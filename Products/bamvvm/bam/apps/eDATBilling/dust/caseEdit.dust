@@ -1,0 +1,66 @@
+<fieldset data-type="object" itemtype="http://schema.org/Thing" id="caseEditFieldset" style="width: auto;">
+  <legend>Edit Case</legend>
+  <div class="row-fluid">
+    <div class="span5">
+      <label class="label" for="_name">Name</label>
+      <br />
+      <input data-type="string" id="_name" itemprop="name" name="name" type="text" value="" />
+      <br />
+      <label class="label" for="_client">Client</label>
+      <br />
+      <input type="hidden" itemprop="clientId" name="clientId" id="caseEditClientId" />
+      <input data-type="string" id="_client" itemprop="clientName" name="clientName" type="text" value=""
+              data-plugin="typeahead"
+              data-opts='{
+                  "z-index": 1100,
+                  "source": "{typeAheadSource}", 
+                  "highlighter": "{typeAheadHighlighter}",
+                  "updater" : "{typeAheadUpdater}"
+              }'
+        />
+      <br />
+      <label class="label" for="_caseType">Case Type</label>
+      {?caseTypes}
+      <br />
+      <select itemprop="caseTypeId">
+        {#caseTypes}
+        <option value="{id}">{name}</option>
+        {/caseTypes}
+      </select>
+      {/caseTypes}
+      <br />
+      <label class="label" for="_comment">Comment</label>
+      <br />
+      <textarea data-type="string" id="_comment" itemprop="comment" name="comment">
+      </textarea>
+      <span id="matterNumbers" >
+        <br />
+        <label class="label">Billing Numbers</label>
+        <i class="icon-plus-sign hand" data-action="addBillingNumber"></i>
+        <br />
+        <table style="width: 450px">
+          <tbody id="matterNumberList" data-array="true" itemscope="itemscope" data-set="setMatterNumbers">
+            <!-- this is populated by caseEditViewModel activate method ~lines 20-30-->
+          </tbody>
+        </table>
+      </span>
+      <br />
+      <label class="label" for="_status">Case Status</label>
+      {?caseStatuses}
+      <br />
+      <select itemprop="caseStatusId">
+        {#caseStatuses}
+        <option value="{id}">{name}</option>
+        {/caseStatuses}
+      </select>
+      {/caseStatuses}
+      <br />
+    </div>
+    <div class="span5">
+      <div id="caseTeamMembers">
+        <!-- this is populated by caseEditViewModel activate method ~lines 20-30-->
+      </div>
+    </div>
+  </div>
+  <span class="btn" data-action="save">Save</span>
+</fieldset>

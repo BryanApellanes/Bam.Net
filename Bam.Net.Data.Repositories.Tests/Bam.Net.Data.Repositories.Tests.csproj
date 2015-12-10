@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6E5C0894-EBA9-4B58-AC42-FA4707524D97}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Bam.Net.Data.Repositories.Tests</RootNamespace>
+    <AssemblyName>Bam.Net.Data.Repositories.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Debug\CommandLineMenuInterface.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Release\CommandLineMenuInterface.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="YamlSerializer">
+      <HintPath>..\packages\YamlSerializer.1.0\lib\Net35\YamlSerializer.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BackupDatabaseTests.cs" />
+    <Compile Include="ConsoleActions.cs" />
+    <Compile Include="ObjectRepositoryUnitTests.cs" />
+    <Compile Include="Partials\MainObject.cs" />
+    <Compile Include="Partials\SecondaryObject.cs" />
+    <Compile Include="Partials\SecondaryObjectTernaryObject.cs" />
+    <Compile Include="Partials\TernaryObject.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DaoRepositoryUnitTests.cs" />
+    <Compile Include="Test_Generated\MainObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Test_Generated\MainObjectCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Test_Generated\MainObjectColumns.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Test_Generated\MainObjectPagedQuery.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Test_Generated\MainObjectQuery.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Test_Generated\Qi\MainObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Test_Generated\Qi\SecondaryObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Test_Generated\Qi\SecondaryObjectTernaryObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Test_Generated\Qi\TernaryObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Test_Generated\RepoTestsContext.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Test_Generated\SecondaryObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Test_Generated\SecondaryObjectCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Test_Generated\SecondaryObjectColumns.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Test_Generated\SecondaryObjectPagedQuery.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Test_Generated\SecondaryObjectQuery.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Test_Generated\SecondaryObjectTernaryObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Test_Generated\SecondaryObjectTernaryObjectCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Test_Generated\SecondaryObjectTernaryObjectColumns.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Test_Generated\SecondaryObjectTernaryObjectPagedQuery.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Test_Generated\SecondaryObjectTernaryObjectQuery.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Test_Generated\TernaryObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Test_Generated\TernaryObjectCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Test_Generated\TernaryObjectColumns.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Test_Generated\TernaryObjectPagedQuery.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Test_Generated\TernaryObjectQuery.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bam.Net.Analytics\Bam.Net.Analytics.csproj">
+      <Project>{67cca5a4-9b97-444c-9f4b-f464b2e04d6b}</Project>
+      <Name>Bam.Net.Analytics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.CommandLine\Bam.Net.CommandLine.csproj">
+      <Project>{ea9863a9-8e0b-4497-b7fd-abf450a3e468}</Project>
+      <Name>Bam.Net.CommandLine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.MSSql\Bam.Net.Data.MsSql.csproj">
+      <Project>{f373eaf9-b69c-4322-9659-a53a8fb7d43f}</Project>
+      <Name>Bam.Net.Data.MsSql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.Oracle\Bam.Net.Data.Oracle.csproj">
+      <Project>{296d4f9e-09f3-48c1-9968-d161c9666756}</Project>
+      <Name>Bam.Net.Data.Oracle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.Repositories\Bam.Net.Data.Repositories.csproj">
+      <Project>{222ef625-a115-49c7-8bdb-5879725a7d17}</Project>
+      <Name>Bam.Net.Data.Repositories</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.Schema\Bam.Net.Data.Schema.csproj">
+      <Project>{d2c2b1c0-1047-4211-92fc-37f332861161}</Project>
+      <Name>Bam.Net.Data.Schema</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.SQLite\Bam.Net.Data.SQLite.csproj">
+      <Project>{42339dbf-9389-42f8-9d28-4c523caa7b01}</Project>
+      <Name>Bam.Net.Data.SQLite</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data\Bam.Net.Data.csproj">
+      <Project>{3b52b739-58fd-4b49-b815-6b317e701520}</Project>
+      <Name>Bam.Net.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Testing\Bam.Net.Testing.csproj">
+      <Project>{85212881-c676-4b40-b311-37c2d1706042}</Project>
+      <Name>Bam.Net.Testing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Yaml\Bam.Net.Yaml.csproj">
+      <Project>{1c5258ec-7579-4032-94ec-b016bdc1b876}</Project>
+      <Name>Bam.Net.Yaml</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net\Bam.Net.csproj">
+      <Project>{8794C09D-D72C-420C-812F-BFDA251B64C9}</Project>
+      <Name>Bam.Net</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Test.db.js" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
+

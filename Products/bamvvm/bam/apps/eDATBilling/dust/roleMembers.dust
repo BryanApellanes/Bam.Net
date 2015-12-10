@@ -1,0 +1,8 @@
+﻿<div>
+<label class="label" for="_name">{name}</label>
+  {#members}
+    <div>
+      {name}
+    </div>
+  {/members}
+</div>

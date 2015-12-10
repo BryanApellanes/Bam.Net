@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A7F12BBC-DE63-494B-9B47-819C6C102FF0}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Bam.Net.Queries.Tests</RootNamespace>
+    <AssemblyName>Bam.Net.Queries.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Bam.Net.Queries.Tests.xml</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>bin\Release\</OutputPath>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\Assemblies\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite">
+      <HintPath>..\Assemblies\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.0.0\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BookTests.cs" />
+    <Compile Include="ColumnAttributeTests.cs" />
+    <Compile Include="DaoTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FormatPartsTest.cs" />
+    <Compile Include="GeneratedClassTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Generated\Cart.cs" />
+    <Compile Include="Generated\CartCollection.cs" />
+    <Compile Include="Generated\CartColumns.cs" />
+    <Compile Include="Generated\CartItem.cs" />
+    <Compile Include="Generated\CartItemCollection.cs" />
+    <Compile Include="Generated\CartItemColumns.cs" />
+    <Compile Include="Generated\Item.cs" />
+    <Compile Include="Generated\ItemCollection.cs" />
+    <Compile Include="Generated\ItemColumns.cs" />
+    <Compile Include="Generated\List.cs" />
+    <Compile Include="Generated\ListCollection.cs" />
+    <Compile Include="Generated\ListColumns.cs" />
+    <Compile Include="Generated\ListItem.cs" />
+    <Compile Include="Generated\ListItemCollection.cs" />
+    <Compile Include="Generated\ListItemColumns.cs" />
+    <Compile Include="Generated\Qi\Cart.cs" />
+    <Compile Include="Generated\Qi\CartItem.cs" />
+    <Compile Include="Generated\Qi\Item.cs" />
+    <Compile Include="Generated\Qi\List.cs" />
+    <Compile Include="Generated\Qi\ListItem.cs" />
+    <Compile Include="Generated\ShopContext.cs" />
+    <Compile Include="LegacyGenerated\DaoReferenceObject.cs" />
+    <Compile Include="LegacyGenerated\DaoReferenceObjectCollection.cs" />
+    <Compile Include="LegacyGenerated\DaoReferenceObjectColumns.cs" />
+    <Compile Include="LegacyGenerated\DaoReferenceObjectWithForeignKey.cs" />
+    <Compile Include="LegacyGenerated\DaoReferenceObjectWithForeignKeyCollection.cs" />
+    <Compile Include="LegacyGenerated\DaoReferenceObjectWithForeignKeyColumns.cs" />
+    <Compile Include="LegacyGenerated\QiDaoReferenceObject.cs" />
+    <Compile Include="LegacyGenerated\QiDaoReferenceObjectWithForeignKey.cs" />
+    <Compile Include="ParameterFactoryTests.cs" />
+    <Compile Include="QueryFilterTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QuerySetTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SqlStringBuilderTests.cs" />
+    <Compile Include="Table.cs" />
+    <Compile Include="TableColumns.cs" />
+    <Compile Include="TestDao.cs" />
+    <Compile Include="TestProgram.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Shop.db.js" />
+    <Content Include="Test.sdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Bam.Net.Hatagi\Bam.Net.Hatagi.Data\Bam.Net.Hatagi.Data.csproj">
+      <Project>{2ec35496-4fac-48a0-8046-c571e209de5e}</Project>
+      <Name>Bam.Net.Hatagi.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Analytics\Bam.Net.Analytics.csproj">
+      <Project>{67cca5a4-9b97-444c-9f4b-f464b2e04d6b}</Project>
+      <Name>Bam.Net.Analytics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.CommandLine\Bam.Net.CommandLine.csproj">
+      <Project>{EA9863A9-8E0B-4497-B7FD-ABF450A3E468}</Project>
+      <Name>Bam.Net.CommandLine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.MSSql\Bam.Net.Data.MsSql.csproj">
+      <Project>{F373EAF9-B69C-4322-9659-A53A8FB7D43F}</Project>
+      <Name>Bam.Net.Data.MsSql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.Schema\Bam.Net.Data.Schema.csproj">
+      <Project>{D2C2B1C0-1047-4211-92FC-37F332861161}</Project>
+      <Name>Bam.Net.Data.Schema</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.SQLite\Bam.Net.Data.SQLite.csproj">
+      <Project>{42339DBF-9389-42F8-9D28-4C523CAA7B01}</Project>
+      <Name>Bam.Net.Data.SQLite</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data\Bam.Net.Data.csproj">
+      <Project>{3B52B739-58FD-4B49-B815-6B317E701520}</Project>
+      <Name>Bam.Net.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Incubation\Bam.Net.Incubation.csproj">
+      <Project>{AA186331-A0D0-4F77-BEA2-E7B7650D3FF5}</Project>
+      <Name>Bam.Net.Incubation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.OAuth\Bam.Net.OAuth.csproj">
+      <Project>{9FFA176A-469F-46A3-A95F-952428D1DB5B}</Project>
+      <Name>Bam.Net.OAuth</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.ServiceProxy\Bam.Net.ServiceProxy.csproj">
+      <Project>{8987d8c8-033b-4993-99f0-8dd5a4d6dd0d}</Project>
+      <Name>Bam.Net.ServiceProxy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Testing\Bam.Net.Testing.csproj">
+      <Project>{85212881-C676-4B40-B311-37C2D1706042}</Project>
+      <Name>Bam.Net.Testing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net\Bam.Net.csproj">
+      <Project>{8794C09D-D72C-420C-812F-BFDA251B64C9}</Project>
+      <Name>Bam.Net</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

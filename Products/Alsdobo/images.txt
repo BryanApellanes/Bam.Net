@@ -1,0 +1,11 @@
+/images/logo.gif
+/images/border-top.gif
+/images/bg-navigation.gif
+/images/bg-footer.png
+/images/bg-content.png
+/images/bg-body-top.jpg
+/images/bg-body-bottom.jpg
+/images/zoom.png
+/images/bg-top-navigation-left.png
+/images/bg-top-navigation.png
+/images/bg-top-navigation2.png

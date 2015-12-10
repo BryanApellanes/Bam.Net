@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Image Stream</title>
+</head>
+<body>
+    <div id="pageContent">
+        <h1 id="questionToUser"></h1>
+        <h2 id="errors" data-state="error"></h2>
+        <div data-state="initial">
+            <div id="imageSlides"
+                 data-plugin="slideshow"
+                 data-opts='{
+                    "height": 200, 
+                    "loop": false, 
+                    "viewableCount": 1, 
+                    "afterSlide": "imageStream.afterSlide"
+                }'>
+                    
+                <div>
+                    <span>Loading...</span>
+                </div>
+            </div>
+        </div>
+        <style type="text/css">
+            [data-state]{
+                display: none;
+            }
+        </style>
+    </div>
+</body>
+</html>

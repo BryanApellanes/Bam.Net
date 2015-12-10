@@ -1,0 +1,25 @@
+
+		// Xref       
+        public XrefDaoCollection<@Model.XrefTableName, @Model.ListTableName> @Model.ListTableName.Pluralize()
+        {
+            get
+            {			
+				if (this.IsNew)
+				{
+					throw new InvalidOperationException("The current instance of type({0}) hasn't been saved and will have no child collections, call Save() or Save(Database) first."._Format(this.GetType().Name));
+				}
+
+				if(!this.ChildCollections.ContainsKey("@(Model.ParentTableName)_@(Model.XrefTableName)_@(Model.ListTableName)"))
+				{
+					SetChildren();
+				}
+
+				var xref = (XrefDaoCollection<@(Model.XrefTableName), @(Model.ListTableName)>)this.ChildCollections["@(Model.ParentTableName)_@(Model.XrefTableName)_@(Model.ListTableName)"];
+				if(!xref.Loaded)
+				{
+					xref.Load(Database);
+				}
+
+				return xref;
+            }
+        }

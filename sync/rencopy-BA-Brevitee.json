@@ -1,0 +1,65 @@
+{
+    "Ignore": [ ".git", "*.suo", "*.orig" ],
+    "TextReplacementFileExtensions": [
+        ".md",
+        ".nuspec",
+        ".cmd",
+        ".cs",
+        ".js",
+        ".json",
+        ".htm",
+        ".html",
+        ".csproj",
+        ".sln",
+        ".isl",
+        ".isproj",
+        ".transform",
+        ".pp",
+        ".config",
+        ".txt",
+        ".aip",
+        ".tmpl"
+    ],
+    "CopyAllFiles": true,
+    "CopyExtensions": [ ],
+    "SourceFolder": "c:\\src\\Bam.Net",
+    "TargetFolder": "c:\\src\\Brevitee",
+    "TextReplacements": [
+        {
+            "OldText": "Bam.Net",
+            "NewText": "Brevitee"
+        },
+        {
+            "OldText": "Bam.Net",
+            "NewText": "Brevitee"
+        },
+        {
+            "OldText": "Bam",
+            "NewText": "Brevitee"
+        },
+        {
+            "OldText": "Bam.Net",
+            "NewText": "Brevitee"
+        },
+        {
+            "OldText": "Bam DotNet",
+            "NewText": "Brevitee"
+        },
+        {
+            "OldText": "bam dotNet",
+            "NewText": "brevitee"
+        },
+        {
+            "OldText": "Bam",
+            "NewText": "Brevitee"
+        },
+		{
+            "OldText": "bamtoolkit",
+            "NewText": "breviteetookit"
+        },
+        {
+            "OldText": "Copyright © Brevitee",
+            "NewText": "Copyright © Bryan Apellanes"
+        }
+    ]
+}

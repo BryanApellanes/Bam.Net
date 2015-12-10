@@ -1,0 +1,1 @@
+call %1\Bam.Net\Bam.Net.Server\zip_base_app_and_content.cmd %1

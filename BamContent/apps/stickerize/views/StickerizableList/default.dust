@@ -1,0 +1,455 @@
+<fieldset data-type="object" itemscope="itemscope" itemtype="http://schema.org/Thing">
+  <label class="label" for="Creation_Uuid">Uuid</label>
+  <input data-type="string" id="Creation_Uuid" itemprop="Uuid" name="Uuid" type="text" />
+  <br />
+  <label class="label" for="Creation_At">At</label>
+  <input data-plugin="datepicker" data-type="datetime" id="Creation_At" itemprop="At" name="At" type="text" />
+  <br />
+  <label class="label" for="Creation_By">By</label>
+  <input data-type="string" id="Creation_By" itemprop="By" name="By" type="text" />
+  <br />
+</fieldset><fieldset data-type="object" itemscope="itemscope" itemtype="http://schema.org/Thing">
+  <label class="label" for="Image_Uuid">Uuid</label>
+  <input data-type="string" id="Image_Uuid" itemprop="Uuid" name="Uuid" type="text" />
+  <br />
+  <label class="label" for="Image_Url">Url</label>
+  <input data-type="string" id="Image_Url" itemprop="Url" name="Url" type="text" />
+  <br />
+</fieldset><fieldset data-type="object" itemscope="itemscope" itemtype="http://schema.org/Thing">
+  <label class="label" for="LoginTime_Uuid">Uuid</label>
+  <input data-type="string" id="LoginTime_Uuid" itemprop="Uuid" name="Uuid" type="text" />
+  <br />
+  <label class="label" for="LoginTime_DateTime">Date Time</label>
+  <input data-plugin="datepicker" data-type="datetime" id="LoginTime_DateTime" itemprop="DateTime" name="DateTime" type="text" />
+  <br />
+  <label class="label" for="LoginTime_UserName">User Name</label>
+  <input data-type="string" id="LoginTime_UserName" itemprop="UserName" name="UserName" type="text" />
+  <br />
+</fieldset><fieldset data-type="object" itemscope="itemscope" itemtype="http://schema.org/Thing">
+  <label class="label" for="Sticker_Uuid">Uuid</label>
+  <input data-type="string" id="Sticker_Uuid" itemprop="Uuid" name="Uuid" type="text" />
+  <br />
+  <label class="label" for="Sticker_Name">Name</label>
+  <input data-type="string" id="Sticker_Name" itemprop="Name" name="Name" type="text" />
+  <br />
+  <label class="label" for="Sticker_Description">Description</label>
+  <input data-type="string" id="Sticker_Description" itemprop="Description" name="Description" type="text" />
+  <br />
+  <label class="label" for="Sticker_ImageId">Image Id</label>
+  <input data-type="number" id="Sticker_ImageId" itemprop="ImageId" name="ImageId" type="number" />
+  <br />
+  <fieldset data-type="object" id="Sticker_ImageOfImageId" itemprop="ImageOfImageId" itemscope="itemscope" itemtype="http://schema.org/Thing" name="ImageOfImageId">
+    <legend>Image Of Image Id</legend>
+    <label class="label" for="Image_Uuid">Uuid</label>
+    <input data-type="string" id="Image_Uuid" itemprop="Uuid" name="Uuid" type="text" />
+    <br />
+    <label class="label" for="Image_Url">Url</label>
+    <input data-type="string" id="Image_Url" itemprop="Url" name="Url" type="text" />
+    <br />
+  </fieldset>
+  <label class="label" for="Sticker_CreationId">Creation Id</label>
+  <input data-type="number" id="Sticker_CreationId" itemprop="CreationId" name="CreationId" type="number" />
+  <br />
+  <fieldset data-type="object" id="Sticker_CreationOfCreationId" itemprop="CreationOfCreationId" itemscope="itemscope" itemtype="http://schema.org/Thing" name="CreationOfCreationId">
+    <legend>Creation Of Creation Id</legend>
+    <label class="label" for="Creation_Uuid">Uuid</label>
+    <input data-type="string" id="Creation_Uuid" itemprop="Uuid" name="Uuid" type="text" />
+    <br />
+    <label class="label" for="Creation_At">At</label>
+    <input data-plugin="datepicker" data-type="datetime" id="Creation_At" itemprop="At" name="At" type="text" />
+    <br />
+    <label class="label" for="Creation_By">By</label>
+    <input data-type="string" id="Creation_By" itemprop="By" name="By" type="text" />
+    <br />
+  </fieldset>
+</fieldset><fieldset data-type="object" itemscope="itemscope" itemtype="http://schema.org/Thing">
+  <label class="label" for="Stickerizable_Uuid">Uuid</label>
+  <input data-type="string" id="Stickerizable_Uuid" itemprop="Uuid" name="Uuid" type="text" />
+  <br />
+  <label class="label" for="Stickerizable_Name">Name</label>
+  <input data-type="string" id="Stickerizable_Name" itemprop="Name" name="Name" type="text" />
+  <br />
+  <label class="label" for="Stickerizable_Description">Description</label>
+  <input data-type="string" id="Stickerizable_Description" itemprop="Description" name="Description" type="text" />
+  <br />
+  <label class="label" for="Stickerizable_For">For</label>
+  <input data-type="string" id="Stickerizable_For" itemprop="For" name="For" type="text" />
+  <br />
+  <label class="label" for="Stickerizable_CreationId">Creation Id</label>
+  <input data-type="number" id="Stickerizable_CreationId" itemprop="CreationId" name="CreationId" type="number" />
+  <br />
+  <fieldset data-type="object" id="Stickerizable_CreationOfCreationId" itemprop="CreationOfCreationId" itemscope="itemscope" itemtype="http://schema.org/Thing" name="CreationOfCreationId">
+    <legend>Creation Of Creation Id</legend>
+    <label class="label" for="Creation_Uuid">Uuid</label>
+    <input data-type="string" id="Creation_Uuid" itemprop="Uuid" name="Uuid" type="text" />
+    <br />
+    <label class="label" for="Creation_At">At</label>
+    <input data-plugin="datepicker" data-type="datetime" id="Creation_At" itemprop="At" name="At" type="text" />
+    <br />
+    <label class="label" for="Creation_By">By</label>
+    <input data-type="string" id="Creation_By" itemprop="By" name="By" type="text" />
+    <br />
+  </fieldset>
+  <fieldset data-type="object" id="Stickerizable_StickerizableLists" itemprop="StickerizableLists" itemscope="itemscope" itemtype="http://schema.org/Thing" name="StickerizableLists">
+    <legend>Stickerizable Lists</legend>
+    <fieldset data-type="object" id="XrefDaoCollection`2_CurrentPage" itemprop="CurrentPage" itemscope="itemscope" itemtype="http://schema.org/Thing" name="CurrentPage">
+      <legend>Current Page</legend>
+      <label class="label" for="List`1_Capacity">Capacity</label>
+      <input data-type="number" id="List`1_Capacity" itemprop="Capacity" name="Capacity" type="number" />
+      <br />
+      <label class="label" for="List`1_Count">Count</label>
+      <input data-type="number" id="List`1_Count" itemprop="Count" name="Count" type="number" />
+      <br />
+      <fieldset data-type="object" id="List`1_Item" itemprop="Item" itemscope="itemscope" itemtype="http://schema.org/Thing" name="Item">
+        <legend>Item</legend>
+        <label class="label" for="StickerizableList_Uuid">Uuid</label>
+        <input data-type="string" id="StickerizableList_Uuid" itemprop="Uuid" name="Uuid" type="text" />
+        <br />
+        <label class="label" for="StickerizableList_Name">Name</label>
+        <input data-type="string" id="StickerizableList_Name" itemprop="Name" name="Name" type="text" />
+        <br />
+        <label class="label" for="StickerizableList_Description">Description</label>
+        <input data-type="string" id="StickerizableList_Description" itemprop="Description" name="Description" type="text" />
+        <br />
+        <label class="label" for="StickerizableList_Public">Public</label>
+        <input data-type="boolean" id="StickerizableList_Public" itemprop="Public" name="Public" type="checkbox" />
+        <br />
+        <label class="label" for="StickerizableList_CreatorId">Creator Id</label>
+        <input data-type="number" id="StickerizableList_CreatorId" itemprop="CreatorId" name="CreatorId" type="number" />
+        <br />
+        <fieldset data-type="object" id="StickerizableList_StickerizerOfCreatorId" itemprop="StickerizerOfCreatorId" itemscope="itemscope" itemtype="http://schema.org/Thing" name="StickerizerOfCreatorId">
+          <legend>Stickerizer Of Creator Id</legend>
+          <label class="label" for="Stickerizer_Uuid">Uuid</label>
+          <input data-type="string" id="Stickerizer_Uuid" itemprop="Uuid" name="Uuid" type="text" />
+          <br />
+          <label class="label" for="Stickerizer_Name">Name</label>
+          <input data-type="string" id="Stickerizer_Name" itemprop="Name" name="Name" type="text" />
+          <br />
+          <label class="label" for="Stickerizer_DisplayName">Display Name</label>
+          <input data-type="string" id="Stickerizer_DisplayName" itemprop="DisplayName" name="DisplayName" type="text" />
+          <br />
+          <label class="label" for="Stickerizer_UserName">User Name</label>
+          <input data-type="string" id="Stickerizer_UserName" itemprop="UserName" name="UserName" type="text" />
+          <br />
+          <label class="label" for="Stickerizer_ImageId">Image Id</label>
+          <input data-type="number" id="Stickerizer_ImageId" itemprop="ImageId" name="ImageId" type="number" />
+          <br />
+          <label class="label" for="Stickerizer_CreationId">Creation Id</label>
+          <input data-type="number" id="Stickerizer_CreationId" itemprop="CreationId" name="CreationId" type="number" />
+          <br />
+        </fieldset>
+        <label class="label" for="StickerizableList_CreationId">Creation Id</label>
+        <input data-type="number" id="StickerizableList_CreationId" itemprop="CreationId" name="CreationId" type="number" />
+        <br />
+      </fieldset>
+    </fieldset>
+    <label class="label" for="XrefDaoCollection`2_CurrentItemIndex">Current Item Index</label>
+    <input data-type="number" id="XrefDaoCollection`2_CurrentItemIndex" itemprop="CurrentItemIndex" name="CurrentItemIndex" type="number" />
+    <br />
+    <label class="label" for="XrefDaoCollection`2_CurrentPageIndex">Current Page Index</label>
+    <input data-type="number" id="XrefDaoCollection`2_CurrentPageIndex" itemprop="CurrentPageIndex" name="CurrentPageIndex" type="number" />
+    <br />
+    <fieldset data-type="object" id="XrefDaoCollection`2_Current" itemprop="Current" itemscope="itemscope" itemtype="http://schema.org/Thing" name="Current">
+      <legend>Current</legend>
+      <label class="label" for="StickerizableList_Uuid">Uuid</label>
+      <input data-type="string" id="StickerizableList_Uuid" itemprop="Uuid" name="Uuid" type="text" />
+      <br />
+      <label class="label" for="StickerizableList_Name">Name</label>
+      <input data-type="string" id="StickerizableList_Name" itemprop="Name" name="Name" type="text" />
+      <br />
+      <label class="label" for="StickerizableList_Description">Description</label>
+      <input data-type="string" id="StickerizableList_Description" itemprop="Description" name="Description" type="text" />
+      <br />
+      <label class="label" for="StickerizableList_Public">Public</label>
+      <input data-type="boolean" id="StickerizableList_Public" itemprop="Public" name="Public" type="checkbox" />
+      <br />
+      <label class="label" for="StickerizableList_CreatorId">Creator Id</label>
+      <input data-type="number" id="StickerizableList_CreatorId" itemprop="CreatorId" name="CreatorId" type="number" />
+      <br />
+      <fieldset data-type="object" id="StickerizableList_StickerizerOfCreatorId" itemprop="StickerizerOfCreatorId" itemscope="itemscope" itemtype="http://schema.org/Thing" name="StickerizerOfCreatorId">
+        <legend>Stickerizer Of Creator Id</legend>
+        <label class="label" for="Stickerizer_Uuid">Uuid</label>
+        <input data-type="string" id="Stickerizer_Uuid" itemprop="Uuid" name="Uuid" type="text" />
+        <br />
+        <label class="label" for="Stickerizer_Name">Name</label>
+        <input data-type="string" id="Stickerizer_Name" itemprop="Name" name="Name" type="text" />
+        <br />
+        <label class="label" for="Stickerizer_DisplayName">Display Name</label>
+        <input data-type="string" id="Stickerizer_DisplayName" itemprop="DisplayName" name="DisplayName" type="text" />
+        <br />
+        <label class="label" for="Stickerizer_UserName">User Name</label>
+        <input data-type="string" id="Stickerizer_UserName" itemprop="UserName" name="UserName" type="text" />
+        <br />
+        <label class="label" for="Stickerizer_ImageId">Image Id</label>
+        <input data-type="number" id="Stickerizer_ImageId" itemprop="ImageId" name="ImageId" type="number" />
+        <br />
+        <label class="label" for="Stickerizer_CreationId">Creation Id</label>
+        <input data-type="number" id="Stickerizer_CreationId" itemprop="CreationId" name="CreationId" type="number" />
+        <br />
+      </fieldset>
+      <label class="label" for="StickerizableList_CreationId">Creation Id</label>
+      <input data-type="number" id="StickerizableList_CreationId" itemprop="CreationId" name="CreationId" type="number" />
+      <br />
+    </fieldset>
+    <label class="label" for="XrefDaoCollection`2_Loaded">Loaded</label>
+    <input data-type="boolean" id="XrefDaoCollection`2_Loaded" itemprop="Loaded" name="Loaded" type="checkbox" />
+    <br />
+    <label class="label" for="XrefDaoCollection`2_Count">Count</label>
+    <input data-type="number" id="XrefDaoCollection`2_Count" itemprop="Count" name="Count" type="number" />
+    <br />
+    <fieldset data-type="object" id="XrefDaoCollection`2_DataTable" itemprop="DataTable" itemscope="itemscope" itemtype="http://schema.org/Thing" name="DataTable">
+      <legend>Data Table</legend>
+      <label class="label" for="DataTable_DesignMode">Design Mode</label>
+      <input data-type="boolean" id="DataTable_DesignMode" itemprop="DesignMode" name="DesignMode" type="checkbox" />
+      <br />
+      <label class="label" for="DataTable_CaseSensitive">Case Sensitive</label>
+      <input data-type="boolean" id="DataTable_CaseSensitive" itemprop="CaseSensitive" name="CaseSensitive" type="checkbox" />
+      <br />
+      <label class="label" for="DataTable_IsInitialized">Is Initialized</label>
+      <input data-type="boolean" id="DataTable_IsInitialized" itemprop="IsInitialized" name="IsInitialized" type="checkbox" />
+      <br />
+      <label class="label" for="DataTable_RemotingFormat">Remoting Format</label>
+      <ul data-type="enum" id="DataTable_RemotingFormat" itemprop="RemotingFormat" name="RemotingFormat" style="list-style:none;">
+        <li>
+          <input checked="checked" data-text="Xml" id="Xml_fyfe" name="SerializationFormat" type="radio" value="0">
+          </input>
+          <label for="Xml_fyfe">Xml</label>
+        </li>
+        <li>
+          <input data-text="Binary" id="Binary_ioao" name="SerializationFormat" type="radio" value="1">
+          </input>
+          <label for="Binary_ioao">Binary</label>
+        </li>
+      </ul>
+      <label class="label" for="DataTable_DisplayExpression">Display Expression</label>
+      <input data-type="string" id="DataTable_DisplayExpression" itemprop="DisplayExpression" name="DisplayExpression" type="text" />
+      <br />
+      <label class="label" for="DataTable_HasErrors">Has Errors</label>
+      <input data-type="boolean" id="DataTable_HasErrors" itemprop="HasErrors" name="HasErrors" type="checkbox" />
+      <br />
+      <label class="label" for="DataTable_MinimumCapacity">Minimum Capacity</label>
+      <input data-type="number" id="DataTable_MinimumCapacity" itemprop="MinimumCapacity" name="MinimumCapacity" type="number" />
+      <br />
+      <label class="label" for="DataTable_TableName">Table Name</label>
+      <input data-type="string" id="DataTable_TableName" itemprop="TableName" name="TableName" type="text" />
+      <br />
+      <label class="label" for="DataTable_Namespace">Namespace</label>
+      <input data-type="string" id="DataTable_Namespace" itemprop="Namespace" name="Namespace" type="text" />
+      <br />
+      <label class="label" for="DataTable_Prefix">Prefix</label>
+      <input data-type="string" id="DataTable_Prefix" itemprop="Prefix" name="Prefix" type="text" />
+      <br />
+    </fieldset>
+  </fieldset>
+  <fieldset data-type="object" id="Stickerizable_SubSections" itemprop="SubSections" itemscope="itemscope" itemtype="http://schema.org/Thing" name="SubSections">
+    <legend>Sub Sections</legend>
+    <fieldset data-type="object" id="XrefDaoCollection`2_CurrentPage" itemprop="CurrentPage" itemscope="itemscope" itemtype="http://schema.org/Thing" name="CurrentPage">
+      <legend>Current Page</legend>
+      <label class="label" for="List`1_Capacity">Capacity</label>
+      <input data-type="number" id="List`1_Capacity" itemprop="Capacity" name="Capacity" type="number" />
+      <br />
+      <label class="label" for="List`1_Count">Count</label>
+      <input data-type="number" id="List`1_Count" itemprop="Count" name="Count" type="number" />
+      <br />
+      <fieldset data-type="object" id="List`1_Item" itemprop="Item" itemscope="itemscope" itemtype="http://schema.org/Thing" name="Item">
+        <legend>Item</legend>
+        <label class="label" for="SubSection_Uuid">Uuid</label>
+        <input data-type="string" id="SubSection_Uuid" itemprop="Uuid" name="Uuid" type="text" />
+        <br />
+        <label class="label" for="SubSection_Name">Name</label>
+        <input data-type="string" id="SubSection_Name" itemprop="Name" name="Name" type="text" />
+        <br />
+        <label class="label" for="SubSection_StickerizableListId">Stickerizable List Id</label>
+        <input data-type="number" id="SubSection_StickerizableListId" itemprop="StickerizableListId" name="StickerizableListId" type="number" />
+        <br />
+        <label class="label" for="SubSection_CreationId">Creation Id</label>
+        <input data-type="number" id="SubSection_CreationId" itemprop="CreationId" name="CreationId" type="number" />
+        <br />
+      </fieldset>
+    </fieldset>
+    <label class="label" for="XrefDaoCollection`2_CurrentItemIndex">Current Item Index</label>
+    <input data-type="number" id="XrefDaoCollection`2_CurrentItemIndex" itemprop="CurrentItemIndex" name="CurrentItemIndex" type="number" />
+    <br />
+    <label class="label" for="XrefDaoCollection`2_CurrentPageIndex">Current Page Index</label>
+    <input data-type="number" id="XrefDaoCollection`2_CurrentPageIndex" itemprop="CurrentPageIndex" name="CurrentPageIndex" type="number" />
+    <br />
+    <fieldset data-type="object" id="XrefDaoCollection`2_Current" itemprop="Current" itemscope="itemscope" itemtype="http://schema.org/Thing" name="Current">
+      <legend>Current</legend>
+      <label class="label" for="SubSection_Uuid">Uuid</label>
+      <input data-type="string" id="SubSection_Uuid" itemprop="Uuid" name="Uuid" type="text" />
+      <br />
+      <label class="label" for="SubSection_Name">Name</label>
+      <input data-type="string" id="SubSection_Name" itemprop="Name" name="Name" type="text" />
+      <br />
+      <label class="label" for="SubSection_StickerizableListId">Stickerizable List Id</label>
+      <input data-type="number" id="SubSection_StickerizableListId" itemprop="StickerizableListId" name="StickerizableListId" type="number" />
+      <br />
+      <label class="label" for="SubSection_CreationId">Creation Id</label>
+      <input data-type="number" id="SubSection_CreationId" itemprop="CreationId" name="CreationId" type="number" />
+      <br />
+    </fieldset>
+    <label class="label" for="XrefDaoCollection`2_Loaded">Loaded</label>
+    <input data-type="boolean" id="XrefDaoCollection`2_Loaded" itemprop="Loaded" name="Loaded" type="checkbox" />
+    <br />
+    <label class="label" for="XrefDaoCollection`2_Count">Count</label>
+    <input data-type="number" id="XrefDaoCollection`2_Count" itemprop="Count" name="Count" type="number" />
+    <br />
+  </fieldset>
+</fieldset><fieldset data-type="object" itemscope="itemscope" itemtype="http://schema.org/Thing">
+  <label class="label" for="StickerizableList_Uuid">Uuid</label>
+  <input data-type="string" id="StickerizableList_Uuid" itemprop="Uuid" name="Uuid" type="text" />
+  <br />
+  <label class="label" for="StickerizableList_Name">Name</label>
+  <input data-type="string" id="StickerizableList_Name" itemprop="Name" name="Name" type="text" />
+  <br />
+  <label class="label" for="StickerizableList_Description">Description</label>
+  <input data-type="string" id="StickerizableList_Description" itemprop="Description" name="Description" type="text" />
+  <br />
+  <label class="label" for="StickerizableList_Public">Public</label>
+  <input data-type="boolean" id="StickerizableList_Public" itemprop="Public" name="Public" type="checkbox" />
+  <br />
+  <label class="label" for="StickerizableList_CreatorId">Creator Id</label>
+  <input data-type="number" id="StickerizableList_CreatorId" itemprop="CreatorId" name="CreatorId" type="number" />
+  <br />
+  <fieldset data-type="object" id="StickerizableList_StickerizerOfCreatorId" itemprop="StickerizerOfCreatorId" itemscope="itemscope" itemtype="http://schema.org/Thing" name="StickerizerOfCreatorId">
+    <legend>Stickerizer Of Creator Id</legend>
+    <label class="label" for="Stickerizer_Uuid">Uuid</label>
+    <input data-type="string" id="Stickerizer_Uuid" itemprop="Uuid" name="Uuid" type="text" />
+    <br />
+    <label class="label" for="Stickerizer_Name">Name</label>
+    <input data-type="string" id="Stickerizer_Name" itemprop="Name" name="Name" type="text" />
+    <br />
+    <label class="label" for="Stickerizer_DisplayName">Display Name</label>
+    <input data-type="string" id="Stickerizer_DisplayName" itemprop="DisplayName" name="DisplayName" type="text" />
+    <br />
+    <label class="label" for="Stickerizer_UserName">User Name</label>
+    <input data-type="string" id="Stickerizer_UserName" itemprop="UserName" name="UserName" type="text" />
+    <br />
+    <label class="label" for="Stickerizer_ImageId">Image Id</label>
+    <input data-type="number" id="Stickerizer_ImageId" itemprop="ImageId" name="ImageId" type="number" />
+    <br />
+    <fieldset data-type="object" id="Stickerizer_ImageOfImageId" itemprop="ImageOfImageId" itemscope="itemscope" itemtype="http://schema.org/Thing" name="ImageOfImageId">
+      <legend>Image Of Image Id</legend>
+      <label class="label" for="Image_Uuid">Uuid</label>
+      <input data-type="string" id="Image_Uuid" itemprop="Uuid" name="Uuid" type="text" />
+      <br />
+      <label class="label" for="Image_Url">Url</label>
+      <input data-type="string" id="Image_Url" itemprop="Url" name="Url" type="text" />
+      <br />
+    </fieldset>
+    <label class="label" for="Stickerizer_CreationId">Creation Id</label>
+    <input data-type="number" id="Stickerizer_CreationId" itemprop="CreationId" name="CreationId" type="number" />
+    <br />
+    <fieldset data-type="object" id="Stickerizer_CreationOfCreationId" itemprop="CreationOfCreationId" itemscope="itemscope" itemtype="http://schema.org/Thing" name="CreationOfCreationId">
+      <legend>Creation Of Creation Id</legend>
+      <label class="label" for="Creation_Uuid">Uuid</label>
+      <input data-type="string" id="Creation_Uuid" itemprop="Uuid" name="Uuid" type="text" />
+      <br />
+      <label class="label" for="Creation_At">At</label>
+      <input data-plugin="datepicker" data-type="datetime" id="Creation_At" itemprop="At" name="At" type="text" />
+      <br />
+      <label class="label" for="Creation_By">By</label>
+      <input data-type="string" id="Creation_By" itemprop="By" name="By" type="text" />
+      <br />
+    </fieldset>
+    <fieldset data-type="object" id="Stickerizer_Stickerizees" itemprop="Stickerizees" itemscope="itemscope" itemtype="http://schema.org/Thing" name="Stickerizees">
+      <legend>Stickerizees</legend>
+      <fieldset data-type="object" id="XrefDaoCollection`2_CurrentPage" itemprop="CurrentPage" itemscope="itemscope" itemtype="http://schema.org/Thing" name="CurrentPage">
+        <legend>Current Page</legend>
+        <label class="label" for="List`1_Capacity">Capacity</label>
+        <input data-type="number" id="List`1_Capacity" itemprop="Capacity" name="Capacity" type="number" />
+        <br />
+        <label class="label" for="List`1_Count">Count</label>
+        <input data-type="number" id="List`1_Count" itemprop="Count" name="Count" type="number" />
+        <br />
+      </fieldset>
+      <label class="label" for="XrefDaoCollection`2_CurrentItemIndex">Current Item Index</label>
+      <input data-type="number" id="XrefDaoCollection`2_CurrentItemIndex" itemprop="CurrentItemIndex" name="CurrentItemIndex" type="number" />
+      <br />
+      <label class="label" for="XrefDaoCollection`2_CurrentPageIndex">Current Page Index</label>
+      <input data-type="number" id="XrefDaoCollection`2_CurrentPageIndex" itemprop="CurrentPageIndex" name="CurrentPageIndex" type="number" />
+      <br />
+      <label class="label" for="XrefDaoCollection`2_Loaded">Loaded</label>
+      <input data-type="boolean" id="XrefDaoCollection`2_Loaded" itemprop="Loaded" name="Loaded" type="checkbox" />
+      <br />
+      <label class="label" for="XrefDaoCollection`2_Count">Count</label>
+      <input data-type="number" id="XrefDaoCollection`2_Count" itemprop="Count" name="Count" type="number" />
+      <br />
+    </fieldset>
+  </fieldset>
+  <label class="label" for="StickerizableList_CreationId">Creation Id</label>
+  <input data-type="number" id="StickerizableList_CreationId" itemprop="CreationId" name="CreationId" type="number" />
+  <br />
+  <fieldset data-type="object" id="StickerizableList_CreationOfCreationId" itemprop="CreationOfCreationId" itemscope="itemscope" itemtype="http://schema.org/Thing" name="CreationOfCreationId">
+    <legend>Creation Of Creation Id</legend>
+    <label class="label" for="Creation_Uuid">Uuid</label>
+    <input data-type="string" id="Creation_Uuid" itemprop="Uuid" name="Uuid" type="text" />
+    <br />
+    <label class="label" for="Creation_At">At</label>
+    <input data-plugin="datepicker" data-type="datetime" id="Creation_At" itemprop="At" name="At" type="text" />
+    <br />
+    <label class="label" for="Creation_By">By</label>
+    <input data-type="string" id="Creation_By" itemprop="By" name="By" type="text" />
+    <br />
+  </fieldset>
+  <fieldset data-type="object" id="StickerizableList_Stickerizables" itemprop="Stickerizables" itemscope="itemscope" itemtype="http://schema.org/Thing" name="Stickerizables">
+    <legend>Stickerizables</legend>
+    <fieldset data-type="object" id="XrefDaoCollection`2_CurrentPage" itemprop="CurrentPage" itemscope="itemscope" itemtype="http://schema.org/Thing" name="CurrentPage">
+      <legend>Current Page</legend>
+      <label class="label" for="List`1_Capacity">Capacity</label>
+      <input data-type="number" id="List`1_Capacity" itemprop="Capacity" name="Capacity" type="number" />
+      <br />
+      <label class="label" for="List`1_Count">Count</label>
+      <input data-type="number" id="List`1_Count" itemprop="Count" name="Count" type="number" />
+      <br />
+      <fieldset data-type="object" id="List`1_Item" itemprop="Item" itemscope="itemscope" itemtype="http://schema.org/Thing" name="Item">
+        <legend>Item</legend>
+        <label class="label" for="Stickerizable_Uuid">Uuid</label>
+        <input data-type="string" id="Stickerizable_Uuid" itemprop="Uuid" name="Uuid" type="text" />
+        <br />
+        <label class="label" for="Stickerizable_Name">Name</label>
+        <input data-type="string" id="Stickerizable_Name" itemprop="Name" name="Name" type="text" />
+        <br />
+        <label class="label" for="Stickerizable_Description">Description</label>
+        <input data-type="string" id="Stickerizable_Description" itemprop="Description" name="Description" type="text" />
+        <br />
+        <label class="label" for="Stickerizable_For">For</label>
+        <input data-type="string" id="Stickerizable_For" itemprop="For" name="For" type="text" />
+        <br />
+        <label class="label" for="Stickerizable_CreationId">Creation Id</label>
+        <input data-type="number" id="Stickerizable_CreationId" itemprop="CreationId" name="CreationId" type="number" />
+        <br />
+      </fieldset>
+    </fieldset>
+    <label class="label" for="XrefDaoCollection`2_CurrentItemIndex">Current Item Index</label>
+    <input data-type="number" id="XrefDaoCollection`2_CurrentItemIndex" itemprop="CurrentItemIndex" name="CurrentItemIndex" type="number" />
+    <br />
+    <label class="label" for="XrefDaoCollection`2_CurrentPageIndex">Current Page Index</label>
+    <input data-type="number" id="XrefDaoCollection`2_CurrentPageIndex" itemprop="CurrentPageIndex" name="CurrentPageIndex" type="number" />
+    <br />
+    <fieldset data-type="object" id="XrefDaoCollection`2_Current" itemprop="Current" itemscope="itemscope" itemtype="http://schema.org/Thing" name="Current">
+      <legend>Current</legend>
+      <label class="label" for="Stickerizable_Uuid">Uuid</label>
+      <input data-type="string" id="Stickerizable_Uuid" itemprop="Uuid" name="Uuid" type="text" />
+      <br />
+      <label class="label" for="Stickerizable_Name">Name</label>
+      <input data-type="string" id="Stickerizable_Name" itemprop="Name" name="Name" type="text" />
+      <br />
+      <label class="label" for="Stickerizable_Description">Description</label>
+      <input data-type="string" id="Stickerizable_Description" itemprop="Description" name="Description" type="text" />
+      <br />
+      <label class="label" for="Stickerizable_For">For</label>
+      <input data-type="string" id="Stickerizable_For" itemprop="For" name="For" type="text" />
+      <br />
+      <label class="label" for="Stickerizable_CreationId">Creation Id</label>
+      <input data-type="number" id="Stickerizable_CreationId" itemprop="CreationId" name="CreationId" type="number" />
+      <br />
+    </fieldset>
+    <label class="label" for="XrefDaoCollection`2_Loaded">Loaded</label>
+    <input data-type="boolean" id="XrefDaoCollection`2_Loaded" itemprop="Loaded" name="Loaded" type="checkbox" />
+    <br />
+    <label class="label" for="XrefDaoCollection`2_Count">Count</label>
+    <input data-type="number" id="XrefDaoCollection`2_Count" itemprop="Count" name="Count" type="number" />
+    <br />
+  </fieldset>
+</fieldset>

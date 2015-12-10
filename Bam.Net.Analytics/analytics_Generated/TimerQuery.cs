@@ -1,0 +1,25 @@
+/*
+	Copyright © Bryan Apellanes 2015  
+*/
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Data;
+using System.Data.Common;
+using Bam.Net.Data;
+
+namespace Bam.Net.Analytics
+{
+    public class TimerQuery: Query<TimerColumns, Timer>
+    { 
+		public TimerQuery(){}
+		public TimerQuery(WhereDelegate<TimerColumns> where, OrderBy<TimerColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
+		public TimerQuery(Func<TimerColumns, QueryFilter<TimerColumns>> where, OrderBy<TimerColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
+		public TimerQuery(Delegate where, Database db = null) : base(where, db) { }
+
+		public TimerCollection Execute()
+		{
+			return new TimerCollection(this, true);
+		}
+    }
+}

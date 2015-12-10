@@ -1,0 +1,10 @@
+<fieldset data-type="object" itemscope="itemscope" itemtype="http://schema.org/Thing">
+  <span class="label" for="Name">Name: </span>
+  <input data-type="string" itemprop="Name" name="Name" type="text" value="{Name}">
+  </input>
+  <br />
+  <span class="label" for="Id">Id: </span>
+  <input data-type="int64" itemprop="Id" name="Id" type="text">
+  </input>
+  <br />
+</fieldset>

@@ -1,0 +1,86 @@
+﻿@using BAMvvm.Models;
+@{
+    ViewBag.Title = "Deferred";
+}
+
+<h2>Deferred View Tests</h2>
+
+
+<fieldset>
+    <legend>Renders Right Away Without Calling Server Again</legend>
+@Html.Deferred((dv)=>
+{
+    return new Tag("span").Attr("data-test-name", "Should render in half a second").Text("half a second (It Rendered)");
+})
+</fieldset>
+
+<fieldset>
+    <legend>Should Render "Initial" then after ~5 seconds show "Render Complete"</legend>
+@Html.Deferred((dv) =>
+{
+    System.Threading.Thread.Sleep(5000);
+    return new Tag("span", new { data_test_name = "Should render span in 5 seconds" }).Text("Render Complete");
+},
+() =>
+{
+    return new Tag("span").Text("Initial");
+})
+</fieldset>
+
+<fieldset>
+    <legend>Using Html Helper::  Should Render "Initial" then after ~5 seconds show "Render Complete"</legend>
+@Html.Deferred((dv) =>
+{
+    System.Threading.Thread.Sleep(5000);
+    return Html.Tag("span", new { data_test_name = "Should render span in 5 seconds" }).Text("Render Complete");
+},
+() =>
+{
+    return Html.Tag("span").Text("Initial");
+})
+</fieldset>
+
+<fieldset>
+    <legend>Should Render "Initial" then update status until done</legend>
+@Html.Deferred((dv) =>
+{
+    dv.SetState(Html.Tag("span").Text("Simulating long process..."));
+    System.Threading.Thread.Sleep(1500);
+    for (int i = 0; i < 20; i++)
+    {
+        System.Threading.Thread.Sleep(1000);
+        dv.SetState(Html.Tag("span").Text("Slept {0} seconds..."._Format(i)));
+    }
+    return new Tag("span").Text("done");
+},
+    @Html.Tag("span").Text("Initial")
+)
+</fieldset>
+
+<fieldset>
+    <legend>Should have poll interval of half a second</legend>
+@Html.Deferred((dv) =>
+{
+    dv.SetState(Html.Tag("span").Text("Simulating long process..."));
+    System.Threading.Thread.Sleep(1500);
+    for (int i = 0; i < 20; i++)
+    {
+        System.Threading.Thread.Sleep(1000);
+        dv.SetState(Html.Tag("span").Text("Slept {0} seconds..."._Format(i)));
+    }
+    return new Tag("span").Text("done");
+},
+    @Html.Tag("span").Text("Initial")
+, new { data_opts_poll_interval="500" })
+</fieldset>
+
+
+<fieldset>
+    <legend>Should Render DeferredPartial</legend>
+@Html.Partial("DeferredPartial")
+</fieldset>
+
+
+
+
+@Scripts.Render("~/bam/js/deferredView.js")

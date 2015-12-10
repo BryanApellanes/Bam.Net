@@ -1,0 +1,25 @@
+/*
+	Copyright © Bryan Apellanes 2015  
+*/
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Data;
+using System.Data.Common;
+using Bam.Net.Data;
+
+namespace Bam.Net.Analytics
+{
+    public class MethodTimerQuery: Query<MethodTimerColumns, MethodTimer>
+    { 
+		public MethodTimerQuery(){}
+		public MethodTimerQuery(WhereDelegate<MethodTimerColumns> where, OrderBy<MethodTimerColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
+		public MethodTimerQuery(Func<MethodTimerColumns, QueryFilter<MethodTimerColumns>> where, OrderBy<MethodTimerColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
+		public MethodTimerQuery(Delegate where, Database db = null) : base(where, db) { }
+
+		public MethodTimerCollection Execute()
+		{
+			return new MethodTimerCollection(this, true);
+		}
+    }
+}

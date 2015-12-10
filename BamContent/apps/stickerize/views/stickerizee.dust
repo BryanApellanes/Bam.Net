@@ -1,0 +1,13 @@
+﻿<div class="row-fluid" itemscope="itemscope">
+  <span class="person span3">
+	<img src="{StickerizeeImageSource}" />
+  </span>
+  <span class="span6" itemprop="Name">
+	{Name}
+  </span>  
+  <span class="span3 pull right">
+	<button class="btn" data-action="stickerize">Stickerize</button>
+	<button class="btn" data-action="remove">Delete</button>    
+  </span>
+  <span class="hide" itemprop="Id">{Id}</span>
+</div>

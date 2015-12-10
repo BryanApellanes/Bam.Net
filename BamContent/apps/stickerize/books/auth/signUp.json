@@ -1,0 +1,9 @@
+{
+  "Name": "auth/signUp",
+  "Pages": [
+    {
+      "Name": "auth/forgotPassword",
+      "Layout": "basic"
+    }
+  ]
+}

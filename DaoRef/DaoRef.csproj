@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{88B5D719-69ED-45D8-9F04-C33D3FC5DCBE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DaoRef</RootNamespace>
+    <AssemblyName>DaoRef</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\DaoRef.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.0.0\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="daoref_Generated\DaoRefContext.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="daoref_Generated\DaoReferenceObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="daoref_Generated\DaoReferenceObjectCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="daoref_Generated\DaoReferenceObjectColumns.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="daoref_Generated\DaoReferenceObjectPagedQuery.cs" />
+    <Compile Include="daoref_Generated\DaoReferenceObjectQuery.cs" />
+    <Compile Include="daoref_Generated\DaoReferenceObjectWithForeignKey.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="daoref_Generated\DaoReferenceObjectWithForeignKeyCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="daoref_Generated\DaoReferenceObjectWithForeignKeyColumns.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="daoref_Generated\DaoReferenceObjectWithForeignKeyPagedQuery.cs" />
+    <Compile Include="daoref_Generated\DaoReferenceObjectWithForeignKeyQuery.cs" />
+    <Compile Include="daoref_Generated\Left.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="daoref_Generated\LeftCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="daoref_Generated\LeftColumns.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="daoref_Generated\LeftPagedQuery.cs" />
+    <Compile Include="daoref_Generated\LeftQuery.cs" />
+    <Compile Include="daoref_Generated\LeftRight.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="daoref_Generated\LeftRightCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="daoref_Generated\LeftRightColumns.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="daoref_Generated\LeftRightPagedQuery.cs" />
+    <Compile Include="daoref_Generated\LeftRightQuery.cs" />
+    <Compile Include="daoref_Generated\Qi\DaoReferenceObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="daoref_Generated\Qi\DaoReferenceObjectWithForeignKey.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="daoref_Generated\Qi\Left.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="daoref_Generated\Qi\LeftRight.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="daoref_Generated\Qi\Right.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="daoref_Generated\Qi\TestFkTable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="daoref_Generated\Qi\TestTable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="daoref_Generated\Right.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="daoref_Generated\RightCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="daoref_Generated\RightColumns.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="daoref_Generated\RightPagedQuery.cs" />
+    <Compile Include="daoref_Generated\RightQuery.cs" />
+    <Compile Include="daoref_Generated\TestFkTable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="daoref_Generated\TestFkTableCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="daoref_Generated\TestFkTableColumns.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="daoref_Generated\TestFkTablePagedQuery.cs" />
+    <Compile Include="daoref_Generated\TestFkTableQuery.cs" />
+    <Compile Include="daoref_Generated\TestTable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="daoref_Generated\TestTableCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="daoref_Generated\TestTableColumns.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="daoref_Generated\TestTablePagedQuery.cs" />
+    <Compile Include="daoref_Generated\TestTableQuery.cs" />
+    <Compile Include="Partials\DaoReferenceObject.cs" />
+    <Compile Include="Partials\DaoReferenceObjectWithForeignKey.cs" />
+    <Compile Include="Partials\Left.cs" />
+    <Compile Include="Partials\LeftRight.cs" />
+    <Compile Include="Partials\Right.cs" />
+    <Compile Include="Partials\TestFkTable.cs" />
+    <Compile Include="Partials\TestTable.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bam.Net.Data\Bam.Net.Data.csproj">
+      <Project>{3b52b739-58fd-4b49-b815-6b317e701520}</Project>
+      <Name>Bam.Net.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net\Bam.Net.csproj">
+      <Project>{8794c09d-d72c-420c-812f-bfda251b64c9}</Project>
+      <Name>Bam.Net</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="daoref.db.js" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy $(TargetPath) c:\BamContent\common\dao\$(TargetFileName)</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

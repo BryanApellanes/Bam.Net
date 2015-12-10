@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{222EF625-A115-49C7-8BDB-5879725A7D17}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Bam.Net.Data.Repositories</RootNamespace>
+    <AssemblyName>Bam.Net.Data.Repositories</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Bam.Net.Data.Repositories.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Bam.Net.Data.Repositories.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net">
+      <HintPath>..\packages\Lucene.Net.3.0.3\lib\NET40\Lucene.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Bson, Version=1.9.2.235, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\mongocsharpdriver.1.9.2\lib\net35\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver, Version=1.9.2.235, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\mongocsharpdriver.1.9.2\lib\net35\MongoDB.Driver.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.0.0\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BackedupDatabase.cs" />
+    <Compile Include="DaoGenerationException.cs" />
+    <Compile Include="DaoBackup.cs" />
+    <Compile Include="DaoRepositorySchemaWarningEventArgs.cs" />
+    <Compile Include="DaoSuffixTypeTableNameProvider.cs" />
+    <Compile Include="DefaultDataTypeBehaviors.cs" />
+    <Compile Include="GenerateDaoAssemblyEventArgs.cs" />
+    <Compile Include="IGeneratesDaoAssembly.cs" />
+    <Compile Include="Indexer.cs" />
+    <Compile Include="IndexExtensions.cs" />
+    <Compile Include="ITypeTableNameProvider.cs" />
+    <Compile Include="MissingForeignKeyPropertyException.cs" />
+    <Compile Include="DaoToDtoGenerator.cs" />
+    <Compile Include="PocoGenerator.cs" />
+    <Compile Include="PocoModel.cs" />
+    <Compile Include="OldToNewIdMapping.cs" />
+    <Compile Include="Dto.cs" />
+    <Compile Include="DtoPropertyModel.cs" />
+    <Compile Include="DtoTemplate.cs" />
+    <Compile Include="PocoTemplate.cs" />
+    <Compile Include="IHasUpdatedXrefCollectionProperties.cs" />
+    <Compile Include="IMetaProvider.cs" />
+    <Compile Include="IObjectReaderWriter.cs" />
+    <Compile Include="KeyAttribute.cs" />
+    <Compile Include="Meta.cs" />
+    <Compile Include="MetaId.cs" />
+    <Compile Include="MetaProperty.cs" />
+    <Compile Include="MetaProvider.cs" />
+    <Compile Include="MetaPropertyVersionInfo.cs" />
+    <Compile Include="MongoObjectReaderWriter.cs" />
+    <Compile Include="MongoRepository.cs" />
+    <Compile Include="NoIdPropertyException.cs" />
+    <Compile Include="DaoRepository.cs" />
+    <Compile Include="IRepository.cs" />
+    <Compile Include="ObjectRepository.cs" />
+    <Compile Include="ObjectReaderWriter.cs" />
+    <Compile Include="DtoModel.cs" />
+    <Compile Include="RepoData.cs" />
+    <Compile Include="SavedObject.cs" />
+    <Compile Include="TypeDaoGenerator.cs" />
+    <Compile Include="TypeSchema.cs" />
+    <Compile Include="TypeSchemaGenerator.cs" />
+    <Compile Include="TypeSchemaPropertyInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository.cs" />
+    <Compile Include="RepositoryEventArgs.cs" />
+    <Compile Include="SchemaDefinitionCreateResult.cs" />
+    <Compile Include="SchemaWarnings.cs" />
+    <Compile Include="TypeFk.cs" />
+    <Compile Include="EchoTypeTableNameProvider.cs" />
+    <Compile Include="TypeXref.cs" />
+    <Compile Include="Xref.cs" />
+    <Compile Include="XrefInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <EmbeddedResource Include="Templates\Poco.tmpl" />
+    <EmbeddedResource Include="Templates\ForeignKeyProperty.tmpl" />
+    <EmbeddedResource Include="Templates\XrefLeftProperty.tmpl" />
+    <EmbeddedResource Include="Templates\ChildPrimaryKeyProperty.tmpl" />
+    <EmbeddedResource Include="Templates\XrefRightProperty.tmpl" />
+    <None Include="packages.config" />
+    <EmbeddedResource Include="Templates\Dto.tmpl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bam.Net.Data.MSSql\Bam.Net.Data.MsSql.csproj">
+      <Project>{f373eaf9-b69c-4322-9659-a53a8fb7d43f}</Project>
+      <Name>Bam.Net.Data.MsSql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.MySql\Bam.Net.Data.MySql.csproj">
+      <Project>{aeaaa461-99de-4daf-9e3d-0301582784e7}</Project>
+      <Name>Bam.Net.Data.MySql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.Oracle\Bam.Net.Data.Oracle.csproj">
+      <Project>{296d4f9e-09f3-48c1-9968-d161c9666756}</Project>
+      <Name>Bam.Net.Data.Oracle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.Schema\Bam.Net.Data.Schema.csproj">
+      <Project>{d2c2b1c0-1047-4211-92fc-37f332861161}</Project>
+      <Name>Bam.Net.Data.Schema</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.SQLite\Bam.Net.Data.SQLite.csproj">
+      <Project>{42339dbf-9389-42f8-9d28-4c523caa7b01}</Project>
+      <Name>Bam.Net.Data.SQLite</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data\Bam.Net.Data.csproj">
+      <Project>{3b52b739-58fd-4b49-b815-6b317e701520}</Project>
+      <Name>Bam.Net.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Incubation\Bam.Net.Incubation.csproj">
+      <Project>{aa186331-a0d0-4f77-bea2-e7b7650d3ff5}</Project>
+      <Name>Bam.Net.Incubation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.ServiceProxy\Bam.Net.ServiceProxy.csproj">
+      <Project>{8987d8c8-033b-4993-99f0-8dd5a4d6dd0d}</Project>
+      <Name>Bam.Net.ServiceProxy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net\Bam.Net.csproj">
+      <Project>{8794c09d-d72c-420c-812f-bfda251b64c9}</Project>
+      <Name>Bam.Net</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DaoRepoNotes.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

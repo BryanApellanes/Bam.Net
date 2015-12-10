@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>
+        Home Page
+    </title>
+</head>
+<body>
+    <div id="pageContent">
+        <div id="errors" style="display:none;" data-state="error"></div>
+        <div id="messages" style="display:none;"></div>
+        <h1>Sample Home</h1>
+
+        <span class="btn btn-default" data-navigate-to="contentPage">Content Page</span>
+        <span class="btn btn-default" data-navigate-to="instructions">Instructions</span>
+        <span class="btn btn-default" data-navigate-to="tests/templateTests">Template Tests</span>
+        <span class="btn btn-default" data-navigate-to="tests/DaoTests">Dao Tests</span>
+        <br /><br />
+        <label for="effectTypes">Default Transition Effect</label>
+        <select id="effectTypes" name="effects" 
+            data-view-model="effectViewModel"
+            >
+            <option value="blind">Blind</option>
+            <option value="bounce">Bounce</option>
+            <option value="clip">Clip</option>
+            <option value="drop">Drop</option>
+            <option value="explode">Explode</option>
+            <option value="fold">Fold</option>
+            <option value="highlight">Highlight</option>
+            <option value="puff">Puff</option>
+            <option value="pulsate">Pulsate</option>
+            <option value="scale">Scale</option>
+            <option value="shake">Shake</option>
+            <option value="size">Size</option>
+            <option value="slide">Slide</option>
+        </select>
+    </div>
+    <hr />
+</body>
+</html>

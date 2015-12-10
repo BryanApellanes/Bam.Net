@@ -1,0 +1,5 @@
+﻿<div class="btn-group">
+  {#items}
+  <button class="btn" id="{id}">{text}</button>  
+  {/items}
+</div>

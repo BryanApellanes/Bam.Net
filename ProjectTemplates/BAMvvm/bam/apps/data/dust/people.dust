@@ -1,0 +1,13 @@
+﻿{#items}
+<div class="row-fluid" itemscope="itemscope">
+  <span class="person span3">
+    <img src="{stickerizeeImageSource}" />
+  </span>
+  <span class="span6">
+    {stickerizeeName}
+  </span>
+  <span class="span3 pull right">
+    <i class="icon-remove" data-action="remove"></i>
+  </span>
+</div>
+{/items}

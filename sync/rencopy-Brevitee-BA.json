@@ -1,0 +1,37 @@
+{
+  "Ignore": [".git", "*.suo", "*.orig"],
+  "TextReplacementFileExtensions": [
+    ".md",
+    ".nuspec",
+    ".cmd",
+    ".cs",
+    ".js",
+	".json",
+    ".htm",
+    ".html",
+    ".csproj",
+    ".sln",
+    ".isl",
+    ".isproj",
+	".transform",
+	".pp",
+	".config",
+	".txt",
+	".aip",
+	".tmpl"
+  ],
+  "CopyAllFiles": true,
+  "CopyExtensions": [],
+  "SourceFolder": "c:\\src\\Brevitee\\Brevitee",
+  "TargetFolder": "c:\\src\\Bam.Net\\Bam.Net",
+  "TextReplacements": [
+	{
+      "OldText": "Brevitee",
+	  "NewText": "Bam.Net"
+	},
+	{
+      "OldText": "brevitee",
+      "NewText": "bam dotNet"
+    }
+  ]
+}

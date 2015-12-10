@@ -1,0 +1,3 @@
+[submodule "BamContent"]
+	path = BamContent
+	url = https://github.com/BryanApellanes/BamContent

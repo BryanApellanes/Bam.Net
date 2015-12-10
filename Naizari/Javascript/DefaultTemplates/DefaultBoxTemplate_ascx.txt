@@ -1,0 +1,4 @@
+<%@ Control Language="C#" AutoEventWireup="true" CodeFile="{0}.ascx.cs" Inherits="{0}" %>
+<%@ Register Assembly="Naizari.Javascript" Namespace="Naizari.Javascript.JsonControls" TagPrefix="json" %>
+<%@ Register Assembly="Naizari.Javascript" Namespace="Naizari.Javascript.BoxControls" TagPrefix="box" %>
+<box:BoxUserControl ID="BoxUserControl" runat="server" />

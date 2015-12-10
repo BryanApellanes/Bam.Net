@@ -1,0 +1,125 @@
+﻿<?xml version="1.0"?>
+<doc>
+  <assembly>
+    <name>TestBuildProject</name>
+  </assembly>
+  <members>
+    <member name="T:TestBuildProject.DocumentationExampleClass2">
+      <summary>
+        This class exists specifically to provide
+        examples of the xml documentation that
+        msbuild produces
+      </summary>
+    </member>
+    <member name="F:TestBuildProject.DocumentationExampleClass2.AStringConstantField">
+      <summary>
+        This is a string constant public field
+      </summary>
+    </member>
+    <member name="M:TestBuildProject.DocumentationExampleClass2.TakeNoArgumentsAndReturnVoid">
+      <summary>
+        This is a method that takes no arguments and returns
+        nothing
+      </summary>
+    </member>
+    <member name="M:TestBuildProject.DocumentationExampleClass2.TakeArgumentsAndReturnVoid(System.String,TestBuildProject.DocumentationExampleClass)">
+      <summary>
+        This is a method that takes arguments and returns nothing
+      </summary>
+      <param name="aValue">A string</param>
+      <param name="exampleClass">A Class</param>
+    </member>
+    <member name="M:TestBuildProject.DocumentationExampleClass2.TakeArgumentsAndReturnString(System.String,TestBuildProject.DocumentationExampleClass)">
+      <summary>
+        This is a method that takes arguments and return a string.
+      </summary>
+      <param name="aValue"></param>
+      <param name="exampleClass"></param>
+      <returns></returns>
+    </member>
+    <member name="M:TestBuildProject.DocumentationExampleClass2.TakeArgumentsAndReturnClassInstance(System.String,TestBuildProject.DocumentationExampleClass)">
+      <summary>
+        This is a method that takes arguments and return an object.
+      </summary>
+      <param name="aValue"></param>
+      <param name="exampleClass"></param>
+      <returns></returns>
+    </member>
+    <member name="P:TestBuildProject.DocumentationExampleClass2.StringProperty">
+      <summary>
+        This is a string property
+      </summary>
+    </member>
+    <member name="P:TestBuildProject.DocumentationExampleClass2.IntProperty">
+      <summary>
+        This is an int property
+      </summary>
+    </member>
+    <member name="P:TestBuildProject.DocumentationExampleClass2.ObjectProperty">
+      <summary>
+        This is an ObjectProperty
+      </summary>
+    </member>
+    <member name="T:TestBuildProject.DocumentationExampleClass">
+      <summary>
+        This class exists specifically to provide
+        examples of the xml documentation that
+        msbuild produces
+      </summary>
+    </member>
+    <member name="F:TestBuildProject.DocumentationExampleClass.AStringConstantField">
+      <summary>
+        This is a string constant public field
+      </summary>
+    </member>
+    <member name="M:TestBuildProject.DocumentationExampleClass.TakeNoArgumentsAndReturnVoid">
+      <summary>
+        This is a method that takes no arguments and returns
+        nothing
+      </summary>
+    </member>
+    <member name="M:TestBuildProject.DocumentationExampleClass.TakeArgumentsAndReturnVoid(System.String,TestBuildProject.DocumentationExampleClass)">
+      <summary>
+        This is a method that takes arguments and returns nothing
+      </summary>
+      <param name="aValue">A string</param>
+      <param name="exampleClass">A Class</param>
+    </member>
+    <member name="M:TestBuildProject.DocumentationExampleClass.TakeArgumentsAndReturnString(System.String,TestBuildProject.DocumentationExampleClass)">
+      <summary>
+        This is a method that takes arguments and return a string.
+      </summary>
+      <param name="aValue"></param>
+      <param name="exampleClass"></param>
+      <returns></returns>
+    </member>
+    <member name="M:TestBuildProject.DocumentationExampleClass.TakeArgumentsAndReturnClassInstance(System.String,TestBuildProject.DocumentationExampleClass)">
+      <summary>
+        This is a method that takes arguments and return an object.
+      </summary>
+      <param name="aValue"></param>
+      <param name="exampleClass"></param>
+      <returns></returns>
+    </member>
+    <member name="P:TestBuildProject.DocumentationExampleClass.StringProperty">
+      <summary>
+        This is a string property
+      </summary>
+    </member>
+    <member name="P:TestBuildProject.DocumentationExampleClass.IntProperty">
+      <summary>
+        This is an int property
+      </summary>
+    </member>
+    <member name="P:TestBuildProject.DocumentationExampleClass.ObjectProperty">
+      <summary>
+        This is an ObjectProperty
+      </summary>
+    </member>
+    <member name="M:TestBuildProject.ExampleUnitTests.BasicUnitTest">
+      <summary>
+        A Basic unit test
+      </summary>
+    </member>
+  </members>
+</doc>

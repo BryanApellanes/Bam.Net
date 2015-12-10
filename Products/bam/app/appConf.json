@@ -1,0 +1,39 @@
+{
+  "Name": "localhost",
+  "DisplayName": "Localhost",
+  "Bindings": [
+    {
+      "HostName": "www.localhost.com",
+      "Port": 8080,
+      "Ssl": false
+    },
+    {
+      "HostName": "localhost",
+      "Port": 8080,
+      "Ssl": false
+    }
+  ],
+  "DefaultLayout": "basic",
+  "DefaultPage": "home",
+  "GenerateDao": true,
+  "CheckDaoHashes": true,
+  "RenderLayoutBody": false,
+  "ServiceProxySearchPatterns": [
+    "*Services.dll",
+    "*Proxyables.dll"
+  ],
+  "ServiceProxyTypeNames": [
+    "Bam.Net.ServiceProxy.Echo, Bam.Net.ServiceProxy, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "Bam.Net.ServiceProxy.EncryptedEcho, Bam.Net.ServiceProxy, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+  ],
+  "SchemaInitializers": [],
+  "AppInitializer": null,
+  "AppInitializerAssemblyPath": null,
+  "UserManager": {
+    "ApplicationNameResolverType": "Bam.Net.ServiceProxy.DefaultConfigurationApplicationNameProvider, Bam.Net.ServiceProxy, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "EmailComposerType": "Bam.Net.Messaging.NamedFormatEmailComposer, Bam.Net.Messaging, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "EmailTemplateDirectoryPath": ".\\EmailTemplates",
+    "EmailTemplateExtension": ".txt",
+    "SmtpSettingsVaultPath": ".\\SmtpSettings.vault.sqlite"
+  }
+}

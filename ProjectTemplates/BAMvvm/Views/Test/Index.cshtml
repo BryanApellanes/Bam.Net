@@ -1,0 +1,67 @@
+﻿@using Bryan.Apellanes.DaoRef;
+@using BAMvvm.Models;
+
+@{
+    
+    ViewBag.Title = "Tests";
+}
+
+@section stylesection{
+    @Styles.Render("~/Content/qunit-1.10.css")
+}
+
+<h2>Tests</h2>
+
+ <div id="qunit"></div>
+
+<div style="margin: 10px; width: auto;" id="scratch">
+
+</div>
+
+<div id="justItemScope" itemscope></div>
+<div itemscope="itemscope" itemtype="http://schema.org/Thing" id="thing1">
+
+</div>
+
+<div itemscope="itemscope" itemtype="http://schema.org/Person" id="person">
+    <span itemprop="name">Bryan</span>
+    <span itemprop="lastName">Apellanes</span>
+</div>
+
+<div itemscope id="noodles">
+    <span itemprop="name">Noodles</span>
+    <span itemprop="owner" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Bryan</span>
+    </span>
+</div>
+
+<div itemscope id="setme">
+    <span itemprop="name">First</span>    
+</div>
+
+<div id="inputsForTestTable" itemscope>
+@Html.InputsFor(typeof(TestTable), new { Name = "TestName", Description = "Test description" })
+    <span class="btn" data-item-action="startTest">Test Action Binding</span>
+</div>
+
+<div id="proxyHtmlTarget">
+
+</div>
+
+<br /><br />
+<hr />
+<div>
+    <h2>Form Test</h2>
+    <form name="TestForm" action="/Post/Echo/TestCompoundParameter.json" method="post">
+        @Html.FieldsetFor(typeof(TestObject), new TestObject { Name = "Da Name", SubObject = new SubObject { SubName = "SubName" } }, "Form Test")
+        <input type="submit" class="btn" />
+    </form>    
+</div>
+<hr />
+@Bam.CommonConfigScripts(this)
+@Scripts.Render("~/ServiceProxy/JsProxies",
+"~/Scripts/qunit.js", "~/bam/js/tests/DaoTests.js",
+"~/bam/js/tests/SdoTests.js", 
+"~/bam/js/tests/ServiceProxyTests.js"
+)
+

@@ -1,0 +1,10 @@
+%YAML 1.2
+---
+!Bam.core.Conf
+HostName: alsdobo.com
+MaxThreads: null
+Port: "8888"
+ConnectionName: Default
+DatabaseInitializer: Bryan.Apellanes.Data.SQLite.SQLiteDatabaseInitializer, Bryan.Apellanes.Data.SQLite, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+ApplicationName: Alsdobo
+...

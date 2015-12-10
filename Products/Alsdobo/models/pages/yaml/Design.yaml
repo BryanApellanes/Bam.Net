@@ -1,0 +1,109 @@
+%YAML 1.2
+---
+!Bam.core.PageModel
+Title: Alsdobo
+LayoutTemplate: layout_sanssidebar
+Content: "\r\n\
+  \r\n\
+  \r\n\
+  <div>\r\n\
+  \    <fieldset>\r\n\
+  \        <legend style='font-family: arial;'>Tests</legend>\r\n\
+  \        <div id='qunit'></div>\r\n\
+  \    </fieldset>\r\n\
+  </div>\r\n\
+  <div>\r\n\
+  \    <fieldset>\r\n\
+  \        <legend style='font-family: arial'>Color Scheme</legend>\r\n\
+  \        <div id='colorScheme' itemscope='itemscope'></div>\r\n\
+  \        <br />\r\n\
+  \        <span data-plugin='button' onclick='design._saveColorScheme();'>Save</span>\r\n\
+  \        <span data-plugin='button' onclick='design.resetColorScheme();'>Cancel</span>\r\n\
+  \    </fieldset>\r\n\
+  </div>\r\n\
+  <!--<div>\r\n\
+  \    <fieldset>\r\n\
+  \        <legend style='font-family: arial;'>Palettes</legend>\r\n\
+  \        <fieldset>\r\n\
+  \            <legend>Add A Color</legend>\r\n\
+  \            <div id='addColorContainer' itemscope='itemscope' style='padding: 8px; height: 75px; border: 1px solid black;'>\r\n\
+  \                <label>Name:</label><input type='text' itemprop='Name' value='White' id='addColorName' />\r\n\
+  \                <label>Hex:</label><input type='text' itemprop='Hex' value='#FFFFFF' id='addColorHex' />\r\n\
+  \                <span \r\n\
+  \                    data-plugin='button'\r\n\
+  \                    onclick='admin._addColor()'\r\n\
+  \                    >add</span>\r\n\
+  \            </div>\r\n\
+  \        </fieldset>\r\n\
+  \        <div id='paletteColors'></div>\r\n\
+  \r\n\
+  \    </fieldset>\r\n\
+  </div>-->\r\n"
+Pages: 
+  - SubLinks: null
+    Href: index.html
+    Text: Home
+    Name: home
+Year: "2012"
+Stylesheets: 
+  - style.css
+  - jquery-ui.css
+  - qunit.css
+SectionList: 
+  - SubLinks: 
+      - SubLinks: null
+        Href: "#Subsection1"
+        Text: Subsection 1
+        Name: Subsection1
+      - SubLinks: null
+        Href: "#Subsection2"
+        Text: Subsection 2
+        Name: Subsection2
+    Href: "#Section1"
+    Text: Section 1
+    Name: Section1
+  - SubLinks: 
+      - SubLinks: null
+        Href: "#NextSubsection1"
+        Text: Next Subsection 1
+        Name: NextSubsection1
+      - SubLinks: null
+        Href: "#AndSoON"
+        Text: And so on
+        Name: AndSoON
+    Href: "#Section2"
+    Text: Section 2
+    Name: Section2
+NavList: 
+  - SubLinks: null
+    Href: about.html
+    Text: About us
+    Name: aboutUs
+  - SubLinks: null
+    Href: account.html
+    Text: My Account
+    Name: myAccount
+  - SubLinks: null
+    Href: login.html
+    Text: Login
+    Name: login
+Scripts: 
+  - jquery.js
+  - jquery-ui.js
+  - underscore.js
+  - dust.js
+  - schema.js
+  - qi.js
+  - bam.js
+  - dataset.js
+  - dao.js
+  - eazel.js
+  - proxies
+  - ctors
+  - templates
+  - design.js
+  - tests.js
+  - qunit.js
+ApplicationName: Alsdobo
+Name: Design
+...

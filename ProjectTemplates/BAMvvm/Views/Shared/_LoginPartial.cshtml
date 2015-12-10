@@ -1,0 +1,28 @@
+﻿@model BAMvvm.Models.LoginModel
+
+@if (Request.IsAuthenticated)
+{
+    <text>
+    Hello, @Html.ActionLink(User.Identity.Name, "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "username", title = "Manage" })!
+        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+        {
+            @Html.AntiForgeryToken()
+            <a href="javascript:document.getElementById('logoutForm').submit()" class="btn">Log off</a>
+        }
+    </text>
+}
+else
+{
+@*<form class="navbar-form pull-right">
+              <input class="span2" type="text" placeholder="Email">
+              <input class="span2" type="password" placeholder="Password">
+              <button type="submit" class="btn">Sign in</button>
+            </form>*@
+    using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { Class = "navbar-form pull-right" }))
+    {
+    @Html.AntiForgeryToken()
+    <input class="span2" type="text" placeholder="Email" name="UserName">
+    <input class="span2" type="password" placeholder="Password" name="Password">
+    <button type="submit" class="btn">Sign in</button>
+    }
+}

@@ -1,0 +1,21 @@
+{
+  "Name": "home",
+  "Pages": [
+    {
+      "Name": "contentPage",
+      "Layout": "basic"
+    },
+    {
+      "Name": "instructions",
+      "Layout": "basic"
+    },
+    {
+      "Name": "tests/templateTests",
+      "Layout": "basic"
+    },
+    {
+      "Name": "tests/DaoTests",
+      "Layout": "basic"
+    }
+  ]
+}

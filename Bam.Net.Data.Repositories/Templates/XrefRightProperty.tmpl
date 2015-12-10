@@ -1,0 +1,25 @@
+// Xref property: Left -> @(Model.Left.Name) ; Right -> @(Model.Right.Name)
+@{
+	var xrefTableName = string.Format("{0}Dao{1}Dao", Model.Left.Name, Model.Right.Name);
+}
+		@(Model.LeftCollectionTypeName) _@(Model.Left.Name.Pluralize().CamelCase());
+		public override @(Model.LeftCollectionTypeName) @(Model.LeftCollectionProperty.Name)
+		{
+			get
+			{
+				if(_@(Model.Left.Name.Pluralize().CamelCase()) == null)
+				{
+					 var xref = new XrefDaoCollection<@(xrefTableName), @(Model.Left.Name)Dao>(Repository.GetDaoInstance(this), false);
+					 xref.Load(Repository.Database);
+					 _@(Model.Left.Name.Pluralize().CamelCase()) = ((IEnumerable)xref).CopyAs<@(Model.Left.Namespace).@(Model.Left.Name)>().To@(Model.LeftArrayOrList)();
+					 this.UpdatedXrefCollectionProperties.Add("@(Model.Left.Name.Pluralize())", typeof(@(Model.Left.FullName)).GetProperty("@(Model.LeftCollectionProperty.Name)"));
+				}
+
+				return _@(Model.Left.Name.Pluralize().CamelCase());
+			}
+			set
+			{
+				_@(Model.Left.Name.Pluralize().CamelCase()) = value;
+				this.UpdatedXrefCollectionProperties.Add("@(Model.Left.Name.Pluralize())", typeof(@(Model.Left.FullName)).GetProperty("@(Model.LeftCollectionProperty.Name)"));
+			}
+		}

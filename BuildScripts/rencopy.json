@@ -1,0 +1,17 @@
+{
+  "TextReplacementFileExtensions": [
+    ".cmd",
+    ".nuspec"
+  ],
+  "CopyAllFiles": true,
+  "CopyExtensions": [],
+  "SourceFolder": ".\\BuildTemplate",
+  "TargetFolder": ".\\Bam\\PackageName",
+  "TextReplacements": [
+    {
+      "OldText": "BuildTemplate",
+      "NewText": "PackageName"
+    }
+  ],
+  "Ignore": []
+}

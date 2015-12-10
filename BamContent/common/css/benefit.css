@@ -1,0 +1,31 @@
+.subhead {
+    color: #000;
+    font-size: 3em;
+    text-align: center;
+    margin: 0.3em 0;
+}
+.benefit {
+    margin: 0.8em 0;
+    text-align: center;
+}
+.benefit .benefit-ball {
+    background: #428bca;
+    border-radius: 50%;
+    color: #fff;
+    display: inline-block;
+    line-height: 1em;
+    padding: 3em;
+}
+.benefit .benefit-ball .glyphicon {
+    font-size: 4em;
+    position: relative;
+    top: -3px;
+    right: 1px;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+.benefit h3 {
+    color: #000;
+    font-family: "gandhi serif", georgia, serif;
+    font-size: 2em;
+    font-weight: bold;
+}

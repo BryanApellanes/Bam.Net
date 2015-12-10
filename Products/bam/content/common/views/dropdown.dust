@@ -1,0 +1,18 @@
+<!--
+  {
+    name: "string",
+    options: [
+      {id: "int", text: "string"}
+    ]
+  }
+-->
+<div class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{name} <b class="caret"></b></a>
+    <ul class="dropdown-menu">
+      {#items}
+      <li>
+        <a id="{id}">{text}</a>
+      </li>
+      {/items}
+    </ul>
+</div>

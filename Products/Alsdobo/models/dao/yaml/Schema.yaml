@@ -1,0 +1,41 @@
+%YAML 1.2
+---
+!Schema
+Tables: 
+  - Cols: 
+      - Empty: True
+        Type: String
+        Name: NickName
+      - Empty: True
+        Type: String
+        Name: First
+      - Empty: True
+        Type: String
+        Name: Last
+    Name: Customer
+  - Cols:
+      - Type: String
+	    Name: Name
+      - Type: String
+        Name: Line1
+        Empty: True
+      - Type: String
+        Name: Line2
+        Empty: True
+    Name: Address		
+    Fks:
+      - Ref: Customer
+        Name: CustomerId
+        Empty: False		
+  - Cols: 
+      - Type: Int64
+        Name: Quantity
+      - Type: String
+        Name: Unit	  
+    Name: Order
+	Fks: 
+      - Ref: Customer
+        Name: CustomerId    
+	  - Ref: Address
+	    Name: AddressId
+...

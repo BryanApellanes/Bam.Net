@@ -1,0 +1,16 @@
+/*
+	Copyright © Bryan Apellanes 2015  
+*/
+using System;
+
+namespace Bam.Net.Schema.Org
+{
+	///<summary>Organization: Sports team.</summary>
+	public class SportsTeam: SportsOrganization
+	{
+		///<summary>A person that acts as performing member of a sports team; a player as opposed to a coach.</summary>
+		public Person Athlete {get; set;}
+		///<summary>A person that acts in a coaching role for a sports team.</summary>
+		public Person Coach {get; set;}
+	}
+}

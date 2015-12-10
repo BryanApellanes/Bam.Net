@@ -1,0 +1,29 @@
+%YAML 1.2
+---
+!Bam.core.ColorScheme
+MainText: 
+  Hex: "#FFFFFF"
+  Name: MainText
+Tertiary: 
+  Hex: "#FFFFFF"
+  Name: Tertiary
+SecondaryText: 
+  Hex: "#FFFFFF"
+  Name: SecondaryText
+Background: 
+  Hex: "#FFFFFF"
+  Name: Background
+Main: 
+  Hex: "#FFFFFF"
+  Name: Main
+Secondary: 
+  Hex: "#FFFFFF"
+  Name: Secondary
+TertiaryText: 
+  Hex: "#FFFFFF"
+  Name: TertiaryText
+Footer: 
+  Hex: "#FFFFFF"
+  Name: Footer
+Name: Default
+...

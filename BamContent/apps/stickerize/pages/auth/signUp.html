@@ -1,0 +1,119 @@
+<html>
+    <!--<link rel="stylesheet" href="/css/login.css" />-->
+
+<body>
+<div class="container" itemscope="itemscope" data-view-model="loginViewModel" data-plugin="validatable" id="loginElement">
+    <div class="omb_login hidden" id="loginPage">
+    	<h3 class="omb_authTitle" id="loginHeader" data-state="initial">Login or <a href="#" id="signUpLink" data-set-state="signUp">Sign up</a></h3>
+        <h3 class="omb_authTitle hidden" data-state="signUp" id="signUpHeader">Sign up or <a href="#" id="loginLink" data-set-state="initial">Login</a></h3>
+            <!--<div class="row omb_row-sm-offset-3 omb_socialButtons">
+            <div class="col-xs-4 col-sm-2">
+                <a href="#" class="btn btn-lg btn-block omb_btn-facebook">
+                    <i class="fa fa-facebook visible-xs"></i>
+                    <span class="hidden-xs">Facebook</span>
+                </a>
+            </div>
+            <div class="col-xs-4 col-sm-2">
+                   <a href="#" class="btn btn-lg btn-block omb_btn-twitter">
+                       <i class="fa fa-twitter visible-xs"></i>
+                       <span class="hidden-xs">Twitter</span>
+                   </a>
+               </div>
+               <div class="col-xs-4 col-sm-2">
+                   <a href="#" class="btn btn-lg btn-block omb_btn-google">
+                       <i class="fa fa-google-plus visible-xs"></i>
+                       <span class="hidden-xs">Google+</span>
+                   </a>
+               </div>
+           </div>
+
+           <div class="row omb_row-sm-offset-3 omb_loginOr">
+               <div class="col-xs-12 col-sm-6">
+                   <hr class="omb_hrOr">
+                   <span class="omb_spanOr">or</span>
+               </div>
+           </div>
+           -->
+		<div class="row omb_row-sm-offset-3">
+			<div class="col-xs-12 col-sm-6">
+                <span class="help-block" id="loginMessage"></span>
+			    <form class="omb_loginForm" action="" autocomplete="off" method="POST">
+
+					<div class="input-group">
+						<span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+						<input type="text" class="form-control"
+                               data-opts-email="true"
+                               data-opts-email-msg="Please enter a valid email address"
+                               data-opts-required="true"
+                               data-opts-required-msg="Email address is required"
+                               name="emailAddress"
+                               itemprop="emailAddress"
+                               placeholder="Email Address">
+					</div>
+					<span class="help-block" id="emailAddressHelp"></span>
+
+                    <div data-state="signUp" class="hidden">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                            <input type="text" class="form-control"
+                                   data-opts-required="true"
+                                   data-opts-required-msg="User name is required"
+                                   data-opts-min-length="4"
+                                   data-opts-min-length-msg="User Name must be at least 4 characters long"
+                                   name="userName" itemprop="userName" placeholder="User Name">
+                        </div>
+                        <span class="help-block" id="userNameHelp"></span>
+                    </div>
+
+					<div class="input-group">
+						<span class="input-group-addon"><i class="fa fa-lock"></i></span>
+						<input  type="password" class="form-control"
+                                data-opts-required="true"
+                                data-opts-required-msg="Password is required"
+                                data-opts-min-length="8"
+                                data-opts-min-length-msg="Password must be at least 8 characters long"
+                                name="password"
+                                itemprop="password"
+                                placeholder="Password">
+					</div>
+                    <span class="help-block" id="passwordHelp"></span>
+
+					<button class="btn btn-lg btn-primary btn-block" data-action="login" data-state="initial">Login</button>
+                    <button class="btn btn-lg btn-primary btn-block hidden" data-action="signUp" data-state="signUp">Sign up</button>
+
+				</form>
+			</div>
+    	</div>
+		<div class="row omb_row-sm-offset-3">
+			<div class="col-xs-12 col-sm-3">
+				<!--<label class="checkbox hidden"  data-state="initial">-->
+					<!--<input type="checkbox" value="remember-me">Remember Me-->
+				<!--</label>-->
+			</div>
+			<div class="col-xs-12 col-sm-3">
+				<p class="omb_forgotPwd">
+					<a href="#" data-navigate-to="auth/forgotPassword">Forgot password?</a>
+				</p>
+			</div>
+		</div>
+        <!-- facebook login -->
+        <!--<div class="row omb_row-sm-offset-3 omb_loginOr">-->
+            <!--<div class="col-xs-12 col-sm-6">-->
+                <!--<hr class="omb_hrOr">-->
+                <!--<span class="omb_spanOr">or</span>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="row omb_row-sm-offset-3  omb_socialButtons">-->
+            <!--<div class="col-xs-12 col-sm-6">-->
+
+                <!--<span class="btn btn-lg btn-primary btn-block omb_btn-facebook" onclick="FB.login();">Login with Facebook</span>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!-- /facebook login -->
+	</div>
+
+
+
+</div>
+</body>
+</html>

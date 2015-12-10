@@ -1,0 +1,55 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>{Title}</title>
+		{#Stylesheets}
+		<link rel="stylesheet" href="css/{.}" type="text/css" />
+		{/Stylesheets}
+		{#Scripts}
+		<script src="/scripts/{.}" type="text/javascript"></script>
+		{/Scripts}
+	</head>
+	<body>	
+		<div class="header">
+			<div>
+				<a href="index.html" id="logo"><img src="images/logo.gif" alt="logo"/></a>
+				<div class="navigation">
+					<ul>
+                        {#NavList}
+						<li><a href="{Href}">{Text}</a></li>						
+                        {/NavList}
+					</ul>
+				</div>
+				<form action="" class="search">
+					<input type="text" value="search" onblur="this.value=!this.value?'search':this.value;" onfocus="this.select()" onclick="this.value='';"/>
+					<input type="submit" id="submit" value=""/>
+				</form>
+			</div>
+			<div id="navigation">
+				<ul>
+                    {#Pages}
+					<li><a href="{Href}">{Text}</a></li>
+                    {/Pages}
+				</ul>
+			</div>
+		</div> 
+		<div class="body"> 		
+			<div class="content" style="height: auto; min-height: 800px; width: 100%;">
+				{Content}	
+				{#SectionList}
+					{?SubSections}
+						{#SubSections}
+							{>partial_subsection/}
+						{/SubSections}
+					{/SubSections}
+				{/SectionList}		
+			</div>
+			<div class="article">
+
+			</div>
+		</div>
+		<div class="footer">
+			<p>&#169; {Year} {ApplicationName}. All Rights Reserved.</p>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,27 @@
+﻿@using Bryan.Apellanes.DaoRef;
+@using BAMvvm.Models;
+
+@{
+    
+    ViewBag.Title = "Tests";
+}
+
+@section stylesection{
+    @Styles.Render("~/Content/qunit-1.10.css")
+}
+
+<h2>Tests</h2>
+
+ <div id="qunit"></div>
+
+ <div id="proxyHtmlTarget"></div>
+
+ <div id="testObjectParameterTarget"></div>
+<hr />
+
+@Scripts.Render(
+"http://uspapptstweb02:8099/ServiceProxy/JsProxies",
+"~/Scripts/qunit.js",
+"~/bam/js/tests/ServiceProxyTests.js"
+)
+

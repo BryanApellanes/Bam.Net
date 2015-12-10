@@ -1,0 +1,26 @@
+<fieldset data-type="object" itemscope="itemscope" itemtype="http://schema.org/Thing">
+  <span class="label" for="Hash">Hash: </span>
+  <input data-type="string" itemprop="Hash" name="Hash" type="text" value="{Hash}">
+  </input>
+  <br />
+  <span class="label" for="HashAlgorithm">Hash Algorithm: </span>
+  <input data-type="string" itemprop="HashAlgorithm" name="HashAlgorithm" type="text" value="{HashAlgorithm}">
+  </input>
+  <br />
+  <span class="label" for="Key">Key: </span>
+  <input data-type="string" itemprop="Key" name="Key" type="text" value="{Key}">
+  </input>
+  <br />
+  <span class="label" for="Value">Value: </span>
+  <input data-type="string" itemprop="Value" name="Value" type="text" value="{Value}">
+  </input>
+  <br />
+  <span class="label" for="Id">Id: </span>
+  <input data-type="int64" itemprop="Id" name="Id" type="text">
+  </input>
+  <br />
+  <span class="label" for="UserId">User Id: </span>
+  <input data-type="int64" itemprop="UserId" name="UserId" type="text">
+  </input>
+  <br />
+</fieldset>

@@ -1,0 +1,111 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Reflection;
+using Naizari.Logging;
+using Naizari.Javascript.JsonControls;
+using Naizari.Extensions;
+using System.Web;
+using System.Web.UI;
+
+namespace Naizari.Javascript.BoxControls
+{
+    /// <summary>
+    /// THIS IDEA MAY HAVE JUST BEEN INVALIDATED, I MAY DECIDE TO REUSE THE NAME
+    /// CODE WILL REMAIN COMMENTED UNTIL DELETED.
+    /// </summary>
+    //public class BoxServer
+    //{
+    //    Dictionary<string, Type> jsonControlTypesByNamespace;
+
+    //    public BoxServer()
+    //    {
+    //        jsonControlTypesByNamespace = new Dictionary<string, Type>();
+    //        LoadJsonControlTypes(Assembly.GetExecutingAssembly());
+    //    }
+
+    //    public void LoadJsonControlTypes(Assembly targetAssembly)
+    //    {
+    //        Type[] allTypes = targetAssembly.GetTypes();
+    //        foreach (Type type in allTypes)
+    //        {
+    //            bool isJsonControl = type.GetInterface("IJsonControl") != null;
+    //            if (isJsonControl && !type.IsAbstract)
+    //            {
+    //                jsonControlTypesByNamespace.Add(string.Format("{0}.{1}", type.Namespace, type.Name), type);
+    //            }
+    //        }
+    //    }
+
+    //    public string[] TypeNames
+    //    {
+    //        get
+    //        {
+    //            return DictionaryExtensions.KeysToArray<string, Type>(jsonControlTypesByNamespace);
+    //        }
+    //    }
+
+    //    public Type this[string typeName]
+    //    {
+    //        get
+    //        {
+    //            return GetTypeByName(typeName);
+    //        }
+    //    }
+
+    //    public IJsonControl GetJsonControl(string name)
+    //    {
+    //        string ignore;
+    //        return GetJsonControl(name, true, out ignore);
+    //    }
+
+    //    /// <summary>
+    //    /// Gets an instance of the specified generic type by the name
+    //    /// </summary>
+    //    /// <typeparam name="T"></typeparam>
+    //    /// <param name="name"></param>
+    //    /// <returns></returns>
+    //    public IJsonControl GetJsonControl(string name, bool throwOnInvalidConstructor, out string namespaceQualifiedName)
+    //    {
+    //        Type typeToInstantiate = GetTypeByName(name);
+    //        namespaceQualifiedName = typeToInstantiate.Namespace + "." + typeToInstantiate.Name;
+
+    //        ConstructorInfo ctor = typeToInstantiate.GetConstructor(Type.EmptyTypes);
+    //        if (ctor == null)
+    //        {
+    //            LogManager.CurrentLog.AddEntry("The type [{0}] doesn't have a parameterless constructor and can't be instantiated.", LogEventType.Error, new string[] { name });
+    //            if (throwOnInvalidConstructor)
+    //                throw new ParameterlessContructorNotFoundException(name);
+
+    //            return null;
+    //        }
+
+    //        return (IJsonControl)ctor.Invoke(null);
+    //    }
+
+    //    private Type GetTypeByName(string name)
+    //    {
+    //        Type typeToInstantiate = null;
+    //        if (jsonControlTypesByNamespace.ContainsKey(name))
+    //        {
+    //            typeToInstantiate = jsonControlTypesByNamespace[name];
+    //        }
+    //        else
+    //        {
+    //            // do a brute force lookup to see if 
+    //            // the name of the type was provided without the qualifying namespace
+    //            foreach (string typeName in jsonControlTypesByNamespace.Keys)
+    //            {
+    //                if (typeName.Equals(name))
+    //                {
+    //                    typeToInstantiate = jsonControlTypesByNamespace[typeName];
+    //                    //LogManager.CurrentLog.AddEntry("Found JsonControl by unqualified name [{0}], for better performance specify the namespace qualified name of the type.", LogEventType.Warning, new string[] { name });
+    //                    break;
+    //                }
+    //            }
+    //        }
+    //        return typeToInstantiate;
+    //    }
+    //}
+}

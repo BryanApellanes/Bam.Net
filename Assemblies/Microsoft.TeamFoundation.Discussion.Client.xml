@@ -1,0 +1,348 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>Microsoft.TeamFoundation.Discussion.Client</name>
+  </assembly>
+  <members>
+    <member name="T:Microsoft.TeamFoundation.Discussion.Client.Comment">
+      <summary>A comment is a part of a discussion. When a discussion is initiated, it should have a root comment by the initiator, and other comments by the contributors.</summary>
+    </member>
+    <member name="P:Microsoft.TeamFoundation.Discussion.Client.Comment.Author">
+      <summary>The person who creates the comment.</summary>
+      <returns>Returns <see cref="T:Microsoft.TeamFoundation.Framework.Client.TeamFoundationIdentity" />.</returns>
+    </member>
+    <member name="P:Microsoft.TeamFoundation.Discussion.Client.Comment.CommentType">
+      <summary>Indicates whether the comment is a text or a code change, and so on</summary>
+      <returns>Returns <see cref="T:Microsoft.TeamFoundation.Discussion.Client.CommentType" />.</returns>
+    </member>
+    <member name="P:Microsoft.TeamFoundation.Discussion.Client.Comment.Content">
+      <summary>The content of the comment.</summary>
+      <returns>Returns <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="P:Microsoft.TeamFoundation.Discussion.Client.Comment.Discussion">
+      <summary>This is a client-only property to reference the discussion thread of this comment entry.</summary>
+      <returns>Returns <see cref="T:Microsoft.TeamFoundation.Discussion.Client.DiscussionThread" />.</returns>
+    </member>
+    <member name="P:Microsoft.TeamFoundation.Discussion.Client.Comment.DiscussionId">
+      <summary>Id of the discussion that owns the comment.</summary>
+      <returns>Returns <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.Comment.GetChildComments">
+      <summary>Returns the direct child comments of this comment. The method wraps a copy of the list of child comments in a readonly collection.</summary>
+      <returns>Returns <see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" />.</returns>
+    </member>
+    <member name="P:Microsoft.TeamFoundation.Discussion.Client.Comment.Id">
+      <summary>The Id of a a comment. Id is 0 when the comment is first created and is assigned to an incrementing value after it is saved to the server.</summary>
+      <returns>Returns <see cref="T:System.Int16" />.</returns>
+    </member>
+    <member name="P:Microsoft.TeamFoundation.Discussion.Client.Comment.IsDeleted">
+      <summary>True if the comment is deleted.</summary>
+      <returns>Returns <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="P:Microsoft.TeamFoundation.Discussion.Client.Comment.NeedsSave">
+      <summary>True if the comment has changed and can be saved to the local store.</summary>
+      <returns>Returns <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="P:Microsoft.TeamFoundation.Discussion.Client.Comment.ParentComment">
+      <summary>The direct parent comment of the comment.</summary>
+      <returns>Returns <see cref="T:Microsoft.TeamFoundation.Discussion.Client.Comment" />.</returns>
+    </member>
+    <member name="P:Microsoft.TeamFoundation.Discussion.Client.Comment.PublishedDate">
+      <summary>Time when the comment is published and can be viewed by others.</summary>
+      <returns>Returns <see cref="T:System.DateTime" />.</returns>
+    </member>
+    <member name="P:Microsoft.TeamFoundation.Discussion.Client.Comment.SavedDate">
+      <summary>The DateTime of when the comment was saved locally.</summary>
+      <returns>Returns <see cref="T:System.DateTime" />.</returns>
+    </member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.Comment.ToString">
+      <returns>Returns <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="T:Microsoft.TeamFoundation.Discussion.Client.CommentId">
+      <summary>Represents the unique identifier of a comment in a team project collection.</summary>
+    </member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.CommentId.Equals(Microsoft.TeamFoundation.Discussion.Client.CommentId)">
+      <returns>Returns <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.CommentId.Equals(System.Object)">
+      <returns>Returns <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.CommentId.GetHashCode">
+      <returns>Returns <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.CommentId.ToString">
+      <returns>Returns <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="T:Microsoft.TeamFoundation.Discussion.Client.CommentType">
+      <summary>The type of a comment.</summary>
+    </member>
+    <member name="F:Microsoft.TeamFoundation.Discussion.Client.CommentType.Unknown">
+      <summary />
+    </member>
+    <member name="F:Microsoft.TeamFoundation.Discussion.Client.CommentType.Text">
+      <summary />
+    </member>
+    <member name="F:Microsoft.TeamFoundation.Discussion.Client.CommentType.CodeChange">
+      <summary />
+    </member>
+    <member name="T:Microsoft.TeamFoundation.Discussion.Client.DiscussionException">
+      <summary>Base class for all exceptions thrown by the Tfs Discussion API.</summary>
+    </member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.DiscussionException.#ctor"></member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.DiscussionException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)"></member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.DiscussionException.#ctor(System.String)"></member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.DiscussionException.#ctor(System.String,System.Exception)"></member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.DiscussionException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)"></member>
+    <member name="T:Microsoft.TeamFoundation.Discussion.Client.DiscussionPosition">
+      <summary>Position of the discussion in a file.</summary>
+    </member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.DiscussionPosition.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.String)">
+      <summary>Constructs a discussion position instance.</summary>
+    </member>
+    <member name="P:Microsoft.TeamFoundation.Discussion.Client.DiscussionPosition.EndCharPosition">
+      <summary>Character number of the end position.</summary>
+      <returns>Returns <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="P:Microsoft.TeamFoundation.Discussion.Client.DiscussionPosition.EndLine">
+      <summary>Line number of the end position.</summary>
+      <returns>Returns <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="P:Microsoft.TeamFoundation.Discussion.Client.DiscussionPosition.PositionContext">
+      <summary>Any other metadata we need about the comment to re-create and position it correctly.</summary>
+      <returns>Returns <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="P:Microsoft.TeamFoundation.Discussion.Client.DiscussionPosition.StartCharPosition">
+      <summary>Character number of the start position.</summary>
+      <returns>Returns <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="P:Microsoft.TeamFoundation.Discussion.Client.DiscussionPosition.StartLine">
+      <summary>Line number of the start position.</summary>
+      <returns>Returns <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.DiscussionPosition.ToString">
+      <returns>Returns <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="T:Microsoft.TeamFoundation.Discussion.Client.DiscussionPublishException"></member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.DiscussionPublishException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)"></member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.DiscussionPublishException.#ctor(System.String)"></member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.DiscussionPublishException.#ctor(System.String,System.Exception)"></member>
+    <member name="T:Microsoft.TeamFoundation.Discussion.Client.DiscussionSaveException"></member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.DiscussionSaveException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)"></member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.DiscussionSaveException.#ctor(System.String)"></member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.DiscussionSaveException.#ctor(System.String,System.Exception)"></member>
+    <member name="T:Microsoft.TeamFoundation.Discussion.Client.DiscussionSeverity">
+      <summary>The severity of a discussion.</summary>
+    </member>
+    <member name="F:Microsoft.TeamFoundation.Discussion.Client.DiscussionSeverity.Unknown">
+      <summary />
+    </member>
+    <member name="F:Microsoft.TeamFoundation.Discussion.Client.DiscussionSeverity.Low">
+      <summary />
+    </member>
+    <member name="F:Microsoft.TeamFoundation.Discussion.Client.DiscussionSeverity.Normal">
+      <summary />
+    </member>
+    <member name="F:Microsoft.TeamFoundation.Discussion.Client.DiscussionSeverity.High">
+      <summary />
+    </member>
+    <member name="T:Microsoft.TeamFoundation.Discussion.Client.DiscussionStatus">
+      <summary>The status of a discussion.</summary>
+    </member>
+    <member name="F:Microsoft.TeamFoundation.Discussion.Client.DiscussionStatus.Unknown">
+      <summary />
+    </member>
+    <member name="F:Microsoft.TeamFoundation.Discussion.Client.DiscussionStatus.Active">
+      <summary />
+    </member>
+    <member name="F:Microsoft.TeamFoundation.Discussion.Client.DiscussionStatus.Fixed">
+      <summary />
+    </member>
+    <member name="F:Microsoft.TeamFoundation.Discussion.Client.DiscussionStatus.WontFix">
+      <summary />
+    </member>
+    <member name="F:Microsoft.TeamFoundation.Discussion.Client.DiscussionStatus.Closed">
+      <summary />
+    </member>
+    <member name="T:Microsoft.TeamFoundation.Discussion.Client.DiscussionThread">
+      <summary>A discussion is a comment thread associated with a block of code, a file or a code review.</summary>
+    </member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.DiscussionThread.#ctor(Microsoft.TeamFoundation.Discussion.Client.IDiscussionManager,System.Int32,System.Uri)">
+      <summary>Constructs a discussion.</summary>
+      <param name="workItemId">Workitem Id of the code review request.</param>
+      <param name="versionUri">Can only be a uri of a changeset or a shelveset.</param>
+    </member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.DiscussionThread.#ctor(Microsoft.TeamFoundation.Discussion.Client.IDiscussionManager,System.Int32,System.Uri,System.String)">
+      <summary>Constructs a discussion.</summary>
+      <param name="workItemId">Workitem Id of the code review request.</param>
+      <param name="versionUri">Can only be a uri of a changeset or a shelveset.</param>
+      <param name="itemPath">Server path of the file that contains the discussion.</param>
+    </member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.DiscussionThread.#ctor(Microsoft.TeamFoundation.Discussion.Client.IDiscussionManager,System.Int32,System.Uri,System.String,Microsoft.TeamFoundation.Discussion.Client.DiscussionPosition)">
+      <summary>Constructs a discussion.</summary>
+      <param name="workItemId">Workitem Id of the code review request.</param>
+      <param name="versionUri">Can only be a uri of a changeset or a shelveset.</param>
+      <param name="itemPath">Server path of the file that contains the discussion.</param>
+      <param name="position">Position of the discussion in the file.</param>
+    </member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.DiscussionThread.AddComment(Microsoft.TeamFoundation.Discussion.Client.Comment,Microsoft.TeamFoundation.Discussion.Client.Comment)">
+      <summary>Adds a given comment to this discussion.  An exception will be thrown if: 1. The parentComment is null but: a. The discussion has a root comment. b. The discussion is already deleted. 2. The parentComment has not yet been published to the server.</summary>
+      <returns>The new comment added.</returns>
+      <param name="comment">The comment to be added.</param>
+      <param name="parentComment">Parent of the given comment. If null, the new comment will be the root.</param>
+    </member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.DiscussionThread.AddComment(Microsoft.TeamFoundation.Framework.Client.TeamFoundationIdentity,Microsoft.TeamFoundation.Discussion.Client.CommentType,System.String,Microsoft.TeamFoundation.Discussion.Client.Comment)">
+      <summary>Adds a new comment to this discussion.  An exception will be thrown if: 1. The parentComment is null but: a. The discussion has a root comment. b. The discussion is already deleted. 2. The parentComment has not yet been published to the server.</summary>
+      <returns>The new comment added.</returns>
+      <param name="author">Author of the new comment.</param>
+      <param name="commentType">Type of the new comment.</param>
+      <param name="content">Content of the new comment.</param>
+      <param name="parentComment">Parent of the new comment. If null, the new comment can be the root.</param>
+    </member>
+    <member name="P:Microsoft.TeamFoundation.Discussion.Client.DiscussionThread.Id">
+      <summary>The unique Id of a discussion. Id is 0 when the discussion is created and is assigned to a unique value after it is saved to the server.</summary>
+      <returns>Returns <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="P:Microsoft.TeamFoundation.Discussion.Client.DiscussionThread.ItemPath">
+      <summary>Server path of the file in which the discussion occurs.</summary>
+      <returns>Returns <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="P:Microsoft.TeamFoundation.Discussion.Client.DiscussionThread.LastUpdatedDate">
+      <summary>Time when the discussion is last updated on this client. This property only is updated when the client polls for updates.</summary>
+      <returns>Returns <see cref="T:System.DateTime" />.</returns>
+    </member>
+    <member name="P:Microsoft.TeamFoundation.Discussion.Client.DiscussionThread.NeedsSave">
+      <summary>True if the discussion has changed and can be saved to the local store.</summary>
+      <returns>Returns <see cref="T:System.Boolean" />.</returns>
+    </member>
+    <member name="P:Microsoft.TeamFoundation.Discussion.Client.DiscussionThread.Position">
+      <summary>Position in the file of the discussion.</summary>
+      <returns>Returns <see cref="T:Microsoft.TeamFoundation.Discussion.Client.DiscussionPosition" />.</returns>
+    </member>
+    <member name="P:Microsoft.TeamFoundation.Discussion.Client.DiscussionThread.PublishedDate">
+      <summary>Time when the discussion is published and can be viewed by others.</summary>
+      <returns>Returns <see cref="T:System.DateTime" />.</returns>
+    </member>
+    <member name="P:Microsoft.TeamFoundation.Discussion.Client.DiscussionThread.ReadStatus">
+      <summary>Tracks whether the discussion has been read.</summary>
+      <returns>Returns <see cref="T:Microsoft.TeamFoundation.Discussion.Client.ReadStatus" />.</returns>
+    </member>
+    <member name="P:Microsoft.TeamFoundation.Discussion.Client.DiscussionThread.Revision">
+      <summary>Revision is incremented on the server every time a discussion is published.  However, a publish call will not update the revision of the client discussion. The client revision only is updated when the client polls for updates.</summary>
+      <returns>Returns <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="P:Microsoft.TeamFoundation.Discussion.Client.DiscussionThread.RootComment">
+      <summary>The root comment of the discussion. Setter only works for the first time only, when the RootComment is null, to ensure the discussion's threaded comments cannot be updated.</summary>
+      <returns>Returns <see cref="T:Microsoft.TeamFoundation.Discussion.Client.Comment" />.</returns>
+    </member>
+    <member name="P:Microsoft.TeamFoundation.Discussion.Client.DiscussionThread.SavedDate">
+      <summary>The DateTime of when the discussion was saved locally.</summary>
+      <returns>Returns <see cref="T:System.DateTime" />.</returns>
+    </member>
+    <member name="P:Microsoft.TeamFoundation.Discussion.Client.DiscussionThread.Severity">
+      <summary>Indicates the severity of the discussion.</summary>
+      <returns>Returns <see cref="T:Microsoft.TeamFoundation.Discussion.Client.DiscussionSeverity" />.</returns>
+    </member>
+    <member name="P:Microsoft.TeamFoundation.Discussion.Client.DiscussionThread.Status">
+      <summary>Indicates the status of the discussion.</summary>
+      <returns>Returns <see cref="T:Microsoft.TeamFoundation.Discussion.Client.DiscussionStatus" />.</returns>
+    </member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.DiscussionThread.ToString">
+      <returns>Returns <see cref="T:System.String" />.</returns>
+    </member>
+    <member name="P:Microsoft.TeamFoundation.Discussion.Client.DiscussionThread.VersionUri">
+      <summary>Uri of the shelveset or the changeset associated with the discussion.</summary>
+      <returns>Returns <see cref="T:System.Uri" />.</returns>
+    </member>
+    <member name="P:Microsoft.TeamFoundation.Discussion.Client.DiscussionThread.WorkItemId">
+      <summary>WorkItem Id of the code review request associated with the discussion.</summary>
+      <returns>Returns <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="T:Microsoft.TeamFoundation.Discussion.Client.IDiscussionManager">
+      <summary>Manages publishing and querying the discussions against Team Foundation Server.</summary>
+    </member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.IDiscussionManager.BeginCleanup(System.Collections.Generic.IEnumerable{Microsoft.TeamFoundation.Discussion.Client.DiscussionThread},System.AsyncCallback,System.Object)">
+      <summary>Cleans up the discussions in the local storage.</summary>
+      <returns>Returns <see cref="T:System.IAsyncResult" />.</returns>
+    </member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.IDiscussionManager.BeginPublish(System.Collections.Generic.IEnumerable{Microsoft.TeamFoundation.Discussion.Client.DiscussionThread},System.AsyncCallback,System.Object)">
+      <summary>Publishes the discussions so other viewers can see them.</summary>
+      <returns>Returns <see cref="T:System.IAsyncResult" />.</returns>
+    </member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.IDiscussionManager.BeginQueryByCodeReviewRequest(System.Int32,Microsoft.TeamFoundation.Discussion.Client.QueryStoreOptions,System.AsyncCallback,System.Object)">
+      <summary>Queries the discussions associated with the specified code review request. The results can come from the server or the local store, or both, by setting the option, whose default value is QueryStoreOption.ServerOnly.</summary>
+      <returns>Returns <see cref="T:System.IAsyncResult" />.</returns>
+      <param name="workItemId">Workitem Id of the code review request.</param>
+      <param name="storeOptions">Specifies the stores from which the discussions are retrieved.</param>
+    </member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.IDiscussionManager.BeginQueryByVersion(System.Uri,Microsoft.TeamFoundation.Discussion.Client.QueryStoreOptions,System.AsyncCallback,System.Object)">
+      <summary>Queries the discussions associated with the specified changeset or shelveset.  The results can come from the server or the local store, or both, by setting the option, whose default value is QueryStoreOption.ServerOnly.</summary>
+      <returns>Returns <see cref="T:System.IAsyncResult" />.</returns>
+      <param name="versionUri">Can only be a uri of a changeset or a shelveset.</param>
+      <param name="storeOptions">Specifies the stores from which the discussions are retrieved.</param>
+    </member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.IDiscussionManager.BeginSave(System.Collections.Generic.IEnumerable{Microsoft.TeamFoundation.Discussion.Client.DiscussionThread},System.AsyncCallback,System.Object)">
+      <summary>Saves the changed discussions to the local storage.</summary>
+      <returns>Returns <see cref="T:System.IAsyncResult" />.</returns>
+    </member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.IDiscussionManager.EndCleanup(System.IAsyncResult)">
+      <summary>Ends cleaning up the discussions.</summary>
+    </member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.IDiscussionManager.EndPublish(System.IAsyncResult)">
+      <summary>Ends publishing the discussions.</summary>
+    </member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.IDiscussionManager.EndQueryByCodeReviewRequest(System.IAsyncResult)">
+      <summary>Ends querying discussions by the specified code review request.</summary>
+      <returns>Returns <see cref="T:System.Collections.Generic.IEnumerable`1" />.</returns>
+    </member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.IDiscussionManager.EndQueryByVersion(System.IAsyncResult)">
+      <summary>Ends querying discussions by the specified changeset or shelveset.</summary>
+      <returns>Returns <see cref="T:System.Collections.Generic.IEnumerable`1" />.</returns>
+    </member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.IDiscussionManager.EndSave(System.IAsyncResult)">
+      <summary>Ends saving the discussions.</summary>
+    </member>
+    <member name="E:Microsoft.TeamFoundation.Discussion.Client.IDiscussionManager.LocalDataLost">
+      <summary>Notifies that the local storage is corrupted and existing data is lost.</summary>
+    </member>
+    <member name="P:Microsoft.TeamFoundation.Discussion.Client.IDiscussionManager.LocalDataRetentionDays">
+      <summary>The number of days the local data will be retained since the last saved date.</summary>
+      <returns>Returns <see cref="T:System.Int32" />.</returns>
+    </member>
+    <member name="T:Microsoft.TeamFoundation.Discussion.Client.QueryStoreOptions">
+      <summary>The option to query for discussions.</summary>
+    </member>
+    <member name="F:Microsoft.TeamFoundation.Discussion.Client.QueryStoreOptions.None">
+      <summary />
+    </member>
+    <member name="F:Microsoft.TeamFoundation.Discussion.Client.QueryStoreOptions.ServerOnly">
+      <summary />
+    </member>
+    <member name="F:Microsoft.TeamFoundation.Discussion.Client.QueryStoreOptions.LocalOnly">
+      <summary />
+    </member>
+    <member name="F:Microsoft.TeamFoundation.Discussion.Client.QueryStoreOptions.ServerAndLocal">
+      <summary />
+    </member>
+    <member name="T:Microsoft.TeamFoundation.Discussion.Client.ReadStatus">
+      <summary>The read status of a discussion.</summary>
+    </member>
+    <member name="F:Microsoft.TeamFoundation.Discussion.Client.ReadStatus.Unknown">
+      <summary />
+    </member>
+    <member name="F:Microsoft.TeamFoundation.Discussion.Client.ReadStatus.Read">
+      <summary />
+    </member>
+    <member name="F:Microsoft.TeamFoundation.Discussion.Client.ReadStatus.Unread">
+      <summary />
+    </member>
+    <member name="T:Microsoft.TeamFoundation.Discussion.Client.TeamFoundationDiscussionService">
+      <summary>The entry point of Team Foundation Discussion Service.</summary>
+    </member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.TeamFoundationDiscussionService.#ctor"></member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.TeamFoundationDiscussionService.CreateDiscussionManager">
+      <summary>Returns a new instance of the IDiscussionManager interface.</summary>
+      <returns>Returns <see cref="T:Microsoft.TeamFoundation.Discussion.Client.IDiscussionManager" />.</returns>
+    </member>
+    <member name="M:Microsoft.TeamFoundation.Discussion.Client.TeamFoundationDiscussionService.Initialize(Microsoft.TeamFoundation.Client.TfsTeamProjectCollection)"></member>
+  </members>
+</doc>

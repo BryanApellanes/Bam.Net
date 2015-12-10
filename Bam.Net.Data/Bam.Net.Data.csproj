@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3B52B739-58FD-4B49-B815-6B317E701520}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Bam.Net.Data</RootNamespace>
+    <AssemblyName>Bam.Net.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Bam.Net.Data.xml</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>bin\Release\Bam.Net.Data.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite">
+      <HintPath>..\packages\System.Data.SQLite.Core.1.0.94.0\lib\net45\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.0.0\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.0.0\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Yahoo.Yui.Compressor, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\YUICompressor.NET.2.3.0.0\lib\NET20\Yahoo.Yui.Compressor.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Book.cs" />
+    <Compile Include="CloseParen.cs" />
+    <Compile Include="ColumnAttribute.cs" />
+    <Compile Include="CommitDelegate.cs" />
+    <Compile Include="Comparison.cs" />
+    <Compile Include="ConfiguredDatabaseFactory.cs" />
+    <Compile Include="ConnectionStringInfo.cs" />
+    <Compile Include="ContainsComparison.cs" />
+    <Compile Include="CountResult.cs" />
+    <Compile Include="DaoController.cs" />
+    <Compile Include="DaoProxyRegistration.cs" />
+    <Compile Include="DaoProxyRegistrationInfo.cs" />
+    <Compile Include="DaoProxySystem.cs" />
+    <Compile Include="DaoTransaction.cs" />
+    <Compile Include="DatabaseInfo.cs" />
+    <Compile Include="DatabaseInitializationFailedException.cs" />
+    <Compile Include="Db.cs" />
+    <Compile Include="DoesntContainComparison.cs" />
+    <Compile Include="DoesntEndWithComparison.cs" />
+    <Compile Include="DoesntStartWithComparison.cs" />
+    <Compile Include="DropNotEnabledException.cs" />
+    <Compile Include="EndsWithComparison.cs" />
+    <Compile Include="EnsureSchemaStatus.cs" />
+    <Compile Include="ExcludeAttribute.cs" />
+    <Compile Include="DataExtensions.cs" />
+    <Compile Include="DaoProxyResult.cs" />
+    <Compile Include="FilterToken.cs" />
+    <Compile Include="IAddable.cs" />
+    <Compile Include="IDatabase.cs" />
+    <Compile Include="IHasConnectionStringResolver.cs" />
+    <Compile Include="ILoadable.cs" />
+    <Compile Include="IRegistrarCaller.cs" />
+    <Compile Include="NullConnectionStringResolver.cs" />
+    <Compile Include="PagedQuery.cs" />
+    <Compile Include="Query.cs" />
+    <Compile Include="IHasDataRow.cs" />
+    <Compile Include="InComparison.cs" />
+    <Compile Include="LiteralFilterToken.cs" />
+    <Compile Include="NullComparison.cs" />
+    <Compile Include="OpenParen.cs" />
+    <Compile Include="OrderBy.cs" />
+    <Compile Include="ParameterBuilder.cs" />
+    <Compile Include="Qi\Qi.cs" />
+    <Compile Include="Qi\QiClause.cs" />
+    <Compile Include="Qi\QiOperator.cs" />
+    <Compile Include="Qi\QiQuery.cs" />
+    <Compile Include="QueryFilter.cs" />
+    <Compile Include="Registrar.cs" />
+    <Compile Include="RegistrarCallerFactory.cs" />
+    <Compile Include="SchemaInitializer.cs" />
+    <Compile Include="Select.cs" />
+    <Compile Include="SelectColumn.cs" />
+    <Compile Include="SortOrder.cs" />
+    <Compile Include="SchemaWriter.cs" />
+    <Compile Include="ConnectionStringResolveResult.cs" />
+    <Compile Include="ConnectionStringResolvers.cs" />
+    <Compile Include="Dao.cs" />
+    <Compile Include="DaoCollection.cs" />
+    <Compile Include="DaoDelegate.cs" />
+    <Compile Include="Database.cs" />
+    <Compile Include="DatabaseContainer.cs" />
+    <Compile Include="DatabaseInitializers.cs" />
+    <Compile Include="DefaultConnectionStringResolver.cs" />
+    <Compile Include="DefaultDatabaseInitializer.cs" />
+    <Compile Include="ForeignKeyAttribute.cs" />
+    <Compile Include="FormatPart.cs" />
+    <Compile Include="ICommittable.cs" />
+    <Compile Include="IConnectionStringResolver.cs" />
+    <Compile Include="IDatabaseInitializer.cs" />
+    <Compile Include="IDeleteable.cs" />
+    <Compile Include="DatabaseInitializationResult.cs" />
+    <Compile Include="InsertResult.cs" />
+    <Compile Include="IHasDataTable.cs" />
+    <Compile Include="IHasFormatParts.cs" />
+    <Compile Include="IHasParameterInfos.cs" />
+    <Compile Include="InsertFormat.cs" />
+    <Compile Include="KeyColumnAttribute.cs" />
+    <Compile Include="MultipleEntriesFoundException.cs" />
+    <Compile Include="IParameterInfo.cs" />
+    <Compile Include="IHasFilters.cs" />
+    <Compile Include="IParameterInfoParser.cs" />
+    <Compile Include="PagedEnumerator.cs" />
+    <Compile Include="IFilterToken.cs" />
+    <Compile Include="IParameterBuilder.cs" />
+    <Compile Include="IQueryFilter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryResult.cs" />
+    <Compile Include="QuerySet.cs" />
+    <Compile Include="QuerySetResults.cs" />
+    <Compile Include="SelectResult.cs" />
+    <Compile Include="SetFormat.cs" />
+    <Compile Include="SqlDialect.cs" />
+    <Compile Include="SqlExecuteDelegate.cs" />
+    <Compile Include="SqlStringBuilder.cs" />
+    <Compile Include="SqlStringBuilderDelegate.cs" />
+    <Compile Include="StartsWithComparison.cs" />
+    <Compile Include="StaticDatabaseInitializer.cs" />
+    <Compile Include="TableAttribute.cs" />
+    <Compile Include="AssignValue.cs" />
+    <Compile Include="ValidationException.cs" />
+    <Compile Include="ValidationResult.cs" />
+    <Compile Include="WhereDelegate.cs" />
+    <Compile Include="WhereFormat.cs" />
+    <Compile Include="XrefDaoCollection.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Js\AES.js" />
+    <Content Include="Js\SHA1.js" />
+    <Content Include="Js\SHA256.js" />
+    <EmbeddedResource Include="Qi\Dao.js" />
+    <EmbeddedResource Include="Qi\Qi.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bam.Net.Incubation\Bam.Net.Incubation.csproj">
+      <Project>{AA186331-A0D0-4F77-BEA2-E7B7650D3FF5}</Project>
+      <Name>Bam.Net.Incubation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net\Bam.Net.csproj">
+      <Project>{8794C09D-D72C-420C-812F-BFDA251B64C9}</Project>
+      <Name>Bam.Net</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

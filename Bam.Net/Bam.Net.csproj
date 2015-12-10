@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8794C09D-D72C-420C-812F-BFDA251B64C9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Bam.Net</RootNamespace>
+    <AssemblyName>Bam.Net</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Bam.Net.XML</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>bin\Debug\Bam.Net.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>bin\Release\Bam.Net.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>signing.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Ionic.Zip, Version=1.9.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotNetZip.1.9.3\lib\net20\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Net.FtpClient, Version=1.0.5281.14359, Culture=neutral, PublicKeyToken=fa4be07daa57c2b7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\System.Net.FtpClient.1.0.5281.14359\lib\net40\System.Net.FtpClient.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.0.0\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.0.0\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AdHocCSharpCompiler.cs" />
+    <Compile Include="ApplicationNameProvider.cs" />
+    <Compile Include="Args.cs" />
+    <Compile Include="CompilationException.cs" />
+    <Compile Include="Configuration\Configurable.cs" />
+    <Compile Include="Configuration\DefaultConfigurationApplicationNameProvider.cs" />
+    <Compile Include="Configuration\IConfigurer.cs" />
+    <Compile Include="Configuration\DefaultConfiguration.cs" />
+    <Compile Include="Configuration\DefaultConfigurer.cs" />
+    <Compile Include="Configuration\IConfigurable.cs" />
+    <Compile Include="Configuration\IHasRequiredProperties.cs" />
+    <Compile Include="Configuration\InvalidIHasRequiredPropertiesImplementationException.cs" />
+    <Compile Include="Configuration\RequiredPropertiesNotSetException.cs" />
+    <Compile Include="Configuration\RequiredPropertyNotFoundException.cs" />
+    <Compile Include="Documentation\doc.cs" />
+    <Compile Include="DynamicTypeRecursionLimitReachedException.cs" />
+    <Compile Include="EncryptAttribute.cs" />
+    <Compile Include="Encryption\Rsa.cs" />
+    <Compile Include="Encryption\RSAKeyValue.cs" />
+    <Compile Include="ExceptionHandling\ExceptionArbiter.cs" />
+    <Compile Include="ExceptionHandling\IArbitrateExceptions.cs" />
+    <Compile Include="FileSystemWatchingExtensions.cs" />
+    <Compile Include="GeneratedAssemblies.cs" />
+    <Compile Include="GeneratedAssemblyInfo.cs" />
+    <Compile Include="IApplicationNameProvider.cs" />
+    <Compile Include="IAssemblyGenerator.cs" />
+    <Compile Include="Instant.cs" />
+    <Compile Include="IpcMessageLockInfo.cs" />
+    <Compile Include="Logging\ClientLogger.cs" />
+    <Compile Include="ApplicationDiagnosticInfo.cs" />
+    <Compile Include="Logging\ILoggable.cs" />
+    <Compile Include="Logging\Loggable.cs" />
+    <Compile Include="Logging\VerbosityAttribute.cs" />
+    <Compile Include="Logging\Severity.cs" />
+    <Compile Include="Logging\VerbosityLevel.cs" />
+    <Compile Include="IpcMessage.cs" />
+    <Compile Include="IpcMessageRoot.cs" />
+    <Compile Include="NamedThread.cs" />
+    <Compile Include="Razor\RazorBaseTemplate.cs" />
+    <Compile Include="Razor\RazorParser.cs" />
+    <Compile Include="Razor\RazorRenderer.cs" />
+    <Compile Include="Razor\RazorTemplate.cs" />
+    <Compile Include="Validate.cs" />
+    <Compile Include="Web\CookieEnabledWebClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Web\FormParameterExtensionscs.cs" />
+    <Compile Include="Web\Ftp.cs" />
+    <Compile Include="Web\Http.cs" />
+    <Compile Include="Logging\CsvLogger.cs" />
+    <Compile Include="ReflectionExtensions.cs" />
+    <Compile Include="SerializationExtensions.cs" />
+    <Compile Include="CustomAttributeExtension.cs" />
+    <Compile Include="CustomPropertyInfo.cs" />
+    <Compile Include="DynamicTypeInfo.cs" />
+    <Compile Include="DynamicTypeStore.cs" />
+    <Compile Include="Email.cs" />
+    <Compile Include="Encryption\Aes.cs" />
+    <Compile Include="Encryption\AesKeyVectorPair.cs" />
+    <Compile Include="Encryption\RsaKeyPair.cs" />
+    <Compile Include="ExceptionHandling\ExceptionEventArgs.cs" />
+    <Compile Include="ExceptionHandling\ExceptionHandler.cs" />
+    <Compile Include="ExceptionHelper.cs" />
+    <Compile Include="Expect.cs" />
+    <Compile Include="ExpectFailedException.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="HashAlgorithms.cs" />
+    <Compile Include="RandomNumber.cs" />
+    <Compile Include="JulianDate.cs" />
+    <Compile Include="Logging\BlockingLogger.cs" />
+    <Compile Include="Logging\EventIdProvider.cs" />
+    <Compile Include="Logging\ILogger.cs" />
+    <Compile Include="Logging\Log.cs" />
+    <Compile Include="Logging\LogEntryAddedListener.cs" />
+    <Compile Include="Logging\LogEvent.cs" />
+    <Compile Include="Logging\LogEventCollection.cs" />
+    <Compile Include="Logging\LogEventType.cs" />
+    <Compile Include="Logging\Logger.cs" />
+    <Compile Include="Logging\MultiTargetLogger.cs" />
+    <Compile Include="Logging\NamespaceDoc.cs" />
+    <Compile Include="Logging\NullLogger.cs" />
+    <Compile Include="Logging\TextFileLogger.cs" />
+    <Compile Include="Logging\WindowsEventIdProvider.cs" />
+    <Compile Include="Logging\WindowsLogger.cs" />
+    <Compile Include="Logging\XmlLogger.cs" />
+    <Compile Include="MethodCase.cs" />
+    <Compile Include="NamedFormatter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProviderAlreadySetException.cs" />
+    <Compile Include="Providers.cs" />
+    <Compile Include="ProxyAttribute.cs" />
+    <Compile Include="RandomHelper.cs" />
+    <Compile Include="ResourceTextFiles.cs" />
+    <Compile Include="RoleRequiredAttribute.cs" />
+    <Compile Include="ServiceExe.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ServiceInfo.cs" />
+    <Compile Include="ServiceInstallHandler.cs" />
+    <Compile Include="Smtp.cs" />
+    <Compile Include="Exec.cs" />
+    <Compile Include="ToDelimitedDelegate.cs" />
+    <Compile Include="Web\HttpArgs.cs" />
+    <Compile Include="Web\ProxyAlias.cs" />
+    <Compile Include="Web\QueryStringParameter.cs" />
+    <Compile Include="Web\UserAgents.cs" />
+    <Compile Include="UserUtil.cs" />
+    <Compile Include="_.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Documentation\XmlDocumentation.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+    <None Include="signing.snk" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

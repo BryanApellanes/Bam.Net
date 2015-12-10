@@ -1,0 +1,70 @@
+{
+  "SearchRules": [
+    {
+      "Ext": ".png",
+      "SearchDirectories": [
+        {
+          "SortOrder": 1,
+          "RelativePath": "~/img"
+        },
+        {
+          "SortOrder": 2,
+          "RelativePath": "~/image"
+        }
+      ]
+    },
+    {
+      "Ext": ".gif",
+      "SearchDirectories": [
+        {
+          "SortOrder": 1,
+          "RelativePath": "~/img"
+        },
+        {
+          "SortOrder": 2,
+          "RelativePath": "~/image"
+        }
+      ]
+    },
+    {
+      "Ext": ".jpg",
+      "SearchDirectories": [
+        {
+          "SortOrder": 1,
+          "RelativePath": "~/img"
+        },
+        {
+          "SortOrder": 2,
+          "RelativePath": "~/image"
+        }
+      ]
+    },
+    {
+      "Ext": ".htm",
+      "SearchDirectories": [
+        {
+          "SortOrder": 1,
+          "RelativePath": "~/pages"
+        }
+      ]
+    },
+    {
+      "Ext": ".html",
+      "SearchDirectories": [
+        {
+          "SortOrder": 1,
+          "RelativePath": "~/pages"
+        }
+      ]
+    },
+    {
+      "Ext": ".css",
+      "SearchDirectories": [
+        {
+          "SortOrder": 1,
+          "RelativePath": "~/css"
+        }
+      ]
+    }
+  ]
+}

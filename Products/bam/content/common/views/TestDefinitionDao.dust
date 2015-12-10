@@ -1,0 +1,1189 @@
+<fieldset data-type="object" itemscope="itemscope" itemtype="http://schema.org/Thing">
+  <fieldset data-type="object" id="NotificationSubscriptionDao_TypeHandle" itemprop="TypeHandle" itemscope="itemscope" itemtype="http://schema.org/Thing" name="TypeHandle">
+    <legend>Type Handle</legend>
+    <fieldset data-type="object" id="RuntimeTypeHandle_Value" itemprop="Value" itemscope="itemscope" itemtype="http://schema.org/Thing" name="Value">
+      <legend>Value</legend>
+      <label class="label" for="IntPtr_Size">Size</label>
+      <input data-type="number" id="IntPtr_Size" itemprop="Size" name="Size" type="number" />
+      <br />
+    </fieldset>
+  </fieldset>
+  <fieldset data-type="object" id="NotificationSubscriptionDao_GUID" itemprop="GUID" itemscope="itemscope" itemtype="http://schema.org/Thing" name="GUID">
+    <legend>G U I D</legend>
+  </fieldset>
+  <label class="label" for="NotificationSubscriptionDao_IsEnum">Is Enum</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsEnum" itemprop="IsEnum" name="IsEnum" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_GenericParameterAttributes">Generic Parameter Attributes</label>
+  <ul data-type="enum" id="NotificationSubscriptionDao_GenericParameterAttributes" itemprop="GenericParameterAttributes" name="GenericParameterAttributes" style="list-style:none;">
+    <li>
+      <input checked="checked" data-text="None" id="None_tthy" name="GenericParameterAttributes" type="radio" value="0">
+      </input>
+      <label for="None_tthy">None</label>
+    </li>
+    <li>
+      <input data-text="VarianceMask" id="VarianceMask_rxes" name="GenericParameterAttributes" type="radio" value="3">
+      </input>
+      <label for="VarianceMask_rxes">Variance Mask</label>
+    </li>
+    <li>
+      <input data-text="Covariant" id="Covariant_mrlr" name="GenericParameterAttributes" type="radio" value="1">
+      </input>
+      <label for="Covariant_mrlr">Covariant</label>
+    </li>
+    <li>
+      <input data-text="Contravariant" id="Contravariant_dppx" name="GenericParameterAttributes" type="radio" value="2">
+      </input>
+      <label for="Contravariant_dppx">Contravariant</label>
+    </li>
+    <li>
+      <input data-text="SpecialConstraintMask" id="SpecialConstraintMask_poqg" name="GenericParameterAttributes" type="radio" value="28">
+      </input>
+      <label for="SpecialConstraintMask_poqg">Special Constraint Mask</label>
+    </li>
+    <li>
+      <input data-text="ReferenceTypeConstraint" id="ReferenceTypeConstraint_rcrl" name="GenericParameterAttributes" type="radio" value="4">
+      </input>
+      <label for="ReferenceTypeConstraint_rcrl">Reference Type Constraint</label>
+    </li>
+    <li>
+      <input data-text="NotNullableValueTypeConstraint" id="NotNullableValueTypeConstraint_vddv" name="GenericParameterAttributes" type="radio" value="8">
+      </input>
+      <label for="NotNullableValueTypeConstraint_vddv">Not Nullable Value Type Constraint</label>
+    </li>
+    <li>
+      <input data-text="DefaultConstructorConstraint" id="DefaultConstructorConstraint_uhia" name="GenericParameterAttributes" type="radio" value="16">
+      </input>
+      <label for="DefaultConstructorConstraint_uhia">Default Constructor Constraint</label>
+    </li>
+  </ul>
+  <label class="label" for="NotificationSubscriptionDao_IsSecurityCritical">Is Security Critical</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsSecurityCritical" itemprop="IsSecurityCritical" name="IsSecurityCritical" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsSecuritySafeCritical">Is Security Safe Critical</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsSecuritySafeCritical" itemprop="IsSecuritySafeCritical" name="IsSecuritySafeCritical" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsSecurityTransparent">Is Security Transparent</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsSecurityTransparent" itemprop="IsSecurityTransparent" name="IsSecurityTransparent" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsGenericTypeDefinition">Is Generic Type Definition</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsGenericTypeDefinition" itemprop="IsGenericTypeDefinition" name="IsGenericTypeDefinition" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsGenericParameter">Is Generic Parameter</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsGenericParameter" itemprop="IsGenericParameter" name="IsGenericParameter" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_GenericParameterPosition">Generic Parameter Position</label>
+  <input data-type="number" id="NotificationSubscriptionDao_GenericParameterPosition" itemprop="GenericParameterPosition" name="GenericParameterPosition" type="number" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsGenericType">Is Generic Type</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsGenericType" itemprop="IsGenericType" name="IsGenericType" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsConstructedGenericType">Is Constructed Generic Type</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsConstructedGenericType" itemprop="IsConstructedGenericType" name="IsConstructedGenericType" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_ContainsGenericParameters">Contains Generic Parameters</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_ContainsGenericParameters" itemprop="ContainsGenericParameters" name="ContainsGenericParameters" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_MemberType">Member Type</label>
+  <ul data-type="enum" id="NotificationSubscriptionDao_MemberType" itemprop="MemberType" name="MemberType" style="list-style:none;">
+    <li>
+      <input checked="checked" data-text="Constructor" id="Constructor_nixa" name="MemberTypes" type="radio" value="1">
+      </input>
+      <label for="Constructor_nixa">Constructor</label>
+    </li>
+    <li>
+      <input data-text="Event" id="Event_tkvt" name="MemberTypes" type="radio" value="2">
+      </input>
+      <label for="Event_tkvt">Event</label>
+    </li>
+    <li>
+      <input data-text="Field" id="Field_sfhd" name="MemberTypes" type="radio" value="4">
+      </input>
+      <label for="Field_sfhd">Field</label>
+    </li>
+    <li>
+      <input data-text="Method" id="Method_scti" name="MemberTypes" type="radio" value="8">
+      </input>
+      <label for="Method_scti">Method</label>
+    </li>
+    <li>
+      <input data-text="Property" id="Property_crrb" name="MemberTypes" type="radio" value="16">
+      </input>
+      <label for="Property_crrb">Property</label>
+    </li>
+    <li>
+      <input data-text="TypeInfo" id="TypeInfo_ucot" name="MemberTypes" type="radio" value="32">
+      </input>
+      <label for="TypeInfo_ucot">Type Info</label>
+    </li>
+    <li>
+      <input data-text="Custom" id="Custom_hxfj" name="MemberTypes" type="radio" value="64">
+      </input>
+      <label for="Custom_hxfj">Custom</label>
+    </li>
+    <li>
+      <input data-text="NestedType" id="NestedType_kjmh" name="MemberTypes" type="radio" value="128">
+      </input>
+      <label for="NestedType_kjmh">Nested Type</label>
+    </li>
+    <li>
+      <input data-text="All" id="All_mobg" name="MemberTypes" type="radio" value="191">
+      </input>
+      <label for="All_mobg">All</label>
+    </li>
+  </ul>
+  <label class="label" for="NotificationSubscriptionDao_MetadataToken">Metadata Token</label>
+  <input data-type="number" id="NotificationSubscriptionDao_MetadataToken" itemprop="MetadataToken" name="MetadataToken" type="number" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsNested">Is Nested</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsNested" itemprop="IsNested" name="IsNested" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_Attributes">Attributes</label>
+  <ul data-type="enum" id="NotificationSubscriptionDao_Attributes" itemprop="Attributes" name="Attributes" style="list-style:none;">
+    <li>
+      <input checked="checked" data-text="VisibilityMask" id="VisibilityMask_rdxu" name="TypeAttributes" type="radio" value="7">
+      </input>
+      <label for="VisibilityMask_rdxu">Visibility Mask</label>
+    </li>
+    <li>
+      <input data-text="NotPublic" id="NotPublic_rben" name="TypeAttributes" type="radio" value="0">
+      </input>
+      <label for="NotPublic_rben">Not Public</label>
+    </li>
+    <li>
+      <input data-text="Public" id="Public_rexp" name="TypeAttributes" type="radio" value="1">
+      </input>
+      <label for="Public_rexp">Public</label>
+    </li>
+    <li>
+      <input data-text="NestedPublic" id="NestedPublic_aolt" name="TypeAttributes" type="radio" value="2">
+      </input>
+      <label for="NestedPublic_aolt">Nested Public</label>
+    </li>
+    <li>
+      <input data-text="NestedPrivate" id="NestedPrivate_drue" name="TypeAttributes" type="radio" value="3">
+      </input>
+      <label for="NestedPrivate_drue">Nested Private</label>
+    </li>
+    <li>
+      <input data-text="NestedFamily" id="NestedFamily_mjis" name="TypeAttributes" type="radio" value="4">
+      </input>
+      <label for="NestedFamily_mjis">Nested Family</label>
+    </li>
+    <li>
+      <input data-text="NestedAssembly" id="NestedAssembly_apea" name="TypeAttributes" type="radio" value="5">
+      </input>
+      <label for="NestedAssembly_apea">Nested Assembly</label>
+    </li>
+    <li>
+      <input data-text="NestedFamANDAssem" id="NestedFamANDAssem_nowu" name="TypeAttributes" type="radio" value="6">
+      </input>
+      <label for="NestedFamANDAssem_nowu">Nested Fam A N D Assem</label>
+    </li>
+    <li>
+      <input data-text="NestedFamORAssem" id="NestedFamORAssem_afdx" name="TypeAttributes" type="radio" value="7">
+      </input>
+      <label for="NestedFamORAssem_afdx">Nested Fam O R Assem</label>
+    </li>
+    <li>
+      <input data-text="LayoutMask" id="LayoutMask_qxow" name="TypeAttributes" type="radio" value="24">
+      </input>
+      <label for="LayoutMask_qxow">Layout Mask</label>
+    </li>
+    <li>
+      <input data-text="AutoLayout" id="AutoLayout_busf" name="TypeAttributes" type="radio" value="0">
+      </input>
+      <label for="AutoLayout_busf">Auto Layout</label>
+    </li>
+    <li>
+      <input data-text="SequentialLayout" id="SequentialLayout_nqma" name="TypeAttributes" type="radio" value="8">
+      </input>
+      <label for="SequentialLayout_nqma">Sequential Layout</label>
+    </li>
+    <li>
+      <input data-text="ExplicitLayout" id="ExplicitLayout_pmpn" name="TypeAttributes" type="radio" value="16">
+      </input>
+      <label for="ExplicitLayout_pmpn">Explicit Layout</label>
+    </li>
+    <li>
+      <input data-text="ClassSemanticsMask" id="ClassSemanticsMask_blih" name="TypeAttributes" type="radio" value="32">
+      </input>
+      <label for="ClassSemanticsMask_blih">Class Semantics Mask</label>
+    </li>
+    <li>
+      <input data-text="Class" id="Class_uetc" name="TypeAttributes" type="radio" value="0">
+      </input>
+      <label for="Class_uetc">Class</label>
+    </li>
+    <li>
+      <input data-text="Interface" id="Interface_vdad" name="TypeAttributes" type="radio" value="32">
+      </input>
+      <label for="Interface_vdad">Interface</label>
+    </li>
+    <li>
+      <input data-text="Abstract" id="Abstract_hdot" name="TypeAttributes" type="radio" value="128">
+      </input>
+      <label for="Abstract_hdot">Abstract</label>
+    </li>
+    <li>
+      <input data-text="Sealed" id="Sealed_kmce" name="TypeAttributes" type="radio" value="256">
+      </input>
+      <label for="Sealed_kmce">Sealed</label>
+    </li>
+    <li>
+      <input data-text="SpecialName" id="SpecialName_cxdr" name="TypeAttributes" type="radio" value="1024">
+      </input>
+      <label for="SpecialName_cxdr">Special Name</label>
+    </li>
+    <li>
+      <input data-text="Import" id="Import_qdfj" name="TypeAttributes" type="radio" value="4096">
+      </input>
+      <label for="Import_qdfj">Import</label>
+    </li>
+    <li>
+      <input data-text="Serializable" id="Serializable_deka" name="TypeAttributes" type="radio" value="8192">
+      </input>
+      <label for="Serializable_deka">Serializable</label>
+    </li>
+    <li>
+      <input data-text="WindowsRuntime" id="WindowsRuntime_yiso" name="TypeAttributes" type="radio" value="16384">
+      </input>
+      <label for="WindowsRuntime_yiso">Windows Runtime</label>
+    </li>
+    <li>
+      <input data-text="StringFormatMask" id="StringFormatMask_wudl" name="TypeAttributes" type="radio" value="196608">
+      </input>
+      <label for="StringFormatMask_wudl">String Format Mask</label>
+    </li>
+    <li>
+      <input data-text="AnsiClass" id="AnsiClass_dmbw" name="TypeAttributes" type="radio" value="0">
+      </input>
+      <label for="AnsiClass_dmbw">Ansi Class</label>
+    </li>
+    <li>
+      <input data-text="UnicodeClass" id="UnicodeClass_tpwj" name="TypeAttributes" type="radio" value="65536">
+      </input>
+      <label for="UnicodeClass_tpwj">Unicode Class</label>
+    </li>
+    <li>
+      <input data-text="AutoClass" id="AutoClass_bsod" name="TypeAttributes" type="radio" value="131072">
+      </input>
+      <label for="AutoClass_bsod">Auto Class</label>
+    </li>
+    <li>
+      <input data-text="CustomFormatClass" id="CustomFormatClass_jkkd" name="TypeAttributes" type="radio" value="196608">
+      </input>
+      <label for="CustomFormatClass_jkkd">Custom Format Class</label>
+    </li>
+    <li>
+      <input data-text="CustomFormatMask" id="CustomFormatMask_ipqq" name="TypeAttributes" type="radio" value="12582912">
+      </input>
+      <label for="CustomFormatMask_ipqq">Custom Format Mask</label>
+    </li>
+    <li>
+      <input data-text="BeforeFieldInit" id="BeforeFieldInit_ykyq" name="TypeAttributes" type="radio" value="1048576">
+      </input>
+      <label for="BeforeFieldInit_ykyq">Before Field Init</label>
+    </li>
+    <li>
+      <input data-text="ReservedMask" id="ReservedMask_sydy" name="TypeAttributes" type="radio" value="264192">
+      </input>
+      <label for="ReservedMask_sydy">Reserved Mask</label>
+    </li>
+    <li>
+      <input data-text="RTSpecialName" id="RTSpecialName_kavp" name="TypeAttributes" type="radio" value="2048">
+      </input>
+      <label for="RTSpecialName_kavp">R T Special Name</label>
+    </li>
+    <li>
+      <input data-text="HasSecurity" id="HasSecurity_iqao" name="TypeAttributes" type="radio" value="262144">
+      </input>
+      <label for="HasSecurity_iqao">Has Security</label>
+    </li>
+  </ul>
+  <label class="label" for="NotificationSubscriptionDao_IsVisible">Is Visible</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsVisible" itemprop="IsVisible" name="IsVisible" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsNotPublic">Is Not Public</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsNotPublic" itemprop="IsNotPublic" name="IsNotPublic" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsPublic">Is Public</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsPublic" itemprop="IsPublic" name="IsPublic" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsNestedPublic">Is Nested Public</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsNestedPublic" itemprop="IsNestedPublic" name="IsNestedPublic" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsNestedPrivate">Is Nested Private</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsNestedPrivate" itemprop="IsNestedPrivate" name="IsNestedPrivate" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsNestedFamily">Is Nested Family</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsNestedFamily" itemprop="IsNestedFamily" name="IsNestedFamily" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsNestedAssembly">Is Nested Assembly</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsNestedAssembly" itemprop="IsNestedAssembly" name="IsNestedAssembly" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsNestedFamANDAssem">Is Nested Fam A N D Assem</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsNestedFamANDAssem" itemprop="IsNestedFamANDAssem" name="IsNestedFamANDAssem" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsNestedFamORAssem">Is Nested Fam O R Assem</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsNestedFamORAssem" itemprop="IsNestedFamORAssem" name="IsNestedFamORAssem" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsAutoLayout">Is Auto Layout</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsAutoLayout" itemprop="IsAutoLayout" name="IsAutoLayout" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsLayoutSequential">Is Layout Sequential</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsLayoutSequential" itemprop="IsLayoutSequential" name="IsLayoutSequential" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsExplicitLayout">Is Explicit Layout</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsExplicitLayout" itemprop="IsExplicitLayout" name="IsExplicitLayout" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsClass">Is Class</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsClass" itemprop="IsClass" name="IsClass" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsInterface">Is Interface</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsInterface" itemprop="IsInterface" name="IsInterface" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsValueType">Is Value Type</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsValueType" itemprop="IsValueType" name="IsValueType" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsAbstract">Is Abstract</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsAbstract" itemprop="IsAbstract" name="IsAbstract" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsSealed">Is Sealed</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsSealed" itemprop="IsSealed" name="IsSealed" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsSpecialName">Is Special Name</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsSpecialName" itemprop="IsSpecialName" name="IsSpecialName" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsImport">Is Import</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsImport" itemprop="IsImport" name="IsImport" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsSerializable">Is Serializable</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsSerializable" itemprop="IsSerializable" name="IsSerializable" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsAnsiClass">Is Ansi Class</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsAnsiClass" itemprop="IsAnsiClass" name="IsAnsiClass" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsUnicodeClass">Is Unicode Class</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsUnicodeClass" itemprop="IsUnicodeClass" name="IsUnicodeClass" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsAutoClass">Is Auto Class</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsAutoClass" itemprop="IsAutoClass" name="IsAutoClass" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsArray">Is Array</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsArray" itemprop="IsArray" name="IsArray" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsByRef">Is By Ref</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsByRef" itemprop="IsByRef" name="IsByRef" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsPointer">Is Pointer</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsPointer" itemprop="IsPointer" name="IsPointer" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsPrimitive">Is Primitive</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsPrimitive" itemprop="IsPrimitive" name="IsPrimitive" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsCOMObject">Is C O M Object</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsCOMObject" itemprop="IsCOMObject" name="IsCOMObject" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_HasElementType">Has Element Type</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_HasElementType" itemprop="HasElementType" name="HasElementType" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsContextful">Is Contextful</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsContextful" itemprop="IsContextful" name="IsContextful" type="checkbox" />
+  <br />
+  <label class="label" for="NotificationSubscriptionDao_IsMarshalByRef">Is Marshal By Ref</label>
+  <input data-type="boolean" id="NotificationSubscriptionDao_IsMarshalByRef" itemprop="IsMarshalByRef" name="IsMarshalByRef" type="checkbox" />
+  <br />
+</fieldset><fieldset data-type="object" itemscope="itemscope" itemtype="http://schema.org/Thing">
+  <fieldset data-type="object" id="SuiteDefinitionDao_TypeHandle" itemprop="TypeHandle" itemscope="itemscope" itemtype="http://schema.org/Thing" name="TypeHandle">
+    <legend>Type Handle</legend>
+    <fieldset data-type="object" id="RuntimeTypeHandle_Value" itemprop="Value" itemscope="itemscope" itemtype="http://schema.org/Thing" name="Value">
+      <legend>Value</legend>
+      <label class="label" for="IntPtr_Size">Size</label>
+      <input data-type="number" id="IntPtr_Size" itemprop="Size" name="Size" type="number" />
+      <br />
+    </fieldset>
+  </fieldset>
+  <fieldset data-type="object" id="SuiteDefinitionDao_GUID" itemprop="GUID" itemscope="itemscope" itemtype="http://schema.org/Thing" name="GUID">
+    <legend>G U I D</legend>
+  </fieldset>
+  <label class="label" for="SuiteDefinitionDao_IsEnum">Is Enum</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsEnum" itemprop="IsEnum" name="IsEnum" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_GenericParameterAttributes">Generic Parameter Attributes</label>
+  <ul data-type="enum" id="SuiteDefinitionDao_GenericParameterAttributes" itemprop="GenericParameterAttributes" name="GenericParameterAttributes" style="list-style:none;">
+    <li>
+      <input checked="checked" data-text="None" id="None_uijp" name="GenericParameterAttributes" type="radio" value="0">
+      </input>
+      <label for="None_uijp">None</label>
+    </li>
+    <li>
+      <input data-text="VarianceMask" id="VarianceMask_gqow" name="GenericParameterAttributes" type="radio" value="3">
+      </input>
+      <label for="VarianceMask_gqow">Variance Mask</label>
+    </li>
+    <li>
+      <input data-text="Covariant" id="Covariant_pfgd" name="GenericParameterAttributes" type="radio" value="1">
+      </input>
+      <label for="Covariant_pfgd">Covariant</label>
+    </li>
+    <li>
+      <input data-text="Contravariant" id="Contravariant_llsn" name="GenericParameterAttributes" type="radio" value="2">
+      </input>
+      <label for="Contravariant_llsn">Contravariant</label>
+    </li>
+    <li>
+      <input data-text="SpecialConstraintMask" id="SpecialConstraintMask_jetl" name="GenericParameterAttributes" type="radio" value="28">
+      </input>
+      <label for="SpecialConstraintMask_jetl">Special Constraint Mask</label>
+    </li>
+    <li>
+      <input data-text="ReferenceTypeConstraint" id="ReferenceTypeConstraint_xyav" name="GenericParameterAttributes" type="radio" value="4">
+      </input>
+      <label for="ReferenceTypeConstraint_xyav">Reference Type Constraint</label>
+    </li>
+    <li>
+      <input data-text="NotNullableValueTypeConstraint" id="NotNullableValueTypeConstraint_xtsj" name="GenericParameterAttributes" type="radio" value="8">
+      </input>
+      <label for="NotNullableValueTypeConstraint_xtsj">Not Nullable Value Type Constraint</label>
+    </li>
+    <li>
+      <input data-text="DefaultConstructorConstraint" id="DefaultConstructorConstraint_vgcr" name="GenericParameterAttributes" type="radio" value="16">
+      </input>
+      <label for="DefaultConstructorConstraint_vgcr">Default Constructor Constraint</label>
+    </li>
+  </ul>
+  <label class="label" for="SuiteDefinitionDao_IsSecurityCritical">Is Security Critical</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsSecurityCritical" itemprop="IsSecurityCritical" name="IsSecurityCritical" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsSecuritySafeCritical">Is Security Safe Critical</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsSecuritySafeCritical" itemprop="IsSecuritySafeCritical" name="IsSecuritySafeCritical" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsSecurityTransparent">Is Security Transparent</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsSecurityTransparent" itemprop="IsSecurityTransparent" name="IsSecurityTransparent" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsGenericTypeDefinition">Is Generic Type Definition</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsGenericTypeDefinition" itemprop="IsGenericTypeDefinition" name="IsGenericTypeDefinition" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsGenericParameter">Is Generic Parameter</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsGenericParameter" itemprop="IsGenericParameter" name="IsGenericParameter" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_GenericParameterPosition">Generic Parameter Position</label>
+  <input data-type="number" id="SuiteDefinitionDao_GenericParameterPosition" itemprop="GenericParameterPosition" name="GenericParameterPosition" type="number" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsGenericType">Is Generic Type</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsGenericType" itemprop="IsGenericType" name="IsGenericType" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsConstructedGenericType">Is Constructed Generic Type</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsConstructedGenericType" itemprop="IsConstructedGenericType" name="IsConstructedGenericType" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_ContainsGenericParameters">Contains Generic Parameters</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_ContainsGenericParameters" itemprop="ContainsGenericParameters" name="ContainsGenericParameters" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_MemberType">Member Type</label>
+  <ul data-type="enum" id="SuiteDefinitionDao_MemberType" itemprop="MemberType" name="MemberType" style="list-style:none;">
+    <li>
+      <input checked="checked" data-text="Constructor" id="Constructor_blio" name="MemberTypes" type="radio" value="1">
+      </input>
+      <label for="Constructor_blio">Constructor</label>
+    </li>
+    <li>
+      <input data-text="Event" id="Event_btup" name="MemberTypes" type="radio" value="2">
+      </input>
+      <label for="Event_btup">Event</label>
+    </li>
+    <li>
+      <input data-text="Field" id="Field_lveh" name="MemberTypes" type="radio" value="4">
+      </input>
+      <label for="Field_lveh">Field</label>
+    </li>
+    <li>
+      <input data-text="Method" id="Method_bmbd" name="MemberTypes" type="radio" value="8">
+      </input>
+      <label for="Method_bmbd">Method</label>
+    </li>
+    <li>
+      <input data-text="Property" id="Property_ohvi" name="MemberTypes" type="radio" value="16">
+      </input>
+      <label for="Property_ohvi">Property</label>
+    </li>
+    <li>
+      <input data-text="TypeInfo" id="TypeInfo_nqlx" name="MemberTypes" type="radio" value="32">
+      </input>
+      <label for="TypeInfo_nqlx">Type Info</label>
+    </li>
+    <li>
+      <input data-text="Custom" id="Custom_ebjd" name="MemberTypes" type="radio" value="64">
+      </input>
+      <label for="Custom_ebjd">Custom</label>
+    </li>
+    <li>
+      <input data-text="NestedType" id="NestedType_onbh" name="MemberTypes" type="radio" value="128">
+      </input>
+      <label for="NestedType_onbh">Nested Type</label>
+    </li>
+    <li>
+      <input data-text="All" id="All_qyir" name="MemberTypes" type="radio" value="191">
+      </input>
+      <label for="All_qyir">All</label>
+    </li>
+  </ul>
+  <label class="label" for="SuiteDefinitionDao_MetadataToken">Metadata Token</label>
+  <input data-type="number" id="SuiteDefinitionDao_MetadataToken" itemprop="MetadataToken" name="MetadataToken" type="number" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsNested">Is Nested</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsNested" itemprop="IsNested" name="IsNested" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_Attributes">Attributes</label>
+  <ul data-type="enum" id="SuiteDefinitionDao_Attributes" itemprop="Attributes" name="Attributes" style="list-style:none;">
+    <li>
+      <input checked="checked" data-text="VisibilityMask" id="VisibilityMask_fmxn" name="TypeAttributes" type="radio" value="7">
+      </input>
+      <label for="VisibilityMask_fmxn">Visibility Mask</label>
+    </li>
+    <li>
+      <input data-text="NotPublic" id="NotPublic_ctsb" name="TypeAttributes" type="radio" value="0">
+      </input>
+      <label for="NotPublic_ctsb">Not Public</label>
+    </li>
+    <li>
+      <input data-text="Public" id="Public_obch" name="TypeAttributes" type="radio" value="1">
+      </input>
+      <label for="Public_obch">Public</label>
+    </li>
+    <li>
+      <input data-text="NestedPublic" id="NestedPublic_saja" name="TypeAttributes" type="radio" value="2">
+      </input>
+      <label for="NestedPublic_saja">Nested Public</label>
+    </li>
+    <li>
+      <input data-text="NestedPrivate" id="NestedPrivate_kjyk" name="TypeAttributes" type="radio" value="3">
+      </input>
+      <label for="NestedPrivate_kjyk">Nested Private</label>
+    </li>
+    <li>
+      <input data-text="NestedFamily" id="NestedFamily_qbxu" name="TypeAttributes" type="radio" value="4">
+      </input>
+      <label for="NestedFamily_qbxu">Nested Family</label>
+    </li>
+    <li>
+      <input data-text="NestedAssembly" id="NestedAssembly_vpcd" name="TypeAttributes" type="radio" value="5">
+      </input>
+      <label for="NestedAssembly_vpcd">Nested Assembly</label>
+    </li>
+    <li>
+      <input data-text="NestedFamANDAssem" id="NestedFamANDAssem_irrl" name="TypeAttributes" type="radio" value="6">
+      </input>
+      <label for="NestedFamANDAssem_irrl">Nested Fam A N D Assem</label>
+    </li>
+    <li>
+      <input data-text="NestedFamORAssem" id="NestedFamORAssem_qche" name="TypeAttributes" type="radio" value="7">
+      </input>
+      <label for="NestedFamORAssem_qche">Nested Fam O R Assem</label>
+    </li>
+    <li>
+      <input data-text="LayoutMask" id="LayoutMask_njcg" name="TypeAttributes" type="radio" value="24">
+      </input>
+      <label for="LayoutMask_njcg">Layout Mask</label>
+    </li>
+    <li>
+      <input data-text="AutoLayout" id="AutoLayout_pcal" name="TypeAttributes" type="radio" value="0">
+      </input>
+      <label for="AutoLayout_pcal">Auto Layout</label>
+    </li>
+    <li>
+      <input data-text="SequentialLayout" id="SequentialLayout_xawx" name="TypeAttributes" type="radio" value="8">
+      </input>
+      <label for="SequentialLayout_xawx">Sequential Layout</label>
+    </li>
+    <li>
+      <input data-text="ExplicitLayout" id="ExplicitLayout_yram" name="TypeAttributes" type="radio" value="16">
+      </input>
+      <label for="ExplicitLayout_yram">Explicit Layout</label>
+    </li>
+    <li>
+      <input data-text="ClassSemanticsMask" id="ClassSemanticsMask_vtne" name="TypeAttributes" type="radio" value="32">
+      </input>
+      <label for="ClassSemanticsMask_vtne">Class Semantics Mask</label>
+    </li>
+    <li>
+      <input data-text="Class" id="Class_ncrl" name="TypeAttributes" type="radio" value="0">
+      </input>
+      <label for="Class_ncrl">Class</label>
+    </li>
+    <li>
+      <input data-text="Interface" id="Interface_rprv" name="TypeAttributes" type="radio" value="32">
+      </input>
+      <label for="Interface_rprv">Interface</label>
+    </li>
+    <li>
+      <input data-text="Abstract" id="Abstract_iqpq" name="TypeAttributes" type="radio" value="128">
+      </input>
+      <label for="Abstract_iqpq">Abstract</label>
+    </li>
+    <li>
+      <input data-text="Sealed" id="Sealed_selb" name="TypeAttributes" type="radio" value="256">
+      </input>
+      <label for="Sealed_selb">Sealed</label>
+    </li>
+    <li>
+      <input data-text="SpecialName" id="SpecialName_hsuo" name="TypeAttributes" type="radio" value="1024">
+      </input>
+      <label for="SpecialName_hsuo">Special Name</label>
+    </li>
+    <li>
+      <input data-text="Import" id="Import_alvu" name="TypeAttributes" type="radio" value="4096">
+      </input>
+      <label for="Import_alvu">Import</label>
+    </li>
+    <li>
+      <input data-text="Serializable" id="Serializable_sdeq" name="TypeAttributes" type="radio" value="8192">
+      </input>
+      <label for="Serializable_sdeq">Serializable</label>
+    </li>
+    <li>
+      <input data-text="WindowsRuntime" id="WindowsRuntime_qfow" name="TypeAttributes" type="radio" value="16384">
+      </input>
+      <label for="WindowsRuntime_qfow">Windows Runtime</label>
+    </li>
+    <li>
+      <input data-text="StringFormatMask" id="StringFormatMask_ocqk" name="TypeAttributes" type="radio" value="196608">
+      </input>
+      <label for="StringFormatMask_ocqk">String Format Mask</label>
+    </li>
+    <li>
+      <input data-text="AnsiClass" id="AnsiClass_qqna" name="TypeAttributes" type="radio" value="0">
+      </input>
+      <label for="AnsiClass_qqna">Ansi Class</label>
+    </li>
+    <li>
+      <input data-text="UnicodeClass" id="UnicodeClass_kddg" name="TypeAttributes" type="radio" value="65536">
+      </input>
+      <label for="UnicodeClass_kddg">Unicode Class</label>
+    </li>
+    <li>
+      <input data-text="AutoClass" id="AutoClass_jgft" name="TypeAttributes" type="radio" value="131072">
+      </input>
+      <label for="AutoClass_jgft">Auto Class</label>
+    </li>
+    <li>
+      <input data-text="CustomFormatClass" id="CustomFormatClass_fyfd" name="TypeAttributes" type="radio" value="196608">
+      </input>
+      <label for="CustomFormatClass_fyfd">Custom Format Class</label>
+    </li>
+    <li>
+      <input data-text="CustomFormatMask" id="CustomFormatMask_yydb" name="TypeAttributes" type="radio" value="12582912">
+      </input>
+      <label for="CustomFormatMask_yydb">Custom Format Mask</label>
+    </li>
+    <li>
+      <input data-text="BeforeFieldInit" id="BeforeFieldInit_fvso" name="TypeAttributes" type="radio" value="1048576">
+      </input>
+      <label for="BeforeFieldInit_fvso">Before Field Init</label>
+    </li>
+    <li>
+      <input data-text="ReservedMask" id="ReservedMask_kafd" name="TypeAttributes" type="radio" value="264192">
+      </input>
+      <label for="ReservedMask_kafd">Reserved Mask</label>
+    </li>
+    <li>
+      <input data-text="RTSpecialName" id="RTSpecialName_csbp" name="TypeAttributes" type="radio" value="2048">
+      </input>
+      <label for="RTSpecialName_csbp">R T Special Name</label>
+    </li>
+    <li>
+      <input data-text="HasSecurity" id="HasSecurity_nbjq" name="TypeAttributes" type="radio" value="262144">
+      </input>
+      <label for="HasSecurity_nbjq">Has Security</label>
+    </li>
+  </ul>
+  <label class="label" for="SuiteDefinitionDao_IsVisible">Is Visible</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsVisible" itemprop="IsVisible" name="IsVisible" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsNotPublic">Is Not Public</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsNotPublic" itemprop="IsNotPublic" name="IsNotPublic" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsPublic">Is Public</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsPublic" itemprop="IsPublic" name="IsPublic" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsNestedPublic">Is Nested Public</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsNestedPublic" itemprop="IsNestedPublic" name="IsNestedPublic" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsNestedPrivate">Is Nested Private</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsNestedPrivate" itemprop="IsNestedPrivate" name="IsNestedPrivate" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsNestedFamily">Is Nested Family</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsNestedFamily" itemprop="IsNestedFamily" name="IsNestedFamily" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsNestedAssembly">Is Nested Assembly</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsNestedAssembly" itemprop="IsNestedAssembly" name="IsNestedAssembly" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsNestedFamANDAssem">Is Nested Fam A N D Assem</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsNestedFamANDAssem" itemprop="IsNestedFamANDAssem" name="IsNestedFamANDAssem" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsNestedFamORAssem">Is Nested Fam O R Assem</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsNestedFamORAssem" itemprop="IsNestedFamORAssem" name="IsNestedFamORAssem" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsAutoLayout">Is Auto Layout</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsAutoLayout" itemprop="IsAutoLayout" name="IsAutoLayout" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsLayoutSequential">Is Layout Sequential</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsLayoutSequential" itemprop="IsLayoutSequential" name="IsLayoutSequential" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsExplicitLayout">Is Explicit Layout</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsExplicitLayout" itemprop="IsExplicitLayout" name="IsExplicitLayout" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsClass">Is Class</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsClass" itemprop="IsClass" name="IsClass" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsInterface">Is Interface</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsInterface" itemprop="IsInterface" name="IsInterface" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsValueType">Is Value Type</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsValueType" itemprop="IsValueType" name="IsValueType" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsAbstract">Is Abstract</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsAbstract" itemprop="IsAbstract" name="IsAbstract" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsSealed">Is Sealed</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsSealed" itemprop="IsSealed" name="IsSealed" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsSpecialName">Is Special Name</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsSpecialName" itemprop="IsSpecialName" name="IsSpecialName" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsImport">Is Import</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsImport" itemprop="IsImport" name="IsImport" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsSerializable">Is Serializable</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsSerializable" itemprop="IsSerializable" name="IsSerializable" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsAnsiClass">Is Ansi Class</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsAnsiClass" itemprop="IsAnsiClass" name="IsAnsiClass" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsUnicodeClass">Is Unicode Class</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsUnicodeClass" itemprop="IsUnicodeClass" name="IsUnicodeClass" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsAutoClass">Is Auto Class</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsAutoClass" itemprop="IsAutoClass" name="IsAutoClass" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsArray">Is Array</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsArray" itemprop="IsArray" name="IsArray" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsByRef">Is By Ref</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsByRef" itemprop="IsByRef" name="IsByRef" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsPointer">Is Pointer</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsPointer" itemprop="IsPointer" name="IsPointer" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsPrimitive">Is Primitive</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsPrimitive" itemprop="IsPrimitive" name="IsPrimitive" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsCOMObject">Is C O M Object</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsCOMObject" itemprop="IsCOMObject" name="IsCOMObject" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_HasElementType">Has Element Type</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_HasElementType" itemprop="HasElementType" name="HasElementType" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsContextful">Is Contextful</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsContextful" itemprop="IsContextful" name="IsContextful" type="checkbox" />
+  <br />
+  <label class="label" for="SuiteDefinitionDao_IsMarshalByRef">Is Marshal By Ref</label>
+  <input data-type="boolean" id="SuiteDefinitionDao_IsMarshalByRef" itemprop="IsMarshalByRef" name="IsMarshalByRef" type="checkbox" />
+  <br />
+</fieldset><fieldset data-type="object" itemscope="itemscope" itemtype="http://schema.org/Thing">
+  <fieldset data-type="object" id="TestDefinitionDao_TypeHandle" itemprop="TypeHandle" itemscope="itemscope" itemtype="http://schema.org/Thing" name="TypeHandle">
+    <legend>Type Handle</legend>
+    <fieldset data-type="object" id="RuntimeTypeHandle_Value" itemprop="Value" itemscope="itemscope" itemtype="http://schema.org/Thing" name="Value">
+      <legend>Value</legend>
+      <label class="label" for="IntPtr_Size">Size</label>
+      <input data-type="number" id="IntPtr_Size" itemprop="Size" name="Size" type="number" />
+      <br />
+    </fieldset>
+  </fieldset>
+  <fieldset data-type="object" id="TestDefinitionDao_GUID" itemprop="GUID" itemscope="itemscope" itemtype="http://schema.org/Thing" name="GUID">
+    <legend>G U I D</legend>
+  </fieldset>
+  <label class="label" for="TestDefinitionDao_IsEnum">Is Enum</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsEnum" itemprop="IsEnum" name="IsEnum" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_GenericParameterAttributes">Generic Parameter Attributes</label>
+  <ul data-type="enum" id="TestDefinitionDao_GenericParameterAttributes" itemprop="GenericParameterAttributes" name="GenericParameterAttributes" style="list-style:none;">
+    <li>
+      <input checked="checked" data-text="None" id="None_pllw" name="GenericParameterAttributes" type="radio" value="0">
+      </input>
+      <label for="None_pllw">None</label>
+    </li>
+    <li>
+      <input data-text="VarianceMask" id="VarianceMask_kkqa" name="GenericParameterAttributes" type="radio" value="3">
+      </input>
+      <label for="VarianceMask_kkqa">Variance Mask</label>
+    </li>
+    <li>
+      <input data-text="Covariant" id="Covariant_kxpx" name="GenericParameterAttributes" type="radio" value="1">
+      </input>
+      <label for="Covariant_kxpx">Covariant</label>
+    </li>
+    <li>
+      <input data-text="Contravariant" id="Contravariant_oetx" name="GenericParameterAttributes" type="radio" value="2">
+      </input>
+      <label for="Contravariant_oetx">Contravariant</label>
+    </li>
+    <li>
+      <input data-text="SpecialConstraintMask" id="SpecialConstraintMask_yojx" name="GenericParameterAttributes" type="radio" value="28">
+      </input>
+      <label for="SpecialConstraintMask_yojx">Special Constraint Mask</label>
+    </li>
+    <li>
+      <input data-text="ReferenceTypeConstraint" id="ReferenceTypeConstraint_yeqe" name="GenericParameterAttributes" type="radio" value="4">
+      </input>
+      <label for="ReferenceTypeConstraint_yeqe">Reference Type Constraint</label>
+    </li>
+    <li>
+      <input data-text="NotNullableValueTypeConstraint" id="NotNullableValueTypeConstraint_pgeo" name="GenericParameterAttributes" type="radio" value="8">
+      </input>
+      <label for="NotNullableValueTypeConstraint_pgeo">Not Nullable Value Type Constraint</label>
+    </li>
+    <li>
+      <input data-text="DefaultConstructorConstraint" id="DefaultConstructorConstraint_oydt" name="GenericParameterAttributes" type="radio" value="16">
+      </input>
+      <label for="DefaultConstructorConstraint_oydt">Default Constructor Constraint</label>
+    </li>
+  </ul>
+  <label class="label" for="TestDefinitionDao_IsSecurityCritical">Is Security Critical</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsSecurityCritical" itemprop="IsSecurityCritical" name="IsSecurityCritical" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsSecuritySafeCritical">Is Security Safe Critical</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsSecuritySafeCritical" itemprop="IsSecuritySafeCritical" name="IsSecuritySafeCritical" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsSecurityTransparent">Is Security Transparent</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsSecurityTransparent" itemprop="IsSecurityTransparent" name="IsSecurityTransparent" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsGenericTypeDefinition">Is Generic Type Definition</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsGenericTypeDefinition" itemprop="IsGenericTypeDefinition" name="IsGenericTypeDefinition" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsGenericParameter">Is Generic Parameter</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsGenericParameter" itemprop="IsGenericParameter" name="IsGenericParameter" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_GenericParameterPosition">Generic Parameter Position</label>
+  <input data-type="number" id="TestDefinitionDao_GenericParameterPosition" itemprop="GenericParameterPosition" name="GenericParameterPosition" type="number" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsGenericType">Is Generic Type</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsGenericType" itemprop="IsGenericType" name="IsGenericType" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsConstructedGenericType">Is Constructed Generic Type</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsConstructedGenericType" itemprop="IsConstructedGenericType" name="IsConstructedGenericType" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_ContainsGenericParameters">Contains Generic Parameters</label>
+  <input data-type="boolean" id="TestDefinitionDao_ContainsGenericParameters" itemprop="ContainsGenericParameters" name="ContainsGenericParameters" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_MemberType">Member Type</label>
+  <ul data-type="enum" id="TestDefinitionDao_MemberType" itemprop="MemberType" name="MemberType" style="list-style:none;">
+    <li>
+      <input checked="checked" data-text="Constructor" id="Constructor_qaon" name="MemberTypes" type="radio" value="1">
+      </input>
+      <label for="Constructor_qaon">Constructor</label>
+    </li>
+    <li>
+      <input data-text="Event" id="Event_dqul" name="MemberTypes" type="radio" value="2">
+      </input>
+      <label for="Event_dqul">Event</label>
+    </li>
+    <li>
+      <input data-text="Field" id="Field_qxvp" name="MemberTypes" type="radio" value="4">
+      </input>
+      <label for="Field_qxvp">Field</label>
+    </li>
+    <li>
+      <input data-text="Method" id="Method_rfft" name="MemberTypes" type="radio" value="8">
+      </input>
+      <label for="Method_rfft">Method</label>
+    </li>
+    <li>
+      <input data-text="Property" id="Property_yiku" name="MemberTypes" type="radio" value="16">
+      </input>
+      <label for="Property_yiku">Property</label>
+    </li>
+    <li>
+      <input data-text="TypeInfo" id="TypeInfo_gheg" name="MemberTypes" type="radio" value="32">
+      </input>
+      <label for="TypeInfo_gheg">Type Info</label>
+    </li>
+    <li>
+      <input data-text="Custom" id="Custom_cllt" name="MemberTypes" type="radio" value="64">
+      </input>
+      <label for="Custom_cllt">Custom</label>
+    </li>
+    <li>
+      <input data-text="NestedType" id="NestedType_urvn" name="MemberTypes" type="radio" value="128">
+      </input>
+      <label for="NestedType_urvn">Nested Type</label>
+    </li>
+    <li>
+      <input data-text="All" id="All_jqio" name="MemberTypes" type="radio" value="191">
+      </input>
+      <label for="All_jqio">All</label>
+    </li>
+  </ul>
+  <label class="label" for="TestDefinitionDao_MetadataToken">Metadata Token</label>
+  <input data-type="number" id="TestDefinitionDao_MetadataToken" itemprop="MetadataToken" name="MetadataToken" type="number" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsNested">Is Nested</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsNested" itemprop="IsNested" name="IsNested" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_Attributes">Attributes</label>
+  <ul data-type="enum" id="TestDefinitionDao_Attributes" itemprop="Attributes" name="Attributes" style="list-style:none;">
+    <li>
+      <input checked="checked" data-text="VisibilityMask" id="VisibilityMask_sxhh" name="TypeAttributes" type="radio" value="7">
+      </input>
+      <label for="VisibilityMask_sxhh">Visibility Mask</label>
+    </li>
+    <li>
+      <input data-text="NotPublic" id="NotPublic_yvtx" name="TypeAttributes" type="radio" value="0">
+      </input>
+      <label for="NotPublic_yvtx">Not Public</label>
+    </li>
+    <li>
+      <input data-text="Public" id="Public_ygjf" name="TypeAttributes" type="radio" value="1">
+      </input>
+      <label for="Public_ygjf">Public</label>
+    </li>
+    <li>
+      <input data-text="NestedPublic" id="NestedPublic_pyiu" name="TypeAttributes" type="radio" value="2">
+      </input>
+      <label for="NestedPublic_pyiu">Nested Public</label>
+    </li>
+    <li>
+      <input data-text="NestedPrivate" id="NestedPrivate_ikre" name="TypeAttributes" type="radio" value="3">
+      </input>
+      <label for="NestedPrivate_ikre">Nested Private</label>
+    </li>
+    <li>
+      <input data-text="NestedFamily" id="NestedFamily_apxc" name="TypeAttributes" type="radio" value="4">
+      </input>
+      <label for="NestedFamily_apxc">Nested Family</label>
+    </li>
+    <li>
+      <input data-text="NestedAssembly" id="NestedAssembly_ifbv" name="TypeAttributes" type="radio" value="5">
+      </input>
+      <label for="NestedAssembly_ifbv">Nested Assembly</label>
+    </li>
+    <li>
+      <input data-text="NestedFamANDAssem" id="NestedFamANDAssem_paom" name="TypeAttributes" type="radio" value="6">
+      </input>
+      <label for="NestedFamANDAssem_paom">Nested Fam A N D Assem</label>
+    </li>
+    <li>
+      <input data-text="NestedFamORAssem" id="NestedFamORAssem_wymi" name="TypeAttributes" type="radio" value="7">
+      </input>
+      <label for="NestedFamORAssem_wymi">Nested Fam O R Assem</label>
+    </li>
+    <li>
+      <input data-text="LayoutMask" id="LayoutMask_wyco" name="TypeAttributes" type="radio" value="24">
+      </input>
+      <label for="LayoutMask_wyco">Layout Mask</label>
+    </li>
+    <li>
+      <input data-text="AutoLayout" id="AutoLayout_rvuk" name="TypeAttributes" type="radio" value="0">
+      </input>
+      <label for="AutoLayout_rvuk">Auto Layout</label>
+    </li>
+    <li>
+      <input data-text="SequentialLayout" id="SequentialLayout_litq" name="TypeAttributes" type="radio" value="8">
+      </input>
+      <label for="SequentialLayout_litq">Sequential Layout</label>
+    </li>
+    <li>
+      <input data-text="ExplicitLayout" id="ExplicitLayout_yslx" name="TypeAttributes" type="radio" value="16">
+      </input>
+      <label for="ExplicitLayout_yslx">Explicit Layout</label>
+    </li>
+    <li>
+      <input data-text="ClassSemanticsMask" id="ClassSemanticsMask_diuc" name="TypeAttributes" type="radio" value="32">
+      </input>
+      <label for="ClassSemanticsMask_diuc">Class Semantics Mask</label>
+    </li>
+    <li>
+      <input data-text="Class" id="Class_aeys" name="TypeAttributes" type="radio" value="0">
+      </input>
+      <label for="Class_aeys">Class</label>
+    </li>
+    <li>
+      <input data-text="Interface" id="Interface_uwhy" name="TypeAttributes" type="radio" value="32">
+      </input>
+      <label for="Interface_uwhy">Interface</label>
+    </li>
+    <li>
+      <input data-text="Abstract" id="Abstract_qwip" name="TypeAttributes" type="radio" value="128">
+      </input>
+      <label for="Abstract_qwip">Abstract</label>
+    </li>
+    <li>
+      <input data-text="Sealed" id="Sealed_maxi" name="TypeAttributes" type="radio" value="256">
+      </input>
+      <label for="Sealed_maxi">Sealed</label>
+    </li>
+    <li>
+      <input data-text="SpecialName" id="SpecialName_icle" name="TypeAttributes" type="radio" value="1024">
+      </input>
+      <label for="SpecialName_icle">Special Name</label>
+    </li>
+    <li>
+      <input data-text="Import" id="Import_umqa" name="TypeAttributes" type="radio" value="4096">
+      </input>
+      <label for="Import_umqa">Import</label>
+    </li>
+    <li>
+      <input data-text="Serializable" id="Serializable_ljww" name="TypeAttributes" type="radio" value="8192">
+      </input>
+      <label for="Serializable_ljww">Serializable</label>
+    </li>
+    <li>
+      <input data-text="WindowsRuntime" id="WindowsRuntime_nqin" name="TypeAttributes" type="radio" value="16384">
+      </input>
+      <label for="WindowsRuntime_nqin">Windows Runtime</label>
+    </li>
+    <li>
+      <input data-text="StringFormatMask" id="StringFormatMask_ekir" name="TypeAttributes" type="radio" value="196608">
+      </input>
+      <label for="StringFormatMask_ekir">String Format Mask</label>
+    </li>
+    <li>
+      <input data-text="AnsiClass" id="AnsiClass_ajtu" name="TypeAttributes" type="radio" value="0">
+      </input>
+      <label for="AnsiClass_ajtu">Ansi Class</label>
+    </li>
+    <li>
+      <input data-text="UnicodeClass" id="UnicodeClass_nvto" name="TypeAttributes" type="radio" value="65536">
+      </input>
+      <label for="UnicodeClass_nvto">Unicode Class</label>
+    </li>
+    <li>
+      <input data-text="AutoClass" id="AutoClass_ydey" name="TypeAttributes" type="radio" value="131072">
+      </input>
+      <label for="AutoClass_ydey">Auto Class</label>
+    </li>
+    <li>
+      <input data-text="CustomFormatClass" id="CustomFormatClass_ucpb" name="TypeAttributes" type="radio" value="196608">
+      </input>
+      <label for="CustomFormatClass_ucpb">Custom Format Class</label>
+    </li>
+    <li>
+      <input data-text="CustomFormatMask" id="CustomFormatMask_vphm" name="TypeAttributes" type="radio" value="12582912">
+      </input>
+      <label for="CustomFormatMask_vphm">Custom Format Mask</label>
+    </li>
+    <li>
+      <input data-text="BeforeFieldInit" id="BeforeFieldInit_myhk" name="TypeAttributes" type="radio" value="1048576">
+      </input>
+      <label for="BeforeFieldInit_myhk">Before Field Init</label>
+    </li>
+    <li>
+      <input data-text="ReservedMask" id="ReservedMask_ykka" name="TypeAttributes" type="radio" value="264192">
+      </input>
+      <label for="ReservedMask_ykka">Reserved Mask</label>
+    </li>
+    <li>
+      <input data-text="RTSpecialName" id="RTSpecialName_ntlc" name="TypeAttributes" type="radio" value="2048">
+      </input>
+      <label for="RTSpecialName_ntlc">R T Special Name</label>
+    </li>
+    <li>
+      <input data-text="HasSecurity" id="HasSecurity_qfiy" name="TypeAttributes" type="radio" value="262144">
+      </input>
+      <label for="HasSecurity_qfiy">Has Security</label>
+    </li>
+  </ul>
+  <label class="label" for="TestDefinitionDao_IsVisible">Is Visible</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsVisible" itemprop="IsVisible" name="IsVisible" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsNotPublic">Is Not Public</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsNotPublic" itemprop="IsNotPublic" name="IsNotPublic" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsPublic">Is Public</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsPublic" itemprop="IsPublic" name="IsPublic" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsNestedPublic">Is Nested Public</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsNestedPublic" itemprop="IsNestedPublic" name="IsNestedPublic" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsNestedPrivate">Is Nested Private</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsNestedPrivate" itemprop="IsNestedPrivate" name="IsNestedPrivate" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsNestedFamily">Is Nested Family</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsNestedFamily" itemprop="IsNestedFamily" name="IsNestedFamily" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsNestedAssembly">Is Nested Assembly</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsNestedAssembly" itemprop="IsNestedAssembly" name="IsNestedAssembly" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsNestedFamANDAssem">Is Nested Fam A N D Assem</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsNestedFamANDAssem" itemprop="IsNestedFamANDAssem" name="IsNestedFamANDAssem" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsNestedFamORAssem">Is Nested Fam O R Assem</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsNestedFamORAssem" itemprop="IsNestedFamORAssem" name="IsNestedFamORAssem" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsAutoLayout">Is Auto Layout</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsAutoLayout" itemprop="IsAutoLayout" name="IsAutoLayout" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsLayoutSequential">Is Layout Sequential</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsLayoutSequential" itemprop="IsLayoutSequential" name="IsLayoutSequential" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsExplicitLayout">Is Explicit Layout</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsExplicitLayout" itemprop="IsExplicitLayout" name="IsExplicitLayout" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsClass">Is Class</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsClass" itemprop="IsClass" name="IsClass" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsInterface">Is Interface</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsInterface" itemprop="IsInterface" name="IsInterface" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsValueType">Is Value Type</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsValueType" itemprop="IsValueType" name="IsValueType" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsAbstract">Is Abstract</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsAbstract" itemprop="IsAbstract" name="IsAbstract" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsSealed">Is Sealed</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsSealed" itemprop="IsSealed" name="IsSealed" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsSpecialName">Is Special Name</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsSpecialName" itemprop="IsSpecialName" name="IsSpecialName" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsImport">Is Import</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsImport" itemprop="IsImport" name="IsImport" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsSerializable">Is Serializable</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsSerializable" itemprop="IsSerializable" name="IsSerializable" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsAnsiClass">Is Ansi Class</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsAnsiClass" itemprop="IsAnsiClass" name="IsAnsiClass" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsUnicodeClass">Is Unicode Class</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsUnicodeClass" itemprop="IsUnicodeClass" name="IsUnicodeClass" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsAutoClass">Is Auto Class</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsAutoClass" itemprop="IsAutoClass" name="IsAutoClass" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsArray">Is Array</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsArray" itemprop="IsArray" name="IsArray" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsByRef">Is By Ref</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsByRef" itemprop="IsByRef" name="IsByRef" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsPointer">Is Pointer</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsPointer" itemprop="IsPointer" name="IsPointer" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsPrimitive">Is Primitive</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsPrimitive" itemprop="IsPrimitive" name="IsPrimitive" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsCOMObject">Is C O M Object</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsCOMObject" itemprop="IsCOMObject" name="IsCOMObject" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_HasElementType">Has Element Type</label>
+  <input data-type="boolean" id="TestDefinitionDao_HasElementType" itemprop="HasElementType" name="HasElementType" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsContextful">Is Contextful</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsContextful" itemprop="IsContextful" name="IsContextful" type="checkbox" />
+  <br />
+  <label class="label" for="TestDefinitionDao_IsMarshalByRef">Is Marshal By Ref</label>
+  <input data-type="boolean" id="TestDefinitionDao_IsMarshalByRef" itemprop="IsMarshalByRef" name="IsMarshalByRef" type="checkbox" />
+  <br />
+</fieldset>

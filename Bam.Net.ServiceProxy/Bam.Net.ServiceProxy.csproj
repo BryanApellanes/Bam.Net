@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8987D8C8-033B-4993-99F0-8DD5A4D6DD0D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Bam.Net.ServiceProxy</RootNamespace>
+    <AssemblyName>Bam.Net.ServiceProxy</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Bam.Net.ServiceProxy.xml</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>bin\Release\Bam.Net.ServiceProxy.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.7.4137.9688, Culture=neutral, PublicKeyToken=a4292a325f69b123, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\BouncyCastle.1.7.0\lib\Net40-Client\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="EcmaScript.NET, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EcmaScript.Net.1.0.1.0\lib\net20\EcmaScript.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.0.0\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Yahoo.Yui.Compressor, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\YUICompressor.NET.2.3.0.0\lib\NET20\Yahoo.Yui.Compressor.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DefaultRoleResolver.cs" />
+    <Compile Include="DefaultUserResolver.cs" />
+    <Compile Include="DefaultWebUserResolver.cs" />
+    <Compile Include="GeneratedServiceProxyInfo.cs" />
+    <Compile Include="IRoleResolver.cs" />
+    <Compile Include="MethodGenerationInfo.cs" />
+    <Compile Include="RequestResponse.cs" />
+    <Compile Include="RoleResolvers.cs" />
+    <Compile Include="Secure\ApiKeyRequiredAttribute.cs" />
+    <Compile Include="Secure\ApiKeyInfo.cs" />
+    <Compile Include="Secure\ApiKeyNotFoundException.cs" />
+    <Compile Include="Secure\ApiKeyProvider.cs" />
+    <Compile Include="ApiParameters.cs" />
+    <Compile Include="Secure\ApiKeyManager.cs" />
+    <Compile Include="Secure\ApiKeyResolver.cs" />
+    <Compile Include="Secure\IApiKeyProvider.cs" />
+    <Compile Include="Secure\DefaultConfigurationApiKeyProvider.cs" />
+    <Compile Include="Secure\LocalApiKeyProvider.cs" />
+    <Compile Include="Secure\Partials\ApiKey.cs" />
+    <Compile Include="Secure\Partials\Application.cs" />
+    <Compile Include="Secure\Partials\ConfigSetting.cs" />
+    <Compile Include="Secure\Partials\Configuration.cs" />
+    <Compile Include="Secure\Partials\SecureSession.cs" />
+    <Compile Include="Secure\SecureChannelMessage.cs" />
+    <Compile Include="Secure\SecureChannelConfig.cs" />
+    <Compile Include="Secure\SecureExecutionRequest.cs" />
+    <Compile Include="Secure\SecureServiceProxyClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Secure\ApplicationCreateResult.cs" />
+    <Compile Include="Secure\ApplicationCreateStatus.cs" />
+    <Compile Include="Secure\SecureChannel.cs" />
+    <Compile Include="Secure\ClientSessionInfo.cs" />
+    <Compile Include="BaseController.cs" />
+    <Compile Include="HttpContextWrapper.cs" />
+    <Compile Include="CSharpProxyResult.cs" />
+    <Compile Include="Echo.cs" />
+    <Compile Include="IHttpContext.cs" />
+    <Compile Include="IRequest.cs" />
+    <Compile Include="IRequiresHttpContext.cs" />
+    <Compile Include="IResponse.cs" />
+    <Compile Include="RequestWrapper.cs" />
+    <Compile Include="ResponseWrapper.cs" />
+    <Compile Include="RolesController.cs" />
+    <Compile Include="Secure\RemoteApiKeyProvider.cs" />
+    <Compile Include="Secure\RemoteApiKeyProviderBehavior.cs" />
+    <Compile Include="Secure\SecureServiceProxy_Generated\ApiKey.cs" />
+    <Compile Include="Secure\SecureServiceProxy_Generated\ApiKeyCollection.cs" />
+    <Compile Include="Secure\SecureServiceProxy_Generated\ApiKeyColumns.cs" />
+    <Compile Include="Secure\SecureServiceProxy_Generated\Application.cs" />
+    <Compile Include="Secure\SecureServiceProxy_Generated\ApplicationCollection.cs" />
+    <Compile Include="Secure\SecureServiceProxy_Generated\ApplicationColumns.cs" />
+    <Compile Include="Secure\SecureServiceProxy_Generated\ConfigSetting.cs" />
+    <Compile Include="Secure\SecureServiceProxy_Generated\ConfigSettingCollection.cs" />
+    <Compile Include="Secure\SecureServiceProxy_Generated\ConfigSettingColumns.cs" />
+    <Compile Include="Secure\SecureServiceProxy_Generated\Configuration.cs" />
+    <Compile Include="Secure\SecureServiceProxy_Generated\ConfigurationCollection.cs" />
+    <Compile Include="Secure\SecureServiceProxy_Generated\ConfigurationColumns.cs" />
+    <Compile Include="Secure\SecureServiceProxy_Generated\Qi\ApiKey.cs" />
+    <Compile Include="Secure\SecureServiceProxy_Generated\Qi\Application.cs" />
+    <Compile Include="Secure\SecureServiceProxy_Generated\Qi\ConfigSetting.cs" />
+    <Compile Include="Secure\SecureServiceProxy_Generated\Qi\Configuration.cs" />
+    <Compile Include="Secure\SecureServiceProxy_Generated\Qi\SecureSession.cs" />
+    <Compile Include="Secure\SecureServiceProxy_Generated\SecureServiceProxyContext.cs" />
+    <Compile Include="Secure\SecureServiceProxy_Generated\SecureSession.cs" />
+    <Compile Include="Secure\SecureServiceProxy_Generated\SecureSessionCollection.cs" />
+    <Compile Include="Secure\SecureServiceProxy_Generated\SecureSessionColumns.cs" />
+    <Compile Include="Secure\ServiceProxyInvocationFailedException.cs" />
+    <Compile Include="Secure\SetSessionKeyRequest.cs" />
+    <Compile Include="Secure\ApiValidation.cs" />
+    <Compile Include="Secure\StaticApiKeyProvider.cs" />
+    <Compile Include="Secure\TokenValidationStatus.cs" />
+    <Compile Include="Secure\ValidationToken.cs" />
+    <Compile Include="Secure\ValidationTokenNotFoundException.cs" />
+    <Compile Include="ServiceGenerationInfo.cs" />
+    <Compile Include="ServiceProxyClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ServiceProxyEventArgs.cs" />
+    <Compile Include="ServiceProxyInfo.cs" />
+    <Compile Include="ServiceProxyParameters.cs" />
+    <Compile Include="ServiceProxyVerbs.cs" />
+    <Compile Include="ServiceProxyWebViewPage.cs" />
+    <Compile Include="Js\PlaceHolder.cs" />
+    <Compile Include="Js\ResourceScripts.cs" />
+    <Compile Include="ServiceProxyController.cs" />
+    <Compile Include="ServiceProxyHelper.cs" />
+    <Compile Include="JsProxyResult.cs" />
+    <Compile Include="ExecutionResultDelegate.cs" />
+    <Compile Include="CsvResult.cs" />
+    <Compile Include="JsonpResult.cs" />
+    <Compile Include="ServiceProxySystem.cs" />
+    <Compile Include="ExecutionRequest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestObject.cs" />
+    <Compile Include="UnableToResolveUserException.cs" />
+    <Compile Include="UrlHelperExtensions.cs" />
+    <Compile Include="ServiceProxyClient[T].cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="IUserResolver.cs" />
+    <Compile Include="UserResolvers.cs" />
+    <Compile Include="ValidationResult.cs" />
+    <Compile Include="XmlResult.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bam.Net.Data.SQLite\Bam.Net.Data.SQLite.csproj">
+      <Project>{42339dbf-9389-42f8-9d28-4c523caa7b01}</Project>
+      <Name>Bam.Net.Data.SQLite</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data\Bam.Net.Data.csproj">
+      <Project>{3b52b739-58fd-4b49-b815-6b317e701520}</Project>
+      <Name>Bam.Net.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Encryption\Bam.Net.Encryption.csproj">
+      <Project>{f27dc9a6-e432-4d20-bcef-d10b0c2a657d}</Project>
+      <Name>Bam.Net.Encryption</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Incubation\Bam.Net.Incubation.csproj">
+      <Project>{AA186331-A0D0-4F77-BEA2-E7B7650D3FF5}</Project>
+      <Name>Bam.Net.Incubation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net\Bam.Net.csproj">
+      <Project>{8794C09D-D72C-420C-812F-BFDA251B64C9}</Project>
+      <Name>Bam.Net</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Secure\SecureServiceProxy.db.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

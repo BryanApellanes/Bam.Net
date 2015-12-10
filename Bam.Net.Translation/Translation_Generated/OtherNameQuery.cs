@@ -1,0 +1,25 @@
+/*
+	Copyright © Bryan Apellanes 2015  
+*/
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Data;
+using System.Data.Common;
+using Bam.Net.Data;
+
+namespace Bam.Net.Translation
+{
+    public class OtherNameQuery: Query<OtherNameColumns, OtherName>
+    { 
+		public OtherNameQuery(){}
+		public OtherNameQuery(WhereDelegate<OtherNameColumns> where, OrderBy<OtherNameColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
+		public OtherNameQuery(Func<OtherNameColumns, QueryFilter<OtherNameColumns>> where, OrderBy<OtherNameColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
+		public OtherNameQuery(Delegate where, Database db = null) : base(where, db) { }
+
+		public OtherNameCollection Execute()
+		{
+			return new OtherNameCollection(this, true);
+		}
+    }
+}

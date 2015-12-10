@@ -1,0 +1,34 @@
+.pointer {
+    cursor: pointer;
+    cursor: hand;
+}
+
+.hand {
+    cursor: pointer;
+    cursor: hand;
+}
+
+#toolBar {
+    opacity: 1;
+    position: fixed;
+    top: 50px;
+    width: 100%;
+    z-index: 999;
+}
+
+#stickerizableContainer {
+    margin-top: 55px;
+}
+
+#stickerizeDate {
+    border: none;
+    padding-left: 25px;
+}
+
+.editSubSections {
+    padding-left: 50px;
+}
+
+.editStickerizables {
+    padding-left: 75px;
+}

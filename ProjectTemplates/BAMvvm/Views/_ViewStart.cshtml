@@ -1,0 +1,10 @@
+﻿@{
+    string layout = Request.QueryString["layout"];
+    if (string.IsNullOrEmpty(layout)) {
+        layout = ViewContext.ViewBag.Layout;
+    }
+    if(string.IsNullOrEmpty(layout)){
+        layout = "_BasicLayout";
+    }
+    Layout = string.Format("~/Views/Shared/{0}.cshtml", layout);
+}

@@ -1,0 +1,149 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Bryan.Apellanes.FileExt</name>
+    </assembly>
+    <members>
+        <member name="T:Bryan.Apellanes.FileExt.Js.FileExt">
+            <summary>
+            Place holder for resource Js file.
+            </summary>
+        </member>
+        <member name="M:Bryan.Apellanes.FileExt.Js.ResourceScripts.LoadScripts(System.Type)">
+            <summary>
+            Loads all resource scripts in the namespace path of the specified type.
+            </summary>
+            <param name="type"></param>
+        </member>
+        <member name="T:Bryan.Apellanes.FileExt.ExcludeAttribute">
+            <summary>
+            Use to exclude a method from being proxied.
+            </summary>
+        </member>
+        <member name="M:Bryan.Apellanes.FileExt.FileExtController.RegisterFileExtRequestDelegate(System.String,Bryan.Apellanes.FileExt.FileExtRequestDelegate,System.Boolean)">
+            <summary>
+            Register the specified handler to handle the specified file extension.
+            </summary>
+            <param name="extension"></param>
+            <param name="handler"></param>
+            <param name="reset"></param>
+        </member>
+        <member name="M:Bryan.Apellanes.FileExt.FileExtController.Register(System.Reflection.Assembly)">
+            <summary>
+            Register all the types found in the specified assembly to 
+            handle FileExt requests.
+            </summary>
+            <param name="assembly"></param>
+        </member>
+        <member name="M:Bryan.Apellanes.FileExt.FileExtController.RegisterRoutes">
+            <summary>
+            Maps the FileExt routes in the default Mvc RouteTable.
+            This should be called from Global before setting the default
+            action route.
+            </summary>
+        </member>
+        <member name="M:Bryan.Apellanes.FileExt.FileExtController.RegisterRoutes(System.Web.Routing.RouteCollection)">
+            <summary>
+            Maps the Poc routes in the specified RouteCollection.
+            This should be called from Global before setting the default
+            action route.
+            </summary>
+        </member>
+        <member name="M:Bryan.Apellanes.FileExt.FileExtController.ParseFileExtRequest(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            The action that is executed for all FileExt requests.  This method
+            returns an ActionResult based on the specified file extension.
+            </summary>
+            <param name="className"></param>
+            <param name="methodName"></param>
+            <param name="ext"></param>
+            <param name="jsonParams"></param>
+            <param name="callBack"></param>
+            <param name="view"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Bryan.Apellanes.FileExt.FileExtHelper">
+            <summary>
+            An empty extension entry point to extend FileExtWebViewPage
+            functionality
+            </summary>
+        </member>
+        <member name="T:Bryan.Apellanes.FileExt.ProxyAttribute">
+            <summary>
+            Used to specify the name of the client proxy instance.
+            </summary>
+        </member>
+        <member name="M:Bryan.Apellanes.FileExt.FileExtSystem.Initialize">
+            <summary>
+            Initialize the underlying FileExtSystem.
+            </summary>
+        </member>
+        <member name="M:Bryan.Apellanes.FileExt.FileExtSystem.Register(System.Type)">
+            <summary>
+            Register the specified type as a FileExt responder.
+            </summary>
+            <param name="type"></param>
+        </member>
+        <member name="M:Bryan.Apellanes.FileExt.FileExtSystem.Register``1">
+            <summary>
+            Register the specified type as a FileExt responder.
+            </summary>
+            <param name="type"></param>
+        </member>
+        <member name="M:Bryan.Apellanes.FileExt.FileExtSystem.Register``1(``0)">
+            <summary>
+            Register the instance of T.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="instance"></param>
+        </member>
+        <member name="M:Bryan.Apellanes.FileExt.FileExtSystem.RegisterFileExtRequestDelegate(System.String,Bryan.Apellanes.FileExt.FileExtRequestDelegate,System.Boolean)">
+            <summary>
+            Register the specified handler to handle the specified file extension.
+            </summary>
+            <param name="extension"></param>
+            <param name="handler"></param>
+            <param name="reset"></param>
+        </member>
+        <member name="P:Bryan.Apellanes.FileExt.FileExtSystem.Incubator">
+            <summary>
+            Gets or sets the default Incubator instance used by the FileExt(ension) system.
+            </summary>
+        </member>
+        <member name="M:Bryan.Apellanes.FileExt.UrlHelperExtensions.Script(System.Web.Mvc.UrlHelper,System.String,System.Boolean)">
+            <summary>
+            Create a script tag
+            </summary>
+            <param name="helper">The helper being extended</param>
+            <param name="scriptName">The value to be used by the src attribute of the script tag</param>
+            <param name="addMinIfDebugDisabled">If true .min will be inserted before the .js extension only
+            if debugging is disabled</param>
+            <returns></returns>
+        </member>
+        <member name="M:Bryan.Apellanes.FileExt.UrlHelperExtensions.Proxy(System.Web.Mvc.UrlHelper,System.String,System.Boolean)">
+            <summary>
+            Register client side FileExt proxies for the specified className
+            </summary>
+            <param name="helper"></param>
+            <param name="className"></param>
+            <param name="min"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bryan.Apellanes.FileExt.UrlHelperExtensions.Proxies(System.Web.Mvc.UrlHelper,System.Boolean)">
+            <summary>
+            Register all FileExt proxies
+            </summary>
+            <param name="helper"></param>
+            <param name="min"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bryan.Apellanes.FileExt.UrlHelperExtensions.FileExt(System.Web.Mvc.UrlHelper)">
+            <summary>
+            Adds a reference to the FileExt.js script.  And registers all
+            proxies on the page.
+            </summary>
+            <param name="helper"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

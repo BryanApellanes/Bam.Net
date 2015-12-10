@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Batman</title>
+    <link rel="stylesheet" href="css/style.css" type="text/css" />
+    <link rel="stylesheet" href="css/jquery-ui.css" type="text/css" />
+    <script src="/scripts/jquery.js" type="text/javascript">
+    </script>
+    <script src="/scripts/jquery-ui.js" type="text/javascript">
+    </script>
+    <script src="/scripts/underscore.js" type="text/javascript">
+    </script>
+    <script src="/scripts/dust.js" type="text/javascript">
+    </script>
+    <script src="/scripts/schema.js" type="text/javascript">
+    </script>
+    <script src="/scripts/qi.js" type="text/javascript">
+    </script>
+    <script src="/scripts/bam.js" type="text/javascript">
+    </script>
+    <script src="/scripts/dataset.js" type="text/javascript">
+    </script>
+    <script src="/scripts/dao.js" type="text/javascript">
+    </script>
+    <script src="/scripts/eazel.js" type="text/javascript">
+    </script>
+    <script src="/scripts/proxies" type="text/javascript">
+    </script>
+    <script src="/scripts/ctors" type="text/javascript">
+    </script>
+    <script src="/scripts/templates" type="text/javascript">
+    </script>
+  </head>
+  <body>
+    <div class="header">
+      <div>
+        <a href="index.html" id="logo">
+          <img src="images/logo.gif" alt="logo" />
+        </a>
+        <div class="navigation">
+          <ul>
+            <li>
+              <a href="about.html">About us</a>
+            </li>
+            <li>
+              <a href="account.html">My Account</a>
+            </li>
+            <li>
+              <a href="login.html">Login</a>
+            </li>
+          </ul>
+        </div>
+        <form action="" class="search">
+          <input type="text" value="search" onblur="this.value=!this.value?'search':this.value;" onfocus="this.select()" onclick="this.value='';" />
+          <input type="submit" id="submit" value="" />
+        </form>
+      </div>
+      <div id="navigation">
+        <ul>
+          <li>
+            <a href="index.html">Home</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="body">
+      <div class="sidebar" style="float: right; margin: 0 0 10px;">
+        <div>
+          <h2>
+            <a href="#Section1">Section 1</a>
+          </h2>
+          <ul>
+            <li>
+              <ul>
+                <li>
+                  <a href="#Subsection1">Subsection 1</a>
+                </li>
+                <li>
+                  <a href="#Subsection2">Subsection 2</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h2>
+            <a href="#Section2">Section 2</a>
+          </h2>
+          <ul>
+            <li>
+              <ul>
+                <li>
+                  <a href="#NextSubsection1">Next Subsection 1</a>
+                </li>
+                <li>
+                  <a href="#AndSoON">And so on</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="content" style="height: auto; min-height: 1200px;">
+        <div class="main">
+          <hr />
+          <h2>
+            <a name="Section1">Section 1</a>
+          </h2>
+          <a name="Subsection1">
+            <h3>Subsection 1</h3>
+          </a>
+          <p>Replace with your content.</p>
+          <a name="Subsection2">
+            <h3>Subsection 2</h3>
+          </a>
+          <p>Replace with your content.</p>
+        </div>
+        <div class="main">
+          <hr />
+          <h2>
+            <a name="Section2">Section 2</a>
+          </h2>
+          <a name="NextSubsection1">
+            <h3>Next Subsection 1</h3>
+          </a>
+          <p>Replace with your content.</p>
+          <a name="AndSoON">
+            <h3>And so on</h3>
+          </a>
+          <p>Replace with your content.</p>
+        </div>
+      </div>
+      <div class="article">
+      </div>
+    </div>
+    <div class="footer">
+      <p>© 2012 Batman. All Rights Reserved.</p>
+    </div>
+  </body>
+</html>

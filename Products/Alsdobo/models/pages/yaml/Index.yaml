@@ -1,0 +1,70 @@
+%YAML 1.2
+---
+!Bam.core.PageModel
+Title: Alsdobo
+LayoutTemplate: layout_sidebarright
+Content: null
+Pages: 
+  - SubLinks: null
+    Href: index.html
+    Text: Home
+    Name: home
+Year: "2012"
+Stylesheets: 
+  - style.css
+  - jquery-ui.css
+SectionList: 
+  - SubLinks: 
+      - SubLinks: null
+        Href: "#Subsection1"
+        Text: Subsection 1
+        Name: Subsection1
+      - SubLinks: null
+        Href: "#Subsection2"
+        Text: Subsection 2
+        Name: Subsection2
+    Href: "#Section1"
+    Text: Section 1
+    Name: Section1
+  - SubLinks: 
+      - SubLinks: null
+        Href: "#NextSubsection1"
+        Text: Next Subsection 1
+        Name: NextSubsection1
+      - SubLinks: null
+        Href: "#AndSoON"
+        Text: And so on
+        Name: AndSoON
+    Href: "#Section2"
+    Text: Section 2
+    Name: Section2
+NavList: 
+  - SubLinks: null
+    Href: about.html
+    Text: About us
+    Name: aboutUs
+  - SubLinks: null
+    Href: account.html
+    Text: My Account
+    Name: myAccount
+  - SubLinks: null
+    Href: login.html
+    Text: Login
+    Name: login
+Scripts: 
+  - jquery.js
+  - jquery-ui.js
+  - underscore.js
+  - dust.js
+  - schema.js
+  - qi.js
+  - bam.js
+  - dataset.js
+  - dao.js
+  - eazel.js
+  - proxies
+  - ctors
+  - templates
+ApplicationName: Alsdobo
+Name: Index
+...

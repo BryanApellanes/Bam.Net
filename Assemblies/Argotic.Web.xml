@@ -1,0 +1,592 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Argotic.Web</name>
+    </assembly>
+    <members>
+        <member name="T:Argotic.Configuration.PrivilegedConfigurationManager">
+            <summary>
+            Provides privileged access to configuration files for web applications. This class cannot be inherited.
+            </summary>
+        </member>
+        <member name="F:Argotic.Configuration.PrivilegedConfigurationManager.configurationManagerSyndicationResourceHandlerSyncObject">
+            <summary>
+            Private member to hold object used to synchronize locks when reading syndication handler configuration information.
+            </summary>
+        </member>
+        <member name="M:Argotic.Configuration.PrivilegedConfigurationManager.GetSection(System.String)">
+            <summary>
+            Retrieves a specified configuration section for the current application's default configuration.
+            </summary>
+            <param name="sectionName">The configuration section path and name.</param>
+            <returns>The specified ConfigurationSection object, or a null reference (Nothing in Visual Basic) if the section does not exist.</returns>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="sectionName"/> is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="sectionName"/> is an empty string.</exception>
+            <exception cref="T:System.Configuration.ConfigurationErrorsException">A configuration file could not be loaded.</exception>
+        </member>
+        <member name="M:Argotic.Configuration.PrivilegedConfigurationManager.GetSyndicationHandlerSection">
+            <summary>
+            Returns the syndication handler configuration section information.
+            </summary>
+            <returns>
+                A <see cref="T:Argotic.Configuration.SyndicationResourceHandlerSection"/> object that represents the syndication handler configuration information. 
+                If no configuration section is defined for syndication handlers, returns a <b>null</b> reference.
+            </returns>
+        </member>
+        <member name="P:Argotic.Configuration.PrivilegedConfigurationManager.HandlerSyncObject">
+            <summary>
+            Gets the <see cref="T:System.Object"/> used when locking acess to the syndication handler configuration file section being managed.
+            </summary>
+            <value>The <see cref="T:System.Object"/> used when locking acess to the syndication handler configuration file section being managed.</value>
+        </member>
+        <member name="T:Argotic.Configuration.SyndicationResourceHandlerSection">
+            <summary>
+            Represents the configuration section used to declarativly configure the <see cref="T:Argotic.Web.SyndicationResourceHandler"/> class. This class cannot be inheritied.
+            </summary>
+        </member>
+        <member name="F:Argotic.Configuration.SyndicationResourceHandlerSection.configurationSectionFormatProperty">
+            <summary>
+            Private member to hold the handler syndication format configuration property for the section.
+            </summary>
+        </member>
+        <member name="F:Argotic.Configuration.SyndicationResourceHandlerSection.configurationSectionUpdatableWithinProperty">
+            <summary>
+            Private member to hold the updateable within timespan configuration property for the section.
+            </summary>
+        </member>
+        <member name="F:Argotic.Configuration.SyndicationResourceHandlerSection.configurationSectionValidForProperty">
+            <summary>
+            Private member to hold the valid for timespan configuration property for the section.
+            </summary>
+        </member>
+        <member name="F:Argotic.Configuration.SyndicationResourceHandlerSection.configurationSectionEnableCachingProperty">
+            <summary>
+            Private member to hold the enable caching configuration property for the section.
+            </summary>
+        </member>
+        <member name="F:Argotic.Configuration.SyndicationResourceHandlerSection.configurationSectionIdentifierProperty">
+            <summary>
+            Private member to hold the unique identifier configuration property for the section.
+            </summary>
+        </member>
+        <member name="F:Argotic.Configuration.SyndicationResourceHandlerSection.configurationSectionProperties">
+            <summary>
+            Private member to hold a collection of configuration properties for the section.
+            </summary>
+        </member>
+        <member name="M:Argotic.Configuration.SyndicationResourceHandlerSection.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Argotic.Configuration.SyndicationResourceHandlerSection"/> class.
+            </summary>
+        </member>
+        <member name="P:Argotic.Configuration.SyndicationResourceHandlerSection.EnableCaching">
+            <summary>
+            Gets or sets a value indicating if the syndication resource handler utilizes cache-specific HTTP headers and the output cache.
+            </summary>
+            <value><b>true</b> if handler caching is enabled, otherwise returns <b>false</b>. The default value is <b>true</b>.</value>
+        </member>
+        <member name="P:Argotic.Configuration.SyndicationResourceHandlerSection.Format">
+            <summary>
+            Gets or sets the default syndication content format processed by the syndication resource handler.
+            </summary>
+            <value>
+                A <see cref="T:Argotic.Common.SyndicationContentFormat"/> enumeration value that indcates the default syndication content format processed by the syndication resource handler. 
+                The default value is <see cref="F:Argotic.Common.SyndicationContentFormat.Rss"/>, which indicates that by default RSS feed information is retrieved for the application.
+            </value>
+        </member>
+        <member name="P:Argotic.Configuration.SyndicationResourceHandlerSection.Id">
+            <summary>
+            Gets or sets the unique identifier of the content that the syndication resource handler should generate.
+            </summary>
+            <value>
+                An object that represents the unique identifier of the syndication resource served by the syndication resource handler. 
+                The default value is <see cref="F:System.String.Empty"/>, which indicates that no unique identifier was specified.
+            </value>
+        </member>
+        <member name="P:Argotic.Configuration.SyndicationResourceHandlerSection.UpdatableWithin">
+            <summary>
+            Gets or sets the period of time after which clients may perform a background check and optional fetch of new content.
+            </summary>
+            <value>
+                A <see cref="T:System.TimeSpan"/> that indicates to the browser that if the content is modified by the server 
+                and the resource is requested by the user within the specified time span to <see cref="P:Argotic.Configuration.SyndicationResourceHandlerSection.ValidFor"/> period, 
+                the browser displays the information found in the local cache but also performs a background check 
+                and optional fetch of the new content on the server. The default value is 15 minutes.
+            </value>
+        </member>
+        <member name="P:Argotic.Configuration.SyndicationResourceHandlerSection.ValidFor">
+            <summary>
+            Gets or sets the period of time in which the handler content can be expected to not change.
+            </summary>
+            <value>
+                A <see cref="T:System.TimeSpan"/> that indicates to the browser that the content will not change for the specified time span 
+                and instructs it to retrieve the content directly from the local cache. The default value is 60 minutes.
+            </value>
+        </member>
+        <member name="P:Argotic.Configuration.SyndicationResourceHandlerSection.Properties">
+            <summary>
+            Gets the configuration properties for this section.
+            </summary>
+            <value>A <see cref="T:System.Configuration.ConfigurationPropertyCollection"/> object that represents the configuration properties for this section.</value>
+        </member>
+        <member name="T:Argotic.Web.SyndicationAutoDiscoveryHyperlink">
+            <summary>
+            A control that enables the auto-discovery of syndicated content by generating a header link that describes the syndication resource.
+            </summary>
+            <remarks>
+                <para>
+                    Auto-discovery is a technique that makes it possible for browsers and other software to automatically find a web site's syndication feeds and other resources. 
+                    Supported by Mozilla Firefox 2.0, Microsoft Internet Explorer 7.0 and other browsers, autodiscovery has become the best way to inform users that a web site 
+                    offers a syndication feed. When a browser loads a page and discovers that a feed is available, Firefox and Internet Explorer display the common feed icon in the address bar.
+                </para>
+                <para>
+                    This implementation conforms to the <i>RSS Autodiscovery</i> 1.0 guidelines as close as possible, 
+                    which can be found at <a href="http://www.rssboard.org/rss-autodiscovery">http://www.rssboard.org/rss-autodiscovery</a>.
+                </para>
+                <para>
+                    Regardless of whether the <see cref="T:Argotic.Web.SyndicationAutoDiscoveryHyperlink"/> control is placed within the <i>head</i> section 
+                    of an ASP.NET page or somewhere within the <i>body</i> of an ASP.NET page, the auto-discovery link will be written within the 
+                    <i>head</i> section of the page, as client browsers that support syndication auto-discovery expect it to be located in this HTML section.
+                </para>
+            </remarks>
+        </member>
+        <member name="M:Argotic.Web.SyndicationAutoDiscoveryHyperlink.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Argotic.Web.SyndicationAutoDiscoveryHyperlink"/> class.
+            </summary>
+        </member>
+        <member name="M:Argotic.Web.SyndicationAutoDiscoveryHyperlink.OnPreRender(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Web.UI.Control.PreRender">PreRender</see> event.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs"/> object that contains the event data.</param>
+            <remarks>
+                <para>This method notifies the server control to perform any necessary pre-rendering steps prior to saving view state and rendering content.</para>
+                <para>
+                    During this step in the ASP.NET page life-cycle, the <see cref="T:Argotic.Web.SyndicationAutoDiscoveryHyperlink"/> will attempt to add 
+                    a <i><link rel="alternate" type="{MIME Type}" title="{Text}" href="{NavigateUrl}"/></i> to the page header section if 
+                    it is available to be modified.
+                </para>
+                <para>
+                    The MIME media type of the link will be automatically selected based on the <see cref="P:Argotic.Web.SyndicationAutoDiscoveryHyperlink.Format">format</see> 
+                    unless the <see cref="P:Argotic.Web.SyndicationAutoDiscoveryHyperlink.MediaType">media type</see> has been explicitly specified.
+                </para>
+                <para>
+                    The <i>title</i> attribute will only be rendered if the control's <see cref="P:Argotic.Web.SyndicationAutoDiscoveryHyperlink.Text"/> property has been specified.
+                </para>
+            </remarks>
+        </member>
+        <member name="M:Argotic.Web.SyndicationAutoDiscoveryHyperlink.RenderControl(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Outputs server control content to a provided <see cref="T:System.Web.UI.HtmlTextWriter"/> object and stores tracing information about the control if tracing is enabled.
+            </summary>
+            <param name="writer">The <see cref="T:System.Web.UI.HtmlTextWriter"/> object that receives the control content.</param>
+            <remarks>
+                <para>
+                    The MIME media type of the link will be automatically selected based on the <see cref="P:Argotic.Web.SyndicationAutoDiscoveryHyperlink.Format">format</see> 
+                    unless the <see cref="P:Argotic.Web.SyndicationAutoDiscoveryHyperlink.MediaType">media type</see> has been explicitly specified.
+                </para>
+                <para>
+                    The <i>title</i> attribute will only be rendered if the control's <see cref="P:Argotic.Web.SyndicationAutoDiscoveryHyperlink.Text"/> property has been specified.
+                </para>
+            </remarks>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="writer"/> is a null reference (Nothing in Visual Basic).</exception>
+        </member>
+        <member name="P:Argotic.Web.SyndicationAutoDiscoveryHyperlink.Format">
+            <summary>
+            Gets or sets the <see cref="T:Argotic.Common.SyndicationContentFormat"/> that the auto-discoverable syndicated content conforms to.
+            </summary>
+            <value>The <see cref="T:Argotic.Common.SyndicationContentFormat"/> enumeration value that indicates the type of syndication format that auto-discoverable syndicated content conforms to.</value>
+        </member>
+        <member name="P:Argotic.Web.SyndicationAutoDiscoveryHyperlink.MediaType">
+            <summary>
+            Gets or sets the MIME content type of the auto-discoverable syndicated content.
+            </summary>
+            <value>
+                The <a href="http://www.iana.org/assignments/media-types/">IANA MIME media type</a> for the auto-discoverable syndicated content. 
+                The default value is an empty string.
+            </value>
+            <remarks>
+                If a MIME media type is explictily specified, its value takes precedence over 
+                the MIME type that would be generated based on the <see cref="P:Argotic.Web.SyndicationAutoDiscoveryHyperlink.Format">format</see>.
+            </remarks>
+        </member>
+        <member name="P:Argotic.Web.SyndicationAutoDiscoveryHyperlink.NavigateUrl">
+            <summary>
+            Gets or sets the <see cref="T:System.Uri">URL</see> to the auto-discoverable syndicated content.
+            </summary>
+            <value>The <see cref="T:System.Uri">URL</see> to the auto-discoverable syndicated content. The default value is a null reference (Nothing in Visual Basic).</value>
+            <remarks>
+                Use the NavigateUrl property to specify the URL of the syndicated content you wish to broadcast as discoverable.
+            </remarks>
+        </member>
+        <member name="P:Argotic.Web.SyndicationAutoDiscoveryHyperlink.Text">
+            <summary>
+            Gets or sets the display name for the auto-discoverable syndicated content.
+            </summary>
+            <value>The display name for the auto-discoverable syndicated content. The default value is an empty string.</value>
+        </member>
+        <member name="T:Argotic.Web.SyndicationResourceHandler">
+            <summary>
+            Synchronously processes HTTP Web requests for syndicated content.
+            </summary>
+            <seealso cref="T:Argotic.Web.SyndicationResourceHandlerFactory"/>
+        </member>
+        <member name="F:Argotic.Web.SyndicationResourceHandler.handlerIsReusable">
+            <summary>
+            Private member to hold a value indicating whether another request can use the handler.
+            </summary>
+        </member>
+        <member name="F:Argotic.Web.SyndicationResourceHandler.handlerFormat">
+            <summary>
+            Private member to hold the type of syndication format that this syndication resource handler processes.
+            </summary>
+        </member>
+        <member name="F:Argotic.Web.SyndicationResourceHandler.handlerContentValidFor">
+            <summary>
+            Private member to hold the period of time in which the handler content is expected to not change.
+            </summary>
+        </member>
+        <member name="F:Argotic.Web.SyndicationResourceHandler.handlerContentUpdatableWithin">
+            <summary>
+            Private member to hold the period of time after which clients may perform a background check and optional fetch of new content.
+            </summary>
+        </member>
+        <member name="F:Argotic.Web.SyndicationResourceHandler.handlerHasCachingEnabled">
+            <summary>
+            Private member to hold a value indicating if the handler utilizes the HTTP caching policy.
+            </summary>
+        </member>
+        <member name="F:Argotic.Web.SyndicationResourceHandler.handlerResourceId">
+            <summary>
+            Private member to hold the unique identifier of the syndication resource served by the handler.
+            </summary>
+        </member>
+        <member name="M:Argotic.Web.SyndicationResourceHandler.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Argotic.Web.SyndicationResourceHandler"/> class.
+            </summary>
+        </member>
+        <member name="M:Argotic.Web.SyndicationResourceHandler.ContentFormatAsMimeType(Argotic.Common.SyndicationContentFormat)">
+            <summary>
+            Returns the MIME content type for the supplied <see cref="T:Argotic.Common.SyndicationContentFormat"/>.
+            </summary>
+            <param name="format">The <see cref="T:Argotic.Common.SyndicationContentFormat"/> to get the MIME content type for.</param>
+            <returns>The MIME content type for the supplied <paramref name="format"/>, otherwise returns <b>text/xml</b>.</returns>
+        </member>
+        <member name="M:Argotic.Web.SyndicationResourceHandler.ContentFormatByMimeType(System.String)">
+            <summary>
+            Returns the <see cref="T:Argotic.Common.SyndicationContentFormat"/> enumeration value that corresponds to the specified MIME content type.
+            </summary>
+            <param name="contentType">The MIME type of the syndication format.</param>
+            <returns>A <see cref="T:Argotic.Common.SyndicationContentFormat"/> enumeration value that corresponds to the specified string, otherwise returns <b>SyndicationContentFormat.None</b>.</returns>
+            <remarks>This method disregards case of specified MIME content type.</remarks>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="contentType"/> is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="contentType"/> is an empty string.</exception>
+        </member>
+        <member name="M:Argotic.Web.SyndicationResourceHandler.GetContentDisposition(Argotic.Common.SyndicationContentFormat)">
+            <summary>
+            Returns the content disposition header value for the supplied syndication format.
+            </summary>
+            <param name="format">The <see cref="T:Argotic.Common.SyndicationContentFormat"/> enumeration value to determine the content disposition for.</param>
+            <returns>
+                The content disposition header value that is mapped to the supplied <see cref="T:Argotic.Common.SyndicationContentFormat"/>. 
+                If no content disposition is mapped to the supplied <paramref name="format"/>, returns an empty string.
+            </returns>
+        </member>
+        <member name="M:Argotic.Web.SyndicationResourceHandler.GetLastModificationDate(Argotic.Common.ISyndicationResource)">
+            <summary>
+            Returns a date-time indicating the most recent instant in time when the resource was last modified.
+            </summary>
+            <param name="resource">The <see cref="T:Argotic.Common.ISyndicationResource"/> to determine the modification date for.</param>
+            <returns>
+                A <see cref="T:System.DateTime"/> indicating the most recent instant in time when the <see cref="T:Argotic.Common.ISyndicationResource"/> was last modified. 
+                If the <see cref="T:Argotic.Common.ISyndicationResource"/> conforms to a format that does not support modification tracking, or if otherwise unable 
+                to determine the modification date, returns <see cref="F:System.DateTime.MinValue"/>.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="resource"/> is a null reference (Nothing in Visual Basic).</exception>
+        </member>
+        <member name="M:Argotic.Web.SyndicationResourceHandler.ProcessConditionalGetInformation(System.Web.HttpContext,Argotic.Common.ISyndicationResource)">
+            <summary>
+            Processes conditional GET header information for the supplied <see cref="T:Argotic.Common.ISyndicationResource"/>.
+            </summary>
+            <param name="context">
+                An <see cref="T:System.Web.HttpContext"/> object that provides references to the intrinsic server objects 
+                (for example, <b>Request</b>, <b>Response</b>, <b>Session</b>, and <b>Server</b>) used to service HTTP requests.
+            </param>
+            <param name="resource">The <see cref="T:Argotic.Common.ISyndicationResource"/> that is used when determining if conditional GET operation requirements were met.</param>
+            <remarks>
+                <para>
+                    This  method will retrieve conditional GET information from the request headers, and if present, will set the appropriate 
+                    response header information and status for the supplied <paramref name="resource"/>. If a modification date is available for  
+                    the supplied <paramref name="resource"/>, the conditional GET header information will be set so that clients may optionally 
+                    cache this infomration when making future requests.
+                </para>
+                <para>If a conditional GET operation was fulflled, no additional processing or modification of the response should be performed.</para>
+            </remarks>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="context"/> is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="resource"/> is a null reference (Nothing in Visual Basic).</exception>
+        </member>
+        <member name="M:Argotic.Web.SyndicationResourceHandler.ProcessRequest(System.Web.HttpContext)">
+            <summary>
+            Enables processing of HTTP Web requests for syndicated content.
+            </summary>
+            <param name="context">
+                An <see cref="T:System.Web.HttpContext"/> object that provides references to the intrinsic server objects 
+                (for example, <b>Request</b>, <b>Response</b>, <b>Session</b>, and <b>Server</b>) used to service HTTP requests.
+            </param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="context"/> is a null reference (Nothing in Visual Basic).</exception>
+        </member>
+        <member name="M:Argotic.Web.SyndicationResourceHandler.Initialize">
+            <summary>
+            Initializes the current instance using the application configuration settings.
+            </summary>
+            <seealso cref="T:Argotic.Configuration.SyndicationResourceHandlerSection"/>
+        </member>
+        <member name="M:Argotic.Web.SyndicationResourceHandler.ModifyCacheExpiration(System.Web.HttpContext)">
+            <summary>
+            Modifies the <see cref="T:System.Web.HttpResponse"/> caching properties on the supplied <see cref="T:System.Web.HttpContext"/>.
+            </summary>
+            <param name="context">
+                An <see cref="T:System.Web.HttpContext"/> object that provides references to the intrinsic server objects 
+                (for example, <b>Request</b>, <b>Response</b>, <b>Session</b>, and <b>Server</b>) used to service HTTP requests.
+            </param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="context"/> is a null reference (Nothing in Visual Basic).</exception>
+        </member>
+        <member name="M:Argotic.Web.SyndicationResourceHandler.WriteResource(System.Web.HttpContext,Argotic.Common.ISyndicationResource)">
+            <summary>
+            Writes the supplied <see cref="T:Argotic.Common.ISyndicationResource"/> to the specified <see cref="T:System.Web.HttpContext"/> response stream and sets the appropriate headers.
+            </summary>
+            <param name="context">
+                An <see cref="T:System.Web.HttpContext"/> object that provides references to the intrinsic server objects 
+                (for example, <b>Request</b>, <b>Response</b>, <b>Session</b>, and <b>Server</b>) used to service HTTP requests.
+            </param>
+            <param name="resource">The <see cref="T:Argotic.Common.ISyndicationResource"/> to be written to the response stream.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="context"/> is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="resource"/> is a null reference (Nothing in Visual Basic).</exception>
+        </member>
+        <member name="P:Argotic.Web.SyndicationResourceHandler.ContentUpdatableWithin">
+            <summary>
+            Gets or sets the period of time after which clients may perform a background check and optional fetch of new content.
+            </summary>
+            <value>
+                A <see cref="T:System.TimeSpan"/> that indicates to the browser that if the content is modified by the server 
+                and the resource is requested by the user within the specified time span to <see cref="P:Argotic.Web.SyndicationResourceHandler.ContentValidFor"/> period, 
+                the browser displays the information found in the local cache but also performs a background check 
+                and optional fetch of the new content on the server. The default value is 15 minutes.
+            </value>
+            <remarks>
+                <para>
+                    The initialization order of precedence is as follows:
+                    <list type="bullet">
+                        <item>
+                            <description>
+                                Application settings: If the <b>httpHandler</b> configuration section defines a <i>updatableWithin</i> attribute, 
+                                its value takes precedence.
+                            </description>
+                        </item>
+                        <item>
+                            <description>
+                                Runtime/programmatic: If content update period is not specified via application configuration, the property setter value takes precedence.
+                            </description>
+                        </item>
+                    </list>
+                </para>
+                <para>This property corresponds to the value of the <i>post-check</i> cache extension.</para>
+            </remarks>
+        </member>
+        <member name="P:Argotic.Web.SyndicationResourceHandler.ContentValidFor">
+            <summary>
+            Gets or sets the period of time in which the handler content can be expected to not change.
+            </summary>
+            <value>
+                A <see cref="T:System.TimeSpan"/> that indicates to the browser that the content will not change for the specified time span 
+                and instructs it to retrieve the content directly from the local cache. The default value is 60 minutes.
+            </value>
+            <remarks>
+                <para>
+                    The initialization order of precedence is as follows:
+                    <list type="bullet">
+                        <item>
+                            <description>
+                                Application settings: If the <b>httpHandler</b> configuration section defines a <i>validFor</i> attribute, 
+                                its value takes precedence.
+                            </description>
+                        </item>
+                        <item>
+                            <description>
+                                Runtime/programmatic: If content expiration period is not specified via application configuration, the property setter value takes precedence.
+                            </description>
+                        </item>
+                    </list>
+                </para>
+                <para>This property corresponds to the value of the <i>pre-check</i> cache extension.</para>
+            </remarks>
+        </member>
+        <member name="P:Argotic.Web.SyndicationResourceHandler.EnableCaching">
+            <summary>
+            Gets or sets a value indicating if the <see cref="T:Argotic.Web.SyndicationResourceHandler"/> utilizes cache-specific HTTP headers and the output cache.
+            </summary>
+            <value><b>true</b> if handler caching is enabled, otherwise returns <b>false</b>. The default value is <b>true</b>.</value>
+            <remarks>
+                <para>
+                    The initialization order of precedence is as follows:
+                    <list type="bullet">
+                        <item>
+                            <description>
+                                Application settings: If the <b>httpHandler</b> configuration section defines a <i>enableCaching</i> attribute, 
+                                its value takes precedence.
+                            </description>
+                        </item>
+                        <item>
+                            <description>
+                                Runtime/programmatic: If enable of caching is not specified via application configuration, the property setter value takes precedence.
+                            </description>
+                        </item>
+                    </list>
+                </para>
+            </remarks>
+        </member>
+        <member name="P:Argotic.Web.SyndicationResourceHandler.Format">
+            <summary>
+            Gets or sets the <see cref="T:Argotic.Common.SyndicationContentFormat"/> that this syndication resource handler processes.
+            </summary>
+            <value>
+                The <see cref="T:Argotic.Common.SyndicationContentFormat"/> enumeration value that indicates the type of syndication format that this syndication resource handler processes. 
+                The default value is <see cref="F:Argotic.Common.SyndicationContentFormat.None"/>, whcih indicates that no content format was specified or configured.
+            </value>
+            <remarks>
+                <para>
+                    The <see cref="P:Argotic.Web.SyndicationResourceHandler.Format"/> property determines the syndication content format that this <see cref="T:Argotic.Web.SyndicationResourceHandler"/> will attempt to retrieve. 
+                    The handler format can be specified via the query string or declaratively configured in the application configuration settings.
+                </para>
+                <para>
+                    The initialization order of precedence is as follows:
+                    <list type="bullet">
+                        <item>
+                            <description>
+                                Request query string parameter: If a <i>format</i> parameter exists, its value takes precedence.
+                            </description>
+                        </item>
+                        <item>
+                            <description>
+                                Application settings: If format was not specified via the query string, 
+                                and the <b>httpHandler</b> configuration section defines a <i>format</i> attribute, the configuration value takes precedence.
+                            </description>
+                        </item>
+                        <item>
+                            <description>
+                                Runtime/programmatic: If format was not specified via the query string or via application configuration, 
+                                the property setter value takes precedence.
+                            </description>
+                        </item>
+                    </list>
+                </para>
+            </remarks>
+        </member>
+        <member name="P:Argotic.Web.SyndicationResourceHandler.Id">
+            <summary>
+            Gets or sets the unique identifier of the content that this HTTP handler should generate.
+            </summary>
+            <value>An object that represents the unique identifier of the syndication resource served by this HTTP handler.</value>
+            <remarks>
+                <para>
+                    The initialization order of precedence is as follows:
+                    <list type="bullet">
+                        <item>
+                            <description>
+                                Request query string parameter: If an <i>id</i> parameter exists, its value takes precedence.
+                            </description>
+                        </item>
+                        <item>
+                            <description>
+                               Application settings: If resource identifier was not specified via the query string, 
+                                and the <b>httpHandler</b> configuration section defines a <i>id</i> attribute, the configuration value takes precedence.
+                            </description>
+                        </item>
+                        <item>
+                            <description>
+                                Runtime/programmatic: If content identifier was not specified via the query string or via application configuration, 
+                                the property setter value takes precedence.
+                            </description>
+                        </item>
+                    </list>
+                </para>
+            </remarks>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="value"/>is a null reference (Nothing in Visual Basic).</exception>
+        </member>
+        <member name="P:Argotic.Web.SyndicationResourceHandler.IsReusable">
+            <summary>
+            Gets a value indicating whether another request can use the <see cref="T:Argotic.Web.SyndicationResourceHandler"/> instance.
+            </summary>
+            <value><b>true</b> if the <see cref="T:Argotic.Web.SyndicationResourceHandler"/> instance is reusable; otherwise, <b>false</b>. The default value is <b>false</b>.</value>
+        </member>
+        <member name="T:Argotic.Web.SyndicationResourceHandlerFactory">
+            <summary>
+            HTTP handler factory used to create new <see cref="T:Argotic.Web.SyndicationResourceHandler"/> objects.
+            </summary>
+            <seealso cref="T:Argotic.Web.SyndicationResourceHandler"/>
+            <remarks>
+                <para>
+                    By default the syndication handler factory will return a default instance of the <see cref="T:Argotic.Web.SyndicationResourceHandler"/> class. 
+                    However, if the configured path of the handler factory uses a supported syndication format as its name (e.g. apml.axd, atom.axd, blogml.axd, opml.axd, rsd.axd, rss.axd, etc.), 
+                    the factory will automatically configure the handler to use the syndication format that matches the factory path name.
+                </para>
+            </remarks>
+        </member>
+        <member name="F:Argotic.Web.SyndicationResourceHandlerFactory.factoryHandlerLock">
+            <summary>
+            Private member to hold a value used to enable initialization mutual-exclusion locking.
+            </summary>
+        </member>
+        <member name="F:Argotic.Web.SyndicationResourceHandlerFactory.handlerPoolLimit">
+            <summary>
+            Private member to hold the maximum number of handlers that can be used in pooling by the factory.
+            </summary>
+        </member>
+        <member name="F:Argotic.Web.SyndicationResourceHandlerFactory.factoryHandlers">
+            <summary>
+            Private member to hold a collection of handlers managed by the factory.
+            </summary>
+        </member>
+        <member name="M:Argotic.Web.SyndicationResourceHandlerFactory.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Argotic.Web.SyndicationResourceHandlerFactory"/> class.
+            </summary>
+        </member>
+        <member name="M:Argotic.Web.SyndicationResourceHandlerFactory.#ctor(System.Int32)">
+            <summary>
+            Creates a new instance of the <see cref="T:Argotic.Web.SyndicationResourceHandlerFactory"/> class using the supplied pool size.
+            </summary>
+            <param name="poolSize">
+                The maximum number of resuable handlers that can be pooled by the factory. 
+                A value of 0 or less indicates an unlimted number of handlers will be pooled by the factory
+            </param>
+        </member>
+        <member name="M:Argotic.Web.SyndicationResourceHandlerFactory.GetHandler(System.Web.HttpContext,System.String,System.String,System.String)">
+            <summary>
+            Returns an instance of a class that implements the <see cref="T:System.Web.IHttpHandler"/> interface.
+            </summary>
+            <param name="context">
+                An instance of the <see cref="T:System.Web.HttpContext"/> class that provides references to 
+                intrinsic server objects (for example, <b>Request</b>, <b>Response</b>, <b>Session</b>, and <b>Server</b>) used to service HTTP requests.
+            </param>
+            <param name="requestType">The HTTP data transfer method (<b>GET</b> or <b>POST</b>) that the client uses.</param>
+            <param name="url">The <see cref="P:System.Web.HttpRequest.RawUrl">RawUrl</see> of the requested resource.</param>
+            <param name="pathTranslated">The <see cref="P:System.Web.HttpRequest.PhysicalApplicationPath">PhysicalApplicationPath</see> to the requested resource.</param>
+            <returns>A new <see cref="T:Argotic.Web.SyndicationResourceHandler"/> object that processes the request.</returns>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="context"/> is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="requestType"/> is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="requestType"/> is an empty string.</exception>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="url"/> is a null reference (Nothing in Visual Basic).</exception>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="url"/> is an empty string.</exception>
+            <exception cref="T:System.Web.HttpException">The factory was unable to create a <see cref="T:Argotic.Web.SyndicationResourceHandler"/> for the request.</exception>
+        </member>
+        <member name="M:Argotic.Web.SyndicationResourceHandlerFactory.ReleaseHandler(System.Web.IHttpHandler)">
+            <summary>
+            Enables a factory to reuse an existing HTTP handler instance.
+            </summary>
+            <param name="handler">The <see cref="T:System.Web.IHttpHandler"/> object to reuse.</param>
+        </member>
+    </members>
+</doc>

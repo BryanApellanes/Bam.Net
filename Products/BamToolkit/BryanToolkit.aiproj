@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">All</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>6cb5a673-098e-4f6f-92b7-891e744ef316</ProjectGuid>
+    <OutputType>msi</OutputType>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>BryanToolkit.aip</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <IsWindowsApplication>True</IsWindowsApplication>
+    <AssemblyName>BryanToolkit</AssemblyName>
+    <Name>BryanToolkit</Name>
+    <RootNamespace>BryanToolkit</RootNamespace>
+    <AiComPath>C:\Program Files (x86)\Caphyon\Advanced Installer 10.9.1\bin\x86\AdvancedInstaller.com</AiComPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'All' ">
+    <DebugSymbols>false</DebugSymbols>
+    <OutputPath>msi\</OutputPath>
+    <EnableUnmanagedDebugging>true</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'DefaultBuild' " />
+  <ItemGroup>
+    <Compile Include="BryanToolkit.aip">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <Target Name="Build">
+    <!--Create the output directory-->
+    <!-- <MakeDir Directories="$(OutputPath)"  Condition="!Exists('$(OutputPath)')" /> -->
+    <!-- Run the advanced installer on the .aip project - build -->
+    <!-- Path to the Advanced Installer version used to build .aip is specified in the registry HKEY_CURRENT_USER\SOFTWARE\Caphyon\Advanced Installer\Extension for VS -->
+    <Exec Command="&quot;$(AiComPath)&quot; /build &quot;%(Compile.Identity)&quot; $(AdvinstCmdLine)" />
+  </Target>
+  <Target Name="Rebuild">
+    <!--Create the output directory-->
+    <!-- MakeDir Directories="$(OutputPath)"  Condition="!Exists('$(OutputPath)')" /> -->
+    <!-- Run the advanced installer on the .aip project - rebuild -->
+    <Exec Command="&quot;$(AiComPath)&quot; /rebuild &quot;%(Compile.Identity)&quot; $(AdvinstCmdLine)" />
+  </Target>
+  <Target Name="Clean">
+  </Target>
+  <Target Name="ResolveAssemblyReferences">
+  </Target>
+</Project>

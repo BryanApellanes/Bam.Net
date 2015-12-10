@@ -1,0 +1,152 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Bryan.Apellanes.Incubation</name>
+    </assembly>
+    <members>
+        <member name="T:Bryan.Apellanes.Incubation.Incubator">
+            <summary>
+            A simple dependency injection container.
+            </summary>
+        </member>
+        <member name="M:Bryan.Apellanes.Incubation.Incubator.Construct``1">
+            <summary>
+            Constructs an instance of type T by finding a constructor
+            that can take objects of types that have already been 
+            constructed.  If the constructor parameters have not
+            been instantiated an InvalidOperationException will be 
+            thrown.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Bryan.Apellanes.Incubation.Incubator.SetProperties(System.Object)">
+            <summary>
+            Set writable properties of the specified instance to 
+            instances in the current Incubator.
+            </summary>
+            <param name="instance"></param>
+        </member>
+        <member name="M:Bryan.Apellanes.Incubation.Incubator.Construct``1(System.Object[])">
+            <summary>
+            Constructs an object of type T passing the specified ctorParams to the 
+            contructor.
+            </summary>
+            <typeparam name="T">The type of the object to instantiate.</typeparam>
+            <param name="ctorParams">The object values to pass to the constructor of type T.</param>
+            <exception cref="T:System.InvalidOperationException">If the constructor with a signature matching
+            the types of the specified ctorParams is not found.</exception>
+        </member>
+        <member name="M:Bryan.Apellanes.Incubation.Incubator.Construct(System.Type,System.Object[])">
+            <summary>
+            Constructs an object of the specified type passing the specified
+            ctorParams to the constructor.
+            </summary>
+            <param name="type"></param>
+            <param name="ctorParams"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bryan.Apellanes.Incubation.Incubator.Construct``1(System.Type[])">
+            <summary>
+            Constructs an object of type T using existing instances
+            of the specified ctorTypes.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="ctorParamTypes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bryan.Apellanes.Incubation.Incubator.Get``1">
+            <summary>
+            Gets an object of type T if it has been instantiated otherwise
+            calls Construct and returns the result.
+            </summary>
+            <typeparam name="T">The type of the object to get.</typeparam>
+            <returns>T</returns>
+        </member>
+        <member name="M:Bryan.Apellanes.Incubation.Incubator.Get``1(``0)">
+            <summary>
+            Gets an object of type T if it has been instantiated otherwise
+            sets the inner instance to the specified setToIfNull and returns
+            it.  This results in the specified setToIfNull being returned
+            for subsequent calls to this method.
+            </summary>
+            <typeparam name="T">The type of the object to get</typeparam>
+            <param name="setToIfNull">The instance to set the inner instance to if
+            it has not been previously set</param>
+            <returns>T</returns>
+        </member>
+        <member name="M:Bryan.Apellanes.Incubation.Incubator.Get``1(System.Object[])">
+            <summary>
+            Gets an object of type T if it has been instantiated otherwise
+            calls Construct and returns the result.
+            </summary>
+            <typeparam name="T">The type of the object to get.</typeparam>
+            <param name="ctorParams">Array of objects to pass to the constructor of type T</param>
+            <returns>T</returns>
+        </member>
+        <member name="M:Bryan.Apellanes.Incubation.Incubator.GetNew``1">
+            <summary>
+            Gets a new instance of interface I.
+            SetCtor must be called first
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Bryan.Apellanes.Incubation.Incubator.SetCtor``2">
+            <summary>
+            Sets the constructor to use when calling GetNew
+            </summary>
+            <typeparam name="I"></typeparam>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Bryan.Apellanes.Incubation.Incubator.Get``1(System.Type[])">
+            <summary>
+            Gets an object of type T if it has been instantiated otherwise
+            calls Construct and returns the result.
+            </summary>
+            <typeparam name="T">The type of the object get.</typeparam>
+            <param name="ctorParamTypes">Array of types used to retrieve the parameters passed to the contructor of
+            type T</param>
+            <returns>T</returns>
+        </member>
+        <member name="M:Bryan.Apellanes.Incubation.Incubator.Set``1(``0)">
+            <summary>
+            Sets the inner instance of type T to the specified
+            instance.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="instance"></param>
+        </member>
+        <member name="P:Bryan.Apellanes.Incubation.Incubator.Item(System.Type)">
+            <summary>
+            Gets the inner instance of the type specified or
+            null if it has not been set through a call to Set(), Get() or 
+            Construct().
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bryan.Apellanes.Incubation.StringExtensions.ToDelimited``1(``0[],Bryan.Apellanes.Incubation.ToDelimitedDelegate{``0})">
+            <summary>
+            Intended to delimit the specified array of T using the
+            specified ToDelimitedDelegate.  Each item will be represented
+            by the return value of the specified ToDelimitedDelegate.
+            </summary>
+            <typeparam name="T">The type of objects in the specified array</typeparam>
+            <param name="objectsToStringify">The objects</param>
+            <param name="toDelimiteder">The ToDelimitedDelegate used to represent each object</param>
+            <returns>string</returns>
+        </member>
+        <member name="M:Bryan.Apellanes.Incubation.StringExtensions.ToDelimited``1(``0[],Bryan.Apellanes.Incubation.ToDelimitedDelegate{``0},System.String)">
+            <summary>
+            Intended to delimit the specified array of T using the
+            specified ToDelimitedDelegate.  Each item will be represented
+            by the return value of the specified ToDelimitedDelegate.
+            </summary>
+            <typeparam name="T">The type of objects in the specified array</typeparam>
+            <param name="objectsToStringify">The objects</param>
+            <param name="toDelimiteder">The ToDelimitedDelegate used to represent each object</param>
+            <returns>string</returns>
+        </member>
+    </members>
+</doc>

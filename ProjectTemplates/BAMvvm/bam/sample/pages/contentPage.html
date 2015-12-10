@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>
+        Content Page
+    </title>        
+</head>
+<body>
+    <div id="pageContent">
+        <h3 id="errors" data-state="error" style="display: none;"></h3>
+        <h1>Content Page</h1>
+        <div id="info" data-state="initial">
+            <h2>Information</h2>
+        </div>
+        <div id="otherStuff" data-state="other">
+            <h2>Other</h2>
+        </div>
+        <div id="more" data-state="initial">
+            <h3>More</h3>
+        </div>
+        <div data-state="monkey">Monkeys</div>
+        <span class="btn" data-navigate-to="contentPage">Content Page</span>
+        <span class="btn" data-navigate-to="start">Start Page</span>
+        
+        <span class="btn" data-set-state="other">Other</span>
+        <span class="btn" data-set-state="">Initial</span>
+        <span class="btn" data-set-state="monkey">monkey</span>
+
+        <div class="row-fluid">
+            <div class="span6">
+                <h2>another section</h2>
+            </div>
+            <div class="span6">
+                <h2>next to another section</h2>
+            </div>            
+        </div>
+        <script src="/bam/pages/js/contentPage.js" type="text/javascript" ></script>
+        <style type="text/css">
+            [data-state]{
+                display: none;
+            }
+        </style>
+    </div>
+</body>
+</html>

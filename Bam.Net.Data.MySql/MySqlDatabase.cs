@@ -1,0 +1,75 @@
+/*
+	Copyright © Bryan Apellanes 2015  
+*/
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Bam.Net.Incubation;
+using System.Data.Common;
+using System.Data.SqlClient;
+using Bam.Net.Data;
+using MySql.Data.MySqlClient;
+
+namespace Bam.Net.Data.MySql
+{
+    public class MySqlDatabase : Database, IHasConnectionStringResolver
+    {
+        public MySqlDatabase(string serverName, string databaseName, MySqlCredentials credentials = null)
+            : this(serverName, databaseName, databaseName, credentials)
+        { }
+
+        public MySqlDatabase(string serverName, string databaseName, string connectionName, MySqlCredentials credentials = null)
+            : base()
+        {
+            this.ColumnNameProvider = (c) => c.Name;
+            this.ConnectionStringResolver = new MySqlConnectionStringResolver(serverName, databaseName, credentials);
+
+            this.ConnectionName = connectionName;
+            this.ServiceProvider = new Incubator();
+            this.ServiceProvider.Set<DbProviderFactory>(MySqlClientFactory.Instance);
+            MySqlRegistrar.Register(this);
+            Infos.Add(new DatabaseInfo(this));
+        }
+
+        public IConnectionStringResolver ConnectionStringResolver
+        {
+            get;
+            set;
+        }
+
+        string _connectionString;
+        public override string ConnectionString
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_connectionString))
+                {
+                    _connectionString = ConnectionStringResolver.Resolve(ConnectionName).ConnectionString;
+                }
+
+                return _connectionString;
+            }
+            set
+            {
+                _connectionString = value;
+            }
+        }
+
+        public override long? GetLongValue(string columnName, System.Data.DataRow row)
+        {
+            object value = row[columnName];
+            if (value is long || value is long?)
+            {
+                return (long?)value;
+            }
+            else if (value is int || value is int?)
+            {
+                int d = (int)value;
+                return Convert.ToInt64(d);
+            }
+            return null;
+        }
+    }
+}

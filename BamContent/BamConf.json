@@ -1,0 +1,27 @@
+{
+  "GenerateDao": true,
+  "ServiceSearchPattern": "*Services.dll,*Proxyables.dll",
+  "InitializeFileSystemFrom": "Resource",
+  "ZipPath": "C:\\Users\\bryan\\AppData\\Roaming\\BamDaemon\\bkg\\content.root",
+  "InitializeTemplates": true,
+  "InitializeWebBooks": true,
+  "UseCache": false,
+  "DaoSearchPattern": "*Dao.dll,Dao*.dll,*Dao*.dll",
+  "ContentRoot": "C:\\BamContent\\",
+  "DaoConfigs": [],
+  "ProxyAliases": [],
+  "LoggerPaths": [
+    "."
+  ],
+  "LoggerSearchPattern": "*Logging.dll",
+  "MainLoggerName": "ConsoleLogger",
+  "ServerEventListenerSearchPath": "c:\\BamContent\\server-listeners,c:\\BamContent\\server-listeners-temp",
+  "ServerEventListenerAssemblySearchPattern": "*ServerListeners.dll,*ServerEventListeners.dll",
+  "MaxThreads": 100,
+  "SchemaInitializers": [
+    {
+      "SchemaContext": "Bam.Net.UserAccounts.Data.UserAccountsContext, Bam.Net.UserAccounts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "RegistrarCaller": "Bam.Net.Data.SQLiteRegistrarCaller, Bam.Net.Data.SQLite, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+    }
+  ]
+}

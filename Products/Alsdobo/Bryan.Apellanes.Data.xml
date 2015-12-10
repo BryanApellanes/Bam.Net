@@ -1,0 +1,392 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Bryan.Apellanes.Data</name>
+    </assembly>
+    <members>
+        <member name="T:Bryan.Apellanes.Data.ColumnAttribute">
+            <summary>
+            Used to define a Column in a Table in Schema.
+            </summary>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.QueryResult.As``1">
+            <summary>
+            Instantiates a new instance of T and calls SetDataTable passing
+            in the DataTable from the current instance
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="T:Bryan.Apellanes.Data.ExcludeAttribute">
+            <summary>
+            Use to exclude a method from being proxied.
+            </summary>
+        </member>
+        <member name="T:Bryan.Apellanes.Data.Query`2">
+            <summary>
+            Convenience class for queries
+            </summary>
+            <typeparam name="C">The type defining column names</typeparam>
+            <typeparam name="T">The matching table type T for columns C</typeparam>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.SqlStringBuilder.TryExecute(Bryan.Apellanes.Data.Database,System.Exception@)">
+            <summary>
+            Tries to execute the script by wrapping a call to Execute
+            in a try catch; will return true if no exception occurred.
+            </summary>
+            <param name="db"></param>
+            <param name="ex"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.SqlStringBuilder.Go">
+            <summary>
+            Appends GoText to the end of the current string
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.SqlStringBuilder.Top``1(System.Int32)">
+            <summary>
+            Select Top [topCount].  Same as SelectTop
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="topCount"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.SqlStringBuilder.SelectTop``1(System.Int32)">
+            <summary>
+            Select Top [topCount].  Same as Top
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="topCount"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.SchemaWriter.WriteSchemaScript``1">
+            <summary>
+            Writes the sql script that will recreate the schema associated with the specified
+            Dao type.  
+            </summary>
+            <typeparam name="T">The type to analyse</typeparam>
+            <returns>False if the Assembly that the specified type 
+            is defined in has already been analysed, true otherwise</returns>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.SchemaWriter.DropAllTables``1">
+            <summary>
+            Write the necessary script to drop  
+            all tables associated with the specified type
+            T.  Throws a DropNotEnabledException if
+            EnableDrop is false.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.SchemaWriter.GetColumnDefinition(Bryan.Apellanes.Data.ColumnAttribute)">
+            <summary>
+            Gets the text used to declare the specified column in a 
+            create table sql statement.
+            </summary>
+            <param name="column"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Bryan.Apellanes.Data.Dao">
+            <summary>
+            Data Access Object
+            </summary>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.Dao.WriteCommit(Bryan.Apellanes.Data.SqlStringBuilder)">
+            <summary>
+            Write the update or insert statement for the current instance
+            to the specified SqlStringBuilder.
+            </summary>
+            <param name="sqlStringBuilder"></param>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.Dao.ToJsonSafe">
+            <summary>
+            Creates an in memory dynamic type representing
+            the current Dao's Columns only.
+            </summary>
+            <param name="daoObject"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.Dao.GetNewAssignValues">
+            <summary>
+            Gets an array of AssignValue instances that represent 
+            the names and values of columns with new values
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.Dao.GetOldAssignValues">
+            <summary>
+            Gets an array of AssignValue instances that represent 
+            the names and values of columns with old values (prior to any new sets)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.Dao.GetUniqueFilter">
+            <summary>
+            When implemented by a derived class returns filters that should uniquely
+            identify a single record.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.Dao.ConnectionName(System.Type)">
+            <summary>
+            Returns the connection name for the specified type or the proxied
+            name if the connection name for the specified type has been proxied
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.Dao.ProxiedConnectionName(System.Type)">
+            <summary>
+            Returns the proxied connection name for the specified
+            Type if the connection hasn't been proxied/redirected
+            then the real connection name will be returned.
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.Dao.UnproxyConnection(System.Type)">
+            <summary>
+            Stop redirecting the connection name for the specified
+            type
+            </summary>
+            <param name="type"></param>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.Dao.UnproxyConnection(System.String)">
+            <summary>
+            Stop redirecting the connection name for the specified type
+            </summary>
+            <param name="realName"></param>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.Dao.ProxyConnection(System.Type,System.String)">
+            <summary>
+            Causes calls to ConnectionName for the specified type to 
+            return the specified newConnectionName.  This method must be
+            called prior to any XXXRegistrar.Register(Type, "CxName") calls
+            for example: SqlClientRegistrar.Register(typeof(Employee), "MyConnectionName")
+            </summary>
+            <param name="type"></param>
+            <param name="newConnectionName"></param>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.Dao.ProxyConnection(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="originalConnectionName"></param>
+            <param name="newConnectionName"></param>
+        </member>
+        <member name="P:Bryan.Apellanes.Data.Dao.AutoDeleteChildren">
+            <summary>
+            If true, any references to the current
+            record will be deleted prior to deleting
+            the current record in a call to Delete()
+            </summary>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.PagedEnumerator`1.MoveNextPage">
+            <summary>
+            When implemented by a derived class should set the 
+            CurrentPage property to the next page.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Bryan.Apellanes.Data.PagedEnumerator`1.CurrentItemIndex">
+            <summary>
+            Represents the current index of the 
+            current page.
+            </summary>
+        </member>
+        <member name="P:Bryan.Apellanes.Data.PagedEnumerator`1.CurrentPageIndex">
+            <summary>
+            Represents the index of the current page.
+            </summary>
+        </member>
+        <member name="P:Bryan.Apellanes.Data.PagedEnumerator`1.Current">
+            <summary>
+            Returns the item of the current page at 
+            the current index.
+            </summary>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.DaoCollection`2.As``1">
+            <summary>
+            Instantiates a new instance of T and calls SetDataTable passing
+            in the DataTable from the current instance
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.DaoCollection`2.GetPage(System.Int32)">
+            <summary>
+            Get the 1 based page number or an empty list
+            if the specified page number is not found.
+            </summary>
+            <param name="pageNum"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.Database.ExecuteSql``1(Bryan.Apellanes.Data.SqlStringBuilder)">
+            <summary>
+            Execute the specified SqlStringBuilder using the 
+            specified generic type to determine which database
+            to use.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="builder"></param>
+        </member>
+        <member name="M:Bryan.Apellanes.Data._.EnsureSchema``1">
+            <summary>
+            Creates the tables for the specified type
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Bryan.Apellanes.Data._.EnsureSchema(System.Type)">
+            <summary>
+            Creates the tables for the specified type
+            </summary>
+            <param name="type"></param>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.DatabaseContainer.For``1">
+            <summary>
+            Gets the Database for the specified type.
+            </summary>
+            <typeparam name="D"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.DatabaseContainer.For(System.String)">
+            <summary>
+            Gets the Databse for the specified entity relationship diagram
+            name.  This directly correlates to the 
+            </summary>
+            <param name="connectionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Bryan.Apellanes.Data.DatabaseContainer.Item(System.Type)">
+            <summary>
+            Gets the database for the specified type.
+            </summary>
+            <param name="daoType"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Bryan.Apellanes.Data.DatabaseInitializers">
+            <summary>
+            Acts as a convenience container for any IDatabaseInitializer
+            implementations that should be used to resolve Database 
+            requests when using generated Dao objects.
+            </summary>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.DatabaseInitializers.TryInitialize(System.String)">
+            <summary>
+            Tries to initialize the database for the specified connectionName using
+            the registered DatabaseInitializers
+            </summary>
+            <param name="connectionName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.IConnectionStringResolver.Resolve(System.String)">
+            <summary>
+            When implemented in a derived class returns the ConnectionStringSettings 
+            for the specified connectionName
+            </summary>
+            <param name="connectionName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.DefaultInitializer.Ignore(System.Type[])">
+            <summary>
+            Causes the current DatabaseInitializer to NOT initialize the 
+            database for the connection name associated with the specified
+            types.
+            </summary>
+            <param name="types"></param>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.DefaultInitializer.Ignore(System.String[])">
+            <summary>
+            Causes the current DatabaseInitializer to NOT initialize the
+            database for the connection names specified.
+            </summary>
+            <param name="connectionNames"></param>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.DefaultInitializer.GetDatabase(System.Configuration.ConnectionStringSettings,System.Data.Common.DbProviderFactory)">
+            <summary>
+            Instantiates a database uing the specified ConnectionStringSettings and DbProviderFactory
+            </summary>
+            <param name="conn"></param>
+            <param name="factory"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.DefaultInitializer.ResolveFactoryType(System.Configuration.ConnectionStringSettings)">
+            <summary>
+            Reads the ProviderName property of the specified ConnectionStringSettings
+            and uses Type.GetType() to find the type of the DbFactory.
+            NOTE: This requires the ProviderName to be set to a string value
+            that Type.GetType() can resolve to a CLI type.
+            </summary>
+            <param name="conn"></param>
+            <returns></returns>        
+        </member>
+        <member name="P:Bryan.Apellanes.Data.DefaultInitializer.Instance">
+            <summary>
+            The DefaultInitilizer Instance
+            </summary>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.FormatPart.AddParameter(Bryan.Apellanes.Data.IParameterInfo)">
+            <summary>
+            Adds the specified IParameterInfo
+            </summary>
+            <param name="parameter"></param>
+        </member>
+        <member name="T:Bryan.Apellanes.Data.QuerySet">
+            <summary>
+            Allows
+            one to specify a sequence of sql statements
+            that result in the return of potentially
+            multiple result sets (similar to a DataSet).
+            </summary>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.QuerySet.Count``1">
+            <summary>
+            Same as SelectCount. Equivalent to (SELECT COUNT(*))
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.QuerySet.SelectCount``1">
+            <summary>
+            Same as Count. Equivalent to (SELECT COUNT(*))
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.QuerySet.SubscribeToExecute">
+            <summary>
+            This is what's responsible for setting the ID 
+            </summary>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.QuerySetResults.As``1(System.Int32)">
+            <summary>
+            Instantiates a new instance of T and calls SetDataTable passing
+            in the DataTable from the specified index
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.QuerySetResults.ToDao``1(System.Int32)">
+            <summary>
+            Returns the value of the specified index as the specified 
+            generic Dao type, only valid for inserts.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Bryan.Apellanes.Data.TableAttribute.ConnectionName">
+            <summary>
+            Logical name given to the schema that
+            the table is part of.  
+            </summary>
+        </member>
+        <member name="M:Bryan.Apellanes.Data.UrlHelperExtensions.Qi(System.Web.Mvc.UrlHelper)">
+            <summary>
+            Add a reference to the Qi.js resource script.
+            </summary>
+            <param name="helper"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

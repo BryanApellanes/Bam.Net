@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{045EAC13-C80A-4EB3-8F05-06A019C44ED2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Naizari</RootNamespace>
+    <AssemblyName>Naizari</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>naizari.pfx</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <Optimize>false</Optimize>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <Optimize>true</Optimize>
+    <DocumentationFile>bin\Release\Naizari.XML</DocumentationFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <Optimize>true</Optimize>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FirebirdSql.Data.FirebirdClient">
+      <HintPath>..\Assemblies\FirebirdSql.Data.FirebirdClient.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.configuration">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Data.OracleClient">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.SQLite, Version=1.0.84.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Assemblies\SQLite\x64\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Design">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.DirectoryServices">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Management">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ServiceProcess">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Extensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Configuration\EncryptedConfig.cs" />
+    <Compile Include="Configuration\KeyValuePair.cs" />
+    <Compile Include="Data\AddForeignKeyResult.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\CreateDaoTableResult.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\DaoColumn.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\DaoContext.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\DaoContextConnectionStringSetEventHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\DaoContextConsumer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\DaoContextProviderFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\DaoDbType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\DaoEnumTableAlreadySetException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\DaoEventArgs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\DaoEventHandlers.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\DaoForeignKeyColumn.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\DaoForeignKeyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\DaoForeignKeyList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\DaoIdColumn.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\DaoIgnore.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\DaoNullColumnValueException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\DaoObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\DaoObjectCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\DaoObjectCommitResult.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\DaoObjectInsertResult.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\DaoObjectInsertStatus.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\DaoParameter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\DaoParen.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\DaoPrimaryKeyColumn.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\DaoSearchFilter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\DaoSearchParameter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\DaoSearchToken.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\DaoStub.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\DaoTable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\DaoWhereAppenderSearchToken.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\DatabaseAgent.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\DataRelationshipDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\DbSelectParameter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\IDaoContextConsumer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\IdColumnNotDefinedException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\MSSqlAgent.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\MultipleEntriesFoundException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\OrderBy.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\Paging\CustomIndex.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\Paging\CustomIndexes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\SortOrder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\SQLiteAgent.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\SqlSelectParameter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\UnableToDetermineConnectionStringException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\UpdateResult.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\WhereAppender.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\Comparison.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\Book.cs" />
+    <Compile Include="Data\Common\AppDb.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\Common\UserDb.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\DbPropertyIgnore.cs" />
+    <Compile Include="Data\PagedEnumerator.cs" />
+    <Compile Include="ArgumentInfo.cs" />
+    <Compile Include="ArgumentInfoHash.cs" />
+    <Compile Include="BindingType.cs" />
+    <Compile Include="Encryption\Base64EncodedRijndaelKeyVectorPair.cs" />
+    <Compile Include="Encryption\RijndaelEncryptor.cs" />
+    <Compile Include="Encryption\RSAKeyPair.cs" />
+    <Compile Include="Extensions\CommandLineTestInterface.cs" />
+    <Compile Include="Extensions\DynamicTypeInfo.cs" />
+    <Compile Include="Extensions\DynamicTypeStore.cs" />
+    <Compile Include="Extensions\Mail.cs" />
+    <Compile Include="Helpers\Base64EncodedRijndaelKeyVectorPair.cs" />
+    <Compile Include="Helpers\IKeyVectorPair.cs" />
+    <Compile Include="Helpers\ThreadHelper.cs" />
+    <Compile Include="Helpers\CompileHelper.cs" />
+    <Compile Include="Helpers\DataSlots.cs" />
+    <Compile Include="JsonIgnore.cs" />
+    <Compile Include="Logging\Base\LogEventDataBase.cs" />
+    <Compile Include="Logging\BlockingLogger.cs" />
+    <Compile Include="Logging\ConsoleLogger.cs" />
+    <Compile Include="Logging\EventIdProvider.cs" />
+    <Compile Include="Logging\FieldEnums\LogEventDataFields.cs" />
+    <Compile Include="Logging\ILogger.cs" />
+    <Compile Include="Logging\Log.cs" />
+    <Compile Include="Logging\LogEntryAddedListener.cs" />
+    <Compile Include="Logging\LogEvent.cs" />
+    <Compile Include="Logging\LogEventCollection.cs" />
+    <Compile Include="Logging\LogEventData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Logging\LogEventType.cs" />
+    <Compile Include="Logging\Logger.cs" />
+    <Compile Include="Logging\LogType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Logging\MultiTargetLogger.cs" />
+    <Compile Include="Logging\NamespaceDoc.cs" />
+    <Compile Include="Logging\NullLogger.cs" />
+    <Compile Include="Logging\SearchFilters\LogEventDataSearchFilter.cs" />
+    <Compile Include="Logging\TextFileLogger.cs" />
+    <Compile Include="Logging\WindowsEventIdProvider.cs" />
+    <Compile Include="Logging\WindowsLogger.cs" />
+    <Compile Include="Logging\XmlLogger.cs" />
+    <Compile Include="ProcessOutput.cs" />
+    <Compile Include="Extensions\TestExceptionEventArgs.cs" />
+    <Compile Include="Extensions\ConsoleArgsParsed.cs" />
+    <Compile Include="Extensions\ConsoleMenu.cs" />
+    <Compile Include="Extensions\CustomAttributeExtension.cs" />
+    <Compile Include="Extensions\CustomPropertyInfo.cs" />
+    <Compile Include="Extensions\FileInfoExtension.cs" />
+    <Compile Include="Extensions\ObjectExtension.cs" />
+    <Compile Include="Extensions\StringDelegate.cs" />
+    <Compile Include="Extensions\StringToObjectDelegate.cs" />
+    <Compile Include="Extensions\ToDelimitedDelegate.cs" />
+    <Compile Include="Helpers\CultureInfoHelper.cs" />
+    <Compile Include="Helpers\EmailHelper.cs" />
+    <Compile Include="Helpers\HostNameHelper.cs" />
+    <Compile Include="Helpers\HttpContextHelper.cs" />
+    <Compile Include="Helpers\IISHelper.cs" />
+    <Compile Include="Helpers\JulianDate.cs" />
+    <Compile Include="Helpers\LanguageInfo.cs" />
+    <Compile Include="Helpers\RandomHelper.cs" />
+    <Compile Include="Helpers\Web\BrowserAccessInfo.cs" />
+    <Compile Include="Helpers\Web\BrowserAccessRule.cs" />
+    <Compile Include="Helpers\Web\BrowserHelper.cs" />
+    <Compile Include="Helpers\CustomException.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Helpers\ExceptionHelper.cs" />
+    <Compile Include="Helpers\SingletonHelper.cs" />
+    <Compile Include="Extensions\IInfoAttribute.cs" />
+    <Compile Include="Extensions\InvalidStringExtensionsFormatException.cs" />
+    <Compile Include="Helpers\ProviderAlreadySetException.cs" />
+    <Compile Include="Helpers\Web\ControlHelper.cs" />
+    <Compile Include="ParsedArguments.cs" />
+    <Compile Include="Configuration\CascadeConfiguration.cs" />
+    <Compile Include="Configuration\ObjectHasNullPropertiesException.cs" />
+    <Compile Include="Configuration\RegistryConfiguration.cs" />
+    <Compile Include="Configuration\DefaultConfiguration.cs" />
+    <Compile Include="Configuration\IHasRequiredProperties.cs" />
+    <Compile Include="Configuration\InvalidIHasRequiredPropertiesImplementationException.cs" />
+    <Compile Include="Configuration\RequiredPropertiesNotSetException.cs" />
+    <Compile Include="Configuration\RequiredPropertyNotFoundException.cs" />
+    <Compile Include="Configuration\SerializationUtil.cs" />
+    <Compile Include="Extensions\ArrayExtensions.cs" />
+    <Compile Include="Helpers\ByteSizeConverter.cs" />
+    <Compile Include="Extensions\CommandLineInterface.cs" />
+    <Compile Include="Extensions\ConsoleAction.cs" />
+    <Compile Include="Extensions\ConsoleInvokeableMethod.cs" />
+    <Compile Include="Extensions\DictionaryExtensions.cs" />
+    <Compile Include="Helpers\DiffReportTokenType.cs" />
+    <Compile Include="Helpers\FsUtil.cs" />
+    <Compile Include="Helpers\InsertedDiffReportToken.cs" />
+    <Compile Include="Helpers\DeletedDiffReportToken.cs" />
+    <Compile Include="Helpers\Diff.cs" />
+    <Compile Include="Extensions\ConsoleExtension.cs" />
+    <Compile Include="Helpers\Debug.cs" />
+    <Compile Include="Helpers\DiffReport.cs" />
+    <Compile Include="Helpers\DiffReportToken.cs" />
+    <Compile Include="Extensions\HttpResponseExtensions.cs" />
+    <Compile Include="Extensions\PropertyExtender.cs" />
+    <Compile Include="Extensions\SqlParser.cs" />
+    <Compile Include="Extensions\SqlSyntaxHighlightMap.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="MultiPartMessageBuilder.cs" />
+    <Compile Include="ProgressStatus.cs" />
+    <Compile Include="ProgressStatusEventArgs.cs" />
+    <Compile Include="ProgressStatusUpdatedEventHandler.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Helpers\UserUtil.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ServiceExe.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ServiceInstallHandler.cs" />
+    <Compile Include="Testing\Expect.cs" />
+    <Compile Include="Testing\ExpectFailedException.cs" />
+    <Compile Include="Testing\TestObject.cs" />
+    <Compile Include="Testing\UnitTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="naizari.pfx" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

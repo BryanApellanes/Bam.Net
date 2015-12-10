@@ -1,0 +1,11 @@
+﻿
+<div class="well affix sidebar-nav" id="{id}">
+  {#sections}
+  <ul class="nav nav-list" id="{id}">      
+      <li class="nav-header">{title}</li>
+      {#links}
+      <li><a href="{href}">{text}</a></li>
+      {/links}                   
+  </ul>
+  {/sections}
+</div>

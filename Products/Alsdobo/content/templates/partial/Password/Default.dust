@@ -1,0 +1,14 @@
+<fieldset data-type="object" itemscope="itemscope" itemtype="http://schema.org/Thing">
+  <span class="label" for="SHA1">S H A1: </span>
+  <input data-type="string" itemprop="SHA1" name="SHA1" type="text" value="{SHA1}">
+  </input>
+  <br />
+  <span class="label" for="Id">Id: </span>
+  <input data-type="int64" itemprop="Id" name="Id" type="text">
+  </input>
+  <br />
+  <span class="label" for="UserId">User Id: </span>
+  <input data-type="int64" itemprop="UserId" name="UserId" type="text">
+  </input>
+  <br />
+</fieldset>

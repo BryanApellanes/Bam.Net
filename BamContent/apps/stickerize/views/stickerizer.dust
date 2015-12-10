@@ -1,0 +1,9 @@
+﻿<div class="row-fluid" itemscope="itemscope">
+  <span class="person span12">
+	<span itemprop="Name">
+		{Name}
+	</span> 
+	<img src="{StickerizerImageSource}" />
+  </span>  
+  <span class="hide" itemprop="Id">{Id}</span>
+</div>

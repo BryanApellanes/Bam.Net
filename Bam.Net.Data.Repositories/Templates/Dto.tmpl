@@ -1,0 +1,27 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Data;
+using System.Data.Common;
+using System.Linq;
+using Bam.Net;
+using Bam.Net.Data;
+
+namespace @(Model.Namespace)
+{
+	// gnerated
+	[Serializable]
+	public class @(Model.TypeName)
+	{
+		public @(Model.TypeName)()
+		{
+		}
+
+		@foreach(string property in Model.Properties)
+		{
+			@(property)
+		}
+	}
+	// -- generated
+}																								

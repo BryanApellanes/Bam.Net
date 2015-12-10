@@ -1,0 +1,6 @@
+{
+  "SourceFilePath": "C:\\BamContent\\common\\views\\defaultPage.dust",
+  "TemplateName": "defaultPage",
+  "SourceHash": "f49ee8080955f2a7fe963f118d57b993b8582736",
+  "CompiledTemplate": "(function(){dust.register(\"defaultPage\",body_0);function body_0(chk,ctx){return chk.write(\"<!DOCTYPE html><html xmlns=\\\\\"http://www.w3.org/1999/xhtml\\\\\"><head>    <title>\").reference(ctx.get(\"title\"),ctx,\"h\").write(\"</title></head><body>    <div id=\\\\\"pageContent\\\\\">        <h2>\").reference(ctx.get(\"title\"),ctx,\"h\").write(\"</h2>            </div></body></html>\");}return body_0;})();"
+}
