@@ -1,4 +1,0 @@
-{#links}
-<li id="{id}"><a href="{href}">{text}</a></li>
-{/links}
-
