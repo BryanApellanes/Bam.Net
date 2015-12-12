@@ -1,1 +1,0 @@
-wkhtmltopdf.exe -O Landscape -s Letter <input.html> <output.pdf>

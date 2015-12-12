@@ -1,5 +1,0 @@
-<fieldset data-type="object" itemscope="itemscope" itemtype="http://schema.org/Thing">
-  <label class="label" for="SecureChannelMessage`1_Success">Success</label>
-  <input data-type="boolean" id="SecureChannelMessage`1_Success" itemprop="Success" name="Success" type="checkbox" value="" />
-  <br />
-</fieldset>
