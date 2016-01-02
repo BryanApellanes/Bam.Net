@@ -1,9 +1,0 @@
-1 - uninstall toolkit from control panel
-2 - get_build_install_test_latest: make sure it works
-  2a - set major, minor, patch version in files of same name in buildscripts\Bam
-3 - create_Brevitee.cmd
-4 - show.cmd : check version, author and owner
-  4a - set_owners_and_authors.cmd
-5 - set_major_minor_patch.cmd
-6 - pack.cmd
-7 - push.cmd

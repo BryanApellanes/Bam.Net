@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Search</title>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <form class="form-search" data-view-model="searchViewModel" itemscope="itemscope">
+                <div class="input-append">
+                    <input type="text" class="input-large search-query"
+                        onclick="$(this).select()"
+                        itemprop="stickerizerQuery"
+                        data-action="searchStickerizers"
+                        data-action-on="keyup"
+                        >
+                    <button type="submit" class="btn" data-action="searchStickerizers"><i class="icon-search"></i></button>
+                </div>
+            </form>
+            <h2>Or</h2>
+            <form class="form-search" data-view-model="searchViewModel" itemscope="itemscope">
+                <div class="input-append">
+                    <input type="text" class="input-large search-query"
+                        onclick="$(this).select()"
+                        itemprop="stickerizeeQuery"
+                        data-action="searchStickerizees"
+                        data-action-on="keyup"
+                        >
+                    <button type="submit" class="btn" data-action="searchStickerizees"><i class="icon-search"></i></button>
+                </div>
+            </form>
+        </div>
+        <hr />
+        <div id="stickerizers">
+            <div class="row-fluid" data-app-view="stickerizers" data-view-model="searchViewModel">
+
+            </div>
+        </div>
+        <div id="stickerizees">
+            <div class="row-fluid" data-app-view="stickerizees" data-view-model="searchViewModel">
+
+            </div>
+        </div>        
+    </div>
+</body>
+</html>

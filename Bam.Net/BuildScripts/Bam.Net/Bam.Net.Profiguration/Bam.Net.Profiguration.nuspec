@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Bam.Net.Profiguration</id>
+    <version>1.0.2</version>
+    <authors>Bam DotNet</authors>
+    <owners>Bam DotNet</owners>
+    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>http://bryanapellanes.github.io/Brevitee/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>
+	Legacy configuration encryption provider.  
+	New projects should consider using the Vault class in
+	Bam.Net.Encryption
+	</description>
+    <copyright>Copyright 2015</copyright>
+    <dependencies>
+      <dependency id="Bam.Net" version="1.0.1" />
+      <dependency id="DotNetZip" version="1.9.2.0" />
+    </dependencies>
+  </metadata>
+</package>

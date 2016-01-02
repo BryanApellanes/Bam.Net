@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{15E91407-00D6-4EDF-B75C-BC817A75C8AD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Bam.Net.Logging</RootNamespace>
+    <AssemblyName>Bam.Net.Logging</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>bin\Debug\Bam.Net.Logging.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>bin\Release\Bam.Net.Logging.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>bin\Debug\Bam.Net.Logging.XML</DocumentationFile>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>bin\Release\Bam.Net.Logging.XML</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.0.0\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DaoLogger.cs" />
+    <Compile Include="DaoLogger2.cs" />
+    <Compile Include="DaoLogger2_Generated\CategoryName.cs" />
+    <Compile Include="DaoLogger2_Generated\CategoryNameCollection.cs" />
+    <Compile Include="DaoLogger2_Generated\CategoryNameColumns.cs" />
+    <Compile Include="DaoLogger2_Generated\ComputerName.cs" />
+    <Compile Include="DaoLogger2_Generated\ComputerNameCollection.cs" />
+    <Compile Include="DaoLogger2_Generated\ComputerNameColumns.cs" />
+    <Compile Include="DaoLogger2_Generated\DaoLogger2Context.cs" />
+    <Compile Include="DaoLogger2_Generated\Event.cs" />
+    <Compile Include="DaoLogger2_Generated\EventCollection.cs" />
+    <Compile Include="DaoLogger2_Generated\EventColumns.cs" />
+    <Compile Include="DaoLogger2_Generated\EventParam.cs" />
+    <Compile Include="DaoLogger2_Generated\EventParamCollection.cs" />
+    <Compile Include="DaoLogger2_Generated\EventParamColumns.cs" />
+    <Compile Include="DaoLogger2_Generated\Param.cs" />
+    <Compile Include="DaoLogger2_Generated\ParamCollection.cs" />
+    <Compile Include="DaoLogger2_Generated\ParamColumns.cs" />
+    <Compile Include="DaoLogger2_Generated\Qi\CategoryName.cs" />
+    <Compile Include="DaoLogger2_Generated\Qi\ComputerName.cs" />
+    <Compile Include="DaoLogger2_Generated\Qi\Event.cs" />
+    <Compile Include="DaoLogger2_Generated\Qi\EventParam.cs" />
+    <Compile Include="DaoLogger2_Generated\Qi\Param.cs" />
+    <Compile Include="DaoLogger2_Generated\Qi\Signature.cs" />
+    <Compile Include="DaoLogger2_Generated\Qi\SourceName.cs" />
+    <Compile Include="DaoLogger2_Generated\Qi\UserName.cs" />
+    <Compile Include="DaoLogger2_Generated\Signature.cs" />
+    <Compile Include="DaoLogger2_Generated\SignatureCollection.cs" />
+    <Compile Include="DaoLogger2_Generated\SignatureColumns.cs" />
+    <Compile Include="DaoLogger2_Generated\SourceName.cs" />
+    <Compile Include="DaoLogger2_Generated\SourceNameCollection.cs" />
+    <Compile Include="DaoLogger2_Generated\SourceNameColumns.cs" />
+    <Compile Include="DaoLogger2_Generated\UserName.cs" />
+    <Compile Include="DaoLogger2_Generated\UserNameCollection.cs" />
+    <Compile Include="DaoLogger2_Generated\UserNameColumns.cs" />
+    <Compile Include="DaoLogger2LogReader.cs" />
+    <Compile Include="DaoLoggerLogReader.cs" />
+    <Compile Include="DaoLoggerLogReaderBase.cs" />
+    <Compile Include="DaoLogger_Generated\DaoLoggerContext.cs" />
+    <Compile Include="DaoLogger_Generated\LogEvent.cs" />
+    <Compile Include="DaoLogger_Generated\LogEventCollection.cs" />
+    <Compile Include="DaoLogger_Generated\LogEventColumns.cs" />
+    <Compile Include="DaoLogger_Generated\Qi\LogEvent.cs" />
+    <Compile Include="IDaoLogger.cs" />
+    <Compile Include="ILogReader.cs" />
+    <Compile Include="LogEntry.cs" />
+    <Compile Include="LogReader.cs" />
+    <Compile Include="LogReaderFactory.cs" />
+    <Compile Include="ObjectRepositoryLogger.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RepositoryLogger.cs" />
+    <Compile Include="ObjectRepositoryLoggerLogReader.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DaoLogger.db.js" />
+    <Content Include="DaoLogger2.db.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bam.Net.Data.Repositories\Bam.Net.Data.Repositories.csproj">
+      <Project>{222ef625-a115-49c7-8bdb-5879725a7d17}</Project>
+      <Name>Bam.Net.Data.Repositories</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.Schema\Bam.Net.Data.Schema.csproj">
+      <Project>{d2c2b1c0-1047-4211-92fc-37f332861161}</Project>
+      <Name>Bam.Net.Data.Schema</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data\Bam.Net.Data.csproj">
+      <Project>{3b52b739-58fd-4b49-b815-6b317e701520}</Project>
+      <Name>Bam.Net.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net\Bam.Net.csproj">
+      <Project>{8794c09d-d72c-420c-812f-bfda251b64c9}</Project>
+      <Name>Bam.Net</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,7 @@
+<ul class="nav nav-pills pull-right">  
+{#pages}
+  <li id="nav_{name}">
+    <a href="#" onclick="bam.navigateTo('{name}')">{title}</a>
+  </li>
+{/pages}
+</ul>

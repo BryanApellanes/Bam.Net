@@ -1,0 +1,880 @@
+<html>
+<head>
+    <link rel="Stylesheet" href="SmileySheet.css">
+    <title>Smiley Sheet</title>
+</head>
+
+<body>
+<table style="border-collapse: collapse; table-layout: fixed; width: 643pt;">
+<thead>
+<tr>
+    <th style="width: 88pt;"></th>
+    <th style="width: 90pt;"></th>
+    <th style="width: 15pt;"></th>
+</tr>
+</thead>
+
+<tbody>
+<tr style="height: 24.95pt;">
+    <td colspan="5" class="xl72" style="height: 24.95pt; width: 223pt;">
+        Name: {Name} Age: {Age}
+    </td>
+    <td colspan="18" class="xl84" style="width: 270pt;">
+        {CompanyName}
+    </td>
+    <td colspan="10" class="xl69" style="width: 150pt;">
+        {Month} {Year}
+    </td>
+</tr>
+<tr style="height: 24.95pt;">
+    <td colspan="5" class="xl72" style="height: 24.95pt;">
+        {AdditionalInfo}
+    </td>
+    <td colspan="18" class="xl84">
+        {RewardProgramName}
+    </td>
+    <td colspan="10" class="xl85">
+        &nbsp;
+    </td>
+</tr>
+<tr style="height: 24pt;">
+    <td colspan="3" class="xl71" style="height: 24pt; width: 193pt;">
+        {PrimaryCaption}
+    </td>
+    <td colspan="30" class="xl72">&nbsp;</td>
+</tr>
+<tr style="height: 10.5pt;">
+    <td colspan="2" class="xl70" style="height: 10.5pt; width: 178pt;">
+        {SecondaryCaption}
+    </td>
+    <td colspan="31" class="xl69">
+        Draw a <img src="JSmiley.png" height="10" width="10"/>
+        <span class="font5">
+            for {StickerizableTypes}
+        </span>
+    </td>
+</tr>
+<tr style="height: 9.95pt;">
+    <td class="xl65" style="height: 9.95pt;"></td>
+    <td class="xl65"></td>
+    <td class="xl81">1</td>
+    <td class="xl81" style="border-left: medium none;">2</td>
+    <td class="xl81" style="border-left: medium none;">3</td>
+    <td class="xl81" style="border-left: medium none;">4</td>
+    <td class="xl81" style="border-left: medium none;">5</td>
+    <td class="xl81" style="border-left: medium none;">6</td>
+    <td class="xl81" style="border-left: medium none;">7</td>
+    <td class="xl81" style="border-left: medium none;">8</td>
+    <td class="xl81" style="border-left: medium none;">9</td>
+    <td class="xl81" style="border-left: medium none;">10</td>
+    <td class="xl81" style="border-left: medium none;">11</td>
+    <td class="xl81" style="border-left: medium none;">12</td>
+    <td class="xl81" style="border-left: medium none;">13</td>
+    <td class="xl81" style="border-left: medium none;">14</td>
+    <td class="xl81" style="border-left: medium none;">15</td>
+    <td class="xl81" style="border-left: medium none;">16</td>
+    <td class="xl81" style="border-left: medium none;">17</td>
+    <td class="xl81" style="border-left: medium none;">18</td>
+    <td class="xl81" style="border-left: medium none;">19</td>
+    <td class="xl81" style="border-left: medium none;">20</td>
+    <td class="xl81" style="border-left: medium none;">21</td>
+    <td class="xl81" style="border-left: medium none;">22</td>
+    <td class="xl81" style="border-left: medium none;">23</td>
+    <td class="xl81" style="border-left: medium none;">24</td>
+    <td class="xl81" style="border-left: medium none;">25</td>
+    <td class="xl81" style="border-left: medium none;">26</td>
+    <td class="xl81" style="border-left: medium none;">27</td>
+    <td class="xl81" style="border-left: medium none;">28</td>
+    <td class="xl81" style="border-left: medium none;">29</td>
+    <td class="xl81" style="border-left: medium none;">30</td>
+    <td class="xl81" style="border-left: medium none;">31</td>
+</tr>
+<tr class="xl68" style="height: 20.1pt;">
+    <td colspan="33" class="xl75" style="height: 20.1pt;">
+        Clean my Room: Responsibility
+    </td>
+</tr>
+<tr style="height: 15.95pt;">
+    <td colspan="2" class="xl73" style="height: 15.95pt;">
+        1. Make my bed
+    </td>
+    <td class="xl82">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+</tr>
+<tr style="height: 15.95pt;">
+    <td colspan="2" class="xl74" style="height: 15.95pt;">
+        2. Put away personal belongings
+    </td>
+    <td class="xl83" style="border-top: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+</tr>
+<tr style="height: 15.95pt;">
+    <td colspan="2" class="xl74" style="height: 15.95pt;">
+        3. Vacuum room
+    </td>
+    <td class="xl83" style="border-top: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+</tr>
+<tr style="height: 15.95pt;">
+    <td colspan="2" class="xl76" style="height: 15.95pt;">
+        4.
+    </td>
+    <td class="xl83" style="border-top: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+</tr>
+<tr style="height: 15.95pt;">
+    <td colspan="2" class="xl76" style="height: 15.95pt;">
+        5.
+    </td>
+    <td class="xl83" style="border-top: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+</tr>
+<tr class="xl68" style="height: 20.1pt;">
+    <td colspan="33" class="xl79" style="border-right: 0.5pt solid black; height: 20.1pt;">
+        Personal Hygiene: Self-confidence
+    </td>
+</tr>
+<tr style="height: 15.95pt;">
+    <td colspan="2" class="xl74" style="height: 15.95pt;">
+        1. Brush my teeth
+    </td>
+    <td class="xl82">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+</tr>
+<tr style="height: 15.95pt;">
+    <td colspan="2" class="xl74" style="height: 15.95pt;">
+        2. Take my bath or shower
+    </td>
+    <td class="xl83" style="border-top: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+</tr>
+<tr style="height: 15.95pt;">
+    <td colspan="2" class="xl74" style="height: 15.95pt;">
+        3. Put all dirty clothes in the laundry hamper
+    </td>
+    <td class="xl83" style="border-top: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+</tr>
+<tr style="height: 15.95pt;">
+    <td colspan="2" class="xl76" style="height: 15.95pt;">
+        4.
+    </td>
+    <td class="xl83" style="border-top: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+</tr>
+<tr style="height: 15.95pt;">
+    <td colspan="2" class="xl76" style="height: 15.95pt;">
+        5.
+    </td>
+    <td class="xl83" style="border-top: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+</tr>
+<tr class="xl68" style="height: 20.1pt;">
+    <td colspan="33" class="xl79" style="border-right: 0.5pt solid black; height: 20.1pt;">
+        Study/Practice: Character Development
+    </td>
+</tr>
+<tr style="height: 15.95pt;">
+    <td colspan="2" class="xl74" style="height: 15.95pt;">
+        1. Complete Homework
+    </td>
+    <td class="xl82">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+</tr>
+<tr style="height: 15.95pt;">
+    <td colspan="2" class="xl74" style="height: 15.95pt;">
+        2. Get an "A" on a test
+    </td>
+    <td class="xl83" style="border-top: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+</tr>
+<tr style="height: 15.95pt;">
+    <td colspan="2" class="xl74" style="height: 15.95pt;">
+        3. Practice Tae Kwon Do 10 minutes or more
+    </td>
+    <td class="xl83" style="border-top: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+</tr>
+<tr style="height: 15.95pt;">
+    <td colspan="2" class="xl74" style="height: 15.95pt;">
+        4. Read a book for 1/4 hour or more
+    </td>
+    <td class="xl83" style="border-top: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+</tr>
+<tr style="height: 15.95pt;">
+    <td colspan="2" class="xl76" style="height: 15.95pt;">
+        5.
+    </td>
+    <td class="xl83" style="border-top: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+</tr>
+<tr class="xl68" style="height: 20.1pt;">
+    <td colspan="33" class="xl79" style="border-right: 0.5pt solid black; height: 20.1pt;">
+        Wonderful Family: Respect and Love
+    </td>
+</tr>
+<tr style="height: 15pt;">
+    <td colspan="2" class="xl74" style="height: 15pt;">
+        1. Help clean up after meals and snacks
+    </td>
+    <td class="xl82">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+    <td class="xl66" style="border-left: medium none;">&nbsp;</td>
+</tr>
+<tr style="height: 15pt;">
+    <td colspan="2" class="xl74" style="height: 15pt;">
+        2. Take out the trash
+    </td>
+    <td class="xl83" style="border-top: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+</tr>
+<tr style="height: 15pt;">
+    <td colspan="2" class="xl74" style="height: 15pt;">
+        3. Listen and respect parents
+    </td>
+    <td class="xl83" style="border-top: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+</tr>
+<tr style="height: 15pt;">
+    <td colspan="2" class="xl74" style="height: 15pt;" >
+        4. Share and cooperate with siblings
+    </td>
+    <td class="xl83" style="border-top: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+</tr>
+<tr style="height: 15pt;">
+    <td colspan="2" class="xl74" style="height: 15pt;">
+        5. Tell my parents I love them
+    </td>
+    <td class="xl83" style="border-top: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+</tr>
+<tr style="height: 15pt;">
+    <td colspan="2" class="xl74" style="height: 15pt;">
+        Daily Score
+    </td>
+    <td class="xl83" style="border-top: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+    <td class="xl67" style="border-top: medium none; border-left: medium none;">&nbsp;</td>
+</tr>
+<tr style="height: 15pt;">
+    <td colspan="2" class="xl77" style="height: 15pt;">
+        (Blank lines can be filled by individual family jobs)
+    </td>
+    <td colspan="31" class="xl78">
+        ONCE YOU HAVE EARNED AN AWARD PLEASE NOTIFY YOUR INSTRUCTOR SO YOU CAN BE ADDED TO THE
+        AWARD RECIPIENTS AT THE NEXT BELT PRESENTATION
+    </td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!--
+  {
+    id: "string",
+    sections: [
+      {id: "string", title: "string", content: "string"}
+    ]
+  }
+-->   
+<div class="accordion" id="{id}">
+  {#sections parentid=id}
+  <div class="accordion-group">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#{parentid}" href="#{id}Body">
+        {title}
+      </a>
+    </div>
+    <div id="{id}Body" class="accordion-body collapse">
+      <div class="accordion-inner" id="{id}Content">
+        {content}
+      </div>
+    </div>
+  </div>
+  {/sections}
+</div>

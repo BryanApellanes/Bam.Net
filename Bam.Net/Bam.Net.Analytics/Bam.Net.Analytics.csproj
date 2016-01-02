@@ -1,0 +1,547 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{67CCA5A4-9B97-444C-9F4B-F464B2E04D6B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Bam.Net.Analytics</RootNamespace>
+    <AssemblyName>Bam.Net.Analytics</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Bam.Net.Analytics.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Bam.Net.Analytics.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>bin\Debug\Bam.Net.Analytics.XML</DocumentationFile>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>bin\Release\Bam.Net.Analytics.XML</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CsQuery">
+      <HintPath>..\Assemblies\CsQuery.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.0.0\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Analytics_Generated\AnalyticsContext.cs" />
+    <Compile Include="Analytics_Generated\Category.cs" />
+    <Compile Include="Analytics_Generated\CategoryCollection.cs" />
+    <Compile Include="Analytics_Generated\CategoryColumns.cs" />
+    <Compile Include="Analytics_Generated\CategoryPagedQuery.cs" />
+    <Compile Include="Analytics_Generated\CategoryQuery.cs" />
+    <Compile Include="Analytics_Generated\ClickCounter.cs" />
+    <Compile Include="Analytics_Generated\ClickCounterCollection.cs" />
+    <Compile Include="Analytics_Generated\ClickCounterColumns.cs" />
+    <Compile Include="Analytics_Generated\ClickCounterPagedQuery.cs" />
+    <Compile Include="Analytics_Generated\ClickCounterQuery.cs" />
+    <Compile Include="Analytics_Generated\Counter.cs" />
+    <Compile Include="Analytics_Generated\CounterCollection.cs" />
+    <Compile Include="Analytics_Generated\CounterColumns.cs" />
+    <Compile Include="Analytics_Generated\CounterPagedQuery.cs" />
+    <Compile Include="Analytics_Generated\CounterQuery.cs" />
+    <Compile Include="Analytics_Generated\Crawler.cs" />
+    <Compile Include="Analytics_Generated\CrawlerCollection.cs" />
+    <Compile Include="Analytics_Generated\CrawlerColumns.cs" />
+    <Compile Include="Analytics_Generated\CrawlerPagedQuery.cs" />
+    <Compile Include="Analytics_Generated\CrawlerQuery.cs" />
+    <Compile Include="Analytics_Generated\CustomTimer.cs" />
+    <Compile Include="Analytics_Generated\CustomTimerCollection.cs" />
+    <Compile Include="Analytics_Generated\CustomTimerColumns.cs" />
+    <Compile Include="Analytics_Generated\CustomTimerPagedQuery.cs" />
+    <Compile Include="Analytics_Generated\CustomTimerQuery.cs" />
+    <Compile Include="Analytics_Generated\Domain.cs" />
+    <Compile Include="Analytics_Generated\DomainCollection.cs" />
+    <Compile Include="Analytics_Generated\DomainColumns.cs" />
+    <Compile Include="Analytics_Generated\DomainPagedQuery.cs" />
+    <Compile Include="Analytics_Generated\DomainQuery.cs" />
+    <Compile Include="Analytics_Generated\Feature.cs" />
+    <Compile Include="Analytics_Generated\FeatureCollection.cs" />
+    <Compile Include="Analytics_Generated\FeatureColumns.cs" />
+    <Compile Include="Analytics_Generated\FeaturePagedQuery.cs" />
+    <Compile Include="Analytics_Generated\FeatureQuery.cs" />
+    <Compile Include="Analytics_Generated\Fragment.cs" />
+    <Compile Include="Analytics_Generated\FragmentCollection.cs" />
+    <Compile Include="Analytics_Generated\FragmentColumns.cs" />
+    <Compile Include="Analytics_Generated\FragmentPagedQuery.cs" />
+    <Compile Include="Analytics_Generated\FragmentQuery.cs" />
+    <Compile Include="Analytics_Generated\Image.cs" />
+    <Compile Include="Analytics_Generated\ImageCollection.cs" />
+    <Compile Include="Analytics_Generated\ImageColumns.cs" />
+    <Compile Include="Analytics_Generated\ImagePagedQuery.cs" />
+    <Compile Include="Analytics_Generated\ImageQuery.cs" />
+    <Compile Include="Analytics_Generated\ImageTag.cs" />
+    <Compile Include="Analytics_Generated\ImageTagCollection.cs" />
+    <Compile Include="Analytics_Generated\ImageTagColumns.cs" />
+    <Compile Include="Analytics_Generated\ImageTagPagedQuery.cs" />
+    <Compile Include="Analytics_Generated\ImageTagQuery.cs" />
+    <Compile Include="Analytics_Generated\LoadCounter.cs" />
+    <Compile Include="Analytics_Generated\LoadCounterCollection.cs" />
+    <Compile Include="Analytics_Generated\LoadCounterColumns.cs" />
+    <Compile Include="Analytics_Generated\LoadCounterPagedQuery.cs" />
+    <Compile Include="Analytics_Generated\LoadCounterQuery.cs" />
+    <Compile Include="Analytics_Generated\LoadTimer.cs" />
+    <Compile Include="Analytics_Generated\LoadTimerCollection.cs" />
+    <Compile Include="Analytics_Generated\LoadTimerColumns.cs" />
+    <Compile Include="Analytics_Generated\LoadTimerPagedQuery.cs" />
+    <Compile Include="Analytics_Generated\LoadTimerQuery.cs" />
+    <Compile Include="Analytics_Generated\LoginCounter.cs" />
+    <Compile Include="Analytics_Generated\LoginCounterCollection.cs" />
+    <Compile Include="Analytics_Generated\LoginCounterColumns.cs" />
+    <Compile Include="Analytics_Generated\LoginCounterPagedQuery.cs" />
+    <Compile Include="Analytics_Generated\LoginCounterQuery.cs" />
+    <Compile Include="Analytics_Generated\MethodCounter.cs" />
+    <Compile Include="Analytics_Generated\MethodCounterCollection.cs" />
+    <Compile Include="Analytics_Generated\MethodCounterColumns.cs" />
+    <Compile Include="Analytics_Generated\MethodCounterPagedQuery.cs" />
+    <Compile Include="Analytics_Generated\MethodCounterQuery.cs" />
+    <Compile Include="Analytics_Generated\MethodTimer.cs" />
+    <Compile Include="Analytics_Generated\MethodTimerCollection.cs" />
+    <Compile Include="Analytics_Generated\MethodTimerColumns.cs" />
+    <Compile Include="Analytics_Generated\MethodTimerPagedQuery.cs" />
+    <Compile Include="Analytics_Generated\MethodTimerQuery.cs" />
+    <Compile Include="Analytics_Generated\Path.cs" />
+    <Compile Include="Analytics_Generated\PathCollection.cs" />
+    <Compile Include="Analytics_Generated\PathColumns.cs" />
+    <Compile Include="Analytics_Generated\PathPagedQuery.cs" />
+    <Compile Include="Analytics_Generated\PathQuery.cs" />
+    <Compile Include="Analytics_Generated\Port.cs" />
+    <Compile Include="Analytics_Generated\PortCollection.cs" />
+    <Compile Include="Analytics_Generated\PortColumns.cs" />
+    <Compile Include="Analytics_Generated\PortPagedQuery.cs" />
+    <Compile Include="Analytics_Generated\PortQuery.cs" />
+    <Compile Include="Analytics_Generated\Protocol.cs" />
+    <Compile Include="Analytics_Generated\ProtocolCollection.cs" />
+    <Compile Include="Analytics_Generated\ProtocolColumns.cs" />
+    <Compile Include="Analytics_Generated\ProtocolPagedQuery.cs" />
+    <Compile Include="Analytics_Generated\ProtocolQuery.cs" />
+    <Compile Include="Analytics_Generated\Qi\Category.cs" />
+    <Compile Include="Analytics_Generated\Qi\ClickCounter.cs" />
+    <Compile Include="Analytics_Generated\Qi\Counter.cs" />
+    <Compile Include="Analytics_Generated\Qi\Crawler.cs" />
+    <Compile Include="Analytics_Generated\Qi\CustomTimer.cs" />
+    <Compile Include="Analytics_Generated\Qi\Domain.cs" />
+    <Compile Include="Analytics_Generated\Qi\Feature.cs" />
+    <Compile Include="Analytics_Generated\Qi\Fragment.cs" />
+    <Compile Include="Analytics_Generated\Qi\Image.cs" />
+    <Compile Include="Analytics_Generated\Qi\ImageTag.cs" />
+    <Compile Include="Analytics_Generated\Qi\LoadCounter.cs" />
+    <Compile Include="Analytics_Generated\Qi\LoadTimer.cs" />
+    <Compile Include="Analytics_Generated\Qi\LoginCounter.cs" />
+    <Compile Include="Analytics_Generated\Qi\MethodCounter.cs" />
+    <Compile Include="Analytics_Generated\Qi\MethodTimer.cs" />
+    <Compile Include="Analytics_Generated\Qi\Path.cs" />
+    <Compile Include="Analytics_Generated\Qi\Port.cs" />
+    <Compile Include="Analytics_Generated\Qi\Protocol.cs" />
+    <Compile Include="Analytics_Generated\Qi\QueryString.cs" />
+    <Compile Include="Analytics_Generated\Qi\Tag.cs" />
+    <Compile Include="Analytics_Generated\Qi\Timer.cs" />
+    <Compile Include="Analytics_Generated\Qi\Url.cs" />
+    <Compile Include="Analytics_Generated\Qi\UrlTag.cs" />
+    <Compile Include="Analytics_Generated\Qi\UserIdentifier.cs" />
+    <Compile Include="Analytics_Generated\QueryString.cs" />
+    <Compile Include="Analytics_Generated\QueryStringCollection.cs" />
+    <Compile Include="Analytics_Generated\QueryStringColumns.cs" />
+    <Compile Include="Analytics_Generated\QueryStringPagedQuery.cs" />
+    <Compile Include="Analytics_Generated\QueryStringQuery.cs" />
+    <Compile Include="Analytics_Generated\Tag.cs" />
+    <Compile Include="Analytics_Generated\TagCollection.cs" />
+    <Compile Include="Analytics_Generated\TagColumns.cs" />
+    <Compile Include="Analytics_Generated\TagPagedQuery.cs" />
+    <Compile Include="Analytics_Generated\TagQuery.cs" />
+    <Compile Include="Analytics_Generated\Timer.cs" />
+    <Compile Include="Analytics_Generated\TimerCollection.cs" />
+    <Compile Include="Analytics_Generated\TimerColumns.cs" />
+    <Compile Include="Analytics_Generated\TimerPagedQuery.cs" />
+    <Compile Include="Analytics_Generated\TimerQuery.cs" />
+    <Compile Include="Analytics_Generated\Url.cs" />
+    <Compile Include="Analytics_Generated\UrlCollection.cs" />
+    <Compile Include="Analytics_Generated\UrlColumns.cs" />
+    <Compile Include="Analytics_Generated\UrlPagedQuery.cs" />
+    <Compile Include="Analytics_Generated\UrlQuery.cs" />
+    <Compile Include="Analytics_Generated\UrlTag.cs" />
+    <Compile Include="Analytics_Generated\UrlTagCollection.cs" />
+    <Compile Include="Analytics_Generated\UrlTagColumns.cs" />
+    <Compile Include="Analytics_Generated\UrlTagPagedQuery.cs" />
+    <Compile Include="Analytics_Generated\UrlTagQuery.cs" />
+    <Compile Include="Analytics_Generated\UserIdentifier.cs" />
+    <Compile Include="Analytics_Generated\UserIdentifierCollection.cs" />
+    <Compile Include="Analytics_Generated\UserIdentifierColumns.cs" />
+    <Compile Include="ActionChangedDelegate.cs" />
+    <Compile Include="ActionChangedEventArgs.cs" />
+    <Compile Include="Analytics_Generated\UserIdentifierPagedQuery.cs" />
+    <Compile Include="Analytics_Generated\UserIdentifierQuery.cs" />
+    <Compile Include="Classifier.cs" />
+    <Compile Include="DeletedDiffReportToken.cs" />
+    <Compile Include="Diff.cs" />
+    <Compile Include="DiffReport.cs" />
+    <Compile Include="DiffReportFormatter.cs" />
+    <Compile Include="DiffReportToken.cs" />
+    <Compile Include="FisherClassifier.cs" />
+    <Compile Include="HtmlTableDiffReportFormatter.cs" />
+    <Compile Include="InsertedDiffReportToken.cs" />
+    <Compile Include="NaiveBayesClassifier.cs" />
+    <Compile Include="BaseCrawler.cs" />
+    <Compile Include="CrawlerState.cs" />
+    <Compile Include="ICrawler.cs" />
+    <Compile Include="ImageCrawler.cs" />
+    <Compile Include="UrlCrawler.cs" />
+    <Compile Include="Timed.cs" />
+    <Compile Include="Partials\Category.cs" />
+    <Compile Include="Partials\ClickCounter.cs" />
+    <Compile Include="Partials\Counter.cs" />
+    <Compile Include="Partials\Crawler.cs" />
+    <Compile Include="Partials\CustomTimer.cs" />
+    <Compile Include="Partials\Domain.cs" />
+    <Compile Include="Partials\Feature.cs" />
+    <Compile Include="Partials\Fragment.cs" />
+    <Compile Include="Partials\Image.cs" />
+    <Compile Include="Partials\ImageCrawler.cs" />
+    <Compile Include="Partials\ImageTag.cs" />
+    <Compile Include="Partials\LoadCounter.cs" />
+    <Compile Include="Partials\LoadTimer.cs" />
+    <Compile Include="Partials\LoginCounter.cs" />
+    <Compile Include="Partials\MethodCounter.cs" />
+    <Compile Include="Partials\MethodTimer.cs" />
+    <Compile Include="Partials\Path.cs" />
+    <Compile Include="Partials\Port.cs" />
+    <Compile Include="Partials\Protocol.cs" />
+    <Compile Include="Partials\QueryString.cs" />
+    <Compile Include="Partials\Tag.cs" />
+    <Compile Include="Partials\Timer.cs" />
+    <Compile Include="Partials\Url.cs" />
+    <Compile Include="Partials\UrlTag.cs" />
+    <Compile Include="Partials\UserIdentifier.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Analytics.db.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="words\american-abbreviations.70" />
+    <None Include="words\american-proper-names.80" />
+    <None Include="words\american-proper-names.95" />
+    <None Include="words\american-upper.35" />
+    <None Include="words\american-upper.50" />
+    <None Include="words\american-upper.60" />
+    <None Include="words\american-upper.70" />
+    <None Include="words\american-upper.80" />
+    <None Include="words\american-upper.95" />
+    <None Include="words\american-words.10" />
+    <None Include="words\american-words.20" />
+    <None Include="words\american-words.35" />
+    <None Include="words\american-words.40" />
+    <None Include="words\american-words.50" />
+    <None Include="words\american-words.55" />
+    <None Include="words\american-words.60" />
+    <None Include="words\american-words.70" />
+    <None Include="words\american-words.80" />
+    <None Include="words\american-words.95" />
+    <None Include="words\british-abbreviations.70" />
+    <None Include="words\british-abbreviations.80" />
+    <None Include="words\british-abbreviations.95" />
+    <None Include="words\british-proper-names.80" />
+    <None Include="words\british-proper-names.95" />
+    <None Include="words\british-upper.50" />
+    <None Include="words\british-upper.60" />
+    <None Include="words\british-upper.70" />
+    <None Include="words\british-upper.80" />
+    <None Include="words\british-upper.95" />
+    <None Include="words\british-words.10" />
+    <None Include="words\british-words.20" />
+    <None Include="words\british-words.35" />
+    <None Include="words\british-words.40" />
+    <None Include="words\british-words.50" />
+    <None Include="words\british-words.55" />
+    <None Include="words\british-words.60" />
+    <None Include="words\british-words.70" />
+    <None Include="words\british-words.80" />
+    <None Include="words\british-words.95" />
+    <None Include="words\british_variant_0-contractions.50" />
+    <None Include="words\british_variant_0-proper-names.35" />
+    <None Include="words\british_variant_0-upper.35" />
+    <None Include="words\british_variant_0-upper.40" />
+    <None Include="words\british_variant_0-upper.50" />
+    <None Include="words\british_variant_0-upper.60" />
+    <None Include="words\british_variant_0-upper.70" />
+    <None Include="words\british_variant_0-upper.80" />
+    <None Include="words\british_variant_0-upper.95" />
+    <None Include="words\british_variant_0-words.10" />
+    <None Include="words\british_variant_0-words.20" />
+    <None Include="words\british_variant_0-words.35" />
+    <None Include="words\british_variant_0-words.40" />
+    <None Include="words\british_variant_0-words.50" />
+    <None Include="words\british_variant_0-words.55" />
+    <None Include="words\british_variant_0-words.60" />
+    <None Include="words\british_variant_0-words.70" />
+    <None Include="words\british_variant_0-words.80" />
+    <None Include="words\british_variant_0-words.95" />
+    <None Include="words\british_variant_1-abbreviations.70" />
+    <None Include="words\british_variant_1-contractions.50" />
+    <None Include="words\british_variant_1-contractions.60" />
+    <None Include="words\british_variant_1-contractions.70" />
+    <None Include="words\british_variant_1-upper.35" />
+    <None Include="words\british_variant_1-upper.40" />
+    <None Include="words\british_variant_1-upper.50" />
+    <None Include="words\british_variant_1-upper.60" />
+    <None Include="words\british_variant_1-upper.70" />
+    <None Include="words\british_variant_1-upper.80" />
+    <None Include="words\british_variant_1-upper.95" />
+    <None Include="words\british_variant_1-words.10" />
+    <None Include="words\british_variant_1-words.20" />
+    <None Include="words\british_variant_1-words.35" />
+    <None Include="words\british_variant_1-words.40" />
+    <None Include="words\british_variant_1-words.50" />
+    <None Include="words\british_variant_1-words.55" />
+    <None Include="words\british_variant_1-words.60" />
+    <None Include="words\british_variant_1-words.70" />
+    <None Include="words\british_variant_1-words.80" />
+    <None Include="words\british_variant_1-words.95" />
+    <None Include="words\british_z-abbreviations.70" />
+    <None Include="words\british_z-abbreviations.80" />
+    <None Include="words\british_z-abbreviations.95" />
+    <None Include="words\british_z-proper-names.80" />
+    <None Include="words\british_z-proper-names.95" />
+    <None Include="words\british_z-upper.50" />
+    <None Include="words\british_z-upper.60" />
+    <None Include="words\british_z-upper.70" />
+    <None Include="words\british_z-upper.80" />
+    <None Include="words\british_z-upper.95" />
+    <None Include="words\british_z-words.10" />
+    <None Include="words\british_z-words.20" />
+    <None Include="words\british_z-words.35" />
+    <None Include="words\british_z-words.40" />
+    <None Include="words\british_z-words.50" />
+    <None Include="words\british_z-words.55" />
+    <None Include="words\british_z-words.60" />
+    <None Include="words\british_z-words.70" />
+    <None Include="words\british_z-words.80" />
+    <None Include="words\british_z-words.95" />
+    <None Include="words\canadian-abbreviations.70" />
+    <None Include="words\canadian-abbreviations.80" />
+    <None Include="words\canadian-abbreviations.95" />
+    <None Include="words\canadian-proper-names.80" />
+    <None Include="words\canadian-proper-names.95" />
+    <None Include="words\canadian-upper.50" />
+    <None Include="words\canadian-upper.60" />
+    <None Include="words\canadian-upper.70" />
+    <None Include="words\canadian-upper.80" />
+    <None Include="words\canadian-upper.95" />
+    <None Include="words\canadian-words.10" />
+    <None Include="words\canadian-words.20" />
+    <None Include="words\canadian-words.35" />
+    <None Include="words\canadian-words.40" />
+    <None Include="words\canadian-words.50" />
+    <None Include="words\canadian-words.55" />
+    <None Include="words\canadian-words.60" />
+    <None Include="words\canadian-words.70" />
+    <None Include="words\canadian-words.80" />
+    <None Include="words\canadian-words.95" />
+    <None Include="words\canadian_variant_0-contractions.50" />
+    <None Include="words\canadian_variant_0-proper-names.35" />
+    <None Include="words\canadian_variant_0-upper.35" />
+    <None Include="words\canadian_variant_0-upper.40" />
+    <None Include="words\canadian_variant_0-upper.50" />
+    <None Include="words\canadian_variant_0-upper.60" />
+    <None Include="words\canadian_variant_0-upper.70" />
+    <None Include="words\canadian_variant_0-upper.80" />
+    <None Include="words\canadian_variant_0-upper.95" />
+    <None Include="words\canadian_variant_0-words.10" />
+    <None Include="words\canadian_variant_0-words.20" />
+    <None Include="words\canadian_variant_0-words.35" />
+    <None Include="words\canadian_variant_0-words.40" />
+    <None Include="words\canadian_variant_0-words.50" />
+    <None Include="words\canadian_variant_0-words.55" />
+    <None Include="words\canadian_variant_0-words.60" />
+    <None Include="words\canadian_variant_0-words.70" />
+    <None Include="words\canadian_variant_0-words.80" />
+    <None Include="words\canadian_variant_0-words.95" />
+    <None Include="words\canadian_variant_1-abbreviations.70" />
+    <None Include="words\canadian_variant_1-contractions.50" />
+    <None Include="words\canadian_variant_1-contractions.60" />
+    <None Include="words\canadian_variant_1-contractions.70" />
+    <None Include="words\canadian_variant_1-upper.35" />
+    <None Include="words\canadian_variant_1-upper.40" />
+    <None Include="words\canadian_variant_1-upper.50" />
+    <None Include="words\canadian_variant_1-upper.60" />
+    <None Include="words\canadian_variant_1-upper.70" />
+    <None Include="words\canadian_variant_1-upper.80" />
+    <None Include="words\canadian_variant_1-upper.95" />
+    <None Include="words\canadian_variant_1-words.10" />
+    <None Include="words\canadian_variant_1-words.20" />
+    <None Include="words\canadian_variant_1-words.35" />
+    <None Include="words\canadian_variant_1-words.40" />
+    <None Include="words\canadian_variant_1-words.50" />
+    <None Include="words\canadian_variant_1-words.55" />
+    <None Include="words\canadian_variant_1-words.60" />
+    <None Include="words\canadian_variant_1-words.70" />
+    <None Include="words\canadian_variant_1-words.80" />
+    <None Include="words\canadian_variant_1-words.95" />
+    <None Include="words\english-abbreviations.10" />
+    <None Include="words\english-abbreviations.20" />
+    <None Include="words\english-abbreviations.35" />
+    <None Include="words\english-abbreviations.40" />
+    <None Include="words\english-abbreviations.50" />
+    <None Include="words\english-abbreviations.55" />
+    <None Include="words\english-abbreviations.60" />
+    <None Include="words\english-abbreviations.70" />
+    <None Include="words\english-abbreviations.80" />
+    <None Include="words\english-abbreviations.95" />
+    <None Include="words\english-contractions.10" />
+    <None Include="words\english-contractions.35" />
+    <None Include="words\english-contractions.40" />
+    <None Include="words\english-contractions.50" />
+    <None Include="words\english-contractions.60" />
+    <None Include="words\english-contractions.70" />
+    <None Include="words\english-contractions.80" />
+    <None Include="words\english-contractions.95" />
+    <None Include="words\english-proper-names.35" />
+    <None Include="words\english-proper-names.40" />
+    <None Include="words\english-proper-names.50" />
+    <None Include="words\english-proper-names.60" />
+    <None Include="words\english-proper-names.70" />
+    <None Include="words\english-proper-names.80" />
+    <None Include="words\english-proper-names.95" />
+    <None Include="words\english-upper.10" />
+    <None Include="words\english-upper.35" />
+    <None Include="words\english-upper.40" />
+    <None Include="words\english-upper.50" />
+    <None Include="words\english-upper.60" />
+    <None Include="words\english-upper.70" />
+    <None Include="words\english-upper.80" />
+    <None Include="words\english-upper.95" />
+    <None Include="words\english-words.10" />
+    <None Include="words\english-words.20" />
+    <None Include="words\english-words.35" />
+    <None Include="words\english-words.40" />
+    <None Include="words\english-words.50" />
+    <None Include="words\english-words.55" />
+    <None Include="words\english-words.60" />
+    <None Include="words\english-words.70" />
+    <None Include="words\english-words.80" />
+    <None Include="words\english-words.95" />
+    <None Include="words\special-hacker.50" />
+    <None Include="words\special-roman-numerals.35" />
+    <None Include="words\variant_0-contractions.50" />
+    <None Include="words\variant_0-proper-names.35" />
+    <None Include="words\variant_0-upper.35" />
+    <None Include="words\variant_0-upper.40" />
+    <None Include="words\variant_0-upper.50" />
+    <None Include="words\variant_0-upper.60" />
+    <None Include="words\variant_0-upper.70" />
+    <None Include="words\variant_0-upper.80" />
+    <None Include="words\variant_0-upper.95" />
+    <None Include="words\variant_0-words.10" />
+    <None Include="words\variant_0-words.20" />
+    <None Include="words\variant_0-words.35" />
+    <None Include="words\variant_0-words.40" />
+    <None Include="words\variant_0-words.50" />
+    <None Include="words\variant_0-words.55" />
+    <None Include="words\variant_0-words.60" />
+    <None Include="words\variant_0-words.70" />
+    <None Include="words\variant_0-words.80" />
+    <None Include="words\variant_0-words.95" />
+    <None Include="words\variant_1-abbreviations.70" />
+    <None Include="words\variant_1-contractions.50" />
+    <None Include="words\variant_1-contractions.60" />
+    <None Include="words\variant_1-contractions.70" />
+    <None Include="words\variant_1-upper.35" />
+    <None Include="words\variant_1-upper.40" />
+    <None Include="words\variant_1-upper.50" />
+    <None Include="words\variant_1-upper.60" />
+    <None Include="words\variant_1-upper.70" />
+    <None Include="words\variant_1-upper.80" />
+    <None Include="words\variant_1-upper.95" />
+    <None Include="words\variant_1-words.10" />
+    <None Include="words\variant_1-words.20" />
+    <None Include="words\variant_1-words.35" />
+    <None Include="words\variant_1-words.40" />
+    <None Include="words\variant_1-words.50" />
+    <None Include="words\variant_1-words.55" />
+    <None Include="words\variant_1-words.60" />
+    <None Include="words\variant_1-words.70" />
+    <None Include="words\variant_1-words.80" />
+    <None Include="words\variant_1-words.95" />
+    <None Include="words\variant_2-upper.40" />
+    <None Include="words\variant_2-upper.95" />
+    <None Include="words\variant_2-words.10" />
+    <None Include="words\variant_2-words.20" />
+    <None Include="words\variant_2-words.35" />
+    <None Include="words\variant_2-words.40" />
+    <None Include="words\variant_2-words.50" />
+    <None Include="words\variant_2-words.55" />
+    <None Include="words\variant_2-words.60" />
+    <None Include="words\variant_2-words.70" />
+    <None Include="words\variant_2-words.80" />
+    <None Include="words\variant_2-words.95" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bam.Net.Data\Bam.Net.Data.csproj">
+      <Project>{3b52b739-58fd-4b49-b815-6b317e701520}</Project>
+      <Name>Bam.Net.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net\Bam.Net.csproj">
+      <Project>{8794c09d-d72c-420c-812f-bfda251b64c9}</Project>
+      <Name>Bam.Net</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

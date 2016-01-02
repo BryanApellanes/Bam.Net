@@ -1,0 +1,13 @@
+{
+  "Name": "firstLogin",
+  "Pages": [
+    {
+      "Name": "stickerizees",
+      "Layout": "basic"
+    },
+    {
+      "Name": "search",
+      "Layout": "basic"
+    }
+  ]
+}

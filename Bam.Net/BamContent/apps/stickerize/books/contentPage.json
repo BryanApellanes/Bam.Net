@@ -1,0 +1,13 @@
+{
+  "Name": "contentPage",
+  "Pages": [
+    {
+      "Name": "contentPage",
+      "Layout": "basic"
+    },
+    {
+      "Name": "start",
+      "Layout": "basic"
+    }
+  ]
+}

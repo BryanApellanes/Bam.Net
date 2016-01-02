@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+
+    <title>BAMvvm</title>
+    <link href="@Url.Content("~/favicon.ico")" rel="shortcut icon" type="image/x-icon" />
+
+    @Styles.Render("~/content/bootstrap.css")
+    @RenderSection("stylesection", false)
+
+    @Styles.Render("~/content/stickyfooter.css")
+    @Styles.Render("~/content/bootstrap-responsive.css")
+    @Styles.Render("~/content/qunit-1.10.css")
+
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/Scripts/jQuery-1.9.1.js")
+    @Scripts.Render(
+            "~/Scripts/jquery-ui-1.10.2.custom.js",
+            "~/Scripts/jquery-migrate-1.1.1.js",
+            "~/Scripts/dust.js",
+            "~/Scripts/bootstrap.js",
+            "~/Scripts/less.js",
+            "~/Scripts/underscore.js"
+            )
+
+
+
+    @RenderSection("scripts", required: false)
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="brand" href="#" id="siteName">BAMvvm</a>
+                <div class="nav-collapse collapse">
+                    <ul class="nav" data-view="navLinks" data-view-model="nav">
+                    </ul>                    
+                    <form class="navbar-form pull-right form-search">
+                        <div class="input-append">
+                            <input type="text" class="input-large search-query"
+                                placeholder="Search"
+                                itemprop="query"
+                                data-plugin="typeahead"
+                                data-opts='{
+                                            "z-index": 1100,
+                                            "source": "mainSearchViewModel.searchProvider.search",
+                                            "highlighter": "mainSearchViewModel.searchProvider.highlighter",
+                                            "updater" : "mainSearchViewModel.searchProvider.updater"
+                                        }'>
+                            <button type="submit" class="btn">@Bam.Icon(Icons.Search)</button>
+                        </div>
+                    </form>
+                    <p class="navbar-text pull-right">
+                      <a href="#" class="navbar-link">@User.Identity.Name</a>&nbsp;&nbsp;&nbsp;
+                    </p>
+                </div>
+                <!--/.nav-collapse -->
+            </div>
+        </div>
+    </div>
+    <div class="container" id="wrap">
+        @RenderBody()
+    </div>
+
+    @*@Html.Partial("_Row")*@
+
+    <div id="footer">
+        <div class="container">
+            <p class="muted credit">&copy; @DateTime.Now.Year - My Bryan.Apellanes.BAMvvm Application</p>
+        </div>
+    </div>
+
+</body>
+</html>

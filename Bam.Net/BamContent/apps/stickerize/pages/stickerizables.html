@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Stickerizables</title>
+    <link rel="stylesheet" href="/css/pikaday.css" />
+    <link rel="stylesheet" href="/css/one-page-wonder.css" />
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top hidden" role="navigation" id="toolBar">
+        <div class="container">
+            <div>
+                <span class="navbar-brand" id="toolBarTitle"></span>
+            </div>
+            <ul class="nav navbar-nav">
+                <li>
+                    <a id="stickerizeDate" style="" class="fa fa-calendar pointer"
+                       data-plugin="pikaday"
+                       data-opts-on-select="stickerizables.setSelectedDate"
+                       data-opts-format="MMMM Do YYYY"
+                        >
+                    </a>
+                </li>
+                <li>
+                    <a href="/pickList" class="nav navbar-nav" data-navigate-to="pickList">Choose List</a>
+                </li>
+            </ul>
+
+        </div>
+    </nav>
+    <div class="container" id="stickerizableContainer">
+        <div class="row">
+            <div class="col-xs-12" id="stickerizables" data-app-view="stickerizableList" data-view-model="stickerizableListsViewModel" itemscope="itemscope">
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!-- 
+{
+  viewModelName: "", 
+  title: "Javascript Code",
+  mode: "javascript",
+  theme: "monokai",
+  action: "save",
+  actionText: "Run"
+}
+-->
+<div itemscope="itemscope" data-view-model="{viewModelName}">
+    <h4>{title}</h4>
+    <div data-plugin="codeEditor"
+        data-opts='{
+            "mode": "{mode}",
+            "theme": "{theme}",
+            "lineNumbers": true
+        }'
+        itemprop="source" data-get="getSource" data-set="setSource" id="{editorId}">
+    </div>
+    <br />
+    {#buttons}
+      <span class="btn" data-action="{action}">{text}</span>
+    {/buttons}
+</div>
+

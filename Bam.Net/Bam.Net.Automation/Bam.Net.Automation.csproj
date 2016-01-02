@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B65E4FCD-DE50-4D9E-91D7-DDDF80C25C47}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Bam.Net.Automation</RootNamespace>
+    <AssemblyName>Bam.Net.Automation</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Bam.Net.Automation.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Bam.Net.Automation.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>bin\Debug\Bam.Net.Automation.XML</DocumentationFile>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>bin\Release\Bam.Net.Automation.XML</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Ionic.Zip, Version=1.9.7.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotNetZip.1.9.7\lib\net20\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Build" />
+    <Reference Include="Microsoft.Build.Engine" />
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.XmlTransform, Version=2.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Web.Xdt.2.1.1\lib\net40\Microsoft.Web.XmlTransform.dll</HintPath>
+    </Reference>
+    <Reference Include="MSBuild, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\MSBuild\12.0\Bin\MSBuild.exe</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net.FtpClient, Version=1.0.5824.34026, Culture=neutral, PublicKeyToken=fa4be07daa57c2b7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\System.Net.FtpClient.1.0.5824.34026\lib\net40\System.Net.FtpClient.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="YamlSerializer, Version=0.9.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\YamlSerializer.1.0\lib\Net35\YamlSerializer.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="automation_Generated\AutomationContext.cs" />
+    <Compile Include="automation_Generated\DeferredJob.cs" />
+    <Compile Include="automation_Generated\DeferredJobCollection.cs" />
+    <Compile Include="automation_Generated\DeferredJobColumns.cs" />
+    <Compile Include="automation_Generated\Qi\DeferredJob.cs" />
+    <Compile Include="automation_Generated\Qi\RunningJob.cs" />
+    <Compile Include="automation_Generated\RunningJob.cs" />
+    <Compile Include="automation_Generated\RunningJobCollection.cs" />
+    <Compile Include="automation_Generated\RunningJobColumns.cs" />
+    <Compile Include="ContinuousIntegration\continuousIntegration_Generated\BuildJob.cs" />
+    <Compile Include="ContinuousIntegration\continuousIntegration_Generated\BuildJobCollection.cs" />
+    <Compile Include="ContinuousIntegration\continuousIntegration_Generated\BuildJobColumns.cs" />
+    <Compile Include="ContinuousIntegration\continuousIntegration_Generated\BuildResult.cs" />
+    <Compile Include="ContinuousIntegration\continuousIntegration_Generated\BuildResultCollection.cs" />
+    <Compile Include="ContinuousIntegration\continuousIntegration_Generated\BuildResultColumns.cs" />
+    <Compile Include="ContinuousIntegration\continuousIntegration_Generated\ContinuousIntegrationContext.cs" />
+    <Compile Include="ContinuousIntegration\continuousIntegration_Generated\Qi\BuildJob.cs" />
+    <Compile Include="ContinuousIntegration\continuousIntegration_Generated\Qi\BuildResult.cs" />
+    <Compile Include="EmailWorker.cs" />
+    <Compile Include="SourceControl\Git.cs" />
+    <Compile Include="SourceControl\GitConfigStack.cs" />
+    <Compile Include="SourceControl\GitLog.cs" />
+    <Compile Include="SourceControl\GitOption.cs" />
+    <Compile Include="SourceControl\GitToolsSetupResult.cs" />
+    <Compile Include="SourceControl\UnableToConfigureGitException.cs" />
+    <Compile Include="SourceControl\UnableToInitializeGitToolsException.cs" />
+    <Compile Include="SuspendedJob.cs" />
+    <Compile Include="Testing\Data\NotificationSubscription.cs" />
+    <Compile Include="Testing\Data\SuiteDefinition.cs" />
+    <Compile Include="Testing\Data\TestDefinition.cs" />
+    <Compile Include="Testing\Data\TestExecution.cs" />
+    <Compile Include="Testing\Data\TestSummary.cs" />
+    <Compile Include="Testing\Responses\CreateStatus.cs" />
+    <Compile Include="Testing\Responses\CreateTestSummaryResponse.cs" />
+    <Compile Include="Testing\Responses\DefineSuiteResponse.cs" />
+    <Compile Include="Testing\Responses\DefineTestResponse.cs" />
+    <Compile Include="Testing\Responses\NotificationSubscriptionResponse.cs" />
+    <Compile Include="Testing\Responses\RetrieveNotificationSubscriptionsResponse.cs" />
+    <Compile Include="Testing\Responses\RetrieveTestExecutionResponse.cs" />
+    <Compile Include="Testing\Responses\RetrieveTestSummaryResponse.cs" />
+    <Compile Include="Testing\Responses\SaveTestExecutionResponse.cs" />
+    <Compile Include="Testing\Responses\SearchTestExecutionResponse.cs" />
+    <Compile Include="Testing\SubscriptionStatus.cs" />
+    <Compile Include="Testing\TestRepositoryServer.cs" />
+    <Compile Include="WorkStateEventArgs.cs" />
+    <Compile Include="ContinuousIntegration\BamTestRunProcessWorker.cs" />
+    <Compile Include="ContinuousIntegration\BuildEventInfo.cs" />
+    <Compile Include="ContinuousIntegration\BuildResultEventArgs.cs" />
+    <Compile Include="ContinuousIntegration\DeploymentWorker.cs" />
+    <Compile Include="ContinuousIntegration\ITestWorker.cs" />
+    <Compile Include="ContinuousIntegration\Loggers\BuildLogger.cs" />
+    <Compile Include="ContinuousIntegration\BuildJobResult.cs" />
+    <Compile Include="ContinuousIntegration\BuildWorker.cs" />
+    <Compile Include="ContinuousIntegration\Loggers\ConsoleBuildLogger.cs" />
+    <Compile Include="ContinuousIntegration\ContinuousIntegrationJobConf.cs" />
+    <Compile Include="ContinuousIntegration\FtpDeploymentWorker.cs" />
+    <Compile Include="ContinuousIntegration\Extensions.cs" />
+    <Compile Include="ContinuousIntegration\GetSourceException.cs" />
+    <Compile Include="ContinuousIntegration\GetSourceWorker.cs" />
+    <Compile Include="ContinuousIntegration\BamContinuousIntegrationJobConf.cs" />
+    <Compile Include="ContinuousIntegration\GitGetSourceWorker.cs" />
+    <Compile Include="ContinuousIntegration\IBuildSourceControlClient.cs" />
+    <Compile Include="ContinuousIntegration\Loggers\CsvBuildLogger.cs" />
+    <Compile Include="ContinuousIntegration\Loggers\Dao2BuildLogger.cs" />
+    <Compile Include="ContinuousIntegration\Loggers\DaoBuildLogger.cs" />
+    <Compile Include="ContinuousIntegration\Loggers\TextFileBuildLogger.cs" />
+    <Compile Include="ContinuousIntegration\Loggers\WindowsBuildLogger.cs" />
+    <Compile Include="ContinuousIntegration\Loggers\XmlBuildLogger.cs" />
+    <Compile Include="Status.cs" />
+    <Compile Include="NotificationWorker.cs" />
+    <Compile Include="ContinuousIntegration\ProjectBuildResult.cs" />
+    <Compile Include="ContinuousIntegration\ProjectBuildWorker.cs" />
+    <Compile Include="ContinuousIntegration\AllProjectsBuildWorker.cs" />
+    <Compile Include="ContinuousIntegration\SourceControlClient.cs" />
+    <Compile Include="ContinuousIntegration\TfsClient.cs" />
+    <Compile Include="ContinuousIntegration\TfsGetSourceWorker.cs" />
+    <Compile Include="ContinuousIntegration\WebDeployDeploymentWorker.cs" />
+    <Compile Include="SuspendJobWorker.cs" />
+    <Compile Include="XmlTransformWorker.cs" />
+    <Compile Include="DirectoryCopyWorker.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="FileCopyWorker.cs" />
+    <Compile Include="FileSystemFileCopyWorker.cs" />
+    <Compile Include="Orchestrator.cs" />
+    <Compile Include="FtpUploadWorker.cs" />
+    <Compile Include="IfElseWork.cs" />
+    <Compile Include="IWorker.cs" />
+    <Compile Include="Job.cs" />
+    <Compile Include="JobConf.cs" />
+    <Compile Include="KeyValuePair.cs" />
+    <Compile Include="MultiFileCopyWorker.cs" />
+    <Compile Include="Nuget\conventionbasedpackage.cs" />
+    <Compile Include="Nuget\NugetPackageIdentifier.cs" />
+    <Compile Include="Nuget\NuspecFile.cs" />
+    <Compile Include="Nuget\package.cs" />
+    <Compile Include="Nuget\PackageVersion.cs" />
+    <Compile Include="ProcessWorker.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ContinuousIntegration\GitClient.cs" />
+    <Compile Include="SendEmailWorker.cs" />
+    <Compile Include="Worker.cs" />
+    <Compile Include="WorkerConf.cs" />
+    <Compile Include="WorkSequence.cs" />
+    <Compile Include="WorkState.cs" />
+    <Compile Include="ZipFolderWorker.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bam.Net.Analytics\Bam.Net.Analytics.csproj">
+      <Project>{67cca5a4-9b97-444c-9f4b-f464b2e04d6b}</Project>
+      <Name>Bam.Net.Analytics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.CommandLine\Bam.Net.CommandLine.csproj">
+      <Project>{ea9863a9-8e0b-4497-b7fd-abf450a3e468}</Project>
+      <Name>Bam.Net.CommandLine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.MSSql\Bam.Net.Data.MsSql.csproj">
+      <Project>{f373eaf9-b69c-4322-9659-a53a8fb7d43f}</Project>
+      <Name>Bam.Net.Data.MsSql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.Repositories\Bam.Net.Data.Repositories.csproj">
+      <Project>{222ef625-a115-49c7-8bdb-5879725a7d17}</Project>
+      <Name>Bam.Net.Data.Repositories</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.SQLite\Bam.Net.Data.SQLite.csproj">
+      <Project>{42339dbf-9389-42f8-9d28-4c523caa7b01}</Project>
+      <Name>Bam.Net.Data.SQLite</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data\Bam.Net.Data.csproj">
+      <Project>{3b52b739-58fd-4b49-b815-6b317e701520}</Project>
+      <Name>Bam.Net.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Distributed\Bam.Net.Distributed.csproj">
+      <Project>{35cfb5c2-8456-4d5b-b421-9d91365f783a}</Project>
+      <Name>Bam.Net.Distributed</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Html\Bam.Net.Html.csproj">
+      <Project>{795d5552-94d6-4373-b4f1-551b1d5bdafb}</Project>
+      <Name>Bam.Net.Html</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Incubation\Bam.Net.Incubation.csproj">
+      <Project>{aa186331-a0d0-4f77-bea2-e7b7650d3ff5}</Project>
+      <Name>Bam.Net.Incubation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Javascript\Bam.Net.Javascript.csproj">
+      <Project>{34c5016d-5265-4394-a9ba-cb2f70d8e93b}</Project>
+      <Name>Bam.Net.Javascript</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Logging\Bam.Net.Logging.csproj">
+      <Project>{15e91407-00d6-4edf-b75c-bc817a75c8ad}</Project>
+      <Name>Bam.Net.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Net\Bam.Net.Net.csproj">
+      <Project>{3065ab0d-376c-4005-b025-2c59be6b18ae}</Project>
+      <Name>Bam.Net.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Profiguration\Bam.Net.Profiguration.csproj">
+      <Project>{a61564b6-6f36-4ffb-b43e-c03d48534b19}</Project>
+      <Name>Bam.Net.Profiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Schema.Org\Bam.Net.Schema.Org.csproj">
+      <Project>{8d98e22b-3c6d-47c0-b028-0c3e3fc6b4fd}</Project>
+      <Name>Bam.Net.Schema.Org</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.ServiceProxy\Bam.Net.ServiceProxy.csproj">
+      <Project>{8987d8c8-033b-4993-99f0-8dd5a4d6dd0d}</Project>
+      <Name>Bam.Net.ServiceProxy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Testing\Bam.Net.Testing.csproj">
+      <Project>{85212881-c676-4b40-b311-37c2d1706042}</Project>
+      <Name>Bam.Net.Testing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Yaml\Bam.Net.Yaml.csproj">
+      <Project>{1c5258ec-7579-4032-94ec-b016bdc1b876}</Project>
+      <Name>Bam.Net.Yaml</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net\Bam.Net.csproj">
+      <Project>{8794c09d-d72c-420c-812f-bfda251b64c9}</Project>
+      <Name>Bam.Net</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="MyPackage.1.0.0.nuspec" />
+    <None Include="nuspec.2010.7.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="nuspec.2011.8.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="OpenCover.zip" />
+    <None Include="packages.config" />
+    <None Include="ReportGenerator.zip" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Automation.db.js" />
+    <Content Include="ContinuousIntegration\ContinuousIntegration.db.js" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

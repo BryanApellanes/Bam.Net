@@ -1,0 +1,37 @@
+﻿@using Bryan.Apellanes.DaoRef;
+@using Bryan.Apellanes.Schema.Org;
+
+@{
+    
+    ViewBag.Title = "Tests";
+}
+
+@section stylesection{
+    @Styles.Render("~/Content/qunit-1.10.css")
+    @Styles.Render("~/Content/jquery-ui.css")
+    @Styles.Render("~/Content/tests.css")
+}
+
+<h2>Tests</h2>
+
+ <div id="qunit"></div>
+
+<div style="margin: 10px; width: auto;" id="scratch">
+
+</div>
+
+<div id="example" itemscope class="objectInputs">
+@Html.InputsFor(typeof(TestTable), new { Name = "Example", Description = "Example description" })
+</div>
+
+<div id="databindRaw" itemscope class="objectInputs">
+@Html.InputsFor(typeof(TestTable))
+</div>
+
+<div id="databindObservable" itemscope class="objectInputs">
+@Html.InputsFor(typeof(TestTable))
+    <span data-plugin="button" data-item-action="checkValues">Check Values</span>
+</div>
+
+
+@Scripts.Render("~/Scripts/qunit.js", "~/Scripts/DataBindTests.js")

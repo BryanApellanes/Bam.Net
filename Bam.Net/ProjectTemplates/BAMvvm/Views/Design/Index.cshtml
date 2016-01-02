@@ -1,0 +1,56 @@
+﻿@using BAMvvm.Models;
+@using System.Reflection;
+@using Bryan.Apellanes.Drawing;
+@using System.Drawing;
+
+<div class="container" id="messages">
+
+</div>
+<fieldset>
+    <legend>Color Palette</legend>
+    <div id="palette">
+
+    </div>
+    <input type="text" id="paletteUrl" placeholder="http://sample.com" />
+    <button class="btn" onclick="design.deriveColorPalette();">Get Color Palette</button>
+</fieldset>
+<br />
+<h1>Current Colors</h1>
+<hr />
+@{
+    var colorScheme = ColorScheme.Load(Server.MapPath("~/bam/json/colorscheme.json"));
+    Type t = colorScheme.GetType();
+    PropertyInfo[] op = t.GetProperties();
+    HexColor black = HexColor.Black;
+    HexColor white = HexColor.White;
+    HexColor txtColor = black;
+    foreach(PropertyInfo p in op)
+    {
+        object section = p.GetValue(colorScheme);
+        Type st = section.GetType();
+        PropertyInfo[] ip = st.GetProperties();
+        foreach(PropertyInfo prop in ip)
+        {
+            object val = prop.GetValue(section);
+            if(!val.ToString().Equals("transparent"))
+            {
+                HexColor hexColor = new HexColor(prop.Name, val.ToString());
+                txtColor = HexColor.Contrast(hexColor);
+            }
+            else
+            {
+                txtColor = black;
+            }
+            @(Dust.RenderMvcHtmlString("hexcolor", new { DomId= "".RandomString(8), Name = p.Name + "." + prop.Name, Hex = val, TxtColor = txtColor.Hex }))
+        }
+    }
+}
+
+@section scripts{
+    @Scripts.Render("~/bam/js/edit.js", "~/bam/js/Design.js", "~/bam/js/colorscheme.js")
+<script type="text/javascript">
+    $(function () {
+        $("[data-plugin]").dataSetPlugins();
+    });
+</script>
+}

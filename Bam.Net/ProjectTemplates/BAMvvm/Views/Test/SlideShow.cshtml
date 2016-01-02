@@ -1,0 +1,119 @@
+﻿@using Bryan.Apellanes.DaoRef;
+@using BAMvvm.Models;
+
+@{
+    
+    ViewBag.Title = "SlideShow Tests";
+}
+
+@section stylesection{
+    @Styles.Render("~/Content/qunit-1.10.css")
+}
+
+<h2>SlideShow Tests</h2>
+
+ <div id="qunit"></div>
+
+<h1>No Loop</h1>
+<div data-plugin="slideShow" 
+    data-opts-next-button="#firstNextButton"
+    data-opts-previous-button="#firstPreviousButton"
+    data-opts-loop="b:false"
+    data-opts-height="75"
+    >
+    <div>
+        <h2>One</h2>
+    </div>
+    <div>
+        <h2>Two</h2>
+    </div>
+    <div>
+        <h2>Three</h2>
+    </div>
+</div>
+<span id="firstPreviousButton" class="btn">Previous</span><span id="firstNextButton" class="btn">Next</span>
+<hr />
+<h1>With Loop</h1>
+<div data-plugin="slideShow" 
+    data-opts-next-button="#secondNextButton"
+    data-opts-previous-button="#secondPreviousButton"
+    data-opts-height="75"
+    >
+    <div>
+        <h2>One</h2>
+    </div>
+    <div>
+        <h2>Two</h2>
+    </div>
+    <div>
+        <h2>Three</h2>
+    </div>
+</div>
+<span id="secondPreviousButton" class="btn">Previous</span><span id="secondNextButton" class="btn">Next</span>
+<hr />
+<h1>With Loop & View 2</h1>
+<div data-plugin="slideShow" 
+    data-opts-next-button="#thirdNextButton"
+    data-opts-previous-button="#thirdPreviousButton"
+    data-opts-height="75"
+    data-opts-viewable-count="2"
+    data-opts-before-slide="beforeSlideFn"
+    data-opts-after-slide="afterSlideFn"
+    id="view2Loop"
+    >
+    <div>
+        <h2>One</h2>
+    </div>
+    <div>
+        <h2>Two</h2>
+    </div>
+    <div>
+        <h2>Three</h2>
+    </div>
+    <div>
+        <h2>Four</h2>
+    </div>
+</div>
+<span id="thirdPreviousButton" class="btn">Previous</span><span id="thirdNextButton" class="btn">Next</span>
+<hr />
+<h1 id="noLoop2">Add Slide Test</h1>
+<div data-plugin="slideShow" 
+    data-opts-next-button="#noLoop2NextButton"
+    data-opts-previous-button="#noLoop2PreviousButton"
+    data-opts-loop="b:false"
+    data-opts-height="75"
+    data-opts-before-slide="beforeSlideFn"
+    data-opts-after-slide="afterSlideFn"
+    id="interactiveTest"
+    >
+    <div>
+        <h2>One</h2>
+    </div>
+    <div>
+        <h2>Two</h2>
+    </div>
+    <div>
+        <h2>Three</h2>
+    </div>
+</div>
+<span id="noLoop2PreviousButton" class="btn">Previous</span><span id="noLoop2NextButton" class="btn">Next</span>
+<br />
+<span data-click="addSlideTest" class="btn">Add slide</span>
+<span data-click="setLoopTest" class="btn">Set Loop</span>
+<span data-click="addSlideTestLoop" class="btn">Add slide and loop</span>
+<span data-click="gotoSlide2" class="btn">Go to 2</span>
+<span data-click="replaceSlides" class="btn">Replace Slides</span>
+<hr />
+
+<h2>Messages</h2>
+<div id="beforeMessages">
+</div>
+<div id="afterMessages">
+</div>
+<hr />
+@Scripts.Render(
+"http://uspappdevweb02:8099/ServiceProxy/JsProxies",
+"~/Scripts/qunit.js",
+"~/bam/js/SlideShow.js",
+"~/bam/js/tests/SlideShowTests.js"
+)

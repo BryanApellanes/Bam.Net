@@ -1,0 +1,61 @@
+﻿@model BAMvvm.Models.ValidationTestModel
+@{
+    ViewBag.Title = "Validation";
+}
+
+<h2>Validation</h2>
+
+<form action="PostTarget" method="post" data-plugin="validatable" id="requiredTest">
+    <fieldset data-type="object" itemscope="itemscope" itemtype="http://schema.org/Thing">        
+        <label class="label" for="RequiredField">Value </label>
+        <input data-type="string" id="RequiredField" 
+            itemprop="RequiredField" 
+            name="RequiredField" 
+            type="number"
+            data-opts-required="true"            
+            />
+        <br />
+        <span id="requiredTestMsgs"></span>
+    </fieldset>
+</form>
+
+<form action="PostTarget" method="post" data-plugin="validatable" id="requiredWithMessageTest">
+    <fieldset data-type="object" itemscope="itemscope" itemtype="http://schema.org/Thing">        
+        <label class="label" for="RequiredWithMessageField">Value</label>
+        <input data-type="string" id="RequiredWithMessageField" 
+            itemprop="RequiredWithMessageField" 
+            name="RequiredWithMessageField" 
+            type="number"
+            data-opts-required="true"  
+            data-opts-required-msg="Custom Msg: The {0} field requires a value"
+            />
+        <br />
+    </fieldset>
+</form>
+
+<form action="PostTarget" method="post" data-plugin="validatable" id="optionalEmailTest">
+    <fieldset data-type="object" itemscope="itemscope" itemtype="http://schema.org/Thing">        
+        <label class="label" for="OptionalEmail">Email</label>
+        <input data-type="string" id="OptionalEmail" 
+            itemprop="OptionalEmail" 
+            name="OptionalEmail" 
+            type="text"
+            data-opts-email="true"
+            data-opts-email-msg="Custom Msg: The {0} field must be an email address"
+            />
+        <br />
+    </fieldset>
+</form>
+
+@section stylesection{
+    @Styles.Render("~/Content/qunit-1.10.css")
+}
+
+ <div id="qunit"></div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval", 
+    "~/Scripts/qunit.js",
+    "~/bam/js/validatable.js", 
+    "~/bam/js/tests/ValidatableTests.js")
+}

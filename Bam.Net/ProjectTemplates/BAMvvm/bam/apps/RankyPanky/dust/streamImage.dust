@@ -1,0 +1,23 @@
+﻿<span itemscope="itemscope">
+    <span id="loading_{Id}" class="loading">Loading...</span>
+    <div id="item_{Id}" style="display: table-cell; vertical-align: middle; text-align: center;">
+        <img id="image_{Id}" 
+              src="{Url}" 
+              data-get="imageStream.getUrl" 
+              data-set="imageStream.setUrl" 
+              style="display:none; margin-bottom: 8px;height: 125px; width: 125px;" 
+              itemprop="Url" />
+                    
+        <input type="hidden" itemprop="Id" value="{Id}" />
+        <div data-plugin="raty"
+           data-image-id="{Id}"
+           data-opts='{ 
+              "number": 10, 
+              "path": "/content/raty/img",
+              "click": "imageStream.score"}'>
+        <!--data-opts-score="3"
+        data-opts-number="10"
+        data-opts-path="/content/raty/img">-->
+      </div>
+    </div>
+</span>

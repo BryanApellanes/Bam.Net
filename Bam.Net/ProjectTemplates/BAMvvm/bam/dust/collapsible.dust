@@ -1,0 +1,19 @@
+<!--
+{id: "string", title: "string", content: "string"}
+-->   
+<div class="accordion" id="{id}">
+  <div class="accordion-group">
+    <div class="accordion-heading" onclick="$('i', $(this)).toggle();">
+      <a class="accordion-toggle" data-toggle="collapse" href="#{id}Body">
+        {title}
+        <i class="icon-chevron-down pull-right"></i>
+        <i class="icon-chevron-up pull-right hide"></i>
+      </a>
+    </div>
+    <div id="{id}Body" class="accordion-body collapse">
+      <div class="accordion-inner" id="{id}Content">
+        {content}
+      </div>
+    </div>
+  </div>  
+</div>

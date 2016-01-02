@@ -1,0 +1,24 @@
+﻿{#items}
+<div class="feedItem">
+  <div data-plugin="friendlyDate" 
+       data-mo="{month}" 
+       data-dd="{date}" 
+       data-yyyy="{year}" 
+       data-hh="{hour}" 
+       data-mm="{minute}"
+       data-ss="{second}"
+       data-ms="{millisecond}"
+       >    
+  </div>
+  <div>
+    <img src="{stickerizerImageSource}" /> 
+    {stickerizerName} 
+    gave 
+    <img src="{stickerizeeImageSource}" />
+    {stickerizeeName} a
+    <img src="{stickerSource}" />
+    for {stickerizable}
+  </div>
+</div>
+{/items}
+
