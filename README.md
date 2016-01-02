@@ -15,7 +15,12 @@ existed or the options did not provide the specific functionality and capabiliti
 that I was looking for.
 
 ## No, I Mean Why Is It Called Bam.Net?
-Bam.Net is a re-branding of what was Brevitee.  The underlying toolkit of Brevitee made heavy use of the acronym B.A.M short for Brevitee Application Management which now is short for Bam Application Management.  The word brevity is defined as; concise and exact use of words in writing or speech.  In the same sense Bam.Net is intended, in the spirit of jQuery, to allow one to write less and do more through the use of Bam.Net's extensive .Net extension method library, jQuery plugins and other productivity enhancing JavaScripts.  BAM and you're done!
+The word brevity is defined as; concise and exact use of words in writing or speech.  
+In the same sense Bam.Net is intended, in the spirit of jQuery, to allow one to 
+write less and do more through the use of Bam.Net's extensive .Net extension method 
+library, jQuery plugins and other productivity enhancing JavaScripts.  At the time I 
+first uploaded the Bam.Net Nuget packages the name Brevity had already been taken,
+hence the spelling Bam.Net :).
 
 ## Data Access Objects (Dao)
 The generation of data access objects can be done by extracting objects from an 
