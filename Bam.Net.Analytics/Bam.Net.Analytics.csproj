@@ -53,8 +53,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CsQuery">
-      <HintPath>..\Assemblies\CsQuery.dll</HintPath>
+    <Reference Include="CsQuery, Version=1.3.3.249, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\Bam.Net\packages\CsQuery.1.3.4\lib\net40\CsQuery.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -264,6 +265,7 @@
     <Content Include="Analytics.db.js" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="words\american-abbreviations.70" />
     <None Include="words\american-proper-names.80" />
     <None Include="words\american-proper-names.95" />
