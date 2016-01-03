@@ -14,15 +14,7 @@ namespace Bam.Net
         {
             _watchers = new Dictionary<string, FileSystemWatcher>();
         }
-        private static FileSystemWatcher Get(string path)
-        {
-            path = path.ToLowerInvariant();
-            if (!_watchers.ContainsKey(path))
-            {
-                _watchers.Add(path, new FileSystemWatcher { Path = path, EnableRaisingEvents = true, IncludeSubdirectories = true });
-            }
-            return _watchers[path];
-        }
+
         public static FileSystemWatcher OnChange(this FileSystemInfo fs, FileSystemEventHandler changeHandler)
         {
             FileSystemWatcher watcher = Get(fs.FullName);
@@ -78,6 +70,15 @@ namespace Bam.Net
         {
             watcher.Renamed += renamedHandler;
             return watcher;
+        }
+        private static FileSystemWatcher Get(string path)
+        {
+            path = path.ToLowerInvariant();
+            if (!_watchers.ContainsKey(path))
+            {
+                _watchers.Add(path, new FileSystemWatcher { Path = path, EnableRaisingEvents = true, IncludeSubdirectories = true });
+            }
+            return _watchers[path];
         }
     }
 }
