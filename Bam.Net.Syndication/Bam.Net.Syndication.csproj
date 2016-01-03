@@ -56,15 +56,17 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Argotic.Common">
-      <HintPath>..\Assemblies\Argotic.Common.dll</HintPath>
+    <Reference Include="Argotic.Common, Version=2008.0.2.0, Culture=neutral, PublicKeyToken=84b2ce808fb02469, processorArchitecture=MSIL">
+      <HintPath>..\Bam.Net\packages\Argotic.Common.2008.0.2.0\lib\Net35\Argotic.Common.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Argotic.Core">
-      <HintPath>..\Assemblies\Argotic.Core.dll</HintPath>
+    <Reference Include="Argotic.Core, Version=2008.0.2.0, Culture=neutral, PublicKeyToken=84b2ce808fb02469, processorArchitecture=MSIL">
+      <HintPath>..\Bam.Net\packages\Argotic.Core.2008.0.2.0\lib\Net35\Argotic.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Argotic.Extensions, Version=2008.0.2.0, Culture=neutral, PublicKeyToken=84b2ce808fb02469, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Assemblies\Argotic.Extensions.dll</HintPath>
+      <HintPath>..\Bam.Net\packages\Argotic.Extensions.2008.0.2.0\lib\Net35\Argotic.Extensions.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>

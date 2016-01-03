@@ -18,7 +18,6 @@ using Bam.Net.CommandLine;
 using Bam.Net.Data;
 using Bam.Net;
 using Bam.Net.Testing;
-using dtSearch.Engine;
 
 namespace Bam.Net.Data.Tests
 {
