@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -168,7 +168,7 @@
       <Name>Bam.Net.Data.Schema</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Data.SQLite\Bam.Net.Data.SQLite.csproj">
-      <Project>{42339dbf-9389-42f8-9d28-4c523caa7b01}</Project>
+      <Project>{ae48f655-c3eb-49d6-98d3-42c428e39a1d}</Project>
       <Name>Bam.Net.Data.SQLite</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Data\Bam.Net.Data.csproj">

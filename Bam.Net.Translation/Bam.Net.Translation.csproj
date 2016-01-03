@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -134,10 +134,6 @@
     <ProjectReference Include="..\Bam.Net.Analytics\Bam.Net.Analytics.csproj">
       <Project>{67cca5a4-9b97-444c-9f4b-f464b2e04d6b}</Project>
       <Name>Bam.Net.Analytics</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Bam.Net.Data.SQLite\Bam.Net.Data.SQLite.csproj">
-      <Project>{42339dbf-9389-42f8-9d28-4c523caa7b01}</Project>
-      <Name>Bam.Net.Data.SQLite</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Data\Bam.Net.Data.csproj">
       <Project>{3b52b739-58fd-4b49-b815-6b317e701520}</Project>

@@ -8,7 +8,6 @@ using System.Text;
 using System.Configuration;
 using System.IO;
 using System.Web;
-using System.Web.Hosting;
 
 namespace Bam.Net.Data
 {
