@@ -1,0 +1,53 @@
+{
+    "Ignore": [ ".git", "*.suo", "*.orig" ],
+    "TextReplacementFileExtensions": [
+        ".md",
+        ".nuspec",
+        ".cmd",
+        ".cs",
+        ".js",
+        ".json",
+        ".htm",
+        ".html",
+        ".csproj",
+        ".sln",
+        ".isl",
+        ".isproj",
+        ".transform",
+        ".pp",
+        ".config",
+        ".txt",
+        ".aip",
+        ".tmpl"
+    ],
+    "CopyAllFiles": true,
+    "CopyExtensions": [ ],
+    "SourceFolder": "c:\\src\\Bryan.Apellanes",
+    "TargetFolder": "c:\\src\\Bam.Net",
+    "TextReplacements": [
+        {
+            "OldText": "Bryan.Apellanes",
+            "NewText": "Bam.Net"
+        },
+        {
+            "OldText": "Bryan Apellanes",
+            "NewText": "Bam DotNet"
+        },
+        {
+            "OldText": "bryan apellanes",
+            "NewText": "bam dotNet"
+        },
+        {
+            "OldText": "Bryan",
+            "NewText": "Bam"
+        },
+		{
+            "OldText": "bryantoolkit",
+            "NewText": "bamtoolkit"
+        },
+        {
+            "OldText": "Copyright © Bam DotNet",
+            "NewText": "Copyright © Bryan Apellanes"
+        }
+    ]
+}
