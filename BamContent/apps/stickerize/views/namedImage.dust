@@ -1,3 +1,0 @@
-<div style="width: {Size}px; height: {Size}px; line-height: {Size}px; text-align: center;">
-    <img src="{ImageSource}" style="vertical-align: middle;" alt="{Name}" />{Name}
-</div>

@@ -1,3 +1,0 @@
-﻿<span class="btn" id="{id}" data-date="{date}" data-date-format="{format}">
-  <i class="glyphicon glyphicon-calendar"></i>
-</span>

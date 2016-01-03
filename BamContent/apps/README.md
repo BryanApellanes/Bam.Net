@@ -1,2 +1,0 @@
-# Apps
-Bam hosted apps

@@ -1,9 +1,0 @@
-{
-  "Name": "home",
-  "Pages": [
-    {
-      "Name": "auth/login",
-      "Layout": "basic"
-    }
-  ]
-}
