@@ -1,4 +1,4 @@
-@echo off
+@echo on
 call %3\Bam.Net\Bam.Net.Server\zip_base_app_and_content.cmd %3
 call .\restore.cmd
 SET OutputPath=%3\Bam.Net\BuildScripts\Bam.Net\BuildOutput\%1\
