@@ -2,7 +2,7 @@
 	Copyright © Bryan Apellanes 2015  
 */
 var database = {
-    nameSpace: "Bryan.Apellanes.DaoRef",
+    nameSpace: "Bam.Net.DaoRef",
     schemaName: "DaoRef",
     xrefs: [
         ["Left", "Right"]

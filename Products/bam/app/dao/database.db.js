@@ -2,7 +2,7 @@
 	Copyright © Bryan Apellanes 2015  
 */
 var database = {
-    nameSpace: "Bryan.Application.Data",
+    nameSpace: "Bam.Net.Data",
     schemaName: "DaoTestData",
 	xrefs: [
 		["LeftOfManyItem", "RightOfManyItem"]
