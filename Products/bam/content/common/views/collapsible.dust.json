@@ -1,0 +1,6 @@
+{
+  "SourceFilePath": "C:\\BamContent\\common\\views\\collapsible.dust",
+  "TemplateName": "collapsible",
+  "SourceHash": "56dad1e2ab6ce16927814dcb2626f3cda2799cd2",
+  "CompiledTemplate": "(function(){dust.register(\"collapsible\",body_0);function body_0(chk,ctx){return chk.write(\"<!--{id: \\\\\"string\\\\\", title: \\\\\"string\\\\\", content: \\\\\"string\\\\\"}-->   <div class=\\\\\"accordion\\\\\" id=\\\\\"\").reference(ctx.get(\"id\"),ctx,\"h\").write(\"\\\\\">  <div class=\\\\\"accordion-group\\\\\">    <div class=\\\\\"accordion-heading\\\\\" onclick=\\\\\"$('i', $(this)).toggle();\\\\\">      <a class=\\\\\"accordion-toggle\\\\\" data-toggle=\\\\\"collapse\\\\\" href=\\\\\"#\").reference(ctx.get(\"id\"),ctx,\"h\").write(\"Body\\\\\">        \").reference(ctx.get(\"title\"),ctx,\"h\").write(\"        <i class=\\\\\"icon-chevron-down pull-right\\\\\"></i>        <i class=\\\\\"icon-chevron-up pull-right hide\\\\\"></i>      </a>    </div>    <div id=\\\\\"\").reference(ctx.get(\"id\"),ctx,\"h\").write(\"Body\\\\\" class=\\\\\"accordion-body collapse\\\\\">      <div class=\\\\\"accordion-inner\\\\\" id=\\\\\"\").reference(ctx.get(\"id\"),ctx,\"h\").write(\"Content\\\\\">        \").reference(ctx.get(\"content\"),ctx,\"h\").write(\"      </div>    </div>  </div>  </div>\");}return body_0;})();"
+}

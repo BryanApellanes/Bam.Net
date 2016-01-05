@@ -1,0 +1,9 @@
+{
+  "Name": "contentPage",
+  "Pages": [
+    {
+      "Name": "contentPage",
+      "Layout": "basic"
+    }
+  ]
+}
