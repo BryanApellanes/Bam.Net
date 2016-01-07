@@ -474,9 +474,19 @@ namespace Bam.Net
             }
         }
 
+        /// <summary>
+        /// Iterate over the current IEnumerable passing
+        /// each element to the specified function
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="arr"></param>
+        /// <param name="function"></param>
         public static void Each<T>(this IEnumerable<T> arr, Func<T, bool> function)
         {
-            arr.ToArray().Each(function);
+            foreach(T item in arr)
+            {
+                function(item);
+            }            
         }
 
         /// <summary>
@@ -504,7 +514,7 @@ namespace Bam.Net
         }
 
         /// <summary>
-        /// Iterate over the current array passing
+        /// Iterate over the current IEnumerable passing
         /// each element to the specified function.  
         /// Return true to continue the loop return 
         /// false to stop

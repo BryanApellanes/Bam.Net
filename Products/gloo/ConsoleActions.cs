@@ -20,7 +20,7 @@ namespace gloo
     [Serializable]
     public class ConsoleActions : CommandLineTestInterface
     {
-        static string contentRoot = "ContentRoot";
+        static string contentRootConfigKey = "ContentRoot";
         static string defaultRoot = "C:\\BamContent";
         static GlooServer glooServer;
         
@@ -48,7 +48,7 @@ namespace gloo
 
         public static void CreateGlooServer(ConsoleLogger logger)
         {
-            BamConf conf = BamConf.Load(DefaultConfiguration.GetAppSetting(contentRoot).Or(defaultRoot));
+            BamConf conf = BamConf.Load(DefaultConfiguration.GetAppSetting(contentRootConfigKey).Or(defaultRoot));
             glooServer = new GlooServer(conf, logger);
             glooServer.HostPrefixes = new HostPrefix[] { GetConfiguredHostPrefix() };
             glooServer.MonitorDirectories = DefaultConfiguration.GetAppSetting("MonitorDirectories").DelimitSplit(",", ";");
