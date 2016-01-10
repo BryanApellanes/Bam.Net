@@ -311,9 +311,9 @@ namespace Bam.Net.Data
             return set;
         }
 
-		protected internal virtual AssignValue GetAssignment(string keyColumn, object value)
+		protected internal virtual AssignValue GetAssignment(string keyColumn, object value, Func<string, string> columnNameformatter = null)
 		{
-			return new AssignValue(keyColumn, value);
+			return new AssignValue(keyColumn, value, columnNameformatter);
 		}
 
         protected internal virtual DbCommand BuildCommand(string sqlStatement, CommandType commandType, DbParameter[] dbParameters, DbProviderFactory providerFactory, DbConnection conn, DbTransaction tx  =null)

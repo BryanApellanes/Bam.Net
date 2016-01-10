@@ -123,7 +123,7 @@ namespace Bam.Net.Data
 		{
 			// get the ids for the specified query
 			SqlStringBuilder sql = Database.GetService<SqlStringBuilder>();
-			sql.Select(Dao.TableName(typeof(T)), Dao.GetKeyColumnName(typeof(T)));
+            sql.Select(Dao.TableName(typeof(T)), sql.ColumnNameFormatter(Dao.GetKeyColumnName(typeof(T))));
 			SetQuery(sql);
 			return sql;
 		}

@@ -335,6 +335,7 @@ namespace Bam.Net.Data
         public virtual SqlStringBuilder Where(AssignValue filter)
         {
             WhereFormat where = new WhereFormat();
+            where.ColumnNameFormatter = filter.ColumnNameFormatter;
             where.StartNumber = NextNumber;
             where.AddAssignment(filter);
             _stringBuilder.Append(where.Parse());
