@@ -47,10 +47,13 @@ namespace Bam.Net.Data
             string type = column.DbDataType.ToLowerInvariant();
 
             if (type.Equals("bigint") ||
-                type.Equals("int") ||
-                type.Equals("bit"))
+                type.Equals("int"))
             {
                 type = "INT";
+                max = "";
+            }else if (type.Equals("bit"))
+            {
+                type = "boolean";
                 max = "";
             }
             else if (type.Equals("decimal"))
@@ -59,14 +62,15 @@ namespace Bam.Net.Data
             }
             else if (type.Equals("datetime"))
             {
-                type = "INT";
+                type = "timestamp";
                 max = "";
             }
             else if (type.Equals("varbinary"))
             {
                 type = "bytea";
                 max = "";
-            }else if (type.Equals("serial"))
+            }
+            else if (type.Equals("serial"))
             {
                 max = "";
             }

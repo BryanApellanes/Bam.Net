@@ -34,17 +34,17 @@ namespace Bam.Net.Data.Integration.Tests
 		{
 			HashSet<Database> testDatabases = new HashSet<Database>();
 
-            //MsSqlDatabase msDatabase = new MsSqlDatabase("chumsql2", "DaoRef", new MsSqlCredentials { UserName = "mssqluser", Password = "mssqlP455w0rd" });
-            //Db.TryEnsureSchema<TestTable>(msDatabase);
-            //testDatabases.Add(msDatabase);
+            MsSqlDatabase msDatabase = new MsSqlDatabase("chumsql2", "DaoRef", new MsSqlCredentials { UserName = "mssqluser", Password = "mssqlP455w0rd" });
+            Db.TryEnsureSchema<TestTable>(msDatabase);
+            testDatabases.Add(msDatabase);
 
-            //SQLiteDatabase sqliteDatabase = new SQLiteDatabase(".\\DaoCrudTests", "DaoRef");
-            //Db.TryEnsureSchema<TestTable>(sqliteDatabase);
-            //testDatabases.Add(sqliteDatabase);
+            SQLiteDatabase sqliteDatabase = new SQLiteDatabase(".\\DaoCrudTests", "DaoRef");
+            Db.TryEnsureSchema<TestTable>(sqliteDatabase);
+            testDatabases.Add(sqliteDatabase);
 
-            //OracleDatabase oracleDatabase = new OracleDatabase("chumsql2", "DaoRef", new OracleCredentials { UserId = "C##ORACLEUSER", Password = "oracleP455w0rd" });
-            //Db.TryEnsureSchema<TestTable>(oracleDatabase);
-            //testDatabases.Add(oracleDatabase);
+            OracleDatabase oracleDatabase = new OracleDatabase("chumsql2", "DaoRef", new OracleCredentials { UserId = "C##ORACLEUSER", Password = "oracleP455w0rd" });
+            Db.TryEnsureSchema<TestTable>(oracleDatabase);
+            testDatabases.Add(oracleDatabase);
 
             MySqlDatabase mySqlDatabase = new MySqlDatabase("chumsql2", "DaoRef", new MySqlCredentials { UserId = "mysql", Password = "mysqlP455w0rd" });
             Db.TryEnsureSchema<TestTable>(mySqlDatabase);
