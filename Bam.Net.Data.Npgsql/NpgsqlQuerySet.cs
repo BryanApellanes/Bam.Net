@@ -5,29 +5,29 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Bam.Net.Data.MySql;
+using Bam.Net.Data.Npgsql;
 
 namespace Bam.Net.Data
 {
-    public class MySqlQuerySet : QuerySet
+    public class NpgsqlQuerySet : QuerySet
     {
-        public MySqlQuerySet()
+        public NpgsqlQuerySet()
             : base()
         {
             this.GoText = ";\r\n";
-            this.TableNameFormatter = (s) => "`{0}`"._Format(s);
-            this.ColumnNameFormatter = (s) => s;
+            this.TableNameFormatter = (s) => "\"{0}\""._Format(s);
+            this.ColumnNameFormatter = (s) => "\"{0}\""._Format(s);
         }
 
         public override SqlStringBuilder Id(string idAs)
         {
-            Builder.AppendFormat("{0}SELECT last_insert_id() AS {1}", this.GoText, idAs);
+            Builder.AppendFormat(" RETURNING \"Id\" AS \"{0}\"{1}", idAs, this.GoText);
             return this;
         }
 
         public override SqlStringBuilder Where(IQueryFilter filter)
         {
-            WhereFormat where = MySqlFormatProvider.GetWhereFormat(filter, StringBuilder, NextNumber);
+            WhereFormat where = NpgsqlFormatProvider.GetWhereFormat(filter, StringBuilder, NextNumber);
             NextNumber = where.NextNumber;
             this.parameters.AddRange(where.Parameters);
             return this;
@@ -36,7 +36,7 @@ namespace Bam.Net.Data
         public override SqlStringBuilder Update(string tableName, params AssignValue[] values)
         {
             Builder.AppendFormat("UPDATE {0} ", TableNameFormatter(tableName));
-            SetFormat set = MySqlFormatProvider.GetSetFormat(tableName, StringBuilder, NextNumber, values);
+            SetFormat set = NpgsqlFormatProvider.GetSetFormat(tableName, StringBuilder, NextNumber, values);
             NextNumber = set.NextNumber;
             this.parameters.AddRange(set.Parameters);
             return this;
@@ -57,9 +57,8 @@ namespace Bam.Net.Data
             {
                 columnNames = new string[] { "*" };
             }
-
             string cols = columnNames.ToDelimited(s => string.Format("{0}", s));
-            StringBuilder.AppendFormat("SELECT {0} FROM `{1}` ", cols, tableName);
+            StringBuilder.AppendFormat("SELECT {0} FROM {1} ", cols, TableNameFormatter(tableName));
             return this;
         }
 

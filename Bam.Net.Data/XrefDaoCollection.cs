@@ -115,7 +115,7 @@ namespace Bam.Net.Data
                         XrefsByListId = new Dictionary<long, X>();
 
                         QuerySet q = Dao.GetQuerySet(db);
-                        q.Select<X>().Where(new AssignValue(ParentColumnName, Parent.IdValue));
+                        q.Select<X>().Where(new AssignValue(ParentColumnName, Parent.IdValue, q.ColumnNameFormatter));
                         q.Execute(db);
 
                         // should have all the ids of L that should be retrieved

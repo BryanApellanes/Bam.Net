@@ -16,6 +16,7 @@ using Bam.Net.Data.MsSql;
 using Bam.Net.Data.SQLite;
 using Bam.Net.Data.Oracle;
 using Bam.Net.Data.MySql;
+using Bam.Net.Data.Npgsql;
 using Bam.Net.Testing.Integration;
 using Bam.Net.Data.Schema;
 using System.Configuration;
@@ -44,12 +45,16 @@ namespace Bam.Net.Data.Integration.Tests
             OracleDatabase oracleDatabase = new OracleDatabase("chumsql2", "DaoRef", new OracleCredentials { UserId = "C##ORACLEUSER", Password = "oracleP455w0rd" });
             Db.TryEnsureSchema<TestTable>(oracleDatabase);
             testDatabases.Add(oracleDatabase);
-            //Data Source=chumsql2;User ID=mysql;Password=******;Allow Zero Datetime=Yes;Allow User Variables=true;Persist Security Info=true;Default Command Timeout=3600
+
             MySqlDatabase mySqlDatabase = new MySqlDatabase("chumsql2", "DaoRef", new MySqlCredentials { UserId = "mysql", Password = "mysqlP455w0rd" });
             Db.TryEnsureSchema<TestTable>(mySqlDatabase);
             testDatabases.Add(mySqlDatabase);
 
-			return testDatabases;
+            NpgsqlDatabase npgsqlDatabase = new NpgsqlDatabase("chumsql2", "DaoRef", new NpgsqlCredentials { UserId = "postgres", Password = "postgresP455w0rd" });
+            Db.TryEnsureSchema<TestTable>(npgsqlDatabase);
+            testDatabases.Add(npgsqlDatabase);
+
+            return testDatabases;
 		}
 
 		[ConsoleAction]

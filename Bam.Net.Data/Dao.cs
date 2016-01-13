@@ -662,7 +662,7 @@ namespace Bam.Net.Data
         {
             Database db = Database;
             OnBeforeWriteDelete(db);
-            sql.Delete(TableName()).Where(db.GetAssignment(KeyColumnName, IdValue));
+            sql.Delete(TableName()).Where(db.GetAssignment(KeyColumnName, IdValue, sql.ColumnNameFormatter));
             OnAfterWriteDelete(db);
         }
 

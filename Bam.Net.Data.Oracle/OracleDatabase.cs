@@ -208,9 +208,9 @@ namespace Bam.Net.Data.Oracle
             }
         }
 
-        protected internal override AssignValue GetAssignment(string keyColumn, object value)
+        protected internal override AssignValue GetAssignment(string keyColumn, object value, Func<string, string> columnNameformatter = null)
         {
-            AssignValue result = base.GetAssignment(keyColumn, value);
+            AssignValue result = base.GetAssignment(keyColumn, value, columnNameformatter);
             result.ParameterPrefix = ":";
             return result;
         }

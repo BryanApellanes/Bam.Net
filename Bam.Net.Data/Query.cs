@@ -196,7 +196,7 @@ namespace Bam.Net.Data
         private SqlStringBuilder GetSqlStringBuilder(Database db)
         {
 			db = db ?? Db.For<T>();
-			SqlStringBuilder sql = db == null ? new SqlStringBuilder(): db.ServiceProvider.Get<SqlStringBuilder>();
+			SqlStringBuilder sql = db.ServiceProvider.Get<SqlStringBuilder>();
             sql.Select(Dao.TableName(typeof(T)), ColumnAttribute.GetColumns(typeof(T)).ToDelimited(c => db.ColumnNameProvider(c)));
             return sql;
         }
