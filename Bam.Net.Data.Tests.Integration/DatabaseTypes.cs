@@ -7,13 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Distributed
+namespace Bam.Net.Data.Tests.Integration
 {
-	public class CreateOperation: Operation
+	public enum DatabaseTypes
 	{
-		public override object Execute()
-		{
-			throw new NotImplementedException();
-		}
+		Invalid,
+		SQLite,
+		MsSql,
+		Oracle,
+		MySql,
+
 	}
 }

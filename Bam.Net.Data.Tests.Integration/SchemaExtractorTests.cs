@@ -29,7 +29,7 @@ using Bam.Net.Data.Tests;
 using Bam.Net.Analytics;
 using Bam.Net.Testing.Integration;
 
-namespace Bam.Net.Data.Integration.Tests
+namespace Bam.Net.Data.Tests.Integration
 {
     public class SchemaExtractorTests : CommandLineTestInterface
     {

@@ -14,7 +14,7 @@ using Bam.Net.Data.Repositories;
 using System.IO;
 using System.Reflection;
 
-namespace Bam.Net.Data.Integration.Tests
+namespace Bam.Net.Data.Tests.Integration
 {
 	[Serializable]
 	public class TestDto

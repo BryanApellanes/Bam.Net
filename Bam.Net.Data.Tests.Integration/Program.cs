@@ -16,7 +16,7 @@ using Bam.Net;
 using Bam.Net.Testing;
 using Bam.Net.Encryption;
 
-namespace Bam.Net.Data.Integration.Tests
+namespace Bam.Net.Data.Tests.Integration
 {
 	[Serializable]
 	class Program : CommandLineTestInterface

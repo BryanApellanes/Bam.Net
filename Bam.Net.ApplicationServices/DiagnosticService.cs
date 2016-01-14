@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Bam.Net.ApplicationServices
 {
     [Encrypt]
-    [Proxy("log")]
+    [Proxy("diag")]
     [ApiKeyRequired]
     public class DiagnosticService
     {
