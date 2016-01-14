@@ -64,17 +64,37 @@
   <ItemGroup>
     <Compile Include="AssemblyGenerationEventEmitter.cs" />
     <Compile Include="ConfigurationService.cs" />
-    <Compile Include="CreateOperation.cs" />
-    <Compile Include="DeleteOperation.cs" />
+    <Compile Include="Distributed\CreateOperation.cs" />
+    <Compile Include="Distributed\DeleteOperation.cs" />
     <Compile Include="DiagnosticInfo.cs" />
     <Compile Include="DiagnosticService.cs" />
+    <Compile Include="Distributed\ComputeNode.cs" />
+    <Compile Include="Distributed\ComputeNodeInfo.cs" />
+    <Compile Include="Distributed\ComputeRing.cs" />
+    <Compile Include="Distributed\DistributedObjectReaderWriter.cs" />
+    <Compile Include="Distributed\Files\DistributedFileInfo.cs" />
+    <Compile Include="Distributed\Files\DistributedFileManager.cs" />
+    <Compile Include="Distributed\Files\FileChunk.cs" />
+    <Compile Include="Distributed\HubElection.cs" />
+    <Compile Include="Distributed\HubNode.cs" />
+    <Compile Include="Distributed\IDistributedRepository.cs" />
+    <Compile Include="Distributed\IHasInfo.cs" />
+    <Compile Include="Distributed\InfoAttribute.cs" />
+    <Compile Include="Distributed\Keyspace.cs" />
+    <Compile Include="Distributed\PingOperation.cs" />
+    <Compile Include="Distributed\PongOperation.cs" />
+    <Compile Include="Distributed\ReplicateOperation.cs" />
+    <Compile Include="Distributed\ReplicationResult.cs" />
+    <Compile Include="Distributed\RepositoryKey.cs" />
+    <Compile Include="Distributed\Ring.cs" />
+    <Compile Include="Distributed\Slot.cs" />
     <Compile Include="LoggerService.cs" />
-    <Compile Include="Operation.cs" />
+    <Compile Include="Distributed\Operation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Protocols.cs" />
-    <Compile Include="QueryOperation.cs" />
+    <Compile Include="Distributed\QueryOperation.cs" />
     <Compile Include="RepositoryService.cs" />
-    <Compile Include="RetrieveOperation.cs" />
+    <Compile Include="Distributed\RetrieveOperation.cs" />
     <Compile Include="ServiceAssemblyGenerator.cs" />
     <Compile Include="AssemblyGenerationEventArgs.cs" />
     <Compile Include="ServiceFactory.cs" />
@@ -82,7 +102,7 @@
     <Compile Include="ServiceModel.cs" />
     <Compile Include="ServiceSettings.cs" />
     <Compile Include="ServiceTemplate.cs" />
-    <Compile Include="UpdateOperation.cs" />
+    <Compile Include="Distributed\UpdateOperation.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bam.Net.Caching\Bam.Net.Caching.csproj">
@@ -100,6 +120,10 @@
     <ProjectReference Include="..\Bam.Net.Documentation\Bam.Net.Documentation.csproj">
       <Project>{8febe7ea-4f1f-44e2-a694-52b9a33c2414}</Project>
       <Name>Bam.Net.Documentation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Drawing\Bam.Net.Drawing.csproj">
+      <Project>{1db5bac4-f6fd-48d7-a89a-228f41036b78}</Project>
+      <Name>Bam.Net.Drawing</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Encryption\Bam.Net.Encryption.csproj">
       <Project>{f27dc9a6-e432-4d20-bcef-d10b0c2a657d}</Project>
@@ -142,9 +166,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Distributed\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

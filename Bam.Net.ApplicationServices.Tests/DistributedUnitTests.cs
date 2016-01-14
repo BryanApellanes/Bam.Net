@@ -15,11 +15,12 @@ using Bam.Net.Testing;
 using Bam.Net.Distributed;
 using System.Net;
 using System.Reflection;
+using Bam.Net.ApplicationServices.Distributed;
 
 namespace Bam.Net.Distributed.Tests
 {
 	[Serializable]
-	public class UnitTests: CommandLineTestInterface
+	public class DistributedUnitTests: CommandLineTestInterface
 	{
 		class TestRing : Ring
 		{

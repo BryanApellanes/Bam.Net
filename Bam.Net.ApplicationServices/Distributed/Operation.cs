@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.ApplicationServices
+namespace Bam.Net.ApplicationServices.Distributed
 {
 	public abstract class Operation
 	{

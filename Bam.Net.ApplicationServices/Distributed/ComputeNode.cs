@@ -10,7 +10,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 
-namespace Bam.Net.Distributed
+namespace Bam.Net.ApplicationServices.Distributed
 {
     public class ComputeNode: IDistributedRepository, IHasInfo
     {

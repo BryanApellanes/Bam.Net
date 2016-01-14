@@ -7,10 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Distributed.Files
+namespace Bam.Net.ApplicationServices.Distributed
 {
-	public class DistributedFileManager
+	public class ReplicationResult
 	{
-
 	}
 }

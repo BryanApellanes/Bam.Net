@@ -10,7 +10,7 @@ using Bam.Net.Data.Repositories;
 using Bam.Net.Data;
 using Bam.Net;
 
-namespace Bam.Net.Distributed
+namespace Bam.Net.ApplicationServices.Distributed
 {
 	public class DistributedObjectReaderWriter: ObjectReaderWriter
 	{

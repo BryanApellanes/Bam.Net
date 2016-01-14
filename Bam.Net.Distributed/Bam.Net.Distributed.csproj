@@ -62,27 +62,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ComputeNodeInfo.cs" />
-    <Compile Include="DistributedObjectReaderWriter.cs" />
-    <Compile Include="Files\DistributedFileInfo.cs" />
-    <Compile Include="Files\DistributedFileManager.cs" />
-    <Compile Include="Files\FileChunk.cs" />
-    <Compile Include="HubElection.cs" />
-    <Compile Include="HubNode.cs" />
-    <Compile Include="IHasInfo.cs" />
-    <Compile Include="InfoAttribute.cs" />
-    <Compile Include="IDistributedRepository.cs" />
-    <Compile Include="Keyspace.cs" />
-    <Compile Include="ComputeNode.cs" />
-    <Compile Include="ComputeRing.cs" />
-    <Compile Include="ReplicationResult.cs" />
-    <Compile Include="PingOperation.cs" />
-    <Compile Include="PongOperation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReplicateOperation.cs" />
-    <Compile Include="RepositoryKey.cs" />
-    <Compile Include="Ring.cs" />
-    <Compile Include="Slot.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bam.Net.Data.Repositories\Bam.Net.Data.Repositories.csproj">
@@ -113,9 +93,7 @@
   <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Processes\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

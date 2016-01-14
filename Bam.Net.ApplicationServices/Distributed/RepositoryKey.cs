@@ -7,13 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Distributed
+namespace Bam.Net.ApplicationServices.Distributed
 {
-	public class ReplicateOperation: Operation
-	{
-		public override object Execute()
-		{
-			throw new NotImplementedException();
-		}
-	}
+    [AttributeUsage(AttributeTargets.Property)]
+    public class RepositoryKey: Attribute
+    {
+    }
 }
