@@ -11,7 +11,7 @@ using Bam.Net;
 using Bam.Net.Logging;
 using Bam.Net.Data;
 
-namespace Bam.Net.Distributed
+namespace Bam.Net.ApplicationServices.Distributed
 {
     public class ComputeRing: Ring<ComputeNode>, IDistributedRepository
     {

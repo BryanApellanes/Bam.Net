@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.ApplicationServices
+namespace Bam.Net.ApplicationServices.Distributed
 {
-	public class QueryOperation: Operation
+	public class HubElection: Operation
 	{
 		public override object Execute()
 		{

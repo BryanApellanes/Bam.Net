@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net;
 
-namespace Bam.Net.Distributed
+namespace Bam.Net.ApplicationServices.Distributed
 {
     public class Slot<T>: Slot where T: IDistributedRepository
     {

@@ -59,6 +59,7 @@ namespace Bam.Net.Testing
             AddValidArgument("dir", false, "The directory to look for test assemblies in");
 			AddValidArgument("debug", true, "If specified, the runner will pause to allow for a debugger to be attached to the process");
 			AddValidArgument("data", false, "The path to save the results to, default is the current directory if not specified");
+            AddValidArgument("dataFilePrefix", false, "The file prefix for the sqlite data file or 'BamTests' if not specified");
 			AddValidArgument(_exitOnFailure, true);
 			
             DefaultMethod = typeof(Program).GetMethod("Start");
@@ -71,7 +72,7 @@ namespace Bam.Net.Testing
 				Pause("Attach the debugger now");
 			}
 
-			PrepareResultRepository();
+			PrepareResultRepository(Arguments["dataFilePrefix"].Or("BamTests"));
             string startDirectory = Environment.CurrentDirectory;
 			DirectoryInfo testDir = GetTestDirectory();
             Environment.CurrentDirectory = testDir.FullName;
@@ -117,10 +118,10 @@ namespace Bam.Net.Testing
 			}
         }
 
-		private static void PrepareResultRepository()
+		private static void PrepareResultRepository(string filePrefix)
 		{
 			string directory = Arguments.Contains("data") ? Arguments["data"] : ".";
-			_repo = new DaoRepository(new SQLiteDatabase(directory, "BamTests_{0}"._Format(DateTime.Now.Date.ToString("MM_dd_yyyy"))));
+			_repo = new DaoRepository(new SQLiteDatabase(directory, "{0}_{1}"._Format(filePrefix, DateTime.Now.Date.ToString("MM_dd_yyyy"))));
 			_repo.AddType(typeof(UnitTestResult));
 			_repo.EnsureDaoAssembly();
 		}

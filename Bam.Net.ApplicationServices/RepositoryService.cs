@@ -19,6 +19,6 @@ namespace Bam.Net.ApplicationServices
             _repo = repo;
         }
 
-        public object Create()
+        //public object Create()
     }
 }
