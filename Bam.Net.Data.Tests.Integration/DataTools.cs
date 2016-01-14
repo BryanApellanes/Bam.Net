@@ -21,7 +21,7 @@ using Bam.Net.Testing.Integration;
 using Bam.Net.Data.Schema;
 using System.Configuration;
 
-namespace Bam.Net.Data.Integration.Tests
+namespace Bam.Net.Data.Tests.Integration
 {
 	public static class DataTools
 	{

@@ -17,7 +17,7 @@ using Bam.Net.Data.MsSql;
 using Bam.Net.Data.SQLite;
 using Bam.Net.Testing.Integration;
 
-namespace Bam.Net.Data.Integration.Tests
+namespace Bam.Net.Data.Tests.Integration
 {
 	[IntegrationTestContainer]
 	public class DaoQueryTests : CommandLineTestInterface

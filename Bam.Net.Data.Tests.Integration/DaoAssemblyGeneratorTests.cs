@@ -13,7 +13,7 @@ using Bam.Net.Data.Schema;
 using Bam.Net.Data.Dynamic;
 using Bam.Net.Testing.Integration;
 
-namespace Bam.Net.Data.Integration.Tests
+namespace Bam.Net.Data.Tests.Integration
 {
     public class DaoAssemblyGeneratorTests: CommandLineTestInterface
     {

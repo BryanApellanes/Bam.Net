@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Distributed
+namespace Bam.Net.ApplicationServices
 {
-	public class DeleteOperation: Operation
+	public class UpdateOperation: Operation
 	{
 		public override object Execute()
 		{
