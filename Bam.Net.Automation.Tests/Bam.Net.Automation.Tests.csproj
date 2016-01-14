@@ -88,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsoleActions.cs" />
+    <Compile Include="FtpUnitTests.cs" />
     <Compile Include="OrchestratorUnitTests.cs" />
     <Compile Include="GitLogTests.cs" />
     <Compile Include="Program.cs" />

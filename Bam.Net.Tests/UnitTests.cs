@@ -80,55 +80,6 @@ namespace Bam.Net.Tests
         }
 
         [UnitTest]
-        public void ShouldSetFtpServer()
-        {
-            Ftp ftp = Ftp.Server("localhost");
-            Expect.AreEqual(ftp.Config.ServerHost, "localhost");
-        }
-
-        [UnitTest]
-        public void ShouldSetFtpUserName()
-        {       
-            string un = "userTest";
-            Ftp ftp = Ftp.Server("localhost").UserName(un);
-            Expect.AreEqual(ftp.Config.UserName, un, "UserName was not set properly");
-        }
-
-        [UnitTest]
-        public void ShouldSetPassword()
-        {
-            string p = "password";
-            Ftp ftp = Ftp.Server("localhost").Password(p);
-            Expect.AreEqual(ftp.Config.Password, p, "Password was not set properly");
-        }
-
-        [IntegrationTest]
-        public void ShouldUpload()
-        {
-            string testPath= "C:\\inetpub\\ftproot\\subfolder";
-            if (Directory.Exists(testPath))
-            {
-                Directory.Delete(testPath, true);
-            };
-
-            Expect.IsFalse(Directory.Exists(testPath));
-            Ftp ftp = Ftp.Server("localhost");
-            ftp.UserName("ftptest").Password("53cr3tP455w0rd1!").Upload(".\\Test");
-            Expect.IsTrue(Directory.Exists(testPath));            
-        }
-        
-        [UnitTest]
-        public void SettingUserNameAndPasswordShouldSetNetworkCredential()
-        {
-            Ftp ftp = Ftp.Server("localhost");
-            Expect.IsNull(ftp.Config.Credentials);
-
-            ftp.UserName("ftptest").Password("53cr3tP455w0rd1!");
-
-            Expect.IsNotNull(ftp.Config.Credentials);
-        }
-
-        [UnitTest]
         public void SetAndRemoveAttribute()
         {
             FileInfo file = new FileInfo(".\\test.txt");
