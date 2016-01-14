@@ -59,7 +59,7 @@ namespace Bam.Net.Testing
             AddValidArgument("dir", false, "The directory to look for test assemblies in");
             AddValidArgument("debug", true, "If specified, the runner will pause to allow for a debugger to be attached to the process");
             AddValidArgument("data", false, "The path to save the results to, default is the current directory if not specified");
-            AddValidArgument("dataFilePrefix", false, "The file prefix for the sqlite data file or 'BamTests' if not specified");
+            AddValidArgument("dataPrefix", true, "The file prefix for the sqlite data file or 'BamTests' if not specified");
             AddValidArgument(_exitOnFailure, true);
 
             DefaultMethod = typeof(Program).GetMethod("Start");
@@ -72,7 +72,7 @@ namespace Bam.Net.Testing
                 Pause("Attach the debugger now");
             }
 
-            PrepareResultRepository(Arguments["dataFilePrefix"].Or("BamTests"));
+            PrepareResultRepository(Arguments["dataPrefix"].Or("BamTests"));
             string startDirectory = Environment.CurrentDirectory;
             DirectoryInfo testDir = GetTestDirectory();
             Environment.CurrentDirectory = testDir.FullName;

@@ -1,6 +1,7 @@
 @echo off
 C:
 cd C:\src\Bam.Net\BuildScripts\Bam.Net
+git checkout %1
 call build_and_install_toolkit.cmd c:\src
 Z:
 cd \Workspace\Build

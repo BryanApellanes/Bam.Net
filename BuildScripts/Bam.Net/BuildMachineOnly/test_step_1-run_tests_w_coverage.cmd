@@ -2,7 +2,7 @@
 C:
 cd C:\src\Bam.Net\BuildScripts\Bam.Net
 git checkout %1
-call build_and_run_tests_w_coverage.cmd C:\src
+call build_and_run_tests_w_coverage.cmd C:\src %1
 Z:
 cd \Workspace\Build
 
