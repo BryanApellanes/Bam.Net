@@ -24,10 +24,10 @@ namespace Bam.Net.Testing
 {
     [Serializable]
     class Program : CommandLineTestInterface
-	{
-	    private const string _exitOnFailure = "exitOnFailure";
-		private const string _programName = "bamtestrunner";
-		static DaoRepository _repo;
+    {
+        private const string _exitOnFailure = "exitOnFailure";
+        private const string _programName = "bamtestrunner";
+        static DaoRepository _repo;
         static void Main(string[] args)
         {
             PreInit();
@@ -57,122 +57,123 @@ namespace Bam.Net.Testing
             #endregion
             AddValidArgument("search", false, "The search pattern to use to locate test assemblies");
             AddValidArgument("dir", false, "The directory to look for test assemblies in");
-			AddValidArgument("debug", true, "If specified, the runner will pause to allow for a debugger to be attached to the process");
-			AddValidArgument("data", false, "The path to save the results to, default is the current directory if not specified");
-			AddValidArgument(_exitOnFailure, true);
-			
+            AddValidArgument("debug", true, "If specified, the runner will pause to allow for a debugger to be attached to the process");
+            AddValidArgument("data", false, "The path to save the results to, default is the current directory if not specified");
+            AddValidArgument("dataFilePrefix", false, "The file prefix for the sqlite data file or 'BamTests' if not specified");
+            AddValidArgument(_exitOnFailure, true);
+
             DefaultMethod = typeof(Program).GetMethod("Start");
         }
 
         public static void Start()
-        {			
-			if(Arguments.Contains("debug"))
-			{
-				Pause("Attach the debugger now");
-			}
+        {
+            if (Arguments.Contains("debug"))
+            {
+                Pause("Attach the debugger now");
+            }
 
-			PrepareResultRepository();
+            PrepareResultRepository(Arguments["dataFilePrefix"].Or("BamTests"));
             string startDirectory = Environment.CurrentDirectory;
-			DirectoryInfo testDir = GetTestDirectory();
+            DirectoryInfo testDir = GetTestDirectory();
             Environment.CurrentDirectory = testDir.FullName;
 
-			FileInfo[] files = GetTestFiles(testDir);
+            FileInfo[] files = GetTestFiles(testDir);
 
             TestFailed += TestFailedHandler;
-			TestPassed += TestPassedHandler;
-			bool exceptionOccurred = false;
-			for (int i = 0; i < files.Length; i++)
-			{
-				FileInfo fi = files[i];
-				try
-				{
-					Assembly assembly = Assembly.LoadFrom(fi.FullName);
-					AttachBeforeAndAfterHandlers(assembly);
-					RunAllTests(assembly);
-					NullifyBeforeAndAfterHandlers();
+            TestPassed += TestPassedHandler;
+            bool exceptionOccurred = false;
+            for (int i = 0; i < files.Length; i++)
+            {
+                FileInfo fi = files[i];
+                try
+                {
+                    Assembly assembly = Assembly.LoadFrom(fi.FullName);
+                    AttachBeforeAndAfterHandlers(assembly);
+                    RunAllTests(assembly);
+                    NullifyBeforeAndAfterHandlers();
                     Environment.CurrentDirectory = startDirectory;
-				}
-				catch (Exception ex)
-				{
+                }
+                catch (Exception ex)
+                {
                     Environment.CurrentDirectory = startDirectory;
-					exceptionOccurred = true;
-					OutLineFormat("bamtestrunner: {0}", ConsoleColor.DarkRed, ex.Message);
-					if (Arguments.Contains(_exitOnFailure))
-					{
-						Exit(1);
-					}
-				}
-			}
+                    exceptionOccurred = true;
+                    OutLineFormat("bamtestrunner: {0}", ConsoleColor.DarkRed, ex.Message);
+                    if (Arguments.Contains(_exitOnFailure))
+                    {
+                        Exit(1);
+                    }
+                }
+            }
 
-			OutLineFormat("Passed: {0}", ConsoleColor.Green, _passedCount);
-			OutLineFormat("Failed: {0}", ConsoleColor.Red, _failedCount);
+            OutLineFormat("Passed: {0}", ConsoleColor.Green, _passedCount);
+            OutLineFormat("Failed: {0}", ConsoleColor.Red, _failedCount);
 
-			if (_failedCount > 0 || exceptionOccurred)
-			{				
-				Exit(1);
-			}
-			else
-			{
-				Exit(0);
-			}
+            if (_failedCount > 0 || exceptionOccurred)
+            {
+                Exit(1);
+            }
+            else
+            {
+                Exit(0);
+            }
         }
 
-		private static void PrepareResultRepository()
-		{
-			string directory = Arguments.Contains("data") ? Arguments["data"] : ".";
-			_repo = new DaoRepository(new SQLiteDatabase(directory, "BamTests_{0}"._Format(DateTime.Now.Date.ToString("MM_dd_yyyy"))));
-			_repo.AddType(typeof(UnitTestResult));
-			_repo.EnsureDaoAssembly();
-		}
+        private static void PrepareResultRepository(string filePrefix)
+        {
+            string directory = Arguments.Contains("data") ? Arguments["data"] : ".";
+            _repo = new DaoRepository(new SQLiteDatabase(directory, "{0}_{1}"._Format(filePrefix, DateTime.Now.Date.ToString("MM_dd_yyyy"))));
+            _repo.AddType(typeof(UnitTestResult));
+            _repo.EnsureDaoAssembly();
+        }
 
-		private static FileInfo[] GetTestFiles(DirectoryInfo testDir)
-		{
-			FileInfo[] files = null;
-			if (Arguments.Contains("search"))
-			{
-				files = testDir.GetFiles(Arguments["search"]);
-			}
-			else
-			{
-				files = testDir.GetFiles();
-			}
-			return files;
-		}
+        private static FileInfo[] GetTestFiles(DirectoryInfo testDir)
+        {
+            FileInfo[] files = null;
+            if (Arguments.Contains("search"))
+            {
+                files = testDir.GetFiles(Arguments["search"]);
+            }
+            else
+            {
+                files = testDir.GetFiles();
+            }
+            return files;
+        }
 
-		static int _passedCount = 0;
-		static int _failedCount = 0;
-		
+        static int _passedCount = 0;
+        static int _failedCount = 0;
+
         private static void TestFailedHandler(object sender, TestExceptionEventArgs e)
         {
-			_failedCount++;
-			_repo.Save(new UnitTestResult(e));
-			if (Arguments.Contains(_exitOnFailure))
-			{
-				Exit(1);
-			}
+            _failedCount++;
+            _repo.Save(new UnitTestResult(e));
+            if (Arguments.Contains(_exitOnFailure))
+            {
+                Exit(1);
+            }
         }
 
-		private static void TestPassedHandler(object sender, ConsoleInvokeableMethod cim)
-		{
-			_passedCount++;
-			_repo.Save(new UnitTestResult(cim));
-		}
-		
-		private static DirectoryInfo GetTestDirectory()
-		{
-			DirectoryInfo testDir = new DirectoryInfo(".");
-			if (Arguments.Contains("dir"))
-			{
-				string dir = Arguments["dir"];
-				testDir = new DirectoryInfo(dir);
-				if (!testDir.Exists)
-				{
-					OutLineFormat("The specified directory ({0}) was not found", ConsoleColor.Red, dir);
-					Exit(1);
-				}
-			}
-			return testDir;
-		}
+        private static void TestPassedHandler(object sender, ConsoleInvokeableMethod cim)
+        {
+            _passedCount++;
+            _repo.Save(new UnitTestResult(cim));
+        }
+
+        private static DirectoryInfo GetTestDirectory()
+        {
+            DirectoryInfo testDir = new DirectoryInfo(".");
+            if (Arguments.Contains("dir"))
+            {
+                string dir = Arguments["dir"];
+                testDir = new DirectoryInfo(dir);
+                if (!testDir.Exists)
+                {
+                    OutLineFormat("The specified directory ({0}) was not found", ConsoleColor.Red, dir);
+                    Exit(1);
+                }
+            }
+            return testDir;
+        }
     }
 
 }
