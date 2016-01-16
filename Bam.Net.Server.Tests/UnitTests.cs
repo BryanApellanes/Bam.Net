@@ -1251,17 +1251,6 @@ namespace Bam.Net.Server.Tests
             OutLineFormat(Assembly.GetExecutingAssembly().Location);
         }
 
-        [UnitTest]
-        public void ReflectionLoaderShouldLoad()
-        {
-            string tempDir = Environment.ExpandEnvironmentVariables("%tmp%");
-            ReflectionLoader loader = new ReflectionLoader { Paths = new[] { tempDir }, AssemblySearchPatterns = "DaoRef.*", TypesToLoad = new[] { "Bam.Net.DaoRef.DaoRefContext" } };
-            ConsoleLogger logger = new ConsoleLogger();
-            Type[] loaded = loader.Load(logger);
-            Expect.IsNotNull(loaded);
-            Expect.IsTrue(loaded.Length > 0, "no types were loaded");
-        }
-
         private static void CreateTestRootAndSetDefaultConfig(DirectoryInfo dir)
         {
             if (!dir.Exists)
