@@ -3,8 +3,4 @@ CD \
 RMDIR /S /Q C:\src
 MKDIR C:\src
 CD C:\src
-git clone git@github.com:BryanApellanes/Bam.Net.git
-CD C:\src\Bam.Net
-git clone git@github.com:BryanApellanes/BamContent.git
-CD C:\src\Bam.Net\BamContent\common
-git clone git@github.com:BryanApellanes/bamvvm.git
+git clone --recursive git@github.com:BryanApellanes/Bam.Net.git
