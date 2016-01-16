@@ -138,6 +138,7 @@
     <Compile Include="ContinuousIntegration\continuousIntegration_Generated\Qi\BuildResult.cs" />
     <Compile Include="EmailWorker.cs" />
     <Compile Include="Ftp.cs" />
+    <Compile Include="IfEseWorker.cs" />
     <Compile Include="SourceControl\Git.cs" />
     <Compile Include="SourceControl\GitConfigStack.cs" />
     <Compile Include="SourceControl\GitLog.cs" />
@@ -204,7 +205,6 @@
     <Compile Include="FileSystemFileCopyWorker.cs" />
     <Compile Include="Orchestrator.cs" />
     <Compile Include="FtpUploadWorker.cs" />
-    <Compile Include="IfElseWork.cs" />
     <Compile Include="IWorker.cs" />
     <Compile Include="Job.cs" />
     <Compile Include="JobConf.cs" />

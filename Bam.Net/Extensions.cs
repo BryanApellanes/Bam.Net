@@ -1787,10 +1787,13 @@ namespace Bam.Net
                     if (property.GetIndexParameters().Length == 0)
                     {
                         object value = property.GetValue(obj, null);
+                        string stringValue = "[null]";
                         if (value != null)
                         {
-                            returnValue.AppendFormat("{0}: {1}{2}", property.Name, value.ToString(), separator);
+                            stringValue = value.ToString();
                         }
+
+                        returnValue.AppendFormat("{0}: {1}{2}", property.Name, stringValue, separator);
                     }
                     else
                     {

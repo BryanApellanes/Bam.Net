@@ -1159,22 +1159,25 @@ namespace Bam.Net.Server
         {
             IResponse response = context.Response;
             IRequest request = context.Request;
-            using (StreamWriter sw = new StreamWriter(response.OutputStream))
+            if(response.OutputStream != null)
             {
-                string description = "({0})"._Format(ex.Message);
-                response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                response.StatusDescription = description;
-                sw.WriteLine("<!DOCTYPE html>");
-                Tag html = new Tag("html");
-                html.Child(new Tag("body")
-                    .Child(new Tag("h1").Text("Internal Server Exception"))
-                    .Child(new Tag("p").Text(description))
-                );
-                sw.WriteLine(html.ToHtmlString());
-                sw.Flush();
-                sw.Close();
-            }
+                using (StreamWriter sw = new StreamWriter(response.OutputStream))
+                {
+                    string description = "({0})"._Format(ex.Message);
+                    response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    response.StatusDescription = description;
+                    sw.WriteLine("<!DOCTYPE html>");
+                    Tag html = new Tag("html");
+                    html.Child(new Tag("body")
+                        .Child(new Tag("h1").Text("Internal Server Exception"))
+                        .Child(new Tag("p").Text(description))
+                    );
+                    sw.WriteLine(html.ToHtmlString());
+                    sw.Flush();
+                    sw.Close();
+                }
 
+            }
             MainLogger.AddEntry("An error occurred handling the request: ({0})\r\n*** Request Details ***\r\n{1}",
                     ex,
                     ex.Message,
