@@ -69,12 +69,25 @@ namespace Bam.Net.ServiceProxy
             this.ServiceProvider = serviceProvider;
         }
 
-        public ExecutionRequest(IHttpContext context, ProxyAlias[] aliases, Incubator serviceProvider, string inputString = null)
+        public ExecutionRequest(IHttpContext context, ProxyAlias[] aliases, Incubator serviceProvider)//, string inputString = null)
         {
             this.Context = context;
             this.ProxyAliases = aliases;
             this.ServiceProvider = serviceProvider;
-            this.InputString = inputString;
+            using (StreamReader sr = new StreamReader(context.Request.InputStream))
+            {
+                this.InputString = sr.ReadToEnd();
+            }
+            if(Instance != null &&
+                Instance.GetType() == typeof(SecureChannel) &&
+                MethodName.Equals("Invoke"))
+            {
+                this.InputString = SecureSession.Get(context).Decrypt(this.InputString);
+                HttpArgs args = new HttpArgs();
+                args.ParseJson(this.InputString);
+                JsonParams = args["jsonParams"];
+                this._httpArgs = args;
+            }
         }
 
         protected internal ProxyAlias[] ProxyAliases
@@ -174,16 +187,6 @@ namespace Bam.Net.ServiceProxy
                     else if (InputString.StartsWith("{")) // TODO: this should be reviewed for validity
                     {
                         JsonParams = InputString;
-                    }
-                    else if (!string.IsNullOrEmpty(Request.Headers[ServiceProxySystem.SecureSessionName]) && !IsUnencrypted)
-                    {
-                        SecureSession session = GetSecureSession();
-
-                        Decrypted decrypted = new Decrypted(InputString, session.PlainSymmetricKey, session.PlainSymmetricIV);
-                        HttpArgs args = new HttpArgs();
-                        args.ParseJson(decrypted.Value);
-                        JsonParams = args["jsonParams"];
-                        Decrypted = decrypted;
                     }
 
                     ParseRequestUrl();
@@ -404,13 +407,19 @@ namespace Bam.Net.ServiceProxy
                     _instance = ServiceProvider.Get(ClassName, out _targetType);
                     if (_targetType.HasCustomAttributeOfType<SerializableAttribute>()) // if its Serializable clone it so we're not acting on a single instance
                     {
-                        byte[] bytes = _instance.ToBinaryBytes();
-                        _instance = bytes.FromBinaryBytes();
+                        byte[] bytes;
+                        if (_instance.TryToBinaryBytes(out bytes, (ex) => 
+                        {
+                            Log.AddEntry("Failed to serialize object instance of type {0}: {1}", LogEventType.Warning, ex, _targetType.FullName, ex.Message);
+                        }))
+                        {
+                            _instance = bytes.FromBinaryBytes();
+                        };
                     }
                 }
                 return _instance;
             }
-            private set
+            protected set
             {
                 _instance = value;
             }
@@ -830,30 +839,6 @@ namespace Bam.Net.ServiceProxy
             internal set;
         }
 
-        public virtual ValidationResult Validate()
-        {
-            Initialize();
-            ValidationResult result = new ValidationResult(this);
-            result.Execute(Context, Decrypted);
-            return result;
-        }
-
-        public bool Execute()
-        {
-            bool result = false;
-            ValidationResult validation = Validate();
-            if (!validation.Success)
-            {
-                Result = validation;
-            }
-            else
-            {
-                result = Execute(Instance, false);
-            }
-
-            return result;
-        }
-
         public bool WasExecuted
         {
             get;
@@ -920,10 +905,25 @@ namespace Bam.Net.ServiceProxy
                 ContextSet(this, target);
             }
         }
+
+        public virtual ValidationResult Validate()
+        {
+            Initialize();
+            ValidationResult result = new ValidationResult(this);
+            result.Execute(Context, Decrypted);
+            return result;
+        }
+
         public bool ExecuteWithoutValidation()
         {
             return Execute(Instance, false);
         }
+
+        public bool Execute()
+        {
+            return Execute(Instance, true);
+        }
+
         public bool Execute(object target, bool validate = true)
         {
             bool result = false;

@@ -284,7 +284,7 @@ namespace Bam.Net.Server
                 bw.Write(data);
                 bw.Flush();
             }
-            response.Close();
+            //response.Close();
         }
         protected static void SendResponse(IResponse response, string content)
         {
@@ -293,7 +293,7 @@ namespace Bam.Net.Server
                 sw.Write(content);
                 sw.Flush();
             }
-            response.Close();
+            //response.Close();
         }
         protected RendererFactory RendererFactory
         {

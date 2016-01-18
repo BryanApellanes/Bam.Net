@@ -490,10 +490,10 @@ namespace Bam.Net.Server
                     else
                     {
                         ExecutionRequest execRequest = CreateExecutionRequest(context, appName);
-                        using (StreamReader sr = new StreamReader(request.InputStream))
-                        {
-                            execRequest.InputString = sr.ReadToEnd();
-                        }
+                        //using (StreamReader sr = new StreamReader(request.InputStream))
+                        //{
+                        //    execRequest.InputString = sr.ReadToEnd();
+                        //}
                         responded = execRequest.Execute();
                         if (responded)
                         {
@@ -699,7 +699,7 @@ namespace Bam.Net.Server
             RendererFactory.Respond(execRequest, ContentResponder);
         }
 
-        private ExecutionRequest CreateExecutionRequest(IHttpContext context, string appName)
+        protected virtual ExecutionRequest CreateExecutionRequest(IHttpContext context, string appName)
         {
             Incubator proxiedClasses;
             List<ProxyAlias> aliases;

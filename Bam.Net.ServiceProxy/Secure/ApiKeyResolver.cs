@@ -139,7 +139,7 @@ namespace Bam.Net.ServiceProxy.Secure
         {
             Args.ThrowIfNull(resolver, "ApiKeyResolver");
             Args.ThrowIfNull(resolver.ApplicationNameProvider, "ApiKeyResolver.ApplicationNameProvider");
-            Args.ThrowIfNull(resolver.ApiKeyProvider, "ApiKeyResolver.ApiKeyprovider");
+            Args.ThrowIfNull(resolver.ApiKeyProvider, "ApiKeyResolver.ApiKeyProvider");
         }
     }
 }

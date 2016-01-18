@@ -394,7 +394,7 @@ namespace Bam.Net.ServiceProxy.Tests
             public TestExecutionRequest(string c, string m, string f)
                 : base(c, m, f)
             {
-
+                this.Instance = new Echo();
             }
 
             public bool Called { get; set; }

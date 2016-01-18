@@ -137,6 +137,21 @@ namespace Bam.Net
 			return byteStream.LongLength;
 		}
 
+        public static bool TryToBinaryBytes(this object target, out byte[] bytes, Action<Exception> exceptionHandler)
+        {
+            try
+            {
+                bytes = ToBinaryBytes(target);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                exceptionHandler(ex);
+                bytes = null;
+                return false;
+            }
+        }
+
         public static byte[] ToBinaryBytes(this object target)
         {
             return ToBinaryStream(target).GetBuffer();

@@ -623,12 +623,13 @@ namespace Bam.Net.Server
                         content = temp;
                         handled = true;
                     }
-                }
 
-                if (handled)
-                {
-                    SetContentType(response, path);
-                    SendResponse(response, content);
+
+                    if (handled)
+                    {
+                        SetContentType(response, path);
+                        SendResponse(response, content);
+                    }
                 }
             }
 
