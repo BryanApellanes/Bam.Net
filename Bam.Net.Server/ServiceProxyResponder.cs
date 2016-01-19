@@ -699,13 +699,27 @@ namespace Bam.Net.Server
             RendererFactory.Respond(execRequest, ContentResponder);
         }
 
-        protected virtual ExecutionRequest CreateExecutionRequest(IHttpContext context, string appName)
+        protected virtual ExecutionRequest CreateExecutionRequest(IHttpContext httpContext, string appName)
         {
             Incubator proxiedClasses;
             List<ProxyAlias> aliases;
             GetServiceProxies(appName, out proxiedClasses, out aliases);
 
-            ExecutionRequest execRequest = new ExecutionRequest(context, aliases.ToArray(), proxiedClasses);
+            ExecutionRequest execRequest = new ExecutionRequest(httpContext, aliases.ToArray(), proxiedClasses);
+            using (StreamReader sr = new StreamReader(httpContext.Request.InputStream))
+            {
+                execRequest.InputString = sr.ReadToEnd();
+            }
+            if (execRequest.Instance != null &&
+                execRequest.Instance.GetType() == typeof(SecureChannel) &&
+                execRequest.MethodName.Equals("Invoke"))
+            {
+                execRequest.InputString = SecureSession.Get(httpContext).Decrypt(execRequest.InputString);
+                HttpArgs args = new HttpArgs();
+                args.ParseJson(execRequest.InputString);
+                execRequest.JsonParams = args["jsonParams"];
+                //this._httpArgs = args;
+            }
             return execRequest;
         }
 

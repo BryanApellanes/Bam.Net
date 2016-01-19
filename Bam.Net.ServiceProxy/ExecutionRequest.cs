@@ -74,20 +74,20 @@ namespace Bam.Net.ServiceProxy
             this.Context = context;
             this.ProxyAliases = aliases;
             this.ServiceProvider = serviceProvider;
-            using (StreamReader sr = new StreamReader(context.Request.InputStream))
-            {
-                this.InputString = sr.ReadToEnd();
-            }
-            if(Instance != null &&
-                Instance.GetType() == typeof(SecureChannel) &&
-                MethodName.Equals("Invoke"))
-            {
-                this.InputString = SecureSession.Get(context).Decrypt(this.InputString);
-                HttpArgs args = new HttpArgs();
-                args.ParseJson(this.InputString);
-                JsonParams = args["jsonParams"];
-                this._httpArgs = args;
-            }
+            //using (StreamReader sr = new StreamReader(context.Request.InputStream))
+            //{
+            //    this.InputString = sr.ReadToEnd();
+            //}
+            //if(Instance != null &&
+            //    Instance.GetType() == typeof(SecureChannel) &&
+            //    MethodName.Equals("Invoke"))
+            //{
+            //    this.InputString = SecureSession.Get(context).Decrypt(this.InputString);
+            //    HttpArgs args = new HttpArgs();
+            //    args.ParseJson(this.InputString);
+            //    JsonParams = args["jsonParams"];
+            //    this._httpArgs = args;
+            //}
         }
 
         protected internal ProxyAlias[] ProxyAliases
