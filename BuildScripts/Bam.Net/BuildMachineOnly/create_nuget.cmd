@@ -1,4 +1,6 @@
 rem %1 major, %2 minor, %3 patch
+C:
+cd C:\src\Bam.Net\BuildScripts\Bam.Net
 call clean.cmd
 call set_ver.cmd %1 %2 %3
 call build_solution.cmd Release v4.5 c:\src

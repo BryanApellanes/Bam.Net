@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Incubation
 {
+    /// <summary>
+    /// Fluent entry point to FluentIncubationContext
+    /// </summary>
     public static class Requesting
     {
         public static FluentIncubationContext<I> A<I>()
