@@ -706,21 +706,21 @@ namespace Bam.Net.Server
             GetServiceProxies(appName, out proxiedClasses, out aliases);
 
             ExecutionRequest execRequest = new ExecutionRequest(httpContext, aliases.ToArray(), proxiedClasses);
-            using (StreamReader sr = new StreamReader(httpContext.Request.InputStream))
-            {
-                execRequest.InputString = sr.ReadToEnd();
-            }
+            DecryptIfSecureChannelInvoke(execRequest);
+            return execRequest;
+        }
+
+        private static void DecryptIfSecureChannelInvoke(ExecutionRequest execRequest)
+        {
             if (execRequest.Instance != null &&
                 execRequest.Instance.GetType() == typeof(SecureChannel) &&
                 execRequest.MethodName.Equals("Invoke"))
             {
-                execRequest.InputString = SecureSession.Get(httpContext).Decrypt(execRequest.InputString);
+                execRequest.InputString = SecureSession.Get(execRequest.Context).Decrypt(execRequest.InputString);
                 HttpArgs args = new HttpArgs();
                 args.ParseJson(execRequest.InputString);
                 execRequest.JsonParams = args["jsonParams"];
-                //this._httpArgs = args;
             }
-            return execRequest;
         }
 
         private void GetServiceProxies(string appName, out Incubator proxiedClasses, out List<ProxyAlias> aliases)

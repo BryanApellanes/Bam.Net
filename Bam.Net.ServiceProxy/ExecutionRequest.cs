@@ -69,25 +69,11 @@ namespace Bam.Net.ServiceProxy
             this.ServiceProvider = serviceProvider;
         }
 
-        public ExecutionRequest(IHttpContext context, ProxyAlias[] aliases, Incubator serviceProvider)//, string inputString = null)
+        public ExecutionRequest(IHttpContext context, ProxyAlias[] aliases, Incubator serviceProvider)
         {
             this.Context = context;
             this.ProxyAliases = aliases;
             this.ServiceProvider = serviceProvider;
-            //using (StreamReader sr = new StreamReader(context.Request.InputStream))
-            //{
-            //    this.InputString = sr.ReadToEnd();
-            //}
-            //if(Instance != null &&
-            //    Instance.GetType() == typeof(SecureChannel) &&
-            //    MethodName.Equals("Invoke"))
-            //{
-            //    this.InputString = SecureSession.Get(context).Decrypt(this.InputString);
-            //    HttpArgs args = new HttpArgs();
-            //    args.ParseJson(this.InputString);
-            //    JsonParams = args["jsonParams"];
-            //    this._httpArgs = args;
-            //}
         }
 
         protected internal ProxyAlias[] ProxyAliases
@@ -196,14 +182,7 @@ namespace Bam.Net.ServiceProxy
                 }
             }
         }
-
-        private SecureSession GetSecureSession()
-        {
-            string sessionId = Request.Headers[ServiceProxySystem.SecureSessionName];
-            SecureSession session = SecureSession.Get(sessionId);
-            return session;
-        }
-
+        
         Decrypted _decrypted;
         internal Decrypted Decrypted
         {
@@ -410,7 +389,7 @@ namespace Bam.Net.ServiceProxy
                         byte[] bytes;
                         if (_instance.TryToBinaryBytes(out bytes, (ex) => 
                         {
-                            Log.AddEntry("Failed to serialize object instance of type {0}: {1}", LogEventType.Warning, ex, _targetType.FullName, ex.Message);
+                            Log.AddEntry("Failed to serialize object instance of type {0}", LogEventType.Warning, ex, _targetType.FullName);
                         }))
                         {
                             _instance = bytes.FromBinaryBytes();
@@ -547,19 +526,6 @@ namespace Bam.Net.ServiceProxy
             return result;
         }
         
-        public dynamic GetSuccessWrapper(object toWrap, string methodName = "Unspecified")
-        {
-            Log.AddEntry("Success::{0}", methodName);
-            return new { Success = true, Message = "", Data = toWrap };
-        }
-
-        public dynamic GetErrorWrapper(Exception ex, bool stack = true, string methodName = "Unspecified")
-        {
-            Log.AddEntry("Error::{0}\r\n***{1}\r\n***", ex, methodName, ex.Message);
-            string message = GetMessage(ex, stack);
-            return new { Success = false, Message = message };
-        }
-
 		public bool HasCallback
 		{
 			get
