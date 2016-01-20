@@ -209,7 +209,6 @@
     <Compile Include="NotRespondedHandlerAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Renderers\Renderer.cs" />
-    <Compile Include="RequestHandler.cs" />
     <Compile Include="RespondedHandlerAttribute.cs" />
     <Compile Include="ResponderBase.cs" />
     <Compile Include="ResponderEventHandler.cs" />
