@@ -30,7 +30,7 @@
   "AppInitializer": null,
   "AppInitializerAssemblyPath": null,
   "UserManager": {
-    "ApplicationNameResolverType": "Bam.Net.ServiceProxy.DefaultConfigurationApplicationNameProvider, Bam.Net.ServiceProxy, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "ApplicationNameResolverType": "Bam.Net.Configuration.DefaultConfigurationApplicationNameProvider, Bam.Net, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
     "EmailComposerType": "Bam.Net.Messaging.NamedFormatEmailComposer, Bam.Net.Messaging, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
     "EmailTemplateDirectoryPath": ".\\EmailTemplates",
     "EmailTemplateExtension": ".txt",

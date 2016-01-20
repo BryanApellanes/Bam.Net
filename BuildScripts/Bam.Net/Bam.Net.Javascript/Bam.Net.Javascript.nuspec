@@ -2,9 +2,9 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Javascript</id>
-    <version>1.0.2</version>
-    <authors>Bam DotNet</authors>
-    <owners>Bam DotNet</owners>
+    <version>1.2.1</version>
+    <authors>Bryan Apellanes</authors>
+    <owners>Bryan Apellanes</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>http://bryanapellanes.github.io/Brevitee/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>

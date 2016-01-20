@@ -36,3 +36,5 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: InternalsVisibleTo("Bam.Net.Stickerize.Tests")]
+[assembly: AssemblyVersion("1.2.1")]
+[assembly: AssemblyFileVersion("1.2.1")]
