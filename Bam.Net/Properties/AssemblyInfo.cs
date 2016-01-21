@@ -9,9 +9,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Bam.Net")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Productivity Tools")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Bam DotNet")]
+[assembly: AssemblyCompany("Bryan Apellanes")]
 [assembly: AssemblyProduct("Bam.Net")]
 [assembly: AssemblyCopyright("Copyright © Bryan Apellanes 2015")]
 [assembly: AssemblyTrademark("")]
@@ -38,5 +38,5 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("Bam.Net.Tests")]
 [assembly: InternalsVisibleTo("Bam.Net.Automation.Tests")]
 
-[assembly: AssemblyVersion("1.2.1")]
-[assembly: AssemblyFileVersion("1.2.1")]
+[assembly: AssemblyVersion("1.2.2")]
+[assembly: AssemblyFileVersion("1.2.2")]

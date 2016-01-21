@@ -6,10 +6,10 @@
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
-    <projectUrl>http://bryanapellanes.github.io/Brevitee/</projectUrl>
+    <projectUrl>http://bryanapellanes.github.io/Bam.Net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>
-	Unit testing and assertion tools for use with Bam
+	Simple unit testing and assertion tools for use with Bam
 	</description>
     <copyright>Copyright 2015</copyright>
     <dependencies>

@@ -8,8 +8,8 @@
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>http://bryanapellanes.github.io/Brevitee/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Tools for authoring web based applications</description>
-    <copyright>Copyright 2014</copyright>
+    <description>Tools for authoring distributed web based applications</description>
+    <copyright>Copyright 2015</copyright>
     <dependencies />
   </metadata>
 </package>

@@ -3,6 +3,7 @@ call remove_nuspec_ro.cmd
 nuver /c:"Copyright %1" /path:BamToolkit\BamToolkit.nuspec
 nuver /c:"Copyright %1" /path:Bam.Net\Bam.Net.nuspec 
 nuver /c:"Copyright %1" /path:Bam.Net.Analytics\Bam.Net.Analytics.nuspec
+nuver /c:"Copyright %1" /path:Bam.Net.ApplicationServices\Bam.Net.ApplicationServices.nuspec
 nuver /c:"Copyright %1" /path:Bam.Net.Automation\Bam.Net.Automation.nuspec
 nuver /c:"Copyright %1" /path:Bam.Net.CommandLine\Bam.Net.CommandLine.nuspec 
 nuver /c:"Copyright %1" /path:Bam.Net.Data\Bam.Net.Data.nuspec

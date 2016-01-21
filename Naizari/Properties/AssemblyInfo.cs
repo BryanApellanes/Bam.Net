@@ -9,9 +9,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Naizari")]
-[assembly: AssemblyDescription("Naizari Core")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Naizari")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Naizari")]
 [assembly: AssemblyCopyright("Copyright © Naizari")]
 [assembly: AssemblyTrademark("")]
@@ -50,6 +50,6 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 
 
-[assembly: AssemblyVersion("1.2.1")]
-[assembly: AssemblyFileVersion("1.2.1")]
+[assembly: AssemblyVersion("1.2.2")]
+[assembly: AssemblyFileVersion("1.2.2")]
 

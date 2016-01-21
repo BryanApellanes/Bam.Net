@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("TestBuildProject")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("K&L Gates")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("TestBuildProject")]
 [assembly: AssemblyCopyright("Copyright © K&L Gates 2012")]
 [assembly: AssemblyTrademark("")]
@@ -37,5 +37,5 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 
 
-[assembly: AssemblyVersion("1.2.1")]
-[assembly: AssemblyFileVersion("1.2.1")]
+[assembly: AssemblyVersion("1.2.2")]
+[assembly: AssemblyFileVersion("1.2.2")]

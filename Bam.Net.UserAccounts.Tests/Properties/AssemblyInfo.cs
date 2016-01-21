@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Bam.Net.Users.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Bam DotNet")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Bam.Net.Users.Tests")]
 [assembly: AssemblyCopyright("Copyright © Bryan Apellanes 2015")]
 [assembly: AssemblyTrademark("")]
@@ -36,5 +36,5 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: InternalsVisibleTo("Bam.Net.Stickerize.Tests")]
-[assembly: AssemblyVersion("1.2.1")]
-[assembly: AssemblyFileVersion("1.2.1")]
+[assembly: AssemblyVersion("1.2.2")]
+[assembly: AssemblyFileVersion("1.2.2")]

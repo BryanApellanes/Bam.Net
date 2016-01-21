@@ -8,7 +8,7 @@
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>http://bryanapellanes.github.io/Bam.Net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Command Line Tools</description>
+    <description>Command line tools</description>
     <copyright>Copyright 2015</copyright>
     <dependencies>
       <dependency id="Bam.Net" version="1.0.1" />

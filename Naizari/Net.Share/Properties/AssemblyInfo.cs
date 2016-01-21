@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("KLGates.Net.Share")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Preston | Gates | Ellis LLP")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("KLGates.Net.Share")]
 [assembly: AssemblyCopyright("Copyright © Preston | Gates | Ellis LLP 2008")]
 [assembly: AssemblyTrademark("")]
@@ -37,5 +37,5 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 
 
-[assembly: AssemblyVersion("1.2.1")]
-[assembly: AssemblyFileVersion("1.2.1")]
+[assembly: AssemblyVersion("1.2.2")]
+[assembly: AssemblyFileVersion("1.2.2")]

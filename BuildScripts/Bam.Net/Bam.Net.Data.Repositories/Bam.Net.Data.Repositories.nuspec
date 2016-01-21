@@ -6,9 +6,9 @@
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
-    <projectUrl>http://bryanapellanes.github.io/Brevitee/</projectUrl>
+    <projectUrl>http://bryanapellanes.github.io/Bam.Net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Repository pattern providers for Bam framework</description>
+    <description>Repository pattern providers for the Bam framework</description>
     <copyright>Copyright 2015</copyright>
     <dependencies>
       <dependency id="Bam.Net" version="1.0.1" />

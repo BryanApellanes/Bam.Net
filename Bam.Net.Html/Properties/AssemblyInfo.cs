@@ -9,9 +9,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Bam.Net.Html")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Fluent extensions to TagBuilder")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Bam DotNet")]
+[assembly: AssemblyCompany("Bryan Apellanes")]
 [assembly: AssemblyProduct("Bam.Net.Html")]
 [assembly: AssemblyCopyright("Copyright © Bryan Apellanes 2015")]
 [assembly: AssemblyTrademark("")]
@@ -37,5 +37,5 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: InternalsVisibleTo("Bam.Net.Html.Tests")]
 [assembly: InternalsVisibleTo("Bam.Net.Rendering")]
-[assembly: AssemblyVersion("1.2.1")]
-[assembly: AssemblyFileVersion("1.2.1")]
+[assembly: AssemblyVersion("1.2.2")]
+[assembly: AssemblyFileVersion("1.2.2")]

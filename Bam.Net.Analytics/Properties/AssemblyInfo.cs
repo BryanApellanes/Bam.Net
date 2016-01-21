@@ -9,9 +9,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Bam.Net.Analytics")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Basic Analytics Tools")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Bam DotNet")]
+[assembly: AssemblyCompany("Bryan Apellanes")]
 [assembly: AssemblyProduct("Bam.Net.Analytics")]
 [assembly: AssemblyCopyright("Copyright © Bryan Apellanes 2015")]
 [assembly: AssemblyTrademark("")]
@@ -35,5 +35,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.2.1")]
-[assembly: AssemblyFileVersion("1.2.1")]
+[assembly: AssemblyVersion("1.2.2")]
+[assembly: AssemblyFileVersion("1.2.2")]
