@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Bam.Net.Syndication")]
-[assembly: AssemblyDescription("Tools for programmatically interacting with command line git  	and TFS source control")]
+[assembly: AssemblyDescription("Bam extensions to Argotic based rss and atom feeds")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Bryan Apellanes")]
 [assembly: AssemblyProduct("Bam.Net.Syndication")]

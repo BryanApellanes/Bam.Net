@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Bam.Net.Data.Dynamic")]
-[assembly: AssemblyDescription("description")]
+[assembly: AssemblyDescription("Dynamic wrapper to ADO.Net")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Bam DotNet")]
 [assembly: AssemblyProduct("Bam.Net.Data.Dynamic")]

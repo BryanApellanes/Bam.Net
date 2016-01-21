@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Bam.Net.CommandLine")]
-[assembly: AssemblyDescription("Command Line Tools")]
+[assembly: AssemblyDescription("Command line tools")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Bryan Apellanes")]
 [assembly: AssemblyProduct("Bam.Net.CommandLine")]

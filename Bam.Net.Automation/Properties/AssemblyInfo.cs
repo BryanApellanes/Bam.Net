@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Bam.Net.Automation")]
-[assembly: AssemblyDescription("Automation Tools")]
+[assembly: AssemblyDescription("Automation tools")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Bryan Apellanes")]
 [assembly: AssemblyProduct("Bam.Net.Automation")]

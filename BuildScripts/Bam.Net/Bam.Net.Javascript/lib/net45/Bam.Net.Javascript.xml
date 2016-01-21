@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Bam.Net.Javascript</name>
+    </assembly>
+    <members>
+        <member name="M:Bam.Net.Javascript.Extensions.Compress(System.String)">
+            <summary>
+            Use YuiCompressor to compress the specified javascript
+            </summary>
+            <param name="script"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Javascript.Extensions.JsonFromJsLiteralFile(System.String,System.String)">
+            <summary>
+            Get a json string by reading an object from a javascript file
+            </summary>
+            <param name="javascriptFilePath"></param>
+            <param name="objName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Javascript.Extensions.JsonFromJsLiteralFile(System.IO.FileInfo,System.String)">
+            <summary>
+            Get a json string by reading an object from a javascript file
+            </summary>
+            <param name="jsLiteralFile"></param>
+            <param name="objName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Javascript.JsContext.Load(System.String)">
+            <summary>
+            Preload the specified script text
+            </summary>
+            <param name="script"></param>
+        </member>
+        <member name="M:Bam.Net.Javascript.ResourceScripts.LoadScripts">
+            <summary>
+            Loads embedded resouce scripts that are in the namespace path Bam.Net.Javascript
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Javascript.ResourceScripts.LoadScripts(System.Type)">
+            <summary>
+            Loads all resource scripts in the namespace path of the specified type.
+            </summary>
+            <param name="type"></param>
+        </member>
+        <member name="M:Bam.Net.Javascript.ResourceScripts.LoadNamespaceScripts(System.Reflection.Assembly,System.String)">
+            <summary>
+            Loads embedded scripts into memory from the specified
+            assembly in the specified namespacePath
+            </summary>
+            <param name="assembly"></param>
+            <param name="namespacePath"></param>
+        </member>
+    </members>
+</doc>

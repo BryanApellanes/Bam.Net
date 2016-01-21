@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Bam.Net.Data.Repositories")]
-[assembly: AssemblyDescription("Repository pattern providers for Bam framework")]
+[assembly: AssemblyDescription("Repository pattern providers for the Bam framework")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Bryan Apellanes")]
 [assembly: AssemblyProduct("Bam.Net.Data.Repositories")]
