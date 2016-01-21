@@ -27,7 +27,7 @@ namespace assinf
             {
                 if(!string.IsNullOrEmpty(NuspecProperty) && NuspecFile != null)
                 {
-                    return NuspecFile.Property<string>(NuspecProperty, false);
+                    return NuspecFile.Property<string>(NuspecProperty, false).Replace("\r\n", " ").Replace("\r", " ").Replace("\n", " ");
                 }
 
                 return _value;
