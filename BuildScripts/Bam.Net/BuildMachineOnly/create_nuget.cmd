@@ -13,4 +13,4 @@ call pack.cmd
 echo "Ready to push Nuget packages"
 echo "use 'show' to see nuspec details"
 
-echo "type 'push' when ready"
+echo "type 'push %1.%2.%3' when ready"

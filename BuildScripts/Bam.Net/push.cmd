@@ -29,4 +29,5 @@ nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.Testing.%1.nupkg
 nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.UserAccounts.%1.nupkg
 nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.Yaml.%1.nupkg
 
+call tag_version.cmd %1
 :END
