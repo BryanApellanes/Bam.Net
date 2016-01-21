@@ -6,7 +6,7 @@ call set_ver.cmd %1 %2 %3
 call build_solution.cmd Release v4.5 c:\src
 call build_toolkit.cmd
 call set_owners_and_authors.cmd "Bryan Apellanes"
-call set_copyright.cmd "Copyright © Bryan Apellanes 2015"
+call set_copyright.cmd "Bryan Apellanes 2015"
 call set_major_minor_patch.cmd
 call pack.cmd
 

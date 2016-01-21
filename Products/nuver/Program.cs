@@ -181,11 +181,11 @@ namespace nuver
             string copyRight = file.Copyright;
             if (Arguments.Contains("c"))
             {
-                copyRight = Arguments["c"];
+                copyRight = "Copyright © {0}"._Format(Arguments["c"]);
             }
             else if (Arguments.Contains("copyright"))
             {
-                copyRight = Arguments["copyright"];
+                copyRight = "Copyright © {0}"._Format(Arguments["copyright"]);
             }
             file.Copyright = copyRight;
         }

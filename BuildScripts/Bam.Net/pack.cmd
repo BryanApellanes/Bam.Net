@@ -17,7 +17,6 @@ nuget pack Bam.Net.Html\Bam.Net.Html.nuspec
 nuget pack Bam.Net.Incubation\Bam.Net.Incubation.nuspec 
 nuget pack Bam.Net.Javascript\Bam.Net.Javascript.nuspec
 nuget pack Bam.Net.Logging\Bam.Net.Logging.nuspec 
-nuget pack Bam.Net.Management\Bam.Net.Management.nuspec
 nuget pack Bam.Net.Messaging\Bam.Net.Messaging.nuspec
 nuget pack Bam.Net.Net\Bam.Net.Net.nuspec
 nuget pack Bam.Net.Profiguration\Bam.Net.Profiguration.nuspec
