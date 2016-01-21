@@ -8,7 +8,7 @@
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>http://bryanapellanes.github.io/Brevitee/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Basic Analytics Tools</description>
+    <description>Tools for distributed application services</description>
     <copyright>Copyright 2015</copyright>
     <dependencies>
       <dependency id="Bam.Net" version="1.1.5" />
