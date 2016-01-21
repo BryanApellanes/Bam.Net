@@ -178,14 +178,16 @@ namespace nuver
 
         private static void SetCopyright(NuspecFile file)
         {
+            string format = "Copyright © {0} {1}";
+            int year = DateTime.UtcNow.Year;
             string copyRight = file.Copyright;
             if (Arguments.Contains("c"))
             {
-                copyRight = "Copyright © {0}"._Format(Arguments["c"]);
+                copyRight = format._Format(Arguments["c"], year);
             }
             else if (Arguments.Contains("copyright"))
             {
-                copyRight = "Copyright © {0}"._Format(Arguments["copyright"]);
+                copyRight = format._Format(Arguments["copyright"], year);
             }
             file.Copyright = copyRight;
         }
