@@ -16,35 +16,6 @@ namespace assinf
     public class ConsoleActions : CommandLineTestInterface
     {
         // See the below for examples of ConsoleActions and UnitTests
-        static List<AssemblyAttributeInfo> GetAssemblyAttributeInfos(string fileName, string version, string nuspecRoot)
-        {
-            List<AssemblyAttributeInfo> _assemblyAttributeInfos = new List<AssemblyAttributeInfo>();
-            DirectoryInfo nuspecRootDir = new DirectoryInfo(nuspecRoot);
-            FileInfo[] nuspecFiles = nuspecRootDir.GetFiles("{0}.nuspec"._Format(fileName), SearchOption.AllDirectories);
-            string nuspecFilePath = string.Empty;
-            NuspecFile nuspecFile = null;
-            if (nuspecFiles.Length == 1)
-            {
-                nuspecFilePath = nuspecFiles[0].FullName;
-            }
-            else if (nuspecFiles.Length > 1)
-            {
-                nuspecFilePath = SelectNuspecFile(nuspecFiles);
-            }
-
-            if (!string.IsNullOrEmpty(nuspecFilePath))
-            {
-                nuspecFile = new NuspecFile(nuspecFilePath);
-            }
-
-            _assemblyAttributeInfos = new List<AssemblyAttributeInfo>();
-            _assemblyAttributeInfos.Add(new AssemblyAttributeInfo { AttributeName = "AssemblyVersion", Value = version });
-            _assemblyAttributeInfos.Add(new AssemblyAttributeInfo { AttributeName = "AssemblyFileVersion", Value = version });
-            _assemblyAttributeInfos.Add(new AssemblyAttributeInfo { AttributeName = "AssemblyCompany", NuspecFile = nuspecFile, NuspecProperty = "Owners" });
-            _assemblyAttributeInfos.Add(new AssemblyAttributeInfo { AttributeName = "AssemblyDescription", NuspecFile = nuspecFile, NuspecProperty = "Description" });
-        
-            return _assemblyAttributeInfos;
-        }
         #region ConsoleAction examples
         [ConsoleAction("si", "Set assembly info")]
         public static void SetInfo()
@@ -86,52 +57,36 @@ namespace assinf
                 newContent.ToString().SafeWriteToFile(infoFile.FullName, true);
             });
         }
-
-        //[ConsoleAction("sv", "Set Version")]
-        //public static void SetVersion()
-        //{
-        //    string srcRoot = Arguments["root"] ?? Prompt("Please enter the root of the source tree");
-        //    string version = Arguments["sv"] ?? Prompt("Please enter the version number");
-        //    string assemblyVersionFormat = "[assembly: AssemblyVersion(\"{0}\")]";
-        //    string fileVersionFormat = "[assembly: AssemblyFileVersion(\"{0}\")]";
-
-        //    DirectoryInfo srcRootDir = new DirectoryInfo(srcRoot);
-        //    srcRootDir.GetFiles("AssemblyInfo.cs", SearchOption.AllDirectories).Each(infoFile =>
-        //    {
-        //        OutLineFormat("Writing assembly info into: {0}", ConsoleColor.Blue, infoFile.FullName);
-        //        StringBuilder newContent = new StringBuilder();
-        //        bool wroteAssemblyVersion = false;
-        //        bool wroteFileVersion = false;
-        //        using (StreamReader reader = new StreamReader(infoFile.FullName))
-        //        {
-        //            while (!reader.EndOfStream)
-        //            {
-        //                string currentLine = reader.ReadLine();
-        //                if (currentLine.StartsWith("[assembly: AssemblyVersion"))
-        //                {
-        //                    currentLine = assemblyVersionFormat._Format(version);
-        //                    wroteAssemblyVersion = true;
-        //                }
-        //                else if (currentLine.StartsWith("[assembly: AssemblyFileVersion"))
-        //                {
-        //                    currentLine = fileVersionFormat._Format(version);
-        //                    wroteFileVersion = true;
-        //                }
-        //                newContent.AppendLine(currentLine);
-        //            }
-        //        }
-        //        if (!wroteAssemblyVersion)
-        //        {
-        //            newContent.AppendLine(assemblyVersionFormat._Format(version));
-        //        }
-        //        if (!wroteFileVersion)
-        //        {
-        //            newContent.AppendLine(fileVersionFormat._Format(version));
-        //        }
-        //        newContent.ToString().SafeWriteToFile(infoFile.FullName, true);
-        //    });
-        //}
         #endregion
+        private static List<AssemblyAttributeInfo> GetAssemblyAttributeInfos(string fileName, string version, string nuspecRoot)
+        {
+            List<AssemblyAttributeInfo> _assemblyAttributeInfos = new List<AssemblyAttributeInfo>();
+            DirectoryInfo nuspecRootDir = new DirectoryInfo(nuspecRoot);
+            FileInfo[] nuspecFiles = nuspecRootDir.GetFiles("{0}.nuspec"._Format(fileName), SearchOption.AllDirectories);
+            string nuspecFilePath = string.Empty;
+            NuspecFile nuspecFile = null;
+            if (nuspecFiles.Length == 1)
+            {
+                nuspecFilePath = nuspecFiles[0].FullName;
+            }
+            else if (nuspecFiles.Length > 1)
+            {
+                nuspecFilePath = SelectNuspecFile(nuspecFiles);
+            }
+
+            if (!string.IsNullOrEmpty(nuspecFilePath))
+            {
+                nuspecFile = new NuspecFile(nuspecFilePath);
+            }
+
+            _assemblyAttributeInfos = new List<AssemblyAttributeInfo>();
+            _assemblyAttributeInfos.Add(new AssemblyAttributeInfo { AttributeName = "AssemblyVersion", Value = version });
+            _assemblyAttributeInfos.Add(new AssemblyAttributeInfo { AttributeName = "AssemblyFileVersion", Value = version });
+            _assemblyAttributeInfos.Add(new AssemblyAttributeInfo { AttributeName = "AssemblyCompany", NuspecFile = nuspecFile, NuspecProperty = "Owners" });
+            _assemblyAttributeInfos.Add(new AssemblyAttributeInfo { AttributeName = "AssemblyDescription", NuspecFile = nuspecFile, NuspecProperty = "Description" });
+
+            return _assemblyAttributeInfos;
+        }
         private static string SelectNuspecFile(FileInfo[] files)
         {
             OutLineFormat("Multiple nuspec files found named {0}\r\n{1}Select from the list:\r\n", Path.GetFileNameWithoutExtension(files[0].FullName));

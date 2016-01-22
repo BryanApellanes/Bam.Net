@@ -506,7 +506,7 @@ namespace Bam.Net.Testing
 				try
 				{
 					InvokeTest(consoleMethod, generateParameters);
-					Pass(consoleMethod.Method.Name.PascalSplit(" "));
+					Pass(consoleMethod.Information);
 					passedCount++;
 					OnTestPassed(consoleMethod);
 				}

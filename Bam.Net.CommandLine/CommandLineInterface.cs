@@ -954,6 +954,33 @@ namespace Bam.Net.CommandLine
             }
         }
 
+        /// <summary>
+        /// Determines if any command line switches were provided as arguments
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static bool ReceivedSwitchArguments(Type type)
+        {
+            MethodInfo[] methods = type.GetMethods();
+            bool receivedSwitches = false;
+            foreach(MethodInfo method in methods)
+            {
+                ConsoleAction action = null;
+                if(method.HasCustomAttributeOfType<ConsoleAction>(out action))
+                {
+                    if (!string.IsNullOrEmpty(action.CommandLineSwitch) && !receivedSwitches)
+                    {
+                        receivedSwitches = Arguments.Contains(action.CommandLineSwitch);
+                    }
+                }
+                if (receivedSwitches)
+                {
+                    break;
+                }
+            }
+            return receivedSwitches;
+        }
+
 		/// <summary>
 		/// Execute the methods on the specified instance that are addorned with ConsoleAction
 		/// attributes that have CommandLineSwitch(es) defined that match keys in the

@@ -113,6 +113,18 @@ namespace Bam.Net.Data
         }
 
         /// <summary>
+        /// A list of lists representing the individual
+        /// pages
+        /// </summary>
+        public List<List<T>> AllPages
+        {
+            get
+            {
+                return allPages;
+            }
+        }
+
+        /// <summary>
         /// Retrieve the set of values on the specified
         /// zero based page number
         /// </summary>

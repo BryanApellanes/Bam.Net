@@ -19,6 +19,7 @@ using Bam.Net;
 using Bam.Net.Testing;
 using Bam.Net.Encryption;
 using Bam.Net.Logging;
+using System.Threading.Tasks;
 
 namespace Bam.Net.Testing
 {
@@ -60,7 +61,9 @@ namespace Bam.Net.Testing
             AddValidArgument("debug", true, "If specified, the runner will pause to allow for a debugger to be attached to the process");
             AddValidArgument("data", false, "The path to save the results to, default is the current directory if not specified");
             AddValidArgument("dataPrefix", true, "The file prefix for the sqlite data file or 'BamTests' if not specified");
+            
             AddValidArgument(_exitOnFailure, true);
+            AddSwitches(typeof(Program));
 
             DefaultMethod = typeof(Program).GetMethod("Start");
         }
@@ -72,37 +75,14 @@ namespace Bam.Net.Testing
                 Pause("Attach the debugger now");
             }
 
-            PrepareResultRepository(Arguments["dataPrefix"].Or("BamTests"));
-            string startDirectory = Environment.CurrentDirectory;
-            DirectoryInfo testDir = GetTestDirectory();
-            Environment.CurrentDirectory = testDir.FullName;
-
-            FileInfo[] files = GetTestFiles(testDir);
-
-            TestFailed += TestFailedHandler;
-            TestPassed += TestPassedHandler;
+            string startDirectory;
+            FileInfo[] files;
+            Setup(out startDirectory, out files);
             bool exceptionOccurred = false;
             for (int i = 0; i < files.Length; i++)
             {
                 FileInfo fi = files[i];
-                try
-                {
-                    Assembly assembly = Assembly.LoadFrom(fi.FullName);
-                    AttachBeforeAndAfterHandlers(assembly);
-                    RunAllTests(assembly);
-                    NullifyBeforeAndAfterHandlers();
-                    Environment.CurrentDirectory = startDirectory;
-                }
-                catch (Exception ex)
-                {
-                    Environment.CurrentDirectory = startDirectory;
-                    exceptionOccurred = true;
-                    OutLineFormat("bamtestrunner: {0}", ConsoleColor.DarkRed, ex.Message);
-                    if (Arguments.Contains(_exitOnFailure))
-                    {
-                        Exit(1);
-                    }
-                }
+                RunTestsInFile(fi.FullName, startDirectory);
             }
 
             OutLineFormat("Passed: {0}", ConsoleColor.Green, _passedCount);
@@ -116,6 +96,69 @@ namespace Bam.Net.Testing
             {
                 Exit(0);
             }
+        }
+
+        [ConsoleAction("mp", "[process_count]", "Run the tests in the specified directory using multiple processes")]
+        public static void RunTestsInMultipleProcesses()
+        {
+            int processCount = 5;
+            string processCountString = Arguments["mp"];
+            if (!int.TryParse(processCountString, out processCount))
+            {
+                OutLineFormat("{0}: Invalid value specified for argument /mp: {1}", ConsoleColor.DarkRed, _programName, processCountString);
+            }
+            string startDirectory;
+            FileInfo[] files;
+            Setup(out startDirectory, out files);
+            Book<FileInfo> pagedFiles = new Book<FileInfo>(files, processCount);
+            foreach(List<FileInfo> page in pagedFiles.AllPages)
+            {
+                List<Task> tasks = new List<Task>(page.Count);
+                foreach(FileInfo file in page)
+                {
+                    tasks.Add(Task.Run(() =>
+                    {
+                        RunTestsInFile(file.FullName, startDirectory);
+                    }));
+                }
+                Task.WaitAll(tasks.ToArray());
+            }
+        }
+
+        [ConsoleAction("assembly", "[path_to_test_assembly]", "Run tests in the specified assembly")]
+        public static void RunTestsInFile(string assemblyPath = null, string endDirectory = null)
+        {
+            assemblyPath = assemblyPath ?? Arguments["assembly"];
+            endDirectory = endDirectory ?? Environment.CurrentDirectory;
+            try
+            {
+                Assembly assembly = Assembly.LoadFrom(assemblyPath);
+                AttachBeforeAndAfterHandlers(assembly);
+                RunAllTests(assembly);
+                NullifyBeforeAndAfterHandlers();
+                Environment.CurrentDirectory = endDirectory;
+            }
+            catch (Exception ex)
+            {
+                Environment.CurrentDirectory = endDirectory;
+                OutLineFormat("{0}: {1}", ConsoleColor.DarkRed, _programName, ex.Message);
+                if (Arguments.Contains(_exitOnFailure))
+                {
+                    Exit(1);
+                }
+            }
+        }
+
+        private static void Setup(out string startDirectory, out FileInfo[] files)
+        {
+            PrepareResultRepository(Arguments["dataPrefix"].Or("BamTests"));
+            startDirectory = Environment.CurrentDirectory;
+            DirectoryInfo testDir = GetTestDirectory();
+            Environment.CurrentDirectory = testDir.FullName;
+
+            files = GetTestFiles(testDir);
+            TestFailed += TestFailedHandler;
+            TestPassed += TestPassedHandler;
         }
 
         private static void PrepareResultRepository(string filePrefix)
