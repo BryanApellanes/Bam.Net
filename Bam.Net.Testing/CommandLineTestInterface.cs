@@ -78,7 +78,7 @@ namespace Bam.Net.Testing
 				}
 				else if (Arguments.Contains("t"))
 				{
-					RunAllTests(Assembly.GetEntryAssembly());
+					RunAllUnitTests(Assembly.GetEntryAssembly());
 					return;
 				}
 			}
@@ -301,14 +301,14 @@ namespace Bam.Net.Testing
 			OnTestFinished();
         }
 
-        public static void RunAllTests(Assembly assemblyToAnalyze)
+        public static void RunAllUnitTests(Assembly assemblyToAnalyze)
         {
-            RunAllTests(assemblyToAnalyze, true);
+            RunAllUnitTests(assemblyToAnalyze, true);
         }
 
         protected static void RunAllTestsInteractively(Assembly assemblyToAnalyze)
         {
-            RunAllTests(assemblyToAnalyze, false);
+            RunAllUnitTests(assemblyToAnalyze, false);
         }
 
         /// <summary>
@@ -326,7 +326,7 @@ namespace Bam.Net.Testing
 		public static event EventHandler TestStarting;
 		public static event EventHandler TestFinished;
 
-		protected internal static void RunAllTests(Assembly assemblyToAnalyze, bool generateParameters, bool finalOut = true)
+		protected internal static void RunAllUnitTests(Assembly assemblyToAnalyze, bool generateParameters, bool finalOut = true)
 		{
 			List<ConsoleInvokeableMethod> tests = GetUnitTests(assemblyToAnalyze);
 			string assemblyName = assemblyToAnalyze.FullName;
@@ -338,7 +338,7 @@ namespace Bam.Net.Testing
 
 			OutLineFormat("Running all tests in {0}", ConsoleColor.Green, assemblyName);
 			OutLineFormat("\tFound {0} tests", ConsoleColor.Cyan, tests.Count);
-			RunAllTests(generateParameters, finalOut, tests);
+			RunAllUnitTests(generateParameters, finalOut, tests);
 		}
 
         public static List<ConsoleInvokeableMethod> GetUnitTests(Assembly assemblyToAnalyze )
@@ -491,11 +491,11 @@ namespace Bam.Net.Testing
 			}
 			else
 			{
-				RunAllTests(assemblyToAnalyze);
+				RunAllUnitTests(assemblyToAnalyze);
 			}
 		}
 
-		private static void RunAllTests(bool generateParameters, bool finalOut, List<ConsoleInvokeableMethod> tests)
+		private static void RunAllUnitTests(bool generateParameters, bool finalOut, List<ConsoleInvokeableMethod> tests)
 		{
 			int passedCount = 0;
 			int failedCount = 0;
@@ -512,8 +512,10 @@ namespace Bam.Net.Testing
 				}
 				catch (Exception ex)
 				{
-					if (ex.InnerException != null)
-						ex = ex.InnerException;
+                    if (ex.InnerException != null)
+                    {
+                        ex = ex.InnerException;
+                    }
 
 					OnTestFailed(consoleMethod, ex);
 					failedCount++;

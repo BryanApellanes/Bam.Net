@@ -82,13 +82,23 @@ namespace Bam.Net.Data
             SetInitializerAndConnectionStringResolver(connectionName);
             Register(Db.For(connectionName).ServiceProvider);
         }
-
+        /// <summary>
+        /// Registers SQLite as the handler for the specified type.
+        /// This dao handler will register apropriate DatabaseInitializer and
+        /// ConnectionStringResolver.  This behavior is different compared to the
+        /// SqlClientRegistrar's Register method.
+        /// </summary>
         public static void Register(Type daoType)
         {
             SetInitializerAndConnectionStringResolver(daoType);
             Register(Db.For(daoType).ServiceProvider);
         }
-
+        /// <summary>
+        /// Registers SQLite as the handler for the specified generic type T.
+        /// This dao handler will register apropriate DatabaseInitializer and
+        /// ConnectionStringResolver.  This behavior is different compared to the
+        /// SqlClientRegistrar's Register method.
+        /// </summary>
         public static void Register<T>() where T : Dao
         {
             SetInitializerAndConnectionStringResolver(typeof(T));

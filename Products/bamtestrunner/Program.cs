@@ -20,6 +20,7 @@ using Bam.Net.Testing;
 using Bam.Net.Encryption;
 using Bam.Net.Logging;
 using System.Threading.Tasks;
+using Bam.Net.Testing.Integration;
 
 namespace Bam.Net.Testing
 {
@@ -28,6 +29,7 @@ namespace Bam.Net.Testing
     {
         private const string _exitOnFailure = "exitOnFailure";
         private const string _programName = "bamtestrunner";
+        
         static DaoRepository _repo;
         static void Main(string[] args)
         {
@@ -61,13 +63,16 @@ namespace Bam.Net.Testing
             AddValidArgument("debug", true, "If specified, the runner will pause to allow for a debugger to be attached to the process");
             AddValidArgument("data", false, "The path to save the results to, default is the current directory if not specified");
             AddValidArgument("dataPrefix", true, "The file prefix for the sqlite data file or 'BamTests' if not specified");
+            AddValidArgument("type", false, "The type of tests to run [Unit | Integration], default is unit.");
             
             AddValidArgument(_exitOnFailure, true);
             AddSwitches(typeof(Program));
 
+            TestAction = RunUnitTests;
+
             DefaultMethod = typeof(Program).GetMethod("Start");
         }
-
+        
         public static void Start()
         {
             if (Arguments.Contains("debug"))
@@ -75,14 +80,53 @@ namespace Bam.Net.Testing
                 Pause("Attach the debugger now");
             }
 
+            TestType testType;
+            Enum.TryParse<TestType>(Arguments["type"].Or("Unit"), out testType);
+
             string startDirectory;
             FileInfo[] files;
             Setup(out startDirectory, out files);
+
+            switch (testType)
+            {
+                case TestType.Unit:
+                    TestAction = RunUnitTests;
+                    break;
+                case TestType.Integration:
+                    TestAction = RunIntegrationTests;
+                    break;
+            }
+            TestAction(startDirectory, files);
+        }
+
+        protected static Action<string, FileInfo[]> TestAction { get; set; }
+
+        protected static void RunIntegrationTests(string startDirectory, FileInfo[] files)
+        {
             bool exceptionOccurred = false;
             for (int i = 0; i < files.Length; i++)
             {
                 FileInfo fi = files[i];
-                RunTestsInFile(fi.FullName, startDirectory);
+                RunIntegrationTestsInFile(fi.FullName, startDirectory);
+            }
+            
+            if (_failedCount > 0 || exceptionOccurred)
+            {
+                Exit(1);
+            }
+            else
+            {
+                Exit(0);
+            }
+        }
+
+        protected static void RunUnitTests(string startDirectory, FileInfo[] files)
+        {
+            bool exceptionOccurred = false;
+            for (int i = 0; i < files.Length; i++)
+            {
+                FileInfo fi = files[i];
+                RunUnitTestsInFile(fi.FullName, startDirectory);
             }
 
             OutLineFormat("Passed: {0}", ConsoleColor.Green, _passedCount);
@@ -98,30 +142,50 @@ namespace Bam.Net.Testing
             }
         }
 
-        [ConsoleAction("assembly", "[path_to_test_assembly]", "Run tests in the specified assembly")]
-        public static void RunTestsInFile(string assemblyPath = null, string endDirectory = null)
+        [ConsoleAction("UnitTests", "[path_to_test_assembly]", "Run unit tests in the specified assembly")]
+        public static void RunUnitTestsInFile(string assemblyPath = null, string endDirectory = null)
         {
-            assemblyPath = assemblyPath ?? Arguments["assembly"];
+            assemblyPath = assemblyPath ?? Arguments["UnitTests"];
             endDirectory = endDirectory ?? Environment.CurrentDirectory;
             try
             {
                 Assembly assembly = Assembly.LoadFrom(assemblyPath);
                 AttachBeforeAndAfterHandlers(assembly);
-                RunAllTests(assembly);
+                RunAllUnitTests(assembly);                
                 NullifyBeforeAndAfterHandlers();
                 Environment.CurrentDirectory = endDirectory;
             }
             catch (Exception ex)
             {
                 Environment.CurrentDirectory = endDirectory;
-                OutLineFormat("{0}: {1}", ConsoleColor.DarkRed, _programName, ex.Message);
-                if (Arguments.Contains(_exitOnFailure))
-                {
-                    Exit(1);
-                }
+                HandleException(ex);
             }
         }
 
+        [ConsoleAction("IntegrationTests", "[path_to_test_assemlby]", "Run integration tests in the specified assemlby")]
+        public static void RunIntegrationTestsInFile(string assemblyPath = null, string endDirectory = null)
+        {
+            assemblyPath = assemblyPath ?? Arguments["IntegrationTests"];
+            try
+            {
+                Assembly assembly = Assembly.LoadFrom(assemblyPath);
+                IntegrationTestRunner.RunAllIntegrationTests(assembly);
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+        }
+
+        private static void HandleException(Exception ex)
+        {
+            OutLineFormat("{0}: {1}", ConsoleColor.DarkRed, _programName, ex.Message);
+            if (Arguments.Contains(_exitOnFailure))
+            {
+                Exit(1);
+            }
+        }
+        
         private static void Setup(out string startDirectory, out FileInfo[] files)
         {
             PrepareResultRepository(Arguments["dataPrefix"].Or("BamTests"));
@@ -131,7 +195,7 @@ namespace Bam.Net.Testing
 
             files = GetTestFiles(testDir);
             TestFailed += TestFailedHandler;
-            TestPassed += TestPassedHandler;
+            TestPassed += TestPassedHandler;            
         }
 
         private static void PrepareResultRepository(string filePrefix)

@@ -14,6 +14,7 @@ using System.IO;
 using Bam.Net.CommandLine;
 using Bam.Net;
 using Bam.Net.Testing;
+using Bam.Net.Testing.Integration;
 using Bam.Net.Encryption;
 
 namespace Bam.Net.Data.Tests.Integration
@@ -35,19 +36,19 @@ namespace Bam.Net.Data.Tests.Integration
 		[ConsoleAction]
 		public void RunIntegrationTests()
 		{
-			TestRunner.RunAllIntegrationTests(this.GetType().Assembly);
+			IntegrationTestRunner.RunAllIntegrationTests(this.GetType().Assembly);
 		}
 
 		[ConsoleAction]
 		public void RunQueryTests()
 		{
-			TestRunner.RunIntegrationTests(typeof(DaoQueryTests));
+			IntegrationTestRunner.RunIntegrationTests(typeof(DaoQueryTests));
 		}
 
 		[ConsoleAction]
 		public void RunCrudTests()
 		{
-			TestRunner.RunIntegrationTests(typeof(DaoCrudTests));
+			IntegrationTestRunner.RunIntegrationTests(typeof(DaoCrudTests));
 		}
 
 		[ConsoleAction]
@@ -99,7 +100,7 @@ namespace Bam.Net.Data.Tests.Integration
 		{
 			if (Arguments.Contains("t"))
 			{
-				RunAllTests(Assembly.GetExecutingAssembly());
+				RunAllUnitTests(Assembly.GetExecutingAssembly());
 			}
 			else
 			{

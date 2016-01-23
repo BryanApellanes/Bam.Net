@@ -60,7 +60,7 @@ namespace Bam.Net.Schema.Org.Tests
 		{
 			if (Arguments.Contains("t"))
 			{
-				RunAllTests(typeof(Program).Assembly);
+				RunAllUnitTests(typeof(Program).Assembly);
 			}
 			else
 			{

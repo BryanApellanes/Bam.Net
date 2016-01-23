@@ -26,55 +26,8 @@ using Bam.Net.Testing.Integration;
 
 namespace Bam.Net.UserAccounts.Tests
 {
-    public partial class UserAccountTestsProgram
+    public partial class Program
     {
-        static UserAccountTestsProgram()
-        {
-            SQLiteRegistrar.Register<User>();
-            //SqlClientRegistrar.Register<User>();
-            Db.TryEnsureSchema<User>();
-
-			ClearAllUserInfo();			
-        }
-
-		private static void ClearAllUserInfo()
-		{
-			DeleteAllAccounts();
-			DeleteAllPasswords();
-			DeleteAllLogins();
-			DeleteAllSessions();
-			DeleteAllUsers();
-		}
-
-        private static void DeleteAllUsers()
-        {
-            UserCollection users = User.LoadAll();
-            users.Delete();
-        }
-
-        private static void DeleteAllSessions()
-        {
-            SessionCollection sessions = Session.LoadAll();
-            sessions.Delete();
-        }
-
-        private static void DeleteAllLogins()
-        {
-            LoginCollection logins = Login.LoadAll();
-            logins.Delete();
-        }
-
-        private static void DeleteAllPasswords()
-        {
-            PasswordCollection passwords = Password.LoadAll();
-            passwords.Delete();
-        }
-
-        private static void DeleteAllAccounts()
-        {
-            AccountCollection accounts = Account.LoadAll();
-            accounts.Delete();            
-        }
 
         [UnitTest]
         public void UserNameIsAvailableShouldBeFalseIfUserAlreadyExists()
@@ -335,7 +288,7 @@ namespace Bam.Net.UserAccounts.Tests
             string userName = MethodBase.GetCurrentMethod().Name;
             IHttpContext context;
             LoginResponse result;
-            SignUpAndLogin(userName, out context, out result);
+            UserTestTools.SignUpAndLogin(userName, out context, out result);
 
             Expect.IsTrue(result.Success);
 
@@ -353,7 +306,7 @@ namespace Bam.Net.UserAccounts.Tests
             IHttpContext context;
             LoginResponse result;
             UserManager userMgr;
-            SignUpAndLogin(userName, out context, out result, out userMgr);
+            UserTestTools.SignUpAndLogin(userName, out context, out result, out userMgr);
 
             Session session = Session.Get(context);
             Expect.IsTrue(session.IsActive.Value, "session wasn't active");
@@ -366,7 +319,7 @@ namespace Bam.Net.UserAccounts.Tests
             IHttpContext context;
             LoginResponse result;
             UserManager userMgr;
-            SignUpAndLogin(userName, out context, out result, out userMgr);
+            UserTestTools.SignUpAndLogin(userName, out context, out result, out userMgr);
 
             Session session = Session.Get(context);
 
@@ -380,7 +333,7 @@ namespace Bam.Net.UserAccounts.Tests
             IHttpContext context;
             LoginResponse result;
             UserManager userMgr;
-            SignUpAndLogin(userName, out context, out result, out userMgr);
+            UserTestTools.SignUpAndLogin(userName, out context, out result, out userMgr);
 
             SignOutResponse response = userMgr.SignOut();
             Expect.AreEqual(true, response.Success);
@@ -393,7 +346,7 @@ namespace Bam.Net.UserAccounts.Tests
             IHttpContext context;
             LoginResponse result;
             UserManager userMgr;
-            SignUpAndLogin(userName, out context, out result, out userMgr);
+            UserTestTools.SignUpAndLogin(userName, out context, out result, out userMgr);
 
             Session session = Session.Get(context);
             session.End();
@@ -405,60 +358,6 @@ namespace Bam.Net.UserAccounts.Tests
             Expect.IsFalse(doubleCheck.IsActive.Value, "Doublecheck was still active");
         }
 
-        public static void SignUpAndLogin(string userName, out IHttpContext context, out LoginResponse result)
-        {
-            UserManager userProxy;
-            SignUpAndLogin(userName, out context, out result, out userProxy);
-        }
-
-        public static void SignUpAndLogin(string userName, out IHttpContext context, out LoginResponse result, out UserManager userProxy)
-        {
-            string passHash;
-            SignUp(userName, out userProxy, out context, out passHash);
-            result = userProxy.Login(userName, passHash);
-        }
-
-        protected internal static void SignUp(string userName, out UserManager userProxy, out IHttpContext context, out string passHash)
-        {
-            SignUp(userName, "test@domain.cxm", out userProxy, out context, out passHash);
-        }
-
-        protected internal static void SignUp(string userName, string email)
-        {
-            UserManager mgr;
-            IHttpContext context;
-            string passHash;
-            SignUp(userName, email, out mgr, out context, out passHash);
-        }
-
-        private static void SignUp(string userName, string email, out UserManager userProxy, out IHttpContext context, out string passHash)
-        {
-            userProxy = new UserManager();
-            context = A.Fake<IHttpContext>();
-            context.Request = new TestRequest();
-            userProxy.HttpContext = context;
-
-            Session session = Session.Get(context);
-
-            passHash = "password".Sha1();
-            EnsureUserNameAndEmailAreAvailable(userName, email);
-            userProxy.SignUp(email, userName, passHash, false);
-        }
-
-        private static void EnsureUserNameAndEmailAreAvailable(string userName, string email)
-        {
-            User byEmail = User.OneWhere(c => c.Email == email);
-            if (byEmail != null)
-            {
-                byEmail.Delete();
-            }
-            User byUserName = User.OneWhere(c => c.UserName == userName);
-            if (byUserName != null)
-            {
-                byUserName.Delete();
-            }
-        }
-
         [UnitTest]
         public void LoginShouldFailIfBadPassword()
         {
@@ -466,7 +365,7 @@ namespace Bam.Net.UserAccounts.Tests
             UserManager userProxy;
             IHttpContext context;
             string passHash;
-            SignUp(userName, out userProxy, out context, out passHash);
+            UserTestTools.SignUp(userName, out userProxy, out context, out passHash);
 
             LoginResponse result = userProxy.Login(userName, "badPassword");
             Expect.IsFalse(result.Success, "login should have failed");            
@@ -485,7 +384,7 @@ namespace Bam.Net.UserAccounts.Tests
 
             string passHash = "password".Sha1();
             string email = "test@domain.cxm";
-            EnsureUserNameAndEmailAreAvailable(userName, email);
+            UserTestTools.EnsureUserNameAndEmailAreAvailable(userName, email);
             userProxy.SignUp(email, userName, passHash, false);
             LoginResponse result = userProxy.Login(userName, passHash);
 
@@ -502,7 +401,7 @@ namespace Bam.Net.UserAccounts.Tests
             string userName = MethodBase.GetCurrentMethod().Name;
             IHttpContext context;
             LoginResponse result;
-            SignUpAndLogin(userName, out context, out result);
+            UserTestTools.SignUpAndLogin(userName, out context, out result);
 
             IHttpContext context2 = A.Fake<IHttpContext>();
             context2.Request = new TestRequest();
@@ -523,7 +422,7 @@ namespace Bam.Net.UserAccounts.Tests
 
             IHttpContext context;
             LoginResponse result;
-            SignUpAndLogin(userName, out context, out result);
+            UserTestTools.SignUpAndLogin(userName, out context, out result);
 
             User user = User.OneWhere(c=>c.UserName == userName);
             Login login = Login.OneWhere(c => c.UserId == user.Id);
@@ -536,7 +435,7 @@ namespace Bam.Net.UserAccounts.Tests
             string userName = MethodBase.GetCurrentMethod().Name;
             IHttpContext context;
             LoginResponse result;
-            SignUpAndLogin(userName, out context, out result);
+            UserTestTools.SignUpAndLogin(userName, out context, out result);
 
             IHttpContext context2 = A.Fake<IHttpContext>();
             context2.Request = new TestRequest();
@@ -552,7 +451,7 @@ namespace Bam.Net.UserAccounts.Tests
             string userName = MethodBase.GetCurrentMethod().Name;
             IHttpContext context;
             LoginResponse result;
-            SignUpAndLogin(userName, out context, out result);
+            UserTestTools.SignUpAndLogin(userName, out context, out result);
 
             User user = User.GetByUserNameOrDie(userName);
             Instant nowInstant = new Instant();
@@ -575,7 +474,7 @@ namespace Bam.Net.UserAccounts.Tests
             UserManager userProxy;
             IHttpContext context;
             string passHash;
-            SignUp(userName, out userProxy, out context, out passHash);
+            UserTestTools.SignUp(userName, out userProxy, out context, out passHash);
 
             User user = User.GetByUserNameOrDie(userName);
             Account account = user.AccountsByUserId.FirstOrDefault();
@@ -591,7 +490,7 @@ namespace Bam.Net.UserAccounts.Tests
             string userName = MethodBase.GetCurrentMethod().Name;
             IHttpContext context;
             LoginResponse result;
-            SignUpAndLogin(userName, out context, out result);
+            UserTestTools.SignUpAndLogin(userName, out context, out result);
 
             UserManager userMgr = new UserManager();
             User user = User.GetByUserNameOrDie(userName);
@@ -614,14 +513,6 @@ namespace Bam.Net.UserAccounts.Tests
             Expect.IsNotNull(mgr);
             Expect.IsNotNull(mgr.EmailComposer);
             Expect.IsNotNull(mgr.SmtpSettingsVault);
-        }
-
-        public class TestAppNameResolver: IApplicationNameProvider
-        {
-            public string GetApplicationName()
-            {
-                return "test";
-            }
         }
 
         [UnitTest]
@@ -702,107 +593,6 @@ namespace Bam.Net.UserAccounts.Tests
             UserManager mgr = config.Create();
 
             Expect.IsTrue(mgr.EmailComposer.TemplateExists(UserManager.PasswordResetEmailName), "Password Reset email template was not there");
-        }
-
-        [IntegrationTest]
-        public void ShouldBeAbleToRequestConfirmationEmail()
-        {
-            UserManager mgr = CreateTestUserManager();
-            mgr.HttpContext = A.Fake<IHttpContext>();
-            mgr.HttpContext.Request = new TestRequest();
-            SignUp("monkey", "bryan.apellanes@gmail.com");
-            SendEmailResponse result = mgr.RequestConfirmationEmail("bryan.apellanes@gmail.com");
-
-            Expect.IsTrue(result.Success, result.Message);
-        }
-
-        [IntegrationTest]
-        public void ForgotPasswordShouldCreatePasswordResetEntry()
-        {
-            string userName = MethodBase.GetCurrentMethod().Name;
-            string email = "bryan.apellanes@gmail.com";
-            SignUp(userName, email);
-            User user = User.GetByEmail(email);
-            Expect.AreEqual(0, user.PasswordResetsByUserId.Count);
-
-            UserManager userMgr = CreateTestUserManager();
-            userMgr.HttpContext = A.Fake<IHttpContext>();
-            userMgr.HttpContext.Request = new TestRequest();
-
-            userMgr.ForgotPassword(email);
-
-            user.PasswordResetsByUserId.Reload();
-            Expect.AreEqual(1, user.PasswordResetsByUserId.Count);            
-        }
-
-        [IntegrationTest]
-        public void ForgotPasswordShouldSucceed()
-        {
-			ClearAllUserInfo();
-            string userName = MethodBase.GetCurrentMethod().Name;
-            string email = "bryan.apellanes@gmail.com";
-            SignUp(userName, email);
-            User user = User.GetByEmail(email);
-            Expect.AreEqual(0, user.PasswordResetsByUserId.Count);
-
-            UserManager userMgr = CreateTestUserManager();
-            userMgr.HttpContext = A.Fake<IHttpContext>();
-            userMgr.HttpContext.Request = new TestRequest();
-
-            ForgotPasswordResponse response = userMgr.ForgotPassword(email);
-
-            Expect.IsTrue(response.Success);
-        }
-
-        [IntegrationTest]
-        public void ResetPasswordShouldSucceed()
-        {
-            string userName = MethodBase.GetCurrentMethod().Name;
-            string email = "bryan.apellanes@gmail.com";
-            SignUp(userName, email);
-            User user = User.GetByEmail(email);
-            Expect.AreEqual(0, user.PasswordResetsByUserId.Count);
-
-            UserManager userMgr = CreateTestUserManager();
-            userMgr.HttpContext = A.Fake<IHttpContext>();
-            userMgr.HttpContext.Request = new TestRequest();
-
-            string password = ServiceProxySystem.GenerateId();
-            ForgotPasswordResponse forgot = userMgr.ForgotPassword(email);
-            PasswordResetResponse reset = userMgr.ResetPassword(password.Sha1(), (string)forgot.Data);
-            Expect.IsTrue(reset.Success, "Reset failed");
-        }
-
-        [IntegrationTest]
-        public void ResetPasswordShouldBeLoginnable()
-        {
-            string userName = MethodBase.GetCurrentMethod().Name;
-            string email = "bryan.apellanes@gmail.com";
-            SignUp(userName, email);
-            User user = User.GetByEmail(email);
-            Expect.AreEqual(0, user.PasswordResetsByUserId.Count);
-
-            UserManager userMgr = CreateTestUserManager();
-            userMgr.HttpContext = A.Fake<IHttpContext>();
-            userMgr.HttpContext.Request = new TestRequest();
-
-            string password = ServiceProxySystem.GenerateId();
-            ForgotPasswordResponse forgot = userMgr.ForgotPassword(email);
-            PasswordResetResponse reset = userMgr.ResetPassword(password.Sha1(), (string)forgot.Data);
-            LoginResponse login = userMgr.Login(user.UserName, password.Sha1());
-            Expect.IsTrue(login.Success, "Login failed");
-        }
-
-        private static UserManager CreateTestUserManager()
-        {
-            UserManagerConfig config = new UserManagerConfig();
-            config.SmtpSettingsVaultPath = "Z:\\Workspace\\TestData\\Vaults\\StickerizeSmtpSettings.vault.sqlite";
-            config.ApplicationNameResolverType = typeof(TestAppNameResolver).AssemblyQualifiedName;
-            config.EmailTemplateDirectoryPath = "Z:\\Workspace\\TestData\\NamedFormatEmailTemplates";
-            config.EmailTemplateExtension = ".nft";
-
-            UserManager mgr = config.Create();
-            return mgr;
         }
     }
 }

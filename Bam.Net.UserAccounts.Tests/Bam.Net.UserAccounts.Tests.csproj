@@ -144,10 +144,12 @@
   <ItemGroup>
     <Compile Include="ConsoleActions.cs" />
     <Compile Include="Helpers.cs" />
-    <Compile Include="UserAccountTestsProgram.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestAppNameResolver.cs" />
     <Compile Include="TestRequest.cs" />
     <Compile Include="UnitTests.cs" />
+    <Compile Include="UserTestTools.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

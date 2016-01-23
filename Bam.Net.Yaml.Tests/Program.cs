@@ -60,7 +60,7 @@ namespace Bam.Net.Yaml.Tests
 		{
 			if (Arguments.Contains("t"))
 			{
-				RunAllTests(Assembly.GetExecutingAssembly());
+				RunAllUnitTests(Assembly.GetExecutingAssembly());
 			}
 			else
 			{

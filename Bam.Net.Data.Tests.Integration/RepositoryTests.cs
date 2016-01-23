@@ -84,11 +84,5 @@ namespace Bam.Net.Data.Tests.Integration
 				Pass("{0}:{1}"._Format((string)tn, repo.GetType().Name));
 			});
 		}
-
-		//[IntegrationTest]
-		//public void RetrieveAllShouldRetrievAll()
-		//{
-		//	throw new NotImplementedException();
-		//}
 	}
 }

@@ -34,7 +34,7 @@ namespace Bam.Net.Automation.Tests
 		{
 			if (Arguments.Contains("t"))
 			{
-				RunAllTests(typeof(Program).Assembly);
+				RunAllUnitTests(typeof(Program).Assembly);
 			}
 			else
 			{

@@ -81,6 +81,7 @@
     <Compile Include="BeforeUnitTests.cs" />
     <Compile Include="CommandLineTestInterface.cs" />
     <Compile Include="ConsoleBecauseWriter.cs" />
+    <Compile Include="Integration\IntegrationTestResult.cs" />
     <Compile Include="Integration\IntegrationTestAttribute.cs" />
     <Compile Include="Integration\IntegrationTestCleanupAttribute.cs" />
     <Compile Include="Integration\IntegrationTestSetupAttribute.cs" />
@@ -101,15 +102,25 @@
     </Compile>
     <Compile Include="TestContext.cs" />
     <Compile Include="AssertionWrapper.cs" />
-    <Compile Include="TestRunner.cs" />
+    <Compile Include="Integration\IntegrationTestRunner.cs" />
+    <Compile Include="TestType.cs" />
     <Compile Include="UnitTest.cs" />
     <Compile Include="Integration\IntegrationTestContainerAttribute.cs" />
+    <Compile Include="UnitTestResult.cs" />
     <Compile Include="When.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bam.Net.CommandLine\Bam.Net.CommandLine.csproj">
       <Project>{ea9863a9-8e0b-4497-b7fd-abf450a3e468}</Project>
       <Name>Bam.Net.CommandLine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.Repositories\Bam.Net.Data.Repositories.csproj">
+      <Project>{222ef625-a115-49c7-8bdb-5879725a7d17}</Project>
+      <Name>Bam.Net.Data.Repositories</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data\Bam.Net.Data.csproj">
+      <Project>{3b52b739-58fd-4b49-b815-6b317e701520}</Project>
+      <Name>Bam.Net.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Incubation\Bam.Net.Incubation.csproj">
       <Project>{aa186331-a0d0-4f77-bea2-e7b7650d3ff5}</Project>

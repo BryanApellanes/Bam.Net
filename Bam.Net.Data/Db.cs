@@ -27,21 +27,43 @@ namespace Bam.Net.Data
             }
         }
 
+        /// <summary>
+        /// Get the Database for the specified generic type T
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static Database For<T>() where T : Dao
         {
             return DefaultContainer[typeof(T)];
         }
 
+        /// <summary>
+        /// Get the Database for the specified type 
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public static Database For(Type type)
         {
             return DefaultContainer[type];
         }
 
+        /// <summary>
+        /// Set and return the Database for the specified generic type T
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="database"></param>
+        /// <returns></returns>
 		public static Database For<T>(Database database)
 		{
 			return For(typeof(T), database);
 		}
 
+        /// <summary>
+        /// Set and return the Database for the specified type
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="database"></param>
+        /// <returns></returns>
 		public static Database For(Type type, Database database)
 		{
 			return For(Dao.ConnectionName(type), database);

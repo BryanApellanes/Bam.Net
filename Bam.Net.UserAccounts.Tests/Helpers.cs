@@ -29,7 +29,7 @@ using Bam.Net.Logging;
 
 namespace Bam.Net.UserAccounts.Tests
 {
-    public partial class UserAccountTestsProgram
+    public partial class Program
     {
 
         class TestRequest : IRequest

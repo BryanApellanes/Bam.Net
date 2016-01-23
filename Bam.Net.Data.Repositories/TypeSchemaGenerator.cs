@@ -10,6 +10,9 @@ using Bam.Net.Logging;
 
 namespace Bam.Net.Data.Repositories
 {
+    /// <summary>
+    /// A class used to generate 
+    /// </summary>
     public class TypeSchemaGenerator : Loggable
     {
         UuidSchemaManager _schemaManager;

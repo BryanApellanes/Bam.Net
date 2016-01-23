@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Bam.Net.Data.Repositories
 {
 	/// <summary>
-	/// Foreing key descriptor for generated TypeSchemas
+	/// Forein key descriptor for generated TypeSchemas
 	/// </summary>
 	public class TypeFk
 	{

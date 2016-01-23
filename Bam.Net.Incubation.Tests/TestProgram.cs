@@ -52,7 +52,7 @@ namespace CommandLineTests
 		{
 			if (Arguments.Contains("t"))
 			{
-				RunAllTests(typeof(TestProgram).Assembly);
+				RunAllUnitTests(typeof(TestProgram).Assembly);
 			}
 			else
 			{

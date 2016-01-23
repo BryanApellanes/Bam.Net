@@ -59,7 +59,7 @@ namespace Bam.Net.Translation.Tests
         {
             if (Arguments.Contains("t"))
             {
-                RunAllTests(Assembly.GetExecutingAssembly());
+                RunAllUnitTests(Assembly.GetExecutingAssembly());
             }
             else
             {

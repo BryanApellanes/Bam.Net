@@ -75,7 +75,7 @@ namespace Bam.Net.ServiceProxy.Tests
 		{
 			if (Arguments.Contains("t"))
 			{
-				RunAllTests(typeof(ServiceProxyTestContainer).Assembly);
+				RunAllUnitTests(typeof(ServiceProxyTestContainer).Assembly);
 			}
 			else
 			{
