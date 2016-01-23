@@ -68,17 +68,7 @@ namespace Bam.Net.Data
                 this.currentPageIndex = value;
             }
         }
-
-        ///// <summary>
-        ///// Gets or sets the number of items in 
-        ///// a page.
-        ///// </summary>
-        //public virtual int PageSize
-        //{
-        //    get { return this.pageSize; }
-        //    set { this.pageSize = value; }
-        //}
-
+        
         #region IEnumerator<T> Members
 
         /// <summary>
