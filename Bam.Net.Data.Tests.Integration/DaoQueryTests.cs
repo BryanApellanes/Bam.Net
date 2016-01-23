@@ -261,12 +261,7 @@ namespace Bam.Net.Data.Tests.Integration
 			{ }
 
 		}
-
-		[UnitTest]
-		public void QueryIsExtendable()
-		{
-			TestTableQuery query = new TestTableQuery(c => c.Name.StartsWith("blah"));
-		}
+        
 		private static TestTableCollection CreateTestTableEntries(string name, Database db)
 		{
 			TestTableCollection testTables = new TestTableCollection();
