@@ -78,45 +78,6 @@ namespace Bam.Net.Data
             this.Initialize();
         }
 
-        private void Initialize()
-        {
-            this.Initialize(this.allItems);           
-        }
-
-        private void Initialize(IEnumerable<T> items)
-        {
-            int itemCount = items.Count();
-            int remainder = itemCount % pageSize;
-            int pageCount = itemCount / pageSize;
-            if (remainder > 0)
-            {
-                pageCount++;
-            }
-
-            PageCount = pageCount;
-            foreach (T item in items)
-            {
-                int currentPage = allPages.Count - 1;
-                if (currentPage < 0)
-                {
-                    currentPage = 0;
-                }
-
-                if (allPages.ElementAtOrDefault(currentPage) == null)
-                {
-                    allPages.Add(new List<T>());
-                }
-
-                if (allPages[currentPage].Count >= pageSize)
-                {
-                    allPages.Add(new List<T>());
-                }
-
-                currentPage = allPages.Count - 1;
-                allPages[currentPage].Add(item);
-            }
-        }
-
         /// <summary>
         /// A list of lists representing the individual
         /// pages
@@ -171,5 +132,43 @@ namespace Bam.Net.Data
             return this.allItems.ToArray();
         }
 
+        private void Initialize()
+        {
+            this.Initialize(this.allItems);
+        }
+
+        private void Initialize(IEnumerable<T> items)
+        {
+            int itemCount = items.Count();
+            int remainder = itemCount % pageSize;
+            int pageCount = itemCount / pageSize;
+            if (remainder > 0)
+            {
+                pageCount++;
+            }
+
+            PageCount = pageCount;
+            foreach (T item in items)
+            {
+                int currentPage = allPages.Count - 1;
+                if (currentPage < 0)
+                {
+                    currentPage = 0;
+                }
+
+                if (allPages.ElementAtOrDefault(currentPage) == null)
+                {
+                    allPages.Add(new List<T>());
+                }
+
+                if (allPages[currentPage].Count >= pageSize)
+                {
+                    allPages.Add(new List<T>());
+                }
+
+                currentPage = allPages.Count - 1;
+                allPages[currentPage].Add(item);
+            }
+        }
     }
 }
