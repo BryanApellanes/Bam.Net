@@ -14,42 +14,42 @@ using Bam.Net.Logging;
 
 namespace Bam.Net.Data.Repositories
 {
-	/// <summary>
-	/// A generator that will create Dto's from Dao's.
-	/// Intended primarily to enable backup of
-	/// Daos to an ObjectRepository
-	/// </summary>
-	public class DaoToDtoGenerator: Loggable, IAssemblyGenerator
-	{
-		public DaoToDtoGenerator() { }
+    /// <summary>
+    /// A generator that will create Dto's from Dao's.
+    /// Intended primarily to enable backup of
+    /// Daos to an ObjectRepository
+    /// </summary>
+    public class DaoToDtoGenerator : Loggable, IAssemblyGenerator
+    {
+        public DaoToDtoGenerator() { }
 
-		public DaoToDtoGenerator(Assembly daoAssembly)
-		{
-			this.DaoAssembly = daoAssembly;
-		}
+        public DaoToDtoGenerator(Assembly daoAssembly)
+        {
+            this.DaoAssembly = daoAssembly;
+        }
 
-		public DaoToDtoGenerator(Dao daoInstance)
-			: this(daoInstance.GetType().Assembly)
-		{ }
-		
-		public Assembly DaoAssembly
-		{
-			get;
-			set;
-		}
+        public DaoToDtoGenerator(Dao daoInstance)
+            : this(daoInstance.GetType().Assembly)
+        { }
 
-		[Verbosity(VerbosityLevel.Warning, MessageFormat="Unable to delete temp source directory: {TempDir}\r\n{ExceptionMessage}")]
-		public event EventHandler DeleteTempSourceDirectoryFailed;
+        public Assembly DaoAssembly
+        {
+            get;
+            set;
+        }
 
-		/// <summary>
-		/// Read by Loggable messages if deleting temp directory fails
-		/// </summary>
-		public string ExceptionMessage { get; set; }
-		
-		/// <summary>
-		/// Read by Loggable messages if deleting temp directory fails
-		/// </summary>
-		public string TempDir { get; set; }
+        [Verbosity(VerbosityLevel.Warning, MessageFormat = "Unable to delete temp source directory: {TempDir}\r\n{ExceptionMessage}")]
+        public event EventHandler DeleteTempSourceDirectoryFailed;
+
+        /// <summary>
+        /// Read by Loggable messages if deleting temp directory fails
+        /// </summary>
+        public string ExceptionMessage { get; set; }
+
+        /// <summary>
+        /// Read by Loggable messages if deleting temp directory fails
+        /// </summary>
+        public string TempDir { get; set; }
 
         /// <summary>
         /// Implements IAssemblyGenerator.GenerateAssembly by delegating
@@ -66,80 +66,87 @@ namespace Bam.Net.Data.Repositories
         /// </summary>
         /// <returns></returns>
 		public GeneratedAssemblyInfo GenerateDtoAssembly()
-		{
-			Args.ThrowIfNull(DaoAssembly, "DaoToDtoGenerator.DaoAssembly");
+        {
+            string nameSpace = GetNamespace();
+            return GenerateDtoAssembly("{0}.Dtos"._Format(nameSpace));
+        }
 
-			Type oneTable = DaoAssembly.GetTypes().FirstOrDefault(t => t.HasCustomAttributeOfType<TableAttribute>());
-			if (oneTable == null)
-			{
-				oneTable = DaoAssembly.GetTypes().FirstOrDefault();
-				if (oneTable == null)
-				{
-					Args.Throw<InvalidOperationException>("The specified DaoAssembly has no types defined");
-				}
-			}
+        public GeneratedAssemblyInfo GenerateDtoAssembly(string nameSpace)
+        {
+            return GenerateDtoAssembly(nameSpace, GetDefaultFileName());
+        }
 
-			return GenerateDtoAssembly("{0}.Dtos"._Format(oneTable.Namespace));
-		}
+        public GeneratedAssemblyInfo GenerateDtoAssembly(string nameSpace, string fileName)
+        {
+            Type oneDao = DaoAssembly.GetTypes().FirstOrDefault(t => t.HasCustomAttributeOfType<TableAttribute>());
+            string writeSourceTo = Path.Combine("".GetAppDataFolder(), "DtoTemp_{0}"._Format(Dao.ConnectionName(oneDao)));
+            DirectoryInfo sourceDir = SetSourceDir(writeSourceTo);
 
-		public GeneratedAssemblyInfo GenerateDtoAssembly(string nameSpace)
-		{
-			return GenerateDtoAssembly(nameSpace, GetDefaultFileName());
-		}
+            foreach (Type dynamicDtoType in DaoAssembly.GetTypes()
+                .Where(t => t.HasCustomAttributeOfType<TableAttribute>())
+                .Select(t => t.CreateDynamicType<ColumnAttribute>()).ToArray())
+            {
+                Dto.WriteRenderedDto(nameSpace, writeSourceTo, dynamicDtoType);
+            }
 
-		public GeneratedAssemblyInfo GenerateDtoAssembly(string nameSpace, string fileName)
-		{
-			Type oneDao = DaoAssembly.GetTypes().FirstOrDefault(t => t.HasCustomAttributeOfType<TableAttribute>());
-			string writeSourceTo = Path.Combine("".GetAppDataFolder(), "DtoTemp_{0}"._Format(Dao.ConnectionName(oneDao)));
-			DirectoryInfo sourceDir = SetSourceDir(writeSourceTo);
+            CompilerResults results;
+            sourceDir.ToAssembly(fileName, out results);
+            GeneratedAssemblyInfo result = new GeneratedAssemblyInfo(fileName, results);
+            result.Save();
+            return result;
+        }
 
-			foreach (Type dynamicDtoType in DaoAssembly.GetTypes()
-				.Where(t => t.HasCustomAttributeOfType<TableAttribute>())
-				.Select(t => t.CreateDynamicType<ColumnAttribute>()).ToArray())
-			{
-				Dto.WriteRenderedDto(nameSpace, writeSourceTo, dynamicDtoType);
-			}
+        private DirectoryInfo SetSourceDir(string writeSourceTo)
+        {
+            DirectoryInfo sourceDir = new DirectoryInfo(writeSourceTo);
+            if (sourceDir.Exists)
+            {
+                try
+                {
+                    sourceDir.Delete(true);
+                }
+                catch (Exception ex)
+                {
+                    TempDir = sourceDir.FullName;
+                    ExceptionMessage = Args.GetMessageAndStackTrace(ex);
+                    FireEvent(DeleteTempSourceDirectoryFailed, EventArgs.Empty);
+                    throw ex;
+                }
+            }
 
-			CompilerResults results;
-			sourceDir.ToAssembly(fileName, out results);
-			GeneratedAssemblyInfo result = new GeneratedAssemblyInfo(fileName, results);
-			result.Save();
-			return result;
-		}
-		
-		private DirectoryInfo SetSourceDir(string writeSourceTo)
-		{
-			DirectoryInfo sourceDir = new DirectoryInfo(writeSourceTo);
-			if (sourceDir.Exists)
-			{
-				try
-				{
-					sourceDir.Delete(true);
-				}
-				catch (Exception ex)
-				{
-					TempDir = sourceDir.FullName;
-					ExceptionMessage = Args.GetMessageAndStackTrace(ex);
-					FireEvent(DeleteTempSourceDirectoryFailed, EventArgs.Empty);
-					throw ex;
-				}
-			}
+            sourceDir.Create();
+            return sourceDir;
+        }
 
-			sourceDir.Create();
-			return sourceDir;
-		}
-		
-		public string GetDefaultFileName()
-		{
-			return "_{0}_.dll"._Format( 
-									DaoAssembly.GetTypes()
-									.Where(t => t.HasCustomAttributeOfType<TableAttribute>())
-									.Select(t => t.Name)
-									.ToArray()
-									.ToDelimited(n => n, ", ")
-									.Md5()
-								); // this fluent stuff is setting the fileName to the Md5 hash of all the table names comma delimited
-		}
+        public string GetDefaultFileName()
+        {
+            return "_{0}_{1}_.dll"._Format(
+                GetNamespace(),
+                DaoAssembly.GetTypes()
+                .Where(t => t.HasCustomAttributeOfType<TableAttribute>())
+                .Select(t => t.Name)
+                .ToArray()
+                .ToDelimited(n => n, ", ")
+                .Md5()
+            ); // this fluent stuff is setting the fileName to the Md5 hash of all the table names comma delimited
+        }
 
-	}
+        private string GetNamespace()
+        {
+            Args.ThrowIfNull(DaoAssembly, "DaoToDtoGenerator.DaoAssembly");
+
+            Type oneTable = DaoAssembly.GetTypes().FirstOrDefault(t => t.HasCustomAttributeOfType<TableAttribute>());
+            if (oneTable == null)
+            {
+                oneTable = DaoAssembly.GetTypes().FirstOrDefault();
+                if (oneTable == null)
+                {
+                    Args.Throw<InvalidOperationException>("The specified DaoAssembly has no types defined");
+                }
+            }
+            string nameSpace = oneTable.Namespace;
+            return nameSpace;
+        }
+
+    }
 }
