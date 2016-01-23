@@ -25,6 +25,11 @@ namespace Bam.Net.Data
             allItems = new List<T>();
         }
 
+        /// <summary>
+        /// Instantiate a new Book with the specified items, using
+        /// a default PageSize of 10
+        /// </summary>
+        /// <param name="items"></param>
         public Book(IEnumerable<T> items)
             : this()
         {
@@ -157,6 +162,10 @@ namespace Bam.Net.Data
 			return this[zeroBasedPageNumber];
 		}
 
+        /// <summary>
+        /// Convert the book to an array containing all items
+        /// </summary>
+        /// <returns></returns>
         public T[] ToArray()
         {
             return this.allItems.ToArray();
