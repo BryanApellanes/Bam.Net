@@ -98,33 +98,6 @@ namespace Bam.Net.Testing
             }
         }
 
-        [ConsoleAction("mp", "[process_count]", "Run the tests in the specified directory using multiple processes")]
-        public static void RunTestsInMultipleProcesses()
-        {
-            int processCount = 5;
-            string processCountString = Arguments["mp"];
-            if (!int.TryParse(processCountString, out processCount))
-            {
-                OutLineFormat("{0}: Invalid value specified for argument /mp: {1}", ConsoleColor.DarkRed, _programName, processCountString);
-            }
-            string startDirectory;
-            FileInfo[] files;
-            Setup(out startDirectory, out files);
-            Book<FileInfo> pagedFiles = new Book<FileInfo>(files, processCount);
-            foreach(List<FileInfo> page in pagedFiles.AllPages)
-            {
-                List<Task> tasks = new List<Task>(page.Count);
-                foreach(FileInfo file in page)
-                {
-                    tasks.Add(Task.Run(() =>
-                    {
-                        RunTestsInFile(file.FullName, startDirectory);
-                    }));
-                }
-                Task.WaitAll(tasks.ToArray());
-            }
-        }
-
         [ConsoleAction("assembly", "[path_to_test_assembly]", "Run tests in the specified assembly")]
         public static void RunTestsInFile(string assemblyPath = null, string endDirectory = null)
         {
