@@ -19,7 +19,21 @@ namespace Bam.Net.Data.Repositories
 		void AddNamespace(Assembly assembly, string ns);
 		void AddTypes(IEnumerable<Type> types);
 		void AddType<T>();
+        /// <summary>
+        /// When implemented in a derived class, calls
+        /// Create or Update as appropriate
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="toSave"></param>
+        /// <returns></returns>
         T Save<T>(T toSave) where T : class, new();
+
+        /// <summary>
+        /// When implemented in a derived class, calls
+        /// Create or Update as appropriate
+        /// </summary>
+        /// <param name="toSave"></param>
+        /// <returns></returns>
 		object Save(object toSave);
         T Create<T>(T toCreate) where T : class, new();
 		object Create(object toCreate);
