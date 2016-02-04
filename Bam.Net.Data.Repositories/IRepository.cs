@@ -35,10 +35,41 @@ namespace Bam.Net.Data.Repositories
         /// <param name="toSave"></param>
         /// <returns></returns>
 		object Save(object toSave);
+
         T Create<T>(T toCreate) where T : class, new();
+        /// <summary>
+        /// When implemented in a derived class, calls
+        /// Create or Update as appropriate
+        /// </summary>
+        /// <param name="toCreate"></param>
+        /// <returns></returns>
 		object Create(object toCreate);
+
+        /// <summary>
+        /// When implemented in a derived class retrieves
+        /// the specified instance of type T with the
+        /// specified id
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="id"></param>
+        /// <returns></returns>
         T Retrieve<T>(int id) where T : class, new();
+        /// <summary>
+        /// When implemented in a derived class retrieves
+        /// the specified instance of type T with the
+        /// specified id
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="id"></param>
+        /// <returns></returns>
         T Retrieve<T>(long id) where T : class, new();
+
+        /// <summary>
+        /// When implemented in a derived class retrieves
+        /// all instances of type T
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
 		IEnumerable<T> RetrieveAll<T>() where T : class, new();
 		IEnumerable<object> RetrieveAll(Type type);
 		IEnumerable<object> Query(string propertyName, object propertyValue);

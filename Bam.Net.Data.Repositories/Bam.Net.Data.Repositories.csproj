@@ -115,6 +115,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsyncDaoRepository.cs" />
+    <Compile Include="AsyncRepository.cs" />
     <Compile Include="BackedupDatabase.cs" />
     <Compile Include="DaoGenerationException.cs" />
     <Compile Include="DaoBackup.cs" />
@@ -122,6 +124,7 @@
     <Compile Include="DaoSuffixTypeTableNameProvider.cs" />
     <Compile Include="DefaultDataTypeBehaviors.cs" />
     <Compile Include="GenerateDaoAssemblyEventArgs.cs" />
+    <Compile Include="IAsyncRepository.cs" />
     <Compile Include="IGeneratesDaoAssembly.cs" />
     <Compile Include="Indexer.cs" />
     <Compile Include="IndexExtensions.cs" />
