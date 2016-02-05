@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -16,6 +13,8 @@ namespace Bam.Net.Schema.Org
 		public Text Description {get; set;}
 		///<summary>An image of the item. This can be a URL or a fully described ImageObject.</summary>
 		public ThisOrThat<ImageObject , URL> Image {get; set;}
+		///<summary>Indicates a page (or other CreativeWork) for which this thing is the main entity being described.            See background notes for details.       Inverse property: mainEntity.</summary>
+		public ThisOrThat<CreativeWork , URL> MainEntityOfPage {get; set;}
 		///<summary>The name of the item.</summary>
 		public Text Name {get; set;}
 		///<summary>Indicates a potential Action, which describes an idealized action in which this thing would play an 'object' role.</summary>

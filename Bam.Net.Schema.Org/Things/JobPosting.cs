@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -9,9 +6,7 @@ namespace Bam.Net.Schema.Org
 	public class JobPosting: Intangible
 	{
 		///<summary>The base salary of the job or of an employee in an EmployeeRole.</summary>
-		public ThisOrThat<Number , PriceSpecification> BaseSalary {get; set;}
-		///<summary>Description of benefits associated with the job.</summary>
-		public Text Benefits {get; set;}
+		public ThisOrThat<PriceSpecification , Number> BaseSalary {get; set;}
 		///<summary>Publication date for the job posting.</summary>
 		public Date DatePosted {get; set;}
 		///<summary>Educational background needed for the position.</summary>
@@ -22,10 +17,12 @@ namespace Bam.Net.Schema.Org
 		public Text ExperienceRequirements {get; set;}
 		///<summary>Organization offering the job position.</summary>
 		public Organization HiringOrganization {get; set;}
-		///<summary>Description of bonus and commission compensation aspects of the job.</summary>
-		public Text Incentives {get; set;}
+		///<summary>Description of bonus and commission compensation aspects of the job. Supersedes incentives.</summary>
+		public Text IncentiveCompensation {get; set;}
 		///<summary>The industry associated with the job position.</summary>
 		public Text Industry {get; set;}
+		///<summary>Description of benefits associated with the job. Supersedes benefits.</summary>
+		public Text JobBenefits {get; set;}
 		///<summary>A (typically single) geographic location associated with the job position.</summary>
 		public Place JobLocation {get; set;}
 		///<summary>Category or categories describing the job. Use BLS O*NET-SOC taxonomy: http://www.onetcenter.org/taxonomy.html. Ideally includes textual label and formal code, with the property repeated for each applicable value.</summary>
