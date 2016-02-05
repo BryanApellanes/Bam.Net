@@ -1,1 +1,1 @@
-git pull github
+git pull github --recurse
