@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -14,7 +11,9 @@ namespace Bam.Net.Schema.Org
 		public BusinessFunction BusinessFunction {get; set;}
 		///<summary>The product that this structured value is referring to.</summary>
 		public Product TypeOfGood {get; set;}
-		///<summary>The unit of measurement given using the UN/CEFACT Common Code (3 characters).</summary>
-		public Text UnitCode {get; set;}
+		///<summary>The unit of measurement given using the UN/CEFACT Common Code (3 characters) or a URL. Other codes than the UN/CEFACT Common Code may be used with a prefix followed by a colon.</summary>
+		public ThisOrThat<Text , URL> UnitCode {get; set;}
+		///<summary>A string or text indicating the unit of measurement. Useful if you cannot provide a standard unit code forunitCode.</summary>
+		public Text UnitText {get; set;}
 	}
 }

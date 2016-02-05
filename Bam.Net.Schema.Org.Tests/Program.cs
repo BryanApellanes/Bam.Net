@@ -173,17 +173,20 @@ namespace Bam.Net.Schema.Org.Tests
         {
             string html = TryGetHtml(typeName);
             CQ cq = CQ.Create(html);
-            CQ propBody = cq[string.Format(".definition-table .supertype-name a[href={0}]", typeName)].First().ParentsUntil(".definition-table").Next();
+            CQ propBody = cq[string.Format(".definition-table .supertype-name a[href='/{0}']", typeName)].First().ParentsUntil(".definition-table").Next();
             List<SchemaDotOrgProperty> properties = new List<SchemaDotOrgProperty>();
             cq["tr", propBody].Each((row) =>
             {
-                string propName = cq[".prop-nam", row].Children().First().Text();
-                string expectedType = cq[".prop-ect", row].Text().Trim();
-				string description = cq[".prop-desc", row].Text().Trim().Replace("\r", "").Replace("\n", "");
-				if (properties.Where(p => p.Name.Equals(propName.PascalCase())).FirstOrDefault() == null)
-				{
-					properties.Add(new SchemaDotOrgProperty { Name = propName.PascalCase(), ExpectedType = expectedType, Description = description });
-				}
+                string propName = cq[".prop-nam", row].Children().First().Text().PascalCase();
+                if (!string.IsNullOrEmpty(propName))
+                {
+                    string expectedType = cq[".prop-ect", row].Text().Trim();
+                    string description = cq[".prop-desc", row].Text().Trim().Replace("\r", "").Replace("\n", "");
+                    if (properties.Where(p => p.Name.Equals(propName)).FirstOrDefault() == null)
+                    {
+                        properties.Add(new SchemaDotOrgProperty { Name = propName, ExpectedType = expectedType, Description = description });
+                    }
+                }
             });
 
             return properties.ToArray();
@@ -227,7 +230,7 @@ namespace Bam.Net.Schema.Org.Tests
 					if (child != null)
 					{
 						string href = child.Attributes["href"];
-						if (!href.StartsWith("/") && !href.StartsWith("http"))
+						if (!href.StartsWith("http"))
 						{
 							childType = child.InnerText;
 							result.Add(new SpecificType { Extends = typeName, TypeName = childType });
