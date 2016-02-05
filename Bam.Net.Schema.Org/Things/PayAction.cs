@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -9,8 +6,8 @@ namespace Bam.Net.Schema.Org
 	public class PayAction: TradeAction
 	{
 		///<summary>A goal towards an action is taken. Can be concrete or abstract.</summary>
-		public ThisOrThat<MedicalDevicePurpose , Thing> Purpose {get; set;}
+		public ThisOrThat<Thing , MedicalDevicePurpose> Purpose {get; set;}
 		///<summary>A sub property of participant. The participant who is at the receiving end of the action.</summary>
-		public ThisOrThat<Person , Organization , Audience> Recipient {get; set;}
+		public ThisOrThat<Organization , Person , Audience> Recipient {get; set;}
 	}
 }

@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -12,11 +9,11 @@ namespace Bam.Net.Schema.Org
 		public Answer AcceptedAnswer {get; set;}
 		///<summary>The number of answers this question has received.</summary>
 		public Integer AnswerCount {get; set;}
-		///<summary>The number of downvotes this question has received from the community.</summary>
+		///<summary>The number of downvotes this question, answer or comment has received from the community.</summary>
 		public Integer DownvoteCount {get; set;}
 		///<summary>An answer (possibly one of several, possibly incorrect) to a Question, e.g. on a Question/Answer site.</summary>
 		public Answer SuggestedAnswer {get; set;}
-		///<summary>The number of upvotes this question has received from the community.</summary>
+		///<summary>The number of upvotes this question, answer or comment has received from the community.</summary>
 		public Integer UpvoteCount {get; set;}
 	}
 }

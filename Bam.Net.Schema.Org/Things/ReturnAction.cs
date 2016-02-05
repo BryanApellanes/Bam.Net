@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -9,6 +6,6 @@ namespace Bam.Net.Schema.Org
 	public class ReturnAction: TransferAction
 	{
 		///<summary>A sub property of participant. The participant who is at the receiving end of the action.</summary>
-		public ThisOrThat<Person , Organization , Audience> Recipient {get; set;}
+		public ThisOrThat<Audience , Person , Organization> Recipient {get; set;}
 	}
 }
