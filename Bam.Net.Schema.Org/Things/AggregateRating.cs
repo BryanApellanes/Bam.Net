@@ -1,3 +1,6 @@
+/*
+	Copyright © Bryan Apellanes 2015  
+*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -8,8 +11,8 @@ namespace Bam.Net.Schema.Org
 		///<summary>The item that is being reviewed/rated.</summary>
 		public Thing ItemReviewed {get; set;}
 		///<summary>The count of total number of ratings.</summary>
-		public Integer RatingCount {get; set;}
+		public Number RatingCount {get; set;}
 		///<summary>The count of total number of reviews.</summary>
-		public Integer ReviewCount {get; set;}
+		public Number ReviewCount {get; set;}
 	}
 }

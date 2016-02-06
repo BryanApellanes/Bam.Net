@@ -1,3 +1,6 @@
+/*
+	Copyright © Bryan Apellanes 2015  
+*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -6,7 +9,7 @@ namespace Bam.Net.Schema.Org
 	public class RentAction: TradeAction
 	{
 		///<summary>A sub property of participant. The owner of the real estate property.</summary>
-		public ThisOrThat<Organization , Person> Landlord {get; set;}
+		public ThisOrThat<Person , Organization> Landlord {get; set;}
 		///<summary>A sub property of participant. The real estate agent involved in the action.</summary>
 		public RealEstateAgent RealEstateAgent {get; set;}
 	}

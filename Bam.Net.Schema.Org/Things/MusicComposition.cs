@@ -1,3 +1,6 @@
+/*
+	Copyright © Bryan Apellanes 2015  
+*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -15,8 +18,6 @@ namespace Bam.Net.Schema.Org
 		public Text IswcCode {get; set;}
 		///<summary>The person who wrote the words.</summary>
 		public Person Lyricist {get; set;}
-		///<summary>The words in the song.</summary>
-		public CreativeWork Lyrics {get; set;}
 		///<summary>An arrangement derived from the composition.</summary>
 		public MusicComposition MusicArrangement {get; set;}
 		///<summary>The type of composition (e.g. overture, sonata, symphony, etc.).</summary>

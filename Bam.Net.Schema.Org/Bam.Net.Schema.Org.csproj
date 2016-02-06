@@ -90,7 +90,6 @@
     <Compile Include="Things\AlbumRelease.cs" />
     <Compile Include="Things\AlignmentObject.cs" />
     <Compile Include="Things\AllocateAction.cs" />
-    <Compile Include="Things\AllWheelDriveConfiguration.cs" />
     <Compile Include="Things\AmusementPark.cs" />
     <Compile Include="Things\AnaerobicActivity.cs" />
     <Compile Include="Things\AnatomicalStructure.cs" />
@@ -129,7 +128,6 @@
     <Compile Include="Things\Bakery.cs" />
     <Compile Include="Things\Balance.cs" />
     <Compile Include="Things\BankOrCreditUnion.cs" />
-    <Compile Include="Things\Barcode.cs" />
     <Compile Include="Things\BarOrPub.cs" />
     <Compile Include="Things\Beach.cs" />
     <Compile Include="Things\BeautySalon.cs" />
@@ -139,7 +137,6 @@
     <Compile Include="Things\Blog.cs" />
     <Compile Include="Things\BlogPosting.cs" />
     <Compile Include="Things\BloodTest.cs" />
-    <Compile Include="Things\BoardingPolicyType.cs" />
     <Compile Include="Things\BodyOfWater.cs" />
     <Compile Include="Things\Bone.cs" />
     <Compile Include="Things\Book.cs" />
@@ -153,8 +150,6 @@
     <Compile Include="Things\Brand.cs" />
     <Compile Include="Things\BreadcrumbList.cs" />
     <Compile Include="Things\Brewery.cs" />
-    <Compile Include="Things\Bridge.cs" />
-    <Compile Include="Things\BroadcastChannel.cs" />
     <Compile Include="Things\BroadcastEvent.cs" />
     <Compile Include="Things\BroadcastRelease.cs" />
     <Compile Include="Things\BroadcastService.cs" />
@@ -168,7 +163,6 @@
     <Compile Include="Things\BusStop.cs" />
     <Compile Include="Things\BusTrip.cs" />
     <Compile Include="Things\BuyAction.cs" />
-    <Compile Include="Things\CableOrSatelliteService.cs" />
     <Compile Include="Things\CafeOrCoffeeShop.cs" />
     <Compile Include="Things\Campground.cs" />
     <Compile Include="Things\Canal.cs" />
@@ -176,7 +170,6 @@
     <Compile Include="Things\Car.cs" />
     <Compile Include="Things\Cardiovascular.cs" />
     <Compile Include="Things\CardiovascularExam.cs" />
-    <Compile Include="Things\CarUsageType.cs" />
     <Compile Include="Things\CaseSeries.cs" />
     <Compile Include="Things\Casino.cs" />
     <Compile Include="Things\CassetteFormat.cs" />
@@ -228,8 +221,6 @@
     <Compile Include="Things\Courthouse.cs" />
     <Compile Include="Things\CreateAction.cs" />
     <Compile Include="Things\CreativeWork.cs" />
-    <Compile Include="Things\CreativeWorkSeason.cs" />
-    <Compile Include="Things\CreativeWorkSeries.cs" />
     <Compile Include="Things\CreditCard.cs" />
     <Compile Include="Things\Crematorium.cs" />
     <Compile Include="Things\CrossSectional.cs" />
@@ -239,8 +230,6 @@
     <Compile Include="Things\DanceGroup.cs" />
     <Compile Include="Things\DataCatalog.cs" />
     <Compile Include="Things\DataDownload.cs" />
-    <Compile Include="Things\DataFeed.cs" />
-    <Compile Include="Things\DataFeedItem.cs" />
     <Compile Include="Things\Dataset.cs" />
     <Compile Include="Things\DatedMoneySpecification.cs" />
     <Compile Include="Things\DayOfWeek.cs" />
@@ -270,7 +259,6 @@
     <Compile Include="Things\DisagreeAction.cs" />
     <Compile Include="Things\Discontinued.cs" />
     <Compile Include="Things\DiscoverAction.cs" />
-    <Compile Include="Things\DiscussionForumPosting.cs" />
     <Compile Include="Things\DislikeAction.cs" />
     <Compile Include="Things\Distance.cs" />
     <Compile Include="Things\DJMixAlbum.cs" />
@@ -280,8 +268,6 @@
     <Compile Include="Things\DownloadAction.cs" />
     <Compile Include="Things\DrawAction.cs" />
     <Compile Include="Things\DrinkAction.cs" />
-    <Compile Include="Things\DriveWheelConfigurationValue.cs" />
-    <Compile Include="Things\DrivingSchoolVehicleUsage.cs" />
     <Compile Include="Things\Drug.cs" />
     <Compile Include="Things\DrugClass.cs" />
     <Compile Include="Things\DrugCost.cs" />
@@ -311,7 +297,6 @@
     <Compile Include="Things\Endocrine.cs" />
     <Compile Include="Things\EndorseAction.cs" />
     <Compile Include="Things\Energy.cs" />
-    <Compile Include="Things\EngineSpecification.cs" />
     <Compile Include="Things\EnrollingByInvitation.cs" />
     <Compile Include="Things\EntertainmentBusiness.cs" />
     <Compile Include="Things\EntryPoint.cs" />
@@ -332,7 +317,6 @@
     <Compile Include="Things\ExerciseAction.cs" />
     <Compile Include="Things\ExerciseGym.cs" />
     <Compile Include="Things\ExercisePlan.cs" />
-    <Compile Include="Things\ExhibitionEvent.cs" />
     <Compile Include="Things\Eye.cs" />
     <Compile Include="Things\FailedActionStatus.cs" />
     <Compile Include="Things\FastFoodRestaurant.cs" />
@@ -355,8 +339,6 @@
     <Compile Include="Things\FoodEstablishment.cs" />
     <Compile Include="Things\FoodEstablishmentReservation.cs" />
     <Compile Include="Things\FoodEvent.cs" />
-    <Compile Include="Things\FourWheelDriveConfiguration.cs" />
-    <Compile Include="Things\FrontWheelDriveConfiguration.cs" />
     <Compile Include="Things\Fungus.cs" />
     <Compile Include="Things\FurnitureStore.cs" />
     <Compile Include="Things\Game.cs" />
@@ -370,7 +352,6 @@
     <Compile Include="Things\GeneralContractor.cs" />
     <Compile Include="Things\Genetic.cs" />
     <Compile Include="Things\Genitourinary.cs" />
-    <Compile Include="Things\GeoCircle.cs" />
     <Compile Include="Things\GeoCoordinates.cs" />
     <Compile Include="Things\GeoShape.cs" />
     <Compile Include="Things\Geriatric.cs" />
@@ -382,7 +363,6 @@
     <Compile Include="Things\GovernmentPermit.cs" />
     <Compile Include="Things\GovernmentService.cs" />
     <Compile Include="Things\GroceryStore.cs" />
-    <Compile Include="Things\GroupBoardingPolicy.cs" />
     <Compile Include="Things\Gynecologic.cs" />
     <Compile Include="Things\HairSalon.cs" />
     <Compile Include="Things\Hardcover.cs" />
@@ -420,7 +400,6 @@
     <Compile Include="Things\InsuranceAgency.cs" />
     <Compile Include="Things\Intangible.cs" />
     <Compile Include="Things\InteractAction.cs" />
-    <Compile Include="Things\InteractionCounter.cs" />
     <Compile Include="Things\InternationalTrial.cs" />
     <Compile Include="Things\InternetCafe.cs" />
     <Compile Include="Things\InviteAction.cs" />
@@ -443,8 +422,6 @@
     <Compile Include="Things\Language.cs" />
     <Compile Include="Things\LaserDiscFormat.cs" />
     <Compile Include="Things\LeaveAction.cs" />
-    <Compile Include="Things\LeftHandDriving.cs" />
-    <Compile Include="Things\LegalService.cs" />
     <Compile Include="Things\LegislativeBuilding.cs" />
     <Compile Include="Things\LeisureTimeActivity.cs" />
     <Compile Include="Things\LendAction.cs" />
@@ -458,7 +435,6 @@
     <Compile Include="Things\ListItem.cs" />
     <Compile Include="Things\LiteraryEvent.cs" />
     <Compile Include="Things\LiveAlbum.cs" />
-    <Compile Include="Things\LiveBlogPosting.cs" />
     <Compile Include="Things\LocalBusiness.cs" />
     <Compile Include="Things\LockerDelivery.cs" />
     <Compile Include="Things\Locksmith.cs" />
@@ -529,7 +505,6 @@
     <Compile Include="Things\Mountain.cs" />
     <Compile Include="Things\MoveAction.cs" />
     <Compile Include="Things\Movie.cs" />
-    <Compile Include="Things\MovieClip.cs" />
     <Compile Include="Things\MovieRentalStore.cs" />
     <Compile Include="Things\MovieSeries.cs" />
     <Compile Include="Things\MovieTheater.cs" />
@@ -576,7 +551,6 @@
     <Compile Include="Things\OccupationalTherapy.cs" />
     <Compile Include="Things\OceanBodyOfWater.cs" />
     <Compile Include="Things\Offer.cs" />
-    <Compile Include="Things\OfferCatalog.cs" />
     <Compile Include="Things\OfferItemCondition.cs" />
     <Compile Include="Things\OfficeEquipmentStore.cs" />
     <Compile Include="Things\OfflinePermanently.cs" />
@@ -596,7 +570,6 @@
     <Compile Include="Things\OrderCancelled.cs" />
     <Compile Include="Things\OrderDelivered.cs" />
     <Compile Include="Things\OrderInTransit.cs" />
-    <Compile Include="Things\OrderItem.cs" />
     <Compile Include="Things\OrderPaymentDue.cs" />
     <Compile Include="Things\OrderPickupAvailable.cs" />
     <Compile Include="Things\OrderProblem.cs" />
@@ -627,14 +600,8 @@
     <Compile Include="Things\Patient.cs" />
     <Compile Include="Things\PawnShop.cs" />
     <Compile Include="Things\PayAction.cs" />
-    <Compile Include="Things\PaymentAutomaticallyApplied.cs" />
     <Compile Include="Things\PaymentChargeSpecification.cs" />
-    <Compile Include="Things\PaymentComplete.cs" />
-    <Compile Include="Things\PaymentDeclined.cs" />
-    <Compile Include="Things\PaymentDue.cs" />
     <Compile Include="Things\PaymentMethod.cs" />
-    <Compile Include="Things\PaymentPastDue.cs" />
-    <Compile Include="Things\PaymentStatusType.cs" />
     <Compile Include="Things\Pediatric.cs" />
     <Compile Include="Things\PeopleAudience.cs" />
     <Compile Include="Things\PercutaneousProcedure.cs" />
@@ -687,7 +654,6 @@
     <Compile Include="Things\Property.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Things\PropertyValue.cs" />
     <Compile Include="Things\PropertyValueSpecification.cs" />
     <Compile Include="Things\Protozoa.cs" />
     <Compile Include="Things\Psychiatric.cs" />
@@ -705,7 +671,6 @@
     <Compile Include="Things\Question.cs" />
     <Compile Include="Things\QuoteAction.cs" />
     <Compile Include="Things\RadiationTherapy.cs" />
-    <Compile Include="Things\RadioChannel.cs" />
     <Compile Include="Things\RadioClip.cs" />
     <Compile Include="Things\RadioEpisode.cs" />
     <Compile Include="Things\Radiograpy.cs" />
@@ -717,7 +682,6 @@
     <Compile Include="Things\ReactAction.cs" />
     <Compile Include="Things\ReadAction.cs" />
     <Compile Include="Things\RealEstateAgent.cs" />
-    <Compile Include="Things\RearWheelDriveConfiguration.cs" />
     <Compile Include="Things\ReceiveAction.cs" />
     <Compile Include="Things\Recipe.cs" />
     <Compile Include="Things\RecommendedDoseSchedule.cs" />
@@ -732,10 +696,8 @@
     <Compile Include="Things\Renal.cs" />
     <Compile Include="Things\RentAction.cs" />
     <Compile Include="Things\RentalCarReservation.cs" />
-    <Compile Include="Things\RentalVehicleUsage.cs" />
     <Compile Include="Things\ReplaceAction.cs" />
     <Compile Include="Things\ReplyAction.cs" />
-    <Compile Include="Things\Report.cs" />
     <Compile Include="Things\ReportedDoseSchedule.cs" />
     <Compile Include="Things\Reservation.cs" />
     <Compile Include="Things\ReservationCancelled.cs" />
@@ -757,7 +719,6 @@
     <Compile Include="Things\Review.cs" />
     <Compile Include="Things\ReviewAction.cs" />
     <Compile Include="Things\Rheumatologic.cs" />
-    <Compile Include="Things\RightHandDriving.cs" />
     <Compile Include="Things\RiverBodyOfWater.cs" />
     <Compile Include="Things\Role.cs" />
     <Compile Include="Things\RoofingContractor.cs" />
@@ -771,7 +732,6 @@
     <Compile Include="Things\ScheduleAction.cs" />
     <Compile Include="Things\ScholarlyArticle.cs" />
     <Compile Include="Things\School.cs" />
-    <Compile Include="Things\ScreeningEvent.cs" />
     <Compile Include="Things\Sculpture.cs" />
     <Compile Include="Things\SeaBodyOfWater.cs" />
     <Compile Include="Things\SearchAction.cs" />
@@ -797,9 +757,7 @@
     <Compile Include="Things\Skin.cs" />
     <Compile Include="Things\SkiResort.cs" />
     <Compile Include="Things\SocialEvent.cs" />
-    <Compile Include="Things\SocialMediaPosting.cs" />
     <Compile Include="Things\SoftwareApplication.cs" />
-    <Compile Include="Things\SoftwareSourceCode.cs" />
     <Compile Include="Things\SoldOut.cs" />
     <Compile Include="Things\SomeProducts.cs" />
     <Compile Include="Things\SoundtrackAlbum.cs" />
@@ -814,7 +772,6 @@
     <Compile Include="Things\SportsTeam.cs" />
     <Compile Include="Things\StadiumOrArena.cs" />
     <Compile Include="Things\State.cs" />
-    <Compile Include="Things\SteeringPositionValue.cs" />
     <Compile Include="Things\Store.cs" />
     <Compile Include="Things\StrengthTraining.cs" />
     <Compile Include="Things\StructuredValue.cs" />
@@ -832,11 +789,8 @@
     <Compile Include="Things\TattooParlor.cs" />
     <Compile Include="Things\Taxi.cs" />
     <Compile Include="Things\TaxiReservation.cs" />
-    <Compile Include="Things\TaxiService.cs" />
     <Compile Include="Things\TaxiStand.cs" />
-    <Compile Include="Things\TaxiVehicleUsage.cs" />
     <Compile Include="Things\TechArticle.cs" />
-    <Compile Include="Things\TelevisionChannel.cs" />
     <Compile Include="Things\TelevisionStation.cs" />
     <Compile Include="Things\TennisComplex.cs" />
     <Compile Include="Things\Terminated.cs" />
@@ -896,7 +850,6 @@
     <Compile Include="Things\VeterinaryCare.cs" />
     <Compile Include="Things\VideoGallery.cs" />
     <Compile Include="Things\VideoGame.cs" />
-    <Compile Include="Things\VideoGameClip.cs" />
     <Compile Include="Things\VideoGameSeries.cs" />
     <Compile Include="Things\VideoObject.cs" />
     <Compile Include="Things\ViewAction.cs" />
@@ -929,7 +882,6 @@
     <Compile Include="Things\WPSideBar.cs" />
     <Compile Include="Things\WriteAction.cs" />
     <Compile Include="Things\XRay.cs" />
-    <Compile Include="Things\ZoneBoardingPolicy.cs" />
     <Compile Include="Things\Zoo.cs" />
     <Compile Include="ThisOrThat.cs" />
     <Compile Include="_Url.cs" />

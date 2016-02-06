@@ -1,3 +1,6 @@
+/*
+	Copyright © Bryan Apellanes 2015  
+*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -8,7 +11,7 @@ namespace Bam.Net.Schema.Org
 		///<summary>The end date and time of the item (in ISO 8601 date format).</summary>
 		public Date EndDate {get; set;}
 		///<summary>A role played, performed or filled by a person or organization. For example, the team of creators for a comic book might fill the roles named 'inker', 'penciller', and 'letterer'; or an athlete in a SportsTeam might play in the position named 'Quarterback'. Supersedes namedPosition.</summary>
-		public ThisOrThat<Text , URL> RoleName {get; set;}
+		public ThisOrThat<URL , Text> RoleName {get; set;}
 		///<summary>The start date and time of the item (in ISO 8601 date format).</summary>
 		public Date StartDate {get; set;}
 	}

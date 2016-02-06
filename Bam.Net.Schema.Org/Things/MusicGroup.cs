@@ -1,3 +1,6 @@
+/*
+	Copyright © Bryan Apellanes 2015  
+*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -8,7 +11,7 @@ namespace Bam.Net.Schema.Org
 		///<summary>A music album. Supersedes albums.</summary>
 		public MusicAlbum Album {get; set;}
 		///<summary>Genre of the creative work or group.</summary>
-		public ThisOrThat<Text , URL> Genre {get; set;}
+		public Text Genre {get; set;}
 		///<summary>A music recording (track)—usually a single song. If an ItemList is given, the list should contain items of type MusicRecording. Supersedes tracks.</summary>
 		public ThisOrThat<ItemList , MusicRecording> Track {get; set;}
 	}
