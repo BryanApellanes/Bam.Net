@@ -1,3 +1,6 @@
+/*
+	Copyright © Bryan Apellanes 2015  
+*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -6,6 +9,6 @@ namespace Bam.Net.Schema.Org
 	public class AllocateAction: OrganizeAction
 	{
 		///<summary>A goal towards an action is taken. Can be concrete or abstract.</summary>
-		public ThisOrThat<Thing , MedicalDevicePurpose> Purpose {get; set;}
+		public ThisOrThat<MedicalDevicePurpose , Thing> Purpose {get; set;}
 	}
 }

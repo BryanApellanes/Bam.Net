@@ -1,3 +1,6 @@
+/*
+	Copyright © Bryan Apellanes 2015  
+*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -22,7 +25,7 @@ namespace Bam.Net.Schema.Org
 		///<summary>The overall order the items in this delivery were included in.</summary>
 		public Order PartOfOrder {get; set;}
 		///<summary>The service provider, service operator, or service performer; the goods producer. Another party (a seller) may offer those services or goods on behalf of the provider. A provider may also serve as the seller. Supersedes carrier.</summary>
-		public ThisOrThat<Organization , Person> Provider {get; set;}
+		public ThisOrThat<Person , Organization> Provider {get; set;}
 		///<summary>Shipper tracking number.</summary>
 		public Text TrackingNumber {get; set;}
 		///<summary>Tracking url for the parcel delivery.</summary>

@@ -1,3 +1,6 @@
+/*
+	Copyright © Bryan Apellanes 2015  
+*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -6,6 +9,6 @@ namespace Bam.Net.Schema.Org
 	public class AskAction: CommunicateAction
 	{
 		///<summary>A sub property of object. A question.</summary>
-		public Question Question {get; set;}
+		public Text Question {get; set;}
 	}
 }

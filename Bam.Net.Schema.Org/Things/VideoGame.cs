@@ -1,3 +1,6 @@
+/*
+	Copyright © Bryan Apellanes 2015  
+*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -12,7 +15,7 @@ namespace Bam.Net.Schema.Org
 		///<summary>A director of e.g. tv, radio, movie, video games etc. content. Directors can be associated with individual items or with a series, episode, clip. Supersedes directors.</summary>
 		public Person Director {get; set;}
 		///<summary>The electronic systems used to play video games.</summary>
-		public ThisOrThat<Thing , Text , URL> GamePlatform {get; set;}
+		public ThisOrThat<URL , Text , Thing> GamePlatform {get; set;}
 		///<summary>The server on which  it is possible to play the game. Inverse property: game.</summary>
 		public GameServer GameServer {get; set;}
 		///<summary>Links to tips, tactics, etc.</summary>

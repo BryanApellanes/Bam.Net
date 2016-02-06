@@ -1,3 +1,6 @@
+/*
+	Copyright © Bryan Apellanes 2015  
+*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -5,24 +8,16 @@ namespace Bam.Net.Schema.Org
 	///<summary>Any offered product or service. For example: a pair of shoes; a concert ticket; the rental of a car; a haircut; or an episode of a TV show streamed online.</summary>
 	public class Product: Thing
 	{
-		///<summary>A property-value pair representing an additional characteristics of the entitity, e.g. a product feature or another characteristic for which there is no matching property in schema.org. Note: Publishers should be aware that applications designed to use specific schema.org properties (e.g. http://schema.org/width, http://schema.org/color, http://schema.org/gtin13, ...) will typically expect such data to be provided using those properties, rather than using the generic property/value mechanism.</summary>
-		public PropertyValue AdditionalProperty {get; set;}
 		///<summary>The overall rating, based on a collection of reviews or ratings, of the item.</summary>
 		public AggregateRating AggregateRating {get; set;}
-		///<summary>An intended audience, i.e. a group for whom something was created. Supersedes serviceAudience.</summary>
+		///<summary>The intended audience of the item, i.e. the group for whom the item was created.</summary>
 		public Audience Audience {get; set;}
-		///<summary>An award won by or for this item. Supersedes awards.</summary>
-		public Text Award {get; set;}
 		///<summary>The brand(s) associated with a product or service, or the brand(s) maintained by an organization or business person.</summary>
-		public ThisOrThat<Organization , Brand> Brand {get; set;}
-		///<summary>A category for the item. Greater signs or slashes can be used to informally indicate a category hierarchy.</summary>
-		public ThisOrThat<Thing , PhysicalActivityCategory , Text> Category {get; set;}
+		public ThisOrThat<Brand , Organization> Brand {get; set;}
 		///<summary>The color of the product.</summary>
 		public Text Color {get; set;}
 		///<summary>The depth of the item.</summary>
 		public ThisOrThat<Distance , QuantitativeValue> Depth {get; set;}
-		///<summary>The GTIN-12 code of the product, or the product to which the offer refers. The GTIN-12 is the 12-digit GS1 Identification Key composed of a U.P.C. Company Prefix, Item Reference, and Check Digit used to identify trade items. See GS1 GTIN Summary for more details.</summary>
-		public Text Gtin12 {get; set;}
 		///<summary>The GTIN-13 code of the product, or the product to which the offer refers. This is equivalent to 13-digit ISBN codes and EAN UCC-13. Former 12-digit UPC codes can be converted into a GTIN-13 code by simply adding a preceeding zero. See GS1 GTIN Summary for more details.</summary>
 		public Text Gtin13 {get; set;}
 		///<summary>The GTIN-14 code of the product, or the product to which the offer refers. See GS1 GTIN Summary for more details.</summary>
@@ -42,21 +37,17 @@ namespace Bam.Net.Schema.Org
 		///<summary>A predefined value from OfferItemCondition or a textual description of the condition of the product or service, or the products or services included in the offer.</summary>
 		public OfferItemCondition ItemCondition {get; set;}
 		///<summary>An associated logo.</summary>
-		public ThisOrThat<ImageObject , URL> Logo {get; set;}
+		public ThisOrThat<URL , ImageObject> Logo {get; set;}
 		///<summary>The manufacturer of the product.</summary>
 		public Organization Manufacturer {get; set;}
 		///<summary>The model of the product. Use with the URL of a ProductModel or a textual representation of the model identifier. The URL of the ProductModel can be from an external source. It is recommended to additionally provide strong product identifiers via the gtin8/gtin13/gtin14 and mpn properties.</summary>
 		public ThisOrThat<Text , ProductModel> Model {get; set;}
 		///<summary>The Manufacturer Part Number (MPN) of the product, or the product to which the offer refers.</summary>
 		public Text Mpn {get; set;}
-		///<summary>An offer to provide this item—for example, an offer to sell a product, rent the DVD of a movie, perform a service, or give away tickets to an event.</summary>
+		///<summary>An offer to provide this item—for example, an offer to sell a product, rent the DVD of a movie, or give away tickets to an event.</summary>
 		public Offer Offers {get; set;}
 		///<summary>The product identifier, such as ISBN. For example: <meta itemprop='productID' content='isbn:123-456-789'/>.</summary>
 		public Text ProductID {get; set;}
-		///<summary>The date of production of the item, e.g. vehicle.</summary>
-		public Date ProductionDate {get; set;}
-		///<summary>The date the item e.g. vehicle was purchased by the current owner.</summary>
-		public Date PurchaseDate {get; set;}
 		///<summary>The release date of a product or product model. This can be used to distinguish the exact variant of a product.</summary>
 		public Date ReleaseDate {get; set;}
 		///<summary>A review of the item. Supersedes reviews.</summary>
