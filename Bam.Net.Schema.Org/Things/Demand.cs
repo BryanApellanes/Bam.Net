@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -12,6 +9,8 @@ namespace Bam.Net.Schema.Org
 		public PaymentMethod AcceptedPaymentMethod {get; set;}
 		///<summary>The amount of time that is required between accepting the offer and the actual usage of the resource or service.</summary>
 		public QuantitativeValue AdvanceBookingRequirement {get; set;}
+		///<summary>The geographic area where a service or offered item is provided. Supersedes serviceArea.</summary>
+		public OneOfThese<AdministrativeArea , Place , GeoShape , Text> AreaServed {get; set;}
 		///<summary>The availability of this item—for example In stock, Out of stock, Pre-order, etc.</summary>
 		public ItemAvailability Availability {get; set;}
 		///<summary>The end of the availability of the product or service included in the offer.</summary>
@@ -32,10 +31,12 @@ namespace Bam.Net.Schema.Org
 		public QuantitativeValue EligibleDuration {get; set;}
 		///<summary>The interval and unit of measurement of ordering quantities for which the offer or price specification is valid. This allows e.g. specifying that a certain freight charge is valid only for a certain quantity.</summary>
 		public QuantitativeValue EligibleQuantity {get; set;}
-		///<summary>The ISO 3166-1 (ISO 3166-1 alpha-2) or ISO 3166-2 code, or the GeoShape for the geo-political region(s) for which the offer or delivery charge specification is valid.</summary>
-		public OneOfThese<GeoShape , Text> EligibleRegion {get; set;}
+		///<summary>The ISO 3166-1 (ISO 3166-1 alpha-2) or ISO 3166-2 code, the place, or the GeoShape for the geo-political region(s) for which the offer or delivery charge specification is valid.       See also ineligibleRegion.</summary>
+		public OneOfThese<Place , GeoShape , Text> EligibleRegion {get; set;}
 		///<summary>The transaction volume, in a monetary unit, for which the offer or price specification is valid, e.g. for indicating a minimal purchasing volume, to express free shipping above a certain order volume, or to limit the acceptance of credit cards to purchases to a certain minimal amount.</summary>
 		public PriceSpecification EligibleTransactionVolume {get; set;}
+		///<summary>The GTIN-12 code of the product, or the product to which the offer refers. The GTIN-12 is the 12-digit GS1 Identification Key composed of a U.P.C. Company Prefix, Item Reference, and Check Digit used to identify trade items. See GS1 GTIN Summary for more details.</summary>
+		public Text Gtin12 {get; set;}
 		///<summary>The GTIN-13 code of the product, or the product to which the offer refers. This is equivalent to 13-digit ISBN codes and EAN UCC-13. Former 12-digit UPC codes can be converted into a GTIN-13 code by simply adding a preceeding zero. See GS1 GTIN Summary for more details.</summary>
 		public Text Gtin13 {get; set;}
 		///<summary>The GTIN-14 code of the product, or the product to which the offer refers. See GS1 GTIN Summary for more details.</summary>
@@ -44,18 +45,20 @@ namespace Bam.Net.Schema.Org
 		public Text Gtin8 {get; set;}
 		///<summary>This links to a node or nodes indicating the exact quantity of the products included in the offer.</summary>
 		public TypeAndQuantityNode IncludesObject {get; set;}
+		///<summary>The ISO 3166-1 (ISO 3166-1 alpha-2) or ISO 3166-2 code, the place, or the GeoShape for the geo-political region(s) for which the offer or delivery charge specification is not valid, e.g. a region where the transaction is not allowed.       See also eligibleRegion.</summary>
+		public OneOfThese<Place , GeoShape , Text> IneligibleRegion {get; set;}
 		///<summary>The current approximate inventory level for the item or items.</summary>
 		public QuantitativeValue InventoryLevel {get; set;}
 		///<summary>A predefined value from OfferItemCondition or a textual description of the condition of the product or service, or the products or services included in the offer.</summary>
 		public OfferItemCondition ItemCondition {get; set;}
 		///<summary>The item being offered.</summary>
-		public Product ItemOffered {get; set;}
+		public OneOfThese<Product , Service> ItemOffered {get; set;}
 		///<summary>The Manufacturer Part Number (MPN) of the product, or the product to which the offer refers.</summary>
 		public Text Mpn {get; set;}
 		///<summary>One or more detailed price specifications, indicating the unit price and delivery or payment charges.</summary>
 		public PriceSpecification PriceSpecification {get; set;}
-		///<summary>An entity which offers (sells / leases / lends / loans) the services / goods.  A seller may also be a provider. Supersedes merchant, vendor.</summary>
-		public OneOfThese<Person , Organization> Seller {get; set;}
+		///<summary>An entity which offers (sells / leases / lends / loans) the services / goods.  A seller may also be a provider. Supersedes vendor, merchant.</summary>
+		public OneOfThese<Organization , Person> Seller {get; set;}
 		///<summary>The serial number or any alphanumeric identifier of a particular product. When attached to an offer, it is a shortcut for the serial number of the product included in the offer.</summary>
 		public Text SerialNumber {get; set;}
 		///<summary>The Stock Keeping Unit (SKU), i.e. a merchant-specific identifier for a product or service, or the product to which the offer refers.</summary>
@@ -64,7 +67,7 @@ namespace Bam.Net.Schema.Org
 		public DateTime ValidFrom {get; set;}
 		///<summary>The end of the validity of offer, price specification, or opening hours data.</summary>
 		public DateTime ValidThrough {get; set;}
-		///<summary>The warranty promise(s) included in the offer.</summary>
+		///<summary>The warranty promise(s) included in the offer. Supersedes warrantyPromise.</summary>
 		public WarrantyPromise Warranty {get; set;}
 	}
 }

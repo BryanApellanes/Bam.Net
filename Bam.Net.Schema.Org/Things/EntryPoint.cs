@@ -8,7 +8,7 @@ namespace Bam.Net.Schema.Org
 		///<summary>An application that can complete the request. Supersedes application.</summary>
 		public SoftwareApplication ActionApplication {get; set;}
 		///<summary>The high level platform(s) where the Action can be performed for the given URL. To specify a specific application or operating system instance, use actionApplication.</summary>
-		public ThisOrThat<Text , URL> ActionPlatform {get; set;}
+		public OneOfThese<Text , URL> ActionPlatform {get; set;}
 		///<summary>The supported content type(s) for an EntryPoint response.</summary>
 		public Text ContentType {get; set;}
 		///<summary>The supported encoding type(s) for an EntryPoint request.</summary>

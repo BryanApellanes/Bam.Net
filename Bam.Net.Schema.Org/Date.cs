@@ -22,16 +22,6 @@ namespace Bam.Net.Schema.Org
             this.Value = value;
         }
 
-        public static implicit operator DateTime(Date date)
-        {
-            return date.Value;
-        }
-
-        public static implicit operator Date(DateTime date)
-        {
-            return new Date(date);
-        }
-
         public DateTime Value { get; set; }
 
         public override string ToString()

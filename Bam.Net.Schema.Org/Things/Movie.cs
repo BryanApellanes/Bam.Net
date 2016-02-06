@@ -14,11 +14,11 @@ namespace Bam.Net.Schema.Org
 		///<summary>The duration of the item (movie, audio recording, event, etc.) in ISO 8601 date format.</summary>
 		public Duration Duration {get; set;}
 		///<summary>The composer of the soundtrack.</summary>
-		public OneOfThese<Person , MusicGroup> MusicBy {get; set;}
+		public OneOfThese<MusicGroup , Person> MusicBy {get; set;}
 		///<summary>The production company or studio responsible for the item e.g. series, video game, episode etc.</summary>
 		public Organization ProductionCompany {get; set;}
 		///<summary>Languages in which subtitles/captions are available, in IETF BCP 47 standard format.</summary>
-		public ThisOrThat<Language , Text> SubtitleLanguage {get; set;}
+		public OneOfThese<Text , Language> SubtitleLanguage {get; set;}
 		///<summary>The trailer of a movie or tv/radio series, season, episode, etc.</summary>
 		public VideoObject Trailer {get; set;}
 	}

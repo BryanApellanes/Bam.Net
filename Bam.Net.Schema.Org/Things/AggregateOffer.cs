@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -9,12 +6,12 @@ namespace Bam.Net.Schema.Org
 	public class AggregateOffer: Offer
 	{
 		///<summary>The highest price of all offers available.</summary>
-		public OneOfThese<Number , Text> HighPrice {get; set;}
+		public OneOfThese<Text , Number> HighPrice {get; set;}
 		///<summary>The lowest price of all offers available.</summary>
-		public OneOfThese<Number , Text> LowPrice {get; set;}
+		public OneOfThese<Text , Number> LowPrice {get; set;}
 		///<summary>The number of offers for the product.</summary>
 		public Integer OfferCount {get; set;}
-		///<summary>An offer to provide this item—for example, an offer to sell a product, rent the DVD of a movie, or give away tickets to an event.</summary>
+		///<summary>An offer to provide this item—for example, an offer to sell a product, rent the DVD of a movie, perform a service, or give away tickets to an event.</summary>
 		public Offer Offers {get; set;}
 	}
 }

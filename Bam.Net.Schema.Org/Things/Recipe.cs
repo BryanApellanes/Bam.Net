@@ -20,7 +20,7 @@ namespace Bam.Net.Schema.Org
 		///<summary>A single ingredient used in the recipe, e.g. sugar, flour or garlic. Supersedes ingredients.</summary>
 		public Text RecipeIngredient {get; set;}
 		///<summary>A step or instruction involved in making the recipe.</summary>
-		public ThisOrThat<ItemList , Text> RecipeInstructions {get; set;}
+		public OneOfThese<ItemList , Text> RecipeInstructions {get; set;}
 		///<summary>The quantity produced by the recipe (for example, number of people served, number of servings, etc).</summary>
 		public Text RecipeYield {get; set;}
 		///<summary>The total time it takes to prepare and cook the recipe, in ISO 8601 duration format.</summary>

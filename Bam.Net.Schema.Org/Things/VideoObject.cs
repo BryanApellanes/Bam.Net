@@ -12,7 +12,7 @@ namespace Bam.Net.Schema.Org
 		///<summary>A director of e.g. tv, radio, movie, video games etc. content. Directors can be associated with individual items or with a series, episode, clip. Supersedes directors.</summary>
 		public Person Director {get; set;}
 		///<summary>The composer of the soundtrack.</summary>
-		public OneOfThese<Person , MusicGroup> MusicBy {get; set;}
+		public OneOfThese<MusicGroup , Person> MusicBy {get; set;}
 		///<summary>Thumbnail image for an image or video.</summary>
 		public ImageObject Thumbnail {get; set;}
 		///<summary>If this MediaObject is an AudioObject or VideoObject, the transcript of that object.</summary>

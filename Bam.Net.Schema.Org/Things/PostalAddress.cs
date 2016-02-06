@@ -6,7 +6,7 @@ namespace Bam.Net.Schema.Org
 	public class PostalAddress: ContactPoint
 	{
 		///<summary>The country. For example, USA. You can also provide the two-letter ISO 3166-1 alpha-2 country code.</summary>
-		public ThisOrThat<Text , Country> AddressCountry {get; set;}
+		public OneOfThese<Country , Text> AddressCountry {get; set;}
 		///<summary>The locality. For example, Mountain View.</summary>
 		public Text AddressLocality {get; set;}
 		///<summary>The region. For example, CA.</summary>

@@ -6,7 +6,7 @@ namespace Bam.Net.Schema.Org
 	public class InteractionCounter: StructuredValue
 	{
 		///<summary>The WebSite or SoftwareApplication where the interactions took place.</summary>
-		public ThisOrThat<SoftwareApplication , WebSite> InteractionService {get; set;}
+		public OneOfThese<WebSite , SoftwareApplication> InteractionService {get; set;}
 		///<summary>The Action representing the type of interaction. For up votes, +1s, etc. use LikeAction. For down votes use DislikeAction. Otherwise, use the most specific Action.</summary>
 		public Action InteractionType {get; set;}
 		///<summary>The number of interactions for the CreativeWork using the WebSite or SoftwareApplication.</summary>

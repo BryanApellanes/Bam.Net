@@ -685,9 +685,7 @@
     <Compile Include="Things\ProfessionalService.cs" />
     <Compile Include="Things\ProfilePage.cs" />
     <Compile Include="Things\ProgramMembership.cs" />
-    <Compile Include="Things\Property.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Things\Property.cs" />
     <Compile Include="Things\PropertyValue.cs" />
     <Compile Include="Things\PropertyValueSpecification.cs" />
     <Compile Include="Things\Protozoa.cs" />
@@ -950,6 +948,7 @@
       <Name>Bam.Net</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

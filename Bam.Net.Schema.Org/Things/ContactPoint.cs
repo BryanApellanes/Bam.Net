@@ -6,7 +6,7 @@ namespace Bam.Net.Schema.Org
 	public class ContactPoint: StructuredValue
 	{
 		///<summary>The geographic area where a service or offered item is provided. Supersedes serviceArea.</summary>
-		public AdministrativeArea  or  Place  or  GeoShape  or  Text AreaServed {get; set;}
+		public OneOfThese<Place , GeoShape , Text , AdministrativeArea> AreaServed {get; set;}
 		///<summary>A language someone may use with the item.</summary>
 		public Language AvailableLanguage {get; set;}
 		///<summary>An option available on this contact point (e.g. a toll-free number or support for hearing-impaired callers).</summary>

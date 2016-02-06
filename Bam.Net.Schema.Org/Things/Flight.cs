@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -9,7 +6,7 @@ namespace Bam.Net.Schema.Org
 	public class Flight: Intangible
 	{
 		///<summary>The kind of aircraft (e.g., "Boeing 747").</summary>
-		public OneOfThese<Vehicle , Text> Aircraft {get; set;}
+		public OneOfThese<Text , Vehicle> Aircraft {get; set;}
 		///<summary>The airport where the flight terminates.</summary>
 		public Airport ArrivalAirport {get; set;}
 		///<summary>Identifier of the flight's arrival gate.</summary>
@@ -18,6 +15,8 @@ namespace Bam.Net.Schema.Org
 		public Text ArrivalTerminal {get; set;}
 		///<summary>The expected arrival time.</summary>
 		public DateTime ArrivalTime {get; set;}
+		///<summary>The type of boarding policy used by the airline (e.g. zone-based or group-based).</summary>
+		public BoardingPolicyType BoardingPolicy {get; set;}
 		///<summary>The airport where the flight originates.</summary>
 		public Airport DepartureAirport {get; set;}
 		///<summary>Identifier of the flight's departure gate.</summary>

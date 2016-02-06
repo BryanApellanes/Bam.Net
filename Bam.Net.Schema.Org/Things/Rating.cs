@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -9,10 +6,10 @@ namespace Bam.Net.Schema.Org
 	public class Rating: Intangible
 	{
 		///<summary>The highest value allowed in this rating system. If bestRating is omitted, 5 is assumed.</summary>
-		public OneOfThese<Number , Text> BestRating {get; set;}
+		public OneOfThese<Text , Number> BestRating {get; set;}
 		///<summary>The rating for the content.</summary>
 		public Text RatingValue {get; set;}
 		///<summary>The lowest value allowed in this rating system. If worstRating is omitted, 1 is assumed.</summary>
-		public OneOfThese<Number , Text> WorstRating {get; set;}
+		public OneOfThese<Text , Number> WorstRating {get; set;}
 	}
 }

@@ -6,7 +6,7 @@ namespace Bam.Net.Schema.Org
 	public class WebPage: CreativeWork
 	{
 		///<summary>A set of links that can help a user understand and navigate a website hierarchy.</summary>
-		public OneOfThese<Text , BreadcrumbList> Breadcrumb {get; set;}
+		public OneOfThese<BreadcrumbList , Text> Breadcrumb {get; set;}
 		///<summary>Date on which the content on this web page was last reviewed for accuracy and/or completeness.</summary>
 		public Date LastReviewed {get; set;}
 		///<summary>Indicates if this web page element is the main subject of the page.</summary>

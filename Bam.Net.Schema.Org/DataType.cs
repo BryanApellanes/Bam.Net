@@ -18,6 +18,17 @@ namespace Bam.Net.Schema.Org
         }
         public string Name { get; set; }
 
+        public static implicit operator DateTime(DataType type)
+        {
+            return type.Value<DateTime>();
+        }
+        
+        public static implicit operator DataType(DateTime dateTime)
+        {
+            Date dt = new Date();
+            dt.Value<DateTime>(dateTime);
+            return dt;
+        }
         public virtual T Value<T>(object value = null)
         {
             Type type = this.GetType();

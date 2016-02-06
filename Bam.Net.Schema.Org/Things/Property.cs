@@ -12,6 +12,6 @@ namespace Bam.Net.Schema.Org
 		///<summary>Relates a property to a class that constitutes (one of) the expected type(s) for values of the property.</summary>
 		public Class RangeIncludes {get; set;}
 		///<summary>Relates a term (i.e. a property, class or enumeration) to one that supersedes it.</summary>
-		public ThisOrThat<Enumeration , Class , Property> SupersededBy {get; set;}
+		public OneOfThese<Enumeration , Class , Property> SupersededBy {get; set;}
 	}
 }

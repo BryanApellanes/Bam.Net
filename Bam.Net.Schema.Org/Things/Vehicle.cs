@@ -10,27 +10,27 @@ namespace Bam.Net.Schema.Org
 		///<summary>The date of the first registration of the vehicle with the respective public authorities.</summary>
 		public Date DateVehicleFirstRegistered {get; set;}
 		///<summary>The drive wheel configuration, i.e. which roadwheels will receive torque from the vehicle's engine via the drivetrain.</summary>
-		public ThisOrThat<DriveWheelConfigurationValue , Text> DriveWheelConfiguration {get; set;}
+		public OneOfThese<Text , DriveWheelConfigurationValue> DriveWheelConfiguration {get; set;}
 		///<summary>The amount of fuel consumed for traveling a particular distance or temporal duration with the given vehicle (e.g. liters per 100 km).Note 1: There are unfortunately no standard unit codes for liters per 100 km.Use unitText to indicate the unit of measurement, e.g. L/100 km.Note 2: There are two ways of indicating the fuel consumption, fuelConsumption (e.g. 8 liters per 100 km) and fuelEfficiency (e.g. 30 miles per gallon). They are reciprocal.Note 3: Often, the absolute value is useful only when related to driving speed ("at 80 km/h") or usage pattern ("city traffic"). You can use valueReference to link the value for the fuel consumption to another value.</summary>
 		public QuantitativeValue FuelConsumption {get; set;}
 		///<summary>The distance traveled per unit of fuel used; most commonly miles per gallon (mpg) or kilometers per liter (km/L).Note 1: There are unfortunately no standard unit codes for miles per gallon or kilometers per liter.Use unitText to indicate the unit of measurement, e.g. mpg or km/L.Note 2: There are two ways of indicating the fuel consumption, fuelConsumption (e.g. 8 liters per 100 km) and fuelEfficiency (e.g. 30 miles per gallon). They are reciprocal.Note 3: Often, the absolute value is useful only when related to driving speed ("at 80 km/h") or usage pattern ("city traffic"). You can use valueReference to link the value for the fuel economy to another value.</summary>
 		public QuantitativeValue FuelEfficiency {get; set;}
 		///<summary>The type of fuel suitable for the engine or engines of the vehicle. If the vehicle has only one engine, this property can be attached directly to the vehicle.</summary>
-		public ThisOrThat<QualitativeValue , Text , URL> FuelType {get; set;}
+		public OneOfThese<QualitativeValue , Text , URL> FuelType {get; set;}
 		///<summary>A textual description of known damages, both repaired and unrepaired.</summary>
 		public Text KnownVehicleDamages {get; set;}
 		///<summary>The total distance travelled by the particular vehicle since its initial production, as read from its odometer.Typical unit code(s): KMT for kilometers, SMI for statute miles</summary>
 		public QuantitativeValue MileageFromOdometer {get; set;}
 		///<summary>The number or type of airbags in the vehicle.</summary>
-		public ThisOrThat<Text , Number> NumberOfAirbags {get; set;}
+		public OneOfThese<Text , Number> NumberOfAirbags {get; set;}
 		///<summary>The number of axles.Typical unit code(s): C62</summary>
-		public ThisOrThat<QuantitativeValue , Number> NumberOfAxles {get; set;}
+		public OneOfThese<QuantitativeValue , Number> NumberOfAxles {get; set;}
 		///<summary>The number of doors.Typical unit code(s): C62</summary>
-		public ThisOrThat<QuantitativeValue , Number> NumberOfDoors {get; set;}
+		public OneOfThese<QuantitativeValue , Number> NumberOfDoors {get; set;}
 		///<summary>The total number of forward gears available for the transmission system of the vehicle.Typical unit code(s): C62</summary>
-		public ThisOrThat<QuantitativeValue , Number> NumberOfForwardGears {get; set;}
+		public OneOfThese<QuantitativeValue , Number> NumberOfForwardGears {get; set;}
 		///<summary>The number of owners of the vehicle, including the current one.Typical unit code(s): C62</summary>
-		public ThisOrThat<QuantitativeValue , Number> NumberOfPreviousOwners {get; set;}
+		public OneOfThese<QuantitativeValue , Number> NumberOfPreviousOwners {get; set;}
 		///<summary>The date of production of the item, e.g. vehicle.</summary>
 		public Date ProductionDate {get; set;}
 		///<summary>The date the item e.g. vehicle was purchased by the current owner.</summary>
@@ -50,8 +50,8 @@ namespace Bam.Net.Schema.Org
 		///<summary>The release date of a vehicle model (often used to differentiate versions of the same make and model).</summary>
 		public Date VehicleModelDate {get; set;}
 		///<summary>The number of passengers that can be seated in the vehicle, both in terms of the physical space available, and in terms of limitations set by law.Typical unit code(s): C62 for persons.</summary>
-		public ThisOrThat<QuantitativeValue , Number> VehicleSeatingCapacity {get; set;}
+		public OneOfThese<QuantitativeValue , Number> VehicleSeatingCapacity {get; set;}
 		///<summary>The type of component used for transmitting the power from a rotating power source to the wheels or other relevant component(s) ("gearbox" for cars).</summary>
-		public ThisOrThat<QualitativeValue , Text , URL> VehicleTransmission {get; set;}
+		public OneOfThese<QualitativeValue , Text , URL> VehicleTransmission {get; set;}
 	}
 }

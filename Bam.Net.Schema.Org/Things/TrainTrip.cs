@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -21,7 +18,7 @@ namespace Bam.Net.Schema.Org
 		///<summary>The expected departure time.</summary>
 		public DateTime DepartureTime {get; set;}
 		///<summary>The service provider, service operator, or service performer; the goods producer. Another party (a seller) may offer those services or goods on behalf of the provider. A provider may also serve as the seller. Supersedes carrier.</summary>
-		public OneOfThese<Person , Organization> Provider {get; set;}
+		public OneOfThese<Organization , Person> Provider {get; set;}
 		///<summary>The name of the train (e.g. The Orient Express).</summary>
 		public Text TrainName {get; set;}
 		///<summary>The unique identifier for the train.</summary>

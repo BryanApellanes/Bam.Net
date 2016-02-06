@@ -6,6 +6,6 @@ namespace Bam.Net.Schema.Org
 	public class EngineSpecification: StructuredValue
 	{
 		///<summary>The type of fuel suitable for the engine or engines of the vehicle. If the vehicle has only one engine, this property can be attached directly to the vehicle.</summary>
-		public ThisOrThat<Text , URL , QualitativeValue> FuelType {get; set;}
+		public OneOfThese<URL , QualitativeValue , Text> FuelType {get; set;}
 	}
 }

@@ -6,6 +6,6 @@ namespace Bam.Net.Schema.Org
 	public class Enumeration: Intangible
 	{
 		///<summary>Relates a term (i.e. a property, class or enumeration) to one that supersedes it.</summary>
-		public ThisOrThat<Enumeration , Class , Property> SupersededBy {get; set;}
+		public OneOfThese<Property , Enumeration , Class> SupersededBy {get; set;}
 	}
 }

@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -11,19 +8,19 @@ namespace Bam.Net.Schema.Org
 		///<summary>An additional name for a Person, can be used for a middle name.</summary>
 		public Text AdditionalName {get; set;}
 		///<summary>Physical address of the item.</summary>
-		public PostalAddress Address {get; set;}
+		public OneOfThese<PostalAddress , Text> Address {get; set;}
 		///<summary>An organization that this person is affiliated with. For example, a school/university, a club, or a team.</summary>
 		public Organization Affiliation {get; set;}
-		///<summary>An educational organizations that the person is an alumni of. Inverse property: alumni.</summary>
-		public EducationalOrganization AlumniOf {get; set;}
-		///<summary>An award won by this person or for this creative work. Supersedes awards.</summary>
+		///<summary>An organization that the person is an alumni of. Inverse property: alumni.</summary>
+		public OneOfThese<EducationalOrganization , Organization> AlumniOf {get; set;}
+		///<summary>An award won by or for this item. Supersedes awards.</summary>
 		public Text Award {get; set;}
 		///<summary>Date of birth.</summary>
 		public Date BirthDate {get; set;}
 		///<summary>The place where the person was born.</summary>
 		public Place BirthPlace {get; set;}
 		///<summary>The brand(s) associated with a product or service, or the brand(s) maintained by an organization or business person.</summary>
-		public OneOfThese<Brand , Organization> Brand {get; set;}
+		public OneOfThese<Organization , Brand> Brand {get; set;}
 		///<summary>A child of the person.</summary>
 		public Person Children {get; set;}
 		///<summary>A colleague of the person. Supersedes colleagues.</summary>
@@ -50,25 +47,25 @@ namespace Bam.Net.Schema.Org
 		public Text GivenName {get; set;}
 		///<summary>The Global Location Number (GLN, sometimes also referred to as International Location Number or ILN) of the respective organization, person, or place. The GLN is a 13-digit number used to identify parties and physical locations.</summary>
 		public Text GlobalLocationNumber {get; set;}
+		///<summary>Indicates an OfferCatalog listing for this Organization, Person, or Service.</summary>
+		public OfferCatalog HasOfferCatalog {get; set;}
 		///<summary>Points-of-Sales operated by the organization or person.</summary>
 		public Place HasPOS {get; set;}
 		///<summary>The height of the item.</summary>
 		public OneOfThese<Distance , QuantitativeValue> Height {get; set;}
 		///<summary>A contact location for a person's residence.</summary>
-		public OneOfThese<ContactPoint , Place> HomeLocation {get; set;}
+		public OneOfThese<Place , ContactPoint> HomeLocation {get; set;}
 		///<summary>An honorific prefix preceding a Person's name such as Dr/Mrs/Mr.</summary>
 		public Text HonorificPrefix {get; set;}
 		///<summary>An honorific suffix preceding a Person's name such as M.D. /PhD/MSCSW.</summary>
 		public Text HonorificSuffix {get; set;}
-		///<summary>A count of a specific user interactions with this item—for example, 20 UserLikes, 5 UserComments, or 300 UserDownloads. The user interaction type should be one of the sub types of UserInteraction.</summary>
-		public Text InteractionCount {get; set;}
 		///<summary>The International Standard of Industrial Classification of All Economic Activities (ISIC), Revision 4 code for a particular organization, business person, or place.</summary>
 		public Text IsicV4 {get; set;}
 		///<summary>The job title of the person (for example, Financial Manager).</summary>
 		public Text JobTitle {get; set;}
 		///<summary>The most generic bi-directional social/work relation.</summary>
 		public Person Knows {get; set;}
-		///<summary>A pointer to products or services offered by the organization or person.</summary>
+		///<summary>A pointer to products or services offered by the organization or person. Inverse property: offeredBy.</summary>
 		public Offer MakesOffer {get; set;}
 		///<summary>An Organization (or ProgramMembership) to which this Person or Organization belongs. Inverse property: member.</summary>
 		public OneOfThese<Organization , ProgramMembership> MemberOf {get; set;}
@@ -76,7 +73,7 @@ namespace Bam.Net.Schema.Org
 		public Text Naics {get; set;}
 		///<summary>Nationality of the person.</summary>
 		public Country Nationality {get; set;}
-		///<summary>The total financial value of the organization or person as calculated by subtracting assets from liabilities.</summary>
+		///<summary>The total financial value of the person as calculated by subtracting assets from liabilities.</summary>
 		public PriceSpecification NetWorth {get; set;}
 		///<summary>Products owned by the organization or person.</summary>
 		public OneOfThese<Product , OwnershipInfo> Owns {get; set;}
@@ -101,7 +98,7 @@ namespace Bam.Net.Schema.Org
 		///<summary>The weight of the product or person.</summary>
 		public QuantitativeValue Weight {get; set;}
 		///<summary>A contact location for a person's place of work.</summary>
-		public OneOfThese<ContactPoint , Place> WorkLocation {get; set;}
+		public OneOfThese<Place , ContactPoint> WorkLocation {get; set;}
 		///<summary>Organizations that the person works for.</summary>
 		public Organization WorksFor {get; set;}
 	}

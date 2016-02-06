@@ -20,7 +20,7 @@ namespace Bam.Net.Schema.Org
 		///<summary>The production company or studio responsible for the item e.g. series, video game, episode etc.</summary>
 		public Organization ProductionCompany {get; set;}
 		///<summary>Position of the season within an ordered group of seasons.</summary>
-		public ThisOrThat<Text , Integer> SeasonNumber {get; set;}
+		public OneOfThese<Text , Integer> SeasonNumber {get; set;}
 		///<summary>The start date and time of the item (in ISO 8601 date format).</summary>
 		public Date StartDate {get; set;}
 		///<summary>The trailer of a movie or tv/radio series, season, episode, etc.</summary>

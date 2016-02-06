@@ -8,6 +8,6 @@ namespace Bam.Net.Schema.Org
 		///<summary>Indicates the GeoCoordinates at the centre of a GeoShape e.g. GeoCircle.</summary>
 		public GeoCoordinates GeoMidpoint {get; set;}
 		///<summary>Indicates the approximate radius of a GeoCircle (metres unless indicated otherwise via Distance notation).</summary>
-		public ThisOrThat<Distance , Text , Number> GeoRadius {get; set;}
+		public OneOfThese<Distance , Text , Number> GeoRadius {get; set;}
 	}
 }

@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -9,6 +6,6 @@ namespace Bam.Net.Schema.Org
 	public class SportsOrganization: Organization
 	{
 		///<summary>A type of sport (e.g. Baseball).</summary>
-		public OneOfThese<URL , Text> Sport {get; set;}
+		public OneOfThese<Text , URL> Sport {get; set;}
 	}
 }
