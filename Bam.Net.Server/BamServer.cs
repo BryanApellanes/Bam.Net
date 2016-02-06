@@ -475,6 +475,7 @@ namespace Bam.Net.Server
         public string DaoSearchPattern { get; set; }
         public string ServiceSearchPattern { get; set; }
         public string MainLoggerName { get; set; }
+        public string InitializeFileSystemFrom { get; set; }
         public string[] ServerEventListenerSearchPaths { get; set; }
         public string ServerEventListenerAssemblySearchPattern { get; set; }
         // -end config values
