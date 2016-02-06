@@ -1,3 +1,6 @@
+/*
+	Copyright © Bryan Apellanes 2015  
+*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -6,6 +9,6 @@ namespace Bam.Net.Schema.Org
 	public class TipAction: TradeAction
 	{
 		///<summary>A sub property of participant. The participant who is at the receiving end of the action.</summary>
-		public ThisOrThat<Audience , Person , Organization> Recipient {get; set;}
+		public OneOfThese<Person , Organization , Audience> Recipient {get; set;}
 	}
 }

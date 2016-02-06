@@ -1,3 +1,6 @@
+/*
+	Copyright © Bryan Apellanes 2015  
+*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -6,6 +9,6 @@ namespace Bam.Net.Schema.Org
 	public class SearchAction: Action
 	{
 		///<summary>A sub property of instrument. The query used on this action.</summary>
-		public Text Query {get; set;}
+		public OneOfThese<Class , Text> Query {get; set;}
 	}
 }

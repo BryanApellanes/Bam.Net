@@ -6,7 +6,7 @@ namespace Bam.Net.Schema.Org
 	public class Physician: MedicalOrganization
 	{
 		///<summary>A medical service available from this provider.</summary>
-		public ThisOrThat<MedicalTherapy , MedicalTest , MedicalProcedure> AvailableService {get; set;}
+		public OneOfThese<MedicalTherapy , MedicalTest , MedicalProcedure> AvailableService {get; set;}
 		///<summary>A hospital with which the physician or office is affiliated.</summary>
 		public Hospital HospitalAffiliation {get; set;}
 		///<summary>A medical specialty of the provider.</summary>

@@ -67,6 +67,7 @@
     <Compile Include="Boolean.cs" />
     <Compile Include="Integer.cs" />
     <Compile Include="Js\Sdo.cs" />
+    <Compile Include="OneOfThese.cs" />
     <Compile Include="SchemaDotOrgProperty.cs" />
     <Compile Include="Things\Abdomen.cs" />
     <Compile Include="Things\AboutPage.cs" />
@@ -931,7 +932,6 @@
     <Compile Include="Things\XRay.cs" />
     <Compile Include="Things\ZoneBoardingPolicy.cs" />
     <Compile Include="Things\Zoo.cs" />
-    <Compile Include="ThisOrThat.cs" />
     <Compile Include="_Url.cs" />
     <Compile Include="DataType.cs" />
     <Compile Include="Date.cs" />

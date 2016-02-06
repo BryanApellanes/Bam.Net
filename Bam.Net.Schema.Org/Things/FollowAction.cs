@@ -6,6 +6,6 @@ namespace Bam.Net.Schema.Org
 	public class FollowAction: InteractAction
 	{
 		///<summary>A sub property of object. The person or organization being followed.</summary>
-		public ThisOrThat<Person , Organization> Followee {get; set;}
+		public OneOfThese<Person , Organization> Followee {get; set;}
 	}
 }

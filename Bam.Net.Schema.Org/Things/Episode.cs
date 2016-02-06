@@ -10,9 +10,9 @@ namespace Bam.Net.Schema.Org
 		///<summary>A director of e.g. tv, radio, movie, video games etc. content. Directors can be associated with individual items or with a series, episode, clip. Supersedes directors.</summary>
 		public Person Director {get; set;}
 		///<summary>Position of the episode within an ordered group of episodes.</summary>
-		public ThisOrThat<Integer , Text> EpisodeNumber {get; set;}
+		public OneOfThese<Integer , Text> EpisodeNumber {get; set;}
 		///<summary>The composer of the soundtrack.</summary>
-		public ThisOrThat<Person , MusicGroup> MusicBy {get; set;}
+		public OneOfThese<Person , MusicGroup> MusicBy {get; set;}
 		///<summary>The season to which this episode belongs.</summary>
 		public CreativeWorkSeason PartOfSeason {get; set;}
 		///<summary>The series to which this episode or season belongs. Supersedes partOfTVSeries.</summary>

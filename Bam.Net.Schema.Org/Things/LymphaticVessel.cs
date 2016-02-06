@@ -8,7 +8,7 @@ namespace Bam.Net.Schema.Org
 		///<summary>The vasculature the lymphatic structure originates, or afferents, from.</summary>
 		public Vessel OriginatesFrom {get; set;}
 		///<summary>The anatomical or organ system drained by this vessel; generally refers to a specific part of an organ.</summary>
-		public ThisOrThat<AnatomicalSystem , AnatomicalStructure> RegionDrained {get; set;}
+		public OneOfThese<AnatomicalSystem , AnatomicalStructure> RegionDrained {get; set;}
 		///<summary>The vasculature the lymphatic structure runs, or efferents, to.</summary>
 		public Vessel RunsTo {get; set;}
 	}

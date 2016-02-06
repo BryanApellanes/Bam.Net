@@ -1,3 +1,6 @@
+/*
+	Copyright © Bryan Apellanes 2015  
+*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -12,10 +15,10 @@ namespace Bam.Net.Schema.Org
 		///<summary>A full description of the lodging unit.</summary>
 		public Text LodgingUnitDescription {get; set;}
 		///<summary>Textual description of the unit type (including suite vs. room, size of bed, etc.).</summary>
-		public ThisOrThat<Text , QualitativeValue> LodgingUnitType {get; set;}
+		public OneOfThese<Text , QualitativeValue> LodgingUnitType {get; set;}
 		///<summary>The number of adults staying in the unit.</summary>
-		public ThisOrThat<QuantitativeValue , Integer> NumAdults {get; set;}
+		public OneOfThese<Number , QuantitativeValue> NumAdults {get; set;}
 		///<summary>The number of children staying in the unit.</summary>
-		public ThisOrThat<QuantitativeValue , Integer> NumChildren {get; set;}
+		public OneOfThese<Number , QuantitativeValue> NumChildren {get; set;}
 	}
 }

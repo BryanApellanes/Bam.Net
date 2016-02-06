@@ -1,3 +1,6 @@
+/*
+	Copyright © Bryan Apellanes 2015  
+*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -14,7 +17,7 @@ namespace Bam.Net.Schema.Org
 		///<summary>Additional details to capture the origin of the cost data. For example, 'Medicare Part B'.</summary>
 		public Text CostOrigin {get; set;}
 		///<summary>The cost per unit of the drug.</summary>
-		public ThisOrThat<Text , Number> CostPerUnit {get; set;}
+		public OneOfThese<Number , Text> CostPerUnit {get; set;}
 		///<summary>The unit in which the drug is measured, e.g. '5 mg tablet'.</summary>
 		public Text DrugUnit {get; set;}
 	}

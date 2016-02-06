@@ -1,3 +1,6 @@
+/*
+	Copyright © Bryan Apellanes 2015  
+*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -8,6 +11,6 @@ namespace Bam.Net.Schema.Org
 		///<summary>A sub property of instrument. The method of delivery.</summary>
 		public DeliveryMethod DeliveryMethod {get; set;}
 		///<summary>A sub property of participant. The participant who is at the sending end of the action.</summary>
-		public ThisOrThat<Organization , Person , Audience> Sender {get; set;}
+		public OneOfThese<Person , Organization , Audience> Sender {get; set;}
 	}
 }

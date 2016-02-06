@@ -1,3 +1,6 @@
+/*
+	Copyright © Bryan Apellanes 2015  
+*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -5,19 +8,15 @@ namespace Bam.Net.Schema.Org
 	///<summary> A point value or interval for product characteristics and other purposes.</summary>
 	public class QuantitativeValue: StructuredValue
 	{
-		///<summary>A property-value pair representing an additional characteristics of the entitity, e.g. a product feature or another characteristic for which there is no matching property in schema.org. Note: Publishers should be aware that applications designed to use specific schema.org properties (e.g. http://schema.org/width, http://schema.org/color, http://schema.org/gtin13, ...) will typically expect such data to be provided using those properties, rather than using the generic property/value mechanism.</summary>
-		public PropertyValue AdditionalProperty {get; set;}
 		///<summary>The upper value of some characteristic or property.</summary>
 		public Number MaxValue {get; set;}
 		///<summary>The lower value of some characteristic or property.</summary>
 		public Number MinValue {get; set;}
-		///<summary>The unit of measurement given using the UN/CEFACT Common Code (3 characters) or a URL. Other codes than the UN/CEFACT Common Code may be used with a prefix followed by a colon.</summary>
-		public ThisOrThat<Text , URL> UnitCode {get; set;}
-		///<summary>A string or text indicating the unit of measurement. Useful if you cannot provide a standard unit code forunitCode.</summary>
-		public Text UnitText {get; set;}
-		///<summary>The value of the quantitative value or property value node. For QuantitativeValue, the recommended type for values is 'Number'. For PropertyValue, it can be 'Text;', 'Number', 'Boolean', or 'StructuredValue'.</summary>
-		public StructuredValue  or  Text  or  Number  or  Boolean Value {get; set;}
+		///<summary>The unit of measurement given using the UN/CEFACT Common Code (3 characters).</summary>
+		public Text UnitCode {get; set;}
+		///<summary>The value of the product characteristic.</summary>
+		public Number Value {get; set;}
 		///<summary>A pointer to a secondary value that provides additional information on the original value, e.g. a reference temperature.</summary>
-		public Enumeration  or  StructuredValue  or  PropertyValue  or  QualitativeValue  or  QuantitativeValue ValueReference {get; set;}
+		public OneOfThese<Enumeration , StructuredValue> ValueReference {get; set;}
 	}
 }

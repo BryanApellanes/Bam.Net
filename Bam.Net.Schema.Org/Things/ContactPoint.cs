@@ -20,7 +20,7 @@ namespace Bam.Net.Schema.Org
 		///<summary>The hours during which this service or contact is available.</summary>
 		public OpeningHoursSpecification HoursAvailable {get; set;}
 		///<summary>The product or service this support contact point is related to (such as product support for a particular product line). This can be a specific product or product line (e.g. "iPhone") or a general category of products or services (e.g. "smartphones").</summary>
-		public ThisOrThat<Product , Text> ProductSupported {get; set;}
+		public OneOfThese<Product , Text> ProductSupported {get; set;}
 		///<summary>The telephone number.</summary>
 		public Text Telephone {get; set;}
 	}

@@ -1,3 +1,6 @@
+/*
+	Copyright © Bryan Apellanes 2015  
+*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -56,6 +59,6 @@ namespace Bam.Net.Schema.Org
 		///<summary>Any other drug related to this one, for example commonly-prescribed alternatives.</summary>
 		public Drug RelatedDrug {get; set;}
 		///<summary>Any FDA or other warnings about the drug (text or URL).</summary>
-		public ThisOrThat<Text , URL> Warning {get; set;}
+		public OneOfThese<URL , Text> Warning {get; set;}
 	}
 }

@@ -10,7 +10,7 @@ namespace Bam.Net.Schema.Org
 		///<summary>A link to the ListItem that follows the current one.</summary>
 		public ListItem NextItem {get; set;}
 		///<summary>The position of an item in a series or sequence of items.</summary>
-		public ThisOrThat<Integer , Text> Position {get; set;}
+		public OneOfThese<Integer , Text> Position {get; set;}
 		///<summary>A link to the ListItem that preceeds the current one.</summary>
 		public ListItem PreviousItem {get; set;}
 	}
