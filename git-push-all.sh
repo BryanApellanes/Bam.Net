@@ -1,12 +1,12 @@
 #!/bin/bash
 
-cd /BamContent/apps
+cd /c/BamContent/apps
 /c/src/Bam.Net/git-push.sh
-cd /BamContent/common/bamvvm
+cd /c/BamContent/common/bamvvm
 /c/src/Bam.Net/git-push.sh
-cd /BamContent
+cd /c/BamContent
 /c/src/Bam.Net/git-push.sh
-cd /src/Business
+cd /c/src/Business
 /c/src/Bam.Net/git-push.sh
-cd /src/Bam.Net
+cd /c/src/Bam.Net
 /c/src/Bam.Net/git-push.sh
