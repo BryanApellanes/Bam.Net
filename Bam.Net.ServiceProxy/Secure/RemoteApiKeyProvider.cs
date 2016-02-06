@@ -18,7 +18,7 @@ namespace Bam.Net.ServiceProxy.Secure
         }
 
         /// <summary>
-        /// Gets or sets the behavior for the current ApiKeyManager
+        /// Gets or sets the behavior for the current ApiKeyProvider
         /// which determines what will be done if a request is made for
         /// an api key and the specified applicationClientId is not 
         /// found

@@ -1,7 +1,7 @@
 @echo off
 call copy_Bam.Net.cmd 
 call copy_Bam.Net.Analytics.cmd
-call copy_Bam.Net.ApplicationServices.cmd
+call copy_Bam.Net.CoreServices.cmd
 call copy_Bam.Net.Automation.cmd
 call copy_Bam.Net.CommandLine.cmd 
 call copy_Bam.Net.Data.cmd
