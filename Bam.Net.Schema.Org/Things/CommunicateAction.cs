@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -10,9 +7,9 @@ namespace Bam.Net.Schema.Org
 	{
 		///<summary>The subject matter of the content.</summary>
 		public Thing About {get; set;}
-		///<summary>A sub property of instrument. The language used on this action.</summary>
-		public Language Language {get; set;}
+		///<summary>The language of the content or performance or used in an action. Please use one of the language codes from the IETF BCP 47 standard. Supersedes language.</summary>
+		public OneOfThese<Text , Language> InLanguage {get; set;}
 		///<summary>A sub property of participant. The participant who is at the receiving end of the action.</summary>
-		public ThisOrThat<Person , Organization , Audience> Recipient {get; set;}
+		public OneOfThese<Audience , Person , Organization> Recipient {get; set;}
 	}
 }

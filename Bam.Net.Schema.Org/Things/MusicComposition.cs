@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -9,7 +6,7 @@ namespace Bam.Net.Schema.Org
 	public class MusicComposition: CreativeWork
 	{
 		///<summary>The person or organization who wrote the composition.</summary>
-		public ThisOrThat<Person , Organization> Composer {get; set;}
+		public OneOfThese<Person , Organization> Composer {get; set;}
 		///<summary>The date and place the work was first performed.</summary>
 		public Event FirstPerformance {get; set;}
 		///<summary>Smaller compositions included in this work (e.g. a movement in a symphony).</summary>
@@ -18,6 +15,8 @@ namespace Bam.Net.Schema.Org
 		public Text IswcCode {get; set;}
 		///<summary>The person who wrote the words.</summary>
 		public Person Lyricist {get; set;}
+		///<summary>The words in the song.</summary>
+		public CreativeWork Lyrics {get; set;}
 		///<summary>An arrangement derived from the composition.</summary>
 		public MusicComposition MusicArrangement {get; set;}
 		///<summary>The type of composition (e.g. overture, sonata, symphony, etc.).</summary>

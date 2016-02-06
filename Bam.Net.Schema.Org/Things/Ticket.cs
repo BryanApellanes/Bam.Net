@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -17,12 +14,12 @@ namespace Bam.Net.Schema.Org
 		///<summary>The unique identifier for the ticket.</summary>
 		public Text TicketNumber {get; set;}
 		///<summary>Reference to an asset (e.g., Barcode, QR code image or PDF) usable for entrance.</summary>
-		public ThisOrThat<URL , Text> TicketToken {get; set;}
+		public OneOfThese<URL , Text> TicketToken {get; set;}
 		///<summary>The seat associated with the ticket.</summary>
 		public Seat TicketedSeat {get; set;}
 		///<summary>The total price for the reservation or ticket, including applicable taxes, shipping, etc.</summary>
-		public ThisOrThat<Number , Text , PriceSpecification> TotalPrice {get; set;}
+		public OneOfThese<Number , PriceSpecification , Text> TotalPrice {get; set;}
 		///<summary>The person or organization the reservation or ticket is for.</summary>
-		public ThisOrThat<Person , Organization> UnderName {get; set;}
+		public OneOfThese<Person , Organization> UnderName {get; set;}
 	}
 }

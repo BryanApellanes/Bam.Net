@@ -23,14 +23,29 @@ namespace Bam.Net.Schema.Org
             set
             {
                 _expectedType = value;
-                string[] split = _expectedType.Split(new string[] { "\r", "\n", " " }, StringSplitOptions.RemoveEmptyEntries);
-                if (split.Length == 3)
+                string[] split = _expectedType.Split(new string[] { " or ", " OR ", "\r\nor\r\n", "\r\nOR\r\n", " ", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+                if (split.Length == 2)
                 {
-                    _expectedType = string.Format("ThisOrThat<{0}, {1}>", split[0], split[2]);
+                    if(split[0].Equals("Date") || split[0].Equals("DateTime"))
+                    {
+                        _expectedType = "DateTime";
+                    }
+                    else
+                    {
+                        _expectedType = string.Format("OneOfThese<{0}, {1}>", split[0], split[1]);
+                    }
+                }
+                else if (split.Length == 3)
+                {
+                    _expectedType = string.Format("OneOfThese<{0}, {1}, {2}>", split[0], split[1], split[2]);
+                }
+                else if (split.Length == 4)
+                {
+                    _expectedType = string.Format("OneOfThese<{0}, {1}, {2}, {3}>", split[0], split[1], split[2], split[3]);
                 }
                 else if (split.Length == 5)
                 {
-                    _expectedType = string.Format("ThisOrThat<{0}, {1}, {2}>", split[0], split[2], split[4]);
+                    _expectedType = string.Format("OneOfThese<{0}, {1}, {2}, {3}, {4}>", split[0], split[1], split[2], split[3], split[4]);
                 }
             }
         }

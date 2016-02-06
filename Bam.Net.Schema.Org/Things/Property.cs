@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -14,7 +11,7 @@ namespace Bam.Net.Schema.Org
 		public Property InverseOf {get; set;}
 		///<summary>Relates a property to a class that constitutes (one of) the expected type(s) for values of the property.</summary>
 		public Class RangeIncludes {get; set;}
-		///<summary>Relates a property to one that supersedes it.</summary>
-		public Property SupersededBy {get; set;}
+		///<summary>Relates a term (i.e. a property, class or enumeration) to one that supersedes it.</summary>
+		public OneOfThese<Enumeration , Class , Property> SupersededBy {get; set;}
 	}
 }

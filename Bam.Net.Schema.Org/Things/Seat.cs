@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -15,6 +12,6 @@ namespace Bam.Net.Schema.Org
 		///<summary>The section location of the reserved seat (e.g. Orchestra).</summary>
 		public Text SeatSection {get; set;}
 		///<summary>The type/class of the seat.</summary>
-		public ThisOrThat<Text , QualitativeValue> SeatingType {get; set;}
+		public OneOfThese<QualitativeValue , Text> SeatingType {get; set;}
 	}
 }

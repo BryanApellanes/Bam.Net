@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -9,7 +6,7 @@ namespace Bam.Net.Schema.Org
 	public class CookAction: CreateAction
 	{
 		///<summary>A sub property of location. The specific food establishment where the action occurred.</summary>
-		public ThisOrThat<FoodEstablishment , Place> FoodEstablishment {get; set;}
+		public OneOfThese<Place , FoodEstablishment> FoodEstablishment {get; set;}
 		///<summary>A sub property of location. The specific food event where the action occurred.</summary>
 		public FoodEvent FoodEvent {get; set;}
 		///<summary>A sub property of instrument. The recipe/instructions used to perform the action.</summary>

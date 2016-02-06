@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -27,13 +24,11 @@ namespace Bam.Net.Schema.Org
 		///<summary>Date the content expires and is no longer useful or available. Useful for videos.</summary>
 		public Date Expires {get; set;}
 		///<summary>The height of the item.</summary>
-		public ThisOrThat<Distance , QuantitativeValue> Height {get; set;}
+		public OneOfThese<QuantitativeValue , Distance> Height {get; set;}
 		///<summary>Player type required—for example, Flash or Silverlight.</summary>
 		public Text PlayerType {get; set;}
 		///<summary>The production company or studio responsible for the item e.g. series, video game, episode etc.</summary>
 		public Organization ProductionCompany {get; set;}
-		///<summary>A publication event associated with the episode, clip or media object.</summary>
-		public PublicationEvent Publication {get; set;}
 		///<summary>The regions where the media is allowed. If not specified, then it's assumed to be allowed everywhere. Specify the countries in ISO 3166 format.</summary>
 		public Place RegionsAllowed {get; set;}
 		///<summary>Indicates if use of the media require a subscription  (either paid or free). Allowed values are true or false (note that an earlier version had 'yes', 'no').</summary>
@@ -41,6 +36,6 @@ namespace Bam.Net.Schema.Org
 		///<summary>Date when this media object was uploaded to this site.</summary>
 		public Date UploadDate {get; set;}
 		///<summary>The width of the item.</summary>
-		public ThisOrThat<Distance , QuantitativeValue> Width {get; set;}
+		public OneOfThese<QuantitativeValue , Distance> Width {get; set;}
 	}
 }

@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -11,7 +8,7 @@ namespace Bam.Net.Schema.Org
 		///<summary>If applicable, a description of the pathophysiology associated with the anatomical system, including potential abnormal changes in the mechanical, physical, and biochemical functions of the system.</summary>
 		public Text AssociatedPathophysiology {get; set;}
 		///<summary>Anatomical systems or structures that relate to the superficial anatomy.</summary>
-		public ThisOrThat<AnatomicalSystem , AnatomicalStructure> RelatedAnatomy {get; set;}
+		public OneOfThese<AnatomicalSystem , AnatomicalStructure> RelatedAnatomy {get; set;}
 		///<summary>A medical condition associated with this anatomy.</summary>
 		public MedicalCondition RelatedCondition {get; set;}
 		///<summary>A medical therapy related to this anatomy.</summary>

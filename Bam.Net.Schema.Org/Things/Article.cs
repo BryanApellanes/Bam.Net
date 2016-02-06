@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -13,9 +10,9 @@ namespace Bam.Net.Schema.Org
 		///<summary>Articles may belong to one or more 'sections' in a magazine or newspaper, such as Sports, Lifestyle, etc.</summary>
 		public Text ArticleSection {get; set;}
 		///<summary>The page on which the work ends; for example "138" or "xvi".</summary>
-		public ThisOrThat<Integer , Text> PageEnd {get; set;}
+		public OneOfThese<Text , Integer> PageEnd {get; set;}
 		///<summary>The page on which the work starts; for example "135" or "xiii".</summary>
-		public ThisOrThat<Integer , Text> PageStart {get; set;}
+		public OneOfThese<Text , Integer> PageStart {get; set;}
 		///<summary>Any description of pages that is not separated into pageStart and pageEnd; for example, "1-6, 9, 55" or "10-12, 46-49".</summary>
 		public Text Pagination {get; set;}
 		///<summary>The number of words in the text of the Article.</summary>

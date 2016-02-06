@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 
 namespace Bam.Net.Schema.Org
@@ -9,7 +6,7 @@ namespace Bam.Net.Schema.Org
 	public class WebPage: CreativeWork
 	{
 		///<summary>A set of links that can help a user understand and navigate a website hierarchy.</summary>
-		public ThisOrThat<Text , BreadcrumbList> Breadcrumb {get; set;}
+		public OneOfThese<BreadcrumbList , Text> Breadcrumb {get; set;}
 		///<summary>Date on which the content on this web page was last reviewed for accuracy and/or completeness.</summary>
 		public Date LastReviewed {get; set;}
 		///<summary>Indicates if this web page element is the main subject of the page.</summary>
@@ -19,7 +16,7 @@ namespace Bam.Net.Schema.Org
 		///<summary>A link related to this web page, for example to other related web pages.</summary>
 		public URL RelatedLink {get; set;}
 		///<summary>People or organizations that have reviewed the content on this web page for accuracy and/or completeness.</summary>
-		public ThisOrThat<Person , Organization> ReviewedBy {get; set;}
+		public OneOfThese<Person , Organization> ReviewedBy {get; set;}
 		///<summary>One of the more significant URLs on the page. Typically, these are the non-navigation links that are clicked on the most. Supersedes significantLinks.</summary>
 		public URL SignificantLink {get; set;}
 		///<summary>One of the domain specialities to which this web page's content applies.</summary>
