@@ -1,1 +1,1 @@
-git pull github --all
+git pull --all
