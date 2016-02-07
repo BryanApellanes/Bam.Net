@@ -84,6 +84,11 @@ namespace Bam.Net.Encryption
             }
         }
 
+        public static Vault Load(string filePath, string name)
+        {
+            return Load(new FileInfo(filePath), name);
+        }
+
         public static Vault Load(FileInfo file, string name)
         {
             return Load(file, name, "".RandomLetters(16)); // password will only be used if the file doesn't exist

@@ -36,7 +36,7 @@ namespace Bam.Net.Data.Tests.Integration
 		[ConsoleAction]
 		public void RunIntegrationTests()
 		{
-			IntegrationTestRunner.RunAllIntegrationTests(this.GetType().Assembly);
+			IntegrationTestRunner.RunAllIntegrationTests(typeof(Program).Assembly);
 		}
 
 		[ConsoleAction]
@@ -100,8 +100,8 @@ namespace Bam.Net.Data.Tests.Integration
 		{
 			if (Arguments.Contains("t"))
 			{
-				RunAllUnitTests(Assembly.GetExecutingAssembly());
-			}
+                IntegrationTestRunner.RunAllIntegrationTests(typeof(Program).Assembly);
+            }
 			else
 			{
 				Interactive();

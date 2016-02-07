@@ -28,7 +28,6 @@ namespace Bam.Net.UserAccounts
     /// </summary>
     [Encrypt]
     [Proxy("user", MethodCase = MethodCase.Both)]
-    [Serializable] // make sure it doesn't use the same instance for every request
     public class UserManager: IRequiresHttpContext
     {
         static UserManager()

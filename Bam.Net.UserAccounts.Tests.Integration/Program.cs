@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Bam.Net;
 using Bam.Net.CommandLine;
 using Bam.Net.Testing;
+using Bam.Net.Testing.Integration;
 
 namespace Bam.Net.UserAccounts.Tests.Integration
 {
@@ -44,7 +45,14 @@ namespace Bam.Net.UserAccounts.Tests.Integration
 
         public static void Start()
         {
-
+            if (Arguments.Contains("t"))
+            {
+                IntegrationTestRunner.RunAllIntegrationTests(typeof(Program).Assembly);
+            }
+            else
+            {
+                Interactive();
+            }
         }
     }
 }

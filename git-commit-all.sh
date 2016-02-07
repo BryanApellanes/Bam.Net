@@ -13,7 +13,7 @@ cd /c/BamContent
 /c/src/Bam.Net/git-add.sh
 /c/src/Bam.Net/git-commit.sh $1
 cd /c/src/Bam.Net/BamContent
-/c/src/Bam.Net/git-pull.sh
-cd /src/Bam.Net
+/c/src/Bam.Net/git-pull.sh --all
+cd /c/src/Bam.Net
 /c/src/Bam.Net/git-add.sh
 /c/src/Bam.Net/git-commit.sh $1
