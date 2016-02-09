@@ -2,7 +2,7 @@ rem %1 major, %2 minor, %3 patch
 C:
 cd C:\src\Bam.Net\BuildScripts\Bam.Net
 call clean.cmd
-call set_ver.cmd %1 %2 %3
+call set_version.cmd %1 %2 %3
 call set_major_minor_patch.cmd
 call set_copyright.cmd "Bryan Apellanes"
 call set_owners_and_authors.cmd "Bryan Apellanes"

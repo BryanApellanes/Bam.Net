@@ -8,8 +8,8 @@
     <ProjectGuid>{823141D0-42B2-46D9-9B18-7A0F876D9960}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>assinf</RootNamespace>
-    <AssemblyName>assinf</AssemblyName>
+    <RootNamespace>bamver</RootNamespace>
+    <AssemblyName>bamver</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -101,7 +101,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsoleActions.cs" />
-    <Compile Include="AssemblyAttributeInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -109,6 +108,10 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Bam.Net.Automation\Bam.Net.Automation.csproj">
+      <Project>{b65e4fcd-de50-4d9e-91d7-dddf80c25c47}</Project>
+      <Name>Bam.Net.Automation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Bam.Net.CommandLine\Bam.Net.CommandLine.csproj">
       <Project>{ea9863a9-8e0b-4497-b7fd-abf450a3e468}</Project>
       <Name>Bam.Net.CommandLine</Name>
@@ -124,10 +127,6 @@
     <ProjectReference Include="..\..\Bam.Net\Bam.Net.csproj">
       <Project>{8794c09d-d72c-420c-812f-bfda251b64c9}</Project>
       <Name>Bam.Net</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\nuver\nuver.csproj">
-      <Project>{c4e30118-46a5-4bfa-8bc1-ba04810601d9}</Project>
-      <Name>nuver</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -184,7 +184,28 @@ namespace Bam.Net.Automation.Nuget
                 MetaData.owners = value;
             }
         }
-
+        public string LicenseUrl
+        {
+            get
+            {
+                return MetaData.licenseUrl;
+            }
+            set
+            {
+                MetaData.licenseUrl = value;
+            }
+        }
+        public string ProjectUrl
+        {
+            get
+            {
+                return MetaData.projectUrl;
+            }
+            set
+            {
+                MetaData.projectUrl = value;
+            }
+        }
         public bool RequireLicenseAcceptance
         {
             get
