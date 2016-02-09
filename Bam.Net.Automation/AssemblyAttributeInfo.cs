@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using nuver.Nuget;
+using Bam.Net.Automation.Nuget;
 using Bam.Net;
 
-namespace assinf
+namespace Bam.Net.Automation
 {
     public class AssemblyAttributeInfo
     {

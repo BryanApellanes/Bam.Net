@@ -118,6 +118,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyAttributeInfo.cs" />
     <Compile Include="automation_Generated\AutomationContext.cs" />
     <Compile Include="automation_Generated\DeferredJob.cs" />
     <Compile Include="automation_Generated\DeferredJobCollection.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="automation_Generated\RunningJob.cs" />
     <Compile Include="automation_Generated\RunningJobCollection.cs" />
     <Compile Include="automation_Generated\RunningJobColumns.cs" />
+    <Compile Include="BamInfo.cs" />
     <Compile Include="ContinuousIntegration\continuousIntegration_Generated\BuildJob.cs" />
     <Compile Include="ContinuousIntegration\continuousIntegration_Generated\BuildJobCollection.cs" />
     <Compile Include="ContinuousIntegration\continuousIntegration_Generated\BuildJobColumns.cs" />

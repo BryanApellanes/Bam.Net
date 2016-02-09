@@ -13,7 +13,7 @@ using Bam.Net;
 using Bam.Net.Testing;
 using Bam.Net.Encryption;
 
-namespace assinf
+namespace baminf
 {
     [Serializable]
     class Program : CommandLineTestInterface
@@ -30,8 +30,9 @@ namespace assinf
 
         public static void PreInit()
         {
-            AddValidArgument("si", true, "Set assembly information");
-            AddValidArgument("v", false, "Set version", "1.0.0");
+            AddValidArgument("sai", true, "Set assembly information");
+            AddValidArgument("baminfo.json", false, "Specify the path to the baminfo.json file (used to update nuspec files)");
+            AddValidArgument("v", false, "Set assembly version", "1.0.0");
             AddValidArgument("root", "The root of the source tree");
             AddValidArgument("nuspecRoot", "The root directory to search for nuspec files");
         }
@@ -39,9 +40,17 @@ namespace assinf
         #region do not modify
         public static void Start()
         {
-            if (Arguments.Contains("si"))
+            if (Arguments.Contains("sai") || Arguments.Contains("baminfo.json"))
             {
-                ConsoleActions.SetInfo();
+                if (Arguments.Contains("sai"))
+                {
+                    ConsoleActions.SetAssemblyInfo();
+                }
+
+                if (Arguments.Contains("baminfo.json"))
+                {
+                    ConsoleActions.SetBamInfo();
+                }
             }
             else
             {
