@@ -1,0 +1,1 @@
+baminf /baminfo.json:"z:\workspace\baminfo.json" /nuspecRoot:"." /v:%1.%2.%3

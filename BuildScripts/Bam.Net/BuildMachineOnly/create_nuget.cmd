@@ -3,7 +3,7 @@ C:
 cd C:\src\Bam.Net\BuildScripts\Bam.Net
 call clean.cmd
 call set_assembly_version.cmd %1 %2 %3
-call set_bam_info.cmd
+call set_nuspec_info.cmd %1 %2 %3
 call build_solution.cmd Release v4.5 c:\src
 call build_toolkit.cmd
 call pack.cmd

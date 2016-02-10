@@ -10,6 +10,7 @@ using Bam.Net.Testing;
 using Bam.Net.Encryption;
 using Bam.Net.Automation.Nuget;
 using Bam.Net.Automation;
+using System.Reflection;
 
 namespace baminf
 {
@@ -20,12 +21,16 @@ namespace baminf
         [ConsoleAction("baminfo.json", "specify the path to the baminfo.json file to use")]
         public static void SetBamInfo()
         {
-            string  nuspecRoot = GetNuspecRoot();
+            string nuspecRoot = GetNuspecRoot();
             string bamInfoPath = (Arguments["baminfo.json"] ?? Prompt("Enter the path to the baminfo.json file"));
+            string versionString = GetVersion();
             BamInfo info = bamInfoPath.FromJsonFile<BamInfo>();
             Out("*** baminfo.json ***", ConsoleColor.Cyan);
             OutLine(info.PropertiesToString(), ConsoleColor.Cyan);
-            Out("***", ConsoleColor.Cyan);
+            OutLine("***", ConsoleColor.Cyan);
+            OutLineFormat("Updating version from {0} to {1}", ConsoleColor.Yellow, info.VersionString, versionString);
+            info.VersionString = versionString;
+            info.ToJsonFile(bamInfoPath);
             DirectoryInfo nuspecRootDir = new DirectoryInfo(nuspecRoot);
             FileInfo[] nuspecFiles = nuspecRootDir.GetFiles("*.nuspec", SearchOption.AllDirectories);
             foreach(FileInfo file in nuspecFiles)
@@ -41,14 +46,13 @@ namespace baminf
                 string patch = string.Format("{0}{1}", info.PatchVersion.ToString(), buildNumber);
                 nuspecFile.Version.Major = info.MajorVersion.ToString();
                 nuspecFile.Version.Minor = info.MinorVersion.ToString();
-                nuspecFile.Version.Patch = patch;
-                string versionString = "{0}.{1}.{2}"._Format(info.MajorVersion, info.MinorVersion, patch);
+                nuspecFile.Version.Patch = patch;                
                 List<NugetPackageIdentifier> bamDependencies = new List<NugetPackageIdentifier>();
                 if(nuspecFile.Dependencies != null)
                 {
-                    nuspecFile.Dependencies.Where(npi => npi.Id.StartsWith("Bam.Net")).Each(npi =>
+                    nuspecFile.Dependencies.Where(npi => npi.Id.StartsWith(typeof(Args).Namespace)).Each(npi =>
                     {
-                        bamDependencies.Add(new NugetPackageIdentifier(npi.Id, versionString));
+                        bamDependencies.Add(new NugetPackageIdentifier(npi.Id, info.VersionString));
                     });
                     nuspecFile.Dependencies = bamDependencies.ToArray();
                 }
@@ -98,9 +102,19 @@ namespace baminf
 
         private static void GetParameters(out string srcRoot, out string version, out string nuspecRoot)
         {
-            srcRoot = Arguments["root"] ?? Prompt("Please enter the root of the source tree");
-            version = Arguments["v"] ?? Prompt("Please enter the version number");
+            srcRoot = GetSourceRoot();
+            version = GetVersion();
             nuspecRoot = GetNuspecRoot();
+        }
+
+        private static string GetSourceRoot()
+        {
+            return Arguments["root"] ?? Prompt("Please enter the root of the source tree");
+        }
+
+        private static string GetVersion()
+        {
+            return Arguments["v"] ?? Prompt("Please enter the version number");
         }
 
         private static string GetNuspecRoot()
