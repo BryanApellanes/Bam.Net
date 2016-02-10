@@ -16,16 +16,16 @@
             <summary>Web page type: About page.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.AcceptAction">
-            <summary>The act of committing to/adopting an object.Related actions:RejectAction: The antagonym of AcceptAction.</summary>
+            <summary>The act of committing to/adopting an object.Related actions:RejectAction: The antonym of AcceptAction.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.AccountingService">
-            <summary>Accountancy business.</summary>
+            <summary>Accountancy business.                As a LocalBusiness it can be        described as a provider of one or more        Service(s).      </summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.AchieveAction">
-            <summary>The act of accomplishing something via     previous efforts. It is an instantaneous action rather than an ongoing     process.</summary>
+            <summary>The act of accomplishing something via previous efforts. It is an instantaneous action rather than an ongoing process.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.Action">
-            <summary>An action performed by a direct agent and indirect     participants upon a direct object. Optionally happens at a location     with the help of an inanimate instrument. The execution of the action     may produce a result. Specific action sub-type documentation specifies     the exact expectation of each argument/role.      See also blog post      and Actions overview document.</summary>
+            <summary>An action performed by a direct agent and indirect participants upon a direct object. Optionally happens at a location with the help of an inanimate instrument. The execution of the action may produce a result. Specific action sub-type documentation specifies the exact expectation of each argument/role.      See also blog post      and Actions overview document.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Action.ActionStatus">
             <summary>Indicates the current disposition of the Action.</summary>
@@ -43,7 +43,7 @@
             <summary>The object that helped the agent perform the action. e.g. John wrote a book with *a pen*.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Action.Location">
-            <summary>The location of the event, organization or action.</summary>
+            <summary>The location of for example where the event is happening, an organization is located, or where an action takes place.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Action.Object">
             <summary>The object upon the action is carried out, whose state is kept intact or changed. Also known as the semantic roles patient, affected or undergoer (which change their state) or theme (which doesn't). e.g. John read *a book*.</summary>
@@ -76,7 +76,7 @@
             <summary>The act of editing by adding an object to a collection.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.AdministrativeArea">
-            <summary>A geographical region under the jurisdiction of a particular government.</summary>
+            <summary>A geographical region, typically under the jurisdiction of a particular government.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.AdultEntertainment">
             <summary>An adult entertainment establishment.</summary>
@@ -97,7 +97,7 @@
             <summary>The number of offers for the product.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.AggregateOffer.Offers">
-            <summary>An offer to provide this item—for example, an offer to sell a product, rent the DVD of a movie, or give away tickets to an event.</summary>
+            <summary>An offer to provide this item—for example, an offer to sell a product, rent the DVD of a movie, perform a service, or give away tickets to an event.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.AggregateRating">
             <summary>The average rating based on multiple ratings or reviews.</summary>
@@ -116,6 +116,9 @@
         </member>
         <member name="T:Bam.Net.Schema.Org.Airline">
             <summary>An organization that provides flights for passengers.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Airline.BoardingPolicy">
+            <summary>The type of boarding policy used by the airline (e.g. zone-based or group-based).</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Airline.IataCode">
             <summary>IATA identifier for an airline or airport.</summary>
@@ -155,6 +158,9 @@
         </member>
         <member name="P:Bam.Net.Schema.Org.AllocateAction.Purpose">
             <summary>A goal towards an action is taken. Can be concrete or abstract.</summary>
+        </member>
+        <member name="T:Bam.Net.Schema.Org.AllWheelDriveConfiguration">
+            <summary>All-wheel Drive is a transmission layout where the engine drives all four wheels.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.AmusementPark">
             <summary>An amusement park.</summary>
@@ -219,26 +225,17 @@
         <member name="T:Bam.Net.Schema.Org.Answer">
             <summary>An answer offered to a question; perhaps correct, perhaps opinionated or wrong.</summary>
         </member>
-        <member name="P:Bam.Net.Schema.Org.Answer.DownvoteCount">
-            <summary>The number of downvotes this question has received from the community.</summary>
-        </member>
-        <member name="P:Bam.Net.Schema.Org.Answer.ParentItem">
-            <summary>The parent of a question, answer or item in general.</summary>
-        </member>
-        <member name="P:Bam.Net.Schema.Org.Answer.UpvoteCount">
-            <summary>The number of upvotes this question has received from the community.</summary>
-        </member>
         <member name="T:Bam.Net.Schema.Org.ApartmentComplex">
             <summary>Residence type: Apartment complex.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.APIReference">
             <summary>Reference documentation for application programming interfaces (APIs).</summary>
         </member>
-        <member name="P:Bam.Net.Schema.Org.APIReference.Assembly">
-            <summary>Library file name e.g., mscorlib.dll, system.web.dll.</summary>
-        </member>
         <member name="P:Bam.Net.Schema.Org.APIReference.AssemblyVersion">
             <summary>Associated product/technology version. e.g., .NET Framework 4.5.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.APIReference.ExecutableLibraryName">
+            <summary>Library file name e.g., mscorlib.dll, system.web.dll. Supersedes assembly.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.APIReference.ProgrammingModel">
             <summary>Indicates whether API is managed or unmanaged.</summary>
@@ -313,7 +310,7 @@
             <summary>The act of allocating an action/event/task to some destination (someone or something).</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.Attorney">
-            <summary>Professional service: Attorney.</summary>
+            <summary>Professional service: Attorney.         This type is deprecated - LegalService is more inclusive and less ambiguous.      </summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.Audience">
             <summary>Intended audience for an item, i.e. the group for whom the item was created.</summary>
@@ -375,6 +372,9 @@
         <member name="T:Bam.Net.Schema.Org.BankOrCreditUnion">
             <summary>Bank or credit union.</summary>
         </member>
+        <member name="T:Bam.Net.Schema.Org.Barcode">
+            <summary>An image of a visual machine-readable code such as a barcode or QR code.</summary>
+        </member>
         <member name="T:Bam.Net.Schema.Org.BarOrPub">
             <summary>A bar or pub.</summary>
         </member>
@@ -404,6 +404,9 @@
         </member>
         <member name="T:Bam.Net.Schema.Org.BloodTest">
             <summary>A medical test performed on a sample of a patient's blood.</summary>
+        </member>
+        <member name="T:Bam.Net.Schema.Org.BoardingPolicyType">
+            <summary>A type of boarding policy used by an airline.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.BodyOfWater">
             <summary>A body of water, such as a sea, ocean, or lake.</summary>
@@ -456,17 +459,50 @@
         <member name="T:Bam.Net.Schema.Org.Brand">
             <summary>A brand is a name used by an organization or business person for labeling a product, product group, or similar.</summary>
         </member>
+        <member name="P:Bam.Net.Schema.Org.Brand.AggregateRating">
+            <summary>The overall rating, based on a collection of reviews or ratings, of the item.</summary>
+        </member>
         <member name="P:Bam.Net.Schema.Org.Brand.Logo">
             <summary>An associated logo.</summary>
         </member>
+        <member name="P:Bam.Net.Schema.Org.Brand.Review">
+            <summary>A review of the item. Supersedes reviews.</summary>
+        </member>
         <member name="T:Bam.Net.Schema.Org.BreadcrumbList">
-            <summary>      A BreadcrumbList is an ItemList consisting of a chain of linked Web pages, typically described using at least their URL and their name, ending with the current page.</summary>
+            <summary>      A BreadcrumbList is an ItemList consisting of a chain of linked Web pages, typically described using at least their URL and their name, and typically ending with the current page.                  The 'position' property is used to reconstruct the order of the items in a BreadcrumbList.      The convention is that a breadcrumb list has an itemListOrder of ItemListOrderAscending (lower values listed first), and that the      first items in this list correspond to the "top" or beginning of the breadcrumb trail, e.g. with a site or section homepage.      The specific values of 'position' are not assigned meaning for a BreadcrumbList, but they should be integers, e.g. beginning      with '1' for the first item in the list.      </summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.Brewery">
             <summary>Brewery.</summary>
         </member>
+        <member name="T:Bam.Net.Schema.Org.Bridge">
+            <summary>A bridge.</summary>
+        </member>
+        <member name="T:Bam.Net.Schema.Org.BroadcastChannel">
+            <summary>A unique instance of a BroadcastService on a CableOrSatelliteService lineup.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.BroadcastChannel.BroadcastChannelId">
+            <summary>The unique address by which the BroadcastService can be identified in a provider lineup. In US, this is typically a number.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.BroadcastChannel.BroadcastServiceTier">
+            <summary>The type of service required to have access to the channel (e.g. Standard or Premium).</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.BroadcastChannel.InBroadcastLineup">
+            <summary>The CableOrSatelliteService offering the channel.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.BroadcastChannel.ProvidesBroadcastService">
+            <summary>The BroadcastService offered on this channel.</summary>
+        </member>
         <member name="T:Bam.Net.Schema.Org.BroadcastEvent">
             <summary>An over the air or online broadcast event.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.BroadcastEvent.BroadcastOfEvent">
+            <summary>The event being broadcast such as a sporting event or awards ceremony.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.BroadcastEvent.IsLiveBroadcast">
+            <summary>True is the broadcast is of a live event.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.BroadcastEvent.VideoFormat">
+            <summary>The type of screening or video broadcast used (e.g. IMAX, 3D, SD, HD, etc.).</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.BroadcastRelease">
             <summary>BroadcastRelease.</summary>
@@ -474,14 +510,23 @@
         <member name="T:Bam.Net.Schema.Org.BroadcastService">
             <summary>A delivery service through which content is provided via broadcast over the air or online.</summary>
         </member>
-        <member name="P:Bam.Net.Schema.Org.BroadcastService.Area">
-            <summary>The area within which users can expect to reach the broadcast service.</summary>
+        <member name="P:Bam.Net.Schema.Org.BroadcastService.BroadcastAffiliateOf">
+            <summary>The media network(s) whose content is broadcast on this station.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.BroadcastService.BroadcastDisplayName">
+            <summary>The name displayed in the channel guide. For many US affiliates, it is the network name.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.BroadcastService.BroadcastTimezone">
+            <summary>The timezone in ISO 8601 format for which the service bases its broadcasts.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.BroadcastService.Broadcaster">
             <summary>The organization owning or operating the broadcast service.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.BroadcastService.ParentService">
             <summary>A broadcast service to which the broadcast service may belong to such as regional variations of a national channel.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.BroadcastService.VideoFormat">
+            <summary>The type of screening or video broadcast used (e.g. IMAX, 3D, SD, HD, etc.).</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.BuddhistTemple">
             <summary>A Buddhist temple.</summary>
@@ -490,7 +535,7 @@
             <summary>A set of characteristics belonging to businesses, e.g. who compose an item's target audience.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.BusinessAudience.NumberOfEmployees">
-            <summary>The size of business by number of employees.</summary>
+            <summary>The number of employees in an organization e.g. business.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.BusinessAudience.YearlyRevenue">
             <summary>The size of the business in annual revenue.</summary>
@@ -499,13 +544,13 @@
             <summary>The age of the business.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.BusinessEntityType">
-            <summary>A business entity type is a conceptual entity representing the legal form, the size, the main line of business, the position in the value chain, or any combination thereof, of an organization or business person.    Commonly used values:    http://purl.org/goodrelations/v1#Business    http://purl.org/goodrelations/v1#Enduser    http://purl.org/goodrelations/v1#PublicInstitution    http://purl.org/goodrelations/v1#Reseller        </summary>
+            <summary>A business entity type is a conceptual entity representing the legal form, the size, the main line of business, the position in the value chain, or any combination thereof, of an organization or business person.    Commonly used values:    http://purl.org/goodrelations/v1#Business     http://purl.org/goodrelations/v1#Enduser     http://purl.org/goodrelations/v1#PublicInstitution     http://purl.org/goodrelations/v1#Reseller         </summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.BusinessEvent">
             <summary>Event type: Business event.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.BusinessFunction">
-            <summary>The business function specifies the type of activity or access (i.e., the bundle of rights) offered by the organization or business person through the offer. Typical are sell, rental or lease, maintenance or repair, manufacture / produce, recycle / dispose, engineering / construction, or installation. Proprietary specifications of access rights are also instances of this class.    Commonly used values:    http://purl.org/goodrelations/v1#ConstructionInstallation    http://purl.org/goodrelations/v1#Dispose    http://purl.org/goodrelations/v1#LeaseOut    http://purl.org/goodrelations/v1#Maintain    http://purl.org/goodrelations/v1#ProvideService    http://purl.org/goodrelations/v1#Repair    http://purl.org/goodrelations/v1#Sell    http://purl.org/goodrelations/v1#Buy        </summary>
+            <summary>The business function specifies the type of activity or access (i.e., the bundle of rights) offered by the organization or business person through the offer. Typical are sell, rental or lease, maintenance or repair, manufacture / produce, recycle / dispose, engineering / construction, or installation. Proprietary specifications of access rights are also instances of this class.    Commonly used values:    http://purl.org/goodrelations/v1#ConstructionInstallation     http://purl.org/goodrelations/v1#Dispose     http://purl.org/goodrelations/v1#LeaseOut     http://purl.org/goodrelations/v1#Maintain     http://purl.org/goodrelations/v1#ProvideService     http://purl.org/goodrelations/v1#Repair     http://purl.org/goodrelations/v1#Sell     http://purl.org/goodrelations/v1#Buy         </summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.BusReservation">
             <summary>A reservation for bus travel.</summary>
@@ -546,8 +591,8 @@
         <member name="P:Bam.Net.Schema.Org.BuyAction.Seller">
             <summary>An entity which offers (sells / leases / lends / loans) the services / goods.  A seller may also be a provider. Supersedes merchant, vendor.</summary>
         </member>
-        <member name="P:Bam.Net.Schema.Org.BuyAction.WarrantyPromise">
-            <summary>The warranty promise(s) included in the offer.</summary>
+        <member name="T:Bam.Net.Schema.Org.CableOrSatelliteService">
+            <summary>A service which provides access to media programming like TV or radio. Access may be via cable or satellite.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.CafeOrCoffeeShop">
             <summary>A cafe or coffee shop.</summary>
@@ -559,16 +604,19 @@
             <summary>A canal, like the Panama Canal.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.CancelAction">
-            <summary>The act of asserting that a future event/action is no longer going to happen.Related actions:ConfirmAction: The antagonym of CancelAction.</summary>
+            <summary>The act of asserting that a future event/action is no longer going to happen.Related actions:ConfirmAction: The antonym of CancelAction.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.Car">
-            <summary>An automobile.</summary>
+            <summary>A car is a wheeled, self-powered motor vehicle used for transportation.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.Cardiovascular">
             <summary>A specific branch of medical science that pertains to diagnosis and treatment of disorders of heart and vasculature.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.CardiovascularExam">
             <summary>Cardiovascular.</summary>
+        </member>
+        <member name="T:Bam.Net.Schema.Org.CarUsageType">
+            <summary>A value indicating a special usage of a car, e.g. commercial rental, driving school, or as a taxi.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.CaseSeries">
             <summary>A case series (also known as a clinical series) is a medical research study that tracks patients with a known exposure given similar treatment or examines their medical records for exposure and outcome. A case series can be retrospective or prospective and usually involves a smaller number of patients than the more powerful case-control studies or randomized controlled trials. Case series may be consecutive or non-consecutive, depending on whether all cases presenting to the reporting authors over a period of time were included, or only a selection.</summary>
@@ -592,10 +640,10 @@
             <summary>An agent inspects/determines/investigates/inquire or examine an object's accuracy/quality/condition or state.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.CheckInAction">
-            <summary>The act of an agent communicating (service provider, social media, etc) their arrival by registering/confirming for a previously reserved service (e.g. flight check in) or at a place (e.g. hotel), possibly resulting in a result (boarding pass, etc).Related actions:CheckOutAction: The antagonym of CheckInAction.ArriveAction: Unlike ArriveAction, CheckInAction implies that the agent is informing/confirming the start of a previously reserved service.ConfirmAction: Unlike ConfirmAction, CheckInAction implies that the agent is informing/confirming the *start* of a previously reserved service rather than its validity/existence.</summary>
+            <summary>The act of an agent communicating (service provider, social media, etc) their arrival by registering/confirming for a previously reserved service (e.g. flight check in) or at a place (e.g. hotel), possibly resulting in a result (boarding pass, etc).Related actions:CheckOutAction: The antonym of CheckInAction.ArriveAction: Unlike ArriveAction, CheckInAction implies that the agent is informing/confirming the start of a previously reserved service.ConfirmAction: Unlike ConfirmAction, CheckInAction implies that the agent is informing/confirming the *start* of a previously reserved service rather than its validity/existence.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.CheckOutAction">
-            <summary>The act of an agent communicating (service provider, social media, etc) their departure of a previously reserved service (e.g. flight check in) or place (e.g. hotel).Related actions:CheckInAction: The antagonym of CheckOutAction.DepartAction: Unlike DepartAction, CheckOutAction implies that the agent is informing/confirming the end of a previously reserved service.CancelAction: Unlike CancelAction, CheckOutAction implies that the agent is informing/confirming the end of a previously reserved service.</summary>
+            <summary>The act of an agent communicating (service provider, social media, etc) their departure of a previously reserved service (e.g. flight check in) or place (e.g. hotel).Related actions:CheckInAction: The antonym of CheckOutAction.DepartAction: Unlike DepartAction, CheckOutAction implies that the agent is informing/confirming the end of a previously reserved service.CancelAction: Unlike CancelAction, CheckOutAction implies that the agent is informing/confirming the end of a previously reserved service.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.CheckoutPage">
             <summary>Web page type: Checkout page.</summary>
@@ -612,8 +660,8 @@
         <member name="T:Bam.Net.Schema.Org.ChooseAction">
             <summary>The act of expressing a preference from a set of options or a large or unbounded set of choices/options.</summary>
         </member>
-        <member name="P:Bam.Net.Schema.Org.ChooseAction.Option">
-            <summary>A sub property of object. The options subject to this action.</summary>
+        <member name="P:Bam.Net.Schema.Org.ChooseAction.ActionOption">
+            <summary>A sub property of object. The options subject to this action. Supersedes option.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.Church">
             <summary>A church.</summary>
@@ -632,6 +680,9 @@
         </member>
         <member name="T:Bam.Net.Schema.Org.Class">
             <summary>A class, also often called a 'Type'; equivalent to rdfs:Class.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Class.SupersededBy">
+            <summary>Relates a term (i.e. a property, class or enumeration) to one that supersedes it.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.Clinician">
             <summary>Medical clinicians, including practicing physicians and other medical professionals involved in clinical practice.</summary>
@@ -660,29 +711,11 @@
         <member name="P:Bam.Net.Schema.Org.Clip.PartOfSeries">
             <summary>The series to which this episode or season belongs. Supersedes partOfTVSeries.</summary>
         </member>
-        <member name="P:Bam.Net.Schema.Org.Clip.Publication">
-            <summary>A publication event associated with the episode, clip or media object.</summary>
-        </member>
         <member name="T:Bam.Net.Schema.Org.ClothingStore">
             <summary>A clothing store.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.Code">
             <summary>Computer programming source code. Example: Full (compile ready) solutions, code snippet samples, scripts, templates.</summary>
-        </member>
-        <member name="P:Bam.Net.Schema.Org.Code.CodeRepository">
-            <summary>Link to the repository where the un-compiled, human readable code and related code is located (SVN, github, CodePlex).</summary>
-        </member>
-        <member name="P:Bam.Net.Schema.Org.Code.ProgrammingLanguage">
-            <summary>The computer programming language.</summary>
-        </member>
-        <member name="P:Bam.Net.Schema.Org.Code.Runtime">
-            <summary>Runtime platform or script interpreter dependencies (Example - Java v1, Python2.3, .Net Framework 3.0).</summary>
-        </member>
-        <member name="P:Bam.Net.Schema.Org.Code.SampleType">
-            <summary>Full (compile ready) solution, code snippet, inline code, scripts, template.</summary>
-        </member>
-        <member name="P:Bam.Net.Schema.Org.Code.TargetProduct">
-            <summary>Target Operating System / Product to which the code applies.  If applies to several versions, just the product name can be used.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.CohortStudy">
             <summary>Also known as a panel study. A cohort study is a form of longitudinal study used in medicine and social science. It is one type of study design and should be compared with a cross-sectional study.  A cohort is a group of people who share a common characteristic or experience within a defined period (e.g., are born, leave school, lose their job, are exposed to a drug or a vaccine, etc.). The comparison group may be the general population from which the cohort is drawn, or it may be another cohort of persons thought to have had little or no exposure to the substance under investigation, but otherwise similar. Alternatively, subgroups within the cohort may be compared with each other.</summary>
@@ -703,16 +736,19 @@
             <summary>A comment on an item - for example, a comment on a blog post. The comment's content is expressed via the "text" property, and its topic via "about", properties shared with all CreativeWorks.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Comment.DownvoteCount">
-            <summary>The number of downvotes this question has received from the community.</summary>
+            <summary>The number of downvotes this question, answer or comment has received from the community.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Comment.ParentItem">
             <summary>The parent of a question, answer or item in general.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Comment.UpvoteCount">
-            <summary>The number of upvotes this question has received from the community.</summary>
+            <summary>The number of upvotes this question, answer or comment has received from the community.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.CommentAction">
             <summary>The act of generating a comment about a subject.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.CommentAction.ResultComment">
+            <summary>A sub property of result. The Comment created or sent as a result of this action.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.CommunicateAction">
             <summary>The act of conveying information to another person via a communication medium (instrument) such as speech, email, or telephone conversation.</summary>
@@ -720,8 +756,8 @@
         <member name="P:Bam.Net.Schema.Org.CommunicateAction.About">
             <summary>The subject matter of the content.</summary>
         </member>
-        <member name="P:Bam.Net.Schema.Org.CommunicateAction.Language">
-            <summary>A sub property of instrument. The language used on this action.</summary>
+        <member name="P:Bam.Net.Schema.Org.CommunicateAction.InLanguage">
+            <summary>The language of the content or performance or used in an action. Please use one of the language codes from the IETF BCP 47 standard. Supersedes language.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.CommunicateAction.Recipient">
             <summary>A sub property of participant. The participant who is at the receiving end of the action.</summary>
@@ -742,7 +778,7 @@
             <summary>A computer store.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.ConfirmAction">
-            <summary>The act of notifying someone that a future event/action is going to happen as expected.Related actions:CancelAction: The antagonym of ConfirmAction.</summary>
+            <summary>The act of notifying someone that a future event/action is going to happen as expected.Related actions:CancelAction: The antonym of ConfirmAction.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.ConsumeAction">
             <summary>The act of ingesting information/resources/food.</summary>
@@ -757,7 +793,7 @@
             <summary>A contact point—for example, a Customer Complaints department.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.ContactPoint.AreaServed">
-            <summary>The location served by this contact point (e.g., a phone number intended for Europeans vs. North Americans or only within the United States).</summary>
+            <summary>The geographic area where a service or offered item is provided. Supersedes serviceArea.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.ContactPoint.AvailableLanguage">
             <summary>A language someone may use with the item.</summary>
@@ -775,7 +811,7 @@
             <summary>The fax number.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.ContactPoint.HoursAvailable">
-            <summary>The hours during which this contact point is available.</summary>
+            <summary>The hours during which this service or contact is available.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.ContactPoint.ProductSupported">
             <summary>The product or service this support contact point is related to (such as product support for a particular product line). This can be a specific product or product line (e.g. "iPhone") or a general category of products or services (e.g. "smartphones").</summary>
@@ -856,7 +892,7 @@
             <summary>A media object that encodes this CreativeWork. This property is a synonym for encoding.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.CreativeWork.Audience">
-            <summary>The intended audience of the item, i.e. the group for whom the item was created.</summary>
+            <summary>An intended audience, i.e. a group for whom something was created. Supersedes serviceAudience.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.CreativeWork.Audio">
             <summary>An embedded audio object.</summary>
@@ -865,7 +901,7 @@
             <summary>The author of this content. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.CreativeWork.Award">
-            <summary>An award won by this person or for this creative work. Supersedes awards.</summary>
+            <summary>An award won by or for this item. Supersedes awards.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.CreativeWork.Character">
             <summary>Fictional person connected with a creative work.</summary>
@@ -874,13 +910,13 @@
             <summary>A citation or reference to another creative work, such as another publication, web page, scholarly article, etc.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.CreativeWork.Comment">
-            <summary>Comments, typically from users, on this CreativeWork.</summary>
+            <summary>Comments, typically from users.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.CreativeWork.CommentCount">
             <summary>The number of comments this CreativeWork (e.g. Article, Question or Answer) has received. This is most applicable to works published in Web sites with commenting system; additional comments may exist elsewhere.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.CreativeWork.ContentLocation">
-            <summary>The location of the content.</summary>
+            <summary>The location depicted or described in the content. For example, the location in a photograph or painting.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.CreativeWork.ContentRating">
             <summary>Official rating of a piece of content—for example,'MPAA PG-13'.</summary>
@@ -895,13 +931,13 @@
             <summary>The year during which the claimed copyright for the CreativeWork was first asserted.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.CreativeWork.Creator">
-            <summary>The creator/author of this CreativeWork or UserComments. This is the same as the Author property for CreativeWork.</summary>
+            <summary>The creator/author of this CreativeWork. This is the same as the Author property for CreativeWork.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.CreativeWork.DateCreated">
-            <summary>The date on which the CreativeWork was created.</summary>
+            <summary>The date on which the CreativeWork was created or the item was added to a DataFeed.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.CreativeWork.DateModified">
-            <summary>The date on which the CreativeWork was most recently modified.</summary>
+            <summary>The date on which the CreativeWork was most recently modified or when the item's entry was modified within a DataFeed.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.CreativeWork.DatePublished">
             <summary>Date of first broadcast/publication.</summary>
@@ -924,6 +960,9 @@
         <member name="P:Bam.Net.Schema.Org.CreativeWork.ExampleOfWork">
             <summary>A creative work that this work is an example/instance/realization/derivation of. Inverse property: workExample.</summary>
         </member>
+        <member name="P:Bam.Net.Schema.Org.CreativeWork.FileFormat">
+            <summary>Media type (aka MIME format, see IANA site) of the content e.g. application/zip of a SoftwareApplication binary. In cases where a CreativeWork has several media type representations, 'encoding' can be used to indicate each MediaObject alongside particular fileFormat information.</summary>
+        </member>
         <member name="P:Bam.Net.Schema.Org.CreativeWork.Genre">
             <summary>Genre of the creative work or group.</summary>
         </member>
@@ -934,10 +973,10 @@
             <summary>Headline of the article.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.CreativeWork.InLanguage">
-            <summary>The language of the content. please use one of the language codes from the IETF BCP 47 standard.</summary>
+            <summary>The language of the content or performance or used in an action. Please use one of the language codes from the IETF BCP 47 standard. Supersedes language.</summary>
         </member>
-        <member name="P:Bam.Net.Schema.Org.CreativeWork.InteractionCount">
-            <summary>A count of a specific user interactions with this item—for example, 20 UserLikes, 5 UserComments, or 300 UserDownloads. The user interaction type should be one of the sub types of UserInteraction.</summary>
+        <member name="P:Bam.Net.Schema.Org.CreativeWork.InteractionStatistic">
+            <summary>The number of interactions for the CreativeWork using the WebSite or SoftwareApplication. The most specific child type of InteractionCounter should be used. Supersedes interactionCount.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.CreativeWork.InteractivityType">
             <summary>The predominant mode of learning supported by the learning resource. Acceptable values are 'active', 'expositive', or 'mixed'.</summary>
@@ -960,11 +999,17 @@
         <member name="P:Bam.Net.Schema.Org.CreativeWork.License">
             <summary>A license document that applies to this content, typically indicated by URL.</summary>
         </member>
+        <member name="P:Bam.Net.Schema.Org.CreativeWork.LocationCreated">
+            <summary>The location where the CreativeWork was created, which may not be the same as the location depicted in the CreativeWork.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.CreativeWork.MainEntity">
+            <summary>Indicates the primary entity described in some page or other CreativeWork. Inverse property: mainEntityOfPage.</summary>
+        </member>
         <member name="P:Bam.Net.Schema.Org.CreativeWork.Mentions">
             <summary>Indicates that the CreativeWork contains a reference to, but is not necessarily about a concept.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.CreativeWork.Offers">
-            <summary>An offer to provide this item—for example, an offer to sell a product, rent the DVD of a movie, or give away tickets to an event.</summary>
+            <summary>An offer to provide this item—for example, an offer to sell a product, rent the DVD of a movie, perform a service, or give away tickets to an event.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.CreativeWork.Position">
             <summary>The position of an item in a series or sequence of items.</summary>
@@ -974,6 +1019,9 @@
         </member>
         <member name="P:Bam.Net.Schema.Org.CreativeWork.Provider">
             <summary>The service provider, service operator, or service performer; the goods producer. Another party (a seller) may offer those services or goods on behalf of the provider. A provider may also serve as the seller. Supersedes carrier.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.CreativeWork.Publication">
+            <summary>A publication event associated with the item.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.CreativeWork.Publisher">
             <summary>The publisher of the creative work.</summary>
@@ -989,6 +1037,9 @@
         </member>
         <member name="P:Bam.Net.Schema.Org.CreativeWork.Review">
             <summary>A review of the item. Supersedes reviews.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.CreativeWork.SchemaVersion">
+            <summary>Indicates (by URL or string) a particular version of a schema used in some CreativeWork. For example, a document could declare a schemaVersion using a URL such as http://schema.org/version/2.0/ if precise indication of schema version was required by some application.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.CreativeWork.SourceOrganization">
             <summary>The Organization on whose behalf the creator was working.</summary>
@@ -1017,8 +1068,50 @@
         <member name="P:Bam.Net.Schema.Org.CreativeWork.WorkExample">
             <summary>Example/instance/realization/derivation of the concept of this creative work. eg. The paperback edition, first edition, or eBook. Inverse property: exampleOfWork.</summary>
         </member>
+        <member name="T:Bam.Net.Schema.Org.CreativeWorkSeason">
+            <summary>A media season e.g. tv, radio, video game etc.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.CreativeWorkSeason.Actor">
+            <summary>An actor, e.g. in tv, radio, movie, video games etc. Actors can be associated with individual items or with a series, episode, clip. Supersedes actors.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.CreativeWorkSeason.Director">
+            <summary>A director of e.g. tv, radio, movie, video games etc. content. Directors can be associated with individual items or with a series, episode, clip. Supersedes directors.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.CreativeWorkSeason.EndDate">
+            <summary>The end date and time of the item (in ISO 8601 date format).</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.CreativeWorkSeason.Episode">
+            <summary>An episode of a tv, radio or game media within a series or season. Supersedes episodes.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.CreativeWorkSeason.NumberOfEpisodes">
+            <summary>The number of episodes in this season or series.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.CreativeWorkSeason.PartOfSeries">
+            <summary>The series to which this episode or season belongs. Supersedes partOfTVSeries.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.CreativeWorkSeason.ProductionCompany">
+            <summary>The production company or studio responsible for the item e.g. series, video game, episode etc.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.CreativeWorkSeason.SeasonNumber">
+            <summary>Position of the season within an ordered group of seasons.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.CreativeWorkSeason.StartDate">
+            <summary>The start date and time of the item (in ISO 8601 date format).</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.CreativeWorkSeason.Trailer">
+            <summary>The trailer of a movie or tv/radio series, season, episode, etc.</summary>
+        </member>
+        <member name="T:Bam.Net.Schema.Org.CreativeWorkSeries">
+            <summary>          A CreativeWorkSeries in schema.org is a group of related items, typically but not necessarily of the same kind.          CreativeWorkSeries are usually organized into some order, often chronological. Unlike ItemList which          is a general purpose data structure for lists of things, the emphasis with          CreativeWorkSeries is on published materials (written e.g. books and periodicals,          or media such as tv, radio and games).                    Specific subtypes are available for describing TVSeries, RadioSeries,          MovieSeries,          BookSeries,          Periodical          and VideoGameSeries. In each case,          the hasPart / isPartOf properties          can be used to relate the CreativeWorkSeries to its parts. The general CreativeWorkSeries type serves largely          just to organize these more specific and practical subtypes.                    It is common for properties applicable to an item from the series to be usefully applied to the containing group.          Schema.org attempts to anticipate some of these cases, but publishers should be free to apply          properties of the series parts to the series as a whole wherever they seem appropriate.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.CreativeWorkSeries.EndDate">
+            <summary>The end date and time of the item (in ISO 8601 date format).</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.CreativeWorkSeries.StartDate">
+            <summary>The start date and time of the item (in ISO 8601 date format).</summary>
+        </member>
         <member name="T:Bam.Net.Schema.Org.CreditCard">
-            <summary>A credit or debit card type as a standardized procedure for transferring the monetary amount for a purchase.    Commonly used values:    http://purl.org/goodrelations/v1#AmericanExpress    http://purl.org/goodrelations/v1#DinersClub    http://purl.org/goodrelations/v1#Discover    http://purl.org/goodrelations/v1#JCB    http://purl.org/goodrelations/v1#MasterCard    http://purl.org/goodrelations/v1#VISA        </summary>
+            <summary>A credit or debit card type as a standardized procedure for transferring the monetary amount for a purchase.    Commonly used values:    http://purl.org/goodrelations/v1#AmericanExpress     http://purl.org/goodrelations/v1#DinersClub     http://purl.org/goodrelations/v1#Discover     http://purl.org/goodrelations/v1#JCB     http://purl.org/goodrelations/v1#MasterCard     http://purl.org/goodrelations/v1#VISA         </summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.Crematorium">
             <summary>A crematorium.</summary>
@@ -1047,20 +1140,41 @@
         <member name="T:Bam.Net.Schema.Org.DataDownload">
             <summary>A dataset in downloadable form.</summary>
         </member>
+        <member name="T:Bam.Net.Schema.Org.DataFeed">
+            <summary>A single feed providing structured information about one or more entities or topics.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.DataFeed.DataFeedElement">
+            <summary>An item within in a data feed. Data feeds may have many elements.</summary>
+        </member>
+        <member name="T:Bam.Net.Schema.Org.DataFeedItem">
+            <summary>A single item within a larger data feed.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.DataFeedItem.DateCreated">
+            <summary>The date on which the CreativeWork was created or the item was added to a DataFeed.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.DataFeedItem.DateDeleted">
+            <summary>The datetime the item was removed from the DataFeed.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.DataFeedItem.DateModified">
+            <summary>The date on which the CreativeWork was most recently modified or when the item's entry was modified within a DataFeed.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.DataFeedItem.Item">
+            <summary>An entity represented by an entry in a list or data feed (e.g. an 'artist' in a list of 'artists')â€™.</summary>
+        </member>
         <member name="T:Bam.Net.Schema.Org.Dataset">
             <summary>A body of structured information describing some topic(s) of interest.</summary>
         </member>
-        <member name="P:Bam.Net.Schema.Org.Dataset.Catalog">
-            <summary>A data catalog which contains a dataset.</summary>
+        <member name="P:Bam.Net.Schema.Org.Dataset.DatasetTimeInterval">
+            <summary>The range of temporal applicability of a dataset, e.g. for a 2011 census dataset, the year 2011 (in ISO 8601 time interval format). Supersedes temporal.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Dataset.Distribution">
             <summary>A downloadable form of this dataset, at a specific location, in a specific format.</summary>
         </member>
+        <member name="P:Bam.Net.Schema.Org.Dataset.IncludedDataCatalog">
+            <summary>A data catalog contained in the dataset. Supersedes catalog.</summary>
+        </member>
         <member name="P:Bam.Net.Schema.Org.Dataset.Spatial">
             <summary>The range of spatial applicability of a dataset, e.g. for a dataset of New York weather, the state of New York.</summary>
-        </member>
-        <member name="P:Bam.Net.Schema.Org.Dataset.Temporal">
-            <summary>The range of temporal applicability of a dataset, e.g. for a 2011 census dataset, the year 2011 (in ISO 8601 time interval format).</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.DatedMoneySpecification">
             <summary>A DatedMoneySpecification represents monetary values with optional start and end dates. For example, this could represent an employee's salary over a specific period of time.</summary>
@@ -1078,7 +1192,7 @@
             <summary>The start date and time of the item (in ISO 8601 date format).</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.DayOfWeek">
-            <summary>The day of the week, e.g. used to specify to which day the opening hours of an OpeningHoursSpecification refer.    Commonly used values:    http://purl.org/goodrelations/v1#Monday    http://purl.org/goodrelations/v1#Tuesday    http://purl.org/goodrelations/v1#Wednesday    http://purl.org/goodrelations/v1#Thursday    http://purl.org/goodrelations/v1#Friday    http://purl.org/goodrelations/v1#Saturday    http://purl.org/goodrelations/v1#Sunday    http://purl.org/goodrelations/v1#PublicHolidays        </summary>
+            <summary>The day of the week, e.g. used to specify to which day the opening hours of an OpeningHoursSpecification refer.    Commonly used values:    http://purl.org/goodrelations/v1#Monday     http://purl.org/goodrelations/v1#Tuesday     http://purl.org/goodrelations/v1#Wednesday     http://purl.org/goodrelations/v1#Thursday     http://purl.org/goodrelations/v1#Friday     http://purl.org/goodrelations/v1#Saturday     http://purl.org/goodrelations/v1#Sunday     http://purl.org/goodrelations/v1#PublicHolidays         </summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.DaySpa">
             <summary>A day spa.</summary>
@@ -1107,8 +1221,14 @@
         <member name="P:Bam.Net.Schema.Org.DeliveryChargeSpecification.AppliesToDeliveryMethod">
             <summary>The delivery method(s) to which the delivery charge or payment charge specification applies.</summary>
         </member>
+        <member name="P:Bam.Net.Schema.Org.DeliveryChargeSpecification.AreaServed">
+            <summary>The geographic area where a service or offered item is provided. Supersedes serviceArea.</summary>
+        </member>
         <member name="P:Bam.Net.Schema.Org.DeliveryChargeSpecification.EligibleRegion">
-            <summary>The ISO 3166-1 (ISO 3166-1 alpha-2) or ISO 3166-2 code, or the GeoShape for the geo-political region(s) for which the offer or delivery charge specification is valid.</summary>
+            <summary>The ISO 3166-1 (ISO 3166-1 alpha-2) or ISO 3166-2 code, the place, or the GeoShape for the geo-political region(s) for which the offer or delivery charge specification is valid.       See also ineligibleRegion.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.DeliveryChargeSpecification.IneligibleRegion">
+            <summary>The ISO 3166-1 (ISO 3166-1 alpha-2) or ISO 3166-2 code, the place, or the GeoShape for the geo-political region(s) for which the offer or delivery charge specification is not valid, e.g. a region where the transaction is not allowed.       See also eligibleRegion.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.DeliveryEvent">
             <summary>An event involving the delivery of an item.</summary>
@@ -1126,7 +1246,7 @@
             <summary>Method used for delivery or shipping.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.DeliveryMethod">
-            <summary>A delivery method is a standardized procedure for transferring the product or service to the destination of fulfillment chosen by the customer. Delivery methods are characterized by the means of transportation used, and by the organization or group that is the contracting party for the sending organization or person.    Commonly used values:    http://purl.org/goodrelations/v1#DeliveryModeDirectDownload    http://purl.org/goodrelations/v1#DeliveryModeFreight    http://purl.org/goodrelations/v1#DeliveryModeMail    http://purl.org/goodrelations/v1#DeliveryModeOwnFleet    http://purl.org/goodrelations/v1#DeliveryModePickUp    http://purl.org/goodrelations/v1#DHL    http://purl.org/goodrelations/v1#FederalExpress    http://purl.org/goodrelations/v1#UPS        </summary>
+            <summary>A delivery method is a standardized procedure for transferring the product or service to the destination of fulfillment chosen by the customer. Delivery methods are characterized by the means of transportation used, and by the organization or group that is the contracting party for the sending organization or person.    Commonly used values:    http://purl.org/goodrelations/v1#DeliveryModeDirectDownload     http://purl.org/goodrelations/v1#DeliveryModeFreight     http://purl.org/goodrelations/v1#DeliveryModeMail     http://purl.org/goodrelations/v1#DeliveryModeOwnFleet     http://purl.org/goodrelations/v1#DeliveryModePickUp     http://purl.org/goodrelations/v1#DHL     http://purl.org/goodrelations/v1#FederalExpress     http://purl.org/goodrelations/v1#UPS         </summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.Demand">
             <summary>A demand entity represents the public, not necessarily binding, not necessarily exclusive, announcement by an organization or person to seek a certain type of goods or services. For describing demand using this type, the very same properties used for Offer apply.</summary>
@@ -1136,6 +1256,9 @@
         </member>
         <member name="P:Bam.Net.Schema.Org.Demand.AdvanceBookingRequirement">
             <summary>The amount of time that is required between accepting the offer and the actual usage of the resource or service.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Demand.AreaServed">
+            <summary>The geographic area where a service or offered item is provided. Supersedes serviceArea.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Demand.Availability">
             <summary>The availability of this item—for example In stock, Out of stock, Pre-order, etc.</summary>
@@ -1168,10 +1291,13 @@
             <summary>The interval and unit of measurement of ordering quantities for which the offer or price specification is valid. This allows e.g. specifying that a certain freight charge is valid only for a certain quantity.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Demand.EligibleRegion">
-            <summary>The ISO 3166-1 (ISO 3166-1 alpha-2) or ISO 3166-2 code, or the GeoShape for the geo-political region(s) for which the offer or delivery charge specification is valid.</summary>
+            <summary>The ISO 3166-1 (ISO 3166-1 alpha-2) or ISO 3166-2 code, the place, or the GeoShape for the geo-political region(s) for which the offer or delivery charge specification is valid.       See also ineligibleRegion.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Demand.EligibleTransactionVolume">
             <summary>The transaction volume, in a monetary unit, for which the offer or price specification is valid, e.g. for indicating a minimal purchasing volume, to express free shipping above a certain order volume, or to limit the acceptance of credit cards to purchases to a certain minimal amount.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Demand.Gtin12">
+            <summary>The GTIN-12 code of the product, or the product to which the offer refers. The GTIN-12 is the 12-digit GS1 Identification Key composed of a U.P.C. Company Prefix, Item Reference, and Check Digit used to identify trade items. See GS1 GTIN Summary for more details.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Demand.Gtin13">
             <summary>The GTIN-13 code of the product, or the product to which the offer refers. This is equivalent to 13-digit ISBN codes and EAN UCC-13. Former 12-digit UPC codes can be converted into a GTIN-13 code by simply adding a preceeding zero. See GS1 GTIN Summary for more details.</summary>
@@ -1184,6 +1310,9 @@
         </member>
         <member name="P:Bam.Net.Schema.Org.Demand.IncludesObject">
             <summary>This links to a node or nodes indicating the exact quantity of the products included in the offer.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Demand.IneligibleRegion">
+            <summary>The ISO 3166-1 (ISO 3166-1 alpha-2) or ISO 3166-2 code, the place, or the GeoShape for the geo-political region(s) for which the offer or delivery charge specification is not valid, e.g. a region where the transaction is not allowed.       See also eligibleRegion.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Demand.InventoryLevel">
             <summary>The current approximate inventory level for the item or items.</summary>
@@ -1201,7 +1330,7 @@
             <summary>One or more detailed price specifications, indicating the unit price and delivery or payment charges.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Demand.Seller">
-            <summary>An entity which offers (sells / leases / lends / loans) the services / goods.  A seller may also be a provider. Supersedes merchant, vendor.</summary>
+            <summary>An entity which offers (sells / leases / lends / loans) the services / goods.  A seller may also be a provider. Supersedes vendor, merchant.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Demand.SerialNumber">
             <summary>The serial number or any alphanumeric identifier of a particular product. When attached to an offer, it is a shortcut for the serial number of the product included in the offer.</summary>
@@ -1216,7 +1345,7 @@
             <summary>The end of the validity of offer, price specification, or opening hours data.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Demand.Warranty">
-            <summary>The warranty promise(s) included in the offer.</summary>
+            <summary>The warranty promise(s) included in the offer. Supersedes warrantyPromise.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.DemoAlbum">
             <summary>DemoAlbum.</summary>
@@ -1329,6 +1458,9 @@
         <member name="T:Bam.Net.Schema.Org.DiscoverAction">
             <summary>The act of discovering/finding an object.</summary>
         </member>
+        <member name="T:Bam.Net.Schema.Org.DiscussionForumPosting">
+            <summary>A posting to a discussion forum.</summary>
+        </member>
         <member name="T:Bam.Net.Schema.Org.DislikeAction">
             <summary>The act of expressing a negative sentiment about the object. An agent dislikes an object (a proposition, topic or theme) with participants.</summary>
         </member>
@@ -1368,6 +1500,12 @@
         </member>
         <member name="T:Bam.Net.Schema.Org.DrinkAction">
             <summary>The act of swallowing liquids.</summary>
+        </member>
+        <member name="T:Bam.Net.Schema.Org.DriveWheelConfigurationValue">
+            <summary>A value indicating which roadwheels will receive torque.</summary>
+        </member>
+        <member name="T:Bam.Net.Schema.Org.DrivingSchoolVehicleUsage">
+            <summary>Indicates the usage of the vehicle for driving school.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.Drug">
             <summary>A chemical or biologic substance, used as a medical therapy, that has a physiological effect on an organism.</summary>
@@ -1535,7 +1673,7 @@
             <summary>An educational organization.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.EducationalOrganization.Alumni">
-            <summary>Alumni of educational organization. Inverse property: alumniOf.</summary>
+            <summary>Alumni of an organization. Inverse property: alumniOf.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.EducationEvent">
             <summary>Event type: Education event.</summary>
@@ -1583,6 +1721,12 @@
             <summary>A sub property of participant. The person/organization being supported.</summary>
         </member>
         <!-- Badly formed XML comment ignored for member "T:Bam.Net.Schema.Org.Energy" -->
+        <member name="T:Bam.Net.Schema.Org.EngineSpecification">
+            <summary>Information about the engine of the vehicle. A vehicle can have multiple engines represented by multiple engine specification entities.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.EngineSpecification.FuelType">
+            <summary>The type of fuel suitable for the engine or engines of the vehicle. If the vehicle has only one engine, this property can be attached directly to the vehicle.</summary>
+        </member>
         <member name="T:Bam.Net.Schema.Org.EnrollingByInvitation">
             <summary>Enrolling participants by invitation only.</summary>
         </member>
@@ -1592,8 +1736,11 @@
         <member name="T:Bam.Net.Schema.Org.EntryPoint">
             <summary>An entry point, within some Web-based protocol.</summary>
         </member>
-        <member name="P:Bam.Net.Schema.Org.EntryPoint.Application">
-            <summary>An application that can complete the request.</summary>
+        <member name="P:Bam.Net.Schema.Org.EntryPoint.ActionApplication">
+            <summary>An application that can complete the request. Supersedes application.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.EntryPoint.ActionPlatform">
+            <summary>The high level platform(s) where the Action can be performed for the given URL. To specify a specific application or operating system instance, use actionApplication.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.EntryPoint.ContentType">
             <summary>The supported content type(s) for an EntryPoint response.</summary>
@@ -1605,10 +1752,13 @@
             <summary>An HTTP method that specifies the appropriate HTTP method for a request to an HTTP EntryPoint. Values are capitalized strings as used in HTTP.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.EntryPoint.UrlTemplate">
-            <summary>An url template (RFC6570) that will be used to construct the target of the execution of the action.</summary>
+            <summary>A url template (RFC6570) that will be used to construct the target of the execution of the action.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.Enumeration">
             <summary>Lists or enumerations—for example, a list of cuisines or music genres, etc.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Enumeration.SupersededBy">
+            <summary>Relates a term (i.e. a property, class or enumeration) to one that supersedes it.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.Episode">
             <summary>A media episode (e.g. TV, radio, video game) which can be part of a series or season.</summary>
@@ -1634,9 +1784,6 @@
         <member name="P:Bam.Net.Schema.Org.Episode.ProductionCompany">
             <summary>The production company or studio responsible for the item e.g. series, video game, episode etc.</summary>
         </member>
-        <member name="P:Bam.Net.Schema.Org.Episode.Publication">
-            <summary>A publication event associated with the episode, clip or media object.</summary>
-        </member>
         <member name="P:Bam.Net.Schema.Org.Episode.Trailer">
             <summary>The trailer of a movie or tv/radio series, season, episode, etc.</summary>
         </member>
@@ -1645,6 +1792,9 @@
         </member>
         <member name="T:Bam.Net.Schema.Org.Event">
             <summary>An event happening at a certain time and location, such as a concert, lecture, or festival. Ticketing information may be added via the 'offers' property. Repeated events may be structured as separate Event objects.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Event.AggregateRating">
+            <summary>The overall rating, based on a collection of reviews or ratings, of the item.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Event.Attendee">
             <summary>A person or organization attending the event. Supersedes attendees.</summary>
@@ -1661,11 +1811,14 @@
         <member name="P:Bam.Net.Schema.Org.Event.EventStatus">
             <summary>An eventStatus of an event represents its status; particularly useful when an event is cancelled or rescheduled.</summary>
         </member>
+        <member name="P:Bam.Net.Schema.Org.Event.InLanguage">
+            <summary>The language of the content or performance or used in an action. Please use one of the language codes from the IETF BCP 47 standard. Supersedes language.</summary>
+        </member>
         <member name="P:Bam.Net.Schema.Org.Event.Location">
-            <summary>The location of the event, organization or action.</summary>
+            <summary>The location of for example where the event is happening, an organization is located, or where an action takes place.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Event.Offers">
-            <summary>An offer to provide this item—for example, an offer to sell a product, rent the DVD of a movie, or give away tickets to an event.</summary>
+            <summary>An offer to provide this item—for example, an offer to sell a product, rent the DVD of a movie, perform a service, or give away tickets to an event.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Event.Organizer">
             <summary>An organizer of an Event.</summary>
@@ -1679,6 +1832,9 @@
         <member name="P:Bam.Net.Schema.Org.Event.RecordedIn">
             <summary>The CreativeWork that captured all or part of this Event. Inverse property: recordedAt.</summary>
         </member>
+        <member name="P:Bam.Net.Schema.Org.Event.Review">
+            <summary>A review of the item. Supersedes reviews.</summary>
+        </member>
         <member name="P:Bam.Net.Schema.Org.Event.StartDate">
             <summary>The start date and time of the item (in ISO 8601 date format).</summary>
         </member>
@@ -1690,6 +1846,9 @@
         </member>
         <member name="P:Bam.Net.Schema.Org.Event.TypicalAgeRange">
             <summary>The typical expected age range, e.g. '7-9', '11-'.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Event.WorkFeatured">
+            <summary>A work featured in some event, e.g. exhibited in an ExhibitionEvent.       Specific subproperties are available for workPerformed (e.g. a play), or a workPresented (a Movie at a ScreeningEvent).</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Event.WorkPerformed">
             <summary>A work performed in some event, for example a play performed in a TheaterEvent.</summary>
@@ -1727,17 +1886,17 @@
         <member name="T:Bam.Net.Schema.Org.ExerciseAction">
             <summary>The act of participating in exertive activity for the purposes of improving health and fitness.</summary>
         </member>
-        <member name="P:Bam.Net.Schema.Org.ExerciseAction.Course">
-            <summary>A sub property of location. The course where this action was taken.</summary>
-        </member>
-        <member name="P:Bam.Net.Schema.Org.ExerciseAction.Diet">
-            <summary>A sub property of instrument. The diet used in this action.</summary>
-        </member>
         <member name="P:Bam.Net.Schema.Org.ExerciseAction.Distance">
             <summary>The distance travelled, e.g. exercising or travelling.</summary>
         </member>
+        <member name="P:Bam.Net.Schema.Org.ExerciseAction.ExerciseCourse">
+            <summary>A sub property of location. The course where this action was taken. Supersedes course.</summary>
+        </member>
         <member name="P:Bam.Net.Schema.Org.ExerciseAction.ExercisePlan">
             <summary>A sub property of instrument. The exercise plan used on this action.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.ExerciseAction.ExerciseRelatedDiet">
+            <summary>A sub property of instrument. The diet used in this action. Supersedes diet.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.ExerciseAction.ExerciseType">
             <summary>Type(s) of exercise or activity, such as strength training, flexibility training, aerobics, cardiac rehabilitation, etc.</summary>
@@ -1789,6 +1948,9 @@
         </member>
         <member name="P:Bam.Net.Schema.Org.ExercisePlan.Workload">
             <summary>Quantitative measure of the physiologic output of the exercise; also referred to as energy expenditure.</summary>
+        </member>
+        <member name="T:Bam.Net.Schema.Org.ExhibitionEvent">
+            <summary>Event type: Exhibition event, e.g. at a museum, library, archive, tradeshow, ...</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.Eye">
             <summary>Eye.</summary>
@@ -1853,6 +2015,9 @@
         <member name="P:Bam.Net.Schema.Org.Flight.ArrivalTime">
             <summary>The expected arrival time.</summary>
         </member>
+        <member name="P:Bam.Net.Schema.Org.Flight.BoardingPolicy">
+            <summary>The type of boarding policy used by the airline (e.g. zone-based or group-based).</summary>
+        </member>
         <member name="P:Bam.Net.Schema.Org.Flight.DepartureAirport">
             <summary>The airport where the flight originates.</summary>
         </member>
@@ -1892,6 +2057,15 @@
         <member name="P:Bam.Net.Schema.Org.FlightReservation.BoardingGroup">
             <summary>The airline-specific indicator of boarding order / preference.</summary>
         </member>
+        <member name="P:Bam.Net.Schema.Org.FlightReservation.PassengerPriorityStatus">
+            <summary>The priority status assigned to a passenger for security or boarding (e.g. FastTrack or Priority).</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.FlightReservation.PassengerSequenceNumber">
+            <summary>The passenger's sequence number as assigned by the airline.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.FlightReservation.SecurityScreening">
+            <summary>The type of security screening the passenger is subject to.</summary>
+        </member>
         <member name="T:Bam.Net.Schema.Org.Florist">
             <summary>A florist.</summary>
         </member>
@@ -1905,7 +2079,7 @@
             <summary>A food-related business.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.FoodEstablishment.AcceptsReservations">
-            <summary>Indicates whether a FoodEstablishment accepts reservations. Values can be Boolean, an URL at which reservations can be made or (for backwards compatibility) the strings Yes or No.</summary>
+            <summary>Indicates whether a FoodEstablishment accepts reservations. Values can be Boolean, a URL at which reservations can be made or (for backwards compatibility) the strings Yes or No.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.FoodEstablishment.Menu">
             <summary>Either the actual menu or a URL of the menu.</summary>
@@ -1927,6 +2101,12 @@
         </member>
         <member name="T:Bam.Net.Schema.Org.FoodEvent">
             <summary>Event type: Food event.</summary>
+        </member>
+        <member name="T:Bam.Net.Schema.Org.FourWheelDriveConfiguration">
+            <summary>Four-wheel drive is a transmission layout where the engine primarily drives two wheels with a part-time four-wheel drive capability.</summary>
+        </member>
+        <member name="T:Bam.Net.Schema.Org.FrontWheelDriveConfiguration">
+            <summary>Front-wheel drive is a transmission layout where the engine drives the front wheels.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.Fungus">
             <summary>Pathogenic fungus.</summary>
@@ -1991,35 +2171,62 @@
         <member name="T:Bam.Net.Schema.Org.Genitourinary">
             <summary>Genitourinary.</summary>
         </member>
+        <member name="T:Bam.Net.Schema.Org.GeoCircle">
+            <summary>A GeoCircle is a GeoShape representing a circular geographic area. As it is a GeoShape          it provides the simple textual property 'circle', but also allows the combination of postalCode alongside geoRadius.          The center of the circle can be indicated via the 'geoMidpoint' property, or more approximately using 'address', 'postalCode'.       </summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.GeoCircle.GeoMidpoint">
+            <summary>Indicates the GeoCoordinates at the centre of a GeoShape e.g. GeoCircle.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.GeoCircle.GeoRadius">
+            <summary>Indicates the approximate radius of a GeoCircle (metres unless indicated otherwise via Distance notation).</summary>
+        </member>
         <member name="T:Bam.Net.Schema.Org.GeoCoordinates">
             <summary>The geographic coordinates of a place or event.</summary>
         </member>
+        <member name="P:Bam.Net.Schema.Org.GeoCoordinates.Address">
+            <summary>Physical address of the item.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.GeoCoordinates.AddressCountry">
+            <summary>The country. For example, USA. You can also provide the two-letter ISO 3166-1 alpha-2 country code.</summary>
+        </member>
         <member name="P:Bam.Net.Schema.Org.GeoCoordinates.Elevation">
-            <summary>The elevation of a location.</summary>
+            <summary>The elevation of a location (WGS 84).</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.GeoCoordinates.Latitude">
-            <summary>The latitude of a location. For example 37.42242.</summary>
+            <summary>The latitude of a location. For example 37.42242 (WGS 84).</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.GeoCoordinates.Longitude">
-            <summary>The longitude of a location. For example -122.08585.</summary>
+            <summary>The longitude of a location. For example -122.08585 (WGS 84).</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.GeoCoordinates.PostalCode">
+            <summary>The postal code. For example, 94043.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.GeoShape">
-            <summary>The geographic shape of a place.</summary>
+            <summary>The geographic shape of a place. A GeoShape can be described using several properties whose values are based on latitude/longitude pairs. Either whitespace or commas can be used to separate latitude and longitude; whitespace should be used when writing a list of several such points.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.GeoShape.Address">
+            <summary>Physical address of the item.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.GeoShape.AddressCountry">
+            <summary>The country. For example, USA. You can also provide the two-letter ISO 3166-1 alpha-2 country code.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.GeoShape.Box">
-            <summary>A polygon is the area enclosed by a point-to-point path for which the starting and ending points are the same. A polygon is expressed as a series of four or more space delimited points where the first and final points are identical.</summary>
+            <summary>A box is the area enclosed by the rectangle formed by two points. The first point is the lower corner, the second point is the upper corner. A box is expressed as two points separated by a space character.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.GeoShape.Circle">
             <summary>A circle is the circular region of a specified radius centered at a specified latitude and longitude. A circle is expressed as a pair followed by a radius in meters.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.GeoShape.Elevation">
-            <summary>The elevation of a location.</summary>
+            <summary>The elevation of a location (WGS 84).</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.GeoShape.Line">
             <summary>A line is a point-to-point path consisting of two or more points. A line is expressed as a series of two or more point objects separated by space.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.GeoShape.Polygon">
             <summary>A polygon is the area enclosed by a point-to-point path for which the starting and ending points are the same. A polygon is expressed as a series of four or more space delimited points where the first and final points are identical.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.GeoShape.PostalCode">
+            <summary>The postal code. For example, 94043.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.Geriatric">
             <summary>A specific branch of medical science that is concerned with the diagnosis and treatment of diseases, debilities and provision of care to the aged.</summary>
@@ -2053,6 +2260,9 @@
         </member>
         <member name="T:Bam.Net.Schema.Org.GroceryStore">
             <summary>A grocery store.</summary>
+        </member>
+        <member name="T:Bam.Net.Schema.Org.GroupBoardingPolicy">
+            <summary>The airline boards by groups based on check-in time, priority, etc.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.Gynecologic">
             <summary>A specific branch of medical science that pertains to the health care of women, particularly in the diagnosis and treatment of disorders affecting the female reproductive system.</summary>
@@ -2091,7 +2301,7 @@
             <summary>A store that sells materials useful or necessary for various hobbies.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.HomeAndConstructionBusiness">
-            <summary>A construction business.</summary>
+            <summary>A construction business.                A HomeAndConstructionBusiness is a LocalBusiness that provides services around homes and buildings.                    As a LocalBusiness it can be          described as a provider of one or more          Service(s).      </summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.HomeGoodsStore">
             <summary>A home goods store.</summary>
@@ -2204,6 +2414,18 @@
         <member name="T:Bam.Net.Schema.Org.InteractAction">
             <summary>The act of interacting with another person or organization.</summary>
         </member>
+        <member name="T:Bam.Net.Schema.Org.InteractionCounter">
+            <summary>A summary of how users have interacted with this CreativeWork. In most cases, authors will use a subtype to specify the specific type of interaction.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.InteractionCounter.InteractionService">
+            <summary>The WebSite or SoftwareApplication where the interactions took place.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.InteractionCounter.InteractionType">
+            <summary>The Action representing the type of interaction. For up votes, +1s, etc. use LikeAction. For down votes use DislikeAction. Otherwise, use the most specific Action.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.InteractionCounter.UserInteractionCount">
+            <summary>The number of interactions for the CreativeWork using the WebSite or SoftwareApplication.</summary>
+        </member>
         <member name="T:Bam.Net.Schema.Org.InternationalTrial">
             <summary>An international trial.</summary>
         </member>
@@ -2240,8 +2462,8 @@
         <member name="P:Bam.Net.Schema.Org.Invoice.MinimumPaymentDue">
             <summary>The minimum payment required at this time.</summary>
         </member>
-        <member name="P:Bam.Net.Schema.Org.Invoice.PaymentDue">
-            <summary>The date that payment is due.</summary>
+        <member name="P:Bam.Net.Schema.Org.Invoice.PaymentDueDate">
+            <summary>The date that payment is due. Supersedes paymentDue.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Invoice.PaymentMethod">
             <summary>The name of the credit card or other method of payment for the order.</summary>
@@ -2277,7 +2499,7 @@
             <summary>Type of ordering (e.g. Ascending, Descending, Unordered).</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.ItemList.NumberOfItems">
-            <summary>The number of items in an ItemList. Note that some descriptions might not full describe all items in a list (e.g. multi-page pagination).</summary>
+            <summary>The number of items in an ItemList. Note that some descriptions might not fully describe all items in a list (e.g., multi-page pagination); in such cases, the numberOfItems would be for the entire list.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.ItemListOrderAscending">
             <summary>An ItemList ordered with lower values listed first.</summary>
@@ -2303,9 +2525,6 @@
         <member name="P:Bam.Net.Schema.Org.JobPosting.BaseSalary">
             <summary>The base salary of the job or of an employee in an EmployeeRole.</summary>
         </member>
-        <member name="P:Bam.Net.Schema.Org.JobPosting.Benefits">
-            <summary>Description of benefits associated with the job.</summary>
-        </member>
         <member name="P:Bam.Net.Schema.Org.JobPosting.DatePosted">
             <summary>Publication date for the job posting.</summary>
         </member>
@@ -2321,11 +2540,14 @@
         <member name="P:Bam.Net.Schema.Org.JobPosting.HiringOrganization">
             <summary>Organization offering the job position.</summary>
         </member>
-        <member name="P:Bam.Net.Schema.Org.JobPosting.Incentives">
-            <summary>Description of bonus and commission compensation aspects of the job.</summary>
+        <member name="P:Bam.Net.Schema.Org.JobPosting.IncentiveCompensation">
+            <summary>Description of bonus and commission compensation aspects of the job. Supersedes incentives.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.JobPosting.Industry">
             <summary>The industry associated with the job position.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.JobPosting.JobBenefits">
+            <summary>Description of benefits associated with the job. Supersedes benefits.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.JobPosting.JobLocation">
             <summary>A (typically single) geographic location associated with the job position.</summary>
@@ -2391,10 +2613,16 @@
             <summary>LaserDiscFormat.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.LeaveAction">
-            <summary>An agent leaves an event / group with participants/friends at a location.Related actions:JoinAction: The antagonym of LeaveAction.UnRegisterAction: Unlike UnRegisterAction, LeaveAction implies leaving a group/team of people rather than a service.</summary>
+            <summary>An agent leaves an event / group with participants/friends at a location.Related actions:JoinAction: The antonym of LeaveAction.UnRegisterAction: Unlike UnRegisterAction, LeaveAction implies leaving a group/team of people rather than a service.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.LeaveAction.Event">
             <summary>Upcoming or past event associated with this place, organization, or action. Supersedes events.</summary>
+        </member>
+        <member name="T:Bam.Net.Schema.Org.LeftHandDriving">
+            <summary>The steering position is on the left side of the vehicle (viewed from the main direction of driving).</summary>
+        </member>
+        <member name="T:Bam.Net.Schema.Org.LegalService">
+            <summary>A LegalService is a business that provides legally-oriented services, advice and representation, e.g. law firms.                As a LocalBusiness it can be        described as a provider of one or more        Service(s).      </summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.LegislativeBuilding">
             <summary>A legislative building—for example, the state capitol.</summary>
@@ -2433,7 +2661,7 @@
             <summary>An list item, e.g. a step in a checklist or how-to description.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.ListItem.Item">
-            <summary>An entity represented by an entry in a list (e.g. an 'artist' in a list of 'artists')â€™.</summary>
+            <summary>An entity represented by an entry in a list or data feed (e.g. an 'artist' in a list of 'artists')â€™.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.ListItem.NextItem">
             <summary>A link to the ListItem that follows the current one.</summary>
@@ -2450,11 +2678,23 @@
         <member name="T:Bam.Net.Schema.Org.LiveAlbum">
             <summary>LiveAlbum.</summary>
         </member>
+        <member name="T:Bam.Net.Schema.Org.LiveBlogPosting">
+            <summary>A blog post intended to provide a rolling textual coverage of an ongoing event through continuous updates.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.LiveBlogPosting.CoverageEndTime">
+            <summary>The time when the live blog will stop covering the Event. Note that coverage may continue after the Event concludes.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.LiveBlogPosting.CoverageStartTime">
+            <summary>The time when the live blog will begin covering the Event. Note that coverage may begin before the Event's start time. The LiveBlogPosting may also be created before coverage begins.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.LiveBlogPosting.LiveBlogUpdate">
+            <summary>An update to the LiveBlog.</summary>
+        </member>
         <member name="T:Bam.Net.Schema.Org.LocalBusiness">
             <summary>A particular physical business or branch of an organization. Examples of LocalBusiness include a restaurant, a particular branch of a restaurant chain, a branch of a bank, a medical practice, a club, a bowling alley, etc.</summary>
         </member>
-        <member name="P:Bam.Net.Schema.Org.LocalBusiness.BranchOf">
-            <summary>The larger organization that this local business is a branch of, if any.</summary>
+        <member name="P:Bam.Net.Schema.Org.LocalBusiness.BranchCode">
+            <summary>A short textual code (also called "store code") that uniquely identifies a place of business. The code is typically assigned by the parentOrganization and used in structured URLs. For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047 the code "3047" is a branchCode for a particular branch.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.LocalBusiness.CurrenciesAccepted">
             <summary>The currency accepted (in ISO 4217 currency format).</summary>
@@ -2576,9 +2816,6 @@
         </member>
         <member name="P:Bam.Net.Schema.Org.MediaObject.ProductionCompany">
             <summary>The production company or studio responsible for the item e.g. series, video game, episode etc.</summary>
-        </member>
-        <member name="P:Bam.Net.Schema.Org.MediaObject.Publication">
-            <summary>A publication event associated with the episode, clip or media object.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.MediaObject.RegionsAllowed">
             <summary>The regions where the media is allowed. If not specified, then it's assumed to be allowed everywhere. Specify the countries in ISO 3166 format.</summary>
@@ -2997,6 +3234,9 @@
         <member name="P:Bam.Net.Schema.Org.Movie.Actor">
             <summary>An actor, e.g. in tv, radio, movie, video games etc. Actors can be associated with individual items or with a series, episode, clip. Supersedes actors.</summary>
         </member>
+        <member name="P:Bam.Net.Schema.Org.Movie.CountryOfOrigin">
+            <summary>The country of the principal offices of the production company or individual responsible for the movie or program.</summary>
+        </member>
         <member name="P:Bam.Net.Schema.Org.Movie.Director">
             <summary>A director of e.g. tv, radio, movie, video games etc. content. Directors can be associated with individual items or with a series, episode, clip. Supersedes directors.</summary>
         </member>
@@ -3009,8 +3249,14 @@
         <member name="P:Bam.Net.Schema.Org.Movie.ProductionCompany">
             <summary>The production company or studio responsible for the item e.g. series, video game, episode etc.</summary>
         </member>
+        <member name="P:Bam.Net.Schema.Org.Movie.SubtitleLanguage">
+            <summary>Languages in which subtitles/captions are available, in IETF BCP 47 standard format.</summary>
+        </member>
         <member name="P:Bam.Net.Schema.Org.Movie.Trailer">
             <summary>The trailer of a movie or tv/radio series, season, episode, etc.</summary>
+        </member>
+        <member name="T:Bam.Net.Schema.Org.MovieClip">
+            <summary>A short segment/part of a movie.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.MovieRentalStore">
             <summary>A movie rental store.</summary>
@@ -3035,6 +3281,9 @@
         </member>
         <member name="T:Bam.Net.Schema.Org.MovieTheater">
             <summary>A movie theater.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.MovieTheater.ScreenCount">
+            <summary>The number of screens in the movie theater.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.MovingCompany">
             <summary>A moving company.</summary>
@@ -3119,6 +3368,9 @@
         </member>
         <member name="P:Bam.Net.Schema.Org.MusicComposition.Lyricist">
             <summary>The person who wrote the words.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.MusicComposition.Lyrics">
+            <summary>The words in the song.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.MusicComposition.MusicArrangement">
             <summary>An arrangement derived from the composition.</summary>
@@ -3348,6 +3600,9 @@
         <member name="P:Bam.Net.Schema.Org.Offer.AggregateRating">
             <summary>The overall rating, based on a collection of reviews or ratings, of the item.</summary>
         </member>
+        <member name="P:Bam.Net.Schema.Org.Offer.AreaServed">
+            <summary>The geographic area where a service or offered item is provided. Supersedes serviceArea.</summary>
+        </member>
         <member name="P:Bam.Net.Schema.Org.Offer.Availability">
             <summary>The availability of this item—for example In stock, Out of stock, Pre-order, etc.</summary>
         </member>
@@ -3382,10 +3637,13 @@
             <summary>The interval and unit of measurement of ordering quantities for which the offer or price specification is valid. This allows e.g. specifying that a certain freight charge is valid only for a certain quantity.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Offer.EligibleRegion">
-            <summary>The ISO 3166-1 (ISO 3166-1 alpha-2) or ISO 3166-2 code, or the GeoShape for the geo-political region(s) for which the offer or delivery charge specification is valid.</summary>
+            <summary>The ISO 3166-1 (ISO 3166-1 alpha-2) or ISO 3166-2 code, the place, or the GeoShape for the geo-political region(s) for which the offer or delivery charge specification is valid.       See also ineligibleRegion.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Offer.EligibleTransactionVolume">
             <summary>The transaction volume, in a monetary unit, for which the offer or price specification is valid, e.g. for indicating a minimal purchasing volume, to express free shipping above a certain order volume, or to limit the acceptance of credit cards to purchases to a certain minimal amount.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Offer.Gtin12">
+            <summary>The GTIN-12 code of the product, or the product to which the offer refers. The GTIN-12 is the 12-digit GS1 Identification Key composed of a U.P.C. Company Prefix, Item Reference, and Check Digit used to identify trade items. See GS1 GTIN Summary for more details.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Offer.Gtin13">
             <summary>The GTIN-13 code of the product, or the product to which the offer refers. This is equivalent to 13-digit ISBN codes and EAN UCC-13. Former 12-digit UPC codes can be converted into a GTIN-13 code by simply adding a preceeding zero. See GS1 GTIN Summary for more details.</summary>
@@ -3400,7 +3658,7 @@
             <summary>This links to a node or nodes indicating the exact quantity of the products included in the offer.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Offer.IneligibleRegion">
-            <summary>The place(s) from which the offer cannot be obtained (e.g. a region where the transaction is not allowed).</summary>
+            <summary>The ISO 3166-1 (ISO 3166-1 alpha-2) or ISO 3166-2 code, the place, or the GeoShape for the geo-political region(s) for which the offer or delivery charge specification is not valid, e.g. a region where the transaction is not allowed.       See also eligibleRegion.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Offer.InventoryLevel">
             <summary>The current approximate inventory level for the item or items.</summary>
@@ -3413,6 +3671,9 @@
         </member>
         <member name="P:Bam.Net.Schema.Org.Offer.Mpn">
             <summary>The Manufacturer Part Number (MPN) of the product, or the product to which the offer refers.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Offer.OfferedBy">
+            <summary>A pointer to the organization or person making the offer. Inverse property: makesOffer.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Offer.Price">
             <summary>The offer price of a product, or of a price component when attached to PriceSpecification and its subtypes.      Usage guidelines:Use the priceCurrency property (with ISO 4217 codes e.g. "USD") instead of      including ambiguous symbols such as '$' in the value.      Use '.' (Unicode 'FULL STOP' (U+002E)) rather than ',' to indicate a decimal point. Avoid using these symbols as a readability separator.      Note that both RDFa and Microdata syntax allow the use of a "content=" attribute for publishing simple machine-readable values      alongside more human-friendly formatting.      Use values from 0123456789 (Unicode 'DIGIT ZERO' (U+0030) to 'DIGIT NINE' (U+0039)) rather than superficially similiar Unicode symbols.</summary>
@@ -3445,7 +3706,10 @@
             <summary>The end of the validity of offer, price specification, or opening hours data.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Offer.Warranty">
-            <summary>The warranty promise(s) included in the offer.</summary>
+            <summary>The warranty promise(s) included in the offer. Supersedes warrantyPromise.</summary>
+        </member>
+        <member name="T:Bam.Net.Schema.Org.OfferCatalog">
+            <summary>An OfferCatalog is an ItemList that contains related Offers and/or further OfferCatalogs that are offeredBy the same provider.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.OfferItemCondition">
             <summary>A list of possible conditions for the item.</summary>
@@ -3537,6 +3801,9 @@
         <member name="P:Bam.Net.Schema.Org.Order.OrderDate">
             <summary>Date order was placed.</summary>
         </member>
+        <member name="P:Bam.Net.Schema.Org.Order.OrderDelivery">
+            <summary>The delivery of the parcel related to this order or order item.</summary>
+        </member>
         <member name="P:Bam.Net.Schema.Org.Order.OrderNumber">
             <summary>The identifier of the transaction.</summary>
         </member>
@@ -3549,8 +3816,8 @@
         <member name="P:Bam.Net.Schema.Org.Order.PartOfInvoice">
             <summary>The order is being paid as part of the referenced Invoice.</summary>
         </member>
-        <member name="P:Bam.Net.Schema.Org.Order.PaymentDue">
-            <summary>The date that payment is due.</summary>
+        <member name="P:Bam.Net.Schema.Org.Order.PaymentDueDate">
+            <summary>The date that payment is due. Supersedes paymentDue.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Order.PaymentMethod">
             <summary>The name of the credit card or other method of payment for the order.</summary>
@@ -3562,7 +3829,7 @@
             <summary>The URL for sending a payment.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Order.Seller">
-            <summary>An entity which offers (sells / leases / lends / loans) the services / goods.  A seller may also be a provider. Supersedes merchant, vendor.</summary>
+            <summary>An entity which offers (sells / leases / lends / loans) the services / goods.  A seller may also be a provider. Supersedes vendor, merchant.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.OrderAction">
             <summary>An agent orders an object/product/service to be delivered/sent.</summary>
@@ -3578,6 +3845,24 @@
         </member>
         <member name="T:Bam.Net.Schema.Org.OrderInTransit">
             <summary>OrderStatus representing that an order is in transit.</summary>
+        </member>
+        <member name="T:Bam.Net.Schema.Org.OrderItem">
+            <summary>An order item is a line of an order. It includes the quantity and shipping details of a bought offer.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.OrderItem.OrderDelivery">
+            <summary>The delivery of the parcel related to this order or order item.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.OrderItem.OrderItemNumber">
+            <summary>The identifier of the order item.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.OrderItem.OrderItemStatus">
+            <summary>The current status of the order item.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.OrderItem.OrderQuantity">
+            <summary>The number of the item ordered. If the property is not set, assume the quantity is one.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.OrderItem.OrderedItem">
+            <summary>The item ordered.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.OrderPaymentDue">
             <summary>OrderStatus representing that payment is due on an order.</summary>
@@ -3605,6 +3890,15 @@
         </member>
         <member name="P:Bam.Net.Schema.Org.Organization.AggregateRating">
             <summary>The overall rating, based on a collection of reviews or ratings, of the item.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Organization.Alumni">
+            <summary>Alumni of an organization. Inverse property: alumniOf.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Organization.AreaServed">
+            <summary>The geographic area where a service or offered item is provided. Supersedes serviceArea.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Organization.Award">
+            <summary>An award won by or for this item. Supersedes awards.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Organization.Brand">
             <summary>The brand(s) associated with a product or service, or the brand(s) maintained by an organization or business person.</summary>
@@ -3643,11 +3937,11 @@
         <member name="P:Bam.Net.Schema.Org.Organization.GlobalLocationNumber">
             <summary>The Global Location Number (GLN, sometimes also referred to as International Location Number or ILN) of the respective organization, person, or place. The GLN is a 13-digit number used to identify parties and physical locations.</summary>
         </member>
+        <member name="P:Bam.Net.Schema.Org.Organization.HasOfferCatalog">
+            <summary>Indicates an OfferCatalog listing for this Organization, Person, or Service.</summary>
+        </member>
         <member name="P:Bam.Net.Schema.Org.Organization.HasPOS">
             <summary>Points-of-Sales operated by the organization or person.</summary>
-        </member>
-        <member name="P:Bam.Net.Schema.Org.Organization.InteractionCount">
-            <summary>A count of a specific user interactions with this item—for example, 20 UserLikes, 5 UserComments, or 300 UserDownloads. The user interaction type should be one of the sub types of UserInteraction.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Organization.IsicV4">
             <summary>The International Standard of Industrial Classification of All Economic Activities (ISIC), Revision 4 code for a particular organization, business person, or place.</summary>
@@ -3656,13 +3950,13 @@
             <summary>The official name of the organization, e.g. the registered company name.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Organization.Location">
-            <summary>The location of the event, organization or action.</summary>
+            <summary>The location of for example where the event is happening, an organization is located, or where an action takes place.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Organization.Logo">
             <summary>An associated logo.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Organization.MakesOffer">
-            <summary>A pointer to products or services offered by the organization or person.</summary>
+            <summary>A pointer to products or services offered by the organization or person. Inverse property: offeredBy.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Organization.Member">
             <summary>A member of an Organization or a ProgramMembership. Organizations can be members of organizations; ProgramMembership is typically for individuals. Supersedes members, musicGroupMember. Inverse property: memberOf.</summary>
@@ -3673,8 +3967,14 @@
         <member name="P:Bam.Net.Schema.Org.Organization.Naics">
             <summary>The North American Industry Classification System (NAICS) code for a particular organization or business person.</summary>
         </member>
+        <member name="P:Bam.Net.Schema.Org.Organization.NumberOfEmployees">
+            <summary>The number of employees in an organization e.g. business.</summary>
+        </member>
         <member name="P:Bam.Net.Schema.Org.Organization.Owns">
             <summary>Products owned by the organization or person.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Organization.ParentOrganization">
+            <summary>The larger organization that this organization is a branch of, if any. Supersedes branchOf. Inverse property: subOrganization.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Organization.Review">
             <summary>A review of the item. Supersedes reviews.</summary>
@@ -3683,7 +3983,7 @@
             <summary>A pointer to products or services sought by the organization or person (demand).</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Organization.SubOrganization">
-            <summary>A relationship between two organizations where the first includes the second, e.g., as a subsidiary. See also: the more specific 'department' property.</summary>
+            <summary>A relationship between two organizations where the first includes the second, e.g., as a subsidiary. See also: the more specific 'department' property. Inverse property: parentOrganization.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Organization.TaxID">
             <summary>The Tax / Fiscal ID of the organization or person, e.g. the TIN in the US or the CIF/NIF in Spain.</summary>
@@ -3782,7 +4082,7 @@
             <summary>Tracking url for the parcel delivery.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.ParcelService">
-            <summary>A private parcel service as the delivery mode available for a certain offer.    Commonly used values:    http://purl.org/goodrelations/v1#DHL    http://purl.org/goodrelations/v1#FederalExpress    http://purl.org/goodrelations/v1#UPS      </summary>
+            <summary>A private parcel service as the delivery mode available for a certain offer.    Commonly used values:    http://purl.org/goodrelations/v1#DHL     http://purl.org/goodrelations/v1#FederalExpress     http://purl.org/goodrelations/v1#UPS       </summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.ParentAudience">
             <summary>A set of characteristics describing parents, who can be interested in viewing some content.</summary>
@@ -3826,6 +4126,9 @@
         <member name="P:Bam.Net.Schema.Org.PayAction.Recipient">
             <summary>A sub property of participant. The participant who is at the receiving end of the action.</summary>
         </member>
+        <member name="T:Bam.Net.Schema.Org.PaymentAutomaticallyApplied">
+            <summary>An automatic payment system is in place and will be used.</summary>
+        </member>
         <member name="T:Bam.Net.Schema.Org.PaymentChargeSpecification">
             <summary>The costs of settling the payment using a particular payment method.</summary>
         </member>
@@ -3835,8 +4138,23 @@
         <member name="P:Bam.Net.Schema.Org.PaymentChargeSpecification.AppliesToPaymentMethod">
             <summary>The payment method(s) to which the payment charge specification applies.</summary>
         </member>
+        <member name="T:Bam.Net.Schema.Org.PaymentComplete">
+            <summary>The payment has been received and processed.</summary>
+        </member>
+        <member name="T:Bam.Net.Schema.Org.PaymentDeclined">
+            <summary>The payee received the payment, but it was declined for some reason.</summary>
+        </member>
+        <member name="T:Bam.Net.Schema.Org.PaymentDue">
+            <summary>The payment is due, but still within an acceptable time to be received.</summary>
+        </member>
         <member name="T:Bam.Net.Schema.Org.PaymentMethod">
-            <summary>A payment method is a standardized procedure for transferring the monetary amount for a purchase. Payment methods are characterized by the legal and technical structures used, and by the organization or group carrying out the transaction.    Commonly used values:    http://purl.org/goodrelations/v1#ByBankTransferInAdvance    http://purl.org/goodrelations/v1#ByInvoice    http://purl.org/goodrelations/v1#Cash    http://purl.org/goodrelations/v1#CheckInAdvance    http://purl.org/goodrelations/v1#COD    http://purl.org/goodrelations/v1#DirectDebit    http://purl.org/goodrelations/v1#GoogleCheckout    http://purl.org/goodrelations/v1#PayPal    http://purl.org/goodrelations/v1#PaySwarm        </summary>
+            <summary>A payment method is a standardized procedure for transferring the monetary amount for a purchase. Payment methods are characterized by the legal and technical structures used, and by the organization or group carrying out the transaction.    Commonly used values:    http://purl.org/goodrelations/v1#ByBankTransferInAdvance     http://purl.org/goodrelations/v1#ByInvoice     http://purl.org/goodrelations/v1#Cash     http://purl.org/goodrelations/v1#CheckInAdvance     http://purl.org/goodrelations/v1#COD     http://purl.org/goodrelations/v1#DirectDebit     http://purl.org/goodrelations/v1#GoogleCheckout     http://purl.org/goodrelations/v1#PayPal     http://purl.org/goodrelations/v1#PaySwarm         </summary>
+        </member>
+        <member name="T:Bam.Net.Schema.Org.PaymentPastDue">
+            <summary>The payment is due and considered late.</summary>
+        </member>
+        <member name="T:Bam.Net.Schema.Org.PaymentStatusType">
+            <summary>A specific payment status. For example, PaymentDue, PaymentComplete, etc.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.Pediatric">
             <summary>A specific branch of medical science that specializes in the care of infants, children and adolescents.</summary>
@@ -3929,10 +4247,10 @@
             <summary>An organization that this person is affiliated with. For example, a school/university, a club, or a team.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Person.AlumniOf">
-            <summary>An educational organizations that the person is an alumni of. Inverse property: alumni.</summary>
+            <summary>An organization that the person is an alumni of. Inverse property: alumni.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Person.Award">
-            <summary>An award won by this person or for this creative work. Supersedes awards.</summary>
+            <summary>An award won by or for this item. Supersedes awards.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Person.BirthDate">
             <summary>Date of birth.</summary>
@@ -3980,6 +4298,9 @@
         <member name="P:Bam.Net.Schema.Org.Person.GlobalLocationNumber">
             <summary>The Global Location Number (GLN, sometimes also referred to as International Location Number or ILN) of the respective organization, person, or place. The GLN is a 13-digit number used to identify parties and physical locations.</summary>
         </member>
+        <member name="P:Bam.Net.Schema.Org.Person.HasOfferCatalog">
+            <summary>Indicates an OfferCatalog listing for this Organization, Person, or Service.</summary>
+        </member>
         <member name="P:Bam.Net.Schema.Org.Person.HasPOS">
             <summary>Points-of-Sales operated by the organization or person.</summary>
         </member>
@@ -3995,9 +4316,6 @@
         <member name="P:Bam.Net.Schema.Org.Person.HonorificSuffix">
             <summary>An honorific suffix preceding a Person's name such as M.D. /PhD/MSCSW.</summary>
         </member>
-        <member name="P:Bam.Net.Schema.Org.Person.InteractionCount">
-            <summary>A count of a specific user interactions with this item—for example, 20 UserLikes, 5 UserComments, or 300 UserDownloads. The user interaction type should be one of the sub types of UserInteraction.</summary>
-        </member>
         <member name="P:Bam.Net.Schema.Org.Person.IsicV4">
             <summary>The International Standard of Industrial Classification of All Economic Activities (ISIC), Revision 4 code for a particular organization, business person, or place.</summary>
         </member>
@@ -4008,7 +4326,7 @@
             <summary>The most generic bi-directional social/work relation.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Person.MakesOffer">
-            <summary>A pointer to products or services offered by the organization or person.</summary>
+            <summary>A pointer to products or services offered by the organization or person. Inverse property: offeredBy.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Person.MemberOf">
             <summary>An Organization (or ProgramMembership) to which this Person or Organization belongs. Inverse property: member.</summary>
@@ -4020,7 +4338,7 @@
             <summary>Nationality of the person.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Person.NetWorth">
-            <summary>The total financial value of the organization or person as calculated by subtracting assets from liabilities.</summary>
+            <summary>The total financial value of the person as calculated by subtracting assets from liabilities.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Person.Owns">
             <summary>Products owned by the organization or person.</summary>
@@ -4121,14 +4439,23 @@
         <member name="T:Bam.Net.Schema.Org.Place">
             <summary>Entities that have a somewhat fixed, physical extension.</summary>
         </member>
+        <member name="P:Bam.Net.Schema.Org.Place.AdditionalProperty">
+            <summary>A property-value pair representing an additional characteristics of the entitity, e.g. a product feature or another characteristic for which there is no matching property in schema.org. Note: Publishers should be aware that applications designed to use specific schema.org properties (e.g. http://schema.org/width, http://schema.org/color, http://schema.org/gtin13, ...) will typically expect such data to be provided using those properties, rather than using the generic property/value mechanism.</summary>
+        </member>
         <member name="P:Bam.Net.Schema.Org.Place.Address">
             <summary>Physical address of the item.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Place.AggregateRating">
             <summary>The overall rating, based on a collection of reviews or ratings, of the item.</summary>
         </member>
-        <member name="P:Bam.Net.Schema.Org.Place.ContainedIn">
-            <summary>The basic containment relation between places.</summary>
+        <member name="P:Bam.Net.Schema.Org.Place.BranchCode">
+            <summary>A short textual code (also called "store code") that uniquely identifies a place of business. The code is typically assigned by the parentOrganization and used in structured URLs. For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047 the code "3047" is a branchCode for a particular branch.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Place.ContainedInPlace">
+            <summary>The basic containment relation between a place and one that contains it. Supersedes containedIn. Inverse property: containsPlace.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Place.ContainsPlace">
+            <summary>The basic containment relation between a place and another that it contains. Inverse property: containsPlace.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Place.Event">
             <summary>Upcoming or past event associated with this place, organization, or action. Supersedes events.</summary>
@@ -4143,10 +4470,7 @@
             <summary>The Global Location Number (GLN, sometimes also referred to as International Location Number or ILN) of the respective organization, person, or place. The GLN is a 13-digit number used to identify parties and physical locations.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Place.HasMap">
-            <summary>A URL to a map of the place. Supersedes map, maps.</summary>
-        </member>
-        <member name="P:Bam.Net.Schema.Org.Place.InteractionCount">
-            <summary>A count of a specific user interactions with this item—for example, 20 UserLikes, 5 UserComments, or 300 UserDownloads. The user interaction type should be one of the sub types of UserInteraction.</summary>
+            <summary>A URL to a map of the place. Supersedes maps, map.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Place.IsicV4">
             <summary>The International Standard of Industrial Classification of All Economic Activities (ISIC), Revision 4 code for a particular organization, business person, or place.</summary>
@@ -4185,7 +4509,7 @@
             <summary>The act of playing/exercising/training/performing for enjoyment, leisure, recreation, Competition or exercise.Related actions:ListenAction: Unlike ListenAction (which is under ConsumeAction), PlayAction refers to performing for an audience or at an event, rather than consuming music.WatchAction: Unlike WatchAction (which is under ConsumeAction), PlayAction refers to showing/displaying for an audience or at an event, rather than consuming visual content.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.PlayAction.Audience">
-            <summary>The intended audience of the item, i.e. the group for whom the item was created.</summary>
+            <summary>An intended audience, i.e. a group for whom something was created. Supersedes serviceAudience.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.PlayAction.Event">
             <summary>Upcoming or past event associated with this place, organization, or action. Supersedes events.</summary>
@@ -4286,20 +4610,32 @@
         <member name="T:Bam.Net.Schema.Org.Product">
             <summary>Any offered product or service. For example: a pair of shoes; a concert ticket; the rental of a car; a haircut; or an episode of a TV show streamed online.</summary>
         </member>
+        <member name="P:Bam.Net.Schema.Org.Product.AdditionalProperty">
+            <summary>A property-value pair representing an additional characteristics of the entitity, e.g. a product feature or another characteristic for which there is no matching property in schema.org. Note: Publishers should be aware that applications designed to use specific schema.org properties (e.g. http://schema.org/width, http://schema.org/color, http://schema.org/gtin13, ...) will typically expect such data to be provided using those properties, rather than using the generic property/value mechanism.</summary>
+        </member>
         <member name="P:Bam.Net.Schema.Org.Product.AggregateRating">
             <summary>The overall rating, based on a collection of reviews or ratings, of the item.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Product.Audience">
-            <summary>The intended audience of the item, i.e. the group for whom the item was created.</summary>
+            <summary>An intended audience, i.e. a group for whom something was created. Supersedes serviceAudience.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Product.Award">
+            <summary>An award won by or for this item. Supersedes awards.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Product.Brand">
             <summary>The brand(s) associated with a product or service, or the brand(s) maintained by an organization or business person.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Product.Category">
+            <summary>A category for the item. Greater signs or slashes can be used to informally indicate a category hierarchy.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Product.Color">
             <summary>The color of the product.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Product.Depth">
             <summary>The depth of the item.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Product.Gtin12">
+            <summary>The GTIN-12 code of the product, or the product to which the offer refers. The GTIN-12 is the 12-digit GS1 Identification Key composed of a U.P.C. Company Prefix, Item Reference, and Check Digit used to identify trade items. See GS1 GTIN Summary for more details.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Product.Gtin13">
             <summary>The GTIN-13 code of the product, or the product to which the offer refers. This is equivalent to 13-digit ISBN codes and EAN UCC-13. Former 12-digit UPC codes can be converted into a GTIN-13 code by simply adding a preceeding zero. See GS1 GTIN Summary for more details.</summary>
@@ -4341,10 +4677,16 @@
             <summary>The Manufacturer Part Number (MPN) of the product, or the product to which the offer refers.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Product.Offers">
-            <summary>An offer to provide this item—for example, an offer to sell a product, rent the DVD of a movie, or give away tickets to an event.</summary>
+            <summary>An offer to provide this item—for example, an offer to sell a product, rent the DVD of a movie, perform a service, or give away tickets to an event.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Product.ProductID">
             <summary>The product identifier, such as ISBN. For example: <meta itemprop='productID' content='isbn:123-456-789'/>.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Product.ProductionDate">
+            <summary>The date of production of the item, e.g. vehicle.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Product.PurchaseDate">
+            <summary>The date the item e.g. vehicle was purchased by the current owner.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Product.ReleaseDate">
             <summary>The release date of a product or product model. This can be used to distinguish the exact variant of a product.</summary>
@@ -4374,7 +4716,7 @@
             <summary>A pointer from a newer variant of a product  to its previous, often discontinued predecessor.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.ProfessionalService">
-            <summary>Provider of professional services.</summary>
+            <summary>Original definition: "provider of professional services."                The general ProfessionalService type        for local businesses was deprecated due to confusion with Service.        For reference, the types that it included were: Dentist,        AccountingService,        Attorney,        Notary, as well as types for several kinds of        HomeAndConstructionBusiness:        Electrician,        GeneralContractor,        HousePainter,        Locksmith,        Plumber,        RoofingContractor.        LegalService was introduced as a more        inclusive supertype of Attorney.      </summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.ProfilePage">
             <summary>Web page type: Profile page.</summary>
@@ -4407,7 +4749,31 @@
             <summary>Relates a property to a class that constitutes (one of) the expected type(s) for values of the property.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Property.SupersededBy">
-            <summary>Relates a property to one that supersedes it.</summary>
+            <summary>Relates a term (i.e. a property, class or enumeration) to one that supersedes it.</summary>
+        </member>
+        <member name="T:Bam.Net.Schema.Org.PropertyValue">
+            <summary>A property-value pair, e.g. representing a feature of a product or place. Use the 'name' property for the name of the property. If there is an additional human-readable version of the value, put that into the 'description' property.                Always use specific schema.org properties when a) they exist and b) you can populate them. Using PropertyValue as a substitute will typically not trigger the same effect as using the original, specific property.    </summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.PropertyValue.MaxValue">
+            <summary>The upper value of some characteristic or property.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.PropertyValue.MinValue">
+            <summary>The lower value of some characteristic or property.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.PropertyValue.PropertyID">
+            <summary>A commonly used identifier for the characteristic represented by the property, e.g. a manufacturer or a standard code for a property. propertyID can be(1) a prefixed string, mainly meant to be used with standards for product properties; (2) a site-specific, non-prefixed string (e.g. the primary key of the property or the vendor-specific id of the property), or (3)a URL indicating the type of the property, either pointing to an external vocabulary, or a Web resource that describes the property (e.g. a glossary entry).Standards bodies should promote a standard prefix for the identifiers of properties from their standards.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.PropertyValue.UnitCode">
+            <summary>The unit of measurement given using the UN/CEFACT Common Code (3 characters) or a URL. Other codes than the UN/CEFACT Common Code may be used with a prefix followed by a colon.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.PropertyValue.UnitText">
+            <summary>A string or text indicating the unit of measurement. Useful if you cannot provide a standard unit code forunitCode.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.PropertyValue.Value">
+            <summary>The value of the quantitative value or property value node. For QuantitativeValue, the recommended type for values is 'Number'. For PropertyValue, it can be 'Text;', 'Number', 'Boolean', or 'StructuredValue'.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.PropertyValue.ValueReference">
+            <summary>A pointer to a secondary value that provides additional information on the original value, e.g. a reference temperature.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.PropertyValueSpecification">
             <summary>A Property value specification.</summary>
@@ -4457,8 +4823,8 @@
         <member name="T:Bam.Net.Schema.Org.PublicationEvent">
             <summary>A PublicationEvent corresponds indifferently to the event of publication for a CreativeWork of any type e.g. a broadcast event, an on-demand event, a book/journal publication via a variety of delivery media.</summary>
         </member>
-        <member name="P:Bam.Net.Schema.Org.PublicationEvent.Free">
-            <summary>A flag to signal that the publication is accessible for free.</summary>
+        <member name="P:Bam.Net.Schema.Org.PublicationEvent.IsAccessibleForFree">
+            <summary>A flag to signal that the publication is accessible for free. Supersedes free.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.PublicationEvent.PublishedOn">
             <summary>A broadcast service associated with the publication event.</summary>
@@ -4508,6 +4874,9 @@
         <member name="T:Bam.Net.Schema.Org.QualitativeValue">
             <summary>A predefined value for a product characteristic, e.g. the power cord plug type "US" or the garment sizes "S", "M", "L", and "XL".</summary>
         </member>
+        <member name="P:Bam.Net.Schema.Org.QualitativeValue.AdditionalProperty">
+            <summary>A property-value pair representing an additional characteristics of the entitity, e.g. a product feature or another characteristic for which there is no matching property in schema.org. Note: Publishers should be aware that applications designed to use specific schema.org properties (e.g. http://schema.org/width, http://schema.org/color, http://schema.org/gtin13, ...) will typically expect such data to be provided using those properties, rather than using the generic property/value mechanism.</summary>
+        </member>
         <member name="P:Bam.Net.Schema.Org.QualitativeValue.Equal">
             <summary>This ordering relation for qualitative values indicates that the subject is equal to the object.</summary>
         </member>
@@ -4532,6 +4901,9 @@
         <member name="T:Bam.Net.Schema.Org.QuantitativeValue">
             <summary> A point value or interval for product characteristics and other purposes.</summary>
         </member>
+        <member name="P:Bam.Net.Schema.Org.QuantitativeValue.AdditionalProperty">
+            <summary>A property-value pair representing an additional characteristics of the entitity, e.g. a product feature or another characteristic for which there is no matching property in schema.org. Note: Publishers should be aware that applications designed to use specific schema.org properties (e.g. http://schema.org/width, http://schema.org/color, http://schema.org/gtin13, ...) will typically expect such data to be provided using those properties, rather than using the generic property/value mechanism.</summary>
+        </member>
         <member name="P:Bam.Net.Schema.Org.QuantitativeValue.MaxValue">
             <summary>The upper value of some characteristic or property.</summary>
         </member>
@@ -4539,10 +4911,13 @@
             <summary>The lower value of some characteristic or property.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.QuantitativeValue.UnitCode">
-            <summary>The unit of measurement given using the UN/CEFACT Common Code (3 characters).</summary>
+            <summary>The unit of measurement given using the UN/CEFACT Common Code (3 characters) or a URL. Other codes than the UN/CEFACT Common Code may be used with a prefix followed by a colon.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.QuantitativeValue.UnitText">
+            <summary>A string or text indicating the unit of measurement. Useful if you cannot provide a standard unit code forunitCode.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.QuantitativeValue.Value">
-            <summary>The value of the product characteristic.</summary>
+            <summary>The value of the quantitative value or property value node. For QuantitativeValue, the recommended type for values is 'Number'. For PropertyValue, it can be 'Text;', 'Number', 'Boolean', or 'StructuredValue'.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.QuantitativeValue.ValueReference">
             <summary>A pointer to a secondary value that provides additional information on the original value, e.g. a reference temperature.</summary>
@@ -4560,19 +4935,22 @@
             <summary>The number of answers this question has received.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Question.DownvoteCount">
-            <summary>The number of downvotes this question has received from the community.</summary>
+            <summary>The number of downvotes this question, answer or comment has received from the community.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Question.SuggestedAnswer">
             <summary>An answer (possibly one of several, possibly incorrect) to a Question, e.g. on a Question/Answer site.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Question.UpvoteCount">
-            <summary>The number of upvotes this question has received from the community.</summary>
+            <summary>The number of upvotes this question, answer or comment has received from the community.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.QuoteAction">
             <summary>An agent quotes/estimates/appraises an object/product/service with a price at a location/store.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.RadiationTherapy">
             <summary>A process of care using radiation aimed at improving a health condition.</summary>
+        </member>
+        <member name="T:Bam.Net.Schema.Org.RadioChannel">
+            <summary>A unique instance of a radio BroadcastService on a CableOrSatelliteService lineup.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.RadioClip">
             <summary>A short radio program or a segment/part of a radio program.</summary>
@@ -4587,10 +4965,13 @@
             <summary>Season dedicated to radio broadcast and associated online delivery.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.RadioSeries">
-            <summary>Series dedicated to radio broadcast and associated online delivery.</summary>
+            <summary>CreativeWorkSeries dedicated to radio broadcast and associated online delivery.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.RadioSeries.Actor">
             <summary>An actor, e.g. in tv, radio, movie, video games etc. Actors can be associated with individual items or with a series, episode, clip. Supersedes actors.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.RadioSeries.ContainsSeason">
+            <summary>A season that is part of the media series. Supersedes season.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.RadioSeries.Director">
             <summary>A director of e.g. tv, radio, movie, video games etc. content. Directors can be associated with individual items or with a series, episode, clip. Supersedes directors.</summary>
@@ -4609,9 +4990,6 @@
         </member>
         <member name="P:Bam.Net.Schema.Org.RadioSeries.ProductionCompany">
             <summary>The production company or studio responsible for the item e.g. series, video game, episode etc.</summary>
-        </member>
-        <member name="P:Bam.Net.Schema.Org.RadioSeries.Season">
-            <summary>A season in a media series. Supersedes seasons.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.RadioSeries.Trailer">
             <summary>The trailer of a movie or tv/radio series, season, episode, etc.</summary>
@@ -4643,6 +5021,9 @@
         <member name="T:Bam.Net.Schema.Org.RealEstateAgent">
             <summary>A real-estate agent.</summary>
         </member>
+        <member name="T:Bam.Net.Schema.Org.RearWheelDriveConfiguration">
+            <summary>Real-wheel drive is a transmission layout where the engine drives the rear wheels.</summary>
+        </member>
         <member name="T:Bam.Net.Schema.Org.ReceiveAction">
             <summary>The act of physically/electronically taking delivery of an object thathas been transferred from an origin to a destination. Reciprocal of SendAction.Related actions:SendAction: The reciprocal of ReceiveAction.TakeAction: Unlike TakeAction, ReceiveAction does not imply that the ownership has been transfered (e.g. I can receive a package, but it does not mean the package is now mine).</summary>
         </member>
@@ -4661,9 +5042,6 @@
         <member name="P:Bam.Net.Schema.Org.Recipe.CookingMethod">
             <summary>The method of cooking, such as Frying, Steaming, ...</summary>
         </member>
-        <member name="P:Bam.Net.Schema.Org.Recipe.Ingredients">
-            <summary>An ingredient used in the recipe.</summary>
-        </member>
         <member name="P:Bam.Net.Schema.Org.Recipe.Nutrition">
             <summary>Nutrition information about the recipe.</summary>
         </member>
@@ -4676,8 +5054,11 @@
         <member name="P:Bam.Net.Schema.Org.Recipe.RecipeCuisine">
             <summary>The cuisine of the recipe (for example, French or Ethiopian).</summary>
         </member>
+        <member name="P:Bam.Net.Schema.Org.Recipe.RecipeIngredient">
+            <summary>A single ingredient used in the recipe, e.g. sugar, flour or garlic. Supersedes ingredients.</summary>
+        </member>
         <member name="P:Bam.Net.Schema.Org.Recipe.RecipeInstructions">
-            <summary>The steps to make the dish.</summary>
+            <summary>A step or instruction involved in making the recipe.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Recipe.RecipeYield">
             <summary>The quantity produced by the recipe (for example, number of people served, number of servings, etc).</summary>
@@ -4707,7 +5088,7 @@
             <summary>The drug's cost represents the maximum reimbursement paid by an insurer for the drug.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.RejectAction">
-            <summary>The act of rejecting to/adopting an object.Related actions:AcceptAction: The antagonym of RejectAction.</summary>
+            <summary>The act of rejecting to/adopting an object.Related actions:AcceptAction: The antonym of RejectAction.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.RemixAlbum">
             <summary>RemixAlbum.</summary>
@@ -4739,6 +5120,9 @@
         <member name="P:Bam.Net.Schema.Org.RentalCarReservation.PickupTime">
             <summary>When a taxi will pickup a passenger or a rental car can be picked up.</summary>
         </member>
+        <member name="T:Bam.Net.Schema.Org.RentalVehicleUsage">
+            <summary>Indicates the usage of the vehicle as a rental car.</summary>
+        </member>
         <member name="T:Bam.Net.Schema.Org.ReplaceAction">
             <summary>The act of editing a recipient by replacing an old object with a new object.</summary>
         </member>
@@ -4750,6 +5134,15 @@
         </member>
         <member name="T:Bam.Net.Schema.Org.ReplyAction">
             <summary>The act of responding to a question/message asked/sent by the object. Related to AskAction.Related actions:AskAction: Appears generally as an origin of a ReplyAction.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.ReplyAction.ResultComment">
+            <summary>A sub property of result. The Comment created or sent as a result of this action.</summary>
+        </member>
+        <member name="T:Bam.Net.Schema.Org.Report">
+            <summary>A Report generated by governmental or non-governmental organization.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Report.ReportNumber">
+            <summary>The number or other unique designator assigned to a Report by the publishing organization.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.ReportedDoseSchedule">
             <summary>A patient-reported or observed dosing schedule for a drug or supplement.</summary>
@@ -4868,6 +5261,9 @@
         <member name="T:Bam.Net.Schema.Org.Rheumatologic">
             <summary>A specific branch of medical science that deals with the study and treatment of rheumatic, autoimmune or joint diseases.</summary>
         </member>
+        <member name="T:Bam.Net.Schema.Org.RightHandDriving">
+            <summary>The steering position is on the right side of the vehicle (viewed from the main direction of driving).</summary>
+        </member>
         <member name="T:Bam.Net.Schema.Org.RiverBodyOfWater">
             <summary>A river (for example, the broad majestic Shannon).</summary>
         </member>
@@ -4891,6 +5287,9 @@
         </member>
         <member name="P:Bam.Net.Schema.Org.RsvpAction.AdditionalNumberOfGuests">
             <summary>If responding yes, the number of guests who will attend in addition to the invitee.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.RsvpAction.Comment">
+            <summary>Comments, typically from users.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.RsvpAction.RsvpResponse">
             <summary>The response (yes, no, maybe) to the RSVP.</summary>
@@ -4922,6 +5321,18 @@
         <member name="T:Bam.Net.Schema.Org.School">
             <summary>A school.</summary>
         </member>
+        <member name="T:Bam.Net.Schema.Org.ScreeningEvent">
+            <summary>A screening of a movie or other video.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.ScreeningEvent.SubtitleLanguage">
+            <summary>Languages in which subtitles/captions are available, in IETF BCP 47 standard format.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.ScreeningEvent.VideoFormat">
+            <summary>The type of screening or video broadcast used (e.g. IMAX, 3D, SD, HD, etc.).</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.ScreeningEvent.WorkPresented">
+            <summary>The movie presented during this event.</summary>
+        </member>
         <member name="T:Bam.Net.Schema.Org.Sculpture">
             <summary>A piece of sculpture.</summary>
         </member>
@@ -4939,30 +5350,6 @@
         </member>
         <member name="T:Bam.Net.Schema.Org.Season">
             <summary>A media season e.g. tv, radio, video game etc.</summary>
-        </member>
-        <member name="P:Bam.Net.Schema.Org.Season.EndDate">
-            <summary>The end date and time of the item (in ISO 8601 date format).</summary>
-        </member>
-        <member name="P:Bam.Net.Schema.Org.Season.Episode">
-            <summary>An episode of a tv, radio or game media within a series or season. Supersedes episodes.</summary>
-        </member>
-        <member name="P:Bam.Net.Schema.Org.Season.NumberOfEpisodes">
-            <summary>The number of episodes in this season or series.</summary>
-        </member>
-        <member name="P:Bam.Net.Schema.Org.Season.PartOfSeries">
-            <summary>The series to which this episode or season belongs. Supersedes partOfTVSeries.</summary>
-        </member>
-        <member name="P:Bam.Net.Schema.Org.Season.ProductionCompany">
-            <summary>The production company or studio responsible for the item e.g. series, video game, episode etc.</summary>
-        </member>
-        <member name="P:Bam.Net.Schema.Org.Season.SeasonNumber">
-            <summary>Position of the season within an ordered group of seasons.</summary>
-        </member>
-        <member name="P:Bam.Net.Schema.Org.Season.StartDate">
-            <summary>The start date and time of the item (in ISO 8601 date format).</summary>
-        </member>
-        <member name="P:Bam.Net.Schema.Org.Season.Trailer">
-            <summary>The trailer of a movie or tv/radio series, season, episode, etc.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.Seat">
             <summary>Used to describe a seat, such as a reserved seat in an event reservation.</summary>
@@ -4991,9 +5378,6 @@
         <member name="P:Bam.Net.Schema.Org.SellAction.Buyer">
             <summary>A sub property of participant. The participant/person/organization that bought the object.</summary>
         </member>
-        <member name="P:Bam.Net.Schema.Org.SellAction.WarrantyPromise">
-            <summary>The warranty promise(s) included in the offer.</summary>
-        </member>
         <member name="T:Bam.Net.Schema.Org.SendAction">
             <summary>The act of physically/electronically dispatching an object for transfer from an origin to a destination.Related actions:ReceiveAction: The reciprocal of SendAction.GiveAction: Unlike GiveAction, SendAction does not imply the transfer of ownership (e.g. I can send you my laptop, but I'm not necessarily giving it to you).</summary>
         </member>
@@ -5004,31 +5388,46 @@
             <summary>A sub property of participant. The participant who is at the receiving end of the action.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.Series">
-            <summary>          A Series in schema.org is a group of related items, typically but not necessarily of the same kind.          Series are usually organized into some order, often chronological. Unlike ItemList which          is a general purpose data structure for lists of things, the emphasis with Series          is on published materials (written e.g. books and periodicals, or media such as          tv, radio and games).                    Specific subtypes are available for describing TVSeries, RadioSeries,          MovieSeries,          BookSeries,          Periodical          and VideoGameSeries. In each case,          the hasPart / isPartOf properties          can be used to relate the Series to its parts. The general Series type serves largely          just to organize these more specific and practical subtypes.                    It is common for properties applicable to an item from the series to be usefully applied to the containing group.          Schema.org attempts to anticipate some of these cases, but publishers should be free to apply          properties of the series parts to the series as a whole wherever they seem appropriate.</summary>
-        </member>
-        <member name="P:Bam.Net.Schema.Org.Series.EndDate">
-            <summary>The end date and time of the item (in ISO 8601 date format).</summary>
-        </member>
-        <member name="P:Bam.Net.Schema.Org.Series.StartDate">
-            <summary>The start date and time of the item (in ISO 8601 date format).</summary>
+            <summary>          A Series in schema.org is a group of related items, typically but not necessarily of the same kind. </summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.Service">
             <summary>A service provided by an organization, e.g. delivery service, print services, etc.</summary>
         </member>
+        <member name="P:Bam.Net.Schema.Org.Service.AggregateRating">
+            <summary>The overall rating, based on a collection of reviews or ratings, of the item.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Service.AreaServed">
+            <summary>The geographic area where a service or offered item is provided. Supersedes serviceArea.</summary>
+        </member>
         <member name="P:Bam.Net.Schema.Org.Service.AvailableChannel">
             <summary>A means of accessing the service (e.g. a phone bank, a web site, a location, etc.).</summary>
         </member>
-        <member name="P:Bam.Net.Schema.Org.Service.Produces">
-            <summary>The tangible thing generated by the service, e.g. a passport, permit, etc.</summary>
+        <member name="P:Bam.Net.Schema.Org.Service.Award">
+            <summary>An award won by or for this item. Supersedes awards.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Service.Category">
+            <summary>A category for the item. Greater signs or slashes can be used to informally indicate a category hierarchy.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Service.HasOfferCatalog">
+            <summary>Indicates an OfferCatalog listing for this Organization, Person, or Service.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Service.HoursAvailable">
+            <summary>The hours during which this service or contact is available.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Service.Offers">
+            <summary>An offer to provide this item—for example, an offer to sell a product, rent the DVD of a movie, perform a service, or give away tickets to an event.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Service.Provider">
             <summary>The service provider, service operator, or service performer; the goods producer. Another party (a seller) may offer those services or goods on behalf of the provider. A provider may also serve as the seller. Supersedes carrier.</summary>
         </member>
-        <member name="P:Bam.Net.Schema.Org.Service.ServiceArea">
-            <summary>The geographic area where the service is provided.</summary>
+        <member name="P:Bam.Net.Schema.Org.Service.ProviderMobility">
+            <summary>Indicates the mobility of a provided service (e.g. 'static', 'dynamic').</summary>
         </member>
-        <member name="P:Bam.Net.Schema.Org.Service.ServiceAudience">
-            <summary>The audience eligible for this service.</summary>
+        <member name="P:Bam.Net.Schema.Org.Service.Review">
+            <summary>A review of the item. Supersedes reviews.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Service.ServiceOutput">
+            <summary>The tangible thing generated by the service, e.g. a passport, permit, etc. Supersedes produces.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Service.ServiceType">
             <summary>The type of service being offered, e.g. veterans' benefits, emergency relief, etc.</summary>
@@ -5096,6 +5495,12 @@
         <member name="T:Bam.Net.Schema.Org.SocialEvent">
             <summary>Event type: Social event.</summary>
         </member>
+        <member name="T:Bam.Net.Schema.Org.SocialMediaPosting">
+            <summary>A post to a social media platform, including blog posts, tweets, Facebook posts, etc.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.SocialMediaPosting.SharedContent">
+            <summary>A CreativeWork such as an image, video, or audio clip shared as part of this posting.</summary>
+        </member>
         <member name="T:Bam.Net.Schema.Org.SoftwareApplication">
             <summary>A software application.</summary>
         </member>
@@ -5108,23 +5513,20 @@
         <member name="P:Bam.Net.Schema.Org.SoftwareApplication.ApplicationSuite">
             <summary>The name of the application suite to which the application belongs (e.g. Excel belongs to Office).</summary>
         </member>
+        <member name="P:Bam.Net.Schema.Org.SoftwareApplication.AvailableOnDevice">
+            <summary>Device required to run the application. Used in cases where a specific make/model is required to run the application. Supersedes device.</summary>
+        </member>
         <member name="P:Bam.Net.Schema.Org.SoftwareApplication.CountriesNotSupported">
             <summary>Countries for which the application is not supported. You can also provide the two-letter ISO 3166-1 alpha-2 country code.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.SoftwareApplication.CountriesSupported">
             <summary>Countries for which the application is supported. You can also provide the two-letter ISO 3166-1 alpha-2 country code.</summary>
         </member>
-        <member name="P:Bam.Net.Schema.Org.SoftwareApplication.Device">
-            <summary>Device required to run the application. Used in cases where a specific make/model is required to run the application.</summary>
-        </member>
         <member name="P:Bam.Net.Schema.Org.SoftwareApplication.DownloadUrl">
             <summary>If the file can be downloaded, URL to download the binary.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.SoftwareApplication.FeatureList">
             <summary>Features or modules provided by this application (and possibly required by other applications).</summary>
-        </member>
-        <member name="P:Bam.Net.Schema.Org.SoftwareApplication.FileFormat">
-            <summary>MIME format of the binary (e.g. application/zip).</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.SoftwareApplication.FileSize">
             <summary>Size of the application / package (e.g. 18MB). In the absence of a unit (MB, KB etc.), KB will be assumed.</summary>
@@ -5147,9 +5549,6 @@
         <member name="P:Bam.Net.Schema.Org.SoftwareApplication.ReleaseNotes">
             <summary>Description of what changed in this version.</summary>
         </member>
-        <member name="P:Bam.Net.Schema.Org.SoftwareApplication.Requirements">
-            <summary>Component dependency requirements for application. This includes runtime environments and shared libraries that are not included in the application distribution package, but required to run the application (Examples: DirectX, Java or .NET runtime).</summary>
-        </member>
         <member name="P:Bam.Net.Schema.Org.SoftwareApplication.Screenshot">
             <summary>A link to a screenshot image of the app.</summary>
         </member>
@@ -5159,11 +5558,35 @@
         <member name="P:Bam.Net.Schema.Org.SoftwareApplication.SoftwareHelp">
             <summary>Software application help.</summary>
         </member>
+        <member name="P:Bam.Net.Schema.Org.SoftwareApplication.SoftwareRequirements">
+            <summary>Component dependency requirements for application. This includes runtime environments and shared libraries that are not included in the application distribution package, but required to run the application (Examples: DirectX, Java or .NET runtime). Supersedes requirements.</summary>
+        </member>
         <member name="P:Bam.Net.Schema.Org.SoftwareApplication.SoftwareVersion">
             <summary>Version of the software instance.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.SoftwareApplication.StorageRequirements">
             <summary>Storage requirements (free space required).</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.SoftwareApplication.SupportingData">
+            <summary>Supporting data for a SoftwareApplication.</summary>
+        </member>
+        <member name="T:Bam.Net.Schema.Org.SoftwareSourceCode">
+            <summary>Computer programming source code. Example: Full (compile ready) solutions, code snippet samples, scripts, templates.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.SoftwareSourceCode.CodeRepository">
+            <summary>Link to the repository where the un-compiled, human readable code and related code is located (SVN, github, CodePlex).</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.SoftwareSourceCode.CodeSampleType">
+            <summary>What type of code sample: full (compile ready) solution, code snippet, inline code, scripts, template. Supersedes sampleType.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.SoftwareSourceCode.ProgrammingLanguage">
+            <summary>The computer programming language.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.SoftwareSourceCode.RuntimePlatform">
+            <summary>Runtime platform or script interpreter dependencies (Example - Java v1, Python2.3, .Net Framework 3.0). Supersedes runtime.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.SoftwareSourceCode.TargetProduct">
+            <summary>Target Operating System / Product to which the code applies.  If applies to several versions, just the product name can be used.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.SoldOut">
             <summary>Indicates that the item has sold out.</summary>
@@ -5228,14 +5651,20 @@
         <member name="T:Bam.Net.Schema.Org.State">
             <summary>A state or province of a country.</summary>
         </member>
+        <member name="T:Bam.Net.Schema.Org.SteeringPositionValue">
+            <summary>A value indicating a steering position.</summary>
+        </member>
         <member name="T:Bam.Net.Schema.Org.Store">
             <summary>A retail good store.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Store.BranchCode">
+            <summary>A short textual code (also called "store code") that uniquely identifies a place of business. The code is typically assigned by the parentOrganization and used in structured URLs. For example, in the URL http://www.starbucks.co.uk/store-locator/etc/detail/3047 the code "3047" is a branchCode for a particular branch.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.StrengthTraining">
             <summary>Physical activity that is engaged in to improve muscle and bone strength. Also referred to as resistance training.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.StructuredValue">
-            <summary>Structured values are strings—for example, addresses—that have certain constraints on their structure.</summary>
+            <summary>Structured values are used when the value of a property has a more complex structure than simply being a textual value or a reference to another thing.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.StudioAlbum">
             <summary>StudioAlbum.</summary>
@@ -5303,8 +5732,14 @@
         <member name="P:Bam.Net.Schema.Org.TaxiReservation.PickupTime">
             <summary>When a taxi will pickup a passenger or a rental car can be picked up.</summary>
         </member>
+        <member name="T:Bam.Net.Schema.Org.TaxiService">
+            <summary>A service for a vehicle for hire with a driver for local travel. Fares are usually calculated based on distance traveled.</summary>
+        </member>
         <member name="T:Bam.Net.Schema.Org.TaxiStand">
             <summary>A taxi stand.</summary>
+        </member>
+        <member name="T:Bam.Net.Schema.Org.TaxiVehicleUsage">
+            <summary>Indicates the usage of the car as a taxi.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.TechArticle">
             <summary>A technical article - Example: How-to (task) topics, step-by-step, procedural troubleshooting, specifications, etc.</summary>
@@ -5314,6 +5749,9 @@
         </member>
         <member name="P:Bam.Net.Schema.Org.TechArticle.ProficiencyLevel">
             <summary>Proficiency needed for this content; expected values: 'Beginner', 'Expert'.</summary>
+        </member>
+        <member name="T:Bam.Net.Schema.Org.TelevisionChannel">
+            <summary>A unique instance of a television BroadcastService on a CableOrSatelliteService lineup.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.TelevisionStation">
             <summary>A television station.</summary>
@@ -5350,6 +5788,9 @@
         </member>
         <member name="P:Bam.Net.Schema.Org.Thing.Image">
             <summary>An image of the item. This can be a URL or a fully described ImageObject.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Thing.MainEntityOfPage">
+            <summary>Indicates a page (or other CreativeWork) for which this thing is the main entity being described.            See background notes for details.       Inverse property: mainEntity.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.Thing.Name">
             <summary>The name of the item.</summary>
@@ -5507,14 +5948,29 @@
         <member name="T:Bam.Net.Schema.Org.TVEpisode">
             <summary>A TV episode which can be part of a series or season.</summary>
         </member>
+        <member name="P:Bam.Net.Schema.Org.TVEpisode.CountryOfOrigin">
+            <summary>The country of the principal offices of the production company or individual responsible for the movie or program.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.TVEpisode.SubtitleLanguage">
+            <summary>Languages in which subtitles/captions are available, in IETF BCP 47 standard format.</summary>
+        </member>
         <member name="T:Bam.Net.Schema.Org.TVSeason">
             <summary>Season dedicated to TV broadcast and associated online delivery.</summary>
         </member>
+        <member name="P:Bam.Net.Schema.Org.TVSeason.CountryOfOrigin">
+            <summary>The country of the principal offices of the production company or individual responsible for the movie or program.</summary>
+        </member>
         <member name="T:Bam.Net.Schema.Org.TVSeries">
-            <summary>Series dedicated to TV broadcast and associated online delivery.</summary>
+            <summary>CreativeWorkSeries dedicated to TV broadcast and associated online delivery.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.TVSeries.Actor">
             <summary>An actor, e.g. in tv, radio, movie, video games etc. Actors can be associated with individual items or with a series, episode, clip. Supersedes actors.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.TVSeries.ContainsSeason">
+            <summary>A season that is part of the media series. Supersedes season.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.TVSeries.CountryOfOrigin">
+            <summary>The country of the principal offices of the production company or individual responsible for the movie or program.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.TVSeries.Director">
             <summary>A director of e.g. tv, radio, movie, video games etc. content. Directors can be associated with individual items or with a series, episode, clip. Supersedes directors.</summary>
@@ -5534,9 +5990,6 @@
         <member name="P:Bam.Net.Schema.Org.TVSeries.ProductionCompany">
             <summary>The production company or studio responsible for the item e.g. series, video game, episode etc.</summary>
         </member>
-        <member name="P:Bam.Net.Schema.Org.TVSeries.Season">
-            <summary>A season in a media series. Supersedes seasons.</summary>
-        </member>
         <member name="P:Bam.Net.Schema.Org.TVSeries.Trailer">
             <summary>The trailer of a movie or tv/radio series, season, episode, etc.</summary>
         </member>
@@ -5553,7 +6006,10 @@
             <summary>The product that this structured value is referring to.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.TypeAndQuantityNode.UnitCode">
-            <summary>The unit of measurement given using the UN/CEFACT Common Code (3 characters).</summary>
+            <summary>The unit of measurement given using the UN/CEFACT Common Code (3 characters) or a URL. Other codes than the UN/CEFACT Common Code may be used with a prefix followed by a colon.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.TypeAndQuantityNode.UnitText">
+            <summary>A string or text indicating the unit of measurement. Useful if you cannot provide a standard unit code forunitCode.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.Ultrasound">
             <summary>Ultrasound imaging.</summary>
@@ -5568,16 +6024,19 @@
             <summary>A short text or acronym indicating multiple price specifications for the same offer, e.g. SRP for the suggested retail price or INVOICE for the invoice price, mostly used in the car industry.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.UnitPriceSpecification.UnitCode">
-            <summary>The unit of measurement given using the UN/CEFACT Common Code (3 characters).</summary>
+            <summary>The unit of measurement given using the UN/CEFACT Common Code (3 characters) or a URL. Other codes than the UN/CEFACT Common Code may be used with a prefix followed by a colon.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.UnitPriceSpecification.UnitText">
+            <summary>A string or text indicating the unit of measurement. Useful if you cannot provide a standard unit code forunitCode.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.UnRegisterAction">
-            <summary>The act of un-registering from a service.Related actions:RegisterAction: Antagonym of UnRegisterAction.Leave: Unlike LeaveAction, UnRegisterAction implies that you are unregistering from a service you werer previously registered, rather than leaving a team/group of people.</summary>
+            <summary>The act of un-registering from a service.Related actions:RegisterAction: antonym of UnRegisterAction.Leave: Unlike LeaveAction, UnRegisterAction implies that you are unregistering from a service you werer previously registered, rather than leaving a team/group of people.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.UpdateAction">
             <summary>The act of managing by changing/editing the state of the object.</summary>
         </member>
-        <member name="P:Bam.Net.Schema.Org.UpdateAction.Collection">
-            <summary>A sub property of object. The collection target of the action.</summary>
+        <member name="P:Bam.Net.Schema.Org.UpdateAction.TargetCollection">
+            <summary>A sub property of object. The collection target of the action. Supersedes collection.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.Urologic">
             <summary>A specific branch of medical science that is concerned with the diagnosis and treatment of diseases pertaining to the urinary tract and the urogenital system.</summary>
@@ -5589,13 +6048,13 @@
             <summary>Indicates that the item is used.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.UserBlocks">
-            <summary>User interaction: Block this content.</summary>
+            <summary>UserInteraction and its subtypes is an old way of talking about users interacting with pages. It is generally better to use          Action-based vocabulary, alongside types such as Comment.      </summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.UserCheckins">
-            <summary>User interaction: Check-in at a place.</summary>
+            <summary>UserInteraction and its subtypes is an old way of talking about users interacting with pages. It is generally better to use          Action-based vocabulary, alongside types such as Comment.      </summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.UserComments">
-            <summary>The UserInteraction event in which a user comments on an item.</summary>
+            <summary>UserInteraction and its subtypes is an old way of talking about users interacting with pages. It is generally better to use          Action-based vocabulary, alongside types such as Comment.      </summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.UserComments.CommentText">
             <summary>The text of the UserComment.</summary>
@@ -5604,7 +6063,7 @@
             <summary>The time at which the UserComment was made.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.UserComments.Creator">
-            <summary>The creator/author of this CreativeWork or UserComments. This is the same as the Author property for CreativeWork.</summary>
+            <summary>The creator/author of this CreativeWork. This is the same as the Author property for CreativeWork.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.UserComments.Discusses">
             <summary>Specifies the CreativeWork associated with the UserComment.</summary>
@@ -5613,28 +6072,100 @@
             <summary>The URL at which a reply may be posted to the specified UserComment.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.UserDownloads">
-            <summary>User interaction: Download of an item.</summary>
+            <summary>UserInteraction and its subtypes is an old way of talking about users interacting with pages. It is generally better to use          Action-based vocabulary, alongside types such as Comment.      </summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.UserInteraction">
-            <summary>A user interacting with a page.</summary>
+            <summary>UserInteraction and its subtypes is an old way of talking about users interacting with pages. It is generally better to use          Action-based vocabulary, alongside types such as Comment.      </summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.UserLikes">
-            <summary>User interaction: Like an item.</summary>
+            <summary>UserInteraction and its subtypes is an old way of talking about users interacting with pages. It is generally better to use          Action-based vocabulary, alongside types such as Comment.      </summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.UserPageVisits">
-            <summary>User interaction: Visit to a web page.</summary>
+            <summary>UserInteraction and its subtypes is an old way of talking about users interacting with pages. It is generally better to use          Action-based vocabulary, alongside types such as Comment.      </summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.UserPlays">
-            <summary>User interaction: Play count of an item, for example a video or a song.</summary>
+            <summary>UserInteraction and its subtypes is an old way of talking about users interacting with pages. It is generally better to use          Action-based vocabulary, alongside types such as Comment.      </summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.UserPlusOnes">
-            <summary>User interaction: +1.</summary>
+            <summary>UserInteraction and its subtypes is an old way of talking about users interacting with pages. It is generally better to use          Action-based vocabulary, alongside types such as Comment.      </summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.UserTweets">
-            <summary>User interaction: Tweets.</summary>
+            <summary>UserInteraction and its subtypes is an old way of talking about users interacting with pages. It is generally better to use          Action-based vocabulary, alongside types such as Comment.      </summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.Vehicle">
-            <summary>A vehicle.</summary>
+            <summary>A vehicle is a device that is designed or used to transport people or cargo over land, water, air, or through space.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Vehicle.CargoVolume">
+            <summary>The available volume for cargo or luggage. For automobiles, this is usually the trunk volume.Typical unit code(s): LTR for liters, FTQ for cubic foot/feetNote: You can use minValue and maxValue to indicate ranges.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Vehicle.DateVehicleFirstRegistered">
+            <summary>The date of the first registration of the vehicle with the respective public authorities.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Vehicle.DriveWheelConfiguration">
+            <summary>The drive wheel configuration, i.e. which roadwheels will receive torque from the vehicle's engine via the drivetrain.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Vehicle.FuelConsumption">
+            <summary>The amount of fuel consumed for traveling a particular distance or temporal duration with the given vehicle (e.g. liters per 100 km).Note 1: There are unfortunately no standard unit codes for liters per 100 km.Use unitText to indicate the unit of measurement, e.g. L/100 km.Note 2: There are two ways of indicating the fuel consumption, fuelConsumption (e.g. 8 liters per 100 km) and fuelEfficiency (e.g. 30 miles per gallon). They are reciprocal.Note 3: Often, the absolute value is useful only when related to driving speed ("at 80 km/h") or usage pattern ("city traffic"). You can use valueReference to link the value for the fuel consumption to another value.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Vehicle.FuelEfficiency">
+            <summary>The distance traveled per unit of fuel used; most commonly miles per gallon (mpg) or kilometers per liter (km/L).Note 1: There are unfortunately no standard unit codes for miles per gallon or kilometers per liter.Use unitText to indicate the unit of measurement, e.g. mpg or km/L.Note 2: There are two ways of indicating the fuel consumption, fuelConsumption (e.g. 8 liters per 100 km) and fuelEfficiency (e.g. 30 miles per gallon). They are reciprocal.Note 3: Often, the absolute value is useful only when related to driving speed ("at 80 km/h") or usage pattern ("city traffic"). You can use valueReference to link the value for the fuel economy to another value.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Vehicle.FuelType">
+            <summary>The type of fuel suitable for the engine or engines of the vehicle. If the vehicle has only one engine, this property can be attached directly to the vehicle.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Vehicle.KnownVehicleDamages">
+            <summary>A textual description of known damages, both repaired and unrepaired.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Vehicle.MileageFromOdometer">
+            <summary>The total distance travelled by the particular vehicle since its initial production, as read from its odometer.Typical unit code(s): KMT for kilometers, SMI for statute miles</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Vehicle.NumberOfAirbags">
+            <summary>The number or type of airbags in the vehicle.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Vehicle.NumberOfAxles">
+            <summary>The number of axles.Typical unit code(s): C62</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Vehicle.NumberOfDoors">
+            <summary>The number of doors.Typical unit code(s): C62</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Vehicle.NumberOfForwardGears">
+            <summary>The total number of forward gears available for the transmission system of the vehicle.Typical unit code(s): C62</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Vehicle.NumberOfPreviousOwners">
+            <summary>The number of owners of the vehicle, including the current one.Typical unit code(s): C62</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Vehicle.ProductionDate">
+            <summary>The date of production of the item, e.g. vehicle.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Vehicle.PurchaseDate">
+            <summary>The date the item e.g. vehicle was purchased by the current owner.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Vehicle.SteeringPosition">
+            <summary>The position of the steering wheel or similar device (mostly for cars).</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Vehicle.VehicleConfiguration">
+            <summary>A short text indicating the configuration of the vehicle, e.g. '5dr hatchback ST 2.5 MT 225 hp' or 'limited edition'.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Vehicle.VehicleEngine">
+            <summary>Information about the engine or engines of the vehicle.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Vehicle.VehicleIdentificationNumber">
+            <summary>The Vehicle Identification Number (VIN) is a unique serial number used by the automotive industry to identify individual motor vehicles.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Vehicle.VehicleInteriorColor">
+            <summary>The color or color combination of the interior of the vehicle.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Vehicle.VehicleInteriorType">
+            <summary>The type or material of the interior of the vehicle (e.g. synthetic fabric, leather, wood, etc.). While most interior types are characterized by the material used, an interior type can also be based on vehicle usage or target audience.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Vehicle.VehicleModelDate">
+            <summary>The release date of a vehicle model (often used to differentiate versions of the same make and model).</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Vehicle.VehicleSeatingCapacity">
+            <summary>The number of passengers that can be seated in the vehicle, both in terms of the physical space available, and in terms of limitations set by law.Typical unit code(s): C62 for persons.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.Vehicle.VehicleTransmission">
+            <summary>The type of component used for transmitting the power from a rotating power source to the wheels or other relevant component(s) ("gearbox" for cars).</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.Vein">
             <summary>A type of blood vessel that specifically carries blood to the heart.</summary>
@@ -5690,6 +6221,9 @@
         <member name="P:Bam.Net.Schema.Org.VideoGame.Trailer">
             <summary>The trailer of a movie or tv/radio series, season, episode, etc.</summary>
         </member>
+        <member name="T:Bam.Net.Schema.Org.VideoGameClip">
+            <summary>A short segment/part of a video game.</summary>
+        </member>
         <member name="T:Bam.Net.Schema.Org.VideoGameSeries">
             <summary>A video game series.</summary>
         </member>
@@ -5702,6 +6236,9 @@
         <member name="P:Bam.Net.Schema.Org.VideoGameSeries.CheatCode">
             <summary>Cheat codes to the game.</summary>
         </member>
+        <member name="P:Bam.Net.Schema.Org.VideoGameSeries.ContainsSeason">
+            <summary>A season that is part of the media series. Supersedes season.</summary>
+        </member>
         <member name="P:Bam.Net.Schema.Org.VideoGameSeries.Director">
             <summary>A director of e.g. tv, radio, movie, video games etc. content. Directors can be associated with individual items or with a series, episode, clip. Supersedes directors.</summary>
         </member>
@@ -5710,6 +6247,9 @@
         </member>
         <member name="P:Bam.Net.Schema.Org.VideoGameSeries.GameItem">
             <summary>An item is an object within the game world that can be collected by a player or, occasionally, a non-player character.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.VideoGameSeries.GameLocation">
+            <summary>Real or fictional location of the game (or part of game).</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.VideoGameSeries.GamePlatform">
             <summary>The electronic systems used to play video games.</summary>
@@ -5734,9 +6274,6 @@
         </member>
         <member name="P:Bam.Net.Schema.Org.VideoGameSeries.Quest">
             <summary>The task that a player-controlled character, or group of characters may complete in order to gain a reward.</summary>
-        </member>
-        <member name="P:Bam.Net.Schema.Org.VideoGameSeries.Season">
-            <summary>A season in a media series. Supersedes seasons.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.VideoGameSeries.Trailer">
             <summary>The trailer of a movie or tv/radio series, season, episode, etc.</summary>
@@ -5786,20 +6323,20 @@
         <member name="P:Bam.Net.Schema.Org.VisualArtwork.ArtEdition">
             <summary>The number of copies when multiple copies of a piece of artwork are produced - e.g. for a limited edition of 20 prints, 'artEdition' refers to the total number of copies (in this example "20").</summary>
         </member>
+        <member name="P:Bam.Net.Schema.Org.VisualArtwork.ArtMedium">
+            <summary>The material used. (e.g. Oil, Watercolour, Acrylic, Linoprint, Marble, Cyanotype, Digital, Lithograph, DryPoint, Intaglio, Pastel, Woodcut, Pencil, Mixed Media, etc.) Supersedes material.</summary>
+        </member>
         <member name="P:Bam.Net.Schema.Org.VisualArtwork.Artform">
             <summary>e.g. Painting, Drawing, Sculpture, Print, Photograph, Assemblage, Collage, etc.</summary>
+        </member>
+        <member name="P:Bam.Net.Schema.Org.VisualArtwork.ArtworkSurface">
+            <summary>The supporting materials for the artwork, e.g. Canvas, Paper, Wood, Board, etc. Supersedes surface.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.VisualArtwork.Depth">
             <summary>The depth of the item.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.VisualArtwork.Height">
             <summary>The height of the item.</summary>
-        </member>
-        <member name="P:Bam.Net.Schema.Org.VisualArtwork.Material">
-            <summary>e.g. Oil, Watercolour, Acrylic, Linoprint, Marble, Cyanotype, Digital, Lithograph, DryPoint, Intaglio, Pastel, Woodcut, Pencil, Mixed Media, etc.</summary>
-        </member>
-        <member name="P:Bam.Net.Schema.Org.VisualArtwork.Surface">
-            <summary>e.g. Canvas, Paper, Wood, Board, etc.</summary>
         </member>
         <member name="P:Bam.Net.Schema.Org.VisualArtwork.Width">
             <summary>The width of the item.</summary>
@@ -5829,7 +6366,7 @@
             <summary>The scope of the warranty promise.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.WarrantyScope">
-            <summary>A range of of services that will be provided to a customer free of charge in case of a defect or malfunction of a product.    Commonly used values:    http://purl.org/goodrelations/v1#Labor-BringIn    http://purl.org/goodrelations/v1#PartsAndLabor-BringIn    http://purl.org/goodrelations/v1#PartsAndLabor-PickUp      </summary>
+            <summary>A range of of services that will be provided to a customer free of charge in case of a defect or malfunction of a product.    Commonly used values:    http://purl.org/goodrelations/v1#Labor-BringIn     http://purl.org/goodrelations/v1#PartsAndLabor-BringIn     http://purl.org/goodrelations/v1#PartsAndLabor-PickUp       </summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.WatchAction">
             <summary>The act of consuming dynamic/moving visual content.</summary>
@@ -5915,11 +6452,14 @@
         <member name="T:Bam.Net.Schema.Org.WriteAction">
             <summary>The act of authoring written creative content.</summary>
         </member>
-        <member name="P:Bam.Net.Schema.Org.WriteAction.Language">
-            <summary>A sub property of instrument. The language used on this action.</summary>
+        <member name="P:Bam.Net.Schema.Org.WriteAction.InLanguage">
+            <summary>The language of the content or performance or used in an action. Please use one of the language codes from the IETF BCP 47 standard. Supersedes language.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.XRay">
             <summary>X-ray imaging.</summary>
+        </member>
+        <member name="T:Bam.Net.Schema.Org.ZoneBoardingPolicy">
+            <summary>The airline boards by zones of the plane.</summary>
         </member>
         <member name="T:Bam.Net.Schema.Org.Zoo">
             <summary>A zoo.</summary>

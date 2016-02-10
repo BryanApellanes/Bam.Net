@@ -11,6 +11,19 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
+        <member name="M:Bam.Net.Data.Book`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Instantiate a new Book with the specified items, using
+            a default PageSize of 10
+            </summary>
+            <param name="items"></param>
+        </member>
+        <member name="P:Bam.Net.Data.Book`1.AllPages">
+            <summary>
+            A list of lists representing the individual
+            pages
+            </summary>
+        </member>
         <member name="P:Bam.Net.Data.Book`1.Item(System.Int32)">
             <summary>
             Retrieve the set of values on the specified
@@ -25,6 +38,12 @@
             zero based page number
             </summary>
             <param name="zeroBasedPageNumber"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Book`1.ToArray">
+            <summary>
+            Convert the book to an array containing all items
+            </summary>
             <returns></returns>
         </member>
         <member name="T:Bam.Net.Data.ColumnAttribute">
@@ -79,6 +98,36 @@
             Utitlity for setting default databases
             in the default database container.
             </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Db.For``1">
+            <summary>
+            Get the Database for the specified generic type T
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Db.For(System.Type)">
+            <summary>
+            Get the Database for the specified type 
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Db.For``1(Bam.Net.Data.Database)">
+            <summary>
+            Set and return the Database for the specified generic type T
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="database"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Db.For(System.Type,Bam.Net.Data.Database)">
+            <summary>
+            Set and return the Database for the specified type
+            </summary>
+            <param name="type"></param>
+            <param name="database"></param>
+            <returns></returns>
         </member>
         <member name="M:Bam.Net.Data.Db.For(System.String,Bam.Net.Data.Database)">
             <summary>

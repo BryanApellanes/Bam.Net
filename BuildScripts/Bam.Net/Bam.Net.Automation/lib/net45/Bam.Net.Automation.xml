@@ -4,6 +4,16 @@
         <name>Bam.Net.Automation</name>
     </assembly>
     <members>
+        <member name="P:Bam.Net.Automation.AssemblyAttributeInfo.AttributeName">
+            <summary>
+            The name of the assembly attribute to set
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Automation.AssemblyAttributeInfo.NuspecProperty">
+            <summary>
+            The name of the nuspec property to set the value to or null
+            </summary>
+        </member>
         <member name="M:Bam.Net.Automation.Data.DeferredJob.GetUniqueFilter">
             <summary>
             Gets a query filter that should uniquely identify

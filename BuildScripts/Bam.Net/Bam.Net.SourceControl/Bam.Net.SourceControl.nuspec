@@ -2,7 +2,7 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.SourceControl</id>
-    <version>1.2.2</version>
+    <version>1.2.4</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
@@ -12,14 +12,14 @@
 	Tools for programmatically interacting with command line git 
 	and TFS source control
 	</description>
-    <copyright>Copyright © Bryan Apellanes 2015 2016</copyright>
+    <releaseNotes>Fix dependency versions</releaseNotes>
+    <copyright>Copyright © Bryan Apellanes 2016</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.0.1" />
-      <dependency id="Bam.Net.CommandLine" version="1.0.1" />
-      <dependency id="Bam.Net.Data" version="1.0.1" />
-      <dependency id="Bam.Net.Profiguration" version="1.0.1" />
-      <dependency id="Bam.Net.Testing" version="1.0.1" />
-      <dependency id="DotNetZip" version="1.9.2.0" />
+      <dependency id="Bam.Net" version="1.2.4" />
+      <dependency id="Bam.Net.CommandLine" version="1.2.4" />
+      <dependency id="Bam.Net.Data" version="1.2.4" />
+      <dependency id="Bam.Net.Profiguration" version="1.2.4" />
+      <dependency id="Bam.Net.Testing" version="1.2.4" />
     </dependencies>
   </metadata>
 </package>

@@ -4,6 +4,11 @@
         <name>Bam.Net.Data.Repositories</name>
     </assembly>
     <members>
+        <member name="T:Bam.Net.Data.Repositories.AsyncDaoRepository">
+            <summary>
+            An asynchronous wrapper for a DaoRepository
+            </summary>
+        </member>
         <member name="T:Bam.Net.Data.Repositories.DaoBackup">
             <summary>
             Represents a backup of a Dao database schema and the data therein
@@ -50,6 +55,14 @@
             An interface to be implemented by types that provide
             Type to table name translation
             </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.ITypeTableNameProvider.GetTableName(System.Type)">
+            <summary>
+            When implemented in a derived class gets
+            the table name for the specified Type
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
         </member>
         <member name="T:Bam.Net.Data.Repositories.DaoToDtoGenerator">
             <summary>
@@ -277,6 +290,59 @@
             <param name="typeFk"></param>
             <returns></returns>
         </member>
+        <member name="M:Bam.Net.Data.Repositories.IRepository.Save``1(``0)">
+            <summary>
+            When implemented in a derived class, calls
+            Create or Update as appropriate
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="toSave"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.IRepository.Save(System.Object)">
+            <summary>
+            When implemented in a derived class, calls
+            Create or Update as appropriate
+            </summary>
+            <param name="toSave"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.IRepository.Create(System.Object)">
+            <summary>
+            When implemented in a derived class, calls
+            Create or Update as appropriate
+            </summary>
+            <param name="toCreate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.IRepository.Retrieve``1(System.Int32)">
+            <summary>
+            When implemented in a derived class retrieves
+            the specified instance of type T with the
+            specified id
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.IRepository.Retrieve``1(System.Int64)">
+            <summary>
+            When implemented in a derived class retrieves
+            the specified instance of type T with the
+            specified id
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.IRepository.RetrieveAll``1">
+            <summary>
+            When implemented in a derived class retrieves
+            all instances of type T
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
         <member name="T:Bam.Net.Data.Repositories.ObjectRepository">
             <summary>
             A class responsible for saving and retrieving
@@ -332,6 +398,11 @@
             Class that provides database schema like relationships
             for CLR types.  This class should not be instantiated
             directly, instead see <see cref="T:Bam.Net.Data.Repositories.TypeSchemaGenerator"/>
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Data.Repositories.TypeSchemaGenerator">
+            <summary>
+            A class used to generate 
             </summary>
         </member>
         <member name="E:Bam.Net.Data.Repositories.TypeSchemaGenerator.CreatingSchemaStarted">
@@ -442,7 +513,7 @@
         </member>
         <member name="T:Bam.Net.Data.Repositories.TypeFk">
             <summary>
-            Foreing key descriptor for generated TypeSchemas
+            Forein key descriptor for generated TypeSchemas
             </summary>
         </member>
         <member name="P:Bam.Net.Data.Repositories.TypeFk.PrimaryKeyType">
