@@ -2,17 +2,18 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Logging</id>
-    <version>1.2.2</version>
+    <version>1.2.3</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>http://bryanapellanes.github.io/Bam.Net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Supplemental data access object based loggers for Bam</description>
-    <copyright>Copyright © Bryan Apellanes 2015 2016</copyright>
+    <releaseNotes>more updates yay</releaseNotes>
+    <copyright>Copyright © Bryan Apellanes 2016</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.0.1" />
-      <dependency id="Bam.Net.Data" version="1.0.1" />
+      <dependency id="Bam.Net" version="1.2.3" />
+      <dependency id="Bam.Net.Data" version="1.2.3" />
     </dependencies>
   </metadata>
 </package>

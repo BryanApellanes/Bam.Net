@@ -207,6 +207,16 @@
             <param name="message">The message to output.</param>
             <param name="ex">The Exception that occurred.</param>
         </member>
+        <member name="E:Bam.Net.Testing.Integration.IntegrationTestRunner.IntegrationTestFailed">
+            <summary>
+            Event that fires when a test fails.
+            </summary>
+        </member>
+        <member name="E:Bam.Net.Testing.Integration.IntegrationTestRunner.IntegrationTestPassed">
+            <summary>
+            Event that fires when a test passes.
+            </summary>
+        </member>
         <member name="T:Bam.Net.Testing.IAssertionWriter">
             <summary>
             Defines methods used to write passed and failed assertions.
@@ -358,6 +368,36 @@
         <member name="T:Bam.Net.Testing.UnitTest">
             <summary>
             Attribute used to mark a method as a Unit Test
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Testing.UnitTestResult.Passed">
+            <summary>
+            Boolean indicating whether the test passed
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Testing.UnitTestResult.MethodName">
+            <summary>
+            The name of the test method 
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Testing.UnitTestResult.Description">
+            <summary>
+            The information value of the test method if any
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Testing.UnitTestResult.AssemblyFullName">
+            <summary>
+            The full name of the assembly the test was in
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Testing.UnitTestResult.Exception">
+            <summary>
+            The exception message if any
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Testing.UnitTestResult.StackTrace">
+            <summary>
+            The stack trace if any
             </summary>
         </member>
         <member name="T:Bam.Net.Testing.When">

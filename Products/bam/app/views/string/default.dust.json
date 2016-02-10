@@ -1,6 +1,0 @@
-{
-  "SourceFilePath": "C:\\BamContent\\apps\\localhost\\views\\string\\default.dust",
-  "TemplateName": "localhost.string_default",
-  "SourceHash": "4ea6d511a60a8a7818498a4c64f7818e4ea0efd7",
-  "CompiledTemplate": "(function(){dust.register(\"localhost.string_default\",body_0);function body_0(chk,ctx){return chk.write(\"<h2>\").reference(ctx.get(\"Title\"),ctx,\"h\").write(\"</h2><p>\").reference(ctx.get(\"Details\"),ctx,\"h\").write(\"</p>\");}return body_0;})();"
-}

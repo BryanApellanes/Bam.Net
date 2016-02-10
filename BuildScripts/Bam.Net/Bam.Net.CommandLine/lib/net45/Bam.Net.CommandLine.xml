@@ -131,6 +131,13 @@
             </summary>
             <param name="type"></param>
         </member>
+        <member name="M:Bam.Net.CommandLine.CommandLineInterface.ReceivedSwitchArguments(System.Type)">
+            <summary>
+            Determines if any command line switches were provided as arguments
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
         <member name="M:Bam.Net.CommandLine.CommandLineInterface.ExecuteSwitches(Bam.Net.CommandLine.ParsedArguments,System.Object,Bam.Net.Logging.ILogger)">
             <summary>
             Execute the methods on the specified instance that are addorned with ConsoleAction
