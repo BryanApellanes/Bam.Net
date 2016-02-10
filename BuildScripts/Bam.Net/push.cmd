@@ -3,7 +3,7 @@
 nuget push Z:\Workspace\NugetPackages\Push\BamToolkit.%1.nupkg 
 nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.%1.nupkg 
 nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.Analytics.%1.nupkg
-nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.ApplicationServices.%1.nupkg
+nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.CoreServices.%1.nupkg
 nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.Automation.%1.nupkg
 nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.CommandLine.%1.nupkg 
 nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.Data.%1.nupkg
