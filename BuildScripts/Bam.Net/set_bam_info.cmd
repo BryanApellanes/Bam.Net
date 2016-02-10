@@ -1,1 +1,1 @@
-baminf /baminfo.json:"z:\workspace\build\baminfo.json" /nuspecRoot:"."
+baminf /baminfo.json:"z:\workspace\baminfo.json" /nuspecRoot:"."
