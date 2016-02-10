@@ -44,11 +44,14 @@ namespace baminf
                 nuspecFile.Version.Patch = patch;
                 string versionString = "{0}.{1}.{2}"._Format(info.MajorVersion, info.MinorVersion, patch);
                 List<NugetPackageIdentifier> bamDependencies = new List<NugetPackageIdentifier>();
-                nuspecFile.Dependencies.Where(npi => npi.Id.StartsWith("Bam.Net")).Each(npi =>
-                  {
-                      bamDependencies.Add(new NugetPackageIdentifier(npi.Id, versionString));
-                  });
-                nuspecFile.Dependencies = bamDependencies.ToArray();
+                if(nuspecFile.Dependencies != null)
+                {
+                    nuspecFile.Dependencies.Where(npi => npi.Id.StartsWith("Bam.Net")).Each(npi =>
+                    {
+                        bamDependencies.Add(new NugetPackageIdentifier(npi.Id, versionString));
+                    });
+                    nuspecFile.Dependencies = bamDependencies.ToArray();
+                }
                 nuspecFile.Save();
             }
         }
