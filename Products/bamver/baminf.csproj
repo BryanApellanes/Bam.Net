@@ -8,8 +8,8 @@
     <ProjectGuid>{823141D0-42B2-46D9-9B18-7A0F876D9960}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>bamver</RootNamespace>
-    <AssemblyName>bamver</AssemblyName>
+    <RootNamespace>baminf</RootNamespace>
+    <AssemblyName>baminf</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
