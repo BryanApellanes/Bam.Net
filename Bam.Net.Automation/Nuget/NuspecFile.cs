@@ -258,7 +258,12 @@ namespace Bam.Net.Automation.Nuget
         {
             get
             {
-                return MetaData.dependencies.Select(d => new NugetPackageIdentifier(d.id, d.version)).ToArray();
+                if(MetaData != null &&
+                    MetaData.dependencies != null)
+                {
+                    return MetaData.dependencies.Select(d => new NugetPackageIdentifier(d.id, d.version)).ToArray();
+                }
+                return new NugetPackageIdentifier[] { };
             }
             set
             {
