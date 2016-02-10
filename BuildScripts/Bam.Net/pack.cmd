@@ -3,7 +3,7 @@ call copy_all.cmd
 
 nuget pack Bam.Net\Bam.Net.nuspec 
 nuget pack Bam.Net.Analytics\Bam.Net.Analytics.nuspec
-nuget pack Bam.Net.ApplicationServices\Bam.Net.ApplicationServices.nuspec
+nuget pack Bam.Net.CoreServices\Bam.Net.CoreServices.nuspec
 nuget pack Bam.Net.Automation\Bam.Net.Automation.nuspec
 nuget pack Bam.Net.CommandLine\Bam.Net.CommandLine.nuspec 
 nuget pack Bam.Net.Data\Bam.Net.Data.nuspec
