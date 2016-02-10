@@ -7,8 +7,8 @@
     <ProjectGuid>{5480D2A0-145B-4435-8E1C-4555EAD0424A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Bam.Net.ApplicationServices</RootNamespace>
-    <AssemblyName>Bam.Net.ApplicationServices</AssemblyName>
+    <RootNamespace>Bam.Net.CoreServices</RootNamespace>
+    <AssemblyName>Bam.Net.CoreServices</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

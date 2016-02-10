@@ -8,11 +8,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Bam.Net.ApplicationServices")]
+[assembly: AssemblyTitle("Bam.Net.CoreServices")]
 [assembly: AssemblyDescription("Tools for distributed application services")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Bam DotNet")]
-[assembly: AssemblyProduct("Bam.Net.ApplicationServices")]
+[assembly: AssemblyProduct("Bam.Net.CoreServices")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -36,6 +36,6 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly:InternalsVisibleTo("Bam.Net.ApplicationServices.Tests")]
+[assembly:InternalsVisibleTo("Bam.Net.CoreServices.Tests")]
 [assembly: AssemblyVersion("1.2.2")]
 [assembly: AssemblyFileVersion("1.2.2")]
