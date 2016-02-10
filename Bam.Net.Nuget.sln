@@ -191,7 +191,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bam.Net.CoreServices", "Bam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bam.Net.CoreServices.Tests", "Bam.Net.CoreServices.Tests\Bam.Net.CoreServices.Tests.csproj", "{F95435C0-19A5-440C-B615-D8BE85E3E190}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "baminf", "Products\bamver\baminf.csproj", "{823141D0-42B2-46D9-9B18-7A0F876D9960}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "baminf", "Products\baminf\baminf.csproj", "{823141D0-42B2-46D9-9B18-7A0F876D9960}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
