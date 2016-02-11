@@ -15,8 +15,6 @@ GOTO COPY
 MD Bam.Net.UserAccounts\lib\%LIB%
 copy /Y .\BuildOutput\Release\%VER%\Bam.Net.UserAccounts.dll Bam.Net.UserAccounts\lib\%LIB%\Bam.Net.UserAccounts.dll
 copy /Y .\BuildOutput\Release\%VER%\Bam.Net.UserAccounts.xml Bam.Net.UserAccounts\lib\%LIB%\Bam.Net.UserAccounts.xml
-copy /Y .\BuildOutput\Release\%VER%\Bam.Net.UserAccounts.Tests.exe Bam.Net.UserAccounts\lib\%LIB%\Bam.Net.UserAccounts.Tests.exe
-copy /Y .\BuildOutput\Release\%VER%\Bam.Net.UserAccounts.Tests.pdb Bam.Net.UserAccounts\lib\%LIB%\Bam.Net.UserAccounts.Tests.pdb
 GOTO %NEXT%
 
 :END
