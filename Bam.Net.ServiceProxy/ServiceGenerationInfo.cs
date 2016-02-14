@@ -46,6 +46,7 @@ namespace Bam.Net.ServiceProxy
         private void AddDefaultAssemblies(HashSet<Assembly> assemblies)
         {
             assemblies.Add(typeof(Args).Assembly);
+            assemblies.Add(typeof(ServiceProxySystem).Assembly);
         }
     }
 }
