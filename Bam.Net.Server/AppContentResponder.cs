@@ -265,7 +265,7 @@ namespace Bam.Net.Server
                 LayoutConf fromLayoutFile = AppRoot.ReadAllText(layoutSegments).FromJson<LayoutConf>();
                 layoutConf.CopyProperties(fromLayoutFile);
                 result = layoutConf.CreateLayoutModel(htmlSegments);
-                LayoutModelsByPath[lowered] = result;
+                LayoutModelsByPath[lowered] = result;                
             }
             else
             {

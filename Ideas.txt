@@ -1,9 +1,3 @@
-- Internal NuGet Repository
-
-- Continuous Integration System (Build Server)
-
-- Custom Dev Labs (custom software suggestions and requests)
-
 	- Exegete: An automatic translation script that can translate any page
 		and provides the ability to accept custom translations in the cases
 		where automatic translation (google translate, and others) provides
@@ -17,18 +11,10 @@
 		-- Lumberjack: A centralized logging system that agreggates logs for ALL 
 			applications under our ownership.
 		-- Shipyard: A doc(k) site for our apps.  (Shipyard->Dock get it ;)
-			
-	- Get A Room: A system for reserving conference rooms
-	
-	- Org Chart Generator: A system that generates an org chart using available
-		data sources like, EDW, Active Directory and/or others.
-	
+
 	- Personality: An inference and similarity comparison engine for creating
 		"Personalities" representing specific configurations for analyzing the
 		internet, inranet or combined subset.
 		-- Iterative Visualization Engine: A system for mapping data points to
 			a four dimensional (space & time) visualization model.
-	
-	- Custom Controls: We are custom development, we should have custom 
-		controls of our own.  Styled and awesome.
 		
