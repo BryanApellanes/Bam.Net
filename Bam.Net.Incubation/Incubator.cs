@@ -203,23 +203,20 @@ namespace Bam.Net.Incubation
         /// <returns></returns>
         public object Construct(Type type, params object[] ctorParams)
         {
-            lock (_getLock)
+            Type[] ctorTypes = new Type[ctorParams.Length];
+            for (int i = 0; i < ctorTypes.Length; i++)
             {
-                Type[] ctorTypes = new Type[ctorParams.Length];
-                for (int i = 0; i < ctorTypes.Length; i++)
-                {
-                    ctorTypes[i] = ctorParams[i].GetType();
-                }
-
-                ConstructorInfo ctor = type.GetConstructor(ctorTypes);
-                if (ctor == null)
-                {
-                    Throw(type, ctorTypes);
-                }
-
-                this[type] = ctor.Invoke(ctorParams);
-                return this[type];
+                ctorTypes[i] = ctorParams[i].GetType();
             }
+
+            ConstructorInfo ctor = type.GetConstructor(ctorTypes);
+            if (ctor == null)
+            {
+                Throw(type, ctorTypes);
+            }
+
+            this[type] = ctor.Invoke(ctorParams);
+            return this[type];
         }
 
         private static void Throw(Type type, Type[] ctorTypes)
@@ -317,25 +314,44 @@ namespace Bam.Net.Incubation
         object _getLock = new object();
         private T GetInternal<T>()
         {
-            lock (_getLock)
+            Func<T> f = this[typeof(T)] as Func<T>;
+            Func<Type, T> fp = this[typeof(T)] as Func<Type, T>;
+            if (f != null)
             {
-                Func<T> f = this[typeof(T)] as Func<T>;
-                Func<Type, T> fp = this[typeof(T)] as Func<Type, T>;
-                if (f != null)
-                {
-                    return f();
-                }
-                else if (fp != null)
-                {
-                    return fp(typeof(T));
-                }
-                else
-                {
-                    return (T)this[typeof(T)];
-                }
+                return f();
+            }
+            else if (fp != null)
+            {
+                return fp(typeof(T));
+            }
+            else
+            {
+                return (T)this[typeof(T)];
             }
         }
-        
+
+        public object Get(string className)
+        {
+            Type t;
+            return Get(className, out t);
+        }
+
+        public object Get(string className, out Type type)
+        {
+            type = this[className];
+            if (type != null)
+            {
+                object result = this[type];
+                Func<object> fn = result as Func<object>;
+                if(fn != null)
+                {
+                    return fn();
+                }
+                return result;
+            }
+
+            return null;
+        }
         /// <summary>
         /// Gets an object of type T if it has been instantiated otherwise
         /// calls Construct and returns the result.
@@ -535,23 +551,6 @@ namespace Bam.Net.Incubation
                 }
                 return types.ToArray();
             }
-        }
-
-        public object Get(string className)
-        {
-            Type t;
-            return Get(className, out t);
-        }
-
-        public object Get(string className, out Type type)
-        {
-            type = this[className];
-            if (type != null)
-            {
-                return this[type];
-            }
-
-            return null;
         }
 
         public Type this[string className]

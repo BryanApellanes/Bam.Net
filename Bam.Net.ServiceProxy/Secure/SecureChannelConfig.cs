@@ -36,6 +36,11 @@ namespace Bam.Net.ServiceProxy.Secure
             set;
         }
 
+        public static SecureChannelConfig Load(string filePath)
+        {
+            return Load(new FileInfo(filePath));
+        }
+
         public static SecureChannelConfig Load()
         {
             FileInfo info = new FileInfo(FileName);

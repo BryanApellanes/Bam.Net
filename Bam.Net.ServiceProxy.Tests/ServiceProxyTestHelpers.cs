@@ -228,7 +228,7 @@ namespace Bam.Net.ServiceProxy.Tests
         public static void CreateServer(out string baseAddress, out BamServer server)
         {
             BamConf conf = new BamConf();
-            baseAddress = "http://localhost:8080";
+            baseAddress = "http://localhost:8080"; // this works because of the contents of C:\BamContent\apps\localhost
             server = new BamServer(conf);
         }
 

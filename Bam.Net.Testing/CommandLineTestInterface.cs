@@ -46,7 +46,8 @@ namespace Bam.Net.Testing
 
 			AddValidArgument("i", true, "Run interactively");
 			AddValidArgument("?", true, "Show usage");
-			AddValidArgument("t", true, "Run all tests");
+			AddValidArgument("t", true, "Run all unit tests");
+            AddValidArgument("it", true, "Run all integration tests");
 
 			ParseArgs(args);
 			int? exitCode = AttachFailedHandler();

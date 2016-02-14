@@ -22,6 +22,7 @@ using Bam.Net.UserAccounts;
 using Bam.Net.Server;
 using Bam.Net.Server.Listeners;
 using Bam.Net.Data.Repositories;
+using Bam.Net.ServiceProxy.Secure;
 
 namespace Bam.Net.Server
 {
@@ -740,6 +741,14 @@ namespace Bam.Net.Server
             Stop();
             this.IsInitialized = false;
             Start();
+        }
+
+        public static BamServer Serve(string contentRoot)
+        {
+            BamConf conf = BamConf.Load(contentRoot);
+            BamServer server = new BamServer(conf);
+            server.Start();
+            return server;
         }
 
         public Incubator CommonServiceProvider

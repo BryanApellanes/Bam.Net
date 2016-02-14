@@ -142,6 +142,25 @@ namespace CommandLineTests
         }
 
         [UnitTest]
+        public static void IncubatorShouldTakeAFuncAndReturnByClassName()
+        {
+            Incubator i = new Incubator();
+            i.Set<Primate>(() => { return new Monkey(); });
+            object m = i.Get("Primate");
+            Expect.IsTrue(m.GetType() == typeof(Monkey));
+        }
+
+        [UnitTest]
+        public static void IncubatorShouldTakeAFuncAndPopOutSpecifiedType()
+        {
+            Incubator i = new Incubator();
+            Type type;
+            i.Set<Primate>(() => { return new Monkey(); });
+            object m = i.Get("Primate", out type);
+            Expect.IsTrue(type == typeof(Primate));
+        }
+
+        [UnitTest]
         public static void FluentIncubatorTest()
         {
             Incubator i = Requesting.A<Primate>().Returns<Monkey>();
