@@ -265,6 +265,7 @@
     <Content Include="Analytics.db.js" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="words\american-abbreviations.70" />
     <None Include="words\american-proper-names.80" />
