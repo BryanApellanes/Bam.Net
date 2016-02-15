@@ -1,0 +1,14 @@
+<div id="{DomId}" itemscope="itemscope" style="background-color: {Hex}; padding: 10px; color: {TxtColor}; border-radius: 5px; margin-bottom: 3px; border: 1px solid #DEDBE7;">
+	<div itemprop="Name" style="text-align: left">{Name}</div>
+	<div style="text-align: left">
+		<span 
+					data-plugin="edit" 
+					data-opts-config="design.hexConfig"
+					data-opts-change="design.changeColor"
+					data-opts-dom-id="{DomId}"
+					itemprop="Hex"              
+			>
+			{Hex}  
+		</span>
+	</div>
+</div>

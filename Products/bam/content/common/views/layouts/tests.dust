@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta content="width=device-width" name="viewport">
+    <title>{Title}</title>
+    <link type="image/x-icon" rel="shortcut icon" href="/favicon.ico">
+    {StyleSheetLinkTags|s}
+</head>
+<body>
+    <div id="fb-root"></div>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/home.html">{ApplicationDisplayName}</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <span data-view-model="navViewModel"></span>
+                <p class="navbar-text pull-right">
+                    <a class="navbar-link" href="/auth/login" id="mainLoginLink">log in</a>
+                    <span>&nbsp;&nbsp;&nbsp;</span>
+                    <a class="navbar-link" href="/auth/signup" id="mainSignUpLink">sign up</a>
+                    <span>&nbsp;&nbsp;&nbsp;</span>
+                </p>
+            </div><!-- /.navbar-collapse -->           
+        </div><!-- /.container -->
+    </nav>
+    
+    <div class="container" id="wrap">
+        <div class="span12" style="height: auto;">
+            <div style="display: block;" data-app="{DomApplicationId}" data-start="{StartPage}" data-opts-show-spinner="true">
+                {PageContent|s}
+            </div>
+            <h1>Tests</h1>
+            <div id="qunit"></div>
+            <div id="qunit-fixture"></div>
+        </div>
+    </div>
+
+    <div id="footer">
+        <div class="container">
+            <p class="muted credit">© {Year} - {ApplicationDisplayName}</p>
+        </div>
+    </div>
+    {ScriptTags|s}
+    <script src="/bam/gettemplates.js?appName={DomApplicationId}" type="text/javascript"></script>
+</body>
+</html>

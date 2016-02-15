@@ -1,0 +1,52 @@
+/*
+	Copyright © Bryan Apellanes 2015  
+*/
+; var include = {
+	css: [
+	    "/css/jquery-ui.css",
+		"/css/bootstrap.css",
+		"/css/bootstrap-theme.css",
+		"/css/custom.css",
+		"/css/stickyfooter.css",
+        "/css/pikaday.css",
+        "/css/qunit.css"
+	],
+    scripts: [
+        "/3rdParty/lodash.underscore.js",
+        "/3rdParty/json2.js",
+        "/3rdParty/jQuery-1.9.1.js",
+        "/3rdParty/detachAndReplaceWith.js",
+        "/3rdParty/jquery-ui-1.10.2.custom.js",
+        "/3rdParty/jquery-migrate-1.1.1.js",
+        "/3rdParty/spin.js",
+        "/3rdParty/jquery.spin.js",
+        "/3rdParty/jquery.sticky.js",
+        "/3rdParty/moment.js",
+        "/3rdParty/pikaday.js",
+        "/3rdParty/pikaday.jquery.js",
+        "/3rdParty/dust.js",
+        "/3rdParty/bootstrap.js",
+        //"/3rdParty/less.js",
+        "/3rdParty/qunit.js",
+        //"/3rdParty/expect.js",
+        "/3rdParty/SHA1.js",
+        "/3rdParty/forge.min.js",
+        "/bamvvm/data/observer.js",
+        "/bamvvm/data/dataset.js",
+        "/bamvvm/data/sdo.js",
+        "/bamvvm/data/qi.js",
+        "/bamvvm/data/dao.js",
+        "/bamvvm/system/bam.js",
+        "/serviceproxy/jsproxies",
+        "/bamvvm/system/secureChannel.js",
+        "/bamvvm/ui/spa.js",
+        "/bamvvm/system/using.js",
+        "/bamvvm/models.js",
+        "/bamvvm/system/querystring.js",
+        "/bamvvm/system/cookies.js",
+        "/bamvvm/ui/slideshow.js",
+        "/bamvvm/ui/html.js",
+        "/bamvvm/templateModels.js",
+        "/bamvvm/methodForms.js"
+    ]
+};
