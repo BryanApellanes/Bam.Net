@@ -7,7 +7,7 @@ using Bam.Net.Web;
 
 namespace Bam.Net.CoreServices
 {
-    public class ServiceSettings
+    public class ProxySettings
     {
         public Protocols Protocol { get; set; }
         public string Host { get; set; }
@@ -41,7 +41,7 @@ namespace Bam.Net.CoreServices
 
         public override bool Equals(object obj)
         {
-            ServiceSettings settings = obj as ServiceSettings;
+            ProxySettings settings = obj as ProxySettings;
             if (settings != null)
             {
                 return settings.Protocol == this.Protocol &&
@@ -64,9 +64,9 @@ namespace Bam.Net.CoreServices
         /// Copy the current ServiceSettings instance
         /// </summary>
         /// <returns></returns>
-        public ServiceSettings Clone()
+        public ProxySettings Clone()
         {
-            return this.CopyAs<ServiceSettings>();
+            return this.CopyAs<ProxySettings>();
         }
     }
 }

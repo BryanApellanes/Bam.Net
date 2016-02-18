@@ -5,7 +5,7 @@ using Bam.Net.Razor;
 
 namespace Bam.Net.CoreServices
 {
-    public abstract class ServiceTemplate : RazorTemplate<ServiceModel>
+    public abstract class ProxyTemplate : RazorTemplate<ProxyModel>
     {
     }
 }

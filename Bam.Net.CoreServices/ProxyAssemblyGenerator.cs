@@ -11,9 +11,9 @@ using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.CoreServices
 {
-    public class ServiceAssemblyGenerator: AssemblyGenerationEventEmitter, IAssemblyGenerator
+    public class ProxyAssemblyGenerator: AssemblyGenerationEventEmitter, IAssemblyGenerator
     {
-        public ServiceAssemblyGenerator(ServiceSettings settings, string workspaceDirectory = ".", ILogger logger = null)
+        public ProxyAssemblyGenerator(ProxySettings settings, string workspaceDirectory = ".", ILogger logger = null)
         {
             this.ServiceType = settings.ServiceType;
             this.ServiceSettings = settings;
@@ -26,7 +26,7 @@ namespace Bam.Net.CoreServices
         /// The logger used to log events for the current ServiceAssemblyGenerator
         /// </summary>
         public ILogger Logger { get; set; }
-        public ServiceSettings ServiceSettings { get; set; }
+        public ProxySettings ServiceSettings { get; set; }
         public StringBuilder Code { get; set; }
         public string WorkspaceDirectory { get; set; }
         public Type ServiceType { get; set; }
@@ -50,7 +50,7 @@ namespace Bam.Net.CoreServices
             EnsureWorkspace();
             SetClientCode();
 
-            ServiceModel serviceModel = new ServiceModel(ServiceType, ServiceSettings.Protocol.ToString().ToLowerInvariant(), ServiceSettings.Host, ServiceSettings.Port);
+            ProxyModel serviceModel = new ProxyModel(ServiceType, ServiceSettings.Protocol.ToString().ToLowerInvariant(), ServiceSettings.Host, ServiceSettings.Port);
             WarnNonVirtualMethods(serviceModel);
             Code.AppendLine(serviceModel.Render());
             
@@ -66,7 +66,7 @@ namespace Bam.Net.CoreServices
             return result;
         }
 
-        private void WarnNonVirtualMethods(ServiceModel model)
+        private void WarnNonVirtualMethods(ProxyModel model)
         {
             model.ServiceGenerationInfo.MethodGenerationInfos.Each(mgi =>
             {

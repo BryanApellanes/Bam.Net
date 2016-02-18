@@ -95,13 +95,13 @@
     <Compile Include="Distributed\QueryOperation.cs" />
     <Compile Include="RepositoryService.cs" />
     <Compile Include="Distributed\RetrieveOperation.cs" />
-    <Compile Include="ServiceAssemblyGenerator.cs" />
+    <Compile Include="ProxyAssemblyGenerator.cs" />
     <Compile Include="AssemblyGenerationEventArgs.cs" />
-    <Compile Include="ServiceFactory.cs" />
-    <Compile Include="ServiceMethodModel.cs" />
-    <Compile Include="ServiceModel.cs" />
-    <Compile Include="ServiceSettings.cs" />
-    <Compile Include="ServiceTemplate.cs" />
+    <Compile Include="ProxyFactory.cs" />
+    <Compile Include="ProxyMethodModel.cs" />
+    <Compile Include="ProxyModel.cs" />
+    <Compile Include="ProxySettings.cs" />
+    <Compile Include="ProxyTemplate.cs" />
     <Compile Include="Distributed\UpdateOperation.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -159,8 +159,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Templates\Service.tmpl" />
-    <EmbeddedResource Include="Templates\ServiceMethod.tmpl" />
+    <EmbeddedResource Include="Templates\Proxy.tmpl" />
+    <EmbeddedResource Include="Templates\ProxyMethod.tmpl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -11,16 +11,16 @@ namespace Bam.Net.CoreServices
     /// <summary>
     /// A class used for generating service proxies for use in code
     /// </summary>
-    public class ServiceFactory: AssemblyGenerationEventEmitter
+    public class ProxyFactory: AssemblyGenerationEventEmitter
     {
-        public ServiceFactory(ILogger logger = null)
+        public ProxyFactory(ILogger logger = null)
             : this(".", logger)
         { }
 
-        public ServiceFactory(string workspaceDirectory, ILogger logger = null)
+        public ProxyFactory(string workspaceDirectory, ILogger logger = null)
         {
             this.WorkspaceDirectory = workspaceDirectory;
-            this.DefaultSettings = new ServiceSettings { Protocol = Protocols.Http, Host = "localhost", Port = 8080 };
+            this.DefaultSettings = new ProxySettings { Protocol = Protocols.Http, Host = "localhost", Port = 8080 };
             this.Logger = logger ?? Log.Default;
         }
 
@@ -31,7 +31,7 @@ namespace Bam.Net.CoreServices
         /// <summary>
         /// The default settings to use if none are specified
         /// </summary>
-        public ServiceSettings DefaultSettings { get; set; }
+        public ProxySettings DefaultSettings { get; set; }
 
         /// <summary>
         /// The directory to save temp and generated files in
@@ -57,7 +57,7 @@ namespace Bam.Net.CoreServices
         /// <returns></returns>
         protected internal Assembly GetAssembly<T>()
         {
-            ServiceSettings settings = DefaultSettings.Clone();
+            ProxySettings settings = DefaultSettings.Clone();
             settings.ServiceType = typeof(T);
             settings.DownloadClient = false;
             return GetAssembly(settings);
@@ -73,7 +73,7 @@ namespace Bam.Net.CoreServices
         /// <returns></returns>
         protected internal Assembly GetAssembly<T>(string hostName, int port = 8080)
         {
-            ServiceSettings settings = DefaultSettings.Clone();
+            ProxySettings settings = DefaultSettings.Clone();
             settings.ServiceType = typeof(T);
             settings.DownloadClient = true;
             settings.Host = hostName;
@@ -88,12 +88,12 @@ namespace Bam.Net.CoreServices
         /// <typeparam name="T"></typeparam>
         /// <param name="settings"></param>
         /// <returns></returns>
-        protected internal Assembly GetAssembly(ServiceSettings settings)
+        protected internal Assembly GetAssembly(ProxySettings settings)
         {
             Args.ThrowIfNull(settings.ServiceType, "Settings.ServiceType");
 
             settings = settings ?? DefaultSettings;
-            ServiceAssemblyGenerator generator = new ServiceAssemblyGenerator(settings, WorkspaceDirectory, Logger);
+            ProxyAssemblyGenerator generator = new ProxyAssemblyGenerator(settings, WorkspaceDirectory, Logger);
             generator.AssemblyGenerating += (o, args) =>
             {
                 OnAssemblyGenerating(args);

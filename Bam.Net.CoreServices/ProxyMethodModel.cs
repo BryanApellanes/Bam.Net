@@ -8,13 +8,13 @@ using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.CoreServices
 {
-    public class ServiceMethodModel
+    public class ProxyMethodModel
     {
-        public ServiceMethodModel(MethodInfo method, params Assembly[] assembliesToreference)
+        public ProxyMethodModel(MethodInfo method, params Assembly[] assembliesToreference)
             : this(new MethodGenerationInfo(method), assembliesToreference)
         { }
 
-        public ServiceMethodModel(MethodGenerationInfo methodGenInfo, params Assembly[] assembliesToReference)
+        public ProxyMethodModel(MethodGenerationInfo methodGenInfo, params Assembly[] assembliesToReference)
         {
             this.MethodGenerationInfo = methodGenInfo;
             List<Assembly> assemblies = new List<Assembly>(assembliesToReference);
@@ -85,7 +85,7 @@ namespace Bam.Net.CoreServices
 
         public string Render(params Assembly[] assembliesToReference)
         {
-            return RazorRenderer.RenderResource<ServiceMethodModel>(this, "ServiceMethod.tmpl", assembliesToReference);
+            return RazorRenderer.RenderResource<ProxyMethodModel>(this, "ProxyMethod.tmpl", assembliesToReference);
         }
     }
 }

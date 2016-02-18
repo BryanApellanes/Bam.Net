@@ -15,9 +15,9 @@ namespace Bam.Net.CoreServices
     /// that though there are properties that appear not to
     /// be referenced they are used by the razor template
     /// </summary>
-    public class ServiceModel
+    public class ProxyModel
     {
-        public ServiceModel(Type serviceType, string protocol = "http", string host = "localhost", int port = 8080)
+        public ProxyModel(Type serviceType, string protocol = "http", string host = "localhost", int port = 8080)
         {
             this.ServiceGenerationInfo = new ServiceGenerationInfo(serviceType);
             this.BaseType = serviceType;
@@ -34,14 +34,14 @@ namespace Bam.Net.CoreServices
 
         public string TypeName { get { return BaseType.Name; } }
 
-        public ServiceMethodModel[] Methods
+        public ProxyMethodModel[] Methods
         {
             get
             {
-                List<ServiceMethodModel> methods = new List<ServiceMethodModel>();
+                List<ProxyMethodModel> methods = new List<ProxyMethodModel>();
                 ServiceProxySystem.GetProxiedMethods(BaseType).Each(mi =>
                 {
-                    methods.Add(new ServiceMethodModel(mi, ReferenceAssemblies));
+                    methods.Add(new ProxyMethodModel(mi, ReferenceAssemblies));
                 });
                 return methods.ToArray();
             }
@@ -62,7 +62,7 @@ namespace Bam.Net.CoreServices
             get
             {
                 HashSet<Assembly> assemblies = new HashSet<Assembly>();
-                assemblies.Add(typeof(ServiceModel).Assembly);
+                assemblies.Add(typeof(ProxyModel).Assembly);
                 ServiceGenerationInfo.ReferenceAssemblies.Each(a => assemblies.Add(a));
                 return assemblies.ToArray();
             }
@@ -70,7 +70,7 @@ namespace Bam.Net.CoreServices
 
         public string Render()
         {
-            return RazorRenderer.RenderResource<ServiceModel>(this, "Service.tmpl", ReferenceAssemblies);
+            return RazorRenderer.RenderResource<ProxyModel>(this, "Proxy.tmpl", ReferenceAssemblies);
         }
     }
 }

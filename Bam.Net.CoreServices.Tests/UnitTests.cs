@@ -40,14 +40,14 @@ namespace Bam.Net.CoreServices.Tests
         [UnitTest]
         public void ShouldBeAbleToRenderService()
         {
-            ServiceModel model = new ServiceModel(typeof(Echo));
+            ProxyModel model = new ProxyModel(typeof(Echo));
             OutLine(model.Render(), ConsoleColor.Cyan);
         }
 
         [UnitTest]
         public void ShouldBeAbleToGetGeneratedAssembly()
         {
-            ServiceFactory serviceFactory = new ServiceFactory();
+            ProxyFactory serviceFactory = new ProxyFactory();
             Assembly assembly = serviceFactory.GetAssembly<EncryptedEcho>();
             OutLine(assembly.FullName);
         }
@@ -55,7 +55,7 @@ namespace Bam.Net.CoreServices.Tests
         [UnitTest]
         public void ShouldBeAbleToInstanciateProxy()
         {
-            ServiceFactory serviceFactory = new ServiceFactory();
+            ProxyFactory serviceFactory = new ProxyFactory();
             EncryptedEcho echoProvider = serviceFactory.GetService<EncryptedEcho>();
             Type echoType = echoProvider.GetType();
             Expect.IsTrue(echoType.Name.Contains("Proxy"), "Expected 'Proxy' to be in the type name: {0}"._Format(echoType.Name));
@@ -64,7 +64,7 @@ namespace Bam.Net.CoreServices.Tests
         [UnitTest]
         public void ShouldBeAbleToSetApiKeyResolver()
         {
-            ServiceFactory serviceFactory = new ServiceFactory(".\\workspace_".RandomLetters(4), logger);
+            ProxyFactory serviceFactory = new ProxyFactory(".\\workspace_".RandomLetters(4), logger);
             EncryptedEcho echo = serviceFactory.GetService<EncryptedEcho>();
             ApiKeyResolver resolver = new ApiKeyResolver();
             echo.Property("ApiKeyResolver", resolver);
@@ -79,7 +79,7 @@ namespace Bam.Net.CoreServices.Tests
             SecureServiceProxyClient<EncryptedEcho> sspc;
             ServiceProxyTestHelpers.StartSecureChannelTestServerGetEncryptedEchoClient(out server, out sspc);
             ConsoleLogger logger = GetTestConsoleLogger();
-            ServiceFactory serviceFactory = new ServiceFactory(".\\workspace_".RandomLetters(4), logger);
+            ProxyFactory serviceFactory = new ProxyFactory(".\\workspace_".RandomLetters(4), logger);
             try
             {                
                 IResponder responder = null;

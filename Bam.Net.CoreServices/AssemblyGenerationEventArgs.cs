@@ -16,7 +16,7 @@ namespace Bam.Net.CoreServices
         /// <summary>
         /// The settings used to generate or null
         /// </summary>
-        public ServiceSettings ServiceSettings { get; set; }
+        public ProxySettings ServiceSettings { get; set; }
 
         /// <summary>
         /// The MethodInfo being reported as non virtual or null
