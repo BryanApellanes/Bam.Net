@@ -78,6 +78,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GlooActions.cs" />
     <Compile Include="PageClone.cs" />
     <Compile Include="UtilityActions.cs" />
     <Compile Include="Program.cs" />
