@@ -138,29 +138,25 @@ namespace Bam.Net.UserAccounts.Data
             return session;
         }
 
-        static object _createLock = new object();
         internal static Session Create(IResponse response, string identifier = "", bool isActive = true)
         {
-            lock (_createLock)
+            if (string.IsNullOrEmpty(identifier))
             {
-                if (string.IsNullOrEmpty(identifier))
-                {
-                    identifier = GenId();
-                }
-
-                Session session = new Session();
-                session.Identifier = identifier;
-                DateTime now = DateTime.UtcNow;
-                session.CreationDate = now;
-                session.LastActivity = now;
-                session.IsActive = isActive;
-                session.UserId = User.Anonymous.Id;
-                session.Save();
-
-                Cookie cookie = new Cookie(CookieName, session.Identifier);
-                response.Cookies.Add(cookie);
-                return session;
+                identifier = GenId();
             }
+
+            Session session = new Session();
+            session.Identifier = identifier;
+            DateTime now = DateTime.UtcNow;
+            session.CreationDate = now;
+            session.LastActivity = now;
+            session.IsActive = isActive;
+            session.UserId = User.Anonymous.Id;
+            session.Save();
+
+            Cookie cookie = new Cookie(CookieName, session.Identifier);
+            response.Cookies.Add(cookie);
+            return session;
         }
 
         
