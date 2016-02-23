@@ -44,29 +44,25 @@ namespace Bam.Net.UserAccounts.Data
             return Get(context.Request, context.Response);    
         }
 
-        static object _getLock = new object();
         public static Session Get(IRequest request, IResponse response)
         {
             Cookie sessionIdCookie = request.Cookies[CookieName];
             Session session = null;
-            lock (_getLock)
+            string identifier = string.Empty;
+            if (sessionIdCookie != null)
             {
-                string identifier = string.Empty;
-                if (sessionIdCookie != null)
-                {
-                    identifier = sessionIdCookie.Value;
-                    session = Session.OneWhere(c => c.Identifier == identifier);
-                }
+                identifier = sessionIdCookie.Value;
+                session = Session.OneWhere(c => c.Identifier == identifier);
+            }
 
-                if (session == null)
-                {
-                    session = Create(response, identifier);
-                }
-                else
-                {
-                    session.LastActivity = DateTime.UtcNow;
-                    session.Save();
-                }
+            if (session == null)
+            {
+                session = Create(response, identifier);
+            }
+            else
+            {
+                session.LastActivity = DateTime.UtcNow;
+                session.Save();
             }
             return session;
         }
