@@ -5,11 +5,11 @@
     <ROW Property="ALLUSERS" Value="1"/>
     <ROW Property="ARPCOMMENTS" Value="A rapid application development framework for .Net and JavaScript [|ProductName]." ValueLocId="*"/>
     <ROW Property="ARPPRODUCTICON" Value="favicon.exe" Type="8"/>
-    <ROW Property="Manufacturer" Value="Bam DotNet"/>
-    <ROW Property="ProductCode" Value="1033:{DD079BD8-B91F-43E1-BDB6-0BC6246F0137} " Type="16"/>
+    <ROW Property="Manufacturer" Value="Three Headz"/>
+    <ROW Property="ProductCode" Value="1033:{7CD244F4-367D-4616-8E1C-F7C86B0062CB} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="Bam Toolkit"/>
-    <ROW Property="ProductVersion" Value="3.0.0" Type="32"/>
+    <ROW Property="ProductVersion" Value="1.2.4" Type="32"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{36B6D76C-CBB8-4109-BDBC-0BFABC1C5182}"/>
     <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>

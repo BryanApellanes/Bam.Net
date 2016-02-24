@@ -18,7 +18,7 @@ GOTO BUILD
 
 rmdir /Q /S %OutputPath%%VER%
 mkdir %OutputPath%%VER%
-.\MSBuild\MSBuild.exe /t:Build /filelogger /p:AutoGenerateBindingRedirects=true;GenerateDocumentation=true;OutputPath=%OutputPath%%VER%;Configuration=%1;Platform="x64";CompilerVersion=%VER% %3\Bam.Net\Bam.Net.Nuget.sln /m
+.\MSBuild\MSBuild.exe /t:Build /filelogger /p:AutoGenerateBindingRedirects=true;GenerateDocumentation=true;OutputPath=%OutputPath%%VER%;Configuration=%1;Platform="x64";CompilerVersion=%VER% %3\Bam.Net\Bam.Net.Nuget.sln /m:4
 
 IF ERRORLEVEL 1 GOTO END
 
