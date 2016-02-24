@@ -383,18 +383,7 @@ namespace Bam.Net.ServiceProxy
             {
                 if (_instance == null)
                 {
-                    _instance = ServiceProvider.Get(ClassName, out _targetType);
-                    if (_targetType.HasCustomAttributeOfType<SerializableAttribute>()) // if its Serializable clone it so we're not acting on a single instance
-                    {
-                        byte[] bytes;
-                        if (_instance.TryToBinaryBytes(out bytes, (ex) => 
-                        {
-                            Log.AddEntry("Failed to serialize object instance of type {0}", LogEventType.Warning, ex, _targetType.FullName);
-                        }))
-                        {
-                            _instance = bytes.FromBinaryBytes();
-                        };
-                    }
+                    _instance = ServiceProvider.Get(ClassName);
                 }
                 return _instance;
             }

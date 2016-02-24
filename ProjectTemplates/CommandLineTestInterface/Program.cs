@@ -59,7 +59,7 @@ namespace _CommandLineTestInterface
         {
             if (Arguments.Contains("t"))
             {
-                RunAllTests(Assembly.GetExecutingAssembly());
+                RunAllUnitTests(Assembly.GetExecutingAssembly());
             }
             else
             {
