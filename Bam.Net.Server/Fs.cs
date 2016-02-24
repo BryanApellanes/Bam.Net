@@ -310,11 +310,7 @@ namespace Bam.Net.Server
             if (relativePath.StartsWith("~"))
             {
                 relativePath = relativePath.Substring(1, relativePath.Length - 1);
-                if (relativePath.StartsWith("/"))
-                {
-                    relativePath = relativePath.Substring(1, relativePath.Length - 1);
-                }
-                string path = string.Format("{0}{1}", Root, relativePath);
+                string path = CleanPath(string.Format("{0}{1}", Root, relativePath));
                 result = path;
             }
             else

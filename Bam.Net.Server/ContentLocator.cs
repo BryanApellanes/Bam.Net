@@ -47,11 +47,14 @@ namespace Bam.Net.Server
                 {
                     rule.SearchDirectories.Each(dir =>
                     {
-						string subPath = path.StartsWith(Path.DirectorySeparatorChar.ToString()) ? path.TruncateFront(1) : path;
-						checkNext = Fs.CleanPath(Path.Combine(dir, subPath));
+                        List<string> segments = new List<string>();
+                        segments.AddRange(dir.RelativePath.DelimitSplit("/", "\\"));
+                        segments.AddRange(path.DelimitSplit("/", "\\"));
+                        string subPath = Path.Combine(segments.ToArray());
+                        checkNext = Fs.CleanPath(subPath);
                         pathsChecked.Add(checkNext);
 
-						if (fs.FileExists(checkNext, out foundPath))
+                        if (fs.FileExists(checkNext, out foundPath))
                         {                         
                             return false; // stop the each loop
 						}
