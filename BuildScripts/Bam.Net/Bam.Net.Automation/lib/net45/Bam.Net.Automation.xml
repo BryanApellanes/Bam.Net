@@ -1,0 +1,1168 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Bam.Net.Automation</name>
+    </assembly>
+    <members>
+        <member name="P:Bam.Net.Automation.AssemblyAttributeInfo.AttributeName">
+            <summary>
+            The name of the assembly attribute to set
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Automation.AssemblyAttributeInfo.NuspecProperty">
+            <summary>
+            The name of the nuspec property to set the value to or null
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.Data.DeferredJob.GetUniqueFilter">
+            <summary>
+            Gets a query filter that should uniquely identify
+            the current instance.  The default implementation
+            compares the Id/key field to the current instance's.
+            </summary> 
+        </member>
+        <member name="M:Bam.Net.Automation.Data.DeferredJob.LoadAll(Bam.Net.Data.Database)">
+            <summary>
+            Return every record in the DeferredJob table.
+            </summary>
+            <param name="database">
+            The database to load from or null
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.Data.DeferredJob.Where(System.Func{Bam.Net.Automation.Data.DeferredJobColumns,Bam.Net.Data.QueryFilter{Bam.Net.Automation.Data.DeferredJobColumns}},Bam.Net.Data.OrderBy{Bam.Net.Automation.Data.DeferredJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A Func delegate that recieves a DeferredJobColumns 
+            and returns a QueryFilter which is the result of any comparisons
+            between DeferredJobColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.Data.DeferredJob.Where(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.Data.DeferredJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a DeferredJobColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between DeferredJobColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.Data.DeferredJob.Where(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.Data.DeferredJobColumns},Bam.Net.Data.OrderBy{Bam.Net.Automation.Data.DeferredJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a DeferredJobColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between DeferredJobColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Automation.Data.DeferredJob.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.Automation.Data.DeferredJob.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.Data.DeferredJob.OneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.Data.DeferredJob.GetOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.Data.DeferredJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.Data.DeferredJob.OneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.Data.DeferredJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  This method is most commonly used to retrieve a
+            single DeferredJob instance by its Id/Key value
+            </summary>
+            <param name="where">A WhereDelegate that recieves a DeferredJobColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between DeferredJobColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Automation.Data.DeferredJob.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.Automation.Data.DeferredJob.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.Data.DeferredJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a DeferredJobColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between DeferredJobColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.Data.DeferredJob.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.Data.DeferredJobColumns},Bam.Net.Data.OrderBy{Bam.Net.Automation.Data.DeferredJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a DeferredJobColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between DeferredJobColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.Data.DeferredJob.FirstOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Automation.Data.DeferredJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Shortcut for Top(1, where, orderBy, database)
+            </summary>
+            <param name="where">A WhereDelegate that recieves a DeferredJobColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between DeferredJobColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.Data.DeferredJob.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Automation.Data.DeferredJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number
+            of values. This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a DeferredJobColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between DeferredJobColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.Data.DeferredJob.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Automation.Data.DeferredJobColumns},Bam.Net.Data.OrderBy{Bam.Net.Automation.Data.DeferredJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a DeferredJobColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between DeferredJobColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.Data.DeferredJob.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Automation.Data.DeferredJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.Data.DeferredJob.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.Data.DeferredJob.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.Data.DeferredJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the number of results
+            </summary>
+            <param name="where">A WhereDelegate that recieves a DeferredJobColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between DeferredJobColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.Data.RunningJob.GetUniqueFilter">
+            <summary>
+            Gets a query filter that should uniquely identify
+            the current instance.  The default implementation
+            compares the Id/key field to the current instance's.
+            </summary> 
+        </member>
+        <member name="M:Bam.Net.Automation.Data.RunningJob.LoadAll(Bam.Net.Data.Database)">
+            <summary>
+            Return every record in the RunningJob table.
+            </summary>
+            <param name="database">
+            The database to load from or null
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.Data.RunningJob.Where(System.Func{Bam.Net.Automation.Data.RunningJobColumns,Bam.Net.Data.QueryFilter{Bam.Net.Automation.Data.RunningJobColumns}},Bam.Net.Data.OrderBy{Bam.Net.Automation.Data.RunningJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A Func delegate that recieves a RunningJobColumns 
+            and returns a QueryFilter which is the result of any comparisons
+            between RunningJobColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.Data.RunningJob.Where(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.Data.RunningJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a RunningJobColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between RunningJobColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.Data.RunningJob.Where(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.Data.RunningJobColumns},Bam.Net.Data.OrderBy{Bam.Net.Automation.Data.RunningJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a RunningJobColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between RunningJobColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Automation.Data.RunningJob.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.Automation.Data.RunningJob.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.Data.RunningJob.OneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.Data.RunningJob.GetOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.Data.RunningJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.Data.RunningJob.OneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.Data.RunningJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  This method is most commonly used to retrieve a
+            single RunningJob instance by its Id/Key value
+            </summary>
+            <param name="where">A WhereDelegate that recieves a RunningJobColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between RunningJobColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Automation.Data.RunningJob.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.Automation.Data.RunningJob.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.Data.RunningJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a RunningJobColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between RunningJobColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.Data.RunningJob.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.Data.RunningJobColumns},Bam.Net.Data.OrderBy{Bam.Net.Automation.Data.RunningJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a RunningJobColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between RunningJobColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.Data.RunningJob.FirstOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Automation.Data.RunningJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Shortcut for Top(1, where, orderBy, database)
+            </summary>
+            <param name="where">A WhereDelegate that recieves a RunningJobColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between RunningJobColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.Data.RunningJob.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Automation.Data.RunningJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number
+            of values. This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a RunningJobColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between RunningJobColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.Data.RunningJob.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Automation.Data.RunningJobColumns},Bam.Net.Data.OrderBy{Bam.Net.Automation.Data.RunningJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a RunningJobColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between RunningJobColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.Data.RunningJob.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Automation.Data.RunningJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.Data.RunningJob.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.Data.RunningJob.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.Data.RunningJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the number of results
+            </summary>
+            <param name="where">A WhereDelegate that recieves a RunningJobColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between RunningJobColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildJob.GetUniqueFilter">
+            <summary>
+            Gets a query filter that should uniquely identify
+            the current instance.  The default implementation
+            compares the Id/key field to the current instance's.
+            </summary> 
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildJob.LoadAll(Bam.Net.Data.Database)">
+            <summary>
+            Return every record in the BuildJob table.
+            </summary>
+            <param name="database">
+            The database to load from or null
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildJob.Where(System.Func{Bam.Net.Automation.ContinuousIntegration.Data.BuildJobColumns,Bam.Net.Data.QueryFilter{Bam.Net.Automation.ContinuousIntegration.Data.BuildJobColumns}},Bam.Net.Data.OrderBy{Bam.Net.Automation.ContinuousIntegration.Data.BuildJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A Func delegate that recieves a BuildJobColumns 
+            and returns a QueryFilter which is the result of any comparisons
+            between BuildJobColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildJob.Where(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.ContinuousIntegration.Data.BuildJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a BuildJobColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between BuildJobColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildJob.Where(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.ContinuousIntegration.Data.BuildJobColumns},Bam.Net.Data.OrderBy{Bam.Net.Automation.ContinuousIntegration.Data.BuildJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a BuildJobColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between BuildJobColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Automation.ContinuousIntegration.Data.BuildJob.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildJob.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildJob.OneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildJob.GetOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.ContinuousIntegration.Data.BuildJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildJob.OneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.ContinuousIntegration.Data.BuildJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  This method is most commonly used to retrieve a
+            single BuildJob instance by its Id/Key value
+            </summary>
+            <param name="where">A WhereDelegate that recieves a BuildJobColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between BuildJobColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Automation.ContinuousIntegration.Data.BuildJob.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildJob.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.ContinuousIntegration.Data.BuildJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a BuildJobColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between BuildJobColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildJob.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.ContinuousIntegration.Data.BuildJobColumns},Bam.Net.Data.OrderBy{Bam.Net.Automation.ContinuousIntegration.Data.BuildJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a BuildJobColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between BuildJobColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildJob.FirstOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Automation.ContinuousIntegration.Data.BuildJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Shortcut for Top(1, where, orderBy, database)
+            </summary>
+            <param name="where">A WhereDelegate that recieves a BuildJobColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between BuildJobColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildJob.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Automation.ContinuousIntegration.Data.BuildJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number
+            of values. This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a BuildJobColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between BuildJobColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildJob.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Automation.ContinuousIntegration.Data.BuildJobColumns},Bam.Net.Data.OrderBy{Bam.Net.Automation.ContinuousIntegration.Data.BuildJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a BuildJobColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between BuildJobColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildJob.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Automation.ContinuousIntegration.Data.BuildJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildJob.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildJob.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.ContinuousIntegration.Data.BuildJobColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the number of results
+            </summary>
+            <param name="where">A WhereDelegate that recieves a BuildJobColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between BuildJobColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildResult.GetUniqueFilter">
+            <summary>
+            Gets a query filter that should uniquely identify
+            the current instance.  The default implementation
+            compares the Id/key field to the current instance's.
+            </summary> 
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildResult.LoadAll(Bam.Net.Data.Database)">
+            <summary>
+            Return every record in the BuildResult table.
+            </summary>
+            <param name="database">
+            The database to load from or null
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildResult.Where(System.Func{Bam.Net.Automation.ContinuousIntegration.Data.BuildResultColumns,Bam.Net.Data.QueryFilter{Bam.Net.Automation.ContinuousIntegration.Data.BuildResultColumns}},Bam.Net.Data.OrderBy{Bam.Net.Automation.ContinuousIntegration.Data.BuildResultColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A Func delegate that recieves a BuildResultColumns 
+            and returns a QueryFilter which is the result of any comparisons
+            between BuildResultColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildResult.Where(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.ContinuousIntegration.Data.BuildResultColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a BuildResultColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between BuildResultColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildResult.Where(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.ContinuousIntegration.Data.BuildResultColumns},Bam.Net.Data.OrderBy{Bam.Net.Automation.ContinuousIntegration.Data.BuildResultColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a BuildResultColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between BuildResultColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Automation.ContinuousIntegration.Data.BuildResult.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildResult.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildResult.OneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildResult.GetOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.ContinuousIntegration.Data.BuildResultColumns},Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildResult.OneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.ContinuousIntegration.Data.BuildResultColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  This method is most commonly used to retrieve a
+            single BuildResult instance by its Id/Key value
+            </summary>
+            <param name="where">A WhereDelegate that recieves a BuildResultColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between BuildResultColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Automation.ContinuousIntegration.Data.BuildResult.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildResult.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.ContinuousIntegration.Data.BuildResultColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a BuildResultColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between BuildResultColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildResult.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.ContinuousIntegration.Data.BuildResultColumns},Bam.Net.Data.OrderBy{Bam.Net.Automation.ContinuousIntegration.Data.BuildResultColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a BuildResultColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between BuildResultColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildResult.FirstOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Automation.ContinuousIntegration.Data.BuildResultColumns},Bam.Net.Data.Database)">
+            <summary>
+            Shortcut for Top(1, where, orderBy, database)
+            </summary>
+            <param name="where">A WhereDelegate that recieves a BuildResultColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between BuildResultColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildResult.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Automation.ContinuousIntegration.Data.BuildResultColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number
+            of values. This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a BuildResultColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between BuildResultColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildResult.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Automation.ContinuousIntegration.Data.BuildResultColumns},Bam.Net.Data.OrderBy{Bam.Net.Automation.ContinuousIntegration.Data.BuildResultColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a BuildResultColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between BuildResultColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildResult.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Automation.ContinuousIntegration.Data.BuildResultColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildResult.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildResult.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.ContinuousIntegration.Data.BuildResultColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the number of results
+            </summary>
+            <param name="where">A WhereDelegate that recieves a BuildResultColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between BuildResultColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="P:Bam.Net.Automation.ContinuousIntegration.DeploymentWorker.ProjectNames">
+            <summary>
+            A comma and/or semi-color separated list of project names
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Loggers.BuildLogger`1.SetLoggerProperties(System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Set properties on the underlying Bam.Net.Logging.ILogger where names match
+            the keys in the specified properties dictionary
+            </summary>
+            <param name="properties"></param>
+        </member>
+        <member name="P:Bam.Net.Automation.ContinuousIntegration.GetSourceWorker.TagName">
+            <summary>
+            Gets or sets the name of the source control 
+            Tag to retrieve
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Automation.ContinuousIntegration.GetSourceWorker.ServerSourcePath">
+            <summary>
+            Gets or sets the path on the server where source 
+            should be retrieved from.  For Git this is the
+            repository path, for Tfs this is the team project
+            branch path
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Automation.ContinuousIntegration.GetSourceWorker.GetLatest">
+            <summary>
+            Returns true if the TagName is latest
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Automation.ContinuousIntegration.ProjectBuildWorker">
+            <summary>
+            A Worker that will attempt to build only the specified
+            ProjectFileName.  A recursive search will be done
+            to find it, it may be either a .csproj file, .vbproj file or
+            .sln file.
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Automation.ContinuousIntegration.AllProjectsBuildWorker">
+            <summary>
+            A Worker that will attempt to build all the projects 
+            that it finds in the specified SourceDirectory.
+            A recursive search will be done for all .csproj 
+            and .vbproj files.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.AllProjectsBuildWorker.GetBuildFiles">
+            <summary>
+            Gets the solution files to build
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Bam.Net.Automation.Ftp">
+            <summary>
+            Fluent wrapper around System.Net.FtpClient
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.SuspendedJob.#ctor(Bam.Net.IpcMessageRoot,Bam.Net.Automation.Job)">
+            <summary>
+            Instantiate a new SuspendedJob instance saving
+            the specified job as an IpcMessage to the 
+            specified IpcMessageRoot.  A new InstanceId
+            will be assigned.
+            </summary>
+            <param name="messageRoot"></param>
+            <param name="job"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.SuspendedJob.#ctor(Bam.Net.IpcMessageRoot,System.String)">
+            <summary>
+            Instantiate a new Suspended job instance which can 
+            be reinstantiated from the specified messageRoot 
+            using the specified instanceId
+            </summary>
+            <param name="messageRoot"></param>
+            <param name="instanceId"></param>
+        </member>
+        <member name="P:Bam.Net.Automation.NotificationWorker.Recipients">
+            <summary>
+            A comma/or semi-colon separated list of
+            recipients (typically email addresses, but depends on 
+            the implementation)
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Automation.Orchestrator">
+            <summary>
+            The master orchestrator for 
+            all jobs.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.Orchestrator.AddWorker(System.String,System.String,System.String)">
+            <summary>
+            Add a worker of the specified type assigning the
+            specified workerName to the job with the specified
+            jobName.
+            </summary>
+            <param name="workerTypeName"></param>
+            <param name="workerName"></param>
+            <param name="jobName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Automation.Orchestrator.AddWorker``1(System.String,Bam.Net.Automation.JobConf)">
+            <summary>
+            Adds a worker of generic type T to the
+            specified JobConf.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="conf"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Automation.Orchestrator.JobExists(System.String)">
+            <summary>
+            Returns true is a job with the specified name
+            exists under the current Foreman.  Determined
+            by looking in the current Foreman's JobsDirectory.
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Automation.Orchestrator.StartJobRunnerThread">
+            <summary>
+            Starts the JobRunner thread.  This method
+            must be called prior to queueing up jobs
+            or the jobs will not be run.
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Automation.Job">
+            <summary>
+            A set of workers that are run in sequence
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.Job.GetWorkStateData``1">
+            <summary>
+            Tries to cast CurrentWorkState to WorkState&lt;T&gt;
+            and returns WorkState.Data if it exists, otherwise 
+            returns null;
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="P:Bam.Net.Automation.Job.CurrentWorkerName">
+            <summary>
+            Represents the name of the currently running worker
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Automation.Job.WorkStateMessage">
+            <summary>
+            The Message property of the CurrentWorkState
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Automation.JobConf.CurrentIndex">
+            <summary>
+            Represents the "Order" that will be assigned to the next
+            worker added
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Automation.JobConf.WorkerFiles">
+            <summary>
+            An array of worker config file paths to
+            load
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Automation.JobConf.JobDirectory">
+            <summary>
+            The root of the Job
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.JobConf.GetWorker``1(System.String)">
+            <summary>
+            Gets a worker of the specified generic type 
+            loading it from a file if the worker file exists
+            creating it otherwise.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="workerName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Automation.JobConf.GetFilePath">
+            <summary>
+            Returns the save to path for the current
+            JobConf.  In the form {JobDirectory}\\{Name}.job
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Bam.Net.Automation.Nuget.conventionbasedpackage">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.Nuget.conventionbasedpackage.metadata">
+            <remarks/>
+        </member>
+        <member name="T:Bam.Net.Automation.Nuget.package">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.Nuget.package.metadata">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.Nuget.package.files">
+            <remarks/>
+        </member>
+        <member name="T:Bam.Net.Automation.Nuget.packageMetadata">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.Nuget.packageMetadata.id">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.Nuget.packageMetadata.version">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.Nuget.packageMetadata.title">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.Nuget.packageMetadata.authors">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.Nuget.packageMetadata.owners">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.Nuget.packageMetadata.licenseUrl">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.Nuget.packageMetadata.projectUrl">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.Nuget.packageMetadata.iconUrl">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.Nuget.packageMetadata.requireLicenseAcceptance">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.Nuget.packageMetadata.requireLicenseAcceptanceSpecified">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.Nuget.packageMetadata.description">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.Nuget.packageMetadata.summary">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.Nuget.packageMetadata.releaseNotes">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.Nuget.packageMetadata.copyright">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.Nuget.packageMetadata.language">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.Nuget.packageMetadata.tags">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.Nuget.packageMetadata.dependencies">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.Nuget.packageMetadata.frameworkAssemblies">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.Nuget.packageMetadata.references">
+            <remarks/>
+        </member>
+        <member name="T:Bam.Net.Automation.Nuget.packageMetadataDependency">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.Nuget.packageMetadataDependency.id">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.Nuget.packageMetadataDependency.version">
+            <remarks/>
+        </member>
+        <member name="T:Bam.Net.Automation.Nuget.packageMetadataFrameworkAssembly">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.Nuget.packageMetadataFrameworkAssembly.assemblyName">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.Nuget.packageMetadataFrameworkAssembly.targetFramework">
+            <remarks/>
+        </member>
+        <member name="T:Bam.Net.Automation.Nuget.packageMetadataReference">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.Nuget.packageMetadataReference.file">
+            <remarks/>
+        </member>
+        <member name="T:Bam.Net.Automation.Nuget.packageFile">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.Nuget.packageFile.src">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.Nuget.packageFile.target">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.Nuget.packageFile.exclude">
+            <remarks/>
+        </member>
+        <member name="T:Bam.Net.Automation.ProcessWorker">
+            <summary>
+            Work done as a command line process
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Automation.Worker.StepNumber">
+            <summary>
+            Used by the job to sort this worker into its proper
+            place in order relative to other workers
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.Worker.State``1(Bam.Net.Automation.WorkState{``0})">
+            <summary>
+            Gets or sets the current WorkState of this Worker
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="state"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Automation.Worker.ConfigureFromWorkstate">
+            <summary>
+            Sets all the properties of the current
+            worker from the properties of the current
+            WorkState.  All writable string properties that
+            match in name will be copied to the 
+            current worker
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Automation.ZipFolderWorker.SourceDirectory">
+            <summary>
+            The directory to zip
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Automation.ZipFolderWorker.TargetPath">
+            <summary>
+            The full path or job relative path to the
+            final zip file including the desired extension
+            </summary>
+        </member>
+    </members>
+</doc>

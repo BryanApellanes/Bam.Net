@@ -1,0 +1,604 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Bam.Net.Data.Repositories</name>
+    </assembly>
+    <members>
+        <member name="T:Bam.Net.Data.Repositories.AsyncDaoRepository">
+            <summary>
+            An asynchronous wrapper for a DaoRepository
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Data.Repositories.DaoBackup">
+            <summary>
+            Represents a backup of a Dao database schema and the data therein
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.DaoBackup.DaoAssembly">
+            <summary>
+            The Assembly given to the constructor which "should" contain Dao types.
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.DaoBackup.DaoTypes">
+            <summary>
+            All the Dao types that were found in the Assembly given to the constructor
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.DaoBackup.DatabaseToBackup">
+            <summary>
+            The database to backup
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.DaoBackup.BackupRepository">
+            <summary>
+            The repository where the database will be backed up to.
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.DaoBackup.DatabaseToRestoreTo">
+            <summary>
+            The database that the backup will be restored to
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Data.Repositories.DaoSuffixTypeTableNameProvider">
+            <summary>
+            A table name provider that returns the type name
+            suffixed with "Dao"
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Data.Repositories.IGeneratesDaoAssembly">
+            <summary>
+            Defines an event named GenerateDaoAssemblySucceeded
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Data.Repositories.ITypeTableNameProvider">
+            <summary>
+            An interface to be implemented by types that provide
+            Type to table name translation
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.ITypeTableNameProvider.GetTableName(System.Type)">
+            <summary>
+            When implemented in a derived class gets
+            the table name for the specified Type
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Bam.Net.Data.Repositories.DaoToDtoGenerator">
+            <summary>
+            A generator that will create Dto's from Dao's.
+            Intended primarily to enable backup of
+            Daos to an ObjectRepository
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.DaoToDtoGenerator.ExceptionMessage">
+            <summary>
+            Read by Loggable messages if deleting temp directory fails
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.DaoToDtoGenerator.TempDir">
+            <summary>
+            Read by Loggable messages if deleting temp directory fails
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.DaoToDtoGenerator.GenerateAssembly">
+            <summary>
+            Implements IAssemblyGenerator.GenerateAssembly by delegating
+            to GenerateDtoAssembly
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.DaoToDtoGenerator.GenerateDtoAssembly">
+            <summary>
+            Generates a Dto assembly
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Bam.Net.Data.Repositories.PocoGenerator">
+            <summary>
+            A class used to generate Poco type wrappers which 
+            enable lazy loading of IEnumerable properties.
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.PocoModel.LeftXrefs">
+            <summary>
+            Xrefs where the current DtoType is the left
+            side of the cross reference table
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.PocoModel.RightXrefs">
+            <summary>
+            Xrefs where the current DtoType is the Right
+            side of the cross reference table
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Data.Repositories.Dto">
+            <summary>
+            A Data Transfer Object.  Represents the properties
+            of Dao types without the associated methods.  
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.Dto.GetTypesFromDaos(System.Reflection.Assembly)">
+            <summary>
+            Get the associated Dto types for the 
+            Dao types in the specified daoAssembly
+            </summary>
+            <param name="daoAssembly"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.Dto.TypeFor(Bam.Net.Data.Dao)">
+            <summary>
+            Get a generated Dto type for the specified Dao instance.
+            The Dto type will only have properties that match the columns
+            of the Dao
+            </summary>
+            <param name="daoInstance"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.Dto.TypeFor(System.Type)">
+            <summary>
+            Get the associated Dto type for the specified
+            daoType
+            </summary>
+            <param name="daoType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.Dto.Copy(Bam.Net.Data.Dao)">
+            <summary>
+            Copy the specified Dao instance as an equivalent Dto instance
+            </summary>
+            <param name="instance"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.Dto.GetGeneratedDtoAssemblyInfo(System.Reflection.Assembly,System.String)">
+            <summary>
+            Generates an assembly containing Dto's that represent all the 
+            Dao's found in the sepecified daoAssembly.  A Dto or (DTO) is
+            a Data Transfer Object and represents only the properties of 
+            a Dao.  A Dao or (DAO) is a Data Access Object that represents
+            both properties and methods to create, retrieve, update and delete. 
+            </summary>
+            <param name="daoAssembly"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Bam.Net.Data.Repositories.IHasUpdatedXrefCollectionProperties">
+            <summary>
+            Used internally by Generated Poco's
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Data.Repositories.KeyAttribute">
+            <summary>
+            Specifies that a property should be used as the 
+            primary key for an object
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.Meta.Hash">
+            <summary>
+            Returns UuidHash
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.Meta.SetId(System.Object,Bam.Net.Data.Repositories.IObjectReaderWriter)">
+            <summary>
+            Sets the Id property of the specified value to the 
+            next Id for it's type if it
+            has not yet been set.
+            </summary>
+            <param name="value"></param>
+            <param name="objectReaderWriter"></param>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.Meta.SetUuid(System.Object,System.String)">
+            <summary>
+            Sets the Uuid property of the specified data if
+            it has not already been set
+            </summary>
+            <param name="data"></param>
+            <param name="uuid"></param>
+        </member>
+        <member name="T:Bam.Net.Data.Repositories.DaoRepository">
+            <summary>
+            A repository that will generate an underlying Dao
+            for the types added.  Any values returned by a 
+            call to Query will not be fully hydrated (child lists
+            won't be populated).  To ensure full hydration of
+            the values call Retrieve(id) or Retrieve(uuid).
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.DaoRepository.MissingProperties">
+            <summary>
+            Returns true if the schema definition for the added types
+            are missing key columns (as represented by a property on the class)
+            or missing foreign key columns (as represented by a property on the class)
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.DaoRepository.EnsureDaoAssembly">
+            <summary>
+            Generates a Dao Assembly for the the underlying 
+            storable types if it has not yet been generated
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.DaoRepository.AddType(System.Type)">
+            <summary>
+            Add the specified type as a storable type.
+            When the underlying schema is generated for the 
+            specified type it will be analyzed for its 
+            relationships to other types as necessary
+            and those types will be included in the 
+            resulting schema
+            </summary>
+            <param name="type"></param>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.DaoRepository.Create``1(``0)">
+            <summary>
+            Creates (Saves) the specified instance of T.  While
+            the parameter value specified will be updated with 
+            the newly assigned Id, one should favor using the
+            return value instead as it will be an augmented extension
+            of T.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="toCreate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.DaoRepository.Update``1(``0)">
+            <summary>
+            Updates the repository instance that represents the specified 
+            value.  
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="toUpdate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.DaoRepository.GetWrapperType(System.Type)">
+            <summary>
+            Get the wrapper type for the specified poco type.
+            Will not return null unless the specified pocoType
+            is null.
+            </summary>
+            <param name="pocoType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.DaoRepository.SetParentProperties(System.Object)">
+            <summary>
+            Sets the properties that represent PrimaryKeys if any
+            </summary>
+            <param name="dtoInstance"></param>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.DaoRepository.GetParentPropertyOfChild(System.Object,System.Type)">
+            <summary>
+            Get the instance of the parentType specified for the 
+            specified dto instance
+            </summary>
+            <param name="dtoChild"></param>
+            <param name="parentType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.DaoRepository.GetParentDaoPropertyOfChildForTypeFk(Bam.Net.Data.Repositories.TypeFk)">
+            <summary>
+            Get the PropertyInfo that represents the parent object instance for the specified
+            TypeFk
+            </summary>
+            <param name="typeFk"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.DaoRepository.GetChildCollectionDaoPropertyForTypeFk(Bam.Net.Data.Repositories.TypeFk)">
+            <summary>
+            Get the PropertyInfo that represents the child collection for the specified 
+            TypeFk
+            </summary>
+            <param name="typeFk"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.IRepository.Save``1(``0)">
+            <summary>
+            When implemented in a derived class, calls
+            Create or Update as appropriate
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="toSave"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.IRepository.Save(System.Object)">
+            <summary>
+            When implemented in a derived class, calls
+            Create or Update as appropriate
+            </summary>
+            <param name="toSave"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.IRepository.Create(System.Object)">
+            <summary>
+            When implemented in a derived class, calls
+            Create or Update as appropriate
+            </summary>
+            <param name="toCreate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.IRepository.Retrieve``1(System.Int32)">
+            <summary>
+            When implemented in a derived class retrieves
+            the specified instance of type T with the
+            specified id
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.IRepository.Retrieve``1(System.Int64)">
+            <summary>
+            When implemented in a derived class retrieves
+            the specified instance of type T with the
+            specified id
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.IRepository.RetrieveAll``1">
+            <summary>
+            When implemented in a derived class retrieves
+            all instances of type T
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="T:Bam.Net.Data.Repositories.ObjectRepository">
+            <summary>
+            A class responsible for saving and retrieving
+            Poco objects.  Currently not designed for performance
+            and is primarily used for backups.  This "should"
+            be changed in the future to improve performance.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.ObjectRepository.SetParentProperties(System.Object,System.Object)">
+            <summary>
+            Sets the properties that represent PrimaryKeys if any
+            </summary>
+            <param name="parent"></param>
+            <param name="child"></param>
+        </member>
+        <member name="T:Bam.Net.Data.Repositories.ObjectReaderWriter">
+            <summary>
+            Class used to write objects to disk.  Will 
+            write two representations of the object, one
+            as an IpcMessage <see cref="T:Bam.Net.IpcMessage"/>
+            and another "searchable" version of all
+            the properties in crawlable files
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Data.Repositories.RepoData">
+            <summary>
+            An abstract base class defining common
+            properties for any object you may wish to 
+            save in a Repository
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Data.Repositories.TypeDaoGenerator">
+            <summary>
+            A class used to generate data access objects from
+            CLR types.
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.TypeDaoGenerator.Namespace">
+            <summary>
+            The namespace to place generated Dao objects into
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.TypeDaoGenerator.CreateSchemaDefinition(System.String)">
+            <summary>
+            Create a SchemaDefintionCreateResult for the types currently
+            added to the TypeDaoGenerator
+            </summary>
+            <param name="schemaName"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Bam.Net.Data.Repositories.TypeSchema">
+            <summary>
+            Class that provides database schema like relationships
+            for CLR types.  This class should not be instantiated
+            directly, instead see <see cref="T:Bam.Net.Data.Repositories.TypeSchemaGenerator"/>
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Data.Repositories.TypeSchemaGenerator">
+            <summary>
+            A class used to generate 
+            </summary>
+        </member>
+        <member name="E:Bam.Net.Data.Repositories.TypeSchemaGenerator.CreatingSchemaStarted">
+            <summary>
+            The event that fires when schema creation begins
+            </summary>
+        </member>
+        <member name="E:Bam.Net.Data.Repositories.TypeSchemaGenerator.CreatingTypeSchemaStarted">
+            <summary>
+            The event that fires when type schema creation begins
+            </summary>
+        </member>
+        <member name="E:Bam.Net.Data.Repositories.TypeSchemaGenerator.CreatingTypeSchemaFinished">
+            <summary>
+            The event that fires when type schema creation completes
+            </summary>
+        </member>
+        <member name="E:Bam.Net.Data.Repositories.TypeSchemaGenerator.WritingDaoSchemaStarted">
+            <summary>
+            The event that fires when dao schema creation begins
+            </summary>
+        </member>
+        <member name="E:Bam.Net.Data.Repositories.TypeSchemaGenerator.WritingDaoSchemaFinished">
+            <summary>
+            The event that fires when dao schema creation completes
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.TypeSchemaGenerator.SchemaName">
+            <summary>
+            Holds the name of the currently generating
+            schema
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.TypeSchemaGenerator.AddIdField">
+            <summary>
+            If true, an Id column will be added to the generated dao tables
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.TypeSchemaGenerator.AddAuditFields">
+            <summary>
+            If true, audit fields Created and Modified will be added to the dao tables
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.TypeSchemaGenerator.IncludeModifiedBy">
+            <summary>
+            If true, ModifiedBy will be added to the dao tables
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.TypeSchemaGenerator.IncludeCreatedBy">
+            <summary>
+            If true, CreatedBy will be added to the dao tables
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.TypeSchemaGenerator.DefaultDataTypeBehavior">
+            <summary>
+            Gets or sets an enum value indicating how to treat
+            properties whose type is not explicitly supported.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.TypeSchemaGenerator.GetXrefTypesFor(System.Type)">
+            <summary>
+            Get the properties where the type of the
+            property is of a type that has a property that is
+            an enumerable of the type specified
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.TypeSchemaGenerator.Instant">
+            <summary>
+            A string representation of the UtcNow at the time
+            of reference.  <see cref="T:Bam.Net.Instant" />
+            </summary>
+        </member>
+        <member name="E:Bam.Net.Data.Repositories.TypeSchemaGenerator.KeyPropertyNotFound">
+            <summary>
+            The event that occurs when a Type is found in the current
+            TypeSchema hierarchy with no Key property specified (the Type's key is determined
+            by whether a property has the KeyAttribute custom attribute or
+            the name of "Id")
+            </summary>
+        </member>
+        <member name="E:Bam.Net.Data.Repositories.TypeSchemaGenerator.ReferencingPropertyNotFound">
+            <summary>
+            The event that occurs when a Type is found in the current
+            TypeSchema hierarchy with an IEnumerable&lt;T&gt; property where the underlying type of
+            the IEnumerable doesn't have a property referencing
+            the current Type's key (the Type's key is determined
+            by whether a property has the KeyAttribute custom attribute or
+            the name of "Id")
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "E:Bam.Net.Data.Repositories.TypeSchemaGenerator.ChildParentPropertyNotFound" -->
+        <member name="M:Bam.Net.Data.Repositories.TypeSchemaGenerator.GetReferencingForeignKeyTypesFor(System.Type)">
+            <summary>
+            Get the types for each IEnumerable property of the specified type
+            </summary>
+            <param name="parentType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.Repository.Save(System.Object)">
+            <summary>
+            Calls update for the specified object toSave if
+            it has Id greater than 0 otherwise calls Create
+            </summary>
+            <param name="toSave"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Bam.Net.Data.Repositories.TypeFk">
+            <summary>
+            Forein key descriptor for generated TypeSchemas
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.TypeFk.PrimaryKeyType">
+            <summary>
+            The type of the Primary Key poco
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.TypeFk.PrimaryKeyProperty">
+            <summary>
+            The property of the Primary Key poco
+            that represents the Id/Primary Key
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.TypeFk.ForeignKeyType">
+            <summary>
+            The type of the Foreign Key poco
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.TypeFk.ForeignKeyProperty">
+            <summary>
+            The Foreign Key property that references the 
+            Primary Key
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.TypeFk.CollectionProperty">
+            <summary>
+            The property that represents the collection
+            of Foreign Keys that represent the same 
+            Primary Key
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.TypeFk.ChildParentProperty">
+            <summary>
+            The property that represents the Parent
+            Primary Key instance on the Foreign Key
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Data.Repositories.EchoTypeTableNameProvider">
+            <summary>
+            A table name provider that just returns the name of the
+            type
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Data.Repositories.TypeXref">
+            <summary>
+            Used to describe a many to many 
+            relationship between two types.
+            This would imply that each type
+            has an IEnumerable property
+            of the other type
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.TypeXref.LeftCollectionProperty">
+            <summary>
+            The property of the Left type that represents
+            the collection containing elements of the Right type
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.TypeXref.RightCollectionProperty">
+            <summary>
+            The property of the Right type that represents 
+            the collection containing elements of the Left type
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.TypeXref.LeftCollectionTypeName">
+            <summary>
+            The name of the LeftCollectionProperty.  Used by underlying 
+            Poco generator
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.TypeXref.RightCollectionTypeName">
+            <summary>
+            The name of the RightCollectionProperty.  Used by underlying
+            Poco generator
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.TypeXref.LeftArrayOrList">
+            <summary>
+            Used by the underlying Poco generator
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.TypeXref.RightArrayOrList">
+            <summary>
+            Used by the underlying Poco generator
+            </summary>
+        </member>
+    </members>
+</doc>

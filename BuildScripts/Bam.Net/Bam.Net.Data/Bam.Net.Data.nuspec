@@ -2,7 +2,7 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Data</id>
-    <version>1.2.4</version>
+    <version>1.2.5</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
@@ -12,8 +12,8 @@
     <releaseNotes>Fix dependency versions</releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2016</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.2.4" />
-      <dependency id="Bam.Net.Incubation" version="1.2.4" />
+      <dependency id="Bam.Net" version="1.2.5" />
+      <dependency id="Bam.Net.Incubation" version="1.2.5" />
     </dependencies>
   </metadata>
 </package>

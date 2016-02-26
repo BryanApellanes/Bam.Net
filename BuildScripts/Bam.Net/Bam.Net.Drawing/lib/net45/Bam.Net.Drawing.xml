@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Bam.Net.Drawing</name>
+    </assembly>
+    <members>
+        <member name="M:Bam.Net.Drawing.ColorPalette.Add(System.String,System.String)">
+            <summary>
+            Adds the specified color if one with the same name
+            has not already been added.
+            </summary>
+            <param name="colorName"></param>
+            <param name="hexColor"></param>
+        </member>
+        <member name="M:Bam.Net.Drawing.ColorPalette.Remove(System.String)">
+            <summary>
+            Remove the color with the specified name if it exists
+            </summary>
+            <param name="colorName"></param>
+        </member>
+        <member name="M:Bam.Net.Drawing.ColorPalette.DeriveFrom(System.Uri)">
+            <summary>
+            Derive a ColorPalette from the specified Uri by 
+            finding colors in all the linked stylesheets
+            </summary>
+            <param name="url"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Drawing.ColorPalette.DeriveFrom(System.String)">
+            <summary>
+            Derives a color pallette from the specified css url
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Bam.Net.Drawing.HexColor.Name">
+            <summary>
+            Gets or sets the name of the current color.
+            May be anything useful for remembering this
+            color and its purpose.
+            </summary>
+        </member>
+    </members>
+</doc>
