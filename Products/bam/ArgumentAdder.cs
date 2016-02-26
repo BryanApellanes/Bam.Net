@@ -19,10 +19,10 @@ namespace bam
 
         private static void AddBuildArguments()
         {
-            AddValidArgument("dllNamesFile", false, addAcronym: true, description: "generateCopyCmds: The path to the text file containing the names of the libraries");
-            AddValidArgument("templateFile", false, addAcronym: true, description: "generateCopyCmds: The path to the template file to use");
-            AddValidArgument("fileNameFormat", false, addAcronym: true, description: "generateCopyCmds: The file name format for generated files: default is copy_{0}.cmd, where 0 is the name of the library in dllNamesFile");
-            AddValidArgument("outputDir", false, addAcronym: true, description: "generateCopyCmds: The directory to write files to");
+            AddValidArgument("dllNamesFile", false, addAcronym: true, description: "generateNugetScripts: The path to the text file containing the names of the libraries");
+            AddValidArgument("templateFile", false, addAcronym: true, description: "generateNugetScripts: The path to the template file to use");
+            AddValidArgument("fileNameFormat", false, addAcronym: true, description: "generateNugetScripts: The file name format for generated files: default is copy_{0}.cmd, where 0 is the name of the library in dllNamesFile");
+            AddValidArgument("outputDir", false, addAcronym: true, description: "generateNugetScripts: The directory to write files to");
         }
 
         private static void AddGlooArguments()
