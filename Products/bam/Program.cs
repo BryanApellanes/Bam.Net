@@ -30,12 +30,22 @@ namespace bam
 			IsolateMethodCalls = false;
 
 			Type type = typeof(Program);
-			AddSwitches(type);
+			AddSwitches(typeof(Program));
+            AddSwitches(typeof(VaultActions));
+            AddSwitches(typeof(GlooActions));
 			AddConfigurationSwitches();
 
 			AddValidArgument("root", false, "The root directory to pack files from");
 			AddValidArgument("saveTo", false, "The zip file to create when packing the toolkit");
 			AddValidArgument("appName", false, "The name of the app to create when calling /ca (create app)");
+
+            AddValidArgument("vp", false, "The path to a vault to read; used with /rv");
+            AddValidArgument("vaultpath", false, "Same as /vp");
+            AddValidArgument("vn", false, "The name of the vault to read; used with /rv");
+            AddValidArgument("vaultname", false, "Same as /vn");
+            
+            AddValidArgument("host", false, "The hostname to download gloo client from; used with /gloo");
+            AddValidArgument("port", false, "The port to download gloo client from; used with /gloo");
 
 			DefaultMethod = type.GetMethod("Interactive");
 
@@ -43,16 +53,14 @@ namespace bam
 
 			if (Arguments.Length > 0 && !Arguments.Contains("i"))
 			{
-				ExecuteSwitches(Arguments, type, null, null);
+				ExecuteSwitches(Arguments, type);
+                ExecuteSwitches(Arguments, typeof(VaultActions));
+                ExecuteSwitches(Arguments, typeof(GlooActions));
 			}
 			else
 			{
 				Interactive();
 			}
 		}
-
-
-
-
     }
 }

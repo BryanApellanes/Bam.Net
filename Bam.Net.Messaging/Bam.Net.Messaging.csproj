@@ -88,6 +88,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EmailComposer.cs" />
     <Compile Include="RequiredSettingsNotSetException.cs" />
+    <Compile Include="SmtpSettingsVault.cs" />
     <Compile Include="StringFormatEmailComposer.cs" />
   </ItemGroup>
   <ItemGroup>

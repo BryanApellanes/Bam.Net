@@ -23,11 +23,11 @@ namespace Bam.Net.Data.Repositories
 		PocoGenerator _pocoGenerator;
 	    TypeSchemaGenerator _schemaGenerator;
         HashSet<Assembly> _additonalReferenceAssemblies;
-        public TypeDaoGenerator(ILogger logger = null)
+        public TypeDaoGenerator(ITypeTableNameProvider tableNameProvider = null, ILogger logger = null)
         {
 			_daoGenerator = new DaoGenerator();
 			_pocoGenerator = new PocoGenerator();
-			_schemaGenerator = new TypeSchemaGenerator();
+			_schemaGenerator = new TypeSchemaGenerator(tableNameProvider);
             _additonalReferenceAssemblies = new HashSet<Assembly>();
 			this.Namespace = "TypeDaos";
 			this._types = new List<Type>();

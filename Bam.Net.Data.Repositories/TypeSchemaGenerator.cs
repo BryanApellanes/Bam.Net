@@ -17,16 +17,10 @@ namespace Bam.Net.Data.Repositories
     {
         UuidSchemaManager _schemaManager;
         ITypeTableNameProvider _tableNameProvider;
-        public TypeSchemaGenerator()
+        public TypeSchemaGenerator(ITypeTableNameProvider tableNameProvider = null)
         {
             this._schemaManager = new UuidSchemaManager();
-            this.DefaultDataTypeBehavior = Repositories.DefaultDataTypeBehaviors.Exclude;
-            this._tableNameProvider = new DaoSuffixTypeTableNameProvider();
-        }
-
-        public TypeSchemaGenerator(ITypeTableNameProvider tableNameProvider)
-            : this()
-        {
+            this.DefaultDataTypeBehavior = DefaultDataTypeBehaviors.Exclude;
             this._tableNameProvider = tableNameProvider ?? new DaoSuffixTypeTableNameProvider();
         }
 

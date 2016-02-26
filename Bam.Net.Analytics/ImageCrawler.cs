@@ -93,7 +93,7 @@ namespace Bam.Net.Analytics
 
                     if (Uri.IsWellFormedUriString(imgUrl, UriKind.Relative))
                     {
-                        imgUrl = string.Format("http://{0}{1}{2}", url.DomainOfDomainId.Value, url.PathOfPathId.Value, imgUrl);
+                        imgUrl = $"{url.ProtocolOfProtocolId.Value}://{url.DomainOfDomainId.Value}{url.PathOfPathId.Value}{imgUrl}";
                     }
                     Url image = Url.FromUri(new Uri(imgUrl), true);// new Url(imgUrl);                    
                     Image img = Image.OneWhere(c => c.UrlId == image.Id);
