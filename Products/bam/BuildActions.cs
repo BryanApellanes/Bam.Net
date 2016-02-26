@@ -35,7 +35,7 @@ SET NEXT=END
 RMDIR /S /Q .\BuildOutput
 RMDIR /S /Q ..\..\Products\BUILD");
             StringBuilder packScript = GetPackScriptStart();
-            StringBuilder packScriptDebug = GetPackScriptStart();
+            StringBuilder packScriptDebug = GetPackScriptStart("Debug");
 
             StringBuilder pushScript = new StringBuilder();
             pushScript.AppendLine("@echo on");
@@ -51,7 +51,7 @@ RMDIR /S /Q ..\..\Products\BUILD");
                     string filePath = Path.Combine(outputDir.FullName, fileName);
                     string fileContent = template.NamedFormat(new Dll { LibraryName = libraryName });
                     fileContent.SafeWriteToFile(filePath, true);
-                    copyAllScript.AppendLine($"call {fileName}");
+                    copyAllScript.AppendLine($"call {fileName} %1");
                     string packLine = $"nuget pack {libraryName}\\{libraryName}.nuspec";
                     packScript.AppendLine(packLine);
                     packScriptDebug.AppendLine(packLine);
@@ -73,11 +73,11 @@ call git_tag_version.cmd %1");
             cleanScript.ToString().SafeWriteToFile(Path.Combine(outputDir.FullName, "clean.cmd"), true);
         }
 
-        private static StringBuilder GetPackScriptStart()
+        private static StringBuilder GetPackScriptStart(string config = "Release")
         {
             StringBuilder packScript = new StringBuilder();
             packScript.AppendLine("@echo on");
-            packScript.AppendLine("call copy_all.cmd");
+            packScript.AppendLine($"call copy_all.cmd {config}");
             packScript.AppendLine();
             return packScript;
         }
