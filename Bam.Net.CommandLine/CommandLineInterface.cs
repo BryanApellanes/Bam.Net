@@ -930,7 +930,7 @@ namespace Bam.Net.CommandLine
         /// <param name="name"></param>
         public static void AddValidArgument(string name, string description = null)
         {
-            AddValidArgument(name, false, description);
+            AddValidArgument(name, false, description: description);
         }
 
         /// <summary>
@@ -948,7 +948,7 @@ namespace Bam.Net.CommandLine
                 {
                     if (!string.IsNullOrEmpty(action.CommandLineSwitch))
                     {
-                        AddValidArgument(action.CommandLineSwitch, true, action.Information, action.ValueExample);
+                        AddValidArgument(action.CommandLineSwitch, true, addAcronym: true, description: action.Information, valueExample: action.ValueExample);
                     }
                 }
             }
@@ -1054,9 +1054,14 @@ namespace Bam.Net.CommandLine
         /// </summary>
         /// <param name="name">The name of the command line argument.</param>
         /// <param name="allowNull">If true no value for the specified name is necessary.</param>
-        public static void AddValidArgument(string name, bool allowNull, string description = null, string valueExample = null)
-        {
+        /// <param name="addAcronym">Add another valid argument of the acronym of the specified name</param>
+        public static void AddValidArgument(string name, bool allowNull, bool addAcronym = false, string description = null, string valueExample = null)
+        {            
             ValidArgumentInfo.Add(new ArgumentInfo(name, allowNull, description, valueExample));
+            if (addAcronym)
+            {
+                ValidArgumentInfo.Add(new ArgumentInfo(name.CaseAcronym().ToLowerInvariant(), allowNull, $"{description}; same as {name}", valueExample));
+            }
         }
 
         protected static void ParseArgs(string[] args)

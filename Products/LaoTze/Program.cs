@@ -151,21 +151,21 @@ namespace laotze
 
         private static void SetArguments(string[] args)
         {
-            AddValidArgument("f", false, "The output schema file name");
-            AddValidArgument("conn", false, "The name of the connection in the config file to use");
-            AddValidArgument("gen", false, "The directory to write generated files to");
-            AddValidArgument("ns", false, "The namespace to place generated code into");
-            AddValidArgument("dll", false, "When generating from an existing database, if specified the code will be compiled to the dll specified");
-            AddValidArgument("examples", true, "Original example usage output");
-            AddValidArgument("p", false, "Partial folder for custom code");
-            AddValidArgument("pause", true, "Prompt for a keypress before processing");
-            AddValidArgument("v", true, "Enable verbose mode, outputs generated code to the console");
-            AddValidArgument("s", true, "Enable silent mode, limited output");
-            AddValidArgument("root", false, "Specifies the root directory to search when generating from *.db.js files");
-            AddValidArgument("keep", true, "If not specified when generating from a *.db.js file the code will be compiled to the dll specified by /dll and the source will be deleted");
-			AddValidArgument("sql", false, "The name of the sql txt file to output the schema creation script to");
-			AddValidArgument("dialect", false, "The sql dialect to use, one of: SQLite, Ms or Oracle");
-			AddValidArgument("?", true, "Usage");
+            AddValidArgument("f", false, description: "The output schema file name");
+            AddValidArgument("conn", false, description: "The name of the connection in the config file to use");
+            AddValidArgument("gen", false, description: "The directory to write generated files to");
+            AddValidArgument("ns", false, description: "The namespace to place generated code into");
+            AddValidArgument("dll", false, description: "When generating from an existing database, if specified the code will be compiled to the dll specified");
+            AddValidArgument("examples", true, description: "Original example usage output");
+            AddValidArgument("p", false, description: "Partial folder for custom code");
+            AddValidArgument("pause", true, description: "Prompt for a keypress before processing");
+            AddValidArgument("v", true, description: "Enable verbose mode, outputs generated code to the console");
+            AddValidArgument("s", true, description: "Enable silent mode, limited output");
+            AddValidArgument("root", false, description: "Specifies the root directory to search when generating from *.db.js files");
+            AddValidArgument("keep", true, description: "If not specified when generating from a *.db.js file the code will be compiled to the dll specified by /dll and the source will be deleted");
+			AddValidArgument("sql", false, description: "The name of the sql txt file to output the schema creation script to");
+			AddValidArgument("dialect", false, description: "The sql dialect to use, one of: SQLite, Ms or Oracle");
+			AddValidArgument("?", true, description: "Usage");
 
             ParseArgs(args);
         }

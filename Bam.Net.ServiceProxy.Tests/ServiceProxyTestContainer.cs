@@ -67,7 +67,7 @@ namespace Bam.Net.ServiceProxy.Tests
 
             // the arguments protected member is not available in PreInit() (this method)
             #endregion
-			AddValidArgument("t", true, "run all tests");
+			AddValidArgument("t", true, description: "run all tests");
 			DefaultMethod = typeof(ServiceProxyTestContainer).GetMethod("Start");
 		}
 

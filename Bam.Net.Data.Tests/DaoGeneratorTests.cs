@@ -186,16 +186,6 @@ namespace Bam.Net.Data.Tests
             Expect.IsTrue(afterColumnClassParse.Value, "AfterColumnClassParse didn't fire");
         }
 
-        
-        [UnitTest]
-        public static void CamelCaseShouldLeaveFirstLetterLower()
-        {
-            string test = "The quick brown fox jumps over the lazy dog";
-
-            Expect.AreEqual("TheQuickBrownFoxJumpsOverTheLazyDog", test.PascalCase(true, new string[]{" "}));
-            Expect.AreEqual("theQuickBrownFoxJumpsOverTheLazyDog", test.CamelCase(true, new string[] { " " }));
-        }
-
         private static void OutputCompilerErrors(CompilerResults results)
         {
             foreach (CompilerError error in results.Errors)

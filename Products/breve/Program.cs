@@ -50,10 +50,10 @@ namespace breve
 
             // the arguments protected member is not available in PreInit() (this method)
 
-            AddValidArgument("file", true, "The path to the breve file to analyse");
-            AddValidArgument("obj", false, "The name of the object to generate for");
-            AddValidArgument("name", false, "The name of the breve object to generate");
-            AddValidArgument("lang", false, "The language to generate breve objects for (C# or Java) the default is Java");
+            AddValidArgument("file", true, description: "The path to the breve file to analyse");
+            AddValidArgument("obj", false, description: "The name of the object to generate for");
+            AddValidArgument("name", false, description: "The name of the breve object to generate");
+            AddValidArgument("lang", false, description: "The language to generate breve objects for (C# or Java) the default is Java");
             
             DefaultMethod = typeof(Program).GetMethod("Start");
             Expect.IsNotNull(DefaultMethod);

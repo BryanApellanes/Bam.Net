@@ -58,12 +58,12 @@ namespace Bam.Net.Testing
 
             // the arguments protected member is not available in PreInit() (this method)
             #endregion
-            AddValidArgument("search", false, "The search pattern to use to locate test assemblies");
-            AddValidArgument("dir", false, "The directory to look for test assemblies in");
-            AddValidArgument("debug", true, "If specified, the runner will pause to allow for a debugger to be attached to the process");
-            AddValidArgument("data", false, "The path to save the results to, default is the current directory if not specified");
-            AddValidArgument("dataPrefix", true, "The file prefix for the sqlite data file or 'BamTests' if not specified");
-            AddValidArgument("type", false, "The type of tests to run [Unit | Integration], default is unit.");
+            AddValidArgument("search", false, description: "The search pattern to use to locate test assemblies");
+            AddValidArgument("dir", false, description: "The directory to look for test assemblies in");
+            AddValidArgument("debug", true, description: "If specified, the runner will pause to allow for a debugger to be attached to the process");
+            AddValidArgument("data", false, description: "The path to save the results to, default is the current directory if not specified");
+            AddValidArgument("dataPrefix", true, description: "The file prefix for the sqlite data file or 'BamTests' if not specified");
+            AddValidArgument("type", false, description: "The type of tests to run [Unit | Integration], default is unit.");
             
             AddValidArgument(_exitOnFailure, true);
             AddSwitches(typeof(Program));

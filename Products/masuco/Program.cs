@@ -42,8 +42,8 @@ namespace masuco
 
             // the arguments protected member is not available in PreInit() (this method)
 
-            AddValidArgument("run", true, "Run the copy process");
-            AddValidArgument("conf", false, "Path to the config file to use", "<.\\masuco.json>");
+            AddValidArgument("run", true, description: "Run the copy process");
+            AddValidArgument("conf", false, description: "Path to the config file to use", valueExample: "<.\\masuco.json>");
 
             DefaultMethod = typeof(Program).GetMethod("Start");
             Expect.IsNotNull(DefaultMethod);

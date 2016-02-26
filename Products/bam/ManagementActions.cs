@@ -25,7 +25,7 @@ namespace bam
 	[Serializable]
 	public class ManagementActions : CommandLineTestInterface
 	{
-		[ConsoleAction("pt", "Pack toolkit")]
+		[ConsoleAction("packToolkit", "Pack toolkit")]
 		public void PackToolkit()
 		{
 			string root;
@@ -37,19 +37,19 @@ namespace bam
 			toolkit.Save(saveTo);
 		}
 
-		[ConsoleAction("ps", "Pack Server")]
+		[ConsoleAction("packServer", "Pack Server")]
 		public void PackServer()
 		{
 			throw new NotImplementedException();
 		}
 
-		[ConsoleAction("pa", "Pack application")]
+		[ConsoleAction("packApplication", "Pack application")]
 		public void PackApp()
 		{
 			throw new NotImplementedException();
 		}
 		
-		[ConsoleAction("ca", "Create application")]
+		[ConsoleAction("createApplication", "Create application")]
 		public void CreateApp()
 		{
 			BamServer server = new BamServer(BamConf.Load(GetRoot()));

@@ -2,20 +2,9 @@
 	Copyright © Bryan Apellanes 2015  
 */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Bam.Net;
-using Bam.Net.Web;
-using Bam.Net.Testing;
-using Bam.Net.Configuration;
-using Bam.Net.CommandLine;
 using System.IO;
-using System.Net.FtpClient;
 using Bam.Net.Logging;
-using System.Reflection;
-using Bam.Net.Testing.Integration;
+using Bam.Net.Testing;
 
 namespace Bam.Net.Tests
 {

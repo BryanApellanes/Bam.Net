@@ -30,9 +30,9 @@ namespace baminf
 
         public static void PreInit()
         {
-            AddValidArgument("sai", true, "Set assembly information");
-            AddValidArgument("baminfo.json", false, "Specify the path to the baminfo.json file (used to update nuspec files)");
-            AddValidArgument("v", false, "Set version", "1.0.0");
+            AddValidArgument("sai", true, description: "Set assembly information");
+            AddValidArgument("baminfo.json", false, description: "Specify the path to the baminfo.json file (used to update nuspec files)");
+            AddValidArgument("v", false, description: "Set version", valueExample: "1.0.0");
             AddValidArgument("root", "The root of the source tree");
             AddValidArgument("nuspecRoot", "The root directory to search for nuspec files");
         }

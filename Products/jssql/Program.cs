@@ -32,7 +32,7 @@ namespace Bam.Net.Server
 			Type type = typeof(Program);
 			AddSwitches(type);
 			AddConfigurationSwitches();
-			AddValidArgument("i", true, "interactive");
+			AddValidArgument("i", true, description: "interactive");
 
 			DefaultMethod = type.GetMethod("Interactive");
 

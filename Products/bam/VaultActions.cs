@@ -13,7 +13,7 @@ namespace bam
     [Serializable]
     public class VaultActions: CommandLineTestInterface
     {
-        [ConsoleAction("rv", "Read vault")]
+        [ConsoleAction("readVault", "Read vault")]
         public void ReadVault()
         {
             string vaultPath = GetVaultPath();

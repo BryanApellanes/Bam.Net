@@ -28,11 +28,11 @@ namespace Wrapify
             Type type = typeof(Program);
             AddSwitches(type);
             AddSwitches(typeof(ConsoleActions));
-            AddValidArgument("i", true, "interactive");
-            AddValidArgument("?", true, "usage");
+            AddValidArgument("i", true, description: "interactive");
+            AddValidArgument("?", true, description: "usage");
             AddValidArgument("root", "The root directory");
             AddValidArgument("config", "The config to use");
-            AddValidArgument("clean", true, "Clean up .wrapified files");
+            AddValidArgument("clean", true, description: "Clean up .wrapified files");
 
             DefaultMethod = type.GetMethod("Interactive");
 

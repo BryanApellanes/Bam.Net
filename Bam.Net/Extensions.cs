@@ -2060,6 +2060,33 @@ namespace Bam.Net
                 return string.Empty;
             }
         }
+        
+        /// <summary>
+        /// Return an acronym for the specified string using 
+        /// </summary>
+        /// <param name="stringToAcronymize"></param>
+        /// <param name="alwaysUseFirst"></param>
+        /// <returns></returns>
+        public static string CaseAcronym(this string stringToAcronymize, bool alwaysUseFirst = true)
+        {
+            if(stringToAcronymize.Length > 0)
+            {
+                StringBuilder result = new StringBuilder();
+                for(int i = 0; i < stringToAcronymize.Length; i++)
+                {
+                    char current = stringToAcronymize[i];
+                    if(i == 0 && alwaysUseFirst || char.IsUpper(current))
+                    {
+                        result.Append(current.ToString().ToUpperInvariant());
+                    }
+                }
+                return result.ToString();
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
 
         /// <summary>
         /// Returns a pascal cased string from the specified string using the specified 

@@ -5,9 +5,9 @@ call clean.cmd
 call set_assembly_version.cmd %1 %2 %3
 call set_nuspec_info.cmd %1 %2 %3
 call generate_nuget_scripts.cmd
-call build_solution.cmd Release v4.5 c:\src
-call build_toolkit.cmd
-call pack.cmd
+call build_solution.cmd Debug v4.5 c:\src
+call build_toolkit_debug.cmd
+call pack_debug.cmd
 
 echo "Ready to push Nuget packages"
 

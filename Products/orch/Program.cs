@@ -45,7 +45,7 @@ namespace foreman
 
             // the arguments protected member is not available in PreInit() (this method)
 
-            AddValidArgument("run", true, "Run the copy and rename process");
+            AddValidArgument("run", true, description: "Run the copy and rename process");
 
             DefaultMethod = typeof(Program).GetMethod("Start");
             Expect.IsNotNull(DefaultMethod);

@@ -1,17 +1,12 @@
 rem @echo off
 
-SET LIB=net40
-SET VER=v4.0
-SET NEXT=NEXT
-GOTO COPY
-
-:NEXT
 SET LIB=net45
 SET VER=v4.5
 SET NEXT=END
-GOTO COPY
 
-:COPY
+rmdir /S /Q .\BuildOutput
+rmdir /S /Q ..\..\Products\BUILD
+
 del /F /Q .\Bam.Net\lib\%LIB%\*
 del /F /Q .\Bam.Net.Analytics\lib\%LIB%\*
 del /F /Q .\Bam.Net.Automation\lib\%LIB%\*
@@ -39,13 +34,6 @@ del /F /Q .\Bam.Net.Testing\lib\%LIB%\*
 del /F /Q .\Bam.Net.UserAccounts\lib\%LIB%\*
 del /F /Q .\Bam.Net.Yaml\lib\%LIB%\*
 del /F /Q .\BamToolkit\lib\%LIB%\*
-
-GOTO %NEXT%
-
-:END
-
-rmdir /S /Q .\BuildOutput
-rmdir /S /Q ..\..\Products\BUILD
 
 RMDIR /S /Q ..\..\Bam.Net\obj\
 RMDIR /S /Q ..\..\Bam.Net.Analytics\obj\

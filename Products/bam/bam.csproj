@@ -78,6 +78,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArgumentAdder.cs" />
+    <Compile Include="BuildActions.cs" />
     <Compile Include="GlooActions.cs" />
     <Compile Include="PageClone.cs" />
     <Compile Include="UtilityActions.cs" />

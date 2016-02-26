@@ -28,7 +28,7 @@ namespace bam
 	[Serializable]
 	public class UtilityActions: CommandLineTestInterface
 	{
-		[ConsoleAction("get", "Download the specified url")]
+		[ConsoleAction("downloadUrl", "Download the specified url")]
 		public void Get()
 		{
 			string url = string.Empty;
@@ -77,7 +77,7 @@ namespace bam
 			}
 		}
 
-		[ConsoleAction("less", "Process .less files")]
+		[ConsoleAction("processLess", "Process .less files")]
 		public void ProcessDotLessFiles()
 		{
 			string folder = Prompt("Enter the folder path containing .less files");

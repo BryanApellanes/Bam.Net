@@ -24,7 +24,7 @@ namespace Bam.Net.Automation.Tests
     {
         static void Main(string[] args)
         {
-			AddValidArgument("t", true, "run all tests");
+			AddValidArgument("t", true, description: "run all tests");
 			DefaultMethod = typeof(Program).GetMethod("Start");
 
 			Initialize(args);

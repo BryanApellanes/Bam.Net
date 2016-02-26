@@ -44,10 +44,10 @@ namespace Bam.Net.Testing
 
 			interactive = false;
 
-			AddValidArgument("i", true, "Run interactively");
-			AddValidArgument("?", true, "Show usage");
-			AddValidArgument("t", true, "Run all unit tests");
-            AddValidArgument("it", true, "Run all integration tests");
+			AddValidArgument("i", true, description: "Run interactively");
+			AddValidArgument("?", true, description: "Show usage");
+			AddValidArgument("t", true, description: "Run all unit tests");
+            AddValidArgument("it", true, description: "Run all integration tests");
 
 			ParseArgs(args);
 			int? exitCode = AttachFailedHandler();

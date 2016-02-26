@@ -48,8 +48,8 @@ namespace rencopy
 
             // the arguments protected member is not available in PreInit() (this method)
 
-            AddValidArgument("run", true, "Run the copy and rename process");
-            AddValidArgument("conf", false, "Path to the config file to use", "<.\\rencopy.json>");
+            AddValidArgument("run", true, description: "Run the copy and rename process");
+            AddValidArgument("conf", false, description: "Path to the config file to use", valueExample: "<.\\rencopy.json>");
 
             DefaultMethod = typeof(Program).GetMethod("Start");
             Expect.IsNotNull(DefaultMethod);
