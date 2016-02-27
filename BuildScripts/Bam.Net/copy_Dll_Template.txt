@@ -4,6 +4,6 @@ IF [%1]==[] SET CONFIG=Release
 SET LIB=net45
 SET VER=v4.5
 
-MD Bam.Net.Analytics\lib\%LIB%
+MD {LibararyName}\lib\%LIB%
 copy /Y .\BuildOutput\%CONFIG%\%VER%\{LibraryName}.dll {LibraryName}\lib\%LIB%\{LibraryName}.dll
 copy /Y .\BuildOutput\%CONFIG%\%VER%\{LibraryName}.xml {LibraryName}\lib\%LIB%\{LibraryName}.xml
