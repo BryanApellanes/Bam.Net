@@ -1,0 +1,1750 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Bam.Net.ServiceProxy</name>
+    </assembly>
+    <members>
+        <member name="T:Bam.Net.ServiceProxy.DefaultUserResolver">
+            <summary>
+            Resolves the current user of the 
+            application by first trying the default
+            web user then, if nothing is returned 
+            returns the owner of the current process.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.DefaultWebUserResolver.GetCurrentUser">
+            <summary>
+            Gets the current web user as reported
+            by HttpContext.Current.User.Identity
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Bam.Net.ServiceProxy.MethodGenerationInfo">
+            <summary>
+            Provides meta data to code generators about a
+            particular method
+            </summary>
+        </member>
+        <member name="T:Bam.Net.ServiceProxy.Secure.ApiKeyRequiredAttribute">
+            <summary>
+            Attribute used to addorn classes or methods that require
+            authentication or authorization.
+            </summary>
+        </member>
+        <member name="T:Bam.Net.ServiceProxy.Secure.ApiKeyProvider">
+            <summary>
+            A class used to retrieve an applications Api Key and 
+            client Id to be used in SecureServiceProxy sessions.
+            Implementers of this class need only implement the
+            GetApplicationClientId and GetApplicationApiKey methods, 
+            retrieving each from an appropriate location.  For example,
+            the DefaultConfigurationApiKeyProvider retrieves this
+            information from the web.config or app.config file.
+            </summary>
+        </member>
+        <member name="P:Bam.Net.ServiceProxy.Secure.ApiKeyManager.UserResolver">
+            <summary>
+            The component used to resolve the current user
+            or the user of a specified IHttpContext based
+            on the session cookie therein
+            </summary>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ApiKey.GetUniqueFilter">
+            <summary>
+            Gets a query filter that should uniquely identify
+            the current instance.  The default implementation
+            compares the Id/key field to the current instance's.
+            </summary> 
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ApiKey.LoadAll(Bam.Net.Data.Database)">
+            <summary>
+            Return every record in the ApiKey table.
+            </summary>
+            <param name="database">
+            The database to load from or null
+            </param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ApiKey.Where(System.Func{Bam.Net.ServiceProxy.Secure.ApiKeyColumns,Bam.Net.Data.QueryFilter{Bam.Net.ServiceProxy.Secure.ApiKeyColumns}},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ApiKeyColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A Func delegate that recieves a ApiKeyColumns 
+            and returns a QueryFilter which is the result of any comparisons
+            between ApiKeyColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ApiKey.Where(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ApiKeyColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a ApiKeyColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ApiKeyColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ApiKey.Where(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ApiKeyColumns},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ApiKeyColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a ApiKeyColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ApiKeyColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.ServiceProxy.Secure.ApiKey.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.ServiceProxy.Secure.ApiKey.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ApiKey.OneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ApiKey.GetOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ApiKeyColumns},Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ApiKey.OneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ApiKeyColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  This method is most commonly used to retrieve a
+            single ApiKey instance by its Id/Key value
+            </summary>
+            <param name="where">A WhereDelegate that recieves a ApiKeyColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ApiKeyColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.ServiceProxy.Secure.ApiKey.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.ServiceProxy.Secure.ApiKey.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ApiKeyColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a ApiKeyColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ApiKeyColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ApiKey.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ApiKeyColumns},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ApiKeyColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a ApiKeyColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ApiKeyColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ApiKey.FirstOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ApiKeyColumns},Bam.Net.Data.Database)">
+            <summary>
+            Shortcut for Top(1, where, orderBy, database)
+            </summary>
+            <param name="where">A WhereDelegate that recieves a ApiKeyColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ApiKeyColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ApiKey.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ApiKeyColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number
+            of values. This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a ApiKeyColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ApiKeyColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ApiKey.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ApiKeyColumns},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ApiKeyColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a ApiKeyColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ApiKeyColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ApiKey.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ApiKeyColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ApiKey.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ApiKey.Count(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ApiKeyColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the number of results
+            </summary>
+            <param name="where">A WhereDelegate that recieves a ApiKeyColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ApiKeyColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Application.Create(System.String)">
+            <summary>
+            Creates an Application using ApiKeyManager.Default.CreateApplication
+            </summary>
+            <param name="applicationName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Application.GetUniqueFilter">
+            <summary>
+            Gets a query filter that should uniquely identify
+            the current instance.  The default implementation
+            compares the Id/key field to the current instance's.
+            </summary> 
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Application.LoadAll(Bam.Net.Data.Database)">
+            <summary>
+            Return every record in the Application table.
+            </summary>
+            <param name="database">
+            The database to load from or null
+            </param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Application.Where(System.Func{Bam.Net.ServiceProxy.Secure.ApplicationColumns,Bam.Net.Data.QueryFilter{Bam.Net.ServiceProxy.Secure.ApplicationColumns}},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ApplicationColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A Func delegate that recieves a ApplicationColumns 
+            and returns a QueryFilter which is the result of any comparisons
+            between ApplicationColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Application.Where(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ApplicationColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a ApplicationColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ApplicationColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Application.Where(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ApplicationColumns},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ApplicationColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a ApplicationColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ApplicationColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.ServiceProxy.Secure.Application.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.ServiceProxy.Secure.Application.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Application.OneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Application.GetOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ApplicationColumns},Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Application.OneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ApplicationColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  This method is most commonly used to retrieve a
+            single Application instance by its Id/Key value
+            </summary>
+            <param name="where">A WhereDelegate that recieves a ApplicationColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ApplicationColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.ServiceProxy.Secure.Application.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.ServiceProxy.Secure.Application.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ApplicationColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a ApplicationColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ApplicationColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Application.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ApplicationColumns},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ApplicationColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a ApplicationColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ApplicationColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Application.FirstOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ApplicationColumns},Bam.Net.Data.Database)">
+            <summary>
+            Shortcut for Top(1, where, orderBy, database)
+            </summary>
+            <param name="where">A WhereDelegate that recieves a ApplicationColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ApplicationColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Application.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ApplicationColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number
+            of values. This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a ApplicationColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ApplicationColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Application.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ApplicationColumns},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ApplicationColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a ApplicationColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ApplicationColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Application.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ApplicationColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Application.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Application.Count(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ApplicationColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the number of results
+            </summary>
+            <param name="where">A WhereDelegate that recieves a ApplicationColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ApplicationColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ConfigSetting.GetUniqueFilter">
+            <summary>
+            Gets a query filter that should uniquely identify
+            the current instance.  The default implementation
+            compares the Id/key field to the current instance's.
+            </summary> 
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ConfigSetting.LoadAll(Bam.Net.Data.Database)">
+            <summary>
+            Return every record in the ConfigSetting table.
+            </summary>
+            <param name="database">
+            The database to load from or null
+            </param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ConfigSetting.Where(System.Func{Bam.Net.ServiceProxy.Secure.ConfigSettingColumns,Bam.Net.Data.QueryFilter{Bam.Net.ServiceProxy.Secure.ConfigSettingColumns}},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ConfigSettingColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A Func delegate that recieves a ConfigSettingColumns 
+            and returns a QueryFilter which is the result of any comparisons
+            between ConfigSettingColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ConfigSetting.Where(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ConfigSettingColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a ConfigSettingColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ConfigSettingColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ConfigSetting.Where(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ConfigSettingColumns},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ConfigSettingColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a ConfigSettingColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ConfigSettingColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.ServiceProxy.Secure.ConfigSetting.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.ServiceProxy.Secure.ConfigSetting.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ConfigSetting.OneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ConfigSetting.GetOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ConfigSettingColumns},Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ConfigSetting.OneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ConfigSettingColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  This method is most commonly used to retrieve a
+            single ConfigSetting instance by its Id/Key value
+            </summary>
+            <param name="where">A WhereDelegate that recieves a ConfigSettingColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ConfigSettingColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.ServiceProxy.Secure.ConfigSetting.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.ServiceProxy.Secure.ConfigSetting.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ConfigSettingColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a ConfigSettingColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ConfigSettingColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ConfigSetting.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ConfigSettingColumns},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ConfigSettingColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a ConfigSettingColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ConfigSettingColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ConfigSetting.FirstOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ConfigSettingColumns},Bam.Net.Data.Database)">
+            <summary>
+            Shortcut for Top(1, where, orderBy, database)
+            </summary>
+            <param name="where">A WhereDelegate that recieves a ConfigSettingColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ConfigSettingColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ConfigSetting.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ConfigSettingColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number
+            of values. This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a ConfigSettingColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ConfigSettingColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ConfigSetting.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ConfigSettingColumns},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ConfigSettingColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a ConfigSettingColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ConfigSettingColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ConfigSetting.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ConfigSettingColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ConfigSetting.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ConfigSetting.Count(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ConfigSettingColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the number of results
+            </summary>
+            <param name="where">A WhereDelegate that recieves a ConfigSettingColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ConfigSettingColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Configuration.GetUniqueFilter">
+            <summary>
+            Gets a query filter that should uniquely identify
+            the current instance.  The default implementation
+            compares the Id/key field to the current instance's.
+            </summary> 
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Configuration.LoadAll(Bam.Net.Data.Database)">
+            <summary>
+            Return every record in the Configuration table.
+            </summary>
+            <param name="database">
+            The database to load from or null
+            </param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Configuration.Where(System.Func{Bam.Net.ServiceProxy.Secure.ConfigurationColumns,Bam.Net.Data.QueryFilter{Bam.Net.ServiceProxy.Secure.ConfigurationColumns}},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ConfigurationColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A Func delegate that recieves a ConfigurationColumns 
+            and returns a QueryFilter which is the result of any comparisons
+            between ConfigurationColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Configuration.Where(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ConfigurationColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a ConfigurationColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ConfigurationColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Configuration.Where(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ConfigurationColumns},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ConfigurationColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a ConfigurationColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ConfigurationColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.ServiceProxy.Secure.Configuration.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.ServiceProxy.Secure.Configuration.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Configuration.OneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Configuration.GetOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ConfigurationColumns},Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Configuration.OneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ConfigurationColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  This method is most commonly used to retrieve a
+            single Configuration instance by its Id/Key value
+            </summary>
+            <param name="where">A WhereDelegate that recieves a ConfigurationColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ConfigurationColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.ServiceProxy.Secure.Configuration.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.ServiceProxy.Secure.Configuration.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ConfigurationColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a ConfigurationColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ConfigurationColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Configuration.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ConfigurationColumns},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ConfigurationColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a ConfigurationColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ConfigurationColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Configuration.FirstOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ConfigurationColumns},Bam.Net.Data.Database)">
+            <summary>
+            Shortcut for Top(1, where, orderBy, database)
+            </summary>
+            <param name="where">A WhereDelegate that recieves a ConfigurationColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ConfigurationColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Configuration.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ConfigurationColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number
+            of values. This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a ConfigurationColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ConfigurationColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Configuration.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ConfigurationColumns},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ConfigurationColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a ConfigurationColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ConfigurationColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Configuration.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ConfigurationColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Configuration.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Configuration.Count(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ConfigurationColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the number of results
+            </summary>
+            <param name="where">A WhereDelegate that recieves a ConfigurationColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between ConfigurationColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="P:Bam.Net.ServiceProxy.Secure.SecureSession.CookieName">
+            <summary>
+            The name of the cookie used to hold the 
+            session identifier.  Returns ServiceProxySystem.SessionName
+            </summary>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.Get(Bam.Net.ServiceProxy.IHttpContext,Bam.Net.Instant)">
+            <summary>
+            Gets a SecureSession instance for the specified
+            context using context.Request creating the session if
+            necessary.
+            </summary>
+            <param name="context"></param>
+            <param name="instant"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.Get(Bam.Net.ServiceProxy.IRequest,Bam.Net.ServiceProxy.IResponse,Bam.Net.Instant)">
+            <summary>
+            Gets a SecureSession instance for the specified request
+            creating it if necessary.
+            </summary>
+            <param name="request"></param>
+            <param name="response"></param>
+            <param name="instant"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.Get(System.String,Bam.Net.Instant)">
+            <summary>
+            Gets a SecureSession with the specified sessionIdentifier creating it
+            if necessary
+            </summary>
+            <param name="sessionIdentifier"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.Encrypt(System.String)">
+            <summary>
+            Perform symmetric encryption on the specified plainText
+            </summary>
+            <param name="plainText"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.Decrypt(System.String)">
+            <summary>
+            Perform symmetric decryption on the specified cipher
+            </summary>
+            <param name="cipher"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.DecryptWithPrivateKey(System.String,Org.BouncyCastle.Crypto.IAsymmetricBlockCipher)">
+            <summary>
+            Perform asymmetric decryption on the specified cipher
+            </summary>
+            <param name="cipher"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.EncryptWithPublicKey(System.String,Org.BouncyCastle.Crypto.IAsymmetricBlockCipher)">
+            <summary>
+            Perform asymmetric encryption on the specified plainText
+            </summary>
+            <param name="plainText"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.GetUniqueFilter">
+            <summary>
+            Gets a query filter that should uniquely identify
+            the current instance.  The default implementation
+            compares the Id/key field to the current instance's.
+            </summary> 
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.LoadAll(Bam.Net.Data.Database)">
+            <summary>
+            Return every record in the SecureSession table.
+            </summary>
+            <param name="database">
+            The database to load from or null
+            </param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.Where(System.Func{Bam.Net.ServiceProxy.Secure.SecureSessionColumns,Bam.Net.Data.QueryFilter{Bam.Net.ServiceProxy.Secure.SecureSessionColumns}},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.SecureSessionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A Func delegate that recieves a SecureSessionColumns 
+            and returns a QueryFilter which is the result of any comparisons
+            between SecureSessionColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.Where(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.SecureSessionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a SecureSessionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between SecureSessionColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.Where(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.SecureSessionColumns},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.SecureSessionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a SecureSessionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between SecureSessionColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.ServiceProxy.Secure.SecureSession.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.OneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.GetOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.SecureSessionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.OneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.SecureSessionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  This method is most commonly used to retrieve a
+            single SecureSession instance by its Id/Key value
+            </summary>
+            <param name="where">A WhereDelegate that recieves a SecureSessionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between SecureSessionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.ServiceProxy.Secure.SecureSession.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.SecureSessionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a SecureSessionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between SecureSessionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.SecureSessionColumns},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.SecureSessionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a SecureSessionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between SecureSessionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.FirstOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.SecureSessionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Shortcut for Top(1, where, orderBy, database)
+            </summary>
+            <param name="where">A WhereDelegate that recieves a SecureSessionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between SecureSessionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.SecureSessionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number
+            of values. This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a SecureSessionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between SecureSessionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.SecureSessionColumns},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.SecureSessionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a SecureSessionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between SecureSessionColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.SecureSessionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.Count(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.SecureSessionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the number of results
+            </summary>
+            <param name="where">A WhereDelegate that recieves a SecureSessionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between SecureSessionColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="T:Bam.Net.ServiceProxy.Secure.SecureChannelConfig">
+            <summary>
+            Used to specify the SchemaInitializer for the underlying
+            SecureServiceProxy schema
+            </summary>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.SecureExecutionRequest.GetResultAs``1">
+            <summary>
+            Decrypts the result and returns it as the specified type T
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="T:Bam.Net.ServiceProxy.Secure.SecureServiceProxyClient`1">
+            <summary>
+            A secure service proxy client that uses application level encryption
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:Bam.Net.ServiceProxy.Secure.SecureServiceProxyClient`1.SessionKey">
+            <summary>
+            The key for the current session.
+            </summary>
+        </member>
+        <member name="P:Bam.Net.ServiceProxy.Secure.SecureServiceProxyClient`1.SessionIV">
+            <summary>
+            The initialization vector for the current session
+            </summary>
+        </member>
+        <member name="E:Bam.Net.ServiceProxy.Secure.SecureServiceProxyClient`1.StartSessionException">
+            <summary>
+            The event that is raised if an exception occurs starting the 
+            secure session.
+            </summary>
+        </member>
+        <member name="E:Bam.Net.ServiceProxy.Secure.SecureServiceProxyClient`1.InvocationException">
+            <summary>
+            The event that will occur if an exception occurs during
+            method invocation
+            </summary>
+        </member>
+        <member name="T:Bam.Net.ServiceProxy.Secure.SecureChannel">
+            <summary>
+            A secure communication channel.  Provides 
+            application layer encrypted communication
+            </summary>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.SecureChannel.InitializeDatabase(Bam.Net.Logging.ILogger)">
+            <summary>
+            Ensure that the SecureServiceProxy database is initialized
+            using the specified logger to output messages
+            </summary>
+            <param name="logger"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.SecureChannel.InitSession(Bam.Net.Instant)">
+            <summary>
+            Establish a secure session
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Bam.Net.ServiceProxy.Secure.SecureChannel.ServiceProvider">
+            <summary>
+            The incubator used for SecureChannel requests
+            </summary>
+        </member>
+        <member name="P:Bam.Net.ServiceProxy.Secure.ClientSessionInfo.SessionId">
+            <summary>
+            The database id of the SecureSession instance on the 
+            server
+            </summary>
+        </member>
+        <member name="P:Bam.Net.ServiceProxy.Secure.ClientSessionInfo.ClientIdentifier">
+            <summary>
+            The value of the session cookie
+            </summary>
+        </member>
+        <member name="P:Bam.Net.ServiceProxy.Secure.ClientSessionInfo.PublicKey">
+            <summary>
+            The server Rsa public key of the current session as a Pem string
+            </summary>
+        </member>
+        <member name="P:Bam.Net.ServiceProxy.Secure.RemoteApiKeyProvider.Behavior">
+            <summary>
+            Gets or sets the behavior for the current ApiKeyProvider
+            which determines what will be done if a request is made for
+            an api key and the specified applicationClientId is not 
+            found
+            </summary>
+        </member>
+        <member name="T:Bam.Net.ServiceProxy.Secure.ApiValidation">
+            <summary>
+            Class used to set and validate encryption validation
+            tokens
+            </summary>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ApiValidation.ValidateNonce(System.String,System.Int32)">
+            <summary>
+            Checks that the specified nonce is no more than
+            3 minutes in the past or future
+            </summary>
+            <param name="nonce"></param>
+            <param name="offset"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Bam.Net.ServiceProxy.ApiParameters">
+            <summary>
+            A class used to properly format parameters for service proxy calls
+            </summary>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ApiParameters.ParametersToJsonParamsObject(System.Object[])">
+            <summary>
+            Turn the specified parameter array into a JSON object in the form {jsonParams: &lt;json string array&gt;}.
+            Where &lt;json string array&gt; can be obtained by callig ParametersToJsonParamsArray(parameters)
+            </summary>
+            <param name="parameters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ApiParameters.ParametersToJsonParamsArray(System.Object[])">
+            <summary>
+            Returns an array of json strings that represent each parameter
+            </summary>
+            <param name="parameters"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Bam.Net.ServiceProxy.EchoData">
+            <summary>
+            This class exists for testing
+            </summary>
+        </member>
+        <member name="T:Bam.Net.ServiceProxy.ApiKeyRequiredEcho">
+            <summary>
+            Echo class that requires an api key
+            </summary>
+        </member>
+        <member name="T:Bam.Net.ServiceProxy.EncryptedEcho">
+            <summary>
+            Echo class that requires encryption when used as a service
+            </summary>
+        </member>
+        <member name="T:Bam.Net.ServiceProxy.Echo">
+            <summary>
+            Used specifically for testing ServiceProxy calls
+            </summary>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient.TranslateParameter(System.Object)">
+            <summary>
+            Convert the specified type into a string or a json string if
+            it is something other than a string or number (int, decimal, long)
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Bam.Net.ServiceProxy.ServiceProxyClient.BaseAddress">
+            <summary>
+            The BaseAddress to send requests to 
+            </summary>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient.GetFromJson``1(System.String)">
+            <summary>
+            Make a GET request to the specified path expecting json
+            and deserialize it as the specified generic type T
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="pathAndQuery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient.GetFromXml``1(System.String,System.Text.Encoding)">
+            <summary>
+            Make a GET request to the specified pathAndQuery expecting xml
+            and deserialize it as the specified generic type T
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="pathAndQuery"></param>
+            <param name="encoding"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient.PostFromJson``1(System.String,System.String)">
+            <summary>
+            Post the specified postData to the specified pathAndQuery expecting
+            json and deserializing it as the specified generic type T
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="pathAndQuery"></param>
+            <param name="postData"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient.PostFromXml``1(System.String,System.String)">
+            <summary>
+            Post the specified postData to the specified pathAndQuery expecting
+            json and deserializing it as the specified generic typ T
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="pathAndQuery"></param>
+            <param name="postData"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Bam.Net.ServiceProxy.ServiceProxyParameters">
+            <summary>
+            Encapsulates method and parameters for 
+            a ServiceProxy call
+            </summary>
+        </member>
+        <member name="T:Bam.Net.ServiceProxy.Js.PlaceHolder">
+            <summary>
+            Place holder for resource Js file.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Js.ResourceScripts.LoadScripts(System.Type)">
+            <summary>
+            Loads all resource scripts in the namespace path of the specified type.
+            </summary>
+            <param name="type"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxyController.RegisterServiceProxyRequestDelegate(System.String,Bam.Net.ServiceProxy.ExecutionResultDelegate,System.Boolean)">
+            <summary>
+            Register the specified handler to handle the specified file extension.
+            </summary>
+            <param name="extension"></param>
+            <param name="handler"></param>
+            <param name="reset"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxyController.Register(System.Reflection.Assembly)">
+            <summary>
+            Register all the types found in the specified assembly to 
+            handle FileExt requests.
+            </summary>
+            <param name="assembly"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxyController.JsProxies(System.Boolean)">
+            <summary>
+            The action to be referenced on the client to ensure all proxies
+            are registered on the current client page.
+            </summary>
+            <param name="min"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxyController.ServiceProxyJsResource(System.String,System.Boolean)">
+            <summary>
+            Get the resource script with the specified scriptName
+            </summary>
+            <param name="scriptName"></param>
+            <param name="min"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxyController.Post(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            The action that is executed for all ServiceProxy requests.  This method
+            returns an ActionResult based on the specified file extension.
+            </summary>
+            <param name="className"></param>
+            <param name="methodName"></param>
+            <param name="ext"></param>
+            <param name="jsonParams"></param>
+            <param name="view"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Bam.Net.ServiceProxy.ServiceProxyHelper">
+            <summary>
+            An empty extension entry point to extend ServiceProxyHelper
+            functionality
+            </summary>
+        </member>
+        <member name="T:Bam.Net.ServiceProxy.JsProxyResult">
+            <summary>
+            Used to render all registered javascript proxies to the client.
+            </summary>
+        </member>
+        <member name="P:Bam.Net.ServiceProxy.ServiceProxySystem.SecureSessionName">
+            <summary>
+            Used to identify a service proxy session.  This value is
+            used as the name of the cookie used to track ServiceProxy sessions.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxySystem.Initialize">
+            <summary>
+            Initialize the underlying ServiceProxySystem, including registering the 
+            necessary ServiceProxy routes in System.Web.Routing.RouteTable.Routes.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxySystem.RegisterRoutes">
+            <summary>
+            Maps the ServiceProxy routes in the default Mvc RouteTable.
+            This should be called from Global before setting the default
+            action route.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxySystem.RegisterRoutes(System.Web.Routing.RouteCollection)">
+            <summary>
+            Maps the ServiceProxy routes in the specified RouteCollection.
+            This should be called from Global before setting the default
+            action route.
+            </summary>
+        </member>
+        <member name="P:Bam.Net.ServiceProxy.ServiceProxySystem.Current">
+            <summary>
+            Provides an extension point to add functionality to the ServiceProxySystem
+            </summary>
+        </member>
+        <member name="P:Bam.Net.ServiceProxy.ServiceProxySystem.ProxySearchPattern">
+            <summary>
+            The search pattern used to find assemblies that host
+            service proxies (classes addorned with the ProxyAttribute custom attribute).
+            This value is retrieved from the config file, the default is "*.dll" if none
+            is provided.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxySystem.RegisterBinProviders">
+            <summary>
+            Analyzes all the files in the bin directory of the current app that match the
+            ProxySearchPattern and registers as services any class found addorned with the 
+            ProxyAttribute
+            </summary>
+            <see cref="P:Bam.Net.ServiceProxy.ServiceProxySystem.ProxySearchPattern" />
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxySystem.RegisterTypesWithAttributeFrom``1(System.String)">
+            <summary>
+            Searches the specified folder for assemblies that contain types 
+            addorned with the specified attribute and registers each as
+            services
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="folderPath"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxySystem.RegisterTypesWithAttributeFrom``1(System.IO.DirectoryInfo,Bam.Net.Logging.ILogger)">
+            <summary>
+            Searches the specified folder for assemblies that contain types 
+            addorned with the specified attribute and registers each as
+            services
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="dir"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxySystem.RegisterTypesWithAttribute``1(System.Reflection.Assembly)">
+            <summary>
+            Registers the types from the specified assemblyToLoadFrom that are addorned with
+            the specified generic type attribute T
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="assemblyToLoadFrom"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxySystem.Register(System.Type)">
+            <summary>
+            Register the specified type as a ServiceProxy responder.
+            </summary>
+            <param name="type"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxySystem.Register``1">
+            <summary>
+            Register the speicified generic type T as a ServiceProxy responder.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxySystem.Register``1(``0)">
+            <summary>
+            Register the instance of T.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="instance"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxySystem.RegisterServiceProxyRequestDelegate(System.String,Bam.Net.ServiceProxy.ExecutionResultDelegate,System.Boolean)">
+            <summary>
+            Register the specified handler to handle the specified file extension.
+            </summary>
+            <param name="extension"></param>
+            <param name="handler"></param>
+            <param name="reset"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxySystem.GetProxiedMethods(System.Type)">
+            <summary>
+            Get the MethodInfos for the specified type that will
+            be proxied if the specified type is registered as 
+            a service proxy.
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Bam.Net.ServiceProxy.ServiceProxySystem.Incubator">
+            <summary>
+            Gets or sets the default Incubator instance used by the ServiceProxy system.
+            </summary>
+        </member>
+        <member name="P:Bam.Net.ServiceProxy.ExecutionRequest.InputString">
+            <summary>
+            The input stream of the request read in as 
+            a string
+            </summary>
+        </member>
+        <member name="P:Bam.Net.ServiceProxy.ExecutionRequest.JsonParams">
+            <summary>
+            Should be set to an array of strings stringified twice.  Parsing as Json will return an array of strings,
+            each string can be individually parsed into separate objects
+            </summary>
+        </member>
+        <member name="P:Bam.Net.ServiceProxy.ExecutionRequest.Result">
+            <summary>
+            The result of executing the request
+            </summary>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.UrlHelperExtensions.Script(System.Web.Mvc.UrlHelper,System.String,System.Boolean)">
+            <summary>
+            Create a script tag
+            </summary>
+            <param name="helper">The helper being extended</param>
+            <param name="scriptName">The value to be used by the src attribute of the script tag</param>
+            <param name="addMinIfDebugDisabled">If true .min will be inserted before the .js extension only
+            if debugging is disabled</param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.UrlHelperExtensions.Proxy(System.Web.Mvc.UrlHelper,System.String,System.Boolean)">
+            <summary>
+            Register client side FileExt proxies for the specified className
+            </summary>
+            <param name="helper"></param>
+            <param name="className"></param>
+            <param name="min"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.UrlHelperExtensions.Proxies(System.Web.Mvc.UrlHelper,System.Boolean)">
+            <summary>
+            Register all FileExt proxies
+            </summary>
+            <param name="helper"></param>
+            <param name="min"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.UrlHelperExtensions.FileExt(System.Web.Mvc.UrlHelper)">
+            <summary>
+            Adds a reference to the FileExt.js script.  And registers all
+            proxies on the page.
+            </summary>
+            <param name="helper"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Bam.Net.ServiceProxy.ServiceProxyClient`1.ClassName">
+            <summary>
+            The name of the implementing class on the server.  If typeof(T)
+            is an interface as determined by typeof(T).IsInterface then it
+            is assumed that the classname equals typeof(T).Name.Substring(1)
+            which drops the first character of the name.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:Bam.Net.ServiceProxy.ServiceProxyClient`1.Numbered" -->
+        <!-- Badly formed XML comment ignored for member "P:Bam.Net.ServiceProxy.ServiceProxyClient`1.Named" -->
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient`1.Invoke``1(System.String,System.Object[])">
+            <summary>
+            Invoke the specified methodName on the server side
+            type T returning value of type T1
+            </summary>
+            <typeparam name="T1">The return type of the specified method</typeparam>
+            <param name="methodName">The name of the method to invoke</param>
+            <param name="parameters">parameters to be passed to the method</param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient`1.Invoke``1(System.String,System.String,System.Object[])">
+            <summary>
+            Invoke the specified methodName on the specified
+            server side className specified returning value of 
+            type T1
+            </summary>
+            <typeparam name="T1">The return type of the specified method</typeparam>
+            <param name="className">The name of the server side class to invoke the method on</param>
+            <param name="methodName">The name of the method to invoke</param>
+            <param name="parameters">parameters to be passed to the method</param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient`1.Invoke``1(System.String,System.String,System.String,System.Object[])">
+            <summary>
+            Invoke the specified methodName on the specified
+            server side className at the specified baseAddress
+            returning value of type T1
+            </summary>
+            <typeparam name="T1">The return type of the specified method</typeparam>
+            <param name="baseAddress">The base uri to send the request to</param>
+            <param name="className">The name of the server side class to invoke the method on</param>
+            <param name="methodName">The name of the method to invoke</param>
+            <param name="parameters">parameters to be passed to the method</param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient`1.Invoke(System.String,System.Object[])">
+            <summary>
+            Invoke the specified methodName on the server side
+            type T
+            </summary>
+            <param name="methodName"></param>
+            <param name="parameters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient`1.Invoke(System.String,System.String,System.Object[])">
+            <summary>
+            
+            </summary>
+            <param name="className"></param>
+            <param name="methodName"></param>
+            <param name="parameters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient`1.Invoke(System.String,System.String,System.String,System.Object[])">
+            <summary>
+            This method provides core method invoke functionality.  
+            </summary>
+            <param name="baseAddress"></param>
+            <param name="className"></param>
+            <param name="methodName"></param>
+            <param name="parameters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient`1.GetServiceProxyRequest(System.String,System.Object[])">
+            <summary>
+            Get an HttpWebRequest instance that represents a call to the 
+            specified methodName of the current generic type T
+            </summary>
+            <param name="methodName"></param>
+            <param name="parameters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient`1.GetServiceProxyRequest``1(System.String,System.Object[])">
+            <summary>
+            Get an HttpWebRequest for the specified server generic type ST
+            </summary>
+            <typeparam name="ST"></typeparam>
+            <param name="methodName"></param>
+            <param name="parameters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient`1.GetServiceProxyRequest``1(Bam.Net.ServiceProxy.ServiceProxyVerbs,System.String,System.String)">
+            <summary>
+            Get an HttpWebRequest for the specified server generic type ST
+            </summary>
+            <typeparam name="ST">The server type that will execute the request</typeparam>
+            <param name="verb"></param>
+            <param name="methodName"></param>
+            <param name="queryStringParameters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient`1.GetServiceProxyRequest(Bam.Net.ServiceProxy.ServiceProxyVerbs,System.String,System.String,System.String)">
+            <summary>
+            Get an HttpWebRequest for the specified server type of the specified className
+            </summary>
+            <param name="verb"></param>
+            <param name="className"></param>
+            <param name="methodName"></param>
+            <param name="queryStringParameters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient`1.GetServiceProxyResponse(System.Net.HttpWebRequest)">
+            <summary>
+            Gets the response for the specified request.  All ServiceProxy Post and Get calls result
+            in this method being called.
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient`1.OnGetting(Bam.Net.ServiceProxy.ServiceProxyEventArgs{`0})">
+            <summary>
+            Fires the Getting event 
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient`1.OnGot(Bam.Net.ServiceProxy.ServiceProxyEventArgs{`0})">
+            <summary>
+            Fires the Got event
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient`1.OnPosting(Bam.Net.ServiceProxy.ServiceProxyEventArgs{`0})">
+            <summary>
+            Fires the Getting event 
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient`1.OnPosted(Bam.Net.ServiceProxy.ServiceProxyEventArgs{`0})">
+            <summary>
+            Fires the Got event
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient`1.Post(System.String,System.String,System.String,System.Object[])">
+            <summary>
+            Post to the url representing the specified method call.  Content type used
+            will be "application/json; charset=utf-8";.  This can be overridden in a derived
+            class by overriding WriteJsonParams or GetServiceProxyResponse, each of which
+            is called after the ContentType is set on the request.
+            </summary>
+            <param name="baseAddress"></param>
+            <param name="className"></param>
+            <param name="methodName"></param>
+            <param name="parameters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient`1.WriteJsonParams(System.String,System.Net.HttpWebRequest)">
+            <summary>
+            Writes the specified jsonParamsString to the request stream of the
+            specified request.
+            </summary>
+            <param name="jsonParamsString"></param>
+            <param name="request"></param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient`1.NameParameters(System.String,System.Object[])">
+            <summary>
+            Names the specified parameters by aligning them with the
+            parameters of the specified methodName.  The keys of 
+            the resulting dictionary are the names of the parameters
+            defined in the specified methodName
+            </summary>
+            <param name="methodName"></param>
+            <param name="parameters"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
