@@ -1,1 +1,1 @@
-bam /generateNugetScripts /dnf:.\Dll_Names.txt /tf:.\copy_Dll_Template.txt
+bam /generateNugetScripts /dnf:.\dll_names.txt /enf:.\exe_names.txt /dtf:.\copy_dll_template.txt /etf:.\copy_exe_template.txt

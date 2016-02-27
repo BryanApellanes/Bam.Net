@@ -13,15 +13,17 @@ namespace bam
     [Serializable]
     public class BuildActions: CommandLineTestInterface
     {
-        internal class Dll
+        internal class AssemblyNameContainer
         {
             public string LibraryName { get; set; }
+            public string Ext { get; set; }
         }
 
         [ConsoleAction("generateNugetScripts", "Generate copy commands for build process")]
         public static void GenerateNugetScripts()
         {
-            string libraryPath = GetLibraryNameTextFilePath();
+            string dllListPath = GetDllNameTextFile();
+            string exeListPath = GetExeNameTextFile();
             string template = GetTemplateFilePath().SafeReadFile();
             string fileNameFormat = GetFileNameFormat();
             StringBuilder copyAllScript = new StringBuilder();
@@ -46,23 +48,18 @@ RMDIR /S /Q ..\..\Products\BUILD");
             pushScript.AppendLine(@"nuget push Z:\Workspace\NugetPackages\Push\BamToolkit.%1.nupkg");
 
             DirectoryInfo outputDir = new DirectoryInfo(GetOutputDirectory());
-            using (StreamReader sr = new StreamReader(libraryPath))
+            using (StreamReader sr = new StreamReader(dllListPath))
             {
                 while (!sr.EndOfStream)
                 {
-                    string libraryName = sr.ReadLine().Trim();
-                    string fileName = string.Format(fileNameFormat, libraryName);
-                    string filePath = Path.Combine(outputDir.FullName, fileName);
-                    string fileContent = template.NamedFormat(new Dll { LibraryName = libraryName });
-                    fileContent.SafeWriteToFile(filePath, true);
-                    copyAllScript.AppendLine($"call {fileName} %1");
-                    string packLine = $"nuget pack {libraryName}\\{libraryName}.nuspec";
-                    packScript.AppendLine(packLine);
-                    packScriptDebug.AppendLine(packLine);
-                    pushScript.AppendLine($"nuget push Z:\\Workspace\\NugetPackages\\Push\\{libraryName}.%1.nupkg");
-
-                    cleanScript.AppendLine($@"RMDIR / S / Q..\..\{libraryName}\obj\");
-                    cleanScript.AppendLine($@"del /F /Q .\{libraryName}\lib\%LIB%\*");
+                    Append(template, fileNameFormat, copyAllScript, cleanScript, packScript, packScriptDebug, pushScript, outputDir, sr, "dll");
+                }
+            }
+            using (StreamReader sr = new StreamReader(exeListPath))
+            {
+                while (!sr.EndOfStream)
+                {
+                    Append(template, fileNameFormat, copyAllScript, cleanScript, packScript, packScriptDebug, pushScript, outputDir, sr, "exe");
                 }
             }
 
@@ -77,6 +74,23 @@ call git_tag_version.cmd %1");
             cleanScript.ToString().SafeWriteToFile(Path.Combine(outputDir.FullName, "clean.cmd"), true);
         }
 
+        private static void Append(string template, string fileNameFormat, StringBuilder copyAllScript, StringBuilder cleanScript, StringBuilder packScript, StringBuilder packScriptDebug, StringBuilder pushScript, DirectoryInfo outputDir, StreamReader sr, string ext)
+        {
+            string libraryName = sr.ReadLine().Trim();
+            string fileName = string.Format(fileNameFormat, libraryName);
+            string filePath = Path.Combine(outputDir.FullName, fileName);
+            string fileContent = template.NamedFormat(new AssemblyNameContainer { LibraryName = libraryName, Ext = ext });
+            fileContent.SafeWriteToFile(filePath, true);
+            copyAllScript.AppendLine($"call {fileName} %1");
+            string packLine = $"nuget pack {libraryName}\\{libraryName}.nuspec";
+            packScript.AppendLine(packLine);
+            packScriptDebug.AppendLine(packLine);
+            pushScript.AppendLine($"nuget push Z:\\Workspace\\NugetPackages\\Push\\{libraryName}.%1.nupkg");
+
+            cleanScript.AppendLine($@"RMDIR /S /Q ..\..\{libraryName}\obj\");
+            cleanScript.AppendLine($@"del /F /Q .\{libraryName}\lib\%LIB%\*");
+        }
+
         private static StringBuilder GetPackScriptStart(string config = "Release")
         {
             StringBuilder packScript = new StringBuilder();
@@ -86,9 +100,15 @@ call git_tag_version.cmd %1");
             return packScript;
         }
 
-        private static string GetLibraryNameTextFilePath()
+        private static string GetDllNameTextFile()
         {
             string value = Arguments["dnf"].Or(Arguments["dllNamesFile"]);
+            return PromptIfNullOrEmpty(value, "Please enter the path to the dll names file");
+        }
+
+        private static string GetExeNameTextFile()
+        {
+            string value = Arguments["enf"].Or(Arguments["exeNamesFile"]);
             return PromptIfNullOrEmpty(value, "Please enter the path to the dll names file");
         }
 

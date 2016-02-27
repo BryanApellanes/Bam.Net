@@ -5,5 +5,5 @@ SET LIB=net45
 SET VER=v4.5
 
 MD {LibraryName}\lib\%LIB%
-copy /Y .\BuildOutput\%CONFIG%\%VER%\{LibraryName}.dll {LibraryName}\lib\%LIB%\{LibraryName}.dll
+copy /Y .\BuildOutput\%CONFIG%\%VER%\{LibraryName}.{Ext} {LibraryName}\lib\%LIB%\{LibraryName}.{Ext}
 copy /Y .\BuildOutput\%CONFIG%\%VER%\{LibraryName}.xml {LibraryName}\lib\%LIB%\{LibraryName}.xml
