@@ -26,6 +26,7 @@ namespace bam
             string fileNameFormat = GetFileNameFormat();
             StringBuilder copyAllScript = new StringBuilder();
             copyAllScript.AppendLine("@echo on");
+            copyAllScript.AppendLine("call copy_Bam.Net.Data.cmd %1");
             StringBuilder cleanScript = new StringBuilder();
             cleanScript.Append(@"@echo on
 SET LIB=net45
