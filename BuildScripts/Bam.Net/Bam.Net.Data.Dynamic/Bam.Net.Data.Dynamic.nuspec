@@ -12,7 +12,7 @@
     <releaseNotes>Fix dependency versions</releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2016</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.2.5" />
+      <dependency id="Bam.Net.Data" version="1.2.5" />
     </dependencies>
   </metadata>
 </package>

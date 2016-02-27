@@ -11,8 +11,6 @@ copy /Y .\BuildOutput\%CONFIG%\%VER%\Bam.Net.Data.Model.dll Bam.Net.Data\lib\%LI
 copy /Y .\BuildOutput\%CONFIG%\%VER%\Bam.Net.Data.Model.xml Bam.Net.Data\lib\%LIB%\Bam.Net.Data.Model.xml
 copy /Y .\BuildOutput\%CONFIG%\%VER%\Bam.Net.Data.MsSql.dll Bam.Net.Data\lib\%LIB%\Bam.Net.Data.MsSql.dll
 copy /Y .\BuildOutput\%CONFIG%\%VER%\Bam.Net.Data.MsSql.xml Bam.Net.Data\lib\%LIB%\Bam.Net.Data.MsSql.xml
-copy /Y .\BuildOutput\%CONFIG%\%VER%\Bam.Net.Data.Repositories.dll Bam.Net.Data\lib\%LIB%\Bam.Net.Data.Repositories.dll
-copy /Y .\BuildOutput\%CONFIG%\%VER%\Bam.Net.Data.Repositories.xml Bam.Net.Data\lib\%LIB%\Bam.Net.Data.Repositories.xml
 copy /Y .\BuildOutput\%CONFIG%\%VER%\Bam.Net.Data.Schema.dll Bam.Net.Data\lib\%LIB%\Bam.Net.Data.Schema.dll
 copy /Y .\BuildOutput\%CONFIG%\%VER%\Bam.Net.Data.Schema.xml Bam.Net.Data\lib\%LIB%\Bam.Net.Data.Schema.xml
 copy /Y .\BuildOutput\%CONFIG%\%VER%\Bam.Net.Data.SQLite.dll Bam.Net.Data\lib\%LIB%\Bam.Net.Data.SQLite.dll
