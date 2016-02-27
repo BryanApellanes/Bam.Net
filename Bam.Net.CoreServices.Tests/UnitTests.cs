@@ -56,7 +56,7 @@ namespace Bam.Net.CoreServices.Tests
         public void ShouldBeAbleToInstanciateProxy()
         {
             ProxyFactory serviceFactory = new ProxyFactory();
-            EncryptedEcho echoProvider = serviceFactory.GetService<EncryptedEcho>();
+            EncryptedEcho echoProvider = serviceFactory.GetProxy<EncryptedEcho>();
             Type echoType = echoProvider.GetType();
             Expect.IsTrue(echoType.Name.Contains("Proxy"), "Expected 'Proxy' to be in the type name: {0}"._Format(echoType.Name));
         }
@@ -65,7 +65,7 @@ namespace Bam.Net.CoreServices.Tests
         public void ShouldBeAbleToSetApiKeyResolver()
         {
             ProxyFactory serviceFactory = new ProxyFactory(".\\workspace_".RandomLetters(4), logger);
-            EncryptedEcho echo = serviceFactory.GetService<EncryptedEcho>();
+            EncryptedEcho echo = serviceFactory.GetProxy<EncryptedEcho>();
             ApiKeyResolver resolver = new ApiKeyResolver();
             echo.Property("ApiKeyResolver", resolver);
             ApiKeyResolver got = echo.Property<ApiKeyResolver>("ApiKeyResolver");
@@ -90,7 +90,7 @@ namespace Bam.Net.CoreServices.Tests
                     responder = resp;
                     responseCount++;
                 };
-                EncryptedEcho echo = serviceFactory.GetService<EncryptedEcho>("localhost");
+                EncryptedEcho echo = serviceFactory.GetProxy<EncryptedEcho>("localhost");
                 string value = "A random string: ".RandomLetters(8);
                 string response = echo.Send(value);
                 Expect.IsNotNull(response, "response was null");

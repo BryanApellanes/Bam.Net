@@ -37,13 +37,13 @@ namespace Bam.Net.CoreServices
         /// The directory to save temp and generated files in
         /// </summary>
         public string WorkspaceDirectory { get; private set; }
-        public T GetService<T>()
+        public T GetProxy<T>()
         {
             Assembly assembly = GetAssembly<T>();
             return ConstructProxy<T>(assembly);
         }
 
-        public T GetService<T>(string hostName, int port = 8080)
+        public T GetProxy<T>(string hostName, int port = 8080)
         {
             Assembly assembly = GetAssembly<T>(hostName, port);
             return ConstructProxy<T>(assembly);
