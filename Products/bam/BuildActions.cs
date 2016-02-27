@@ -38,6 +38,7 @@ RMDIR /S /Q ..\..\Products\BUILD");
             StringBuilder packScript = GetPackScriptStart();
             StringBuilder packScriptDebug = GetPackScriptStart("Debug");
             packScriptDebug.AppendLine("nuget pack Bam.Net.Data\\Bam.Net.Data.nuspec");
+
             StringBuilder pushScript = new StringBuilder();
             pushScript.AppendLine("@echo on");
             pushScript.AppendLine(@"nuget push Z:\Workspace\NugetPackages\Push\BamToolkit.%1.nupkg");

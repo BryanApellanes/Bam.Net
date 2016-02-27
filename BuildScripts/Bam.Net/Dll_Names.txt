@@ -3,6 +3,8 @@ Bam.Net.Automation
 Bam.Net
 Bam.Net.CommandLine
 Bam.Net.CoreServices
+Bam.Net.Data.Dynamic
+Bam.Net.Data.Repositories
 Bam.Net.Distributed
 Bam.Net.Drawing
 Bam.Net.Dust
