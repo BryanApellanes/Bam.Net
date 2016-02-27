@@ -6,6 +6,7 @@ Bam.Net.CoreServices
 Bam.Net.Data.Dynamic
 Bam.Net.Data.Repositories
 Bam.Net.Distributed
+Bam.Net.Documentation
 Bam.Net.Drawing
 Bam.Net.Dust
 Bam.Net.Encryption
