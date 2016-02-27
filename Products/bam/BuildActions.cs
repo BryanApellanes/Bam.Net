@@ -35,9 +35,11 @@ SET NEXT=END
 
 RMDIR /S /Q .\BuildOutput
 RMDIR /S /Q ..\..\Products\BUILD");
+            string packData = "nuget pack Bam.Net.Data\\Bam.Net.Data.nuspec";
             StringBuilder packScript = GetPackScriptStart();
+            packScript.AppendLine(packData);
             StringBuilder packScriptDebug = GetPackScriptStart("Debug");
-            packScriptDebug.AppendLine("nuget pack Bam.Net.Data\\Bam.Net.Data.nuspec");
+            packScriptDebug.AppendLine(packData);
 
             StringBuilder pushScript = new StringBuilder();
             pushScript.AppendLine("@echo on");
