@@ -514,7 +514,7 @@ The {ApplicationName} Team<br />
             }
         }
 
-        public dynamic GetUser()
+        public dynamic GetCurrent()
         {
             bool isAuthenticated = false;
             User user = Session.UserOfUserId;
