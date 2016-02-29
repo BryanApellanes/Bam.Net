@@ -129,6 +129,7 @@
     <Compile Include="automation_Generated\RunningJobCollection.cs" />
     <Compile Include="automation_Generated\RunningJobColumns.cs" />
     <Compile Include="BamInfo.cs" />
+    <Compile Include="AdvancedInstaller\BamToolkit.cs" />
     <Compile Include="ContinuousIntegration\continuousIntegration_Generated\BuildJob.cs" />
     <Compile Include="ContinuousIntegration\continuousIntegration_Generated\BuildJobCollection.cs" />
     <Compile Include="ContinuousIntegration\continuousIntegration_Generated\BuildJobColumns.cs" />

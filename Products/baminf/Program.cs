@@ -35,12 +35,14 @@ namespace baminf
             AddValidArgument("v", false, description: "Set version", valueExample: "1.0.0");
             AddValidArgument("root", "The root of the source tree");
             AddValidArgument("nuspecRoot", "The root directory to search for nuspec files");
+            AddValidArgument("aip", false, addAcronym: false, description: "The path to the aip (Advanced Installer Project) file");
+            AddValidArgument("smsiv", true, addAcronym: false, description: "Set msi version in aip (Advanced Installer Project) file");
         }
 
         #region do not modify
         public static void Start()
         {
-            if (Arguments.Contains("sai") || Arguments.Contains("baminfo.json"))
+            if (Arguments.Contains("sai") || Arguments.Contains("baminfo.json") || Arguments.Contains("smsiv"))
             {
                 if (Arguments.Contains("sai"))
                 {
@@ -50,6 +52,11 @@ namespace baminf
                 if (Arguments.Contains("baminfo.json"))
                 {
                     ConsoleActions.SetBamInfo();
+                }
+
+                if (Arguments.Contains("smsiv"))
+                {
+                    ConsoleActions.SetMsiVersion();
                 }
             }
             else

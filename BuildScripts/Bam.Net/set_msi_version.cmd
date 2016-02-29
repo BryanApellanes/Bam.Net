@@ -1,0 +1,1 @@
+baminf /smsiv /v:%1 /aip:%2\Bam.Net\Products\BamToolkit\BamToolkit.aip

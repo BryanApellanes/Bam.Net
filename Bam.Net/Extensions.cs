@@ -2062,7 +2062,7 @@ namespace Bam.Net
         }
         
         /// <summary>
-        /// Return an acronym for the specified string using 
+        /// Return an acronym for the specified string  
         /// </summary>
         /// <param name="stringToAcronymize"></param>
         /// <param name="alwaysUseFirst"></param>

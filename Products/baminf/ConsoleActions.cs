@@ -11,6 +11,7 @@ using Bam.Net.Encryption;
 using Bam.Net.Automation.Nuget;
 using Bam.Net.Automation;
 using System.Reflection;
+using Bam.Net.Automation.AdvancedInstaller;
 
 namespace baminf
 {
@@ -100,6 +101,20 @@ namespace baminf
             });
         }
 
+        [ConsoleAction("smsiv", "Set msi version")]
+        public static void SetMsiVersion()
+        {
+            string aipPath = GetAdvancedInstallerProjectFilePath();
+            DOCUMENT aip = aipPath.FromXmlFile<DOCUMENT>();
+            List<DOCUMENTCOMPONENTROW> rows = new List<DOCUMENTCOMPONENTROW>(aip.COMPONENT[0].ROW);
+            int versionRow = rows.FindIndex(r => r.Property.Equals("ProductVersion"));
+            DOCUMENTCOMPONENTROW row = rows[versionRow];
+            row.Value = GetVersion();
+            rows[versionRow] = row;
+            aip.COMPONENT[0].ROW = rows.ToArray();
+            aip.XmlSerialize(aipPath);
+        }
+
         private static void GetParameters(out string srcRoot, out string version, out string nuspecRoot)
         {
             srcRoot = GetSourceRoot();
@@ -120,6 +135,11 @@ namespace baminf
         private static string GetNuspecRoot()
         {
             return Arguments["nuspecRoot"] ?? Prompt("Please enter the root to search for nuspec files");
+        }
+
+        private static string GetAdvancedInstallerProjectFilePath()
+        {
+            return Arguments["aip"] ?? Prompt("Please enter the path to the aip (Advanced Installer Project) file");
         }
 
         #endregion
