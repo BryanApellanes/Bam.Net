@@ -8,6 +8,4 @@ call generate_nuget_scripts.cmd
 call build_solution.cmd Debug c:\src
 call pack_debug.cmd
 
-echo "Ready to push Nuget packages"
-
-echo "type 'push %1.%2.%3' when ready"
+echo "Debug Nuget packages created"

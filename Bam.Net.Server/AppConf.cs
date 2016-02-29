@@ -160,6 +160,7 @@ namespace Bam.Net.Server
 			}
 		}
 
+        public bool CompileTemplates { get; set; }
         public bool GenerateDao { get; set; }
 
         public bool CheckDaoHashes { get; set; }

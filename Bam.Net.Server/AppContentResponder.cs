@@ -151,7 +151,7 @@ namespace Bam.Net.Server
             OnAppInitializing();
             ExtractBaseApp();
             WriteAppScripts();
-            //WriteCompiledTemplates();
+            WriteCompiledTemplates();
 
             AppRoot.WriteFile("appConf.json", AppConf.ToJson(true));
 
@@ -297,6 +297,13 @@ namespace Bam.Net.Server
             return GetAppIncludes(AppConf);
         }
 
+        private void WriteCompiledTemplates()
+        {
+            if (AppConf.CompileTemplates)
+            {
+                AppConf.AppRoot.WriteFile("~/compiledTemplates.js", Regex.Unescape(AppDustRenderer.CompiledTemplates));
+            }
+        }
         private void WriteAppScripts()
         {
             HashSet<string> filePaths = new HashSet<string>();
