@@ -350,7 +350,7 @@ namespace Bam.Net.CommandLine
             foreach (ArgumentInfo argInfo in ValidArgumentInfo)
             {
                 string valueExample = string.IsNullOrEmpty(argInfo.ValueExample) ? string.Empty : string.Format(":{0}\r\n", argInfo.ValueExample);
-                OutLineFormat("/{0}{1}\t\t{2}", argInfo.Name, valueExample, argInfo.Description);
+                OutLineFormat("/{0}{1}\r\n    {2}", argInfo.Name, valueExample, argInfo.Description);
             }
         }
 

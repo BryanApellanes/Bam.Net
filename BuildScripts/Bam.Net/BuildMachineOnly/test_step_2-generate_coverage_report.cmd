@@ -1,6 +1,8 @@
 @echo off
+SET ROOT=%1
+IF [%1]==[] SET ROOT=C:\src
 C:
-cd C:\src\Bam.Net\BuildScripts\Bam.Net
+cd %ROOT%\Bam.Net\BuildScripts\Bam.Net
 call generate_coverage_report.cmd
 Z:
 cd \Workspace\Build

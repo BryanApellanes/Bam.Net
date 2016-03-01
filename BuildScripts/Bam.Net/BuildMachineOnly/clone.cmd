@@ -1,6 +1,10 @@
-c:
+SET BRANCH=%2
+IF [%2]==[] SET BRANCH=master
+SET ROOT=%1
+IF [%1]==[] SET ROOT=C:\src
+C:
 CD \
-RMDIR /S /Q C:\src
-MKDIR C:\src
-CD C:\src
-git clone --recursive git@github.com:BryanApellanes/Bam.Net.git
+RMDIR /S /Q %ROOT%
+MKDIR %ROOT%
+CD %ROOT%
+git clone -b %BRANCH% --recursive git@github.com:BryanApellanes/Bam.Net.git
