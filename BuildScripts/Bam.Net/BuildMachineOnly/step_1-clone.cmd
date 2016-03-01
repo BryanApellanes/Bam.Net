@@ -1,7 +1,11 @@
 @echo off
+SET BRANCH=%2
+IF [%2]==[] SET BRANCH=master
+SET ROOT=%1
+IF [%1]==[] SET ROOT=C:\src
 Z:
 cd \Workspace\Build
-call clone.cmd
+call clone.cmd %ROOT% %BRANCH%
 Z:
 cd \Workspace\Build
 

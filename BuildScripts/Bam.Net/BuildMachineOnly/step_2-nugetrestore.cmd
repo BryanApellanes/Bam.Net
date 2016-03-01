@@ -1,8 +1,10 @@
 @echo off
+SET ROOT=%1
+IF [%1]==[] SET ROOT=C:\src
 SET EnableNuGetPackageRestore=true
 Z:
 cd \Workspace\Build
-call nugetrestore.cmd
+call nugetrestore.cmd %ROOT%
 Z:
 cd \Workspace\Build
 
