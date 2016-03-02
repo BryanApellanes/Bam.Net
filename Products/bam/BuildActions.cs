@@ -13,6 +13,7 @@ namespace bam
     [Serializable]
     public class BuildActions: CommandLineTestInterface
     {
+        const string NugetReleaseDirectory = @"Z:\Workspace\NugetPackages\Push\";
         internal class AssemblyNameContainer
         {
             public string LibraryName { get; set; }
@@ -45,7 +46,7 @@ RMDIR /S /Q ..\..\Products\BUILD");
 
             StringBuilder pushScript = new StringBuilder();
             pushScript.AppendLine("@echo on");
-            pushScript.AppendLine(@"nuget push Z:\Workspace\NugetPackages\Push\BamToolkit.%1.nupkg");
+            pushScript.AppendLine($@"nuget push {NugetReleaseDirectory}\Push\BamToolkit.%1.nupkg");
 
             DirectoryInfo outputDir = new DirectoryInfo(GetOutputDirectory());
             using (StreamReader sr = new StreamReader(dllListPath))
@@ -85,7 +86,7 @@ call git_tag_version.cmd %1");
             string packLine = $"nuget pack {libraryName}\\{libraryName}.nuspec";
             packScript.AppendLine(packLine);
             packScriptDebug.AppendLine(packLine);
-            pushScript.AppendLine($"nuget push Z:\\Workspace\\NugetPackages\\Push\\{libraryName}.%1.nupkg");
+            pushScript.AppendLine($"nuget push {NugetReleaseDirectory}{libraryName}.%1.nupkg");
 
             cleanScript.AppendLine($@"RMDIR /S /Q ..\..\{libraryName}\obj\");
             cleanScript.AppendLine($@"del /F /Q .\{libraryName}\lib\%LIB%\*");

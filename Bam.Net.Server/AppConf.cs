@@ -31,7 +31,7 @@ namespace Bam.Net.Server
 			this.RenderLayoutBody = true;
 			this.DefaultLayout = DefaultLayoutConst;
 			this.DefaultPage = DefaultPageConst;
-			this.ServiceProxySearchPatterns = new string[] { "*Services.dll", "*Proxyables.dll" };
+			this.ServiceSearchPattern = new string[] { "*Services.dll", "*Proxyables.dll" };
         }
 
         public AppConf(string name, int port = 8080, bool ssl = false)
@@ -167,7 +167,7 @@ namespace Bam.Net.Server
 
 		public bool RenderLayoutBody { get; set; }
 
-		public string[] ServiceProxySearchPatterns
+		public string[] ServiceSearchPattern
 		{
 			get;
 			set;

@@ -28,7 +28,7 @@ namespace Bam.Net.Server
     /// </summary>
     public class ServiceProxyResponder : ResponderBase, IInitialize<ServiceProxyResponder>
     {
-        const string ServiceProxyRelativePath = "~/services";
+        public const string ServiceProxyRelativePath = "~/services";
         const string MethodFormPrefixFormat = "/{0}/MethodForm";
 
         static ServiceProxyResponder()
@@ -173,7 +173,7 @@ namespace Bam.Net.Server
 
         public void ClearAppServices()
         {
-            _appServiceProviders.Clear();            
+            _appServiceProviders.Clear();
         }
 
         public void ClearCommonServices()
@@ -365,30 +365,30 @@ namespace Bam.Net.Server
         private void ForEachProxiedClass(Action<Type> doForEachProxiedType)
         {
             string serviceProxyRelativePath = ServiceProxyRelativePath;
-            DirectoryInfo ctrlrDir = new DirectoryInfo(ServerRoot.GetAbsolutePath(serviceProxyRelativePath));
-            if (ctrlrDir.Exists)
+            DirectoryInfo serviceDir = new DirectoryInfo(ServerRoot.GetAbsolutePath(serviceProxyRelativePath));
+            if (serviceDir.Exists)
             {
-                ForEachProxiedClass(ctrlrDir, doForEachProxiedType);
+                ForEachProxiedClass(serviceDir, doForEachProxiedType);
             }
             else
             {
-                Logger.AddEntry("{0}:{1} directory was not found", LogEventType.Warning, this.Name, ctrlrDir.FullName);
+                Logger.AddEntry("{0}:{1} directory was not found", LogEventType.Warning, this.Name, serviceDir.FullName);
             }
         }
 
-        private void ForEachProxiedClass(AppConf appConf, DirectoryInfo ctrlrDir, Action<Type> doForEachProxiedType)
+        private void ForEachProxiedClass(AppConf appConf, DirectoryInfo serviceDir, Action<Type> doForEachProxiedType)
         {
-            foreach (string searchPattern in appConf.ServiceProxySearchPatterns)
+            foreach (string searchPattern in appConf.ServiceSearchPattern)
             {
-                ForEachProxiedClass(searchPattern, ctrlrDir, doForEachProxiedType);
+                ForEachProxiedClass(searchPattern, serviceDir, doForEachProxiedType);
             }
         }
 
-        private void ForEachProxiedClass(DirectoryInfo ctrlrDir, Action<Type> doForEachProxiedType)
+        private void ForEachProxiedClass(DirectoryInfo serviceDir, Action<Type> doForEachProxiedType)
         {
             foreach (string searchPattern in BamConf.ServiceSearchPattern.DelimitSplit(",", "|"))
             {
-                ForEachProxiedClass(searchPattern, ctrlrDir, doForEachProxiedType);
+                ForEachProxiedClass(searchPattern, serviceDir, doForEachProxiedType);
             }
         }
 
@@ -401,11 +401,11 @@ namespace Bam.Net.Server
                 for (int i = 0; i < ol; i++)
                 {
                     FileInfo file = files[i];
-                    Assembly controllerAssembly = Assembly.LoadFrom(file.FullName);
-                    Type[] controllerTypes = (from type in controllerAssembly.GetTypes()
+                    Assembly serviceAssemlby = Assembly.LoadFrom(file.FullName);
+                    Type[] serviceTypes = (from type in serviceAssemlby.GetTypes()
                                               where type.HasCustomAttributeOfType<ProxyAttribute>()
                                               select type).ToArray();
-                    controllerTypes.Each(t =>
+                    serviceTypes.Each(t =>
                     {
                         ProxyAttribute attr = t.GetCustomAttributeOfType<ProxyAttribute>();
                         if (!string.IsNullOrEmpty(attr.VarName))
@@ -769,6 +769,6 @@ namespace Bam.Net.Server
             LayoutConf defaultLayoutConf = new LayoutConf(conf);
             LayoutModel layoutModel = defaultLayoutConf.CreateLayoutModel();
             return layoutModel;
-        }        
+        }
     }
 }

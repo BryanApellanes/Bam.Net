@@ -22,6 +22,7 @@ using System.Web;
 using System.Net;
 using CsQuery;
 using dotless.Core;
+using Bam.Net.Configuration;
 
 namespace bam
 {
