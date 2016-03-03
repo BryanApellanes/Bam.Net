@@ -1,4 +1,4 @@
-rem %1 major, %2 minor, %3 patch
+rem %1 major, %2 minor, %3 patch, %4 root
 SET ROOT=%4
 IF [%4]==[] SET ROOT=C:\src
 C:
