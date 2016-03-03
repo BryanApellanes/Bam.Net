@@ -342,7 +342,7 @@ namespace Bam.Net.Server
 
         private void AddConfiguredServiceProxyTypes(AppConf appConf)
         {
-            appConf.ServiceProxyTypeNames.Each(typeName =>
+            appConf.ServiceTypeNames.Each(typeName =>
             {
                 Type type = Type.GetType(typeName);
                 if (type != null)

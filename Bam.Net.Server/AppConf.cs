@@ -23,10 +23,10 @@ namespace Bam.Net.Server
 
         public AppConf()
         {
-            this._serviceProxyTypeNames = new List<string>();
+            this._serviceTypeNames = new List<string>();
             this._schemaInitializers = new List<SchemaInitializer>();
-            this._serviceProxyTypeNames.Add(typeof(Echo).AssemblyQualifiedName);
-            this._serviceProxyTypeNames.Add(typeof(EncryptedEcho).AssemblyQualifiedName);
+            this._serviceTypeNames.Add(typeof(Echo).AssemblyQualifiedName);
+            this._serviceTypeNames.Add(typeof(EncryptedEcho).AssemblyQualifiedName);
 
 			this.RenderLayoutBody = true;
 			this.DefaultLayout = DefaultLayoutConst;
@@ -173,16 +173,16 @@ namespace Bam.Net.Server
 			set;
 		}
 
-        List<string> _serviceProxyTypeNames;
-        public string[] ServiceProxyTypeNames
+        List<string> _serviceTypeNames;
+        public string[] ServiceTypeNames
         {
             get
             {
-                return _serviceProxyTypeNames.ToArray();
+                return _serviceTypeNames.ToArray();
             }
             set
             {
-                _serviceProxyTypeNames = new List<string>(value);
+                _serviceTypeNames = new List<string>(value);
             }
         }
 
