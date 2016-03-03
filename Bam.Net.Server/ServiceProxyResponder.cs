@@ -321,9 +321,13 @@ namespace Bam.Net.Server
                 {
                     Action<Type> serviceAdder = (type) =>
                     {
-                        object instance = type.Construct();
-                        SubscribeIfLoggable(instance);
-                        this.AddAppService(appConf.Name, instance);
+                        object instance;
+                        if (type.TryConstruct(out instance,
+                            ex => Logger.AddEntry("RegisterProxiedClasses: Unable to construct instance of type {0}: {1}", ex, type.Name, ex.Message)))
+                        {
+                            SubscribeIfLoggable(instance);
+                            AddAppService(appConf.Name, instance);
+                        }
                     };
                     ForEachProxiedClass(appServicesDir, serviceAdder);
                     ForEachProxiedClass(appConf, appServicesDir, serviceAdder);
@@ -344,10 +348,11 @@ namespace Bam.Net.Server
                 if (type != null)
                 {
                     object instance = null;
-                    if (type.TryConstruct(out instance))
+                    if (type.TryConstruct(out instance,
+                        ex => Logger.AddEntry("AddConfiguredServiceProxyTypes: Unable to construct instance of type {0}: {1}", ex, type.Name, ex.Message)))
                     {
                         SubscribeIfLoggable(instance);
-                        this.AddAppService(appConf.Name, instance);
+                        AddAppService(appConf.Name, instance);
                     }
                 }
             });

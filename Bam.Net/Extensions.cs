@@ -823,14 +823,20 @@ namespace Bam.Net
 
         public static bool TryConstruct(this Type type, out object constructed, params object[] ctorParams)
         {
+            return type.TryConstruct(out constructed, ex => { }, ctorParams);
+        }
+
+        public static bool TryConstruct(this Type type, out object constructed, Action<Exception> catcher, params object[] ctorParams)
+        {
             bool result = true;
             constructed = null;
             try
             {
                 constructed = Construct(type, ctorParams);
             }
-            catch
+            catch(Exception ex)
             {
+                catcher(ex);
                 result = false;
             }
 
@@ -839,14 +845,20 @@ namespace Bam.Net
 
         public static bool TryConstruct<T>(this Type type, out T constructed, params object[] ctorParams)
         {
+            return type.TryConstruct(out constructed, ex => { }, ctorParams);
+        }
+
+        public static bool TryConstruct<T>(this Type type, out T constructed, Action<Exception> catcher, params object[] ctorParams)
+        {
             bool result = true;
             constructed = default(T);
             try
             {
                 constructed = Construct<T>(type, ctorParams);
             }
-            catch //(Exception ex)
+            catch (Exception ex)
             {
+                catcher(ex);
                 result = false;
             }
 
