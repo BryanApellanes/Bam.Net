@@ -343,7 +343,7 @@ namespace Bam.Net.Data.Repositories
 					{
 						Meta.SetUuid(child);
 						SetParentProperties(parent, child);
-						ChildWriter(child);//ObjectReaderWriter.Enqueue(child);						
+						ChildWriter(child);						
 					}
 				}
 			}
@@ -360,9 +360,9 @@ namespace Bam.Net.Data.Repositories
 				{
 					foreach (object obj in collection)
 					{
-						ChildWriter(new Meta(obj, ObjectReaderWriter));//ObjectReaderWriter.Enqueue(new Meta(obj, ObjectReaderWriter));
+						ChildWriter(new Meta(obj, ObjectReaderWriter));
 						XrefInfo xrefInfo = new XrefInfo(parent, obj, MetaProvider.GetMeta(parent).Hash, MetaProvider.GetMeta(obj).Hash);
-						ChildWriter(xrefInfo);//ObjectReaderWriter.Enqueue(xrefInfo);
+						ChildWriter(xrefInfo);
 					}
 				}
 			}
@@ -375,9 +375,9 @@ namespace Bam.Net.Data.Repositories
 				{
 					foreach (object obj in collection)
 					{
-						ChildWriter(new Meta(obj, ObjectReaderWriter));// ObjectReaderWriter.Enqueue(new Meta(obj, ObjectReaderWriter));
+						ChildWriter(new Meta(obj, ObjectReaderWriter));
 						XrefInfo xrefInfo = new XrefInfo(obj, parent, MetaProvider.GetMeta(obj).Hash, MetaProvider.GetMeta(parent).Hash);
-						ChildWriter(xrefInfo);// ObjectReaderWriter.Enqueue(xrefInfo);
+						ChildWriter(xrefInfo);
 					}
 				}
 			}

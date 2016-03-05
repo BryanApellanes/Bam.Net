@@ -25,15 +25,16 @@ namespace Bam.Net.Data.Repositories
         HashSet<Assembly> _additonalReferenceAssemblies;
         public TypeDaoGenerator(ITypeTableNameProvider tableNameProvider = null, ILogger logger = null)
         {
-			_daoGenerator = new DaoGenerator();
-			_pocoGenerator = new PocoGenerator();
+            Namespace = "TypeDaos";
+            _daoGenerator = new DaoGenerator(Namespace);
+			_pocoGenerator = new PocoGenerator(Namespace);
 			_schemaGenerator = new TypeSchemaGenerator(tableNameProvider);
             _additonalReferenceAssemblies = new HashSet<Assembly>();
-			this.Namespace = "TypeDaos";
-			this._types = new List<Type>();
+			
+			_types = new List<Type>();
 			if (logger != null)
 			{
-				this.Subscribe(logger);
+				Subscribe(logger);
 			}
         }
 
