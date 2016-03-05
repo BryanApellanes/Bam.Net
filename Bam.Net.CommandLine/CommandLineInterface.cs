@@ -28,6 +28,16 @@ namespace Bam.Net.CommandLine
             ValidArgumentInfo = new List<ArgumentInfo>();
         }
 
+        public static string GetArgument(string name, string promptMessage = null)
+        {
+            string acronym = name.CaseAcronym();
+            string fromConfig = DefaultConfiguration.GetAppSetting(name, "").Or(DefaultConfiguration.GetAppSetting(acronym, ""));
+            return Arguments.Contains(name) ? Arguments[name] : 
+                Arguments.Contains(acronym) ? Arguments[acronym] : 
+                !string.IsNullOrEmpty(fromConfig) ? fromConfig:  
+                Prompt(promptMessage ?? $"Please enter a value for {name}");
+        }
+
         /// <summary>
         /// Represents arguments after parsing with a call to ParseArgs.  Arguments should be 
         /// passed in on the command line in the format /&lt;name&gt;:&lt;value&gt;.

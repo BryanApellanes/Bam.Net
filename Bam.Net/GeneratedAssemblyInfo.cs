@@ -63,13 +63,13 @@ namespace Bam.Net
 
 		Assembly _assembly;
 
-		internal Assembly Assembly
+		public Assembly Assembly
 		{
 			get
 			{
 				return _assembly;
 			}
-			set
+			internal set
 			{
 				_assembly = value;
 			}
@@ -112,21 +112,21 @@ namespace Bam.Net
         /// Get the generated assembly for the specified fileName using the
         /// specified generator to generate it if necessary
         /// </summary>
-        /// <param name="fileName"></param>
+        /// <param name="infoFileName"></param>
         /// <param name="generator"></param>
         /// <returns></returns>
-        public static GeneratedAssemblyInfo GetGeneratedAssembly(string fileName, IAssemblyGenerator generator)
+        public static GeneratedAssemblyInfo GetGeneratedAssembly(string infoFileName, IAssemblyGenerator generator)
         {
-            GeneratedAssemblyInfo assemblyInfo = GeneratedAssemblies.GetGeneratedAssemblyInfo(fileName);
+            GeneratedAssemblyInfo assemblyInfo = GeneratedAssemblies.GetGeneratedAssemblyInfo(infoFileName);
 
             if (assemblyInfo == null)
             {
-                assemblyInfo = new GeneratedAssemblyInfo(fileName);
+                assemblyInfo = new GeneratedAssemblyInfo(infoFileName);
                 // check for the info file
                 if (assemblyInfo.InfoFileExists) // load it from file if it exists
                 {
                     assemblyInfo = assemblyInfo.InfoFilePath.FromJsonFile<GeneratedAssemblyInfo>();
-                    if (!assemblyInfo.InfoFileName.Equals(fileName) || !assemblyInfo.AssemblyExists) // regenerate if the names don't match
+                    if (!assemblyInfo.InfoFileName.Equals(infoFileName) || !assemblyInfo.AssemblyExists) // regenerate if the names don't match
                     {
                         assemblyInfo = generator.GenerateAssembly();
                     }
@@ -137,7 +137,7 @@ namespace Bam.Net
                 }
             }
 
-            GeneratedAssemblies.SetAssemblyInfo(fileName, assemblyInfo);
+            GeneratedAssemblies.SetAssemblyInfo(infoFileName, assemblyInfo);
             return assemblyInfo;
         }
 	}

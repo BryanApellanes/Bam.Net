@@ -28,6 +28,20 @@ namespace Bam.Net.Incubation
             inc.Set(typeof(I), inc.Construct(typeof(T)));
             return inc;
         }
+
+        public Incubator Returns<T>(Func<T> instanciator)
+        {
+            Incubator inc = Incubator ?? new Incubator();
+            inc.Set(instanciator);
+            return inc;
+        }
+
+        public Incubator Returns<T>(Func<Incubator, T> instanciator)
+        {
+            Incubator inc = Incubator ?? new Incubator();
+            inc.Set<T>(() => instanciator(inc));
+            return inc;
+        }
         /// <summary>
         /// Specify the return type T for the specified 
         /// type I ( same as Returns )

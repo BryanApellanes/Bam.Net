@@ -163,6 +163,7 @@
     <Compile Include="IAssemblyGenerator.cs" />
     <Compile Include="Instant.cs" />
     <Compile Include="IpcMessageLockInfo.cs" />
+    <Compile Include="IWriteSource.cs" />
     <Compile Include="Logging\ClientLogger.cs" />
     <Compile Include="ApplicationDiagnosticInfo.cs" />
     <Compile Include="Logging\ILoggable.cs" />

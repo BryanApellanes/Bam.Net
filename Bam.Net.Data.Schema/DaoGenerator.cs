@@ -74,10 +74,10 @@ namespace Bam.Net.Data.Schema
             };
         }
         
-        public DaoGenerator(string ns)
+        public DaoGenerator(string nameSpace)
             : this()
         {
-            this.Namespace = ns;
+            this.Namespace = nameSpace;
         }
 
         public DaoGenerator(string ns, Action<string> resultInspector)

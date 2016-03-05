@@ -162,13 +162,14 @@
             <param name="instance"></param>
             <param name="logger"></param>
         </member>
-        <member name="M:Bam.Net.CommandLine.CommandLineInterface.AddValidArgument(System.String,System.Boolean,System.String,System.String)">
+        <member name="M:Bam.Net.CommandLine.CommandLineInterface.AddValidArgument(System.String,System.Boolean,System.Boolean,System.String,System.String)">
             <summary>
             Makes the specified name a valid command line argument.  Command line
             arguments are assumed to be in the format /&lt;name&gt;:&lt;value&gt;.
             </summary>
             <param name="name">The name of the command line argument.</param>
             <param name="allowNull">If true no value for the specified name is necessary.</param>
+            <param name="addAcronym">Add another valid argument of the acronym of the specified name</param>
         </member>
         <member name="T:Bam.Net.CommandLine.ConsoleAction">
             <summary>

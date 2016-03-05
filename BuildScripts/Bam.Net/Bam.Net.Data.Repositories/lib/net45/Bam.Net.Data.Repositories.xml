@@ -50,6 +50,12 @@
             Defines an event named GenerateDaoAssemblySucceeded
             </summary>
         </member>
+        <member name="M:Bam.Net.Data.Repositories.LuceneIndex.#ctor(System.String)">
+            <summary>
+            Instantiate a new LuceneIndex
+            </summary>
+            <param name="indexDirectoryPath"></param>
+        </member>
         <member name="T:Bam.Net.Data.Repositories.ITypeTableNameProvider">
             <summary>
             An interface to be implemented by types that provide
@@ -94,10 +100,30 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Bam.Net.Data.Repositories.DaoToDtoGenerator.WriteDtoSource(System.IO.DirectoryInfo)">
+            <summary>
+            Write dto source code to the specified directory
+            </summary>
+            <param name="dir"></param>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.DaoToDtoGenerator.WriteDtoSource(System.String)">
+            <summary>
+            Write dto source code to the specified directory
+            </summary>
+            <param name="writeSourceTo"></param>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.DaoToDtoGenerator.WriteDtoSource(System.String,System.String)">
+            <summary>
+            Write dto source code into the specified namespace placing files into the specified directory
+            </summary>
+            <param name="nameSpace"></param>
+            <param name="writeSourceTo"></param>
+        </member>
         <member name="T:Bam.Net.Data.Repositories.PocoGenerator">
             <summary>
             A class used to generate Poco type wrappers which 
-            enable lazy loading of IEnumerable properties.
+            enable lazy loading of IEnumerable properties.  This type
+            is not thread safe
             </summary>
         </member>
         <member name="P:Bam.Net.Data.Repositories.PocoModel.LeftXrefs">
