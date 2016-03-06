@@ -806,7 +806,7 @@ namespace Bam.Net.Server
 
         public void AddAppService<T>(string appName)
         {
-            ServiceProxyResponder.AddAppService<T>(appName, (T)typeof(T).Construct());
+            ServiceProxyResponder.AddAppService<T>(appName, () => (T)typeof(T).Construct());
         }
 
         public void AddAppService<T>(string appName, T instance)

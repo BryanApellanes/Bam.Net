@@ -162,6 +162,14 @@ namespace Bam.Net.Server
             }
         }
 
+        public void AddAppService(string appName, Type type, Func<object> instanciator)
+        {
+            if (_appServiceProviders.ContainsKey(appName))
+            {
+                _appServiceProviders[appName].Set(type, instanciator);
+            }
+        }
+
         public void AddAppService(string appName, Type type, object instance)
         {
             if (_appServiceProviders.ContainsKey(appName))
@@ -299,36 +307,25 @@ namespace Bam.Net.Server
             return true;
         }
 
-
         public void RegisterProxiedClasses()
         {
+            string caller = MethodBase.GetCurrentMethod().Name;
             string serviceProxyRelativePath = ServiceProxyRelativePath;
             List<string> registered = new List<string>();
             ForEachProxiedClass((type) =>
             {
-                this.AddCommonService(type, type.Construct());
+                AddCommonService(type, type.Construct());
             });
 
             BamConf.AppConfigs.Each(appConf =>
             {
                 string name = appConf.Name.ToLowerInvariant();
-                Incubator serviceProvider = new Incubator();
-
                 AppServiceProviders[name] = new Incubator();
 
                 DirectoryInfo appServicesDir = new DirectoryInfo(appConf.AppRoot.GetAbsolutePath(serviceProxyRelativePath));
                 if (appServicesDir.Exists)
                 {
-                    Action<Type> serviceAdder = (type) =>
-                    {
-                        object instance;
-                        if (type.TryConstruct(out instance,
-                            ex => Logger.AddEntry("RegisterProxiedClasses: Unable to construct instance of type {0}: {1}", ex, type.Name, ex.Message)))
-                        {
-                            SubscribeIfLoggable(instance);
-                            AddAppService(appConf.Name, instance);
-                        }
-                    };
+                    Action<Type> serviceAdder = (type) => AddServiceInstanciator(appConf, type, caller);
                     ForEachProxiedClass(appServicesDir, serviceAdder);
                     ForEachProxiedClass(appConf, appServicesDir, serviceAdder);
                 }
@@ -340,21 +337,28 @@ namespace Bam.Net.Server
             });
         }
 
+        private void AddServiceInstanciator(AppConf appConf, Type type, string caller = null)
+        {
+            caller = caller ?? MethodBase.GetCurrentMethod().Name;
+            Func<Type, object> instanciator = (t) =>
+            {
+                object inst;
+                if (t.TryConstruct(out inst,
+                    ex => Logger.AddEntry("{0}: Unable to construct instance of type {1}: {2}", ex, caller, type.Name, ex.Message)))
+                {
+                    SubscribeIfLoggable(inst);
+                }
+                return inst;
+            };
+            AddAppService(appConf.Name, instanciator);
+        }
+
         private void AddConfiguredServiceProxyTypes(AppConf appConf)
         {
             appConf.ServiceTypeNames.Each(typeName =>
             {
                 Type type = Type.GetType(typeName);
-                if (type != null)
-                {
-                    object instance = null;
-                    if (type.TryConstruct(out instance,
-                        ex => Logger.AddEntry("AddConfiguredServiceProxyTypes: Unable to construct instance of type {0}: {1}", ex, type.Name, ex.Message)))
-                    {
-                        SubscribeIfLoggable(instance);
-                        AddAppService(appConf.Name, instance);
-                    }
-                }
+                AddServiceInstanciator(appConf, type, MethodBase.GetCurrentMethod().Name);
             });
         }
 
