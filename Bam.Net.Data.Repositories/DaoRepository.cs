@@ -30,33 +30,65 @@ namespace Bam.Net.Data.Repositories
 	public class DaoRepository : Repository, IGeneratesDaoAssembly
 	{
 		TypeDaoGenerator _typeDaoGenerator;
-		public DaoRepository()
-		{
-			this.WarningsAsErrors = true;
-			this._typeDaoGenerator = new TypeDaoGenerator();
-			this._typeDaoGenerator.GenerateDaoAssemblySucceeded += (o, a) =>
-			{
-				GenerateDaoAssemblyEventArgs args = (GenerateDaoAssemblyEventArgs)a;
-				FireEvent(GenerateDaoAssemblySucceeded, args);
-			};
-		}
+        public DaoRepository()
+        {
+            WarningsAsErrors = true;
+            _typeDaoGenerator = new TypeDaoGenerator();
+            _typeDaoGenerator.GenerateDaoAssemblySucceeded += (o, a) =>
+            {
+                GenerateDaoAssemblyEventArgs args = (GenerateDaoAssemblyEventArgs)a;
+                FireEvent(GenerateDaoAssemblySucceeded, args);
+            };
+        }
+        public DaoRepository(Database database, ILogger logger = null, string schemaName = null, ITypeTableNameProvider tableNameProvider = null)
+            : this()
+        {
+            Database = database;
+            Logger = logger ?? Log.Default;
+            Subscribe(logger);
+            SchemaName = schemaName;
+            TableNameProvider = tableNameProvider ?? new DaoSuffixTypeTableNameProvider();
+        }
 
-		public DaoRepository(Database database, ILogger logger = null)
-			: this()
-		{
-			this.Database = database;
-            this.Logger = logger;
-			this.Subscribe(logger);			
-		}
+        public string DaoNameSpace
+        {
+            get
+            {
+                return _typeDaoGenerator.Namespace;
+            }
+            set
+            {
+                _typeDaoGenerator.Namespace = value;
+            }
+        }
+
+        public string SchemaName
+        {
+            get
+            {
+                return _typeDaoGenerator.SchemaName;
+            }
+            set
+            {
+                _typeDaoGenerator.SchemaName = value;
+            }
+        }
+
+        public ITypeTableNameProvider TableNameProvider
+        {
+            get
+            {
+                return _typeDaoGenerator.TableNameProvider;
+            }
+            set
+            {
+                _typeDaoGenerator.TableNameProvider = value;
+            }
+        }
 
 		public bool WarningsAsErrors { get; set; }
 
 		public Database Database { get; set; }
-
-		public Assembly GetDaoAssembly()
-		{
-			return EnsureDaoAssembly();
-		}
 
 		[Verbosity(VerbosityLevel.Information)]
 		public event EventHandler GenerateDaoAssemblySucceeded;		
@@ -86,7 +118,6 @@ namespace Bam.Net.Data.Repositories
 		{
 			get
 			{
-				EnsureDaoAssembly();
 				return _typeDaoGenerator.SchemaDefinitionCreateResult.MissingColumns;
 			}
 		}
@@ -95,7 +126,7 @@ namespace Bam.Net.Data.Repositories
 		{
 			get
 			{
-				EnsureDaoAssembly();
+				EnsureDaoAssemblyAndSchema();
 				return _typeDaoGenerator.SchemaDefinitionCreateResult.Warnings;
 			}
 		}
@@ -159,23 +190,30 @@ namespace Bam.Net.Data.Repositories
         /// storable types if it has not yet been generated
         /// </summary>
         /// <returns></returns>
-		public Assembly EnsureDaoAssembly()
+		public Assembly EnsureDaoAssemblyAndSchema()
 		{
-			if (_daoAssembly == null)
-			{
-				Initialize();
-				_daoAssembly = _typeDaoGenerator.GetDaoAssembly();
-				MultiTargetLogger logger = new MultiTargetLogger();
-				Subscribers.Each(l => logger.AddLogger(l));
-				EmitWarnings();
-				ThrowWarningsIfWarningsAsErrors();
-				Database.TryEnsureSchema(_daoAssembly.GetTypes().First(type => type.HasCustomAttributeOfType<TableAttribute>()), logger);
-			}
+            if (_daoAssembly == null)
+            {
+                GenerateDaoAssembly();
+                MultiTargetLogger logger = new MultiTargetLogger();
+                Subscribers.Each(l => logger.AddLogger(l));
+                EmitWarnings();
+                ThrowWarningsIfWarningsAsErrors();
+                Args.ThrowIfNull(Database, "Database");
+                Database.TryEnsureSchema(_daoAssembly.GetTypes().First(type => type.HasCustomAttributeOfType<TableAttribute>()), logger);
+            }
 
-			return _daoAssembly;
+            return _daoAssembly;
 		}
 
-		bool isInitialized;
+        public Assembly GenerateDaoAssembly()
+        {
+            Initialize();
+            _daoAssembly = _typeDaoGenerator.GetDaoAssembly();
+            return _daoAssembly;
+        }
+
+        bool isInitialized;
 		readonly object _initLock = new object();
 		public void Initialize()
 		{
@@ -435,7 +473,7 @@ namespace Bam.Net.Data.Repositories
 
 		public Type GetDaoType(Type pocoType)
 		{
-			Assembly daoAssembly = EnsureDaoAssembly();
+			Assembly daoAssembly = EnsureDaoAssemblyAndSchema();
 			Type daoType = daoAssembly.GetType("{0}.{1}Dao"._Format(_typeDaoGenerator.Namespace, pocoType.Name));
 			return daoType;
 		}

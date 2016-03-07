@@ -178,6 +178,7 @@
     <Compile Include="Razor\RazorParser.cs" />
     <Compile Include="Razor\RazorRenderer.cs" />
     <Compile Include="Razor\RazorTemplate.cs" />
+    <Compile Include="SQLiteBitMonitor.cs" />
     <Compile Include="Validate.cs" />
     <Compile Include="Web\CookieEnabledWebClient.cs">
       <SubType>Component</SubType>

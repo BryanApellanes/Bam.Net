@@ -45,7 +45,7 @@ namespace Bam.Net.Testing.Repository
 			};
 
 			AddStorableTypes(_repository);
-			_repository.EnsureDaoAssembly();
+			_repository.EnsureDaoAssemblyAndSchema();
 			this.Repository = _repository;
 		}
 		

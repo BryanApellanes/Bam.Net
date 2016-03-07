@@ -17,6 +17,7 @@ using System.IO;
 using System.Reflection;
 using Bam.Net.Data;
 using Bam.Net.Data.SQLite;
+using Bam.Net.Logging;
 
 namespace Bam.Net.Data.Repositories.Tests
 {
@@ -86,12 +87,32 @@ namespace Bam.Net.Data.Repositories.Tests
     [Serializable]
     public class DaoRepositoryUnitTests : CommandLineTestInterface
     {
+        [UnitTest]
+        public void SchemaNameShouldBeSet()
+        {
+            string schemaName = "TheSchemaName_".RandomLetters(5);
+            DaoRepository repo = new DaoRepository(new SQLiteDatabase(".", MethodBase.GetCurrentMethod().Name), Log.Default, schemaName);
+            Expect.AreEqual(schemaName, repo.SchemaName);
+        }
+
+        [UnitTest]
+        public void SchemaNameShouldBeUsed()
+        {            
+            string schemaName = "TheSchemaName_".RandomLetters(5);
+            DaoRepository repo = new DaoRepository(new SQLiteDatabase(".", MethodBase.GetCurrentMethod().Name), Log.Default, schemaName);
+            repo.WarningsAsErrors = false;
+            repo.AddType<Parent>();
+            Assembly daoAssembly = repo.GenerateDaoAssembly();
+            Type type = daoAssembly.GetTypes().FirstOrDefault(t => t.HasCustomAttributeOfType<TableAttribute>());
+            Expect.IsNotNull(type);
+            Expect.AreEqual(schemaName, Dao.ConnectionName(type));
+        }
 
         [UnitTest]
         public void RetrieveShouldSetParentOnChildren()
         {
             DaoRepository repo = GetTestDaoRepository();
-            repo.EnsureDaoAssembly();
+            repo.EnsureDaoAssemblyAndSchema();
             Parent parent = new Parent();
             parent.Name = "Test parent";
             Son one = new Son();
@@ -108,7 +129,7 @@ namespace Bam.Net.Data.Repositories.Tests
         public void ParentSaveShouldSaveChildren()
         {
             DaoRepository repo = GetTestDaoRepository();
-            repo.EnsureDaoAssembly();
+            repo.EnsureDaoAssemblyAndSchema();
             Parent parent = new Parent();
             parent.Name = "Parent Name";
             Son sonOne = new Son();
@@ -124,7 +145,7 @@ namespace Bam.Net.Data.Repositories.Tests
         public void SavingParentShouldSaveChildLists()
         {
             DaoRepository repo = GetTestDaoRepository();
-            repo.EnsureDaoAssembly();
+            repo.EnsureDaoAssemblyAndSchema();
             House house = new House { Name = "TestHouse", Parents = new List<Parent> { new Parent { Name = "TestParent" } } };
             repo.Save(house);
 
@@ -136,7 +157,7 @@ namespace Bam.Net.Data.Repositories.Tests
         public void SavingParentXrefShouldSetChildXref()
         {
             DaoRepository repo = GetTestDaoRepository();
-            repo.EnsureDaoAssembly();
+            repo.EnsureDaoAssemblyAndSchema();
             House house = new House { Name = "TestHouse", Parents = new List<Parent> { new Parent { Name = "TestParent" } } };
             repo.Save(house);
 
@@ -149,7 +170,7 @@ namespace Bam.Net.Data.Repositories.Tests
         public void RepoShouldBeQueryable()
         {
             DaoRepository repo = GetTestDaoRepository();
-            repo.EnsureDaoAssembly();
+            repo.EnsureDaoAssemblyAndSchema();
 
             House one = new House { Name = "Get This One" };
             House two = new House { Name = "Get This Too" };
@@ -357,7 +378,7 @@ namespace Bam.Net.Data.Repositories.Tests
         public void ShouldBeAbleToReflectOverGeneratedDaoAssembly()
         {
             DaoRepository daoRepo = GetTestDaoRepository();
-            Assembly daoAssembly = daoRepo.EnsureDaoAssembly();
+            Assembly daoAssembly = daoRepo.EnsureDaoAssemblyAndSchema();
             Type[] types = daoAssembly.GetTypes();
             foreach (Type type in types)
             {

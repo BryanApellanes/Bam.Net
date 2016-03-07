@@ -30,6 +30,10 @@ namespace Bam.Net.Data.Repositories
             {
                 return _tableNameProvider;
             }
+            set
+            {
+                _tableNameProvider = value;
+            }
         }
 
         /// <summary>

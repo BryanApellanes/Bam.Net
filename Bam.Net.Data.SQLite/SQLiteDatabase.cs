@@ -20,7 +20,7 @@ namespace Bam.Net.Data.SQLite
     {
         static SQLiteDatabase()
         {
-            SQLiteRegistrar.MonitorBitness();
+            SQLiteBitMonitor.MonitorBitness();
         }
         /// <summary>
         /// Instantiate a new SQLiteDatabase instance where the database
@@ -32,7 +32,7 @@ namespace Bam.Net.Data.SQLite
         public SQLiteDatabase(string directoryPath, string connectionName)
             : base()
         {
-            SQLiteRegistrar.MonitorBitness();
+            SQLiteBitMonitor.MonitorBitness();
             DirectoryInfo directory = new DirectoryInfo(directoryPath);
             if (!directory.Exists)
             {

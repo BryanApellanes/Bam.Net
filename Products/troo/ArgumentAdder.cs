@@ -16,9 +16,11 @@ namespace troo
 
         private static void AddUtilityArguments()
         {
-            AddValidArgument("daoAssembly", false, addAcronym: true, description: "The path to the dao assembly");
-            AddValidArgument("sourceDir", false, addAcronym: true, description: "The path to the directory to write source files to");
-            AddValidArgument("compile", true, addAcronym: false, description: "If specified the source will be compiled to a dll suffixed by 'Dto' and the source deleted");
+            AddValidArgument("typeAssembly", false, addAcronym: true, description: "The path to the dao assembly");
+            AddValidArgument("schemaName", false, addAcronym: true, description: "The name to use for the generated schema");
+            AddValidArgument("fromNameSpace", false, addAcronym: true, description: "The namespace containing types to generate daos for");
+            AddValidArgument("toNameSpace", false, addAcronym: true, description: "The namespace to write generated daos into");
+            AddValidArgument("copyTo", false, addAcronym: true, description: "Copy the resulting assembly to the specified directory");
         }
     }
 }

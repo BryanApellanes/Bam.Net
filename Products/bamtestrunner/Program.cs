@@ -203,7 +203,7 @@ namespace Bam.Net.Testing
             string directory = Arguments.Contains("data") ? Arguments["data"] : ".";
             _repo = new DaoRepository(new SQLiteDatabase(directory, "{0}_{1}"._Format(filePrefix, DateTime.Now.Date.ToString("MM_dd_yyyy"))));
             _repo.AddType(typeof(UnitTestResult));
-            _repo.EnsureDaoAssembly();
+            _repo.EnsureDaoAssemblyAndSchema();
         }
 
         private static FileInfo[] GetTestFiles(DirectoryInfo testDir)

@@ -3,7 +3,9 @@
 */
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.CommandLine;
@@ -63,6 +65,5 @@ namespace Bam.Net.Data.Repositories.Tests
 			DtoModel model = new DtoModel(o, "Test");
 			OutLine(model.Render());
 		}
-
-	}
+    }
 }
