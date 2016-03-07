@@ -237,7 +237,7 @@
             or missing foreign key columns (as represented by a property on the class)
             </summary>
         </member>
-        <member name="M:Bam.Net.Data.Repositories.DaoRepository.EnsureDaoAssembly">
+        <member name="M:Bam.Net.Data.Repositories.DaoRepository.EnsureDaoAssembly(System.Boolean)">
             <summary>
             Generates a Dao Assembly for the the underlying 
             storable types if it has not yet been generated
