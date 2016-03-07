@@ -13,6 +13,8 @@ using Bam.Net.Data;
 using Bam.Net.Logging;
 using Bam.Net.ServiceProxy;
 using Bam.Net.Server;
+using Newtonsoft.Json;
+using System.Xml.Serialization;
 
 namespace Bam.Net.Server
 {
@@ -54,7 +56,7 @@ namespace Bam.Net.Server
             set;
         }
 
-        internal ILogger Logger
+        public ILogger Logger
         {
             get
             {
@@ -71,7 +73,9 @@ namespace Bam.Net.Server
 
         Fs _appRoot;
         object _appRootLock = new object();
-        internal Fs AppRoot
+        [JsonIgnore]
+        [XmlIgnore]
+        public Fs AppRoot
         {
             get
             {
