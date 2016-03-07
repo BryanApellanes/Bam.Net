@@ -357,9 +357,9 @@ namespace Bam.Net.Server
                         }
                     }
 
-                    IAppInitializer initializer = appInitializer.Construct<IAppInitializer>();
+                    IInitialize initializer = appInitializer.Construct<IInitialize>();
                     initializer.Subscribe(Logger);
-                    initializer.Initialize(ac);
+                    initializer.Initialize();
                 }
                 OnAppInitialized(ac);
             });

@@ -124,7 +124,6 @@
     <Compile Include="AppConfApplicationNameProvider.cs" />
     <Compile Include="AppContentResponder.cs" />
     <Compile Include="AppInitializerBase.cs" />
-    <Compile Include="IAppInitializer.cs" />
     <Compile Include="Bam.cs" />
     <Compile Include="BamController.cs" />
     <Compile Include="BootstrapIcons.cs" />
