@@ -3,12 +3,15 @@
 */
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.CommandLine;
 using Bam.Net.Testing;
 using Bam.Net.Yaml;
+using Stickerize.Business.TypeSchema;
 
 namespace Bam.Net.Data.Repositories.Tests
 {
@@ -64,5 +67,19 @@ namespace Bam.Net.Data.Repositories.Tests
 			OutLine(model.Render());
 		}
 
-	}
+        [ConsoleAction("Generate Dao assembly")]
+        public void GenerateDaoAssemlby()
+        {
+            DaoRepository repo = new DaoRepository();
+            repo.AddNamespace(typeof(Sticker));
+            Assembly daoAssembly = repo.GetDaoAssembly();
+            FileInfo file = daoAssembly.GetFileInfo();
+            string fileName = $".\\{file.Name}";
+            if (File.Exists(fileName))
+            {
+                File.Delete(fileName);
+            }
+            file.CopyTo(fileName);
+        }
+    }
 }

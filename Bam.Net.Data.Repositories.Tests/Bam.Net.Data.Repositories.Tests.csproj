@@ -221,6 +221,16 @@
     <Compile Include="Test_Generated\TernaryObjectQuery.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TypeSchema\Sticker.cs" />
+    <Compile Include="TypeSchema\Stickerizable.cs" />
+    <Compile Include="TypeSchema\StickerizableCategory.cs" />
+    <Compile Include="TypeSchema\StickerizableList.cs" />
+    <Compile Include="TypeSchema\StickerizableListSection.cs" />
+    <Compile Include="TypeSchema\Stickerization.cs" />
+    <Compile Include="TypeSchema\Stickerizee.cs" />
+    <Compile Include="TypeSchema\Stickerizer.cs" />
+    <Compile Include="TypeSchema\StickerizeReward.cs" />
+    <Compile Include="TypeSchema\StickerizeRewardProgram.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bam.Net.Analytics\Bam.Net.Analytics.csproj">

@@ -30,22 +30,17 @@ namespace Bam.Net.Data.Repositories
 	public class DaoRepository : Repository, IGeneratesDaoAssembly
 	{
 		TypeDaoGenerator _typeDaoGenerator;
-		public DaoRepository()
+		public DaoRepository(Database database, string schemaName, ITypeTableNameProvider tableNameProvider, ILogger logger = null)
 		{
-			this.WarningsAsErrors = true;
-			this._typeDaoGenerator = new TypeDaoGenerator();
-			this._typeDaoGenerator.GenerateDaoAssemblySucceeded += (o, a) =>
-			{
-				GenerateDaoAssemblyEventArgs args = (GenerateDaoAssemblyEventArgs)a;
-				FireEvent(GenerateDaoAssemblySucceeded, args);
-			};
-		}
-
-		public DaoRepository(Database database, ILogger logger = null)
-			: this()
-		{
-			this.Database = database;
-            this.Logger = logger;
+            this.WarningsAsErrors = true;
+            this._typeDaoGenerator = new TypeDaoGenerator { TableNameProvider = tableNameProvider, SchemaName = schemaName };
+            this._typeDaoGenerator.GenerateDaoAssemblySucceeded += (o, a) =>
+            {
+                GenerateDaoAssemblyEventArgs args = (GenerateDaoAssemblyEventArgs)a;
+                FireEvent(GenerateDaoAssemblySucceeded, args);
+            };
+            this.Database = database;
+            this.Logger = logger ?? Log.Default;
 			this.Subscribe(logger);			
 		}
 
@@ -159,7 +154,7 @@ namespace Bam.Net.Data.Repositories
         /// storable types if it has not yet been generated
         /// </summary>
         /// <returns></returns>
-		public Assembly EnsureDaoAssembly()
+		public Assembly EnsureDaoAssembly(bool ensureSchema = true)
 		{
 			if (_daoAssembly == null)
 			{
@@ -169,7 +164,11 @@ namespace Bam.Net.Data.Repositories
 				Subscribers.Each(l => logger.AddLogger(l));
 				EmitWarnings();
 				ThrowWarningsIfWarningsAsErrors();
-				Database.TryEnsureSchema(_daoAssembly.GetTypes().First(type => type.HasCustomAttributeOfType<TableAttribute>()), logger);
+                if (ensureSchema)
+                {
+                    Args.ThrowIfNull(Database, "Database");
+                    Database.TryEnsureSchema(_daoAssembly.GetTypes().First(type => type.HasCustomAttributeOfType<TableAttribute>()), logger);
+                }
 			}
 
 			return _daoAssembly;
