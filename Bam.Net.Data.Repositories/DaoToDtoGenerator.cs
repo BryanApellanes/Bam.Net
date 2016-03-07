@@ -19,7 +19,7 @@ namespace Bam.Net.Data.Repositories
     /// Intended primarily to enable backup of
     /// Daos to an ObjectRepository
     /// </summary>
-    public class DaoToDtoGenerator : Loggable, IAssemblyGenerator
+    public class DaoToDtoGenerator : Loggable, IAssemblyGenerator, IWriteSource
     {
         public DaoToDtoGenerator() { }
 
@@ -51,6 +51,10 @@ namespace Bam.Net.Data.Repositories
         /// </summary>
         public string TempDir { get; set; }
 
+        public void WriteSource(string writeSourceTo)
+        {
+            WriteDtoSource(GetNamespace(), writeSourceTo);
+        }
         /// <summary>
         /// Implements IAssemblyGenerator.GenerateAssembly by delegating
         /// to GenerateDtoAssembly
@@ -82,12 +86,7 @@ namespace Bam.Net.Data.Repositories
             string writeSourceTo = Path.Combine("".GetAppDataFolder(), "DtoTemp_{0}"._Format(Dao.ConnectionName(oneDao)));
             DirectoryInfo sourceDir = SetSourceDir(writeSourceTo);
 
-            foreach (Type dynamicDtoType in DaoAssembly.GetTypes()
-                .Where(t => t.HasCustomAttributeOfType<TableAttribute>())
-                .Select(t => t.CreateDynamicType<ColumnAttribute>()).ToArray())
-            {
-                Dto.WriteRenderedDto(nameSpace, writeSourceTo, dynamicDtoType);
-            }
+            WriteDtoSource(nameSpace, writeSourceTo);
 
             CompilerResults results;
             sourceDir.ToAssembly(fileName, out results);
@@ -96,26 +95,39 @@ namespace Bam.Net.Data.Repositories
             return result;
         }
 
-        private DirectoryInfo SetSourceDir(string writeSourceTo)
+        /// <summary>
+        /// Write dto source code to the specified directory
+        /// </summary>
+        /// <param name="dir"></param>
+        public void WriteDtoSource(DirectoryInfo dir)
         {
-            DirectoryInfo sourceDir = new DirectoryInfo(writeSourceTo);
-            if (sourceDir.Exists)
-            {
-                try
-                {
-                    sourceDir.Delete(true);
-                }
-                catch (Exception ex)
-                {
-                    TempDir = sourceDir.FullName;
-                    ExceptionMessage = Args.GetMessageAndStackTrace(ex);
-                    FireEvent(DeleteTempSourceDirectoryFailed, EventArgs.Empty);
-                    throw ex;
-                }
-            }
+            WriteDtoSource(dir.FullName);
+        }
 
-            sourceDir.Create();
-            return sourceDir;
+        /// <summary>
+        /// Write dto source code to the specified directory
+        /// </summary>
+        /// <param name="writeSourceTo"></param>
+        public void WriteDtoSource(string writeSourceTo)
+        {
+            WriteDtoSource($"{GetNamespace()}.Dtos", writeSourceTo);
+        }
+
+        /// <summary>
+        /// Write dto source code into the specified namespace placing files into the specified directory
+        /// </summary>
+        /// <param name="nameSpace"></param>
+        /// <param name="writeSourceTo"></param>
+        public void WriteDtoSource(string nameSpace, string writeSourceTo)
+        {
+            Args.ThrowIfNull(DaoAssembly, "DaoAssembly");
+
+            foreach (Type daoType in DaoAssembly.GetTypes()
+                .Where(t => t.HasCustomAttributeOfType<TableAttribute>())
+                .Select(t => t.CreateDynamicType<ColumnAttribute>()).ToArray())
+            {
+                Dto.WriteRenderedDto(nameSpace, writeSourceTo, daoType);
+            }
         }
 
         public string GetDefaultFileName()
@@ -147,6 +159,26 @@ namespace Bam.Net.Data.Repositories
             string nameSpace = oneTable.Namespace;
             return nameSpace;
         }
+        private DirectoryInfo SetSourceDir(string writeSourceTo)
+        {
+            DirectoryInfo sourceDir = new DirectoryInfo(writeSourceTo);
+            if (sourceDir.Exists)
+            {
+                try
+                {
+                    sourceDir.Delete(true);
+                }
+                catch (Exception ex)
+                {
+                    TempDir = sourceDir.FullName;
+                    ExceptionMessage = Args.GetMessageAndStackTrace(ex);
+                    FireEvent(DeleteTempSourceDirectoryFailed, EventArgs.Empty);
+                    throw ex;
+                }
+            }
 
+            sourceDir.Create();
+            return sourceDir;
+        }
     }
 }

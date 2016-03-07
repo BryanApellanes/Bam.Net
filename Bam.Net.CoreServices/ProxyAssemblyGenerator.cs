@@ -38,6 +38,12 @@ namespace Bam.Net.CoreServices
             }
         }
 
+        public void WriteSource(string writeSourceTo)
+        {
+            RenderCode();
+            Code.ToString().SafeWriteToFile(Path.Combine(WorkspaceDirectory, "src", $"{ServiceType.Name}.Proxy.cs"));
+        }
+
         public GeneratedAssemblyInfo GetAssembly()
         {
             return GeneratedAssemblyInfo.GetGeneratedAssembly(FileName, this);
@@ -46,15 +52,10 @@ namespace Bam.Net.CoreServices
         public GeneratedAssemblyInfo GenerateAssembly()
         {
             OnAssemblyGenerating(new AssemblyGenerationEventArgs { ServiceType = ServiceType, ServiceSettings = ServiceSettings });
-            
-            EnsureWorkspace();
-            SetClientCode();
 
-            ProxyModel serviceModel = new ProxyModel(ServiceType, ServiceSettings.Protocol.ToString().ToLowerInvariant(), ServiceSettings.Host, ServiceSettings.Port);
-            WarnNonVirtualMethods(serviceModel);
-            Code.AppendLine(serviceModel.Render());
-            
-            CompilerResults compileResult = AdHocCSharpCompiler.CompileSource(Code.ToString(), FileName, serviceModel.ReferenceAssemblies);
+            ProxyModel proxyModel = RenderCode();
+
+            CompilerResults compileResult = AdHocCSharpCompiler.CompileSource(Code.ToString(), FileName, proxyModel.ReferenceAssemblies);
             if (compileResult.Errors.Count > 0)
             {
                 throw new CompilationException(compileResult);
@@ -64,6 +65,21 @@ namespace Bam.Net.CoreServices
             result.Save();
             OnAssemblyGenerated(new AssemblyGenerationEventArgs { ServiceType = ServiceType, ServiceSettings = ServiceSettings });
             return result;
+        }
+
+        private ProxyModel RenderCode()
+        {
+            EnsureWorkspace();
+            SetClientCode();
+            ProxyModel proxyModel = GetProxyModel();
+            WarnNonVirtualMethods(proxyModel);
+            Code.AppendLine(proxyModel.Render());
+            return proxyModel;
+        }
+
+        private ProxyModel GetProxyModel()
+        {
+            return new ProxyModel(ServiceType, ServiceSettings.Protocol.ToString().ToLowerInvariant(), ServiceSettings.Host, ServiceSettings.Port);
         }
 
         private void WarnNonVirtualMethods(ProxyModel model)

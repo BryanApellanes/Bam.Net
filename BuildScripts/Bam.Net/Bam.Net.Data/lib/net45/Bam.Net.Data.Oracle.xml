@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Bam.Net.Data.Oracle</name>
+    </assembly>
+    <members>
+        <member name="M:Bam.Net.Data.Oracle.OracleDatabase.#ctor(System.String,System.String,Bam.Net.Data.OracleCredentials)">
+            <summary>
+            Instantiate a new OracleDatabase instance using the specified serverName
+            connectionName and credentials
+            </summary>
+            <param name="directoryPath"></param>
+            <param name="connectionName"></param>
+        </member>
+        <member name="M:Bam.Net.Data.Oracle.OracleDatabase.#ctor(System.String,Bam.Net.Data.OracleCredentials)">
+            <summary>
+            Instantiate a new OracleDatabase instance using the specified serverName and
+            credentials
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Oracle.OracleDatabase.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Instantiate a new OracleDatabase instance using the specified serverName and
+            credentials
+            </summary>
+            <param name="serverName"></param>
+            <param name="userId"></param>
+            <param name="password"></param>
+        </member>
+        <member name="T:Bam.Net.Data.Oracle.OracleDatasetProvider">
+            <summary>
+            Internal class used to provide a common implementation of
+            GetDataSet for use by the OracleQuerySet and the OracleSqlStringBuilder
+            each of which is a SqlStringBuilder.  This class is designed
+            to prevent duplicate implementations in each of the afformentioned
+            classes.
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Data.Oracle.OracleFormatProvider">
+            <summary>
+            Provides Oracle specific expression formatting.
+            It may make sense to put this class into the database.ServiceProvider
+            container, especially when moving on to implement 
+            support for other databases.  
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Data.OracleConnectionStringResolver">
+            <summary>
+            Resolves connection string requests to a Oracle database in the
+            directory specified by the Directory property.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.OracleRegistrar.Register(Bam.Net.Data.Database)">
+            <summary>
+            Register the Oracle components with the ServiceProvider 
+            of the specified database.  This Register method will
+            not call SetInitializerAndConnectionStringResolver
+            like the other Register methods do.
+            </summary>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Data.OracleRegistrar.Register(System.String)">
+            <summary>
+            Registers Oracle as the handler for the specified connection name.
+            This dao handler will register apropriate DatabaseInitializer and
+            ConnectionStringResolver.  This behavior is different compared to the
+            SqlClientRegistrar's Register method.
+            </summary>
+            <param name="connectionName"></param>
+        </member>
+        <member name="T:Bam.Net.Data.OracleRegistrarCaller">
+            <summary>
+            Registrar caller used to register Oracle as the 
+            handler for a database
+            </summary>
+        </member>
+    </members>
+</doc>

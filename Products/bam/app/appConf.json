@@ -15,20 +15,19 @@
   ],
   "DefaultLayout": "basic",
   "DefaultPage": "home",
+  "CompileTemplates": false,
   "GenerateDao": true,
   "CheckDaoHashes": true,
   "RenderLayoutBody": false,
-  "ServiceProxySearchPatterns": [
+  "ServiceSearchPattern": [
     "*Services.dll",
     "*Proxyables.dll"
   ],
-  "ServiceProxyTypeNames": [
-    "Bam.Net.ServiceProxy.Echo, Bam.Net.ServiceProxy, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-    "Bam.Net.ServiceProxy.EncryptedEcho, Bam.Net.ServiceProxy, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+  "ServiceTypeNames": [
+    "Bam.Net.ServiceProxy.Echo, Bam.Net.ServiceProxy, Version=1.2.7.0, Culture=neutral, PublicKeyToken=null",
+    "Bam.Net.ServiceProxy.EncryptedEcho, Bam.Net.ServiceProxy, Version=1.2.7.0, Culture=neutral, PublicKeyToken=null"
   ],
   "SchemaInitializers": [],
-  "AppInitializer": null,
-  "AppInitializerAssemblyPath": null,
   "UserManager": {
     "ApplicationNameResolverType": "Bam.Net.Configuration.DefaultConfigurationApplicationNameProvider, Bam.Net, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
     "EmailComposerType": "Bam.Net.Messaging.NamedFormatEmailComposer, Bam.Net.Messaging, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",

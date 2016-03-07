@@ -13,6 +13,8 @@ using Bam.Net.Data;
 using Bam.Net.Logging;
 using Bam.Net.ServiceProxy;
 using Bam.Net.Server;
+using Newtonsoft.Json;
+using System.Xml.Serialization;
 
 namespace Bam.Net.Server
 {
@@ -28,6 +30,7 @@ namespace Bam.Net.Server
             this._serviceTypeNames.Add(typeof(Echo).AssemblyQualifiedName);
             this._serviceTypeNames.Add(typeof(EncryptedEcho).AssemblyQualifiedName);
 
+            this.AppSettings = new AppSetting[] { };
 			this.RenderLayoutBody = true;
 			this.DefaultLayout = DefaultLayoutConst;
 			this.DefaultPage = DefaultPageConst;
@@ -54,7 +57,7 @@ namespace Bam.Net.Server
             set;
         }
 
-        internal ILogger Logger
+        public ILogger Logger
         {
             get
             {
@@ -71,7 +74,9 @@ namespace Bam.Net.Server
 
         Fs _appRoot;
         object _appRootLock = new object();
-        internal Fs AppRoot
+        [JsonIgnore]
+        [XmlIgnore]
+        public Fs AppRoot
         {
             get
             {
@@ -80,6 +85,16 @@ namespace Bam.Net.Server
                     return new Fs(Path.Combine(BamConf.ContentRoot, "apps", Name));
                 });
             }
+        }
+
+        public void AddService<T>(Func<T> serviceInstanciator)
+        {
+            BamConf.Server.AddAppService<T>(Name, serviceInstanciator);
+        }
+
+        public void AddService<T>(T instance)
+        {
+            BamConf.Server.AddAppService<T>(Name);
         }
 
         /// <summary>
@@ -138,6 +153,7 @@ namespace Bam.Net.Server
             }
         }
 
+        public AppSetting[] AppSettings { get; set; }
         /// <summary>
         /// The name of the default layout 
         /// </summary>

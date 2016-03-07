@@ -49,11 +49,6 @@
             The database equivalent of the DataType
             </summary>
         </member>
-        <member name="F:Bam.Net.Data.Schema.DataTypes.ByteArray">
-            <summary>
-            The field will be generated as a byte array (byte[])
-            </summary>
-        </member>
         <member name="T:Bam.Net.Data.Schema.ForeignKeyColumn">
             <summary>
             A column that represents a foreign key

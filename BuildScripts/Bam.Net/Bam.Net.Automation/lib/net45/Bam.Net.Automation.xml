@@ -422,6 +422,252 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="T:Bam.Net.Automation.AdvancedInstaller.DOCUMENT">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENT.COMPONENT">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENT.Type">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENT.CreateVersion">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENT.version">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENT.Modules">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENT.RootPath">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENT.Language">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENT.Id">
+            <remarks/>
+        </member>
+        <member name="T:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENT">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENT.ROW">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENT.ATTRIBUTE">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENT.cid">
+            <remarks/>
+        </member>
+        <member name="T:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Property">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Value">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.ValueLocId">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Type">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.MultiBuildValue">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Directory">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Directory_Parent">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.DefaultDir">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.IsPseudoRoot">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Component">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.ComponentId">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Directory_">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Attributes">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.KeyPath">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Feature">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Title">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Description">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Display">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Level">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Components">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.File">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Component_">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.FileName">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.SourcePath">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.SelfReg">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.NextFile">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.DigSign">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.BuildKey">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.BuildName">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.BuildOrder">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.BuildType">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Languages">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.InstallationType">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.UseLargeSchema">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.MsiPackageType">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Path">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Fragment">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Name">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Dialog_">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Control_">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Event">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Argument">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Condition">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Ordering">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Options">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Action">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Target">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Source">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.WithoutSeq">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.MultiBuildTarget">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Environment">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Index">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Sequence">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.DescriptionLocId">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.IsPredefined">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Builds">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Registry">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Root">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.Key">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.UpgradeCode">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.VersionMin">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.VersionMax">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTROW.ActionProperty">
+            <remarks/>
+        </member>
+        <member name="T:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTATTRIBUTE">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTATTRIBUTE.name">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.DOCUMENTCOMPONENTATTRIBUTE.value">
+            <remarks/>
+        </member>
+        <member name="T:Bam.Net.Automation.AdvancedInstaller.NewDataSet">
+            <remarks/>
+        </member>
+        <member name="P:Bam.Net.Automation.AdvancedInstaller.NewDataSet.Items">
+            <remarks/>
+        </member>
         <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildJob.GetUniqueFilter">
             <summary>
             Gets a query filter that should uniquely identify

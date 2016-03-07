@@ -12,14 +12,14 @@ namespace Bam.Net.Automation.Tests
     [Serializable]
     public class GitLogTests: CommandLineTestInterface
     {
-        [UnitTest("Git: Get logs")]
-        public void ShouldPopulateGitLogInstances()
-        {
-            List<GitLog> logs = GitLog.GetLogs("c:\\src\\Bam.Net\\Bam.Net", 1);
-            logs.Each(log =>
-            {
-                OutLine(log.PropertiesToString());
-            });
-        }
+        //[UnitTest("Git: Get logs")]
+        //public void ShouldPopulateGitLogInstances()
+        //{
+        //    List<GitLog> logs = GitLog.GetLogs("c:\\src\\Bam.Net\\Bam.Net", 1);
+        //    logs.Each(log =>
+        //    {
+        //        OutLine(log.PropertiesToString());
+        //    });
+        //}
     }
 }

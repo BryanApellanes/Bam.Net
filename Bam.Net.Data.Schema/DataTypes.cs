@@ -16,9 +16,6 @@ namespace Bam.Net.Data.Schema
         Long,
         Decimal,
         String,
-        /// <summary>
-        /// The field will be generated as a byte array (byte[])
-        /// </summary>
         ByteArray,
         DateTime
     }

@@ -29,13 +29,23 @@ namespace troo
         {
             TrooService.SetInfo(TrooService.ServiceInfo);
             if (!GlooService.ProcessCommandLineArgs(args))
-            {
+            {                
+                AddSwitches(typeof(UtilityActions));
+                AddConfigurationSwitches();
+                ArgumentAdder.AddArguments();
+
                 Initialize(args, (a) =>
                 {
                     OutLineFormat("Error parsing arguments: {0}", ConsoleColor.Red, a.Message);
                     Environment.Exit(1);
                 });
-                if (Arguments.Contains("i"))
+
+                if (Arguments.Length > 0 && !Arguments.Contains("i"))
+                {
+                    IsolateMethodCalls = false;
+                    ExecuteSwitches(Arguments, typeof(UtilityActions));
+                }
+                else if (Arguments.Contains("i"))
                 {
                     Interactive();
                 }

@@ -1,6 +1,6 @@
 {
   "SourceFilePath": "C:\\BamContent\\common\\views\\navLeft.dust",
   "TemplateName": "navLeft",
-  "SourceHash": "cb5428e67a4bacceee5292b3df6a56a8285d0a70",
-  "CompiledTemplate": "(function(){dust.register(\"navLeft\",body_0);function body_0(chk,ctx){return chk.write(\"<ul class=\\\\\"nav nav-pills pull-left\\\\\">  \").section(ctx.get(\"pages\"),ctx,{\"block\":body_1},null).write(\"</ul>\");}function body_1(chk,ctx){return chk.write(\"  <li id=\\\\\"nav_\").reference(ctx.get(\"name\"),ctx,\"h\").write(\"\\\\\">    <a href=\\\\\"#\\\\\" onclick=\\\\\"bam.navigateTo('\").reference(ctx.get(\"name\"),ctx,\"h\").write(\"')\\\\\">\").reference(ctx.get(\"title\"),ctx,\"h\").write(\"</a>  </li>\");}return body_0;})();"
+  "SourceHash": "9417c3f4b6def86968700dd0e07a0a684380009e",
+  "CompiledTemplate": "(function(){dust.register(\"navLeft\",body_0);function body_0(chk,ctx){return chk.write(\"<ul class=\\\\\"nav navbar-nav\\\\\">\").section(ctx.get(\"pages\"),ctx,{\"block\":body_1},null).write(\"</ul>\");}function body_1(chk,ctx){return chk.write(\"  <li id=\\\\\"\").reference(ctx.get(\"id\"),ctx,\"h\").write(\"\\\\\">    <a href=\\\\\"#\\\\\">\").reference(ctx.get(\"title\"),ctx,\"h\").write(\"</a>  </li>\");}return body_0;})();"
 }

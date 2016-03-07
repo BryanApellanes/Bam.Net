@@ -670,7 +670,7 @@
             Get the generated assembly for the specified fileName using the
             specified generator to generate it if necessary
             </summary>
-            <param name="fileName"></param>
+            <param name="infoFileName"></param>
             <param name="generator"></param>
             <returns></returns>
         </member>
@@ -2119,6 +2119,14 @@
             </summary>
             <param name="stringToPascalSplit"></param>
             <param name="separator"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Extensions.CaseAcronym(System.String,System.Boolean)">
+            <summary>
+            Return an acronym for the specified string  
+            </summary>
+            <param name="stringToAcronymize"></param>
+            <param name="alwaysUseFirst"></param>
             <returns></returns>
         </member>
         <member name="M:Bam.Net.Extensions.PascalCase(System.String,System.Boolean,System.String[])">

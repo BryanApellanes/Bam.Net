@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net
 {
-    public interface IAssemblyGenerator
+    public interface IAssemblyGenerator: IWriteSource
     {
         GeneratedAssemblyInfo GenerateAssembly();
     }

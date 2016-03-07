@@ -132,6 +132,11 @@ namespace Bam.Net.Data.Dynamic
             return result;
         }
 
+        public void WriteSource(string writeSourceTo)
+        {
+            GenerateSource(writeSourceTo);
+        }
+
         public void GenerateSource(string sourcePath)
         {
             DirectoryInfo sourceDir = new DirectoryInfo(sourcePath);

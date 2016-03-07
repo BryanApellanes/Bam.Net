@@ -46,7 +46,7 @@ RMDIR /S /Q ..\..\Products\BUILD");
 
             StringBuilder pushScript = new StringBuilder();
             pushScript.AppendLine("@echo on");
-            pushScript.AppendLine($@"nuget push {NugetReleaseDirectory}\Push\BamToolkit.%1.nupkg");
+            pushScript.AppendLine($@"nuget push {NugetReleaseDirectory}\BamToolkit.%1.nupkg");
 
             DirectoryInfo outputDir = new DirectoryInfo(GetOutputDirectory());
             using (StreamReader sr = new StreamReader(dllListPath))

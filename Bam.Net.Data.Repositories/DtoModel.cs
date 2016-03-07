@@ -29,7 +29,7 @@ namespace Bam.Net.Data.Repositories
 			foreach(PropertyInfo p in dynamicDtoType.GetProperties())
 			{
 				Type type = (p.PropertyType.IsGenericType && p.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)) ? Nullable.GetUnderlyingType(p.PropertyType) : p.PropertyType;
-				properties.Add("\tpublic {0} {1} {{get; set;}}\r\n"._Format(type.Name, p.Name));
+				properties.Add("\t\tpublic {0} {1} {{get; set;}}\r\n"._Format(type.Name, p.Name));
 			}
 			this.Properties = properties.ToArray();
 			this.DtoType = dynamicDtoType;
