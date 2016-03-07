@@ -30,19 +30,49 @@ namespace Bam.Net.Data.Repositories
 	public class DaoRepository : Repository, IGeneratesDaoAssembly
 	{
 		TypeDaoGenerator _typeDaoGenerator;
-		public DaoRepository(Database database, string schemaName, ITypeTableNameProvider tableNameProvider, ILogger logger = null)
-		{
-            this.WarningsAsErrors = true;
-            this._typeDaoGenerator = new TypeDaoGenerator { TableNameProvider = tableNameProvider, SchemaName = schemaName };
-            this._typeDaoGenerator.GenerateDaoAssemblySucceeded += (o, a) =>
+        public DaoRepository()
+        {
+            WarningsAsErrors = true;
+            _typeDaoGenerator = new TypeDaoGenerator();
+            _typeDaoGenerator.GenerateDaoAssemblySucceeded += (o, a) =>
             {
                 GenerateDaoAssemblyEventArgs args = (GenerateDaoAssemblyEventArgs)a;
                 FireEvent(GenerateDaoAssemblySucceeded, args);
             };
-            this.Database = database;
-            this.Logger = logger ?? Log.Default;
-			this.Subscribe(logger);			
-		}
+        }
+        public DaoRepository(Database database, ILogger logger = null, string schemaName = null, ITypeTableNameProvider tableNameProvider = null)
+            : this()
+        {
+            Database = database;
+            Logger = logger ?? Log.Default;
+            Subscribe(logger);
+            SchemaName = schemaName;
+            TableNameProvider = tableNameProvider ?? new DaoSuffixTypeTableNameProvider();
+        }
+
+        public string SchemaName
+        {
+            get
+            {
+                return _typeDaoGenerator.SchemaName;
+            }
+            set
+            {
+                _typeDaoGenerator.SchemaName = value;
+            }
+        }
+
+        public ITypeTableNameProvider TableNameProvider
+        {
+            get
+            {
+                return _typeDaoGenerator.TableNameProvider;
+            }
+            set
+            {
+                _typeDaoGenerator.TableNameProvider = value;
+            }
+        }
 
 		public bool WarningsAsErrors { get; set; }
 
