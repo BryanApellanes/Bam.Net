@@ -30,6 +30,7 @@ namespace Bam.Net.Server
             this._serviceTypeNames.Add(typeof(Echo).AssemblyQualifiedName);
             this._serviceTypeNames.Add(typeof(EncryptedEcho).AssemblyQualifiedName);
 
+            this.AppSettings = new AppSetting[] { };
 			this.RenderLayoutBody = true;
 			this.DefaultLayout = DefaultLayoutConst;
 			this.DefaultPage = DefaultPageConst;
@@ -152,6 +153,7 @@ namespace Bam.Net.Server
             }
         }
 
+        public AppSetting[] AppSettings { get; set; }
         /// <summary>
         /// The name of the default layout 
         /// </summary>
