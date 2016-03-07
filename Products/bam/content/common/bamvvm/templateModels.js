@@ -16,13 +16,19 @@ var templates = (function($,_,b){
                 })
             }
         },
-        addItem: function(text, clickHandler){
+        addItem: function(item, clickHandler){
             var the = this,
                 id = _.randomString(6),
                 items = the.items || [],
-                handlers = the.handlers || [];
+                handlers = the.handlers || [],
+                newItem = {id:id};
 
-            items.push({id: id, text: text});
+            if(_.isObject(item)){
+                _.extend(newItem, item);
+            }else if(_.isString(item)){
+                newItem.name = item;
+            }
+            items.push(newItem);
             handlers.push(clickHandler);
             the.items = items;
             the.handlers = handlers;

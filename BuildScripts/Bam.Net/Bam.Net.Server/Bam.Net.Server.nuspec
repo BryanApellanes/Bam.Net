@@ -2,7 +2,7 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Server</id>
-    <version>1.2.5</version>
+    <version>1.2.10</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
@@ -12,20 +12,20 @@
 	Core Bam server allowing applications to self host outside of
 	IIS.  Simplifies distributed computing
 	</description>
-    <releaseNotes>Fix dependency versions</releaseNotes>
+    <releaseNotes>minor bug fixes</releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2016</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.2.5" />
-      <dependency id="Bam.Net.CommandLine" version="1.2.5" />
-      <dependency id="Bam.Net.Data" version="1.2.5" />
-      <dependency id="Bam.Net.Drawing" version="1.2.5" />
-      <dependency id="Bam.Net.Encryption" version="1.2.5" />
-      <dependency id="Bam.Net.Html" version="1.2.5" />
-      <dependency id="Bam.Net.Incubation" version="1.2.5" />
-      <dependency id="Bam.Net.Javascript" version="1.2.5" />
-      <dependency id="Bam.Net.ServiceProxy" version="1.2.5" />
-      <dependency id="Bam.Net.UserAccounts" version="1.2.5" />
-      <dependency id="Bam.Net.Yaml" version="1.2.5" />
+      <dependency id="Bam.Net" version="1.2.10" />
+      <dependency id="Bam.Net.CommandLine" version="1.2.10" />
+      <dependency id="Bam.Net.Data" version="1.2.10" />
+      <dependency id="Bam.Net.Drawing" version="1.2.10" />
+      <dependency id="Bam.Net.Encryption" version="1.2.10" />
+      <dependency id="Bam.Net.Html" version="1.2.10" />
+      <dependency id="Bam.Net.Incubation" version="1.2.10" />
+      <dependency id="Bam.Net.Javascript" version="1.2.10" />
+      <dependency id="Bam.Net.ServiceProxy" version="1.2.10" />
+      <dependency id="Bam.Net.UserAccounts" version="1.2.10" />
+      <dependency id="Bam.Net.Yaml" version="1.2.10" />
     </dependencies>
   </metadata>
 </package>
