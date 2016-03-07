@@ -86,6 +86,16 @@ namespace Bam.Net.Server
             }
         }
 
+        public void AddService<T>(Func<T> serviceInstanciator)
+        {
+            BamConf.Server.AddAppService<T>(Name, serviceInstanciator);
+        }
+
+        public void AddService<T>(T instance)
+        {
+            BamConf.Server.AddAppService<T>(Name);
+        }
+
         /// <summary>
         /// The name of the application.  This will be the name of the 
         /// folder being served from the "apps" folder of the root
