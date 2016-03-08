@@ -170,7 +170,6 @@
     <Compile Include="SchemaDefinitionCreateResult.cs" />
     <Compile Include="SchemaWarnings.cs" />
     <Compile Include="TypeFk.cs" />
-    <Compile Include="EchoTypeTableNameProvider.cs" />
     <Compile Include="TypeXref.cs" />
     <Compile Include="Xref.cs" />
     <Compile Include="XrefInfo.cs" />

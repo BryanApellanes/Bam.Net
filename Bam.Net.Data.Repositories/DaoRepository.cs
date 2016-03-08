@@ -126,7 +126,6 @@ namespace Bam.Net.Data.Repositories
 		{
 			get
 			{
-				EnsureDaoAssemblyAndSchema();
 				return _typeDaoGenerator.SchemaDefinitionCreateResult.Warnings;
 			}
 		}
@@ -206,10 +205,10 @@ namespace Bam.Net.Data.Repositories
             return _daoAssembly;
 		}
 
-        public Assembly GenerateDaoAssembly()
+        public Assembly GenerateDaoAssembly(bool useExisting = true)
         {
             Initialize();
-            _daoAssembly = _typeDaoGenerator.GetDaoAssembly();
+            _daoAssembly = _typeDaoGenerator.GetDaoAssembly(useExisting);
             return _daoAssembly;
         }
 

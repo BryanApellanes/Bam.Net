@@ -142,7 +142,7 @@ namespace Bam.Net.Data.Repositories
 			_types.Add(type);
 		}
 
-        public Assembly GetDaoAssembly()
+        public Assembly GetDaoAssembly(bool useExisting = true)
         {
 			GeneratedAssemblyInfo info = GeneratedAssemblies.GetGeneratedAssemblyInfo(SchemaName);
 			if(info == null)
@@ -151,7 +151,7 @@ namespace Bam.Net.Data.Repositories
 				info = new GeneratedAssemblyInfo(schema.Name);
 				
 				// check for the info file
-				if(info.InfoFileExists) // load it from file if it exists
+				if(info.InfoFileExists && useExisting) // load it from file if it exists
 				{
 					info = info.InfoFilePath.FromJsonFile<GeneratedAssemblyInfo>();
 					if(!info.InfoFileName.Equals(schema.Name)) // regenerate if the names don't match
