@@ -10,35 +10,29 @@ using System.Reflection;
 using Bam.Net.Data;
 using System.IO;
 using Bam.Net;
+using Bam.Net.Data.SQLite;
+using Bam.Net.Logging;
 
 namespace troo
 {
     [Serializable]
     public class UtilityActions : CommandLineTestInterface
     {
-        [ConsoleAction("generateDtosFromDaos", "Generate Dtos from a dao assembly")]
-        public static void GenerateDtosFromDaos()
+        [ConsoleAction("generateDaoForTypes", "Generate Daos for types")]
+        public static void GenerateDaoForTypes()
         {
-            Assembly daoAssembly = Assembly.LoadFrom(GetArgument("daoAssembly", "Please enter the path to the Dao assembly to generate Dtos for"));
-            DaoToDtoGenerator gen = new DaoToDtoGenerator(daoAssembly);
-
-            if (Arguments.Contains("compile"))
-            {
-                GeneratedAssemblyInfo info = gen.GenerateAssembly();
-                FileInfo assemblyFile = new FileInfo(info.AssemblyFilePath);
-                File.Copy(info.AssemblyFilePath, Path.Combine(".", assemblyFile.Name), true);
-                Directory.Delete(gen.TempDir, true);                
-            }
-            else
-            {
-                string sourceDirPath = GetArgument("sourceDir", "Please enter the path to the directory to write source files to");
-                DirectoryInfo sourceDir = new DirectoryInfo(sourceDirPath);
-                if (!sourceDir.Exists)
-                {
-                    sourceDir.Create();
-                }
-                gen.WriteDtoSource(sourceDir.FullName);
-            }
+            Assembly typeAssembly = Assembly.LoadFrom(GetArgument("typeAssembly", "Please enter the path to the assembly containing the types to generate daos for"));
+            string schemaName = GetArgument("schemaName", "Please enter the schema name to use").Replace(".", "_");
+            string fromNameSpace = GetArgument("fromNameSpace", "Please enter the namespace containing the types to generate daos for");
+            string toNameSpace = GetArgument("toNameSpace", "Please enter the namespace to write generated daos to");
+            DaoRepository repo = new DaoRepository(new SQLiteDatabase(".", schemaName), Log.Default, schemaName, new EchoTypeTableNameProvider());
+            repo.DaoNameSpace = toNameSpace;
+            repo.AddNamespace(typeAssembly, fromNameSpace);
+            Assembly daoAssembly = repo.GenerateDaoAssembly();
+            FileInfo fileInfo = daoAssembly.GetFileInfo();
+            string copyTo = Path.Combine(GetArgument("copyTo", "Please enter the directory to copy the resulting assemlby to"), fileInfo.Name);
+            fileInfo.CopyTo(copyTo);
+            OutLineFormat("File generated:\r\n{0}", copyTo);
         }
     }
 }

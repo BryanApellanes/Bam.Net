@@ -16,7 +16,8 @@ namespace Bam.Net.Testing
 {
 	public class UnitTestResult: RepoData
 	{
-		public UnitTestResult() { }
+        public UnitTestResult() : base()
+        { }
 		public UnitTestResult(ConsoleInvokeableMethod cim)
 		{
 			MethodInfo method = cim.Method;

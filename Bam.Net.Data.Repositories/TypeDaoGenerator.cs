@@ -38,6 +38,18 @@ namespace Bam.Net.Data.Repositories
 			}
         }
 
+        public ITypeTableNameProvider TableNameProvider
+        {
+            get
+            {
+                return _schemaGenerator.TableNameProvider;
+            }
+            set
+            {
+                _schemaGenerator.TableNameProvider = value;
+            }
+        }
+
         public bool AddAuditFields { get; set; }
 
         public bool IncludeModifiedBy { get; set; }
@@ -63,7 +75,7 @@ namespace Bam.Net.Data.Repositories
 		}
 
 		string _schemaName;
-		internal string SchemaName
+		public string SchemaName
 		{
 			get
 			{

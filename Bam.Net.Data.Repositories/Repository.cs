@@ -49,9 +49,9 @@ namespace Bam.Net.Data.Repositories
 			_canStoreTypes.Add(type);
 		}
 
-		public void AddNamespace(Assembly assembly, string ns)
+		public void AddNamespace(Assembly assembly, string nameSpace)
 		{
-			AddTypes(assembly.GetTypes().Where(t => t.Namespace != null && t.Namespace.Equals(ns) && !t.IsAbstract).ToArray());
+			AddTypes(assembly.GetTypes().Where(t => t.Namespace != null && t.Namespace.Equals(nameSpace) && !t.IsAbstract).ToArray());
 		}
 
         public T Save<T>(T toSave) where T : class, new()
@@ -59,13 +59,17 @@ namespace Bam.Net.Data.Repositories
 			return (T)Save((object)toSave);
 		}
 
-		/// <summary>
-		/// Calls update for the specified object toSave if
-		/// it has Id greater than 0 otherwise calls Create
-		/// </summary>
-		/// <param name="toSave"></param>
-		/// <returns></returns>
-		public object Save(object toSave)
+        public void AddNamespace(Type type)
+        {
+            AddNamespace(type.Assembly, type.Namespace);
+        }
+        /// <summary>
+        /// Calls update for the specified object toSave if
+        /// it has Id greater than 0 otherwise calls Create
+        /// </summary>
+        /// <param name="toSave"></param>
+        /// <returns></returns>
+        public object Save(object toSave)
 		{
 			long id = GetIdValue(toSave);
 			object result = null;
@@ -140,18 +144,6 @@ namespace Bam.Net.Data.Repositories
 			FireEvent(DeleteFailed, args);
 		}
 
-		public void AddNamespace(Type type)
-		{
-			AddNamespace(type.Namespace, type.Assembly);
-		}
-
-		public void AddNamespace(string nameSpace, Assembly assembly)
-		{
-			foreach (Type type in assembly.GetTypes().Where(t => t.Namespace == nameSpace))
-			{
-				AddType(type);
-			}
-		}
 
 		protected internal static PropertyInfo GetKeyProperty(Type type)
 		{

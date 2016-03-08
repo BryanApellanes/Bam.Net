@@ -17,6 +17,11 @@ namespace Bam.Net.Data.Repositories
 	/// </summary>
 	public abstract class RepoData
 	{
+        public RepoData()
+        {
+            Created = DateTime.UtcNow;
+            Modified = Created;
+        }
 		public long Id { get; set; }
         string _uuid;
 		public string Uuid
