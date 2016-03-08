@@ -25,13 +25,13 @@ namespace troo
             string schemaName = GetArgument("schemaName", "Please enter the schema name to use").Replace(".", "_");
             string fromNameSpace = GetArgument("fromNameSpace", "Please enter the namespace containing the types to generate daos for");
             string toNameSpace = GetArgument("toNameSpace", "Please enter the namespace to write generated daos to");
-            DaoRepository repo = new DaoRepository(new SQLiteDatabase(".", schemaName), Log.Default, schemaName, new EchoTypeTableNameProvider());
+            DaoRepository repo = new DaoRepository(new SQLiteDatabase(".", schemaName), Log.Default, schemaName);
             repo.DaoNameSpace = toNameSpace;
             repo.AddNamespace(typeAssembly, fromNameSpace);
             Assembly daoAssembly = repo.GenerateDaoAssembly();
             FileInfo fileInfo = daoAssembly.GetFileInfo();
             string copyTo = Path.Combine(GetArgument("copyTo", "Please enter the directory to copy the resulting assemlby to"), fileInfo.Name);
-            fileInfo.CopyTo(copyTo);
+            fileInfo.CopyTo(copyTo, true);
             OutLineFormat("File generated:\r\n{0}", copyTo);
         }
     }

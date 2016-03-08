@@ -126,7 +126,6 @@ namespace Bam.Net.Data.Repositories
 		{
 			get
 			{
-				EnsureDaoAssemblyAndSchema();
 				return _typeDaoGenerator.SchemaDefinitionCreateResult.Warnings;
 			}
 		}
