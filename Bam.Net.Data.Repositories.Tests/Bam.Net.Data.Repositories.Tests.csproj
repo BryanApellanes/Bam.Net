@@ -223,6 +223,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Business\Stickerize.Business\Stickerize.Business.csproj">
+      <Project>{ab55e655-e43d-46b3-a484-781f5be37da8}</Project>
+      <Name>Stickerize.Business</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Analytics\Bam.Net.Analytics.csproj">
       <Project>{67cca5a4-9b97-444c-9f4b-f464b2e04d6b}</Project>
       <Name>Bam.Net.Analytics</Name>

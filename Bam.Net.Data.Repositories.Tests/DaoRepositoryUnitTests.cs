@@ -299,6 +299,19 @@ namespace Bam.Net.Data.Repositories.Tests
         }
 
         [UnitTest]
+        public void ZZZDaoRepositoryCreateShouldSetId()
+        {
+            DaoRepository repo = ZZGetTestDaoRepository();
+            Stickerize.Business.TypeSchema.StickerizableList toCreate = new Stickerize.Business.TypeSchema.StickerizableList();
+            Expect.AreEqual(0, toCreate.Id);
+            string testName = "Test Name".RandomLetters(5);
+            toCreate.Name = testName;
+            toCreate = repo.Create(toCreate);
+            Expect.IsGreaterThan(toCreate.Id, 0);
+            OutLineFormat("{0} passed", ConsoleColor.Green, repo.GetType().Name);
+        }
+
+        [UnitTest]
         public void RepositoryRetrieveByIdTest()
         {
             DaoRepository repo = GetTestDaoRepository();
@@ -418,6 +431,15 @@ namespace Bam.Net.Data.Repositories.Tests
             daoRepo.WarningsAsErrors = false;
             daoRepo.Database = new SQLiteDatabase(".\\", "UNITTESTS");
             daoRepo.AddType(typeof(TestContainer));
+            return daoRepo;
+        }
+
+        protected static DaoRepository ZZGetTestDaoRepository()
+        {
+            DaoRepository daoRepo = new DaoRepository();
+            daoRepo.WarningsAsErrors = false;
+            daoRepo.Database = new SQLiteDatabase(".\\", "UNITTESTS");
+            daoRepo.AddType(typeof(Stickerize.Business.TypeSchema.StickerizableList));
             return daoRepo;
         }
 
