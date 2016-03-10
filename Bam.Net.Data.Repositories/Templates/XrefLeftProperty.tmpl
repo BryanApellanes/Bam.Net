@@ -12,7 +12,7 @@
 					 var xref = new XrefDaoCollection<@(xrefTableName), @(Model.Right.Name)Dao>(Repository.GetDaoInstance(this), false);
 					 xref.Load(Repository.Database);
 					 _@(Model.Right.Name.Pluralize().CamelCase()) = ((IEnumerable)xref).CopyAs<@(Model.Right.Namespace).@(Model.Right.Name)>().To@(Model.RightArrayOrList)();
-					 this.UpdatedXrefCollectionProperties.Add("@(Model.Right.Name.Pluralize())", typeof(@(Model.Right.FullName)).GetProperty("@(Model.RightCollectionProperty.Name)"));
+					 SetUpdatedXrefCollectionProperty("@(Model.RightDaoName.Pluralize())", this.GetType().GetProperty("@(Model.RightCollectionProperty.Name)"));
 				}
 
 				return _@(Model.Right.Name.Pluralize().CamelCase());
@@ -20,6 +20,6 @@
 			set
 			{
 				_@(Model.Right.Name.Pluralize().CamelCase()) = value;
-				this.UpdatedXrefCollectionProperties.Add("@(Model.Right.Name.Pluralize())", typeof(@(Model.Right.FullName)).GetProperty("@(Model.RightCollectionProperty.Name)"));
+				SetUpdatedXrefCollectionProperty("@(Model.RightDaoName.Pluralize())", this.GetType().GetProperty("@(Model.RightCollectionProperty.Name)"));
 			}
 		}

@@ -26,7 +26,7 @@ namespace troo
             string fromNameSpace = GetArgument("fromNameSpace", "Please enter the namespace containing the types to generate daos for");
             string toNameSpace = GetArgument("toNameSpace", "Please enter the namespace to write generated daos to");
             DaoRepository repo = new DaoRepository(new SQLiteDatabase(".", schemaName), new ConsoleLogger(), schemaName);
-            repo.DaoNameSpace = toNameSpace;
+            repo.Namespace = toNameSpace;
             repo.AddNamespace(typeAssembly, fromNameSpace);
             Assembly daoAssembly = repo.GenerateDaoAssembly(false);
             FileInfo fileInfo = daoAssembly.GetFileInfo();

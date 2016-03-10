@@ -136,7 +136,7 @@ namespace Bam.Net
             return result;
         }
 
-        public static T Clone<T>(this T from) where T : class, new()
+        public static T BinaryClone<T>(this T from) where T : class, new()
         {
             byte[] bytes = from.ToBinaryBytes();
             return bytes.FromBinaryBytes<T>();
@@ -2030,6 +2030,42 @@ namespace Bam.Net
             }
         }
 
+        public static long Smallest(this IEnumerable<long> longs)
+        {
+            return longs.ToArray().Smallest();
+        }
+
+        public static long Smallest(this long[] longs)
+        {
+            if(longs.Length == 0)
+            {
+                return -1;
+            }
+            long smallest = longs[0];
+            longs.Each(l => smallest = l < smallest ? l : smallest);
+            return smallest;
+        }
+
+        public static long Biggest(this IEnumerable<long> longs)
+        {
+            return longs.ToArray().Largest();
+        }
+
+        public static long Largest(this IEnumerable<long> longs)
+        {
+            return longs.ToArray().Largest();
+        }
+
+        public static long Largest(this long[] longs)
+        {
+            if(longs.Length == 0)
+            {
+                return -1;
+            }
+            long largest = longs[0];
+            longs.Each(l => largest = l > largest ? l : largest);
+            return largest;
+        }
 
         /// <summary>
         /// Splits the specified text at capital letters inserting the specified separator.
@@ -2616,6 +2652,32 @@ namespace Bam.Net
             }
 
             return destination;
+        }
+
+        public static IEnumerable<T> DataClone<T>(this IEnumerable<T> values) where T: new()
+        {
+            return values.Select(t => t.DataClone());
+        }
+
+        /// <summary>
+        /// Clone the specified instance copying only properties
+        /// that are of represented in the Bam.Net.DataTypes enum
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="instance"></param>
+        /// <returns></returns>
+        public static T DataClone<T>(this T instance) where T : new()
+        {
+            T result = new T();
+            object temp = instance.ToDynamicType(nameof(T), (pi) => 
+                                                    pi.PropertyType.IsValueType ||
+                                                    pi.PropertyType == typeof(string) ||
+                                                    pi.PropertyType == typeof(byte[]) ||
+                                                    pi.PropertyType == typeof(DateTime))
+                                                .Construct();
+            temp.CopyProperties(instance);
+            result.CopyProperties(temp);
+            return result;
         }
 
         public static object ValuePropertiesToDynamicInstance(this Type type, out AssemblyBuilder assemblyBuilder)

@@ -16,7 +16,8 @@ namespace Bam.Net.Data.Repositories
     {
 		IEnumerable<Type> StorableTypes { get; }
 		void AddType(Type type);
-		void AddNamespace(Assembly assembly, string ns);
+        void AddNamespace(Type type);
+        void AddNamespace(Assembly assembly, string ns);
 		void AddTypes(IEnumerable<Type> types);
 		void AddType<T>();
         /// <summary>
@@ -80,7 +81,10 @@ namespace Bam.Net.Data.Repositories
 		IEnumerable<T> Query<T>(dynamic query) where T : class, new();
         IEnumerable<T> Query<T>(Func<T, bool> query) where T : class, new();
 		IEnumerable<object> Query(Type type, Func<object, bool> predicate);
-		T Update<T>(T toUpdate) where T : new();
+        IEnumerable<T> Query<T>(QueryFilter query) where T : new();
+        IEnumerable Query(Type type, QueryFilter query);
+
+        T Update<T>(T toUpdate) where T : new();
 		object Update(object toUpdate);
 		bool Delete<T>(T toDelete) where T : new();
 		bool Delete(object toDelete);

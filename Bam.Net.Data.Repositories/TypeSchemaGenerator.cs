@@ -11,7 +11,9 @@ using Bam.Net.Logging;
 namespace Bam.Net.Data.Repositories
 {
     /// <summary>
-    /// A class used to generate 
+    /// A class used to generate TypeSchemas.  A TypeSchema is 
+    /// a class that provides database schema like relationships
+	/// for CLR types.
     /// </summary>
     public class TypeSchemaGenerator : Loggable
     {
@@ -110,8 +112,7 @@ namespace Bam.Net.Data.Repositories
             TypeSchema typeSchema = CreateTypeSchema(types);
             FireEvent(CreatingTypeSchemaFinished, EventArgs.Empty);
 
-            schemaName = schemaName ?? string.Format("_{0}_", typeSchema.Tables.ToArray().ToDelimited(t => t.FullName, ", ").Md5());
-            SchemaName = schemaName;
+            schemaName = schemaName ?? string.Format("_{0}_", typeSchema.Tables.ToArray().ToDelimited(t => t.FullName, ", ").Md5());            
             _schemaManager.SetSchema(schemaName, false);
             SchemaName = schemaName;
 
@@ -345,7 +346,6 @@ namespace Bam.Net.Data.Repositories
         [Verbosity(VerbosityLevel.Warning, MessageFormat = "[{Instant}]:: ReferencingPropertyNotFound: {Message}\r\n")]
         public event EventHandler ReferencingPropertyNotFound;
 
-
         /// The event that occurs when a Type is found in the current
         /// TypeSchema hierarchy with an IEnumerable&lt;T&gt; property where the underlying type of
         /// the IEnumerable doesn't have a property of the parent Type to hold the instance of
@@ -353,7 +353,6 @@ namespace Bam.Net.Data.Repositories
         /// </summary>
         [Verbosity(VerbosityLevel.Warning, MessageFormat = "[{Instant}]:: ChildParentPropertyNotFound: {Message}\r\n")]
         public event EventHandler ChildParentPropertyNotFound;
-
 
         /// <summary>
         /// Get the types for each IEnumerable property of the specified type
@@ -430,17 +429,11 @@ namespace Bam.Net.Data.Repositories
             }
             return keyProperty;
         }
-
-        protected string GetTableNameForType(Type type)
-        {
-            return GetTableNameForType(type, TableNameProvider);
-        }
-
+        
         protected internal static string GetTableNameForType(Type type, ITypeTableNameProvider tableNameProvider = null)
         {
             tableNameProvider = tableNameProvider ?? new DaoSuffixTypeTableNameProvider();
-            string tableName = tableNameProvider.GetTableName(type);
-            return tableName;
+            return tableNameProvider.GetTableName(type);
         }
 
         static readonly List<Type> _daoPrimitives = new List<Type> { typeof(bool), typeof(int), typeof(long), typeof(decimal), typeof(byte[]), typeof(DateTime), typeof(string) };
