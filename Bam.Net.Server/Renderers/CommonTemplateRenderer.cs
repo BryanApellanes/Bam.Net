@@ -2,14 +2,10 @@
 	Copyright © Bryan Apellanes 2015  
 */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Bam.Net;
-using Bam.Net.Html;
-using System.Web.Mvc;
 using System.IO;
+using System.Text;
+using System.Web.Mvc;
+using Bam.Net.Html;
 
 namespace Bam.Net.Server.Renderers
 {
