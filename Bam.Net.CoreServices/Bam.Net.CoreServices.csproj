@@ -103,6 +103,7 @@
     <Compile Include="ProxySettings.cs" />
     <Compile Include="ProxyTemplate.cs" />
     <Compile Include="Distributed\UpdateOperation.cs" />
+    <Compile Include="ServiceResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bam.Net.Caching\Bam.Net.Caching.csproj">

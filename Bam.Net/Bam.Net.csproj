@@ -149,6 +149,7 @@
     <Compile Include="Configuration\InvalidIHasRequiredPropertiesImplementationException.cs" />
     <Compile Include="Configuration\RequiredPropertiesNotSetException.cs" />
     <Compile Include="Configuration\RequiredPropertyNotFoundException.cs" />
+    <Compile Include="Date.cs" />
     <Compile Include="Documentation\doc.cs" />
     <Compile Include="DynamicTypeRecursionLimitReachedException.cs" />
     <Compile Include="EncryptAttribute.cs" />

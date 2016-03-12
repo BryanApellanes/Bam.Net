@@ -30,27 +30,28 @@ namespace Bam.Net.Data.Repositories
 	public class DaoRepository : Repository, IGeneratesDaoAssembly
 	{
 		TypeDaoGenerator _typeDaoGenerator;
+        TypeSchemaGenerator _typeSchemaGenerator;
         public DaoRepository()
         {
             WarningsAsErrors = true;
             _typeDaoGenerator = new TypeDaoGenerator();
+            _typeSchemaGenerator = new TypeSchemaGenerator();
             _typeDaoGenerator.GenerateDaoAssemblySucceeded += (o, a) =>
             {
                 GenerateDaoAssemblyEventArgs args = (GenerateDaoAssemblyEventArgs)a;
                 FireEvent(GenerateDaoAssemblySucceeded, args);
             };
         }
-        public DaoRepository(Database database, ILogger logger = null, string schemaName = null, ITypeTableNameProvider tableNameProvider = null)
+        public DaoRepository(Database database, ILogger logger = null, string schemaName = null)
             : this()
         {
             Database = database;
             Logger = logger ?? Log.Default;
             Subscribe(logger);
             SchemaName = schemaName;
-            TableNameProvider = tableNameProvider ?? new DaoSuffixTypeTableNameProvider();
         }
 
-        public string DaoNameSpace
+        public string Namespace
         {
             get
             {
@@ -59,6 +60,30 @@ namespace Bam.Net.Data.Repositories
             set
             {
                 _typeDaoGenerator.Namespace = value;
+            }
+        }
+
+        public bool KeepSource
+        {
+            get
+            {
+                return _typeDaoGenerator.KeepSource;
+            }
+            set
+            {
+                _typeDaoGenerator.KeepSource = value; 
+            }
+        }
+
+        public Func<string, string> TempPathProvider
+        {
+            get
+            {
+                return _typeDaoGenerator.TempPathProvider;
+            }
+            set
+            {
+                _typeDaoGenerator.TempPathProvider = value;
             }
         }
 
@@ -71,18 +96,6 @@ namespace Bam.Net.Data.Repositories
             set
             {
                 _typeDaoGenerator.SchemaName = value;
-            }
-        }
-
-        public ITypeTableNameProvider TableNameProvider
-        {
-            get
-            {
-                return _typeDaoGenerator.TableNameProvider;
-            }
-            set
-            {
-                _typeDaoGenerator.TableNameProvider = value;
             }
         }
 
@@ -101,11 +114,17 @@ namespace Bam.Net.Data.Repositories
 			}
 		}
 
+        TypeSchema _typeSchema;
 		public TypeSchema TypeSchema
 		{
 			get
 			{
-				return _typeDaoGenerator.SchemaDefinitionCreateResult.TypeSchema;
+                if(_typeSchema == null)
+                {
+                    Initialize();
+                    _typeSchema = _typeSchemaGenerator.CreateTypeSchema(StorableTypes);
+                }
+                return _typeSchema;
 			}
 		}
 
@@ -184,6 +203,7 @@ namespace Bam.Net.Data.Repositories
 		}
 
 		Assembly _daoAssembly;
+        EnsureSchemaStatus _schemaStatus;
         /// <summary>
         /// Generates a Dao Assembly for the the underlying 
         /// storable types if it has not yet been generated
@@ -199,7 +219,11 @@ namespace Bam.Net.Data.Repositories
                 EmitWarnings();
                 ThrowWarningsIfWarningsAsErrors();
                 Args.ThrowIfNull(Database, "Database");
-                Database.TryEnsureSchema(_daoAssembly.GetTypes().First(type => type.HasCustomAttributeOfType<TableAttribute>()), logger);
+                if(_schemaStatus == EnsureSchemaStatus.Invalid || // not done
+                    _schemaStatus == EnsureSchemaStatus.Error) // failed
+                {
+                    _schemaStatus = Database.TryEnsureSchema(_daoAssembly.GetTypes().First(type => type.HasCustomAttributeOfType<TableAttribute>()), logger);
+                }
             }
 
             return _daoAssembly;
@@ -270,7 +294,7 @@ namespace Bam.Net.Data.Repositories
 			try
 			{
 				Initialize();
-				Type daoType = GetDaoType(GetPocoType(toCreate.GetType()));
+				Type daoType = GetDaoType(GetBasePocoType(toCreate.GetType()));
 				Dao daoInstance = daoType.Construct<Dao>();
 				daoInstance.ForceInsert = true;
 				object dto = SetDaoInstancePropertiesAndSave(toCreate, daoInstance);
@@ -336,6 +360,7 @@ namespace Bam.Net.Data.Repositories
 
 		public override IEnumerable<T> RetrieveAll<T>()// where T: new()
 		{
+            WarnRetrieveAll(typeof(T));
 			return RetrieveAll(typeof(T)).CopyAs<T>();
 		}
 
@@ -343,7 +368,7 @@ namespace Bam.Net.Data.Repositories
 		{
 			Args.ThrowIfNull(Database, "Database");
 
-			Type pocoType = GetPocoType(dtoOrPocoType);
+			Type pocoType = GetBasePocoType(dtoOrPocoType);
 			Type daoType = GetDaoType(pocoType);
 			MethodInfo getterMethod = daoType.GetMethod("LoadAll", new Type[] { typeof(Database) });
 			return new List<object>((IEnumerable<object>)getterMethod.Invoke(null, new object[] { Database }));
@@ -448,14 +473,14 @@ namespace Bam.Net.Data.Repositories
 
 		#region IDaoRepository Members
 
-		public IEnumerable<T> Query<T>(QueryFilter query) where T : new()
+		public override IEnumerable<T> Query<T>(QueryFilter query)
 		{
 			Type pocoType = typeof(T);
             IEnumerable daoResults = Query(pocoType, query);
 			return daoResults.CopyAs<T>();
 		}
 
-        public IEnumerable Query(Type pocoType, QueryFilter query)
+        public override IEnumerable Query(Type pocoType, QueryFilter query)
         {
             Type daoType = GetDaoType(pocoType);
             MethodInfo whereMethod = daoType.GetMethod("Where", new Type[] { typeof(QueryFilter), typeof(Database) });
@@ -473,13 +498,14 @@ namespace Bam.Net.Data.Repositories
 		public Type GetDaoType(Type pocoType)
 		{
 			Assembly daoAssembly = EnsureDaoAssemblyAndSchema();
-			Type daoType = daoAssembly.GetType("{0}.{1}Dao"._Format(_typeDaoGenerator.Namespace, pocoType.Name));
+            Type basePocoType = GetBasePocoType(pocoType);
+			Type daoType = daoAssembly.GetType("{0}.{1}Dao"._Format(_typeDaoGenerator.Namespace, basePocoType.Name));
 			return daoType;
 		}
 
 		public Type GetWrapperType<T>() where T : new()
 		{
-			return GetWrapperType(typeof(T));
+			return GetWrapperPocoType(typeof(T));
 		}
 
 		/// <summary>
@@ -489,7 +515,7 @@ namespace Bam.Net.Data.Repositories
 		/// </summary>
 		/// <param name="pocoType"></param>
 		/// <returns></returns>
-		public Type GetWrapperType(Type pocoType)
+		public Type GetWrapperPocoType(Type pocoType)
 		{
 			if (pocoType.Name.EndsWith("Poco"))
 			{
@@ -502,10 +528,16 @@ namespace Bam.Net.Data.Repositories
 			return result;
 		}
 
-		public Type GetPocoType(Type wrapperType)
+        /// <summary>
+        /// Gets the base poco type by analyzing the naming convention
+        /// of the specified wrapperType
+        /// </summary>
+        /// <param name="wrapperType"></param>
+        /// <returns></returns>
+		public Type GetBasePocoType(Type wrapperType)
 		{
-			string dtoName = wrapperType.Name.EndsWith("Poco") ? wrapperType.Name.Truncate("Poco".Length) : wrapperType.Name;
-			Type poco = TypeSchema.Tables.FirstOrDefault(t => t.Name.Equals(dtoName));
+			string basePocoName = wrapperType.Name.EndsWith("Poco") ? wrapperType.Name.Truncate("Poco".Length) : wrapperType.Name;
+			Type poco = TypeSchema.Tables.FirstOrDefault(t => t.Name.Equals(basePocoName));
 			Type result = poco ?? wrapperType;
 			return result;
 		}
@@ -517,12 +549,12 @@ namespace Bam.Net.Data.Repositories
 
 		public object ConstructDto(Type pocoType)
 		{
-			Type dtoType = GetWrapperType(pocoType);
-			ConstructorInfo ctor = dtoType.GetConstructor(new Type[] { typeof(DaoRepository) });
+			Type wrapperType = GetWrapperPocoType(pocoType);
+			ConstructorInfo ctor = wrapperType.GetConstructor(new Type[] { typeof(DaoRepository) });
 			object result = null;
 			if (ctor == null)
 			{
-				ctor = dtoType.GetConstructor(Type.EmptyTypes);
+				ctor = wrapperType.GetConstructor(Type.EmptyTypes);
 				if (ctor == null)
 				{
 					Args.Throw<InvalidOperationException>(
@@ -547,19 +579,19 @@ namespace Bam.Net.Data.Repositories
 			return dao;
 		}
 
-		public bool SetChildDaoCollectionValues(object pocoOrPocoParent, Dao daoInstance)
+		public bool SetChildDaoCollectionValues(object poco, Dao daoInstance)
 		{
-			List<TypeFk> fkDescriptors = TypeSchema.ForeignKeys.Where(tfk => tfk.PrimaryKeyType == GetPocoType(pocoOrPocoParent.GetType())).ToList();
+			List<TypeFk> fkDescriptors = TypeSchema.ForeignKeys.Where(tfk => tfk.PrimaryKeyType == GetBasePocoType(poco.GetType())).ToList();
 			bool result = false;
 			foreach (TypeFk fkDescriptor in fkDescriptors)
 			{
 				PropertyInfo childCollectionDaoProperty = GetChildCollectionDaoPropertyForTypeFk(fkDescriptor);
-				IEnumerable values = (IEnumerable)fkDescriptor.CollectionProperty.GetValue(pocoOrPocoParent) ?? new object[] { };
+				IEnumerable values = (IEnumerable)fkDescriptor.CollectionProperty.GetValue(poco) ?? new object[] { };
 				IAddable daoCollection = (IAddable)childCollectionDaoProperty.GetValue(daoInstance);
 				foreach (object o in values)
 				{
 					Meta.SetUuid(o);
-					Dao dao = GetDaoType(GetPocoType(o.GetType())).Construct<Dao>();
+					Dao dao = GetDaoType(GetBasePocoType(o.GetType())).Construct<Dao>();
 					dao.CopyProperties(o);
 					daoCollection.Add(dao);
 					result = true;
@@ -569,11 +601,11 @@ namespace Bam.Net.Data.Repositories
 			return result;
 		}
 
-		public bool SetXrefDaoCollectionValues(object pocoOrPocoParent, Dao daoInstance)
+		public bool SetXrefDaoCollectionValues(object poco, Dao daoInstance)
 		{
-			Type pocoType = GetPocoType(pocoOrPocoParent.GetType());
+			Type pocoType = GetBasePocoType(poco.GetType());
 			Type daoType = GetDaoType(pocoType);
-			IHasUpdatedXrefCollectionProperties xrefPropertyProvider = pocoOrPocoParent as IHasUpdatedXrefCollectionProperties;
+			IHasUpdatedXrefCollectionProperties xrefPropertyProvider = poco as IHasUpdatedXrefCollectionProperties;
 			bool result = false;
 			HashSet<string> handledProperties = new HashSet<string>();
 			if (xrefPropertyProvider != null)
@@ -583,7 +615,7 @@ namespace Bam.Net.Data.Repositories
 				{
 					PropertyInfo daoXrefProperty = daoType.GetProperty(daoXrefPropertyName);
 					PropertyInfo pocoProperty = xrefPropertyProvider.UpdatedXrefCollectionProperties[daoXrefPropertyName];
-					SetXrefDaoCollectionValues(pocoOrPocoParent, daoInstance, daoXrefProperty, pocoProperty);
+                    SetXrefDaoCollectionValues(poco, daoInstance, daoXrefProperty, pocoProperty);
 					result = true;
 				});
 			}
@@ -596,7 +628,7 @@ namespace Bam.Net.Data.Repositories
 				{
 					PropertyInfo daoXrefProperty = daoType.GetProperty(daoXrefPropertyName);
 					PropertyInfo pocoProperty = leftXref.RightCollectionProperty;
-					SetXrefDaoCollectionValues(pocoOrPocoParent, daoInstance, daoXrefProperty, pocoProperty);
+					SetXrefDaoCollectionValues(poco, daoInstance, daoXrefProperty, pocoProperty);
 					result = true;
 				}
 			}
@@ -609,7 +641,7 @@ namespace Bam.Net.Data.Repositories
 				{
 					PropertyInfo daoXrefProperty = daoType.GetProperty(daoXrefPropertyName);
 					PropertyInfo pocoProperty = rightXref.LeftCollectionProperty;
-					SetXrefDaoCollectionValues(pocoOrPocoParent, daoInstance, daoXrefProperty, pocoProperty);
+					SetXrefDaoCollectionValues(poco, daoInstance, daoXrefProperty, pocoProperty);
 					result = true;
 				}
 			}
@@ -617,7 +649,7 @@ namespace Bam.Net.Data.Repositories
 		}
 
 
-		public IEnumerable<TChildType> ForeignKeyCollectionLoader<TChildType>(object dtoOrDtoParent) where TChildType : new()
+		public IEnumerable<TChildType> ForeignKeyCollectionLoader<TChildType>(object poco) where TChildType : new()
 		{
 			// get all the child types where the foreign key property value equals the parent id
 			Type pocoChildType = typeof(TChildType);
@@ -627,11 +659,11 @@ namespace Bam.Net.Data.Repositories
 			{
 				List<TChildType> results = new List<TChildType>();
 				string foreignKeyName = fkDescriptor.ForeignKeyProperty.Name;
-				long parentId = GetIdValue(dtoOrDtoParent);
+				long parentId = GetIdValue(poco);
 				if (parentId <= 0)
 				{
 					Args.Throw<InvalidOperationException>("IdValue not found for specified parent instance: {0}",
-						dtoOrDtoParent.PropertiesToString());
+						poco.PropertiesToString());
 				}
 				QueryFilter filter = Bam.Net.Data.Query.Where(foreignKeyName) == parentId;
 				Type childDaoType = GetDaoType(typeof(TChildType));
@@ -657,7 +689,7 @@ namespace Bam.Net.Data.Repositories
 		/// <param name="dtoInstance"></param>
 		public void SetParentProperties(object dtoInstance)
 		{
-			Type pocoType = GetPocoType(dtoInstance.GetType());
+			Type pocoType = GetBasePocoType(dtoInstance.GetType());
 			foreach (TypeFk typeFk in TypeSchema.ForeignKeys.Where(fk => fk.ForeignKeyType == pocoType))
 			{
 				PropertyInfo parentInstanceProperty = pocoType.GetProperty(typeFk.PrimaryKeyType.Name);
@@ -678,7 +710,7 @@ namespace Bam.Net.Data.Repositories
 		/// <returns></returns>
 		public object GetParentPropertyOfChild(object dtoChild, Type parentType)
 		{
-			Type dtoType = GetWrapperType(dtoChild.GetType());
+			Type dtoType = GetWrapperPocoType(dtoChild.GetType());
 			if (dtoType != null)
 			{
 				string primaryIdPropertyName = "{0}Id"._Format(parentType.Name);
@@ -734,7 +766,8 @@ namespace Bam.Net.Data.Repositories
 			object result = ConstructDto(objectType);
 			result.CopyProperties(daoInstance);
 			SetParentProperties(result);
-			return result;
+
+            return result;
 		}
 
 		private Dao GetDaoInstanceById<T>(long id) where T : new()
@@ -754,7 +787,7 @@ namespace Bam.Net.Data.Repositories
 
 		private Dao GetDaoInstanceByMethod(string methodName, Type dtoOrPocoType, object parameter)
 		{
-			Type pocoType = GetPocoType(dtoOrPocoType);
+			Type pocoType = GetBasePocoType(dtoOrPocoType);
 			Type daoType = GetDaoType(pocoType);
 			MethodInfo getterMethod = daoType.GetMethod(methodName, new Type[] { parameter.GetType(), typeof(Database) });
 			object daoResult = getterMethod.Invoke(null, new object[] { parameter, Database });
@@ -781,7 +814,6 @@ namespace Bam.Net.Data.Repositories
 			return GetDaoType(typeof(T));
 		}
 
-
 		private void SetXrefDaoCollectionValues(object pocoOrPocoParent, Dao daoInstance, PropertyInfo daoXrefProperty, PropertyInfo pocoProperty)
 		{
 			IEnumerable values = (IEnumerable)pocoProperty.GetValue(pocoOrPocoParent);
@@ -803,7 +835,7 @@ namespace Bam.Net.Data.Repositories
 			Meta.SetUuid(poco);
 			daoInstance.CopyProperties(poco);
 			daoInstance.Property("Database", Database);
-			Type pocoType = GetPocoType(poco.GetType());
+			Type pocoType = GetBasePocoType(poco.GetType());
 			SaveDaoInstance(pocoType, daoInstance);
 			if (SetChildDaoCollectionValues(poco, daoInstance) || SetXrefDaoCollectionValues(poco, daoInstance))
 			{
@@ -840,7 +872,7 @@ namespace Bam.Net.Data.Repositories
         private void WarnRetrieveAll(Type type)
         {
             string msgSignature = "Use of this method ({0}) can have a potential detrimental performance hit because it will retrieve all records for type ({1}) to execute the predicate against each";
-            string[] messageArgs = new string[] { MethodBase.GetCurrentMethod().Name, type.Name };
+            string[] messageArgs = new string[] { "RetrieveAll", type.Name };
             Logger.AddEntry(msgSignature, LogEventType.Warning, messageArgs);
             if (WarningsAsErrors)
             {

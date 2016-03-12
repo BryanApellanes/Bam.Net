@@ -517,25 +517,32 @@ The {ApplicationName} Team<br />
         public dynamic GetCurrent()
         {
             bool isAuthenticated = false;
-            User user = Session.UserOfUserId;
+            User user = GetCurrentUser();
 
             if (user.Id.Value != User.Anonymous.Id.Value)
             {
                 isAuthenticated = true;
             }
 
-            int loginCount = isAuthenticated ? user.LoginsByUserId.Count: 0;
+            int loginCount = isAuthenticated ? user.LoginsByUserId.Count : 0;
 
-            dynamic result = new { 
-                userName = user.UserName, 
-                id = user.Id, 
+            dynamic result = new
+            {
+                userName = user.UserName,
+                id = user.Id,
                 isAuthenticated = isAuthenticated,
                 loginCount = loginCount
             };
 
             return result;
-        }   
-        
+        }
+
+        [Exclude]
+        public User GetCurrentUser()
+        {
+            return Session.UserOfUserId;
+        }
+
         public Session Session
         {
             get

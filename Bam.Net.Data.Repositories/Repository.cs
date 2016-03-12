@@ -159,6 +159,15 @@ namespace Bam.Net.Data.Repositories
 		{
 			return Meta.GetId(value);
 		}
-			
-	}
+
+        public virtual IEnumerable<T> Query<T>(QueryFilter query) where T : new()
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual IEnumerable Query(Type type, QueryFilter query)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

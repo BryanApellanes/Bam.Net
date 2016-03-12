@@ -27,6 +27,18 @@ namespace @Model.Namespace
 
 		public Dictionary<string, PropertyInfo> UpdatedXrefCollectionProperties { get; set; }
 
+		protected void SetUpdatedXrefCollectionProperty(string propertyName, PropertyInfo correspondingProperty)
+		{
+			if(!UpdatedXrefCollectionProperties.ContainsKey(propertyName))
+			{
+				UpdatedXrefCollectionProperties.Add(propertyName, correspondingProperty);				
+			}
+			else
+			{
+				UpdatedXrefCollectionProperties[propertyName] = correspondingProperty;				
+			}
+		}
+
 		@foreach(TypeFk fk in Model.ForeignKeys)
 		{
 			WriteForeignKeyProperty(fk);

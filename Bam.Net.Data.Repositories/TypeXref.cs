@@ -32,6 +32,14 @@ namespace Bam.Net.Data.Repositories
 			set;
 		}
 
+        public string LeftDaoName
+        {
+            get
+            {
+                return TypeSchemaGenerator.GetTableNameForType(Left);
+            }
+        }
+
 		/// <summary>
 		/// The property of the Right type that represents 
 		/// the collection containing elements of the Left type
@@ -41,6 +49,14 @@ namespace Bam.Net.Data.Repositories
 			get;
 			set;
 		}
+
+        public string RightDaoName
+        {
+            get
+            {
+                return TypeSchemaGenerator.GetTableNameForType(Right);
+            }
+        }
 
 		/// <summary>
 		/// The name of the LeftCollectionProperty.  Used by underlying 

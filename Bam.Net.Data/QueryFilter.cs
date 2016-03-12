@@ -37,6 +37,11 @@ namespace Bam.Net.Data
             }
         }
 
+        public static QueryFilter Where(string columnName)
+        {
+            return Query.Where(columnName);
+        }
+
         protected internal string ColumnName { get; set; }
 
         public IEnumerable<IFilterToken> Filters
