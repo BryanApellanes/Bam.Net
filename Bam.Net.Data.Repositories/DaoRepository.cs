@@ -294,7 +294,7 @@ namespace Bam.Net.Data.Repositories
 			try
 			{
 				Initialize();
-				Type daoType = GetDaoType(GetBasePocoType(toCreate.GetType()));
+				Type daoType = GetDaoType(GetBaseType(toCreate.GetType()));
 				Dao daoInstance = daoType.Construct<Dao>();
 				daoInstance.ForceInsert = true;
 				object dto = SetDaoInstancePropertiesAndSave(toCreate, daoInstance);
@@ -368,7 +368,7 @@ namespace Bam.Net.Data.Repositories
 		{
 			Args.ThrowIfNull(Database, "Database");
 
-			Type pocoType = GetBasePocoType(dtoOrPocoType);
+			Type pocoType = GetBaseType(dtoOrPocoType);
 			Type daoType = GetDaoType(pocoType);
 			MethodInfo getterMethod = daoType.GetMethod("LoadAll", new Type[] { typeof(Database) });
 			return new List<object>((IEnumerable<object>)getterMethod.Invoke(null, new object[] { Database }));
@@ -498,14 +498,14 @@ namespace Bam.Net.Data.Repositories
 		public Type GetDaoType(Type pocoType)
 		{
 			Assembly daoAssembly = EnsureDaoAssemblyAndSchema();
-            Type basePocoType = GetBasePocoType(pocoType);
+            Type basePocoType = GetBaseType(pocoType);
 			Type daoType = daoAssembly.GetType("{0}.{1}Dao"._Format(_typeDaoGenerator.Namespace, basePocoType.Name));
 			return daoType;
 		}
 
 		public Type GetWrapperType<T>() where T : new()
 		{
-			return GetWrapperPocoType(typeof(T));
+			return GetWrapperType(typeof(T));
 		}
 
 		/// <summary>
@@ -513,18 +513,18 @@ namespace Bam.Net.Data.Repositories
 		/// Will not return null unless the specified pocoType
 		/// is null.
 		/// </summary>
-		/// <param name="pocoType"></param>
+		/// <param name="baseOrWrapperType"></param>
 		/// <returns></returns>
-		public Type GetWrapperPocoType(Type pocoType)
+		public Type GetWrapperType(Type baseOrWrapperType)
 		{
-			if (pocoType.Name.EndsWith("Poco"))
+			if (baseOrWrapperType.Name.EndsWith("Poco"))
 			{
-				return pocoType;
+				return baseOrWrapperType;
 			}
 
-			Type daoType = GetDaoType(pocoType);
-			Type dto = daoType.Assembly.GetType("{0}.{1}Poco"._Format(_typeDaoGenerator.Namespace, pocoType.Name));
-			Type result = dto ?? pocoType;
+			Type daoType = GetDaoType(baseOrWrapperType);
+			Type dto = daoType.Assembly.GetType("{0}.{1}Poco"._Format(_typeDaoGenerator.Namespace, baseOrWrapperType.Name));
+			Type result = dto ?? baseOrWrapperType;
 			return result;
 		}
 
@@ -534,22 +534,22 @@ namespace Bam.Net.Data.Repositories
         /// </summary>
         /// <param name="wrapperType"></param>
         /// <returns></returns>
-		public Type GetBasePocoType(Type wrapperType)
+		public Type GetBaseType(Type wrapperType)
 		{
 			string basePocoName = wrapperType.Name.EndsWith("Poco") ? wrapperType.Name.Truncate("Poco".Length) : wrapperType.Name;
 			Type poco = TypeSchema.Tables.FirstOrDefault(t => t.Name.Equals(basePocoName));
 			Type result = poco ?? wrapperType;
 			return result;
 		}
-
-		public T ConstructDto<T>()
+        
+		public T ConstructWrapper<T>()
 		{
-			return (T)ConstructDto(typeof(T));
+			return (T)ConstructWrapper(typeof(T));
 		}
 
-		public object ConstructDto(Type pocoType)
+		public object ConstructWrapper(Type pocoType)
 		{
-			Type wrapperType = GetWrapperPocoType(pocoType);
+			Type wrapperType = GetWrapperType(pocoType);
 			ConstructorInfo ctor = wrapperType.GetConstructor(new Type[] { typeof(DaoRepository) });
 			object result = null;
 			if (ctor == null)
@@ -581,7 +581,7 @@ namespace Bam.Net.Data.Repositories
 
 		public bool SetChildDaoCollectionValues(object poco, Dao daoInstance)
 		{
-			List<TypeFk> fkDescriptors = TypeSchema.ForeignKeys.Where(tfk => tfk.PrimaryKeyType == GetBasePocoType(poco.GetType())).ToList();
+			List<TypeFk> fkDescriptors = TypeSchema.ForeignKeys.Where(tfk => tfk.PrimaryKeyType == GetBaseType(poco.GetType())).ToList();
 			bool result = false;
 			foreach (TypeFk fkDescriptor in fkDescriptors)
 			{
@@ -591,7 +591,7 @@ namespace Bam.Net.Data.Repositories
 				foreach (object o in values)
 				{
 					Meta.SetUuid(o);
-					Dao dao = GetDaoType(GetBasePocoType(o.GetType())).Construct<Dao>();
+					Dao dao = GetDaoType(GetBaseType(o.GetType())).Construct<Dao>();
 					dao.CopyProperties(o);
 					daoCollection.Add(dao);
 					result = true;
@@ -603,9 +603,9 @@ namespace Bam.Net.Data.Repositories
 
 		public bool SetXrefDaoCollectionValues(object poco, Dao daoInstance)
 		{
-			Type pocoType = GetBasePocoType(poco.GetType());
-			Type daoType = GetDaoType(pocoType);
-			IHasUpdatedXrefCollectionProperties xrefPropertyProvider = poco as IHasUpdatedXrefCollectionProperties;
+			Type baseType = GetBaseType(poco.GetType());
+			Type daoType = GetDaoType(baseType);
+            IHasUpdatedXrefCollectionProperties xrefPropertyProvider = poco as IHasUpdatedXrefCollectionProperties;
 			bool result = false;
 			HashSet<string> handledProperties = new HashSet<string>();
 			if (xrefPropertyProvider != null)
@@ -620,7 +620,7 @@ namespace Bam.Net.Data.Repositories
 				});
 			}
 
-			TypeXref[] leftXrefs = TypeSchema.Xrefs.Where(xref => xref.Left.Equals(pocoType)).ToArray();
+			TypeXref[] leftXrefs = TypeSchema.Xrefs.Where(xref => xref.Left.Equals(baseType)).ToArray();
 			foreach (TypeXref leftXref in leftXrefs)
 			{
 				string daoXrefPropertyName = "{0}Dao"._Format(leftXref.Right.Name).Pluralize();
@@ -633,7 +633,7 @@ namespace Bam.Net.Data.Repositories
 				}
 			}
 
-			TypeXref[] rightXrefs = TypeSchema.Xrefs.Where(xref => xref.Right.Equals(pocoType)).ToArray();
+			TypeXref[] rightXrefs = TypeSchema.Xrefs.Where(xref => xref.Right.Equals(baseType)).ToArray();
 			foreach (TypeXref rightXref in rightXrefs)
 			{
 				string daoXrefPropertyName = "{0}Dao"._Format(rightXref.Left.Name).Pluralize();
@@ -689,7 +689,7 @@ namespace Bam.Net.Data.Repositories
 		/// <param name="dtoInstance"></param>
 		public void SetParentProperties(object dtoInstance)
 		{
-			Type pocoType = GetBasePocoType(dtoInstance.GetType());
+			Type pocoType = GetBaseType(dtoInstance.GetType());
 			foreach (TypeFk typeFk in TypeSchema.ForeignKeys.Where(fk => fk.ForeignKeyType == pocoType))
 			{
 				PropertyInfo parentInstanceProperty = pocoType.GetProperty(typeFk.PrimaryKeyType.Name);
@@ -710,7 +710,7 @@ namespace Bam.Net.Data.Repositories
 		/// <returns></returns>
 		public object GetParentPropertyOfChild(object dtoChild, Type parentType)
 		{
-			Type dtoType = GetWrapperPocoType(dtoChild.GetType());
+			Type dtoType = GetWrapperType(dtoChild.GetType());
 			if (dtoType != null)
 			{
 				string primaryIdPropertyName = "{0}Id"._Format(parentType.Name);
@@ -763,7 +763,7 @@ namespace Bam.Net.Data.Repositories
 
 		private object GetPocoInstance(Type objectType, Dao daoInstance)
 		{
-			object result = ConstructDto(objectType);
+			object result = ConstructWrapper(objectType);
 			result.CopyProperties(daoInstance);
 			SetParentProperties(result);
 
@@ -785,9 +785,9 @@ namespace Bam.Net.Data.Repositories
 			return GetDaoInstanceByMethod("GetByUuid", dtoOrPocoType, (object)uuid);
 		}
 
-		private Dao GetDaoInstanceByMethod(string methodName, Type dtoOrPocoType, object parameter)
+		private Dao GetDaoInstanceByMethod(string methodName, Type baseOrWrapperType, object parameter)
 		{
-			Type pocoType = GetBasePocoType(dtoOrPocoType);
+			Type pocoType = GetBaseType(baseOrWrapperType);
 			Type daoType = GetDaoType(pocoType);
 			MethodInfo getterMethod = daoType.GetMethod(methodName, new Type[] { parameter.GetType(), typeof(Database) });
 			object daoResult = getterMethod.Invoke(null, new object[] { parameter, Database });
@@ -835,14 +835,14 @@ namespace Bam.Net.Data.Repositories
 			Meta.SetUuid(poco);
 			daoInstance.CopyProperties(poco);
 			daoInstance.Property("Database", Database);
-			Type pocoType = GetBasePocoType(poco.GetType());
+			Type pocoType = GetBaseType(poco.GetType());
 			SaveDaoInstance(pocoType, daoInstance);
 			if (SetChildDaoCollectionValues(poco, daoInstance) || SetXrefDaoCollectionValues(poco, daoInstance))
 			{
 				daoInstance.ForceUpdate = true;
 				SaveDaoInstance(pocoType, daoInstance);
 			}
-			object dto = ConstructDto(pocoType);
+			object dto = ConstructWrapper(pocoType);
 			dto.CopyProperties(daoInstance);
 			poco.CopyProperties(dto);
 			return dto;

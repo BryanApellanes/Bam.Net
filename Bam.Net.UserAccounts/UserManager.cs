@@ -50,6 +50,18 @@ namespace Bam.Net.UserAccounts
             this.PasswordResetTokensExpireInThisManyMinutes = 15;
         }
 
+        public UserManager Clone()
+        {
+            UserManager result = new UserManager();
+            result.CopyProperties(this);
+            result._serviceProvider = _serviceProvider.Clone();
+            result.DaoUserResolver = DaoUserResolver;
+            result.EmailComposer = EmailComposer;
+            result.SmtpSettingsVault = SmtpSettingsVault;
+            result.ApplicationNameProvider = ApplicationNameProvider;
+            return result;
+        }
+
         Incubator _serviceProvider;
         object _serviceProviderLock = new object();
         protected internal Incubator ServiceProvider
