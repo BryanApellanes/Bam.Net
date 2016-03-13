@@ -28,7 +28,7 @@ namespace Bam.Net.UserAccounts
     /// </summary>
     [Encrypt]
     [Proxy("user", MethodCase = MethodCase.Both)]
-    public class UserManager: IRequiresHttpContext
+    public class UserManager: Loggable, IRequiresHttpContext
     {
         static UserManager()
         {
@@ -55,10 +55,7 @@ namespace Bam.Net.UserAccounts
             UserManager result = new UserManager();
             result.CopyProperties(this);
             result._serviceProvider = _serviceProvider.Clone();
-            result.DaoUserResolver = DaoUserResolver;
-            result.EmailComposer = EmailComposer;
             result.SmtpSettingsVault = SmtpSettingsVault;
-            result.ApplicationNameProvider = ApplicationNameProvider;
             return result;
         }
 

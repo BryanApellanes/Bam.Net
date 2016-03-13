@@ -289,9 +289,8 @@ namespace Bam.Net.Server
             {
                 try
                 {
-                    UserManager mgr = appConfig.UserManager.Create(MainLogger);
-                    // TODO: Use service locator (incubator) here
-                    mgr.ApplicationNameProvider = new AppConfApplicationNameProvider(appConfig);
+                    UserManager mgr = appConfig.UserManager.Create(MainLogger);                    
+                    mgr.ApplicationNameProvider = new AppConfApplicationNameProvider(appConfig);                    
                     AddAppService<UserManager>(appConfig.Name, mgr);
                 }
                 catch (Exception ex)
