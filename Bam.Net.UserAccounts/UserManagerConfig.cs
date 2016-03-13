@@ -41,6 +41,7 @@ namespace Bam.Net.UserAccounts
                 mgr.SmtpSettingsVaultPath = SmtpSettingsVaultPath;
             }
 
+            mgr.Subscribe(logger);
             return mgr;
         }
         

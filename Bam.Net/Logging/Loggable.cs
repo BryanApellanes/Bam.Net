@@ -47,15 +47,19 @@ namespace Bam.Net.Logging
 
 		/// <summary>
 		/// Subscribe the current Loggables subscribers
-		/// to the specified Loggable
+		/// to the specified Loggable and vice versa
 		/// </summary>
 		/// <param name="loggable"></param>
 		public virtual void Subscribe(Loggable loggable)
 		{
-			this.Subscribers.Each(logger =>
+			Subscribers.Each(logger =>
 			{
 				loggable.Subscribe(logger);
 			});
+            loggable.Subscribers.Each(logger =>
+            {
+                Subscribe(logger);
+            });
 		}
 
         /// <summary>
