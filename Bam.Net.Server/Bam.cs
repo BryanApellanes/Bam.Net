@@ -69,10 +69,6 @@ namespace Bam.Net.Server
 
         static Dictionary<string, string> _combinedScripts = new Dictionary<string, string>();
         static Dictionary<string, string> _combinedMinScripts = new Dictionary<string, string>();
-        public static string CombinedAppScript(WebViewPage page, string appName, bool refresh = false, bool min = true)
-        {
-            return CombinedAppScript(page.Server, appName, refresh);
-        }
 
         public static string CombinedAppScript(HttpServerUtilityBase server, string appName, bool refresh = false, bool min = true)
         {
@@ -221,23 +217,10 @@ namespace Bam.Net.Server
 
             return MvcHtmlString.Create(dustBamTemplates.ToString());
         }
-        //private static void RegisterConfiguredProxies(WebViewPage page, object appNameObj)
-        //{
-        //    HttpServerUtilityBase server = page.Server;
-        //    string appsRoot = server.MapPath(AppsRoot);
-        //    string appRoot = server.MapPath(AppRoot.NamedFormat(appNameObj));
-        //    string commonConfigJsPath = string.Format("{0}/config.js", appsRoot);
-        //    string configJsPath = string.Format("{0}/config.js", appRoot);
-
-        //    dynamic commonConfig = commonConfigJsPath.JsonFromJsLiteralFile("config").JsonToDynamic();
-        //    dynamic config = configJsPath.JsonFromJsLiteralFile("config").JsonToDynamic();
-
-        //    //if()
-        //}
 
         private static StringBuilder CreateDustBamTemplatesScriptTag(WebViewPage page, object appNameObj)
         {
-            HttpServerUtilityBase server = page.Server;
+            HttpServerUtilityBase server = page.Context.Server;
             UrlHelper url = page.Url;
 
             StringBuilder templatePath = new StringBuilder();
@@ -248,7 +231,7 @@ namespace Bam.Net.Server
 
         private static StringBuilder CreateAppInitScriptTag(WebViewPage page, object appNameObj)
         {
-            HttpServerUtilityBase server = page.Server;
+            HttpServerUtilityBase server = page.Context.Server;
             UrlHelper url = page.Url;
 
             StringBuilder initPath = new StringBuilder();
@@ -259,7 +242,7 @@ namespace Bam.Net.Server
 
         private static StringBuilder CreateViewModelsScriptTags(WebViewPage page, object appNameObj)
         {
-            HttpServerUtilityBase server = page.Server;
+            HttpServerUtilityBase server = page.Context.Server;
             UrlHelper url = page.Url;
 
             string viewModelsDirPath = server.MapPath(AppViewModels.NamedFormat(appNameObj));
@@ -277,7 +260,7 @@ namespace Bam.Net.Server
 
         private static StringBuilder CreatePagesScriptsTags(WebViewPage page, object appNameObject)
         {
-            HttpServerUtilityBase server = page.Server;
+            HttpServerUtilityBase server = page.Context.Server;
             UrlHelper url = page.Url;
 
             string pagesDirPath = server.MapPath(AppPages.NamedFormat(appNameObject));
@@ -295,7 +278,7 @@ namespace Bam.Net.Server
 
         private static StringBuilder CreateJsScriptsTags(WebViewPage page, object appNameObject)
         {
-            HttpServerUtilityBase server = page.Server;
+            HttpServerUtilityBase server = page.Context.Server;
             UrlHelper url = page.Url;
 
             string jsDirPath = server.MapPath(AppJs.NamedFormat(appNameObject));

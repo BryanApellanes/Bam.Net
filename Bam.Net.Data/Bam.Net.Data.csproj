@@ -127,6 +127,7 @@
     <Compile Include="ContainsComparison.cs" />
     <Compile Include="CountResult.cs" />
     <Compile Include="DaoController.cs" />
+    <Compile Include="DaoExpressionFilter.cs" />
     <Compile Include="DaoProxyRegistration.cs" />
     <Compile Include="DaoProxyRegistrationInfo.cs" />
     <Compile Include="DaoProxySystem.cs" />
@@ -144,6 +145,8 @@
     <Compile Include="ExcludeAttribute.cs" />
     <Compile Include="DataExtensions.cs" />
     <Compile Include="DaoProxyResult.cs" />
+    <Compile Include="ExpressionTypeNotSupportedException.cs" />
+    <Compile Include="Filter.cs" />
     <Compile Include="FilterToken.cs" />
     <Compile Include="IAddable.cs" />
     <Compile Include="IDatabase.cs" />
