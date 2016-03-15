@@ -139,6 +139,7 @@
     <Compile Include="DoesntStartWithComparison.cs" />
     <Compile Include="DropNotEnabledException.cs" />
     <Compile Include="EndsWithComparison.cs" />
+    <Compile Include="EnsureSchemaResult.cs" />
     <Compile Include="EnsureSchemaStatus.cs" />
     <Compile Include="ExcludeAttribute.cs" />
     <Compile Include="DataExtensions.cs" />

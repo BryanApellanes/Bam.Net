@@ -228,25 +228,28 @@ namespace Bam.Net.Data
             return result;
         }
 
-        static List<string> _ensuredSchemas = new List<string>();
+        static List<EnsureSchemaResult> _ensureSchemaResults = new List<EnsureSchemaResult>();
         /// <summary>
         /// Creates the tables for the specified type
         /// </summary>
         /// <param name="type"></param>
         public static EnsureSchemaStatus EnsureSchema(Type type, Database database = null)
         {
-            EnsureSchemaStatus status = EnsureSchemaStatus.Success;
             string name = Dao.ConnectionName(type);
-            if (!_ensuredSchemas.Contains(name))
+            Database db = database ?? Db.For(type);
+            EnsureSchemaResult result = new EnsureSchemaResult { Database = db, SchemaName = name };
+            EnsureSchemaStatus status = _ensureSchemaResults.Where(esr => esr.Equals(result)).Select(esr => esr.Status).FirstOrDefault();
+            if (status != EnsureSchemaStatus.AlreadyDone ||
+                status != EnsureSchemaStatus.Success)
             {
-                _ensuredSchemas.Add(name);
-                Database db = database ?? Db.For(type);
+                _ensureSchemaResults.Add(result);                
                 status = db.TryEnsureSchema(type);
             }
             else
             {
                 status = EnsureSchemaStatus.AlreadyDone;
             }
+            result.Status = status;
             return status;
         }
 
