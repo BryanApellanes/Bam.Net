@@ -46,10 +46,12 @@ namespace Bam.Net.UserAccounts
 
         public UserManager()
         {
-            this.SmtpSettingsVaultPath = ".\\SmtpSettings.vault.sqlite";
-            this.PasswordResetTokensExpireInThisManyMinutes = 15;
+            SmtpSettingsVaultPath = ".\\SmtpSettings.vault.sqlite";
+            PasswordResetTokensExpireInThisManyMinutes = 15;
+            LastException = new NullException();
         }
 
+        [Exclude]
         public UserManager Clone()
         {
             UserManager result = new UserManager();
@@ -110,6 +112,7 @@ namespace Bam.Net.UserAccounts
         }
 
         string _smtpSettingsVaultPath;
+        [Exclude]
         public string SmtpSettingsVaultPath
         {
             get
@@ -129,6 +132,27 @@ namespace Bam.Net.UserAccounts
             get;
             set;
         }
+
+        [Exclude]
+        public string ApplicationName // used by loggable implementation
+        {
+            get
+            {
+                return ApplicationNameProvider.GetApplicationName();
+            }
+        }
+
+        [Exclude]
+        public string LastExceptionMessage // used by loggable implementation
+        {
+            get
+            {
+                return LastException.Message;
+            }
+        }
+
+        [Exclude]
+        public Exception LastException { get; set; }
 
         protected internal IApplicationNameProvider ApplicationNameProvider
         {
@@ -249,7 +273,16 @@ The {ApplicationName} Team<br />
         {
             return GetPasswordResetUrlFunction(token);
         }
-        
+        /// <summary>
+        /// The vent that is fired when someone logs in
+        /// </summary>
+        [Verbosity(VerbosityLevel.Information, MessageFormat = "{ApplicationName}::{UserName}:: ForgotPasswordSucceeded")]
+        public event EventHandler ForgotPasswordSucceeded;
+        /// <summary>
+        /// The event that is fired when a login fails
+        /// </summary>
+        [Verbosity(VerbosityLevel.Information, MessageFormat = "{ApplicationName}::{UserName}:: ForgotPasswordSucceeded: {LastExceptionMessage}")]
+        public event EventHandler ForgotPasswordFailed;
         public ForgotPasswordResponse ForgotPassword(string emailAddress)
         {
             try
@@ -272,11 +305,13 @@ The {ApplicationName} Team<br />
                 string subject = "Password Reset for {0}"._Format(data.ApplicationName);
                 string email = user.Email;
                 ComposePasswordResetEmail(subject, data).To(email).Send();
-
+                FireEvent(ForgotPasswordSucceeded);
                 return GetSuccess<ForgotPasswordResponse>(reset.Token, "Password email was sent to {0}"._Format(email));
             }
             catch (Exception ex)
             {
+                LastException = ex;
+                FireEvent(ForgotPasswordFailed);
                 return GetFailure<ForgotPasswordResponse>(ex);
             }
         }
@@ -290,12 +325,23 @@ The {ApplicationName} Team<br />
             //return new { userName = userName, isAuthenticated = true };
             throw new NotImplementedException();
         }
-
+        /// <summary>
+        /// The vent that is fired when someone logs in
+        /// </summary>
+        [Verbosity(VerbosityLevel.Information, MessageFormat = "{ApplicationName}::{UserName}:: LoginSucceeded")]
+        public event EventHandler LoginSucceeded;
+        /// <summary>
+        /// The event that is fired when a login fails
+        /// </summary>
+        [Verbosity(VerbosityLevel.Information, MessageFormat = "{ApplicationName}::{UserName}:: LoginFailed: {LastExceptionMessage}")]
+        public event EventHandler LoginFailed;
         public LoginResponse Login(string userName, string passHash)
         {
+            string failureMessage = "User name and password combination was invalid";
+            EventHandler eventToFire = LoginSucceeded;
+            LoginResponse result = GetFailure<LoginResponse>(new Exception("Unknown exception occurred"));
             try
             {
-
                 User user = null;
                 if (userName.Contains("@"))
                 {
@@ -310,31 +356,45 @@ The {ApplicationName} Team<br />
                 {
                     bool passwordIsValid = Password.Validate(user, passHash);
 
-                    LoginResponse result = GetSuccess<LoginResponse>(passwordIsValid);
+                    result = GetSuccess<LoginResponse>(passwordIsValid);
                     if (!passwordIsValid)
                     {
-                        result.Message = "User name and password combination was invalid";
+                        result.Message = failureMessage;
                         result.Success = false;
+                        eventToFire = LoginFailed;
                     }
                     else
                     {
                         DaoUserResolver.SetUser(HttpContext, user, true);
-                        user.AddLoginRecord();
+                        user.AddLoginRecord();                        
                     }
-
-                    return result;
                 }
                 else
                 {
-                    return GetFailure<LoginResponse>(new Exception("User name and password combination was invalid"));
+                    eventToFire = LoginFailed;
+                    result = GetFailure<LoginResponse>(new Exception(failureMessage));
                 }                
             }
             catch (Exception ex)
             {
-                return GetFailure<LoginResponse>(ex);
+                eventToFire = LoginFailed;
+                result = GetFailure<LoginResponse>(ex);
             }
+
+            FireEvent(eventToFire, EventArgs.Empty);
+            return result;
         }
 
+        /// <summary>
+        /// The vent that is fired when someone signs up
+        /// </summary>
+        [Verbosity(VerbosityLevel.Information, MessageFormat = "{ApplicationName}::{UserName}:: SignUpSucceeded")]
+        public event EventHandler SignUpSucceeded;
+        /// <summary>
+        /// The event that is fired when a sign up fails
+        /// </summary>
+        [Verbosity(VerbosityLevel.Information, MessageFormat = "{ApplicationName}::{UserName}:: SignUpFailed: {LastExceptionMessage}")]
+        public event EventHandler SignUpFailed;
         public SignUpResponse SignUp(string emailAddress, string userName, string passHash, bool sendConfirmationEmail)
         {
             try
@@ -345,14 +405,27 @@ The {ApplicationName} Team<br />
                 {
                     RequestConfirmationEmail(emailAddress);
                 }
+                FireEvent(SignUpSucceeded, EventArgs.Empty);
                 return GetSuccess<SignUpResponse>(user.ToJsonSafe());
             }
             catch (Exception ex)
             {
+                LastException = ex;
+                FireEvent(SignUpFailed, EventArgs.Empty);
                 return GetFailure<SignUpResponse>(ex);
             }
         }
 
+        /// <summary>
+        /// The vent that is fired when someone signs up
+        /// </summary>
+        [Verbosity(VerbosityLevel.Information, MessageFormat = "{ApplicationName}::{UserName}:: SignOutSucceeded")]
+        public event EventHandler SignOutSucceeded;
+        /// <summary>
+        /// The event that is fired when a sign up fails
+        /// </summary>
+        [Verbosity(VerbosityLevel.Information, MessageFormat = "{ApplicationName}::{UserName}:: SignOutFailed: {LastExceptionMessage}")]
+        public event EventHandler SignOutFailed;
         public SignOutResponse SignOut()
         {
             try
@@ -369,14 +442,21 @@ The {ApplicationName} Team<br />
                 }
 
                 Session.End();
-
+                FireEvent(SignOutSucceeded);
                 return GetSuccess<SignOutResponse>("Sign out successful");
             }
             catch (Exception ex)
             {
+                LastException = ex;
+                FireEvent(SignOutFailed);
                 return GetFailure<SignOutResponse>(ex);
             }
         }
+        
+        [Verbosity(VerbosityLevel.Information, MessageFormat = "{ApplicationName}::{UserName}:: RequestConfirmationEmailSucceeded")]
+        public event EventHandler RequestConfirmationEmailSucceeded;
+        [Verbosity(VerbosityLevel.Information, MessageFormat = "{ApplicationName}::{UserName}:: RequestConfirmationEmailFailed: {LastExceptionMessage}")]
+        public event EventHandler RequestConfirmationEmailFailed;
 
         public SendEmailResponse RequestConfirmationEmail(string emailAddress, int accountIndex = 0)
         {
@@ -412,13 +492,21 @@ The {ApplicationName} Team<br />
                 string subject = "Account Registration Confirmation";
                 ComposeConfirmationEmail(subject, data).To(user.Email).Send();
 
+                FireEvent(RequestConfirmationEmailSucceeded);
                 return GetSuccess<SendEmailResponse>(true);
             }
             catch (Exception ex)
             {
+                LastException = ex;
+                FireEvent(RequestConfirmationEmailFailed);
                 return GetFailure<SendEmailResponse>(ex);
             }
         }
+
+        [Verbosity(VerbosityLevel.Information, MessageFormat = "{ApplicationName}::{UserName}:: ConfirmAccountSucceeded")]
+        public event EventHandler ConfirmAccountSucceeded;
+        [Verbosity(VerbosityLevel.Information, MessageFormat = "{ApplicationName}::{UserName}:: ConfirmAccountFailed: {LastExceptionMessage}")]
+        public event EventHandler ConfirmAccountFailed;
 
         public ConfirmResponse ConfirmAccount(string token)
         {
@@ -435,10 +523,13 @@ The {ApplicationName} Team<br />
                     account.Save();
                 }
 
+                FireEvent(ConfirmAccountSucceeded);
                 return GetSuccess<ConfirmResponse>(account.Provider);
             }
             catch (Exception ex)
             {
+                LastException = ex;
+                FireEvent(ConfirmAccountFailed);
                 return GetFailure<ConfirmResponse>(ex);
             }
         }
@@ -496,6 +587,11 @@ The {ApplicationName} Team<br />
             return response;
         }
 
+        [Verbosity(VerbosityLevel.Information, MessageFormat = "{ApplicationName}::{UserName}:: RequestConfirmationEmailSucceeded")]
+        public event EventHandler ResetPasswordSucceeded;
+        [Verbosity(VerbosityLevel.Information, MessageFormat = "{ApplicationName}::{UserName}:: RequestConfirmationEmailFailed: {LastExceptionMessage}")]
+        public event EventHandler ResetPasswordFailed;
+
         public PasswordResetResponse ResetPassword(string passHash, string resetToken)
         {
             try
@@ -514,11 +610,13 @@ The {ApplicationName} Team<br />
                 }
 
                 Password.Set(reset.UserOfUserId, passHash);
-
+                FireEvent(ResetPasswordSucceeded);
                 return GetSuccess<PasswordResetResponse>(true, "Password was successfully reset");
             }
             catch (Exception ex)
             {
+                LastException = ex;
+                FireEvent(ResetPasswordFailed);
                 return GetFailure<PasswordResetResponse>(ex);
             }
         }
@@ -547,11 +645,21 @@ The {ApplicationName} Team<br />
         }
 
         [Exclude]
+        public string UserName
+        {
+            get
+            {
+                return GetCurrentUser().UserName;
+            }
+        }
+
+        [Exclude]
         public User GetCurrentUser()
         {
             return Session.UserOfUserId;
         }
 
+        [Exclude]
         public Session Session
         {
             get
