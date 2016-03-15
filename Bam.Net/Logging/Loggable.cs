@@ -135,6 +135,11 @@ namespace Bam.Net.Logging
             return _subscribers.Contains(logger);
         }
 
+        protected void FireEvent(EventHandler eventHandler)
+        {
+            FireEvent(eventHandler, EventArgs.Empty);
+        }
+
 		protected void FireEvent(EventHandler eventHandler, EventArgs eventArgs)
 		{
 			if (eventHandler != null)

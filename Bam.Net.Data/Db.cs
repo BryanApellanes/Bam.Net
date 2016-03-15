@@ -229,15 +229,25 @@ namespace Bam.Net.Data
         }
 
         static List<string> _ensuredSchemas = new List<string>();
-        static object _ensureLock = new object();
         /// <summary>
         /// Creates the tables for the specified type
         /// </summary>
         /// <param name="type"></param>
         public static EnsureSchemaStatus EnsureSchema(Type type, Database database = null)
         {
-			Database db = database ?? Db.For(type);
-			return db.TryEnsureSchema(type);
+            EnsureSchemaStatus status = EnsureSchemaStatus.Success;
+            string name = Dao.ConnectionName(type);
+            if (!_ensuredSchemas.Contains(name))
+            {
+                _ensuredSchemas.Add(name);
+                Database db = database ?? Db.For(type);
+                status = db.TryEnsureSchema(type);
+            }
+            else
+            {
+                status = EnsureSchemaStatus.AlreadyDone;
+            }
+            return status;
         }
 
         public static ColumnAttribute[] GetColumns<T>() where T : Dao

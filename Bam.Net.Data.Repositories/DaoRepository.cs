@@ -51,6 +51,9 @@ namespace Bam.Net.Data.Repositories
             SchemaName = schemaName;
         }
 
+        /// <summary>
+        /// The namespace to place generated classes into
+        /// </summary>
         public string Namespace
         {
             get
@@ -59,7 +62,7 @@ namespace Bam.Net.Data.Repositories
             }
             set
             {
-                _typeDaoGenerator.Namespace = value;
+                _typeDaoGenerator.Namespace = value.Replace("Dao", "_Dao_");
             }
         }
 
@@ -209,11 +212,11 @@ namespace Bam.Net.Data.Repositories
         /// storable types if it has not yet been generated
         /// </summary>
         /// <returns></returns>
-		public Assembly EnsureDaoAssemblyAndSchema()
+		public Assembly EnsureDaoAssemblyAndSchema(bool useExisting = true)
 		{
             if (_daoAssembly == null)
             {
-                GenerateDaoAssembly();
+                GenerateDaoAssembly(useExisting);
                 MultiTargetLogger logger = new MultiTargetLogger();
                 Subscribers.Each(l => logger.AddLogger(l));
                 EmitWarnings();
@@ -253,6 +256,14 @@ namespace Bam.Net.Data.Repositories
 				}
 			}
 		}
+
+        public T ToDto<T>(object instance) where T : new()
+        {
+            Type daoType = GetDaoType(instance.GetType());
+            Dao o = (Dao)daoType.Construct();
+            o.CopyProperties(instance);
+            return o.ToJsonSafe().CopyAs<T>();
+        }
 
         /// <summary>
         /// Add the specified type as a storable type.

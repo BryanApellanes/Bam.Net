@@ -23,6 +23,7 @@ using Bam.Net.Server;
 using Bam.Net.Server.Listeners;
 using Bam.Net.Data.Repositories;
 using Bam.Net.ServiceProxy.Secure;
+using System.Reflection;
 
 namespace Bam.Net.Server
 {
@@ -252,6 +253,8 @@ namespace Bam.Net.Server
 
                 InitializeUserManagers();
 
+                InitializeApps();
+
                 ConfigureHttpServer();
 
                 RegisterWorkspaceDaos();
@@ -264,6 +267,65 @@ namespace Bam.Net.Server
             }
         }
 
+        public event Action<BamServer, AppConf> AppInitializing;
+        protected void OnAppInitializing(AppConf conf)
+        {
+            if (AppInitializing != null)
+            {
+                AppInitializing(this, conf);
+            }
+        }
+        public event Action<BamServer, AppConf> AppInitialized;
+        protected void OnAppInitialized(AppConf conf)
+        {
+            if (AppInitialized != null)
+            {
+                AppInitialized(this, conf);
+            }
+        }
+        protected internal void InitializeApps()
+        {
+            InitializeApps(_conf.AppConfigs);
+        }
+
+        private void InitializeApps(AppConf[] configs)
+        {
+            configs.Each(ac =>
+            {
+                OnAppInitializing(ac);
+                if (!string.IsNullOrEmpty(ac.AppInitializer))
+                {
+                    Type appInitializer = null;
+                    if (!string.IsNullOrEmpty(ac.AppInitializerAssemblyPath))
+                    {
+                        Assembly assembly = Assembly.LoadFrom(ac.AppInitializerAssemblyPath);
+                        appInitializer = assembly.GetType(ac.AppInitializer);
+                        if (appInitializer == null)
+                        {
+                            appInitializer = assembly.GetTypes().Where(t => t.AssemblyQualifiedName.Equals(ac.AppInitializer)).FirstOrDefault();
+                        }
+
+                        if (appInitializer == null)
+                        {
+                            Args.Throw<InvalidOperationException>("The specified AppInitializer type ({0}) wasn't found in the specified assembly ({1})", ac.AppInitializer, ac.AppInitializerAssemblyPath);
+                        }
+                    }
+                    else
+                    {
+                        appInitializer = Type.GetType(ac.AppInitializer);
+                        if (appInitializer == null)
+                        {
+                            Args.Throw<InvalidOperationException>("The specified AppInitializer type ({0}) wasn't found", ac.AppInitializer);
+                        }
+                    }
+
+                    IAppInitializer initializer = appInitializer.Construct<IAppInitializer>();
+                    initializer.Subscribe(MainLogger);
+                    initializer.Initialize(ac);
+                }
+                OnAppInitialized(ac);
+            });
+        }
         /// <summary>
         /// Initialize server level schemas
         /// </summary>
@@ -818,6 +880,12 @@ namespace Bam.Net.Server
             ServiceProxyResponder.AddAppService<T>(appName, instanciator);
         }
 
+        /// <summary>
+        /// Add or update the app service using the specified instanciator
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="appName"></param>
+        /// <param name="instanciator"></param>
         public void AddAppService<T>(string appName, Func<Type, T> instanciator)
         {
             ServiceProxyResponder.AddAppService<T>(appName, instanciator);
