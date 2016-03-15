@@ -257,12 +257,12 @@ namespace Bam.Net.Data.Repositories
 			}
 		}
 
-        public T ToDto<T>(object instance) where T : new()
+        public object ToDto(object instance)
         {
             Type daoType = GetDaoType(instance.GetType());
             Dao o = (Dao)daoType.Construct();
             o.CopyProperties(instance);
-            return o.ToJsonSafe().CopyAs<T>();
+            return o.ToJsonSafe();
         }
 
         /// <summary>

@@ -6,21 +6,16 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.CoreServices
 {
-    public class ServiceResponse<T> : ServiceResponse
-    {
-        public T Data
-        {
-            get
-            {
-                return (T)ObjectData;
-            }
-        }
-    }
-
     public class ServiceResponse
     {
         public bool Success { get; set; }
         public string Message { get; set; }
-        public object ObjectData { get; set; }
+        public object Data { get; set; }
+        public T DataAs<T>() where T : new()
+        {
+            T t = new T();
+            t.CopyProperties(Data);
+            return t;
+        }
     }
 }
