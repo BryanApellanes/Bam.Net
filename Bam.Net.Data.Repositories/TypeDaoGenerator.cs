@@ -265,6 +265,11 @@ namespace Bam.Net.Data.Repositories
 
         private void GenerateOrThrow()
         {
+            string tempPath = TempPathProvider(SchemaName);
+            if (Directory.Exists(tempPath))
+            {
+                Directory.Move(tempPath, $"{tempPath}_{DateTime.UtcNow.ToJulianDate().ToString()}");
+            }
             CompilationException compilationException;
             if (!GenerateDaoAssembly(out compilationException))
             {
