@@ -88,7 +88,6 @@ namespace Bam.Net.Encryption
 
                 ConnectionStringSettings s = new ConnectionStringSettings();
                 s.ProviderName = SQLiteRegistrar.SQLiteFactoryAssemblyQualifiedName();
-                //string dbFile = Path.Combine(Directory.FullName, string.Format("{0}.sqlite", connectionName));
                 s.ConnectionString = string.Format("Data Source={0};Version=3;", VaultFile.FullName);
 
                 return new ConnectionStringResolveResult(s);
