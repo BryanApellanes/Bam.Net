@@ -828,11 +828,12 @@ namespace Bam.Net
 
         public static bool TryConstruct(this Type type, out object constructed, Action<Exception> catcher, params object[] ctorParams)
         {
-            bool result = true;
+            bool result = false;
             constructed = null;
             try
             {
                 constructed = Construct(type, ctorParams);
+                result = constructed != null;
             }
             catch(Exception ex)
             {

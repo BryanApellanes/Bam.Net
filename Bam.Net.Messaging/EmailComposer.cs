@@ -18,7 +18,6 @@ namespace Bam.Net.Messaging
         {
             this.TemplateDirectory = new DirectoryInfo(templateDirectory);
             this.FileExtension = extension;
-            this.IsBodyHtml = true;
         }
 
         public EmailComposer()
