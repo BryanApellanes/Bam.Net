@@ -40,7 +40,7 @@ namespace Bam.Net.UserAccounts.Data
         public static Session Get(IHttpContext context)
         {
             Args.ThrowIfNull(context, "context");
-
+            
             return Get(context.Request, context.Response);    
         }
 

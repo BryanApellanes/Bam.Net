@@ -14,14 +14,13 @@ namespace Bam.Net.Messaging
 {
     public abstract class EmailComposer: IEmailComposer
     {
-        public EmailComposer(string templateDirectory, string extension = ".txt")
+        public EmailComposer(string templateDirectory)
         {
             this.TemplateDirectory = new DirectoryInfo(templateDirectory);
-            this.FileExtension = extension;
         }
 
         public EmailComposer()
-            : this(".", ".txt")
+            : this(".")
         { }
 
         public DirectoryInfo TemplateDirectory
@@ -29,24 +28,10 @@ namespace Bam.Net.Messaging
             get;
             set;
         }
-        
-        string _fileExtension;
-        public string FileExtension
-        {
-            get
-            {
-                return _fileExtension;
-            }
-            set
-            {
-                _fileExtension = value.StartsWith(".") ? value : ".{0}"._Format(value);
-            }
-        }
 
-        public bool IsBodyHtml
+        public bool GetIsHtml(string emailName)
         {
-            get;
-            set;
+            return GetTemplate(emailName).IsHtml;
         }
 
         public void SetEmailTemplate(string emailName, FileInfo file)
@@ -54,7 +39,7 @@ namespace Bam.Net.Messaging
             SetEmailTemplate(emailName, File.ReadAllText(file.FullName));
         }
 
-        public void SetEmailTemplate(string emailName, string templateContent)
+        public void SetEmailTemplate(string emailName, string templateContent, bool isHtml = false)
         {
             if (!TemplateDirectory.Exists)
             {
@@ -62,17 +47,8 @@ namespace Bam.Net.Messaging
             }
 
             string templatePath = GetTemplatePath(emailName);
-            using (StreamWriter sw = new StreamWriter(templatePath))
-            {
-                sw.Write(templateContent);
-            }
-        }
-
-        private string GetTemplatePath(string emailName)
-        {
-            string fileName = "{0}{1}"._Format(emailName, FileExtension);
-            string templatePath = Path.Combine(TemplateDirectory.FullName, fileName);
-            return templatePath;
+            EmailTemplate template = new EmailTemplate { EmailName = emailName, IsHtml = isHtml, TemplateContent = templateContent };
+            template.ToJsonFile(templatePath);
         }
 
         public bool TemplateExists(string emailName)
@@ -83,17 +59,41 @@ namespace Bam.Net.Messaging
 
         public Email Compose(string subject, string emailName, params object[] data)
         {
-            return new Email().Subject(subject).IsBodyHtml(IsBodyHtml).Body(GetEmailBody(emailName, data));
+            return new Email().Subject(subject).IsBodyHtml(GetIsHtml(emailName)).Body(GetEmailBody(emailName, data));
         }
 
         public abstract string GetEmailBody(string emailName, params object[] data);
 
         protected internal virtual string GetTemplateContent(string emailName)
         {
-            string path = Path.Combine(TemplateDirectory.FullName, "{0}{1}"._Format(emailName, FileExtension));
-            Args.ThrowIf<FileNotFoundException>(!File.Exists(path), "Specified template doesn't exist: {0}", path);
+            EmailTemplate template = GetTemplate(emailName);
+            return template.TemplateContent;
+        }
 
-            return File.ReadAllText(path);
+        Dictionary<string, EmailTemplate> _templateCache;
+        private EmailTemplate GetTemplate(string emailName)
+        {
+            if (_templateCache == null)
+            {
+                _templateCache = new Dictionary<string, EmailTemplate>();
+            }
+
+            EmailTemplate template;
+            if(_templateCache != null &&
+                _templateCache.ContainsKey(emailName))
+            {
+                template = _templateCache[emailName];
+            }
+            else
+            {
+                string path = Path.Combine(TemplateDirectory.FullName, "{0}.json"._Format(emailName));
+                Args.ThrowIf<FileNotFoundException>(!File.Exists(path), "Specified template doesn't exist: {0}", path);
+
+                template = path.FromJsonFile<EmailTemplate>();
+            }
+            _templateCache.AddMissing(emailName, template);
+
+            return template;
         }
 
         public static Email SetEmailSettings(Vault settingContainer, Email email)
@@ -117,5 +117,13 @@ namespace Bam.Net.Messaging
 
             return email.SmtpHost(smtpHost).UserName(userName).Password(password).From(from, displayName).Port(port).EnableSsl(enableSsl);
         }
+        
+        private string GetTemplatePath(string emailName)
+        {
+            string fileName = "{0}.json"._Format(emailName);
+            string templatePath = Path.Combine(TemplateDirectory.FullName, fileName);
+            return templatePath;
+        }
+
     }
 }
