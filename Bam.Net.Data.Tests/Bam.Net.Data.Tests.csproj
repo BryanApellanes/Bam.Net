@@ -136,6 +136,10 @@
       <Project>{D2C2B1C0-1047-4211-92FC-37F332861161}</Project>
       <Name>Bam.Net.Data.Schema</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.SQLite\Bam.Net.Data.SQLite.csproj">
+      <Project>{ae48f655-c3eb-49d6-98d3-42c428e39a1d}</Project>
+      <Name>Bam.Net.Data.SQLite</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Data\Bam.Net.Data.csproj">
       <Project>{3B52B739-58FD-4B49-B815-6B317E701520}</Project>
       <Name>Bam.Net.Data</Name>
@@ -159,6 +163,10 @@
     <ProjectReference Include="..\Bam.Net\Bam.Net.csproj">
       <Project>{8794C09D-D72C-420C-812F-BFDA251B64C9}</Project>
       <Name>Bam.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DaoRef\DaoRef.csproj">
+      <Project>{88b5d719-69ed-45d8-9f04-c33d3fc5dcbe}</Project>
+      <Name>DaoRef</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

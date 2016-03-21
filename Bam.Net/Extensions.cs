@@ -866,6 +866,43 @@ namespace Bam.Net
             return result;
         }
 
+
+        private delegate T CompiledLambdaCtor<T>(params object[] ctorParams);
+        /// <summary>
+        /// Construct an instance of the type using a dynamically defined and
+        /// compiled lambda.  This "should" replace existing Construct&lt;T&gt;
+        /// implementation after benchmarks prove this one is faster
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type"></param>
+        /// <param name="ctorParams"></param>
+        /// <returns></returns>
+        public static T DynamicConstruct<T>(this Type type, params object[] ctorParams)
+        {
+            ConstructorInfo ctor = GetConstructor(type, ctorParams);
+            ParameterInfo[] parameterInfos = ctor.GetParameters();
+
+            ParameterExpression param = Expression.Parameter(typeof(object[]), "args");
+
+            Expression[] argsExp = new Expression[parameterInfos.Length];
+            for (int i = 0; i < parameterInfos.Length; i++)
+            {
+                Expression index = Expression.Constant(i);
+                Type paramType = parameterInfos[i].ParameterType;
+
+                Expression paramAccessorExp = Expression.ArrayIndex(param, index);
+
+                Expression paramCastExp = Expression.Convert(paramAccessorExp, paramType);
+                argsExp[i] = paramCastExp;
+            };
+
+            NewExpression newExp = Expression.New(ctor, argsExp);
+
+            LambdaExpression lambda = Expression.Lambda(typeof(CompiledLambdaCtor<T>), newExp, param);
+            CompiledLambdaCtor<T> compiled = (CompiledLambdaCtor<T>)lambda.Compile();
+            return compiled(ctorParams);
+        }
+
         /// <summary>
         /// Construct an instance of the type
         /// </summary>
@@ -887,13 +924,7 @@ namespace Bam.Net
         /// <returns></returns>
         public static object Construct(this Type type, params object[] ctorParams)
         {
-            List<Type> paramTypes = new List<Type>();
-            foreach (object o in ctorParams)
-            {
-                paramTypes.Add(o.GetType());
-            }
-
-            ConstructorInfo ctor = type.GetConstructor(paramTypes.ToArray());
+            ConstructorInfo ctor = GetConstructor(type, ctorParams);
             object val = null;
             if (ctor != null)
             {
@@ -2328,9 +2359,14 @@ namespace Bam.Net
 
         public static bool IsEnumerable(this PropertyInfo property)
         {
-            return property.PropertyType.IsArray ||
-                typeof(IEnumerable).IsAssignableFrom(property.PropertyType) ||
-                property.PropertyType.GetInterface(typeof(IEnumerable<>).FullName) != null;
+            return property.PropertyType.IsEnumerable();
+        }
+
+        public static bool IsEnumerable(this Type type)
+        {
+            return type.IsArray ||
+                typeof(IEnumerable).IsAssignableFrom(type) ||
+                type.GetInterface(typeof(IEnumerable<>).FullName) != null;
         }
 
         /// <summary>
@@ -2815,6 +2851,18 @@ namespace Bam.Net
             {
                 return CreateDynamicType(dictionary, typeName, recursionThusFar, createdTypes, out assemblyBuilder);
             }
+        }
+
+        private static ConstructorInfo GetConstructor(Type type, object[] ctorParams)
+        {
+            List<Type> paramTypes = new List<Type>();
+            foreach (object o in ctorParams)
+            {
+                paramTypes.Add(o.GetType());
+            }
+
+            ConstructorInfo ctor = type.GetConstructor(paramTypes.ToArray());
+            return ctor;
         }
 
         private static Type CreateDynamicType(Dictionary<object, object> dictionary, string typeName, int recursionThusFar, List<Type> createdTypes, out AssemblyBuilder assemblyBuilder)

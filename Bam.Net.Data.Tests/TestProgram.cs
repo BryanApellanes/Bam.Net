@@ -5,19 +5,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-//using Naizari.Extensions;
 using System.Reflection;
 using System.Data;
 using System.Data.Common;
 using System.Data.Sql;
 using System.Data.SqlClient;
-//using Naizari.Testing;
 using System.IO;
-//using Naizari.Data;
 using Bam.Net.CommandLine;
 using Bam.Net.Data;
 using Bam.Net;
 using Bam.Net.Testing;
+using System.Linq.Expressions;
+using Bam.Net.Data.SQLite;
+using Bam.Net.DaoRef;
 
 namespace Bam.Net.Data.Tests
 {
@@ -79,7 +79,88 @@ namespace Bam.Net.Data.Tests
             Expect.AreEqual("Monkey", "_88%%$83345Monkey".DropLeadingNonLetters());
         }
 
-        
+        [UnitTest]
+        public static void DaoEvaluatorTest()
+        {
+            Database database = new SQLiteDatabase(".\\", MethodBase.GetCurrentMethod().Name);
+            ConsoleLogger logger = PrepareDatabaseAndGetLogger(database);
+
+            TestTable testInstance = new TestTable();
+            testInstance.Name = "banana";
+            testInstance.Save(database);
+
+            DaoExpressionFilter v = new DaoExpressionFilter(logger);
+            QueryFilter testFilter = v.Where<TestTable>((t) => t.Name == testInstance.Name);
+
+            TestTable check = TestTable.Where(Filter.Column("Name") == "banana", database).FirstOrDefault();
+            Expect.IsNotNull(check);
+
+            TestTable evalCheck = TestTable.Where(testFilter, database).FirstOrDefault();
+            Expect.IsNotNull(evalCheck);
+
+            Expect.AreEqual(check.Id, evalCheck.Id);
+            Out(v.TraceLog, ConsoleColor.Cyan);
+        }
+        [UnitTest]
+        public static void FilterOrExpression()
+        {
+            Database database = new SQLiteDatabase(".\\", MethodBase.GetCurrentMethod().Name);
+            ConsoleLogger logger = PrepareDatabaseAndGetLogger(database);
+
+            TestTable one = new TestTable();
+            one.Name = "banana";
+            one.Save(database);
+
+            TestTable two = new TestTable();
+            two.Name = "blah";
+            two.Save(database);
+
+            DaoExpressionFilter v = new DaoExpressionFilter(logger);
+            QueryFilter testFilter = v.Where<TestTable>((t) => t.Name == one.Name).Or<TestTable>((t) => t.Name == two.Name);
+
+            TestTableCollection check = TestTable.Where(c => c.Name == "banana" || c.Name == "blah", database);
+            Expect.IsNotNull(check);
+
+            TestTableCollection evalCheck = TestTable.Where(testFilter, database);
+            Expect.IsNotNull(evalCheck);
+
+            Expect.AreEqual(2, evalCheck.Count);
+            Out(v.TraceLog, ConsoleColor.Cyan);
+        }
+        [UnitTest]
+        public static void ConditionalExpressionThrowsException()
+        {
+            Database database = new SQLiteDatabase(".\\", MethodBase.GetCurrentMethod().Name);
+            ConsoleLogger logger = PrepareDatabaseAndGetLogger(database);
+
+            DaoExpressionFilter f = new DaoExpressionFilter(logger);
+            bool thrown = false;
+            try
+            {
+                Out(f.Where<TestTable>((t) => t.Name == "blah" || t.Name == "monkey").Parse(), ConsoleColor.DarkCyan);
+            }
+            catch (ExpressionTypeNotSupportedException etnse)
+            {
+                thrown = true;
+                Out(etnse.Message, ConsoleColor.Cyan);
+            }
+            Expect.IsTrue(thrown);
+        }
+
+        private static ConsoleLogger PrepareDatabaseAndGetLogger(Database database)
+        {
+            ConsoleLogger logger = new ConsoleLogger();
+            logger.StartLoggingThread();
+            database.TryEnsureSchema(typeof(TestTable), logger);
+            ClearTestTable(database);
+            return logger;
+        }
+
+        private static void ClearTestTable(Database db)
+        {
+            TestTable.LoadAll(db).Delete(db);
+        }
+
         #region do not modify
         static void Main(string[] args)
         {

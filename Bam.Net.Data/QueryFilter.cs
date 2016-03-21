@@ -3,7 +3,7 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using Bam.Net.Data;
 
@@ -175,6 +175,18 @@ namespace Bam.Net.Data
         {
             return this.Add(new LiteralFilterToken(" OR "))
                 .AddRange(c);
+        }
+        
+        public QueryFilter Or<T>(Expression<Func<T, bool>> expression)
+        {
+            DaoExpressionFilter expressionFilter = new DaoExpressionFilter();
+            return Or(expressionFilter.Where<T>(expression));
+        }
+
+        public QueryFilter And<T>(Expression<Func<T, bool>> expression)
+        {
+            DaoExpressionFilter expressionFilter = new DaoExpressionFilter();
+            return And(expressionFilter.Where<T>(expression));
         }
 
         public static QueryFilter operator &(QueryFilter one, QueryFilter two)
