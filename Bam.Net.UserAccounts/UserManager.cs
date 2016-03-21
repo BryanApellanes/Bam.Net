@@ -182,21 +182,50 @@ namespace Bam.Net.UserAccounts
         {
             if (!EmailComposer.TemplateExists(AccountConfirmationEmailName))
             {
-                string content = @"
-Hi {UserName},<br /><br />
-
-Thanks for signing up for {ApplicationName}.  Click the link below to confirm your account.<br /><br />
-
-<a href=""{ConfirmationUrl}"">{ConfirmationUrl}</a><br /><br />
-
-If you are unable to click on the link, copy and paste the above link into a browser address bar.<br /><br />
-
-If you did not sign up for {ApplicationName} you may ignore this email.<br /><br />
-
-Thanks,<br />
-The {ApplicationName} Team<br />
-";
-                EmailComposer.SetEmailTemplate(AccountConfirmationEmailName, content);
+                string content = @"<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Transitional//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"">
+<html xmlns = ""http://www.w3.org/1999/xhtml"">  
+   <head>
+    <meta http - equiv = ""Content-Type"" content = ""text/html; charset=UTF-8"" />       
+    <title>{Title}</title>
+    <meta name = ""viewport"" content = ""width=device-width, initial-scale=1.0"" />
+    </head>
+    <body style=""margin: 0; padding: 0;"">
+     <table border=""0"" cellpadding=""15"" cellspacing=""0"" width=""100%"">
+      <tr>
+       <td>
+        Hi {UserName},
+       </td>
+      </tr>
+      <tr>
+       <td>
+        Thanks for signing up for {ApplicationName}.  Please click the link below to confirm your account.
+       </td>
+      </tr>
+      <tr>
+       <td>
+        <a href=""{ConfirmationUrl}"">{ConfirmationUrl}</a>
+       </td>
+      </tr>
+      <tr>
+       <td>
+        If you are unable to click on the link, copy and paste the above link into a browser address bar.
+       </td>
+      </tr>
+      <tr>
+       <td>
+        If you did not sign up for {ApplicationName} you may ignore this email.
+       </td>
+      </tr>
+      <tr>
+       <td>
+        Thanks,<br>
+        The {ApplicationName} team
+       </td>
+      </tr>
+     </table>
+    </body>
+</html>";
+                EmailComposer.SetEmailTemplate(AccountConfirmationEmailName, content, true);
             }
         }
 
@@ -204,21 +233,50 @@ The {ApplicationName} Team<br />
         {
             if (!EmailComposer.TemplateExists(PasswordResetEmailName))
             {
-                string content = @"
-Hi {UserName},<br /><br />
-
-Someone recently requested a password reset for {ApplicationName}.  If this was you click the link below to reset your password.<br /><br />
-
-<a href=""{PasswordResetUrl}"">{PasswordResetUrl}</a><br /><br />
-
-If you are unable to click on the link, copy and paste the above link into a browser address bar.<br /><br />
-
-If you did not request a password reset for {ApplicationName} you can disregard this email.<br /><br />
-
-Thanks,<br />
-The {ApplicationName} Team<br />
-";
-                EmailComposer.SetEmailTemplate(PasswordResetEmailName, content);
+                string content = @"<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Transitional//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"">
+<html xmlns = ""http://www.w3.org/1999/xhtml"">  
+   <head>
+    <meta http - equiv = ""Content-Type"" content = ""text/html; charset=UTF-8"" />       
+    <title>{Title}</title>
+    <meta name = ""viewport"" content = ""width=device-width, initial-scale=1.0"" />
+    </head>
+    <body style=""margin: 0; padding: 0;"">
+     <table border=""0"" cellpadding=""15"" cellspacing=""0"" width=""100%"">
+      <tr>
+       <td>
+        Hi {UserName},
+       </td>
+      </tr>
+      <tr>
+       <td>
+        Someone recently requested a password reset for {ApplicationName}.  If this was you click the link below to reset your password.
+       </td>
+      </tr>
+      <tr>
+       <td>
+        <a href=""{PasswordResetUrl}"">{PasswordResetUrl}</a>
+       </td>
+      </tr>
+      <tr>
+       <td>
+        If you are unable to click on the link, copy and paste the above link into a browser address bar.
+       </td>
+      </tr>
+      <tr>
+       <td>
+        If you did not request a password reset for {ApplicationName} you can disregard this email.
+       </td>
+      </tr>
+      <tr>
+       <td>
+        Thanks,<br>
+        The {ApplicationName} team
+       </td>
+      </tr>
+     </table>
+    </body>
+</html>";
+                EmailComposer.SetEmailTemplate(PasswordResetEmailName, content, true);
             }
         }
 
@@ -298,6 +356,7 @@ The {ApplicationName} Team<br />
 
                 PasswordResetEmailData data = new PasswordResetEmailData
                 {
+                    Title = "Password Reset",
                     UserName = user.UserName,
                     ApplicationName = ApplicationNameProvider.GetApplicationName(),
                     PasswordResetUrl = GetPasswordResetUrl(reset.Token)
@@ -484,6 +543,7 @@ The {ApplicationName} Team<br />
 
                 AccountConfirmationEmailData data = new AccountConfirmationEmailData
                 {
+                    Title = "Account Confirmation",
                     UserName = user.UserName,
                     ApplicationName = ApplicationNameProvider.GetApplicationName(),
                     ConfirmationUrl = GetConfirmationUrl(account.Token)
@@ -656,6 +716,10 @@ The {ApplicationName} Team<br />
         [Exclude]
         public User GetCurrentUser()
         {
+            if(HttpContext == null)
+            {
+                return User.Anonymous;
+            }
             return Session.UserOfUserId;
         }
 

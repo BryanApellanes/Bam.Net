@@ -19,7 +19,6 @@ namespace Bam.Net.UserAccounts
         public UserManagerConfig()
         {
             this.EmailTemplateDirectoryPath = ".\\EmailTemplates";
-            this.EmailTemplateExtension = ".txt";
             this.EmailComposerType = typeof(NamedFormatEmailComposer).AssemblyQualifiedName;
             this.ApplicationNameResolverType = typeof(DefaultConfigurationApplicationNameProvider).AssemblyQualifiedName;
             this.SmtpSettingsVaultPath = ".\\SmtpSettings.vault.sqlite";
@@ -63,12 +62,6 @@ namespace Bam.Net.UserAccounts
             set;
         }
 
-        public string EmailTemplateExtension
-        {
-            get;
-            set;
-        }
-
         public string SmtpSettingsVaultPath
         {
             get;
@@ -86,7 +79,6 @@ namespace Bam.Net.UserAccounts
             {
                 EmailComposer composer = emailComposerType.Construct<EmailComposer>();
                 composer.TemplateDirectory = new DirectoryInfo(EmailTemplateDirectoryPath);
-                composer.FileExtension = EmailTemplateExtension;
                 mgr.EmailComposer = composer;
                 
                 mgr.InitializeConfirmationEmail();

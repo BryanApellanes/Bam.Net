@@ -91,6 +91,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EmailTemplate.cs" />
     <Compile Include="IEmailComposer.cs" />
     <Compile Include="messaging_Generated\DirectMessage.cs" />
     <Compile Include="messaging_Generated\DirectMessageCollection.cs" />

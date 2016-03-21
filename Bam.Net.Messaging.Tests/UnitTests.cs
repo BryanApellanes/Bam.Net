@@ -40,19 +40,6 @@ namespace Bam.Net.Messaging.Tests
             });
         }
                
-		//[UnitTest]
-		//public void ShouldBeAbleToSendEmail()
-		//{
-		//	Vault stickerizeSettings = Vault.Load(new FileInfo(".\\StickerizeSmtpSettings.vault.sqlite"), "SmtpSettings");
-		//	stickerizeSettings.Keys.Each(key =>
-		//	{
-		//		if (!key.ToLowerInvariant().Equals("password"))
-		//		{
-		//			OutLineFormat("{0}={1}", key, stickerizeSettings[key]);
-		//		}
-		//	});
-		//	Notify.ByEmail(stickerizeSettings, "bryan.apellanes@gmail.com").Subject("Test: " + MethodBase.GetCurrentMethod().Name).Body("This is a test from stickerize").Send();
-		//}
 
         [UnitTest]
         public void ShouldSetEmailTemplateInSpecifiedDirectory()

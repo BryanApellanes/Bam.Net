@@ -14,8 +14,8 @@ namespace Bam.Net.Messaging
     public class StringFormatEmailComposer: EmailComposer
     {
         public StringFormatEmailComposer() : base() { }
-        public StringFormatEmailComposer(string templateDirectory, string extension = ".txt")
-            : base(templateDirectory, extension)
+        public StringFormatEmailComposer(string templateDirectory)
+            : base(templateDirectory)
         { }
 
         public override string GetEmailBody(string emailName, params object[] data)

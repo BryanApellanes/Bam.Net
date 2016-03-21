@@ -541,7 +541,6 @@ namespace Bam.Net.UserAccounts.Tests
             public TestEmailComposer()
             {
                 this.TemplateDirectory = _testEmailComposerTemplateDir;
-                this.FileExtension = _ext;
             }
             public override string GetEmailBody(string emailName, params object[] data)
             {
@@ -554,13 +553,11 @@ namespace Bam.Net.UserAccounts.Tests
             UserManagerConfig config = new UserManagerConfig();
             config.EmailComposerType = typeof(TestEmailComposer).AssemblyQualifiedName;
             config.EmailTemplateDirectoryPath = _testEmailComposerTemplateDir.FullName;
-            config.EmailTemplateExtension = _ext;
             UserManager mgr = config.Create();
 
             Expect.IsNotNull(mgr);
             Expect.IsNotNull(mgr.EmailComposer);
             Expect.IsObjectOfType<TestEmailComposer>(mgr.EmailComposer, "Composer was a {0}"._Format(mgr.EmailComposer.GetType().Name));
-            Expect.AreEqual(_ext, mgr.EmailComposer.FileExtension);
             Expect.AreEqual(_testEmailComposerTemplateDir.FullName, mgr.EmailComposer.TemplateDirectory.FullName);
         }
 

@@ -183,14 +183,6 @@ namespace Bam.Net.Server
                 {
                     logger.AddEntry("{0}::AppContentResponderInitializ(ED):{1}", className, a.Name);
                 };
-                //this.AppInitializing += (c, a) =>
-                //{
-                //    logger.AddEntry("{0}::AppInitializ(ING):{1}", className, a.Name);
-                //};
-                //this.AppInitialized += (c, a) =>
-                //{
-                //    logger.AddEntry("{0}::AppInitializ(ED):{1}", className, a.Name);
-                //};
                 this.Initializing += (c) =>
                 {
                     logger.AddEntry("{0}::Initializ(ING)", className);
@@ -303,67 +295,6 @@ namespace Bam.Net.Server
                 OnAppContentResponderInitialized(ac);
             });
         }
-
-        //public event Action<ContentResponder, AppConf> AppInitializing;
-        //protected void OnAppInitializing(AppConf conf)
-        //{
-        //    if (AppInitializing != null)
-        //    {
-        //        AppInitializing(this, conf);
-        //    }
-        //}
-        //public event Action<ContentResponder, AppConf> AppInitialized;
-        //protected void OnAppInitialized(AppConf conf)
-        //{
-        //    if (AppInitialized != null)
-        //    {
-        //        AppInitialized(this, conf);
-        //    }
-        //}
-
-        //protected internal void InitializeApps()
-        //{
-        //    InitializeApps(AppConfigs);
-        //}
-
-        //private void InitializeApps(AppConf[] configs)
-        //{
-        //    configs.Each(ac =>
-        //    {
-        //        OnAppInitializing(ac);
-        //        if (!string.IsNullOrEmpty(ac.AppInitializer))
-        //        {
-        //            Type appInitializer = null;
-        //            if (!string.IsNullOrEmpty(ac.AppInitializerAssemblyPath))
-        //            {
-        //                Assembly assembly = Assembly.LoadFrom(ac.AppInitializerAssemblyPath);
-        //                appInitializer = assembly.GetType(ac.AppInitializer);
-        //                if (appInitializer == null)
-        //                {
-        //                    appInitializer = assembly.GetTypes().Where(t => t.AssemblyQualifiedName.Equals(ac.AppInitializer)).FirstOrDefault();
-        //                }
-
-        //                if (appInitializer == null)
-        //                {
-        //                    Args.Throw<InvalidOperationException>("The specified AppInitializer type ({0}) wasn't found in the specified assembly ({1})", ac.AppInitializer, ac.AppInitializerAssemblyPath);
-        //                }
-        //            }
-        //            else
-        //            {
-        //                appInitializer = Type.GetType(ac.AppInitializer);
-        //                if (appInitializer == null)
-        //                {
-        //                    Args.Throw<InvalidOperationException>("The specified AppInitializer type ({0}) wasn't found", ac.AppInitializer);
-        //                }
-        //            }
-
-        //            IAppInitializer initializer = appInitializer.Construct<IAppInitializer>();
-        //            initializer.Subscribe(Logger);
-        //            initializer.Initialize(ac);
-        //        }
-        //        OnAppInitialized(ac);
-        //    });
-        //}
 
         public bool IsFileSystemInitialized { get; private set; }
 

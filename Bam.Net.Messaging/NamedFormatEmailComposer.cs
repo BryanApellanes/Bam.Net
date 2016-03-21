@@ -12,7 +12,7 @@ namespace Bam.Net.Messaging
     public class NamedFormatEmailComposer: EmailComposer
     {
         public NamedFormatEmailComposer() : base() { }
-        public NamedFormatEmailComposer(string templateDirectory, string extension = ".txt") : base(templateDirectory, extension) { }
+        public NamedFormatEmailComposer(string templateDirectory) : base(templateDirectory) { }
 
         public override string GetEmailBody(string emailName, params object[] data)
         {
