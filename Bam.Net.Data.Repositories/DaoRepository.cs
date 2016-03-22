@@ -337,7 +337,7 @@ namespace Bam.Net.Data.Repositories
 				Dao daoInstance = GetDaoInstanceById(objectType, id);
 				if (daoInstance != null)
 				{
-					return GetPocoInstance(objectType, daoInstance);
+					return GetWrapperInstance(objectType, daoInstance);
 				}
 				return null;
 			}
@@ -357,7 +357,7 @@ namespace Bam.Net.Data.Repositories
 				Dao daoInstance = GetDaoInstanceByUuid(objectType, uuid);
 				if (daoInstance != null)
 				{
-					return GetPocoInstance(objectType, daoInstance);
+					return GetWrapperInstance(objectType, daoInstance);
 				}
 				return null;
 			}
@@ -552,8 +552,41 @@ namespace Bam.Net.Data.Repositories
 			Type result = poco ?? wrapperType;
 			return result;
 		}
-        
-		public T ConstructWrapper<T>()
+
+        /// <summary>
+        /// Wrap the specified base instance to enable lazy loading
+        /// of List or array properties
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="baseInstance"></param>
+        /// <returns></returns>
+        public T Wrap<T>(T baseInstance)
+        {
+            return (T)Wrap(typeof(T), baseInstance);
+        }
+
+        public object Wrap(object instance)
+        {
+            return Wrap(instance.GetType(), instance);
+        }
+
+        /// <summary>
+        /// Wrap the specified base instance to enable lazy loading 
+        /// of List or array properties
+        /// </summary>
+        /// <param name="baseType"></param>
+        /// <param name="instance"></param>
+        /// <returns></returns>
+        public object Wrap(Type baseType, object instance)
+        {
+            object result = ConstructWrapper(baseType);
+            result.CopyProperties(instance);
+            SetParentProperties(result);
+
+            return result;
+        }
+
+        public T ConstructWrapper<T>()
 		{
 			return (T)ConstructWrapper(typeof(T));
 		}
@@ -772,7 +805,7 @@ namespace Bam.Net.Data.Repositories
 			return childCollectionPropertyForTypeFk;
 		}
 
-		private object GetPocoInstance(Type objectType, Dao daoInstance)
+		private object GetWrapperInstance(Type objectType, Dao daoInstance)
 		{
 			object result = ConstructWrapper(objectType);
 			result.CopyProperties(daoInstance);

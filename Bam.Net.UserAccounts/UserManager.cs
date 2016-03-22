@@ -73,6 +73,9 @@ namespace Bam.Net.UserAccounts
                     DaoUserResolver userResolver = new DaoUserResolver();
                     serviceProvider.Set<IUserResolver>(userResolver);
                     serviceProvider.Set<DaoUserResolver>(userResolver);
+                    DaoRoleResolver roleResolver = new DaoRoleResolver();
+                    serviceProvider.Set<IRoleResolver>(roleResolver);
+                    serviceProvider.Set<DaoRoleResolver>(roleResolver);
                     serviceProvider.Set<EmailComposer>(new NamedFormatEmailComposer());
                     serviceProvider.Set<IApplicationNameProvider>(DefaultConfigurationApplicationNameProvider.Instance);
 

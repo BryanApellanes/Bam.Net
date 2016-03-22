@@ -153,6 +153,7 @@
     <Compile Include="ConfirmResponse.cs" />
     <Compile Include="DaoIdentity.cs" />
     <Compile Include="DaoPrincipal.cs" />
+    <Compile Include="DaoRoleResolver.cs" />
     <Compile Include="ForgotPasswordResponse.cs" />
     <Compile Include="InvalidTokenException.cs" />
     <Compile Include="IsAuthenticatedResponse.cs" />
