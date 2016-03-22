@@ -471,7 +471,7 @@ namespace Bam.Net.ServiceProxy.Secure
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate<SecureSessionColumns>.
+		/// WhereDelegate&lt;SecureSessionColumns&gt;.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
@@ -605,6 +605,10 @@ namespace Bam.Net.ServiceProxy.Secure
 			return results;
 		}
 
+		public static SecureSessionCollection Top(int count, QueryFilter where, Database database)
+		{
+			return Top(count, where, null, database);
+		}
 		/// <summary>
 		/// Execute a query and return the specified number of values.  This method
 		/// will issue a sql TOP clause so only the specified number of values
