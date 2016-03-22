@@ -1,5 +1,5 @@
 /*
-	Copyright © Bryan Apellanes 2015  
+	This file was generated and should not be modified directly
 */
 // model is SchemaDefinition
 using System;
@@ -30,7 +30,7 @@ namespace Bam.Net.Instructions
 			}
 		}
 
-﻿
+
 	public class InstructionSetQueryContext
 	{
 			public InstructionSetCollection Where(WhereDelegate<InstructionSetColumns> where, Database db = null)
@@ -77,7 +77,7 @@ namespace Bam.Net.Instructions
 		{
 			return _instructionSetsLock.DoubleCheckLock<InstructionSetQueryContext>(ref _instructionSets, () => new InstructionSetQueryContext());
 		}
-	}﻿
+	}
 	public class SectionQueryContext
 	{
 			public SectionCollection Where(WhereDelegate<SectionColumns> where, Database db = null)
@@ -124,7 +124,7 @@ namespace Bam.Net.Instructions
 		{
 			return _sectionsLock.DoubleCheckLock<SectionQueryContext>(ref _sections, () => new SectionQueryContext());
 		}
-	}﻿
+	}
 	public class StepQueryContext
 	{
 			public StepCollection Where(WhereDelegate<StepColumns> where, Database db = null)

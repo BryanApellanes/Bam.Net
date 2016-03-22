@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,29 +19,30 @@ namespace Bam.Net.Data.Repositories.Tests
 				return new TernaryObjectColumns("Id");
 			}
 		}	
+
 				
-﻿        public TernaryObjectColumns Id
+        public TernaryObjectColumns Id
         {
             get
             {
                 return new TernaryObjectColumns("Id");
             }
         }
-﻿        public TernaryObjectColumns Uuid
+        public TernaryObjectColumns Uuid
         {
             get
             {
                 return new TernaryObjectColumns("Uuid");
             }
         }
-﻿        public TernaryObjectColumns Created
+        public TernaryObjectColumns Created
         {
             get
             {
                 return new TernaryObjectColumns("Created");
             }
         }
-﻿        public TernaryObjectColumns Name
+        public TernaryObjectColumns Name
         {
             get
             {

@@ -1,4 +1,4 @@
-/*
+﻿/*
 	Copyright © Bryan Apellanes 2015  
 */
 using System;
@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Automation
 {
-    public class IfElseWork: Worker
+    public class IfElseWorker : Worker
     {
-        public IfElseWork() : base() { }
-        public IfElseWork(string name) : base(name) { }
-        public IfElseWork(string name, Worker workIfTrue, Worker elseWork)
+        public IfElseWorker() : base() { }
+        public IfElseWorker(string name) : base(name) { }
+        public IfElseWorker(string name, Worker workIfTrue, Worker elseWork)
             : base(name)
         {
             this.IfTrueWorker = workIfTrue;

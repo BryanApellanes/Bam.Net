@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,22 +19,23 @@ namespace Bam.Net.Shop
 				return new PriceColumns("Id");
 			}
 		}	
+
 				
-﻿        public PriceColumns Id
+        public PriceColumns Id
         {
             get
             {
                 return new PriceColumns("Id");
             }
         }
-﻿        public PriceColumns Uuid
+        public PriceColumns Uuid
         {
             get
             {
                 return new PriceColumns("Uuid");
             }
         }
-﻿        public PriceColumns Value
+        public PriceColumns Value
         {
             get
             {
@@ -45,14 +43,14 @@ namespace Bam.Net.Shop
             }
         }
 
-﻿        public PriceColumns ShopItemId
+        public PriceColumns ShopItemId
         {
             get
             {
                 return new PriceColumns("ShopItemId");
             }
         }
-﻿        public PriceColumns CurrencyId
+        public PriceColumns CurrencyId
         {
             get
             {

@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,21 +21,21 @@ namespace Bam.Net.UserAccounts.Data
 		}	
 
 				
-﻿        public LoginColumns Id
+        public LoginColumns Id
         {
             get
             {
                 return new LoginColumns("Id");
             }
         }
-﻿        public LoginColumns Uuid
+        public LoginColumns Uuid
         {
             get
             {
                 return new LoginColumns("Uuid");
             }
         }
-﻿        public LoginColumns DateTime
+        public LoginColumns DateTime
         {
             get
             {
@@ -46,7 +43,7 @@ namespace Bam.Net.UserAccounts.Data
             }
         }
 
-﻿        public LoginColumns UserId
+        public LoginColumns UserId
         {
             get
             {

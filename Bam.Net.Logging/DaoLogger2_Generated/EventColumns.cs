@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,36 +19,37 @@ namespace Bam.Net.Logging.Data
 				return new EventColumns("Id");
 			}
 		}	
+
 				
-﻿        public EventColumns Id
+        public EventColumns Id
         {
             get
             {
                 return new EventColumns("Id");
             }
         }
-﻿        public EventColumns Uuid
+        public EventColumns Uuid
         {
             get
             {
                 return new EventColumns("Uuid");
             }
         }
-﻿        public EventColumns Time
+        public EventColumns Time
         {
             get
             {
                 return new EventColumns("Time");
             }
         }
-﻿        public EventColumns Severity
+        public EventColumns Severity
         {
             get
             {
                 return new EventColumns("Severity");
             }
         }
-﻿        public EventColumns EventId
+        public EventColumns EventId
         {
             get
             {
@@ -59,35 +57,35 @@ namespace Bam.Net.Logging.Data
             }
         }
 
-﻿        public EventColumns SignatureId
+        public EventColumns SignatureId
         {
             get
             {
                 return new EventColumns("SignatureId");
             }
         }
-﻿        public EventColumns ComputerNameId
+        public EventColumns ComputerNameId
         {
             get
             {
                 return new EventColumns("ComputerNameId");
             }
         }
-﻿        public EventColumns CategoryNameId
+        public EventColumns CategoryNameId
         {
             get
             {
                 return new EventColumns("CategoryNameId");
             }
         }
-﻿        public EventColumns SourceNameId
+        public EventColumns SourceNameId
         {
             get
             {
                 return new EventColumns("SourceNameId");
             }
         }
-﻿        public EventColumns UserNameId
+        public EventColumns UserNameId
         {
             get
             {

@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,49 +21,49 @@ namespace Bam.Net.UserAccounts.Data
 		}	
 
 				
-﻿        public UserColumns Id
+        public UserColumns Id
         {
             get
             {
                 return new UserColumns("Id");
             }
         }
-﻿        public UserColumns Uuid
+        public UserColumns Uuid
         {
             get
             {
                 return new UserColumns("Uuid");
             }
         }
-﻿        public UserColumns CreationDate
+        public UserColumns CreationDate
         {
             get
             {
                 return new UserColumns("CreationDate");
             }
         }
-﻿        public UserColumns IsDeleted
+        public UserColumns IsDeleted
         {
             get
             {
                 return new UserColumns("IsDeleted");
             }
         }
-﻿        public UserColumns UserName
+        public UserColumns UserName
         {
             get
             {
                 return new UserColumns("UserName");
             }
         }
-﻿        public UserColumns IsApproved
+        public UserColumns IsApproved
         {
             get
             {
                 return new UserColumns("IsApproved");
             }
         }
-﻿        public UserColumns Email
+        public UserColumns Email
         {
             get
             {

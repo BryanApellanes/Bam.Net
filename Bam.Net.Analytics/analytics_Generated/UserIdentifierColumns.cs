@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,28 +21,28 @@ namespace Bam.Net.Analytics
 		}	
 
 				
-﻿        public UserIdentifierColumns Id
+        public UserIdentifierColumns Id
         {
             get
             {
                 return new UserIdentifierColumns("Id");
             }
         }
-﻿        public UserIdentifierColumns Uuid
+        public UserIdentifierColumns Uuid
         {
             get
             {
                 return new UserIdentifierColumns("Uuid");
             }
         }
-﻿        public UserIdentifierColumns Value
+        public UserIdentifierColumns Value
         {
             get
             {
                 return new UserIdentifierColumns("Value");
             }
         }
-﻿        public UserIdentifierColumns Name
+        public UserIdentifierColumns Name
         {
             get
             {

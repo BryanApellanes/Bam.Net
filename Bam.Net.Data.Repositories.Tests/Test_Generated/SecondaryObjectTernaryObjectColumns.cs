@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,15 +19,16 @@ namespace Bam.Net.Data.Repositories.Tests
 				return new SecondaryObjectTernaryObjectColumns("Id");
 			}
 		}	
+
 				
-﻿        public SecondaryObjectTernaryObjectColumns Id
+        public SecondaryObjectTernaryObjectColumns Id
         {
             get
             {
                 return new SecondaryObjectTernaryObjectColumns("Id");
             }
         }
-﻿        public SecondaryObjectTernaryObjectColumns Uuid
+        public SecondaryObjectTernaryObjectColumns Uuid
         {
             get
             {
@@ -38,14 +36,14 @@ namespace Bam.Net.Data.Repositories.Tests
             }
         }
 
-﻿        public SecondaryObjectTernaryObjectColumns SecondaryObjectId
+        public SecondaryObjectTernaryObjectColumns SecondaryObjectId
         {
             get
             {
                 return new SecondaryObjectTernaryObjectColumns("SecondaryObjectId");
             }
         }
-﻿        public SecondaryObjectTernaryObjectColumns TernaryObjectId
+        public SecondaryObjectTernaryObjectColumns TernaryObjectId
         {
             get
             {

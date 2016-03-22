@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,22 +19,23 @@ namespace Bam.Net.Data.Tests
 				return new ListColumns("Id");
 			}
 		}	
+
 				
-﻿        public ListColumns Id
+        public ListColumns Id
         {
             get
             {
                 return new ListColumns("Id");
             }
         }
-﻿        public ListColumns Uuid
+        public ListColumns Uuid
         {
             get
             {
                 return new ListColumns("Uuid");
             }
         }
-﻿        public ListColumns Name
+        public ListColumns Name
         {
             get
             {

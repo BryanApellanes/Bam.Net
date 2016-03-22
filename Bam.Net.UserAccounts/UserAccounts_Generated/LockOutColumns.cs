@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,42 +21,42 @@ namespace Bam.Net.UserAccounts.Data
 		}	
 
 				
-﻿        public LockOutColumns Id
+        public LockOutColumns Id
         {
             get
             {
                 return new LockOutColumns("Id");
             }
         }
-﻿        public LockOutColumns Uuid
+        public LockOutColumns Uuid
         {
             get
             {
                 return new LockOutColumns("Uuid");
             }
         }
-﻿        public LockOutColumns DateTime
+        public LockOutColumns DateTime
         {
             get
             {
                 return new LockOutColumns("DateTime");
             }
         }
-﻿        public LockOutColumns Unlocked
+        public LockOutColumns Unlocked
         {
             get
             {
                 return new LockOutColumns("Unlocked");
             }
         }
-﻿        public LockOutColumns UnlockedDate
+        public LockOutColumns UnlockedDate
         {
             get
             {
                 return new LockOutColumns("UnlockedDate");
             }
         }
-﻿        public LockOutColumns UnlockedBy
+        public LockOutColumns UnlockedBy
         {
             get
             {
@@ -67,7 +64,7 @@ namespace Bam.Net.UserAccounts.Data
             }
         }
 
-﻿        public LockOutColumns UserId
+        public LockOutColumns UserId
         {
             get
             {

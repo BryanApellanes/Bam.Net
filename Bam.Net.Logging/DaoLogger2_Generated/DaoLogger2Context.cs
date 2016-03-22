@@ -1,5 +1,5 @@
 /*
-	Copyright © Bryan Apellanes 2015  
+	This file was generated and should not be modified directly
 */
 // model is SchemaDefinition
 using System;
@@ -30,7 +30,7 @@ namespace Bam.Net.Logging.Data
 			}
 		}
 
-﻿
+
 	public class SourceNameQueryContext
 	{
 			public SourceNameCollection Where(WhereDelegate<SourceNameColumns> where, Database db = null)
@@ -77,7 +77,7 @@ namespace Bam.Net.Logging.Data
 		{
 			return _sourceNamesLock.DoubleCheckLock<SourceNameQueryContext>(ref _sourceNames, () => new SourceNameQueryContext());
 		}
-	}﻿
+	}
 	public class UserNameQueryContext
 	{
 			public UserNameCollection Where(WhereDelegate<UserNameColumns> where, Database db = null)
@@ -124,7 +124,7 @@ namespace Bam.Net.Logging.Data
 		{
 			return _userNamesLock.DoubleCheckLock<UserNameQueryContext>(ref _userNames, () => new UserNameQueryContext());
 		}
-	}﻿
+	}
 	public class CategoryNameQueryContext
 	{
 			public CategoryNameCollection Where(WhereDelegate<CategoryNameColumns> where, Database db = null)
@@ -171,7 +171,7 @@ namespace Bam.Net.Logging.Data
 		{
 			return _categoryNamesLock.DoubleCheckLock<CategoryNameQueryContext>(ref _categoryNames, () => new CategoryNameQueryContext());
 		}
-	}﻿
+	}
 	public class ComputerNameQueryContext
 	{
 			public ComputerNameCollection Where(WhereDelegate<ComputerNameColumns> where, Database db = null)
@@ -218,7 +218,7 @@ namespace Bam.Net.Logging.Data
 		{
 			return _computerNamesLock.DoubleCheckLock<ComputerNameQueryContext>(ref _computerNames, () => new ComputerNameQueryContext());
 		}
-	}﻿
+	}
 	public class SignatureQueryContext
 	{
 			public SignatureCollection Where(WhereDelegate<SignatureColumns> where, Database db = null)
@@ -265,7 +265,7 @@ namespace Bam.Net.Logging.Data
 		{
 			return _signaturesLock.DoubleCheckLock<SignatureQueryContext>(ref _signatures, () => new SignatureQueryContext());
 		}
-	}﻿
+	}
 	public class ParamQueryContext
 	{
 			public ParamCollection Where(WhereDelegate<ParamColumns> where, Database db = null)
@@ -312,7 +312,7 @@ namespace Bam.Net.Logging.Data
 		{
 			return _paramsLock.DoubleCheckLock<ParamQueryContext>(ref _params, () => new ParamQueryContext());
 		}
-	}﻿
+	}
 	public class EventQueryContext
 	{
 			public EventCollection Where(WhereDelegate<EventColumns> where, Database db = null)
@@ -359,7 +359,7 @@ namespace Bam.Net.Logging.Data
 		{
 			return _eventsLock.DoubleCheckLock<EventQueryContext>(ref _events, () => new EventQueryContext());
 		}
-	}﻿
+	}
 	public class EventParamQueryContext
 	{
 			public EventParamCollection Where(WhereDelegate<EventParamColumns> where, Database db = null)

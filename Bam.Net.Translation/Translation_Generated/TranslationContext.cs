@@ -1,5 +1,5 @@
 /*
-	Copyright © Bryan Apellanes 2015  
+	This file was generated and should not be modified directly
 */
 // model is SchemaDefinition
 using System;
@@ -30,7 +30,7 @@ namespace Bam.Net.Translation
 			}
 		}
 
-﻿
+
 	public class LanguageQueryContext
 	{
 			public LanguageCollection Where(WhereDelegate<LanguageColumns> where, Database db = null)
@@ -77,7 +77,7 @@ namespace Bam.Net.Translation
 		{
 			return _languagesLock.DoubleCheckLock<LanguageQueryContext>(ref _languages, () => new LanguageQueryContext());
 		}
-	}﻿
+	}
 	public class TextQueryContext
 	{
 			public TextCollection Where(WhereDelegate<TextColumns> where, Database db = null)
@@ -124,7 +124,7 @@ namespace Bam.Net.Translation
 		{
 			return _textsLock.DoubleCheckLock<TextQueryContext>(ref _texts, () => new TextQueryContext());
 		}
-	}﻿
+	}
 	public class LanguageDetectionQueryContext
 	{
 			public LanguageDetectionCollection Where(WhereDelegate<LanguageDetectionColumns> where, Database db = null)
@@ -171,7 +171,7 @@ namespace Bam.Net.Translation
 		{
 			return _languageDetectionsLock.DoubleCheckLock<LanguageDetectionQueryContext>(ref _languageDetections, () => new LanguageDetectionQueryContext());
 		}
-	}﻿
+	}
 	public class TranslationQueryContext
 	{
 			public TranslationCollection Where(WhereDelegate<TranslationColumns> where, Database db = null)
@@ -218,7 +218,7 @@ namespace Bam.Net.Translation
 		{
 			return _translationsLock.DoubleCheckLock<TranslationQueryContext>(ref _translations, () => new TranslationQueryContext());
 		}
-	}﻿
+	}
 	public class OtherNameQueryContext
 	{
 			public OtherNameCollection Where(WhereDelegate<OtherNameColumns> where, Database db = null)

@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,36 +19,37 @@ namespace Bam.Net.Instructions
 				return new StepColumns("Id");
 			}
 		}	
+
 				
-﻿        public StepColumns Id
+        public StepColumns Id
         {
             get
             {
                 return new StepColumns("Id");
             }
         }
-﻿        public StepColumns Uuid
+        public StepColumns Uuid
         {
             get
             {
                 return new StepColumns("Uuid");
             }
         }
-﻿        public StepColumns Number
+        public StepColumns Number
         {
             get
             {
                 return new StepColumns("Number");
             }
         }
-﻿        public StepColumns Description
+        public StepColumns Description
         {
             get
             {
                 return new StepColumns("Description");
             }
         }
-﻿        public StepColumns Detail
+        public StepColumns Detail
         {
             get
             {
@@ -59,7 +57,7 @@ namespace Bam.Net.Instructions
             }
         }
 
-﻿        public StepColumns SectionId
+        public StepColumns SectionId
         {
             get
             {

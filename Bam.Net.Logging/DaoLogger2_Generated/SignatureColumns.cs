@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,22 +19,23 @@ namespace Bam.Net.Logging.Data
 				return new SignatureColumns("Id");
 			}
 		}	
+
 				
-﻿        public SignatureColumns Id
+        public SignatureColumns Id
         {
             get
             {
                 return new SignatureColumns("Id");
             }
         }
-﻿        public SignatureColumns Uuid
+        public SignatureColumns Uuid
         {
             get
             {
                 return new SignatureColumns("Uuid");
             }
         }
-﻿        public SignatureColumns Value
+        public SignatureColumns Value
         {
             get
             {

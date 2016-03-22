@@ -1,10 +1,12 @@
 /*
-	Copyright © Bryan Apellanes 2015  
+	This file was generated and should not be modified directly
 */
 // Model is Table
 using System;
 using System.Data;
 using System.Data.Common;
+using System.Linq;
+using System.Threading.Tasks;
 using Bam.Net;
 using Bam.Net.Data;
 using Bam.Net.Data.Qi;
@@ -54,7 +56,7 @@ namespace Bam.Net.UserAccounts.Data
 						
 		}
 
-﻿	// property:Id, columnName:Id	
+	// property:Id, columnName:Id	
 	[Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
 	public long? Id
@@ -69,7 +71,7 @@ namespace Bam.Net.UserAccounts.Data
 		}
 	}
 
-﻿	// property:Uuid, columnName:Uuid	
+	// property:Uuid, columnName:Uuid	
 	[Bam.Net.Data.Column(Name="Uuid", DbDataType="VarChar", MaxLength="4000", AllowNull=false)]
 	public string Uuid
 	{
@@ -83,7 +85,7 @@ namespace Bam.Net.UserAccounts.Data
 		}
 	}
 
-﻿	// property:DateTime, columnName:DateTime	
+	// property:DateTime, columnName:DateTime	
 	[Bam.Net.Data.Column(Name="DateTime", DbDataType="DateTime", MaxLength="8", AllowNull=true)]
 	public DateTime? DateTime
 	{
@@ -97,7 +99,7 @@ namespace Bam.Net.UserAccounts.Data
 		}
 	}
 
-﻿	// property:Unlocked, columnName:Unlocked	
+	// property:Unlocked, columnName:Unlocked	
 	[Bam.Net.Data.Column(Name="Unlocked", DbDataType="Bit", MaxLength="1", AllowNull=true)]
 	public bool? Unlocked
 	{
@@ -111,7 +113,7 @@ namespace Bam.Net.UserAccounts.Data
 		}
 	}
 
-﻿	// property:UnlockedDate, columnName:UnlockedDate	
+	// property:UnlockedDate, columnName:UnlockedDate	
 	[Bam.Net.Data.Column(Name="UnlockedDate", DbDataType="DateTime", MaxLength="8", AllowNull=true)]
 	public DateTime? UnlockedDate
 	{
@@ -125,7 +127,7 @@ namespace Bam.Net.UserAccounts.Data
 		}
 	}
 
-﻿	// property:UnlockedBy, columnName:UnlockedBy	
+	// property:UnlockedBy, columnName:UnlockedBy	
 	[Bam.Net.Data.Column(Name="UnlockedBy", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
 	public string UnlockedBy
 	{
@@ -141,7 +143,7 @@ namespace Bam.Net.UserAccounts.Data
 
 
 
-﻿	// start UserId -> UserId
+	// start UserId -> UserId
 	[Bam.Net.Data.ForeignKey(
         Table="LockOut",
 		Name="UserId", 
@@ -211,6 +213,43 @@ namespace Bam.Net.UserAccounts.Data
 			var results = new LockOutCollection(sql.GetDataTable(db));
 			results.Database = db;
 			return results;
+		}
+
+		public static async Task BatchAll(int batchSize, Func<LockOutCollection, Task> batchProcessor, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				LockOutColumns columns = new LockOutColumns();
+				var orderBy = Order.By<LockOutColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
+				while(results.Count > 0)
+				{
+					await batchProcessor(results);
+					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
+					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}	 
+
+		public static async Task BatchQuery(int batchSize, QueryFilter filter, Func<LockOutCollection, Task> batchProcessor, Database database = null)
+		{
+			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
+		}
+
+		public static async Task BatchQuery(int batchSize, WhereDelegate<LockOutColumns> where, Func<LockOutCollection, Task> batchProcessor, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				LockOutColumns columns = new LockOutColumns();
+				var orderBy = Order.By<LockOutColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await batchProcessor(results);
+					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
+					results = Top(batchSize, (LockOutColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
 		}
 
 		public static LockOut GetById(int id, Database database = null)
@@ -295,7 +334,7 @@ namespace Bam.Net.UserAccounts.Data
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate<LockOutColumns>.
+		/// WhereDelegate&lt;LockOutColumns&gt;.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>

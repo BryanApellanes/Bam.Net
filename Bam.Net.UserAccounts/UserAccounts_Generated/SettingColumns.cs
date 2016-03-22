@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,35 +21,35 @@ namespace Bam.Net.UserAccounts.Data
 		}	
 
 				
-﻿        public SettingColumns Id
+        public SettingColumns Id
         {
             get
             {
                 return new SettingColumns("Id");
             }
         }
-﻿        public SettingColumns Uuid
+        public SettingColumns Uuid
         {
             get
             {
                 return new SettingColumns("Uuid");
             }
         }
-﻿        public SettingColumns Key
+        public SettingColumns Key
         {
             get
             {
                 return new SettingColumns("Key");
             }
         }
-﻿        public SettingColumns ValueType
+        public SettingColumns ValueType
         {
             get
             {
                 return new SettingColumns("ValueType");
             }
         }
-﻿        public SettingColumns Value
+        public SettingColumns Value
         {
             get
             {
@@ -60,7 +57,7 @@ namespace Bam.Net.UserAccounts.Data
             }
         }
 
-﻿        public SettingColumns UserId
+        public SettingColumns UserId
         {
             get
             {

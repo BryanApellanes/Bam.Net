@@ -1,10 +1,12 @@
 /*
-	Copyright © Bryan Apellanes 2015  
+	This file was generated and should not be modified directly
 */
 // Model is Table
 using System;
 using System.Data;
 using System.Data.Common;
+using System.Linq;
+using System.Threading.Tasks;
 using Bam.Net;
 using Bam.Net.Data;
 using Bam.Net.Data.Qi;
@@ -51,14 +53,14 @@ namespace Bam.Net.Analytics
 
 		private void SetChildren()
 		{
-﻿
-            this.ChildCollections.Add("Image_UrlId", new ImageCollection(Database.GetQuery<ImageColumns, Image>((c) => c.UrlId == GetLongValue("Id")), this, "UrlId"));	﻿
-            this.ChildCollections.Add("UrlTag_UrlId", new UrlTagCollection(Database.GetQuery<UrlTagColumns, UrlTag>((c) => c.UrlId == GetLongValue("Id")), this, "UrlId"));				﻿
+
+            this.ChildCollections.Add("Image_UrlId", new ImageCollection(Database.GetQuery<ImageColumns, Image>((c) => c.UrlId == GetLongValue("Id")), this, "UrlId"));	
+            this.ChildCollections.Add("UrlTag_UrlId", new UrlTagCollection(Database.GetQuery<UrlTagColumns, UrlTag>((c) => c.UrlId == GetLongValue("Id")), this, "UrlId"));				
             this.ChildCollections.Add("Url_UrlTag_Tag",  new XrefDaoCollection<UrlTag, Tag>(this, false));
 							
 		}
 
-﻿	// property:Id, columnName:Id	
+	// property:Id, columnName:Id	
 	[Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
 	public long? Id
@@ -73,7 +75,7 @@ namespace Bam.Net.Analytics
 		}
 	}
 
-﻿	// property:Uuid, columnName:Uuid	
+	// property:Uuid, columnName:Uuid	
 	[Bam.Net.Data.Column(Name="Uuid", DbDataType="VarChar", MaxLength="4000", AllowNull=false)]
 	public string Uuid
 	{
@@ -89,7 +91,7 @@ namespace Bam.Net.Analytics
 
 
 
-﻿	// start ProtocolId -> ProtocolId
+	// start ProtocolId -> ProtocolId
 	[Bam.Net.Data.ForeignKey(
         Table="Url",
 		Name="ProtocolId", 
@@ -124,7 +126,7 @@ namespace Bam.Net.Analytics
 		}
 	}
 	
-﻿	// start DomainId -> DomainId
+	// start DomainId -> DomainId
 	[Bam.Net.Data.ForeignKey(
         Table="Url",
 		Name="DomainId", 
@@ -159,7 +161,7 @@ namespace Bam.Net.Analytics
 		}
 	}
 	
-﻿	// start PortId -> PortId
+	// start PortId -> PortId
 	[Bam.Net.Data.ForeignKey(
         Table="Url",
 		Name="PortId", 
@@ -194,7 +196,7 @@ namespace Bam.Net.Analytics
 		}
 	}
 	
-﻿	// start PathId -> PathId
+	// start PathId -> PathId
 	[Bam.Net.Data.ForeignKey(
         Table="Url",
 		Name="PathId", 
@@ -229,7 +231,7 @@ namespace Bam.Net.Analytics
 		}
 	}
 	
-﻿	// start QueryStringId -> QueryStringId
+	// start QueryStringId -> QueryStringId
 	[Bam.Net.Data.ForeignKey(
         Table="Url",
 		Name="QueryStringId", 
@@ -264,7 +266,7 @@ namespace Bam.Net.Analytics
 		}
 	}
 	
-﻿	// start FragmentId -> FragmentId
+	// start FragmentId -> FragmentId
 	[Bam.Net.Data.ForeignKey(
         Table="Url",
 		Name="FragmentId", 
@@ -300,7 +302,7 @@ namespace Bam.Net.Analytics
 	}
 	
 				
-﻿
+
 	[Exclude]	
 	public ImageCollection ImagesByUrlId
 	{
@@ -324,7 +326,7 @@ namespace Bam.Net.Analytics
 			return c;
 		}
 	}
-	﻿
+	
 	[Exclude]	
 	public UrlTagCollection UrlTagsByUrlId
 	{
@@ -349,7 +351,7 @@ namespace Bam.Net.Analytics
 		}
 	}
 			
-﻿
+
 		// Xref       
         public XrefDaoCollection<UrlTag, Tag> Tags
         {
@@ -406,6 +408,43 @@ namespace Bam.Net.Analytics
 			var results = new UrlCollection(sql.GetDataTable(db));
 			results.Database = db;
 			return results;
+		}
+
+		public static async Task BatchAll(int batchSize, Func<UrlCollection, Task> batchProcessor, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				UrlColumns columns = new UrlColumns();
+				var orderBy = Order.By<UrlColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
+				while(results.Count > 0)
+				{
+					await batchProcessor(results);
+					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
+					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}	 
+
+		public static async Task BatchQuery(int batchSize, QueryFilter filter, Func<UrlCollection, Task> batchProcessor, Database database = null)
+		{
+			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
+		}
+
+		public static async Task BatchQuery(int batchSize, WhereDelegate<UrlColumns> where, Func<UrlCollection, Task> batchProcessor, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				UrlColumns columns = new UrlColumns();
+				var orderBy = Order.By<UrlColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await batchProcessor(results);
+					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
+					results = Top(batchSize, (UrlColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
 		}
 
 		public static Url GetById(int id, Database database = null)
@@ -490,7 +529,7 @@ namespace Bam.Net.Analytics
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate<UrlColumns>.
+		/// WhereDelegate&lt;UrlColumns&gt;.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>

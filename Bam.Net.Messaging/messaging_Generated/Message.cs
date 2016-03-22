@@ -1,10 +1,12 @@
 /*
-	Copyright © Bryan Apellanes 2015  
+	This file was generated and should not be modified directly
 */
 // Model is Table
 using System;
 using System.Data;
 using System.Data.Common;
+using System.Linq;
+using System.Threading.Tasks;
 using Bam.Net;
 using Bam.Net.Data;
 using Bam.Net.Data.Qi;
@@ -51,11 +53,11 @@ namespace Bam.Net.Messaging.Data
 
 		private void SetChildren()
 		{
-﻿
-            this.ChildCollections.Add("DirectMessage_MessageId", new DirectMessageCollection(Database.GetQuery<DirectMessageColumns, DirectMessage>((c) => c.MessageId == this.Id), this, "MessageId"));							
+
+            this.ChildCollections.Add("DirectMessage_MessageId", new DirectMessageCollection(Database.GetQuery<DirectMessageColumns, DirectMessage>((c) => c.MessageId == GetLongValue("Id")), this, "MessageId"));							
 		}
 
-﻿	// property:Id, columnName:Id	
+	// property:Id, columnName:Id	
 	[Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
 	public long? Id
@@ -70,7 +72,7 @@ namespace Bam.Net.Messaging.Data
 		}
 	}
 
-﻿	// property:Uuid, columnName:Uuid	
+	// property:Uuid, columnName:Uuid	
 	[Bam.Net.Data.Column(Name="Uuid", DbDataType="VarChar", MaxLength="4000", AllowNull=false)]
 	public string Uuid
 	{
@@ -84,7 +86,7 @@ namespace Bam.Net.Messaging.Data
 		}
 	}
 
-﻿	// property:CreatedDate, columnName:CreatedDate	
+	// property:CreatedDate, columnName:CreatedDate	
 	[Bam.Net.Data.Column(Name="CreatedDate", DbDataType="DateTime", MaxLength="8", AllowNull=false)]
 	public DateTime? CreatedDate
 	{
@@ -98,7 +100,7 @@ namespace Bam.Net.Messaging.Data
 		}
 	}
 
-﻿	// property:From, columnName:From	
+	// property:From, columnName:From	
 	[Bam.Net.Data.Column(Name="From", DbDataType="VarChar", MaxLength="4000", AllowNull=false)]
 	public string From
 	{
@@ -112,7 +114,7 @@ namespace Bam.Net.Messaging.Data
 		}
 	}
 
-﻿	// property:FromEmail, columnName:FromEmail	
+	// property:FromEmail, columnName:FromEmail	
 	[Bam.Net.Data.Column(Name="FromEmail", DbDataType="VarChar", MaxLength="4000", AllowNull=false)]
 	public string FromEmail
 	{
@@ -126,7 +128,7 @@ namespace Bam.Net.Messaging.Data
 		}
 	}
 
-﻿	// property:Subject, columnName:Subject	
+	// property:Subject, columnName:Subject	
 	[Bam.Net.Data.Column(Name="Subject", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
 	public string Subject
 	{
@@ -140,7 +142,7 @@ namespace Bam.Net.Messaging.Data
 		}
 	}
 
-﻿	// property:Body, columnName:Body	
+	// property:Body, columnName:Body	
 	[Bam.Net.Data.Column(Name="Body", DbDataType="VarChar", MaxLength="4000", AllowNull=false)]
 	public string Body
 	{
@@ -157,7 +159,7 @@ namespace Bam.Net.Messaging.Data
 
 
 				
-﻿
+
 	[Exclude]	
 	public DirectMessageCollection DirectMessagesByMessageId
 	{
@@ -217,6 +219,43 @@ namespace Bam.Net.Messaging.Data
 			return results;
 		}
 
+		public static async Task BatchAll(int batchSize, Func<MessageCollection, Task> batchProcessor, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				MessageColumns columns = new MessageColumns();
+				var orderBy = Order.By<MessageColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
+				while(results.Count > 0)
+				{
+					await batchProcessor(results);
+					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
+					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}	 
+
+		public static async Task BatchQuery(int batchSize, QueryFilter filter, Func<MessageCollection, Task> batchProcessor, Database database = null)
+		{
+			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
+		}
+
+		public static async Task BatchQuery(int batchSize, WhereDelegate<MessageColumns> where, Func<MessageCollection, Task> batchProcessor, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				MessageColumns columns = new MessageColumns();
+				var orderBy = Order.By<MessageColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await batchProcessor(results);
+					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
+					results = Top(batchSize, (MessageColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
 		public static Message GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
@@ -229,7 +268,12 @@ namespace Bam.Net.Messaging.Data
 
 		public static Message GetByUuid(string uuid, Database database = null)
 		{
-			return OneWhere(c => c.Uuid == uuid, database);
+			return OneWhere(c => Bam.Net.Data.Query.Where("Uuid") == uuid, database);
+		}
+
+		public static Message GetByCuid(string cuid, Database database = null)
+		{
+			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
 		public static MessageCollection Query(QueryFilter filter, Database database = null)
@@ -294,7 +338,7 @@ namespace Bam.Net.Messaging.Data
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate<MessageColumns>.
+		/// WhereDelegate&lt;MessageColumns&gt;.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>

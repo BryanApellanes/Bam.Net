@@ -1,5 +1,5 @@
 /*
-	Copyright © Bryan Apellanes 2015  
+	This file was generated and should not be modified directly
 */
 // model is SchemaDefinition
 using System;
@@ -30,7 +30,7 @@ namespace Bam.Net.Messaging.Data
 			}
 		}
 
-﻿
+
 	public class EmailMessageQueryContext
 	{
 			public EmailMessageCollection Where(WhereDelegate<EmailMessageColumns> where, Database db = null)
@@ -77,7 +77,7 @@ namespace Bam.Net.Messaging.Data
 		{
 			return _emailMessagesLock.DoubleCheckLock<EmailMessageQueryContext>(ref _emailMessages, () => new EmailMessageQueryContext());
 		}
-	}﻿
+	}
 	public class DirectMessageQueryContext
 	{
 			public DirectMessageCollection Where(WhereDelegate<DirectMessageColumns> where, Database db = null)
@@ -124,7 +124,7 @@ namespace Bam.Net.Messaging.Data
 		{
 			return _directMessagesLock.DoubleCheckLock<DirectMessageQueryContext>(ref _directMessages, () => new DirectMessageQueryContext());
 		}
-	}﻿
+	}
 	public class MessageQueryContext
 	{
 			public MessageCollection Where(WhereDelegate<MessageColumns> where, Database db = null)

@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,22 +19,23 @@ namespace Bam.Net.Shop
 				return new CurrencyCountryColumns("Id");
 			}
 		}	
+
 				
-﻿        public CurrencyCountryColumns Id
+        public CurrencyCountryColumns Id
         {
             get
             {
                 return new CurrencyCountryColumns("Id");
             }
         }
-﻿        public CurrencyCountryColumns Uuid
+        public CurrencyCountryColumns Uuid
         {
             get
             {
                 return new CurrencyCountryColumns("Uuid");
             }
         }
-﻿        public CurrencyCountryColumns Name
+        public CurrencyCountryColumns Name
         {
             get
             {
@@ -45,7 +43,7 @@ namespace Bam.Net.Shop
             }
         }
 
-﻿        public CurrencyCountryColumns CurrencyId
+        public CurrencyCountryColumns CurrencyId
         {
             get
             {

@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,21 +21,21 @@ namespace Bam.Net.Analytics
 		}	
 
 				
-﻿        public PortColumns Id
+        public PortColumns Id
         {
             get
             {
                 return new PortColumns("Id");
             }
         }
-﻿        public PortColumns Uuid
+        public PortColumns Uuid
         {
             get
             {
                 return new PortColumns("Uuid");
             }
         }
-﻿        public PortColumns Value
+        public PortColumns Value
         {
             get
             {

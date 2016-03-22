@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,21 +21,21 @@ namespace Bam.Net.Analytics
 		}	
 
 				
-﻿        public QueryStringColumns Id
+        public QueryStringColumns Id
         {
             get
             {
                 return new QueryStringColumns("Id");
             }
         }
-﻿        public QueryStringColumns Uuid
+        public QueryStringColumns Uuid
         {
             get
             {
                 return new QueryStringColumns("Uuid");
             }
         }
-﻿        public QueryStringColumns Value
+        public QueryStringColumns Value
         {
             get
             {

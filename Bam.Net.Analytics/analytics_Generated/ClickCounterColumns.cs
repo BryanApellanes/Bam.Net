@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,21 +21,21 @@ namespace Bam.Net.Analytics
 		}	
 
 				
-﻿        public ClickCounterColumns Id
+        public ClickCounterColumns Id
         {
             get
             {
                 return new ClickCounterColumns("Id");
             }
         }
-﻿        public ClickCounterColumns Uuid
+        public ClickCounterColumns Uuid
         {
             get
             {
                 return new ClickCounterColumns("Uuid");
             }
         }
-﻿        public ClickCounterColumns UrlId
+        public ClickCounterColumns UrlId
         {
             get
             {
@@ -46,14 +43,14 @@ namespace Bam.Net.Analytics
             }
         }
 
-﻿        public ClickCounterColumns CounterId
+        public ClickCounterColumns CounterId
         {
             get
             {
                 return new ClickCounterColumns("CounterId");
             }
         }
-﻿        public ClickCounterColumns UserIdentifierId
+        public ClickCounterColumns UserIdentifierId
         {
             get
             {

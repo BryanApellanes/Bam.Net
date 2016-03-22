@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,21 +21,21 @@ namespace Bam.Net.Analytics
 		}	
 
 				
-﻿        public LoadCounterColumns Id
+        public LoadCounterColumns Id
         {
             get
             {
                 return new LoadCounterColumns("Id");
             }
         }
-﻿        public LoadCounterColumns Uuid
+        public LoadCounterColumns Uuid
         {
             get
             {
                 return new LoadCounterColumns("Uuid");
             }
         }
-﻿        public LoadCounterColumns UrlUuid
+        public LoadCounterColumns UrlUuid
         {
             get
             {
@@ -46,7 +43,7 @@ namespace Bam.Net.Analytics
             }
         }
 
-﻿        public LoadCounterColumns CounterId
+        public LoadCounterColumns CounterId
         {
             get
             {

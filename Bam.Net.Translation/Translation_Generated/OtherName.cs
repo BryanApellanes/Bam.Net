@@ -1,10 +1,12 @@
 /*
-	Copyright © Bryan Apellanes 2015  
+	This file was generated and should not be modified directly
 */
 // Model is Table
 using System;
 using System.Data;
 using System.Data.Common;
+using System.Linq;
+using System.Threading.Tasks;
 using Bam.Net;
 using Bam.Net.Data;
 using Bam.Net.Data.Qi;
@@ -54,7 +56,7 @@ namespace Bam.Net.Translation
 						
 		}
 
-﻿	// property:Id, columnName:Id	
+	// property:Id, columnName:Id	
 	[Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
 	public long? Id
@@ -69,7 +71,7 @@ namespace Bam.Net.Translation
 		}
 	}
 
-﻿	// property:Uuid, columnName:Uuid	
+	// property:Uuid, columnName:Uuid	
 	[Bam.Net.Data.Column(Name="Uuid", DbDataType="VarChar", MaxLength="4000", AllowNull=false)]
 	public string Uuid
 	{
@@ -83,7 +85,7 @@ namespace Bam.Net.Translation
 		}
 	}
 
-﻿	// property:LanguageName, columnName:LanguageName	
+	// property:LanguageName, columnName:LanguageName	
 	[Bam.Net.Data.Column(Name="LanguageName", DbDataType="VarChar", MaxLength="4000", AllowNull=false)]
 	public string LanguageName
 	{
@@ -97,7 +99,7 @@ namespace Bam.Net.Translation
 		}
 	}
 
-﻿	// property:Value, columnName:Value	
+	// property:Value, columnName:Value	
 	[Bam.Net.Data.Column(Name="Value", DbDataType="VarChar", MaxLength="4000", AllowNull=false)]
 	public string Value
 	{
@@ -113,7 +115,7 @@ namespace Bam.Net.Translation
 
 
 
-﻿	// start LanguageId -> LanguageId
+	// start LanguageId -> LanguageId
 	[Bam.Net.Data.ForeignKey(
         Table="OtherName",
 		Name="LanguageId", 
@@ -185,6 +187,43 @@ namespace Bam.Net.Translation
 			return results;
 		}
 
+		public static async Task BatchAll(int batchSize, Func<OtherNameCollection, Task> batchProcessor, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				OtherNameColumns columns = new OtherNameColumns();
+				var orderBy = Order.By<OtherNameColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
+				while(results.Count > 0)
+				{
+					await batchProcessor(results);
+					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
+					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}	 
+
+		public static async Task BatchQuery(int batchSize, QueryFilter filter, Func<OtherNameCollection, Task> batchProcessor, Database database = null)
+		{
+			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
+		}
+
+		public static async Task BatchQuery(int batchSize, WhereDelegate<OtherNameColumns> where, Func<OtherNameCollection, Task> batchProcessor, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				OtherNameColumns columns = new OtherNameColumns();
+				var orderBy = Order.By<OtherNameColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await batchProcessor(results);
+					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
+					results = Top(batchSize, (OtherNameColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
 		public static OtherName GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
@@ -197,7 +236,12 @@ namespace Bam.Net.Translation
 
 		public static OtherName GetByUuid(string uuid, Database database = null)
 		{
-			return OneWhere(c => c.Uuid == uuid, database);
+			return OneWhere(c => Bam.Net.Data.Query.Where("Uuid") == uuid, database);
+		}
+
+		public static OtherName GetByCuid(string cuid, Database database = null)
+		{
+			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
 		public static OtherNameCollection Query(QueryFilter filter, Database database = null)
@@ -262,7 +306,7 @@ namespace Bam.Net.Translation
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate<OtherNameColumns>.
+		/// WhereDelegate&lt;OtherNameColumns&gt;.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>

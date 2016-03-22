@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,14 +21,14 @@ namespace Bam.Net.UserAccounts.Data
 		}	
 
 				
-﻿        public UserRoleColumns Id
+        public UserRoleColumns Id
         {
             get
             {
                 return new UserRoleColumns("Id");
             }
         }
-﻿        public UserRoleColumns Uuid
+        public UserRoleColumns Uuid
         {
             get
             {
@@ -39,14 +36,14 @@ namespace Bam.Net.UserAccounts.Data
             }
         }
 
-﻿        public UserRoleColumns UserId
+        public UserRoleColumns UserId
         {
             get
             {
                 return new UserRoleColumns("UserId");
             }
         }
-﻿        public UserRoleColumns RoleId
+        public UserRoleColumns RoleId
         {
             get
             {

@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,29 +19,30 @@ namespace Bam.Net.Shop
 				return new PromotionConditionColumns("Id");
 			}
 		}	
+
 				
-﻿        public PromotionConditionColumns Id
+        public PromotionConditionColumns Id
         {
             get
             {
                 return new PromotionConditionColumns("Id");
             }
         }
-﻿        public PromotionConditionColumns Uuid
+        public PromotionConditionColumns Uuid
         {
             get
             {
                 return new PromotionConditionColumns("Uuid");
             }
         }
-﻿        public PromotionConditionColumns Description
+        public PromotionConditionColumns Description
         {
             get
             {
                 return new PromotionConditionColumns("Description");
             }
         }
-﻿        public PromotionConditionColumns Value
+        public PromotionConditionColumns Value
         {
             get
             {
@@ -52,7 +50,7 @@ namespace Bam.Net.Shop
             }
         }
 
-﻿        public PromotionConditionColumns PromotionId
+        public PromotionConditionColumns PromotionId
         {
             get
             {

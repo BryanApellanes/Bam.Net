@@ -1,10 +1,12 @@
 /*
-	Copyright © Bryan Apellanes 2015  
+	This file was generated and should not be modified directly
 */
 // Model is Table
 using System;
 using System.Data;
 using System.Data.Common;
+using System.Linq;
+using System.Threading.Tasks;
 using Bam.Net;
 using Bam.Net.Data;
 using Bam.Net.Data.Qi;
@@ -51,28 +53,28 @@ namespace Bam.Net.UserAccounts.Data
 
 		private void SetChildren()
 		{
-﻿
-            this.ChildCollections.Add("Account_UserId", new AccountCollection(Database.GetQuery<AccountColumns, Account>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));	﻿
-            this.ChildCollections.Add("Password_UserId", new PasswordCollection(Database.GetQuery<PasswordColumns, Password>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));	﻿
-            this.ChildCollections.Add("PasswordReset_UserId", new PasswordResetCollection(Database.GetQuery<PasswordResetColumns, PasswordReset>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));	﻿
-            this.ChildCollections.Add("PasswordFailure_UserId", new PasswordFailureCollection(Database.GetQuery<PasswordFailureColumns, PasswordFailure>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));	﻿
-            this.ChildCollections.Add("LockOut_UserId", new LockOutCollection(Database.GetQuery<LockOutColumns, LockOut>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));	﻿
-            this.ChildCollections.Add("Login_UserId", new LoginCollection(Database.GetQuery<LoginColumns, Login>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));	﻿
-            this.ChildCollections.Add("PasswordQuestion_UserId", new PasswordQuestionCollection(Database.GetQuery<PasswordQuestionColumns, PasswordQuestion>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));	﻿
-            this.ChildCollections.Add("Setting_UserId", new SettingCollection(Database.GetQuery<SettingColumns, Setting>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));	﻿
-            this.ChildCollections.Add("Session_UserId", new SessionCollection(Database.GetQuery<SessionColumns, Session>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));	﻿
-            this.ChildCollections.Add("UserRole_UserId", new UserRoleCollection(Database.GetQuery<UserRoleColumns, UserRole>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));	﻿
-            this.ChildCollections.Add("UserGroup_UserId", new UserGroupCollection(Database.GetQuery<UserGroupColumns, UserGroup>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));	﻿
-            this.ChildCollections.Add("UserPermission_UserId", new UserPermissionCollection(Database.GetQuery<UserPermissionColumns, UserPermission>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));				﻿
+
+            this.ChildCollections.Add("Account_UserId", new AccountCollection(Database.GetQuery<AccountColumns, Account>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));	
+            this.ChildCollections.Add("Password_UserId", new PasswordCollection(Database.GetQuery<PasswordColumns, Password>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));	
+            this.ChildCollections.Add("PasswordReset_UserId", new PasswordResetCollection(Database.GetQuery<PasswordResetColumns, PasswordReset>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));	
+            this.ChildCollections.Add("PasswordFailure_UserId", new PasswordFailureCollection(Database.GetQuery<PasswordFailureColumns, PasswordFailure>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));	
+            this.ChildCollections.Add("LockOut_UserId", new LockOutCollection(Database.GetQuery<LockOutColumns, LockOut>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));	
+            this.ChildCollections.Add("Login_UserId", new LoginCollection(Database.GetQuery<LoginColumns, Login>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));	
+            this.ChildCollections.Add("PasswordQuestion_UserId", new PasswordQuestionCollection(Database.GetQuery<PasswordQuestionColumns, PasswordQuestion>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));	
+            this.ChildCollections.Add("Setting_UserId", new SettingCollection(Database.GetQuery<SettingColumns, Setting>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));	
+            this.ChildCollections.Add("Session_UserId", new SessionCollection(Database.GetQuery<SessionColumns, Session>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));	
+            this.ChildCollections.Add("UserRole_UserId", new UserRoleCollection(Database.GetQuery<UserRoleColumns, UserRole>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));	
+            this.ChildCollections.Add("UserGroup_UserId", new UserGroupCollection(Database.GetQuery<UserGroupColumns, UserGroup>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));	
+            this.ChildCollections.Add("UserPermission_UserId", new UserPermissionCollection(Database.GetQuery<UserPermissionColumns, UserPermission>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));				
             this.ChildCollections.Add("User_UserRole_Role",  new XrefDaoCollection<UserRole, Role>(this, false));
-				﻿
+				
             this.ChildCollections.Add("User_UserGroup_Group",  new XrefDaoCollection<UserGroup, Group>(this, false));
-				﻿
+				
             this.ChildCollections.Add("User_UserPermission_Permission",  new XrefDaoCollection<UserPermission, Permission>(this, false));
 							
 		}
 
-﻿	// property:Id, columnName:Id	
+	// property:Id, columnName:Id	
 	[Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
 	public long? Id
@@ -87,7 +89,7 @@ namespace Bam.Net.UserAccounts.Data
 		}
 	}
 
-﻿	// property:Uuid, columnName:Uuid	
+	// property:Uuid, columnName:Uuid	
 	[Bam.Net.Data.Column(Name="Uuid", DbDataType="VarChar", MaxLength="4000", AllowNull=false)]
 	public string Uuid
 	{
@@ -101,7 +103,7 @@ namespace Bam.Net.UserAccounts.Data
 		}
 	}
 
-﻿	// property:CreationDate, columnName:CreationDate	
+	// property:CreationDate, columnName:CreationDate	
 	[Bam.Net.Data.Column(Name="CreationDate", DbDataType="DateTime", MaxLength="8", AllowNull=false)]
 	public DateTime? CreationDate
 	{
@@ -115,7 +117,7 @@ namespace Bam.Net.UserAccounts.Data
 		}
 	}
 
-﻿	// property:IsDeleted, columnName:IsDeleted	
+	// property:IsDeleted, columnName:IsDeleted	
 	[Bam.Net.Data.Column(Name="IsDeleted", DbDataType="Bit", MaxLength="1", AllowNull=true)]
 	public bool? IsDeleted
 	{
@@ -129,7 +131,7 @@ namespace Bam.Net.UserAccounts.Data
 		}
 	}
 
-﻿	// property:UserName, columnName:UserName	
+	// property:UserName, columnName:UserName	
 	[Bam.Net.Data.Column(Name="UserName", DbDataType="VarChar", MaxLength="4000", AllowNull=false)]
 	public string UserName
 	{
@@ -143,7 +145,7 @@ namespace Bam.Net.UserAccounts.Data
 		}
 	}
 
-﻿	// property:IsApproved, columnName:IsApproved	
+	// property:IsApproved, columnName:IsApproved	
 	[Bam.Net.Data.Column(Name="IsApproved", DbDataType="Bit", MaxLength="1", AllowNull=true)]
 	public bool? IsApproved
 	{
@@ -157,7 +159,7 @@ namespace Bam.Net.UserAccounts.Data
 		}
 	}
 
-﻿	// property:Email, columnName:Email	
+	// property:Email, columnName:Email	
 	[Bam.Net.Data.Column(Name="Email", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
 	public string Email
 	{
@@ -174,7 +176,7 @@ namespace Bam.Net.UserAccounts.Data
 
 
 				
-﻿
+
 	[Exclude]	
 	public AccountCollection AccountsByUserId
 	{
@@ -198,7 +200,7 @@ namespace Bam.Net.UserAccounts.Data
 			return c;
 		}
 	}
-	﻿
+	
 	[Exclude]	
 	public PasswordCollection PasswordsByUserId
 	{
@@ -222,7 +224,7 @@ namespace Bam.Net.UserAccounts.Data
 			return c;
 		}
 	}
-	﻿
+	
 	[Exclude]	
 	public PasswordResetCollection PasswordResetsByUserId
 	{
@@ -246,7 +248,7 @@ namespace Bam.Net.UserAccounts.Data
 			return c;
 		}
 	}
-	﻿
+	
 	[Exclude]	
 	public PasswordFailureCollection PasswordFailuresByUserId
 	{
@@ -270,7 +272,7 @@ namespace Bam.Net.UserAccounts.Data
 			return c;
 		}
 	}
-	﻿
+	
 	[Exclude]	
 	public LockOutCollection LockOutsByUserId
 	{
@@ -294,7 +296,7 @@ namespace Bam.Net.UserAccounts.Data
 			return c;
 		}
 	}
-	﻿
+	
 	[Exclude]	
 	public LoginCollection LoginsByUserId
 	{
@@ -318,7 +320,7 @@ namespace Bam.Net.UserAccounts.Data
 			return c;
 		}
 	}
-	﻿
+	
 	[Exclude]	
 	public PasswordQuestionCollection PasswordQuestionsByUserId
 	{
@@ -342,7 +344,7 @@ namespace Bam.Net.UserAccounts.Data
 			return c;
 		}
 	}
-	﻿
+	
 	[Exclude]	
 	public SettingCollection SettingsByUserId
 	{
@@ -366,7 +368,7 @@ namespace Bam.Net.UserAccounts.Data
 			return c;
 		}
 	}
-	﻿
+	
 	[Exclude]	
 	public SessionCollection SessionsByUserId
 	{
@@ -390,7 +392,7 @@ namespace Bam.Net.UserAccounts.Data
 			return c;
 		}
 	}
-	﻿
+	
 	[Exclude]	
 	public UserRoleCollection UserRolesByUserId
 	{
@@ -414,7 +416,7 @@ namespace Bam.Net.UserAccounts.Data
 			return c;
 		}
 	}
-	﻿
+	
 	[Exclude]	
 	public UserGroupCollection UserGroupsByUserId
 	{
@@ -438,7 +440,7 @@ namespace Bam.Net.UserAccounts.Data
 			return c;
 		}
 	}
-	﻿
+	
 	[Exclude]	
 	public UserPermissionCollection UserPermissionsByUserId
 	{
@@ -463,7 +465,7 @@ namespace Bam.Net.UserAccounts.Data
 		}
 	}
 			
-﻿
+
 		// Xref       
         public XrefDaoCollection<UserRole, Role> Roles
         {
@@ -487,7 +489,7 @@ namespace Bam.Net.UserAccounts.Data
 
 				return xref;
             }
-        }﻿
+        }
 		// Xref       
         public XrefDaoCollection<UserGroup, Group> Groups
         {
@@ -511,7 +513,7 @@ namespace Bam.Net.UserAccounts.Data
 
 				return xref;
             }
-        }﻿
+        }
 		// Xref       
         public XrefDaoCollection<UserPermission, Permission> Permissions
         {
@@ -568,6 +570,43 @@ namespace Bam.Net.UserAccounts.Data
 			var results = new UserCollection(sql.GetDataTable(db));
 			results.Database = db;
 			return results;
+		}
+
+		public static async Task BatchAll(int batchSize, Func<UserCollection, Task> batchProcessor, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				UserColumns columns = new UserColumns();
+				var orderBy = Order.By<UserColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
+				while(results.Count > 0)
+				{
+					await batchProcessor(results);
+					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
+					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}	 
+
+		public static async Task BatchQuery(int batchSize, QueryFilter filter, Func<UserCollection, Task> batchProcessor, Database database = null)
+		{
+			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
+		}
+
+		public static async Task BatchQuery(int batchSize, WhereDelegate<UserColumns> where, Func<UserCollection, Task> batchProcessor, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				UserColumns columns = new UserColumns();
+				var orderBy = Order.By<UserColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await batchProcessor(results);
+					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
+					results = Top(batchSize, (UserColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
 		}
 
 		public static User GetById(int id, Database database = null)
@@ -652,7 +691,7 @@ namespace Bam.Net.UserAccounts.Data
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate<UserColumns>.
+		/// WhereDelegate&lt;UserColumns&gt;.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>

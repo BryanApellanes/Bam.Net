@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,63 +21,63 @@ namespace Bam.Net.UserAccounts.Data
 		}	
 
 				
-﻿        public AccountColumns Id
+        public AccountColumns Id
         {
             get
             {
                 return new AccountColumns("Id");
             }
         }
-﻿        public AccountColumns Uuid
+        public AccountColumns Uuid
         {
             get
             {
                 return new AccountColumns("Uuid");
             }
         }
-﻿        public AccountColumns Token
+        public AccountColumns Token
         {
             get
             {
                 return new AccountColumns("Token");
             }
         }
-﻿        public AccountColumns Provider
+        public AccountColumns Provider
         {
             get
             {
                 return new AccountColumns("Provider");
             }
         }
-﻿        public AccountColumns ProviderUserId
+        public AccountColumns ProviderUserId
         {
             get
             {
                 return new AccountColumns("ProviderUserId");
             }
         }
-﻿        public AccountColumns Comment
+        public AccountColumns Comment
         {
             get
             {
                 return new AccountColumns("Comment");
             }
         }
-﻿        public AccountColumns CreationDate
+        public AccountColumns CreationDate
         {
             get
             {
                 return new AccountColumns("CreationDate");
             }
         }
-﻿        public AccountColumns IsConfirmed
+        public AccountColumns IsConfirmed
         {
             get
             {
                 return new AccountColumns("IsConfirmed");
             }
         }
-﻿        public AccountColumns ConfirmationDate
+        public AccountColumns ConfirmationDate
         {
             get
             {
@@ -88,7 +85,7 @@ namespace Bam.Net.UserAccounts.Data
             }
         }
 
-﻿        public AccountColumns UserId
+        public AccountColumns UserId
         {
             get
             {

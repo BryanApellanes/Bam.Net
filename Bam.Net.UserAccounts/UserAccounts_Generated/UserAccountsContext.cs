@@ -1,5 +1,5 @@
 /*
-	Copyright © Bryan Apellanes 2015  
+	This file was generated and should not be modified directly
 */
 // model is SchemaDefinition
 using System;
@@ -30,7 +30,7 @@ namespace Bam.Net.UserAccounts.Data
 			}
 		}
 
-﻿
+
 	public class UserQueryContext
 	{
 			public UserCollection Where(WhereDelegate<UserColumns> where, Database db = null)
@@ -77,7 +77,7 @@ namespace Bam.Net.UserAccounts.Data
 		{
 			return _usersLock.DoubleCheckLock<UserQueryContext>(ref _users, () => new UserQueryContext());
 		}
-	}﻿
+	}
 	public class AccountQueryContext
 	{
 			public AccountCollection Where(WhereDelegate<AccountColumns> where, Database db = null)
@@ -124,7 +124,7 @@ namespace Bam.Net.UserAccounts.Data
 		{
 			return _accountsLock.DoubleCheckLock<AccountQueryContext>(ref _accounts, () => new AccountQueryContext());
 		}
-	}﻿
+	}
 	public class PasswordQueryContext
 	{
 			public PasswordCollection Where(WhereDelegate<PasswordColumns> where, Database db = null)
@@ -171,7 +171,7 @@ namespace Bam.Net.UserAccounts.Data
 		{
 			return _passwordsLock.DoubleCheckLock<PasswordQueryContext>(ref _passwords, () => new PasswordQueryContext());
 		}
-	}﻿
+	}
 	public class PasswordResetQueryContext
 	{
 			public PasswordResetCollection Where(WhereDelegate<PasswordResetColumns> where, Database db = null)
@@ -218,7 +218,7 @@ namespace Bam.Net.UserAccounts.Data
 		{
 			return _passwordResetsLock.DoubleCheckLock<PasswordResetQueryContext>(ref _passwordResets, () => new PasswordResetQueryContext());
 		}
-	}﻿
+	}
 	public class PasswordFailureQueryContext
 	{
 			public PasswordFailureCollection Where(WhereDelegate<PasswordFailureColumns> where, Database db = null)
@@ -265,7 +265,7 @@ namespace Bam.Net.UserAccounts.Data
 		{
 			return _passwordFailuresLock.DoubleCheckLock<PasswordFailureQueryContext>(ref _passwordFailures, () => new PasswordFailureQueryContext());
 		}
-	}﻿
+	}
 	public class LockOutQueryContext
 	{
 			public LockOutCollection Where(WhereDelegate<LockOutColumns> where, Database db = null)
@@ -312,7 +312,7 @@ namespace Bam.Net.UserAccounts.Data
 		{
 			return _lockOutsLock.DoubleCheckLock<LockOutQueryContext>(ref _lockOuts, () => new LockOutQueryContext());
 		}
-	}﻿
+	}
 	public class LoginQueryContext
 	{
 			public LoginCollection Where(WhereDelegate<LoginColumns> where, Database db = null)
@@ -359,7 +359,7 @@ namespace Bam.Net.UserAccounts.Data
 		{
 			return _loginsLock.DoubleCheckLock<LoginQueryContext>(ref _logins, () => new LoginQueryContext());
 		}
-	}﻿
+	}
 	public class PasswordQuestionQueryContext
 	{
 			public PasswordQuestionCollection Where(WhereDelegate<PasswordQuestionColumns> where, Database db = null)
@@ -406,7 +406,7 @@ namespace Bam.Net.UserAccounts.Data
 		{
 			return _passwordQuestionsLock.DoubleCheckLock<PasswordQuestionQueryContext>(ref _passwordQuestions, () => new PasswordQuestionQueryContext());
 		}
-	}﻿
+	}
 	public class SettingQueryContext
 	{
 			public SettingCollection Where(WhereDelegate<SettingColumns> where, Database db = null)
@@ -453,7 +453,7 @@ namespace Bam.Net.UserAccounts.Data
 		{
 			return _settingsLock.DoubleCheckLock<SettingQueryContext>(ref _settings, () => new SettingQueryContext());
 		}
-	}﻿
+	}
 	public class SessionQueryContext
 	{
 			public SessionCollection Where(WhereDelegate<SessionColumns> where, Database db = null)
@@ -500,7 +500,7 @@ namespace Bam.Net.UserAccounts.Data
 		{
 			return _sessionsLock.DoubleCheckLock<SessionQueryContext>(ref _sessions, () => new SessionQueryContext());
 		}
-	}﻿
+	}
 	public class SessionStateQueryContext
 	{
 			public SessionStateCollection Where(WhereDelegate<SessionStateColumns> where, Database db = null)
@@ -547,7 +547,7 @@ namespace Bam.Net.UserAccounts.Data
 		{
 			return _sessionStatesLock.DoubleCheckLock<SessionStateQueryContext>(ref _sessionStates, () => new SessionStateQueryContext());
 		}
-	}﻿
+	}
 	public class UserBehaviorQueryContext
 	{
 			public UserBehaviorCollection Where(WhereDelegate<UserBehaviorColumns> where, Database db = null)
@@ -594,7 +594,7 @@ namespace Bam.Net.UserAccounts.Data
 		{
 			return _userBehaviorsLock.DoubleCheckLock<UserBehaviorQueryContext>(ref _userBehaviors, () => new UserBehaviorQueryContext());
 		}
-	}﻿
+	}
 	public class RoleQueryContext
 	{
 			public RoleCollection Where(WhereDelegate<RoleColumns> where, Database db = null)
@@ -641,7 +641,7 @@ namespace Bam.Net.UserAccounts.Data
 		{
 			return _rolesLock.DoubleCheckLock<RoleQueryContext>(ref _roles, () => new RoleQueryContext());
 		}
-	}﻿
+	}
 	public class TreeNodeQueryContext
 	{
 			public TreeNodeCollection Where(WhereDelegate<TreeNodeColumns> where, Database db = null)
@@ -688,7 +688,7 @@ namespace Bam.Net.UserAccounts.Data
 		{
 			return _treeNodesLock.DoubleCheckLock<TreeNodeQueryContext>(ref _treeNodes, () => new TreeNodeQueryContext());
 		}
-	}﻿
+	}
 	public class PermissionQueryContext
 	{
 			public PermissionCollection Where(WhereDelegate<PermissionColumns> where, Database db = null)
@@ -735,7 +735,7 @@ namespace Bam.Net.UserAccounts.Data
 		{
 			return _permissionsLock.DoubleCheckLock<PermissionQueryContext>(ref _permissions, () => new PermissionQueryContext());
 		}
-	}﻿
+	}
 	public class GroupQueryContext
 	{
 			public GroupCollection Where(WhereDelegate<GroupColumns> where, Database db = null)
@@ -782,7 +782,7 @@ namespace Bam.Net.UserAccounts.Data
 		{
 			return _groupsLock.DoubleCheckLock<GroupQueryContext>(ref _groups, () => new GroupQueryContext());
 		}
-	}﻿
+	}
 	public class UserRoleQueryContext
 	{
 			public UserRoleCollection Where(WhereDelegate<UserRoleColumns> where, Database db = null)
@@ -829,7 +829,7 @@ namespace Bam.Net.UserAccounts.Data
 		{
 			return _userRolesLock.DoubleCheckLock<UserRoleQueryContext>(ref _userRoles, () => new UserRoleQueryContext());
 		}
-	}﻿
+	}
 	public class UserGroupQueryContext
 	{
 			public UserGroupCollection Where(WhereDelegate<UserGroupColumns> where, Database db = null)
@@ -876,7 +876,7 @@ namespace Bam.Net.UserAccounts.Data
 		{
 			return _userGroupsLock.DoubleCheckLock<UserGroupQueryContext>(ref _userGroups, () => new UserGroupQueryContext());
 		}
-	}﻿
+	}
 	public class GroupPermissionQueryContext
 	{
 			public GroupPermissionCollection Where(WhereDelegate<GroupPermissionColumns> where, Database db = null)
@@ -923,7 +923,7 @@ namespace Bam.Net.UserAccounts.Data
 		{
 			return _groupPermissionsLock.DoubleCheckLock<GroupPermissionQueryContext>(ref _groupPermissions, () => new GroupPermissionQueryContext());
 		}
-	}﻿
+	}
 	public class UserPermissionQueryContext
 	{
 			public UserPermissionCollection Where(WhereDelegate<UserPermissionColumns> where, Database db = null)

@@ -1,5 +1,5 @@
 /*
-	Copyright © Bryan Apellanes 2015  
+	This file was generated and should not be modified directly
 */
 // model is SchemaDefinition
 using System;
@@ -30,7 +30,7 @@ namespace Bam.Net.Analytics
 			}
 		}
 
-﻿
+
 	public class CategoryQueryContext
 	{
 			public CategoryCollection Where(WhereDelegate<CategoryColumns> where, Database db = null)
@@ -77,7 +77,7 @@ namespace Bam.Net.Analytics
 		{
 			return _categoriesLock.DoubleCheckLock<CategoryQueryContext>(ref _categories, () => new CategoryQueryContext());
 		}
-	}﻿
+	}
 	public class FeatureQueryContext
 	{
 			public FeatureCollection Where(WhereDelegate<FeatureColumns> where, Database db = null)
@@ -124,7 +124,7 @@ namespace Bam.Net.Analytics
 		{
 			return _featuresLock.DoubleCheckLock<FeatureQueryContext>(ref _features, () => new FeatureQueryContext());
 		}
-	}﻿
+	}
 	public class CrawlerQueryContext
 	{
 			public CrawlerCollection Where(WhereDelegate<CrawlerColumns> where, Database db = null)
@@ -171,7 +171,7 @@ namespace Bam.Net.Analytics
 		{
 			return _crawlersLock.DoubleCheckLock<CrawlerQueryContext>(ref _crawlers, () => new CrawlerQueryContext());
 		}
-	}﻿
+	}
 	public class ProtocolQueryContext
 	{
 			public ProtocolCollection Where(WhereDelegate<ProtocolColumns> where, Database db = null)
@@ -218,7 +218,7 @@ namespace Bam.Net.Analytics
 		{
 			return _protocolsLock.DoubleCheckLock<ProtocolQueryContext>(ref _protocols, () => new ProtocolQueryContext());
 		}
-	}﻿
+	}
 	public class DomainQueryContext
 	{
 			public DomainCollection Where(WhereDelegate<DomainColumns> where, Database db = null)
@@ -265,7 +265,7 @@ namespace Bam.Net.Analytics
 		{
 			return _domainsLock.DoubleCheckLock<DomainQueryContext>(ref _domains, () => new DomainQueryContext());
 		}
-	}﻿
+	}
 	public class PortQueryContext
 	{
 			public PortCollection Where(WhereDelegate<PortColumns> where, Database db = null)
@@ -312,7 +312,7 @@ namespace Bam.Net.Analytics
 		{
 			return _portsLock.DoubleCheckLock<PortQueryContext>(ref _ports, () => new PortQueryContext());
 		}
-	}﻿
+	}
 	public class PathQueryContext
 	{
 			public PathCollection Where(WhereDelegate<PathColumns> where, Database db = null)
@@ -359,7 +359,7 @@ namespace Bam.Net.Analytics
 		{
 			return _pathsLock.DoubleCheckLock<PathQueryContext>(ref _paths, () => new PathQueryContext());
 		}
-	}﻿
+	}
 	public class QueryStringQueryContext
 	{
 			public QueryStringCollection Where(WhereDelegate<QueryStringColumns> where, Database db = null)
@@ -406,7 +406,7 @@ namespace Bam.Net.Analytics
 		{
 			return _queryStringsLock.DoubleCheckLock<QueryStringQueryContext>(ref _queryStrings, () => new QueryStringQueryContext());
 		}
-	}﻿
+	}
 	public class FragmentQueryContext
 	{
 			public FragmentCollection Where(WhereDelegate<FragmentColumns> where, Database db = null)
@@ -453,7 +453,7 @@ namespace Bam.Net.Analytics
 		{
 			return _fragmentsLock.DoubleCheckLock<FragmentQueryContext>(ref _fragments, () => new FragmentQueryContext());
 		}
-	}﻿
+	}
 	public class UrlQueryContext
 	{
 			public UrlCollection Where(WhereDelegate<UrlColumns> where, Database db = null)
@@ -500,7 +500,7 @@ namespace Bam.Net.Analytics
 		{
 			return _urlsLock.DoubleCheckLock<UrlQueryContext>(ref _urls, () => new UrlQueryContext());
 		}
-	}﻿
+	}
 	public class TagQueryContext
 	{
 			public TagCollection Where(WhereDelegate<TagColumns> where, Database db = null)
@@ -547,7 +547,7 @@ namespace Bam.Net.Analytics
 		{
 			return _tagsLock.DoubleCheckLock<TagQueryContext>(ref _tags, () => new TagQueryContext());
 		}
-	}﻿
+	}
 	public class ImageQueryContext
 	{
 			public ImageCollection Where(WhereDelegate<ImageColumns> where, Database db = null)
@@ -594,7 +594,7 @@ namespace Bam.Net.Analytics
 		{
 			return _imagesLock.DoubleCheckLock<ImageQueryContext>(ref _images, () => new ImageQueryContext());
 		}
-	}﻿
+	}
 	public class TimerQueryContext
 	{
 			public TimerCollection Where(WhereDelegate<TimerColumns> where, Database db = null)
@@ -641,7 +641,7 @@ namespace Bam.Net.Analytics
 		{
 			return _timersLock.DoubleCheckLock<TimerQueryContext>(ref _timers, () => new TimerQueryContext());
 		}
-	}﻿
+	}
 	public class MethodTimerQueryContext
 	{
 			public MethodTimerCollection Where(WhereDelegate<MethodTimerColumns> where, Database db = null)
@@ -688,7 +688,7 @@ namespace Bam.Net.Analytics
 		{
 			return _methodTimersLock.DoubleCheckLock<MethodTimerQueryContext>(ref _methodTimers, () => new MethodTimerQueryContext());
 		}
-	}﻿
+	}
 	public class LoadTimerQueryContext
 	{
 			public LoadTimerCollection Where(WhereDelegate<LoadTimerColumns> where, Database db = null)
@@ -735,7 +735,7 @@ namespace Bam.Net.Analytics
 		{
 			return _loadTimersLock.DoubleCheckLock<LoadTimerQueryContext>(ref _loadTimers, () => new LoadTimerQueryContext());
 		}
-	}﻿
+	}
 	public class CustomTimerQueryContext
 	{
 			public CustomTimerCollection Where(WhereDelegate<CustomTimerColumns> where, Database db = null)
@@ -782,7 +782,7 @@ namespace Bam.Net.Analytics
 		{
 			return _customTimersLock.DoubleCheckLock<CustomTimerQueryContext>(ref _customTimers, () => new CustomTimerQueryContext());
 		}
-	}﻿
+	}
 	public class CounterQueryContext
 	{
 			public CounterCollection Where(WhereDelegate<CounterColumns> where, Database db = null)
@@ -829,7 +829,7 @@ namespace Bam.Net.Analytics
 		{
 			return _countersLock.DoubleCheckLock<CounterQueryContext>(ref _counters, () => new CounterQueryContext());
 		}
-	}﻿
+	}
 	public class MethodCounterQueryContext
 	{
 			public MethodCounterCollection Where(WhereDelegate<MethodCounterColumns> where, Database db = null)
@@ -876,7 +876,7 @@ namespace Bam.Net.Analytics
 		{
 			return _methodCountersLock.DoubleCheckLock<MethodCounterQueryContext>(ref _methodCounters, () => new MethodCounterQueryContext());
 		}
-	}﻿
+	}
 	public class LoadCounterQueryContext
 	{
 			public LoadCounterCollection Where(WhereDelegate<LoadCounterColumns> where, Database db = null)
@@ -923,7 +923,7 @@ namespace Bam.Net.Analytics
 		{
 			return _loadCountersLock.DoubleCheckLock<LoadCounterQueryContext>(ref _loadCounters, () => new LoadCounterQueryContext());
 		}
-	}﻿
+	}
 	public class UserIdentifierQueryContext
 	{
 			public UserIdentifierCollection Where(WhereDelegate<UserIdentifierColumns> where, Database db = null)
@@ -970,7 +970,7 @@ namespace Bam.Net.Analytics
 		{
 			return _userIdentifiersLock.DoubleCheckLock<UserIdentifierQueryContext>(ref _userIdentifiers, () => new UserIdentifierQueryContext());
 		}
-	}﻿
+	}
 	public class ClickCounterQueryContext
 	{
 			public ClickCounterCollection Where(WhereDelegate<ClickCounterColumns> where, Database db = null)
@@ -1017,7 +1017,7 @@ namespace Bam.Net.Analytics
 		{
 			return _clickCountersLock.DoubleCheckLock<ClickCounterQueryContext>(ref _clickCounters, () => new ClickCounterQueryContext());
 		}
-	}﻿
+	}
 	public class LoginCounterQueryContext
 	{
 			public LoginCounterCollection Where(WhereDelegate<LoginCounterColumns> where, Database db = null)
@@ -1064,7 +1064,7 @@ namespace Bam.Net.Analytics
 		{
 			return _loginCountersLock.DoubleCheckLock<LoginCounterQueryContext>(ref _loginCounters, () => new LoginCounterQueryContext());
 		}
-	}﻿
+	}
 	public class UrlTagQueryContext
 	{
 			public UrlTagCollection Where(WhereDelegate<UrlTagColumns> where, Database db = null)
@@ -1111,7 +1111,7 @@ namespace Bam.Net.Analytics
 		{
 			return _urlTagsLock.DoubleCheckLock<UrlTagQueryContext>(ref _urlTags, () => new UrlTagQueryContext());
 		}
-	}﻿
+	}
 	public class ImageTagQueryContext
 	{
 			public ImageTagCollection Where(WhereDelegate<ImageTagColumns> where, Database db = null)

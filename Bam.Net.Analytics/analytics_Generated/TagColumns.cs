@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,21 +21,21 @@ namespace Bam.Net.Analytics
 		}	
 
 				
-﻿        public TagColumns Id
+        public TagColumns Id
         {
             get
             {
                 return new TagColumns("Id");
             }
         }
-﻿        public TagColumns Uuid
+        public TagColumns Uuid
         {
             get
             {
                 return new TagColumns("Uuid");
             }
         }
-﻿        public TagColumns Value
+        public TagColumns Value
         {
             get
             {

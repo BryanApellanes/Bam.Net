@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,28 +21,28 @@ namespace Bam.Net.UserAccounts.Data
 		}	
 
 				
-﻿        public PermissionColumns Id
+        public PermissionColumns Id
         {
             get
             {
                 return new PermissionColumns("Id");
             }
         }
-﻿        public PermissionColumns Uuid
+        public PermissionColumns Uuid
         {
             get
             {
                 return new PermissionColumns("Uuid");
             }
         }
-﻿        public PermissionColumns Name
+        public PermissionColumns Name
         {
             get
             {
                 return new PermissionColumns("Name");
             }
         }
-﻿        public PermissionColumns Value
+        public PermissionColumns Value
         {
             get
             {
@@ -53,7 +50,7 @@ namespace Bam.Net.UserAccounts.Data
             }
         }
 
-﻿        public PermissionColumns TreeNodeId
+        public PermissionColumns TreeNodeId
         {
             get
             {

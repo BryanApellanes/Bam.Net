@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,14 +21,14 @@ namespace Bam.Net.Analytics
 		}	
 
 				
-﻿        public UrlTagColumns Id
+        public UrlTagColumns Id
         {
             get
             {
                 return new UrlTagColumns("Id");
             }
         }
-﻿        public UrlTagColumns Uuid
+        public UrlTagColumns Uuid
         {
             get
             {
@@ -39,14 +36,14 @@ namespace Bam.Net.Analytics
             }
         }
 
-﻿        public UrlTagColumns UrlId
+        public UrlTagColumns UrlId
         {
             get
             {
                 return new UrlTagColumns("UrlId");
             }
         }
-﻿        public UrlTagColumns TagId
+        public UrlTagColumns TagId
         {
             get
             {

@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,21 +21,21 @@ namespace Bam.Net.Analytics
 		}	
 
 				
-﻿        public ProtocolColumns Id
+        public ProtocolColumns Id
         {
             get
             {
                 return new ProtocolColumns("Id");
             }
         }
-﻿        public ProtocolColumns Uuid
+        public ProtocolColumns Uuid
         {
             get
             {
                 return new ProtocolColumns("Uuid");
             }
         }
-﻿        public ProtocolColumns Value
+        public ProtocolColumns Value
         {
             get
             {

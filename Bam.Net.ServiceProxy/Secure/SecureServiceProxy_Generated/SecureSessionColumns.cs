@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,71 +19,72 @@ namespace Bam.Net.ServiceProxy.Secure
 				return new SecureSessionColumns("Id");
 			}
 		}	
+
 				
-﻿        public SecureSessionColumns Id
+        public SecureSessionColumns Id
         {
             get
             {
                 return new SecureSessionColumns("Id");
             }
         }
-﻿        public SecureSessionColumns Uuid
+        public SecureSessionColumns Uuid
         {
             get
             {
                 return new SecureSessionColumns("Uuid");
             }
         }
-﻿        public SecureSessionColumns Identifier
+        public SecureSessionColumns Identifier
         {
             get
             {
                 return new SecureSessionColumns("Identifier");
             }
         }
-﻿        public SecureSessionColumns AsymmetricKey
+        public SecureSessionColumns AsymmetricKey
         {
             get
             {
                 return new SecureSessionColumns("AsymmetricKey");
             }
         }
-﻿        public SecureSessionColumns SymmetricKey
+        public SecureSessionColumns SymmetricKey
         {
             get
             {
                 return new SecureSessionColumns("SymmetricKey");
             }
         }
-﻿        public SecureSessionColumns SymmetricIV
+        public SecureSessionColumns SymmetricIV
         {
             get
             {
                 return new SecureSessionColumns("SymmetricIV");
             }
         }
-﻿        public SecureSessionColumns CreationDate
+        public SecureSessionColumns CreationDate
         {
             get
             {
                 return new SecureSessionColumns("CreationDate");
             }
         }
-﻿        public SecureSessionColumns TimeOffset
+        public SecureSessionColumns TimeOffset
         {
             get
             {
                 return new SecureSessionColumns("TimeOffset");
             }
         }
-﻿        public SecureSessionColumns LastActivity
+        public SecureSessionColumns LastActivity
         {
             get
             {
                 return new SecureSessionColumns("LastActivity");
             }
         }
-﻿        public SecureSessionColumns IsActive
+        public SecureSessionColumns IsActive
         {
             get
             {
@@ -94,7 +92,7 @@ namespace Bam.Net.ServiceProxy.Secure
             }
         }
 
-﻿        public SecureSessionColumns ApplicationId
+        public SecureSessionColumns ApplicationId
         {
             get
             {

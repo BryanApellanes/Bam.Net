@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,22 +19,23 @@ namespace Bam.Net.Translation
 				return new TextColumns("Id");
 			}
 		}	
+
 				
-﻿        public TextColumns Id
+        public TextColumns Id
         {
             get
             {
                 return new TextColumns("Id");
             }
         }
-﻿        public TextColumns Uuid
+        public TextColumns Uuid
         {
             get
             {
                 return new TextColumns("Uuid");
             }
         }
-﻿        public TextColumns Value
+        public TextColumns Value
         {
             get
             {
@@ -45,7 +43,7 @@ namespace Bam.Net.Translation
             }
         }
 
-﻿        public TextColumns LanguageId
+        public TextColumns LanguageId
         {
             get
             {

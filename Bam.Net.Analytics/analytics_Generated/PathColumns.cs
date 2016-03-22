@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,21 +21,21 @@ namespace Bam.Net.Analytics
 		}	
 
 				
-﻿        public PathColumns Id
+        public PathColumns Id
         {
             get
             {
                 return new PathColumns("Id");
             }
         }
-﻿        public PathColumns Uuid
+        public PathColumns Uuid
         {
             get
             {
                 return new PathColumns("Uuid");
             }
         }
-﻿        public PathColumns Value
+        public PathColumns Value
         {
             get
             {

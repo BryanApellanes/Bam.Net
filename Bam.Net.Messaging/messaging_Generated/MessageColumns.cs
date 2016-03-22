@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,50 +19,51 @@ namespace Bam.Net.Messaging.Data
 				return new MessageColumns("Id");
 			}
 		}	
+
 				
-﻿        public MessageColumns Id
+        public MessageColumns Id
         {
             get
             {
                 return new MessageColumns("Id");
             }
         }
-﻿        public MessageColumns Uuid
+        public MessageColumns Uuid
         {
             get
             {
                 return new MessageColumns("Uuid");
             }
         }
-﻿        public MessageColumns CreatedDate
+        public MessageColumns CreatedDate
         {
             get
             {
                 return new MessageColumns("CreatedDate");
             }
         }
-﻿        public MessageColumns From
+        public MessageColumns From
         {
             get
             {
                 return new MessageColumns("From");
             }
         }
-﻿        public MessageColumns FromEmail
+        public MessageColumns FromEmail
         {
             get
             {
                 return new MessageColumns("FromEmail");
             }
         }
-﻿        public MessageColumns Subject
+        public MessageColumns Subject
         {
             get
             {
                 return new MessageColumns("Subject");
             }
         }
-﻿        public MessageColumns Body
+        public MessageColumns Body
         {
             get
             {

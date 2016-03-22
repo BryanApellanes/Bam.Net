@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,43 +19,44 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 				return new BuildJobColumns("Id");
 			}
 		}	
+
 				
-﻿        public BuildJobColumns Id
+        public BuildJobColumns Id
         {
             get
             {
                 return new BuildJobColumns("Id");
             }
         }
-﻿        public BuildJobColumns Uuid
+        public BuildJobColumns Uuid
         {
             get
             {
                 return new BuildJobColumns("Uuid");
             }
         }
-﻿        public BuildJobColumns Name
+        public BuildJobColumns Name
         {
             get
             {
                 return new BuildJobColumns("Name");
             }
         }
-﻿        public BuildJobColumns UserName
+        public BuildJobColumns UserName
         {
             get
             {
                 return new BuildJobColumns("UserName");
             }
         }
-﻿        public BuildJobColumns HostName
+        public BuildJobColumns HostName
         {
             get
             {
                 return new BuildJobColumns("HostName");
             }
         }
-﻿        public BuildJobColumns OutputPath
+        public BuildJobColumns OutputPath
         {
             get
             {

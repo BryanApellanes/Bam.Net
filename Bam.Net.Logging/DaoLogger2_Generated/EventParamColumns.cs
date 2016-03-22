@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,15 +19,16 @@ namespace Bam.Net.Logging.Data
 				return new EventParamColumns("Id");
 			}
 		}	
+
 				
-﻿        public EventParamColumns Id
+        public EventParamColumns Id
         {
             get
             {
                 return new EventParamColumns("Id");
             }
         }
-﻿        public EventParamColumns Uuid
+        public EventParamColumns Uuid
         {
             get
             {
@@ -38,14 +36,14 @@ namespace Bam.Net.Logging.Data
             }
         }
 
-﻿        public EventParamColumns EventId
+        public EventParamColumns EventId
         {
             get
             {
                 return new EventParamColumns("EventId");
             }
         }
-﻿        public EventParamColumns ParamId
+        public EventParamColumns ParamId
         {
             get
             {

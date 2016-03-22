@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,28 +21,28 @@ namespace Bam.Net.UserAccounts.Data
 		}	
 
 				
-﻿        public TreeNodeColumns Id
+        public TreeNodeColumns Id
         {
             get
             {
                 return new TreeNodeColumns("Id");
             }
         }
-﻿        public TreeNodeColumns Uuid
+        public TreeNodeColumns Uuid
         {
             get
             {
                 return new TreeNodeColumns("Uuid");
             }
         }
-﻿        public TreeNodeColumns Name
+        public TreeNodeColumns Name
         {
             get
             {
                 return new TreeNodeColumns("Name");
             }
         }
-﻿        public TreeNodeColumns Value
+        public TreeNodeColumns Value
         {
             get
             {
@@ -53,7 +50,7 @@ namespace Bam.Net.UserAccounts.Data
             }
         }
 
-﻿        public TreeNodeColumns ParentTreeNodeId
+        public TreeNodeColumns ParentTreeNodeId
         {
             get
             {

@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,28 +21,28 @@ namespace Bam.Net.Analytics
 		}	
 
 				
-﻿        public CategoryColumns Id
+        public CategoryColumns Id
         {
             get
             {
                 return new CategoryColumns("Id");
             }
         }
-﻿        public CategoryColumns Uuid
+        public CategoryColumns Uuid
         {
             get
             {
                 return new CategoryColumns("Uuid");
             }
         }
-﻿        public CategoryColumns Value
+        public CategoryColumns Value
         {
             get
             {
                 return new CategoryColumns("Value");
             }
         }
-﻿        public CategoryColumns DocumentCount
+        public CategoryColumns DocumentCount
         {
             get
             {

@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,21 +21,21 @@ namespace Bam.Net.Analytics
 		}	
 
 				
-﻿        public LoadTimerColumns Id
+        public LoadTimerColumns Id
         {
             get
             {
                 return new LoadTimerColumns("Id");
             }
         }
-﻿        public LoadTimerColumns Uuid
+        public LoadTimerColumns Uuid
         {
             get
             {
                 return new LoadTimerColumns("Uuid");
             }
         }
-﻿        public LoadTimerColumns UrlId
+        public LoadTimerColumns UrlId
         {
             get
             {
@@ -46,7 +43,7 @@ namespace Bam.Net.Analytics
             }
         }
 
-﻿        public LoadTimerColumns TimerId
+        public LoadTimerColumns TimerId
         {
             get
             {
