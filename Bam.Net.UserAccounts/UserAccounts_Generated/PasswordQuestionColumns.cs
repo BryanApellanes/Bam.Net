@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,28 +21,28 @@ namespace Bam.Net.UserAccounts.Data
 		}	
 
 				
-﻿        public PasswordQuestionColumns Id
+        public PasswordQuestionColumns Id
         {
             get
             {
                 return new PasswordQuestionColumns("Id");
             }
         }
-﻿        public PasswordQuestionColumns Uuid
+        public PasswordQuestionColumns Uuid
         {
             get
             {
                 return new PasswordQuestionColumns("Uuid");
             }
         }
-﻿        public PasswordQuestionColumns Value
+        public PasswordQuestionColumns Value
         {
             get
             {
                 return new PasswordQuestionColumns("Value");
             }
         }
-﻿        public PasswordQuestionColumns Answer
+        public PasswordQuestionColumns Answer
         {
             get
             {
@@ -53,7 +50,7 @@ namespace Bam.Net.UserAccounts.Data
             }
         }
 
-﻿        public PasswordQuestionColumns UserId
+        public PasswordQuestionColumns UserId
         {
             get
             {

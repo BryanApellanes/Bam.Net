@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,22 +19,23 @@ namespace Bam.Net.Logging.Data
 				return new UserNameColumns("Id");
 			}
 		}	
+
 				
-﻿        public UserNameColumns Id
+        public UserNameColumns Id
         {
             get
             {
                 return new UserNameColumns("Id");
             }
         }
-﻿        public UserNameColumns Uuid
+        public UserNameColumns Uuid
         {
             get
             {
                 return new UserNameColumns("Uuid");
             }
         }
-﻿        public UserNameColumns Value
+        public UserNameColumns Value
         {
             get
             {

@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,29 +19,30 @@ namespace Bam.Net.Encryption
 				return new VaultItemColumns("Id");
 			}
 		}	
+
 				
-﻿        public VaultItemColumns Id
+        public VaultItemColumns Id
         {
             get
             {
                 return new VaultItemColumns("Id");
             }
         }
-﻿        public VaultItemColumns Uuid
+        public VaultItemColumns Uuid
         {
             get
             {
                 return new VaultItemColumns("Uuid");
             }
         }
-﻿        public VaultItemColumns Key
+        public VaultItemColumns Key
         {
             get
             {
                 return new VaultItemColumns("Key");
             }
         }
-﻿        public VaultItemColumns Value
+        public VaultItemColumns Value
         {
             get
             {
@@ -52,7 +50,7 @@ namespace Bam.Net.Encryption
             }
         }
 
-﻿        public VaultItemColumns VaultId
+        public VaultItemColumns VaultId
         {
             get
             {

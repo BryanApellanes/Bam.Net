@@ -62,7 +62,7 @@ var database = {
             ],
             cols: [
                 { Description: "String", Null: false },
-                { Value: "Byte", Null: false } 
+                { Value: "ByteArray", Null: false } 
             ]
         },
         {

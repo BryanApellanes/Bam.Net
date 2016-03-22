@@ -1,5 +1,5 @@
 /*
-	Copyright © Bryan Apellanes 2015  
+	This file was generated and should not be modified directly
 */
 // model is SchemaDefinition
 using System;
@@ -30,7 +30,7 @@ namespace Bam.Net.Encryption
 			}
 		}
 
-﻿
+
 	public class VaultQueryContext
 	{
 			public VaultCollection Where(WhereDelegate<VaultColumns> where, Database db = null)
@@ -77,7 +77,7 @@ namespace Bam.Net.Encryption
 		{
 			return _vaultsLock.DoubleCheckLock<VaultQueryContext>(ref _vaults, () => new VaultQueryContext());
 		}
-	}﻿
+	}
 	public class VaultItemQueryContext
 	{
 			public VaultItemCollection Where(WhereDelegate<VaultItemColumns> where, Database db = null)
@@ -124,7 +124,7 @@ namespace Bam.Net.Encryption
 		{
 			return _vaultItemsLock.DoubleCheckLock<VaultItemQueryContext>(ref _vaultItems, () => new VaultItemQueryContext());
 		}
-	}﻿
+	}
 	public class VaultKeyQueryContext
 	{
 			public VaultKeyCollection Where(WhereDelegate<VaultKeyColumns> where, Database db = null)

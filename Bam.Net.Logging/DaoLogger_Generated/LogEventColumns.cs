@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,85 +19,86 @@ namespace Bam.Net.Logging.Data
 				return new LogEventColumns("Id");
 			}
 		}	
+
 				
-﻿        public LogEventColumns Id
+        public LogEventColumns Id
         {
             get
             {
                 return new LogEventColumns("Id");
             }
         }
-﻿        public LogEventColumns Uuid
+        public LogEventColumns Uuid
         {
             get
             {
                 return new LogEventColumns("Uuid");
             }
         }
-﻿        public LogEventColumns Source
+        public LogEventColumns Source
         {
             get
             {
                 return new LogEventColumns("Source");
             }
         }
-﻿        public LogEventColumns Category
+        public LogEventColumns Category
         {
             get
             {
                 return new LogEventColumns("Category");
             }
         }
-﻿        public LogEventColumns EventId
+        public LogEventColumns EventId
         {
             get
             {
                 return new LogEventColumns("EventId");
             }
         }
-﻿        public LogEventColumns User
+        public LogEventColumns User
         {
             get
             {
                 return new LogEventColumns("User");
             }
         }
-﻿        public LogEventColumns Time
+        public LogEventColumns Time
         {
             get
             {
                 return new LogEventColumns("Time");
             }
         }
-﻿        public LogEventColumns MessageSignature
+        public LogEventColumns MessageSignature
         {
             get
             {
                 return new LogEventColumns("MessageSignature");
             }
         }
-﻿        public LogEventColumns MessageVariableValues
+        public LogEventColumns MessageVariableValues
         {
             get
             {
                 return new LogEventColumns("MessageVariableValues");
             }
         }
-﻿        public LogEventColumns Message
+        public LogEventColumns Message
         {
             get
             {
                 return new LogEventColumns("Message");
             }
         }
-﻿        public LogEventColumns Computer
+        public LogEventColumns Computer
         {
             get
             {
                 return new LogEventColumns("Computer");
             }
         }
-﻿        public LogEventColumns Severity
+        public LogEventColumns Severity
         {
             get
             {

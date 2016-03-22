@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,22 +19,23 @@ namespace Bam.Net.ServiceProxy.Secure
 				return new ConfigurationColumns("Id");
 			}
 		}	
+
 				
-﻿        public ConfigurationColumns Id
+        public ConfigurationColumns Id
         {
             get
             {
                 return new ConfigurationColumns("Id");
             }
         }
-﻿        public ConfigurationColumns Uuid
+        public ConfigurationColumns Uuid
         {
             get
             {
                 return new ConfigurationColumns("Uuid");
             }
         }
-﻿        public ConfigurationColumns Name
+        public ConfigurationColumns Name
         {
             get
             {
@@ -45,7 +43,7 @@ namespace Bam.Net.ServiceProxy.Secure
             }
         }
 
-﻿        public ConfigurationColumns ApplicationId
+        public ConfigurationColumns ApplicationId
         {
             get
             {

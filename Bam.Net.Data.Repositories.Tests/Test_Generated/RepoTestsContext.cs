@@ -1,5 +1,5 @@
 /*
-	Copyright © Bryan Apellanes 2015  
+	This file was generated and should not be modified directly
 */
 // model is SchemaDefinition
 using System;
@@ -30,7 +30,7 @@ namespace Bam.Net.Data.Repositories.Tests
 			}
 		}
 
-﻿
+
 	public class MainObjectQueryContext
 	{
 			public MainObjectCollection Where(WhereDelegate<MainObjectColumns> where, Database db = null)
@@ -77,7 +77,7 @@ namespace Bam.Net.Data.Repositories.Tests
 		{
 			return _mainObjectsLock.DoubleCheckLock<MainObjectQueryContext>(ref _mainObjects, () => new MainObjectQueryContext());
 		}
-	}﻿
+	}
 	public class SecondaryObjectQueryContext
 	{
 			public SecondaryObjectCollection Where(WhereDelegate<SecondaryObjectColumns> where, Database db = null)
@@ -124,7 +124,7 @@ namespace Bam.Net.Data.Repositories.Tests
 		{
 			return _secondaryObjectsLock.DoubleCheckLock<SecondaryObjectQueryContext>(ref _secondaryObjects, () => new SecondaryObjectQueryContext());
 		}
-	}﻿
+	}
 	public class TernaryObjectQueryContext
 	{
 			public TernaryObjectCollection Where(WhereDelegate<TernaryObjectColumns> where, Database db = null)
@@ -171,7 +171,7 @@ namespace Bam.Net.Data.Repositories.Tests
 		{
 			return _ternaryObjectsLock.DoubleCheckLock<TernaryObjectQueryContext>(ref _ternaryObjects, () => new TernaryObjectQueryContext());
 		}
-	}﻿
+	}
 	public class SecondaryObjectTernaryObjectQueryContext
 	{
 			public SecondaryObjectTernaryObjectCollection Where(WhereDelegate<SecondaryObjectTernaryObjectColumns> where, Database db = null)

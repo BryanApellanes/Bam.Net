@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,29 +19,30 @@ namespace Bam.Net.Data.Repositories.Tests
 				return new MainObjectColumns("Id");
 			}
 		}	
+
 				
-﻿        public MainObjectColumns Id
+        public MainObjectColumns Id
         {
             get
             {
                 return new MainObjectColumns("Id");
             }
         }
-﻿        public MainObjectColumns Uuid
+        public MainObjectColumns Uuid
         {
             get
             {
                 return new MainObjectColumns("Uuid");
             }
         }
-﻿        public MainObjectColumns Created
+        public MainObjectColumns Created
         {
             get
             {
                 return new MainObjectColumns("Created");
             }
         }
-﻿        public MainObjectColumns Name
+        public MainObjectColumns Name
         {
             get
             {

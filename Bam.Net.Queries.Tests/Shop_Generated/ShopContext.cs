@@ -1,5 +1,5 @@
 /*
-	Copyright © Bryan Apellanes 2015  
+	This file was generated and should not be modified directly
 */
 // model is SchemaDefinition
 using System;
@@ -30,7 +30,7 @@ namespace Bam.Net.Data.Tests
 			}
 		}
 
-﻿
+
 	public class CartQueryContext
 	{
 			public CartCollection Where(WhereDelegate<CartColumns> where, Database db = null)
@@ -77,7 +77,7 @@ namespace Bam.Net.Data.Tests
 		{
 			return _cartsLock.DoubleCheckLock<CartQueryContext>(ref _carts, () => new CartQueryContext());
 		}
-	}﻿
+	}
 	public class CartItemQueryContext
 	{
 			public CartItemCollection Where(WhereDelegate<CartItemColumns> where, Database db = null)
@@ -124,7 +124,7 @@ namespace Bam.Net.Data.Tests
 		{
 			return _cartItemsLock.DoubleCheckLock<CartItemQueryContext>(ref _cartItems, () => new CartItemQueryContext());
 		}
-	}﻿
+	}
 	public class ListQueryContext
 	{
 			public ListCollection Where(WhereDelegate<ListColumns> where, Database db = null)
@@ -171,7 +171,7 @@ namespace Bam.Net.Data.Tests
 		{
 			return _listsLock.DoubleCheckLock<ListQueryContext>(ref _lists, () => new ListQueryContext());
 		}
-	}﻿
+	}
 	public class ItemQueryContext
 	{
 			public ItemCollection Where(WhereDelegate<ItemColumns> where, Database db = null)
@@ -218,7 +218,7 @@ namespace Bam.Net.Data.Tests
 		{
 			return _itemsLock.DoubleCheckLock<ItemQueryContext>(ref _items, () => new ItemQueryContext());
 		}
-	}﻿
+	}
 	public class ListItemQueryContext
 	{
 			public ListItemCollection Where(WhereDelegate<ListItemColumns> where, Database db = null)

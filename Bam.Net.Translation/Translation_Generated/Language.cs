@@ -1,10 +1,12 @@
 /*
-	Copyright © Bryan Apellanes 2015  
+	This file was generated and should not be modified directly
 */
 // Model is Table
 using System;
 using System.Data;
 using System.Data.Common;
+using System.Linq;
+using System.Threading.Tasks;
 using Bam.Net;
 using Bam.Net.Data;
 using Bam.Net.Data.Qi;
@@ -51,14 +53,14 @@ namespace Bam.Net.Translation
 
 		private void SetChildren()
 		{
-﻿
-            this.ChildCollections.Add("Text_LanguageId", new TextCollection(Database.GetQuery<TextColumns, Text>((c) => c.LanguageId == this.Id), this, "LanguageId"));	﻿
-            this.ChildCollections.Add("LanguageDetection_LanguageId", new LanguageDetectionCollection(Database.GetQuery<LanguageDetectionColumns, LanguageDetection>((c) => c.LanguageId == this.Id), this, "LanguageId"));	﻿
-            this.ChildCollections.Add("Translation_LanguageId", new TranslationCollection(Database.GetQuery<TranslationColumns, Translation>((c) => c.LanguageId == this.Id), this, "LanguageId"));	﻿
-            this.ChildCollections.Add("OtherName_LanguageId", new OtherNameCollection(Database.GetQuery<OtherNameColumns, OtherName>((c) => c.LanguageId == this.Id), this, "LanguageId"));							
+
+            this.ChildCollections.Add("Text_LanguageId", new TextCollection(Database.GetQuery<TextColumns, Text>((c) => c.LanguageId == GetLongValue("Id")), this, "LanguageId"));	
+            this.ChildCollections.Add("LanguageDetection_LanguageId", new LanguageDetectionCollection(Database.GetQuery<LanguageDetectionColumns, LanguageDetection>((c) => c.LanguageId == GetLongValue("Id")), this, "LanguageId"));	
+            this.ChildCollections.Add("Translation_LanguageId", new TranslationCollection(Database.GetQuery<TranslationColumns, Translation>((c) => c.LanguageId == GetLongValue("Id")), this, "LanguageId"));	
+            this.ChildCollections.Add("OtherName_LanguageId", new OtherNameCollection(Database.GetQuery<OtherNameColumns, OtherName>((c) => c.LanguageId == GetLongValue("Id")), this, "LanguageId"));							
 		}
 
-﻿	// property:Id, columnName:Id	
+	// property:Id, columnName:Id	
 	[Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
 	public long? Id
@@ -73,7 +75,7 @@ namespace Bam.Net.Translation
 		}
 	}
 
-﻿	// property:Uuid, columnName:Uuid	
+	// property:Uuid, columnName:Uuid	
 	[Bam.Net.Data.Column(Name="Uuid", DbDataType="VarChar", MaxLength="4000", AllowNull=false)]
 	public string Uuid
 	{
@@ -87,7 +89,7 @@ namespace Bam.Net.Translation
 		}
 	}
 
-﻿	// property:EnglishName, columnName:EnglishName	
+	// property:EnglishName, columnName:EnglishName	
 	[Bam.Net.Data.Column(Name="EnglishName", DbDataType="VarChar", MaxLength="4000", AllowNull=false)]
 	public string EnglishName
 	{
@@ -101,7 +103,7 @@ namespace Bam.Net.Translation
 		}
 	}
 
-﻿	// property:FrenchName, columnName:FrenchName	
+	// property:FrenchName, columnName:FrenchName	
 	[Bam.Net.Data.Column(Name="FrenchName", DbDataType="VarChar", MaxLength="4000", AllowNull=false)]
 	public string FrenchName
 	{
@@ -115,7 +117,7 @@ namespace Bam.Net.Translation
 		}
 	}
 
-﻿	// property:GermanName, columnName:GermanName	
+	// property:GermanName, columnName:GermanName	
 	[Bam.Net.Data.Column(Name="GermanName", DbDataType="VarChar", MaxLength="4000", AllowNull=false)]
 	public string GermanName
 	{
@@ -129,7 +131,7 @@ namespace Bam.Net.Translation
 		}
 	}
 
-﻿	// property:ISO6392, columnName:ISO639_2	
+	// property:ISO6392, columnName:ISO639_2	
 	[Bam.Net.Data.Column(Name="ISO639_2", DbDataType="VarChar", MaxLength="4000", AllowNull=false)]
 	public string ISO6392
 	{
@@ -143,7 +145,7 @@ namespace Bam.Net.Translation
 		}
 	}
 
-﻿	// property:ISO6391, columnName:ISO639_1	
+	// property:ISO6391, columnName:ISO639_1	
 	[Bam.Net.Data.Column(Name="ISO639_1", DbDataType="VarChar", MaxLength="4000", AllowNull=false)]
 	public string ISO6391
 	{
@@ -160,7 +162,7 @@ namespace Bam.Net.Translation
 
 
 				
-﻿
+
 	[Exclude]	
 	public TextCollection TextsByLanguageId
 	{
@@ -184,7 +186,7 @@ namespace Bam.Net.Translation
 			return c;
 		}
 	}
-	﻿
+	
 	[Exclude]	
 	public LanguageDetectionCollection LanguageDetectionsByLanguageId
 	{
@@ -208,7 +210,7 @@ namespace Bam.Net.Translation
 			return c;
 		}
 	}
-	﻿
+	
 	[Exclude]	
 	public TranslationCollection TranslationsByLanguageId
 	{
@@ -232,7 +234,7 @@ namespace Bam.Net.Translation
 			return c;
 		}
 	}
-	﻿
+	
 	[Exclude]	
 	public OtherNameCollection OtherNamesByLanguageId
 	{
@@ -292,6 +294,43 @@ namespace Bam.Net.Translation
 			return results;
 		}
 
+		public static async Task BatchAll(int batchSize, Func<LanguageCollection, Task> batchProcessor, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				LanguageColumns columns = new LanguageColumns();
+				var orderBy = Order.By<LanguageColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
+				while(results.Count > 0)
+				{
+					await batchProcessor(results);
+					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
+					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}	 
+
+		public static async Task BatchQuery(int batchSize, QueryFilter filter, Func<LanguageCollection, Task> batchProcessor, Database database = null)
+		{
+			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
+		}
+
+		public static async Task BatchQuery(int batchSize, WhereDelegate<LanguageColumns> where, Func<LanguageCollection, Task> batchProcessor, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				LanguageColumns columns = new LanguageColumns();
+				var orderBy = Order.By<LanguageColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await batchProcessor(results);
+					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
+					results = Top(batchSize, (LanguageColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
 		public static Language GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
@@ -304,7 +343,12 @@ namespace Bam.Net.Translation
 
 		public static Language GetByUuid(string uuid, Database database = null)
 		{
-			return OneWhere(c => c.Uuid == uuid, database);
+			return OneWhere(c => Bam.Net.Data.Query.Where("Uuid") == uuid, database);
+		}
+
+		public static Language GetByCuid(string cuid, Database database = null)
+		{
+			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
 		public static LanguageCollection Query(QueryFilter filter, Database database = null)
@@ -369,7 +413,7 @@ namespace Bam.Net.Translation
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate<LanguageColumns>.
+		/// WhereDelegate&lt;LanguageColumns&gt;.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>

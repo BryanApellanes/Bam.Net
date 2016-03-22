@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,36 +19,37 @@ namespace Bam.Net.Instructions
 				return new InstructionSetColumns("Id");
 			}
 		}	
+
 				
-﻿        public InstructionSetColumns Id
+        public InstructionSetColumns Id
         {
             get
             {
                 return new InstructionSetColumns("Id");
             }
         }
-﻿        public InstructionSetColumns Uuid
+        public InstructionSetColumns Uuid
         {
             get
             {
                 return new InstructionSetColumns("Uuid");
             }
         }
-﻿        public InstructionSetColumns Name
+        public InstructionSetColumns Name
         {
             get
             {
                 return new InstructionSetColumns("Name");
             }
         }
-﻿        public InstructionSetColumns Description
+        public InstructionSetColumns Description
         {
             get
             {
                 return new InstructionSetColumns("Description");
             }
         }
-﻿        public InstructionSetColumns Author
+        public InstructionSetColumns Author
         {
             get
             {

@@ -1,5 +1,5 @@
 /*
-	Copyright © Bryan Apellanes 2015  
+	This file was generated and should not be modified directly
 */
 // model is SchemaDefinition
 using System;
@@ -30,7 +30,7 @@ namespace Bam.Net.Logging.Data
 			}
 		}
 
-﻿
+
 	public class LogEventQueryContext
 	{
 			public LogEventCollection Where(WhereDelegate<LogEventColumns> where, Database db = null)

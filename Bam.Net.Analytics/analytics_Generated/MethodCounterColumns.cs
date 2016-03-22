@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,21 +21,21 @@ namespace Bam.Net.Analytics
 		}	
 
 				
-﻿        public MethodCounterColumns Id
+        public MethodCounterColumns Id
         {
             get
             {
                 return new MethodCounterColumns("Id");
             }
         }
-﻿        public MethodCounterColumns Uuid
+        public MethodCounterColumns Uuid
         {
             get
             {
                 return new MethodCounterColumns("Uuid");
             }
         }
-﻿        public MethodCounterColumns MethodName
+        public MethodCounterColumns MethodName
         {
             get
             {
@@ -46,7 +43,7 @@ namespace Bam.Net.Analytics
             }
         }
 
-﻿        public MethodCounterColumns CounterId
+        public MethodCounterColumns CounterId
         {
             get
             {

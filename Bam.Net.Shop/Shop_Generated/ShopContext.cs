@@ -1,5 +1,5 @@
 /*
-	Copyright © Bryan Apellanes 2015  
+	This file was generated and should not be modified directly
 */
 // model is SchemaDefinition
 using System;
@@ -30,7 +30,7 @@ namespace Bam.Net.Shop
 			}
 		}
 
-﻿
+
 	public class CurrencyQueryContext
 	{
 			public CurrencyCollection Where(WhereDelegate<CurrencyColumns> where, Database db = null)
@@ -77,7 +77,7 @@ namespace Bam.Net.Shop
 		{
 			return _currenciesLock.DoubleCheckLock<CurrencyQueryContext>(ref _currencies, () => new CurrencyQueryContext());
 		}
-	}﻿
+	}
 	public class CurrencyCountryQueryContext
 	{
 			public CurrencyCountryCollection Where(WhereDelegate<CurrencyCountryColumns> where, Database db = null)
@@ -124,7 +124,7 @@ namespace Bam.Net.Shop
 		{
 			return _currencyCountriesLock.DoubleCheckLock<CurrencyCountryQueryContext>(ref _currencyCountries, () => new CurrencyCountryQueryContext());
 		}
-	}﻿
+	}
 	public class ShopQueryContext
 	{
 			public ShopCollection Where(WhereDelegate<ShopColumns> where, Database db = null)
@@ -171,7 +171,7 @@ namespace Bam.Net.Shop
 		{
 			return _shopsLock.DoubleCheckLock<ShopQueryContext>(ref _shops, () => new ShopQueryContext());
 		}
-	}﻿
+	}
 	public class PromotionEffectsQueryContext
 	{
 			public PromotionEffectsCollection Where(WhereDelegate<PromotionEffectsColumns> where, Database db = null)
@@ -218,7 +218,7 @@ namespace Bam.Net.Shop
 		{
 			return _promotionEffectsesLock.DoubleCheckLock<PromotionEffectsQueryContext>(ref _promotionEffectses, () => new PromotionEffectsQueryContext());
 		}
-	}﻿
+	}
 	public class PromotionQueryContext
 	{
 			public PromotionCollection Where(WhereDelegate<PromotionColumns> where, Database db = null)
@@ -265,7 +265,7 @@ namespace Bam.Net.Shop
 		{
 			return _promotionsLock.DoubleCheckLock<PromotionQueryContext>(ref _promotions, () => new PromotionQueryContext());
 		}
-	}﻿
+	}
 	public class PromotionEffectQueryContext
 	{
 			public PromotionEffectCollection Where(WhereDelegate<PromotionEffectColumns> where, Database db = null)
@@ -312,7 +312,7 @@ namespace Bam.Net.Shop
 		{
 			return _promotionEffectsLock.DoubleCheckLock<PromotionEffectQueryContext>(ref _promotionEffects, () => new PromotionEffectQueryContext());
 		}
-	}﻿
+	}
 	public class PromotionConditionQueryContext
 	{
 			public PromotionConditionCollection Where(WhereDelegate<PromotionConditionColumns> where, Database db = null)
@@ -359,7 +359,7 @@ namespace Bam.Net.Shop
 		{
 			return _promotionConditionsLock.DoubleCheckLock<PromotionConditionQueryContext>(ref _promotionConditions, () => new PromotionConditionQueryContext());
 		}
-	}﻿
+	}
 	public class PromotionCodeQueryContext
 	{
 			public PromotionCodeCollection Where(WhereDelegate<PromotionCodeColumns> where, Database db = null)
@@ -406,7 +406,7 @@ namespace Bam.Net.Shop
 		{
 			return _promotionCodesLock.DoubleCheckLock<PromotionCodeQueryContext>(ref _promotionCodes, () => new PromotionCodeQueryContext());
 		}
-	}﻿
+	}
 	public class ShopperQueryContext
 	{
 			public ShopperCollection Where(WhereDelegate<ShopperColumns> where, Database db = null)
@@ -453,7 +453,7 @@ namespace Bam.Net.Shop
 		{
 			return _shoppersLock.DoubleCheckLock<ShopperQueryContext>(ref _shoppers, () => new ShopperQueryContext());
 		}
-	}﻿
+	}
 	public class ShoppingCartQueryContext
 	{
 			public ShoppingCartCollection Where(WhereDelegate<ShoppingCartColumns> where, Database db = null)
@@ -500,7 +500,7 @@ namespace Bam.Net.Shop
 		{
 			return _shoppingCartsLock.DoubleCheckLock<ShoppingCartQueryContext>(ref _shoppingCarts, () => new ShoppingCartQueryContext());
 		}
-	}﻿
+	}
 	public class ShoppingCartItemQueryContext
 	{
 			public ShoppingCartItemCollection Where(WhereDelegate<ShoppingCartItemColumns> where, Database db = null)
@@ -547,7 +547,7 @@ namespace Bam.Net.Shop
 		{
 			return _shoppingCartItemsLock.DoubleCheckLock<ShoppingCartItemQueryContext>(ref _shoppingCartItems, () => new ShoppingCartItemQueryContext());
 		}
-	}﻿
+	}
 	public class ShoppingListQueryContext
 	{
 			public ShoppingListCollection Where(WhereDelegate<ShoppingListColumns> where, Database db = null)
@@ -594,7 +594,7 @@ namespace Bam.Net.Shop
 		{
 			return _shoppingListsLock.DoubleCheckLock<ShoppingListQueryContext>(ref _shoppingLists, () => new ShoppingListQueryContext());
 		}
-	}﻿
+	}
 	public class ShopItemQueryContext
 	{
 			public ShopItemCollection Where(WhereDelegate<ShopItemColumns> where, Database db = null)
@@ -641,7 +641,7 @@ namespace Bam.Net.Shop
 		{
 			return _shopItemsLock.DoubleCheckLock<ShopItemQueryContext>(ref _shopItems, () => new ShopItemQueryContext());
 		}
-	}﻿
+	}
 	public class PriceQueryContext
 	{
 			public PriceCollection Where(WhereDelegate<PriceColumns> where, Database db = null)
@@ -688,7 +688,7 @@ namespace Bam.Net.Shop
 		{
 			return _pricesLock.DoubleCheckLock<PriceQueryContext>(ref _prices, () => new PriceQueryContext());
 		}
-	}﻿
+	}
 	public class ShopItemAttributeQueryContext
 	{
 			public ShopItemAttributeCollection Where(WhereDelegate<ShopItemAttributeColumns> where, Database db = null)
@@ -735,7 +735,7 @@ namespace Bam.Net.Shop
 		{
 			return _shopItemAttributesLock.DoubleCheckLock<ShopItemAttributeQueryContext>(ref _shopItemAttributes, () => new ShopItemAttributeQueryContext());
 		}
-	}﻿
+	}
 	public class ShopItemAttributeValueQueryContext
 	{
 			public ShopItemAttributeValueCollection Where(WhereDelegate<ShopItemAttributeValueColumns> where, Database db = null)
@@ -782,7 +782,7 @@ namespace Bam.Net.Shop
 		{
 			return _shopItemAttributeValuesLock.DoubleCheckLock<ShopItemAttributeValueQueryContext>(ref _shopItemAttributeValues, () => new ShopItemAttributeValueQueryContext());
 		}
-	}﻿
+	}
 	public class ShoppingListShopItemQueryContext
 	{
 			public ShoppingListShopItemCollection Where(WhereDelegate<ShoppingListShopItemColumns> where, Database db = null)
@@ -829,7 +829,7 @@ namespace Bam.Net.Shop
 		{
 			return _shoppingListShopItemsLock.DoubleCheckLock<ShoppingListShopItemQueryContext>(ref _shoppingListShopItems, () => new ShoppingListShopItemQueryContext());
 		}
-	}﻿
+	}
 	public class ShopShopItemQueryContext
 	{
 			public ShopShopItemCollection Where(WhereDelegate<ShopShopItemColumns> where, Database db = null)
@@ -876,7 +876,7 @@ namespace Bam.Net.Shop
 		{
 			return _shopShopItemsLock.DoubleCheckLock<ShopShopItemQueryContext>(ref _shopShopItems, () => new ShopShopItemQueryContext());
 		}
-	}﻿
+	}
 	public class ShopItemShopItemAttributeQueryContext
 	{
 			public ShopItemShopItemAttributeCollection Where(WhereDelegate<ShopItemShopItemAttributeColumns> where, Database db = null)
@@ -923,7 +923,7 @@ namespace Bam.Net.Shop
 		{
 			return _shopItemShopItemAttributesLock.DoubleCheckLock<ShopItemShopItemAttributeQueryContext>(ref _shopItemShopItemAttributes, () => new ShopItemShopItemAttributeQueryContext());
 		}
-	}﻿
+	}
 	public class ShopPromotionQueryContext
 	{
 			public ShopPromotionCollection Where(WhereDelegate<ShopPromotionColumns> where, Database db = null)
@@ -970,7 +970,7 @@ namespace Bam.Net.Shop
 		{
 			return _shopPromotionsLock.DoubleCheckLock<ShopPromotionQueryContext>(ref _shopPromotions, () => new ShopPromotionQueryContext());
 		}
-	}﻿
+	}
 	public class ShopItemPromotionQueryContext
 	{
 			public ShopItemPromotionCollection Where(WhereDelegate<ShopItemPromotionColumns> where, Database db = null)

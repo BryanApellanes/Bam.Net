@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,22 +19,23 @@ namespace Bam.Net.Translation
 				return new LanguageDetectionColumns("Id");
 			}
 		}	
+
 				
-﻿        public LanguageDetectionColumns Id
+        public LanguageDetectionColumns Id
         {
             get
             {
                 return new LanguageDetectionColumns("Id");
             }
         }
-﻿        public LanguageDetectionColumns Uuid
+        public LanguageDetectionColumns Uuid
         {
             get
             {
                 return new LanguageDetectionColumns("Uuid");
             }
         }
-﻿        public LanguageDetectionColumns Detector
+        public LanguageDetectionColumns Detector
         {
             get
             {
@@ -45,14 +43,14 @@ namespace Bam.Net.Translation
             }
         }
 
-﻿        public LanguageDetectionColumns LanguageId
+        public LanguageDetectionColumns LanguageId
         {
             get
             {
                 return new LanguageDetectionColumns("LanguageId");
             }
         }
-﻿        public LanguageDetectionColumns TextId
+        public LanguageDetectionColumns TextId
         {
             get
             {

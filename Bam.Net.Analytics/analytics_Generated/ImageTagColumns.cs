@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,14 +21,14 @@ namespace Bam.Net.Analytics
 		}	
 
 				
-﻿        public ImageTagColumns Id
+        public ImageTagColumns Id
         {
             get
             {
                 return new ImageTagColumns("Id");
             }
         }
-﻿        public ImageTagColumns Uuid
+        public ImageTagColumns Uuid
         {
             get
             {
@@ -39,14 +36,14 @@ namespace Bam.Net.Analytics
             }
         }
 
-﻿        public ImageTagColumns ImageId
+        public ImageTagColumns ImageId
         {
             get
             {
                 return new ImageTagColumns("ImageId");
             }
         }
-﻿        public ImageTagColumns TagId
+        public ImageTagColumns TagId
         {
             get
             {

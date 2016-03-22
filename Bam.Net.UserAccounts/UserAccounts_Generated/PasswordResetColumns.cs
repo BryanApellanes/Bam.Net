@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,42 +21,42 @@ namespace Bam.Net.UserAccounts.Data
 		}	
 
 				
-﻿        public PasswordResetColumns Id
+        public PasswordResetColumns Id
         {
             get
             {
                 return new PasswordResetColumns("Id");
             }
         }
-﻿        public PasswordResetColumns Uuid
+        public PasswordResetColumns Uuid
         {
             get
             {
                 return new PasswordResetColumns("Uuid");
             }
         }
-﻿        public PasswordResetColumns Token
+        public PasswordResetColumns Token
         {
             get
             {
                 return new PasswordResetColumns("Token");
             }
         }
-﻿        public PasswordResetColumns DateTime
+        public PasswordResetColumns DateTime
         {
             get
             {
                 return new PasswordResetColumns("DateTime");
             }
         }
-﻿        public PasswordResetColumns WasReset
+        public PasswordResetColumns WasReset
         {
             get
             {
                 return new PasswordResetColumns("WasReset");
             }
         }
-﻿        public PasswordResetColumns ExpiresInMinutes
+        public PasswordResetColumns ExpiresInMinutes
         {
             get
             {
@@ -67,7 +64,7 @@ namespace Bam.Net.UserAccounts.Data
             }
         }
 
-﻿        public PasswordResetColumns UserId
+        public PasswordResetColumns UserId
         {
             get
             {

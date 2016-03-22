@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,21 +21,21 @@ namespace Bam.Net.Analytics
 		}	
 
 				
-﻿        public MethodTimerColumns Id
+        public MethodTimerColumns Id
         {
             get
             {
                 return new MethodTimerColumns("Id");
             }
         }
-﻿        public MethodTimerColumns Uuid
+        public MethodTimerColumns Uuid
         {
             get
             {
                 return new MethodTimerColumns("Uuid");
             }
         }
-﻿        public MethodTimerColumns MethodName
+        public MethodTimerColumns MethodName
         {
             get
             {
@@ -46,7 +43,7 @@ namespace Bam.Net.Analytics
             }
         }
 
-﻿        public MethodTimerColumns TimerId
+        public MethodTimerColumns TimerId
         {
             get
             {

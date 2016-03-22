@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,21 +21,21 @@ namespace Bam.Net.Analytics
 		}	
 
 				
-﻿        public FragmentColumns Id
+        public FragmentColumns Id
         {
             get
             {
                 return new FragmentColumns("Id");
             }
         }
-﻿        public FragmentColumns Uuid
+        public FragmentColumns Uuid
         {
             get
             {
                 return new FragmentColumns("Uuid");
             }
         }
-﻿        public FragmentColumns Value
+        public FragmentColumns Value
         {
             get
             {

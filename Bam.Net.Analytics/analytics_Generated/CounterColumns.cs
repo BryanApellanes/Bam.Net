@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,21 +21,21 @@ namespace Bam.Net.Analytics
 		}	
 
 				
-﻿        public CounterColumns Id
+        public CounterColumns Id
         {
             get
             {
                 return new CounterColumns("Id");
             }
         }
-﻿        public CounterColumns Uuid
+        public CounterColumns Uuid
         {
             get
             {
                 return new CounterColumns("Uuid");
             }
         }
-﻿        public CounterColumns Value
+        public CounterColumns Value
         {
             get
             {

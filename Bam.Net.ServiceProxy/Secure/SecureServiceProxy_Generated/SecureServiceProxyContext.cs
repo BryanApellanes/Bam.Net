@@ -1,5 +1,5 @@
 /*
-	Copyright © Bryan Apellanes 2015  
+	This file was generated and should not be modified directly
 */
 // model is SchemaDefinition
 using System;
@@ -30,7 +30,7 @@ namespace Bam.Net.ServiceProxy.Secure
 			}
 		}
 
-﻿
+
 	public class ApplicationQueryContext
 	{
 			public ApplicationCollection Where(WhereDelegate<ApplicationColumns> where, Database db = null)
@@ -77,7 +77,7 @@ namespace Bam.Net.ServiceProxy.Secure
 		{
 			return _applicationsLock.DoubleCheckLock<ApplicationQueryContext>(ref _applications, () => new ApplicationQueryContext());
 		}
-	}﻿
+	}
 	public class ConfigurationQueryContext
 	{
 			public ConfigurationCollection Where(WhereDelegate<ConfigurationColumns> where, Database db = null)
@@ -124,7 +124,7 @@ namespace Bam.Net.ServiceProxy.Secure
 		{
 			return _configurationsLock.DoubleCheckLock<ConfigurationQueryContext>(ref _configurations, () => new ConfigurationQueryContext());
 		}
-	}﻿
+	}
 	public class ConfigSettingQueryContext
 	{
 			public ConfigSettingCollection Where(WhereDelegate<ConfigSettingColumns> where, Database db = null)
@@ -171,7 +171,7 @@ namespace Bam.Net.ServiceProxy.Secure
 		{
 			return _configSettingsLock.DoubleCheckLock<ConfigSettingQueryContext>(ref _configSettings, () => new ConfigSettingQueryContext());
 		}
-	}﻿
+	}
 	public class ApiKeyQueryContext
 	{
 			public ApiKeyCollection Where(WhereDelegate<ApiKeyColumns> where, Database db = null)
@@ -218,7 +218,7 @@ namespace Bam.Net.ServiceProxy.Secure
 		{
 			return _apiKeysLock.DoubleCheckLock<ApiKeyQueryContext>(ref _apiKeys, () => new ApiKeyQueryContext());
 		}
-	}﻿
+	}
 	public class SecureSessionQueryContext
 	{
 			public SecureSessionCollection Where(WhereDelegate<SecureSessionColumns> where, Database db = null)

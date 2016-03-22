@@ -1,10 +1,12 @@
 /*
-	Copyright © Bryan Apellanes 2015  
+	This file was generated and should not be modified directly
 */
 // Model is Table
 using System;
 using System.Data;
 using System.Data.Common;
+using System.Linq;
+using System.Threading.Tasks;
 using Bam.Net;
 using Bam.Net.Data;
 using Bam.Net.Data.Qi;
@@ -54,7 +56,7 @@ namespace Bam.Net.Shop
 						
 		}
 
-﻿	// property:Id, columnName:Id	
+	// property:Id, columnName:Id	
 	[Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
 	public long? Id
@@ -69,7 +71,7 @@ namespace Bam.Net.Shop
 		}
 	}
 
-﻿	// property:Uuid, columnName:Uuid	
+	// property:Uuid, columnName:Uuid	
 	[Bam.Net.Data.Column(Name="Uuid", DbDataType="VarChar", MaxLength="4000", AllowNull=false)]
 	public string Uuid
 	{
@@ -83,7 +85,7 @@ namespace Bam.Net.Shop
 		}
 	}
 
-﻿	// property:Value, columnName:Value	
+	// property:Value, columnName:Value	
 	[Bam.Net.Data.Column(Name="Value", DbDataType="Decimal", MaxLength="28", AllowNull=false)]
 	public decimal? Value
 	{
@@ -99,7 +101,7 @@ namespace Bam.Net.Shop
 
 
 
-﻿	// start ShopItemId -> ShopItemId
+	// start ShopItemId -> ShopItemId
 	[Bam.Net.Data.ForeignKey(
         Table="Price",
 		Name="ShopItemId", 
@@ -134,7 +136,7 @@ namespace Bam.Net.Shop
 		}
 	}
 	
-﻿	// start CurrencyId -> CurrencyId
+	// start CurrencyId -> CurrencyId
 	[Bam.Net.Data.ForeignKey(
         Table="Price",
 		Name="CurrencyId", 
@@ -206,6 +208,43 @@ namespace Bam.Net.Shop
 			return results;
 		}
 
+		public static async Task BatchAll(int batchSize, Func<PriceCollection, Task> batchProcessor, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				PriceColumns columns = new PriceColumns();
+				var orderBy = Order.By<PriceColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
+				while(results.Count > 0)
+				{
+					await batchProcessor(results);
+					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
+					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}	 
+
+		public static async Task BatchQuery(int batchSize, QueryFilter filter, Func<PriceCollection, Task> batchProcessor, Database database = null)
+		{
+			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
+		}
+
+		public static async Task BatchQuery(int batchSize, WhereDelegate<PriceColumns> where, Func<PriceCollection, Task> batchProcessor, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				PriceColumns columns = new PriceColumns();
+				var orderBy = Order.By<PriceColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await batchProcessor(results);
+					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
+					results = Top(batchSize, (PriceColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
 		public static Price GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
@@ -218,7 +257,12 @@ namespace Bam.Net.Shop
 
 		public static Price GetByUuid(string uuid, Database database = null)
 		{
-			return OneWhere(c => c.Uuid == uuid, database);
+			return OneWhere(c => Bam.Net.Data.Query.Where("Uuid") == uuid, database);
+		}
+
+		public static Price GetByCuid(string cuid, Database database = null)
+		{
+			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
 		public static PriceCollection Query(QueryFilter filter, Database database = null)
@@ -283,7 +327,7 @@ namespace Bam.Net.Shop
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate<PriceColumns>.
+		/// WhereDelegate&lt;PriceColumns&gt;.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>

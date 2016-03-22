@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,28 +21,28 @@ namespace Bam.Net.Analytics
 		}	
 
 				
-﻿        public FeatureColumns Id
+        public FeatureColumns Id
         {
             get
             {
                 return new FeatureColumns("Id");
             }
         }
-﻿        public FeatureColumns Uuid
+        public FeatureColumns Uuid
         {
             get
             {
                 return new FeatureColumns("Uuid");
             }
         }
-﻿        public FeatureColumns Value
+        public FeatureColumns Value
         {
             get
             {
                 return new FeatureColumns("Value");
             }
         }
-﻿        public FeatureColumns FeatureToCategoryCount
+        public FeatureColumns FeatureToCategoryCount
         {
             get
             {
@@ -53,7 +50,7 @@ namespace Bam.Net.Analytics
             }
         }
 
-﻿        public FeatureColumns CategoryId
+        public FeatureColumns CategoryId
         {
             get
             {

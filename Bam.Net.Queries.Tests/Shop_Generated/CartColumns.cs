@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,15 +19,16 @@ namespace Bam.Net.Data.Tests
 				return new CartColumns("Id");
 			}
 		}	
+
 				
-﻿        public CartColumns Id
+        public CartColumns Id
         {
             get
             {
                 return new CartColumns("Id");
             }
         }
-﻿        public CartColumns Uuid
+        public CartColumns Uuid
         {
             get
             {

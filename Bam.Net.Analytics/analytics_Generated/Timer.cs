@@ -1,10 +1,12 @@
 /*
-	Copyright © Bryan Apellanes 2015  
+	This file was generated and should not be modified directly
 */
 // Model is Table
 using System;
 using System.Data;
 using System.Data.Common;
+using System.Linq;
+using System.Threading.Tasks;
 using Bam.Net;
 using Bam.Net.Data;
 using Bam.Net.Data.Qi;
@@ -51,13 +53,13 @@ namespace Bam.Net.Analytics
 
 		private void SetChildren()
 		{
-﻿
-            this.ChildCollections.Add("MethodTimer_TimerId", new MethodTimerCollection(Database.GetQuery<MethodTimerColumns, MethodTimer>((c) => c.TimerId == GetLongValue("Id")), this, "TimerId"));	﻿
-            this.ChildCollections.Add("LoadTimer_TimerId", new LoadTimerCollection(Database.GetQuery<LoadTimerColumns, LoadTimer>((c) => c.TimerId == GetLongValue("Id")), this, "TimerId"));	﻿
+
+            this.ChildCollections.Add("MethodTimer_TimerId", new MethodTimerCollection(Database.GetQuery<MethodTimerColumns, MethodTimer>((c) => c.TimerId == GetLongValue("Id")), this, "TimerId"));	
+            this.ChildCollections.Add("LoadTimer_TimerId", new LoadTimerCollection(Database.GetQuery<LoadTimerColumns, LoadTimer>((c) => c.TimerId == GetLongValue("Id")), this, "TimerId"));	
             this.ChildCollections.Add("CustomTimer_TimerId", new CustomTimerCollection(Database.GetQuery<CustomTimerColumns, CustomTimer>((c) => c.TimerId == GetLongValue("Id")), this, "TimerId"));							
 		}
 
-﻿	// property:Id, columnName:Id	
+	// property:Id, columnName:Id	
 	[Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
 	public long? Id
@@ -72,7 +74,7 @@ namespace Bam.Net.Analytics
 		}
 	}
 
-﻿	// property:Uuid, columnName:Uuid	
+	// property:Uuid, columnName:Uuid	
 	[Bam.Net.Data.Column(Name="Uuid", DbDataType="VarChar", MaxLength="4000", AllowNull=false)]
 	public string Uuid
 	{
@@ -86,7 +88,7 @@ namespace Bam.Net.Analytics
 		}
 	}
 
-﻿	// property:Value, columnName:Value	
+	// property:Value, columnName:Value	
 	[Bam.Net.Data.Column(Name="Value", DbDataType="VarChar", MaxLength="4000", AllowNull=false)]
 	public string Value
 	{
@@ -103,7 +105,7 @@ namespace Bam.Net.Analytics
 
 
 				
-﻿
+
 	[Exclude]	
 	public MethodTimerCollection MethodTimersByTimerId
 	{
@@ -127,7 +129,7 @@ namespace Bam.Net.Analytics
 			return c;
 		}
 	}
-	﻿
+	
 	[Exclude]	
 	public LoadTimerCollection LoadTimersByTimerId
 	{
@@ -151,7 +153,7 @@ namespace Bam.Net.Analytics
 			return c;
 		}
 	}
-	﻿
+	
 	[Exclude]	
 	public CustomTimerCollection CustomTimersByTimerId
 	{
@@ -209,6 +211,43 @@ namespace Bam.Net.Analytics
 			var results = new TimerCollection(sql.GetDataTable(db));
 			results.Database = db;
 			return results;
+		}
+
+		public static async Task BatchAll(int batchSize, Func<TimerCollection, Task> batchProcessor, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				TimerColumns columns = new TimerColumns();
+				var orderBy = Order.By<TimerColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
+				while(results.Count > 0)
+				{
+					await batchProcessor(results);
+					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
+					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}	 
+
+		public static async Task BatchQuery(int batchSize, QueryFilter filter, Func<TimerCollection, Task> batchProcessor, Database database = null)
+		{
+			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
+		}
+
+		public static async Task BatchQuery(int batchSize, WhereDelegate<TimerColumns> where, Func<TimerCollection, Task> batchProcessor, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				TimerColumns columns = new TimerColumns();
+				var orderBy = Order.By<TimerColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await batchProcessor(results);
+					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
+					results = Top(batchSize, (TimerColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
 		}
 
 		public static Timer GetById(int id, Database database = null)
@@ -293,7 +332,7 @@ namespace Bam.Net.Analytics
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate<TimerColumns>.
+		/// WhereDelegate&lt;TimerColumns&gt;.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>

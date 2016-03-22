@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,15 +19,16 @@ namespace Bam.Net.Shop
 				return new ShoppingListShopItemColumns("Id");
 			}
 		}	
+
 				
-﻿        public ShoppingListShopItemColumns Id
+        public ShoppingListShopItemColumns Id
         {
             get
             {
                 return new ShoppingListShopItemColumns("Id");
             }
         }
-﻿        public ShoppingListShopItemColumns Uuid
+        public ShoppingListShopItemColumns Uuid
         {
             get
             {
@@ -38,14 +36,14 @@ namespace Bam.Net.Shop
             }
         }
 
-﻿        public ShoppingListShopItemColumns ShoppingListId
+        public ShoppingListShopItemColumns ShoppingListId
         {
             get
             {
                 return new ShoppingListShopItemColumns("ShoppingListId");
             }
         }
-﻿        public ShoppingListShopItemColumns ShopItemId
+        public ShoppingListShopItemColumns ShopItemId
         {
             get
             {

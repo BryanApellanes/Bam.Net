@@ -1,5 +1,5 @@
 /*
-	Copyright © Bryan Apellanes 2015  
+	This file was generated and should not be modified directly
 */
 // model is SchemaDefinition
 using System;
@@ -30,7 +30,7 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 			}
 		}
 
-﻿
+
 	public class BuildJobQueryContext
 	{
 			public BuildJobCollection Where(WhereDelegate<BuildJobColumns> where, Database db = null)
@@ -77,7 +77,7 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		{
 			return _buildJobsLock.DoubleCheckLock<BuildJobQueryContext>(ref _buildJobs, () => new BuildJobQueryContext());
 		}
-	}﻿
+	}
 	public class BuildResultQueryContext
 	{
 			public BuildResultCollection Where(WhereDelegate<BuildResultColumns> where, Database db = null)

@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,14 +21,14 @@ namespace Bam.Net.UserAccounts.Data
 		}	
 
 				
-﻿        public GroupPermissionColumns Id
+        public GroupPermissionColumns Id
         {
             get
             {
                 return new GroupPermissionColumns("Id");
             }
         }
-﻿        public GroupPermissionColumns Uuid
+        public GroupPermissionColumns Uuid
         {
             get
             {
@@ -39,14 +36,14 @@ namespace Bam.Net.UserAccounts.Data
             }
         }
 
-﻿        public GroupPermissionColumns GroupId
+        public GroupPermissionColumns GroupId
         {
             get
             {
                 return new GroupPermissionColumns("GroupId");
             }
         }
-﻿        public GroupPermissionColumns PermissionId
+        public GroupPermissionColumns PermissionId
         {
             get
             {

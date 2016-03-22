@@ -1,5 +1,5 @@
 /*
-	Copyright © Bryan Apellanes 2015  
+	This file was generated and should not be modified directly
 */
 // model is SchemaDefinition
 using System;
@@ -30,99 +30,146 @@ namespace Bam.Net.Automation.Data
 			}
 		}
 
-﻿
-	public class DeferredJobQueryContext
+
+	public class JobDataQueryContext
 	{
-			public DeferredJobCollection Where(WhereDelegate<DeferredJobColumns> where, Database db = null)
+			public JobDataCollection Where(WhereDelegate<JobDataColumns> where, Database db = null)
 			{
-				return Bam.Net.Automation.Data.DeferredJob.Where(where, db);
+				return Bam.Net.Automation.Data.JobData.Where(where, db);
 			}
 		   
-			public DeferredJobCollection Where(WhereDelegate<DeferredJobColumns> where, OrderBy<DeferredJobColumns> orderBy = null, Database db = null)
+			public JobDataCollection Where(WhereDelegate<JobDataColumns> where, OrderBy<JobDataColumns> orderBy = null, Database db = null)
 			{
-				return Bam.Net.Automation.Data.DeferredJob.Where(where, orderBy, db);
+				return Bam.Net.Automation.Data.JobData.Where(where, orderBy, db);
 			}
 
-			public DeferredJob OneWhere(WhereDelegate<DeferredJobColumns> where, Database db = null)
+			public JobData OneWhere(WhereDelegate<JobDataColumns> where, Database db = null)
 			{
-				return Bam.Net.Automation.Data.DeferredJob.OneWhere(where, db);
+				return Bam.Net.Automation.Data.JobData.OneWhere(where, db);
 			}
 		
-			public DeferredJob FirstOneWhere(WhereDelegate<DeferredJobColumns> where, Database db = null)
+			public JobData FirstOneWhere(WhereDelegate<JobDataColumns> where, Database db = null)
 			{
-				return Bam.Net.Automation.Data.DeferredJob.FirstOneWhere(where, db);
+				return Bam.Net.Automation.Data.JobData.FirstOneWhere(where, db);
 			}
 
-			public DeferredJobCollection Top(int count, WhereDelegate<DeferredJobColumns> where, Database db = null)
+			public JobDataCollection Top(int count, WhereDelegate<JobDataColumns> where, Database db = null)
 			{
-				return Bam.Net.Automation.Data.DeferredJob.Top(count, where, db);
+				return Bam.Net.Automation.Data.JobData.Top(count, where, db);
 			}
 
-			public DeferredJobCollection Top(int count, WhereDelegate<DeferredJobColumns> where, OrderBy<DeferredJobColumns> orderBy, Database db = null)
+			public JobDataCollection Top(int count, WhereDelegate<JobDataColumns> where, OrderBy<JobDataColumns> orderBy, Database db = null)
 			{
-				return Bam.Net.Automation.Data.DeferredJob.Top(count, where, orderBy, db);
+				return Bam.Net.Automation.Data.JobData.Top(count, where, orderBy, db);
 			}
 
-			public long Count(WhereDelegate<DeferredJobColumns> where, Database db = null)
+			public long Count(WhereDelegate<JobDataColumns> where, Database db = null)
 			{
-				return Bam.Net.Automation.Data.DeferredJob.Count(where, db);
+				return Bam.Net.Automation.Data.JobData.Count(where, db);
 			}
 	}
 
-	static DeferredJobQueryContext _deferredJobs;
-	static object _deferredJobsLock = new object();
-	public static DeferredJobQueryContext DeferredJobs
+	static JobDataQueryContext _jobDatas;
+	static object _jobDatasLock = new object();
+	public static JobDataQueryContext JobDatas
 	{
 		get
 		{
-			return _deferredJobsLock.DoubleCheckLock<DeferredJobQueryContext>(ref _deferredJobs, () => new DeferredJobQueryContext());
+			return _jobDatasLock.DoubleCheckLock<JobDataQueryContext>(ref _jobDatas, () => new JobDataQueryContext());
 		}
-	}﻿
-	public class RunningJobQueryContext
+	}
+	public class DeferredJobDataQueryContext
 	{
-			public RunningJobCollection Where(WhereDelegate<RunningJobColumns> where, Database db = null)
+			public DeferredJobDataCollection Where(WhereDelegate<DeferredJobDataColumns> where, Database db = null)
 			{
-				return Bam.Net.Automation.Data.RunningJob.Where(where, db);
+				return Bam.Net.Automation.Data.DeferredJobData.Where(where, db);
 			}
 		   
-			public RunningJobCollection Where(WhereDelegate<RunningJobColumns> where, OrderBy<RunningJobColumns> orderBy = null, Database db = null)
+			public DeferredJobDataCollection Where(WhereDelegate<DeferredJobDataColumns> where, OrderBy<DeferredJobDataColumns> orderBy = null, Database db = null)
 			{
-				return Bam.Net.Automation.Data.RunningJob.Where(where, orderBy, db);
+				return Bam.Net.Automation.Data.DeferredJobData.Where(where, orderBy, db);
 			}
 
-			public RunningJob OneWhere(WhereDelegate<RunningJobColumns> where, Database db = null)
+			public DeferredJobData OneWhere(WhereDelegate<DeferredJobDataColumns> where, Database db = null)
 			{
-				return Bam.Net.Automation.Data.RunningJob.OneWhere(where, db);
+				return Bam.Net.Automation.Data.DeferredJobData.OneWhere(where, db);
 			}
 		
-			public RunningJob FirstOneWhere(WhereDelegate<RunningJobColumns> where, Database db = null)
+			public DeferredJobData FirstOneWhere(WhereDelegate<DeferredJobDataColumns> where, Database db = null)
 			{
-				return Bam.Net.Automation.Data.RunningJob.FirstOneWhere(where, db);
+				return Bam.Net.Automation.Data.DeferredJobData.FirstOneWhere(where, db);
 			}
 
-			public RunningJobCollection Top(int count, WhereDelegate<RunningJobColumns> where, Database db = null)
+			public DeferredJobDataCollection Top(int count, WhereDelegate<DeferredJobDataColumns> where, Database db = null)
 			{
-				return Bam.Net.Automation.Data.RunningJob.Top(count, where, db);
+				return Bam.Net.Automation.Data.DeferredJobData.Top(count, where, db);
 			}
 
-			public RunningJobCollection Top(int count, WhereDelegate<RunningJobColumns> where, OrderBy<RunningJobColumns> orderBy, Database db = null)
+			public DeferredJobDataCollection Top(int count, WhereDelegate<DeferredJobDataColumns> where, OrderBy<DeferredJobDataColumns> orderBy, Database db = null)
 			{
-				return Bam.Net.Automation.Data.RunningJob.Top(count, where, orderBy, db);
+				return Bam.Net.Automation.Data.DeferredJobData.Top(count, where, orderBy, db);
 			}
 
-			public long Count(WhereDelegate<RunningJobColumns> where, Database db = null)
+			public long Count(WhereDelegate<DeferredJobDataColumns> where, Database db = null)
 			{
-				return Bam.Net.Automation.Data.RunningJob.Count(where, db);
+				return Bam.Net.Automation.Data.DeferredJobData.Count(where, db);
 			}
 	}
 
-	static RunningJobQueryContext _runningJobs;
-	static object _runningJobsLock = new object();
-	public static RunningJobQueryContext RunningJobs
+	static DeferredJobDataQueryContext _deferredJobDatas;
+	static object _deferredJobDatasLock = new object();
+	public static DeferredJobDataQueryContext DeferredJobDatas
 	{
 		get
 		{
-			return _runningJobsLock.DoubleCheckLock<RunningJobQueryContext>(ref _runningJobs, () => new RunningJobQueryContext());
+			return _deferredJobDatasLock.DoubleCheckLock<DeferredJobDataQueryContext>(ref _deferredJobDatas, () => new DeferredJobDataQueryContext());
+		}
+	}
+	public class JobRunDataQueryContext
+	{
+			public JobRunDataCollection Where(WhereDelegate<JobRunDataColumns> where, Database db = null)
+			{
+				return Bam.Net.Automation.Data.JobRunData.Where(where, db);
+			}
+		   
+			public JobRunDataCollection Where(WhereDelegate<JobRunDataColumns> where, OrderBy<JobRunDataColumns> orderBy = null, Database db = null)
+			{
+				return Bam.Net.Automation.Data.JobRunData.Where(where, orderBy, db);
+			}
+
+			public JobRunData OneWhere(WhereDelegate<JobRunDataColumns> where, Database db = null)
+			{
+				return Bam.Net.Automation.Data.JobRunData.OneWhere(where, db);
+			}
+		
+			public JobRunData FirstOneWhere(WhereDelegate<JobRunDataColumns> where, Database db = null)
+			{
+				return Bam.Net.Automation.Data.JobRunData.FirstOneWhere(where, db);
+			}
+
+			public JobRunDataCollection Top(int count, WhereDelegate<JobRunDataColumns> where, Database db = null)
+			{
+				return Bam.Net.Automation.Data.JobRunData.Top(count, where, db);
+			}
+
+			public JobRunDataCollection Top(int count, WhereDelegate<JobRunDataColumns> where, OrderBy<JobRunDataColumns> orderBy, Database db = null)
+			{
+				return Bam.Net.Automation.Data.JobRunData.Top(count, where, orderBy, db);
+			}
+
+			public long Count(WhereDelegate<JobRunDataColumns> where, Database db = null)
+			{
+				return Bam.Net.Automation.Data.JobRunData.Count(where, db);
+			}
+	}
+
+	static JobRunDataQueryContext _jobRunDatas;
+	static object _jobRunDatasLock = new object();
+	public static JobRunDataQueryContext JobRunDatas
+	{
+		get
+		{
+			return _jobRunDatasLock.DoubleCheckLock<JobRunDataQueryContext>(ref _jobRunDatas, () => new JobRunDataQueryContext());
 		}
 	}    }
 }																								

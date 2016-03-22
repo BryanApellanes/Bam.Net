@@ -1,10 +1,12 @@
 /*
-	Copyright © Bryan Apellanes 2015  
+	This file was generated and should not be modified directly
 */
 // Model is Table
 using System;
 using System.Data;
 using System.Data.Common;
+using System.Linq;
+using System.Threading.Tasks;
 using Bam.Net;
 using Bam.Net.Data;
 using Bam.Net.Data.Qi;
@@ -51,24 +53,24 @@ namespace Bam.Net.Shop
 
 		private void SetChildren()
 		{
-﻿
-            this.ChildCollections.Add("ShoppingCartItem_ShopItemId", new ShoppingCartItemCollection(Database.GetQuery<ShoppingCartItemColumns, ShoppingCartItem>((c) => c.ShopItemId == this.Id), this, "ShopItemId"));	﻿
-            this.ChildCollections.Add("Price_ShopItemId", new PriceCollection(Database.GetQuery<PriceColumns, Price>((c) => c.ShopItemId == this.Id), this, "ShopItemId"));	﻿
-            this.ChildCollections.Add("ShoppingListShopItem_ShopItemId", new ShoppingListShopItemCollection(Database.GetQuery<ShoppingListShopItemColumns, ShoppingListShopItem>((c) => c.ShopItemId == this.Id), this, "ShopItemId"));	﻿
-            this.ChildCollections.Add("ShopShopItem_ShopItemId", new ShopShopItemCollection(Database.GetQuery<ShopShopItemColumns, ShopShopItem>((c) => c.ShopItemId == this.Id), this, "ShopItemId"));	﻿
-            this.ChildCollections.Add("ShopItemShopItemAttribute_ShopItemId", new ShopItemShopItemAttributeCollection(Database.GetQuery<ShopItemShopItemAttributeColumns, ShopItemShopItemAttribute>((c) => c.ShopItemId == this.Id), this, "ShopItemId"));	﻿
-            this.ChildCollections.Add("ShopItemPromotion_ShopItemId", new ShopItemPromotionCollection(Database.GetQuery<ShopItemPromotionColumns, ShopItemPromotion>((c) => c.ShopItemId == this.Id), this, "ShopItemId"));				﻿
+
+            this.ChildCollections.Add("ShoppingCartItem_ShopItemId", new ShoppingCartItemCollection(Database.GetQuery<ShoppingCartItemColumns, ShoppingCartItem>((c) => c.ShopItemId == GetLongValue("Id")), this, "ShopItemId"));	
+            this.ChildCollections.Add("Price_ShopItemId", new PriceCollection(Database.GetQuery<PriceColumns, Price>((c) => c.ShopItemId == GetLongValue("Id")), this, "ShopItemId"));	
+            this.ChildCollections.Add("ShoppingListShopItem_ShopItemId", new ShoppingListShopItemCollection(Database.GetQuery<ShoppingListShopItemColumns, ShoppingListShopItem>((c) => c.ShopItemId == GetLongValue("Id")), this, "ShopItemId"));	
+            this.ChildCollections.Add("ShopShopItem_ShopItemId", new ShopShopItemCollection(Database.GetQuery<ShopShopItemColumns, ShopShopItem>((c) => c.ShopItemId == GetLongValue("Id")), this, "ShopItemId"));	
+            this.ChildCollections.Add("ShopItemShopItemAttribute_ShopItemId", new ShopItemShopItemAttributeCollection(Database.GetQuery<ShopItemShopItemAttributeColumns, ShopItemShopItemAttribute>((c) => c.ShopItemId == GetLongValue("Id")), this, "ShopItemId"));	
+            this.ChildCollections.Add("ShopItemPromotion_ShopItemId", new ShopItemPromotionCollection(Database.GetQuery<ShopItemPromotionColumns, ShopItemPromotion>((c) => c.ShopItemId == GetLongValue("Id")), this, "ShopItemId"));				
             this.ChildCollections.Add("ShopItem_ShopItemShopItemAttribute_ShopItemAttribute",  new XrefDaoCollection<ShopItemShopItemAttribute, ShopItemAttribute>(this, false));
-				﻿
+				
             this.ChildCollections.Add("ShopItem_ShopItemPromotion_Promotion",  new XrefDaoCollection<ShopItemPromotion, Promotion>(this, false));
-							﻿
+							
             this.ChildCollections.Add("ShopItem_ShoppingListShopItem_ShoppingList",  new XrefDaoCollection<ShoppingListShopItem, ShoppingList>(this, false));
-				﻿
+				
             this.ChildCollections.Add("ShopItem_ShopShopItem_Shop",  new XrefDaoCollection<ShopShopItem, Shop>(this, false));
 				
 		}
 
-﻿	// property:Id, columnName:Id	
+	// property:Id, columnName:Id	
 	[Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
 	public long? Id
@@ -83,7 +85,7 @@ namespace Bam.Net.Shop
 		}
 	}
 
-﻿	// property:Uuid, columnName:Uuid	
+	// property:Uuid, columnName:Uuid	
 	[Bam.Net.Data.Column(Name="Uuid", DbDataType="VarChar", MaxLength="4000", AllowNull=false)]
 	public string Uuid
 	{
@@ -97,7 +99,7 @@ namespace Bam.Net.Shop
 		}
 	}
 
-﻿	// property:Name, columnName:Name	
+	// property:Name, columnName:Name	
 	[Bam.Net.Data.Column(Name="Name", DbDataType="VarChar", MaxLength="4000", AllowNull=false)]
 	public string Name
 	{
@@ -111,7 +113,7 @@ namespace Bam.Net.Shop
 		}
 	}
 
-﻿	// property:Source, columnName:Source	
+	// property:Source, columnName:Source	
 	[Bam.Net.Data.Column(Name="Source", DbDataType="VarChar", MaxLength="4000", AllowNull=false)]
 	public string Source
 	{
@@ -125,7 +127,7 @@ namespace Bam.Net.Shop
 		}
 	}
 
-﻿	// property:SourceId, columnName:SourceId	
+	// property:SourceId, columnName:SourceId	
 	[Bam.Net.Data.Column(Name="SourceId", DbDataType="VarChar", MaxLength="4000", AllowNull=false)]
 	public string SourceId
 	{
@@ -139,7 +141,7 @@ namespace Bam.Net.Shop
 		}
 	}
 
-﻿	// property:DetailUrl, columnName:DetailUrl	
+	// property:DetailUrl, columnName:DetailUrl	
 	[Bam.Net.Data.Column(Name="DetailUrl", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
 	public string DetailUrl
 	{
@@ -153,7 +155,7 @@ namespace Bam.Net.Shop
 		}
 	}
 
-﻿	// property:ImageSrc, columnName:ImageSrc	
+	// property:ImageSrc, columnName:ImageSrc	
 	[Bam.Net.Data.Column(Name="ImageSrc", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
 	public string ImageSrc
 	{
@@ -170,7 +172,7 @@ namespace Bam.Net.Shop
 
 
 				
-﻿
+
 	[Exclude]	
 	public ShoppingCartItemCollection ShoppingCartItemsByShopItemId
 	{
@@ -194,7 +196,7 @@ namespace Bam.Net.Shop
 			return c;
 		}
 	}
-	﻿
+	
 	[Exclude]	
 	public PriceCollection PricesByShopItemId
 	{
@@ -218,7 +220,7 @@ namespace Bam.Net.Shop
 			return c;
 		}
 	}
-	﻿
+	
 	[Exclude]	
 	public ShoppingListShopItemCollection ShoppingListShopItemsByShopItemId
 	{
@@ -242,7 +244,7 @@ namespace Bam.Net.Shop
 			return c;
 		}
 	}
-	﻿
+	
 	[Exclude]	
 	public ShopShopItemCollection ShopShopItemsByShopItemId
 	{
@@ -266,7 +268,7 @@ namespace Bam.Net.Shop
 			return c;
 		}
 	}
-	﻿
+	
 	[Exclude]	
 	public ShopItemShopItemAttributeCollection ShopItemShopItemAttributesByShopItemId
 	{
@@ -290,7 +292,7 @@ namespace Bam.Net.Shop
 			return c;
 		}
 	}
-	﻿
+	
 	[Exclude]	
 	public ShopItemPromotionCollection ShopItemPromotionsByShopItemId
 	{
@@ -315,7 +317,7 @@ namespace Bam.Net.Shop
 		}
 	}
 			
-﻿
+
 		// Xref       
         public XrefDaoCollection<ShopItemShopItemAttribute, ShopItemAttribute> ShopItemAttributes
         {
@@ -339,7 +341,7 @@ namespace Bam.Net.Shop
 
 				return xref;
             }
-        }﻿
+        }
 		// Xref       
         public XrefDaoCollection<ShopItemPromotion, Promotion> Promotions
         {
@@ -364,7 +366,7 @@ namespace Bam.Net.Shop
 				return xref;
             }
         }
-﻿
+
 		// Xref       
         public XrefDaoCollection<ShoppingListShopItem, ShoppingList> ShoppingLists
         {
@@ -388,7 +390,7 @@ namespace Bam.Net.Shop
 
 				return xref;
             }
-        }﻿
+        }
 		// Xref       
         public XrefDaoCollection<ShopShopItem, Shop> Shops
         {
@@ -446,6 +448,43 @@ namespace Bam.Net.Shop
 			return results;
 		}
 
+		public static async Task BatchAll(int batchSize, Func<ShopItemCollection, Task> batchProcessor, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				ShopItemColumns columns = new ShopItemColumns();
+				var orderBy = Order.By<ShopItemColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
+				while(results.Count > 0)
+				{
+					await batchProcessor(results);
+					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
+					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}	 
+
+		public static async Task BatchQuery(int batchSize, QueryFilter filter, Func<ShopItemCollection, Task> batchProcessor, Database database = null)
+		{
+			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
+		}
+
+		public static async Task BatchQuery(int batchSize, WhereDelegate<ShopItemColumns> where, Func<ShopItemCollection, Task> batchProcessor, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				ShopItemColumns columns = new ShopItemColumns();
+				var orderBy = Order.By<ShopItemColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await batchProcessor(results);
+					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
+					results = Top(batchSize, (ShopItemColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
 		public static ShopItem GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
@@ -458,7 +497,12 @@ namespace Bam.Net.Shop
 
 		public static ShopItem GetByUuid(string uuid, Database database = null)
 		{
-			return OneWhere(c => c.Uuid == uuid, database);
+			return OneWhere(c => Bam.Net.Data.Query.Where("Uuid") == uuid, database);
+		}
+
+		public static ShopItem GetByCuid(string cuid, Database database = null)
+		{
+			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
 		public static ShopItemCollection Query(QueryFilter filter, Database database = null)
@@ -523,7 +567,7 @@ namespace Bam.Net.Shop
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate<ShopItemColumns>.
+		/// WhereDelegate&lt;ShopItemColumns&gt;.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>

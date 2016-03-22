@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,64 +19,65 @@ namespace Bam.Net.ServiceProxy.Secure
 				return new ApiKeyColumns("Id");
 			}
 		}	
+
 				
-﻿        public ApiKeyColumns Id
+        public ApiKeyColumns Id
         {
             get
             {
                 return new ApiKeyColumns("Id");
             }
         }
-﻿        public ApiKeyColumns Uuid
+        public ApiKeyColumns Uuid
         {
             get
             {
                 return new ApiKeyColumns("Uuid");
             }
         }
-﻿        public ApiKeyColumns ClientId
+        public ApiKeyColumns ClientId
         {
             get
             {
                 return new ApiKeyColumns("ClientId");
             }
         }
-﻿        public ApiKeyColumns SharedSecret
+        public ApiKeyColumns SharedSecret
         {
             get
             {
                 return new ApiKeyColumns("SharedSecret");
             }
         }
-﻿        public ApiKeyColumns CreatedBy
+        public ApiKeyColumns CreatedBy
         {
             get
             {
                 return new ApiKeyColumns("CreatedBy");
             }
         }
-﻿        public ApiKeyColumns CreatedAt
+        public ApiKeyColumns CreatedAt
         {
             get
             {
                 return new ApiKeyColumns("CreatedAt");
             }
         }
-﻿        public ApiKeyColumns Confirmed
+        public ApiKeyColumns Confirmed
         {
             get
             {
                 return new ApiKeyColumns("Confirmed");
             }
         }
-﻿        public ApiKeyColumns Disabled
+        public ApiKeyColumns Disabled
         {
             get
             {
                 return new ApiKeyColumns("Disabled");
             }
         }
-﻿        public ApiKeyColumns DisabledBy
+        public ApiKeyColumns DisabledBy
         {
             get
             {
@@ -87,7 +85,7 @@ namespace Bam.Net.ServiceProxy.Secure
             }
         }
 
-﻿        public ApiKeyColumns ApplicationId
+        public ApiKeyColumns ApplicationId
         {
             get
             {

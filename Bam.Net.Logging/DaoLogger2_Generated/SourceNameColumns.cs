@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,22 +19,23 @@ namespace Bam.Net.Logging.Data
 				return new SourceNameColumns("Id");
 			}
 		}	
+
 				
-﻿        public SourceNameColumns Id
+        public SourceNameColumns Id
         {
             get
             {
                 return new SourceNameColumns("Id");
             }
         }
-﻿        public SourceNameColumns Uuid
+        public SourceNameColumns Uuid
         {
             get
             {
                 return new SourceNameColumns("Uuid");
             }
         }
-﻿        public SourceNameColumns Value
+        public SourceNameColumns Value
         {
             get
             {

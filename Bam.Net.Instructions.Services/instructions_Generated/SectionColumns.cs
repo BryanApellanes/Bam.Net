@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,29 +19,30 @@ namespace Bam.Net.Instructions
 				return new SectionColumns("Id");
 			}
 		}	
+
 				
-﻿        public SectionColumns Id
+        public SectionColumns Id
         {
             get
             {
                 return new SectionColumns("Id");
             }
         }
-﻿        public SectionColumns Uuid
+        public SectionColumns Uuid
         {
             get
             {
                 return new SectionColumns("Uuid");
             }
         }
-﻿        public SectionColumns Title
+        public SectionColumns Title
         {
             get
             {
                 return new SectionColumns("Title");
             }
         }
-﻿        public SectionColumns Description
+        public SectionColumns Description
         {
             get
             {
@@ -52,7 +50,7 @@ namespace Bam.Net.Instructions
             }
         }
 
-﻿        public SectionColumns InstructionSetId
+        public SectionColumns InstructionSetId
         {
             get
             {

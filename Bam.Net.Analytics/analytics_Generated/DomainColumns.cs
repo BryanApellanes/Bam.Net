@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,21 +21,21 @@ namespace Bam.Net.Analytics
 		}	
 
 				
-﻿        public DomainColumns Id
+        public DomainColumns Id
         {
             get
             {
                 return new DomainColumns("Id");
             }
         }
-﻿        public DomainColumns Uuid
+        public DomainColumns Uuid
         {
             get
             {
                 return new DomainColumns("Uuid");
             }
         }
-﻿        public DomainColumns Value
+        public DomainColumns Value
         {
             get
             {

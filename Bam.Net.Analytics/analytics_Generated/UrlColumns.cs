@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,14 +21,14 @@ namespace Bam.Net.Analytics
 		}	
 
 				
-﻿        public UrlColumns Id
+        public UrlColumns Id
         {
             get
             {
                 return new UrlColumns("Id");
             }
         }
-﻿        public UrlColumns Uuid
+        public UrlColumns Uuid
         {
             get
             {
@@ -39,42 +36,42 @@ namespace Bam.Net.Analytics
             }
         }
 
-﻿        public UrlColumns ProtocolId
+        public UrlColumns ProtocolId
         {
             get
             {
                 return new UrlColumns("ProtocolId");
             }
         }
-﻿        public UrlColumns DomainId
+        public UrlColumns DomainId
         {
             get
             {
                 return new UrlColumns("DomainId");
             }
         }
-﻿        public UrlColumns PortId
+        public UrlColumns PortId
         {
             get
             {
                 return new UrlColumns("PortId");
             }
         }
-﻿        public UrlColumns PathId
+        public UrlColumns PathId
         {
             get
             {
                 return new UrlColumns("PathId");
             }
         }
-﻿        public UrlColumns QueryStringId
+        public UrlColumns QueryStringId
         {
             get
             {
                 return new UrlColumns("QueryStringId");
             }
         }
-﻿        public UrlColumns FragmentId
+        public UrlColumns FragmentId
         {
             get
             {

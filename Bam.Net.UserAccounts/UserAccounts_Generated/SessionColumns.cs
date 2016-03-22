@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,42 +21,42 @@ namespace Bam.Net.UserAccounts.Data
 		}	
 
 				
-﻿        public SessionColumns Id
+        public SessionColumns Id
         {
             get
             {
                 return new SessionColumns("Id");
             }
         }
-﻿        public SessionColumns Uuid
+        public SessionColumns Uuid
         {
             get
             {
                 return new SessionColumns("Uuid");
             }
         }
-﻿        public SessionColumns Identifier
+        public SessionColumns Identifier
         {
             get
             {
                 return new SessionColumns("Identifier");
             }
         }
-﻿        public SessionColumns CreationDate
+        public SessionColumns CreationDate
         {
             get
             {
                 return new SessionColumns("CreationDate");
             }
         }
-﻿        public SessionColumns LastActivity
+        public SessionColumns LastActivity
         {
             get
             {
                 return new SessionColumns("LastActivity");
             }
         }
-﻿        public SessionColumns IsActive
+        public SessionColumns IsActive
         {
             get
             {
@@ -67,7 +64,7 @@ namespace Bam.Net.UserAccounts.Data
             }
         }
 
-﻿        public SessionColumns UserId
+        public SessionColumns UserId
         {
             get
             {

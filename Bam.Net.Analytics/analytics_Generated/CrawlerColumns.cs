@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,28 +21,28 @@ namespace Bam.Net.Analytics
 		}	
 
 				
-﻿        public CrawlerColumns Id
+        public CrawlerColumns Id
         {
             get
             {
                 return new CrawlerColumns("Id");
             }
         }
-﻿        public CrawlerColumns Uuid
+        public CrawlerColumns Uuid
         {
             get
             {
                 return new CrawlerColumns("Uuid");
             }
         }
-﻿        public CrawlerColumns Name
+        public CrawlerColumns Name
         {
             get
             {
                 return new CrawlerColumns("Name");
             }
         }
-﻿        public CrawlerColumns RootUrl
+        public CrawlerColumns RootUrl
         {
             get
             {

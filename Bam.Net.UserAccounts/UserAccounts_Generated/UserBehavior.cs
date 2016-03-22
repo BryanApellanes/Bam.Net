@@ -1,10 +1,12 @@
 /*
-	Copyright © Bryan Apellanes 2015  
+	This file was generated and should not be modified directly
 */
 // Model is Table
 using System;
 using System.Data;
 using System.Data.Common;
+using System.Linq;
+using System.Threading.Tasks;
 using Bam.Net;
 using Bam.Net.Data;
 using Bam.Net.Data.Qi;
@@ -54,7 +56,7 @@ namespace Bam.Net.UserAccounts.Data
 						
 		}
 
-﻿	// property:Id, columnName:Id	
+	// property:Id, columnName:Id	
 	[Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
 	public long? Id
@@ -69,7 +71,7 @@ namespace Bam.Net.UserAccounts.Data
 		}
 	}
 
-﻿	// property:Uuid, columnName:Uuid	
+	// property:Uuid, columnName:Uuid	
 	[Bam.Net.Data.Column(Name="Uuid", DbDataType="VarChar", MaxLength="4000", AllowNull=false)]
 	public string Uuid
 	{
@@ -83,7 +85,7 @@ namespace Bam.Net.UserAccounts.Data
 		}
 	}
 
-﻿	// property:DateTime, columnName:DateTime	
+	// property:DateTime, columnName:DateTime	
 	[Bam.Net.Data.Column(Name="DateTime", DbDataType="DateTime", MaxLength="8", AllowNull=false)]
 	public DateTime? DateTime
 	{
@@ -97,7 +99,7 @@ namespace Bam.Net.UserAccounts.Data
 		}
 	}
 
-﻿	// property:Selector, columnName:Selector	
+	// property:Selector, columnName:Selector	
 	[Bam.Net.Data.Column(Name="Selector", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
 	public string Selector
 	{
@@ -111,7 +113,7 @@ namespace Bam.Net.UserAccounts.Data
 		}
 	}
 
-﻿	// property:EventName, columnName:EventName	
+	// property:EventName, columnName:EventName	
 	[Bam.Net.Data.Column(Name="EventName", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
 	public string EventName
 	{
@@ -125,7 +127,7 @@ namespace Bam.Net.UserAccounts.Data
 		}
 	}
 
-﻿	// property:Data, columnName:Data	
+	// property:Data, columnName:Data	
 	[Bam.Net.Data.Column(Name="Data", DbDataType="VarBinary", MaxLength="8000", AllowNull=true)]
 	public byte[] Data
 	{
@@ -139,7 +141,7 @@ namespace Bam.Net.UserAccounts.Data
 		}
 	}
 
-﻿	// property:Url, columnName:Url	
+	// property:Url, columnName:Url	
 	[Bam.Net.Data.Column(Name="Url", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
 	public string Url
 	{
@@ -155,7 +157,7 @@ namespace Bam.Net.UserAccounts.Data
 
 
 
-﻿	// start SessionId -> SessionId
+	// start SessionId -> SessionId
 	[Bam.Net.Data.ForeignKey(
         Table="UserBehavior",
 		Name="SessionId", 
@@ -225,6 +227,43 @@ namespace Bam.Net.UserAccounts.Data
 			var results = new UserBehaviorCollection(sql.GetDataTable(db));
 			results.Database = db;
 			return results;
+		}
+
+		public static async Task BatchAll(int batchSize, Func<UserBehaviorCollection, Task> batchProcessor, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				UserBehaviorColumns columns = new UserBehaviorColumns();
+				var orderBy = Order.By<UserBehaviorColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
+				while(results.Count > 0)
+				{
+					await batchProcessor(results);
+					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
+					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}	 
+
+		public static async Task BatchQuery(int batchSize, QueryFilter filter, Func<UserBehaviorCollection, Task> batchProcessor, Database database = null)
+		{
+			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
+		}
+
+		public static async Task BatchQuery(int batchSize, WhereDelegate<UserBehaviorColumns> where, Func<UserBehaviorCollection, Task> batchProcessor, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				UserBehaviorColumns columns = new UserBehaviorColumns();
+				var orderBy = Order.By<UserBehaviorColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await batchProcessor(results);
+					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
+					results = Top(batchSize, (UserBehaviorColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
 		}
 
 		public static UserBehavior GetById(int id, Database database = null)
@@ -309,7 +348,7 @@ namespace Bam.Net.UserAccounts.Data
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate<UserBehaviorColumns>.
+		/// WhereDelegate&lt;UserBehaviorColumns&gt;.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>

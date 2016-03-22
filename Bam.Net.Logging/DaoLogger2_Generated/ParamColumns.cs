@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,29 +19,30 @@ namespace Bam.Net.Logging.Data
 				return new ParamColumns("Id");
 			}
 		}	
+
 				
-﻿        public ParamColumns Id
+        public ParamColumns Id
         {
             get
             {
                 return new ParamColumns("Id");
             }
         }
-﻿        public ParamColumns Uuid
+        public ParamColumns Uuid
         {
             get
             {
                 return new ParamColumns("Uuid");
             }
         }
-﻿        public ParamColumns Position
+        public ParamColumns Position
         {
             get
             {
                 return new ParamColumns("Position");
             }
         }
-﻿        public ParamColumns Value
+        public ParamColumns Value
         {
             get
             {

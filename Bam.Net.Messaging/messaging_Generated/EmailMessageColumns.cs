@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,36 +19,37 @@ namespace Bam.Net.Messaging.Data
 				return new EmailMessageColumns("Id");
 			}
 		}	
+
 				
-﻿        public EmailMessageColumns Id
+        public EmailMessageColumns Id
         {
             get
             {
                 return new EmailMessageColumns("Id");
             }
         }
-﻿        public EmailMessageColumns Uuid
+        public EmailMessageColumns Uuid
         {
             get
             {
                 return new EmailMessageColumns("Uuid");
             }
         }
-﻿        public EmailMessageColumns Sent
+        public EmailMessageColumns Sent
         {
             get
             {
                 return new EmailMessageColumns("Sent");
             }
         }
-﻿        public EmailMessageColumns TemplateName
+        public EmailMessageColumns TemplateName
         {
             get
             {
                 return new EmailMessageColumns("TemplateName");
             }
         }
-﻿        public EmailMessageColumns TemplateJsonData
+        public EmailMessageColumns TemplateJsonData
         {
             get
             {
@@ -59,7 +57,7 @@ namespace Bam.Net.Messaging.Data
             }
         }
 
-﻿        public EmailMessageColumns DirectMessageId
+        public EmailMessageColumns DirectMessageId
         {
             get
             {

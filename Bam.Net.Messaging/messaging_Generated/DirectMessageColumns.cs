@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,29 +19,30 @@ namespace Bam.Net.Messaging.Data
 				return new DirectMessageColumns("Id");
 			}
 		}	
+
 				
-﻿        public DirectMessageColumns Id
+        public DirectMessageColumns Id
         {
             get
             {
                 return new DirectMessageColumns("Id");
             }
         }
-﻿        public DirectMessageColumns Uuid
+        public DirectMessageColumns Uuid
         {
             get
             {
                 return new DirectMessageColumns("Uuid");
             }
         }
-﻿        public DirectMessageColumns To
+        public DirectMessageColumns To
         {
             get
             {
                 return new DirectMessageColumns("To");
             }
         }
-﻿        public DirectMessageColumns ToEmail
+        public DirectMessageColumns ToEmail
         {
             get
             {
@@ -52,7 +50,7 @@ namespace Bam.Net.Messaging.Data
             }
         }
 
-﻿        public DirectMessageColumns MessageId
+        public DirectMessageColumns MessageId
         {
             get
             {

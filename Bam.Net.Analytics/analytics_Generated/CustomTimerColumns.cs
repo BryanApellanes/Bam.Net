@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,28 +21,28 @@ namespace Bam.Net.Analytics
 		}	
 
 				
-﻿        public CustomTimerColumns Id
+        public CustomTimerColumns Id
         {
             get
             {
                 return new CustomTimerColumns("Id");
             }
         }
-﻿        public CustomTimerColumns Uuid
+        public CustomTimerColumns Uuid
         {
             get
             {
                 return new CustomTimerColumns("Uuid");
             }
         }
-﻿        public CustomTimerColumns Name
+        public CustomTimerColumns Name
         {
             get
             {
                 return new CustomTimerColumns("Name");
             }
         }
-﻿        public CustomTimerColumns Description
+        public CustomTimerColumns Description
         {
             get
             {
@@ -53,7 +50,7 @@ namespace Bam.Net.Analytics
             }
         }
 
-﻿        public CustomTimerColumns TimerId
+        public CustomTimerColumns TimerId
         {
             get
             {
