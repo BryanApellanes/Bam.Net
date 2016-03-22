@@ -293,7 +293,7 @@ namespace Bam.Net.Data
                 }
 
                 X result = null;
-                QuerySet q = Dao.GetQuerySet(db);//db.ServiceProvider.Get<QuerySet>();//new QuerySet();
+                QuerySet q = Dao.GetQuerySet(db);
                 q.Select<X>().Where(new QueryFilter(ListColumnName) == item.IdValue.Value && new QueryFilter(ParentColumnName) == Parent.IdValue);
 
                 q.Execute(db);

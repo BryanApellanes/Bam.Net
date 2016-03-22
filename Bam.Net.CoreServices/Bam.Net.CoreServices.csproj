@@ -131,7 +131,7 @@
     <Compile Include="ProxySettings.cs" />
     <Compile Include="ProxyTemplate.cs" />
     <Compile Include="Distributed\UpdateOperation.cs" />
-    <Compile Include="ProxyableServiceBase.cs" />
+    <Compile Include="ProxyableService.cs" />
     <Compile Include="ServiceResponse.cs" />
   </ItemGroup>
   <ItemGroup>

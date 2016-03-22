@@ -12,11 +12,11 @@ using Bam.Net.UserAccounts;
 
 namespace Bam.Net.CoreServices
 {
-    public class ProxyableServiceBase: Loggable, IRequiresHttpContext
+    public abstract class ProxyableService: Loggable, IRequiresHttpContext
     {
         UserManager _userManager;
 
-        public ProxyableServiceBase(AppConf appConf, DaoRepository repository)
+        public ProxyableService(DaoRepository repository, AppConf appConf)
         {
             AppConf = appConf;
             Repository = repository;
