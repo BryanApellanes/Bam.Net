@@ -90,12 +90,10 @@ namespace Bam.Net
 
         public static IEnumerable<T> CopyAs<T>(this IEnumerable enumerable) where T : new()
         {
-            List<T> results = new List<T>();
             foreach (object o in enumerable)
             {
-                results.Add(o.CopyAs<T>());
-            }
-            return results;
+                yield return o.CopyAs<T>();
+            }         
         }
 
         /// <summary>
@@ -114,12 +112,10 @@ namespace Bam.Net
 
         public static IEnumerable<object> CopyAs(this IEnumerable enumerable, Type type)
         {
-            List<object> results = new List<object>();
             foreach (object o in enumerable)
             {
-                results.Add(o.CopyAs(type));
+                yield return o.CopyAs(type);         
             }
-            return results;
         }
 
         /// <summary>
