@@ -35,6 +35,7 @@ namespace bam
             AddSwitches(typeof(BuildActions));
             AddSwitches(typeof(VaultActions));
             AddSwitches(typeof(GlooActions));
+            AddSwitches(typeof(ManagementActions));
 			AddConfigurationSwitches();
             ArgumentAdder.AddArguments();
 
@@ -49,6 +50,7 @@ namespace bam
                 ExecuteSwitches(Arguments, typeof(BuildActions));
                 ExecuteSwitches(Arguments, typeof(VaultActions));
                 ExecuteSwitches(Arguments, typeof(GlooActions));
+                ExecuteSwitches(Arguments, typeof(ManagementActions));
 			}
 			else
 			{
