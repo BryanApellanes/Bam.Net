@@ -566,6 +566,14 @@ namespace Bam.Net.Data.Repositories
 			return result;
 		}
 
+        public IEnumerable<T> Wrap<T>(IEnumerable<T> values)
+        {
+            foreach(T value in values)
+            {
+                yield return Wrap<T>(value);
+            }
+        }
+
         /// <summary>
         /// Wrap the specified base instance to enable lazy loading
         /// of List or array properties

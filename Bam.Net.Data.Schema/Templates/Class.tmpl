@@ -464,6 +464,10 @@ namespace @Namespace
 			return results;
 		}
 
+		public static @(Model.ClassName)Collection Top(int count, QueryFilter where, Database database)
+		{
+			return Top(count, where, null, database);
+		}
 		/// <summary>
 		/// Execute a query and return the specified number of values.  This method
 		/// will issue a sql TOP clause so only the specified number of values
