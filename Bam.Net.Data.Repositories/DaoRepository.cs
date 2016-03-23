@@ -483,7 +483,7 @@ namespace Bam.Net.Data.Repositories
 		}
 
 		#region IDaoRepository Members
-
+        
 		public override IEnumerable<T> Query<T>(QueryFilter query)
 		{
 			Type pocoType = typeof(T);
@@ -496,15 +496,28 @@ namespace Bam.Net.Data.Repositories
             Type daoType = GetDaoType(pocoType);
             MethodInfo whereMethod = daoType.GetMethod("Where", new Type[] { typeof(QueryFilter), typeof(Database) });
             IEnumerable daoResults = (IEnumerable)whereMethod.Invoke(null, new object[] { query, Database });
-            List<object> results = new List<object>();
             foreach (object daoResult in daoResults)
             {
-                results.Add(((Dao)daoResult).ToJsonSafe());
+                yield return ((Dao)daoResult).ToJsonSafe();
             }
-            return results.ToArray();
+        }
+        #endregion
+
+        public IEnumerable<T> Top<T>(int count, QueryFilter query) where T : new()
+        {
+            return Top(count, typeof(T), query).CopyAs<T>();
         }
 
-		#endregion
+        public IEnumerable Top(int count, Type pocoType, QueryFilter query)
+        {
+            Type daoType = GetDaoType(pocoType);
+            MethodInfo topMethod = daoType.GetMethod("Top", new Type[] { typeof(int), typeof(QueryFilter), typeof(Database) });
+            IEnumerable daoResults = (IEnumerable)topMethod.Invoke(null, new object[] { count, query, Database });
+            foreach(object daoResult in daoResults)
+            {
+                yield return ((Dao)daoResult).ToJsonSafe();
+            }
+        }
 
 		public Type GetDaoType(Type pocoType)
 		{
@@ -616,10 +629,10 @@ namespace Bam.Net.Data.Repositories
 			return result;
 		}
 
-		public Dao GetDaoInstance(object pocoOrPocoInstance)
+		public Dao GetDaoInstance(object baseInstance) // required by generated code
 		{
-			long id = GetIdValue(pocoOrPocoInstance);
-			Dao dao = GetDaoInstanceById(pocoOrPocoInstance.GetType(), id);
+			long id = GetIdValue(baseInstance);
+			Dao dao = GetDaoInstanceById(baseInstance.GetType(), id);
 			return dao;
 		}
 
