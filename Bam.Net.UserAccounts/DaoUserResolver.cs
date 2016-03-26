@@ -41,7 +41,7 @@ namespace Bam.Net.UserAccounts
 
         public string GetUser(IHttpContext context)
         {
-            Session session = Session.Get(context);
+            Session session = Session.Get(context, UserDatabase);
             return session.UserOfUserId.UserName;
         }
 
