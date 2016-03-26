@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Bam.Net.Data;
 using Bam.Net.Encryption;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Security;
@@ -16,9 +17,9 @@ namespace Bam.Net.UserAccounts.Data
     {
         protected internal const string HashSaltFormat = "{0}::{1}";
 
-        public static Password Set(string userName, string password)
+        public static Password Set(string userName, string password, Database db = null)
         {
-            User user = User.GetByUserNameOrDie(userName);
+            User user = User.GetByUserNameOrDie(userName, db);
             return Set(user, password);
         }
 
@@ -28,7 +29,7 @@ namespace Bam.Net.UserAccounts.Data
         /// <param name="user"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public static Password Set(User user, string password)
+        public static Password Set(User user, string password, Database db = null)
         {
 
             Password passwordEntry = user.PasswordsByUserId.FirstOrDefault();//Password.OneWhere(c => c.UserId == user.Id);
@@ -38,7 +39,7 @@ namespace Bam.Net.UserAccounts.Data
             }
             
             passwordEntry.Value = password.Sha1();
-            passwordEntry.Save();
+            passwordEntry.Save(db);
             return passwordEntry;
         }
 
@@ -64,10 +65,10 @@ namespace Bam.Net.UserAccounts.Data
         public static bool Validate(string userName, string password, bool updateFailure = true)
         {
             User user = User.GetByUserNameOrDie(userName);
-            return Validate(user, password, updateFailure);
+            return Validate(user, password, updateFailure: updateFailure);
         }
 
-        public static bool Validate(User user, string password, bool updateFailure = true)
+        public static bool Validate(User user, string password, Database db = null, bool updateFailure = true)
         {
             Password passwordEntry = user.PasswordsByUserId.FirstOrDefault();
             bool result = false;
@@ -78,7 +79,7 @@ namespace Bam.Net.UserAccounts.Data
 
             if (!result && updateFailure)
             {
-                PasswordFailure.Add(user.UserName);
+                PasswordFailure.Add(user.UserName, db);
             }
             return result;
         }

@@ -334,6 +334,26 @@ namespace Bam.Net.UserAccounts
         {
             return GetPasswordResetUrlFunction(token);
         }
+
+        Database _database;
+        public Database Database
+        {
+            get
+            {
+                if(_database == null)
+                {
+                    _database = Db.For<User>();
+                }
+                return _database;
+            }
+            set
+            {
+                _database = value;
+                DaoUserResolver.UserDatabase = _database;
+                User.UserDatabase = _database;
+            }
+        }
+
         /// <summary>
         /// The vent that is fired when someone logs in
         /// </summary>
@@ -348,14 +368,14 @@ namespace Bam.Net.UserAccounts
         {
             try
             {
-                User user = User.GetByEmail(emailAddress);
+                User user = User.GetByEmail(emailAddress, Database);
                 PasswordReset reset = user.PasswordResetsByUserId.AddNew();
                 reset.Token = Guid.NewGuid().ToString();
                 reset.DateTime = new Instant();
                 reset.ExpiresInMinutes = PasswordResetTokensExpireInThisManyMinutes;
                 reset.WasReset = false;				
 
-                user.Save();
+                user.Save(Database);
 
                 PasswordResetEmailData data = new PasswordResetEmailData
                 {
@@ -407,16 +427,16 @@ namespace Bam.Net.UserAccounts
                 User user = null;
                 if (userName.Contains("@"))
                 {
-                    user = User.GetByEmail(userName);
+                    user = User.GetByEmail(userName, Database);
                 }
                 else
                 {
-                    user = User.GetByUserName(userName);
+                    user = User.GetByUserName(userName, Database);
                 }
 
                 if (user != null)
                 {
-                    bool passwordIsValid = Password.Validate(user, passHash);
+                    bool passwordIsValid = Password.Validate(user, passHash, Database);
 
                     result = GetSuccess<LoginResponse>(passwordIsValid);
                     if (!passwordIsValid)
@@ -427,8 +447,8 @@ namespace Bam.Net.UserAccounts
                     }
                     else
                     {
-                        DaoUserResolver.SetUser(HttpContext, user, true);
-                        user.AddLoginRecord();                        
+                        DaoUserResolver.SetUser(HttpContext, user, true, Database);
+                        user.AddLoginRecord(Database);
                     }
                 }
                 else
@@ -462,7 +482,7 @@ namespace Bam.Net.UserAccounts
             try
             {
                 IApplicationNameProvider appNameResolver = ApplicationNameProvider;
-                User user = User.Create(userName, emailAddress, passHash, appNameResolver, true, true, false);
+                User user = User.Create(userName, emailAddress, passHash, appNameResolver, true, true, false, Database);
                 if (sendConfirmationEmail)
                 {
                     RequestConfirmationEmail(emailAddress);
@@ -503,7 +523,7 @@ namespace Bam.Net.UserAccounts
                     response.Cookies.Add(cookie);
                 }
 
-                Session.End();
+                Session.End(Database);
                 FireEvent(SignOutSucceeded);
                 return GetSuccess<SignOutResponse>("Sign out successful");
             }
@@ -524,7 +544,7 @@ namespace Bam.Net.UserAccounts
         {
             try
             {
-                User user = User.GetByEmail(emailAddress);
+                User user = User.GetByEmail(emailAddress, Database);
                 if (user == null)
                 {
                     throw new UserNameNotFoundException(emailAddress);
@@ -533,7 +553,7 @@ namespace Bam.Net.UserAccounts
                 Account account = null;
                 if (user.AccountsByUserId.Count == 0)
                 {
-                    account = Account.Create(user, ApplicationNameProvider.GetApplicationName(), user.UserName, false);
+                    account = Account.Create(user, ApplicationNameProvider.GetApplicationName(), user.UserName, false, Database);
                 }
                 else if(user.AccountsByUserId.Count <= accountIndex)
                 {
@@ -575,7 +595,7 @@ namespace Bam.Net.UserAccounts
         {
             try
             {
-                Account account = Account.OneWhere(c => c.Token == token);
+                Account account = Account.OneWhere(c => c.Token == token, Database);
                 if (account == null)
                 {
                     throw new ArgumentException("Invalid token");
@@ -583,7 +603,7 @@ namespace Bam.Net.UserAccounts
                 else
                 {
                     account.IsConfirmed = true;
-                    account.Save();
+                    account.Save(Database);
                 }
 
                 FireEvent(ConfirmAccountSucceeded);
@@ -601,7 +621,7 @@ namespace Bam.Net.UserAccounts
         {
             try
             {
-                bool? isAvailable = !User.Exists(userName);
+                bool? isAvailable = !User.Exists(userName, Database);
                 return GetSuccess<CheckUserNameResponse>(isAvailable);
             }
             catch (Exception ex)
@@ -614,7 +634,7 @@ namespace Bam.Net.UserAccounts
         {
             try
             {
-                User user = User.GetByEmail(emailAddress);
+                User user = User.GetByEmail(emailAddress, Database);
                 bool? emailIsInUse = user != null;
                 return GetSuccess<CheckEmailResponse>(emailIsInUse);
             }
@@ -659,7 +679,7 @@ namespace Bam.Net.UserAccounts
         {
             try
             {
-                PasswordReset reset = PasswordReset.OneWhere(c => c.Token == resetToken);
+                PasswordReset reset = PasswordReset.OneWhere(c => c.Token == resetToken, Database);
                 if (reset == null)
                 {
                     throw new InvalidTokenException();
@@ -672,7 +692,7 @@ namespace Bam.Net.UserAccounts
                     throw new InvalidTokenException();
                 }
 
-                Password.Set(reset.UserOfUserId, passHash);
+                Password.Set(reset.UserOfUserId, passHash, Database);
                 FireEvent(ResetPasswordSucceeded);
                 return GetSuccess<PasswordResetResponse>(true, "Password was successfully reset");
             }

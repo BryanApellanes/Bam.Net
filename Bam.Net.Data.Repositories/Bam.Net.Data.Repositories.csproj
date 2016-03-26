@@ -134,6 +134,7 @@
     <Compile Include="ITypeTableNameProvider.cs" />
     <Compile Include="MissingForeignKeyPropertyException.cs" />
     <Compile Include="DaoToDtoGenerator.cs" />
+    <Compile Include="PocoExtensions.cs" />
     <Compile Include="PocoGenerator.cs" />
     <Compile Include="PocoModel.cs" />
     <Compile Include="OldToNewIdMapping.cs" />

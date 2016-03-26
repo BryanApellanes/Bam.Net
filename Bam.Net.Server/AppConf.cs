@@ -51,27 +51,6 @@ namespace Bam.Net.Server
             this.BamConf = serverConf;
         }
 
-        internal BamConf BamConf
-        {
-            get;
-            set;
-        }
-
-        public ILogger Logger
-        {
-            get
-            {
-                if(BamConf != null &&
-                    BamConf.Server != null &&
-                    BamConf.Server.MainLogger != null)
-                {
-                    return BamConf.Server.MainLogger;
-                }
-
-                return new NullLogger();
-            }
-        }
-
         Fs _appRoot;
         object _appRootLock = new object();
         [JsonIgnore]
@@ -254,6 +233,17 @@ namespace Bam.Net.Server
             }
         }
         
+        public string Setting(string settingName, string insteadIfNullOrEmpty)
+        {
+            AppSetting setting = AppSettings.Where(s => s.Name.Equals(settingName)).FirstOrDefault();
+            if(setting != null)
+            {
+                return setting.Value;
+            }
+            Logger.AddEntry("AppConf.AppSettings[{0}]: Setting Name ({0}), not found; using value ({1}) instead", LogEventType.Warning, settingName, insteadIfNullOrEmpty);
+            return insteadIfNullOrEmpty;
+        }
+
         public static string AppNameFromUri(Uri uri)
         {
             string fullDomainName = uri.Authority.DelimitSplit(":")[0].ToLowerInvariant();
@@ -271,16 +261,6 @@ namespace Bam.Net.Server
             return result;
         }
 
-        static Dictionary<string, string> _appNamesByDomAppId;
-        static object _domAppIdsSync = new object();
-        protected internal static Dictionary<string, string> AppNamesByDomAppId
-        {
-            get
-            {
-                return _domAppIdsSync.DoubleCheckLock(ref _appNamesByDomAppId, () => new Dictionary<string, string>());
-            }
-        }
-        
         /// <summary>
         /// Get the application id used in the dom by parsing the appName.
         /// </summary>
@@ -299,5 +279,42 @@ namespace Bam.Net.Server
 
             return result;
         }
+
+        public ILogger GetLogger() // methods don't serialize
+        {
+            return Logger;
+        }
+
+        internal BamConf BamConf
+        {
+            get;
+            set;
+        }
+
+        internal ILogger Logger
+        {
+            get
+            {
+                if (BamConf != null &&
+                    BamConf.Server != null &&
+                    BamConf.Server.MainLogger != null)
+                {
+                    return BamConf.Server.MainLogger;
+                }
+
+                return new NullLogger();
+            }
+        }
+
+        static Dictionary<string, string> _appNamesByDomAppId;
+        static object _domAppIdsSync = new object();
+        protected internal static Dictionary<string, string> AppNamesByDomAppId
+        {
+            get
+            {
+                return _domAppIdsSync.DoubleCheckLock(ref _appNamesByDomAppId, () => new Dictionary<string, string>());
+            }
+        }
+
     }
 }

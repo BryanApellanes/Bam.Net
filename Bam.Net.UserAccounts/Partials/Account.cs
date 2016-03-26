@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Configuration;
+using Bam.Net.Data;
 using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.UserAccounts.Data
@@ -18,7 +19,7 @@ namespace Bam.Net.UserAccounts.Data
         /// Token properties set
         /// </summary>
         /// <returns></returns>
-        public static Account Create(User user, string provider, string providerUserId, bool isConfirmed = false)
+        public static Account Create(User user, string provider, string providerUserId, bool isConfirmed = false, Database db = null)
         {
             DateTime now = DateTime.UtcNow;
             Account result = new Account();
@@ -35,7 +36,7 @@ namespace Bam.Net.UserAccounts.Data
             result.UserId = user.Id;
             result.Token = ServiceProxySystem.GenerateId();
             result.IsConfirmed = false;
-            result.Save();
+            result.Save(db);
             user.AccountsByUserId.Reload();
             return result;
         }

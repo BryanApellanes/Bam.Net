@@ -40,6 +40,26 @@ namespace Bam.Net
             _hashAlgorithms.Add(HashAlgorithms.SHA384, () => SHA384.Create());
             _hashAlgorithms.Add(HashAlgorithms.SHA512, () => SHA512.Create());
         }
+        
+        /// <summary>
+        /// Returns true if the string equals "true", "yes" or "1" using a case
+        /// insensitive comparison
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool IsAffirmative(this string value)
+        {
+            return value.Equals("true", StringComparison.InvariantCultureIgnoreCase) || 
+                value.Equals("yes", StringComparison.InvariantCultureIgnoreCase) ||
+                value.Equals("1");
+        }
+
+        public static bool IsNegative(this string value)
+        {
+            return value.Equals("false", StringComparison.InvariantCultureIgnoreCase) ||
+                value.Equals("no", StringComparison.InvariantCultureIgnoreCase) ||
+                value.Equals("0");
+        }
 
         /// <summary>
         /// Return a copy of the specified DateTime with milliseconds

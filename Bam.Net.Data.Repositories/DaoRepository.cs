@@ -389,7 +389,7 @@ namespace Bam.Net.Data.Repositories
 		{
 			return Query<object>(Bam.Net.Data.Query.Where(propertyName) == value);
 		}
-
+        
 		public override IEnumerable<T> Query<T>(Func<T, bool> predicate)
 		{
             WarnRetrieveAll<T>();
@@ -481,6 +481,12 @@ namespace Bam.Net.Data.Repositories
 				return false;
 			}
 		}
+
+        public IEnumerable<T> Query<T>(Expression<Func<T, bool>> expression) where T : new()
+        {
+            DaoExpressionFilter expressionFilter = new DaoExpressionFilter(Logger);
+            return Query<T>(expressionFilter.Where<T>(expression));
+        }
 
 		#region IDaoRepository Members
         

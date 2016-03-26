@@ -28,17 +28,17 @@ namespace Bam.Net.UserAccounts.Data
         {
             return Add(User.GetByUserNameOrDie(userName));
         }
-        public static Login Add(User user)
+        public static Login Add(User user, Database db = null)
         {
-            return Add(user.Id.Value);
+            return Add(user.Id.Value, db);
         }
 
-        public static Login Add(long userId)
+        public static Login Add(long userId, Database db = null)
         {
             Login result = new Login();
             result.UserId = userId;
             result.DateTime = new Instant().ToDateTime();
-            result.Save();
+            result.Save(db);
             return result;
         }
     }

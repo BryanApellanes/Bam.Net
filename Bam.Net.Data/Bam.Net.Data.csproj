@@ -135,6 +135,7 @@
     <Compile Include="DatabaseInfo.cs" />
     <Compile Include="DatabaseInitializationFailedException.cs" />
     <Compile Include="Db.cs" />
+    <Compile Include="Delete.cs" />
     <Compile Include="DoesntContainComparison.cs" />
     <Compile Include="DoesntEndWithComparison.cs" />
     <Compile Include="DoesntStartWithComparison.cs" />

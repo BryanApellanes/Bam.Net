@@ -12,6 +12,7 @@ using Bam.Net.ServiceProxy;
 using System.Web.Mvc;
 using Org.BouncyCastle.Security;
 using Bam.Net.Logging;
+using Bam.Net.Data;
 
 namespace Bam.Net.UserAccounts.Data
 {
@@ -37,14 +38,14 @@ namespace Bam.Net.UserAccounts.Data
             return session;
         }
 
-        public static Session Get(IHttpContext context)
+        public static Session Get(IHttpContext context, Database db = null)
         {
             Args.ThrowIfNull(context, "context");
             
-            return Get(context.Request, context.Response);    
+            return Get(context.Request, context.Response, db);    
         }
 
-        public static Session Get(IRequest request, IResponse response)
+        public static Session Get(IRequest request, IResponse response, Database db = null)
         {
             Cookie sessionIdCookie = request.Cookies[CookieName];
             Session session = null;
@@ -52,22 +53,22 @@ namespace Bam.Net.UserAccounts.Data
             if (sessionIdCookie != null)
             {
                 identifier = sessionIdCookie.Value;
-                session = Session.OneWhere(c => c.Identifier == identifier);
+                session = Session.OneWhere(c => c.Identifier == identifier, db);
             }
 
             if (session == null)
             {
-                session = Create(response, identifier);
+                session = Create(response, identifier, true, db);
             }
             else
             {
                 session.LastActivity = DateTime.UtcNow;
-                session.Save();
+                session.Save(db);
             }
             return session;
         }
 
-        public void End(ILogger logger = null) // TODO: Write unit test
+        public void End(Database db = null, ILogger logger = null) // TODO: Write unit test
         {
             try
             {
@@ -85,7 +86,7 @@ namespace Bam.Net.UserAccounts.Data
 
                 this.Identifier = this.Identifier + "-Ended";
                 this.IsActive = false;
-                this.Save();
+                this.Save(db);
             }
             catch (Exception ex)
             {
@@ -99,10 +100,10 @@ namespace Bam.Net.UserAccounts.Data
             set;
         }
 
-        public static Session Get(string userName, bool isActive = true)
+        public static Session Get(string userName, bool isActive = true, Database db = null)
         {
-            User user = User.GetByUserNameOrDie(userName);
-            return Get(user, isActive);
+            User user = User.GetByUserNameOrDie(userName, db);
+            return Get(user, isActive, db);
         }
 
         /// <summary>
@@ -112,7 +113,7 @@ namespace Bam.Net.UserAccounts.Data
         /// <param name="userName"></param>
         /// <param name="isActive"></param>
         /// <returns></returns>
-        public static Session Get(User user, bool isActive = true)
+        public static Session Get(User user, bool isActive = true, Database db = null)
         {
             Session session = user.SessionsByUserId.FirstOrDefault();
             DateTime now = DateTime.UtcNow;
@@ -128,13 +129,13 @@ namespace Bam.Net.UserAccounts.Data
                     session.IsActive = false;
                 }
 
-                session.Save();            
+                session.Save(db);            
             }
 
             return session;
         }
 
-        internal static Session Create(IResponse response, string identifier = "", bool isActive = true)
+        internal static Session Create(IResponse response, string identifier = "", bool isActive = true, Database db = null)
         {
             if (string.IsNullOrEmpty(identifier))
             {
@@ -148,7 +149,7 @@ namespace Bam.Net.UserAccounts.Data
             session.LastActivity = now;
             session.IsActive = isActive;
             session.UserId = User.Anonymous.Id;
-            session.Save();
+            session.Save(db);
 
             Cookie cookie = new Cookie(CookieName, session.Identifier);
             response.Cookies.Add(cookie);

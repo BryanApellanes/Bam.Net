@@ -15,6 +15,24 @@ namespace Bam.Net.UserAccounts
 {
     public class DaoUserResolver: IUserResolver
     {
+        Database _userDatabase;
+        public Database UserDatabase
+        {
+            get
+            {
+                if(_userDatabase == null)
+                {
+                    _userDatabase = Db.For<User>();
+                }
+                return _userDatabase;
+            }
+            set
+            {
+                _userDatabase = value;
+                Db.For<User>(_userDatabase);
+            }
+        }
+
         public string GetCurrentUser()
         {
             Session session = Session.Get(HttpContext);
@@ -33,11 +51,11 @@ namespace Bam.Net.UserAccounts
             SetUser(context, user, isAuthenticated);
         }
 
-        public void SetUser(IHttpContext context, User user, bool isAuthenticated)
+        public void SetUser(IHttpContext context, User user, bool isAuthenticated, Database db = null)
         {
             Session session = Session.Get(context);
             session.UserId = user.Id;
-            session.Save();
+            session.Save(db);
 
             context.User = new DaoPrincipal(user, isAuthenticated);
         }

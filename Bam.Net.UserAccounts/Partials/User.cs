@@ -60,6 +60,25 @@ namespace Bam.Net.UserAccounts.Data
             }
         }
 
+        static Database _userDatabase;
+        public static Database UserDatabase
+        {
+            get
+            {
+                if(_userDatabase == null)
+                {
+                    _userDatabase = Db.For<User>();
+                }
+
+                return _userDatabase;
+            }
+            set
+            {
+                _userDatabase = value;
+                Db.For<User>(_userDatabase);
+            }
+        }
+
         public static User GetCurrent(IHttpContext context)
         {
             User result = null;
@@ -95,9 +114,9 @@ namespace Bam.Net.UserAccounts.Data
             }
         }
 
-        public void AddLoginRecord()
+        public void AddLoginRecord(Database db = null)
         {
-            Login.Add(this);
+            Login.Add(this, db);
         }
 
         public DateTime LastAcitivtyDate
@@ -215,9 +234,9 @@ namespace Bam.Net.UserAccounts.Data
         /// </summary>
         /// <param name="userName"></param>
         /// <returns></returns>
-        public static User GetByUserNameOrDie(string userName)
+        public static User GetByUserNameOrDie(string userName, Database db = null)
         {
-            User user = User.GetByUserName(userName);
+            User user = User.GetByUserName(userName, db);
             if (user == null)
             {                
                 throw new UserNameNotFoundException(userName);
@@ -225,15 +244,15 @@ namespace Bam.Net.UserAccounts.Data
             return user;
         }
         
-        public static bool Exists(string userName)
+        public static bool Exists(string userName, Database db = null)
         {
             User ignore;
             return Exists(userName, out ignore);
         }
 
-        public static bool Exists(string userName, out User user)
+        public static bool Exists(string userName, out User user, Database db = null)
         {
-            user = GetByUserName(userName);
+            user = GetByUserName(userName, db);
             return user != null;
         }
 
@@ -244,12 +263,12 @@ namespace Bam.Net.UserAccounts.Data
         /// <param name="userName"></param>
         /// <param name="emailAddress"></param>
         /// <returns></returns>
-        public static User Ensure(string userName)
+        public static User Ensure(string userName, Database db = null)
         {
-            User user = GetByUserName(userName);
+            User user = GetByUserName(userName, db);
             if (user == null)
             {
-                user = User.Create(userName);
+                user = User.Create(userName, db);
             }
 
             return user;
@@ -260,9 +279,9 @@ namespace Bam.Net.UserAccounts.Data
         /// </summary>
         /// <param name="userName"></param>
         /// <returns></returns>
-        public static User GetByUserName(string userName)
+        public static User GetByUserName(string userName, Database db = null)
         {
-            return User.OneWhere(c => c.UserName == userName && c.IsDeleted != true);
+            return User.OneWhere(c => c.UserName == userName && c.IsDeleted != true, db);
         }
 
         /// <summary>
@@ -270,9 +289,9 @@ namespace Bam.Net.UserAccounts.Data
         /// </summary>
         /// <param name="email"></param>
         /// <returns></returns>
-        public static User GetByEmail(string email)
+        public static User GetByEmail(string email, Database database = null)
         {
-            return User.OneWhere(c => c.Email == email && c.IsDeleted != true);            
+            return User.OneWhere(c => c.Email == email && c.IsDeleted != true, database); 
         }
 
         public static User Create(string userName, string email, string password, bool isApproved = true, bool createAccount = false, bool accountIsConfirmed = false, bool sendConfirmationEmail = false)
@@ -280,33 +299,33 @@ namespace Bam.Net.UserAccounts.Data
             return Create(userName, email, password, DefaultConfigurationApplicationNameProvider.Instance, isApproved, createAccount, accountIsConfirmed);
         }
 
-        public static User Create(string userName, string email, string password, IApplicationNameProvider appNameResolver, bool isApproved = true, bool createAccount = false, bool accountIsConfirmed = false)
+        public static User Create(string userName, string email, string password, IApplicationNameProvider appNameResolver, bool isApproved = true, bool createAccount = false, bool accountIsConfirmed = false, Database db = null)
         {
-            ThrowIfUserNameInUse(userName);
-            ThrowIfEmailInUse(email);
+            ThrowIfUserNameInUse(userName, db);
+            ThrowIfEmailInUse(email, db);
 
-            User user = Create(userName, email, password, isApproved);
+            User user = Create(userName, email, password, isApproved, db);
 
             if (createAccount)
             {
-                Account.Create(user, appNameResolver.GetApplicationName(), user.Id.Value.ToString(), accountIsConfirmed);
+                Account.Create(user, appNameResolver.GetApplicationName(), user.Id.Value.ToString(), accountIsConfirmed, db);
             }
 
             return user;
         }
 
-        public static User Create(string userName)
+        public static User Create(string userName, Database db = null)
         {
             User user = new User();
             user.CreationDate = DateTime.UtcNow;
             user.UserName = userName;
             user.IsApproved = true;
             user.IsDeleted = false;
-            user.Save();
+            user.Save(db);
             return user;
         }
 
-        private static User Create(string userName, string email, string password, bool isApproved)
+        private static User Create(string userName, string email, string password, bool isApproved, Database db = null)
         {
             User user = new User();
             user.CreationDate = DateTime.UtcNow;
@@ -314,23 +333,23 @@ namespace Bam.Net.UserAccounts.Data
             user.Email = email;
             user.IsApproved = isApproved;
             user.IsDeleted = false;
-            user.Save();
-            Password p = Password.Set(userName, password);
+            user.Save(db);
+            Password p = Password.Set(userName, password, db);
             return user;
         }
 
-        private static void ThrowIfEmailInUse(string email)
+        private static void ThrowIfEmailInUse(string email, Database db = null)
         {
-            User byEmail = GetByEmail(email);
+            User byEmail = GetByEmail(email, db);
             if (byEmail != null)
             {
                 throw new EmailAlreadyRegisteredException(email);
             }
         }
 
-        private static void ThrowIfUserNameInUse(string userName)
+        private static void ThrowIfUserNameInUse(string userName, Database db = null)
         {
-            User byUserName = GetByUserName(userName);
+            User byUserName = GetByUserName(userName, db);
             if (byUserName != null)
             {
                 throw new UserNameInUseException(userName);
