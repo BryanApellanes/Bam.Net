@@ -93,7 +93,7 @@ namespace Bam.Net.Server.Tests
             Expect.IsTrue(response.Success);
             TestClass result = response.Data.FromJObject<TestClass>();
 
-            TestClass obj = repo.Query<TestClass>(o => o.StringProperty.Equals(testValue)).FirstOrDefault();
+            TestClass obj = repo.Query((Func<TestClass, bool>)(o => o.StringProperty.Equals(testValue))).FirstOrDefault();
 
             Expect.AreEqual(testValue, obj.StringProperty);
             Expect.AreEqual(testDateTime, obj.DateTimeProperty);
