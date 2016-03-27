@@ -12,6 +12,7 @@ using Bam.Net.Web;
 using Bam.Net.Incubation;
 using Bam.Net.Html;
 using System.Reflection;
+using Bam.Net.Logging;
 
 namespace Bam.Net.Server.Renderers
 {
@@ -20,9 +21,10 @@ namespace Bam.Net.Server.Renderers
         public AppDustRenderer(AppContentResponder appContent)
             : base(appContent.ContentResponder)
         {
-            this.AppContentResponder = appContent;
+            AppContentResponder = appContent;
+            Logger = appContent.Logger;
         }
-
+        
         public AppContentResponder AppContentResponder
         {
             get;
@@ -42,12 +44,15 @@ namespace Bam.Net.Server.Renderers
                 return _compiledDustTemplatesLock.DoubleCheckLock(ref _compiledDustTemplates, () =>
                 {
                     StringBuilder templates = new StringBuilder();
+                    Logger.AddEntry("AppDustRenderer::Appending compiled layout templates");
                     templates.AppendLine(CompiledLayoutTemplates);
+                    Logger.AddEntry("AppDustRenderer::Appending compiled common templates");
                     templates.AppendLine(CompiledCommonTemplates);
 
                     DirectoryInfo appDust = new DirectoryInfo(Path.Combine(AppContentResponder.AppRoot.Root, "views"));
                     string domAppName = AppConf.DomApplicationIdFromAppName(this.AppContentResponder.AppConf.Name);
-                    string appCompiledTemplates = DustScript.CompileDirectory(appDust, "*.dust", SearchOption.AllDirectories, domAppName + ".");
+                    Logger.AddEntry("AppDustRenderer::Compiling directory {0}", appDust.FullName);
+                    string appCompiledTemplates = DustScript.CompileDirectory(appDust, "*.dust", SearchOption.AllDirectories, domAppName + ".", Logger);
 
                     templates.Append(appCompiledTemplates);
                     return templates.ToString();

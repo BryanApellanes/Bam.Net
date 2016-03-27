@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.IO;
+using Bam.Net.Logging;
 
 namespace Bam.Net.Server.Renderers
 {
@@ -22,7 +23,20 @@ namespace Bam.Net.Server.Renderers
         {
             this.ContentResponder = content;
         }
-        
+
+        ILogger _logger;
+        public ILogger Logger
+        {
+            get
+            {
+                return _logger ?? Log.Default;
+            }
+            set
+            {
+                _logger = value;
+            }
+        }
+
         string _compiledDustTemplates;
         object _compiledDustTemplatesLock = new object();
         /// <summary>
@@ -61,7 +75,7 @@ namespace Bam.Net.Server.Renderers
                     StringBuilder templates = new StringBuilder();
                     DirectoryInfo layouts = new DirectoryInfo(Path.Combine(ContentResponder.Root, "common", "views", "layouts"));
 
-                    string compiledLayouts = DustScript.CompileDirectory(layouts, "*.dust");
+                    string compiledLayouts = DustScript.CompileDirectory(layouts.FullName, "*.dust", Logger);
 
                     templates.Append(compiledLayouts);
                     return templates.ToString();
@@ -84,7 +98,7 @@ namespace Bam.Net.Server.Renderers
                     StringBuilder templates = new StringBuilder();
                     DirectoryInfo common = new DirectoryInfo(Path.Combine(ContentResponder.Root, "common", "views"));
 
-                    string compiledCommon = DustScript.CompileDirectory(common, "*.dust");
+                    string compiledCommon = DustScript.CompileDirectory(common.FullName, "*.dust", Logger);
 
                     templates.Append(compiledCommon);
                     return templates.ToString();

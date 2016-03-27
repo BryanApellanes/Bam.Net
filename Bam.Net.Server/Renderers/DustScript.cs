@@ -11,6 +11,7 @@ using Bam.Net.ServiceProxy.Js;
 using J = Bam.Net.Javascript;
 using System.Text.RegularExpressions;
 using System.IO;
+using Bam.Net.Logging;
 
 namespace Bam.Net.Server.Renderers
 {
@@ -31,16 +32,18 @@ namespace Bam.Net.Server.Renderers
             return script.ToString();
         }
 
-        public static string CompileDirectory(string directoryPath, string fileSearchPattern = "*.dust")
+        public static string CompileDirectory(string directoryPath, string fileSearchPattern = "*.dust", ILogger logger = null)
         {
-            return CompileDirectory(new DirectoryInfo(directoryPath), fileSearchPattern);
+            return CompileDirectory(new DirectoryInfo(directoryPath), fileSearchPattern, SearchOption.TopDirectoryOnly, "", logger);
         }
 
-        public static string CompileDirectory(DirectoryInfo directory, string fileSearchPattern = "*.dust", SearchOption searchOption = SearchOption.TopDirectoryOnly, string templateNamePrefix = "")
+        public static string CompileDirectory(DirectoryInfo directory, string fileSearchPattern = "*.dust", SearchOption searchOption = SearchOption.TopDirectoryOnly, string templateNamePrefix = "", ILogger logger = null)
         {
             StringBuilder compiled = new StringBuilder();
+            logger = logger ?? Log.Default;
             if (directory.Exists)
             {
+                logger.AddEntry("DustScript::Compiling Dust Directory: {0}", directory.FullName);
                 FileInfo[] files = directory.GetFiles(fileSearchPattern, searchOption);                                
                 foreach (FileInfo file in files)
                 {
@@ -54,9 +57,12 @@ namespace Bam.Net.Server.Renderers
                         }
                     }
 
+                    string templateFullName = templateNamePrefix + templateName;
+                    logger.AddEntry("DustScript::Starting Dust compile: fileName={0}, templateName={1}", file.FullName, templateFullName);
                     compiled.Append(";\r\n");
-                    compiled.Append(new CompiledDustTemplate(file.FullName, templateNamePrefix + templateName));
+                    compiled.Append(new CompiledDustTemplate(file.FullName, templateFullName));
                     compiled.Append(";\r\n");
+                    logger.AddEntry("DustScript::Finished Dust compile: fileName={0}, templateName={1}", file.FullName, templateFullName);
                 }
             }
 
