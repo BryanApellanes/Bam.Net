@@ -47,7 +47,7 @@ namespace Bam.Net.Messaging.Tests
             string methodName = MethodBase.GetCurrentMethod().Name;
             EmailComposer composer = SetStringFormatComposerAndTestTemplate(methodName);
 
-            string templatePath = Path.Combine(composer.TemplateDirectory.FullName, "TestTemplate.txt");
+            string templatePath = Path.Combine(composer.TemplateDirectory.FullName, "TestTemplate.json");
             FileInfo templateFile = new FileInfo(templatePath);
             Expect.IsTrue(templateFile.Exists, "template wasn't written");
         }
