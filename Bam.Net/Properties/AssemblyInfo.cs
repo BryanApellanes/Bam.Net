@@ -38,5 +38,5 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("Bam.Net.Tests")]
 [assembly: InternalsVisibleTo("Bam.Net.Automation.Tests")]
 
-[assembly: AssemblyVersion("1.2.10")]
-[assembly: AssemblyFileVersion("1.2.10")]
+[assembly: AssemblyVersion("1.2.12")]
+[assembly: AssemblyFileVersion("1.2.12")]

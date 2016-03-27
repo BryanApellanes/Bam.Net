@@ -37,5 +37,5 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: InternalsVisibleTo("Stickerize.Tests")]
 [assembly: InternalsVisibleTo("Bam.Net.UserAccounts.Tests.Integration")]
-[assembly: AssemblyVersion("1.2.10")]
-[assembly: AssemblyFileVersion("1.2.10")]
+[assembly: AssemblyVersion("1.2.12")]
+[assembly: AssemblyFileVersion("1.2.12")]

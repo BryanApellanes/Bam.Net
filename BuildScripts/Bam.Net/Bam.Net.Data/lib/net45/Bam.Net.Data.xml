@@ -200,6 +200,11 @@
             <param name="obj"></param>
             <returns></returns>
         </member>
+        <member name="T:Bam.Net.Data.Filter">
+            <summary>
+            Convenience entry for contextually readable syntax; the same as Query
+            </summary>
+        </member>
         <member name="P:Bam.Net.Data.PagedQuery`2.PageSize">
             <summary>
             The number of records per page, default is 5

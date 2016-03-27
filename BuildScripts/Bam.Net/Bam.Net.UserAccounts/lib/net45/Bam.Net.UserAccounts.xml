@@ -4,6 +4,11 @@
         <name>Bam.Net.UserAccounts</name>
     </assembly>
     <members>
+        <member name="T:Bam.Net.UserAccounts.NullException">
+            <summary>
+            Not actually an exception
+            </summary>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.Group.GetUniqueFilter">
             <summary>
             Gets a query filter that should uniquely identify
@@ -52,7 +57,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.Group.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.Group.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;GroupColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.Group.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
             <summary>
             Get one entry matching the specified filter.  If none exists 
@@ -91,7 +105,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.Group.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.Group.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;GroupColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.Group.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.GroupColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -256,7 +279,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.GroupPermission.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.GroupPermission.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;GroupPermissionColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.GroupPermission.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
             <summary>
             Get one entry matching the specified filter.  If none exists 
@@ -295,7 +327,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.GroupPermission.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.GroupPermission.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;GroupPermissionColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.GroupPermission.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.GroupPermissionColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -460,7 +501,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.Account.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.Account.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;AccountColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.Account.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
             <summary>
             Get one entry matching the specified filter.  If none exists 
@@ -499,7 +549,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.Account.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.Account.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;AccountColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.Account.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.AccountColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -616,7 +675,7 @@
             </param>
             <param name="db"></param>
         </member>
-        <member name="M:Bam.Net.UserAccounts.Data.Account.Create(Bam.Net.UserAccounts.Data.User,System.String,System.String,System.Boolean)">
+        <member name="M:Bam.Net.UserAccounts.Data.Account.Create(Bam.Net.UserAccounts.Data.User,System.String,System.String,System.Boolean,Bam.Net.Data.Database)">
             <summary>
             Creates a new Confirmation with the Created and
             Token properties set
@@ -676,7 +735,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.LockOut.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.LockOut.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;LockOutColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.LockOut.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
             <summary>
             Get one entry matching the specified filter.  If none exists 
@@ -715,7 +783,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.LockOut.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.LockOut.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;LockOutColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.LockOut.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.LockOutColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -880,7 +957,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.Login.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.Login.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;LoginColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.Login.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
             <summary>
             Get one entry matching the specified filter.  If none exists 
@@ -919,7 +1005,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.Login.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.Login.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;LoginColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.Login.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.LoginColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -1084,7 +1179,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.Password.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.Password.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;PasswordColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.Password.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
             <summary>
             Get one entry matching the specified filter.  If none exists 
@@ -1123,7 +1227,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.Password.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.Password.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;PasswordColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.Password.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PasswordColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -1240,7 +1353,7 @@
             </param>
             <param name="db"></param>
         </member>
-        <member name="M:Bam.Net.UserAccounts.Data.Password.Set(Bam.Net.UserAccounts.Data.User,System.String)">
+        <member name="M:Bam.Net.UserAccounts.Data.Password.Set(Bam.Net.UserAccounts.Data.User,System.String,Bam.Net.Data.Database)">
             <summary>
             Saves the hash of the specified password
             </summary>
@@ -1296,7 +1409,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.PasswordFailure.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.PasswordFailure.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;PasswordFailureColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.PasswordFailure.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
             <summary>
             Get one entry matching the specified filter.  If none exists 
@@ -1335,7 +1457,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.PasswordFailure.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.PasswordFailure.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;PasswordFailureColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.PasswordFailure.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PasswordFailureColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -1500,7 +1631,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.PasswordQuestion.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.PasswordQuestion.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;PasswordQuestionColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.PasswordQuestion.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
             <summary>
             Get one entry matching the specified filter.  If none exists 
@@ -1539,7 +1679,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.PasswordQuestion.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.PasswordQuestion.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;PasswordQuestionColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.PasswordQuestion.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PasswordQuestionColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -1704,7 +1853,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.PasswordReset.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.PasswordReset.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;PasswordResetColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.PasswordReset.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
             <summary>
             Get one entry matching the specified filter.  If none exists 
@@ -1743,7 +1901,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.PasswordReset.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.PasswordReset.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;PasswordResetColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.PasswordReset.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PasswordResetColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -1916,7 +2083,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.Permission.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.Permission.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;PermissionColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.Permission.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
             <summary>
             Get one entry matching the specified filter.  If none exists 
@@ -1955,7 +2131,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.Permission.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.Permission.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;PermissionColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.Permission.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -2120,7 +2305,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.Role.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.Role.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;RoleColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.Role.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
             <summary>
             Get one entry matching the specified filter.  If none exists 
@@ -2159,7 +2353,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.Role.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.Role.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;RoleColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.Role.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.RoleColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -2324,7 +2527,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.Session.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.Session.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;SessionColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.Session.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
             <summary>
             Get one entry matching the specified filter.  If none exists 
@@ -2363,7 +2575,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.Session.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.Session.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;SessionColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.Session.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.SessionColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -2480,7 +2701,7 @@
             </param>
             <param name="db"></param>
         </member>
-        <member name="M:Bam.Net.UserAccounts.Data.Session.Get(Bam.Net.UserAccounts.Data.User,System.Boolean)">
+        <member name="M:Bam.Net.UserAccounts.Data.Session.Get(Bam.Net.UserAccounts.Data.User,System.Boolean,Bam.Net.Data.Database)">
             <summary>
             Get a Session instance for the specified userName, null will 
             be returned if it doesn't exist
@@ -2543,7 +2764,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.SessionState.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.SessionState.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;SessionStateColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.SessionState.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
             <summary>
             Get one entry matching the specified filter.  If none exists 
@@ -2582,7 +2812,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.SessionState.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.SessionState.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;SessionStateColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.SessionState.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.SessionStateColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -2747,7 +2986,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.Setting.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.Setting.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;SettingColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.Setting.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
             <summary>
             Get one entry matching the specified filter.  If none exists 
@@ -2786,7 +3034,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.Setting.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.Setting.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;SettingColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.Setting.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.SettingColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -2951,7 +3208,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.TreeNode.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;TreeNodeColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.TreeNode.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
             <summary>
             Get one entry matching the specified filter.  If none exists 
@@ -2990,7 +3256,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.TreeNode.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;TreeNodeColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.TreeNode.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -3155,7 +3430,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.User.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.User.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;UserColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.User.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
             <summary>
             Get one entry matching the specified filter.  If none exists 
@@ -3194,7 +3478,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.User.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.User.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;UserColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.User.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -3311,7 +3604,7 @@
             </param>
             <param name="db"></param>
         </member>
-        <member name="M:Bam.Net.UserAccounts.Data.User.GetByUserNameOrDie(System.String)">
+        <member name="M:Bam.Net.UserAccounts.Data.User.GetByUserNameOrDie(System.String,Bam.Net.Data.Database)">
             <summary>
             Get the User object for the specified userName or throw 
             an UserNameNotFoundException if they are not found
@@ -3319,7 +3612,7 @@
             <param name="userName"></param>
             <returns></returns>
         </member>
-        <member name="M:Bam.Net.UserAccounts.Data.User.Ensure(System.String)">
+        <member name="M:Bam.Net.UserAccounts.Data.User.Ensure(System.String,Bam.Net.Data.Database)">
             <summary>
             Ensures that the User with the specified userName 
             exists in the database
@@ -3328,14 +3621,14 @@
             <param name="emailAddress"></param>
             <returns></returns>
         </member>
-        <member name="M:Bam.Net.UserAccounts.Data.User.GetByUserName(System.String)">
+        <member name="M:Bam.Net.UserAccounts.Data.User.GetByUserName(System.String,Bam.Net.Data.Database)">
             <summary>
             Get the user with the specified userName or null if the user is not found
             </summary>
             <param name="userName"></param>
             <returns></returns>
         </member>
-        <member name="M:Bam.Net.UserAccounts.Data.User.GetByEmail(System.String)">
+        <member name="M:Bam.Net.UserAccounts.Data.User.GetByEmail(System.String,Bam.Net.Data.Database)">
             <summary>
             Get the user with the specified email address
             </summary>
@@ -3390,7 +3683,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.UserBehavior.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.UserBehavior.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;UserBehaviorColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserBehavior.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
             <summary>
             Get one entry matching the specified filter.  If none exists 
@@ -3429,7 +3731,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.UserBehavior.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.UserBehavior.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;UserBehaviorColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserBehavior.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserBehaviorColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -3594,7 +3905,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.UserGroup.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;UserGroupColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserGroup.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
             <summary>
             Get one entry matching the specified filter.  If none exists 
@@ -3633,7 +3953,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.UserGroup.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;UserGroupColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserGroup.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -3798,7 +4127,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.UserPermission.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;UserPermissionColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserPermission.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
             <summary>
             Get one entry matching the specified filter.  If none exists 
@@ -3837,7 +4175,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.UserPermission.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;UserPermissionColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserPermission.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -4002,7 +4349,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.UserRole.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.UserRole.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;UserRoleColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserRole.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
             <summary>
             Get one entry matching the specified filter.  If none exists 
@@ -4041,7 +4397,16 @@
             </param>
             <param name="database"></param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.UserRole.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.UserRole.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;UserRoleColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserRole.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserRoleColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -4177,6 +4542,46 @@
         <member name="F:Bam.Net.UserAccounts.UserManager.PasswordResetEmailName">
             <summary>
             The name of the password reset email template
+            </summary>
+        </member>
+        <member name="E:Bam.Net.UserAccounts.UserManager.ForgotPasswordSucceeded">
+            <summary>
+            The vent that is fired when someone logs in
+            </summary>
+        </member>
+        <member name="E:Bam.Net.UserAccounts.UserManager.ForgotPasswordFailed">
+            <summary>
+            The event that is fired when a login fails
+            </summary>
+        </member>
+        <member name="E:Bam.Net.UserAccounts.UserManager.LoginSucceeded">
+            <summary>
+            The vent that is fired when someone logs in
+            </summary>
+        </member>
+        <member name="E:Bam.Net.UserAccounts.UserManager.LoginFailed">
+            <summary>
+            The event that is fired when a login fails
+            </summary>
+        </member>
+        <member name="E:Bam.Net.UserAccounts.UserManager.SignUpSucceeded">
+            <summary>
+            The vent that is fired when someone signs up
+            </summary>
+        </member>
+        <member name="E:Bam.Net.UserAccounts.UserManager.SignUpFailed">
+            <summary>
+            The event that is fired when a sign up fails
+            </summary>
+        </member>
+        <member name="E:Bam.Net.UserAccounts.UserManager.SignOutSucceeded">
+            <summary>
+            The vent that is fired when someone signs up
+            </summary>
+        </member>
+        <member name="E:Bam.Net.UserAccounts.UserManager.SignOutFailed">
+            <summary>
+            The event that is fired when a sign up fails
             </summary>
         </member>
         <member name="T:Bam.Net.UserAccounts.DaoMembershipProvider">

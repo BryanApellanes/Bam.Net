@@ -230,6 +230,11 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
+        <member name="P:Bam.Net.Data.Repositories.DaoRepository.Namespace">
+            <summary>
+            The namespace to place generated classes into
+            </summary>
+        </member>
         <member name="P:Bam.Net.Data.Repositories.DaoRepository.MissingProperties">
             <summary>
             Returns true if the schema definition for the added types
@@ -237,7 +242,7 @@
             or missing foreign key columns (as represented by a property on the class)
             </summary>
         </member>
-        <member name="M:Bam.Net.Data.Repositories.DaoRepository.EnsureDaoAssembly">
+        <member name="M:Bam.Net.Data.Repositories.DaoRepository.EnsureDaoAssemblyAndSchema(System.Boolean)">
             <summary>
             Generates a Dao Assembly for the the underlying 
             storable types if it has not yet been generated
@@ -282,7 +287,33 @@
             Will not return null unless the specified pocoType
             is null.
             </summary>
-            <param name="pocoType"></param>
+            <param name="baseOrWrapperType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.DaoRepository.GetBaseType(System.Type)">
+            <summary>
+            Gets the base poco type by analyzing the naming convention
+            of the specified wrapperType
+            </summary>
+            <param name="wrapperType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.DaoRepository.Wrap``1(``0)">
+            <summary>
+            Wrap the specified base instance to enable lazy loading
+            of List or array properties
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="baseInstance"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.DaoRepository.Wrap(System.Type,System.Object)">
+            <summary>
+            Wrap the specified base instance to enable lazy loading 
+            of List or array properties
+            </summary>
+            <param name="baseType"></param>
+            <param name="instance"></param>
             <returns></returns>
         </member>
         <member name="M:Bam.Net.Data.Repositories.DaoRepository.SetParentProperties(System.Object)">
@@ -428,7 +459,9 @@
         </member>
         <member name="T:Bam.Net.Data.Repositories.TypeSchemaGenerator">
             <summary>
-            A class used to generate 
+            A class used to generate TypeSchemas.  A TypeSchema is 
+            a class that provides database schema like relationships
+            for CLR types.
             </summary>
         </member>
         <member name="E:Bam.Net.Data.Repositories.TypeSchemaGenerator.CreatingSchemaStarted">
@@ -575,12 +608,6 @@
             <summary>
             The property that represents the Parent
             Primary Key instance on the Foreign Key
-            </summary>
-        </member>
-        <member name="T:Bam.Net.Data.Repositories.EchoTypeTableNameProvider">
-            <summary>
-            A table name provider that just returns the name of the
-            type
             </summary>
         </member>
         <member name="T:Bam.Net.Data.Repositories.TypeXref">

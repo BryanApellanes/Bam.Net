@@ -278,6 +278,14 @@
             The primary responder for all content files
             </summary>
         </member>
+        <member name="M:Bam.Net.Server.BamServer.AddAppService``1(System.String,System.Func{System.Type,``0})">
+            <summary>
+            Add or update the app service using the specified instanciator
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="appName"></param>
+            <param name="instanciator"></param>
+        </member>
         <member name="M:Bam.Net.Server.BamServer.AddResponder(Bam.Net.Server.IResponder)">
             <summary>
             Add an IResponder implementation to this

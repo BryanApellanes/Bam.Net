@@ -747,7 +747,7 @@
         <member name="M:Bam.Net.Logging.Loggable.Subscribe(Bam.Net.Logging.Loggable)">
             <summary>
             Subscribe the current Loggables subscribers
-            to the specified Loggable
+            to the specified Loggable and vice versa
             </summary>
             <param name="loggable"></param>
         </member>
@@ -1573,6 +1573,14 @@
             <param name="objectToCheck"></param>
             <param name="failureMessage"></param>
         </member>
+        <member name="M:Bam.Net.Extensions.IsAffirmative(System.String)">
+            <summary>
+            Returns true if the string equals "true", "yes" or "1" using a case
+            insensitive comparison
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
         <member name="M:Bam.Net.Extensions.Trim(System.DateTime)">
             <summary>
             Return a copy of the specified DateTime with milliseconds
@@ -1805,6 +1813,17 @@
             <param name="arr"></param>
             <param name="func"></param>
             <returns>The result of each call to the specified function</returns>
+        </member>
+        <member name="M:Bam.Net.Extensions.DynamicConstruct``1(System.Type,System.Object[])">
+            <summary>
+            Construct an instance of the type using a dynamically defined and
+            compiled lambda.  This "should" replace existing Construct&lt;T&gt;
+            implementation after benchmarks prove this one is faster
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="type"></param>
+            <param name="ctorParams"></param>
+            <returns></returns>
         </member>
         <member name="M:Bam.Net.Extensions.Construct``1(System.Type,System.Object[])">
             <summary>
@@ -2290,6 +2309,15 @@
             </summary>
             <param name="destination"></param>
             <param name="source"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Extensions.DataClone``1(``0)">
+            <summary>
+            Clone the specified instance copying only properties
+            that are of represented in the Bam.Net.DataTypes enum
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="instance"></param>
             <returns></returns>
         </member>
         <member name="M:Bam.Net.Extensions.Combine(System.Object,System.Object[])">
