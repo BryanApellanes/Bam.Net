@@ -70,7 +70,7 @@ namespace Bam.Net.Server
         /// <returns></returns>
         public string GetTemplates()
         {
-          string appName = AppConf.AppNameFromUri(HttpContext.Request.Url);
+          string appName = AppConf.AppNameFromUri(HttpContext.Request.Url, BamConf.AppConfigs);
           Dictionary<string, AppContentResponder> appResponders = BamConf.Server.AppContentResponders;
           AppContentResponder app = appResponders[appName];
           return Regex.Unescape(app.AppDustRenderer.CompiledTemplates);

@@ -473,7 +473,7 @@ namespace Bam.Net.Server
             {
                 RequestWrapper request = context.Request as RequestWrapper;
                 ResponseWrapper response = context.Response as ResponseWrapper;
-                string appName = AppConf.AppNameFromUri(request.Url);
+                string appName = AppConf.AppNameFromUri(request.Url, BamConf.AppConfigs);
 
                 bool responded = false;
 
@@ -560,7 +560,7 @@ namespace Bam.Net.Server
 
         protected void SendJsProxyScript(IRequest request, IResponse response)
         {
-            string appName = AppConf.AppNameFromUri(request.Url);
+            string appName = AppConf.AppNameFromUri(request.Url, BamConf.AppConfigs);
 
             StringBuilder script = ServiceProxySystem.GenerateJsProxyScript(CommonServiceProvider, CommonServiceProvider.ClassNames);
             if (AppServiceProviders.ContainsKey(appName))
@@ -576,7 +576,7 @@ namespace Bam.Net.Server
 
         protected void SendCsProxyCode(IRequest request, IResponse response)
         {
-            string appName = AppConf.AppNameFromUri(request.Url);
+            string appName = AppConf.AppNameFromUri(request.Url, BamConf.AppConfigs);
             string defaultBaseAddress = ServiceProxySystem.GetBaseAddress(request.Url);
             string nameSpace = request.QueryString["namespace"] ?? "ServiceProxyClients";
             string contractNameSpace = "{0}.Contracts"._Format(nameSpace);

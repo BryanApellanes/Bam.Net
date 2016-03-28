@@ -520,7 +520,7 @@ namespace Bam.Net.Server
             string commonPath = Path.Combine("/common", path.TruncateFront(1));
 
             byte[] content = new byte[] { };
-            string appName = AppConf.AppNameFromUri(request.Url);
+            string appName = AppConf.AppNameFromUri(request.Url, BamConf.AppConfigs);
             if (AppContentResponders.ContainsKey(appName))
             {
                 handled = AppContentResponders[appName].TryRespond(context);

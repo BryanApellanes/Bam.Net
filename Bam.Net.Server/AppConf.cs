@@ -242,18 +242,22 @@ namespace Bam.Net.Server
             return insteadIfNullOrEmpty;
         }
 
-        public static string AppNameFromUri(Uri uri)
+        public static string AppNameFromUri(Uri uri, AppConf[] appConfigs = null)
         {
-            string fullDomainName = uri.Authority.DelimitSplit(":")[0].ToLowerInvariant();
-            string[] splitOnDots = fullDomainName.DelimitSplit(".");
-            string result = fullDomainName;
-            if (splitOnDots.Length == 2)
+            string result = AppNameFromBinding(uri, appConfigs);
+            if (string.IsNullOrEmpty(result))
             {
-                result = splitOnDots[0];
-            }
-            else if (splitOnDots.Length == 3)
-            {
-                result = splitOnDots[1];
+                string fullDomainName = uri.Authority.DelimitSplit(":")[0].ToLowerInvariant();
+                string[] splitOnDots = fullDomainName.DelimitSplit(".");
+                result = fullDomainName;
+                if (splitOnDots.Length == 2)
+                {
+                    result = splitOnDots[0];
+                }
+                else if (splitOnDots.Length == 3)
+                {
+                    result = splitOnDots[1];
+                }
             }
 
             return result;
@@ -314,5 +318,14 @@ namespace Bam.Net.Server
             }
         }
 
+        private static string AppNameFromBinding(Uri uri, AppConf[] configs)
+        {
+            AppConf conf = configs.Where(c => c.Bindings.Any(h => h.HostName.Equals(uri.Authority))).FirstOrDefault();
+            if (conf != null)
+            {
+                return conf.Name;
+            }
+            return string.Empty;
+        }
     }
 }
