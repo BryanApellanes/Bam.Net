@@ -361,22 +361,25 @@ namespace Bam.Net.Server
 
         private void ExtractBaseApp()
         {
-            string baseDirectory = Path.Combine(BamConf.ContentRoot, "apps", ApplicationName);
-            Assembly currentAssembly = Assembly.GetExecutingAssembly();
-            string[] resourceNames = currentAssembly.GetManifestResourceNames();
-            resourceNames.Each(rn =>
+            if (AppConf.ExtractBaseApp)
             {
-                bool isBase = Path.GetExtension(rn).ToLowerInvariant().Equals(".base");
-                if (isBase)
+                string baseDirectory = Path.Combine(BamConf.ContentRoot, "apps", ApplicationName);
+                Assembly currentAssembly = Assembly.GetExecutingAssembly();
+                string[] resourceNames = currentAssembly.GetManifestResourceNames();
+                resourceNames.Each(rn =>
                 {
-                    Stream zipStream = currentAssembly.GetManifestResourceStream(rn);
-                    ZipFile zipFile = ZipFile.Read(zipStream);
-                    zipFile.Each(entry =>
+                    bool isBase = Path.GetExtension(rn).ToLowerInvariant().Equals(".base");
+                    if (isBase)
                     {
-                        entry.Extract(baseDirectory, ExtractExistingFileAction.DoNotOverwrite);
-                    });
-                }
-            });
+                        Stream zipStream = currentAssembly.GetManifestResourceStream(rn);
+                        ZipFile zipFile = ZipFile.Read(zipStream);
+                        zipFile.Each(entry =>
+                        {
+                            entry.Extract(baseDirectory, ExtractExistingFileAction.DoNotOverwrite);
+                        });
+                    }
+                });
+            }
         }
     }
 }

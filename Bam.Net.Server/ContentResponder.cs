@@ -688,7 +688,6 @@ namespace Bam.Net.Server
                 InitializeFileSystem();
                 InitializeCommonTemplateRenderer();
                 InitializeAppResponders();
-                //InitializeApps();
 
                 OnInitialized();
             }

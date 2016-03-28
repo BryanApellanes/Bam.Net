@@ -162,11 +162,9 @@ namespace Bam.Net.Server
 
 		public bool RenderLayoutBody { get; set; }
 
-		public string[] ServiceSearchPattern
-		{
-			get;
-			set;
-		}
+		public string[] ServiceSearchPattern { get; set; }
+
+        public bool ExtractBaseApp { get; set; }
 
         List<string> _serviceTypeNames;
         public string[] ServiceTypeNames

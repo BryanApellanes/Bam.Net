@@ -30,6 +30,7 @@ AppConf is the application level configuration file for each application in a Ba
  - **DefaultLayout** - The name of the layout file to use for this application; layout files are found in ~/dust/layouts
  - **GenerateDao** - If true causes the BamServer to generate Data Access Objects from any &ast;.db.js or &ast;.db.json files that found recursively in the ~/apps/[applicationName]/dao directory
  - **CheckDaoHashes** - If true Data Access Objects will only be generated if the database definition files (&ast;.db.js or &ast;.db.json) have been modified
+ - **ExtractBaseApp** - If true causes the BamServer to extract files from the compiled resource placing them into the application; will not overwrite existing files
 
 Common Include.js (~/apps/include.js)
 ---
