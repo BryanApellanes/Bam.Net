@@ -89,14 +89,14 @@ namespace Bam.Net.UserAccounts
         private void SetAppNameProvider(UserManager mgr, ILogger logger)
         {
             Type appNameResolverType = Type.GetType(ApplicationNameResolverType);
+            Type defaultAppNameProvider = typeof(DefaultConfigurationApplicationNameProvider);
             if (appNameResolverType == null)
             {
-                logger.AddEntry("Specified ApplicationNameResolverType was not found, will use {0} instead: {1}", LogEventType.Warning, typeof(DefaultConfigurationApplicationNameProvider).Name, ApplicationNameResolverType);
+                appNameResolverType = defaultAppNameProvider;
+                logger.AddEntry("Specified ApplicationNameResolverType\r\n\r\n\t{0}\r\n\r\nwas not found, will use {1} instead", LogEventType.Warning, ApplicationNameResolverType, defaultAppNameProvider.FullName);
             }
-            else
-            {
-                mgr.ApplicationNameProvider = appNameResolverType.Construct<IApplicationNameProvider>();
-            }
+
+            mgr.ApplicationNameProvider = appNameResolverType.Construct<IApplicationNameProvider>();            
         }
     }
 }
