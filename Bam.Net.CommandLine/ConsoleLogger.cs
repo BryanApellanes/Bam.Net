@@ -77,34 +77,23 @@ namespace Bam.Net.CommandLine
         private StringBuilder GetTimeString(LogEvent logEvent)
         {
             StringBuilder time = new StringBuilder();
-            DateTime utc, local;
-            GetUtcAndLocalTimes(logEvent.Time, out utc, out local);
+            DateTime local = GetLocalTime(logEvent.Time);
             if (ShowTime)
             {
-                time.Append($"Time({local.ToString()} ms {local.Millisecond})");
-            }
-            if (time.Length > 0)
-            {
-                time.Insert(0, "[");
-                time.Append("]:");
+                time.Append($"[Time({local.ToString()} ms {local.Millisecond})]");
             }
 
             return time;
         }
 
-        private static void GetUtcAndLocalTimes(DateTime input, out DateTime utc, out DateTime local)
+        private static DateTime GetLocalTime(DateTime input)
         {
-            utc = input;
-            local = input;
-            switch (input.Kind)
+            DateTime local = input;
+            if(input.Kind == DateTimeKind.Utc)
             {
-                case DateTimeKind.Utc:
-                    local = input.ToLocalTime();
-                    break;
-                case DateTimeKind.Local:
-                    utc = input.ToUniversalTime();
-                    break;
+                local = input.ToLocalTime();
             }
+            return local;
         }
 
         private static void ShowDetails(LogEvent logEvent)
