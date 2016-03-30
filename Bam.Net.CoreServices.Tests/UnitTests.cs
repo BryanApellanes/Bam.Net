@@ -64,7 +64,7 @@ namespace Bam.Net.CoreServices.Tests
         [UnitTest]
         public void ShouldBeAbleToSetApiKeyResolver()
         {
-            ProxyFactory serviceFactory = new ProxyFactory(".\\workspace_".RandomLetters(4), logger);
+            ProxyFactory serviceFactory = new ProxyFactory(".\\workspace_".RandomLetters(4), Logger);
             EncryptedEcho echo = serviceFactory.GetProxy<EncryptedEcho>();
             ApiKeyResolver resolver = new ApiKeyResolver();
             echo.Property("ApiKeyResolver", resolver);

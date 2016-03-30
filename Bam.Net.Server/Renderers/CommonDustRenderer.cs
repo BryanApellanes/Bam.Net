@@ -64,7 +64,7 @@ namespace Bam.Net.Server.Renderers
         object _compiledLayoutTemplatesLock = new object();
         /// <summary>
         /// Represents the compiled javascript result of doing dust.compile
-        /// against all the files found in ~s:/dust/layouts.
+        /// against all the files found in ~s:/common/views/layouts.
         /// </summary>
         public virtual string CompiledLayoutTemplates
         {

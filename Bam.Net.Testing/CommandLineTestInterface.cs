@@ -24,7 +24,7 @@ namespace Bam.Net.Testing
 
         public const string UnitTestAttribute = "UnitTestAttribute";
 
-        protected static ILogger logger;
+        protected static ILogger Logger { get; set; }
 		public static LogEntryAddedListener MessageToConsole { get; set; }
         protected static bool interactive;
 
@@ -103,10 +103,12 @@ namespace Bam.Net.Testing
 
         protected static void InitLogger()
         {
-            logger = Log.CreateLogger(typeof(ConsoleLogger));
-            ((ConsoleLogger)logger).UseColors = true;
+            ConsoleLogger logger = (ConsoleLogger)Log.CreateLogger(typeof(ConsoleLogger));
+            logger.UseColors = true;
+            logger.ShowTime = true;
 			logger.StartLoggingThread();
             logger.EntryAdded += new LogEntryAddedListener(logger_EntryAdded);
+            Logger = logger;
         }
 
         /// <summary>
@@ -368,7 +370,7 @@ namespace Bam.Net.Testing
         /// <param name="message">The message text to output.</param>
         public static void Info(string messageSignature, params object[] signatureVariableValues)
         {
-            logger.AddEntry(messageSignature, ToStringArray(signatureVariableValues));
+            Logger.AddEntry(messageSignature, ToStringArray(signatureVariableValues));
         }
 
 
@@ -382,9 +384,9 @@ namespace Bam.Net.Testing
         /// <param name="message">The message text to output</param>
         public static void Warn(string messageSignature, params object[] signatureVariableValues)
         {
-            logger.AddEntry(messageSignature, LogEventType.Warning, ToStringArray(signatureVariableValues));
-            logger.BlockUntilEventQueueIsEmpty();
-            logger.RestartLoggingThread();
+            Logger.AddEntry(messageSignature, LogEventType.Warning, ToStringArray(signatureVariableValues));
+            Logger.BlockUntilEventQueueIsEmpty();
+            Logger.RestartLoggingThread();
         }
 
         public static void Error(string message, Exception ex)
@@ -398,9 +400,9 @@ namespace Bam.Net.Testing
         /// <param name="ex">The Exception that occurred.</param>
         public static void Error(string messageSignature, Exception ex, params object[] signatureVariableValues)
         {
-            logger.AddEntry(messageSignature, ex, ToStringArray(signatureVariableValues));
-            logger.BlockUntilEventQueueIsEmpty();
-            logger.RestartLoggingThread();
+            Logger.AddEntry(messageSignature, ex, ToStringArray(signatureVariableValues));
+            Logger.BlockUntilEventQueueIsEmpty();
+            Logger.RestartLoggingThread();
         }
 
         public static void Fatal(string message, Exception ex)
@@ -414,9 +416,9 @@ namespace Bam.Net.Testing
         /// <param name="ex">The Exception that occurred.</param>
         public static void Fatal(string messageSignature, Exception ex, params object[] signatureVariableValues)
         {
-            logger.AddEntry(messageSignature, LogEventType.Fatal, ex, ToStringArray(signatureVariableValues));
-            logger.BlockUntilEventQueueIsEmpty();
-            logger.RestartLoggingThread();
+            Logger.AddEntry(messageSignature, LogEventType.Fatal, ex, ToStringArray(signatureVariableValues));
+            Logger.BlockUntilEventQueueIsEmpty();
+            Logger.RestartLoggingThread();
             Exit(1);
         }
 

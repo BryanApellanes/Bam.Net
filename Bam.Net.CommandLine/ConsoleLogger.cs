@@ -16,12 +16,18 @@ namespace Bam.Net.CommandLine
         public ConsoleLogger()
             : base()
         {
-            this.AddDetails = true;
-            this.UseColors = true;
+            AddDetails = true;
+            UseColors = true;
+            ShowTime = true;
         }
 		
         public bool UseColors { get; set; }
         public bool AddDetails { get; set; }
+
+        /// <summary>
+        /// If true the Local time will prefix the output
+        /// </summary>
+        public bool ShowTime { get; set; }
 
         protected override StringBuilder HandleDetails(LogEvent ev)
         {
@@ -47,7 +53,7 @@ namespace Bam.Net.CommandLine
                 switch (logEvent.Severity)
                 {
                     case LogEventType.None:
-                        Console.ForegroundColor = ConsoleColor.Cyan;                        
+                        Console.ForegroundColor = ConsoleColor.Cyan;
                         break;
                     case LogEventType.Information:
                         Console.ForegroundColor = ConsoleColor.Cyan;
@@ -63,10 +69,42 @@ namespace Bam.Net.CommandLine
                         break;
                 }
             }
-            
-            
-            Console.WriteLine(logEvent.Message);
+            StringBuilder time = GetTimeString(logEvent);
+            Console.WriteLine($"{time.ToString()}{logEvent.Message}");
             Console.ResetColor();
+        }
+
+        private StringBuilder GetTimeString(LogEvent logEvent)
+        {
+            StringBuilder time = new StringBuilder();
+            DateTime utc, local;
+            GetUtcAndLocalTimes(logEvent.Time, out utc, out local);
+            if (ShowTime)
+            {
+                time.Append($"Time({local.ToString()} ms {local.Millisecond})");
+            }
+            if (time.Length > 0)
+            {
+                time.Insert(0, "[");
+                time.Append("]:");
+            }
+
+            return time;
+        }
+
+        private static void GetUtcAndLocalTimes(DateTime input, out DateTime utc, out DateTime local)
+        {
+            utc = input;
+            local = input;
+            switch (input.Kind)
+            {
+                case DateTimeKind.Utc:
+                    local = input.ToLocalTime();
+                    break;
+                case DateTimeKind.Local:
+                    utc = input.ToUniversalTime();
+                    break;
+            }
         }
 
         private static void ShowDetails(LogEvent logEvent)
