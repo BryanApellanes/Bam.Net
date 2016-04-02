@@ -63,19 +63,6 @@ namespace Bam.Net.Server
             get;
             private set;
         }
-		
-        /// <summary>
-        /// Called by client code to retrieve templates
-        /// </summary>
-        /// <returns></returns>
-        public string GetTemplates()
-        {
-          string appName = AppConf.AppNameFromUri(HttpContext.Request.Url, BamConf.AppConfigs);
-          Dictionary<string, AppContentResponder> appResponders = BamConf.Server.AppContentResponders;
-          AppContentResponder app = appResponders[appName];
-          return Regex.Unescape(app.AppDustRenderer.CompiledTemplates);
-        }
-
 
         public BamApplicationManagerResult GetSuccessWrapper(object toWrap, string methodName = "Unspecified")
         {

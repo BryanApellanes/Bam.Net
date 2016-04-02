@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Logging;
 using Bam.Net.Server;
+using Bam.Net.Server.Renderers;
 using Bam.Net.ServiceProxy;
 using Bam.Net.UserAccounts;
 
@@ -38,6 +40,16 @@ namespace Bam.Net.CoreServices
 
         [Exclude]
         public AppConf AppConf { get; protected set; }
+
+        public void Render(string templateName, object toRender, Stream output)
+        {
+            Args.ThrowIfNull(AppConf, "AppConf");
+            Args.ThrowIfNull(AppConf.BamConf, "AppConf.BamConf");
+            Args.ThrowIfNull(AppConf.BamConf.Server, "AppConf.BamConf.Server");
+            BamServer server = AppConf.BamConf.Server;
+            AppDustRenderer renderer = server.GetAppDustRenderer(AppConf.Name);
+            renderer.Render(templateName, toRender, output);
+        }
         protected internal UserManager GetUserManager()
         {
             if (_userManager == null)

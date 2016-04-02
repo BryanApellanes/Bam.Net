@@ -24,6 +24,7 @@ using Bam.Net.Server.Listeners;
 using Bam.Net.Data.Repositories;
 using Bam.Net.ServiceProxy.Secure;
 using System.Reflection;
+using Bam.Net.Server.Renderers;
 
 namespace Bam.Net.Server
 {
@@ -1005,6 +1006,20 @@ namespace Bam.Net.Server
             catch (Exception ex)
             {
                 ExceptionHandler(context, ex);                
+            }
+        }
+
+        public AppDustRenderer GetAppDustRenderer(string appName)
+        {
+            Dictionary<string, AppContentResponder> container = ContentResponder.AppContentResponders;
+            if (container.ContainsKey(appName))
+            {
+                return container[appName].AppDustRenderer;
+            }
+            else
+            {
+                MainLogger.AddEntry("Unable to retrieve AppDustRenderer for the specified app name: {0}", LogEventType.Warning, appName);
+                return null;
             }
         }
 

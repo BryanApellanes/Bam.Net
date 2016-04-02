@@ -41,7 +41,7 @@ namespace Bam.Net.Server.Renderers
         object _compiledDustTemplatesLock = new object();
         /// <summary>
         /// Represents the compiled javascript result of doing dust.compile
-        /// against all the files found in ~s:/dust.
+        /// against all the files found in ~s:/common/views.
         /// </summary>
         public virtual string CompiledTemplates
         {
