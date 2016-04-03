@@ -42,7 +42,19 @@ namespace Bam.Net.CoreServices
         public AppConf AppConf { get; protected set; }
 
         [Exclude]
-        public void Render(string templateName, object toRender, Stream output)
+        public void RenderApp(string templateName, object toRender, Stream output)
+        {
+            RenderCommon($"{AppConf.Name}.{templateName}", toRender, output);
+        }
+
+        [Exclude]
+        public void RenderApp(string templateName, object toRender, string filePath)
+        {
+            RenderCommon($"{AppConf.Name}.{templateName}", toRender, filePath);
+        }
+
+        [Exclude]
+        public void RenderCommon(string templateName, object toRender, Stream output)
         {
             Args.ThrowIfNull(AppConf, "AppConf");
             Args.ThrowIfNull(AppConf.BamConf, "AppConf.BamConf");
@@ -51,12 +63,12 @@ namespace Bam.Net.CoreServices
             AppDustRenderer renderer = server.GetAppDustRenderer(AppConf.Name);
             renderer.Render(templateName, toRender, output);
         }
-
+        
         [Exclude]
-        public void Render(string templateName, object toRender, string filePath)
+        public void RenderCommon(string templateName, object toRender, string filePath)
         {
             MemoryStream ms = new MemoryStream();
-            Render(templateName, toRender, ms);
+            RenderCommon(templateName, toRender, ms);
             ms.Flush();
             ms.Seek(0, SeekOrigin.Begin);
             using (StreamReader sr = new StreamReader(ms))
