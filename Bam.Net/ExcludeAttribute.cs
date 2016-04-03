@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Bam.Net.Data
+namespace Bam.Net
 {
     /// <summary>
     /// Use to exclude a method from being proxied or a property from 

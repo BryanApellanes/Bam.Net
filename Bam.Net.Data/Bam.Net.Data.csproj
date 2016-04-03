@@ -143,7 +143,6 @@
     <Compile Include="EndsWithComparison.cs" />
     <Compile Include="EnsureSchemaResult.cs" />
     <Compile Include="EnsureSchemaStatus.cs" />
-    <Compile Include="ExcludeAttribute.cs" />
     <Compile Include="DataExtensions.cs" />
     <Compile Include="DaoProxyResult.cs" />
     <Compile Include="ExpressionTypeNotSupportedException.cs" />

@@ -163,6 +163,7 @@
     <Compile Include="Encryption\RSAKeyValue.cs" />
     <Compile Include="ExceptionHandling\ExceptionArbiter.cs" />
     <Compile Include="ExceptionHandling\IArbitrateExceptions.cs" />
+    <Compile Include="ExcludeAttribute.cs" />
     <Compile Include="FileSystemWatchingExtensions.cs" />
     <Compile Include="GeneratedAssemblies.cs" />
     <Compile Include="GeneratedAssemblyInfo.cs" />

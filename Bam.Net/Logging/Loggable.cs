@@ -50,6 +50,7 @@ namespace Bam.Net.Logging
 		/// to the specified Loggable and vice versa
 		/// </summary>
 		/// <param name="loggable"></param>
+        [Exclude]
 		public virtual void Subscribe(Loggable loggable)
 		{
 			Subscribers.Each(logger =>
@@ -73,6 +74,7 @@ namespace Bam.Net.Logging
         /// Verbosity attribute
         /// </summary>
         /// <param name="logger"></param>
+        [Exclude]
         public virtual void Subscribe(ILogger logger)
         {
             lock (_subscriberLock)
@@ -130,6 +132,7 @@ namespace Bam.Net.Logging
         /// </summary>
         /// <param name="logger"></param>
         /// <returns></returns>
+        [Exclude]
         public bool IsSubscribed(ILogger logger)
         {
             return _subscribers.Contains(logger);

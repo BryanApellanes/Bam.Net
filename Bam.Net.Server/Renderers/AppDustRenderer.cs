@@ -31,8 +31,8 @@ namespace Bam.Net.Server.Renderers
             set;
         }
 
-        string _compiledDustTemplates;
-        object _compiledDustTemplatesLock = new object();
+        string _compiledTemplates;
+        object _compiledTemplatesLock = new object();
         /// <summary>
         /// All application compiled dust templates including Server level
         /// layouts, templates and app custom and type templates
@@ -41,7 +41,7 @@ namespace Bam.Net.Server.Renderers
         {
             get
             {
-                return _compiledDustTemplatesLock.DoubleCheckLock(ref _compiledDustTemplates, () =>
+                return _compiledTemplatesLock.DoubleCheckLock(ref _compiledTemplates, () =>
                 {
                     StringBuilder templates = new StringBuilder();
                     Logger.AddEntry("AppDustRenderer::Appending compiled layout templates");
@@ -50,11 +50,24 @@ namespace Bam.Net.Server.Renderers
                     templates.AppendLine(CompiledCommonTemplates);
 
                     DirectoryInfo appDust = new DirectoryInfo(Path.Combine(AppContentResponder.AppRoot.Root, "views"));
-                    string domAppName = AppConf.DomApplicationIdFromAppName(this.AppContentResponder.AppConf.Name);
-                    Logger.AddEntry("AppDustRenderer::Compiling directory {0}", appDust.FullName);
-                    string appCompiledTemplates = DustScript.CompileDirectory(appDust, "*.dust", SearchOption.AllDirectories, domAppName + ".", Logger);
+                    AppendTemplatesFromDirectory(appDust, templates);
+                    return templates.ToString();
+                });
+            }
+        }
 
-                    templates.Append(appCompiledTemplates);
+        string _compiledAppLayoutTemplates;
+        object _compiledAppLayoutTemplatesLock = new object();
+        public string CompiledAppLayoutTemplates
+        {
+            get
+            {
+                return _compiledAppLayoutTemplatesLock.DoubleCheckLock(ref _compiledAppLayoutTemplates, () =>
+                {
+                    StringBuilder templates = new StringBuilder();
+                    Logger.AddEntry("AppDustRenderer::[{0}] Compiling application layout templates", AppContentResponder.AppConf.Name);
+                    DirectoryInfo appDustLayouts = new DirectoryInfo(Path.Combine(AppContentResponder.AppRoot.Root, "views", "layouts"));
+                    AppendTemplatesFromDirectory(appDustLayouts, templates);
                     return templates.ToString();
                 });
             }
@@ -77,7 +90,7 @@ namespace Bam.Net.Server.Renderers
             string fullPath;
             if(!TemplateExists(anyType, templateName, out fullPath))
             {
-                lock(_compiledDustTemplatesLock)
+                lock(_compiledTemplatesLock)
                 {
                     object instance = anyType.Construct().ValuePropertiesToDynamic();
                     SetTemplateProperties(instance);
@@ -90,7 +103,7 @@ namespace Bam.Net.Server.Renderers
                     }
 
                     File.WriteAllText(fullPath, htm);
-                    _compiledDustTemplates = null; // forces reload
+                    _compiledTemplates = null; // forces reload
                 }
             }
         }
@@ -114,6 +127,15 @@ namespace Bam.Net.Server.Renderers
                     prop.SetValue(instance, "{" + prop.Name + "}", null);
                 }
             }
+        }
+
+        private void AppendTemplatesFromDirectory(DirectoryInfo appDust, StringBuilder templates)
+        {
+            string domAppName = AppConf.DomApplicationIdFromAppName(this.AppContentResponder.AppConf.Name);
+            Logger.AddEntry("AppDustRenderer::Compiling directory {0}", appDust.FullName);
+            string appCompiledTemplates = DustScript.CompileDirectory(appDust, "*.dust", SearchOption.AllDirectories, domAppName + ".", Logger);
+
+            templates.Append(appCompiledTemplates);
         }
     }
 }

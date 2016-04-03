@@ -302,6 +302,7 @@ namespace Bam.Net.Server
             if (AppConf.CompileTemplates)
             {
                 AppConf.AppRoot.WriteFile("~/compiledTemplates.js", Regex.Unescape(AppDustRenderer.CompiledTemplates));
+                AppConf.AppRoot.WriteFile("~/compiledAppLayoutTemplates.js", Regex.Unescape(AppDustRenderer.CompiledAppLayoutTemplates));
             }
         }
         private void WriteAppScripts()

@@ -41,6 +41,7 @@ namespace Bam.Net.CoreServices
         [Exclude]
         public AppConf AppConf { get; protected set; }
 
+        [Exclude]
         public void Render(string templateName, object toRender, Stream output)
         {
             Args.ThrowIfNull(AppConf, "AppConf");
@@ -51,6 +52,7 @@ namespace Bam.Net.CoreServices
             renderer.Render(templateName, toRender, output);
         }
 
+        [Exclude]
         public void Render(string templateName, object toRender, string filePath)
         {
             MemoryStream ms = new MemoryStream();
