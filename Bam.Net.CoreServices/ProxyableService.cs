@@ -50,11 +50,28 @@ namespace Bam.Net.CoreServices
             AppDustRenderer renderer = server.GetAppDustRenderer(AppConf.Name);
             renderer.Render(templateName, toRender, output);
         }
+
+        public void Render(string templateName, object toRender, string filePath)
+        {
+            MemoryStream ms = new MemoryStream();
+            Render(templateName, toRender, ms);
+            ms.Flush();
+            ms.Seek(0, SeekOrigin.Begin);
+            using (StreamReader sr = new StreamReader(ms))
+            {
+                using (StreamWriter sw = new StreamWriter(filePath))
+                {
+                    sw.Write(sr.ReadToEnd());
+                }
+            }
+        }
+
         protected internal UserManager GetUserManager()
         {
             if (_userManager == null)
             {
                 _userManager = AppConf.UserManager.Create(AppConf.Logger);
+                _userManager.ApplicationNameProvider = new BamApplicationNameProvider(AppConf);
             }
             UserManager copy = _userManager.Clone();
             copy.HttpContext = HttpContext;

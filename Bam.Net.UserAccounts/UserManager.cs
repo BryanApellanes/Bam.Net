@@ -157,7 +157,7 @@ namespace Bam.Net.UserAccounts
         [Exclude]
         public Exception LastException { get; set; }
 
-        protected internal IApplicationNameProvider ApplicationNameProvider
+        public IApplicationNameProvider ApplicationNameProvider
         {
             get
             {
@@ -497,7 +497,11 @@ namespace Bam.Net.UserAccounts
                 return GetFailure<SignUpResponse>(ex);
             }
         }
-
+        /// <summary>
+        /// The vent that is fired when someone signs up
+        /// </summary>
+        [Verbosity(VerbosityLevel.Information, MessageFormat = "{ApplicationName}::{UserName}:: SignOutStarted")]
+        public event EventHandler SignOutStarted;
         /// <summary>
         /// The vent that is fired when someone signs up
         /// </summary>
@@ -522,7 +526,7 @@ namespace Bam.Net.UserAccounts
 
                     response.Cookies.Add(cookie);
                 }
-
+                FireEvent(SignOutStarted);
                 Session.End(Database);
                 FireEvent(SignOutSucceeded);
                 return GetSuccess<SignOutResponse>("Sign out successful");

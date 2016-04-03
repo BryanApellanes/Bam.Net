@@ -64,15 +64,15 @@ namespace Bam.Net.Server
             private set;
         }
 
-        public BamApplicationManagerResult GetSuccessWrapper(object toWrap, string methodName = "Unspecified")
+        public BamApplicationManagerResult GetSuccessWrapper(string appName, object toWrap, string methodName = "Unspecified")
         {
-            Logger.AddEntry("Success::{0}", methodName);
+            Logger.AddEntry("{0}::Success::{1}", appName, methodName);
             return new BamApplicationManagerResult(true, "", toWrap);
         }
 
-        public BamApplicationManagerResult GetErrorWrapper(Exception ex, bool stack = true, string methodName = "Unspecified")
+        public BamApplicationManagerResult GetErrorWrapper(string appName, Exception ex, bool stack = true, string methodName = "Unspecified")
         {
-            Logger.AddEntry("Error::{0}\r\n***{1}\r\n***", ex, methodName, ex.Message);
+            Logger.AddEntry("{0}::Error::{1}\r\n***{1}\r\n***", ex, appName, methodName, ex.Message);
             string message = GetMessage(ex, stack);
             return new BamApplicationManagerResult(false, message, null);
         }
@@ -86,11 +86,11 @@ namespace Bam.Net.Server
         {
             try
             {
-                return GetSuccessWrapper(GetPageNamesFromDomAppId(appName), MethodBase.GetCurrentMethod().Name);
+                return GetSuccessWrapper(appName, GetPageNamesFromDomAppId(appName), MethodBase.GetCurrentMethod().Name);
             }
             catch (Exception ex)
             {
-                return GetErrorWrapper(ex, true, MethodBase.GetCurrentMethod().Name);
+                return GetErrorWrapper(appName, ex, true, MethodBase.GetCurrentMethod().Name);
             }
         }
 		
@@ -98,11 +98,11 @@ namespace Bam.Net.Server
         {
             try
             {
-                return GetSuccessWrapper(GetBookByAppAndPage(appName, pageName), MethodBase.GetCurrentMethod().Name);
+                return GetSuccessWrapper(appName, GetBookByAppAndPage(appName, pageName), MethodBase.GetCurrentMethod().Name);
             }
             catch (Exception ex)
             {
-                return GetErrorWrapper(ex, true, MethodBase.GetCurrentMethod().Name);
+                return GetErrorWrapper(appName, ex, true, MethodBase.GetCurrentMethod().Name);
             }
         }
 

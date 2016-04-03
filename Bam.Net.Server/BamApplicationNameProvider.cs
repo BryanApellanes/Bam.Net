@@ -10,9 +10,9 @@ using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.Server
 {
-    public class AppConfApplicationNameProvider: IApplicationNameProvider
+    public class BamApplicationNameProvider: IApplicationNameProvider
     {
-        public AppConfApplicationNameProvider(AppConf conf)
+        public BamApplicationNameProvider(AppConf conf)
         {
             this.Conf = conf;
         }

@@ -121,7 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppConf.cs" />
-    <Compile Include="AppConfApplicationNameProvider.cs" />
+    <Compile Include="BamApplicationNameProvider.cs" />
     <Compile Include="AppContentResponder.cs" />
     <Compile Include="AppInitializerBase.cs" />
     <Compile Include="Bam.cs" />

@@ -618,9 +618,9 @@ namespace Bam.Net.Data.Repositories
 			return (T)ConstructWrapper(typeof(T));
 		}
 
-		public object ConstructWrapper(Type pocoType)
+		public object ConstructWrapper(Type baseType)
 		{
-			Type wrapperType = GetWrapperType(pocoType);
+			Type wrapperType = GetWrapperType(baseType);
 			ConstructorInfo ctor = wrapperType.GetConstructor(new Type[] { typeof(DaoRepository) });
 			object result = null;
 			if (ctor == null)
@@ -630,7 +630,7 @@ namespace Bam.Net.Data.Repositories
 				{
 					Args.Throw<InvalidOperationException>(
 						"The specified type {0} doesn't have a parameterless constructor and no constructor taking a single parameter of type {1}",
-						pocoType.FullName, typeof(DaoRepository).FullName);
+						baseType.FullName, typeof(DaoRepository).FullName);
 				}
 
 				result = ctor.Invoke(new object[] { });
