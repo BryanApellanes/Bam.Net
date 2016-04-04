@@ -1009,12 +1009,12 @@ namespace Bam.Net.Server
             }
         }
 
-        public AppDustRenderer GetAppDustRenderer(string appName)
+        public ITemplateRenderer GetAppTemplateRenderer(string appName)
         {
             Dictionary<string, AppContentResponder> container = ContentResponder.AppContentResponders;
             if (container.ContainsKey(appName))
             {
-                return container[appName].AppDustRenderer;
+                return container[appName].AppTemplateRenderer;
             }
             else
             {

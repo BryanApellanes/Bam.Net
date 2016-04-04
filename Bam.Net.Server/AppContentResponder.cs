@@ -32,7 +32,7 @@ namespace Bam.Net.Server
             this.ServerRoot = serverRoot.ServerRoot;
             this.AppConf = new AppConf(serverRoot.BamConf, appName);
             this.AppRoot = this.AppConf.AppRoot;
-            this.AppDustRenderer = new AppDustRenderer(this);
+            this.AppTemplateRenderer = new AppDustRenderer(this);
             this.UseCache = serverRoot.UseCache;
             this.AppContentLocator = ContentLocator.Load(this);
             this.CommonContentLocator = ContentLocator.Load(ServerRoot);
@@ -52,7 +52,7 @@ namespace Bam.Net.Server
             this.ServerRoot = serverRoot.ServerRoot;
             this.AppConf = conf;
             this.AppRoot = this.AppConf.AppRoot;
-            this.AppDustRenderer = new AppDustRenderer(this);
+            this.AppTemplateRenderer = new AppDustRenderer(this);
             this.UseCache = serverRoot.UseCache;
             this.AppContentLocator = ContentLocator.Load(this);
             Fs commonRoot = new Fs(new DirectoryInfo(Path.Combine(ServerRoot.Root, CommonFolder)));
@@ -93,7 +93,7 @@ namespace Bam.Net.Server
             private set;
         }
 
-        public AppDustRenderer AppDustRenderer
+        public ITemplateRenderer AppTemplateRenderer
         {
             get;
             private set;
@@ -180,9 +180,9 @@ namespace Bam.Net.Server
             if (string.IsNullOrEmpty(ext) && !ShouldIgnore(path) ||
                 (AppRoot.FileExists("~/pages{0}.html"._Format(path))))
             {
-                CommonTemplateRenderer.SetContentType(response);
+                AppTemplateRenderer.SetContentType(response);
                 MemoryStream ms = new MemoryStream();
-                CommonTemplateRenderer.RenderLayout(GetLayoutModelForPath(path), ms);
+                AppTemplateRenderer.RenderLayout(GetLayoutModelForPath(path), ms);
                 ms.Seek(0, SeekOrigin.Begin);
                 content = ms.GetBuffer();
                 result = true;
@@ -301,8 +301,7 @@ namespace Bam.Net.Server
         {
             if (AppConf.CompileTemplates)
             {
-                AppConf.AppRoot.WriteFile("~/compiledTemplates.js", Regex.Unescape(AppDustRenderer.CompiledTemplates));
-                AppConf.AppRoot.WriteFile("~/compiledAppLayoutTemplates.js", Regex.Unescape(AppDustRenderer.CompiledAppLayoutTemplates));
+                AppConf.AppRoot.WriteFile("~/compiledTemplates.js", Regex.Unescape(AppTemplateRenderer.CompiledTemplates));
             }
         }
         private void WriteAppScripts()

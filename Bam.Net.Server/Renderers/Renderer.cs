@@ -58,5 +58,7 @@ namespace Bam.Net.Server.Renderers
             SetContentType(response);
             Render(toRender, response.OutputStream);
         }
+
+        public virtual void EnsureDefaultTemplate(Type type) { }
     }
 }

@@ -60,7 +60,7 @@ namespace Bam.Net.CoreServices
             Args.ThrowIfNull(AppConf.BamConf, "AppConf.BamConf");
             Args.ThrowIfNull(AppConf.BamConf.Server, "AppConf.BamConf.Server");
             BamServer server = AppConf.BamConf.Server;
-            AppDustRenderer renderer = server.GetAppDustRenderer(AppConf.Name);
+            ITemplateRenderer renderer = server.GetAppTemplateRenderer(AppConf.Name);
             renderer.Render(templateName, toRender, output);
         }
         

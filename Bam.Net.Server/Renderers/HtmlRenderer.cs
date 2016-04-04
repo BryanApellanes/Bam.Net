@@ -53,7 +53,7 @@ namespace Bam.Net.Server.Renderers
                 {
                     Type typeToRender = toRender.GetType();
                     prefix = "{0}_"._Format(typeToRender.Name);
-                    AppDustRenderer dustRenderer = ContentResponder.AppContentResponders[AppName].AppDustRenderer;
+                    ITemplateRenderer dustRenderer = ContentResponder.AppContentResponders[AppName].AppTemplateRenderer;
                     dustRenderer.EnsureDefaultTemplate(typeToRender);
                 }
                 AppContentResponder appContentResponder = ContentResponder.AppContentResponders[AppName];
@@ -75,7 +75,7 @@ namespace Bam.Net.Server.Renderers
         public override void Render(object toRender, Stream output)
         {
             AppContentResponder appContentResponder = ContentResponder.AppContentResponders[AppName];
-            AppDustRenderer dustRenderer = appContentResponder.AppDustRenderer;
+            ITemplateRenderer dustRenderer = appContentResponder.AppTemplateRenderer;
             string templateName = GetTemplateName(toRender);
             string templates = dustRenderer.CompiledTemplates;            
             string result = DustScript.Render(templates, templateName, toRender);

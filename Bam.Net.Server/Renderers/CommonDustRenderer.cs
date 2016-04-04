@@ -74,9 +74,7 @@ namespace Bam.Net.Server.Renderers
                 {
                     StringBuilder templates = new StringBuilder();
                     DirectoryInfo layouts = new DirectoryInfo(Path.Combine(ContentResponder.Root, "common", "views", "layouts"));
-
                     string compiledLayouts = DustScript.CompileDirectory(layouts.FullName, "*.dust", Logger);
-
                     templates.Append(compiledLayouts);
                     return templates.ToString();
                 });

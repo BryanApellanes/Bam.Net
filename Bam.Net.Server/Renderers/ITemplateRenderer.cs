@@ -10,10 +10,11 @@ namespace Bam.Net.Server.Renderers
 		void SetContentType(IResponse response);
 		string CompiledCommonTemplates { get; }
 		string CompiledLayoutTemplates { get; }
-		string CompiledTemplates { get; }
+        string CompiledTemplates { get; }
 		ContentResponder ContentResponder { get; set; }
 		void Render(object toRender, System.IO.Stream output);
 		void Render(string templateName, object toRender, System.IO.Stream output);
 		void RenderLayout(LayoutModel toRender, System.IO.Stream output);
+        void EnsureDefaultTemplate(Type type);
 	}
 }

@@ -56,18 +56,23 @@ namespace Bam.Net.Server.Renderers
             }
         }
 
-        string _compiledAppLayoutTemplates;
-        object _compiledAppLayoutTemplatesLock = new object();
-        public string CompiledAppLayoutTemplates
+        string _compiledLayoutTemplates;
+        object _compiledLayoutTemplatesLock = new object();
+        /// <summary>
+        /// Represents the compiled javascript result of doing dust.compile
+        /// against all the files found in ~s:/common/views/layouts.
+        /// </summary>
+        public override string CompiledLayoutTemplates
         {
             get
             {
-                return _compiledAppLayoutTemplatesLock.DoubleCheckLock(ref _compiledAppLayoutTemplates, () =>
+                return _compiledLayoutTemplatesLock.DoubleCheckLock(ref _compiledLayoutTemplates, () =>
                 {
                     StringBuilder templates = new StringBuilder();
-                    Logger.AddEntry("AppDustRenderer::[{0}] Compiling application layout templates", AppContentResponder.AppConf.Name);
-                    DirectoryInfo appDustLayouts = new DirectoryInfo(Path.Combine(AppContentResponder.AppRoot.Root, "views", "layouts"));
-                    AppendTemplatesFromDirectory(appDustLayouts, templates);
+                    DirectoryInfo layouts = new DirectoryInfo(Path.Combine(AppContentResponder.AppRoot.Root, "views", "layouts"));
+                    string compiledLayouts = DustScript.CompileDirectory(layouts.FullName, "*.dust", Logger);
+                    templates.Append(compiledLayouts);
+                    templates.Append(base.CompiledLayoutTemplates);
                     return templates.ToString();
                 });
             }
