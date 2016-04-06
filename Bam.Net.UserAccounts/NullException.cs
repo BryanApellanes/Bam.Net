@@ -11,6 +11,6 @@ namespace Bam.Net.UserAccounts
     /// </summary>
     public class NullException: Exception
     {
-        public NullException() : base("Not actually an exception") { }
+        public NullException() : base(string.Empty) { }
     }
 }

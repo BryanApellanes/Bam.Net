@@ -13,6 +13,13 @@ namespace Bam.Net.CoreServices
             return response.TypedData();
         }
 
+        public ServiceResponse() { }
+        public ServiceResponse(T value)
+        {
+            Data = value;
+            Data = TypedData();
+        }
+
         public T TypedData()
         {
             T t = new T();

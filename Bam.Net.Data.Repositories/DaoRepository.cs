@@ -802,6 +802,14 @@ namespace Bam.Net.Data.Repositories
 			return null;
 		}
 
+        public T Construct<T>() where T : RepoData, new()
+        {
+            T result = new T();
+            result.Created = DateTime.UtcNow;
+            result.Modified = result.Created;
+            return result;
+        }
+
 		/// <summary>
 		/// Get the PropertyInfo that represents the parent object instance for the specified
 		/// TypeFk

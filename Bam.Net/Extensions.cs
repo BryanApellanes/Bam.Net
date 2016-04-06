@@ -1491,6 +1491,13 @@ namespace Bam.Net
             return result;
         }
 
+        /// <summary>
+        /// Append the specified toAppend string to the current
+        /// string
+        /// </summary>
+        /// <param name="current"></param>
+        /// <param name="toAppend"></param>
+        /// <returns></returns>
         public static string Plus(this string current, string toAppend)
         {
             StringBuilder sb = new StringBuilder(current);
@@ -1513,6 +1520,12 @@ namespace Bam.Net
         public static string And(this string current, string toAppendFormat, params object[] args)
         {
             return current.Plus(toAppendFormat, args);
+        }
+
+        public static string ToMonthName(this int oneThroughTwelve)
+        {
+            Args.ThrowIf(oneThroughTwelve < 1 || oneThroughTwelve > 12, "Specified month number must be from 1 to 12: value specified ({0})", oneThroughTwelve.ToString());
+            return new DateTime(1, oneThroughTwelve, 1).ToString("MMMM");
         }
 
         /// <summary>
@@ -1743,17 +1756,17 @@ namespace Bam.Net
             return path.ToString();
         }
 
-        public static Dictionary<TKey, TSource> ToDictionary<TSource, TKey>(this IEnumerable source, Func<TSource, TKey> keySelector)
-        {
-            Dictionary<TKey, TSource> result = new Dictionary<TKey, TSource>();
-            foreach (object o in source)
-            {
-                TSource s = (TSource)o;
-                result.Add(keySelector(s), s);
-            }
+        //public static Dictionary<TKey, TSource> ToDictionary<TSource, TKey>(this IEnumerable source, Func<TSource, TKey> keySelector)
+        //{
+        //    Dictionary<TKey, TSource> result = new Dictionary<TKey, TSource>();
+        //    foreach (object o in source)
+        //    {
+        //        TSource s = (TSource)o;
+        //        result.Add(keySelector(s), s);
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
         public static Dictionary<string, object> PropertiesToDictionary(this object value)
         {

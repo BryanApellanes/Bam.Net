@@ -108,10 +108,21 @@ namespace Bam.Net.UserAccounts
             }
         }
 
+        Vault _smtpSettingsVault;
         protected internal Vault SmtpSettingsVault
         {
-            get;
-            set;
+            get
+            {
+                if(_smtpSettingsVault == null)
+                {
+                    _smtpSettingsVault = Vault.Load(SmtpSettingsVaultPath, "SmtpSettings");
+                }
+                return _smtpSettingsVault;
+            }
+            set
+            {
+                _smtpSettingsVault = value;
+            }
         }
 
         string _smtpSettingsVaultPath;
@@ -125,8 +136,6 @@ namespace Bam.Net.UserAccounts
             set
             {
                 _smtpSettingsVaultPath = value;
-                FileInfo file = new FileInfo(_smtpSettingsVaultPath);
-                SmtpSettingsVault = Vault.Load(file, "SmtpSettings");
             }
         }
 

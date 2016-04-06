@@ -83,10 +83,10 @@ namespace Bam.Net.Encryption
 
             }
         }
-
+        
         public static Vault Load(string filePath, string name)
         {
-            return Load(new FileInfo(filePath), name);
+            return Load(new FileInfo(filePath), name);            
         }
 
         public static Vault Load(FileInfo file, string name)
@@ -94,15 +94,21 @@ namespace Bam.Net.Encryption
             return Load(file, name, "".RandomLetters(16)); // password will only be used if the file doesn't exist
         }
 
+        static Dictionary<string, Vault> _loadedVaults = new Dictionary<string, Vault>();
         public static Vault Load(FileInfo file, string name, string password, ILogger logger = null)
         {
-            if (logger == null)
+            string key = $"{file.FullName}.{name}";
+            if (!_loadedVaults.ContainsKey(key))
             {
-                logger = Log.Default;
+                if (logger == null)
+                {
+                    logger = Log.Default;
+                }
+                Database db = InitializeDatabase(file.FullName, logger);
+                _loadedVaults.Add(key, Retrieve(db, name, password));
             }
 
-            Database db = InitializeDatabase(file.FullName, logger);
-            return Retrieve(db, name, password);
+            return _loadedVaults[key];
         }
 
         public static Vault Retrieve(string name)
