@@ -257,6 +257,12 @@ namespace Bam.Net.Data.Repositories
 			}
 		}
 
+        /// <summary>
+        /// Convert the specified instance to it's dynamic
+        /// json safe representation
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <returns></returns>
         public object ToDto(object instance)
         {
             Type daoType = GetDaoType(instance.GetType());
