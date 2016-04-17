@@ -213,24 +213,24 @@ namespace Bam.Net.Data.Repositories
         /// </summary>
         /// <returns></returns>
 		public Assembly EnsureDaoAssemblyAndSchema(bool useExisting = true)
-		{
+        {
+            MultiTargetLogger logger = new MultiTargetLogger();
             if (_daoAssembly == null)
             {
                 GenerateDaoAssembly(useExisting);
-                MultiTargetLogger logger = new MultiTargetLogger();
                 Subscribers.Each(l => logger.AddLogger(l));
                 EmitWarnings();
                 ThrowWarningsIfWarningsAsErrors();
-                Args.ThrowIfNull(Database, "Database");
-                if(_schemaStatus == EnsureSchemaStatus.Invalid || // not done
-                    _schemaStatus == EnsureSchemaStatus.Error) // failed
-                {
-                    _schemaStatus = Database.TryEnsureSchema(_daoAssembly.GetTypes().First(type => type.HasCustomAttributeOfType<TableAttribute>()), logger);
-                }
+            }
+            Args.ThrowIfNull(Database, "Database");
+            if (_schemaStatus == EnsureSchemaStatus.Invalid || // not done
+                _schemaStatus == EnsureSchemaStatus.Error) // failed
+            {
+                _schemaStatus = Database.TryEnsureSchema(_daoAssembly.GetTypes().First(type => type.HasCustomAttributeOfType<TableAttribute>()), logger);
             }
 
             return _daoAssembly;
-		}
+        }
 
         public Assembly GenerateDaoAssembly(bool useExisting = true)
         {

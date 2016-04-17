@@ -54,6 +54,11 @@ namespace Bam.Net.Data.Repositories
 			AddTypes(assembly.GetTypes().Where(t => t.Namespace != null && t.Namespace.Equals(nameSpace) && !t.IsAbstract).ToArray());
 		}
 
+        public Task<T> SaveAsync<T>(T toSave) where T : class, new()
+        {
+            return Task.Run(() => Save<T>(toSave));
+        }
+
         public T Save<T>(T toSave) where T : class, new()
 		{
 			return (T)Save((object)toSave);

@@ -56,12 +56,6 @@ namespace Bam.Net.Server
             _dynamicResponders.Add("proxies", Proxies);
             _dynamicResponders.Add("ctors", Ctors);
             _dynamicResponders.Add("templates", Templates);
-            Dao.GlobalInitializer = (dao) =>
-            {
-                dao.Property("Created", DateTime.UtcNow, false);
-                dao.Property("Uuid", Guid.NewGuid().ToString(), false);
-                dao.Property("Cuid", Cuid.Generate(), false);
-            };
             Dao.BeforeWriteCommitAny += (db, dao) =>
             {
                 dao.Property("Modified", DateTime.UtcNow, false);

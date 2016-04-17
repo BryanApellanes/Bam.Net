@@ -21,8 +21,13 @@ namespace Bam.Net.CoreServices
         public ProxyableService(DaoRepository repository, AppConf appConf)
         {
             AppConf = appConf;
-            Repository = repository;
+            DaoRepository = repository;
             Logger = appConf.Logger ?? Log.Default;
+        }
+
+        public ProxyableService(IRepository genericRepo, DaoRepository daoRepo, AppConf appConf) : this(daoRepo, appConf)
+        {
+            Repository = genericRepo;
         }
 
         [Exclude]
@@ -36,7 +41,10 @@ namespace Bam.Net.CoreServices
         }
         
         [Exclude]
-        public DaoRepository Repository { get; internal set; }
+        public DaoRepository DaoRepository { get; internal set; }
+
+        [Exclude]
+        public IRepository Repository { get; set; }
 
         [Exclude]
         public AppConf AppConf { get; protected set; }
