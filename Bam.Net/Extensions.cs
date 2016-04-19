@@ -24,6 +24,8 @@ using System.CodeDom.Compiler;
 using Ionic.Zip;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.IO.Compression;
+using System.Threading.Tasks;
 
 namespace Bam.Net
 {
@@ -163,6 +165,35 @@ namespace Bam.Net
             T2 result = new T2();
             result.CopyProperties(from);
             return result;
+        }
+
+        public static Task<byte[]> GZipAsync(this string value, Encoding enc = null)
+        {
+            return Task.Run(() => value.GZip(enc));
+        }
+
+        public static byte[] GZip(this string value, Encoding enc = null)
+        {
+            enc = enc ?? Encoding.UTF8;
+            return enc.GetBytes(value).GZip();
+        }
+
+        public static Task<byte[]> GZipAsync(this byte[] data)
+        {
+            return Task.Run(() => data.GZip());
+        }
+
+        public static byte[] GZip(this byte[] data)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                using (GZipStream zipStream = new GZipStream(ms, CompressionMode.Compress, true))
+                {
+                    zipStream.Write(data, 0, data.Length);
+                }
+                data = ms.ToArray();
+            }
+            return data;
         }
 
         public static bool UnzipResource(this Assembly assembly, Type siblingOfResource, string resourceName, string extractTo, ExtractExistingFileAction existingFileAction = ExtractExistingFileAction.DoNotOverwrite)

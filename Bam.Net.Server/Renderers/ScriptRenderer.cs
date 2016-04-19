@@ -12,18 +12,19 @@ using Bam.Net.Html;
 using Bam.Net.Server;
 using Bam.Net.ServiceProxy;
 using System.Reflection;
+using System.Collections.Concurrent;
 
 namespace Bam.Net.Server.Renderers
 {
     public class ScriptRenderer: ContentRenderer
     {
-        Dictionary<string, byte[]> _cache;
-        Dictionary<string, byte[]> _minCache;
+        ConcurrentDictionary<string, byte[]> _cache;
+        ConcurrentDictionary<string, byte[]> _minCache;
         public ScriptRenderer(ExecutionRequest request, ContentResponder content)
             : base(request, content, "application/javascript", Extensions)
         {
-            this._cache = new Dictionary<string, byte[]>();
-            this._minCache = new Dictionary<string,byte[]>();
+            this._cache = new ConcurrentDictionary<string, byte[]>();
+            this._minCache = new ConcurrentDictionary<string,byte[]>();
             string path = request.Request.Url.AbsolutePath;
 
             if (!request.WasExecuted)
@@ -51,9 +52,7 @@ namespace Bam.Net.Server.Renderers
 
                 script = ";\r\nalert('expected a script but was ({0}) instead');"._Format(type);
             }
-            
-            content.SetCacheAndGetBytes(_cache, _minCache, path, script);            
-
+            Task.Run(() => content.SetScriptCache(path, script));
             SetResult();
         }
 

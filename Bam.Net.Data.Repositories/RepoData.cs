@@ -15,6 +15,7 @@ namespace Bam.Net.Data.Repositories
 	/// properties for any object you may wish to 
 	/// save in a Repository
 	/// </summary>
+    [Serializable]
 	public abstract class RepoData
 	{
         public RepoData()

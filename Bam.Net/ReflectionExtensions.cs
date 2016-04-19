@@ -181,6 +181,41 @@ namespace Bam.Net
         }
 
         /// <summary>
+        /// Set the specified property if it is 
+        /// null or an empty string
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <param name="propertyName"></param>
+        /// <param name="value"></param>
+        /// <param name="throwIfPropertyNotFound"></param>
+        /// <returns></returns>
+        public static object PropertyIfNullOrBlank(this object instance, string propertyName, object value, bool throwIfPropertyNotFound = true)
+        {
+            object currentValue = instance.Property(propertyName, throwIfPropertyNotFound);
+            string stringValue = currentValue as string;
+            return instance.PropertyIf(currentValue == null || string.IsNullOrEmpty(stringValue), propertyName, value, throwIfPropertyNotFound);
+        }
+
+        /// <summary>
+        /// Set the specified property if the specified
+        /// condition is true
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <param name="condition"></param>
+        /// <param name="propertyName"></param>
+        /// <param name="value"></param>
+        /// <param name="throwIfPropertyNotFound"></param>
+        /// <returns></returns>
+        public static object PropertyIf(this object instance, bool condition, string propertyName, object value, bool throwIfPropertyNotFound = true)
+        {
+            if (condition)
+            {
+                instance.Property(propertyName, value, throwIfPropertyNotFound);
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Set the property with the specified name
         /// </summary>
         /// <param name="instance"></param>

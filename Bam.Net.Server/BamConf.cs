@@ -326,7 +326,7 @@ namespace Bam.Net.Server
             {
                 logger = (ILogger)loggerType.Construct();
             }
-
+            logger.StartLoggingThread();
             return logger;
         }
 
