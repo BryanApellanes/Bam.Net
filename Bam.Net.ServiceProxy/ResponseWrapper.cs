@@ -231,17 +231,17 @@ namespace Bam.Net.ServiceProxy
 
         public void AddHeader(string name, string value)
         {
-            Wrapped.GetType().GetMethod("AddHeader", new Type[] { typeof(string), typeof(string) }).Invoke(Wrapped, null);
+            Wrapped.GetType().GetMethod("AddHeader", new Type[] { typeof(string), typeof(string) }).Invoke(Wrapped, new object[] { name, value });
         }
 
         public void AppendCookie(Cookie cookie)
         {
-            Wrapped.GetType().GetMethod("AppendCookie", new Type[] { typeof(Cookie) }).Invoke(Wrapped, null);
+            Wrapped.GetType().GetMethod("AppendCookie", new Type[] { typeof(Cookie) }).Invoke(Wrapped, new object[] { cookie });
         }
 
         public void AppendHeader(string name, string value)
         {
-            Wrapped.GetType().GetMethod("AppendHeader", new Type[] { typeof(string), typeof(string) }).Invoke(Wrapped, null);
+            Wrapped.GetType().GetMethod("AppendHeader", new Type[] { typeof(string), typeof(string) }).Invoke(Wrapped, new object[] { name, value });
         }
 
         public void Close()
@@ -251,17 +251,17 @@ namespace Bam.Net.ServiceProxy
 
         public void Close(byte[] responseEntity, bool willBlock)
         {
-            Wrapped.GetType().GetMethod("Close", new Type[] { typeof(byte[]), typeof(bool) }).Invoke(Wrapped, null);
+            Wrapped.GetType().GetMethod("Close", new Type[] { typeof(byte[]), typeof(bool) }).Invoke(Wrapped, new object[] { responseEntity, willBlock });
         }
 
         public void Redirect(string url)
         {
-            Wrapped.GetType().GetMethod("Redirect", new Type[] { typeof(string) }).Invoke(Wrapped, null);
+            Wrapped.GetType().GetMethod("Redirect", new Type[] { typeof(string) }).Invoke(Wrapped, new object[] { url });
         }
 
         public void SetCookie(Cookie cookie)
         {
-            Wrapped.GetType().GetMethod("SetCookie", new Type[] { typeof(Cookie) }).Invoke(Wrapped, null);
+            Wrapped.GetType().GetMethod("SetCookie", new Type[] { typeof(Cookie) }).Invoke(Wrapped, new object[] { cookie });
         }
 
         #endregion

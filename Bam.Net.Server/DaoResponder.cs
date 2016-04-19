@@ -58,6 +58,9 @@ namespace Bam.Net.Server
             _dynamicResponders.Add("templates", Templates);
             Dao.BeforeWriteCommitAny += (db, dao) =>
             {
+                dao.PropertyIfNullOrBlank("Created", DateTime.UtcNow, false);
+                dao.PropertyIfNullOrBlank("Uuid", Guid.NewGuid().ToString(), false);
+                dao.PropertyIfNullOrBlank("Cuid", Cuid.Generate(), false);
                 dao.Property("Modified", DateTime.UtcNow, false);
             };
         }

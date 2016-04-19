@@ -189,20 +189,18 @@ namespace Bam.Net.Server
             }
             else if (AppContentLocator.Locate(path, out locatedPath, out checkedPaths))
             {
-                if (Cache.ContainsKey(locatedPath) && UseCache)
+                if (UseCache && ReadCache(request, locatedPath, out content))
                 {
-                    content = Cache[path];
-                    result = true;
-                }
-                else if (MinCache.ContainsKey(locatedPath) && UseCache) // check the min cache
-                {
-                    content = MinCache[locatedPath];
+                    if (ShouldZip(request))
+                    {
+                        SetGzipContentEncodingHeader(response);
+                    }
+
                     result = true;
                 }
                 else
                 {
                     byte[] temp = ReadFile(locatedPath);
-
                     content = temp;
                     result = true;
                 }

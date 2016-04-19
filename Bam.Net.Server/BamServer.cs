@@ -533,6 +533,7 @@ namespace Bam.Net.Server
         public DaoConf[] DaoConfigs { get; set; }
         public ProxyAlias[] ProxyAliases { get; set; }
         public bool GenerateDao { get; set; }
+        public bool UseCache { get; set; }
         public bool InitializeTemplates { get; set; }
         public bool InitializeWebBooks { get; set; }
         public string DaoSearchPattern { get; set; }
@@ -651,7 +652,7 @@ namespace Bam.Net.Server
         public void SetConf(BamConf conf)
         {
             OnSettingConf(conf);
-            DefaultConfiguration.CopyProperties(conf, this);
+            
             Type loggerType;
             this.MainLogger = Log.Default = conf.GetMainLogger(out loggerType);
             this.MainLogger.RestartLoggingThread();
@@ -661,6 +662,8 @@ namespace Bam.Net.Server
             }
             this.TryAddAdditionalLoggers(conf);
             conf.Server = this;
+
+            DefaultConfiguration.CopyProperties(conf, this);
             SetWorkspace();
 
             OnSettedConf(conf);

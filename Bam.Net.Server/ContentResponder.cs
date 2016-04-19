@@ -20,6 +20,8 @@ using Bam.Net.Server;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Yahoo.Yui.Compressor;
+using System.Threading.Tasks;
+using System.Collections.Concurrent;
 
 namespace Bam.Net.Server
 {
@@ -281,11 +283,12 @@ namespace Bam.Net.Server
             configs.Each(ac =>
             {
                 OnAppContentResponderInitializing(ac);
-
-                AppContentResponder responder = new AppContentResponder(this, ac);
-                responder.Logger = this.Logger;
+                Logger.RestartLoggingThread();
+                AppContentResponder responder = new AppContentResponder(this, ac);                
+                responder.Logger = Logger;
                 Subscribers.Each(logger =>
                 {
+                    logger.RestartLoggingThread();
                     responder.Subscribe(logger);
                 });
                 string appName = ac.Name.ToLowerInvariant();
@@ -469,13 +472,23 @@ namespace Bam.Net.Server
             }
         }
 
-        Dictionary<string, byte[]> _pageMinCache;
+        ConcurrentDictionary<string, byte[]> _pageMinCache;
         object _pageMinCacheLock = new object();
-        protected Dictionary<string, byte[]> MinCache
+        protected ConcurrentDictionary<string, byte[]> MinCache
         {
             get
             {
-                return _pageMinCacheLock.DoubleCheckLock(ref _pageMinCache, () => new Dictionary<string, byte[]>());
+                return _pageMinCacheLock.DoubleCheckLock(ref _pageMinCache, () => new ConcurrentDictionary<string, byte[]>());
+            }
+        }
+
+        ConcurrentDictionary<string, byte[]> _zippedPageMinCache;
+        object _zippedPageMinCacheLock = new object();
+        protected ConcurrentDictionary<string, byte[]> ZippedMinCache
+        {
+            get
+            {
+                return _zippedPageMinCacheLock.DoubleCheckLock(ref _zippedPageMinCache, () => new ConcurrentDictionary<string, byte[]>());
             }
         }
 
@@ -530,31 +543,30 @@ namespace Bam.Net.Server
             {
                 if (!handled)
                 {
-                    if (Cache.ContainsKey(path) && UseCache)
+                    if(UseCache && ReadCache(request, path, out content))
                     {
-                        content = Cache[path];
+                        ConditionallySetGzipHeader(response, ShouldZip(request));
                         handled = true;
                     }
-                    else if (MinCache.ContainsKey(path) && UseCache) // check the min cache
+                    else
                     {
-                        content = MinCache[path];
-                        handled = true;
-                    }
-                    else if (ServerRoot.FileExists(path))
-                    {
-                        byte[] temp = ReadFile(ServerRoot, path);
+                        string readFileFromPath = string.Empty;
+                        if (ServerRoot.FileExists(path))
+                        {
+                            readFileFromPath = path;
+                        }
+                        else if (ServerRoot.FileExists(commonPath))
+                        {
+                            readFileFromPath = commonPath;
+                        }
 
-                        content = temp;
-                        handled = true;
+                        if (!string.IsNullOrEmpty(readFileFromPath))
+                        {
+                            byte[] temp = ReadFile(ServerRoot, readFileFromPath);
+                            content = temp;
+                            handled = true;
+                        }
                     }
-                    else if (ServerRoot.FileExists(commonPath))
-                    {
-                        byte[] temp = ReadFile(ServerRoot, commonPath);
-
-                        content = temp;
-                        handled = true;
-                    }
-
 
                     if (handled)
                     {
@@ -567,8 +579,14 @@ namespace Bam.Net.Server
             return handled;
         }
 
-        #region super hacky
-        // TODO: replace this with use of CacheManager
+        private static void ConditionallySetGzipHeader(IResponse response, bool shouldZip)
+        {
+            if (shouldZip)
+            {
+                SetGzipContentEncodingHeader(response);
+            }
+        }
+
         protected byte[] ReadFile(string fullPath)
         {
             byte[] temp = null;
@@ -581,7 +599,11 @@ namespace Bam.Net.Server
                 temp = File.ReadAllBytes(fullPath);
                 if (UseCache)
                 {
-                    Cache.Add(fullPath, temp);
+                    SetCacheBytes(fullPath, temp);
+                    temp.GZipAsync().ContinueWith(b =>
+                    {
+                        SetZippedCacheBytes(fullPath, b.Result);
+                    });
                 }
             }
             return temp;
@@ -599,7 +621,11 @@ namespace Bam.Net.Server
                 temp = fs.ReadBytes(path);
                 if (UseCache)
                 {
-                    Cache.Add(path, temp);
+                    SetCacheBytes(path, temp);
+                    temp.GZipAsync().ContinueWith(b =>
+                    {
+                        SetZippedCacheBytes(path, b.Result);
+                    });
                 }
             }
             return temp;
@@ -607,70 +633,127 @@ namespace Bam.Net.Server
 
         protected byte[] ReadScript(string fullPath)
         {
-            byte[] result = null;
-            if (MinCache.ContainsKey(fullPath) && UseCache)
-            {
-                result = MinCache[fullPath];
-            }
-            else if (Cache.ContainsKey(fullPath) && UseCache)
-            {
-                result = Cache[fullPath];
-            }
-            else
-            {
-                string script = File.ReadAllText(fullPath);
-                byte[] scriptBytes = SetCacheAndGetBytes(Cache, MinCache, fullPath, script);
-                result = scriptBytes;
-            }
-
-            return result;
+            string script = File.ReadAllText(fullPath);
+            SetScriptCache(fullPath, script);
+            return Encoding.UTF8.GetBytes(script);
         }
 
         protected byte[] ReadScript(Fs fs, string path)
         {
-            byte[] result = null;
-            if (MinCache.ContainsKey(path) && UseCache)
+            string script = fs.ReadAllText(path);
+            SetScriptCache(path, script);
+            return Encoding.UTF8.GetBytes(script);            
+        }
+
+        static HashSet<string> _cachedScripts = new HashSet<string>();
+        static object _cachedScriptLock = new object();
+        protected internal void SetScriptCache(
+            string path, string script)
+        {
+            if (!_cachedScripts.Contains(path))
             {
-                result = MinCache[path];
-            }
-            else if (Cache.ContainsKey(path) && UseCache)
+                lock (_cachedScriptLock)
+                {
+                    if (!_cachedScripts.Contains(path))
+                    {
+                        _cachedScripts.Add(path);
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+
+                Logger.AddEntry("Minification of ({0}) STARTED", LogEventType.Information, path);
+                script.CompressAsync().ContinueWith(t =>
+                {
+                    CompressionResult compression = t.Result;
+                    if (compression.Success)
+                    {
+                        Logger.AddEntry("Minification of ({0}) COMPLETED", LogEventType.Information, path);
+                        byte[] minBytes = Encoding.UTF8.GetBytes(compression.MinScript);
+                        SetMinCacheBytes(path, minBytes);
+
+                        string fileName = Path.GetFileName(path);
+                        string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(path);
+                        string pathWithoutFileName = path.TruncateFront(fileName.Length);
+                        string minPath = Path.Combine(pathWithoutFileName, "{0}.min.js"._Format(fileNameWithoutExtension));
+                        SetMinCacheBytes(minPath, minBytes);
+
+                        Logger.AddEntry("GZipping the minified bytes of ({0}) STARTED", LogEventType.Information, path);
+                        minBytes.GZipAsync().ContinueWith(g =>
+                        {
+                            Logger.AddEntry("GZipping the minified bytes of ({0}) COMPLETED", LogEventType.Information, path);
+                            byte[] zippedMinBytes = g.Result;
+                            SetZippedMinCacheBytes(path, zippedMinBytes);
+                            SetZippedMinCacheBytes(minPath, zippedMinBytes);
+                        });
+                    }
+                    else
+                    {
+                        string message = compression.Exception != null ? compression.Exception.Message : string.Empty;
+                        string stack = string.Empty;
+                        if (!string.IsNullOrEmpty(compression.Exception.StackTrace))
+                        {
+                            stack = compression.Exception.StackTrace;
+                        }
+                        Logger.AddEntry("Compression of ({0}) failed: {1}\r\n{2}", LogEventType.Warning, path, message, stack);
+                    }
+                });
+
+                Task.Run(() =>
+                {
+                    byte[] scriptBytes = Encoding.UTF8.GetBytes(script);
+                    SetCacheBytes(path, scriptBytes);
+                    Logger.AddEntry("GZipping the bytes of ({0}) STARTED", LogEventType.Information, path);
+                    scriptBytes.GZipAsync().ContinueWith(g =>
+                    {
+                        Logger.AddEntry("GZipping the minified bytes of ({0}) COMPLETED", LogEventType.Information, path);
+                        SetZippedCacheBytes(path, g.Result);
+                    });
+                });
+            }          
+        }
+        #endregion
+        protected bool ReadCache(IRequest request, string path, out byte[] content)
+        {
+            if (ShouldZip(request))
             {
-                result = Cache[path];
+                if(!ZippedMinCache.TryGetValue(path, out content))
+                {
+                    return ZippedCache.TryGetValue(path, out content);
+                }
             }
             else
             {
-                string script = fs.ReadAllText(path);
-                byte[] scriptBytes = SetCacheAndGetBytes(Cache, MinCache, path, script);
-                result = scriptBytes;
-            }
-
-            return result;
-        }
-
-        protected internal byte[] SetCacheAndGetBytes(Dictionary<string, byte[]> cache, Dictionary<string, byte[]> minCache, string path, string script)
-        {
-            CompressionResult compression;
-            if (!script.TryCompress(out compression))
-            {
-                string message = compression.Exception != null ? compression.Exception.Message : string.Empty;
-                string stack = string.Empty;
-                if (!string.IsNullOrEmpty(compression.Exception.StackTrace))
+                if(!MinCache.TryGetValue(path, out content))
                 {
-                    stack = compression.Exception.StackTrace;
+                    return Cache.TryGetValue(path, out content);
                 }
-                Logger.AddEntry("Compression of script at path ({0}) failed: {1}\r\n{2}", LogEventType.Warning, path, message, stack);
             }
-
-            byte[] scriptBytes = Encoding.UTF8.GetBytes(script);
-            byte[] minBytes = Encoding.UTF8.GetBytes(compression.MinScript);
-            cache[path] = scriptBytes;
-            minCache[path] = minBytes;
-            minCache["{0}.min"._Format(path)] = minBytes;
-            return scriptBytes;
+            return true;
         }
-        #endregion
-        #endregion
+        static object cacheLock = new object();
+        static object zippedCacheLock = new object();
+        static object minCacheLock = new object();
+        static object zippedMinCacheLock = new object();
+        private void SetCacheBytes(string path, byte[] content)
+        {
+            Cache.AddOrUpdate(path, content, (s, b) => content);
+        }
+        private void SetZippedCacheBytes(string path, byte[] content)
+        {
+            ZippedCache.AddOrUpdate(path, content, (s, b) => content);
+        }
+        private void SetMinCacheBytes(string path, byte[] content)
+        {
+            MinCache.AddOrUpdate(path, content, (s, b) => content);
+        }
 
+        private void SetZippedMinCacheBytes(string path, byte[] content)
+        {
+            ZippedCache.AddOrUpdate(path, content, (s, b) => content);
+        }
         public bool IsInitialized
         {
             get

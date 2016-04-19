@@ -11,11 +11,21 @@ using System.Web.Mvc;
 using System.Web;
 using Bam.Net.Html;
 using Yahoo.Yui.Compressor;
+using System.Threading.Tasks;
 
 namespace Bam.Net.Javascript
 {
     public static class Extensions
     {
+        public static Task<CompressionResult> CompressAsync(this string script)
+        {
+            return Task.Run(() =>
+            {
+                CompressionResult result;
+                script.TryCompress(out result);
+                return result;
+            });
+        }
         public static bool TryCompress(this string script, out CompressionResult result)
         {
             result = new CompressionResult(script);

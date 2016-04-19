@@ -11,6 +11,8 @@ using Bam.Net.ServiceProxy;
 using Bam.Net.Server;
 using Bam.Net.Server.Renderers;
 using Bam.Net.Configuration;
+using System.IO.Compression;
+using System.Collections.Concurrent;
 
 namespace Bam.Net.Server
 {
@@ -195,17 +197,26 @@ namespace Bam.Net.Server
             }
         }
 
-        Dictionary<string, byte[]> _pageCache;
+        ConcurrentDictionary<string, byte[]> _pageCache;
         object _pageCacheLock = new object();
-        // TODO: Replace this with CacheManager
-        protected Dictionary<string, byte[]> Cache
+        protected ConcurrentDictionary<string, byte[]> Cache
         {
             get
             {
-                return _pageCacheLock.DoubleCheckLock(ref _pageCache, () => new Dictionary<string, byte[]>());
+                return _pageCacheLock.DoubleCheckLock(ref _pageCache, () => new ConcurrentDictionary<string, byte[]>());
             }
         }
 
+        ConcurrentDictionary<string, byte[]> _zippedPageCache;
+        object _zippedPageCacheLock = new object();
+        protected ConcurrentDictionary<string, byte[]> ZippedCache
+        {
+            get
+            {
+                return _zippedPageCacheLock.DoubleCheckLock(ref _zippedPageCache, () => new ConcurrentDictionary<string, byte[]>());
+            }
+        }
+            
 
         protected Dictionary<string, string> ContentTypes
         {
@@ -284,16 +295,11 @@ namespace Bam.Net.Server
                 bw.Write(data);
                 bw.Flush();
             }
-            //response.Close();
         }
+
         protected static void SendResponse(IResponse response, string content)
         {
-            using (StreamWriter sw = new StreamWriter(response.OutputStream))
-            {
-                sw.Write(content);
-                sw.Flush();
-            }
-            //response.Close();
+            SendResponse(response, Encoding.UTF8.GetBytes(content));
         }
         protected RendererFactory RendererFactory
         {
@@ -313,5 +319,20 @@ namespace Bam.Net.Server
                 return responderSignificantName;
             }
         }
+
+        protected static bool ShouldZip(IRequest request)
+        {
+            if (request.Headers["Accept-Encoding"].DelimitSplit(",").ToList().Contains("gzip"))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        protected static void SetGzipContentEncodingHeader(IResponse response)
+        {
+            response.AddHeader("Content-Encoding", "gzip");
+        }
+
     }
 }
