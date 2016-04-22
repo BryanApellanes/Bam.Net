@@ -318,7 +318,7 @@ namespace Bam.Net.Server.Tests
         public void AppContentConfShouldNotBeNull()
         {
             ContentResponder content = new ContentResponder(BamConf.Load());
-            AppContentResponder appContent = new AppContentResponder(content, "Monkey");
+            AppContentResponder appContent = new AppContentResponder(content, new AppConf("Monkey"));
             Expect.IsNotNull(appContent.AppConf);
         }
 
@@ -326,7 +326,7 @@ namespace Bam.Net.Server.Tests
         public void AppContentNameShouldNotBeNull()
         {
             ContentResponder content = new ContentResponder(BamConf.Load());
-            AppContentResponder appContent = new AppContentResponder(content, "Monkey");
+            AppContentResponder appContent = new AppContentResponder(content, new AppConf("Monkey"));
             Expect.IsNotNull(appContent.ApplicationName);
             Expect.AreEqual("Monkey", appContent.ApplicationName);
         }
@@ -497,7 +497,7 @@ namespace Bam.Net.Server.Tests
             CommonTemplateRenderer templateRenderer = new CommonTemplateRenderer(content);
             TestMonkey monkey = new TestMonkey();
             templateRenderer.Render(monkey);
-            AppContentResponder appResponder = new AppContentResponder(content, "Test");
+            AppContentResponder appResponder = new AppContentResponder(content, new AppConf("Test"));
             CommonDustRenderer renderer = new CommonDustRenderer(appResponder);
             Expect.IsTrue(!string.IsNullOrEmpty(renderer.CompiledTemplates));
             OutLine(renderer.CompiledTemplates);
@@ -1116,6 +1116,13 @@ namespace Bam.Net.Server.Tests
                     _context = value;
                     _setContextCalled = true;
                 }
+            }
+
+            public object Clone()
+            {
+                TakesContextTest clone = new TakesContextTest();
+                clone.CopyProperties(this);
+                return clone;
             }
         }
         [UnitTest]

@@ -26,6 +26,13 @@ namespace Bam.Net.UserAccounts.Data
                 return "SESS";
             }
         }
+        [Exclude]
+        public object Clone()
+        {
+            Session clone = new Session();
+            clone.CopyProperties(this);
+            return clone;
+        }
 
         public static Session Init(IHttpContext context)
         {
@@ -151,8 +158,16 @@ namespace Bam.Net.UserAccounts.Data
             session.UserId = User.Anonymous.Id;
             session.Save(db);
 
-            Cookie cookie = new Cookie(CookieName, session.Identifier);
-            response.Cookies.Add(cookie);
+            Cookie existing = response.Cookies[CookieName];
+            if(existing == null)
+            {
+                existing = new Cookie(CookieName, session.Identifier);
+                response.Cookies.Add(existing);
+            }
+            else
+            {
+                response.Cookies[CookieName].Value = session.Identifier;
+            }
             return session;
         }
 

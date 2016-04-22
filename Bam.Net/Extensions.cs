@@ -63,6 +63,23 @@ namespace Bam.Net
                 value.Equals("0");
         }
 
+        public static string GetNextFileName(this string path)
+        {
+            FileInfo file = new FileInfo(path);
+            DirectoryInfo dir = file.Directory;
+            string extension = Path.GetExtension(path);
+            string fileName = Path.GetFileNameWithoutExtension(path);
+            int i = 0;
+            string currentPath = path;
+            while (File.Exists(currentPath))
+            {
+                i++;
+                string nextFile = $"{fileName}_{i}{extension}";
+                currentPath = Path.Combine(dir.FullName, nextFile);
+            }
+            return currentPath;
+        }
+
         /// <summary>
         /// Return a copy of the specified DateTime with milliseconds
         /// set to 0
@@ -74,6 +91,11 @@ namespace Bam.Net
             Instant copy = new Instant(dateTime);
             copy.Millisecond = 0;
             return copy.ToDateTime();
+        }
+
+        public static T Clone<T>(this ICloneable clonable)
+        {
+            return (T)clonable.Clone();
         }
 
         public static string ToBase64(this byte[] data)

@@ -44,7 +44,13 @@ namespace Bam.Net.ServiceProxy.Tests
     {
         class TestUserResolver: IUserResolver
         {
-
+            [Exclude]
+            public object Clone()
+            {
+                TestUserResolver clone = new TestUserResolver();
+                clone.CopyProperties(this);
+                return clone;
+            }
             public string GetCurrentUser()
             {
                 return "TestUser";

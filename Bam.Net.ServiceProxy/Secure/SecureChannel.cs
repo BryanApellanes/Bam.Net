@@ -35,6 +35,13 @@ namespace Bam.Net.ServiceProxy.Secure
         {
             InitializeDatabase();
         }
+        [Exclude]
+        public object Clone()
+        {
+            SecureChannel clone = new SecureChannel();
+            clone.CopyProperties(this);
+            return clone;
+        }
 
         /// <summary>
         /// Ensure that the SecureServiceProxy database is initialized
