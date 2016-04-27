@@ -18,27 +18,14 @@ using Newtonsoft.Json.Linq;
 using System.Text.RegularExpressions;
 using Bam.Net.Server;
 using Yahoo.Yui.Compressor;
+using Bam.Net.UserAccounts.Data;
+using Bam.Net.UserAccounts;
 
 namespace Bam.Net.Server
 {
     public class AppContentResponder : ContentResponder
     {
         public const string CommonFolder = "common";
-
-        public AppContentResponder(ContentResponder serverRoot, string appName)
-            : base(serverRoot.BamConf)
-        {
-            this.ContentResponder = serverRoot;
-            this.ServerRoot = serverRoot.ServerRoot;
-            this.AppConf = new AppConf(serverRoot.BamConf, appName);
-            this.AppRoot = this.AppConf.AppRoot;
-            this.AppTemplateRenderer = new AppDustRenderer(this);
-            this.UseCache = serverRoot.UseCache;
-            this.AppContentLocator = ContentLocator.Load(this);
-            this.CommonContentLocator = ContentLocator.Load(ServerRoot);
-
-            this.SetBaseIgnorePrefixes();
-        }
 
         public AppContentResponder(ContentResponder serverRoot, AppConf conf)
             : base(serverRoot.BamConf)
@@ -59,16 +46,6 @@ namespace Bam.Net.Server
             this.CommonContentLocator = ContentLocator.Load(commonRoot);
 
             this.SetBaseIgnorePrefixes();
-        }
-
-        private void SetBaseIgnorePrefixes()
-        {
-            AddIgnorPrefix("dao");
-            AddIgnorPrefix("serviceproxy");
-            AddIgnorPrefix("api");
-            AddIgnorPrefix("bam");
-            AddIgnorPrefix("get");
-            AddIgnorPrefix("post");
         }
 
         public ContentLocator AppContentLocator
@@ -132,6 +109,12 @@ namespace Bam.Net.Server
             }
         }
 
+        public User GetUser(IHttpContext context)
+        {
+            UserManager mgr = BamConf.Server.GetAppService<UserManager>(ApplicationName).Clone<UserManager>();
+            mgr.HttpContext = context;
+            return mgr.GetCurrentUser();
+        }
         /// <summary>
         /// The server content root
         /// </summary>
@@ -160,31 +143,40 @@ namespace Bam.Net.Server
 
         public override bool TryRespond(IHttpContext context)
         {
+            string[] ignore;
+            return TryRespond(context, out ignore);
+        }
+        public bool TryRespond(IHttpContext context, out string[] checkedPaths)
+        {
+            checkedPaths = new string[] { };
             IRequest request = context.Request;
             IResponse response = context.Response;
-
             string path = request.Url.AbsolutePath;
+
             string ext = Path.GetExtension(path);
-            string mgmtPrefix = "/bam/apps/{0}"._Format(AppConf.DomApplicationIdFromAppName(ApplicationName));
-            if (path.ToLowerInvariant().StartsWith(mgmtPrefix.ToLowerInvariant()))
-            {
-                path = path.TruncateFront(mgmtPrefix.Length);
-            }
+
+            path = RemoveBamAppsPrefix(path);
 
             string[] split = path.DelimitSplit("/");
             byte[] content = new byte[] { };
             bool result = false;
 
             string locatedPath;
-            string[] checkedPaths;
-            if (string.IsNullOrEmpty(ext) && !ShouldIgnore(path) ||
-                (AppRoot.FileExists("~/pages{0}.html"._Format(path))))
+            if (path.Equals("/upload", StringComparison.InvariantCultureIgnoreCase))
             {
-                AppTemplateRenderer.SetContentType(response);
-                MemoryStream ms = new MemoryStream();
-                AppTemplateRenderer.RenderLayout(GetLayoutModelForPath(path), ms);
-                ms.Seek(0, SeekOrigin.Begin);
-                content = ms.GetBuffer();
+                HandleUpload(context, HttpPostedFile.FromRequest(request));
+                string query = request.Url.Query.Length > 0 ? request.Url.Query : string.Empty;
+                if (query.StartsWith("?"))
+                {
+                    query = query.TruncateFront(1);
+                }
+                content = RenderLayout(response, path, query);
+                result = true;
+            }
+            else if (string.IsNullOrEmpty(ext) && !ShouldIgnore(path) ||
+               (AppRoot.FileExists("~/pages{0}.html"._Format(path))))
+            {
+                content = RenderLayout(response, path);
                 result = true;
             }
             else if (AppContentLocator.Locate(path, out locatedPath, out checkedPaths))
@@ -205,23 +197,6 @@ namespace Bam.Net.Server
                     result = true;
                 }
             }
-            else
-            {
-                StringBuilder checkedPathString = new StringBuilder();
-                checkedPaths.Each(p =>
-                {
-                    checkedPathString.AppendLine(p);
-                });
-
-                Logger.AddEntry(
-                  "App[{0}]::Path='{1}'::Not Found\r\nChecked Paths\r\n{2}",
-                  LogEventType.Warning,
-                  AppConf.Name,
-                  path,
-                  checkedPathString.ToString()
-                );
-            }
-
 
             if (result)
             {
@@ -229,6 +204,34 @@ namespace Bam.Net.Server
                 SendResponse(response, content);
             }
             return result;
+        }
+
+        [Verbosity(LogEventType.Information)]
+        public event EventHandler FileUploading;
+        [Verbosity(LogEventType.Information)]
+        public event EventHandler FileUploaded;
+
+        public virtual void HandleUpload(IHttpContext context, HttpPostedFile file)
+        {
+            FileUploadEventArgs args = new FileUploadEventArgs(context, file, ApplicationName);
+            FireEvent(FileUploading, args);
+            if (args.Continue)
+            {
+                string userName = GetUser(context).UserName;
+                args.UserName = userName;
+                string saveToPath = Path.Combine(AppRoot.Root, "workspace", "uploads", userName, "temp_".RandomLetters(8));
+                FileInfo fileInfo = new FileInfo(saveToPath);
+                if (!fileInfo.Directory.Exists)
+                {
+                    fileInfo.Directory.Create();
+                }
+                file.Save(saveToPath);
+                string renameTo = Path.Combine(fileInfo.Directory.FullName, file.FileName);
+                renameTo = renameTo.GetNextFileName();
+                File.Move(saveToPath, renameTo);
+                file.FullPath = renameTo;
+                FireEvent(FileUploaded, args);
+            }
         }
 
         Dictionary<string, LayoutModel> _layoutModelsByPath;
@@ -295,6 +298,30 @@ namespace Bam.Net.Server
             return GetAppIncludes(AppConf);
         }
 
+        private string RemoveBamAppsPrefix(string path)
+        {
+            string mgmtPrefix = $"/bam/apps/{AppConf.DomApplicationIdFromAppName(ApplicationName)}"; // TODO: this is a legacy construct resulting from the way that client side js is written; investigate removal
+            if (path.StartsWith(mgmtPrefix, StringComparison.InvariantCultureIgnoreCase))
+            {
+                path = path.TruncateFront(mgmtPrefix.Length);
+            }
+
+            return path;
+        }
+
+        private byte[] RenderLayout(IResponse response, string path, string extras = null)
+        {
+            byte[] content;
+            AppTemplateRenderer.SetContentType(response);
+            MemoryStream ms = new MemoryStream();
+            LayoutModel layoutModel = GetLayoutModelForPath(path);
+            layoutModel.Extras = extras;
+            AppTemplateRenderer.RenderLayout(layoutModel, ms);
+            ms.Seek(0, SeekOrigin.Begin);
+            content = ms.GetBuffer();
+            return content;
+        }
+
         private void WriteCompiledTemplates()
         {
             if (AppConf.CompileTemplates)
@@ -357,6 +384,13 @@ namespace Bam.Net.Server
             }
         }
 
+        protected override void SetBaseIgnorePrefixes()
+        {
+            base.SetBaseIgnorePrefixes();
+            AddIgnorPrefix("content");
+        }
+
+        // TODO: move this into the bam.exe as part of the create app process
         private void ExtractBaseApp()
         {
             if (AppConf.ExtractBaseApp)

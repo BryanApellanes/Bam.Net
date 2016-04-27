@@ -505,6 +505,13 @@ namespace Bam.Net.Incubation
             this[typeof(T)] = instanciator;
         }
 
+        public void Set(Type type, Func<object> instanciator, bool throwIfSet = false)
+        {
+            Check(type, throwIfSet);
+
+            this[type] = instanciator;
+        }
+
         public void Set(Type type, object instance, bool throwIfSet = false)
         {
             Check(type, throwIfSet);

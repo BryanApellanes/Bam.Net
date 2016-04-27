@@ -66,6 +66,11 @@ namespace Bam.Net.Server
             }
         }
 
+        public BamServer GetServer()
+        {
+            return BamConf.Server;
+        }
+
         public void AddService<T>(Func<T> serviceInstanciator)
         {
             BamConf.Server.AddAppService<T>(Name, serviceInstanciator);

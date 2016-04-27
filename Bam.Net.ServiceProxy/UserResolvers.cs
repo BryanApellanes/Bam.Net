@@ -27,6 +27,13 @@ namespace Bam.Net.ServiceProxy
                 return _defaultLock.DoubleCheckLock(ref _default, () => new UserResolvers());
             }
         }
+        [Exclude]
+        public object Clone()
+        {
+            UserResolvers clone = new UserResolvers();
+            clone.CopyProperties(clone);
+            return clone;
+        }
 
         public int Count
         {

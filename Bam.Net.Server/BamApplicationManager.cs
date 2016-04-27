@@ -20,12 +20,21 @@ namespace Bam.Net.Server
     public class BamApplicationManager: IRequiresHttpContext//: IInitialize<BamApplicationManager>
     {
         public const string AppNamePagesPathFormat = "~/apps/{appName}/pages";
-
+        private BamApplicationManager()
+        {
+        }
         public BamApplicationManager(BamConf conf)
         {
             this.BamConf = conf;
         }
 
+        [Exclude]
+        public object Clone()
+        {
+            BamApplicationManager clone = new BamApplicationManager();
+            clone.CopyProperties(this);
+            return clone;
+        }
         public IHttpContext HttpContext
         {
             get;

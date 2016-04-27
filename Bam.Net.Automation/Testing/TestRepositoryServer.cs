@@ -307,6 +307,13 @@ namespace Bam.Net.Testing.Repository
 			set;
 		}
 
-		#endregion
-	}
+        public object Clone()
+        {
+            TestRepositoryServer clone = new TestRepositoryServer();
+            clone.CopyProperties(this);
+            return clone;
+        }
+
+        #endregion
+    }
 }

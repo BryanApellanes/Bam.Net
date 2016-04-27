@@ -203,7 +203,16 @@ namespace Bam.Net.Server
                 };
             }
         }
-
+        protected virtual void SetBaseIgnorePrefixes()
+        {
+            AddIgnorPrefix("dao");
+            AddIgnorPrefix("serviceproxy");
+            AddIgnorPrefix("api");
+            AddIgnorPrefix("bam");
+            AddIgnorPrefix("get");
+            AddIgnorPrefix("post");
+            AddIgnorPrefix("securechannel");
+        }
         protected internal void InitializeCommonTemplateRenderer()
         {
             OnCommonTemplateRendererInitializing();
@@ -278,6 +287,9 @@ namespace Bam.Net.Server
             OnAppRespondersInitialized();
         }
 
+        public event EventHandler FileUploading;
+        public event EventHandler FileUploaded;
+
         private void InitializeAppResponders(AppConf[] configs)
         {
             configs.Each(ac =>
@@ -293,6 +305,8 @@ namespace Bam.Net.Server
                 });
                 string appName = ac.Name.ToLowerInvariant();
                 responder.Initialize();
+                responder.FileUploading += (o, a) => FileUploading?.Invoke(o, a);
+                responder.FileUploaded += (o, a) => FileUploaded?.Invoke(o, a);
                 AppContentResponders[appName] = responder;
 
                 OnAppContentResponderInitialized(ac);
@@ -534,9 +548,10 @@ namespace Bam.Net.Server
 
             byte[] content = new byte[] { };
             string appName = AppConf.AppNameFromUri(request.Url, BamConf.AppConfigs);
+            string[] checkedPaths = new string[] { };
             if (AppContentResponders.ContainsKey(appName))
             {
-                handled = AppContentResponders[appName].TryRespond(context);
+                handled = AppContentResponders[appName].TryRespond(context, out checkedPaths);
             }
 
             lock (_handleLock)
@@ -573,10 +588,36 @@ namespace Bam.Net.Server
                         SetContentType(response, path);
                         SendResponse(response, content);
                     }
+                    else
+                    {
+                        LogContentNotFound(path, appName, checkedPaths);
+                    }
                 }
             }
 
             return handled;
+        }
+
+        private void LogContentNotFound(string path, string appName, string[] checkedPaths)
+        {
+            List<string> serviceNames = new List<string>(BamConf.Server.ServiceProxyResponder.AppServices(appName).Select(s => s.ToLowerInvariant()));
+            string firstPart = path.DelimitSplit("/", "\\")[0];
+            if(!ShouldIgnore(path) && !serviceNames.Contains(firstPart.ToLowerInvariant()))
+            {
+                StringBuilder checkedPathString = new StringBuilder();
+                checkedPaths.Each(p =>
+                {
+                    checkedPathString.AppendLine(p);
+                });
+
+                Logger.AddEntry(
+                  "App[{0}]::Path='{1}'::Content Not Found\r\nChecked Paths\r\n{2}",
+                  LogEventType.Warning,
+                  appName,
+                  path,
+                  checkedPathString.ToString()
+                );
+            }
         }
 
         private static void ConditionallySetGzipHeader(IResponse response, bool shouldZip)

@@ -896,7 +896,7 @@ namespace Bam.Net.ServiceProxy
                 try
                 {
                     Initialize();
-                    SetContext(target);
+                    target = SetContext(target);
                     OnAnyExecuting(target);
                     OnExecuting(target);
                     Result = MethodInfo.Invoke(target, Parameters);
@@ -916,14 +916,18 @@ namespace Bam.Net.ServiceProxy
             return result;
         }
 
-        protected internal void SetContext(object target)
+        protected internal object SetContext(object target)
         {
+            object result = target;
             IRequiresHttpContext takesContext = target as IRequiresHttpContext;
             if (takesContext != null)
-            {                
+            {
+                takesContext = (IRequiresHttpContext)takesContext.Clone();
                 takesContext.HttpContext = Context;
-                OnContextSet(target);
+                OnContextSet(takesContext);
+                result = takesContext;
             }
+            return result;
         }
 
         public static ExecutionRequest Create(Incubator incubator, MethodInfo method, params object[] parameters)

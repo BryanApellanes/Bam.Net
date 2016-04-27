@@ -12,6 +12,13 @@ namespace Bam.Net.ServiceProxy
 {
     public class DefaultRoleResolver: IRoleResolver
     {
+        [Exclude]
+        public object Clone()
+        {
+            DefaultRoleResolver clone = new DefaultRoleResolver();
+            clone.CopyProperties(this);
+            return clone;
+        }
         public bool IsInRole(IUserResolver userResolver, string roleName)
         {
             string userName = userResolver.GetCurrentUser();

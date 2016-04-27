@@ -129,6 +129,13 @@ namespace Bam.Net.Shop
 			}
 		}
 
-		#endregion
-	}
+        public object Clone()
+        {
+            Shopper clone = new Shopper();
+            clone.CopyProperties(this);
+            return clone;
+        }
+
+        #endregion
+    }
 }																								

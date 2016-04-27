@@ -16,8 +16,10 @@ namespace Bam.Net.CoreServices
 {
     public abstract class ProxyableService: Loggable, IRequiresHttpContext
     {
-        UserManager _userManager;
+        [Exclude]
+        public abstract object Clone();
 
+        UserManager _userManager;
         public ProxyableService(DaoRepository repository, AppConf appConf)
         {
             AppConf = appConf;
@@ -95,7 +97,7 @@ namespace Bam.Net.CoreServices
                 _userManager = AppConf.UserManager.Create(AppConf.Logger);
                 _userManager.ApplicationNameProvider = new BamApplicationNameProvider(AppConf);
             }
-            UserManager copy = _userManager.Clone();
+            UserManager copy = (UserManager)_userManager.Clone();
             copy.HttpContext = HttpContext;
             return copy;
         }

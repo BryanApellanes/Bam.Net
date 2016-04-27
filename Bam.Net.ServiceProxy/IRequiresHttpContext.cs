@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.ServiceProxy
 {
-    public interface IRequiresHttpContext
+    public interface IRequiresHttpContext: ICloneable
     {
         IHttpContext HttpContext { get; set; }
     }

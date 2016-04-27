@@ -21,6 +21,13 @@ namespace Bam.Net.UserAccounts
                 return Session.Get(HttpContext);
             }
         }
+        [Exclude]
+        public object Clone()
+        {
+            OAuthManager clone = new OAuthManager();
+            clone.CopyProperties(this);
+            return clone;
+        }
 
         public IHttpContext HttpContext
         {

@@ -9,6 +9,13 @@ namespace Bam.Net.Server.Rpc
 {
     public class RpcBatch: RpcMessage, IRpcRequest
     {
+        [Exclude]
+        public object Clone()
+        {
+            RpcBatch clone = new RpcBatch();
+            clone.CopyProperties(this);
+            return clone;
+        }
         public static implicit operator IRpcRequest[](RpcBatch batch)
         {
             return batch.Requests;

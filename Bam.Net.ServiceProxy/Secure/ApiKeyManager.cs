@@ -35,7 +35,14 @@ namespace Bam.Net.ServiceProxy.Secure
                 _default = value;
             }
         }
-        
+        [Exclude]
+        public object Clone()
+        {
+            ApiKeyManager clone = new ApiKeyManager();
+            clone.CopyProperties(this);
+            return clone;
+        }
+
         /// <summary>
         /// The component used to resolve the current user
         /// or the user of a specified IHttpContext based

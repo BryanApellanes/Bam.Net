@@ -17,6 +17,13 @@ namespace Bam.Net.Server.Rpc
         {
             this.RpcParams = new RpcParameters();
         }
+        [Exclude]
+        public object Clone()
+        {
+            RpcNotification clone = new RpcNotification();
+            clone.CopyProperties(this);
+            return clone;
+        }
 
         public IHttpContext HttpContext { get; set; }
 

@@ -15,6 +15,13 @@ namespace Bam.Net.UserAccounts
 {
     public class DaoUserResolver: IUserResolver
     {
+        [Exclude]
+        public object Clone()
+        {
+            DaoUserResolver clone = new DaoUserResolver();
+            clone.CopyProperties(this);
+            return clone;
+        }
         Database _userDatabase;
         public Database UserDatabase
         {

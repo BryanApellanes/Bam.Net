@@ -28,6 +28,7 @@ namespace Bam.Net.UserAccounts
     /// </summary>
     [Encrypt]
     [Proxy("user", MethodCase = MethodCase.Both)]
+    [Serializable]
     public class UserManager: Loggable, IRequiresHttpContext
     {
         static UserManager()
@@ -52,7 +53,7 @@ namespace Bam.Net.UserAccounts
         }
 
         [Exclude]
-        public UserManager Clone()
+        public object Clone()
         {
             UserManager result = new UserManager();
             result.CopyProperties(this);

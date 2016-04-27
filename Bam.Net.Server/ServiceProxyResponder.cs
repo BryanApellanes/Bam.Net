@@ -153,6 +153,14 @@ namespace Bam.Net.Server
             }
         }
 
+        public void AddAppService(string appName, Type type, Func<object> instanciator, bool throwIfSet = false)
+        {
+            if (_appServiceProviders.ContainsKey(appName))
+            {
+                _appServiceProviders[appName].Set(type, instanciator, throwIfSet);
+            }
+        }
+
         public void AddAppService<T>(string appName, Func<Type, T> instanciator, bool throwIfSet = false)
         {
             if (_appServiceProviders.ContainsKey(appName))
@@ -280,12 +288,20 @@ namespace Bam.Net.Server
         /// <summary>
         /// List of service class names
         /// </summary>
-        public string[] Services
+        public string[] CommonServices
         {
             get
             {
                 return _commonServiceProvider.ClassNames;
             }
+        }
+
+        public string[] AppServices(string appName)
+        {
+            List<string> services = new List<string>();
+            services.AddRange(_appServiceProviders[appName].ClassNames);
+            services.AddRange(CommonServices);
+            return services.ToArray();
         }
 
         /// <summary>
@@ -406,19 +422,18 @@ namespace Bam.Net.Server
                 for (int i = 0; i < ol; i++)
                 {
                     FileInfo file = files[i];
-                    Assembly serviceAssemlby = Assembly.LoadFrom(file.FullName);
-                    Type[] serviceTypes = (from type in serviceAssemlby.GetTypes()
-                                              where type.HasCustomAttributeOfType<ProxyAttribute>()
-                                              select type).ToArray();
-                    serviceTypes.Each(t =>
-                    {
-                        ProxyAttribute attr = t.GetCustomAttributeOfType<ProxyAttribute>();
-                        if (!string.IsNullOrEmpty(attr.VarName))
+                    Assembly.LoadFrom(file.FullName)
+                        .GetTypes()
+                        .Where(type => type.HasCustomAttributeOfType<ProxyAttribute>())
+                        .Each(t =>
                         {
-                            BamConf.AddProxyAlias(attr.VarName, t);
-                        }
-                        doForEachProxiedType(t);
-                    });
+                            ProxyAttribute attr = t.GetCustomAttributeOfType<ProxyAttribute>();
+                            if (!string.IsNullOrEmpty(attr.VarName))
+                            {
+                                BamConf.AddProxyAlias(attr.VarName, t);
+                            }
+                            doForEachProxiedType(t);
+                        });
                 }
             }
         }

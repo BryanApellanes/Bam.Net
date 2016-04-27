@@ -17,6 +17,13 @@ namespace Bam.Net.ServiceProxy
 	/// </summary>
     public class DefaultUserResolver: IUserResolver
     {
+        [Exclude]
+        public object Clone()
+        {
+            DefaultUserResolver clone = new DefaultUserResolver();
+            clone.CopyProperties(this);
+            return clone;
+        }
         static DefaultUserResolver()
         {
             Instance = new DefaultUserResolver();

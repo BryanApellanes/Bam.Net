@@ -303,7 +303,7 @@ namespace Bam.Net.Server
                         appInitializer = assembly.GetType(ac.AppInitializer);
                         if (appInitializer == null)
                         {
-                            appInitializer = assembly.GetTypes().Where(t => t.AssemblyQualifiedName.Equals(ac.AppInitializer)).FirstOrDefault();
+                            appInitializer = assembly.GetTypes().FirstOrDefault(t => t.AssemblyQualifiedName.Equals(ac.AppInitializer));
                         }
 
                         if (appInitializer == null)
@@ -352,8 +352,8 @@ namespace Bam.Net.Server
             {
                 try
                 {
-                    UserManager mgr = appConfig.UserManager.Create(MainLogger);                    
-                    mgr.ApplicationNameProvider = new BamApplicationNameProvider(appConfig);                    
+                    UserManager mgr = appConfig.UserManager.Create(MainLogger);
+                    mgr.ApplicationNameProvider = new BamApplicationNameProvider(appConfig);
                     AddAppService<UserManager>(appConfig.Name, mgr);
                 }
                 catch (Exception ex)
@@ -869,6 +869,15 @@ namespace Bam.Net.Server
             ServiceProxyResponder.AddCommonService<T>(instance);
         }
 
+        public T GetAppService<T>(string appName)
+        {
+            if (ServiceProxyResponder.AppServiceProviders.ContainsKey(appName))
+            {
+                return ServiceProxyResponder.AppServiceProviders[appName].Get<T>();
+            }
+            return default(T);
+        }
+
         public void AddAppService<T>(string appName)
         {
             ServiceProxyResponder.AddAppService<T>(appName, (T)typeof(T).Construct());
@@ -882,6 +891,11 @@ namespace Bam.Net.Server
         public void AddAppService<T>(string appName, Func<T> instanciator)
         {
             ServiceProxyResponder.AddAppService<T>(appName, instanciator);
+        }
+
+        public void AddAppService(string appName, Type type, Func<object> instanciator)
+        {
+            ServiceProxyResponder.AddAppService(appName, type, instanciator);
         }
 
         /// <summary>
@@ -1173,9 +1187,14 @@ namespace Bam.Net.Server
             AddResponder(_serviceProxyResponder);
         }
 
+        public event EventHandler FileUploading;
+        public event EventHandler FileUploaded;
+
         protected void SetContentResponder()
         {
             _contentResponder = new ContentResponder(GetCurrentConf(true), MainLogger);
+            _contentResponder.FileUploading += (o, a) => FileUploading?.Invoke(o, a);
+            _contentResponder.FileUploaded += (o, a) => FileUploaded?.Invoke(o, a);
             AddResponder(_contentResponder);
         }
 

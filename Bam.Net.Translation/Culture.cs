@@ -58,6 +58,13 @@ namespace Bam.Net.Exegete
 			set;
 		}
 
+        public object Clone()
+        {
+            Culture clone = new Culture();
+            clone.CopyProperties(this);
+            return clone;
+        }
+
 		#endregion
 		
 		private static CultureInfo TryGetFirstCultureFromLangugages(string[] languages)

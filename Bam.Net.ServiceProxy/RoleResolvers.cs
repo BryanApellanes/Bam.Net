@@ -27,6 +27,13 @@ namespace Bam.Net.ServiceProxy
                 return _defaultLock.DoubleCheckLock(ref _default, () => new RoleResolvers());
             }
         }
+        [Exclude]
+        public object Clone()
+        {
+            RoleResolvers clone = new RoleResolvers();
+            clone.CopyProperties(this);
+            return clone;
+        }
 
         public int Count
         {

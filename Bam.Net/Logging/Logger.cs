@@ -52,16 +52,20 @@ namespace Bam.Net.Logging
             this.StartLoggingThread();
         }
 
+        object _threadLock = new object();
         public virtual void StopLoggingThread()
         {
             if (loggingThread != null)
             {
-                try
+                lock (_threadLock)
                 {
-                    loggingThread.Abort();
-                    loggingThread.Join(3000);
+                    try
+                    {
+                        loggingThread.Abort();
+                        loggingThread.Join(3000);
+                    }
+                    catch { } // not all ThreadStates are valid for a call to Abort
                 }
-                catch { } // not all ThreadStates are valid for a call to Abort
             }
         }
 
@@ -71,9 +75,12 @@ namespace Bam.Net.Logging
         /// </summary>
         public virtual void StartLoggingThread()
         {
-            loggingThread = new Thread(new ThreadStart(LoggingThread));
-            loggingThread.IsBackground = true;
-            loggingThread.Start();
+            lock (_threadLock)
+            {
+                loggingThread = new Thread(new ThreadStart(LoggingThread));
+                loggingThread.IsBackground = true;
+                loggingThread.Start();
+            }
         }
 
         protected virtual void QueueLogEvent(LogEvent logEvent)
