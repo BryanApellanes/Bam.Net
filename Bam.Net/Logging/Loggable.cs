@@ -22,7 +22,7 @@ namespace Bam.Net.Logging
     {
         public Loggable()
         {
-            this._subscribers = new List<ILogger>();
+            this._subscribers = new HashSet<ILogger>();
             this.LogVerbosity = LogEventType.Custom;
         }
 
@@ -33,7 +33,7 @@ namespace Bam.Net.Logging
         /// </summary>
         public LogEventType LogVerbosity { get; set; }
 
-        List<ILogger> _subscribers;
+        HashSet<ILogger> _subscribers;
         /// <summary>
         /// An array of all the ILoggers that have
         /// been subscribed to this Loggable

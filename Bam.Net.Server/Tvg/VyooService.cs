@@ -24,7 +24,7 @@ namespace Bam.Net.Server
         {
             get
             {
-                return new ServiceInfo("VyooService", "Vyoo Service", "Template Vyoo Server");
+                return new ServiceInfo("VyooService", "Vyoo Service", "Template Vyoo Server, a vyoo to a kill");
             }
         }
 

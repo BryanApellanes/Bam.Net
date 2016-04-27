@@ -2,29 +2,28 @@
 	Copyright © Bryan Apellanes 2015  
 */
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Data.Repositories;
+using Bam.Net.Logging;
 
 namespace Bam.Net.Caching
 {
-	public class CacheManager
+	public class CacheManager: Loggable
 	{
-		Dictionary<Type, Cache> _cacheDictionary;
+		ConcurrentDictionary<Type, Cache> _cacheDictionary;
 		public CacheManager()
 		{
-			_cacheDictionary = new Dictionary<Type, Cache>();
+			_cacheDictionary = new ConcurrentDictionary<Type, Cache>();
 		}
 
-		public void Clear()
-		{
-			lock (_getLock)
-			{
-				_cacheDictionary.Clear();
-			}
-		}
+        public void Clear()
+        {
+            _cacheDictionary.Clear();
+        }
 
 		public int AllCacheSize
 		{
@@ -45,26 +44,39 @@ namespace Bam.Net.Caching
 			CacheFor(typeof(T), cache);
 		}
 
-		public Cache CacheFor(Type type)
-		{
-			lock(_getLock)
-			{
-				if (!_cacheDictionary.ContainsKey(type))
-				{
-					_cacheDictionary.Add(type, new Cache());
-				}
+        [Verbosity(LogEventType.Warning, MessageFormat = "Failed to get Cache for type {TypeName}")]
+        public event EventHandler GetCacheFailed;
 
-				return _cacheDictionary[type];
-			}
-		}
+        public Cache CacheFor(Type type)
+        {
+            if (!_cacheDictionary.ContainsKey(type))
+            {
+                _cacheDictionary.TryAdd(type, new Cache());
+            }
+            Cache result;
+            if(!_cacheDictionary.TryGetValue(type, out result))
+            {
+                FireEvent(GetCacheFailed, new CacheManagerEventArgs { Type = type });
+            }
+            return result;
+        }
 
-		public void CacheFor(Type type, Cache cache)
-		{
-			lock (_getLock)
-			{
-				_cacheDictionary.Set(type, cache);
-			}
-		}
+        [Verbosity(LogEventType.Information, MessageFormat = "Removed Cache for type {TypeName}")]
+        public event EventHandler CacheRemoved;
+        [Verbosity(LogEventType.Information, MessageFormat = "Set Cache for type {TypeName}")]
+        public event EventHandler CacheSet;
+
+        public void CacheFor(Type type, Cache cache)
+        {
+            Cache removed;
+            if (_cacheDictionary.TryRemove(type, out removed))
+            {
+                FireEvent(CacheRemoved, new CacheManagerEventArgs { Type = type, Cache = removed });
+            }
+
+            _cacheDictionary.TryAdd(type, cache);
+            FireEvent(CacheSet, new CacheManagerEventArgs { Type = type, Cache = cache });
+        }
 
 		static CacheManager _defaultCacheManager;
 		static object _defaultCacheManagerLock = new object();

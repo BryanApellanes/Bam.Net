@@ -16,18 +16,18 @@ namespace Bam.Net.Data.Repositories
 	{
 		public Repository()
 		{
-			this._canStoreTypes = new HashSet<Type>();
+			this._storableTypes = new HashSet<Type>();
 		}
 
 		#region IRepository Members
 
-		HashSet<Type> _canStoreTypes;
+		HashSet<Type> _storableTypes;
 
 		public IEnumerable<Type> StorableTypes
 		{
 			get
 			{
-				return _canStoreTypes;
+				return _storableTypes;
 			}
 		}
 
@@ -46,7 +46,7 @@ namespace Bam.Net.Data.Repositories
 
 		public virtual void AddType(Type type)
 		{
-			_canStoreTypes.Add(type);
+			_storableTypes.Add(type);
 		}
 
 		public void AddNamespace(Assembly assembly, string nameSpace)
@@ -89,7 +89,20 @@ namespace Bam.Net.Data.Repositories
 
 			return result;
 		}
-
+        public virtual IEnumerable SaveCollection(IEnumerable values)
+        {
+            foreach(object value in values)
+            {
+                yield return Save(value);
+            }
+        }
+        public virtual IEnumerable<T> SaveCollection<T>(IEnumerable<T> values) where T : class, new()
+        {
+            foreach(T value in values)
+            {
+                yield return Save<T>(value);
+            }
+        }
         public abstract T Create<T>(T toCreate) where T : class, new();
 
 		public abstract object Create(object toCreate);
@@ -97,6 +110,7 @@ namespace Bam.Net.Data.Repositories
         public abstract T Retrieve<T>(int id) where T : class, new();
 		
 		public abstract T Retrieve<T>(long id) where T : class, new();
+        public abstract T Retrieve<T>(string uuid) where T : class, new();
 		public abstract IEnumerable<T> RetrieveAll<T>() where T : class, new();
 		public abstract IEnumerable<object> RetrieveAll(Type type);
 		public abstract object Retrieve(Type objectType, long id);
@@ -165,14 +179,8 @@ namespace Bam.Net.Data.Repositories
 			return Meta.GetId(value);
 		}
 
-        public virtual IEnumerable<T> Query<T>(QueryFilter query) where T : new()
-        {
-            throw new NotImplementedException();
-        }
+        public abstract IEnumerable<T> Query<T>(QueryFilter query) where T : class, new();
 
-        public virtual IEnumerable Query(Type type, QueryFilter query)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract IEnumerable Query(Type type, QueryFilter query);
     }
 }

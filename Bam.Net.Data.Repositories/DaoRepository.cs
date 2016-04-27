@@ -26,9 +26,8 @@ namespace Bam.Net.Data.Repositories
 	/// won't be populated).  To ensure full hydration of
 	/// the values call Retrieve(id) or Retrieve(uuid).
 	/// </summary>
-	/// <typeparam name="T"></typeparam>
-	public class DaoRepository : Repository, IGeneratesDaoAssembly
-	{
+	public class DaoRepository : Repository, IGeneratesDaoAssembly, IHasTypeSchemaTempPathProvider
+    {
 		TypeDaoGenerator _typeDaoGenerator;
         TypeSchemaGenerator _typeSchemaGenerator;
         public DaoRepository()
@@ -84,7 +83,7 @@ namespace Bam.Net.Data.Repositories
             }
         }
 
-        public Func<SchemaDefinition, TypeSchema, string> TempPathProvider
+        public Func<SchemaDefinition, TypeSchema, string> TypeSchemaTempPathProvider
         {
             get
             {
@@ -187,18 +186,21 @@ namespace Bam.Net.Data.Repositories
 		readonly object _initLock = new object();
 		public void Initialize()
 		{
-			lock (_initLock)
-			{
-				if (!isInitialized)
-				{
-					if (!StorableTypes.Any())
-					{
-						throw new InvalidOperationException("No types were specified.  Call AddType for each type to store.");
-					}
-					isInitialized = true;
-					StorableTypes.Each(type => _typeDaoGenerator.AddType(type));
-				}
-			}
+            if (!isInitialized)
+            {
+                lock (_initLock)
+                {
+                    if (!isInitialized)
+                    {
+                        if (!StorableTypes.Any())
+                        {
+                            throw new InvalidOperationException("No types were specified.  Call AddType for each type to store.");
+                        }
+                        isInitialized = true;
+                        StorableTypes.Each(type => _typeDaoGenerator.AddType(type));
+                    }
+                }
+            }
 		}
 
         /// <summary>
@@ -299,7 +301,7 @@ namespace Bam.Net.Data.Repositories
 			}
 		}
 
-        public T Retrieve<T>(string uuid)
+        public override T Retrieve<T>(string uuid)
         {
             return (T)Retrieve(typeof(T), uuid);
         }
@@ -437,7 +439,7 @@ namespace Bam.Net.Data.Repositories
 			}
 		}
 
-        public IEnumerable<T> Query<T>(Expression<Func<T, bool>> expression) where T : new()
+        public IEnumerable<T> Query<T>(Expression<Func<T, bool>> expression) where T : class, new()
         {
             DaoExpressionFilter expressionFilter = new DaoExpressionFilter(Logger);
             return Query<T>(expressionFilter.Where<T>(expression));

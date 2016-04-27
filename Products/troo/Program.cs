@@ -23,8 +23,6 @@ namespace troo
     [Serializable]
     class Program : CommandLineTestInterface
     {
-        static string contentRoot = "ContentRoot";
-        static string defaultRoot = "C:\\Troo";
         static void Main(string[] args)
         {
             TrooService.SetInfo(TrooService.ServiceInfo);

@@ -123,6 +123,12 @@ namespace Bam.Net.Data.Repositories
 				return null;
 			}
 		}
+
+        public override T Retrieve<T>(string uuid)
+        {
+            return (T)Retrieve(typeof(T), uuid);
+        }
+
 		public override object Retrieve(Type objectType, string uuid)
 		{
 			try
@@ -176,8 +182,17 @@ namespace Bam.Net.Data.Repositories
 			List<T> results = new List<T>(collection.FindAs(typeof(T), query));			
 			return results;
 		}
-		
-		public override T Update<T>(T toUpdate)
+
+        public override IEnumerable Query(Type type, QueryFilter query)
+        {
+            throw new NotImplementedException();
+        }
+        public override IEnumerable<T> Query<T>(QueryFilter query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override T Update<T>(T toUpdate)
 		{
 			return (T)Update((object)toUpdate);
 		}

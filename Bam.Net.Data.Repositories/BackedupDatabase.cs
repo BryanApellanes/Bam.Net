@@ -14,13 +14,13 @@ namespace Bam.Net.Data.Repositories
 {
 	public class BackedupDatabase: Database
 	{
-		public BackedupDatabase(Assembly daoAssembly, Database databaseToTrack)
+		public BackedupDatabase(Assembly daoAssembly, Database databaseToTrack, string objectRepoPath = ".\\DbBackupRepo")
 		{
-			this.Repository = new ObjectRepository(".\\DbBackupRepo");
+			this.Repository = new ObjectRepository(objectRepoPath);
 			this.Backup = new DaoBackup(daoAssembly, databaseToTrack, this.Repository);
 		}
 
-		public IRepository Repository { get; set; }
+		public ObjectRepository Repository { get; private set; }
 
 		protected Database Database
 		{

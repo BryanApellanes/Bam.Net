@@ -79,7 +79,7 @@ namespace Bam.Net.CoreServices
             get
             {
                 UserManager mgr = GetUserManager();
-                return mgr.GetCurrentUser();
+                return mgr.GetUser(HttpContext);
             }
         }
         
