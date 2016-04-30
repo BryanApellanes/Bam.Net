@@ -726,7 +726,7 @@ namespace Bam.Net.Server
                         {
                             Logger.AddEntry("GZipping the minified bytes of ({0}) COMPLETED", LogEventType.Information, path);
                             byte[] zippedMinBytes = g.Result;
-                            SetZippedMinCacheBytes(path, zippedMinBytes);
+                            //SetZippedMinCacheBytes(path, zippedMinBytes);
                             SetZippedMinCacheBytes(minPath, zippedMinBytes);
                         });
                     }

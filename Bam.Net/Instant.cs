@@ -50,6 +50,31 @@ namespace Bam.Net
             return "{Month}/{Day}/{Year};{Hour}.{Minute}.{Second}.{Millisecond}".NamedFormat(this);
         }
 
+        public static Instant FromDateString(string dateString)
+        {
+            string[] monthDayYear = dateString.DelimitSplit("/");
+            if (monthDayYear.Length != 3)
+            {
+                Throw();
+            }
+            int month;
+            int day;
+            int year;
+            if(!int.TryParse(monthDayYear[0], out month))
+            {
+                Throw();
+            }
+            if(!int.TryParse(monthDayYear[1], out day))
+            {
+                Throw();
+            }
+            if(!int.TryParse(monthDayYear[2], out year))
+            {
+                Throw();
+            }
+            return new Instant(new DateTime(year, month, day));
+        }
+
         public static Instant FromString(string instantString)
         {
             int month;
@@ -189,7 +214,16 @@ namespace Bam.Net
         {
             return ToDateTime().Date;
         }
-        
+
+        /// <summary>
+        /// Returns the current instant in the format "{Month}/{Day}/{Year}"
+        /// </summary>
+        /// <returns></returns>
+        public string ToDateString()
+        {
+            return "{Month}/{Day}/{Year}".NamedFormat(this);
+        }
+
         /// <summary>
         /// Return a DateTime object representing the current Instant instance
         /// </summary>

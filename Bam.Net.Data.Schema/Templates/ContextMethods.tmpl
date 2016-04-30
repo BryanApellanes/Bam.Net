@@ -15,6 +15,11 @@
 			{
 				return @(Namespace).@(Model.ClassName).OneWhere(where, db);
 			}
+
+			public static @(Model.ClassName) GetOneWhere(WhereDelegate<@(Model.ClassName)Columns> where, Database db = null)
+			{
+				return @(Namespace).@(Model.ClassName).GetOneWhere(where, db);
+			}
 		
 			public @(Model.ClassName) FirstOneWhere(WhereDelegate<@(Model.ClassName)Columns> where, Database db = null)
 			{

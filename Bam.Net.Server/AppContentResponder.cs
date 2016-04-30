@@ -201,6 +201,7 @@ namespace Bam.Net.Server
             if (result)
             {
                 SetContentType(response, path);
+                SetContentDisposition(response, path);
                 SendResponse(response, content);
             }
             return result;

@@ -46,14 +46,15 @@ namespace Bam.Net.Logging
         }
 
 
-        public virtual void RestartLoggingThread()
+        public virtual ILogger RestartLoggingThread()
         {
             this.StopLoggingThread();
             this.StartLoggingThread();
+            return this;
         }
 
         object _threadLock = new object();
-        public virtual void StopLoggingThread()
+        public virtual ILogger StopLoggingThread()
         {
             if (loggingThread != null)
             {
@@ -67,13 +68,14 @@ namespace Bam.Net.Logging
                     catch { } // not all ThreadStates are valid for a call to Abort
                 }
             }
+            return this;
         }
 
         /// <summary>
         /// Start the background logger commit thread; may cause previous logging 
         /// threads to abort if they exist
         /// </summary>
-        public virtual void StartLoggingThread()
+        public virtual ILogger StartLoggingThread()
         {
             lock (_threadLock)
             {
@@ -81,6 +83,7 @@ namespace Bam.Net.Logging
                 loggingThread.IsBackground = true;
                 loggingThread.Start();
             }
+            return this;
         }
 
         protected virtual void QueueLogEvent(LogEvent logEvent)

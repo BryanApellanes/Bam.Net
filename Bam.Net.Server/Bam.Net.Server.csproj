@@ -134,6 +134,7 @@
     <Compile Include="FileUploadEventArgs.cs" />
     <Compile Include="HttpPostedFile.cs" />
     <Compile Include="IAppInitializer.cs" />
+    <Compile Include="InitializeFailedEventArgs.cs" />
     <Compile Include="Listeners\ServerEventListenerAttribute.cs" />
     <Compile Include="Listeners\BamServerEventListener.cs" />
     <Compile Include="Listeners\BamServerEventListenerBinder.cs" />

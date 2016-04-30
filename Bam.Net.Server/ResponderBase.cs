@@ -18,7 +18,7 @@ namespace Bam.Net.Server
 {
     public abstract class ResponderBase : Loggable, IResponder
     {
-        Dictionary<string, string> _contentTypes;
+        Dictionary<string, string> _contentTypes;        
         public ResponderBase(BamConf conf)
         {
             this.BamConf = conf;
@@ -32,7 +32,7 @@ namespace Bam.Net.Server
             this._contentTypes.Add(".gif", "image/gif");
             this._contentTypes.Add(".png", "image/png");
             this._contentTypes.Add(".html", "text/html");
-
+            
             this._respondToPrefixes = new List<string>();
             this._ignorePrefixes = new List<string>();
 
@@ -186,6 +186,14 @@ namespace Bam.Net.Server
             string contentType = string.Empty;
             string ext = Path.GetExtension(path);
             return GetContentTypeForExtension(ext);
+        }
+
+        protected void SetContentDisposition(IResponse response, string path)
+        {
+            if(Path.GetExtension(path).Equals(".pdf", StringComparison.InvariantCultureIgnoreCase))
+            {
+                response.AddHeader("Content-Disposition", $"attachment; filename={Path.GetFileName(path)}");
+            }
         }
 
         protected void SetContentType(IResponse response, string path)

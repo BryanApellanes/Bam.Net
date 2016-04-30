@@ -15,7 +15,20 @@ namespace Bam.Net.Incubation
         {
             this.Incubator = incubator;
         }
-
+        public Incubator Use(object instance)
+        {
+            return Returns(instance);
+        }
+        public Incubator Returns(object instance)
+        {
+            Incubator inc = Incubator ?? new Incubator();
+            inc.Set(typeof(I), instance);
+            return inc;
+        }
+        public Incubator Use<T>()
+        {
+            return Returns<T>();
+        }
         /// <summary>
         /// Specify the return type T for the specified 
         /// type I ( same as To )
@@ -28,14 +41,20 @@ namespace Bam.Net.Incubation
             inc.Set(typeof(I), inc.Construct(typeof(T)));
             return inc;
         }
-
+        public Incubator Use<T>(Func<T> instanciator)
+        {
+            return Returns<T>(instanciator);
+        }
         public Incubator Returns<T>(Func<T> instanciator)
         {
             Incubator inc = Incubator ?? new Incubator();
             inc.Set(instanciator);
             return inc;
         }
-
+        public Incubator Use<T>(Func<Incubator, T> instanciator)
+        {
+            return Returns<T>(instanciator);
+        }
         public Incubator Returns<T>(Func<Incubator, T> instanciator)
         {
             Incubator inc = Incubator ?? new Incubator();

@@ -27,6 +27,11 @@ namespace Bam.Net.Incubation
             return new FluentIncubationContext<I>(incubator);
         }
 
+        public static FluentIncubationContext<I> For<I>(this Incubator incubator)
+        {
+            return new FluentIncubationContext<I>(incubator);
+        }
+
         /// <summary>
         /// Bind the specified type I ( same as AskingFor )
         /// </summary>

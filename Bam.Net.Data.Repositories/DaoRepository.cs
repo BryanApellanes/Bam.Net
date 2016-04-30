@@ -34,6 +34,7 @@ namespace Bam.Net.Data.Repositories
         public DaoRepository()
         {
             WarningsAsErrors = true;
+            Logger = Log.Default;
             _typeDaoGenerator = new TypeDaoGenerator();
             _typeSchemaGenerator = new TypeSchemaGenerator();
             _typeDaoGenerator.GenerateDaoAssemblySucceeded += (o, a) =>
@@ -355,6 +356,11 @@ namespace Bam.Net.Data.Repositories
 			}
 		}
 
+        public T Retrieve<T>(string uuid)
+        {
+            return (T)Retrieve(typeof(T), uuid);
+        }
+
 		public override object Retrieve(Type objectType, string uuid)
 		{
 			try
@@ -390,7 +396,7 @@ namespace Bam.Net.Data.Repositories
 			MethodInfo getterMethod = daoType.GetMethod("LoadAll", new Type[] { typeof(Database) });
 			return new List<object>((IEnumerable<object>)getterMethod.Invoke(null, new object[] { Database }));
 		}
-
+        
 		public override IEnumerable<object> Query(string propertyName, object value)
 		{
 			return Query<object>(Bam.Net.Data.Query.Where(propertyName) == value);
@@ -413,7 +419,7 @@ namespace Bam.Net.Data.Repositories
 			return Query<object>((QueryFilter)query);
 		}
 
-		public override IEnumerable<T> Query<T>(dynamic query) //where T: class, new()
+		public override IEnumerable<T> Query<T>(dynamic query) 
 		{
 			return Query<T>((QueryFilter)query);
 		}
@@ -891,7 +897,14 @@ namespace Bam.Net.Data.Repositories
 		private void SaveDaoInstance(Type dtoOrPocoType, object daoInstance)
 		{
 			MethodInfo saveMethod = GetDaoType(dtoOrPocoType).GetMethod("Save", new Type[] { typeof(Database) });
-			saveMethod.Invoke(daoInstance, new object[] { Database });
+            try
+            {
+                saveMethod.Invoke(daoInstance, new object[] { Database });
+            }
+            catch (Exception ex)
+            {
+                LogAndThrow(ex, Logger);
+            }
 		}
 
 		private Type GetDaoType<T>() where T : new()
@@ -922,11 +935,20 @@ namespace Bam.Net.Data.Repositories
 			daoInstance.Property("Database", Database);
 			Type pocoType = GetBaseType(poco.GetType());
 			SaveDaoInstance(pocoType, daoInstance);
-			if (SetChildDaoCollectionValues(poco, daoInstance) || SetXrefDaoCollectionValues(poco, daoInstance))
+            bool saveAgain = false;
+			if (SetChildDaoCollectionValues(poco, daoInstance))
 			{
-				daoInstance.ForceUpdate = true;
-				SaveDaoInstance(pocoType, daoInstance);
+                saveAgain = true;
 			}
+            if(SetXrefDaoCollectionValues(poco, daoInstance))
+            {
+                saveAgain = true;
+            }
+            if (saveAgain)
+            {
+                daoInstance.ForceUpdate = true;
+                SaveDaoInstance(pocoType, daoInstance);
+            }
 			object dto = ConstructWrapper(pocoType);
 			dto.CopyProperties(daoInstance);
 			poco.CopyProperties(dto);
@@ -981,6 +1003,21 @@ namespace Bam.Net.Data.Repositories
                 });
             }
             return filter;
+        }
+
+        private static void LogAndThrow(Exception ex, ILogger logger)
+        {
+            logger = logger ?? Log.Default;
+            string message = ex.Message;
+            string innerMessage = "NA";
+            string signature = "ExceptionMessage::{0}::InnerExceptionMessage::{1}";
+            Exception e = ex;            
+            if(ex.InnerException != null)
+            {
+                e = ex.InnerException;
+                innerMessage = ex.InnerException.Message;
+            }
+            logger.AddEntry(signature, e, message, innerMessage);
         }
 
 	}

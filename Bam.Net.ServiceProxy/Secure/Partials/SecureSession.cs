@@ -87,7 +87,7 @@ namespace Bam.Net.ServiceProxy.Secure
         /// <param name="context"></param>
         /// <param name="instant"></param>
         /// <returns></returns>
-        public static SecureSession Get(IHttpContext context, Instant instant = null)//, KeyTypeEnum clientType = KeyTypeEnum.Private)
+        public static SecureSession Get(IHttpContext context, Instant instant = null)
         {
             return Get(context.Request, context.Response, instant);
         }

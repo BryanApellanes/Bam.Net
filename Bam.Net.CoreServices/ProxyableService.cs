@@ -10,7 +10,9 @@ using Bam.Net.Logging;
 using Bam.Net.Server;
 using Bam.Net.Server.Renderers;
 using Bam.Net.ServiceProxy;
+using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.UserAccounts;
+using Bam.Net.UserAccounts.Data;
 
 namespace Bam.Net.CoreServices
 {
@@ -35,21 +37,71 @@ namespace Bam.Net.CoreServices
         [Exclude]
         public ILogger Logger { get; set; }
 
+        IHttpContext _context;
         [Exclude]
         public IHttpContext HttpContext
         {
-            get;
-            set;
+            get
+            {
+                return _context;
+            }
+            set
+            {
+                if(value != null)
+                {
+                    _context = value;
+                    SetHttpContext();
+                }
+            }
+        }
+
+        [Exclude]
+        public Session Session
+        {
+            get
+            {
+                return Session.Init(HttpContext);
+            }
+        }
+
+        [Exclude]
+        public SecureSession SecureSession
+        {
+            get
+            {
+                return SecureSession.Init(HttpContext);
+            }
+        }
+
+        [Exclude]
+        public User CurrentUser
+        {
+            get
+            {
+                UserManager mgr = GetUserManager();
+                return mgr.GetCurrentUser();
+            }
         }
         
+        public string UserName
+        {
+            get
+            {
+                return CurrentUser.UserName;
+            }
+        }
+
         [Exclude]
-        public DaoRepository DaoRepository { get; internal set; }
+        public DaoRepository DaoRepository { get; set; }
 
         [Exclude]
         public IRepository Repository { get; set; }
 
         [Exclude]
-        public AppConf AppConf { get; protected set; }
+        public ObjectRepository ObjectRepository { get; set; }
+
+        [Exclude]
+        public AppConf AppConf { get; set; }
 
         [Exclude]
         public void RenderAppTemplate(string templateName, object toRender, Stream output)
@@ -88,6 +140,14 @@ namespace Bam.Net.CoreServices
                     sw.Write(sr.ReadToEnd());
                 }
             }
+        }
+
+        protected internal void SetHttpContext()
+        {
+            GetType().GetProperties().Where(pi => pi.PropertyType.ImplementsInterface<IRequiresHttpContext>()).Each(pi =>
+            {
+                pi.GetValue(this).Property("HttpContext", HttpContext);
+            });
         }
 
         protected internal UserManager GetUserManager()

@@ -365,7 +365,7 @@ namespace Bam.Net.UserAccounts
         }
 
         /// <summary>
-        /// The vent that is fired when someone logs in
+        /// The event that is fired when someone logs in
         /// </summary>
         [Verbosity(VerbosityLevel.Information, MessageFormat = "{ApplicationName}::{UserName}:: ForgotPasswordSucceeded")]
         public event EventHandler ForgotPasswordSucceeded;
@@ -478,7 +478,7 @@ namespace Bam.Net.UserAccounts
         }
 
         /// <summary>
-        /// The vent that is fired when someone signs up
+        /// The event that is fired when someone signs up
         /// </summary>
         [Verbosity(VerbosityLevel.Information, MessageFormat = "{ApplicationName}::{UserName}:: SignUpSucceeded")]
         public event EventHandler SignUpSucceeded;

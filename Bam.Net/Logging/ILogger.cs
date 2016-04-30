@@ -35,9 +35,9 @@ namespace Bam.Net.Logging
         void AddEntry(string messageSignature, Exception ex, params string[] variableMessageValues);
 
         void BlockUntilEventQueueIsEmpty();
-        void StartLoggingThread();
-        void StopLoggingThread();
-        void RestartLoggingThread();
+        ILogger StartLoggingThread();
+        ILogger StopLoggingThread();
+        ILogger RestartLoggingThread();
 
         void CommitLogEvent(LogEvent logEvent);
 

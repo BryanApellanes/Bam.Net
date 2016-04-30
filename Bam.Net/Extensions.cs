@@ -163,6 +163,24 @@ namespace Bam.Net
         }
 
         /// <summary>
+        /// Copy the specified instance to a dynamic instance where the new
+        /// instance only has the properties addorned with the specified 
+        /// custom attribute T
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="instance"></param>
+        /// <returns></returns>
+        public static dynamic CopyAsDynamic<T>(this object instance) where T : Attribute
+        {
+            return instance.CopyAsDynamic(p => p.HasCustomAttributeOfType<T>());
+        }
+
+        public static dynamic CopyAsDynamic(this object instance, Func<PropertyInfo, bool> propertySelector)
+        {
+            return instance.ToDynamicType(instance.GetType().Name, propertySelector).Construct();
+        }
+
+        /// <summary>
         /// Copy the current sourcce instance as the spcified type
         /// copying all properties that match in name and type
         /// </summary>
@@ -888,6 +906,24 @@ namespace Bam.Net
                 result[i] = func(arr[i]);
             }
             return result;
+        }
+
+        public static IEnumerable<T> OrEmpty<T>(this IEnumerable<T> arr)
+        {
+            if(arr == null)
+            {
+                return new T[] { };
+            }
+            return arr;
+        }
+
+        public static IEnumerable<T> OrEmpty<T>(this T[] arr)
+        {
+            if(arr == null)
+            {
+                return new T[] { };
+            }
+            return arr;
         }
 
         public static bool TryConstruct(this Type type, out object constructed, params object[] ctorParams)
@@ -2132,6 +2168,15 @@ namespace Bam.Net
             }
         }
 
+        /// <summary>
+        /// Set the value for the specified key in the dictionary in a way that won't 
+        /// throw an exception if the value key isn't already there
+        /// </summary>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="dictionary"></param>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
         public static void Set<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, TValue value)
         {
             if (!dictionary.ContainsKey(key))

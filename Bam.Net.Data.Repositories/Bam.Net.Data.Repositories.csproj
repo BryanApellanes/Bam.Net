@@ -160,6 +160,7 @@
     <Compile Include="ObjectReaderWriter.cs" />
     <Compile Include="DtoModel.cs" />
     <Compile Include="RepoData.cs" />
+    <Compile Include="IRepositoryPathProvider.cs" />
     <Compile Include="SavedObject.cs" />
     <Compile Include="TypeDaoGenerator.cs" />
     <Compile Include="TypeSchema.cs" />

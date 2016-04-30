@@ -13,6 +13,7 @@ using System.Web.Mvc;
 using Org.BouncyCastle.Security;
 using Bam.Net.Logging;
 using Bam.Net.Data;
+using System.Runtime.Serialization;
 
 namespace Bam.Net.UserAccounts.Data
 {
@@ -193,17 +194,31 @@ namespace Bam.Net.UserAccounts.Data
             }
         }
 
-        public T Get<T>(string key)
+        /// <summary>
+        /// Get the object of type T for the specified key
+        /// using the setter to set it if it hasn't already
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key"></param>
+        /// <param name="setter"></param>
+        /// <returns></returns>
+        public T Get<T>(string key, Func<T> setter = null)
         {
             object value = this[key];
             if (value != null)
             {
                 return (T)value;
             }
+            else if (value == null && setter != null)
+            {
+                value = setter();
+                this[key] = value;
+                return (T)value;
+            }
 
             return default(T);
         }
-
+        
         public void Set(string key, object value)
         {
             this[key] = value;
@@ -216,7 +231,14 @@ namespace Bam.Net.UserAccounts.Data
                 SessionState state = this.SessionStatesBySessionId.Where(ss => ss.Name == key).FirstOrDefault();
                 if (state != null)
                 {
-                    return state.Value.FromBinaryBytes();
+                    if (state.ValueType.EndsWith(".json"))
+                    {
+                        return Encoding.UTF8.GetString(state.Value).FromJson(Type.GetType(state.ValueType.Truncate(".json".Length)));
+                    }
+                    else
+                    {
+                        return state.Value.FromBinaryBytes();
+                    }
                 }
 
                 return null;
@@ -234,7 +256,16 @@ namespace Bam.Net.UserAccounts.Data
                 if (val != null)
                 {
                     state.ValueType = val.GetType().AssemblyQualifiedName;
-                    state.Value = val.ToBinaryBytes();
+                    try
+                    {
+                        state.Value = val.ToBinaryBytes();
+                    }
+                    catch (SerializationException ex)
+                    {
+                        Log.Default.AddEntry("Session::Error serializing object of type {0}, using Json instead", LogEventType.Warning, ex, val.GetType().Name);
+                        state.ValueType = $"{state.ValueType}.json";
+                        state.Value = Encoding.UTF8.GetBytes(val.ToJson());
+                    }
                 }
                 else
                 {

@@ -10,19 +10,20 @@ namespace Bam.Net.Logging
 {
     public abstract class BlockingLogger: Logger
     {
-        public override void RestartLoggingThread()
+        public override ILogger RestartLoggingThread()
         {
             // this is a blocking logger
+            return this;
         }
 
-        public override void StartLoggingThread()
+        public override ILogger StartLoggingThread()
         {
-            //
+            return this;
         }
 
-        public override void StopLoggingThread()
+        public override ILogger StopLoggingThread()
         {
-            //
+            return this;
         }
 
         protected override void QueueLogEvent(LogEvent logEvent)
