@@ -73,8 +73,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Asking.cs" />
     <Compile Include="ConstructFailedException.cs" />
     <Compile Include="FluentIncubationContext.cs" />
+    <Compile Include="For.cs" />
     <Compile Include="Incubator.cs" />
     <Compile Include="ISetupContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

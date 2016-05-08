@@ -101,7 +101,7 @@ namespace Bam.Net.Data.Repositories
 		public abstract IEnumerable<object> RetrieveAll(Type type);
 		public abstract object Retrieve(Type objectType, long id);
 		public abstract object Retrieve(Type objectType, string uuid);
-		public abstract IEnumerable<object> Query(string propertyName, object propertyValue);
+        public abstract IEnumerable<object> Query(string propertyName, object propertyValue);
 		public abstract IEnumerable<object> Query(dynamic query);
         public abstract IEnumerable<T> Query<T>(Func<T, bool> query) where T : class, new();
         public abstract IEnumerable<T> Query<T>(Dictionary<string, object> queryParameters) where T : class, new();

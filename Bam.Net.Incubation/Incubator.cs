@@ -103,6 +103,31 @@ namespace Bam.Net.Incubation
         }
 
         /// <summary>
+        /// Construct an instance of type T without
+        /// setting the new instance as the new internal gettable instance
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public T GetWithoutSet<T>()
+        {
+            return (T)GetWithoutSet(typeof(T));
+        }
+
+        /// <summary>
+        /// Construct an instance of type T without
+        /// setting the new instance as the new internal gettable instance
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public object GetWithoutSet(Type type)
+        {
+            ConstructorInfo ctor;
+            List<object> ctorParams;
+            GetCtorAndParams(type, out ctor, out ctorParams);
+            return ctor.Invoke(ctorParams.ToArray());
+        }
+
+        /// <summary>
         /// Construct an instance of the specified type
         /// injecting constructor params from the current 
         /// incubator
@@ -112,51 +137,10 @@ namespace Bam.Net.Incubation
         public object Construct(Type type)
         {
             ConstructorInfo ctor;
-            List<object> ctorParams = GetCtorParams(type, out ctor);
-            if (ctor == null)
-            {
-                Throw(type, ctorParams.Select(p => p.GetType()).ToArray());
-            }
+            List<object> ctorParams;
+            GetCtorAndParams(type, out ctor, out ctorParams);
             this[type] = ctor.Invoke(ctorParams.ToArray());
             return this[type];
-        }
-        private List<object> GetCtorParams(Type type)
-        {
-            ConstructorInfo ctor;
-            return GetCtorParams(type, out ctor);
-        }
-        private List<object> GetCtorParams(Type type, out ConstructorInfo ctorInfo)
-        {
-            ctorInfo = null;
-            ConstructorInfo[] ctors = type.GetConstructors();
-            List<object> ctorParams = new List<object>();
-            foreach (ConstructorInfo ctor in ctors)
-            {
-                ParameterInfo[] parameters = ctor.GetParameters();
-                if (parameters.Length > 0)
-                {
-                    foreach (ParameterInfo paramInfo in parameters)
-                    {
-                        object existing = this[paramInfo.ParameterType];
-                        if (existing != null)
-                        {
-                            ctorParams.Add(existing);
-                        }
-                        else
-                        {
-                            ctorParams.Clear();
-                            break;
-                        }
-                    }
-                }
-
-                if (ctorParams.Count == parameters.Length)
-                {
-                    ctorInfo = ctor;
-                    break;
-                }
-            }
-            return ctorParams;
         }
         
         /// <summary>
@@ -266,51 +250,6 @@ namespace Bam.Net.Incubation
             return ctorParams;
         }
 
-        /// <summary>
-        /// Gets a new instance of interface I.
-        /// SetCtor must be called first
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public I GetNew<I>()
-        {
-            ConstructorInfo ctor = null;
-            if (implementations.ContainsKey(typeof(I)))
-            {
-                ctor = implementations[typeof(I)];
-            }
-
-            if (ctor == null)
-            {
-                throw new InvalidOperationException(string.Format("SetCtor<{0}, T>() has not been called", typeof(I).Name));
-            }
-
-            return (I)ctor.Invoke(null);
-        }
-
-        /// <summary>
-        /// Sets the constructor to use when calling GetNew
-        /// </summary>
-        /// <typeparam name="I"></typeparam>
-        /// <typeparam name="T"></typeparam>
-        public void SetCtor<I, T>()
-        {
-            ConstructorInfo ctor = typeof(T).GetConstructor(Type.EmptyTypes);
-            if (ctor == null)
-            {
-                throw new InvalidOperationException(string.Format("The specified type {0} doesn't have a default constructor", typeof(T).Name));
-            }
-
-            if (implementations.ContainsKey(typeof(I)))
-            {
-                implementations[typeof(I)] = ctor;
-            }
-            else
-            {
-                implementations.Add(typeof(I), ctor);
-            }
-        }
-
         object _getLock = new object();
         private T GetInternal<T>()
         {
@@ -328,6 +267,11 @@ namespace Bam.Net.Incubation
             {
                 return (T)this[typeof(T)];
             }
+        }
+        
+        public T Get<T>(string className)
+        {
+            return (T)Get(className);
         }
 
         public object Get(string className)
@@ -347,11 +291,26 @@ namespace Bam.Net.Incubation
                 {
                     return fn();
                 }
+                else
+                {
+                    result = Get(type, GetCtorParams(type));
+                }
                 return result;
             }
 
             return null;
         }
+
+        public object Get(Type type, params Type[] ctorParamTypes)
+        {
+            if (this[type] == null)
+            {
+                Construct(type, ctorParamTypes);
+            }
+
+            return this[type];
+        }
+
         /// <summary>
         /// Gets an object of type T if it has been instantiated otherwise
         /// calls Construct and returns the result.
@@ -460,19 +419,7 @@ namespace Bam.Net.Incubation
                 return this[type];
             }
         }
-
-        public object Get(Type type, params Type[] ctorParamTypes)
-        {
-            if (this[type] == null)
-            {
-                return Construct(type, ctorParamTypes);
-            }
-            else
-            {
-                return this[type];
-            }
-        }
-
+        
         public void Set<T>(T instance)
         {
             Set<T>(instance, false);
@@ -675,6 +622,54 @@ namespace Bam.Net.Incubation
                 }
             }
         }
-        
+
+        private void GetCtorAndParams(Type type, out ConstructorInfo ctor, out List<object> ctorParams)
+        {
+            ctorParams = GetCtorParams(type, out ctor);
+            if (ctor == null)
+            {
+                Throw(type, ctorParams.Select(p => p.GetType()).ToArray());
+            }
+        }
+
+        private List<object> GetCtorParams(Type type)
+        {
+            ConstructorInfo ctor;
+            return GetCtorParams(type, out ctor);
+        }
+        private List<object> GetCtorParams(Type type, out ConstructorInfo ctorInfo)
+        {
+            ctorInfo = null;
+            ConstructorInfo[] ctors = type.GetConstructors();
+            List<object> ctorParams = new List<object>();
+            foreach (ConstructorInfo ctor in ctors)
+            {
+                ParameterInfo[] parameters = ctor.GetParameters();
+                if (parameters.Length > 0)
+                {
+                    foreach (ParameterInfo paramInfo in parameters)
+                    {
+                        object existing = Get(paramInfo.ParameterType, GetCtorParams(paramInfo.ParameterType).ToArray());
+                        if (existing != null)
+                        {
+                            ctorParams.Add(existing);
+                        }
+                        else
+                        {
+                            ctorParams.Clear();
+                            break;
+                        }
+                    }
+                }
+
+                if (ctorParams.Count == parameters.Length)
+                {
+                    ctorInfo = ctor;
+                    break;
+                }
+            }
+            return ctorParams;
+        }
+
     }
 }

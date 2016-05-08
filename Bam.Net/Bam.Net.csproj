@@ -181,6 +181,7 @@
     <Compile Include="Logging\VerbosityLevel.cs" />
     <Compile Include="IpcMessage.cs" />
     <Compile Include="IpcMessageRoot.cs" />
+    <Compile Include="Month.cs" />
     <Compile Include="NamedThread.cs" />
     <Compile Include="Razor\RazorBaseTemplate.cs" />
     <Compile Include="Razor\RazorParser.cs" />

@@ -95,19 +95,22 @@ namespace Bam.Net.Encryption
         }
 
         static Dictionary<string, Vault> _loadedVaults = new Dictionary<string, Vault>();
+        static object _loadedVaultsLock = new object();
         public static Vault Load(FileInfo file, string name, string password, ILogger logger = null)
         {
             string key = $"{file.FullName}.{name}";
-            if (!_loadedVaults.ContainsKey(key))
+            lock (_loadedVaultsLock)
             {
-                if (logger == null)
+                if (!_loadedVaults.ContainsKey(key))
                 {
-                    logger = Log.Default;
+                    if (logger == null)
+                    {
+                        logger = Log.Default;
+                    }
+                    Database db = InitializeDatabase(file.FullName, logger);
+                    _loadedVaults.Add(key, Retrieve(db, name, password));
                 }
-                Database db = InitializeDatabase(file.FullName, logger);
-                _loadedVaults.Add(key, Retrieve(db, name, password));
             }
-
             return _loadedVaults[key];
         }
 
