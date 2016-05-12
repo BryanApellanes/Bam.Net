@@ -10,7 +10,13 @@
 */
 
 
-var bam = bam || {};
+var bam = bam || function(appName){
+        var app;
+        if(bam.app){
+            app = bam.app(appName);
+        }
+        return app;
+    };
 bam.ctor = bam.ctor || {};
 bam.exports = bam.exports || {};
 
@@ -193,7 +199,7 @@ bam.exports = bam.exports || {};
         fn = args.splice(0, 1)[0];
         return $.Deferred(function(){
             var prom = this;
-            fn(prom.resolve, args);
+            fn(prom.resolve, prom.reject, args);
         }).promise();
     };
     /**
@@ -272,7 +278,7 @@ bam.exports = bam.exports || {};
 
         if(!crossDomain) {
             setViewName(config);
-            return $.ajax(config).promise();
+            return $.ajax(config);
         }else {
             var url = _.format(urlFormat + "callback=?", "jsonp");
             config.url = url;
@@ -290,7 +296,7 @@ bam.exports = bam.exports || {};
             ev.returnValue = false;
         }
     };
-
+    
     b.activatePlugins = function () {
         $("[data-plugin]").dataSet().dataSetPlugins();
         $("body").dataSetEvents();

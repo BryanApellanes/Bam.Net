@@ -123,7 +123,7 @@ var sdo = (function ($, _) {
                     setter = defaultGetterSetter;
                     $(propElement)[setter](propVal);
                 }
-                // prevents it from getting re/un-set; cleaned up on line 555 - 557
+                // prevents it from getting re/un-set; cleaned up
                 $(propElement).data("sdo_set", true);
                 // -- end setting the prop value
 

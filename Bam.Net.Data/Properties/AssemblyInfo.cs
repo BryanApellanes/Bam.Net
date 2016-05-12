@@ -46,5 +46,5 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("Bam.Net.Server")]
 [assembly: InternalsVisibleTo("Bam.Net.Data.Integration.Tests")]
 [assembly: InternalsVisibleTo("Bam.Net.CoreServices")]
-[assembly: AssemblyVersion("1.2.12")]
-[assembly: AssemblyFileVersion("1.2.12")]
+[assembly: AssemblyVersion("1.2.13")]
+[assembly: AssemblyFileVersion("1.2.13")]

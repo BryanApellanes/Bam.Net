@@ -218,6 +218,11 @@
             Used to help build usage examples for /? 
             </summary>
         </member>
+        <member name="P:Bam.Net.CommandLine.ConsoleLogger.ShowTime">
+            <summary>
+            If true the Local time will prefix the output
+            </summary>
+        </member>
         <member name="M:Bam.Net.CommandLine.Extensions.Run(System.String,System.Text.StringBuilder,System.Text.StringBuilder,System.Int32)">
             <summary>
             Executes the current string on the command line

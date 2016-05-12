@@ -249,6 +249,14 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Bam.Net.Data.Repositories.DaoRepository.ToDto(System.Object)">
+            <summary>
+            Convert the specified instance to it's dynamic
+            json safe representation
+            </summary>
+            <param name="instance"></param>
+            <returns></returns>
+        </member>
         <member name="M:Bam.Net.Data.Repositories.DaoRepository.AddType(System.Type)">
             <summary>
             Add the specified type as a storable type.

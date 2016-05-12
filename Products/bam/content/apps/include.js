@@ -9,7 +9,8 @@
 		"/css/custom.css",
 		"/css/stickyfooter.css",
         "/css/pikaday.css",
-        "/css/qunit.css"
+        "/css/qunit.css",
+        "/css/monthpicker/MonthPicker.css"
 	],
     scripts: [
         "/3rdParty/lodash.underscore.js",
@@ -26,7 +27,8 @@
         "/3rdParty/pikaday.jquery.js",
         "/3rdParty/dust.js",
         "/3rdParty/bootstrap.js",
-        //"/3rdParty/less.js",
+        "/3rdParty/fullcalendar/fullcalendar.js",
+        "/3rdParty/monthpicker/MonthPicker.js",
         "/3rdParty/qunit.js",
         //"/3rdParty/expect.js",
         "/3rdParty/SHA1.js",
@@ -46,6 +48,7 @@
         "/bamvvm/system/cookies.js",
         "/bamvvm/ui/slideshow.js",
         "/bamvvm/ui/html.js",
+        "/bamvvm/ui/overlay.js",
         "/bamvvm/templateModels.js",
         "/bamvvm/methodForms.js"
     ]

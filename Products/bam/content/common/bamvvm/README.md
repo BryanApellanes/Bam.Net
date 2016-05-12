@@ -27,6 +27,12 @@ Used to specify an element that causes bamvvm navigation when clicked
 ## data-opts-target-state
 If specified, used to specify state the target of data-navigate-to should go to upon activation
 
-## Observer (observer.js)
+## data-action
+Used to specify an action on a viewModel to execute on click or the event specified by data-action-on
+
+## data-action-on
+Used to specify the event an action should be executed in response to, used in conjunction with data-action
+
+# Observer (observer.js)
 Used to observe an object or collection.  The result of calling observer.observe can be likened to instantiating
 a backbone model or collection only the resulting object won't suck.

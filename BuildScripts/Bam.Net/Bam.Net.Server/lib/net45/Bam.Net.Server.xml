@@ -106,12 +106,6 @@
             <param name="namedFormatValues"></param>
             <returns></returns>
         </member>
-        <member name="M:Bam.Net.Server.BamApplicationManager.GetTemplates">
-            <summary>
-            Called by client code to retrieve templates
-            </summary>
-            <returns></returns>
-        </member>
         <member name="M:Bam.Net.Server.BamApplicationManager.GetPages(System.String)">
             <summary>
             Called by client code
@@ -337,6 +331,16 @@
             as service proxy executors
             </summary>
         </member>
+        <member name="P:Bam.Net.Server.FileUploadEventArgs.Continue">
+            <summary>
+            Continue the handling of the upload
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Server.HttpPostedFile">
+            <summary>
+            Modified from http://stackoverflow.com/questions/8466703/httplistener-and-file-upload
+            </summary>
+        </member>
         <member name="M:Bam.Net.Server.Listeners.BamServerEventListenerBinder.Bind">
             <summary>
             Bind the BamServerEventListener implementations defined in BamConf 
@@ -493,6 +497,12 @@
             layouts, templates and app custom and type templates
             </summary>
         </member>
+        <member name="P:Bam.Net.Server.Renderers.AppDustRenderer.CompiledLayoutTemplates">
+            <summary>
+            Represents the compiled javascript result of doing dust.compile
+            against all the files found in ~s:/common/views/layouts.
+            </summary>
+        </member>
         <member name="T:Bam.Net.Server.Renderers.CommonDustRenderer">
             <summary>
             The renderer used to render the results of a 
@@ -502,13 +512,13 @@
         <member name="P:Bam.Net.Server.Renderers.CommonDustRenderer.CompiledTemplates">
             <summary>
             Represents the compiled javascript result of doing dust.compile
-            against all the files found in ~s:/dust.
+            against all the files found in ~s:/common/views.
             </summary>
         </member>
         <member name="P:Bam.Net.Server.Renderers.CommonDustRenderer.CompiledLayoutTemplates">
             <summary>
             Represents the compiled javascript result of doing dust.compile
-            against all the files found in ~s:/dust/layouts.
+            against all the files found in ~s:/common/views/layouts.
             </summary>
         </member>
         <member name="P:Bam.Net.Server.Renderers.CommonDustRenderer.CompiledCommonTemplates">
@@ -873,7 +883,7 @@
             <param name="type"></param>
             <returns></returns>
         </member>
-        <member name="P:Bam.Net.Server.ServiceProxyResponder.Services">
+        <member name="P:Bam.Net.Server.ServiceProxyResponder.CommonServices">
             <summary>
             List of service class names
             </summary>

@@ -18,12 +18,18 @@ var validatable = (function($, _, b, s){
         this.validateObject = function(data) {
             var results = {
                 messages: {},
+                messageElements: {},
                 success: true
             };
             _.each(data, function (value, propertyName) { // value, propertyName
                 var valueElement = $("[itemprop=" + propertyName + "]", element)[0],
+                    elementId = $(valueElement).attr("id"),
                     opts = $.dataSetOptions(valueElement),
-                    label = $("[for=" + $(valueElement).attr("id") + "]").text() || propertyName;
+                    labelElement = $("[for=" + elementId + "]"),
+                    label = labelElement.text() || propertyName;
+
+                results.messageElements[propertyName]= $("[data-validation-message-for=" + elementId + "]");
+                opts.required = opts.required || !_.isUndefined($(valueElement).attr("required"));
 
                 _.each(opts, function (ruleParam, ruleName) {
                     if (!_.isUndefined(theRules[ruleName])) {
@@ -43,18 +49,47 @@ var validatable = (function($, _, b, s){
                             }
                         }
 
+                        if(_.isUndefined(msg) && _.isString(ruleParam) &&
+                            (opts.required || opts.email || opts.url || opts.creditCard)){
+                            msg = ruleParam;
+                        }
+
                         if(failed){
                             msg = msg ? _.format(msg, label) : false;
-                            results.messages[propertyName] = msg || theMessages[ruleName](label, ruleParam);
+                            if(_.isUndefined(results.messages[propertyName])){
+                                results.messages[propertyName] = msg || theMessages[ruleName](label, ruleParam);
+                            }
                             results.success = false;
                         }
                     }
                 })
             });
 
+            the.results = results;
             return results;
         };
 
+        this.hideMessages = function(){
+            if(the.results && the.results.messageElements){
+                _.each(the.results.messageElements, function(message, propertyName) {
+                    the.results.messageElements[propertyName].hide();
+                });
+            }
+        };
+        this.showMessages = function(effect){
+            if(the.results && the.results.messages){
+                the.hideMessages();
+                _.each(the.results.messages, function(message, propertyName){
+                    var msgElement = the.results.messageElements[propertyName];
+                    if(!_.isUndefined(effect)){
+                        msgElement.text(message).show(effect);
+                    }else{
+                        msgElement.text(message).show();
+                    }
+                });
+            }
+        };
+        
         this.validate = function(){
             var data = s.getItem(element);
             the.results = the.validateObject(data.raw);

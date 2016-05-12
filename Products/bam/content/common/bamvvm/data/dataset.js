@@ -16,10 +16,11 @@ var dataset = $("#myId").data("dataset");
 
 */
 /* dataset */
-var dataset = {};
+var dataset = {log: function(msg){}};
 
 (function (ds, $) {
-    var events = ["abort", "blur", "change", "click", "dblclick", "error", "focus", "keydown", "keypress", "keyup", "load", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "reset", "resize", "select", "submit", "unload"];
+    "use strict";
+    var events = ["abort", "blur", "change", "click", "dblclick", "error", "focus", "keydown", "keypress", "keyup", "load", "mousedown", "mousemove", "mouseout", "mouseover", "mouseup", "reset", "resize", "select", "submit", "touchstart", "touchend", "touchcancel", "touchmove", "unload"];
     if ($.getAttributes === null || $.getAttributes === undefined) {
         $.getAttributes = function (ele) {
             var ele = ((typeof ele === "string") ? jQuery(ele)[0] : ele[0]),
@@ -108,7 +109,7 @@ var dataset = {};
     function execute(fnName, context) {
         var sc = 2,
             args;
-        if (context === null | context === undefined) {
+        if (context === null || context === undefined) {
             context = window;
             sc = 1;
         }
@@ -211,7 +212,7 @@ var dataset = {};
         if (el.dataset === null || el.dataset === undefined) {
             el.dataset = {};
         }
-        for (prop in attrs) {
+        for (var prop in attrs) {
             if (hasDataPrefix(prop)) {
 
                 var propName = camelCase(prop.substr(5, prop.length - 1), "-");
@@ -276,22 +277,74 @@ var dataset = {};
                 result = fn;
             }
 
+            // option is a viewModel method: data-opts-<name>='vm:<selector>:<methodName>'
+            if (!$.isFunction(fn) && hasPrefix(str, "vm:")) {
+                var segments = str.split(":");
+                if(segments.length !== 3){
+                    ds.log("invalid viewModel specification: " + str);
+                }else{
+                    var selector = segments[1],
+                        methodName = segments[2],
+                        vm;
+                    
+                    vm = $(selector).data("viewModel");
+                    if(_.isObject(vm.model)){
+                        vm = vm.model;
+                    }
+                    
+                    if(!_.isFunction(vm[methodName])){
+                        ds.log("invalid viewModel method specified: " + methodName);
+                    }else{
+                        result = vm[methodName];
+                        fn = result;
+                    }
+                }
+            }
+
+            // option is a function that can be resolved from the global space
             if (!$.isFunction(fn) && hasPrefix(str, "f:")) {
                 result = str.substr(2, str.length - 1);
                 result = getFunction(result);
             }
 
+            // option should resolve to an object: data-opts-<name>='o:prop1=value;prop2=value2;prop3=f:myFunctionName'
             if (!$.isFunction(fn) && hasPrefix(str, "o:")) {
                 result = str.substr(2, str.length - 1);
                 result = toObject(result);
             }
 
+            // option should be treated as a boolean
             if (!$.isFunction(fn) && hasPrefix(str, "b:")) {
                 result = str.substr(2, str.length - 1);
-                if (result == "1" || result == 1 || result == "true" || result == "True") {
-                    result = true;
+                result = !!(result == "1" || result == 1 || result == "true" || result == "True");
+            }
+
+            // option should be parsed as an array of strings that are comma separated
+            if(!$.isFunction(fn) && hasPrefix(str, "a:")){
+                result = str.substr(2, str.length - 1);
+                var temp = [];
+                _.each(result.split(","), function(v){
+                    temp.push(v.trim());
+                });
+                result = temp;
+            }
+
+            if(!$.isFunction(fn) && hasPrefix(str, "d:")){
+                result = str.substr(2, str.length - 1);
+                var dateString = result;
+
+                if (!$.isFunction(moment)) {
+                    if(dateString !== ""){
+                        result = new Date(dateString);
+                    }else{
+                        result = new Date();
+                    }
                 } else {
-                    result = false;
+                    if(dateString !== ""){
+                        result = moment(dateString).toDate();
+                    }else{
+                        result = moment().toDate();
+                    }
                 }
             }
         }
@@ -305,7 +358,7 @@ var dataset = {};
         if (dataSet.opts) {
             options = resolveOption(dataSet.opts);
         } else {
-            for (propName in dataSet) {
+            for (var propName in dataSet) {
                 if (hasPrefix(propName, "opts")) {
                     var optName = camelCase(propName.substr(4, propName.length - 1)),
                         optVal = dataSet[propName];

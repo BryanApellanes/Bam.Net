@@ -655,6 +655,12 @@
             A Class responsible for arbitrating exceptions
             </summary>
         </member>
+        <member name="T:Bam.Net.ExcludeAttribute">
+            <summary>
+            Use to exclude a method from being proxied or a property from 
+            being "editable" in a call to Html.InputsFor.
+            </summary>
+        </member>
         <member name="T:Bam.Net.GeneratedAssemblyInfo">
             <summary>
             Provides information about dynamically generated assemblies
@@ -698,6 +704,12 @@
         <member name="M:Bam.Net.Instant.ToDate">
             <summary>
             Return a DateTime object representing only the Date
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Instant.ToDateString">
+            <summary>
+            Returns the current instant in the format "{Month}/{Day}/{Year}"
             </summary>
             <returns></returns>
         </member>
@@ -1237,6 +1249,29 @@
             <param name="propertyName"></param>
             <returns></returns>
         </member>
+        <member name="M:Bam.Net.ReflectionExtensions.PropertyIfNullOrBlank(System.Object,System.String,System.Object,System.Boolean)">
+            <summary>
+            Set the specified property if it is 
+            null or an empty string
+            </summary>
+            <param name="instance"></param>
+            <param name="propertyName"></param>
+            <param name="value"></param>
+            <param name="throwIfPropertyNotFound"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ReflectionExtensions.PropertyIf(System.Object,System.Boolean,System.String,System.Object,System.Boolean)">
+            <summary>
+            Set the specified property if the specified
+            condition is true
+            </summary>
+            <param name="instance"></param>
+            <param name="condition"></param>
+            <param name="propertyName"></param>
+            <param name="value"></param>
+            <param name="throwIfPropertyNotFound"></param>
+            <returns></returns>
+        </member>
         <member name="M:Bam.Net.ReflectionExtensions.Property(System.Object,System.String,System.Object,System.Boolean)">
             <summary>
             Set the property with the specified name
@@ -1596,6 +1631,16 @@
             </summary>
             <typeparam name="T"></typeparam>
             <param name="source"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Extensions.CopyAsDynamic``1(System.Object)">
+            <summary>
+            Copy the specified instance to a dynamic instance where the new
+            instance only has the properties addorned with the specified 
+            custom attribute T
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="instance"></param>
             <returns></returns>
         </member>
         <member name="M:Bam.Net.Extensions.CopyAs(System.Object,System.Type)">
@@ -2011,6 +2056,15 @@
             <param name="length"></param>
             <returns></returns>
         </member>
+        <member name="M:Bam.Net.Extensions.Plus(System.String,System.String)">
+            <summary>
+            Append the specified toAppend string to the current
+            string
+            </summary>
+            <param name="current"></param>
+            <param name="toAppend"></param>
+            <returns></returns>
+        </member>
         <member name="M:Bam.Net.Extensions.RandomChar">
             <summary>
             Returns a random lower-case character a-z or 0-9
@@ -2125,6 +2179,17 @@
         <member name="M:Bam.Net.Extensions.AddMissing``2(System.Collections.Generic.Dictionary{``0,``1},``0,``1)">
             <summary>
             Adds the specified value if the specified key has not been added
+            </summary>
+            <typeparam name="TKey"></typeparam>
+            <typeparam name="TValue"></typeparam>
+            <param name="dictionary"></param>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Bam.Net.Extensions.Set``2(System.Collections.Generic.Dictionary{``0,``1},``0,``1)">
+            <summary>
+            Set the value for the specified key in the dictionary in a way that won't 
+            throw an exception if the value key isn't already there
             </summary>
             <typeparam name="TKey"></typeparam>
             <typeparam name="TValue"></typeparam>

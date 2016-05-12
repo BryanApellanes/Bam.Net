@@ -23,7 +23,7 @@ function tag(name, attrsOrText){
         });
     }else if (_.isObject(attrsOrText) && !attrsOrText.isTag){
         _.each(attrsOrText, function(v, k){
-            $(element).attr(k, v);
+            $(element).attr(k.replace('_', '-'), v);
         });
     }else if(_.isString(attrsOrText)){
         $(element).text(attrsOrText);
@@ -89,7 +89,7 @@ var html = (function($, _){
         return t;
     }
 
-    return function(tagName, objectAttributes){
+    return function(tagName, objectAttributes, text){
         var container = createElement("div"),
             firstTag;
         if(_.isString(tagName)){
@@ -100,6 +100,7 @@ var html = (function($, _){
                 throw new Error("tagName must be a valid html tagName");
         }
 
+        firstTag.text(text);
         _.each(objectAttributes, function(v, k){
             firstTag.attr(k, v);
         });
@@ -1337,6 +1338,9 @@ var html = (function($, _){
                 });
 
                 return result;
+            },
+            renderIn: function(el){
+                $(el).append(this.html());
             }
         }
     }

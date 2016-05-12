@@ -183,12 +183,6 @@
             </summary>
             <param name="type"></param>
         </member>
-        <member name="T:Bam.Net.Data.ExcludeAttribute">
-            <summary>
-            Use to exclude a method from being proxied or a property from 
-            being "editable" in a call to Html.InputsFor.
-            </summary>
-        </member>
         <member name="M:Bam.Net.Data.DataExtensions.ToJsonSafe(System.Object)">
             <summary>
             Create a json safe version of the object
