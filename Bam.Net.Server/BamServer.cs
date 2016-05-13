@@ -840,6 +840,19 @@ namespace Bam.Net.Server
             }
         }
 
+        public Dictionary<string, UserManager> AppUserManagers
+        {
+            get
+            {
+                Dictionary<string, UserManager> result = new Dictionary<string, UserManager>();
+                AppServiceProviders.Keys.Each(appName =>
+                {
+                    result.Add(appName, AppServiceProviders[appName].Get<UserManager>());
+                });
+                return result;
+            }
+        }
+
         string _workspace;
         public string Workspace
         {

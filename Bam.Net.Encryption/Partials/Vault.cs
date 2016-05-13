@@ -27,7 +27,8 @@ namespace Bam.Net.Encryption
 {
     /// <summary>
     /// An encrypted key value store used to prevent
-    /// casual access to sensitive data like passwords.
+    /// casual access to sensitive data like passwords.  Encrypted data is stored
+    /// in a sqlite file by default or a Database you specify
     /// </summary>
 	public partial class Vault
 	{

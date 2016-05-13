@@ -29,7 +29,7 @@ namespace Bam.Net.UserAccounts
     [Encrypt]
     [Proxy("user", MethodCase = MethodCase.Both)]
     [Serializable]
-    public class UserManager: Loggable, IRequiresHttpContext
+    public class UserManager: Loggable, IRequiresHttpContext, ISmtpSettingsProvider
     {
         static UserManager()
         {
@@ -47,6 +47,7 @@ namespace Bam.Net.UserAccounts
 
         public UserManager()
         {
+            SmtpSettingsProvider = new SmtpSettingsProvider();
             SmtpSettingsVaultPath = ".\\SmtpSettings.vault.sqlite";
             PasswordResetTokensExpireInThisManyMinutes = 15;
             LastException = new NullException();
@@ -58,7 +59,7 @@ namespace Bam.Net.UserAccounts
             UserManager result = new UserManager();
             result.CopyProperties(this);
             result._serviceProvider = _serviceProvider.Clone();
-            result.SmtpSettingsVault = SmtpSettingsVault;
+            result.SmtpSettingsProvider = SmtpSettingsProvider;
             return result;
         }
 
@@ -109,20 +110,21 @@ namespace Bam.Net.UserAccounts
             }
         }
 
-        Vault _smtpSettingsVault;
+        protected internal SmtpSettingsProvider SmtpSettingsProvider
+        {
+            get;
+            set;
+        }
+        
         protected internal Vault SmtpSettingsVault
         {
             get
             {
-                if(_smtpSettingsVault == null)
-                {
-                    _smtpSettingsVault = Vault.Load(SmtpSettingsVaultPath, "SmtpSettings");
-                }
-                return _smtpSettingsVault;
+                return SmtpSettingsProvider.SmtpSettingsVault;
             }
             set
             {
-                _smtpSettingsVault = value;
+                SmtpSettingsProvider.SmtpSettingsVault = value;
             }
         }
 
@@ -132,11 +134,11 @@ namespace Bam.Net.UserAccounts
         {
             get
             {
-                return _smtpSettingsVaultPath;
+                return SmtpSettingsProvider.SmtpSettingsVaultPath;
             }
             set
             {
-                _smtpSettingsVaultPath = value;
+                SmtpSettingsProvider.SmtpSettingsVaultPath = value;
             }
         }
 
@@ -179,16 +181,21 @@ namespace Bam.Net.UserAccounts
             }
         }
 
+        public Email CreateEmail(string fromAddress = null, string fromDisplayName = null)
+        {
+            return SmtpSettingsProvider.CreateEmail(fromAddress, fromDisplayName);
+        }
+
         protected internal Email ComposeConfirmationEmail(string subject, object data)
         {
             Email email = EmailComposer.Compose(subject, AccountConfirmationEmailName, data);
-            return EmailComposer.SetEmailSettings(SmtpSettingsVault, email);
+            return EmailComposer.SetSmtpHostSettings(SmtpSettingsVault, email);
         }
 
         protected internal Email ComposePasswordResetEmail(string subject, object data)
         {
             Email email = EmailComposer.Compose(subject, PasswordResetEmailName, data);
-            return EmailComposer.SetEmailSettings(SmtpSettingsVault, email);
+            return EmailComposer.SetSmtpHostSettings(SmtpSettingsVault, email);
         }
 
         protected internal virtual void InitializeConfirmationEmail()

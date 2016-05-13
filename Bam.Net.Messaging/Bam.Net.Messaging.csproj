@@ -93,6 +93,7 @@
   <ItemGroup>
     <Compile Include="EmailTemplate.cs" />
     <Compile Include="IEmailComposer.cs" />
+    <Compile Include="ISmtpSettingsProvider.cs" />
     <Compile Include="messaging_Generated\DirectMessage.cs" />
     <Compile Include="messaging_Generated\DirectMessageCollection.cs" />
     <Compile Include="messaging_Generated\DirectMessageColumns.cs" />
@@ -114,7 +115,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EmailComposer.cs" />
     <Compile Include="RequiredSettingsNotSetException.cs" />
-    <Compile Include="SmtpSettingsVault.cs" />
+    <Compile Include="SmtpSettingsProvider.cs" />
     <Compile Include="StringFormatEmailComposer.cs" />
   </ItemGroup>
   <ItemGroup>
