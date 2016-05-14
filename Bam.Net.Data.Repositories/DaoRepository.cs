@@ -814,7 +814,7 @@ namespace Bam.Net.Data.Repositories
 			return null;
 		}
 
-        public T Construct<T>() where T : RepoData, new()
+        public T Construct<T>() where T : AuditRepoData, new()
         {
             T result = new T();
             result.Created = DateTime.UtcNow;

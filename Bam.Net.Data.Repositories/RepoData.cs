@@ -21,7 +21,6 @@ namespace Bam.Net.Data.Repositories
         public RepoData()
         {
             Created = DateTime.UtcNow;
-            Modified = Created;
         }
 		public long Id { get; set; }
         string _uuid;
@@ -57,8 +56,6 @@ namespace Bam.Net.Data.Repositories
             }
         }
         public string CreatedBy { get; set; }
-        public string ModifiedBy { get; set; }
 		public DateTime? Created { get; set; }
-		public DateTime? Modified { get; set; }
 	}
 }

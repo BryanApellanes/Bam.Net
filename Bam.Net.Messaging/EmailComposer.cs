@@ -96,26 +96,9 @@ namespace Bam.Net.Messaging
             return template;
         }
 
-        public static Email SetEmailSettings(Vault settingContainer, Email email)
+        public static Email SetSmtpHostSettings(Vault smtpHostSettings, Email email, string fromAddress = null, string fromDisplayName = null)
         {
-            string[] requiredSettingMessages;
-            string[] extendedSettingMessages;
-
-            bool requiredSettingsSet = Notify.ValidateRequiredSettings(settingContainer, out requiredSettingMessages);
-            bool extendedSettingsSet = Notify.ValidateExtendedSettings(settingContainer, out extendedSettingMessages);
-
-            Args.ThrowIf<RequiredSettingsNotSetException>(!requiredSettingsSet, "Required settings missing from specified vault: {0}", string.Join(", ", requiredSettingMessages));
-            Args.ThrowIf<RequiredSettingsNotSetException>(!extendedSettingsSet, "Extended settings missing from specified vault: {0}", string.Join(", ", extendedSettingMessages));
-
-            string smtpHost = settingContainer["SmtpHost"];
-            string userName = settingContainer["UserName"];
-            string password = settingContainer["Password"];
-            string from = settingContainer["From"];
-            string displayName = settingContainer["DisplayName"];
-            int port = int.Parse(settingContainer["Port"]);
-            bool enableSsl = bool.Parse(settingContainer["EnableSsl"]);
-
-            return email.SmtpHost(smtpHost).UserName(userName).Password(password).From(from, displayName).Port(port).EnableSsl(enableSsl);
+            return SmtpSettingsProvider.SetSmtpHostSettings(smtpHostSettings, email, fromAddress, fromDisplayName);
         }
         
         private string GetTemplatePath(string emailName)

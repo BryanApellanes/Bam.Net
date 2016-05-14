@@ -68,22 +68,35 @@ namespace Bam.Net.UserAccounts
             set;
         }
 
+        /// <summary>
+        /// If true don't log failure to locate EmailComposer and 
+        /// ApplicationNameProvider by type.
+        /// </summary>
+        public bool SuppressMessages
+        {
+            get;
+            set;
+        }
+
         private void SetEmailComposer(UserManager mgr, ILogger logger)
         {
             Type emailComposerType = Type.GetType(EmailComposerType);
+            Type defaultEmailComposerType = typeof(NamedFormatEmailComposer);
             if (emailComposerType == null)
             {
-                logger.AddEntry("Specified EmailComposerType was not found, will use {0} instead: {1}", LogEventType.Warning, typeof(NamedFormatEmailComposer).Name, EmailComposerType);
+                emailComposerType = defaultEmailComposerType;
+                if (!SuppressMessages)
+                {
+                    logger.AddEntry("Specified EmailComposerType was not found, will use {0} instead: {1}", LogEventType.Warning, typeof(NamedFormatEmailComposer).Name, EmailComposerType);
+                }
             }
-            else
-            {
-                EmailComposer composer = emailComposerType.Construct<EmailComposer>();
-                composer.TemplateDirectory = new DirectoryInfo(EmailTemplateDirectoryPath);
-                mgr.EmailComposer = composer;
-                
-                mgr.InitializeConfirmationEmail();
-                mgr.InitializePasswordResetEmail();
-            }
+
+            EmailComposer composer = emailComposerType.Construct<EmailComposer>();
+            composer.TemplateDirectory = new DirectoryInfo(EmailTemplateDirectoryPath);
+            mgr.EmailComposer = composer;
+
+            mgr.InitializeConfirmationEmail();
+            mgr.InitializePasswordResetEmail();
         }
 
         private void SetAppNameProvider(UserManager mgr, ILogger logger)
@@ -93,7 +106,10 @@ namespace Bam.Net.UserAccounts
             if (appNameResolverType == null)
             {
                 appNameResolverType = defaultAppNameProvider;
-                logger.AddEntry("Specified ApplicationNameResolverType\r\n\r\n\t{0}\r\n\r\nwas not found, will use {1} instead", LogEventType.Warning, ApplicationNameResolverType, defaultAppNameProvider.FullName);
+                if (!SuppressMessages)
+                {
+                    logger.AddEntry("Specified ApplicationNameResolverType\r\n\r\n\t{0}\r\n\r\nwas not found, will use {1} instead", LogEventType.Warning, ApplicationNameResolverType, defaultAppNameProvider.FullName);
+                }
             }
 
             mgr.ApplicationNameProvider = appNameResolverType.Construct<IApplicationNameProvider>();            

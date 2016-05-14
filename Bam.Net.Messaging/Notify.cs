@@ -28,6 +28,10 @@ namespace Bam.Net.Messaging
                     return Vault.Load(new FileInfo(".\\SysCreds.vault.sqlite"), CredentialVaultName, "".RandomLetters(16), Log.Default);
                 });
             }
+            set
+            {
+                _credentialVault = value;
+            }
         }
         public static bool ValidateRequiredSettings(Vault credentialContainer)
         {
