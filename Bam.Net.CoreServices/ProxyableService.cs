@@ -154,7 +154,7 @@ namespace Bam.Net.CoreServices
         {
             if (_userManager == null)
             {
-                _userManager = AppConf.UserManager.Create(AppConf.Logger);
+                _userManager = AppConf.UserManagerConfig.Create(AppConf.Logger);
                 _userManager.ApplicationNameProvider = new BamApplicationNameProvider(AppConf);
             }
             UserManager copy = (UserManager)_userManager.Clone();

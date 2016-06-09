@@ -21,10 +21,8 @@ namespace Bam.Net.CoreServices
             SupportedEvents.Add("Error");
             SupportedEvents.Add("Fatal");
 
-
             SmtpSettingsProvider = smtpSettingsProvider;
         }
-
       
         public override object Clone()
         {
@@ -57,6 +55,5 @@ namespace Bam.Net.CoreServices
                 throw new InvalidOperationException();
             }
         }
-
     }
 }

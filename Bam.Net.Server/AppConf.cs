@@ -218,24 +218,34 @@ namespace Bam.Net.Server
             set;
         }
 
-        UserManagerConfig _userManager;
-        public UserManagerConfig UserManager
+        UserManagerConfig _userManagerConfig;
+        public UserManagerConfig UserManagerConfig
         {
             get
             {
-                if (_userManager == null)
+                if (_userManagerConfig == null)
                 {
-                    _userManager = new UserManagerConfig();
+                    _userManagerConfig = new UserManagerConfig();
                 }
 
-                return _userManager;
+                return _userManagerConfig;
             }
             set
             {
-                _userManager = value;
+                _userManagerConfig = value;
             }
         }
-        
+
+        UserManager _userManager;
+        public UserManager GetUserManager()
+        {
+            if(_userManager == null)
+            {
+                _userManager = UserManagerConfig.Create(Logger);
+            }
+            return _userManager;
+        }
+
         public string Setting(string settingName, string insteadIfNullOrEmpty)
         {
             AppSetting setting = AppSettings.Where(s => s.Name.Equals(settingName)).FirstOrDefault();

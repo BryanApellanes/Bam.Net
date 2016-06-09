@@ -148,6 +148,7 @@ namespace Bam.Net.Server
         {
             if (_appServiceProviders.ContainsKey(appName))
             {
+
                 _appServiceProviders[appName].Set(instanciator, throwIfSet);
                 OnAppServiceAdded(appName, typeof(T), null);
             }
