@@ -4,6 +4,15 @@
         <name>Bam.Net.Messaging</name>
     </assembly>
     <members>
+        <member name="M:Bam.Net.Messaging.ISmtpSettingsProvider.CreateEmail(System.String,System.String)">
+            <summary>
+            When implemented should return
+            an email whose smtp settings are already 
+            set to those of the current IHasSmtpSettings
+            implementation
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:Bam.Net.Messaging.Data.DirectMessage.GetUniqueFilter">
             <summary>
             Gets a query filter that should uniquely identify

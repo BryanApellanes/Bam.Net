@@ -4533,6 +4533,12 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="P:Bam.Net.UserAccounts.UserManagerConfig.SuppressMessages">
+            <summary>
+            If true don't log failure to locate EmailComposer and 
+            ApplicationNameProvider by type.
+            </summary>
+        </member>
         <member name="T:Bam.Net.UserAccounts.PageResult">
             <summary>
             The single page application equivalent of
