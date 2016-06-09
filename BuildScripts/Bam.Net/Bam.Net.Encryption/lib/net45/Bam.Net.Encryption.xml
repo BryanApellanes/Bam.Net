@@ -39,7 +39,8 @@
         <member name="T:Bam.Net.Encryption.Vault">
             <summary>
             An encrypted key value store used to prevent
-            casual access to sensitive data like passwords.
+            casual access to sensitive data like passwords.  Encrypted data is stored
+            in a sqlite file by default or a Database you specify
             </summary>
         </member>
         <member name="M:Bam.Net.Encryption.Vault.GetUniqueFilter">

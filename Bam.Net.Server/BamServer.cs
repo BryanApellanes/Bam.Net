@@ -352,9 +352,9 @@ namespace Bam.Net.Server
             {
                 try
                 {
-                    UserManager mgr = appConfig.UserManager.Create(MainLogger);
+                    UserManager mgr = appConfig.GetUserManager();
                     mgr.ApplicationNameProvider = new BamApplicationNameProvider(appConfig);
-                    AddAppService<UserManager>(appConfig.Name, mgr);
+                    AddAppService(appConfig.Name, mgr);
                 }
                 catch (Exception ex)
                 {

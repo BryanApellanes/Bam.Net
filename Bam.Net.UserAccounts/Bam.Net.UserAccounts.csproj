@@ -315,6 +315,7 @@
     <Compile Include="Partials\User.cs" />
     <Compile Include="Partials\UserBehavior.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserManagerEventArgs.cs" />
     <Compile Include="UserNameInUseException.cs" />
     <Compile Include="UserNameNotFoundException.cs" />
   </ItemGroup>
