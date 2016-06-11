@@ -10,5 +10,6 @@ namespace Bam.Net.UserAccounts
     public class UserManagerEventArgs: EventArgs
     {
         public User User { get; set; }
+        public SignUpOptions SignUpOptions { get; set; }
     }
 }

@@ -88,6 +88,7 @@
   <ItemGroup>
     <Compile Include="ApiKeyService.cs" />
     <Compile Include="AssemblyGenerationEventEmitter.cs" />
+    <Compile Include="GlobalEvents.cs" />
     <Compile Include="ConfigurationService.cs" />
     <Compile Include="Distributed\CreateOperation.cs" />
     <Compile Include="Distributed\DeleteOperation.cs" />

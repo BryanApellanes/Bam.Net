@@ -26,13 +26,15 @@ namespace Bam.Net.CoreServices
         {
             AppConf = appConf;
             DaoRepository = repository;
-            Logger = appConf.Logger ?? Log.Default;
+            Logger = appConf?.Logger ?? Log.Default;
         }
 
         public ProxyableService(IRepository genericRepo, DaoRepository daoRepo, AppConf appConf) : this(daoRepo, appConf)
         {
             Repository = genericRepo;
         }
+
+        public object JsonData { get; set; }
 
         [Exclude]
         public ILogger Logger { get; set; }

@@ -496,6 +496,7 @@ namespace Bam.Net.UserAccounts
         public event EventHandler SignUpFailed;
         public SignUpResponse SignUp(string emailAddress, string userName, string passHash, bool sendConfirmationEmail)
         {
+            SignUpOptions options = new SignUpOptions { EmailAddress = emailAddress, UserName = userName, PasswordHash = passHash, SendConfirmation = sendConfirmationEmail };
             try
             {
                 IApplicationNameProvider appNameResolver = ApplicationNameProvider;
@@ -504,13 +505,13 @@ namespace Bam.Net.UserAccounts
                 {
                     RequestConfirmationEmail(emailAddress);
                 }
-                FireEvent(SignUpSucceeded, new UserManagerEventArgs { User = user });
+                FireEvent(SignUpSucceeded, new UserManagerEventArgs { User = user, SignUpOptions = options });
                 return GetSuccess<SignUpResponse>(user.ToJsonSafe());
             }
             catch (Exception ex)
             {
                 LastException = ex;
-                FireEvent(SignUpFailed, EventArgs.Empty);
+                FireEvent(SignUpFailed, new UserManagerEventArgs { SignUpOptions = options });
                 return GetFailure<SignUpResponse>(ex);
             }
         }
