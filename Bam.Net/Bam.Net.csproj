@@ -161,6 +161,7 @@
     <Compile Include="EncryptAttribute.cs" />
     <Compile Include="Encryption\Rsa.cs" />
     <Compile Include="Encryption\RSAKeyValue.cs" />
+    <Compile Include="EventSubscription.cs" />
     <Compile Include="ExceptionHandling\ExceptionArbiter.cs" />
     <Compile Include="ExceptionHandling\IArbitrateExceptions.cs" />
     <Compile Include="ExcludeAttribute.cs" />

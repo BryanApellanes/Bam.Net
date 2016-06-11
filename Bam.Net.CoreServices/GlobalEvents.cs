@@ -14,6 +14,7 @@ namespace Bam.Net.CoreServices
         static GlobalEvents()
         {
             _listeners = new Dictionary<string, List<Action<EventMessage, IHttpContext>>>();
+            Logger = Log.Default;
         }
 
         public static ILogger Logger { get; set; }

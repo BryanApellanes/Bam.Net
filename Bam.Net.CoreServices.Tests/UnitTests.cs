@@ -49,17 +49,43 @@ namespace Bam.Net.CoreServices.Tests
             public event EventHandler TestEvent;
             public async Task Test()
             {
-                await FireEvent("TestEvent", TestEvent);
+                await FireEvent("TestEvent");
             }
+        }
+
+        [UnitTest]
+        public async void CopyEventHandlersTest()
+        {
+            TestEventSourceLoggable src = GetTestEventSource();
+            TestEventSourceLoggable src2 = GetTestEventSource();
+            bool? fired = false;
+            int expectCount = 0;
+            src.TestEvent += (o, a) => { fired = true; };
+            src2.CopyEventHandlers(src);
+            await src2.Test().ContinueWith(t =>
+            {
+                expectCount++;
+                Expect.IsTrue(fired.Value);
+            });
+            Expect.IsTrue(expectCount == 1);
+        }
+
+        [UnitTest]
+        public void GetEventSubscriptionsTest()
+        {
+            TestEventSourceLoggable src = GetTestEventSource();
+            bool? fired = false;
+            src.TestEvent += (o, a) => { fired = true; };
+            List<EventSubscription> subs = src.GetEventSubscriptions().ToList();
+            Expect.AreEqual(1, subs.Count);
+            subs.First().Invoke(src, EventArgs.Empty);
+            Expect.IsTrue(fired.Value);
         }
 
         [UnitTest]
         public async void FireNamedEventTest()
         {
-            Database db = new SQLiteDatabase(".\\EventSourceTests", "UserAccounts");
-            db.TryEnsureSchema(typeof(User));
-            Db.For<User>(db);
-            TestEventSourceLoggable src = new TestEventSourceLoggable(new DaoRepository(db), new ConsoleLogger());
+            TestEventSourceLoggable src = GetTestEventSource();
             bool? fired = false;
             int expectCount = 0;
             GlobalEvents.Subscribe<TestEventSourceLoggable>("TestEvent", (em, c) =>
@@ -72,6 +98,15 @@ namespace Bam.Net.CoreServices.Tests
                 Expect.IsTrue(fired.Value);
             });
             Expect.IsTrue(expectCount == 1);
+        }
+
+        private static TestEventSourceLoggable GetTestEventSource()
+        {
+            Database db = new SQLiteDatabase(".\\EventSourceTests", "UserAccounts");
+            db.TryEnsureSchema(typeof(User));
+            Db.For<User>(db);
+            TestEventSourceLoggable src = new TestEventSourceLoggable(new DaoRepository(db), new ConsoleLogger());
+            return src;
         }
 
         [UnitTest]

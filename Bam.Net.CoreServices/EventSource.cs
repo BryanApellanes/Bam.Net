@@ -31,15 +31,15 @@ namespace Bam.Net.CoreServices
             return instance;
         }
 
-        public virtual Task FireEvent(string eventName, EventHandler eventHandler)
+        public virtual Task FireEvent(string eventName)
         {
-            FireEvent(eventHandler);
-            return FireEvent(eventName, JsonData?.ToJson());            
+            InvokeEventSubscriptions(eventName);
+            return FireEvent(eventName, JsonData?.ToJson());
         }
 
-        public virtual Task FireEvent(string eventName, EventHandler eventHandler, EventArgs args)
+        public virtual Task FireEvent(string eventName, EventArgs args)
         {
-            FireEvent(eventHandler, args);
+            InvokeEventSubscriptions(eventName, args);
             return FireEvent(eventName, args.ToJson());            
         }
 
@@ -87,5 +87,19 @@ namespace Bam.Net.CoreServices
             });
         }
         protected HashSet<string> SupportedEvents { get; set; }
+
+        private void InvokeEventSubscriptions(string eventName, EventArgs args = null)
+        {
+            args = args ?? EventArgs.Empty;
+            IEnumerable<EventSubscription> subs = this.GetEventSubscriptions(eventName);
+            if (subs.Count() > 0)
+            {
+                subs.Each(es =>
+                {
+                    es.Invoke(this, args);
+                });
+            }
+        }
+
     }
 }

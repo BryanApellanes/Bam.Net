@@ -2733,6 +2733,38 @@ namespace Bam.Net
             return valuesOnlyInstance;
         }
 
+        public static object CopyEventHandlers(this object destination, object source)
+        {
+            GetEventSubscriptions(source).Each(es =>
+            {
+                es.EventInfo.AddEventHandler(destination, es.Delegate);
+            });
+            return destination;
+        }
+
+        public static IEnumerable<EventSubscription> GetEventSubscriptions(this object instance, string eventName)
+        {
+            return GetEventSubscriptions(instance).Where(es => es.EventInfo.Name.Equals(eventName));
+        }
+
+        public static IEnumerable<EventSubscription> GetEventSubscriptions(this object instance)
+        {
+            Type type = instance.GetType();
+            Func<EventInfo, FieldInfo> ei2fi =
+            ei => type.GetField(ei.Name,
+                BindingFlags.NonPublic |
+                BindingFlags.Instance |
+                BindingFlags.GetField);
+
+            IEnumerable<EventSubscription> results = from eventInfo in type.GetEvents()
+                   let eventFieldInfo = ei2fi(eventInfo)
+                   let eventFieldValue =
+                       (System.Delegate)eventFieldInfo.GetValue(instance)
+                   from subscribedDelegate in eventFieldValue == null ? new Delegate[] { } : eventFieldValue.GetInvocationList()
+                   select new EventSubscription { EventName = eventFieldInfo.Name, Delegate = subscribedDelegate, FieldInfo = eventFieldInfo, EventInfo = eventInfo };
+            return results;
+        }
+
         /// <summary>
         /// Copies all properties from source to destination where the name and
         /// type match.
