@@ -15,7 +15,13 @@ using Bam.Net.Server;
 using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.ServiceProxy;
 using System.Reflection;
-using System.IO;
+using NSubstitute;
+using Bam.Net.Logging;
+using Bam.Net.Data.Repositories;
+using System.Net;
+using Bam.Net.Data;
+using Bam.Net.Data.SQLite;
+using Bam.Net.UserAccounts.Data;
 
 namespace Bam.Net.CoreServices.Tests
 {
@@ -26,6 +32,46 @@ namespace Bam.Net.CoreServices.Tests
         {
             void Go();
             void GoAgain();
+        }
+
+        class TestEventSourceLoggable: EventSource
+        {
+            public TestEventSourceLoggable(DaoRepository daoRepository, ILogger logger) : base(daoRepository, new AppConf("Test"), logger)
+            {
+                IHttpContext context = Substitute.For<IHttpContext>();
+                context.Request = Substitute.For<IRequest>();
+                context.Request.Cookies.Returns(new CookieCollection());
+                context.Response = Substitute.For<IResponse>();
+                context.Response.Cookies.Returns(new CookieCollection());
+                HttpContext = context;
+            }
+
+            public event EventHandler TestEvent;
+            public async Task Test()
+            {
+                await FireEvent("TestEvent", TestEvent);
+            }
+        }
+
+        [UnitTest]
+        public async void FireNamedEventTest()
+        {
+            Database db = new SQLiteDatabase(".\\EventSourceTests", "UserAccounts");
+            db.TryEnsureSchema(typeof(User));
+            Db.For<User>(db);
+            TestEventSourceLoggable src = new TestEventSourceLoggable(new DaoRepository(db), new ConsoleLogger());
+            bool? fired = false;
+            int expectCount = 0;
+            GlobalEvents.Subscribe<TestEventSourceLoggable>("TestEvent", (em, c) =>
+            {
+                fired = true;
+            });
+            await src.Test().ContinueWith(t =>
+            {
+                expectCount++;
+                Expect.IsTrue(fired.Value);
+            });
+            Expect.IsTrue(expectCount == 1);
         }
 
         [UnitTest]

@@ -89,7 +89,7 @@ namespace Bam.Net.Logging
                         VerbosityAttribute verbosity;
                         bool shouldSubscribe = true;
 						VerbosityLevel logEventType = VerbosityLevel.Information;
-                        if (eventInfo.HasCustomAttributeOfType<VerbosityAttribute>(out verbosity))
+                        if (eventInfo.HasCustomAttributeOfType(out verbosity))
                         {
                             shouldSubscribe = (int)verbosity.Value <= (int)LogVerbosity;
                             logEventType = verbosity.Value;

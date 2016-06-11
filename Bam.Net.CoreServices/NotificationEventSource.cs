@@ -16,8 +16,6 @@ namespace Bam.Net.CoreServices
     {
         public NotificationEventSource(DaoRepository daoRepository, AppConf appConf, ILogger logger, ISmtpSettingsProvider smtpSettingsProvider) : base(daoRepository, appConf, logger)
         {
-            SupportedEvents = new HashSet<string>();
-
             SupportedEvents.Add("Error");
             SupportedEvents.Add("Fatal");
 
@@ -29,20 +27,18 @@ namespace Bam.Net.CoreServices
             return new NotificationEventSource(DaoRepository, AppConf, Logger, SmtpSettingsProvider);
         }
 
-        public override void Trigger(string eventName, string json)
+        public override Task FireEvent(string eventName, string json)
         {
             EnsureSupportedEventOrThrow(eventName);
-            base.Trigger(eventName, json);
+            return base.FireEvent(eventName, json);
         }
 
-        public override void AddListener(string eventName, Action<EventMessage, IHttpContext> listener)
+        public override void Subscribe(string eventName, Action<EventMessage, IHttpContext> listener)
         {
             EnsureSupportedEventOrThrow(eventName);
-            base.AddListener(eventName, listener);
+            base.Subscribe(eventName, listener);
         }
         protected ISmtpSettingsProvider SmtpSettingsProvider { get; private set; }
-        protected HashSet<string> SupportedEvents { get; set; }
-
         private bool EventSupported(string eventName)
         {
             return SupportedEvents.Contains(eventName);

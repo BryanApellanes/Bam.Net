@@ -18,20 +18,40 @@ namespace Bam.Net.CoreServices
         Dictionary<string, HashSet<Action<EventMessage, IHttpContext>>> _listeners;
         public EventSource(DaoRepository daoRepository, AppConf appConf, ILogger logger): base(daoRepository, appConf)
         {
-            Logger = logger;
-            DaoRepository.AddType<EventMessage>();
+            SupportedEvents = new HashSet<string>();
+            Logger = logger ?? appConf?.Logger ?? Log.Default;
+            DaoRepository?.AddType<EventMessage>();
             _listeners = new Dictionary<string, HashSet<Action<EventMessage, IHttpContext>>>();
         }
 
-        public virtual void Trigger(string eventName, string json)
+        public override object Clone()
+        {
+            object instance = GetType().Construct(DaoRepository, AppConf, Logger);
+            instance.CopyProperties(this);
+            return instance;
+        }
+
+        public virtual Task FireEvent(string eventName, EventHandler eventHandler)
+        {
+            FireEvent(eventHandler);
+            return FireEvent(eventName, JsonData?.ToJson());            
+        }
+
+        public virtual Task FireEvent(string eventName, EventHandler eventHandler, EventArgs args)
+        {
+            FireEvent(eventHandler, args);
+            return FireEvent(eventName, args.ToJson());            
+        }
+
+        public virtual Task FireEvent(string eventName, string json)
         {
             EventMessage msg = new EventMessage { Name = eventName, UserName = CurrentUser.UserName, CreatedBy = CurrentUser.UserName, Created = DateTime.UtcNow, Json = json };
             DaoRepository.Save(msg);
-            FireListenersAsync(eventName, msg, HttpContext);
+            return FireListenersAsync(eventName, msg, HttpContext);
         }
 
         [Exclude]
-        public virtual void AddListener(string eventName, Action<EventMessage, IHttpContext> listener)
+        public virtual void Subscribe(string eventName, Action<EventMessage, IHttpContext> listener)
         {
             if (!_listeners.ContainsKey(eventName))
             {
@@ -43,6 +63,7 @@ namespace Bam.Net.CoreServices
 
         protected Task FireListenersAsync(string eventName, EventMessage message, IHttpContext context)
         {
+            GlobalEvents.FireListenersAsync(GetType(), eventName, message, context);
             return Task.Run(() =>
             {
                 if (_listeners.ContainsKey(eventName))
@@ -65,8 +86,6 @@ namespace Bam.Net.CoreServices
                 }
             });
         }
-
-        protected ILogger Logger { get; private set; }        
-
+        protected HashSet<string> SupportedEvents { get; set; }
     }
 }
