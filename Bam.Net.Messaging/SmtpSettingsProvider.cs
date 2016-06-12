@@ -9,6 +9,22 @@ namespace Bam.Net.Messaging
 {
     public class SmtpSettingsProvider : ISmtpSettingsProvider
     {
+        public const string SmtpHost = "SmtpHost";
+        public const string UserName = "UserName";
+        public const string Password = "Password";
+        public const string From = "From";
+        public const string DisplayName = "DisplayName";
+        public const string Port = "Port";
+        public const string EnableSsl = "EnableSsl";
+
+        public string[] SettingKeys
+        {
+            get
+            {
+                return new[] { SmtpHost, UserName, Password, From, DisplayName, Port, EnableSsl };
+            }
+        }
+
         Vault _smtpSettingsVault;
         public Vault SmtpSettingsVault
         {
@@ -57,15 +73,15 @@ namespace Bam.Net.Messaging
             Args.ThrowIf<RequiredSettingsNotSetException>(!requiredSettingsSet, "Required settings missing from specified vault: {0}", string.Join(", ", requiredSettingMessages));
             Args.ThrowIf<RequiredSettingsNotSetException>(!extendedSettingsSet, "Extended settings missing from specified vault: {0}", string.Join(", ", extendedSettingMessages));
 
-            string smtpHost = smtpHostSettings["SmtpHost"];
-            string userName = smtpHostSettings["UserName"];
-            string password = smtpHostSettings["Password"];
-            string from = fromAddress ?? smtpHostSettings["From"];
-            string displayName = fromDisplayName ?? smtpHostSettings["DisplayName"];
-            int port = int.Parse(smtpHostSettings["Port"]);
-            bool enableSsl = bool.Parse(smtpHostSettings["EnableSsl"]);
+            string smtpHost = smtpHostSettings[SmtpHost];
+            string userName = smtpHostSettings[UserName];
+            string password = smtpHostSettings[Password];
+            string from = fromAddress ?? smtpHostSettings[From];
+            string displayName = fromDisplayName ?? smtpHostSettings[DisplayName];
+            int port = int.Parse(smtpHostSettings[Port]);
+            bool enableSsl = bool.Parse(smtpHostSettings[EnableSsl]);
 
             return email.SmtpHost(smtpHost).UserName(userName).Password(password).From(from, displayName).Port(port).EnableSsl(enableSsl);
-        }
+        }        
     }
 }
