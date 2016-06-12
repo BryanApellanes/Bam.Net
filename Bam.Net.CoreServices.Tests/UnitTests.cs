@@ -49,7 +49,7 @@ namespace Bam.Net.CoreServices.Tests
             public event EventHandler TestEvent;
             public async Task Test()
             {
-                await FireEvent("TestEvent");
+                await Trigger("TestEvent");
             }
         }
 

@@ -71,11 +71,23 @@ namespace Bam.Net.Server
             return BamConf.Server;
         }
 
+        /// <summary>
+        /// Add a service of the specified type to be 
+        /// instanciated by the specified function
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="serviceInstanciator"></param>
         public void AddService<T>(Func<T> serviceInstanciator)
         {
             BamConf.Server.AddAppService<T>(Name, serviceInstanciator);
         }
 
+        /// <summary>
+        /// Add the specified instance as a service to 
+        /// be exposed to the client
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="instance"></param>
         public void AddService<T>(T instance)
         {
             BamConf.Server.AddAppService<T>(Name);

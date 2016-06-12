@@ -2733,6 +2733,13 @@ namespace Bam.Net
             return valuesOnlyInstance;
         }
 
+        /// <summary>
+        /// Copies all the subscribed event handlers from source to
+        /// the destination
+        /// </summary>
+        /// <param name="destination"></param>
+        /// <param name="source"></param>
+        /// <returns></returns>
         public static object CopyEventHandlers(this object destination, object source)
         {
             GetEventSubscriptions(source).Each(es =>
@@ -2742,11 +2749,22 @@ namespace Bam.Net
             return destination;
         }
 
+        /// <summary>
+        /// Gets all the subscribed event subscriptions for the specified event name
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <param name="eventName"></param>
+        /// <returns></returns>
         public static IEnumerable<EventSubscription> GetEventSubscriptions(this object instance, string eventName)
         {
             return GetEventSubscriptions(instance).Where(es => es.EventInfo.Name.Equals(eventName));
         }
 
+        /// <summary>
+        /// Gets All the subscribed event subscriptions
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <returns></returns>
         public static IEnumerable<EventSubscription> GetEventSubscriptions(this object instance)
         {
             Type type = instance.GetType();

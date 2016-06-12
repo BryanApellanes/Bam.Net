@@ -27,10 +27,10 @@ namespace Bam.Net.CoreServices
             return new NotificationEventSource(DaoRepository, AppConf, Logger, SmtpSettingsProvider);
         }
 
-        public override Task FireEvent(string eventName, string json)
+        public override Task Trigger(string eventName, string json)
         {
             EnsureSupportedEventOrThrow(eventName);
-            return base.FireEvent(eventName, json);
+            return base.Trigger(eventName, json);
         }
 
         public override void Subscribe(string eventName, Action<EventMessage, IHttpContext> listener)
@@ -48,7 +48,7 @@ namespace Bam.Net.CoreServices
         {
             if (!EventSupported(eventName))
             {
-                throw new InvalidOperationException();
+                throw new InvalidOperationException($"Event not supported: {eventName}");
             }
         }
     }

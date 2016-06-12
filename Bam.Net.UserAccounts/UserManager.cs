@@ -58,6 +58,7 @@ namespace Bam.Net.UserAccounts
         {
             UserManager result = new UserManager();
             result.CopyProperties(this);
+            result.CopyEventHandlers(this);
             result._serviceProvider = _serviceProvider.Clone();
             result.SmtpSettingsProvider = SmtpSettingsProvider;
             return result;

@@ -24,26 +24,30 @@ namespace Bam.Net.CoreServices
             _listeners = new Dictionary<string, HashSet<Action<EventMessage, IHttpContext>>>();
         }
 
+        public object EventData { get; set; }
+
         public override object Clone()
         {
-            object instance = GetType().Construct(DaoRepository, AppConf, Logger);
+            EventSource instance = GetType().Construct<EventSource>(DaoRepository, AppConf, Logger);
             instance.CopyProperties(this);
+            instance.CopyEventHandlers(this);
+            instance._listeners = _listeners;
             return instance;
         }
 
-        public virtual Task FireEvent(string eventName)
+        public virtual Task Trigger(string eventName)
         {
             InvokeEventSubscriptions(eventName);
-            return FireEvent(eventName, JsonData?.ToJson());
+            return Trigger(eventName, EventData?.ToJson());
         }
 
-        public virtual Task FireEvent(string eventName, EventArgs args)
+        public virtual Task Trigger(string eventName, EventArgs args)
         {
             InvokeEventSubscriptions(eventName, args);
-            return FireEvent(eventName, args.ToJson());            
+            return Trigger(eventName, args.ToJson());            
         }
 
-        public virtual Task FireEvent(string eventName, string json)
+        public virtual Task Trigger(string eventName, string json)
         {
             EventMessage msg = new EventMessage { Name = eventName, UserName = CurrentUser.UserName, CreatedBy = CurrentUser.UserName, Created = DateTime.UtcNow, Json = json };
             DaoRepository.Save(msg);

@@ -33,9 +33,7 @@ namespace Bam.Net.CoreServices
         {
             Repository = genericRepo;
         }
-
-        public object JsonData { get; set; }
-
+        
         [Exclude]
         public ILogger Logger { get; set; }
 
