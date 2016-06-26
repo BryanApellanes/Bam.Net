@@ -18,5 +18,37 @@ namespace Bam.Net
         {
             return Delegate.DynamicInvoke(args);
         }
+
+        public override int GetHashCode()
+        {
+            int code = EventName == null ? 0 : EventName.GetHashCode();
+            code += Delegate == null ? 0 : Delegate.GetHashCode();
+            return code;
+        }
+
+        public override bool Equals(object obj)
+        {
+            EventSubscription compareTo = obj as EventSubscription;
+            if(compareTo == null)
+            {
+                return false;
+            }
+            return compareTo.GetHashCode() == GetHashCode();
+        }
+
+        public bool Equals(EventHandler handler)
+        {
+            return Delegate.Equals(handler);
+        }
+
+        public static EventSubscription FromEventHandler(string eventName, EventHandler handler)
+        {
+            return new EventSubscription { EventName = eventName, Delegate = handler };
+        }
+
+        public static EventSubscription FromEventHandler(EventHandler handler)
+        {
+            return new EventSubscription { Delegate = handler };
+        }
     }
 }

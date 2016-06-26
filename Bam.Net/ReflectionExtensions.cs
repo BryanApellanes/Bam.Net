@@ -98,7 +98,7 @@ namespace Bam.Net
         }
 
         /// <summary>
-        /// Subscribe the specified handler from the specified event 
+        /// Subscribe the specified handler to the specified event 
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="instance"></param>
@@ -108,6 +108,45 @@ namespace Bam.Net
         public static T Subscribe<T>(this T instance, string eventName, EventHandler handler)
         {
             EventInfo eventInfo = typeof(T).GetEvent(eventName);
+            Args.ThrowIfNull(eventInfo, "eventName");
+            eventInfo.AddEventHandler(instance, handler);
+            return instance;
+        }
+
+        public static T SubscribeOnce<T>(this T instance, string eventName, EventHandler handler)
+        {
+            EventSubscription ignore;
+            return instance.SubscribeOnce<T>(eventName, handler, out ignore);
+        }
+        public static T SubscribeOnce<T>(this T instance, string eventName, EventHandler handler, out EventSubscription subscription)
+        {
+            T result = instance.UnSubscribe(eventName, handler).Subscribe(eventName, handler);
+            subscription = instance.GetEventSubscriptions(eventName).FirstOrDefault(es => es.Delegate.Equals(handler));
+            return result;
+        }
+        public static object SubscribeOnce(this object instance, string eventName, EventHandler handler)
+        {
+            EventSubscription ignore;
+            return instance.SubscribeOnce(eventName, handler, out ignore);
+        }
+
+        public static object SubscribeOnce(this object instance, string eventName, EventHandler handler, out EventSubscription subscription)
+        {
+            object result = instance.UnSubscribe(eventName, handler).Subscribe(eventName, handler);
+            subscription = instance.GetEventSubscriptions(eventName).FirstOrDefault(es => es.Delegate.Equals(handler));
+            return result;
+        }
+
+        /// <summary>
+        /// Subscribe the specified handler to the specified event
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <param name="eventName"></param>
+        /// <param name="handler"></param>
+        /// <returns></returns>
+        public static object Subscribe(this object instance, string eventName, EventHandler handler)
+        {
+            EventInfo eventInfo = instance.GetType().GetEvent(eventName);
             Args.ThrowIfNull(eventInfo, "eventName");
             eventInfo.AddEventHandler(instance, handler);
             return instance;
@@ -134,11 +173,26 @@ namespace Bam.Net
         /// <param name="eventName"></param>
         /// <param name="handler"></param>
         /// <returns></returns>
+        public static object UnSubscribe(this object instance, string eventName, EventHandler handler)
+        {
+            EventInfo eventInfo = instance.GetType().GetEvent(eventName);
+            Args.ThrowIfNull(eventInfo, "eventName");
+            eventInfo.RemoveEventHandler(instance, handler);
+            return instance;
+        }
+        /// <summary>
+        /// Unsubscribe the specified handler from the specified event 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="instance"></param>
+        /// <param name="eventName"></param>
+        /// <param name="handler"></param>
+        /// <returns></returns>
         public static T UnSubscribe<T>(this T instance, string eventName, EventHandler handler)
         {
             EventInfo eventInfo = typeof(T).GetEvent(eventName);
             Args.ThrowIfNull(eventInfo, "eventName");
-            eventInfo.RemoveEventHandler(eventInfo, handler);
+            eventInfo.RemoveEventHandler(instance, handler);
             return instance;
         }
 

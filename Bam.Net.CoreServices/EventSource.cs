@@ -15,13 +15,34 @@ namespace Bam.Net.CoreServices
 {
     public abstract class EventSource: ProxyableService
     {
-        Dictionary<string, HashSet<Action<EventMessage, IHttpContext>>> _listeners;
+        Dictionary<string, HashSet<EventSubscription>> _listeners;
         public EventSource(DaoRepository daoRepository, AppConf appConf, ILogger logger): base(daoRepository, appConf)
         {
             SupportedEvents = new HashSet<string>();
             Logger = logger ?? appConf?.Logger ?? Log.Default;
             DaoRepository?.AddType<EventMessage>();
-            _listeners = new Dictionary<string, HashSet<Action<EventMessage, IHttpContext>>>();
+            _listeners = new Dictionary<string, HashSet<EventSubscription>>();
+        }
+
+        [Exclude]
+        public HashSet<EventSubscription> GetListeners(string eventName)
+        {
+            if (_listeners.ContainsKey(eventName))
+            {
+                return _listeners[eventName];
+            }
+            return new HashSet<EventSubscription>();
+        }
+
+        [Exclude]
+        public virtual void Subscribe(string eventName, EventHandler handler)
+        {
+            if (!_listeners.ContainsKey(eventName))
+            {
+                _listeners.Add(eventName, new HashSet<EventSubscription>());
+            }
+
+            _listeners[eventName].Add(EventSubscription.FromEventHandler(handler));
         }
 
         public object EventData { get; set; }
@@ -50,43 +71,41 @@ namespace Bam.Net.CoreServices
         public virtual Task Trigger(string eventName, string json)
         {
             EventMessage msg = new EventMessage { Name = eventName, UserName = CurrentUser.UserName, CreatedBy = CurrentUser.UserName, Created = DateTime.UtcNow, Json = json };
-            DaoRepository.Save(msg);
-            return FireListenersAsync(eventName, msg, HttpContext);
+            return Trigger(eventName, msg);
         }
 
-        [Exclude]
-        public virtual void Subscribe(string eventName, Action<EventMessage, IHttpContext> listener)
+        public virtual Task Trigger(string eventName, EventMessage msg)
+        {  
+            return Trigger(eventName, this, new EventSourceArgs { EventMessage = msg });
+        }
+
+        public virtual Task Trigger(string eventName, object sender, EventSourceArgs args)
         {
-            if (!_listeners.ContainsKey(eventName))
+            if(args.EventMessage != null)
             {
-                _listeners.Add(eventName, new HashSet<Action<EventMessage, IHttpContext>>());
+                DaoRepository.Save(args.EventMessage);
             }
-
-            _listeners[eventName].Add(listener);
+            return FireListenersAsync(eventName, sender, args);
         }
 
-        protected Task FireListenersAsync(string eventName, EventMessage message, IHttpContext context)
+        protected Task FireListenersAsync(string eventName, object sender, EventArgs args)
         {
-            GlobalEvents.FireListenersAsync(GetType(), eventName, message, context);
+            GlobalEvents.FireListenersAsync(GetType(), eventName, sender, args);
             return Task.Run(() =>
             {
                 if (_listeners.ContainsKey(eventName))
                 {
-                    Parallel.ForEach(_listeners[eventName], (action) =>
+                    Parallel.ForEach(_listeners[eventName], (subscription) =>
                     {
                         try
                         {
-                            action(message, context);
+                            subscription.Invoke(sender, args);
                         }
                         catch (Exception ex)
                         {
                             Logger.AddEntry("{0}::Exception occurred in EventSource Listenter for event name ({1}): {2}", LogEventType.Warning, GetType().Name, eventName, ex.Message);
                         }
                     });
-                }
-                else
-                {
-                    Logger.AddEntry("{0}::Specified eventName not found ({1})", LogEventType.Warning, GetType().Name, eventName);
                 }
             });
         }
