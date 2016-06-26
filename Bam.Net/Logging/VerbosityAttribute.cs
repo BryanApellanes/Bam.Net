@@ -33,7 +33,7 @@ namespace Bam.Net.Logging
         {
             try
             {
-                message = value.PropertiesToString();
+                message = value.TryPropertiesToString();
                 if (!string.IsNullOrEmpty(MessageFormat))
                 {
                     message = MessageFormat.NamedFormat(value);
