@@ -10,49 +10,55 @@ namespace Bam.Net.CoreServices
 {
     public static class GlobalEvents
     {
-        static Dictionary<string, List<Action<EventMessage, IHttpContext>>> _listeners;
+        static Dictionary<string, HashSet<EventSubscription>> _listeners;
         static GlobalEvents()
         {
-            _listeners = new Dictionary<string, List<Action<EventMessage, IHttpContext>>>();
+            _listeners = new Dictionary<string, HashSet<EventSubscription>>();
             Logger = Log.Default;
         }
 
         public static ILogger Logger { get; set; }
 
-        public static void Subscribe<T>(string eventName, Action<EventMessage, IHttpContext> listener)
+        public static void Subscribe(object src, string eventName, EventHandler listener)
+        {
+            src.SubscribeOnce(eventName, (o, a) =>
+            {
+                EventMessage msg = new EventMessage { Name = eventName, Created = DateTime.UtcNow, Json = a?.ToJson(), Sender = o, EventArgs = a };
+                FireListenersAsync(src.GetType(), eventName, new EventSourceArgs { EventMessage = msg }, a);
+            });
+            Subscribe(src.GetType(), eventName, listener);
+        }
+
+        public static void Subscribe<T>(string eventName, EventHandler listener)
         {
             Subscribe(typeof(T), eventName, listener);
         }
 
-        public static void Subscribe(Type type, string eventName, Action<EventMessage, IHttpContext> listener)
+        public static void Subscribe(Type type, string eventName, EventHandler listener)
         {
             string eventKey = GetEventKey(type, eventName);
-            _listeners.AddMissing(eventKey, new List<Action<EventMessage, IHttpContext>>());
-            _listeners[eventKey].Add(listener);
+            _listeners.AddMissing(eventKey, new HashSet<EventSubscription>());
+            _listeners[eventKey].Add(EventSubscription.FromEventHandler(listener));
         }
 
-        public static Task FireListenersAsync(Type type, string eventName, EventMessage message, IHttpContext context)
+        public static Task FireListenersAsync(Type type, string eventName, object sender, EventArgs args)
         {
             return Task.Run(() =>
             {
                 string eventKey = GetEventKey(type, eventName);
                 if (_listeners.ContainsKey(eventKey))
                 {
-                    Parallel.ForEach(_listeners[eventKey], (action) =>
+                    Parallel.ForEach(_listeners[eventKey], (subscription) =>
                     {
                         try
                         {
-                            action(message, context);
+                            subscription.Invoke(sender, args);
                         }
                         catch (Exception ex)
                         {
                             Logger.AddEntry("GlobalEvents::Exception occurred in EventSource Listenter for event name ({0}): {1}", LogEventType.Warning, eventName, ex.Message);
                         }
                     });
-                }
-                else
-                {
-                    Logger.AddEntry("GlobalEvents::Specified eventName not found ({0})", LogEventType.Warning, eventName);
                 }
             });
         }

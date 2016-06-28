@@ -7,9 +7,14 @@ using Bam.Net.UserAccounts.Data;
 
 namespace Bam.Net.UserAccounts
 {
-    public class UserManagerEventArgs: EventArgs
+    public class UserManagerEventArgs: EventArgs, IJsonable
     {
-        public User User { get; set; }
+        public string UserJson { get; set; }
         public SignUpOptions SignUpOptions { get; set; }
+
+        public string ToJson()
+        {
+            return Extensions.ToJson(this);
+        }
     }
 }

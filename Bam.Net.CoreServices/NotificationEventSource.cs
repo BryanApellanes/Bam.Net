@@ -33,7 +33,7 @@ namespace Bam.Net.CoreServices
             return base.Trigger(eventName, json);
         }
 
-        public override void Subscribe(string eventName, Action<EventMessage, IHttpContext> listener)
+        public override void Subscribe(string eventName, EventHandler listener)
         {
             EnsureSupportedEventOrThrow(eventName);
             base.Subscribe(eventName, listener);

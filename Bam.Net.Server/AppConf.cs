@@ -209,11 +209,11 @@ namespace Bam.Net.Server
             }
         }
 
-		/// <summary>
-		/// The assembly qualified name of an IInitialize
-		/// implementation that will be called on application 
-		/// initialization
-		/// </summary>
+        /// <summary>
+        /// The assembly qualified name of an IAppInitializer
+        /// implementation that will be called on application 
+        /// initialization
+        /// </summary>
         public string AppInitializer
         {
             get;

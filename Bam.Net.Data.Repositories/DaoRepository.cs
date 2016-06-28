@@ -209,7 +209,7 @@ namespace Bam.Net.Data.Repositories
 		Assembly _daoAssembly;
         EnsureSchemaStatus _schemaStatus;
         /// <summary>
-        /// Generates a Dao Assembly for the the underlying 
+        /// Generates a Dao Assembly for the underlying 
         /// storable types if it has not yet been generated
         /// </summary>
         /// <returns></returns>

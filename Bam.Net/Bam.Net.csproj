@@ -170,6 +170,7 @@
     <Compile Include="GeneratedAssemblyInfo.cs" />
     <Compile Include="IApplicationNameProvider.cs" />
     <Compile Include="IAssemblyGenerator.cs" />
+    <Compile Include="IJsonable.cs" />
     <Compile Include="Instant.cs" />
     <Compile Include="IpcMessageLockInfo.cs" />
     <Compile Include="IWriteSource.cs" />
