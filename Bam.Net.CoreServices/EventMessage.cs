@@ -7,7 +7,7 @@ using Bam.Net.Data.Repositories;
 
 namespace Bam.Net.CoreServices
 {
-    public class EventMessage: RepoData
+    public class EventMessage: RepoData, IJsonable
     {
         public string Name { get; set; }
         public string UserName { get; set; }
@@ -24,5 +24,23 @@ namespace Bam.Net.CoreServices
         /// null
         /// </summary>
         public EventArgs EventArgs { get; set; }
+
+        public string ToJson()
+        {
+            IJsonable args = EventArgs as IJsonable;
+            if(args != null)
+            {
+                return args.ToJson();
+            }
+            else
+            {
+                return new
+                {
+                    Name = Name,
+                    UserName = UserName,
+                    Json = Json
+                }.ToJson();
+            }
+        }
     }
 }

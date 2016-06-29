@@ -766,7 +766,7 @@ namespace Bam.Net.UserAccounts
             {
                 return User.Anonymous;
             }
-            return Session.UserOfUserId;
+            return Session.UserOfUserId ?? User.Anonymous;
         }
 
         [Exclude]

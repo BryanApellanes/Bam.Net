@@ -65,7 +65,8 @@ namespace Bam.Net.CoreServices
         public virtual Task Trigger(string eventName, EventArgs args)
         {
             InvokeEventSubscriptions(eventName, args);
-            return Trigger(eventName, args.ToJson());            
+            IJsonable jsonable = args as IJsonable;
+            return Trigger(eventName, jsonable == null ? string.Empty: jsonable.ToJson());
         }
 
         public virtual Task Trigger(string eventName, string json)

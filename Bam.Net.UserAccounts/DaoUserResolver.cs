@@ -49,7 +49,7 @@ namespace Bam.Net.UserAccounts
         public string GetUser(IHttpContext context)
         {
             Session session = Session.Get(context, UserDatabase);
-            return session.UserOfUserId.UserName;
+            return session.UserOfUserId?.UserName;
         }
 
         public void SetUser(IHttpContext context, string userName, bool isAuthenticated)
