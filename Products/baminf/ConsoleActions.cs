@@ -187,7 +187,7 @@ namespace baminf
             {
                 OutLineFormat("{0}. {1}", i + 1, files[i].FullName);
             }
-            int selection = NumberPrompt(string.Format("[1 - {0}]", files.Length));
+            int selection = IntPrompt(string.Format("[1 - {0}]", files.Length));
             if(selection < 0 || selection > files.Length)
             {
                 OutLineFormat("Invalid selection", ConsoleColor.Red);

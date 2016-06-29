@@ -213,6 +213,11 @@ namespace Bam.Net.CommandLine
             return false;
         }
 
+        public static int NumberPrompt(string message, ConsoleColor color = ConsoleColor.Cyan)
+        {
+            return IntPrompt(message, color);
+        }
+
         public static long LongPrompt(string message, ConsoleColor color = ConsoleColor.Cyan)
         {
             string value = Prompt(message, color);
