@@ -4,6 +4,22 @@
         <name>Bam.Net.Server</name>
     </assembly>
     <members>
+        <member name="M:Bam.Net.Server.AppConf.AddService``1(System.Func{``0})">
+            <summary>
+            Add a service of the specified type to be 
+            instanciated by the specified function
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="serviceInstanciator"></param>
+        </member>
+        <member name="M:Bam.Net.Server.AppConf.AddService``1(``0)">
+            <summary>
+            Add the specified instance as a service to 
+            be exposed to the client
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="instance"></param>
+        </member>
         <member name="P:Bam.Net.Server.AppConf.Name">
             <summary>
             The name of the application.  This will be the name of the 
@@ -24,7 +40,7 @@
         </member>
         <member name="P:Bam.Net.Server.AppConf.AppInitializer">
             <summary>
-            The assembly qualified name of an IInitialize
+            The assembly qualified name of an IAppInitializer
             implementation that will be called on application 
             initialization
             </summary>

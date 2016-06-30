@@ -1204,7 +1204,7 @@
         </member>
         <member name="M:Bam.Net.ReflectionExtensions.Subscribe``1(``0,System.String,System.EventHandler)">
             <summary>
-            Subscribe the specified handler from the specified event 
+            Subscribe the specified handler to the specified event 
             </summary>
             <typeparam name="T"></typeparam>
             <param name="instance"></param>
@@ -1212,7 +1212,26 @@
             <param name="handler"></param>
             <returns></returns>
         </member>
+        <member name="M:Bam.Net.ReflectionExtensions.Subscribe(System.Object,System.String,System.EventHandler)">
+            <summary>
+            Subscribe the specified handler to the specified event
+            </summary>
+            <param name="instance"></param>
+            <param name="eventName"></param>
+            <param name="handler"></param>
+            <returns></returns>
+        </member>
         <member name="M:Bam.Net.ReflectionExtensions.Off``1(``0,System.String,System.EventHandler)">
+            <summary>
+            Unsubscribe the specified handler from the specified event 
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="instance"></param>
+            <param name="eventName"></param>
+            <param name="handler"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ReflectionExtensions.UnSubscribe(System.Object,System.String,System.EventHandler)">
             <summary>
             Unsubscribe the specified handler from the specified event 
             </summary>
@@ -2363,6 +2382,30 @@
             <summary>
             Creates a dynamic object from the specified instance populating only
             the properties that are of value types
+            </summary>
+            <param name="instance"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Extensions.CopyEventHandlers(System.Object,System.Object)">
+            <summary>
+            Copies all the subscribed event handlers from source to
+            the destination
+            </summary>
+            <param name="destination"></param>
+            <param name="source"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Extensions.GetEventSubscriptions(System.Object,System.String)">
+            <summary>
+            Gets all the subscribed event subscriptions for the specified event name
+            </summary>
+            <param name="instance"></param>
+            <param name="eventName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Extensions.GetEventSubscriptions(System.Object)">
+            <summary>
+            Gets All the subscribed event subscriptions
             </summary>
             <param name="instance"></param>
             <returns></returns>

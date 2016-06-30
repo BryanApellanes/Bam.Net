@@ -244,7 +244,7 @@
         </member>
         <member name="M:Bam.Net.Data.Repositories.DaoRepository.EnsureDaoAssemblyAndSchema(System.Boolean)">
             <summary>
-            Generates a Dao Assembly for the the underlying 
+            Generates a Dao Assembly for the underlying 
             storable types if it has not yet been generated
             </summary>
             <returns></returns>
