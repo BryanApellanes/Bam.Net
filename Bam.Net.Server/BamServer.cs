@@ -1305,10 +1305,11 @@ namespace Bam.Net.Server
                 }
 
             }
-            MainLogger.AddEntry("An error occurred handling the request: ({0})\r\n*** Request Details ***\r\n{1}",
+            MainLogger.AddEntry("An error occurred handling the request: ({0})\r\n*** Request Details ***\r\n{1}\r\n\r\n{2}",
                     ex,
                     ex.Message,
-                    request.PropertiesToString());
+                    request.TryPropertiesToString(),
+                    Args.GetMessageAndStackTrace(ex));
         }
 
         private void HandleInitialization(BamServer server)
