@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{33166756-C019-4B0C-BCAF-7260DF3110E5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BamCore</RootNamespace>
+    <AssemblyName>BamCore</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>.\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Bam.Net.Analytics.dll" />
+    <EmbeddedResource Include="Bam.Net.Automation.dll" />
+    <EmbeddedResource Include="Bam.Net.Breve.dll" />
+    <EmbeddedResource Include="Bam.Net.Caching.dll" />
+    <EmbeddedResource Include="Bam.Net.CommandLine.dll" />
+    <EmbeddedResource Include="Bam.Net.CoreServices.dll" />
+    <EmbeddedResource Include="Bam.Net.Data.dll" />
+    <EmbeddedResource Include="Bam.Net.Data.Dynamic.dll" />
+    <EmbeddedResource Include="Bam.Net.Data.Model.dll" />
+    <EmbeddedResource Include="Bam.Net.Data.MsSql.dll" />
+    <EmbeddedResource Include="Bam.Net.Data.MySql.dll" />
+    <EmbeddedResource Include="Bam.Net.Data.Npgsql.dll" />
+    <EmbeddedResource Include="Bam.Net.Data.Oracle.dll" />
+    <EmbeddedResource Include="Bam.Net.Data.Repositories.dll" />
+    <EmbeddedResource Include="Bam.Net.Data.Schema.dll" />
+    <EmbeddedResource Include="Bam.Net.Data.SQLite.dll" />
+    <EmbeddedResource Include="Bam.Net.Distributed.dll" />
+    <EmbeddedResource Include="Bam.Net.dll" />
+    <EmbeddedResource Include="Bam.Net.Documentation.dll" />
+    <EmbeddedResource Include="Bam.Net.Drawing.dll" />
+    <EmbeddedResource Include="Bam.Net.Dust.dll" />
+    <EmbeddedResource Include="Bam.Net.Encryption.dll" />
+    <EmbeddedResource Include="Bam.Net.Google.dll" />
+    <EmbeddedResource Include="Bam.Net.Html.dll" />
+    <EmbeddedResource Include="Bam.Net.Incubation.dll" />
+    <EmbeddedResource Include="Bam.Net.Javascript.dll" />
+    <EmbeddedResource Include="Bam.Net.Logging.Debug.dll" />
+    <EmbeddedResource Include="Bam.Net.Logging.dll" />
+    <EmbeddedResource Include="Bam.Net.Messaging.dll" />
+    <EmbeddedResource Include="Bam.Net.Net.dll" />
+    <EmbeddedResource Include="Bam.Net.OAuth.dll" />
+    <EmbeddedResource Include="Bam.Net.Profiguration.dll" />
+    <EmbeddedResource Include="Bam.Net.Schema.Org.dll" />
+    <EmbeddedResource Include="Bam.Net.Server.dll" />
+    <EmbeddedResource Include="Bam.Net.ServiceProxy.dll" />
+    <EmbeddedResource Include="Bam.Net.Shop.dll" />
+    <EmbeddedResource Include="Bam.Net.Syndication.dll" />
+    <EmbeddedResource Include="Bam.Net.System.dll" />
+    <EmbeddedResource Include="Bam.Net.Testing.dll" />
+    <EmbeddedResource Include="Bam.Net.Translation.dll" />
+    <EmbeddedResource Include="Bam.Net.UserAccounts.dll" />
+    <EmbeddedResource Include="Bam.Net.Yaml.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
