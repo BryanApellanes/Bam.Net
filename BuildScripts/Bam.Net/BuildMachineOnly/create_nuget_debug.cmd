@@ -9,6 +9,7 @@ call set_nuspec_info.cmd %1 %2 %3
 call generate_nuget_scripts.cmd
 call set_msi_version_debug.cmd %1.%2.%3 %ROOT%
 call build_solution.cmd Debug %ROOT%
+call build_bamcore.cmd Debug %ROOT%
 call pack_debug.cmd
 
 echo "Debug Nuget packages created"

@@ -6,4 +6,5 @@ RMDIR /S /Q TheMonkey
 CD \
 RMDIR /S /Q temp
 MKDIR temp
+RMDIR /S C:\Builds
 Z:

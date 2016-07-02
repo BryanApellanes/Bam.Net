@@ -9,6 +9,7 @@ call set_nuspec_info.cmd %1 %2 %3
 call generate_nuget_scripts.cmd
 call set_msi_version.cmd %1.%2.%3 %ROOT%
 call build_solution.cmd Release %ROOT%
+call build_bamcore.cmd Release %ROOT%
 call pack.cmd
 
 echo "Ready to push Nuget packages"
