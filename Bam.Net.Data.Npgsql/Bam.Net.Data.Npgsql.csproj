@@ -7,8 +7,8 @@
     <ProjectGuid>{49E255C4-C8EB-4EC9-BAEA-50FF7A9D16DB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Bryan.Apellanes.Data.Npgsql</RootNamespace>
-    <AssemblyName>Bryan.Apellanes.Data.Npgsql</AssemblyName>
+    <RootNamespace>Bam.Net.Data.Npgsql</RootNamespace>
+    <AssemblyName>Bam.Net.Data.Npgsql</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
