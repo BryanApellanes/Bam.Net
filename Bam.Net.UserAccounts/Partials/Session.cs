@@ -40,7 +40,8 @@ namespace Bam.Net.UserAccounts.Data
             Session session = Get(context);
             if (session.UserId != User.Anonymous.Id)
             {
-                context.User = new DaoPrincipal(session.UserOfUserId, session.UserOfUserId.IsAuthenticated);
+                User user = session.UserOfUserId ?? User.Anonymous;
+                context.User = new DaoPrincipal(user, user.IsAuthenticated);
             }
 
             return session;
