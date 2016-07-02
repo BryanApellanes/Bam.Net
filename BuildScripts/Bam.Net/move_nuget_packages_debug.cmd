@@ -7,3 +7,4 @@ move /Y *.nupkg "Z:\Workspace\NugetPackages\%mydate%_%mytime%"
 
 MD "Z:\Workspace\Msi-debug\%mydate%_%mytime%"
 copy .\BamToolkit-debug\lib\net45\BamToolkit-debug.msi "Z:\Workspace\Msi-debug\%mydate%_%mytime%"
+copy /Y .\BamToolkit-debug\lib\net45\BamToolkit-debug.msi "Z:\Workspace\Msi-debug"
