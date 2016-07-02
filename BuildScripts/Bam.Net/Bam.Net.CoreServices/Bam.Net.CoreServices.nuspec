@@ -2,28 +2,28 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.CoreServices</id>
-    <version>1.2.15</version>
+    <version>1.2.16</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>http://bryanapellanes.github.io/Bam.Net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Tools for distributed application services</description>
-    <releaseNotes>minor bug fixes</releaseNotes>
+    <releaseNotes>bamcore plus fixes</releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2016</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.2.15" />
-      <dependency id="Bam.Net.Data" version="1.2.15" />
-      <dependency id="Bam.Net.Data.Repositories" version="1.2.15" />
-      <dependency id="Bam.Net.Distributed" version="1.2.15" />
-      <dependency id="Bam.Net.Documentation" version="1.2.15" />
-      <dependency id="Bam.Net.Encryption" version="1.2.15" />
-      <dependency id="Bam.Net.Incubation" version="1.2.15" />
-      <dependency id="Bam.Net.Logging" version="1.2.15" />
-      <dependency id="Bam.Net.Messaging" version="1.2.15" />
-      <dependency id="Bam.Net.Server" version="1.2.15" />
-      <dependency id="Bam.Net.ServiceProxy" version="1.2.15" />
-      <dependency id="Bam.Net.UserAccounts" version="1.2.15" />
+      <dependency id="Bam.Net" version="1.2.16" />
+      <dependency id="Bam.Net.Data" version="1.2.16" />
+      <dependency id="Bam.Net.Data.Repositories" version="1.2.16" />
+      <dependency id="Bam.Net.Distributed" version="1.2.16" />
+      <dependency id="Bam.Net.Documentation" version="1.2.16" />
+      <dependency id="Bam.Net.Encryption" version="1.2.16" />
+      <dependency id="Bam.Net.Incubation" version="1.2.16" />
+      <dependency id="Bam.Net.Logging" version="1.2.16" />
+      <dependency id="Bam.Net.Messaging" version="1.2.16" />
+      <dependency id="Bam.Net.Server" version="1.2.16" />
+      <dependency id="Bam.Net.ServiceProxy" version="1.2.16" />
+      <dependency id="Bam.Net.UserAccounts" version="1.2.16" />
     </dependencies>
   </metadata>
 </package>

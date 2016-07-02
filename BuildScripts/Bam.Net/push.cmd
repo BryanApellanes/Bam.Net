@@ -1,5 +1,6 @@
 @echo on
 nuget push Z:\Workspace\NugetPackages\Push\BamToolkit.%1.nupkg
+nuget push Z:\Workspace\NugetPackages\Push\BamCore.%1.nupkg
 nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.Analytics.%1.nupkg
 nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.Automation.%1.nupkg
 nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.%1.nupkg

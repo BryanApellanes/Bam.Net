@@ -2,6 +2,7 @@
 call copy_all.cmd Release
 
 nuget pack Bam.Net.Data\Bam.Net.Data.nuspec
+nuget pack BamCore\BamCore.nuspec
 nuget pack Bam.Net.Analytics\Bam.Net.Analytics.nuspec
 nuget pack Bam.Net.Automation\Bam.Net.Automation.nuspec
 nuget pack Bam.Net\Bam.Net.nuspec

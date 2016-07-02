@@ -1,5 +1,6 @@
 @echo on
 call copy_Bam.Net.Data.cmd %1
+call copy_BamCore.cmd %1
 call copy_Bam.Net.Analytics.cmd %1
 call copy_Bam.Net.Automation.cmd %1
 call copy_Bam.Net.cmd %1

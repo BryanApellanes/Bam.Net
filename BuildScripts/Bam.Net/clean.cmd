@@ -4,7 +4,9 @@ SET VER=v4.5
 SET NEXT=END
 
 RMDIR /S /Q .\BuildOutput
-RMDIR /S /Q ..\..\Products\BUILDRMDIR /S /Q ..\..\Bam.Net.Analytics\obj\
+RMDIR /S /Q ..\..\Products\BUILDRMDIR /S /Q ..\..\BamCore\obj\
+del /F /Q .\BamCore\lib\%LIB%\*
+RMDIR /S /Q ..\..\Bam.Net.Analytics\obj\
 del /F /Q .\Bam.Net.Analytics\lib\%LIB%\*
 RMDIR /S /Q ..\..\Bam.Net.Automation\obj\
 del /F /Q .\Bam.Net.Automation\lib\%LIB%\*

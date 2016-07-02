@@ -40,5 +40,5 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("Bam.Net.Data.Tests")]
 [assembly: InternalsVisibleTo("Bam.Net.Data.MsSql")]
 [assembly: InternalsVisibleTo("Bam.Net.Data.Repositories")]
-[assembly: AssemblyVersion("1.2.15")]
-[assembly: AssemblyFileVersion("1.2.15")]
+[assembly: AssemblyVersion("1.2.16")]
+[assembly: AssemblyFileVersion("1.2.16")]
