@@ -61,7 +61,7 @@ namespace Bam.Net.UserAccounts.Data
 		}
 
 	// property:Id, columnName:Id	
-	[Exclude]
+	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
 	public long? Id
 	{
@@ -414,7 +414,7 @@ namespace Bam.Net.UserAccounts.Data
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate&lt;RoleColumns&gt;.
+		/// WhereDelegate<RoleColumns>.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
@@ -513,7 +513,6 @@ namespace Bam.Net.UserAccounts.Data
 		/// Execute a query and return the specified number of values.  This method
 		/// will issue a sql TOP clause so only the specified number of values
 		/// will be returned.
-		/// of values
 		/// </summary>
 		/// <param name="count">The number of values to return.
 		/// This value is used in the sql query so no more than this 

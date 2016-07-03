@@ -47,6 +47,11 @@ namespace Bam.Net.Messaging.Data
 			{
 				return Bam.Net.Messaging.Data.EmailMessage.OneWhere(where, db);
 			}
+
+			public static EmailMessage GetOneWhere(WhereDelegate<EmailMessageColumns> where, Database db = null)
+			{
+				return Bam.Net.Messaging.Data.EmailMessage.GetOneWhere(where, db);
+			}
 		
 			public EmailMessage FirstOneWhere(WhereDelegate<EmailMessageColumns> where, Database db = null)
 			{
@@ -94,6 +99,11 @@ namespace Bam.Net.Messaging.Data
 			{
 				return Bam.Net.Messaging.Data.DirectMessage.OneWhere(where, db);
 			}
+
+			public static DirectMessage GetOneWhere(WhereDelegate<DirectMessageColumns> where, Database db = null)
+			{
+				return Bam.Net.Messaging.Data.DirectMessage.GetOneWhere(where, db);
+			}
 		
 			public DirectMessage FirstOneWhere(WhereDelegate<DirectMessageColumns> where, Database db = null)
 			{
@@ -140,6 +150,11 @@ namespace Bam.Net.Messaging.Data
 			public Message OneWhere(WhereDelegate<MessageColumns> where, Database db = null)
 			{
 				return Bam.Net.Messaging.Data.Message.OneWhere(where, db);
+			}
+
+			public static Message GetOneWhere(WhereDelegate<MessageColumns> where, Database db = null)
+			{
+				return Bam.Net.Messaging.Data.Message.GetOneWhere(where, db);
 			}
 		
 			public Message FirstOneWhere(WhereDelegate<MessageColumns> where, Database db = null)

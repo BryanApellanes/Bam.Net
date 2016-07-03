@@ -47,6 +47,11 @@ namespace Bam.Net.ServiceProxy.Secure
 			{
 				return Bam.Net.ServiceProxy.Secure.Application.OneWhere(where, db);
 			}
+
+			public static Application GetOneWhere(WhereDelegate<ApplicationColumns> where, Database db = null)
+			{
+				return Bam.Net.ServiceProxy.Secure.Application.GetOneWhere(where, db);
+			}
 		
 			public Application FirstOneWhere(WhereDelegate<ApplicationColumns> where, Database db = null)
 			{
@@ -93,6 +98,11 @@ namespace Bam.Net.ServiceProxy.Secure
 			public Configuration OneWhere(WhereDelegate<ConfigurationColumns> where, Database db = null)
 			{
 				return Bam.Net.ServiceProxy.Secure.Configuration.OneWhere(where, db);
+			}
+
+			public static Configuration GetOneWhere(WhereDelegate<ConfigurationColumns> where, Database db = null)
+			{
+				return Bam.Net.ServiceProxy.Secure.Configuration.GetOneWhere(where, db);
 			}
 		
 			public Configuration FirstOneWhere(WhereDelegate<ConfigurationColumns> where, Database db = null)
@@ -141,6 +151,11 @@ namespace Bam.Net.ServiceProxy.Secure
 			{
 				return Bam.Net.ServiceProxy.Secure.ConfigSetting.OneWhere(where, db);
 			}
+
+			public static ConfigSetting GetOneWhere(WhereDelegate<ConfigSettingColumns> where, Database db = null)
+			{
+				return Bam.Net.ServiceProxy.Secure.ConfigSetting.GetOneWhere(where, db);
+			}
 		
 			public ConfigSetting FirstOneWhere(WhereDelegate<ConfigSettingColumns> where, Database db = null)
 			{
@@ -188,6 +203,11 @@ namespace Bam.Net.ServiceProxy.Secure
 			{
 				return Bam.Net.ServiceProxy.Secure.ApiKey.OneWhere(where, db);
 			}
+
+			public static ApiKey GetOneWhere(WhereDelegate<ApiKeyColumns> where, Database db = null)
+			{
+				return Bam.Net.ServiceProxy.Secure.ApiKey.GetOneWhere(where, db);
+			}
 		
 			public ApiKey FirstOneWhere(WhereDelegate<ApiKeyColumns> where, Database db = null)
 			{
@@ -234,6 +254,11 @@ namespace Bam.Net.ServiceProxy.Secure
 			public SecureSession OneWhere(WhereDelegate<SecureSessionColumns> where, Database db = null)
 			{
 				return Bam.Net.ServiceProxy.Secure.SecureSession.OneWhere(where, db);
+			}
+
+			public static SecureSession GetOneWhere(WhereDelegate<SecureSessionColumns> where, Database db = null)
+			{
+				return Bam.Net.ServiceProxy.Secure.SecureSession.GetOneWhere(where, db);
 			}
 		
 			public SecureSession FirstOneWhere(WhereDelegate<SecureSessionColumns> where, Database db = null)

@@ -47,6 +47,11 @@ namespace Bam.Net.Logging.Data
 			{
 				return Bam.Net.Logging.Data.LogEvent.OneWhere(where, db);
 			}
+
+			public static LogEvent GetOneWhere(WhereDelegate<LogEventColumns> where, Database db = null)
+			{
+				return Bam.Net.Logging.Data.LogEvent.GetOneWhere(where, db);
+			}
 		
 			public LogEvent FirstOneWhere(WhereDelegate<LogEventColumns> where, Database db = null)
 			{

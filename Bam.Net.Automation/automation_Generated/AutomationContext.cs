@@ -47,6 +47,11 @@ namespace Bam.Net.Automation.Data
 			{
 				return Bam.Net.Automation.Data.JobData.OneWhere(where, db);
 			}
+
+			public static JobData GetOneWhere(WhereDelegate<JobDataColumns> where, Database db = null)
+			{
+				return Bam.Net.Automation.Data.JobData.GetOneWhere(where, db);
+			}
 		
 			public JobData FirstOneWhere(WhereDelegate<JobDataColumns> where, Database db = null)
 			{
@@ -94,6 +99,11 @@ namespace Bam.Net.Automation.Data
 			{
 				return Bam.Net.Automation.Data.DeferredJobData.OneWhere(where, db);
 			}
+
+			public static DeferredJobData GetOneWhere(WhereDelegate<DeferredJobDataColumns> where, Database db = null)
+			{
+				return Bam.Net.Automation.Data.DeferredJobData.GetOneWhere(where, db);
+			}
 		
 			public DeferredJobData FirstOneWhere(WhereDelegate<DeferredJobDataColumns> where, Database db = null)
 			{
@@ -140,6 +150,11 @@ namespace Bam.Net.Automation.Data
 			public JobRunData OneWhere(WhereDelegate<JobRunDataColumns> where, Database db = null)
 			{
 				return Bam.Net.Automation.Data.JobRunData.OneWhere(where, db);
+			}
+
+			public static JobRunData GetOneWhere(WhereDelegate<JobRunDataColumns> where, Database db = null)
+			{
+				return Bam.Net.Automation.Data.JobRunData.GetOneWhere(where, db);
 			}
 		
 			public JobRunData FirstOneWhere(WhereDelegate<JobRunDataColumns> where, Database db = null)

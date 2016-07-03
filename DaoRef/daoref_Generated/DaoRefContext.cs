@@ -47,6 +47,11 @@ namespace Bam.Net.DaoRef
 			{
 				return Bam.Net.DaoRef.Left.OneWhere(where, db);
 			}
+
+			public static Left GetOneWhere(WhereDelegate<LeftColumns> where, Database db = null)
+			{
+				return Bam.Net.DaoRef.Left.GetOneWhere(where, db);
+			}
 		
 			public Left FirstOneWhere(WhereDelegate<LeftColumns> where, Database db = null)
 			{
@@ -93,6 +98,11 @@ namespace Bam.Net.DaoRef
 			public Right OneWhere(WhereDelegate<RightColumns> where, Database db = null)
 			{
 				return Bam.Net.DaoRef.Right.OneWhere(where, db);
+			}
+
+			public static Right GetOneWhere(WhereDelegate<RightColumns> where, Database db = null)
+			{
+				return Bam.Net.DaoRef.Right.GetOneWhere(where, db);
 			}
 		
 			public Right FirstOneWhere(WhereDelegate<RightColumns> where, Database db = null)
@@ -141,6 +151,11 @@ namespace Bam.Net.DaoRef
 			{
 				return Bam.Net.DaoRef.TestTable.OneWhere(where, db);
 			}
+
+			public static TestTable GetOneWhere(WhereDelegate<TestTableColumns> where, Database db = null)
+			{
+				return Bam.Net.DaoRef.TestTable.GetOneWhere(where, db);
+			}
 		
 			public TestTable FirstOneWhere(WhereDelegate<TestTableColumns> where, Database db = null)
 			{
@@ -187,6 +202,11 @@ namespace Bam.Net.DaoRef
 			public TestFkTable OneWhere(WhereDelegate<TestFkTableColumns> where, Database db = null)
 			{
 				return Bam.Net.DaoRef.TestFkTable.OneWhere(where, db);
+			}
+
+			public static TestFkTable GetOneWhere(WhereDelegate<TestFkTableColumns> where, Database db = null)
+			{
+				return Bam.Net.DaoRef.TestFkTable.GetOneWhere(where, db);
 			}
 		
 			public TestFkTable FirstOneWhere(WhereDelegate<TestFkTableColumns> where, Database db = null)
@@ -235,6 +255,11 @@ namespace Bam.Net.DaoRef
 			{
 				return Bam.Net.DaoRef.DaoReferenceObject.OneWhere(where, db);
 			}
+
+			public static DaoReferenceObject GetOneWhere(WhereDelegate<DaoReferenceObjectColumns> where, Database db = null)
+			{
+				return Bam.Net.DaoRef.DaoReferenceObject.GetOneWhere(where, db);
+			}
 		
 			public DaoReferenceObject FirstOneWhere(WhereDelegate<DaoReferenceObjectColumns> where, Database db = null)
 			{
@@ -282,6 +307,11 @@ namespace Bam.Net.DaoRef
 			{
 				return Bam.Net.DaoRef.DaoReferenceObjectWithForeignKey.OneWhere(where, db);
 			}
+
+			public static DaoReferenceObjectWithForeignKey GetOneWhere(WhereDelegate<DaoReferenceObjectWithForeignKeyColumns> where, Database db = null)
+			{
+				return Bam.Net.DaoRef.DaoReferenceObjectWithForeignKey.GetOneWhere(where, db);
+			}
 		
 			public DaoReferenceObjectWithForeignKey FirstOneWhere(WhereDelegate<DaoReferenceObjectWithForeignKeyColumns> where, Database db = null)
 			{
@@ -328,6 +358,11 @@ namespace Bam.Net.DaoRef
 			public LeftRight OneWhere(WhereDelegate<LeftRightColumns> where, Database db = null)
 			{
 				return Bam.Net.DaoRef.LeftRight.OneWhere(where, db);
+			}
+
+			public static LeftRight GetOneWhere(WhereDelegate<LeftRightColumns> where, Database db = null)
+			{
+				return Bam.Net.DaoRef.LeftRight.GetOneWhere(where, db);
 			}
 		
 			public LeftRight FirstOneWhere(WhereDelegate<LeftRightColumns> where, Database db = null)

@@ -47,6 +47,11 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 			{
 				return Bam.Net.Automation.ContinuousIntegration.Data.BuildJob.OneWhere(where, db);
 			}
+
+			public static BuildJob GetOneWhere(WhereDelegate<BuildJobColumns> where, Database db = null)
+			{
+				return Bam.Net.Automation.ContinuousIntegration.Data.BuildJob.GetOneWhere(where, db);
+			}
 		
 			public BuildJob FirstOneWhere(WhereDelegate<BuildJobColumns> where, Database db = null)
 			{
@@ -93,6 +98,11 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 			public BuildResult OneWhere(WhereDelegate<BuildResultColumns> where, Database db = null)
 			{
 				return Bam.Net.Automation.ContinuousIntegration.Data.BuildResult.OneWhere(where, db);
+			}
+
+			public static BuildResult GetOneWhere(WhereDelegate<BuildResultColumns> where, Database db = null)
+			{
+				return Bam.Net.Automation.ContinuousIntegration.Data.BuildResult.GetOneWhere(where, db);
 			}
 		
 			public BuildResult FirstOneWhere(WhereDelegate<BuildResultColumns> where, Database db = null)

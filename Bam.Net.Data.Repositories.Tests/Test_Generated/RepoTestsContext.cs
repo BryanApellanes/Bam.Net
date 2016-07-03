@@ -47,6 +47,11 @@ namespace Bam.Net.Data.Repositories.Tests
 			{
 				return Bam.Net.Data.Repositories.Tests.MainObject.OneWhere(where, db);
 			}
+
+			public static MainObject GetOneWhere(WhereDelegate<MainObjectColumns> where, Database db = null)
+			{
+				return Bam.Net.Data.Repositories.Tests.MainObject.GetOneWhere(where, db);
+			}
 		
 			public MainObject FirstOneWhere(WhereDelegate<MainObjectColumns> where, Database db = null)
 			{
@@ -93,6 +98,11 @@ namespace Bam.Net.Data.Repositories.Tests
 			public SecondaryObject OneWhere(WhereDelegate<SecondaryObjectColumns> where, Database db = null)
 			{
 				return Bam.Net.Data.Repositories.Tests.SecondaryObject.OneWhere(where, db);
+			}
+
+			public static SecondaryObject GetOneWhere(WhereDelegate<SecondaryObjectColumns> where, Database db = null)
+			{
+				return Bam.Net.Data.Repositories.Tests.SecondaryObject.GetOneWhere(where, db);
 			}
 		
 			public SecondaryObject FirstOneWhere(WhereDelegate<SecondaryObjectColumns> where, Database db = null)
@@ -141,6 +151,11 @@ namespace Bam.Net.Data.Repositories.Tests
 			{
 				return Bam.Net.Data.Repositories.Tests.TernaryObject.OneWhere(where, db);
 			}
+
+			public static TernaryObject GetOneWhere(WhereDelegate<TernaryObjectColumns> where, Database db = null)
+			{
+				return Bam.Net.Data.Repositories.Tests.TernaryObject.GetOneWhere(where, db);
+			}
 		
 			public TernaryObject FirstOneWhere(WhereDelegate<TernaryObjectColumns> where, Database db = null)
 			{
@@ -187,6 +202,11 @@ namespace Bam.Net.Data.Repositories.Tests
 			public SecondaryObjectTernaryObject OneWhere(WhereDelegate<SecondaryObjectTernaryObjectColumns> where, Database db = null)
 			{
 				return Bam.Net.Data.Repositories.Tests.SecondaryObjectTernaryObject.OneWhere(where, db);
+			}
+
+			public static SecondaryObjectTernaryObject GetOneWhere(WhereDelegate<SecondaryObjectTernaryObjectColumns> where, Database db = null)
+			{
+				return Bam.Net.Data.Repositories.Tests.SecondaryObjectTernaryObject.GetOneWhere(where, db);
 			}
 		
 			public SecondaryObjectTernaryObject FirstOneWhere(WhereDelegate<SecondaryObjectTernaryObjectColumns> where, Database db = null)
