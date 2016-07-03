@@ -22,6 +22,7 @@ using System.Net;
 using Bam.Net.Data;
 using Bam.Net.Data.SQLite;
 using Bam.Net.UserAccounts.Data;
+using System.Threading;
 
 namespace Bam.Net.CoreServices.Tests
 {
@@ -94,6 +95,7 @@ namespace Bam.Net.CoreServices.Tests
             });
             await src.Test().ContinueWith(t =>
             {
+                Thread.Sleep(100); // ick :b
                 expectCount++;
                 Expect.IsTrue(fired.Value);
             });
