@@ -204,7 +204,7 @@ namespace Bam.Net.Logging
         /// increment the number of events in the queue.  If the commit 
         /// thread is running it will be restarted.
         /// </summary>
-        public static void BlockUntilEventQueueIsEmpty() { Default.BlockUntilEventQueueIsEmpty(); }
+        public static void BlockUntilEventQueueIsEmpty(int sleep = 0) { Default.BlockUntilEventQueueIsEmpty(sleep); }
         #endregion
 
         /// <summary>

@@ -127,7 +127,7 @@ namespace Bam.Net.Logging
         /// abort the logging thread if it's running and call a 3
         /// second Join (Join(3000)) on the thread to allow it to die.
         /// </summary>
-        public void BlockUntilEventQueueIsEmpty()
+        public void BlockUntilEventQueueIsEmpty(int sleep = 0)
         {
             if(loggingThread != null && loggingThread.ThreadState == System.Threading.ThreadState.Running)
             {
@@ -138,6 +138,7 @@ namespace Bam.Net.Logging
                 loggingThread.Abort();
                 loggingThread.Join(3000);
             }
+            Thread.Sleep(sleep);
         }
 
         internal Queue<LogEvent> LogEventQueue
