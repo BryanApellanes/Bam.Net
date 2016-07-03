@@ -827,7 +827,7 @@
             <param name="messageSignature"></param>
             <param name="type"></param> 
         </member>
-        <member name="M:Bam.Net.Logging.Log.BlockUntilEventQueueIsEmpty">
+        <member name="M:Bam.Net.Logging.Log.BlockUntilEventQueueIsEmpty(System.Int32)">
             <summary>
             Blocks the current thread until the event queue is empty.  Keep
             in mind that other calls to AddEntry by other threads will 
@@ -876,7 +876,7 @@
             threads to abort if they exist
             </summary>
         </member>
-        <member name="M:Bam.Net.Logging.Logger.BlockUntilEventQueueIsEmpty">
+        <member name="M:Bam.Net.Logging.Logger.BlockUntilEventQueueIsEmpty(System.Int32)">
             <summary>
             Blocks the current thread until the event queue is empty.  Keep
             in mind that other calls to AddEntry by other threads will 
