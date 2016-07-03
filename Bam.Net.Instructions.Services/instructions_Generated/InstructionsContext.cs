@@ -47,6 +47,11 @@ namespace Bam.Net.Instructions
 			{
 				return Bam.Net.Instructions.InstructionSet.OneWhere(where, db);
 			}
+
+			public static InstructionSet GetOneWhere(WhereDelegate<InstructionSetColumns> where, Database db = null)
+			{
+				return Bam.Net.Instructions.InstructionSet.GetOneWhere(where, db);
+			}
 		
 			public InstructionSet FirstOneWhere(WhereDelegate<InstructionSetColumns> where, Database db = null)
 			{
@@ -94,6 +99,11 @@ namespace Bam.Net.Instructions
 			{
 				return Bam.Net.Instructions.Section.OneWhere(where, db);
 			}
+
+			public static Section GetOneWhere(WhereDelegate<SectionColumns> where, Database db = null)
+			{
+				return Bam.Net.Instructions.Section.GetOneWhere(where, db);
+			}
 		
 			public Section FirstOneWhere(WhereDelegate<SectionColumns> where, Database db = null)
 			{
@@ -140,6 +150,11 @@ namespace Bam.Net.Instructions
 			public Step OneWhere(WhereDelegate<StepColumns> where, Database db = null)
 			{
 				return Bam.Net.Instructions.Step.OneWhere(where, db);
+			}
+
+			public static Step GetOneWhere(WhereDelegate<StepColumns> where, Database db = null)
+			{
+				return Bam.Net.Instructions.Step.GetOneWhere(where, db);
 			}
 		
 			public Step FirstOneWhere(WhereDelegate<StepColumns> where, Database db = null)

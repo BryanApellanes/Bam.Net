@@ -47,6 +47,11 @@ namespace Bam.Net.UserAccounts.Data
 			{
 				return Bam.Net.UserAccounts.Data.User.OneWhere(where, db);
 			}
+
+			public static User GetOneWhere(WhereDelegate<UserColumns> where, Database db = null)
+			{
+				return Bam.Net.UserAccounts.Data.User.GetOneWhere(where, db);
+			}
 		
 			public User FirstOneWhere(WhereDelegate<UserColumns> where, Database db = null)
 			{
@@ -93,6 +98,11 @@ namespace Bam.Net.UserAccounts.Data
 			public Account OneWhere(WhereDelegate<AccountColumns> where, Database db = null)
 			{
 				return Bam.Net.UserAccounts.Data.Account.OneWhere(where, db);
+			}
+
+			public static Account GetOneWhere(WhereDelegate<AccountColumns> where, Database db = null)
+			{
+				return Bam.Net.UserAccounts.Data.Account.GetOneWhere(where, db);
 			}
 		
 			public Account FirstOneWhere(WhereDelegate<AccountColumns> where, Database db = null)
@@ -141,6 +151,11 @@ namespace Bam.Net.UserAccounts.Data
 			{
 				return Bam.Net.UserAccounts.Data.Password.OneWhere(where, db);
 			}
+
+			public static Password GetOneWhere(WhereDelegate<PasswordColumns> where, Database db = null)
+			{
+				return Bam.Net.UserAccounts.Data.Password.GetOneWhere(where, db);
+			}
 		
 			public Password FirstOneWhere(WhereDelegate<PasswordColumns> where, Database db = null)
 			{
@@ -187,6 +202,11 @@ namespace Bam.Net.UserAccounts.Data
 			public PasswordReset OneWhere(WhereDelegate<PasswordResetColumns> where, Database db = null)
 			{
 				return Bam.Net.UserAccounts.Data.PasswordReset.OneWhere(where, db);
+			}
+
+			public static PasswordReset GetOneWhere(WhereDelegate<PasswordResetColumns> where, Database db = null)
+			{
+				return Bam.Net.UserAccounts.Data.PasswordReset.GetOneWhere(where, db);
 			}
 		
 			public PasswordReset FirstOneWhere(WhereDelegate<PasswordResetColumns> where, Database db = null)
@@ -235,6 +255,11 @@ namespace Bam.Net.UserAccounts.Data
 			{
 				return Bam.Net.UserAccounts.Data.PasswordFailure.OneWhere(where, db);
 			}
+
+			public static PasswordFailure GetOneWhere(WhereDelegate<PasswordFailureColumns> where, Database db = null)
+			{
+				return Bam.Net.UserAccounts.Data.PasswordFailure.GetOneWhere(where, db);
+			}
 		
 			public PasswordFailure FirstOneWhere(WhereDelegate<PasswordFailureColumns> where, Database db = null)
 			{
@@ -281,6 +306,11 @@ namespace Bam.Net.UserAccounts.Data
 			public LockOut OneWhere(WhereDelegate<LockOutColumns> where, Database db = null)
 			{
 				return Bam.Net.UserAccounts.Data.LockOut.OneWhere(where, db);
+			}
+
+			public static LockOut GetOneWhere(WhereDelegate<LockOutColumns> where, Database db = null)
+			{
+				return Bam.Net.UserAccounts.Data.LockOut.GetOneWhere(where, db);
 			}
 		
 			public LockOut FirstOneWhere(WhereDelegate<LockOutColumns> where, Database db = null)
@@ -329,6 +359,11 @@ namespace Bam.Net.UserAccounts.Data
 			{
 				return Bam.Net.UserAccounts.Data.Login.OneWhere(where, db);
 			}
+
+			public static Login GetOneWhere(WhereDelegate<LoginColumns> where, Database db = null)
+			{
+				return Bam.Net.UserAccounts.Data.Login.GetOneWhere(where, db);
+			}
 		
 			public Login FirstOneWhere(WhereDelegate<LoginColumns> where, Database db = null)
 			{
@@ -375,6 +410,11 @@ namespace Bam.Net.UserAccounts.Data
 			public PasswordQuestion OneWhere(WhereDelegate<PasswordQuestionColumns> where, Database db = null)
 			{
 				return Bam.Net.UserAccounts.Data.PasswordQuestion.OneWhere(where, db);
+			}
+
+			public static PasswordQuestion GetOneWhere(WhereDelegate<PasswordQuestionColumns> where, Database db = null)
+			{
+				return Bam.Net.UserAccounts.Data.PasswordQuestion.GetOneWhere(where, db);
 			}
 		
 			public PasswordQuestion FirstOneWhere(WhereDelegate<PasswordQuestionColumns> where, Database db = null)
@@ -423,6 +463,11 @@ namespace Bam.Net.UserAccounts.Data
 			{
 				return Bam.Net.UserAccounts.Data.Setting.OneWhere(where, db);
 			}
+
+			public static Setting GetOneWhere(WhereDelegate<SettingColumns> where, Database db = null)
+			{
+				return Bam.Net.UserAccounts.Data.Setting.GetOneWhere(where, db);
+			}
 		
 			public Setting FirstOneWhere(WhereDelegate<SettingColumns> where, Database db = null)
 			{
@@ -469,6 +514,11 @@ namespace Bam.Net.UserAccounts.Data
 			public Session OneWhere(WhereDelegate<SessionColumns> where, Database db = null)
 			{
 				return Bam.Net.UserAccounts.Data.Session.OneWhere(where, db);
+			}
+
+			public static Session GetOneWhere(WhereDelegate<SessionColumns> where, Database db = null)
+			{
+				return Bam.Net.UserAccounts.Data.Session.GetOneWhere(where, db);
 			}
 		
 			public Session FirstOneWhere(WhereDelegate<SessionColumns> where, Database db = null)
@@ -517,6 +567,11 @@ namespace Bam.Net.UserAccounts.Data
 			{
 				return Bam.Net.UserAccounts.Data.SessionState.OneWhere(where, db);
 			}
+
+			public static SessionState GetOneWhere(WhereDelegate<SessionStateColumns> where, Database db = null)
+			{
+				return Bam.Net.UserAccounts.Data.SessionState.GetOneWhere(where, db);
+			}
 		
 			public SessionState FirstOneWhere(WhereDelegate<SessionStateColumns> where, Database db = null)
 			{
@@ -563,6 +618,11 @@ namespace Bam.Net.UserAccounts.Data
 			public UserBehavior OneWhere(WhereDelegate<UserBehaviorColumns> where, Database db = null)
 			{
 				return Bam.Net.UserAccounts.Data.UserBehavior.OneWhere(where, db);
+			}
+
+			public static UserBehavior GetOneWhere(WhereDelegate<UserBehaviorColumns> where, Database db = null)
+			{
+				return Bam.Net.UserAccounts.Data.UserBehavior.GetOneWhere(where, db);
 			}
 		
 			public UserBehavior FirstOneWhere(WhereDelegate<UserBehaviorColumns> where, Database db = null)
@@ -611,6 +671,11 @@ namespace Bam.Net.UserAccounts.Data
 			{
 				return Bam.Net.UserAccounts.Data.Role.OneWhere(where, db);
 			}
+
+			public static Role GetOneWhere(WhereDelegate<RoleColumns> where, Database db = null)
+			{
+				return Bam.Net.UserAccounts.Data.Role.GetOneWhere(where, db);
+			}
 		
 			public Role FirstOneWhere(WhereDelegate<RoleColumns> where, Database db = null)
 			{
@@ -657,6 +722,11 @@ namespace Bam.Net.UserAccounts.Data
 			public TreeNode OneWhere(WhereDelegate<TreeNodeColumns> where, Database db = null)
 			{
 				return Bam.Net.UserAccounts.Data.TreeNode.OneWhere(where, db);
+			}
+
+			public static TreeNode GetOneWhere(WhereDelegate<TreeNodeColumns> where, Database db = null)
+			{
+				return Bam.Net.UserAccounts.Data.TreeNode.GetOneWhere(where, db);
 			}
 		
 			public TreeNode FirstOneWhere(WhereDelegate<TreeNodeColumns> where, Database db = null)
@@ -705,6 +775,11 @@ namespace Bam.Net.UserAccounts.Data
 			{
 				return Bam.Net.UserAccounts.Data.Permission.OneWhere(where, db);
 			}
+
+			public static Permission GetOneWhere(WhereDelegate<PermissionColumns> where, Database db = null)
+			{
+				return Bam.Net.UserAccounts.Data.Permission.GetOneWhere(where, db);
+			}
 		
 			public Permission FirstOneWhere(WhereDelegate<PermissionColumns> where, Database db = null)
 			{
@@ -751,6 +826,11 @@ namespace Bam.Net.UserAccounts.Data
 			public Group OneWhere(WhereDelegate<GroupColumns> where, Database db = null)
 			{
 				return Bam.Net.UserAccounts.Data.Group.OneWhere(where, db);
+			}
+
+			public static Group GetOneWhere(WhereDelegate<GroupColumns> where, Database db = null)
+			{
+				return Bam.Net.UserAccounts.Data.Group.GetOneWhere(where, db);
 			}
 		
 			public Group FirstOneWhere(WhereDelegate<GroupColumns> where, Database db = null)
@@ -799,6 +879,11 @@ namespace Bam.Net.UserAccounts.Data
 			{
 				return Bam.Net.UserAccounts.Data.UserRole.OneWhere(where, db);
 			}
+
+			public static UserRole GetOneWhere(WhereDelegate<UserRoleColumns> where, Database db = null)
+			{
+				return Bam.Net.UserAccounts.Data.UserRole.GetOneWhere(where, db);
+			}
 		
 			public UserRole FirstOneWhere(WhereDelegate<UserRoleColumns> where, Database db = null)
 			{
@@ -845,6 +930,11 @@ namespace Bam.Net.UserAccounts.Data
 			public UserGroup OneWhere(WhereDelegate<UserGroupColumns> where, Database db = null)
 			{
 				return Bam.Net.UserAccounts.Data.UserGroup.OneWhere(where, db);
+			}
+
+			public static UserGroup GetOneWhere(WhereDelegate<UserGroupColumns> where, Database db = null)
+			{
+				return Bam.Net.UserAccounts.Data.UserGroup.GetOneWhere(where, db);
 			}
 		
 			public UserGroup FirstOneWhere(WhereDelegate<UserGroupColumns> where, Database db = null)
@@ -893,6 +983,11 @@ namespace Bam.Net.UserAccounts.Data
 			{
 				return Bam.Net.UserAccounts.Data.GroupPermission.OneWhere(where, db);
 			}
+
+			public static GroupPermission GetOneWhere(WhereDelegate<GroupPermissionColumns> where, Database db = null)
+			{
+				return Bam.Net.UserAccounts.Data.GroupPermission.GetOneWhere(where, db);
+			}
 		
 			public GroupPermission FirstOneWhere(WhereDelegate<GroupPermissionColumns> where, Database db = null)
 			{
@@ -939,6 +1034,11 @@ namespace Bam.Net.UserAccounts.Data
 			public UserPermission OneWhere(WhereDelegate<UserPermissionColumns> where, Database db = null)
 			{
 				return Bam.Net.UserAccounts.Data.UserPermission.OneWhere(where, db);
+			}
+
+			public static UserPermission GetOneWhere(WhereDelegate<UserPermissionColumns> where, Database db = null)
+			{
+				return Bam.Net.UserAccounts.Data.UserPermission.GetOneWhere(where, db);
 			}
 		
 			public UserPermission FirstOneWhere(WhereDelegate<UserPermissionColumns> where, Database db = null)

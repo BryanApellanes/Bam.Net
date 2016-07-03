@@ -47,6 +47,11 @@ namespace Bam.Net.Shop
 			{
 				return Bam.Net.Shop.Currency.OneWhere(where, db);
 			}
+
+			public static Currency GetOneWhere(WhereDelegate<CurrencyColumns> where, Database db = null)
+			{
+				return Bam.Net.Shop.Currency.GetOneWhere(where, db);
+			}
 		
 			public Currency FirstOneWhere(WhereDelegate<CurrencyColumns> where, Database db = null)
 			{
@@ -93,6 +98,11 @@ namespace Bam.Net.Shop
 			public CurrencyCountry OneWhere(WhereDelegate<CurrencyCountryColumns> where, Database db = null)
 			{
 				return Bam.Net.Shop.CurrencyCountry.OneWhere(where, db);
+			}
+
+			public static CurrencyCountry GetOneWhere(WhereDelegate<CurrencyCountryColumns> where, Database db = null)
+			{
+				return Bam.Net.Shop.CurrencyCountry.GetOneWhere(where, db);
 			}
 		
 			public CurrencyCountry FirstOneWhere(WhereDelegate<CurrencyCountryColumns> where, Database db = null)
@@ -141,6 +151,11 @@ namespace Bam.Net.Shop
 			{
 				return Bam.Net.Shop.Shop.OneWhere(where, db);
 			}
+
+			public static Shop GetOneWhere(WhereDelegate<ShopColumns> where, Database db = null)
+			{
+				return Bam.Net.Shop.Shop.GetOneWhere(where, db);
+			}
 		
 			public Shop FirstOneWhere(WhereDelegate<ShopColumns> where, Database db = null)
 			{
@@ -187,6 +202,11 @@ namespace Bam.Net.Shop
 			public PromotionEffects OneWhere(WhereDelegate<PromotionEffectsColumns> where, Database db = null)
 			{
 				return Bam.Net.Shop.PromotionEffects.OneWhere(where, db);
+			}
+
+			public static PromotionEffects GetOneWhere(WhereDelegate<PromotionEffectsColumns> where, Database db = null)
+			{
+				return Bam.Net.Shop.PromotionEffects.GetOneWhere(where, db);
 			}
 		
 			public PromotionEffects FirstOneWhere(WhereDelegate<PromotionEffectsColumns> where, Database db = null)
@@ -235,6 +255,11 @@ namespace Bam.Net.Shop
 			{
 				return Bam.Net.Shop.Promotion.OneWhere(where, db);
 			}
+
+			public static Promotion GetOneWhere(WhereDelegate<PromotionColumns> where, Database db = null)
+			{
+				return Bam.Net.Shop.Promotion.GetOneWhere(where, db);
+			}
 		
 			public Promotion FirstOneWhere(WhereDelegate<PromotionColumns> where, Database db = null)
 			{
@@ -281,6 +306,11 @@ namespace Bam.Net.Shop
 			public PromotionEffect OneWhere(WhereDelegate<PromotionEffectColumns> where, Database db = null)
 			{
 				return Bam.Net.Shop.PromotionEffect.OneWhere(where, db);
+			}
+
+			public static PromotionEffect GetOneWhere(WhereDelegate<PromotionEffectColumns> where, Database db = null)
+			{
+				return Bam.Net.Shop.PromotionEffect.GetOneWhere(where, db);
 			}
 		
 			public PromotionEffect FirstOneWhere(WhereDelegate<PromotionEffectColumns> where, Database db = null)
@@ -329,6 +359,11 @@ namespace Bam.Net.Shop
 			{
 				return Bam.Net.Shop.PromotionCondition.OneWhere(where, db);
 			}
+
+			public static PromotionCondition GetOneWhere(WhereDelegate<PromotionConditionColumns> where, Database db = null)
+			{
+				return Bam.Net.Shop.PromotionCondition.GetOneWhere(where, db);
+			}
 		
 			public PromotionCondition FirstOneWhere(WhereDelegate<PromotionConditionColumns> where, Database db = null)
 			{
@@ -375,6 +410,11 @@ namespace Bam.Net.Shop
 			public PromotionCode OneWhere(WhereDelegate<PromotionCodeColumns> where, Database db = null)
 			{
 				return Bam.Net.Shop.PromotionCode.OneWhere(where, db);
+			}
+
+			public static PromotionCode GetOneWhere(WhereDelegate<PromotionCodeColumns> where, Database db = null)
+			{
+				return Bam.Net.Shop.PromotionCode.GetOneWhere(where, db);
 			}
 		
 			public PromotionCode FirstOneWhere(WhereDelegate<PromotionCodeColumns> where, Database db = null)
@@ -423,6 +463,11 @@ namespace Bam.Net.Shop
 			{
 				return Bam.Net.Shop.Shopper.OneWhere(where, db);
 			}
+
+			public static Shopper GetOneWhere(WhereDelegate<ShopperColumns> where, Database db = null)
+			{
+				return Bam.Net.Shop.Shopper.GetOneWhere(where, db);
+			}
 		
 			public Shopper FirstOneWhere(WhereDelegate<ShopperColumns> where, Database db = null)
 			{
@@ -469,6 +514,11 @@ namespace Bam.Net.Shop
 			public ShoppingCart OneWhere(WhereDelegate<ShoppingCartColumns> where, Database db = null)
 			{
 				return Bam.Net.Shop.ShoppingCart.OneWhere(where, db);
+			}
+
+			public static ShoppingCart GetOneWhere(WhereDelegate<ShoppingCartColumns> where, Database db = null)
+			{
+				return Bam.Net.Shop.ShoppingCart.GetOneWhere(where, db);
 			}
 		
 			public ShoppingCart FirstOneWhere(WhereDelegate<ShoppingCartColumns> where, Database db = null)
@@ -517,6 +567,11 @@ namespace Bam.Net.Shop
 			{
 				return Bam.Net.Shop.ShoppingCartItem.OneWhere(where, db);
 			}
+
+			public static ShoppingCartItem GetOneWhere(WhereDelegate<ShoppingCartItemColumns> where, Database db = null)
+			{
+				return Bam.Net.Shop.ShoppingCartItem.GetOneWhere(where, db);
+			}
 		
 			public ShoppingCartItem FirstOneWhere(WhereDelegate<ShoppingCartItemColumns> where, Database db = null)
 			{
@@ -563,6 +618,11 @@ namespace Bam.Net.Shop
 			public ShoppingList OneWhere(WhereDelegate<ShoppingListColumns> where, Database db = null)
 			{
 				return Bam.Net.Shop.ShoppingList.OneWhere(where, db);
+			}
+
+			public static ShoppingList GetOneWhere(WhereDelegate<ShoppingListColumns> where, Database db = null)
+			{
+				return Bam.Net.Shop.ShoppingList.GetOneWhere(where, db);
 			}
 		
 			public ShoppingList FirstOneWhere(WhereDelegate<ShoppingListColumns> where, Database db = null)
@@ -611,6 +671,11 @@ namespace Bam.Net.Shop
 			{
 				return Bam.Net.Shop.ShopItem.OneWhere(where, db);
 			}
+
+			public static ShopItem GetOneWhere(WhereDelegate<ShopItemColumns> where, Database db = null)
+			{
+				return Bam.Net.Shop.ShopItem.GetOneWhere(where, db);
+			}
 		
 			public ShopItem FirstOneWhere(WhereDelegate<ShopItemColumns> where, Database db = null)
 			{
@@ -657,6 +722,11 @@ namespace Bam.Net.Shop
 			public Price OneWhere(WhereDelegate<PriceColumns> where, Database db = null)
 			{
 				return Bam.Net.Shop.Price.OneWhere(where, db);
+			}
+
+			public static Price GetOneWhere(WhereDelegate<PriceColumns> where, Database db = null)
+			{
+				return Bam.Net.Shop.Price.GetOneWhere(where, db);
 			}
 		
 			public Price FirstOneWhere(WhereDelegate<PriceColumns> where, Database db = null)
@@ -705,6 +775,11 @@ namespace Bam.Net.Shop
 			{
 				return Bam.Net.Shop.ShopItemAttribute.OneWhere(where, db);
 			}
+
+			public static ShopItemAttribute GetOneWhere(WhereDelegate<ShopItemAttributeColumns> where, Database db = null)
+			{
+				return Bam.Net.Shop.ShopItemAttribute.GetOneWhere(where, db);
+			}
 		
 			public ShopItemAttribute FirstOneWhere(WhereDelegate<ShopItemAttributeColumns> where, Database db = null)
 			{
@@ -751,6 +826,11 @@ namespace Bam.Net.Shop
 			public ShopItemAttributeValue OneWhere(WhereDelegate<ShopItemAttributeValueColumns> where, Database db = null)
 			{
 				return Bam.Net.Shop.ShopItemAttributeValue.OneWhere(where, db);
+			}
+
+			public static ShopItemAttributeValue GetOneWhere(WhereDelegate<ShopItemAttributeValueColumns> where, Database db = null)
+			{
+				return Bam.Net.Shop.ShopItemAttributeValue.GetOneWhere(where, db);
 			}
 		
 			public ShopItemAttributeValue FirstOneWhere(WhereDelegate<ShopItemAttributeValueColumns> where, Database db = null)
@@ -799,6 +879,11 @@ namespace Bam.Net.Shop
 			{
 				return Bam.Net.Shop.ShoppingListShopItem.OneWhere(where, db);
 			}
+
+			public static ShoppingListShopItem GetOneWhere(WhereDelegate<ShoppingListShopItemColumns> where, Database db = null)
+			{
+				return Bam.Net.Shop.ShoppingListShopItem.GetOneWhere(where, db);
+			}
 		
 			public ShoppingListShopItem FirstOneWhere(WhereDelegate<ShoppingListShopItemColumns> where, Database db = null)
 			{
@@ -845,6 +930,11 @@ namespace Bam.Net.Shop
 			public ShopShopItem OneWhere(WhereDelegate<ShopShopItemColumns> where, Database db = null)
 			{
 				return Bam.Net.Shop.ShopShopItem.OneWhere(where, db);
+			}
+
+			public static ShopShopItem GetOneWhere(WhereDelegate<ShopShopItemColumns> where, Database db = null)
+			{
+				return Bam.Net.Shop.ShopShopItem.GetOneWhere(where, db);
 			}
 		
 			public ShopShopItem FirstOneWhere(WhereDelegate<ShopShopItemColumns> where, Database db = null)
@@ -893,6 +983,11 @@ namespace Bam.Net.Shop
 			{
 				return Bam.Net.Shop.ShopItemShopItemAttribute.OneWhere(where, db);
 			}
+
+			public static ShopItemShopItemAttribute GetOneWhere(WhereDelegate<ShopItemShopItemAttributeColumns> where, Database db = null)
+			{
+				return Bam.Net.Shop.ShopItemShopItemAttribute.GetOneWhere(where, db);
+			}
 		
 			public ShopItemShopItemAttribute FirstOneWhere(WhereDelegate<ShopItemShopItemAttributeColumns> where, Database db = null)
 			{
@@ -940,6 +1035,11 @@ namespace Bam.Net.Shop
 			{
 				return Bam.Net.Shop.ShopPromotion.OneWhere(where, db);
 			}
+
+			public static ShopPromotion GetOneWhere(WhereDelegate<ShopPromotionColumns> where, Database db = null)
+			{
+				return Bam.Net.Shop.ShopPromotion.GetOneWhere(where, db);
+			}
 		
 			public ShopPromotion FirstOneWhere(WhereDelegate<ShopPromotionColumns> where, Database db = null)
 			{
@@ -986,6 +1086,11 @@ namespace Bam.Net.Shop
 			public ShopItemPromotion OneWhere(WhereDelegate<ShopItemPromotionColumns> where, Database db = null)
 			{
 				return Bam.Net.Shop.ShopItemPromotion.OneWhere(where, db);
+			}
+
+			public static ShopItemPromotion GetOneWhere(WhereDelegate<ShopItemPromotionColumns> where, Database db = null)
+			{
+				return Bam.Net.Shop.ShopItemPromotion.GetOneWhere(where, db);
 			}
 		
 			public ShopItemPromotion FirstOneWhere(WhereDelegate<ShopItemPromotionColumns> where, Database db = null)

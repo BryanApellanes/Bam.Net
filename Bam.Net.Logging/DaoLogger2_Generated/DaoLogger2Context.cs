@@ -47,6 +47,11 @@ namespace Bam.Net.Logging.Data
 			{
 				return Bam.Net.Logging.Data.SourceName.OneWhere(where, db);
 			}
+
+			public static SourceName GetOneWhere(WhereDelegate<SourceNameColumns> where, Database db = null)
+			{
+				return Bam.Net.Logging.Data.SourceName.GetOneWhere(where, db);
+			}
 		
 			public SourceName FirstOneWhere(WhereDelegate<SourceNameColumns> where, Database db = null)
 			{
@@ -93,6 +98,11 @@ namespace Bam.Net.Logging.Data
 			public UserName OneWhere(WhereDelegate<UserNameColumns> where, Database db = null)
 			{
 				return Bam.Net.Logging.Data.UserName.OneWhere(where, db);
+			}
+
+			public static UserName GetOneWhere(WhereDelegate<UserNameColumns> where, Database db = null)
+			{
+				return Bam.Net.Logging.Data.UserName.GetOneWhere(where, db);
 			}
 		
 			public UserName FirstOneWhere(WhereDelegate<UserNameColumns> where, Database db = null)
@@ -141,6 +151,11 @@ namespace Bam.Net.Logging.Data
 			{
 				return Bam.Net.Logging.Data.CategoryName.OneWhere(where, db);
 			}
+
+			public static CategoryName GetOneWhere(WhereDelegate<CategoryNameColumns> where, Database db = null)
+			{
+				return Bam.Net.Logging.Data.CategoryName.GetOneWhere(where, db);
+			}
 		
 			public CategoryName FirstOneWhere(WhereDelegate<CategoryNameColumns> where, Database db = null)
 			{
@@ -187,6 +202,11 @@ namespace Bam.Net.Logging.Data
 			public ComputerName OneWhere(WhereDelegate<ComputerNameColumns> where, Database db = null)
 			{
 				return Bam.Net.Logging.Data.ComputerName.OneWhere(where, db);
+			}
+
+			public static ComputerName GetOneWhere(WhereDelegate<ComputerNameColumns> where, Database db = null)
+			{
+				return Bam.Net.Logging.Data.ComputerName.GetOneWhere(where, db);
 			}
 		
 			public ComputerName FirstOneWhere(WhereDelegate<ComputerNameColumns> where, Database db = null)
@@ -235,6 +255,11 @@ namespace Bam.Net.Logging.Data
 			{
 				return Bam.Net.Logging.Data.Signature.OneWhere(where, db);
 			}
+
+			public static Signature GetOneWhere(WhereDelegate<SignatureColumns> where, Database db = null)
+			{
+				return Bam.Net.Logging.Data.Signature.GetOneWhere(where, db);
+			}
 		
 			public Signature FirstOneWhere(WhereDelegate<SignatureColumns> where, Database db = null)
 			{
@@ -281,6 +306,11 @@ namespace Bam.Net.Logging.Data
 			public Param OneWhere(WhereDelegate<ParamColumns> where, Database db = null)
 			{
 				return Bam.Net.Logging.Data.Param.OneWhere(where, db);
+			}
+
+			public static Param GetOneWhere(WhereDelegate<ParamColumns> where, Database db = null)
+			{
+				return Bam.Net.Logging.Data.Param.GetOneWhere(where, db);
 			}
 		
 			public Param FirstOneWhere(WhereDelegate<ParamColumns> where, Database db = null)
@@ -329,6 +359,11 @@ namespace Bam.Net.Logging.Data
 			{
 				return Bam.Net.Logging.Data.Event.OneWhere(where, db);
 			}
+
+			public static Event GetOneWhere(WhereDelegate<EventColumns> where, Database db = null)
+			{
+				return Bam.Net.Logging.Data.Event.GetOneWhere(where, db);
+			}
 		
 			public Event FirstOneWhere(WhereDelegate<EventColumns> where, Database db = null)
 			{
@@ -375,6 +410,11 @@ namespace Bam.Net.Logging.Data
 			public EventParam OneWhere(WhereDelegate<EventParamColumns> where, Database db = null)
 			{
 				return Bam.Net.Logging.Data.EventParam.OneWhere(where, db);
+			}
+
+			public static EventParam GetOneWhere(WhereDelegate<EventParamColumns> where, Database db = null)
+			{
+				return Bam.Net.Logging.Data.EventParam.GetOneWhere(where, db);
 			}
 		
 			public EventParam FirstOneWhere(WhereDelegate<EventParamColumns> where, Database db = null)

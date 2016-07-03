@@ -47,6 +47,11 @@ namespace Bam.Net.Analytics
 			{
 				return Bam.Net.Analytics.Category.OneWhere(where, db);
 			}
+
+			public static Category GetOneWhere(WhereDelegate<CategoryColumns> where, Database db = null)
+			{
+				return Bam.Net.Analytics.Category.GetOneWhere(where, db);
+			}
 		
 			public Category FirstOneWhere(WhereDelegate<CategoryColumns> where, Database db = null)
 			{
@@ -93,6 +98,11 @@ namespace Bam.Net.Analytics
 			public Feature OneWhere(WhereDelegate<FeatureColumns> where, Database db = null)
 			{
 				return Bam.Net.Analytics.Feature.OneWhere(where, db);
+			}
+
+			public static Feature GetOneWhere(WhereDelegate<FeatureColumns> where, Database db = null)
+			{
+				return Bam.Net.Analytics.Feature.GetOneWhere(where, db);
 			}
 		
 			public Feature FirstOneWhere(WhereDelegate<FeatureColumns> where, Database db = null)
@@ -141,6 +151,11 @@ namespace Bam.Net.Analytics
 			{
 				return Bam.Net.Analytics.Crawler.OneWhere(where, db);
 			}
+
+			public static Crawler GetOneWhere(WhereDelegate<CrawlerColumns> where, Database db = null)
+			{
+				return Bam.Net.Analytics.Crawler.GetOneWhere(where, db);
+			}
 		
 			public Crawler FirstOneWhere(WhereDelegate<CrawlerColumns> where, Database db = null)
 			{
@@ -187,6 +202,11 @@ namespace Bam.Net.Analytics
 			public Protocol OneWhere(WhereDelegate<ProtocolColumns> where, Database db = null)
 			{
 				return Bam.Net.Analytics.Protocol.OneWhere(where, db);
+			}
+
+			public static Protocol GetOneWhere(WhereDelegate<ProtocolColumns> where, Database db = null)
+			{
+				return Bam.Net.Analytics.Protocol.GetOneWhere(where, db);
 			}
 		
 			public Protocol FirstOneWhere(WhereDelegate<ProtocolColumns> where, Database db = null)
@@ -235,6 +255,11 @@ namespace Bam.Net.Analytics
 			{
 				return Bam.Net.Analytics.Domain.OneWhere(where, db);
 			}
+
+			public static Domain GetOneWhere(WhereDelegate<DomainColumns> where, Database db = null)
+			{
+				return Bam.Net.Analytics.Domain.GetOneWhere(where, db);
+			}
 		
 			public Domain FirstOneWhere(WhereDelegate<DomainColumns> where, Database db = null)
 			{
@@ -281,6 +306,11 @@ namespace Bam.Net.Analytics
 			public Port OneWhere(WhereDelegate<PortColumns> where, Database db = null)
 			{
 				return Bam.Net.Analytics.Port.OneWhere(where, db);
+			}
+
+			public static Port GetOneWhere(WhereDelegate<PortColumns> where, Database db = null)
+			{
+				return Bam.Net.Analytics.Port.GetOneWhere(where, db);
 			}
 		
 			public Port FirstOneWhere(WhereDelegate<PortColumns> where, Database db = null)
@@ -329,6 +359,11 @@ namespace Bam.Net.Analytics
 			{
 				return Bam.Net.Analytics.Path.OneWhere(where, db);
 			}
+
+			public static Path GetOneWhere(WhereDelegate<PathColumns> where, Database db = null)
+			{
+				return Bam.Net.Analytics.Path.GetOneWhere(where, db);
+			}
 		
 			public Path FirstOneWhere(WhereDelegate<PathColumns> where, Database db = null)
 			{
@@ -375,6 +410,11 @@ namespace Bam.Net.Analytics
 			public QueryString OneWhere(WhereDelegate<QueryStringColumns> where, Database db = null)
 			{
 				return Bam.Net.Analytics.QueryString.OneWhere(where, db);
+			}
+
+			public static QueryString GetOneWhere(WhereDelegate<QueryStringColumns> where, Database db = null)
+			{
+				return Bam.Net.Analytics.QueryString.GetOneWhere(where, db);
 			}
 		
 			public QueryString FirstOneWhere(WhereDelegate<QueryStringColumns> where, Database db = null)
@@ -423,6 +463,11 @@ namespace Bam.Net.Analytics
 			{
 				return Bam.Net.Analytics.Fragment.OneWhere(where, db);
 			}
+
+			public static Fragment GetOneWhere(WhereDelegate<FragmentColumns> where, Database db = null)
+			{
+				return Bam.Net.Analytics.Fragment.GetOneWhere(where, db);
+			}
 		
 			public Fragment FirstOneWhere(WhereDelegate<FragmentColumns> where, Database db = null)
 			{
@@ -469,6 +514,11 @@ namespace Bam.Net.Analytics
 			public Url OneWhere(WhereDelegate<UrlColumns> where, Database db = null)
 			{
 				return Bam.Net.Analytics.Url.OneWhere(where, db);
+			}
+
+			public static Url GetOneWhere(WhereDelegate<UrlColumns> where, Database db = null)
+			{
+				return Bam.Net.Analytics.Url.GetOneWhere(where, db);
 			}
 		
 			public Url FirstOneWhere(WhereDelegate<UrlColumns> where, Database db = null)
@@ -517,6 +567,11 @@ namespace Bam.Net.Analytics
 			{
 				return Bam.Net.Analytics.Tag.OneWhere(where, db);
 			}
+
+			public static Tag GetOneWhere(WhereDelegate<TagColumns> where, Database db = null)
+			{
+				return Bam.Net.Analytics.Tag.GetOneWhere(where, db);
+			}
 		
 			public Tag FirstOneWhere(WhereDelegate<TagColumns> where, Database db = null)
 			{
@@ -563,6 +618,11 @@ namespace Bam.Net.Analytics
 			public Image OneWhere(WhereDelegate<ImageColumns> where, Database db = null)
 			{
 				return Bam.Net.Analytics.Image.OneWhere(where, db);
+			}
+
+			public static Image GetOneWhere(WhereDelegate<ImageColumns> where, Database db = null)
+			{
+				return Bam.Net.Analytics.Image.GetOneWhere(where, db);
 			}
 		
 			public Image FirstOneWhere(WhereDelegate<ImageColumns> where, Database db = null)
@@ -611,6 +671,11 @@ namespace Bam.Net.Analytics
 			{
 				return Bam.Net.Analytics.Timer.OneWhere(where, db);
 			}
+
+			public static Timer GetOneWhere(WhereDelegate<TimerColumns> where, Database db = null)
+			{
+				return Bam.Net.Analytics.Timer.GetOneWhere(where, db);
+			}
 		
 			public Timer FirstOneWhere(WhereDelegate<TimerColumns> where, Database db = null)
 			{
@@ -657,6 +722,11 @@ namespace Bam.Net.Analytics
 			public MethodTimer OneWhere(WhereDelegate<MethodTimerColumns> where, Database db = null)
 			{
 				return Bam.Net.Analytics.MethodTimer.OneWhere(where, db);
+			}
+
+			public static MethodTimer GetOneWhere(WhereDelegate<MethodTimerColumns> where, Database db = null)
+			{
+				return Bam.Net.Analytics.MethodTimer.GetOneWhere(where, db);
 			}
 		
 			public MethodTimer FirstOneWhere(WhereDelegate<MethodTimerColumns> where, Database db = null)
@@ -705,6 +775,11 @@ namespace Bam.Net.Analytics
 			{
 				return Bam.Net.Analytics.LoadTimer.OneWhere(where, db);
 			}
+
+			public static LoadTimer GetOneWhere(WhereDelegate<LoadTimerColumns> where, Database db = null)
+			{
+				return Bam.Net.Analytics.LoadTimer.GetOneWhere(where, db);
+			}
 		
 			public LoadTimer FirstOneWhere(WhereDelegate<LoadTimerColumns> where, Database db = null)
 			{
@@ -751,6 +826,11 @@ namespace Bam.Net.Analytics
 			public CustomTimer OneWhere(WhereDelegate<CustomTimerColumns> where, Database db = null)
 			{
 				return Bam.Net.Analytics.CustomTimer.OneWhere(where, db);
+			}
+
+			public static CustomTimer GetOneWhere(WhereDelegate<CustomTimerColumns> where, Database db = null)
+			{
+				return Bam.Net.Analytics.CustomTimer.GetOneWhere(where, db);
 			}
 		
 			public CustomTimer FirstOneWhere(WhereDelegate<CustomTimerColumns> where, Database db = null)
@@ -799,6 +879,11 @@ namespace Bam.Net.Analytics
 			{
 				return Bam.Net.Analytics.Counter.OneWhere(where, db);
 			}
+
+			public static Counter GetOneWhere(WhereDelegate<CounterColumns> where, Database db = null)
+			{
+				return Bam.Net.Analytics.Counter.GetOneWhere(where, db);
+			}
 		
 			public Counter FirstOneWhere(WhereDelegate<CounterColumns> where, Database db = null)
 			{
@@ -845,6 +930,11 @@ namespace Bam.Net.Analytics
 			public MethodCounter OneWhere(WhereDelegate<MethodCounterColumns> where, Database db = null)
 			{
 				return Bam.Net.Analytics.MethodCounter.OneWhere(where, db);
+			}
+
+			public static MethodCounter GetOneWhere(WhereDelegate<MethodCounterColumns> where, Database db = null)
+			{
+				return Bam.Net.Analytics.MethodCounter.GetOneWhere(where, db);
 			}
 		
 			public MethodCounter FirstOneWhere(WhereDelegate<MethodCounterColumns> where, Database db = null)
@@ -893,6 +983,11 @@ namespace Bam.Net.Analytics
 			{
 				return Bam.Net.Analytics.LoadCounter.OneWhere(where, db);
 			}
+
+			public static LoadCounter GetOneWhere(WhereDelegate<LoadCounterColumns> where, Database db = null)
+			{
+				return Bam.Net.Analytics.LoadCounter.GetOneWhere(where, db);
+			}
 		
 			public LoadCounter FirstOneWhere(WhereDelegate<LoadCounterColumns> where, Database db = null)
 			{
@@ -939,6 +1034,11 @@ namespace Bam.Net.Analytics
 			public UserIdentifier OneWhere(WhereDelegate<UserIdentifierColumns> where, Database db = null)
 			{
 				return Bam.Net.Analytics.UserIdentifier.OneWhere(where, db);
+			}
+
+			public static UserIdentifier GetOneWhere(WhereDelegate<UserIdentifierColumns> where, Database db = null)
+			{
+				return Bam.Net.Analytics.UserIdentifier.GetOneWhere(where, db);
 			}
 		
 			public UserIdentifier FirstOneWhere(WhereDelegate<UserIdentifierColumns> where, Database db = null)
@@ -987,6 +1087,11 @@ namespace Bam.Net.Analytics
 			{
 				return Bam.Net.Analytics.ClickCounter.OneWhere(where, db);
 			}
+
+			public static ClickCounter GetOneWhere(WhereDelegate<ClickCounterColumns> where, Database db = null)
+			{
+				return Bam.Net.Analytics.ClickCounter.GetOneWhere(where, db);
+			}
 		
 			public ClickCounter FirstOneWhere(WhereDelegate<ClickCounterColumns> where, Database db = null)
 			{
@@ -1033,6 +1138,11 @@ namespace Bam.Net.Analytics
 			public LoginCounter OneWhere(WhereDelegate<LoginCounterColumns> where, Database db = null)
 			{
 				return Bam.Net.Analytics.LoginCounter.OneWhere(where, db);
+			}
+
+			public static LoginCounter GetOneWhere(WhereDelegate<LoginCounterColumns> where, Database db = null)
+			{
+				return Bam.Net.Analytics.LoginCounter.GetOneWhere(where, db);
 			}
 		
 			public LoginCounter FirstOneWhere(WhereDelegate<LoginCounterColumns> where, Database db = null)
@@ -1081,6 +1191,11 @@ namespace Bam.Net.Analytics
 			{
 				return Bam.Net.Analytics.UrlTag.OneWhere(where, db);
 			}
+
+			public static UrlTag GetOneWhere(WhereDelegate<UrlTagColumns> where, Database db = null)
+			{
+				return Bam.Net.Analytics.UrlTag.GetOneWhere(where, db);
+			}
 		
 			public UrlTag FirstOneWhere(WhereDelegate<UrlTagColumns> where, Database db = null)
 			{
@@ -1127,6 +1242,11 @@ namespace Bam.Net.Analytics
 			public ImageTag OneWhere(WhereDelegate<ImageTagColumns> where, Database db = null)
 			{
 				return Bam.Net.Analytics.ImageTag.OneWhere(where, db);
+			}
+
+			public static ImageTag GetOneWhere(WhereDelegate<ImageTagColumns> where, Database db = null)
+			{
+				return Bam.Net.Analytics.ImageTag.GetOneWhere(where, db);
 			}
 		
 			public ImageTag FirstOneWhere(WhereDelegate<ImageTagColumns> where, Database db = null)

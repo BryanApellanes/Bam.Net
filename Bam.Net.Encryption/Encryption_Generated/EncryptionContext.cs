@@ -47,6 +47,11 @@ namespace Bam.Net.Encryption
 			{
 				return Bam.Net.Encryption.Vault.OneWhere(where, db);
 			}
+
+			public static Vault GetOneWhere(WhereDelegate<VaultColumns> where, Database db = null)
+			{
+				return Bam.Net.Encryption.Vault.GetOneWhere(where, db);
+			}
 		
 			public Vault FirstOneWhere(WhereDelegate<VaultColumns> where, Database db = null)
 			{
@@ -94,6 +99,11 @@ namespace Bam.Net.Encryption
 			{
 				return Bam.Net.Encryption.VaultItem.OneWhere(where, db);
 			}
+
+			public static VaultItem GetOneWhere(WhereDelegate<VaultItemColumns> where, Database db = null)
+			{
+				return Bam.Net.Encryption.VaultItem.GetOneWhere(where, db);
+			}
 		
 			public VaultItem FirstOneWhere(WhereDelegate<VaultItemColumns> where, Database db = null)
 			{
@@ -140,6 +150,11 @@ namespace Bam.Net.Encryption
 			public VaultKey OneWhere(WhereDelegate<VaultKeyColumns> where, Database db = null)
 			{
 				return Bam.Net.Encryption.VaultKey.OneWhere(where, db);
+			}
+
+			public static VaultKey GetOneWhere(WhereDelegate<VaultKeyColumns> where, Database db = null)
+			{
+				return Bam.Net.Encryption.VaultKey.GetOneWhere(where, db);
 			}
 		
 			public VaultKey FirstOneWhere(WhereDelegate<VaultKeyColumns> where, Database db = null)

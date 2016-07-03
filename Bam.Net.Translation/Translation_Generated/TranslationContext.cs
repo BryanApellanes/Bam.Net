@@ -47,6 +47,11 @@ namespace Bam.Net.Translation
 			{
 				return Bam.Net.Translation.Language.OneWhere(where, db);
 			}
+
+			public static Language GetOneWhere(WhereDelegate<LanguageColumns> where, Database db = null)
+			{
+				return Bam.Net.Translation.Language.GetOneWhere(where, db);
+			}
 		
 			public Language FirstOneWhere(WhereDelegate<LanguageColumns> where, Database db = null)
 			{
@@ -93,6 +98,11 @@ namespace Bam.Net.Translation
 			public Text OneWhere(WhereDelegate<TextColumns> where, Database db = null)
 			{
 				return Bam.Net.Translation.Text.OneWhere(where, db);
+			}
+
+			public static Text GetOneWhere(WhereDelegate<TextColumns> where, Database db = null)
+			{
+				return Bam.Net.Translation.Text.GetOneWhere(where, db);
 			}
 		
 			public Text FirstOneWhere(WhereDelegate<TextColumns> where, Database db = null)
@@ -141,6 +151,11 @@ namespace Bam.Net.Translation
 			{
 				return Bam.Net.Translation.LanguageDetection.OneWhere(where, db);
 			}
+
+			public static LanguageDetection GetOneWhere(WhereDelegate<LanguageDetectionColumns> where, Database db = null)
+			{
+				return Bam.Net.Translation.LanguageDetection.GetOneWhere(where, db);
+			}
 		
 			public LanguageDetection FirstOneWhere(WhereDelegate<LanguageDetectionColumns> where, Database db = null)
 			{
@@ -188,6 +203,11 @@ namespace Bam.Net.Translation
 			{
 				return Bam.Net.Translation.Translation.OneWhere(where, db);
 			}
+
+			public static Translation GetOneWhere(WhereDelegate<TranslationColumns> where, Database db = null)
+			{
+				return Bam.Net.Translation.Translation.GetOneWhere(where, db);
+			}
 		
 			public Translation FirstOneWhere(WhereDelegate<TranslationColumns> where, Database db = null)
 			{
@@ -234,6 +254,11 @@ namespace Bam.Net.Translation
 			public OtherName OneWhere(WhereDelegate<OtherNameColumns> where, Database db = null)
 			{
 				return Bam.Net.Translation.OtherName.OneWhere(where, db);
+			}
+
+			public static OtherName GetOneWhere(WhereDelegate<OtherNameColumns> where, Database db = null)
+			{
+				return Bam.Net.Translation.OtherName.GetOneWhere(where, db);
 			}
 		
 			public OtherName FirstOneWhere(WhereDelegate<OtherNameColumns> where, Database db = null)
