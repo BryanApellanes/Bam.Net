@@ -88,18 +88,16 @@ namespace Bam.Net.CoreServices.Tests
         {
             TestEventSourceLoggable src = GetTestEventSource();
             bool? fired = false;
-            int expectCount = 0;
+            GlobalEvents.ClearSubscribers<TestEventSourceLoggable>("TestEvent");
             GlobalEvents.Subscribe<TestEventSourceLoggable>("TestEvent", (em, c) =>
             {
                 fired = true;
             });
-            await src.Test().ContinueWith(t =>
-            {
-                Thread.Sleep(100); // ick :b
-                expectCount++;
-                Expect.IsTrue(fired.Value);
-            });
-            Expect.IsTrue(expectCount == 1);
+            Task test = src.Test();
+            await test.ConfigureAwait(true);
+            await test;
+            Thread.Sleep(100);
+            Expect.IsTrue(fired.Value);
         }
 
         private static TestEventSourceLoggable GetTestEventSource()
