@@ -41,6 +41,20 @@ namespace Bam.Net.CoreServices
             _listeners[eventKey].Add(EventSubscription.FromEventHandler(listener));
         }
 
+        public static void ClearSubscribers<T>(string eventName)
+        {
+            ClearSubscribers(typeof(T), eventName);
+        }
+
+        public static void ClearSubscribers(Type type, string eventName)
+        {
+            string eventKey = GetEventKey(type, eventName);
+            if (_listeners.ContainsKey(eventKey))
+            {
+                _listeners[eventKey].Clear();
+            }
+        }
+
         public static Task FireListenersAsync(Type type, string eventName, object sender, EventArgs args)
         {
             return Task.Run(() =>

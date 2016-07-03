@@ -34,7 +34,7 @@ namespace Bam.Net.Logging
         void AddEntry(string messagesignature, LogEventType type, Exception ex, params string[] variableMessageValues);
         void AddEntry(string messageSignature, Exception ex, params string[] variableMessageValues);
 
-        void BlockUntilEventQueueIsEmpty();
+        void BlockUntilEventQueueIsEmpty(int sleep = 0);
         ILogger StartLoggingThread();
         ILogger StopLoggingThread();
         ILogger RestartLoggingThread();

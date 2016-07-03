@@ -1,5 +1,5 @@
 @echo on
-SET ROOT=%1
+SET CONFIG=%1
 IF [%1]==[] SET CONFIG=Release
 
 SET ROOT=%2

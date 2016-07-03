@@ -22,6 +22,7 @@ using System.Net;
 using Bam.Net.Data;
 using Bam.Net.Data.SQLite;
 using Bam.Net.UserAccounts.Data;
+using System.Threading;
 
 namespace Bam.Net.CoreServices.Tests
 {
@@ -87,17 +88,16 @@ namespace Bam.Net.CoreServices.Tests
         {
             TestEventSourceLoggable src = GetTestEventSource();
             bool? fired = false;
-            int expectCount = 0;
+            GlobalEvents.ClearSubscribers<TestEventSourceLoggable>("TestEvent");
             GlobalEvents.Subscribe<TestEventSourceLoggable>("TestEvent", (em, c) =>
             {
                 fired = true;
             });
-            await src.Test().ContinueWith(t =>
-            {
-                expectCount++;
-                Expect.IsTrue(fired.Value);
-            });
-            Expect.IsTrue(expectCount == 1);
+            Task test = src.Test();
+            await test.ConfigureAwait(true);
+            await test;
+            Thread.Sleep(100);
+            Expect.IsTrue(fired.Value);
         }
 
         private static TestEventSourceLoggable GetTestEventSource()
