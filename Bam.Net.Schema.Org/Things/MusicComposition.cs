@@ -5,8 +5,8 @@ namespace Bam.Net.Schema.Org
 	///<summary>A musical composition.</summary>
 	public class MusicComposition: CreativeWork
 	{
-		///<summary>The person or organization who wrote the composition.</summary>
-		public OneOfThese<Person , Organization> Composer {get; set;}
+		///<summary>The person or organization who wrote a composition, or who is the composer of a work performed at some event.</summary>
+		public OneOfThese<Organization , Person> Composer {get; set;}
 		///<summary>The date and place the work was first performed.</summary>
 		public Event FirstPerformance {get; set;}
 		///<summary>Smaller compositions included in this work (e.g. a movement in a symphony).</summary>

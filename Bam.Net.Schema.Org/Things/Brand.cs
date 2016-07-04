@@ -8,7 +8,7 @@ namespace Bam.Net.Schema.Org
 		///<summary>The overall rating, based on a collection of reviews or ratings, of the item.</summary>
 		public AggregateRating AggregateRating {get; set;}
 		///<summary>An associated logo.</summary>
-		public OneOfThese<URL , ImageObject> Logo {get; set;}
+		public OneOfThese<ImageObject , URL> Logo {get; set;}
 		///<summary>A review of the item. Supersedes reviews.</summary>
 		public Review Review {get; set;}
 	}

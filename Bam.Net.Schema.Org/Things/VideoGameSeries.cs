@@ -5,7 +5,7 @@ namespace Bam.Net.Schema.Org
 	///<summary>A video game series.</summary>
 	public class VideoGameSeries: CreativeWorkSeries
 	{
-		///<summary>An actor, e.g. in tv, radio, movie, video games etc. Actors can be associated with individual items or with a series, episode, clip. Supersedes actors.</summary>
+		///<summary>An actor, e.g. in tv, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip. Supersedes actors.</summary>
 		public Person Actor {get; set;}
 		///<summary>A piece of data that represents a particular aspect of a fictional character (skill, power, character points, advantage, disadvantage).</summary>
 		public Thing CharacterAttribute {get; set;}
@@ -13,7 +13,7 @@ namespace Bam.Net.Schema.Org
 		public CreativeWork CheatCode {get; set;}
 		///<summary>A season that is part of the media series. Supersedes season.</summary>
 		public CreativeWorkSeason ContainsSeason {get; set;}
-		///<summary>A director of e.g. tv, radio, movie, video games etc. content. Directors can be associated with individual items or with a series, episode, clip. Supersedes directors.</summary>
+		///<summary>A director of e.g. tv, radio, movie, video gaming etc. content, or of an event. Directors can be associated with individual items or with a series, episode, clip. Supersedes directors.</summary>
 		public Person Director {get; set;}
 		///<summary>An episode of a tv, radio or game media within a series or season. Supersedes episodes.</summary>
 		public Episode Episode {get; set;}
@@ -22,7 +22,7 @@ namespace Bam.Net.Schema.Org
 		///<summary>Real or fictional location of the game (or part of game).</summary>
 		public OneOfThese<Place , PostalAddress , URL> GameLocation {get; set;}
 		///<summary>The electronic systems used to play video games.</summary>
-		public OneOfThese<Thing , Text , URL> GamePlatform {get; set;}
+		public OneOfThese<Text , Thing , URL> GamePlatform {get; set;}
 		///<summary>The composer of the soundtrack.</summary>
 		public OneOfThese<MusicGroup , Person> MusicBy {get; set;}
 		///<summary>The number of episodes in this season or series.</summary>

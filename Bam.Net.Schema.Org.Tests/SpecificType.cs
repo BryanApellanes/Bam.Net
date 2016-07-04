@@ -13,6 +13,22 @@ namespace Bam.Net.Schema.Org.Tests
 
 	public class SpecificType
 	{
+        string _className;
+        public string ClassName
+        {
+            get
+            {
+                if(_className == null)
+                {
+                    _className = TypeName.LettersOnly();
+                }
+                return _className;
+            }
+            set
+            {
+                _className = value;
+            }
+        }
 		string _typeName;
 		public string TypeName
 		{
@@ -31,5 +47,19 @@ namespace Bam.Net.Schema.Org.Tests
 		{
 			return "{TypeName} extends {Extends}".NamedFormat(this);
 		}
-	}
+
+        public override bool Equals(object obj)
+        {
+            SpecificType type = obj as SpecificType;
+            if (type == null)
+                return false;
+
+            return ToString().Equals(type.ToString());
+        }
+
+        public override int GetHashCode()
+        {
+            return ToString().GetHashCode();
+        }
+    }
 }

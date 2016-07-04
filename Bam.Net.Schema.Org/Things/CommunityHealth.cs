@@ -2,8 +2,8 @@ using System;
 
 namespace Bam.Net.Schema.Org
 {
-	///<summary>Community health.</summary>
-	public class CommunityHealth: MedicalSpecialty
+	///<summary></summary>
+	public class CommunityHealth: MedicalBusiness
 	{
 	}
 }

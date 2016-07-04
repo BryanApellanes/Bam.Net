@@ -2,7 +2,7 @@ using System;
 
 namespace Bam.Net.Schema.Org
 {
-	///<summary>Level of evidence for a medical guideline. Enumerated type.</summary>
+	///<summary></summary>
 	public class MedicalEvidenceLevel: MedicalEnumeration
 	{
 	}

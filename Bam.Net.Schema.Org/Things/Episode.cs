@@ -5,14 +5,14 @@ namespace Bam.Net.Schema.Org
 	///<summary>A media episode (e.g. TV, radio, video game) which can be part of a series or season.</summary>
 	public class Episode: CreativeWork
 	{
-		///<summary>An actor, e.g. in tv, radio, movie, video games etc. Actors can be associated with individual items or with a series, episode, clip. Supersedes actors.</summary>
+		///<summary>An actor, e.g. in tv, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip. Supersedes actors.</summary>
 		public Person Actor {get; set;}
-		///<summary>A director of e.g. tv, radio, movie, video games etc. content. Directors can be associated with individual items or with a series, episode, clip. Supersedes directors.</summary>
+		///<summary>A director of e.g. tv, radio, movie, video gaming etc. content, or of an event. Directors can be associated with individual items or with a series, episode, clip. Supersedes directors.</summary>
 		public Person Director {get; set;}
 		///<summary>Position of the episode within an ordered group of episodes.</summary>
 		public OneOfThese<Integer , Text> EpisodeNumber {get; set;}
 		///<summary>The composer of the soundtrack.</summary>
-		public OneOfThese<Person , MusicGroup> MusicBy {get; set;}
+		public OneOfThese<MusicGroup , Person> MusicBy {get; set;}
 		///<summary>The season to which this episode belongs.</summary>
 		public CreativeWorkSeason PartOfSeason {get; set;}
 		///<summary>The series to which this episode or season belongs. Supersedes partOfTVSeries.</summary>

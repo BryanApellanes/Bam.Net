@@ -28,15 +28,15 @@ namespace Bam.Net.Schema.Org
 		///<summary>The estimated time the flight will take.</summary>
 		public OneOfThese<Duration , Text> EstimatedFlightDuration {get; set;}
 		///<summary>The distance of the flight.</summary>
-		public OneOfThese<Text , Distance> FlightDistance {get; set;}
+		public OneOfThese<Distance , Text> FlightDistance {get; set;}
 		///<summary>The unique identifier for a flight including the airline IATA code. For example, if describing United flight 110, where the IATA code for United is 'UA', the flightNumber is 'UA110'.</summary>
 		public Text FlightNumber {get; set;}
 		///<summary>Description of the meals that will be provided or available for purchase.</summary>
 		public Text MealService {get; set;}
 		///<summary>The service provider, service operator, or service performer; the goods producer. Another party (a seller) may offer those services or goods on behalf of the provider. A provider may also serve as the seller. Supersedes carrier.</summary>
-		public OneOfThese<Person , Organization> Provider {get; set;}
+		public OneOfThese<Organization , Person> Provider {get; set;}
 		///<summary>An entity which offers (sells / leases / lends / loans) the services / goods.  A seller may also be a provider. Supersedes merchant, vendor.</summary>
-		public OneOfThese<Person , Organization> Seller {get; set;}
+		public OneOfThese<Organization , Person> Seller {get; set;}
 		///<summary>The time when a passenger can check into the flight online.</summary>
 		public DateTime WebCheckinTime {get; set;}
 	}

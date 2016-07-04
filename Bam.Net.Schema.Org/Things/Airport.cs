@@ -7,7 +7,7 @@ namespace Bam.Net.Schema.Org
 	{
 		///<summary>IATA identifier for an airline or airport.</summary>
 		public Text IataCode {get; set;}
-		///<summary>IACO identifier for an airport.</summary>
+		///<summary>ICAO identifier for an airport.</summary>
 		public Text IcaoCode {get; set;}
 	}
 }

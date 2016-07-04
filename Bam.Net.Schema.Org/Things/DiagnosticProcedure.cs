@@ -2,8 +2,8 @@ using System;
 
 namespace Bam.Net.Schema.Org
 {
-	///<summary>A medical procedure intended primarily for diagnostic, as opposed to therapeutic, purposes.</summary>
-	public class DiagnosticProcedure: MedicalTest
+	///<summary></summary>
+	public class DiagnosticProcedure: MedicalProcedure
 	{
 	}
 }

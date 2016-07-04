@@ -2,8 +2,8 @@ using System;
 
 namespace Bam.Net.Schema.Org
 {
-	///<summary>Patients.</summary>
-	public class Patient: MedicalAudience
+	///<summary></summary>
+	public class Patient: Person
 	{
 	}
 }

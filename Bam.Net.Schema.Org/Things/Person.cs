@@ -20,11 +20,11 @@ namespace Bam.Net.Schema.Org
 		///<summary>The place where the person was born.</summary>
 		public Place BirthPlace {get; set;}
 		///<summary>The brand(s) associated with a product or service, or the brand(s) maintained by an organization or business person.</summary>
-		public OneOfThese<Organization , Brand> Brand {get; set;}
+		public OneOfThese<Brand , Organization> Brand {get; set;}
 		///<summary>A child of the person.</summary>
 		public Person Children {get; set;}
 		///<summary>A colleague of the person. Supersedes colleagues.</summary>
-		public Person Colleague {get; set;}
+		public OneOfThese<Person , URL> Colleague {get; set;}
 		///<summary>A contact point for a person or organization. Supersedes contactPoints.</summary>
 		public ContactPoint ContactPoint {get; set;}
 		///<summary>Date of death.</summary>
@@ -41,8 +41,8 @@ namespace Bam.Net.Schema.Org
 		public Text FaxNumber {get; set;}
 		///<summary>The most generic uni-directional social relation.</summary>
 		public Person Follows {get; set;}
-		///<summary>Gender of the person.</summary>
-		public Text Gender {get; set;}
+		///<summary>Gender of the person. While http://schema.org/Male and http://schema.org/Female may be used, text strings are also acceptable for people who do not identify as a binary gender.</summary>
+		public OneOfThese<GenderType , Text> Gender {get; set;}
 		///<summary>Given name. In the U.S., the first name of a Person. This can be used along with familyName instead of the name property.</summary>
 		public Text GivenName {get; set;}
 		///<summary>The Global Location Number (GLN, sometimes also referred to as International Location Number or ILN) of the respective organization, person, or place. The GLN is a 13-digit number used to identify parties and physical locations.</summary>
@@ -54,7 +54,7 @@ namespace Bam.Net.Schema.Org
 		///<summary>The height of the item.</summary>
 		public OneOfThese<Distance , QuantitativeValue> Height {get; set;}
 		///<summary>A contact location for a person's residence.</summary>
-		public OneOfThese<Place , ContactPoint> HomeLocation {get; set;}
+		public OneOfThese<ContactPoint , Place> HomeLocation {get; set;}
 		///<summary>An honorific prefix preceding a Person's name such as Dr/Mrs/Mr.</summary>
 		public Text HonorificPrefix {get; set;}
 		///<summary>An honorific suffix preceding a Person's name such as M.D. /PhD/MSCSW.</summary>
@@ -73,10 +73,10 @@ namespace Bam.Net.Schema.Org
 		public Text Naics {get; set;}
 		///<summary>Nationality of the person.</summary>
 		public Country Nationality {get; set;}
-		///<summary>The total financial value of the person as calculated by subtracting assets from liabilities.</summary>
-		public PriceSpecification NetWorth {get; set;}
+		///<summary>The total financial value of the organization or person as calculated by subtracting assets from liabilities.</summary>
+		public OneOfThese<MonetaryAmount , PriceSpecification> NetWorth {get; set;}
 		///<summary>Products owned by the organization or person.</summary>
-		public OneOfThese<Product , OwnershipInfo> Owns {get; set;}
+		public OneOfThese<OwnershipInfo , Product> Owns {get; set;}
 		///<summary>A parent of this person. Supersedes parents.</summary>
 		public Person Parent {get; set;}
 		///<summary>Event that this person is a performer or participant in.</summary>
@@ -87,6 +87,8 @@ namespace Bam.Net.Schema.Org
 		public Demand Seeks {get; set;}
 		///<summary>A sibling of the person. Supersedes siblings.</summary>
 		public Person Sibling {get; set;}
+		///<summary>A person or organization that supports a thing through a pledge, promise, or financial contribution. e.g. a sponsor of a Medical Study or a corporate sponsor of an event.</summary>
+		public OneOfThese<Organization , Person> Sponsor {get; set;}
 		///<summary>The person's spouse.</summary>
 		public Person Spouse {get; set;}
 		///<summary>The Tax / Fiscal ID of the organization or person, e.g. the TIN in the US or the CIF/NIF in Spain.</summary>
@@ -98,7 +100,7 @@ namespace Bam.Net.Schema.Org
 		///<summary>The weight of the product or person.</summary>
 		public QuantitativeValue Weight {get; set;}
 		///<summary>A contact location for a person's place of work.</summary>
-		public OneOfThese<Place , ContactPoint> WorkLocation {get; set;}
+		public OneOfThese<ContactPoint , Place> WorkLocation {get; set;}
 		///<summary>Organizations that the person works for.</summary>
 		public Organization WorksFor {get; set;}
 	}

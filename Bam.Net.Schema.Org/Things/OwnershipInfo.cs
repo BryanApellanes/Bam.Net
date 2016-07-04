@@ -6,7 +6,7 @@ namespace Bam.Net.Schema.Org
 	public class OwnershipInfo: StructuredValue
 	{
 		///<summary>The organization or person from which the product was acquired.</summary>
-		public OneOfThese<Person , Organization> AcquiredFrom {get; set;}
+		public OneOfThese<Organization , Person> AcquiredFrom {get; set;}
 		///<summary>The date and time of obtaining the product.</summary>
 		public DateTime OwnedFrom {get; set;}
 		///<summary>The date and time of giving up ownership on the product.</summary>

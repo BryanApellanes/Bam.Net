@@ -65,17 +65,31 @@ namespace Bam.Net
 
         public static string GetNextFileName(this string path)
         {
+            int num;
+            return GetNextFileName(path, out num);
+        }
+        /// <summary>
+        /// If the specified file exists a new path with 
+        /// a number appended will be returned where the 
+        /// new path does not exist
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static string GetNextFileName(this string path, out int num)
+        {
             FileInfo file = new FileInfo(path);
             DirectoryInfo dir = file.Directory;
             string extension = Path.GetExtension(path);
             string fileName = Path.GetFileNameWithoutExtension(path);
             int i = 0;
+            num = 0;
             string currentPath = path;
             while (File.Exists(currentPath))
             {
                 i++;
                 string nextFile = $"{fileName}_{i}{extension}";
                 currentPath = Path.Combine(dir.FullName, nextFile);
+                num = i;
             }
             return currentPath;
         }
@@ -1691,6 +1705,29 @@ namespace Bam.Net
             }
         }
 
+        public static Dictionary<char, List<T>> LetterGroups<T>(this List<T> list, Func<T, string> propertyReader)
+        {
+            Dictionary<char, List<T>> results = new Dictionary<char, List<T>>();
+            results.Add('\0', new List<T>());
+            list.ForEach(val =>
+            {
+                string propertyValue = propertyReader(val);
+                if (!string.IsNullOrEmpty(propertyValue))
+                {
+                    char first = propertyValue[0];
+                    if (!results.ContainsKey(first))
+                    {
+                        results.Add(first, new List<T>());
+                    }
+                    results[first].Add(val);
+                }
+                else
+                {
+                    results['\0'].Add(val);
+                }
+            });
+            return results;
+        }
 
         public static string RandomLetters(this int count)
         {

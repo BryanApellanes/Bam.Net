@@ -26,7 +26,7 @@ namespace Bam.Net.Schema.Org
                 string[] split = _expectedType.Split(new string[] { " or ", " OR ", "\r\nor\r\n", "\r\nOR\r\n", " ", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
                 if (split.Length == 2)
                 {
-                    if(split[0].Equals("Date") || split[0].Equals("DateTime"))
+                    if(split[0].Trim().Equals("Date") || split[0].Trim().Equals("DateTime"))
                     {
                         _expectedType = "DateTime";
                     }

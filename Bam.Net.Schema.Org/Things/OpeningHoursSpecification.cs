@@ -2,7 +2,7 @@ using System;
 
 namespace Bam.Net.Schema.Org
 {
-	///<summary>A structured value providing information about the opening hours of a place or a certain service inside a place.</summary>
+	///<summary>A structured value providing information about the opening hours of a place or a certain service inside a place.The place is open if the opens property is specified, and closed otherwise.If the value for the closes property is less than the value for the opens property then the hour range is assumed to span over the next day.</summary>
 	public class OpeningHoursSpecification: StructuredValue
 	{
 		///<summary>The closing hour of the place or service on the given day(s) of the week.</summary>
@@ -13,7 +13,7 @@ namespace Bam.Net.Schema.Org
 		public Time Opens {get; set;}
 		///<summary>The date when the item becomes valid.</summary>
 		public DateTime ValidFrom {get; set;}
-		///<summary>The end of the validity of offer, price specification, or opening hours data.</summary>
+		///<summary>The date after when the item is not valid. For example the end of an offer, salary period, or a period of opening hours.</summary>
 		public DateTime ValidThrough {get; set;}
 	}
 }

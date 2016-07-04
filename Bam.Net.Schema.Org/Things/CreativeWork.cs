@@ -34,7 +34,7 @@ namespace Bam.Net.Schema.Org
 		///<summary>Fictional person connected with a creative work.</summary>
 		public Person Character {get; set;}
 		///<summary>A citation or reference to another creative work, such as another publication, web page, scholarly article, etc.</summary>
-		public OneOfThese<Text , CreativeWork> Citation {get; set;}
+		public OneOfThese<CreativeWork , Text> Citation {get; set;}
 		///<summary>Comments, typically from users.</summary>
 		public Comment Comment {get; set;}
 		///<summary>The number of comments this CreativeWork (e.g. Article, Question or Answer) has received. This is most applicable to works published in Web sites with commenting system; additional comments may exist elsewhere.</summary>
@@ -43,7 +43,7 @@ namespace Bam.Net.Schema.Org
 		public Place ContentLocation {get; set;}
 		///<summary>Official rating of a piece of content—for example,'MPAA PG-13'.</summary>
 		public Text ContentRating {get; set;}
-		///<summary>A secondary contributor to the CreativeWork.</summary>
+		///<summary>A secondary contributor to the CreativeWork or Event.</summary>
 		public OneOfThese<Organization , Person> Contributor {get; set;}
 		///<summary>The party holding the legal copyright to the CreativeWork.</summary>
 		public OneOfThese<Organization , Person> CopyrightHolder {get; set;}
@@ -72,19 +72,19 @@ namespace Bam.Net.Schema.Org
 		///<summary>Media type (aka MIME format, see IANA site) of the content e.g. application/zip of a SoftwareApplication binary. In cases where a CreativeWork has several media type representations, 'encoding' can be used to indicate each MediaObject alongside particular fileFormat information.</summary>
 		public Text FileFormat {get; set;}
 		///<summary>Genre of the creative work or group.</summary>
-		public OneOfThese<Text , URL> Genre {get; set;}
+		public Text Genre {get; set;}
 		///<summary>Indicates a CreativeWork that is (in some sense) a part of this CreativeWork. Inverse property: isPartOf.</summary>
 		public CreativeWork HasPart {get; set;}
 		///<summary>Headline of the article.</summary>
 		public Text Headline {get; set;}
-		///<summary>The language of the content or performance or used in an action. Please use one of the language codes from the IETF BCP 47 standard. Supersedes language.</summary>
-		public OneOfThese<Text , Language> InLanguage {get; set;}
+		///<summary>The language of the content or performance or used in an action. Please use one of the language codes from the IETF BCP 47 standard. See also availableLanguage. Supersedes language.</summary>
+		public OneOfThese<Language , Text> InLanguage {get; set;}
 		///<summary>The number of interactions for the CreativeWork using the WebSite or SoftwareApplication. The most specific child type of InteractionCounter should be used. Supersedes interactionCount.</summary>
 		public InteractionCounter InteractionStatistic {get; set;}
 		///<summary>The predominant mode of learning supported by the learning resource. Acceptable values are 'active', 'expositive', or 'mixed'.</summary>
 		public Text InteractivityType {get; set;}
-		///<summary>A resource that was used in the creation of this resource. This term can be repeated for multiple sources. For example, http://example.com/great-multiplication-intro.html.</summary>
-		public URL IsBasedOnUrl {get; set;}
+		///<summary>A resource that was used in the creation of this resource. This term can be repeated for multiple sources. For example, http://example.com/great-multiplication-intro.html. Supersedes isBasedOnUrl.</summary>
+		public OneOfThese<CreativeWork , Product , URL> IsBasedOn {get; set;}
 		///<summary>Indicates whether this content is family friendly.</summary>
 		public Boolean IsFamilyFriendly {get; set;}
 		///<summary>Indicates a CreativeWork that this CreativeWork is (in some sense) part of. Inverse property: hasPart.</summary>
@@ -94,7 +94,7 @@ namespace Bam.Net.Schema.Org
 		///<summary>The predominant type or kind characterizing the learning resource. For example, 'presentation', 'handout'.</summary>
 		public Text LearningResourceType {get; set;}
 		///<summary>A license document that applies to this content, typically indicated by URL.</summary>
-		public OneOfThese<URL , CreativeWork> License {get; set;}
+		public OneOfThese<CreativeWork , URL> License {get; set;}
 		///<summary>The location where the CreativeWork was created, which may not be the same as the location depicted in the CreativeWork.</summary>
 		public Place LocationCreated {get; set;}
 		///<summary>Indicates the primary entity described in some page or other CreativeWork. Inverse property: mainEntityOfPage.</summary>
@@ -112,7 +112,7 @@ namespace Bam.Net.Schema.Org
 		///<summary>A publication event associated with the item.</summary>
 		public PublicationEvent Publication {get; set;}
 		///<summary>The publisher of the creative work.</summary>
-		public OneOfThese<Organization , Person> Publisher {get; set;}
+		public Organization Publisher {get; set;}
 		///<summary>Link to page describing the editorial principles of the organization primarily responsible for the creation of the CreativeWork.</summary>
 		public URL PublishingPrinciples {get; set;}
 		///<summary>The Event where the CreativeWork was recorded. The CreativeWork may capture all or part of the event. Inverse property: recordedIn.</summary>
@@ -121,7 +121,7 @@ namespace Bam.Net.Schema.Org
 		public PublicationEvent ReleasedEvent {get; set;}
 		///<summary>A review of the item. Supersedes reviews.</summary>
 		public Review Review {get; set;}
-		///<summary>Indicates (by URL or string) a particular version of a schema used in some CreativeWork. For example, a document could declare a schemaVersion using a URL such as http://schema.org/version/2.0/ if precise indication of schema version was required by some application.</summary>
+		///<summary>Indicates (by URL or string) a particular version of a schema used in some CreativeWork. For example, a document could declare a schemaVersion using an URL such as http://schema.org/version/2.0/ if precise indication of schema version was required by some application.</summary>
 		public OneOfThese<Text , URL> SchemaVersion {get; set;}
 		///<summary>The Organization on whose behalf the creator was working.</summary>
 		public Organization SourceOrganization {get; set;}
@@ -131,7 +131,7 @@ namespace Bam.Net.Schema.Org
 		public URL ThumbnailUrl {get; set;}
 		///<summary>Approximate or typical time it takes to work with or through this learning resource for the typical intended target audience, e.g. 'P30M', 'P1H25M'.</summary>
 		public Duration TimeRequired {get; set;}
-		///<summary>Organization or person who adapts a creative work to different languages, regional differences and technical requirements of a target market.</summary>
+		///<summary>Organization or person who adapts a creative work to different languages, regional differences and technical requirements of a target market, or that translates during some event.</summary>
 		public OneOfThese<Organization , Person> Translator {get; set;}
 		///<summary>The typical expected age range, e.g. '7-9', '11-'.</summary>
 		public Text TypicalAgeRange {get; set;}

@@ -3,16 +3,16 @@ using System;
 namespace Bam.Net.Schema.Org
 {
 	///<summary>A video game is an electronic game that involves human interaction with a user interface to generate visual feedback on a video device.</summary>
-	public class VideoGame: SoftwareApplication
+	public class VideoGame: Game
 	{
-		///<summary>An actor, e.g. in tv, radio, movie, video games etc. Actors can be associated with individual items or with a series, episode, clip. Supersedes actors.</summary>
+		///<summary>An actor, e.g. in tv, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip. Supersedes actors.</summary>
 		public Person Actor {get; set;}
 		///<summary>Cheat codes to the game.</summary>
 		public CreativeWork CheatCode {get; set;}
-		///<summary>A director of e.g. tv, radio, movie, video games etc. content. Directors can be associated with individual items or with a series, episode, clip. Supersedes directors.</summary>
+		///<summary>A director of e.g. tv, radio, movie, video gaming etc. content, or of an event. Directors can be associated with individual items or with a series, episode, clip. Supersedes directors.</summary>
 		public Person Director {get; set;}
 		///<summary>The electronic systems used to play video games.</summary>
-		public OneOfThese<Text , URL , Thing> GamePlatform {get; set;}
+		public OneOfThese<Text , Thing , URL> GamePlatform {get; set;}
 		///<summary>The server on which  it is possible to play the game. Inverse property: game.</summary>
 		public GameServer GameServer {get; set;}
 		///<summary>Links to tips, tactics, etc.</summary>

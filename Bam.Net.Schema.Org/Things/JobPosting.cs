@@ -6,7 +6,7 @@ namespace Bam.Net.Schema.Org
 	public class JobPosting: Intangible
 	{
 		///<summary>The base salary of the job or of an employee in an EmployeeRole.</summary>
-		public OneOfThese<PriceSpecification , Number> BaseSalary {get; set;}
+		public OneOfThese<MonetaryAmount , Number , PriceSpecification> BaseSalary {get; set;}
 		///<summary>Publication date for the job posting.</summary>
 		public Date DatePosted {get; set;}
 		///<summary>Educational background needed for the position.</summary>
@@ -39,6 +39,8 @@ namespace Bam.Net.Schema.Org
 		public Text SpecialCommitments {get; set;}
 		///<summary>The title of the job.</summary>
 		public Text Title {get; set;}
+		///<summary>The date after when the item is not valid. For example the end of an offer, salary period, or a period of opening hours.</summary>
+		public DateTime ValidThrough {get; set;}
 		///<summary>The typical working hours for this job (e.g. 1st shift, night shift, 8am-5pm).</summary>
 		public Text WorkHours {get; set;}
 	}

@@ -5,8 +5,6 @@ namespace Bam.Net.Schema.Org
 	///<summary>A set of characteristics belonging to people, e.g. who compose an item's target audience.</summary>
 	public class PeopleAudience: Audience
 	{
-		///<summary>Expectations for health conditions of target audience.</summary>
-		public MedicalCondition HealthCondition {get; set;}
 		///<summary>Audiences defined by a person's gender.</summary>
 		public Text RequiredGender {get; set;}
 		///<summary>Audiences defined by a person's maximum age.</summary>

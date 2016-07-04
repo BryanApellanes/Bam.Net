@@ -2,7 +2,7 @@ using System;
 
 namespace Bam.Net.Schema.Org
 {
-	///<summary>A reservation for a rental car.</summary>
+	///<summary>A reservation for a rental car.Note: This type is for information about actual reservations, e.g. in confirmation emails or HTML pages with individual confirmations of reservations.</summary>
 	public class RentalCarReservation: Reservation
 	{
 		///<summary>Where a rental car can be dropped off.</summary>

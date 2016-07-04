@@ -8,7 +8,7 @@ namespace Bam.Net.Schema.Org
 		///<summary>The catalog number for the release.</summary>
 		public Text CatalogNumber {get; set;}
 		///<summary>The group the release is credited to if different than the byArtist. For example, Red and Blue is credited to "Stefani Germanotta Band", but by Lady Gaga.</summary>
-		public OneOfThese<Person , Organization> CreditedTo {get; set;}
+		public OneOfThese<Organization , Person> CreditedTo {get; set;}
 		///<summary>The duration of the item (movie, audio recording, event, etc.) in ISO 8601 date format.</summary>
 		public Duration Duration {get; set;}
 		///<summary>Format of this release (the type of recording media used, ie. compact disc, digital media, LP, etc.).</summary>

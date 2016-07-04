@@ -2,7 +2,7 @@ using System;
 
 namespace Bam.Net.Schema.Org
 {
-	///<summary>A vet's office.</summary>
+	///<summary></summary>
 	public class VeterinaryCare: MedicalOrganization
 	{
 	}

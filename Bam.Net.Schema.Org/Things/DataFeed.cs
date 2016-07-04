@@ -6,6 +6,6 @@ namespace Bam.Net.Schema.Org
 	public class DataFeed: Dataset
 	{
 		///<summary>An item within in a data feed. Data feeds may have many elements.</summary>
-		public OneOfThese<Thing , Text , DataFeedItem> DataFeedElement {get; set;}
+		public OneOfThese<DataFeedItem , Text , Thing> DataFeedElement {get; set;}
 	}
 }

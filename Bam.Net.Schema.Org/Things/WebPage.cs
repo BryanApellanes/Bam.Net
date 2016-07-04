@@ -16,7 +16,7 @@ namespace Bam.Net.Schema.Org
 		///<summary>A link related to this web page, for example to other related web pages.</summary>
 		public URL RelatedLink {get; set;}
 		///<summary>People or organizations that have reviewed the content on this web page for accuracy and/or completeness.</summary>
-		public OneOfThese<Person , Organization> ReviewedBy {get; set;}
+		public OneOfThese<Organization , Person> ReviewedBy {get; set;}
 		///<summary>One of the more significant URLs on the page. Typically, these are the non-navigation links that are clicked on the most. Supersedes significantLinks.</summary>
 		public URL SignificantLink {get; set;}
 		///<summary>One of the domain specialities to which this web page's content applies.</summary>

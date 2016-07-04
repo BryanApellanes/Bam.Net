@@ -14,12 +14,12 @@ namespace Bam.Net.Schema.Org
 		///<summary>The unique identifier for the ticket.</summary>
 		public Text TicketNumber {get; set;}
 		///<summary>Reference to an asset (e.g., Barcode, QR code image or PDF) usable for entrance.</summary>
-		public OneOfThese<URL , Text> TicketToken {get; set;}
+		public OneOfThese<Text , URL> TicketToken {get; set;}
 		///<summary>The seat associated with the ticket.</summary>
 		public Seat TicketedSeat {get; set;}
 		///<summary>The total price for the reservation or ticket, including applicable taxes, shipping, etc.</summary>
 		public OneOfThese<Number , PriceSpecification , Text> TotalPrice {get; set;}
 		///<summary>The person or organization the reservation or ticket is for.</summary>
-		public OneOfThese<Person , Organization> UnderName {get; set;}
+		public OneOfThese<Organization , Person> UnderName {get; set;}
 	}
 }

@@ -6,6 +6,6 @@ namespace Bam.Net.Schema.Org
 	public class BuyAction: TradeAction
 	{
 		///<summary>An entity which offers (sells / leases / lends / loans) the services / goods.  A seller may also be a provider. Supersedes merchant, vendor.</summary>
-		public OneOfThese<Person , Organization> Seller {get; set;}
+		public OneOfThese<Organization , Person> Seller {get; set;}
 	}
 }

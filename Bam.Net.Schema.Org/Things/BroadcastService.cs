@@ -15,7 +15,5 @@ namespace Bam.Net.Schema.Org
 		public Organization Broadcaster {get; set;}
 		///<summary>A broadcast service to which the broadcast service may belong to such as regional variations of a national channel.</summary>
 		public BroadcastService ParentService {get; set;}
-		///<summary>The type of screening or video broadcast used (e.g. IMAX, 3D, SD, HD, etc.).</summary>
-		public Text VideoFormat {get; set;}
 	}
 }
