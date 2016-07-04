@@ -145,16 +145,7 @@
             </param>
             <param name="database"></param>
         </member>
-        <member name="M:Bam.Net.ServiceProxy.Secure.ApiKey.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            This method is intended to respond to client side Qi queries.
-            Use of this method from .Net should be avoided in favor of 
-            one of the methods that take a delegate of type
-            WhereDelegate&lt;ApiKeyColumns&gt;.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.ServiceProxy.Secure.ApiKey.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
         <member name="M:Bam.Net.ServiceProxy.Secure.ApiKey.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ApiKeyColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -208,7 +199,6 @@
             Execute a query and return the specified number of values.  This method
             will issue a sql TOP clause so only the specified number of values
             will be returned.
-            of values
             </summary>
             <param name="count">The number of values to return.
             This value is used in the sql query so no more than this 
@@ -374,16 +364,7 @@
             </param>
             <param name="database"></param>
         </member>
-        <member name="M:Bam.Net.ServiceProxy.Secure.Application.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            This method is intended to respond to client side Qi queries.
-            Use of this method from .Net should be avoided in favor of 
-            one of the methods that take a delegate of type
-            WhereDelegate&lt;ApplicationColumns&gt;.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.ServiceProxy.Secure.Application.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
         <member name="M:Bam.Net.ServiceProxy.Secure.Application.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ApplicationColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -437,7 +418,6 @@
             Execute a query and return the specified number of values.  This method
             will issue a sql TOP clause so only the specified number of values
             will be returned.
-            of values
             </summary>
             <param name="count">The number of values to return.
             This value is used in the sql query so no more than this 
@@ -596,16 +576,7 @@
             </param>
             <param name="database"></param>
         </member>
-        <member name="M:Bam.Net.ServiceProxy.Secure.ConfigSetting.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            This method is intended to respond to client side Qi queries.
-            Use of this method from .Net should be avoided in favor of 
-            one of the methods that take a delegate of type
-            WhereDelegate&lt;ConfigSettingColumns&gt;.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.ServiceProxy.Secure.ConfigSetting.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
         <member name="M:Bam.Net.ServiceProxy.Secure.ConfigSetting.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ConfigSettingColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -659,7 +630,6 @@
             Execute a query and return the specified number of values.  This method
             will issue a sql TOP clause so only the specified number of values
             will be returned.
-            of values
             </summary>
             <param name="count">The number of values to return.
             This value is used in the sql query so no more than this 
@@ -818,16 +788,7 @@
             </param>
             <param name="database"></param>
         </member>
-        <member name="M:Bam.Net.ServiceProxy.Secure.Configuration.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            This method is intended to respond to client side Qi queries.
-            Use of this method from .Net should be avoided in favor of 
-            one of the methods that take a delegate of type
-            WhereDelegate&lt;ConfigurationColumns&gt;.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.ServiceProxy.Secure.Configuration.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
         <member name="M:Bam.Net.ServiceProxy.Secure.Configuration.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ConfigurationColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -881,7 +842,6 @@
             Execute a query and return the specified number of values.  This method
             will issue a sql TOP clause so only the specified number of values
             will be returned.
-            of values
             </summary>
             <param name="count">The number of values to return.
             This value is used in the sql query so no more than this 
@@ -1102,16 +1062,7 @@
             </param>
             <param name="database"></param>
         </member>
-        <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            This method is intended to respond to client side Qi queries.
-            Use of this method from .Net should be avoided in favor of 
-            one of the methods that take a delegate of type
-            WhereDelegate&lt;SecureSessionColumns&gt;.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.ServiceProxy.Secure.SecureSession.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
         <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.SecureSessionColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -1165,7 +1116,6 @@
             Execute a query and return the specified number of values.  This method
             will issue a sql TOP clause so only the specified number of values
             will be returned.
-            of values
             </summary>
             <param name="count">The number of values to return.
             This value is used in the sql query so no more than this 

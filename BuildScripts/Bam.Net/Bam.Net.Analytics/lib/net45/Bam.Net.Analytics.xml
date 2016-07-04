@@ -100,16 +100,7 @@
             </param>
             <param name="database"></param>
         </member>
-        <member name="M:Bam.Net.Analytics.Category.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            This method is intended to respond to client side Qi queries.
-            Use of this method from .Net should be avoided in favor of 
-            one of the methods that take a delegate of type
-            WhereDelegate&lt;CategoryColumns&gt;.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Analytics.Category.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
         <member name="M:Bam.Net.Analytics.Category.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.CategoryColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -163,7 +154,6 @@
             Execute a query and return the specified number of values.  This method
             will issue a sql TOP clause so only the specified number of values
             will be returned.
-            of values
             </summary>
             <param name="count">The number of values to return.
             This value is used in the sql query so no more than this 
@@ -322,16 +312,7 @@
             </param>
             <param name="database"></param>
         </member>
-        <member name="M:Bam.Net.Analytics.ClickCounter.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            This method is intended to respond to client side Qi queries.
-            Use of this method from .Net should be avoided in favor of 
-            one of the methods that take a delegate of type
-            WhereDelegate&lt;ClickCounterColumns&gt;.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Analytics.ClickCounter.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
         <member name="M:Bam.Net.Analytics.ClickCounter.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.ClickCounterColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -385,7 +366,6 @@
             Execute a query and return the specified number of values.  This method
             will issue a sql TOP clause so only the specified number of values
             will be returned.
-            of values
             </summary>
             <param name="count">The number of values to return.
             This value is used in the sql query so no more than this 
@@ -544,16 +524,7 @@
             </param>
             <param name="database"></param>
         </member>
-        <member name="M:Bam.Net.Analytics.Counter.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            This method is intended to respond to client side Qi queries.
-            Use of this method from .Net should be avoided in favor of 
-            one of the methods that take a delegate of type
-            WhereDelegate&lt;CounterColumns&gt;.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Analytics.Counter.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
         <member name="M:Bam.Net.Analytics.Counter.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.CounterColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -607,7 +578,6 @@
             Execute a query and return the specified number of values.  This method
             will issue a sql TOP clause so only the specified number of values
             will be returned.
-            of values
             </summary>
             <param name="count">The number of values to return.
             This value is used in the sql query so no more than this 
@@ -766,16 +736,7 @@
             </param>
             <param name="database"></param>
         </member>
-        <member name="M:Bam.Net.Analytics.Crawler.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            This method is intended to respond to client side Qi queries.
-            Use of this method from .Net should be avoided in favor of 
-            one of the methods that take a delegate of type
-            WhereDelegate&lt;CrawlerColumns&gt;.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Analytics.Crawler.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
         <member name="M:Bam.Net.Analytics.Crawler.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.CrawlerColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -829,7 +790,6 @@
             Execute a query and return the specified number of values.  This method
             will issue a sql TOP clause so only the specified number of values
             will be returned.
-            of values
             </summary>
             <param name="count">The number of values to return.
             This value is used in the sql query so no more than this 
@@ -988,16 +948,7 @@
             </param>
             <param name="database"></param>
         </member>
-        <member name="M:Bam.Net.Analytics.CustomTimer.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            This method is intended to respond to client side Qi queries.
-            Use of this method from .Net should be avoided in favor of 
-            one of the methods that take a delegate of type
-            WhereDelegate&lt;CustomTimerColumns&gt;.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Analytics.CustomTimer.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
         <member name="M:Bam.Net.Analytics.CustomTimer.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.CustomTimerColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -1051,7 +1002,6 @@
             Execute a query and return the specified number of values.  This method
             will issue a sql TOP clause so only the specified number of values
             will be returned.
-            of values
             </summary>
             <param name="count">The number of values to return.
             This value is used in the sql query so no more than this 
@@ -1210,16 +1160,7 @@
             </param>
             <param name="database"></param>
         </member>
-        <member name="M:Bam.Net.Analytics.Domain.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            This method is intended to respond to client side Qi queries.
-            Use of this method from .Net should be avoided in favor of 
-            one of the methods that take a delegate of type
-            WhereDelegate&lt;DomainColumns&gt;.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Analytics.Domain.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
         <member name="M:Bam.Net.Analytics.Domain.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.DomainColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -1273,7 +1214,6 @@
             Execute a query and return the specified number of values.  This method
             will issue a sql TOP clause so only the specified number of values
             will be returned.
-            of values
             </summary>
             <param name="count">The number of values to return.
             This value is used in the sql query so no more than this 
@@ -1432,16 +1372,7 @@
             </param>
             <param name="database"></param>
         </member>
-        <member name="M:Bam.Net.Analytics.Feature.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            This method is intended to respond to client side Qi queries.
-            Use of this method from .Net should be avoided in favor of 
-            one of the methods that take a delegate of type
-            WhereDelegate&lt;FeatureColumns&gt;.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Analytics.Feature.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
         <member name="M:Bam.Net.Analytics.Feature.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.FeatureColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -1495,7 +1426,6 @@
             Execute a query and return the specified number of values.  This method
             will issue a sql TOP clause so only the specified number of values
             will be returned.
-            of values
             </summary>
             <param name="count">The number of values to return.
             This value is used in the sql query so no more than this 
@@ -1654,16 +1584,7 @@
             </param>
             <param name="database"></param>
         </member>
-        <member name="M:Bam.Net.Analytics.Fragment.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            This method is intended to respond to client side Qi queries.
-            Use of this method from .Net should be avoided in favor of 
-            one of the methods that take a delegate of type
-            WhereDelegate&lt;FragmentColumns&gt;.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Analytics.Fragment.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
         <member name="M:Bam.Net.Analytics.Fragment.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.FragmentColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -1717,7 +1638,6 @@
             Execute a query and return the specified number of values.  This method
             will issue a sql TOP clause so only the specified number of values
             will be returned.
-            of values
             </summary>
             <param name="count">The number of values to return.
             This value is used in the sql query so no more than this 
@@ -1876,16 +1796,7 @@
             </param>
             <param name="database"></param>
         </member>
-        <member name="M:Bam.Net.Analytics.Image.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            This method is intended to respond to client side Qi queries.
-            Use of this method from .Net should be avoided in favor of 
-            one of the methods that take a delegate of type
-            WhereDelegate&lt;ImageColumns&gt;.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Analytics.Image.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
         <member name="M:Bam.Net.Analytics.Image.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.ImageColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -1939,7 +1850,6 @@
             Execute a query and return the specified number of values.  This method
             will issue a sql TOP clause so only the specified number of values
             will be returned.
-            of values
             </summary>
             <param name="count">The number of values to return.
             This value is used in the sql query so no more than this 
@@ -2098,16 +2008,7 @@
             </param>
             <param name="database"></param>
         </member>
-        <member name="M:Bam.Net.Analytics.ImageTag.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            This method is intended to respond to client side Qi queries.
-            Use of this method from .Net should be avoided in favor of 
-            one of the methods that take a delegate of type
-            WhereDelegate&lt;ImageTagColumns&gt;.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Analytics.ImageTag.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
         <member name="M:Bam.Net.Analytics.ImageTag.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.ImageTagColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -2161,7 +2062,6 @@
             Execute a query and return the specified number of values.  This method
             will issue a sql TOP clause so only the specified number of values
             will be returned.
-            of values
             </summary>
             <param name="count">The number of values to return.
             This value is used in the sql query so no more than this 
@@ -2320,16 +2220,7 @@
             </param>
             <param name="database"></param>
         </member>
-        <member name="M:Bam.Net.Analytics.LoadCounter.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            This method is intended to respond to client side Qi queries.
-            Use of this method from .Net should be avoided in favor of 
-            one of the methods that take a delegate of type
-            WhereDelegate&lt;LoadCounterColumns&gt;.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Analytics.LoadCounter.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
         <member name="M:Bam.Net.Analytics.LoadCounter.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.LoadCounterColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -2383,7 +2274,6 @@
             Execute a query and return the specified number of values.  This method
             will issue a sql TOP clause so only the specified number of values
             will be returned.
-            of values
             </summary>
             <param name="count">The number of values to return.
             This value is used in the sql query so no more than this 
@@ -2542,16 +2432,7 @@
             </param>
             <param name="database"></param>
         </member>
-        <member name="M:Bam.Net.Analytics.LoadTimer.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            This method is intended to respond to client side Qi queries.
-            Use of this method from .Net should be avoided in favor of 
-            one of the methods that take a delegate of type
-            WhereDelegate&lt;LoadTimerColumns&gt;.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Analytics.LoadTimer.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
         <member name="M:Bam.Net.Analytics.LoadTimer.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.LoadTimerColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -2605,7 +2486,6 @@
             Execute a query and return the specified number of values.  This method
             will issue a sql TOP clause so only the specified number of values
             will be returned.
-            of values
             </summary>
             <param name="count">The number of values to return.
             This value is used in the sql query so no more than this 
@@ -2764,16 +2644,7 @@
             </param>
             <param name="database"></param>
         </member>
-        <member name="M:Bam.Net.Analytics.LoginCounter.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            This method is intended to respond to client side Qi queries.
-            Use of this method from .Net should be avoided in favor of 
-            one of the methods that take a delegate of type
-            WhereDelegate&lt;LoginCounterColumns&gt;.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Analytics.LoginCounter.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
         <member name="M:Bam.Net.Analytics.LoginCounter.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.LoginCounterColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -2827,7 +2698,6 @@
             Execute a query and return the specified number of values.  This method
             will issue a sql TOP clause so only the specified number of values
             will be returned.
-            of values
             </summary>
             <param name="count">The number of values to return.
             This value is used in the sql query so no more than this 
@@ -2986,16 +2856,7 @@
             </param>
             <param name="database"></param>
         </member>
-        <member name="M:Bam.Net.Analytics.MethodCounter.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            This method is intended to respond to client side Qi queries.
-            Use of this method from .Net should be avoided in favor of 
-            one of the methods that take a delegate of type
-            WhereDelegate&lt;MethodCounterColumns&gt;.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Analytics.MethodCounter.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
         <member name="M:Bam.Net.Analytics.MethodCounter.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.MethodCounterColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -3049,7 +2910,6 @@
             Execute a query and return the specified number of values.  This method
             will issue a sql TOP clause so only the specified number of values
             will be returned.
-            of values
             </summary>
             <param name="count">The number of values to return.
             This value is used in the sql query so no more than this 
@@ -3208,16 +3068,7 @@
             </param>
             <param name="database"></param>
         </member>
-        <member name="M:Bam.Net.Analytics.MethodTimer.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            This method is intended to respond to client side Qi queries.
-            Use of this method from .Net should be avoided in favor of 
-            one of the methods that take a delegate of type
-            WhereDelegate&lt;MethodTimerColumns&gt;.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Analytics.MethodTimer.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
         <member name="M:Bam.Net.Analytics.MethodTimer.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.MethodTimerColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -3271,7 +3122,6 @@
             Execute a query and return the specified number of values.  This method
             will issue a sql TOP clause so only the specified number of values
             will be returned.
-            of values
             </summary>
             <param name="count">The number of values to return.
             This value is used in the sql query so no more than this 
@@ -3430,16 +3280,7 @@
             </param>
             <param name="database"></param>
         </member>
-        <member name="M:Bam.Net.Analytics.Path.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            This method is intended to respond to client side Qi queries.
-            Use of this method from .Net should be avoided in favor of 
-            one of the methods that take a delegate of type
-            WhereDelegate&lt;PathColumns&gt;.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Analytics.Path.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
         <member name="M:Bam.Net.Analytics.Path.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.PathColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -3493,7 +3334,6 @@
             Execute a query and return the specified number of values.  This method
             will issue a sql TOP clause so only the specified number of values
             will be returned.
-            of values
             </summary>
             <param name="count">The number of values to return.
             This value is used in the sql query so no more than this 
@@ -3652,16 +3492,7 @@
             </param>
             <param name="database"></param>
         </member>
-        <member name="M:Bam.Net.Analytics.Port.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            This method is intended to respond to client side Qi queries.
-            Use of this method from .Net should be avoided in favor of 
-            one of the methods that take a delegate of type
-            WhereDelegate&lt;PortColumns&gt;.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Analytics.Port.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
         <member name="M:Bam.Net.Analytics.Port.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.PortColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -3715,7 +3546,6 @@
             Execute a query and return the specified number of values.  This method
             will issue a sql TOP clause so only the specified number of values
             will be returned.
-            of values
             </summary>
             <param name="count">The number of values to return.
             This value is used in the sql query so no more than this 
@@ -3874,16 +3704,7 @@
             </param>
             <param name="database"></param>
         </member>
-        <member name="M:Bam.Net.Analytics.Protocol.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            This method is intended to respond to client side Qi queries.
-            Use of this method from .Net should be avoided in favor of 
-            one of the methods that take a delegate of type
-            WhereDelegate&lt;ProtocolColumns&gt;.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Analytics.Protocol.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
         <member name="M:Bam.Net.Analytics.Protocol.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.ProtocolColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -3937,7 +3758,6 @@
             Execute a query and return the specified number of values.  This method
             will issue a sql TOP clause so only the specified number of values
             will be returned.
-            of values
             </summary>
             <param name="count">The number of values to return.
             This value is used in the sql query so no more than this 
@@ -4096,16 +3916,7 @@
             </param>
             <param name="database"></param>
         </member>
-        <member name="M:Bam.Net.Analytics.QueryString.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            This method is intended to respond to client side Qi queries.
-            Use of this method from .Net should be avoided in favor of 
-            one of the methods that take a delegate of type
-            WhereDelegate&lt;QueryStringColumns&gt;.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Analytics.QueryString.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
         <member name="M:Bam.Net.Analytics.QueryString.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.QueryStringColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -4159,7 +3970,6 @@
             Execute a query and return the specified number of values.  This method
             will issue a sql TOP clause so only the specified number of values
             will be returned.
-            of values
             </summary>
             <param name="count">The number of values to return.
             This value is used in the sql query so no more than this 
@@ -4318,16 +4128,7 @@
             </param>
             <param name="database"></param>
         </member>
-        <member name="M:Bam.Net.Analytics.Tag.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            This method is intended to respond to client side Qi queries.
-            Use of this method from .Net should be avoided in favor of 
-            one of the methods that take a delegate of type
-            WhereDelegate&lt;TagColumns&gt;.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Analytics.Tag.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
         <member name="M:Bam.Net.Analytics.Tag.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.TagColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -4381,7 +4182,6 @@
             Execute a query and return the specified number of values.  This method
             will issue a sql TOP clause so only the specified number of values
             will be returned.
-            of values
             </summary>
             <param name="count">The number of values to return.
             This value is used in the sql query so no more than this 
@@ -4540,16 +4340,7 @@
             </param>
             <param name="database"></param>
         </member>
-        <member name="M:Bam.Net.Analytics.Timer.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            This method is intended to respond to client side Qi queries.
-            Use of this method from .Net should be avoided in favor of 
-            one of the methods that take a delegate of type
-            WhereDelegate&lt;TimerColumns&gt;.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Analytics.Timer.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
         <member name="M:Bam.Net.Analytics.Timer.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.TimerColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -4603,7 +4394,6 @@
             Execute a query and return the specified number of values.  This method
             will issue a sql TOP clause so only the specified number of values
             will be returned.
-            of values
             </summary>
             <param name="count">The number of values to return.
             This value is used in the sql query so no more than this 
@@ -4762,16 +4552,7 @@
             </param>
             <param name="database"></param>
         </member>
-        <member name="M:Bam.Net.Analytics.Url.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            This method is intended to respond to client side Qi queries.
-            Use of this method from .Net should be avoided in favor of 
-            one of the methods that take a delegate of type
-            WhereDelegate&lt;UrlColumns&gt;.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Analytics.Url.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
         <member name="M:Bam.Net.Analytics.Url.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.UrlColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -4825,7 +4606,6 @@
             Execute a query and return the specified number of values.  This method
             will issue a sql TOP clause so only the specified number of values
             will be returned.
-            of values
             </summary>
             <param name="count">The number of values to return.
             This value is used in the sql query so no more than this 
@@ -4984,16 +4764,7 @@
             </param>
             <param name="database"></param>
         </member>
-        <member name="M:Bam.Net.Analytics.UrlTag.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            This method is intended to respond to client side Qi queries.
-            Use of this method from .Net should be avoided in favor of 
-            one of the methods that take a delegate of type
-            WhereDelegate&lt;UrlTagColumns&gt;.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Analytics.UrlTag.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
         <member name="M:Bam.Net.Analytics.UrlTag.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.UrlTagColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -5047,7 +4818,6 @@
             Execute a query and return the specified number of values.  This method
             will issue a sql TOP clause so only the specified number of values
             will be returned.
-            of values
             </summary>
             <param name="count">The number of values to return.
             This value is used in the sql query so no more than this 
@@ -5206,16 +4976,7 @@
             </param>
             <param name="database"></param>
         </member>
-        <member name="M:Bam.Net.Analytics.UserIdentifier.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            This method is intended to respond to client side Qi queries.
-            Use of this method from .Net should be avoided in favor of 
-            one of the methods that take a delegate of type
-            WhereDelegate&lt;UserIdentifierColumns&gt;.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Analytics.UserIdentifier.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
         <member name="M:Bam.Net.Analytics.UserIdentifier.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.UserIdentifierColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
@@ -5269,7 +5030,6 @@
             Execute a query and return the specified number of values.  This method
             will issue a sql TOP clause so only the specified number of values
             will be returned.
-            of values
             </summary>
             <param name="count">The number of values to return.
             This value is used in the sql query so no more than this 

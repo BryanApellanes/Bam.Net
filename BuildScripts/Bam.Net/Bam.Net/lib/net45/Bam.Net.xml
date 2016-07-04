@@ -1635,6 +1635,15 @@
             <param name="value"></param>
             <returns></returns>
         </member>
+        <member name="M:Bam.Net.Extensions.GetNextFileName(System.String,System.Int32@)">
+            <summary>
+            If the specified file exists a new path with 
+            a number appended will be returned where the 
+            new path does not exist
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
         <member name="M:Bam.Net.Extensions.Trim(System.DateTime)">
             <summary>
             Return a copy of the specified DateTime with milliseconds

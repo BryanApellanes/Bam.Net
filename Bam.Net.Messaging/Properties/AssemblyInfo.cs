@@ -37,5 +37,5 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 
 [assembly: InternalsVisibleTo("Bam.Net.Messaging.Tests")]
-[assembly: AssemblyVersion("1.2.16")]
-[assembly: AssemblyFileVersion("1.2.16")]
+[assembly: AssemblyVersion("1.2.17")]
+[assembly: AssemblyFileVersion("1.2.17")]
