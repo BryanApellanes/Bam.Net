@@ -22,7 +22,7 @@ namespace Bam.Net.Schema.Org
 		///<summary>The overall order the items in this delivery were included in.</summary>
 		public Order PartOfOrder {get; set;}
 		///<summary>The service provider, service operator, or service performer; the goods producer. Another party (a seller) may offer those services or goods on behalf of the provider. A provider may also serve as the seller. Supersedes carrier.</summary>
-		public OneOfThese<Person , Organization> Provider {get; set;}
+		public OneOfThese<Organization , Person> Provider {get; set;}
 		///<summary>Shipper tracking number.</summary>
 		public Text TrackingNumber {get; set;}
 		///<summary>Tracking url for the parcel delivery.</summary>

@@ -2,7 +2,7 @@ using System;
 
 namespace Bam.Net.Schema.Org
 {
-	///<summary>A utility class that serves as the umbrella for a number of 'intangible' things in the medical space.</summary>
+	///<summary></summary>
 	public class MedicalIntangible: MedicalEntity
 	{
 	}

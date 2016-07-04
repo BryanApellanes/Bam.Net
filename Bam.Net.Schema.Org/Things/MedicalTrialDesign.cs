@@ -2,8 +2,8 @@ using System;
 
 namespace Bam.Net.Schema.Org
 {
-	///<summary>Design models for medical trials. Enumerated type.</summary>
-	public class MedicalTrialDesign: MedicalEnumeration
+	///<summary></summary>
+	public class MedicalTrialDesign: Enumeration
 	{
 	}
 }

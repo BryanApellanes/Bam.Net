@@ -9,12 +9,6 @@ namespace Bam.Net.Schema.Org
 		public Distance Distance {get; set;}
 		///<summary>A sub property of location. The course where this action was taken. Supersedes course.</summary>
 		public Place ExerciseCourse {get; set;}
-		///<summary>A sub property of instrument. The exercise plan used on this action.</summary>
-		public ExercisePlan ExercisePlan {get; set;}
-		///<summary>A sub property of instrument. The diet used in this action. Supersedes diet.</summary>
-		public Diet ExerciseRelatedDiet {get; set;}
-		///<summary>Type(s) of exercise or activity, such as strength training, flexibility training, aerobics, cardiac rehabilitation, etc.</summary>
-		public Text ExerciseType {get; set;}
 		///<summary>A sub property of location. The original location of the object or the agent before the action.</summary>
 		public Place FromLocation {get; set;}
 		///<summary>A sub property of participant. The opponent on this action.</summary>

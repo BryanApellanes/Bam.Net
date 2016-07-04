@@ -5,11 +5,11 @@ namespace Bam.Net.Schema.Org
 	///<summary>A short TV or radio program or a segment/part of a program.</summary>
 	public class Clip: CreativeWork
 	{
-		///<summary>An actor, e.g. in tv, radio, movie, video games etc. Actors can be associated with individual items or with a series, episode, clip. Supersedes actors.</summary>
+		///<summary>An actor, e.g. in tv, radio, movie, video games etc., or in an event. Actors can be associated with individual items or with a series, episode, clip. Supersedes actors.</summary>
 		public Person Actor {get; set;}
 		///<summary>Position of the clip within an ordered group of clips.</summary>
 		public OneOfThese<Integer , Text> ClipNumber {get; set;}
-		///<summary>A director of e.g. tv, radio, movie, video games etc. content. Directors can be associated with individual items or with a series, episode, clip. Supersedes directors.</summary>
+		///<summary>A director of e.g. tv, radio, movie, video gaming etc. content, or of an event. Directors can be associated with individual items or with a series, episode, clip. Supersedes directors.</summary>
 		public Person Director {get; set;}
 		///<summary>The composer of the soundtrack.</summary>
 		public OneOfThese<MusicGroup , Person> MusicBy {get; set;}

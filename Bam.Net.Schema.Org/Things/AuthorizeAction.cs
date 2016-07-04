@@ -6,6 +6,6 @@ namespace Bam.Net.Schema.Org
 	public class AuthorizeAction: AllocateAction
 	{
 		///<summary>A sub property of participant. The participant who is at the receiving end of the action.</summary>
-		public OneOfThese<Organization , Person , Audience> Recipient {get; set;}
+		public OneOfThese<Audience , Organization , Person> Recipient {get; set;}
 	}
 }

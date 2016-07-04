@@ -2,8 +2,8 @@ using System;
 
 namespace Bam.Net.Schema.Org
 {
-	///<summary>Respiratory therapy.</summary>
-	public class RespiratoryTherapy: MedicalSpecialty
+	///<summary></summary>
+	public class RespiratoryTherapy: MedicalTherapy
 	{
 	}
 }

@@ -2,7 +2,7 @@ using System;
 
 namespace Bam.Net.Schema.Org
 {
-	///<summary>Any medical imaging modality typically used for diagnostic purposes. Enumerated type.</summary>
+	///<summary></summary>
 	public class MedicalImagingTechnique: MedicalEnumeration
 	{
 	}

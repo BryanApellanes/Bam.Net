@@ -2,7 +2,7 @@ using System;
 
 namespace Bam.Net.Schema.Org
 {
-	///<summary>A reservation for air travel.</summary>
+	///<summary>A reservation for air travel.Note: This type is for information about actual reservations, e.g. in confirmation emails or HTML pages with individual confirmations of reservations. For offers of tickets, use http://schema.org/Offer.</summary>
 	public class FlightReservation: Reservation
 	{
 		///<summary>The airline-specific indicator of boarding order / preference.</summary>

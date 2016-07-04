@@ -2,7 +2,7 @@ using System;
 
 namespace Bam.Net.Schema.Org
 {
-	///<summary>An indication for treating an underlying condition, symptom, etc.</summary>
+	///<summary></summary>
 	public class TreatmentIndication: MedicalIndication
 	{
 	}

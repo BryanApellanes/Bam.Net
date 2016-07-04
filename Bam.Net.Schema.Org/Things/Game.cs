@@ -2,7 +2,7 @@ using System;
 
 namespace Bam.Net.Schema.Org
 {
-	///<summary>The Game type represents things which are games. These are typically rule-governed recreational activities, e.g. role-playing games in which players assume the role of characters in a fictional setting. See also open issues list.</summary>
+	///<summary>The Game type represents things which are games. These are typically rule-governed recreational activities, e.g. role-playing games in which players assume the role of characters in a fictional setting.</summary>
 	public class Game: CreativeWork
 	{
 		///<summary>A piece of data that represents a particular aspect of a fictional character (skill, power, character points, advantage, disadvantage).</summary>

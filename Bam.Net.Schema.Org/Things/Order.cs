@@ -16,7 +16,7 @@ namespace Bam.Net.Schema.Org
 		///<summary>Party placing the order or paying the invoice.</summary>
 		public OneOfThese<Organization , Person> Customer {get; set;}
 		///<summary>Any discount applied (to an Order).</summary>
-		public OneOfThese<Text , Number> Discount {get; set;}
+		public OneOfThese<Number , Text> Discount {get; set;}
 		///<summary>Code used to redeem a discount.</summary>
 		public Text DiscountCode {get; set;}
 		///<summary>The currency (in 3-letter ISO 4217 format) of the discount.</summary>
@@ -32,7 +32,7 @@ namespace Bam.Net.Schema.Org
 		///<summary>The current status of the order.</summary>
 		public OrderStatus OrderStatus {get; set;}
 		///<summary>The item ordered.</summary>
-		public OneOfThese<Product , OrderItem> OrderedItem {get; set;}
+		public OneOfThese<OrderItem , Product> OrderedItem {get; set;}
 		///<summary>The order is being paid as part of the referenced Invoice.</summary>
 		public Invoice PartOfInvoice {get; set;}
 		///<summary>The date that payment is due. Supersedes paymentDue.</summary>
@@ -43,7 +43,7 @@ namespace Bam.Net.Schema.Org
 		public Text PaymentMethodId {get; set;}
 		///<summary>The URL for sending a payment.</summary>
 		public URL PaymentUrl {get; set;}
-		///<summary>An entity which offers (sells / leases / lends / loans) the services / goods.  A seller may also be a provider. Supersedes vendor, merchant.</summary>
+		///<summary>An entity which offers (sells / leases / lends / loans) the services / goods.  A seller may also be a provider. Supersedes merchant, vendor.</summary>
 		public OneOfThese<Organization , Person> Seller {get; set;}
 	}
 }

@@ -2,7 +2,7 @@ using System;
 
 namespace Bam.Net.Schema.Org
 {
-	///<summary>Enumerated categories of medical drug costs.</summary>
+	///<summary></summary>
 	public class DrugCostCategory: MedicalEnumeration
 	{
 	}

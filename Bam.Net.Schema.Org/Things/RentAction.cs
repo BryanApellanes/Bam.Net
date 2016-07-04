@@ -6,7 +6,7 @@ namespace Bam.Net.Schema.Org
 	public class RentAction: TradeAction
 	{
 		///<summary>A sub property of participant. The owner of the real estate property.</summary>
-		public OneOfThese<Person , Organization> Landlord {get; set;}
+		public OneOfThese<Organization , Person> Landlord {get; set;}
 		///<summary>A sub property of participant. The real estate agent involved in the action.</summary>
 		public RealEstateAgent RealEstateAgent {get; set;}
 	}

@@ -2,7 +2,7 @@ using System;
 
 namespace Bam.Net.Schema.Org
 {
-	///<summary>Describes a reservation for travel, dining or an event. Some reservations require tickets.</summary>
+	///<summary>Describes a reservation for travel, dining or an event. Some reservations require tickets.Note: This type is for information about actual reservations, e.g. in confirmation emails or HTML pages with individual confirmations of reservations. For offers of tickets, restaurant reservations, flights, or rental cars, use http://schema.org/Offer.</summary>
 	public class Reservation: Intangible
 	{
 		///<summary>The date and time the reservation was booked.</summary>
@@ -26,7 +26,7 @@ namespace Bam.Net.Schema.Org
 		///<summary>A ticket associated with the reservation.</summary>
 		public Ticket ReservedTicket {get; set;}
 		///<summary>The total price for the reservation or ticket, including applicable taxes, shipping, etc.</summary>
-		public OneOfThese<PriceSpecification , Text , Number> TotalPrice {get; set;}
+		public OneOfThese<Number , PriceSpecification , Text> TotalPrice {get; set;}
 		///<summary>The person or organization the reservation or ticket is for.</summary>
 		public OneOfThese<Organization , Person> UnderName {get; set;}
 	}

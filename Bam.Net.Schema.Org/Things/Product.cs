@@ -16,11 +16,11 @@ namespace Bam.Net.Schema.Org
 		///<summary>The brand(s) associated with a product or service, or the brand(s) maintained by an organization or business person.</summary>
 		public OneOfThese<Brand , Organization> Brand {get; set;}
 		///<summary>A category for the item. Greater signs or slashes can be used to informally indicate a category hierarchy.</summary>
-		public OneOfThese<PhysicalActivityCategory , Text , Thing> Category {get; set;}
+		public OneOfThese<Text , Thing> Category {get; set;}
 		///<summary>The color of the product.</summary>
 		public Text Color {get; set;}
 		///<summary>The depth of the item.</summary>
-		public OneOfThese<QuantitativeValue , Distance> Depth {get; set;}
+		public OneOfThese<Distance , QuantitativeValue> Depth {get; set;}
 		///<summary>The GTIN-12 code of the product, or the product to which the offer refers. The GTIN-12 is the 12-digit GS1 Identification Key composed of a U.P.C. Company Prefix, Item Reference, and Check Digit used to identify trade items. See GS1 GTIN Summary for more details.</summary>
 		public Text Gtin12 {get; set;}
 		///<summary>The GTIN-13 code of the product, or the product to which the offer refers. This is equivalent to 13-digit ISBN codes and EAN UCC-13. Former 12-digit UPC codes can be converted into a GTIN-13 code by simply adding a preceeding zero. See GS1 GTIN Summary for more details.</summary>
@@ -30,19 +30,19 @@ namespace Bam.Net.Schema.Org
 		///<summary>The GTIN-8 code of the product, or the product to which the offer refers. This code is also known as EAN/UCC-8 or 8-digit EAN. See GS1 GTIN Summary for more details.</summary>
 		public Text Gtin8 {get; set;}
 		///<summary>The height of the item.</summary>
-		public OneOfThese<QuantitativeValue , Distance> Height {get; set;}
+		public OneOfThese<Distance , QuantitativeValue> Height {get; set;}
 		///<summary>A pointer to another product (or multiple products) for which this product is an accessory or spare part.</summary>
 		public Product IsAccessoryOrSparePartFor {get; set;}
 		///<summary>A pointer to another product (or multiple products) for which this product is a consumable.</summary>
 		public Product IsConsumableFor {get; set;}
 		///<summary>A pointer to another, somehow related product (or multiple products).</summary>
-		public Product IsRelatedTo {get; set;}
+		public OneOfThese<Product , Service> IsRelatedTo {get; set;}
 		///<summary>A pointer to another, functionally similar product (or multiple products).</summary>
-		public Product IsSimilarTo {get; set;}
+		public OneOfThese<Product , Service> IsSimilarTo {get; set;}
 		///<summary>A predefined value from OfferItemCondition or a textual description of the condition of the product or service, or the products or services included in the offer.</summary>
 		public OfferItemCondition ItemCondition {get; set;}
 		///<summary>An associated logo.</summary>
-		public OneOfThese<URL , ImageObject> Logo {get; set;}
+		public OneOfThese<ImageObject , URL> Logo {get; set;}
 		///<summary>The manufacturer of the product.</summary>
 		public Organization Manufacturer {get; set;}
 		///<summary>The model of the product. Use with the URL of a ProductModel or a textual representation of the model identifier. The URL of the ProductModel can be from an external source. It is recommended to additionally provide strong product identifiers via the gtin8/gtin13/gtin14 and mpn properties.</summary>
@@ -66,6 +66,6 @@ namespace Bam.Net.Schema.Org
 		///<summary>The weight of the product or person.</summary>
 		public QuantitativeValue Weight {get; set;}
 		///<summary>The width of the item.</summary>
-		public OneOfThese<QuantitativeValue , Distance> Width {get; set;}
+		public OneOfThese<Distance , QuantitativeValue> Width {get; set;}
 	}
 }

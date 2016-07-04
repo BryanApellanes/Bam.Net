@@ -15,7 +15,7 @@ namespace Bam.Net.Schema.Org
 		public Text EncodingType {get; set;}
 		///<summary>An HTTP method that specifies the appropriate HTTP method for a request to an HTTP EntryPoint. Values are capitalized strings as used in HTTP.</summary>
 		public Text HttpMethod {get; set;}
-		///<summary>A url template (RFC6570) that will be used to construct the target of the execution of the action.</summary>
+		///<summary>An url template (RFC6570) that will be used to construct the target of the execution of the action.</summary>
 		public Text UrlTemplate {get; set;}
 	}
 }

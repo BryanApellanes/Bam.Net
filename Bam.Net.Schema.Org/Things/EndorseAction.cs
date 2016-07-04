@@ -6,6 +6,6 @@ namespace Bam.Net.Schema.Org
 	public class EndorseAction: ReactAction
 	{
 		///<summary>A sub property of participant. The person/organization being supported.</summary>
-		public OneOfThese<Person , Organization> Endorsee {get; set;}
+		public OneOfThese<Organization , Person> Endorsee {get; set;}
 	}
 }

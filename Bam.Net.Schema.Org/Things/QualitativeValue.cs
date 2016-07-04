@@ -20,6 +20,6 @@ namespace Bam.Net.Schema.Org
 		///<summary>This ordering relation for qualitative values indicates that the subject is not equal to the object.</summary>
 		public QualitativeValue NonEqual {get; set;}
 		///<summary>A pointer to a secondary value that provides additional information on the original value, e.g. a reference temperature.</summary>
-		public OneOfThese<QualitativeValue , Enumeration , StructuredValue , QuantitativeValue , PropertyValue> ValueReference {get; set;}
+		public OneOfThese<Enumeration , PropertyValue , QualitativeValue , QuantitativeValue , StructuredValue> ValueReference {get; set;}
 	}
 }

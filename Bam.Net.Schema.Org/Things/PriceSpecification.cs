@@ -2,7 +2,7 @@ using System;
 
 namespace Bam.Net.Schema.Org
 {
-	///<summary>A structured value representing a monetary amount. Typically, only the subclasses of this type are used for markup.</summary>
+	///<summary>A structured value representing a price or price range. Typically, only the subclasses of this type are used for markup. It is recommended to use MonetaryAmount to describe independent amounts of money such as a salary, credit card limits, etc.</summary>
 	public class PriceSpecification: StructuredValue
 	{
 		///<summary>The interval and unit of measurement of ordering quantities for which the offer or price specification is valid. This allows e.g. specifying that a certain freight charge is valid only for a certain quantity.</summary>
@@ -19,7 +19,7 @@ namespace Bam.Net.Schema.Org
 		public Text PriceCurrency {get; set;}
 		///<summary>The date when the item becomes valid.</summary>
 		public DateTime ValidFrom {get; set;}
-		///<summary>The end of the validity of offer, price specification, or opening hours data.</summary>
+		///<summary>The date after when the item is not valid. For example the end of an offer, salary period, or a period of opening hours.</summary>
 		public DateTime ValidThrough {get; set;}
 		///<summary>Specifies whether the applicable value-added tax (VAT) is included in the price specification or not.</summary>
 		public Boolean ValueAddedTaxIncluded {get; set;}

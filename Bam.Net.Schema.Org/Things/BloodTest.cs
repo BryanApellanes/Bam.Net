@@ -2,7 +2,7 @@ using System;
 
 namespace Bam.Net.Schema.Org
 {
-	///<summary>A medical test performed on a sample of a patient's blood.</summary>
+	///<summary></summary>
 	public class BloodTest: MedicalTest
 	{
 	}

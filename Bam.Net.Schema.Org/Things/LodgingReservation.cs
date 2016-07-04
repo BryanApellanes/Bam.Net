@@ -2,7 +2,7 @@ using System;
 
 namespace Bam.Net.Schema.Org
 {
-	///<summary>A reservation for lodging at a hotel, motel, inn, etc.</summary>
+	///<summary>A reservation for lodging at a hotel, motel, inn, etc.Note: This type is for information about actual reservations, e.g. in confirmation emails or HTML pages with individual confirmations of reservations.</summary>
 	public class LodgingReservation: Reservation
 	{
 		///<summary>The earliest someone may check into a lodging establishment.</summary>

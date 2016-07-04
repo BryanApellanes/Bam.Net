@@ -14,6 +14,6 @@ namespace Bam.Net.Schema.Org
 		///<summary>The number of the item ordered. If the property is not set, assume the quantity is one.</summary>
 		public Number OrderQuantity {get; set;}
 		///<summary>The item ordered.</summary>
-		public OneOfThese<Product , OrderItem> OrderedItem {get; set;}
+		public OneOfThese<OrderItem , Product> OrderedItem {get; set;}
 	}
 }

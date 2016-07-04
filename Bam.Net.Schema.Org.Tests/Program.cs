@@ -19,6 +19,9 @@ using System.Net;
 using CsQuery;
 using Sdo = Bam.Net.Schema.Org;
 using System.Xml;
+using Bam.Net.Web;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace Bam.Net.Schema.Org.Tests
 {
@@ -69,8 +72,7 @@ namespace Bam.Net.Schema.Org.Tests
 		}
 
 		public static HashSet<string> FailedTypeNames { get; private set; }
-
-		Queue<SpecificType> types;
+        static HashSet<string> _writtenTypes;
         [ConsoleAction("Generate Schema.org.cs files")]
         public void Generate()
         {
@@ -80,21 +82,13 @@ namespace Bam.Net.Schema.Org.Tests
             }
 			
 			FailedTypeNames = new HashSet<string>();
-            types = new Queue<SpecificType>();
-            currentType = new SpecificType { TypeName = "Thing", Extends = "DataType" };
-            types.Enqueue(currentType);
-
-            while (types.Count > 0)
+            _writtenTypes = new HashSet<string>();
+            HashSet<SpecificType> types = GetTypes();
+            types.ToList().ForEach(currentType =>
             {
-                currentType = types.Dequeue();
-                string content = GetCsCode();
-                TryWrite(content);
-                foreach (SpecificType specific in GetSpecificTypes(currentType.TypeName))
-                {
-                    types.Enqueue(specific);
-                }
-            }
-
+                WriteCsCode(currentType);
+            });
+            
 			foreach(string failedType in FailedTypeNames)
 			{
 				FileInfo file = new FileInfo("C:\\Schema.org\\{0}.cs"._Format(failedType));
@@ -109,20 +103,94 @@ namespace Bam.Net.Schema.Org.Tests
 			}
         }
 
-        private void TryWrite(string content)
+
+
+        [ConsoleAction("List sub types")]
+        public void ListTypes()
+        {
+            string topType = Prompt("Enter the top type to retrieve sub types for");
+            GetSubTypes(topType).ToList().ForEach(st =>
+            {
+                OutLine($"{st.TypeName} extends {st.Extends}");
+            });
+        }
+
+        [ConsoleAction("List all types")]
+        public void ListAllTypes()
+        {
+            HashSet<SpecificType> allTypes = GetTypes();
+            OutLine($"Found {allTypes.Count} types");
+            Pause();
+            allTypes.ToList().ForEach(st =>
+            {
+                OutLine($"{st.TypeName} extends {st.Extends}");
+            });
+        }
+
+        private void WriteCsCode(SpecificType currentType)
+        {
+            OutLine($"Writing code for {currentType.TypeName}: {currentType.Extends}", ConsoleColor.Cyan);
+            int num;
+            string specified = $"C:\\Schema.org\\{currentType.TypeName.LettersOnly()}.cs";
+            string path = specified.GetNextFileName(out num);
+            if (num > 0)
+            {
+                currentType.ClassName = $"{currentType.ClassName}{num}";
+            }
+            string code = GetCsCode(currentType);
+            TryWrite(code, path);
+        }
+
+        private HashSet<SpecificType> GetTypes()
+        {
+            HashSet<SpecificType> results = new HashSet<SpecificType>();
+            Queue<SpecificType> queue = new Queue<SpecificType>();
+            queue.Enqueue(new SpecificType { TypeName = "Thing", Extends = "DataType" });
+
+            while(queue.Count > 0)
+            {
+                OutLine($"Queue count is {queue.Count}", ConsoleColor.Yellow);
+                SpecificType currentType = queue.Dequeue();
+                OutLine($"Getting sub types for {currentType.TypeName}", ConsoleColor.Cyan);
+                List<SpecificType> subTypes = GetSubTypes(currentType.TypeName).ToList();
+                OutLine($"Found {subTypes.Count} sub types", ConsoleColor.Blue);
+                subTypes.ForEach(subType =>
+                {
+                    queue.Enqueue(subType);
+                    results.Add(subType);
+                    OutLine($"\t{subType.TypeName} extends {subType.Extends}", ConsoleColor.DarkCyan);
+                });
+            }
+
+            return results;
+        }
+
+        private HashSet<SpecificType> GetSubTypes(string topType)
+        {
+            HashSet<SpecificType> types = new HashSet<SpecificType>();
+            CQ cq = CQ.Create(GetFullHtml());
+            cq[$"#{topType} > ul > li"].Each(li =>
+            {
+                types.Add(new SpecificType { TypeName = cq[li].Attr("id"), Extends = topType });
+            });
+            return types;
+        }
+
+        private void TryWrite(string content, string path)
         {
 			try
 			{
-				File.WriteAllText("c:\\Schema.org\\" + currentType.TypeName.LettersOnly() + ".cs", content);
+                File.WriteAllText(path, content);
 			}
 			catch (Exception ex)
 			{
-				OutLineFormat("Unable to write content for type {0}", ConsoleColor.DarkYellow, currentType.TypeName);
+				OutLineFormat("Unable to write content for path {0}\r\n{1}\r\n\r\n{2}", ConsoleColor.DarkYellow, path, ex.Message, ex.StackTrace);
 			}
         }
+        
+        
 
-        static SpecificType currentType;
-        private static string GetCsCode()
+        private string GetCsCode(SpecificType currentType)
         {
             if (string.IsNullOrEmpty(currentType.TypeName))
             {
@@ -137,7 +205,7 @@ namespace Bam.Net.Schema.Org.Tests
             result.AppendLine("namespace Bam.Net.Schema.Org");
             result.AppendLine("{");
             result.AppendFormat("\t///<summary>{0}</summary>\r\n", GetTypeDescription(currentType.TypeName));
-            result.AppendFormat("\tpublic class {0}", currentType.TypeName.LettersOnly().PascalCase());
+            result.AppendFormat("\tpublic class {0}", currentType.ClassName.PascalCase());
             if (!string.IsNullOrEmpty(currentType.Extends))
             {
                 result.AppendFormat(": {0}", currentType.Extends);
@@ -203,45 +271,21 @@ namespace Bam.Net.Schema.Org.Tests
 			}
 			catch (Exception ex)
 			{
-				OutLineFormat("An error occurred getting html for type {0}", ConsoleColor.Yellow, typeName);
+				OutLineFormat("An error occurred getting html for type {0}\r\n{1}\r\n\r\n{2}", ConsoleColor.Yellow, typeName, ex.Message, ex.StackTrace);
 				FailedTypeNames.Add(typeName);
 				return string.Empty;
 			}
         }
 
-		static List<string> _gotTypes = new List<string>();
-        /// <summary>
-        /// Gets the extenders of the specified typeName
-        /// </summary>
-        /// <param name="typeName"></param>
-        /// <returns></returns>
-        public static SpecificType[] GetSpecificTypes(string typeName)
+        string fullHtml = string.Empty;
+        private string GetFullHtml()
         {
-			List<SpecificType> result = new List<SpecificType>();
-			if (!_gotTypes.Contains(typeName))
-			{
-				_gotTypes.Add(typeName);
-				string html = TryGetHtml(typeName);
-				CQ cq = CQ.Create(html);
-				Action<IDomObject> eacher = (el) =>
-				{
-					IDomElement child = el.FirstElementChild;
-					string childType = string.Empty;
-					if (child != null)
-					{
-						string href = child.Attributes["href"];
-						if (!href.StartsWith("http"))
-						{
-							childType = child.InnerText;
-							result.Add(new SpecificType { Extends = typeName, TypeName = childType });
-						}
-					}
-				};
-
-				cq["#mainContent li"].Each(eacher);
-			}
-
-            return result.ToArray();
+            string url = "http://schema.org/docs/full.html";
+            if (string.IsNullOrEmpty(fullHtml))
+            {
+                fullHtml = Http.Get(url);
+            }
+            return fullHtml;
         }
 
         [UnitTest("DataType.GetDataType should get expected Types")]
