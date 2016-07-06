@@ -33,15 +33,20 @@ namespace Bam.Net.Data.Repositories
         TypeSchemaGenerator _typeSchemaGenerator;
         public DaoRepository()
         {
-            WarningsAsErrors = true;
-            Logger = Log.Default;
             _typeDaoGenerator = new TypeDaoGenerator();
             _typeSchemaGenerator = new TypeSchemaGenerator();
+            _typeDaoGenerator.SchemaWarning += (o, a) =>
+            {
+                FireEvent(SchemaWarning, a);
+            };
             _typeDaoGenerator.GenerateDaoAssemblySucceeded += (o, a) =>
             {
                 GenerateDaoAssemblyEventArgs args = (GenerateDaoAssemblyEventArgs)a;
                 FireEvent(GenerateDaoAssemblySucceeded, args);
             };
+
+            WarningsAsErrors = true;
+            Logger = Log.Default;
         }
         public DaoRepository(Database database, ILogger logger = null, string schemaName = null)
             : this()
@@ -103,7 +108,11 @@ namespace Bam.Net.Data.Repositories
             }
         }
 
-		public bool WarningsAsErrors { get; set; }
+		public bool WarningsAsErrors
+        {
+            get { return _typeDaoGenerator.WarningsAsErrors; }
+            set { _typeDaoGenerator.WarningsAsErrors = value; }
+        }
 
 		public Database Database { get; set; }
 
@@ -131,82 +140,10 @@ namespace Bam.Net.Data.Repositories
                 return _typeSchema;
 			}
 		}
+        [Verbosity(VerbosityLevel.Warning, MessageFormat = "Missing {PropertyType} property: {ClassName}.{PropertyName}")]
+        public event EventHandler SchemaWarning;
 
-		/// <summary>
-		/// Returns true if the schema definition for the added types
-		/// are missing key columns (as represented by a property on the class)
-		/// or missing foreign key columns (as represented by a property on the class)
-		/// </summary>
-		public bool MissingProperties
-		{
-			get
-			{
-				return _typeDaoGenerator.SchemaDefinitionCreateResult.MissingColumns;
-			}
-		}
-
-		public SchemaWarnings SchemaWarnings
-		{
-			get
-			{
-				return _typeDaoGenerator.SchemaDefinitionCreateResult.Warnings;
-			}
-		}
-
-		[Verbosity(VerbosityLevel.Warning, MessageFormat="Missing {PropertyType} property: {ClassName}.{PropertyName}")]
-		public event EventHandler SchemaWarning;
-
-		protected void EmitWarnings()
-		{
-			if (MissingProperties)
-			{
-				if(this.SchemaWarnings.MissingForeignKeyColumns.Length > 0)
-				{					
-					foreach(ForeignKeyColumn fk in this.SchemaWarnings.MissingForeignKeyColumns)
-					{
-						DaoRepositorySchemaWarningEventArgs drswea = GetEventArgs(fk);
-						FireEvent(SchemaWarning, drswea);
-					}
-				}
-				if (this.SchemaWarnings.MissingKeyColumns.Length > 0)
-				{
-					foreach (KeyColumn keyColumn in this.SchemaWarnings.MissingKeyColumns)
-					{
-						DaoRepositorySchemaWarningEventArgs drswea = GetEventArgs(keyColumn);
-						FireEvent(SchemaWarning, drswea);
-					}
-				}
-			}
-		}
-
-		protected void ThrowWarningsIfWarningsAsErrors()
-		{
-			if (MissingProperties && WarningsAsErrors)
-			{
-				if (this.SchemaWarnings.MissingForeignKeyColumns.Length > 0)
-				{
-					List<string> missingColumns = new List<string>();
-					foreach (ForeignKeyColumn fk in this.SchemaWarnings.MissingForeignKeyColumns)
-					{
-						DaoRepositorySchemaWarningEventArgs drswea = GetEventArgs(fk);
-						missingColumns.Add("{ClassName}.{PropertyName}".NamedFormat(drswea));
-					}
-					throw new MissingForeignKeyPropertyException(missingColumns);
-				}
-				if (this.SchemaWarnings.MissingKeyColumns.Length > 0)
-				{
-					List<string> classNames = new List<string>();
-					foreach(KeyColumn k in this.SchemaWarnings.MissingKeyColumns)
-					{
-						DaoRepositorySchemaWarningEventArgs drswea = GetEventArgs(k);
-						classNames.Add(k.TableClassName);
-					}
-					throw new NoIdPropertyException(classNames);
-				}
-			}
-		}
-
-		Assembly _daoAssembly;
+        Assembly _daoAssembly;
         EnsureSchemaStatus _schemaStatus;
         /// <summary>
         /// Generates a Dao Assembly for the underlying 
@@ -214,23 +151,31 @@ namespace Bam.Net.Data.Repositories
         /// </summary>
         /// <returns></returns>
 		public Assembly EnsureDaoAssemblyAndSchema(bool useExisting = true)
-        {
-            MultiTargetLogger logger = new MultiTargetLogger();
+        {            
             if (_daoAssembly == null)
             {
-                GenerateDaoAssembly(useExisting);
-                Subscribers.Each(l => logger.AddLogger(l));
-                EmitWarnings();
-                ThrowWarningsIfWarningsAsErrors();
+                _daoAssembly = GenerateDaoAssembly(useExisting);               
+                _typeDaoGenerator.EmitWarnings();
+                _typeDaoGenerator.ThrowWarningsIfWarningsAsErrors();
             }
+
             Args.ThrowIfNull(Database, "Database");
             if (_schemaStatus == EnsureSchemaStatus.Invalid || // not done
                 _schemaStatus == EnsureSchemaStatus.Error) // failed
             {
+                MultiTargetLogger logger = new MultiTargetLogger();
+                Subscribers.Each(l => logger.AddLogger(l));
                 _schemaStatus = Database.TryEnsureSchema(_daoAssembly.GetTypes().First(type => type.HasCustomAttributeOfType<TableAttribute>()), logger);
             }
 
             return _daoAssembly;
+        }
+
+        public override void Subscribe(ILogger logger)
+        {
+            _typeDaoGenerator.Subscribe(logger);
+            _typeSchemaGenerator.Subscribe(logger);
+            base.Subscribe(logger);
         }
 
         public Assembly GenerateDaoAssembly(bool useExisting = true)
@@ -732,7 +677,7 @@ namespace Bam.Net.Data.Repositories
 		}
 
 
-		public IEnumerable<TChildType> ForeignKeyCollectionLoader<TChildType>(object poco) where TChildType : new()
+		public IEnumerable<TChildType> ForeignKeyCollectionLoader<TChildType>(object poco) where TChildType : new() // this is used by generated code; JIT compiler can't tell
 		{
 			// get all the child types where the foreign key property value equals the parent id
 			Type pocoChildType = typeof(TChildType);
@@ -955,20 +900,20 @@ namespace Bam.Net.Data.Repositories
 			return dto;
 		}
 		
-		private static DaoRepositorySchemaWarningEventArgs GetEventArgs(KeyColumn keyColumn)
-		{
-			string className = keyColumn.TableClassName;
-			DaoRepositorySchemaWarningEventArgs drswea = new DaoRepositorySchemaWarningEventArgs { ClassName = className, PropertyName = "Id", PropertyType = "key column" };
-			return drswea;
-		}
+		//private static DaoRepositorySchemaWarningEventArgs GetEventArgs(KeyColumn keyColumn)
+		//{
+		//	string className = keyColumn.TableClassName;
+		//	DaoRepositorySchemaWarningEventArgs drswea = new DaoRepositorySchemaWarningEventArgs { ClassName = className, PropertyName = "Id", PropertyType = "key column" };
+		//	return drswea;
+		//}
 
-		private static DaoRepositorySchemaWarningEventArgs GetEventArgs(ForeignKeyColumn fk)
-		{
-			string referencingClassName = fk.ReferencingClass.EndsWith("Dao") ? fk.ReferencingClass.Truncate(3) : fk.ReferencingClass;
-			string propertyName = fk.PropertyName;
-			DaoRepositorySchemaWarningEventArgs drswea = new DaoRepositorySchemaWarningEventArgs { ClassName = referencingClassName, PropertyName = propertyName, PropertyType = "foreign key" };
-			return drswea;
-		}
+		//private static DaoRepositorySchemaWarningEventArgs GetEventArgs(ForeignKeyColumn fk)
+		//{
+		//	string referencingClassName = fk.ReferencingClass.EndsWith("Dao") ? fk.ReferencingClass.Truncate(3) : fk.ReferencingClass;
+		//	string propertyName = fk.PropertyName;
+		//	DaoRepositorySchemaWarningEventArgs drswea = new DaoRepositorySchemaWarningEventArgs { ClassName = referencingClassName, PropertyName = propertyName, PropertyType = "foreign key" };
+		//	return drswea;
+		//}
 
         private void WarnRetrieveAll<T>() where T : class, new()
         {
