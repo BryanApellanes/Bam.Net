@@ -184,6 +184,64 @@ namespace Bam.Net.Data.Repositories
 
         public Func<string, string> TempPathProvider { get; set; }
         
+        public bool MissingColumns { get { return SchemaDefinitionCreateResult.MissingColumns; } }
+        public SchemaWarnings Warnings { get { return SchemaDefinitionCreateResult.Warnings; } }
+
+        public bool WarningsAsErrors
+        {
+            get; set;
+        }
+        [Verbosity(VerbosityLevel.Warning, MessageFormat = "Missing {PropertyType} property: {ClassName}.{PropertyName}")]
+        public event EventHandler SchemaWarning;
+
+        protected internal void EmitWarnings()
+        {
+            if (MissingColumns)
+            {
+                if (this.Warnings.MissingForeignKeyColumns.Length > 0)
+                {
+                    foreach (ForeignKeyColumn fk in this.Warnings.MissingForeignKeyColumns)
+                    {
+                        DaoRepositorySchemaWarningEventArgs drswea = GetEventArgs(fk);
+                        FireEvent(SchemaWarning, drswea);
+                    }
+                }
+                if (this.Warnings.MissingKeyColumns.Length > 0)
+                {
+                    foreach (KeyColumn keyColumn in this.Warnings.MissingKeyColumns)
+                    {
+                        DaoRepositorySchemaWarningEventArgs drswea = GetEventArgs(keyColumn);
+                        FireEvent(SchemaWarning, drswea);
+                    }
+                }
+            }
+        }
+        protected internal void ThrowWarningsIfWarningsAsErrors()
+        {
+            if (MissingColumns && WarningsAsErrors)
+            {
+                if (this.Warnings.MissingForeignKeyColumns.Length > 0)
+                {
+                    List<string> missingColumns = new List<string>();
+                    foreach (ForeignKeyColumn fk in this.Warnings.MissingForeignKeyColumns)
+                    {
+                        DaoRepositorySchemaWarningEventArgs drswea = GetEventArgs(fk);
+                        missingColumns.Add("{ClassName}.{PropertyName}".NamedFormat(drswea));
+                    }
+                    throw new MissingForeignKeyPropertyException(missingColumns);
+                }
+                if (this.Warnings.MissingKeyColumns.Length > 0)
+                {
+                    List<string> classNames = new List<string>();
+                    foreach (KeyColumn k in this.Warnings.MissingKeyColumns)
+                    {
+                        DaoRepositorySchemaWarningEventArgs drswea = GetEventArgs(k);
+                        classNames.Add(k.TableClassName);
+                    }
+                    throw new NoIdPropertyException(classNames);
+                }
+            }
+        }
         /// <summary>
         /// Create a SchemaDefintionCreateResult for the types currently
         /// added to the TypeDaoGenerator
@@ -232,11 +290,15 @@ namespace Bam.Net.Data.Repositories
         protected internal CompilerResults GenerateAndCompile(string assemblyNameToCreate, string writeSourceTo)
         {
             TryDeleteDaoTemp(writeSourceTo);
-
-            GenerateDaos(SchemaDefinitionCreateResult.SchemaDefinition, writeSourceTo);
-            GeneratePocos(SchemaDefinitionCreateResult.TypeSchema, writeSourceTo);
+            GenerateSource(writeSourceTo);
 
             return Compile(assemblyNameToCreate, writeSourceTo);
+        }
+
+        protected internal void GenerateSource(string writeSourceTo)
+        {
+            GenerateDaos(SchemaDefinitionCreateResult.SchemaDefinition, writeSourceTo);
+            GeneratePocos(SchemaDefinitionCreateResult.TypeSchema, writeSourceTo);
         }
 
         protected internal void GenerateDaos(SchemaDefinition schema, string writeSourceTo)
@@ -262,7 +324,19 @@ namespace Bam.Net.Data.Repositories
             CompilerResults results = _daoGenerator.Compile(new DirectoryInfo(writeSourceTo), assemblyNameToCreate, references.ToArray(), false);
             return results;
         }
-
+        private static DaoRepositorySchemaWarningEventArgs GetEventArgs(KeyColumn keyColumn)
+        {
+            string className = keyColumn.TableClassName;
+            DaoRepositorySchemaWarningEventArgs drswea = new DaoRepositorySchemaWarningEventArgs { ClassName = className, PropertyName = "Id", PropertyType = "key column" };
+            return drswea;
+        }
+        private static DaoRepositorySchemaWarningEventArgs GetEventArgs(ForeignKeyColumn fk)
+        {
+            string referencingClassName = fk.ReferencingClass.EndsWith("Dao") ? fk.ReferencingClass.Truncate(3) : fk.ReferencingClass;
+            string propertyName = fk.PropertyName;
+            DaoRepositorySchemaWarningEventArgs drswea = new DaoRepositorySchemaWarningEventArgs { ClassName = referencingClassName, PropertyName = propertyName, PropertyType = "foreign key" };
+            return drswea;
+        }
         private void GenerateOrThrow()
         {
             string tempPath = TempPathProvider(SchemaName);
@@ -277,7 +351,7 @@ namespace Bam.Net.Data.Repositories
             }
         }
 
-        private bool TryDeleteDaoTemp(string writeSourceTo)
+        protected internal bool TryDeleteDaoTemp(string writeSourceTo)
         {
             if (!KeepSource)
             {

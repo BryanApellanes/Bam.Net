@@ -124,6 +124,7 @@
     <Compile Include="BackedupDatabase.cs" />
     <Compile Include="DaoGenerationException.cs" />
     <Compile Include="DaoBackup.cs" />
+    <Compile Include="DaoRepositoryGenerator.cs" />
     <Compile Include="DaoRepositorySchemaWarningEventArgs.cs" />
     <Compile Include="DaoSuffixTypeTableNameProvider.cs" />
     <Compile Include="DefaultDataTypeBehaviors.cs" />
