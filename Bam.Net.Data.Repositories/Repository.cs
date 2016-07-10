@@ -51,7 +51,7 @@ namespace Bam.Net.Data.Repositories
 
 		public void AddNamespace(Assembly assembly, string nameSpace)
 		{
-			AddTypes(assembly.GetTypes().Where(t => t.Namespace != null && t.Namespace.Equals(nameSpace) && !t.IsAbstract).ToArray());
+			AddTypes(assembly.GetTypes().Where(t => t.Namespace != null && t.Namespace.Equals(nameSpace) && !t.IsAbstract));
 		}
 
         public Task<T> SaveAsync<T>(T toSave) where T : class, new()

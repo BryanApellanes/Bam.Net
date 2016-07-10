@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Bam.Net.Analytics;
+using Bam.Net.CommandLine;
 using Bam.Net.Data.Schema;
 using Bam.Net.Logging;
 using Newtonsoft.Json;
@@ -23,7 +25,7 @@ namespace Bam.Net.Data.Repositories
         PocoGenerator _pocoGenerator;
         TypeSchemaGenerator _schemaGenerator;
         HashSet<Assembly> _additonalReferenceAssemblies;
-        public TypeDaoGenerator(ILogger logger = null)
+        public TypeDaoGenerator(ILogger logger = null, IEnumerable<Type> types = null)
         {
             _namespace = "TypeDaos";
             _daoGenerator = new DaoGenerator(_namespace);
@@ -31,14 +33,25 @@ namespace Bam.Net.Data.Repositories
             _schemaGenerator = new TypeSchemaGenerator();
             _additonalReferenceAssemblies = new HashSet<Assembly>();
 
-            TempPathProvider = (schemaName) => Path.Combine("".GetAppDataFolder(), "DaoTemp_{0}"._Format(schemaName));
-            _types = new List<Type>();
+            TempPathProvider = (schemaDef, typeSchema) => System.IO.Path.Combine("".GetAppDataFolder(), "DaoTemp_{0}"._Format(schemaDef.Name));
+            _types = new HashSet<Type>();
             if (logger != null)
             {
                 Subscribe(logger);
             }
+            if(types != null)
+            {
+                AddTypes(types);
+            }
         }
-        
+
+        public TypeDaoGenerator(Assembly typeAssembly, string nameSpace, ILogger logger = null)
+            : this(logger)
+        {
+            Args.ThrowIfNull(typeAssembly, "typeAssembly");
+            AddTypes(typeAssembly.GetTypes().Where(t => t.Namespace != null && t.Namespace.Equals(nameSpace) && !t.IsAbstract));
+        }
+
         public bool AddAuditFields { get; set; }
 
         public bool IncludeModifiedBy { get; set; }
@@ -70,7 +83,7 @@ namespace Bam.Net.Data.Repositories
             {
                 if (string.IsNullOrEmpty(_schemaName))
                 {
-                    _schemaName = string.Format("_{0}_Dao", _types.Select(t => t.AssemblyQualifiedName).ToArray().ToDelimited(s => s, ", ").Md5());
+                    _schemaName = string.Format("_{0}_Dao", _types.ToInfoHash());
                 }
 
                 return _schemaName;
@@ -88,7 +101,7 @@ namespace Bam.Net.Data.Repositories
             base.Subscribe(logger);
         }
 
-        List<Type> _types;
+        HashSet<Type> _types;
         public Type[] Types
         {
             get
@@ -99,7 +112,7 @@ namespace Bam.Net.Data.Repositories
 
         public bool KeepSource { get; set; }
 
-        public void AddTypes(Type[] types)
+        public void AddTypes(IEnumerable<Type> types)
         {
             foreach (Type type in types)
             {
@@ -129,31 +142,35 @@ namespace Bam.Net.Data.Repositories
 
         public Assembly GetDaoAssembly(bool useExisting = true)
         {
-            GeneratedAssemblyInfo info = GeneratedAssemblies.GetGeneratedAssemblyInfo(SchemaName);
+            GeneratedDaoAssemblyInfo info = GeneratedAssemblies.GetGeneratedAssemblyInfo(SchemaName) as GeneratedDaoAssemblyInfo;
             if (info == null)
             {
-                SchemaDefinition schema = SchemaDefinitionCreateResult.SchemaDefinition;
-                info = new GeneratedAssemblyInfo(schema.Name);
+                TypeSchema typeSchema = SchemaDefinitionCreateResult.TypeSchema;
+                SchemaDefinition schemaDef = SchemaDefinitionCreateResult.SchemaDefinition;
+                string schemaName = schemaDef.Name;
+                string schemaHash = typeSchema.Hash;
+                info = new GeneratedDaoAssemblyInfo(schemaName, typeSchema, schemaDef);
 
                 // check for the info file
                 if (info.InfoFileExists && useExisting) // load it from file if it exists
                 {
-                    info = info.InfoFilePath.FromJsonFile<GeneratedAssemblyInfo>();
-                    if (!info.InfoFileName.Equals(schema.Name)) // regenerate if the names don't match
+                    info = info.InfoFilePath.FromJsonFile<GeneratedDaoAssemblyInfo>();
+                    if (info.TypeSchemaHash == null || !info.TypeSchemaHash.Equals(schemaHash)) // regenerate if the hashes don't match
                     {
-                        GenerateOrThrow();
+                        ReportDiff(info, typeSchema);
+                        GenerateOrThrow(schemaDef, typeSchema);
                     }
                     else
                     {
-                        GeneratedAssemblies.SetAssemblyInfo(schema.Name, info);
+                        GeneratedAssemblies.SetAssemblyInfo(schemaName, info);
                     }
                 }
                 else
                 {
-                    GenerateOrThrow();
+                    GenerateOrThrow(schemaDef, typeSchema);
                 }
 
-                info = GeneratedAssemblies.GetGeneratedAssemblyInfo(SchemaName);
+                info = GeneratedAssemblies.GetGeneratedAssemblyInfo(SchemaName) as GeneratedDaoAssemblyInfo;
             }
 
             return info.GetAssembly();
@@ -182,8 +199,12 @@ namespace Bam.Net.Data.Repositories
         [Verbosity(VerbosityLevel.Warning, MessageFormat = "Couldn't delete folder {TempPath}:\r\nMessage: {Message}")]
         public event EventHandler DeleteDaoTempFailed;
 
-        public Func<string, string> TempPathProvider { get; set; }
-        
+        public Func<SchemaDefinition, TypeSchema, string> TempPathProvider { get; set; }
+
+        [Verbosity(VerbosityLevel.Warning, MessageFormat = "TypeSchema difference detected\r\n {OldInfoString} \r\n *** \r\n {NewInfoString}")]
+        public event EventHandler SchemaDifferenceDetected;
+        public string OldInfoString { get; set; }
+        public string NewInfoString { get; set; }
         public bool MissingColumns { get { return SchemaDefinitionCreateResult.MissingColumns; } }
         public SchemaWarnings Warnings { get { return SchemaDefinitionCreateResult.Warnings; } }
 
@@ -193,7 +214,7 @@ namespace Bam.Net.Data.Repositories
         }
         [Verbosity(VerbosityLevel.Warning, MessageFormat = "Missing {PropertyType} property: {ClassName}.{PropertyName}")]
         public event EventHandler SchemaWarning;
-
+        
         protected internal void EmitWarnings()
         {
             if (MissingColumns)
@@ -216,7 +237,7 @@ namespace Bam.Net.Data.Repositories
                 }
             }
         }
-        protected internal void ThrowWarningsIfWarningsAsErrors()
+        public void ThrowWarningsIfWarningsAsErrors()
         {
             if (MissingColumns && WarningsAsErrors)
             {
@@ -252,7 +273,7 @@ namespace Bam.Net.Data.Repositories
         {
             return _schemaGenerator.CreateSchemaDefinition(_types, schemaName);
         }
-        protected internal bool GenerateDaoAssembly(out CompilationException compilationEx)
+        protected internal bool GenerateDaoAssembly(TypeSchema typeSchema, out CompilationException compilationEx)
         {
             try
             {
@@ -260,9 +281,11 @@ namespace Bam.Net.Data.Repositories
                 SchemaDefinition schema = SchemaDefinitionCreateResult.SchemaDefinition;
                 string assemblyName = "{0}.dll"._Format(schema.Name);
 
-                string writeSourceTo = TempPathProvider(schema.Name);
+                string writeSourceTo = TempPathProvider(schema, typeSchema);
                 CompilerResults results = GenerateAndCompile(assemblyName, writeSourceTo);
-                GeneratedAssemblyInfo info = new GeneratedAssemblyInfo(schema.Name, results);
+                GeneratedDaoAssemblyInfo info = new GeneratedDaoAssemblyInfo(schema.Name, results);
+                info.TypeSchema = typeSchema;
+                info.SchemaDefinition = schema;
                 info.Save();
 
                 GeneratedAssemblies.SetAssemblyInfo(schema.Name, info);
@@ -295,8 +318,14 @@ namespace Bam.Net.Data.Repositories
             return Compile(assemblyNameToCreate, writeSourceTo);
         }
 
-        protected internal void GenerateSource(string writeSourceTo)
+        /// <summary>
+        /// Generate source code for the current set of types
+        /// </summary>
+        /// <param name="writeSourceTo"></param>
+        public void GenerateSource(string writeSourceTo)
         {
+            EmitWarnings();
+            ThrowWarningsIfWarningsAsErrors();
             GenerateDaos(SchemaDefinitionCreateResult.SchemaDefinition, writeSourceTo);
             GeneratePocos(SchemaDefinitionCreateResult.TypeSchema, writeSourceTo);
         }
@@ -337,17 +366,17 @@ namespace Bam.Net.Data.Repositories
             DaoRepositorySchemaWarningEventArgs drswea = new DaoRepositorySchemaWarningEventArgs { ClassName = referencingClassName, PropertyName = propertyName, PropertyType = "foreign key" };
             return drswea;
         }
-        private void GenerateOrThrow()
+        private void GenerateOrThrow(SchemaDefinition schema, TypeSchema typeSchema)
         {
-            string tempPath = TempPathProvider(SchemaName);
+            string tempPath = TempPathProvider(schema, typeSchema);
             if (Directory.Exists(tempPath))
             {
                 Directory.Move(tempPath, $"{tempPath}_{DateTime.UtcNow.ToJulianDate().ToString()}");
             }
             CompilationException compilationException;
-            if (!GenerateDaoAssembly(out compilationException))
+            if (!GenerateDaoAssembly(typeSchema, out compilationException))
             {
-                throw new DaoGenerationException(SchemaName, Types.ToArray(), compilationException);
+                throw new DaoGenerationException(SchemaName, typeSchema.Hash, Types.ToArray(), compilationException);
             }
         }
 
@@ -377,5 +406,16 @@ namespace Bam.Net.Data.Repositories
             }
             return false;
         }
+
+        private void ReportDiff(GeneratedDaoAssemblyInfo info, TypeSchema typeSchema)
+        {
+            OldInfoString = info.TypeSchemaInfo ?? string.Empty;
+            NewInfoString = typeSchema.ToString();
+            DiffReport diff = DiffReport.Create(OldInfoString, NewInfoString);
+            ConsoleDiffReportFormatter diffFormatter = new ConsoleDiffReportFormatter(diff);
+            diffFormatter.Format(); // outputs to console
+            FireEvent(SchemaDifferenceDetected, new SchemaDifferenceEventArgs { GeneratedDaoAssemblyInfo = info, TypeSchema = typeSchema, DiffReport = diff });
+        }
+
     }
 }

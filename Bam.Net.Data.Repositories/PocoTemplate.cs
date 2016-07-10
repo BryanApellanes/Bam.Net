@@ -24,7 +24,7 @@ namespace Bam.Net.Data.Repositories
 			}
 		}
 
-		public void WriteForeignKeyProperty(TypeFk fk)
+		public void WriteForeignKeyProperty(TypeFk fk) // used by razor templates
 		{
 			if(fk.CollectionProperty.GetGetMethod().IsVirtual)
 			{
@@ -32,8 +32,8 @@ namespace Bam.Net.Data.Repositories
 			}
 		}
 
-		public void WriteLeftXrefProperty(TypeXref xref)
-		{
+		public void WriteLeftXrefProperty(TypeXref xref) // used by razor templates
+        {
 			MethodInfo method = xref.LeftCollectionProperty.GetGetMethod();
 			if(method != null && method.IsVirtual)
 			{
@@ -41,8 +41,8 @@ namespace Bam.Net.Data.Repositories
 			}
 		}
 
-		public void WriteRightXrefProperty(TypeXref xref)
-		{
+		public void WriteRightXrefProperty(TypeXref xref) // used by razor templates
+        {
 			MethodInfo method = xref.LeftCollectionProperty.GetGetMethod();
 			if (method != null && method.IsVirtual)
 			{
@@ -52,12 +52,12 @@ namespace Bam.Net.Data.Repositories
 
 		private string Render<T>(string templateName, object options)
 		{
-			List<Assembly> referenceAssemblies = new List<Assembly>{ 
-					typeof(DaoGenerator).Assembly,
-					typeof(ServiceProxyController).Assembly, 
-					typeof(Providers).Assembly};
-
-			referenceAssemblies.Add(typeof(DaoRepository).Assembly);
+            List<Assembly> referenceAssemblies = new List<Assembly>{
+                    typeof(DaoGenerator).Assembly,
+                    typeof(ServiceProxyController).Assembly,
+                    typeof(Args).Assembly,
+                    typeof(DaoRepository).Assembly};
+            
 			RazorParser<RazorTemplate<T>> parser = new RazorParser<RazorTemplate<T>>();
 			string result = parser.ExecuteResource(templateName, "Bam.Net.Data.Repositories.Templates.", typeof(PocoTemplate).Assembly, options, referenceAssemblies.ToArray()).Trim();
 			return result;

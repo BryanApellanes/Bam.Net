@@ -213,8 +213,15 @@ namespace Bam.Net.Server
                         RegisterDatabase(daoProxyReg);
                     }
 
-                    // TODO: Refactor this to DaoCrudProvider (see #110), 
+                    // TODO: Refactor this to DaoCrudProvider
                     //  replace "SendResponse" with instanciation of the response
+                    // Extract interface ICrudProvider and implement:
+                    //  Create
+                    //  Retrieve
+                    //  Update
+                    //  Delete
+                    //  Query
+                    //  SaveCollection
                     MethodInfo daoMethod = null;
                     object instance;
                     QiQuery query;

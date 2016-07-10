@@ -11,12 +11,12 @@ namespace Bam.Net.Data.Repositories
 {
 	public class DaoGenerationException: Exception
 	{
-		public DaoGenerationException(string schemaName, Type[] types, CompilationException compilationEx) : base(GetMessage(schemaName, types, compilationEx)) { }
+		public DaoGenerationException(string schemaName, string schemaHash, Type[] types, CompilationException compilationEx) : base(GetMessage(schemaName, schemaHash, types, compilationEx)) { }
 
-		private static string GetMessage(string schemaName, Type[] types, CompilationException compilationEx)
+		private static string GetMessage(string schemaName, string schemaHash, Type[] types, CompilationException compilationEx)
 		{
 			StringBuilder builder = new StringBuilder();
-			builder.AppendFormat("Unable to Generate Dao Assembly for {0}.\r\nSpecified Types:\r\n", schemaName);
+			builder.AppendFormat("Unable to Generate Dao Assembly for {0} ({1}).\r\nSpecified Types:\r\n", schemaName, schemaHash);
 			foreach(Type type in types)
 			{
 				builder.AppendFormat("\t{0}\r\n", type.FullName);

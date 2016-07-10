@@ -136,10 +136,7 @@ namespace Bam.Net.Data.Repositories
                 GetNamespace(),
                 DaoAssembly.GetTypes()
                 .Where(t => t.HasCustomAttributeOfType<TableAttribute>())
-                .Select(t => t.Name)
-                .ToArray()
-                .ToDelimited(n => n, ", ")
-                .Md5()
+                .ToInfoHash()
             ); // this fluent stuff is setting the fileName to the Md5 hash of all the table names comma delimited
         }
 

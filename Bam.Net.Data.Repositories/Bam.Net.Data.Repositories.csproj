@@ -124,8 +124,12 @@
     <Compile Include="BackedupDatabase.cs" />
     <Compile Include="DaoGenerationException.cs" />
     <Compile Include="DaoBackup.cs" />
-    <Compile Include="DaoRepositoryGenerator.cs" />
+    <Compile Include="GeneratedDaoAssemblyInfo.cs" />
+    <Compile Include="SchemaDifferenceEventArgs.cs" />
+    <Compile Include="SchemaRepositoryModel.cs" />
+    <Compile Include="SchemaRepositoryGenerator.cs" />
     <Compile Include="DaoRepositorySchemaWarningEventArgs.cs" />
+    <Compile Include="SchemaRepositoryTemplate.cs" />
     <Compile Include="DaoSuffixTypeTableNameProvider.cs" />
     <Compile Include="DefaultDataTypeBehaviors.cs" />
     <Compile Include="GenerateDaoAssemblyEventArgs.cs" />
@@ -187,8 +191,19 @@
     <EmbeddedResource Include="Templates\XrefRightProperty.tmpl" />
     <None Include="packages.config" />
     <EmbeddedResource Include="Templates\Dto.tmpl" />
+    <EmbeddedResource Include="Templates\SchemaRepository.tmpl" />
+    <EmbeddedResource Include="Templates\SchemaRepositoryMethods.tmpl" />
+    <EmbeddedResource Include="Templates\SchemaRepositoryAddType.tmpl" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Bam.Net.Analytics\Bam.Net.Analytics.csproj">
+      <Project>{67cca5a4-9b97-444c-9f4b-f464b2e04d6b}</Project>
+      <Name>Bam.Net.Analytics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.CommandLine\Bam.Net.CommandLine.csproj">
+      <Project>{ea9863a9-8e0b-4497-b7fd-abf450a3e468}</Project>
+      <Name>Bam.Net.CommandLine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Data.MSSql\Bam.Net.Data.MsSql.csproj">
       <Project>{f373eaf9-b69c-4322-9659-a53a8fb7d43f}</Project>
       <Name>Bam.Net.Data.MsSql</Name>

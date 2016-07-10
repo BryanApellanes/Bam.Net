@@ -13,13 +13,14 @@ namespace Bam.Net.Data.Repositories
 {
     public static class LuceneIndexExtensions
     {
-        public static Document ToDocument(this object instance)
+        public static Document ToDocument(this object instance, Func<object, PropertyInfo, Field> fieldCreator = null)
         {
+            fieldCreator = fieldCreator ?? CreateField;
             Document document = new Document();
             Type type = instance.GetType();
             type.GetProperties().Each(prop =>
             {
-                document.Add(CreateField(instance, prop));
+                document.Add(fieldCreator(instance, prop));
             });
             return document;
         }

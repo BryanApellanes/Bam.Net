@@ -1,0 +1,56 @@
+﻿		
+		public @(Model.FullName) GetOne@(Model.Name)Where(WhereDelegate<@(Model.Name)DaoColumns> where)
+		{
+			Type wrapperType = GetWrapperType<@(Model.FullName)>();
+			return (@(Model.FullName))@(Model.Name)Dao.GetOneWhere(where, Database).CopyAs(wrapperType, this);
+		}
+
+		public @(Model.FullName) One@(Model.Name)Where(WhereDelegate<@(Model.Name)DaoColumns> where)
+        {
+            Type wrapperType = GetWrapperType<@(Model.FullName)>();
+            return (@(Model.FullName))@(Model.Name)Dao.OneWhere(where, Database).CopyAs(wrapperType, this);
+        }
+
+		public IEnumerable<@(Model.FullName)> Top@(Model.Name.Pluralize())Where(int count, WhereDelegate<@(Model.Name)DaoColumns> where)
+        {
+            return Wrap<@(Model.FullName)>(@(Model.Name)Dao.Top(count, where, Database));
+        }
+		
+        public IEnumerable<@(Model.FullName)> @(Model.Name.Pluralize())Where(WhereDelegate<@(Model.Name)DaoColumns> where)
+        {
+            return Query<@(Model.FullName)>(where(new @(Model.Name)DaoColumns()));
+        }
+	    
+		public long Count@(Model.Name.Pluralize())()
+        {
+            return @(Model.Name)Dao.Count(Database);
+        }
+
+        public long Count@(Model.Name.Pluralize())Where(WhereDelegate<@(Model.Name)DaoColumns> where)
+        {
+            return @(Model.Name)Dao.Count(where, Database);
+        }
+        
+        public async Task BatchQuery@(Model.Name.Pluralize())(int batchSize, WhereDelegate<@(Model.Name)DaoColumns> where, Action<IEnumerable<@(Model.FullName)>> batchProcessor)
+        {
+            await @(Model.Name)Dao.BatchQuery(batchSize, where, (batch) =>
+            {
+                return Task.Run(() =>
+                {
+                    batchProcessor(Wrap<@(Model.FullName)>(batch));
+                });
+            }, Database);
+        }
+
+		
+        public async Task BatchAll@(Model.Name.Pluralize())(int batchSize, Action<IEnumerable<@(Model.FullName)>> batchProcessor)
+        {
+            await @(Model.Name)Dao.BatchAll(batchSize, (batch) =>
+            {
+                return Task.Run(() =>
+                {
+                    batchProcessor(Wrap<@(Model.FullName)>(batch));
+                });
+            }, Database);
+        }
+

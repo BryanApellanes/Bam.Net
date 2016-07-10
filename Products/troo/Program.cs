@@ -24,15 +24,16 @@ namespace troo
     class Program : CommandLineTestInterface
     {
         static string contentRoot = "ContentRoot";
-        static string defaultRoot = "C:\\BamContent";
+        static string defaultRoot = "C:\\Troo";
         static void Main(string[] args)
         {
             TrooService.SetInfo(TrooService.ServiceInfo);
-            if (!GlooService.ProcessCommandLineArgs(args))
-            {                
+            if (!TrooService.ProcessCommandLineArgs(args))
+            {
+                IsolateMethodCalls = false;             
                 AddSwitches(typeof(UtilityActions));
                 AddConfigurationSwitches();
-                ArgumentAdder.AddArguments();
+                ArgumentAdder.AddArguments(args);
 
                 Initialize(args, (a) =>
                 {
@@ -42,7 +43,6 @@ namespace troo
 
                 if (Arguments.Length > 0 && !Arguments.Contains("i"))
                 {
-                    IsolateMethodCalls = false;
                     ExecuteSwitches(Arguments, typeof(UtilityActions));
                 }
                 else if (Arguments.Contains("i"))

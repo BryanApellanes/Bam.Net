@@ -272,7 +272,7 @@ namespace Bam.Net.Data.Repositories
 		protected string GetHash()
 		{		
 			string hash = GetUuidHash();
-			if (string.IsNullOrEmpty(hash)) //TODO: review this for validity
+			if (string.IsNullOrEmpty(hash)) 
 			{
 				hash = GetIdHash();
 			}

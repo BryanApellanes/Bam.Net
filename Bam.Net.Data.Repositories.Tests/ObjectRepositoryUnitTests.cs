@@ -19,6 +19,7 @@ using Bam.Net.Data;
 using Bam.Net.Data.SQLite;
 using Bam.Net.Analytics;
 using System.Threading;
+using Bam.Net.Data.Repositories.Tests.TestDtos;
 
 namespace Bam.Net.Data.Repositories.Tests
 {

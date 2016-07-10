@@ -23,7 +23,7 @@ namespace Bam.Net.CoreServices
         }
 
         /// <summary>
-        /// The logger used to log events for the current ServiceAssemblyGenerator
+        /// The logger used to log events for the current ProxyAssemblyGenerator
         /// </summary>
         public ILogger Logger { get; set; }
         public ProxySettings ServiceSettings { get; set; }

@@ -261,7 +261,7 @@ namespace Bam.Net.Data.Repositories.Tests
 
 			foreach (IRepository repo in repos)
 			{
-				DaoBackup backup = new DaoBackup(typeof(MainObject).Assembly, source, repo);
+                DaoBackup backup = new DaoBackup(typeof(MainObject).Assembly, source, repo);
 				backup.Backup();
 				HashSet<OldToNewIdMapping> wasIs = backup.Restore(dest);
 				OutputWasIs(wasIs);
@@ -336,7 +336,13 @@ namespace Bam.Net.Data.Repositories.Tests
 				Expect.IsTrue(ternaryCheck.SecondaryObjects.Count == 1);
 			}
 		}
-
+        private static Func<Type, bool> TestDaoPredicate
+        {
+            get
+            {
+                return t => t.HasCustomAttributeOfType<TableAttribute>() && t.Namespace.Equals(typeof(MainObject).Namespace);
+            }
+        }
 		private static void CreateTestDatabases(string sourceName, string destName, out SQLiteDatabase source, out SQLiteDatabase dest)
 		{
 			source = new SQLiteDatabase(".\\{0}"._Format(sourceName), "{0}Db"._Format(sourceName));

@@ -279,18 +279,31 @@ namespace Bam.Net.Data
             return this;
         }
 
+        /// <summary>
+        /// Select count from the table for the specified type T
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public virtual SqlStringBuilder Count<T>() where T : Dao, new()
         {
             return SelectCount<T>();
         }
 
+        /// <summary>
+        /// Select count from the table for the specified type T
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public virtual SqlStringBuilder SelectCount<T>() where T : Dao, new()
         {
-			//_stringBuilder.AppendFormat("SELECT COUNT(*) FROM {0} ", TableNameFormatter(Dao.TableName(typeof(T))));
-            //return this;
 			return SelectCount(Dao.TableName(typeof(T)));
         }
 
+        /// <summary>
+        /// Select count from the specified table
+        /// </summary>
+        /// <param name="tableName"></param>
+        /// <returns></returns>
 		public virtual SqlStringBuilder Count(string tableName)
 		{
 			return SelectCount(tableName);
