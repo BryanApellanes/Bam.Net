@@ -15,7 +15,6 @@ using Newtonsoft.Json;
 
 namespace Bam.Net.Data.Schema
 {
-    // TODO: refactor this; it looks like a retarded monkey wrote this: YIKES!
     public class SchemaDefinition
     {
         Dictionary<string, Table> _tables = new Dictionary<string, Table>();

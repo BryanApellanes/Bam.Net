@@ -50,6 +50,18 @@ namespace Bam.Net.Data.Repositories
 		/// </summary>
 		public PropertyInfo ChildParentProperty { get; set; }
 
+        public override string ToString()
+        {
+            return $"PK:{PrimaryKeyType.FullName}.{PrimaryKeyProperty.Name},FK:{ForeignKeyType.FullName}.{ForeignKeyProperty.Name}";
+        }
+        public string Hash
+        {
+            get
+            {
+                return ToString().Sha1();
+            }
+        }
+
 		public override bool Equals(object obj) 
 		{
 			TypeFk compareTo = obj as TypeFk;
@@ -64,5 +76,5 @@ namespace Bam.Net.Data.Repositories
 		{
 			return PrimaryKeyType.GetHashCode() + ForeignKeyType.GetHashCode();
 		}
-	}
+    }
 }

@@ -13,7 +13,7 @@ namespace Bam.Net.Data
     /// Allows
     /// one to specify a sequence of sql statements
     /// that result in the return of potentially
-    /// multiple result sets (similar to a DataSet).
+    /// multiple result sets.
     /// </summary>
     public class QuerySet: SqlStringBuilder
     {

@@ -18,71 +18,10 @@ using System.Reflection;
 using Bam.Net.Data;
 using Bam.Net.Data.SQLite;
 using Bam.Net.Logging;
+using Bam.Net.Data.Repositories.Tests.TestDtos;
 
 namespace Bam.Net.Data.Repositories.Tests
 {
-    #region test Dtos
-    [Serializable]
-    public class TestParent
-    {
-        public long Id { get; set; }
-        public TestChild[] Childs { get; set; }
-    }
-    [Serializable]
-    public class TestChild
-    {
-        // missing foreign key to parent
-        public string Uuid { get; set; }
-    }
-
-    [Serializable]
-    public class Parent
-    {
-        public long Id { get; set; }
-        public string Uuid { get; set; }
-        public string Name { get; set; }
-        public DateTime Created { get; set; }
-        public virtual House[] Houses { get; set; } // many to many
-        public virtual Daughter[] Daughters { get; set; } //one to many
-        public virtual List<Son> Sons { get; set; }
-    }
-    [Serializable]
-    public class Daughter
-    {
-        public long Id { get; set; }
-        public string Uuid { get; set; }
-        public string Name { get; set; }
-    }
-    [Serializable]
-    public class Son
-    {
-        public long Id { get; set; }
-        public string Uuid { get; set; }
-        public string Name { get; set; }
-
-        public long ParentId { get; set; }
-        public virtual Parent Parent { get; set; }
-    }
-
-    [Serializable]
-    public class House
-    {
-        public long Id { get; set; }
-        public string Uuid { get; set; }
-        public string Name { get; set; }
-        public virtual List<Parent> Parents { get; set; } // many to many
-    }
-
-    [Serializable]
-    public class TestContainer
-    {
-        public long Id { get; set; }
-        public string Name { get; set; }
-        public int Age { get; set; }
-        public DateTime BirthDay { get; set; }
-        public virtual Parent[] Parents { get; set; }
-    }
-    #endregion
 
     [Serializable]
     public class DaoRepositoryUnitTests : CommandLineTestInterface
@@ -411,6 +350,21 @@ namespace Bam.Net.Data.Repositories.Tests
             Expect.AreEqual("Test<Parent, Daughter>", type.ToTypeString(false));
             Expect.AreEqual("Parent[]", arrayOfParent.ToTypeString(false));
         }
+
+        [UnitTest]
+        public void OutputTypesToInfoString()
+        {
+            OutLine((new Type[] { typeof(Parent), typeof(Daughter), typeof(Son) }).ToInfoString());
+        }
+
+        //[UnitTest]
+        //public void GenerateSchemaRepo()
+        //{
+        //    ConsoleLogger logger = new ConsoleLogger();
+        //    logger.StartLoggingThread();
+        //    SchemaRepositoryGenerator generator = new SchemaRepositoryGenerator(Assembly.GetExecutingAssembly(), "Bam.Net.Data.Repositories.Tests.ClrTypes", logger);
+        //    generator.GenerateSource("c:\\temp\\SchemaRepoTest", "TestDaoSchema");
+        //}
 
         protected static DaoRepository GetTestDaoRepository()
         {

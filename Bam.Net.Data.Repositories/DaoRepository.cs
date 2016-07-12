@@ -84,7 +84,7 @@ namespace Bam.Net.Data.Repositories
             }
         }
 
-        public Func<string, string> TempPathProvider
+        public Func<SchemaDefinition, TypeSchema, string> TempPathProvider
         {
             get
             {
@@ -154,9 +154,7 @@ namespace Bam.Net.Data.Repositories
         {            
             if (_daoAssembly == null)
             {
-                _daoAssembly = GenerateDaoAssembly(useExisting);               
-                _typeDaoGenerator.EmitWarnings();
-                _typeDaoGenerator.ThrowWarningsIfWarningsAsErrors();
+                _daoAssembly = GenerateDaoAssembly(useExisting);
             }
 
             Args.ThrowIfNull(Database, "Database");
@@ -449,9 +447,9 @@ namespace Bam.Net.Data.Repositories
         
 		public override IEnumerable<T> Query<T>(QueryFilter query)
 		{
-			Type pocoType = typeof(T);
+			Type pocoType = typeof(T);            
             IEnumerable daoResults = Query(pocoType, query);
-			return daoResults.CopyAs<T>();
+            return Wrap<T>(daoResults);
 		}
 
         public override IEnumerable Query(Type pocoType, QueryFilter query)
@@ -465,6 +463,15 @@ namespace Bam.Net.Data.Repositories
             }
         }
         #endregion
+
+        public IEnumerable<T> Wrap<T>(IEnumerable values) where T : new()
+        {
+            Type wrapperType = GetWrapperType<T>();
+            foreach (object value in values)
+            {
+                yield return (T)value.CopyAs(wrapperType, this);
+            }
+        }
 
         public IEnumerable<T> Top<T>(int count, QueryFilter query) where T : new()
         {
@@ -485,11 +492,17 @@ namespace Bam.Net.Data.Repositories
 		public Type GetDaoType(Type pocoType)
 		{
 			Assembly daoAssembly = EnsureDaoAssemblyAndSchema();
-            Type basePocoType = GetBaseType(pocoType);
-			Type daoType = daoAssembly.GetType("{0}.{1}Dao"._Format(_typeDaoGenerator.Namespace, basePocoType.Name));
+            Type baseType = GetBaseType(pocoType);
+			Type daoType = daoAssembly.GetType("{0}.{1}Dao"._Format(_typeDaoGenerator.Namespace, baseType.Name));
 			return daoType;
 		}
 
+        /// <summary>
+        /// Get the wrapper type for the specified developer defined 
+        /// dto of type T
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
 		public Type GetWrapperType<T>() where T : new()
 		{
 			return GetWrapperType(typeof(T));
@@ -700,8 +713,8 @@ namespace Bam.Net.Data.Repositories
 
 				foreach (object dao in daoResults)
 				{
-					Type dtoType = GetWrapperType<TChildType>();
-					TChildType value = dtoType.Construct<TChildType>(this);
+					Type wrapperType = GetWrapperType<TChildType>();
+					TChildType value = wrapperType.Construct<TChildType>(this);
 					value.CopyProperties(dao);
 					results.Add(value);
 				}

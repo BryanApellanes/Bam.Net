@@ -112,7 +112,7 @@ namespace Bam.Net.Data.Repositories
             TypeSchema typeSchema = CreateTypeSchema(types);
             FireEvent(CreatingTypeSchemaFinished, EventArgs.Empty);
 
-            schemaName = schemaName ?? string.Format("_{0}_", typeSchema.Tables.ToArray().ToDelimited(t => t.FullName, ", ").Md5());            
+            schemaName = schemaName ?? string.Format("_{0}_", typeSchema.Hash);
             _schemaManager.SetSchema(schemaName, false);
             SchemaName = schemaName;
 
@@ -133,7 +133,7 @@ namespace Bam.Net.Data.Repositories
             return CreateTypeSchema((IEnumerable<Type>)types);
         }
 
-        protected internal TypeSchema CreateTypeSchema(IEnumerable<Type> types)
+        public TypeSchema CreateTypeSchema(IEnumerable<Type> types)
         {
             HashSet<Type> tableTypes = new HashSet<Type>();
             HashSet<TypeFk> foreignKeyTypes = new HashSet<TypeFk>();

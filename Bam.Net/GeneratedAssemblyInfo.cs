@@ -24,27 +24,27 @@ namespace Bam.Net
 
 		public GeneratedAssemblyInfo()
 		{
-			this.Root = ".\\";
+			Root = ".\\";
 		}
 
 		public GeneratedAssemblyInfo(string infoFileName)
 			: this()
 		{
-			this.InfoFileName = infoFileName;
+			InfoFileName = infoFileName;
 		}
 
-		public GeneratedAssemblyInfo(string infoFileName, CompilerResults compilerResults)
-			: this(infoFileName)
-		{
-			if (compilerResults.Errors != null &&
-				compilerResults.Errors.Count > 0)
-			{
-				throw new CompilationException(compilerResults);
-			}
+        public GeneratedAssemblyInfo(string infoFileName, CompilerResults compilerResults)
+            : this(infoFileName)
+        {
+            if (compilerResults.Errors != null &&
+                compilerResults.Errors.Count > 0)
+            {
+                throw new CompilationException(compilerResults);
+            }
 
-			this.AssemblyFilePath = new FileInfo(compilerResults.PathToAssembly).FullName;
-			this.Assembly = compilerResults.CompiledAssembly;
-		}
+            AssemblyFilePath = new FileInfo(compilerResults.PathToAssembly).FullName;
+            Assembly = compilerResults.CompiledAssembly;
+        }
 
 		public string InfoFileName { get; set; }
 		

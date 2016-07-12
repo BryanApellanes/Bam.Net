@@ -60,7 +60,7 @@ namespace Bam.Net.Data
                 if (!string.IsNullOrEmpty(SchemaAssemblyPath))
                 {
                     assembly = Assembly.LoadFrom(SchemaAssemblyPath);
-                    context = assembly.GetType(SchemaContext); // TODO: this should be tested;  if the assembly path is specified only the namespace qualified name should be necessary
+                    context = assembly.GetType(SchemaContext); 
                     if (context == null)
                     {
                         context = assembly.GetTypes().Where(t => t.AssemblyQualifiedName.Equals(SchemaContext)).FirstOrDefault();

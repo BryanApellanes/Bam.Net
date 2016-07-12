@@ -11,5 +11,5 @@ using System.Data.Common;
 
 namespace Bam.Net.Data
 {
-    public delegate IQueryFilter WhereDelegate<C>(C where) where C : IQueryFilter, IFilterToken, new();
+    public delegate QueryFilter WhereDelegate<C>(C where) where C : IQueryFilter, IFilterToken, new();
 }

@@ -532,6 +532,18 @@ namespace @Namespace
 		}
 
 		/// <summary>
+		/// Return the count of @(Model.ClassName.Pluralize())
+		/// </summary>
+		public static long Count(Database database = null)
+        {
+			Database db = database ?? Db.For<@(Model.ClassName)>();
+            QuerySet query = GetQuerySet(db);
+            query.Count<@(Model.ClassName)>();
+            query.Execute(db);
+            return (long)query.Results[0].DataRow[0];
+        }
+
+		/// <summary>
 		/// Execute a query and return the number of results
 		/// </summary>
 		/// <param name="where">A WhereDelegate that recieves a @(Model.ClassName)Columns 

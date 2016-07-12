@@ -12,6 +12,44 @@ namespace Bam.Net
 {
     public static class ReflectionExtensions
     {
+        public static string ToInfoHash(this IEnumerable<Type> types, HashAlgorithms algorithm = HashAlgorithms.SHA1, Encoding encoding = null)
+        {
+            return types.ToInfoString().Hash(algorithm, encoding);
+        }
+
+        public static string ToInfoString(this IEnumerable<Type> types)
+        {
+            StringBuilder output = new StringBuilder();
+            types.Each(type =>
+            {
+                output.AppendLine(type.ToInfoString());
+            });
+
+            return output.ToString();
+        }
+
+        public static string ToInfoHash(this Type type, HashAlgorithms algorithm = HashAlgorithms.SHA1, Encoding encoding = null)
+        {
+            return type.ToInfoString().Hash(algorithm, encoding);
+        }
+
+        public static string ToInfoString(this Type type)
+        {
+            StringBuilder output = new StringBuilder();
+            output.AppendLine($"{type.FullName}");
+            List<PropertyInfo> props = new List<PropertyInfo>(type.GetProperties());
+            props.Sort((p1, p2) => p1.Name.CompareTo(p2.Name));
+            props.Each(pi =>
+            {
+                output.AppendLine($"\t{pi.ToInfoString()}");
+            });
+            return output.ToString();
+        }
+
+        public static string ToInfoString(this PropertyInfo prop)
+        {
+            return $"{{{prop.Name}:{prop.PropertyType.ToTypeString(false)}}}";
+        }
         /// <summary>
         /// Invoke the specified static method of the 
         /// specified (extension method "current") type

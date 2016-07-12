@@ -159,9 +159,9 @@ namespace Bam.Net.Data
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="builder"></param>
-        public virtual void ExecuteSql<T>(SqlStringBuilder builder) where T : Dao
+        public virtual void ExecuteSql<T>(SqlStringBuilder builder) where T : Dao 
         {
-            Database db = Db.For<T>();
+            Database db = Db.For<T>(); // TODO: review this.  It seems stupid to get the database when we ARE a database
             ExecuteSql(builder, db.ServiceProvider.Get<IParameterBuilder>());
         }
 

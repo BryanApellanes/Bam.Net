@@ -9,9 +9,10 @@ namespace troo
 {
     internal class ArgumentAdder: CommandLineInterface
     {
-        internal static void AddArguments()
+        internal static void AddArguments(string[] args)
         {
             AddUtilityArguments();
+            ParseArgs(args);
         }
 
         private static void AddUtilityArguments()
@@ -20,7 +21,7 @@ namespace troo
             AddValidArgument("schemaName", false, addAcronym: true, description: "The name to use for the generated schema");
             AddValidArgument("fromNameSpace", false, addAcronym: true, description: "The namespace containing types to generate daos for");
             AddValidArgument("toNameSpace", false, addAcronym: true, description: "The namespace to write generated daos into");
-            AddValidArgument("copyTo", false, addAcronym: true, description: "Copy the resulting assembly to the specified directory");
+            AddValidArgument("writeTo", false, addAcronym: true, description: "Copy the resulting assembly to the specified directory");
         }
     }
 }

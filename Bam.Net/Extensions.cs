@@ -168,11 +168,11 @@ namespace Bam.Net
             return result;
         }
 
-        public static IEnumerable<object> CopyAs(this IEnumerable enumerable, Type type)
+        public static IEnumerable<object> CopyAs(this IEnumerable enumerable, Type type, params object[] ctorParams)
         {
             foreach (object o in enumerable)
             {
-                yield return o.CopyAs(type);         
+                yield return o.CopyAs(type, ctorParams);         
             }
         }
 
@@ -201,9 +201,9 @@ namespace Bam.Net
         /// <param name="source"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static object CopyAs(this object source, Type type)
+        public static object CopyAs(this object source, Type type, params object[] ctorParams)
         {
-            object result = type.Construct();
+            object result = type.Construct(ctorParams);
             result.CopyProperties(source);
             return result;
         }

@@ -21,13 +21,13 @@ namespace troo
     public class ConsoleActions : CommandLineTestInterface
     {
         static string contentRoot = "ContentRoot";
-        static string defaultRoot = "C:\\BamContent";
+        static string defaultRoot = "C:\\Troo";
         static TrooServer trooServer;
 
         [ConsoleAction]
         public void StartConsole()
         {
-            CreateTrooServer(GetLogger(), GetRepository());
+            StartTrooServer(GetLogger(), GetRepository());
             Pause("Troo is running");
         }
 
@@ -45,7 +45,7 @@ namespace troo
             }
         }
 
-        public static void CreateTrooServer(ConsoleLogger logger, IRepository repo)
+        public static void StartTrooServer(ConsoleLogger logger, IRepository repo)
         {
             BamConf conf = BamConf.Load(DefaultConfiguration.GetAppSetting(contentRoot).Or(defaultRoot));
             trooServer = new TrooServer(conf, logger, repo);

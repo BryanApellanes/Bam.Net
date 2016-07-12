@@ -19,6 +19,10 @@ namespace Bam.Net.Data.Repositories
     /// </summary>
     public class TypeXref
     {
+        public TypeXref()
+        {
+            TableNameProvider = new DaoSuffixTypeTableNameProvider();
+        }
         public Type Left { get; set; }
         public Type Right { get; set; }
 
@@ -32,11 +36,26 @@ namespace Bam.Net.Data.Repositories
 			set;
 		}
 
+        public ITypeTableNameProvider TableNameProvider { get; set; }
+
         public string LeftDaoName
         {
             get
             {
-                return TypeSchemaGenerator.GetTableNameForType(Left);
+                return TypeSchemaGenerator.GetTableNameForType(Left, TableNameProvider);
+            }
+        }
+
+        public override string ToString()
+        {
+            return $"Left:{Left.FullName}.{LeftCollectionProperty.Name},Right:{Right.FullName}.{RightCollectionProperty.Name}";
+        }
+
+        public string Hash
+        {
+            get
+            {
+                return ToString().Sha1();
             }
         }
 
@@ -54,7 +73,7 @@ namespace Bam.Net.Data.Repositories
         {
             get
             {
-                return TypeSchemaGenerator.GetTableNameForType(Right);
+                return TypeSchemaGenerator.GetTableNameForType(Right, TableNameProvider);
             }
         }
 

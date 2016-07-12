@@ -170,7 +170,7 @@ namespace Bam.Net.ServiceProxy
                             JsonParams = jsonParams;
                         }
                     }
-                    else if (InputString.StartsWith("{")) // TODO: this should be reviewed for validity
+                    else if (InputString.StartsWith("{")) // TODO: this should be reviewed for validity, check Content/Type
                     {
                         JsonParams = InputString;
                     }

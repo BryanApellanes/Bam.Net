@@ -12,6 +12,7 @@ using Bam.Net.Data.Repositories;
 
 namespace Bam.Net.Caching
 {
+    // TODO: remove the use of _evictionLock in favor of copy update replace
 	public class Cache: Loggable
 	{
 		object _evictionLock = new object();
@@ -127,7 +128,11 @@ namespace Bam.Net.Caching
 		{
 			lock (_evictionLock)
 			{
-				HashSet<CacheItem> results = new HashSet<CacheItem>(Items.Where(ci => predicate(ci.Value)).ToList());
+                // TODO: do this in one pass
+                // ItemsCopy = new HashSet(Items.ToArray());
+                // ItemsCopy.Each(if(predicate.Value) add to results and increment hits else increment misses)
+                // Items = ItemsCopy
+                HashSet<CacheItem> results = new HashSet<CacheItem>(Items.Where(ci => predicate(ci.Value)).ToList());
 				Items.Each(new { Hits = results }, (ctx, ci) =>
 				{
 					if (!ctx.Hits.Contains(ci))
@@ -356,6 +361,7 @@ namespace Bam.Net.Caching
 
 		private void SetCollections()
 		{
+            // TODO: use copy update replace
 			ItemsByHits = new List<CacheItem>(Items);
 			ItemsByHits.Sort((x, y) => y.Hits.CompareTo(x.Hits));
 			ItemsByMisses = new List<CacheItem>(Items);
