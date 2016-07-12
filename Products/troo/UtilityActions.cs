@@ -69,22 +69,11 @@ namespace troo
 
         private static GenerationInfo GetGenerationInfo()
         {
-            GenerationInfo result = null;
-            //if (LastGenerationInfo.Exists)
-            //{
-            //    result = LastGenerationInfo.FromJson<GenerationInfo>();
-            //    OutLine(result.PropertiesToString());
-            //    if(Confirm("Use previous configuration?"))
-            //    {
-            //        return result;
-            //    }
-            //}
             Assembly typeAssembly = Assembly.LoadFrom(GetArgument("typeAssembly", "Please enter the path to the assembly containing the types to generate daos for"));
             string schemaName = GetArgument("schemaName", "Please enter the schema name to use").Replace(".", "_");
             string fromNameSpace = GetArgument("fromNameSpace", "Please enter the namespace containing the types to generate daos for");
             string toNameSpace = $"{fromNameSpace}._Dao_";
-            result = new GenerationInfo { Assembly = typeAssembly, SchemaName = schemaName, FromNameSpace = fromNameSpace, ToNameSpace = toNameSpace };
-            result.ToJsonFile(LastGenerationInfo);
+            GenerationInfo result = new GenerationInfo { Assembly = typeAssembly, SchemaName = schemaName, FromNameSpace = fromNameSpace, ToNameSpace = toNameSpace };           
             return result;
         }
     }

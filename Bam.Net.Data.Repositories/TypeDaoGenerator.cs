@@ -51,7 +51,7 @@ namespace Bam.Net.Data.Repositories
             Args.ThrowIfNull(typeAssembly, "typeAssembly");
             AddTypes(typeAssembly.GetTypes().Where(t => t.Namespace != null && t.Namespace.Equals(nameSpace) && !t.IsAbstract));
         }
-
+        
         public bool AddAuditFields { get; set; }
 
         public bool IncludeModifiedBy { get; set; }
@@ -322,7 +322,7 @@ namespace Bam.Net.Data.Repositories
         /// Generate source code for the current set of types
         /// </summary>
         /// <param name="writeSourceTo"></param>
-        public void GenerateSource(string writeSourceTo)
+        public virtual void GenerateSource(string writeSourceTo)
         {
             EmitWarnings();
             ThrowWarningsIfWarningsAsErrors();
