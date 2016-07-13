@@ -35,10 +35,7 @@
         {
             await @(Model.Name)Dao.BatchQuery(batchSize, where, (batch) =>
             {
-                return Task.Run(() =>
-                {
-                    batchProcessor(Wrap<@(Model.FullName)>(batch));
-                });
+				batchProcessor(Wrap<@(Model.FullName)>(batch));
             }, Database);
         }
 
@@ -47,10 +44,7 @@
         {
             await @(Model.Name)Dao.BatchAll(batchSize, (batch) =>
             {
-                return Task.Run(() =>
-                {
-                    batchProcessor(Wrap<@(Model.FullName)>(batch));
-                });
+				batchProcessor(Wrap<@(Model.FullName)>(batch));
             }, Database);
         }
 

@@ -3,6 +3,7 @@
 */
 // Model is Table
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
@@ -253,7 +254,7 @@ namespace Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_
 			return results;
 		}
 
-		public static async Task BatchAll(int batchSize, Func<ParentDaoCollection, Task> batchProcessor, Database database = null)
+		public static async Task BatchAll(int batchSize, Action<IEnumerable<ParentDao>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
@@ -262,19 +263,22 @@ namespace Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await batchProcessor(results);
+                    await Task.Run(() =>
+                    {
+                        batchProcessor(results);
+                    });
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
 				}
 			});			
 		}	 
 
-		public static async Task BatchQuery(int batchSize, QueryFilter filter, Func<ParentDaoCollection, Task> batchProcessor, Database database = null)
+		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<ParentDao>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
 
-		public static async Task BatchQuery(int batchSize, WhereDelegate<ParentDaoColumns> where, Func<ParentDaoCollection, Task> batchProcessor, Database database = null)
+		public static async Task BatchQuery(int batchSize, WhereDelegate<ParentDaoColumns> where, Action<IEnumerable<ParentDao>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
@@ -283,7 +287,10 @@ namespace Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await batchProcessor(results);
+                    await Task.Run(() =>
+                    {
+                        batchProcessor(results);
+                    });
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (ParentDaoColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
 				}

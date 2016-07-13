@@ -170,10 +170,7 @@ namespace Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_
         {
             await ParentDao.BatchQuery(batchSize, where, (batch) =>
             {
-                return Task.Run(() =>
-                {
-                    batchProcessor(Wrap<Bam.Net.Data.Repositories.Tests.ClrTypes.Parent>(batch));
-                });
+                batchProcessor(Wrap<Bam.Net.Data.Repositories.Tests.ClrTypes.Parent>(batch));
             }, Database);
         }
 
@@ -182,10 +179,7 @@ namespace Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_
         {
             await ParentDao.BatchAll(batchSize, (batch) =>
             {
-                return Task.Run(() =>
-                {
-                    batchProcessor(Wrap<Bam.Net.Data.Repositories.Tests.ClrTypes.Parent>(batch));
-                });
+                batchProcessor(Wrap<Bam.Net.Data.Repositories.Tests.ClrTypes.Parent>(batch));
             }, Database);
         }﻿		
 		public Bam.Net.Data.Repositories.Tests.ClrTypes.Son GetOneSonWhere(WhereDelegate<SonDaoColumns> where)

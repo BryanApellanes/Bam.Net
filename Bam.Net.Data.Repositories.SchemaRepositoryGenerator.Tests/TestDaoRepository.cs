@@ -41,15 +41,12 @@ namespace Bam.Net.Data.Repositories.Tests
         {
             return ParentDao.Count(where, Database);
         }
-        //public static async Task BatchQuery(int batchSize, WhereDelegate<ParentDaoColumns> where, Func<ParentDaoCollection, Task> batchProcessor, Database database = null)
+        
         public async Task BatchQueryParents(int batchSize, WhereDelegate<ParentDaoColumns> where, Action<IEnumerable<ClrTypes.Parent>> batchProcessor)
         {
             await ParentDao.BatchQuery(batchSize, where, (batch) =>
             {
-                return Task.Run(() =>
-                {
-                    batchProcessor(Wrap<ClrTypes.Parent>(batch));
-                });
+                batchProcessor(Wrap<ClrTypes.Parent>(batch));
             }, Database);
         }
 
@@ -57,10 +54,7 @@ namespace Bam.Net.Data.Repositories.Tests
         {
             await ParentDao.BatchAll(batchSize, (batch) =>
             {
-                return Task.Run(() =>
-                {
-                    batchProcessor(Wrap<ClrTypes.Parent>(batch));
-                });
+                batchProcessor(Wrap<ClrTypes.Parent>(batch));
             }, Database);
         }
 

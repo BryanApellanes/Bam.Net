@@ -19,16 +19,18 @@ using System.Linq.Expressions;
 using Bam.Net.Javascript;
 using System.Threading;
 using Bam.Net.Razor;
+using Bam.Net.Configuration;
 
 namespace Bam.Net.Data.Schema
 {
     [Proxy("dbm")]
-    public class SchemaManager
+    public class SchemaManager: IHasSchemaTempPathProvider
     {
         public SchemaManager()
         {
             this.PreColumnAugmentations = new List<SchemaManagerAugmentation>();
             this.PostColumnAugmentations = new List<SchemaManagerAugmentation>();
+            SchemaTempPathProvider = sd => RuntimeSettings.AppDataFolder;
         }
 
         public SchemaManager(string schemaFilePath)
@@ -46,6 +48,8 @@ namespace Bam.Net.Data.Schema
         {
             this.ManageSchema(schema);
         }
+
+        public Func<SchemaDefinition, string> SchemaTempPathProvider { get; set; }  //TODO: wire this up
 
         SchemaDefinition _currentSchema;
         object _currentSchemaLock = new object();
@@ -142,7 +146,7 @@ namespace Bam.Net.Data.Schema
 
         private static string SchemaNameToFilePath(string schemaName)
         {
-            string schemaFile = Path.Combine(AppDataFolder, "{0}.json"._Format(schemaName));
+            string schemaFile = Path.Combine(RuntimeSettings.AppDataFolder, "{0}.json"._Format(schemaName));
             return schemaFile;
         }
 
@@ -886,20 +890,20 @@ namespace Bam.Net.Data.Schema
             return generator;
         }
 
-        public static string AppDataFolder
-        {
-            get
-            {
-                if (HttpContext.Current == null)
-                {
-                    return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-                }
-                else
-                {
-                    return HttpContext.Current.Server.MapPath("~/App_Data/");
-                }
-            }
-        }
+        //public static string AppDataFolder
+        //{
+        //    get
+        //    {
+        //        if (HttpContext.Current == null)
+        //        {
+        //            return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        //        }
+        //        else
+        //        {
+        //            return HttpContext.Current.Server.MapPath("~/App_Data/");
+        //        }
+        //    }
+        //}
 
     }
 }

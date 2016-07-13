@@ -88,11 +88,11 @@ namespace Bam.Net.Data.Repositories
         {
             get
             {
-                return _typeDaoGenerator.TempPathProvider;
+                return _typeDaoGenerator.TypeSchemaTempPathProvider;
             }
             set
             {
-                _typeDaoGenerator.TempPathProvider = value;
+                _typeDaoGenerator.TypeSchemaTempPathProvider = value;
             }
         }
 

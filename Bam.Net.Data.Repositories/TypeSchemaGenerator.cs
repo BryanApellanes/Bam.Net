@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Bam.Net.Configuration;
 using Bam.Net.Data.Schema;
 using Bam.Net.Logging;
 
@@ -15,15 +16,16 @@ namespace Bam.Net.Data.Repositories
     /// a class that provides database schema like relationships
 	/// for CLR types.
     /// </summary>
-    public class TypeSchemaGenerator : Loggable
+    public class TypeSchemaGenerator : Loggable, IHasTypeSchemaTempPathProvider
     {
         UuidSchemaManager _schemaManager;
         ITypeTableNameProvider _tableNameProvider;
-        public TypeSchemaGenerator(ITypeTableNameProvider tableNameProvider = null)
+        public TypeSchemaGenerator(ITypeTableNameProvider tableNameProvider = null, Func<SchemaDefinition, TypeSchema, string> schemaTempPathProvider = null)
         {
-            this._schemaManager = new UuidSchemaManager();
-            this.DefaultDataTypeBehavior = DefaultDataTypeBehaviors.Exclude;
-            this._tableNameProvider = tableNameProvider ?? new DaoSuffixTypeTableNameProvider();
+            DefaultDataTypeBehavior = DefaultDataTypeBehaviors.Exclude;
+            TypeSchemaTempPathProvider = schemaTempPathProvider ?? ((sd, ts) => RuntimeSettings.AppDataFolder);
+            _schemaManager = new UuidSchemaManager();            
+            _tableNameProvider = tableNameProvider ?? new DaoSuffixTypeTableNameProvider();
         }
 
         public ITypeTableNameProvider TableNameProvider
@@ -37,6 +39,8 @@ namespace Bam.Net.Data.Repositories
                 _tableNameProvider = value;
             }
         }
+
+        public Func<SchemaDefinition, TypeSchema, string> TypeSchemaTempPathProvider { get; set; }
 
         /// <summary>
         /// The event that fires when schema creation begins
@@ -113,7 +117,7 @@ namespace Bam.Net.Data.Repositories
             FireEvent(CreatingTypeSchemaFinished, EventArgs.Empty);
 
             schemaName = schemaName ?? string.Format("_{0}_", typeSchema.Hash);
-            _schemaManager.SetSchema(schemaName, false);
+            _schemaManager.SetSchema(schemaName, false); //TODO: enable more granular manipulation of schema file path in schema manager by giving it a PathProvider property
             SchemaName = schemaName;
 
             FireEvent(WritingDaoSchemaStarted, EventArgs.Empty);
