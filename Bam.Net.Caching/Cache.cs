@@ -9,17 +9,16 @@ using System.Threading.Tasks;
 using System.Threading;
 using Bam.Net.Logging;
 using Bam.Net.Data.Repositories;
+using System.Collections.Concurrent;
 
 namespace Bam.Net.Caching
 {
-    // TODO: remove the use of _evictionLock in favor of copy update replace
 	public class Cache: Loggable
 	{
-		object _evictionLock = new object();
 		bool _keepGrooming;
 		Thread _groomerThread;
 		AutoResetEvent _groomerSignal;
-		Queue<CacheItem> _evictionQueue;
+		ConcurrentQueue<CacheItem> _evictionQueue;
 		
 		public Cache() : this(true) { }
 
@@ -44,7 +43,7 @@ namespace Bam.Net.Caching
 
 			this._keepGrooming = true;
 			this._groomerSignal = new AutoResetEvent(false);
-			this._evictionQueue = new Queue<CacheItem>();
+			this._evictionQueue = new ConcurrentQueue<CacheItem>();
 			
 			if (groomInBackground)
 			{
@@ -61,94 +60,122 @@ namespace Bam.Net.Caching
 
 		public int MaxBytes { get; set; }			
 
-		public CacheItem Retrieve(long id)
-		{
-			lock(_evictionLock)
-			{
-				CacheItem result = null;
-				if (ItemsById.ContainsKey(id))
-				{
-					result = ItemsById[id];
-					result.IncrementHits();
-				}
-				return result;
-			}			
-		}
+        public CacheItem Retrieve(object instance)
+        {
+            Meta meta = MetaProvider.GetMeta(instance);
+            return Retrieve(meta.Uuid);
+        }
 
-		public CacheItem Retrieve(string uuid)
-		{
-			lock (_evictionLock)
-			{
-				CacheItem result = null;
-				if (ItemsByUuid.ContainsKey(uuid))
-				{
-					result = ItemsByUuid[uuid];
-					result.IncrementHits();
-				}
+        public CacheItem Retrieve(long id)
+        {
+            CacheItem result = null;
+            if(ItemsById.TryGetValue(id, out result))
+            {
+                result.IncrementHits();
+            }
+            return result;
+        }
 
-				return result;
-			}
-		}
+        public CacheItem Retrieve(string uuid)
+        {
+            CacheItem result = null;
+            if (ItemsByUuid.TryGetValue(uuid, out result))
+            {
+                result.IncrementHits();
+            }
 
-		public virtual CacheItem Add(object value)
-		{
-			lock (_evictionLock)
-			{
-				CacheItem item = new CacheItem(value, MetaProvider);				
-				Items.Add(item);
-				SetCollections();
-				_groomerSignal.Set();
-				return item;
-			}
-		}
+            return result;
+        }
 
-		public virtual List<CacheItem> Add(IEnumerable<object> values)
+        public virtual CacheItem Add(object value)
+        {
+            HashSet<CacheItem> itemsCopy = new HashSet<CacheItem>(Items);
+            CacheItem item = new CacheItem(value, MetaProvider);
+            itemsCopy.Add(item);
+            Items = itemsCopy;
+            SetCollections();
+            _groomerSignal.Set();
+            return item;
+        }
+
+		public virtual IEnumerable<CacheItem> Add(IEnumerable<object> values)
 		{
 			return Add(values.ToArray());
 		}
 
-		public virtual List<CacheItem> Add(params object[] values)
-		{
-			lock(_evictionLock)
-			{
-				List<CacheItem> results = new List<CacheItem>();
-				foreach (object value in values)
-				{
-					CacheItem item = new CacheItem(value, MetaProvider);
-					Items.Add(item);
-					results.Add(item);
-				}
-				SetCollections();
-				_groomerSignal.Set();
-				return results;
-			}
-		}
+        /// <summary>
+        /// Add each of the specified values to the queue yielding the
+        /// resulting CacheItems
+        /// </summary>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        public virtual IEnumerable<CacheItem> Add(params object[] values)
+        {
+            List<CacheItem> results = new List<CacheItem>();
+            HashSet<CacheItem> itemsCopy = new HashSet<CacheItem>(Items);
+            foreach (object value in values)
+            {
+                CacheItem item = new CacheItem(value, MetaProvider);
+                itemsCopy.Add(item);
+                yield return item;
+            }
+            Items = itemsCopy;
+            SetCollections();
+            _groomerSignal.Set();
+        }
 
-		public IEnumerable<object> Query(Predicate<object> predicate)
-		{
-			lock (_evictionLock)
-			{
-                // TODO: do this in one pass
-                // ItemsCopy = new HashSet(Items.ToArray());
-                // ItemsCopy.Each(if(predicate.Value) add to results and increment hits else increment misses)
-                // Items = ItemsCopy
-                HashSet<CacheItem> results = new HashSet<CacheItem>(Items.Where(ci => predicate(ci.Value)).ToList());
-				Items.Each(new { Hits = results }, (ctx, ci) =>
-				{
-					if (!ctx.Hits.Contains(ci))
-					{
-						ci.IncrementMisses();
-					}
-					else
-					{
-						ci.IncrementHits();
-					}
-				});
-				return results;
-			}
-		}
+        public IEnumerable<CacheItem> Query(Predicate<object> predicate)
+        {
+            HashSet<CacheItem> itemsCopy = new HashSet<CacheItem>(Items);
+            foreach(CacheItem ci in itemsCopy)
+            {
+                if (predicate(ci.Value))
+                {
+                    ci.IncrementHits();
+                    yield return ci;
+                }
+                else
+                {
+                    ci.IncrementMisses();
+                }
+            }
+        }
 
-		[Verbosity(VerbosityLevel.Information, MessageFormat="Evicted ({LastEvictionCount}) items from cache named {Name}")]
+        public IEnumerable<CacheItem> Query(Func<CacheItem, bool> predicate)
+        {
+            HashSet<CacheItem> itemsCopy = new HashSet<CacheItem>(Items);
+            foreach (CacheItem ci in itemsCopy)
+            {
+                if (predicate(ci))
+                {
+                    ci.IncrementHits();
+                    yield return ci;
+                }
+                else
+                {
+                    ci.IncrementMisses();
+                }
+            }
+        }
+
+        public IEnumerable<T> Query<T>(Func<T, bool> predicate)
+        {
+            HashSet<CacheItem> itemsCopy = new HashSet<CacheItem>(Items);
+            foreach(CacheItem ci in itemsCopy)
+            {
+                if (predicate((T)ci.Value))
+                {
+                    ci.IncrementHits();
+                    yield return (T)ci.Value;
+                }
+                else
+                {
+                    ci.IncrementMisses();
+                }
+            }
+        }
+
+        [Verbosity(VerbosityLevel.Information, MessageFormat="Evicted ({LastEvictionCount}) items from cache named {Name}")]
 		public event EventHandler Evicted;
 
 		public int LastEvictionCount
@@ -167,7 +194,8 @@ namespace Bam.Net.Caching
 		{
 			get
 			{
-				return Items.Select(c => c.MemorySize).Sum();
+                HashSet<CacheItem> itemsCopy = new HashSet<CacheItem>(Items);
+				return itemsCopy.Select(c => c.MemorySize).Sum();
 			}
 		}
 
@@ -217,8 +245,11 @@ namespace Bam.Net.Caching
 					{
 						while (_evictionQueue.Count > 0)
 						{
-							CacheItem item = _evictionQueue.Dequeue();
-							Evict(item);
+                            CacheItem item;
+                            if(_evictionQueue.TryDequeue(out item))
+                            {
+                                Evict(item);
+                            }
 						}
 					}
 				}
@@ -254,70 +285,79 @@ namespace Bam.Net.Caching
 			Evict(Retrieve(uuid));
 		}
 
-		public void Evict(CacheItem item)
-		{
-			if (Items.Contains(item))
-			{
-				lock (_evictionLock)
-				{
-					Items.Remove(item);
-					SetCollections();
-				}
-				
-				FireEvent(Evicted, new CacheEventArgs { Cache = this, RemovedItems = new CacheItem[] { item } });
-			}
-		}
-	
-		/// <summary>
-		/// Remove the specified number of entries from the end of 
-		/// the Cache; all entries are sorted descending by hits
-		/// </summary>
-		/// <param name="count"></param>
-		public void Evict(int count)
-		{
-			HashSet<CacheItem> removed = new HashSet<CacheItem>();
-			lock(_evictionLock)
-			{
-				LastEvictionCount = count > Items.Count ? Items.Count : count;
-				int firstCount = Items.Count - count;				
-				if (firstCount < 0)
-				{
-					removed = Items;
-					Items = new HashSet<CacheItem>();
-				}
-				else
-				{
-					HashSet<CacheItem> tempItems = new HashSet<CacheItem>();
-					for (int i = 0; i < firstCount; i++)
-					{
-						tempItems.Add(ItemsByHits[i]);
-					}
-					for(int i = firstCount; i < Items.Count; i++)
-					{
-						removed.Add(ItemsByHits[i]);
-					}
-					Items = tempItems;
-				}
+        public void Evict(CacheItem item)
+        {
+            HashSet<CacheItem> itemsCopy = new HashSet<CacheItem>(Items.Where(ci => !ci.Equals(item)));
+            Items = itemsCopy;
+            SetCollections();
 
-				SetCollections();
-			}
+            FireEvent(Evicted, new CacheEventArgs { Cache = this, RemovedItems = new CacheItem[] { item } });
+        }
 
-			FireEvent(Evicted, new CacheEventArgs { Cache = this, RemovedItems = removed.ToArray() });
-		}
+        /// <summary>
+        /// Remove the specified number of entries from the end of 
+        /// the Cache; all entries are sorted descending by hits
+        /// </summary>
+        /// <param name="count"></param>
+        public void Evict(int count)
+        {
+            HashSet<CacheItem> removed = new HashSet<CacheItem>();
+            HashSet<CacheItem> itemsCopy = new HashSet<CacheItem>(Items);
+
+            LastEvictionCount = count > itemsCopy.Count ? Items.Count : count;
+            int firstCount = itemsCopy.Count - count;
+            if (firstCount < 0)
+            {
+                removed = new HashSet<CacheItem>(itemsCopy);
+                itemsCopy = new HashSet<CacheItem>();
+            }
+            else
+            {
+                for (int i = 0; i < firstCount; i++)
+                {
+                    itemsCopy.Add(ItemsByHits[i]);
+                }
+                for (int i = firstCount; i < itemsCopy.Count; i++)
+                {
+                    removed.Add(ItemsByHits[i]);
+                }
+            }
+
+            Items = itemsCopy;
+            SetCollections();
+            FireEvent(Evicted, new CacheEventArgs { Cache = this, RemovedItems = removed.ToArray() });
+        }
 
 		public void Evict(Func<object, bool> predicate)
 		{
-			List<CacheItem> removed = new List<CacheItem>();
-			lock(_evictionLock)
-			{
-				removed = Items.Where(ci => predicate(ci.Value)).ToList();
-				LastEvictionCount = Items.RemoveWhere(ci => predicate(ci.Value));
-				SetCollections();
-			}
+            HashSet<CacheItem> itemsCopy = new HashSet<CacheItem>(Items);
+            HashSet<CacheItem> kept = new HashSet<CacheItem>();
+            List<CacheItem> removed = new List<CacheItem>();
+            itemsCopy.Each(new { Removed = removed, Kept = kept }, (ctx, ci) =>
+            {
+                if (predicate(ci.Value))
+                {
+                    ctx.Removed.Add(ci);
+                }
+                else
+                {
+                    ctx.Kept.Add(ci);
+                }
+            });
+            LastEvictionCount = removed.Count();
+            Items = kept;
+            SetCollections();
 
 			FireEvent(Evicted, new CacheEventArgs { Cache = this, RemovedItems = removed.ToArray() });
 		}
 
+        /// <summary>
+        /// Get the count of items at the tail of the 
+        /// cache that can be evicted if any.  This value is
+        /// determined by comparing the ammount of memory used
+        /// by the cache vs the MaxBytes property value
+        /// </summary>
+        /// <returns></returns>
 		protected int GetEvictableTailCount()
 		{
 			int maxBytes = MaxBytes;
@@ -361,13 +401,21 @@ namespace Bam.Net.Caching
 
 		private void SetCollections()
 		{
-            // TODO: use copy update replace
-			ItemsByHits = new List<CacheItem>(Items);
-			ItemsByHits.Sort((x, y) => y.Hits.CompareTo(x.Hits));
-			ItemsByMisses = new List<CacheItem>(Items);
-			ItemsByMisses.Sort((x, y) => x.Misses.CompareTo(y.Misses));
-			ItemsById = Items.ToDictionary(ci => ci.Id);
-			ItemsByUuid = Items.ToDictionary(ci => ci.Uuid);
-		}
-	}
+			List<CacheItem> itemsByHits = new List<CacheItem>(Items);
+            itemsByHits.Sort((x, y) => y.Hits.CompareTo(x.Hits));
+
+            List<CacheItem> itemsByMisses = new List<CacheItem>(Items);
+			itemsByMisses = new List<CacheItem>(Items);
+			itemsByMisses.Sort((x, y) => x.Misses.CompareTo(y.Misses));
+
+            HashSet<CacheItem> itemsCopy = new HashSet<CacheItem>(Items);
+			Dictionary<long, CacheItem> itemsById = itemsCopy.ToDictionary(ci => ci.Id);
+			Dictionary<string, CacheItem> itemsByUuid = itemsCopy.ToDictionary(ci => ci.Uuid);
+
+            ItemsByHits = itemsByHits;
+            ItemsByMisses = itemsByMisses;
+            ItemsById = itemsById;
+            ItemsByUuid = itemsByUuid;
+        }
+    }
 }

@@ -123,16 +123,28 @@ namespace Bam.Net.Data.Repositories.Tests
             OutLineFormat("Parent count: {0}", ConsoleColor.Blue, testDaoRepo.CountParents());
         }
 
-        [UnitTest]
+        [ConsoleAction("test schema repo generation to c:\\temp\\SchemaRepoTest")]
         public void GenerateSchemaRepo()
         {
             ConsoleLogger logger = new ConsoleLogger();
             logger.AddDetails = false;
             logger.StartLoggingThread();
             SchemaRepositoryGenerator generator = new SchemaRepositoryGenerator(Assembly.GetExecutingAssembly(), "Bam.Net.Data.Repositories.Tests.ClrTypes", logger);
-            generator.GenerateSource("c:\\temp\\SchemaRepoTest", "TestDaoSchema");
+            generator.GenerateRepositorySource("c:\\temp\\SchemaRepoTest", "TestDaoSchema");
         }
 
+        [ConsoleAction("test schema repo assembly generation")]
+        public void GenerateSchemaRepoAssembly()
+        {
+            ConsoleLogger logger = new ConsoleLogger();
+            logger.AddDetails = false;
+            logger.StartLoggingThread();
+            SchemaRepositoryGenerator generator = new SchemaRepositoryGenerator(Assembly.GetExecutingAssembly(), "Bam.Net.Data.Repositories.Tests.ClrTypes", logger);
+            generator.SchemaName = "TestDao";
+            Assembly ass = generator.GetDaoAssembly(true);
+            OutLineFormat("Assembly is at: {0}", ass.GetFilePath());
+        }
+        
         private static ClrTypes.Parent GetClrParent()
         {
             string theName = "The Test Parent 1 ({0})"._Format(8.RandomLetters());
