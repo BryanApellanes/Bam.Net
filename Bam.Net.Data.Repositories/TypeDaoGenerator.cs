@@ -19,7 +19,7 @@ namespace Bam.Net.Data.Repositories
     /// A class used to generate data access objects from
     /// CLR types.
     /// </summary>
-    public class TypeDaoGenerator : Loggable, IGeneratesDaoAssembly
+    public class TypeDaoGenerator : Loggable, IGeneratesDaoAssembly, IHasTypeSchemaTempPathProvider
     {
         DaoGenerator _daoGenerator;
         PocoGenerator _pocoGenerator;
@@ -33,7 +33,7 @@ namespace Bam.Net.Data.Repositories
             _schemaGenerator = new TypeSchemaGenerator();
             _additonalReferenceAssemblies = new HashSet<Assembly>();
 
-            TempPathProvider = (schemaDef, typeSchema) => System.IO.Path.Combine("".GetAppDataFolder(), "DaoTemp_{0}"._Format(schemaDef.Name));
+            TypeSchemaTempPathProvider = (schemaDef, typeSchema) => System.IO.Path.Combine("".GetAppDataFolder(), "DaoTemp_{0}"._Format(schemaDef.Name));
             _types = new HashSet<Type>();
             if (logger != null)
             {
@@ -199,7 +199,7 @@ namespace Bam.Net.Data.Repositories
         [Verbosity(VerbosityLevel.Warning, MessageFormat = "Couldn't delete folder {TempPath}:\r\nMessage: {Message}")]
         public event EventHandler DeleteDaoTempFailed;
 
-        public Func<SchemaDefinition, TypeSchema, string> TempPathProvider { get; set; }
+        public Func<SchemaDefinition, TypeSchema, string> TypeSchemaTempPathProvider { get; set; }
 
         [Verbosity(VerbosityLevel.Warning, MessageFormat = "TypeSchema difference detected\r\n {OldInfoString} \r\n *** \r\n {NewInfoString}")]
         public event EventHandler SchemaDifferenceDetected;
@@ -281,7 +281,7 @@ namespace Bam.Net.Data.Repositories
                 SchemaDefinition schema = SchemaDefinitionCreateResult.SchemaDefinition;
                 string assemblyName = "{0}.dll"._Format(schema.Name);
 
-                string writeSourceTo = TempPathProvider(schema, typeSchema);
+                string writeSourceTo = TypeSchemaTempPathProvider(schema, typeSchema);
                 CompilerResults results = GenerateAndCompile(assemblyName, writeSourceTo);
                 GeneratedDaoAssemblyInfo info = new GeneratedDaoAssemblyInfo(schema.Name, results);
                 info.TypeSchema = typeSchema;
@@ -368,7 +368,7 @@ namespace Bam.Net.Data.Repositories
         }
         private void GenerateOrThrow(SchemaDefinition schema, TypeSchema typeSchema)
         {
-            string tempPath = TempPathProvider(schema, typeSchema);
+            string tempPath = TypeSchemaTempPathProvider(schema, typeSchema);
             if (Directory.Exists(tempPath))
             {
                 Directory.Move(tempPath, $"{tempPath}_{DateTime.UtcNow.ToJulianDate().ToString()}");

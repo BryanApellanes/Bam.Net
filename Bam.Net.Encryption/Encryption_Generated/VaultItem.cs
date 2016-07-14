@@ -3,6 +3,7 @@
 */
 // Model is Table
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
@@ -187,7 +188,7 @@ namespace Bam.Net.Encryption
 			return results;
 		}
 
-		public static async Task BatchAll(int batchSize, Func<VaultItemCollection, Task> batchProcessor, Database database = null)
+		public static async Task BatchAll(int batchSize, Action<IEnumerable<VaultItem>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
@@ -196,19 +197,22 @@ namespace Bam.Net.Encryption
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await batchProcessor(results);
+					await Task.Run(()=>
+					{
+						batchProcessor(results);
+					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
 				}
 			});			
 		}	 
 
-		public static async Task BatchQuery(int batchSize, QueryFilter filter, Func<VaultItemCollection, Task> batchProcessor, Database database = null)
+		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<VaultItem>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
 
-		public static async Task BatchQuery(int batchSize, WhereDelegate<VaultItemColumns> where, Func<VaultItemCollection, Task> batchProcessor, Database database = null)
+		public static async Task BatchQuery(int batchSize, WhereDelegate<VaultItemColumns> where, Action<IEnumerable<VaultItem>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
@@ -217,7 +221,10 @@ namespace Bam.Net.Encryption
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await batchProcessor(results);
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (VaultItemColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
 				}
@@ -587,6 +594,18 @@ namespace Bam.Net.Encryption
 			results.Database = db;
 			return results;
 		}
+
+		/// <summary>
+		/// Return the count of VaultItems
+		/// </summary>
+		public static long Count(Database database = null)
+        {
+			Database db = database ?? Db.For<VaultItem>();
+            QuerySet query = GetQuerySet(db);
+            query.Count<VaultItem>();
+            query.Execute(db);
+            return (long)query.Results[0].DataRow[0];
+        }
 
 		/// <summary>
 		/// Execute a query and return the number of results

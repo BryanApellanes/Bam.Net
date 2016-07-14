@@ -120,6 +120,7 @@
     <Compile Include="AddModifiedAugmentation.cs" />
     <Compile Include="AutoIdSchemaManager.cs" />
     <Compile Include="ColumnNameToPropertyName.cs" />
+    <Compile Include="IHasSchemaTempPathProvider.cs" />
     <Compile Include="INameFormatter.cs" />
     <Compile Include="EchoNameFormatter.cs" />
     <Compile Include="MappedSchemaDefinition.cs" />

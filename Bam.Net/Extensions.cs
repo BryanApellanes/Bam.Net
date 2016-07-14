@@ -1856,7 +1856,7 @@ namespace Bam.Net
         /// </summary>
         /// <param name="any"></param>
         /// <returns></returns>
-        public static string GetAppDataFolder(this object any)
+        public static string GetAppDataFolder(this object any) //TODO: move this into RuntimeSettings
         {
             StringBuilder path = new StringBuilder();
             if (HttpContext.Current == null)

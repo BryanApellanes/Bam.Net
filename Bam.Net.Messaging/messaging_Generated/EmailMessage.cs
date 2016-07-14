@@ -3,6 +3,7 @@
 */
 // Model is Table
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
@@ -201,7 +202,7 @@ namespace Bam.Net.Messaging.Data
 			return results;
 		}
 
-		public static async Task BatchAll(int batchSize, Func<EmailMessageCollection, Task> batchProcessor, Database database = null)
+		public static async Task BatchAll(int batchSize, Action<IEnumerable<EmailMessage>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
@@ -210,19 +211,22 @@ namespace Bam.Net.Messaging.Data
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await batchProcessor(results);
+					await Task.Run(()=>
+					{
+						batchProcessor(results);
+					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
 				}
 			});			
 		}	 
 
-		public static async Task BatchQuery(int batchSize, QueryFilter filter, Func<EmailMessageCollection, Task> batchProcessor, Database database = null)
+		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<EmailMessage>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
 
-		public static async Task BatchQuery(int batchSize, WhereDelegate<EmailMessageColumns> where, Func<EmailMessageCollection, Task> batchProcessor, Database database = null)
+		public static async Task BatchQuery(int batchSize, WhereDelegate<EmailMessageColumns> where, Action<IEnumerable<EmailMessage>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
@@ -231,7 +235,10 @@ namespace Bam.Net.Messaging.Data
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await batchProcessor(results);
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (EmailMessageColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
 				}
@@ -601,6 +608,18 @@ namespace Bam.Net.Messaging.Data
 			results.Database = db;
 			return results;
 		}
+
+		/// <summary>
+		/// Return the count of EmailMessages
+		/// </summary>
+		public static long Count(Database database = null)
+        {
+			Database db = database ?? Db.For<EmailMessage>();
+            QuerySet query = GetQuerySet(db);
+            query.Count<EmailMessage>();
+            query.Execute(db);
+            return (long)query.Results[0].DataRow[0];
+        }
 
 		/// <summary>
 		/// Execute a query and return the number of results

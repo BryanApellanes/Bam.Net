@@ -160,6 +160,10 @@
     <Compile Include="NullException.cs" />
     <Compile Include="Partials\Group.cs" />
     <Compile Include="Partials\GroupPermission.cs" />
+    <Compile Include="Partials\Permission.cs" />
+    <Compile Include="Partials\TreeNode.cs" />
+    <Compile Include="Partials\UserGroup.cs" />
+    <Compile Include="Partials\UserPermission.cs" />
     <Compile Include="PasswordResetEmailData.cs" />
     <Compile Include="PasswordResetPageResponse.cs" />
     <Compile Include="PasswordResetResponse.cs" />

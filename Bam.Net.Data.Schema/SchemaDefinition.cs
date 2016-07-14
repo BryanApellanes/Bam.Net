@@ -12,6 +12,7 @@ using Bam.Net.Data;
 using Bam.Net.ServiceProxy;
 using Bam.Net.ServiceProxy.Js;
 using Newtonsoft.Json;
+using Bam.Net.Configuration;
 
 namespace Bam.Net.Data.Schema
 {
@@ -56,7 +57,7 @@ namespace Bam.Net.Data.Schema
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    this.file = new FileInfo(Path.Combine(SchemaManager.AppDataFolder, this.Name));
+                    this.file = new FileInfo(Path.Combine(RuntimeSettings.AppDataFolder, this.Name));
                 }
                 else
                 {

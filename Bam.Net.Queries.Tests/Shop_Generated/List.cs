@@ -3,6 +3,7 @@
 */
 // Model is Table
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
@@ -60,7 +61,7 @@ namespace Bam.Net.Data.Tests
 		}
 
 	// property:Id, columnName:Id	
-	[Exclude]
+	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
 	public long? Id
 	{
@@ -189,7 +190,7 @@ namespace Bam.Net.Data.Tests
 			return results;
 		}
 
-		public static async Task BatchAll(int batchSize, Func<ListCollection, Task> batchProcessor, Database database = null)
+		public static async Task BatchAll(int batchSize, Action<IEnumerable<List>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
@@ -198,19 +199,22 @@ namespace Bam.Net.Data.Tests
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await batchProcessor(results);
+					await Task.Run(()=>
+					{
+						batchProcessor(results);
+					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
 				}
 			});			
 		}	 
 
-		public static async Task BatchQuery(int batchSize, QueryFilter filter, Func<ListCollection, Task> batchProcessor, Database database = null)
+		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<List>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
 
-		public static async Task BatchQuery(int batchSize, WhereDelegate<ListColumns> where, Func<ListCollection, Task> batchProcessor, Database database = null)
+		public static async Task BatchQuery(int batchSize, WhereDelegate<ListColumns> where, Action<IEnumerable<List>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
@@ -219,7 +223,10 @@ namespace Bam.Net.Data.Tests
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await batchProcessor(results);
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (ListColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
 				}
@@ -389,7 +396,7 @@ namespace Bam.Net.Data.Tests
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate&lt;ListColumns&gt;.
+		/// WhereDelegate<ListColumns>.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
@@ -488,7 +495,6 @@ namespace Bam.Net.Data.Tests
 		/// Execute a query and return the specified number of values.  This method
 		/// will issue a sql TOP clause so only the specified number of values
 		/// will be returned.
-		/// of values
 		/// </summary>
 		/// <param name="count">The number of values to return.
 		/// This value is used in the sql query so no more than this 
@@ -590,6 +596,18 @@ namespace Bam.Net.Data.Tests
 			results.Database = db;
 			return results;
 		}
+
+		/// <summary>
+		/// Return the count of Lists
+		/// </summary>
+		public static long Count(Database database = null)
+        {
+			Database db = database ?? Db.For<List>();
+            QuerySet query = GetQuerySet(db);
+            query.Count<List>();
+            query.Execute(db);
+            return (long)query.Results[0].DataRow[0];
+        }
 
 		/// <summary>
 		/// Execute a query and return the number of results

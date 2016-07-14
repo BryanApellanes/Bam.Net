@@ -47,6 +47,11 @@ namespace Bam.Net.Data.Tests
 			{
 				return Bam.Net.Data.Tests.Cart.OneWhere(where, db);
 			}
+
+			public static Cart GetOneWhere(WhereDelegate<CartColumns> where, Database db = null)
+			{
+				return Bam.Net.Data.Tests.Cart.GetOneWhere(where, db);
+			}
 		
 			public Cart FirstOneWhere(WhereDelegate<CartColumns> where, Database db = null)
 			{
@@ -93,6 +98,11 @@ namespace Bam.Net.Data.Tests
 			public CartItem OneWhere(WhereDelegate<CartItemColumns> where, Database db = null)
 			{
 				return Bam.Net.Data.Tests.CartItem.OneWhere(where, db);
+			}
+
+			public static CartItem GetOneWhere(WhereDelegate<CartItemColumns> where, Database db = null)
+			{
+				return Bam.Net.Data.Tests.CartItem.GetOneWhere(where, db);
 			}
 		
 			public CartItem FirstOneWhere(WhereDelegate<CartItemColumns> where, Database db = null)
@@ -141,6 +151,11 @@ namespace Bam.Net.Data.Tests
 			{
 				return Bam.Net.Data.Tests.List.OneWhere(where, db);
 			}
+
+			public static List GetOneWhere(WhereDelegate<ListColumns> where, Database db = null)
+			{
+				return Bam.Net.Data.Tests.List.GetOneWhere(where, db);
+			}
 		
 			public List FirstOneWhere(WhereDelegate<ListColumns> where, Database db = null)
 			{
@@ -188,6 +203,11 @@ namespace Bam.Net.Data.Tests
 			{
 				return Bam.Net.Data.Tests.Item.OneWhere(where, db);
 			}
+
+			public static Item GetOneWhere(WhereDelegate<ItemColumns> where, Database db = null)
+			{
+				return Bam.Net.Data.Tests.Item.GetOneWhere(where, db);
+			}
 		
 			public Item FirstOneWhere(WhereDelegate<ItemColumns> where, Database db = null)
 			{
@@ -234,6 +254,11 @@ namespace Bam.Net.Data.Tests
 			public ListItem OneWhere(WhereDelegate<ListItemColumns> where, Database db = null)
 			{
 				return Bam.Net.Data.Tests.ListItem.OneWhere(where, db);
+			}
+
+			public static ListItem GetOneWhere(WhereDelegate<ListItemColumns> where, Database db = null)
+			{
+				return Bam.Net.Data.Tests.ListItem.GetOneWhere(where, db);
 			}
 		
 			public ListItem FirstOneWhere(WhereDelegate<ListItemColumns> where, Database db = null)

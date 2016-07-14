@@ -3,6 +3,7 @@
 */
 // Model is Table
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
@@ -202,7 +203,7 @@ namespace Bam.Net.Shop
 			return results;
 		}
 
-		public static async Task BatchAll(int batchSize, Func<CurrencyCollection, Task> batchProcessor, Database database = null)
+		public static async Task BatchAll(int batchSize, Action<IEnumerable<Currency>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
@@ -211,19 +212,22 @@ namespace Bam.Net.Shop
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await batchProcessor(results);
+					await Task.Run(()=>
+					{
+						batchProcessor(results);
+					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
 				}
 			});			
 		}	 
 
-		public static async Task BatchQuery(int batchSize, QueryFilter filter, Func<CurrencyCollection, Task> batchProcessor, Database database = null)
+		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<Currency>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
 
-		public static async Task BatchQuery(int batchSize, WhereDelegate<CurrencyColumns> where, Func<CurrencyCollection, Task> batchProcessor, Database database = null)
+		public static async Task BatchQuery(int batchSize, WhereDelegate<CurrencyColumns> where, Action<IEnumerable<Currency>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
@@ -232,7 +236,10 @@ namespace Bam.Net.Shop
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await batchProcessor(results);
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (CurrencyColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
 				}
@@ -602,6 +609,18 @@ namespace Bam.Net.Shop
 			results.Database = db;
 			return results;
 		}
+
+		/// <summary>
+		/// Return the count of Currencies
+		/// </summary>
+		public static long Count(Database database = null)
+        {
+			Database db = database ?? Db.For<Currency>();
+            QuerySet query = GetQuerySet(db);
+            query.Count<Currency>();
+            query.Execute(db);
+            return (long)query.Results[0].DataRow[0];
+        }
 
 		/// <summary>
 		/// Execute a query and return the number of results

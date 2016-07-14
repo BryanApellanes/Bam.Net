@@ -125,6 +125,7 @@
     <Compile Include="DaoGenerationException.cs" />
     <Compile Include="DaoBackup.cs" />
     <Compile Include="GeneratedDaoAssemblyInfo.cs" />
+    <Compile Include="IHasTypeSchemaTempPathProvider.cs" />
     <Compile Include="SchemaDifferenceEventArgs.cs" />
     <Compile Include="SchemaRepositoryModel.cs" />
     <Compile Include="SchemaRepositoryGenerator.cs" />
