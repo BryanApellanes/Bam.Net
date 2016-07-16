@@ -101,7 +101,12 @@ namespace Bam.Net.Data.Repositories
 			return obj;
 		}
 
-		public override object Retrieve(Type objectType, string uuid)
+        public override T Retrieve<T>(string uuid)
+        {
+            return (T)Retrieve(typeof(T), uuid);
+        }
+
+        public override object Retrieve(Type objectType, string uuid)
 		{
 			object obj = ObjectReaderWriter.Read(objectType, uuid);
             if (obj != null)
@@ -172,7 +177,17 @@ namespace Bam.Net.Data.Repositories
 			return results;
 		}
 
-		public override bool Delete<T>(T toDelete)
+        public override IEnumerable<T> Query<T>(QueryFilter query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IEnumerable Query(Type type, QueryFilter query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool Delete<T>(T toDelete)
 		{
 			return ObjectReaderWriter.Delete(toDelete);
 		}

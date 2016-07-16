@@ -23,8 +23,6 @@ namespace vyoo
     [Serializable]
     class Program : CommandLineTestInterface
     {
-        static string contentRoot = "ContentRoot";
-        static string defaultRoot = "C:\\BamContent";
         static void Main(string[] args)
         {
             VyooService.SetInfo(VyooService.ServiceInfo);

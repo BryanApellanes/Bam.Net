@@ -157,6 +157,7 @@
     <Compile Include="ForgotPasswordResponse.cs" />
     <Compile Include="InvalidTokenException.cs" />
     <Compile Include="IsAuthenticatedResponse.cs" />
+    <Compile Include="IUserManager.cs" />
     <Compile Include="NullException.cs" />
     <Compile Include="Partials\Group.cs" />
     <Compile Include="Partials\GroupPermission.cs" />

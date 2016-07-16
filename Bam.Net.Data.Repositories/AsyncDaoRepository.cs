@@ -23,6 +23,17 @@ namespace Bam.Net.Data.Repositories
         {
             return DaoRepository.Create(toCreate);
         }
+        
+        public override IEnumerable<T> Query<T>(QueryFilter query)
+        {
+            return DaoRepository.Query<T>(query);
+        }
+
+        public override IEnumerable Query(Type type, QueryFilter query)
+        {
+            return DaoRepository.Query(type, query);
+        }
+
 
         public override T Create<T>(T toCreate)
         {
@@ -93,7 +104,10 @@ namespace Bam.Net.Data.Repositories
         {
             return DaoRepository.Retrieve<T>(id);
         }
-
+        public override T Retrieve<T>(string uuid)
+        {
+            return DaoRepository.Retrieve<T>(uuid);
+        }
         public override IEnumerable<object> RetrieveAll(Type type)
         {
             return DaoRepository.RetrieveAll(type);

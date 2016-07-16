@@ -1,6 +1,6 @@
 using Bam.Net.ServiceProxy.Secure;
 
-namespace Bam.Net.CoreServices
+namespace Bam.Net.CoreServices.Proxyables
 {
     [Encrypt]
     [Proxy("diag")]

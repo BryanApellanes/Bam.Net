@@ -29,8 +29,9 @@ namespace Bam.Net.UserAccounts
     [Encrypt]
     [Proxy("user", MethodCase = MethodCase.Both)]
     [Serializable]
-    public class UserManager: Loggable, IRequiresHttpContext, ISmtpSettingsProvider
+    public class UserManager : Loggable, IRequiresHttpContext, ISmtpSettingsProvider, IUserManager
     {
+        public const string FacebookProvider = "facebook";
         static UserManager()
         {
             UserResolvers.Default.InsertResolver(0, new DaoUserResolver());
@@ -415,7 +416,6 @@ namespace Bam.Net.UserAccounts
                 return GetFailure<ForgotPasswordResponse>(ex);
             }
         }
-        public const string FacebookProvider = "facebook";
 
         public dynamic LoginFbUser(string fbId, string userName)
         {
@@ -730,7 +730,7 @@ namespace Bam.Net.UserAccounts
         public dynamic GetCurrent()
         {
             bool isAuthenticated = false;
-            User user = GetCurrentUser();
+            User user = GetUser(HttpContext);
 
             if (user.Id.Value != User.Anonymous.Id.Value)
             {
@@ -755,14 +755,15 @@ namespace Bam.Net.UserAccounts
         {
             get
             {
-                return GetCurrentUser().UserName;
+                return GetUser(HttpContext).UserName;
             }
         }
 
         [Exclude]
-        public User GetCurrentUser()
+        public User GetUser(IHttpContext context)
         {
-            if(HttpContext == null)
+            context = context ?? HttpContext;
+            if(context == null)
             {
                 return User.Anonymous;
             }

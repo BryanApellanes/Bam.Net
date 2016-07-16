@@ -24,7 +24,7 @@ namespace Bam.Net.Server
         {
             get
             {
-                return new ServiceInfo("GlooService", "Gloo Service", "Exposes CLR types as web services");
+                return new ServiceInfo("GlooService", "Gloo Service", "Exposes CLR types as web services, providing the gloo that binds");
             }
         }
 

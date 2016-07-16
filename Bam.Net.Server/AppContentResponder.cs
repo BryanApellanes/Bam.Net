@@ -113,7 +113,7 @@ namespace Bam.Net.Server
         {
             UserManager mgr = BamConf.Server.GetAppService<UserManager>(ApplicationName).Clone<UserManager>();
             mgr.HttpContext = context;
-            return mgr.GetCurrentUser();
+            return mgr.GetUser(context);
         }
         /// <summary>
         /// The server content root

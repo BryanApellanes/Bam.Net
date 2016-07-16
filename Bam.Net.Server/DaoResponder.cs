@@ -215,7 +215,7 @@ namespace Bam.Net.Server
 
                     // TODO: Refactor this to DaoCrudProvider
                     //  replace "SendResponse" with instanciation of the response
-                    // Extract interface ICrudProvider and implement:
+                    // Extract interface ICrudProvider and implement: <= done
                     //  Create
                     //  Retrieve
                     //  Update

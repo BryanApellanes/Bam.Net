@@ -21,7 +21,7 @@ namespace gloo
     public class ConsoleActions : CommandLineTestInterface
     {
         static string contentRootConfigKey = "ContentRoot";
-        static string defaultRoot = "C:\\BamContent";
+        static string defaultRoot = "C:\\tvg";
         static GlooServer glooServer;
         
         [ConsoleAction]

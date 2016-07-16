@@ -12,7 +12,7 @@ using System.Collections;
 
 namespace Bam.Net.Data.Repositories
 {
-	public interface IRepository : ILoggable
+	public interface IRepository : ILoggable, ICrudProvider
     {
 		IEnumerable<Type> StorableTypes { get; }
 		void AddType(Type type);
@@ -36,7 +36,8 @@ namespace Bam.Net.Data.Repositories
         /// <param name="toSave"></param>
         /// <returns></returns>
 		object Save(object toSave);
-
+        IEnumerable SaveCollection(IEnumerable values);
+        IEnumerable<T> SaveCollection<T>(IEnumerable<T> values) where T : class, new();
         T Create<T>(T toCreate) where T : class, new();
         /// <summary>
         /// When implemented in a derived class, calls
@@ -81,7 +82,7 @@ namespace Bam.Net.Data.Repositories
 		IEnumerable<T> Query<T>(dynamic query) where T : class, new();
         IEnumerable<T> Query<T>(Func<T, bool> query) where T : class, new();
 		IEnumerable<object> Query(Type type, Func<object, bool> predicate);
-        IEnumerable<T> Query<T>(QueryFilter query) where T : new();
+        IEnumerable<T> Query<T>(QueryFilter query) where T : class, new();
         IEnumerable Query(Type type, QueryFilter query);
 
         T Update<T>(T toUpdate) where T : new();

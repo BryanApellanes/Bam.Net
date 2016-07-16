@@ -88,7 +88,16 @@ namespace Bam.Net
         {
             Args.ThrowIfNull(instance, "instance");
             Args.ThrowIfNull(methodName, "methodName");
-            return (T)instance.GetType().GetMethod(methodName).Invoke(instance, args);
+            return (T)instance.GetType().GetMethod(methodName, args.Select(a => a.GetType()).ToArray()).Invoke(instance, args);
+        }
+
+        public static T InvokeGeneric<T, TArg>(this object instance, string methodName, params object[] args)
+        {
+            Args.ThrowIfNull(instance, "instance");
+            Args.ThrowIfNull(methodName, "methodName");
+            MethodInfo method = instance.GetType().GetMethod(methodName, args.Select(a => a.GetType()).ToArray());
+            MethodInfo genericMethod = method.MakeGenericMethod(typeof(TArg));
+            return (T)genericMethod.Invoke(instance, args);
         }
 
         /// <summary>
