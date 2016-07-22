@@ -39,6 +39,12 @@ namespace Bam.Net.Data.Tests.Integration
 			IntegrationTestRunner.RunAllIntegrationTests(typeof(Program).Assembly);
 		}
 
+        [ConsoleAction]
+        public void RunSchemaExtractorTests()
+        {
+            IntegrationTestRunner.RunIntegrationTests(typeof(SchemaExtractorTests));
+        }
+
 		[ConsoleAction]
 		public void RunQueryTests()
 		{

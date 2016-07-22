@@ -19,6 +19,7 @@ using Bam.Net.Data.Model.Windows;
 using Bam.Net.Data.MsSql;
 using System.Threading;
 using Bam.Net.Data.Dynamic;
+using Bam.Net.Data;
 
 namespace laotzu
 {
@@ -239,8 +240,7 @@ namespace laotzu
         {
             try
             {
-                MsSqlCredentials credentials = IntegratedSecurity == CheckState.Checked ? null : new MsSqlCredentials { UserName = Form.TextBoxUserName.Text, Password = Form.TextBoxPassword.Text };
-                MsSqlSmoSchemaExtractor extractor = new MsSqlSmoSchemaExtractor(new MsSqlDatabase(this.ServerName, this.DatabaseName, credentials));
+                SchemaExtractor extractor = GetExtractor(); //new MsSqlSmoSchemaExtractor(new MsSqlDatabase(this.ServerName, this.DatabaseName, credentials));
                 extractor.NameMap = MappedSchemaDefinition.SchemaNameMap;
                 extractor.ProcessingTable += (o, args) =>
                 {
@@ -551,6 +551,19 @@ namespace laotzu
         private void SetSettingsStatus(string text)
         {
             Form.SettingsStatus.Text = text;
+        }
+
+        private SchemaExtractor GetExtractor()
+        {
+            return new MsSqlSchemaExtractor(GetMsSqlDatabase());
+        }
+
+        private MsSqlDatabase GetMsSqlDatabase()
+        {
+            MsSqlCredentials credentials = IntegratedSecurity == CheckState.Checked ? null : new MsSqlCredentials { UserName = Form.TextBoxUserName.Text, Password = Form.TextBoxPassword.Text };
+            MsSqlDatabase result = new MsSqlDatabase(this.ServerName, this.DatabaseName, credentials);
+            result.ConnectionString = GetConnectionStringBuilder().ConnectionString;
+            return result;
         }
     }
 }

@@ -130,10 +130,6 @@ namespace Bam.Net.Data.Schema
                     col.TableClassName = NameMap.GetClassName(table.Name);
                 });
             });
-            result.ForeignKeys.Each(fk =>
-            {
-                
-            });
             return result;
         }
     }

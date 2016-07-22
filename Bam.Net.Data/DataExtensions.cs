@@ -104,18 +104,30 @@ namespace Bam.Net.Data
 
 			return table.Rows.Add(rowValues.ToArray());
 		}
-
-        public static List<DbParameter> ToDbParameters(this Dictionary<string, object> parameters, Database db)
+        
+        public static IEnumerable<DbParameter> ToDbParameters(this object parameters, Database db, string prefix = "@")
         {
-            List<DbParameter> dbParameters = new List<DbParameter>();
+            Args.ThrowIfNull(parameters, "parameters");
+            Type type = parameters.GetType();
+            foreach (PropertyInfo pi in type.GetProperties())
+            {
+                DbParameter parameter = db.ServiceProvider.Get<DbProviderFactory>().CreateParameter();
+                parameter.ParameterName = pi.Name;
+                parameter.Value = pi.GetValue(parameters);
+                yield return parameter;
+            }
+        }
+
+        public static IEnumerable<DbParameter> ToDbParameters(this Dictionary<string, object> parameters, Database db)
+        {
+            Args.ThrowIfNull(parameters, "parameters");
             foreach (string key in parameters.Keys)
             {
                 DbParameter parameter = db.ServiceProvider.Get<DbProviderFactory>().CreateParameter();
                 parameter.ParameterName = key;
                 parameter.Value = parameters[key];
-                dbParameters.Add(parameter);
-            }
-            return dbParameters;
+                yield return parameter;
+            }         
         }
     }
 }

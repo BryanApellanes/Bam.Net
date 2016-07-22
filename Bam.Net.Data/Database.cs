@@ -196,12 +196,55 @@ namespace Bam.Net.Data
             }
         }
         
+        public virtual T GetValue<T>(string singleCellReturnSqlStatement, params DbParameter[] dbParameters)
+        {
+            DataRow row = GetFirstRowFromSql(singleCellReturnSqlStatement, dbParameters);
+            if(row.Table.Columns.Count > 0 && row[0] != DBNull.Value)
+            {                
+                return (T)row[0];
+            }
+            return default(T);
+        }
+        public virtual IEnumerable<T> GetValues<T>(string singleColumnSqlStatement, params DbParameter[] dbParameters)
+        {
+            return GetValues<T>(singleColumnSqlStatement, (row) => (T)row[0], dbParameters);
+        }
+        public virtual IEnumerable<T> GetValues<T>(string singleColumnSqlStatement, Func<DataRow, T> rowProcessor, params DbParameter[] dbParameters)
+        {
+            DataTable table = GetDataTableFromSql(singleColumnSqlStatement, dbParameters);
+            foreach(DataRow row in table.Rows)
+            {
+                yield return rowProcessor(row);
+            }
+        }
+
 		public virtual DataRow GetFirstRowFromSql(string sqlStatement, CommandType commandType, params DbParameter[] dbParameters)
 		{
 			return GetDataTableFromSql(sqlStatement, commandType, dbParameters).Rows[0];
 		}
+        public virtual DataRow GetFirstRowFromSql(string sqlStatement, Dictionary<string, object> dbParameters)
+        {
+            return GetFirstRowFromSql(sqlStatement, dbParameters.ToDbParameters(this).ToArray());
+        }
+        public virtual DataRow GetFirstRowFromSql(string sqlStatement, params DbParameter[] dbParameters)
+        {
+            DataTable table = GetDataTableFromSql(sqlStatement, CommandType.Text, dbParameters);
+            if(table.Rows.Count > 0)
+            {
+                return table.Rows[0];
+            }
+            return table.NewRow();
+        }
+        public virtual DataTable GetDataTableFromSql(string sqlStatement, Dictionary<string, object> parameters)
+        {
+            return GetDataTableFromSql(sqlStatement, parameters.ToDbParameters(this).ToArray());
+        }
+        public virtual DataTable GetDataTableFromSql(string sqlStatement, params DbParameter[] dbParameters)
+        {
+            return GetDataTableFromSql(sqlStatement, CommandType.Text, dbParameters);
+        }
 
-		public virtual DataTable GetDataTableFromSql(string sqlStatement, CommandType commandType, params DbParameter[] dbParameters)
+        public virtual DataTable GetDataTableFromSql(string sqlStatement, CommandType commandType, params DbParameter[] dbParameters)
         {
             DbProviderFactory providerFactory = ServiceProvider.Get<DbProviderFactory>();
             DbConnection conn = GetDbConnection();

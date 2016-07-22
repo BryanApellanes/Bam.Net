@@ -218,7 +218,7 @@ namespace Bam.Net.Data.Dynamic
             try
             {
                 Database db = Database;
-                List<DbParameter> dbParameters = parameters.ToDbParameters(db);
+                IEnumerable<DbParameter> dbParameters = parameters.ToDbParameters(db);
                 return Database.GetDataTableFromSql(sql, System.Data.CommandType.Text, dbParameters.ToArray()).ToDynamicList();
             }
             catch (Exception ex)
