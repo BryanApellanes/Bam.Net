@@ -12,7 +12,7 @@ namespace Bam.Net.Data.SQLite
 {
     public class SQLiteSchemaExtractor : SchemaExtractor
     {
-        const string pragma = "PRAGMA TABLE_INFO(@TableName)";
+        const string pragmaFormat = "PRAGMA TABLE_INFO('{0}')";
         
         public SQLiteSchemaExtractor(SQLiteDatabase database)
             : base()
@@ -63,7 +63,7 @@ namespace Bam.Net.Data.SQLite
             {
                 if (((string)row["name"]).Equals(columnName))
                 {
-                    return (int)row["notnull"] == 0;
+                    return (long)row["notnull"] == 0;
                 }
             }
             return true;
@@ -81,7 +81,7 @@ WHERE type != 'meta'
 	AND name NOT LIKE 'sqlite_%'
 ORDER BY SUBSTR(type, 2, 1), name";
             List<ForeignKeyColumn> results = new List<ForeignKeyColumn>();
-            Database.GetSingleColumnResults<string>(sql).Each(createStatement =>
+            Database.QuerySingleColumn<string>(sql).Each(createStatement =>
             {
                 string foreignKey = "FOREIGN KEY";
                 string columnDefinitions;
@@ -113,7 +113,7 @@ ORDER BY SUBSTR(type, 2, 1), name";
             DataTable pragmaTable = GetPragmaTable(tableName);
             foreach (DataRow row in pragmaTable.Rows)
             {
-                if((int)row["pk"] == 1)
+                if((long)row["pk"] == 1)
                 {
                     return (string)row["name"];
                 }
@@ -129,7 +129,7 @@ ORDER BY SUBSTR(type, 2, 1), name";
         public override string[] GetTableNames()
         {
             string sql = "SELECT Name from SQLITE_MASTER where Type = 'table' and Name <> 'sqlite_sequence'";
-            return Database.GetSingleColumnResults<string>(sql).ToArray();
+            return Database.QuerySingleColumn<string>(sql).ToArray();
         }
 
         protected override void SetConnectionName(string connectionString)
@@ -170,7 +170,7 @@ ORDER BY SUBSTR(type, 2, 1), name";
         {
             if (!_pragmaTables.ContainsKey(tableName))
             {
-                _pragmaTables.Add(tableName, Database.GetDataTable(pragma, new { TableName = tableName }));
+                _pragmaTables.Add(tableName, Database.GetDataTable(pragmaFormat._Format(tableName)));
             }
             return _pragmaTables[tableName];            
         }

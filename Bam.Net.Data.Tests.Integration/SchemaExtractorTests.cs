@@ -28,6 +28,9 @@ using System.Configuration;
 using Bam.Net.Data.Tests;
 using Bam.Net.Analytics;
 using Bam.Net.Testing.Integration;
+using Bam.Net.Data.SQLite;
+using Bam.Net.Data.MySql;
+using Bam.Net.Data.Npgsql;
 
 namespace Bam.Net.Data.Tests.Integration
 {
@@ -46,6 +49,20 @@ namespace Bam.Net.Data.Tests.Integration
     [IntegrationTestContainer]
     public class SchemaExtractorTests : CommandLineTestInterface
     {
+        HashSet<Database> _testDatabases;
+        [IntegrationTestSetup]
+        public void SetupTests()
+        {
+            OutLine("Setting up tests...", ConsoleColor.Green);
+            _testDatabases = DataTools.Setup();
+        }
+
+        [IntegrationTestCleanup]
+        public void CleanupTests()
+        {
+            DataTools.Cleanup(_testDatabases);
+        }
+
         [IntegrationTest("SchemaExtractor: Get Table Names")]
         public void GetTableNamesShouldReturnTableNames()
         {
@@ -53,7 +70,7 @@ namespace Bam.Net.Data.Tests.Integration
             {
                 string[] tableNames = extractor.GetTableNames();
                 Expect.IsNotNull(tableNames);
-                Expect.AreEqual(2, tableNames.Length);
+                Expect.AreEqual(7, tableNames.Length);
             });
         }
 
@@ -62,9 +79,9 @@ namespace Bam.Net.Data.Tests.Integration
         {
             GetSchemaExtractors().Each(extractor =>
             {
-                string[] columnNames = extractor.GetColumnNames("t_cust");
+                string[] columnNames = extractor.GetColumnNames("DaoReferenceObject");
                 Expect.IsNotNull(columnNames);
-                Expect.AreEqual(5, columnNames.Length);
+                Expect.AreEqual(9, columnNames.Length);
             });
         }
 
@@ -73,7 +90,7 @@ namespace Bam.Net.Data.Tests.Integration
         {
             GetSchemaExtractors().Each(extractor =>
             {
-                DataTypes dataType = extractor.GetColumnDataType("t_cust", "b_day");
+                DataTypes dataType = extractor.GetColumnDataType("DaoReferenceObject", "DateTimeProperty");
                 Expect.AreEqual(DataTypes.DateTime, dataType);
             });
         }
@@ -85,6 +102,7 @@ namespace Bam.Net.Data.Tests.Integration
             {
                 ForeignKeyColumn[] fks = extractor.GetForeignKeyColumns();
                 Expect.IsNotNull(fks);
+                Expect.IsGreaterThan(fks.Length, 0);
                 fks.Each(fk =>
                 {
                     OutLine(fk.PropertiesToString(), ConsoleColor.Cyan);
@@ -125,29 +143,23 @@ namespace Bam.Net.Data.Tests.Integration
                 Expect.IsTrue(extractor.NameMap.ColumnNamesToPropertyNames.Count > 0);
                 Expect.IsTrue(extractor.NameMap.TableNamesToClassNames.Count > 0);
                 Out(extractor.NameMap.ToJson(), ConsoleColor.DarkBlue);
-                extractor.NameMap.Save("c:\\testData\\Db_SillydatabaseNameMap_test_output.json");
+                extractor.NameMap.Save($"c:\\testData\\{extractor.GetType().Name}_NameMap_test_output.json");
             });
         }
 
         public IEnumerable<SchemaExtractor> GetSchemaExtractors()
         {
-            yield return GetSmoSchemExtractor();
-            yield return GetMsSqlSchemaExtractor();
+            yield return new MsSqlSmoSchemaExtractor(GetDatabase<MsSqlDatabase>());
+            yield return new MsSqlSchemaExtractor(GetDatabase<MsSqlDatabase>());
+            yield return new SQLiteSchemaExtractor(GetDatabase<SQLiteDatabase>());
+            yield return new MySqlSchemaExtractor(GetDatabase<MySqlDatabase>());
+            //yield return new NpgsqlSchemaExtractor(GetDatabase<NpgsqlDatabase>()); // not fully implemented
         }
+        
 
-        private SchemaExtractor GetSmoSchemExtractor()
+        private T GetDatabase<T>() where T : Database
         {
-            return DataTools.GetMsSqlSmoSchemaExtractor(GetMsSqlDatabase());
-        }
-
-        private SchemaExtractor GetMsSqlSchemaExtractor()
-        {
-            return DataTools.GetMsSqlSchemaExtractor(GetMsSqlDatabase());
-        }
-
-        private MsSqlDatabase GetMsSqlDatabase()
-        {
-            return new MsSqlDatabase("chumsql2", "Db_Sillydatabase", new MsSqlCredentials { UserName = "mssqluser", Password = "mssqlP455w0rd" });
+            return (T)_testDatabases.Where(db => db.GetType() == typeof(T)).FirstOrDefault();
         }
     }
 }

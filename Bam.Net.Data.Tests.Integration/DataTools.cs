@@ -76,17 +76,12 @@ namespace Bam.Net.Data.Tests.Integration
 
             return new MsSqlSmoSchemaExtractor(connectionName);
         }
-
-        public static SchemaExtractor GetMsSqlSmoSchemaExtractor(MsSqlDatabase database)
-        {
-            return new MsSqlSmoSchemaExtractor(database);
-        }
-
+        
         public static SchemaExtractor GetMsSqlSchemaExtractor(MsSqlDatabase database)
         {
             return new MsSqlSchemaExtractor(database);
         }
-
+        
 		public static TestTable CreateTestTable(string name, Database db)
 		{
 			return CreateTestTable(name, string.Empty, db);

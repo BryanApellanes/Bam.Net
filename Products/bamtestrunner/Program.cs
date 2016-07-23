@@ -162,7 +162,7 @@ namespace Bam.Net.Testing
             }
         }
 
-        [ConsoleAction("IntegrationTests", "[path_to_test_assemlby]", "Run integration tests in the specified assemlby")]
+        [ConsoleAction("IntegrationTests", "[path_to_test_assembly]", "Run integration tests in the specified assemlby")]
         public static void RunIntegrationTestsInFile(string assemblyPath = null, string endDirectory = null)
         {
             assemblyPath = assemblyPath ?? Arguments["IntegrationTests"];
@@ -201,7 +201,8 @@ namespace Bam.Net.Testing
         private static void PrepareResultRepository(string filePrefix)
         {
             string directory = Arguments.Contains("data") ? Arguments["data"] : ".";
-            _repo = new DaoRepository(new SQLiteDatabase(directory, "{0}_{1}"._Format(filePrefix, DateTime.Now.Date.ToString("MM_dd_yyyy"))));
+            string fileName = "{0}_{1}"._Format(filePrefix, DateTime.Now.Date.ToString("MM_dd_yyyy"));
+            _repo = new DaoRepository(new SQLiteDatabase(directory, fileName));
             _repo.AddType(typeof(UnitTestResult));
             _repo.EnsureDaoAssemblyAndSchema();
         }

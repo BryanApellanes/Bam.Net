@@ -188,16 +188,16 @@ namespace Bam.Net.Data
             return $"{dbParameter.ParameterName}={dbParameter.Value.ToString()}".Hash(algorithm, encoding);
         }
 
-        public static IEnumerable<DbParameter> ToDbParameters(this object parameters, Database db)
+        public static IEnumerable<DbParameter> ToDbParameters(this object dynamicDbParameters, Database db)
         {
-            Args.ThrowIfNull(parameters, "parameters");
-            Type type = parameters.GetType();
+            Args.ThrowIfNull(dynamicDbParameters, "parameters");
+            Type type = dynamicDbParameters.GetType();
             foreach (PropertyInfo pi in type.GetProperties())
             {
-                DbParameter parameter = db.ServiceProvider.Get<DbProviderFactory>().CreateParameter();
-                parameter.ParameterName = pi.Name;
-                parameter.Value = pi.GetValue(parameters);
-                yield return parameter;
+                //DbParameter parameter = db.ServiceProvider.Get<DbProviderFactory>().CreateParameter();
+                //parameter.ParameterName = pi.Name;
+                //parameter.Value = pi.GetValue(parameters);
+                yield return db.CreateParameter(pi.Name, pi.GetValue(dynamicDbParameters));
             }
         }
 

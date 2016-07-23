@@ -48,13 +48,13 @@ namespace Bam.Net.Data.MsSql
         public override string[] GetColumnNames(string tableName)
         {
             string sql = $"SELECT COLUMN_NAME FROM {GetSchemaName()}.INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = @TableName";
-            return Database.GetSingleColumnResults<string>(sql, new { TableName = tableName }.ToDbParameters(Database).ToArray()).ToArray();
+            return Database.QuerySingleColumn<string>(sql, new { TableName = tableName }.ToDbParameters(Database).ToArray()).ToArray();
         }
 
         public override bool GetColumnNullable(string tableName, string columnName)
         {
             string sql = "SELECT COLUMNPROPERTY(OBJECT_ID(@TableName, 'U'), @ColumnName, 'AllowsNull')";
-            return Database.GetValue<int>(sql, new { TableName = tableName, ColumnName = columnName }.ToDbParameters(Database).ToArray()) == 1;
+            return Database.QuerySingle<int>(sql, new { TableName = tableName, ColumnName = columnName }.ToDbParameters(Database).ToArray()) == 1;
         }
 
         public override ForeignKeyColumn[] GetForeignKeyColumns()
@@ -81,7 +81,7 @@ namespace Bam.Net.Data.MsSql
 FROM {GetSchemaName()}.INFORMATION_SCHEMA.KEY_COLUMN_USAGE
 WHERE OBJECTPROPERTY(OBJECT_ID(CONSTRAINT_SCHEMA + '.' + CONSTRAINT_NAME), 'IsPrimaryKey') = 1
 AND TABLE_NAME = @TableName";            
-            return Database.GetValue<string>(sql, new { TableName = tableName }.ToDbParameters(Database).ToArray());            
+            return Database.QuerySingle<string>(sql, new { TableName = tableName }.ToDbParameters(Database).ToArray());            
         }
 
         public override string GetSchemaName()
@@ -208,6 +208,7 @@ AND TABLE_NAME = @TableName";
         protected override void SetConnectionName(string connectionString)
         {
             SqlConnectionStringBuilder connectionStringBuilder = Database.CreateConnectionStringBuilder<SqlConnectionStringBuilder>();
+            connectionStringBuilder.ConnectionString = connectionString;
             string databaseName = connectionStringBuilder["Initial Catalog"] as string;
             if (string.IsNullOrWhiteSpace(databaseName))
             {

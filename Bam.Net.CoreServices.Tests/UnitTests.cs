@@ -93,11 +93,11 @@ namespace Bam.Net.CoreServices.Tests
             {
                 fired = true;
             });
-            Task test = src.Test();
-            await test.ConfigureAwait(true);
-            await test;
-            Thread.Sleep(100);
-            Expect.IsTrue(fired.Value);
+            Task test = src.Test().ContinueWith(t=>
+            {
+                Expect.IsTrue(fired.Value);
+                OutLineFormat("fire named event test ran to completion", ConsoleColor.Green);
+            });
         }
 
         private static TestEventSourceLoggable GetTestEventSource()

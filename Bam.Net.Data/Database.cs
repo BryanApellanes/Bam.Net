@@ -195,11 +195,11 @@ namespace Bam.Net.Data
                 ReleaseConnection(conn);
             }
         }
-        public virtual T GetValue<T>(string singleValueQuery, object dynamicParamters)
+        public virtual T QuerySingle<T>(string singleValueQuery, object dynamicParamters)
         {
-            return GetValue<T>(singleValueQuery, dynamicParamters.ToDbParameters(this).ToArray());
+            return QuerySingle<T>(singleValueQuery, dynamicParamters.ToDbParameters(this).ToArray());
         }
-        public virtual T GetValue<T>(string singleValueQuery, params DbParameter[] dbParameters)
+        public virtual T QuerySingle<T>(string singleValueQuery, params DbParameter[] dbParameters)
         {
             DataRow row = GetFirstRow(singleValueQuery, dbParameters);
             if(row.Table.Columns.Count > 0 && row[0] != DBNull.Value)
@@ -209,9 +209,9 @@ namespace Bam.Net.Data
             return default(T);
         }
 
-        public virtual IEnumerable<T> GetSingleColumnResults<T>(string singleColumnQuery, object dynamicParameters)
+        public virtual IEnumerable<T> QuerySingleColumn<T>(string singleColumnQuery, object dynamicParameters)
         {
-            return GetSingleColumnResults<T>(singleColumnQuery, dynamicParameters.ToDbParameters(this).ToArray());
+            return QuerySingleColumn<T>(singleColumnQuery, dynamicParameters.ToDbParameters(this).ToArray());
         }
         /// <summary>
         /// Execute a query that returns a single column of results casting
@@ -221,7 +221,7 @@ namespace Bam.Net.Data
         /// <param name="singleColumnQuery"></param>
         /// <param name="dbParameters"></param>
         /// <returns></returns>
-        public virtual IEnumerable<T> GetSingleColumnResults<T>(string singleColumnQuery, params DbParameter[] dbParameters)
+        public virtual IEnumerable<T> QuerySingleColumn<T>(string singleColumnQuery, params DbParameter[] dbParameters)
         {
             return Query<T>(singleColumnQuery, (row) => (T)row[0], dbParameters);
         }
@@ -376,6 +376,11 @@ namespace Bam.Net.Data
         public virtual T CreateConnectionStringBuilder<T>() where T : DbConnectionStringBuilder, new()
         {
             return (T)CreateConnectionStringBuilder();
+        }
+
+        public virtual DbParameter CreateParameter(string name, object value)
+        {
+            return ServiceProvider.Get<IParameterBuilder>().BuildParameter(name, value);
         }
         public virtual DbConnectionStringBuilder CreateConnectionStringBuilder()
         {

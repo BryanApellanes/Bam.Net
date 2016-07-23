@@ -15,8 +15,6 @@ namespace Bam.Net.Data.MySql
             : base()
         {
             Database = database;
-            MySqlConnectionStringBuilder conn = database.CreateConnectionStringBuilder<MySqlConnectionStringBuilder>();
-            conn.ConnectionString = database.ConnectionString;
             ConnectionString = database.ConnectionString;
             _tableIndexes = new Dictionary<string, DataTable>();
         }
@@ -27,26 +25,23 @@ namespace Bam.Net.Data.MySql
 
         public override string GetColumnDbDataType(string tableName, string columnName)
         {
-            string sql = "SELECT DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = @TableName AND COLUMN_NAME = @ColumnName";
-            return Database.GetValue<string>(sql, new { TableName = tableName, ColumnName = columnName });
+            return GetColumnAttribute(tableName, columnName, "DATA_TYPE");
         }
 
         public override string GetColumnMaxLength(string tableName, string columnName)
         {
-            string sql = "SELECT CHARACTER_MAX_LENGTH FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = @TableName AND COLUMN_NAME = @ColumnName";
-            return Database.GetValue<object>(sql, new { TableName = tableName, ColumnName = columnName }).ToString();
-        }
-
-        public override string[] GetColumnNames(string tableName)
-        {
-            string sql = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = @TableName";
-            return Database.GetSingleColumnResults<string>(sql, new { TableName = tableName }).ToArray();
+            return GetColumnAttribute(tableName, columnName, "CHARACTER_MAXIMUM_LENGTH");
         }
 
         public override bool GetColumnNullable(string tableName, string columnName)
         {
-            string sql = "SELECT IS_NULLABLE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = @TableName and COLUMN_NAME = @ColumnName";
-            return Database.GetValue<string>(sql, new { TableName = tableName, ColumnName = columnName }).IsAffirmative();
+            return GetColumnAttribute(tableName, columnName, "IS_NULLABLE").IsAffirmative();
+        }
+
+        public override string[] GetColumnNames(string tableName)
+        {
+            string sql = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = @SchemaName AND TABLE_NAME = @TableName";
+            return Database.QuerySingleColumn<string>(sql, new { SchemaName = GetSchemaName(), TableName = tableName }).ToArray();
         }
 
         public override ForeignKeyColumn[] GetForeignKeyColumns()
@@ -93,7 +88,7 @@ WHERE
         public override string[] GetTableNames()
         {
             string sql = $"SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '{GetSchemaName()}'";
-            return Database.GetSingleColumnResults<string>(sql).ToArray();
+            return Database.QuerySingleColumn<string>(sql).ToArray();
         }
 
         protected override void SetConnectionName(string connectionString)
@@ -161,10 +156,18 @@ WHERE
         {
             if (!_tableIndexes.ContainsKey(tableName))
             {
-                _tableIndexes.Add(tableName, Database.GetDataTable("SHOW INDEX FROM @TableName", new { TableName = tableName }));
+                _tableIndexes.Add(tableName, Database.GetDataTable($"SHOW INDEX FROM `{tableName}`"));
             }
 
             return _tableIndexes[tableName];
         }
+
+        private string GetColumnAttribute(string tableName, string columnName, string attributeName)
+        {
+            string sql = $"SELECT {attributeName} FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = @SchemaName AND TABLE_NAME = @TableName AND COLUMN_NAME = @ColumnName";
+            object result = Database.QuerySingle<object>(sql, new { SchemaName = GetSchemaName(), TableName = tableName, ColumnName = columnName });
+            return result == null ? string.Empty : result.ToString();
+        }
+
     }
 }

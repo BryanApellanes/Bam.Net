@@ -12,6 +12,7 @@ namespace Bam.Net.Data
 {
     public interface IParameterBuilder
     {
+        DbParameter BuildParameter(string name, object value);
         DbParameter[] GetParameters(IHasFilters filter);        
     }
 }

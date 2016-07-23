@@ -16,6 +16,10 @@ namespace Bam.Net.Data
 {
 	public class OracleParameterBuilder : ParameterBuilder
     {
+        public override DbParameter BuildParameter(string name, object value)
+        {
+            return new OracleParameter($":{name}", value);
+        }
         public override DbParameter BuildParameter(IParameterInfo c)
         {
             string parameterName = string.Format(":{0}{1}", c.ColumnName, c.Number);

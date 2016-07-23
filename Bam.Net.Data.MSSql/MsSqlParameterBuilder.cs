@@ -16,6 +16,10 @@ namespace Bam.Net.Data
 {
     public class MsSqlParameterBuilder: ParameterBuilder
     {
+        public override DbParameter BuildParameter(string name, object value)
+        {
+            return new SqlParameter($"@{name}", value);
+        }
         public override DbParameter BuildParameter(IParameterInfo c)
         {
             return new SqlParameter(string.Format("@{0}{1}", c.ColumnName, c.Number), c.Value);
