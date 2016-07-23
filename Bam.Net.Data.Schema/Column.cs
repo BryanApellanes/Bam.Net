@@ -10,8 +10,8 @@ using System.Text.RegularExpressions;
 using Bam.Net;
 using Bam.Net.Data;
 using Bam.Net.Razor;
-using Bam.Net.ServiceProxy;
-using Bam.Net.ServiceProxy.Js;
+//using Bam.Net.ServiceProxy;
+//using Bam.Net.ServiceProxy.Js;
 
 namespace Bam.Net.Data.Schema
 {

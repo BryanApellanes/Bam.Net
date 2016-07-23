@@ -317,7 +317,8 @@ namespace Bam.Net
         }
 
         /// <summary>
-        /// Set the property with the specified name
+        /// Set the property with the specified name and return the instance 
+        /// to enable chaining
         /// </summary>
         /// <param name="instance"></param>
         /// <param name="propertyName"></param>
@@ -327,12 +328,61 @@ namespace Bam.Net
         {
             Args.ThrowIfNull(instance, "instance");
             Type type = instance.GetType();
+            PropertyInfo property = GetPropertyOrThrow(type, propertyName, throwIfPropertyNotFound);
+            SetProperty(property, instance, value);
+            return instance;
+        }
+        /// <summary>      
+        /// Set the property with the specified name and return the instance 
+        /// to enable chaining
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <param name="instanceType"></param>
+        /// <param name="propertyName"></param>
+        /// <param name="value"></param>
+        /// <param name="throwIfPropertyNotFound"></param>
+        /// <returns></returns>
+        public static object Property(this object instance, Type instanceType, string propertyName, object value, bool throwIfPropertyNotFound = true)
+        {
+            Args.ThrowIfNull(instance, "instance");
+            Args.ThrowIfNull(instanceType, "instanceType");
+            PropertyInfo property = GetPropertyOrThrow(instanceType, propertyName, throwIfPropertyNotFound);
+            SetProperty(property, instance, value);
+            return instance;
+        }
+
+        /// <summary>      
+        /// Set the property with the specified name and return the instance 
+        /// to enable chaining
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="instance"></param>
+        /// <param name="propertyName"></param>
+        /// <param name="value"></param>
+        /// <param name="throwIfPropertyNotFound"></param>
+        /// <returns></returns>
+        public static object Property<T>(this T instance, string propertyName, object value, bool throwIfPropertyNotFound = true)
+        {
+            Args.ThrowIfNull(instance, "instance");
+            Type type = instance.GetType(); // get the actual instance type since it may be an extender of T
+            PropertyInfo property = GetPropertyOrThrow(type, propertyName, throwIfPropertyNotFound);
+            SetProperty(property, instance, value);
+            return instance;
+        }
+
+        private static PropertyInfo GetPropertyOrThrow(Type type, string propertyName, bool throwIfPropertyNotFound)
+        {
             PropertyInfo property = type.GetProperty(propertyName);
             if (property == null && throwIfPropertyNotFound)
             {
                 PropertyNotFound(propertyName, type);
             }
 
+            return property;
+        }
+
+        private static void SetProperty(PropertyInfo property, object instance, object value)
+        {
             if (property != null)
             {
                 if (value == DBNull.Value)
@@ -341,9 +391,8 @@ namespace Bam.Net
                 }
                 property.SetValue(instance, value, null);
             }
-
-            return instance;
         }
+
 
         public static void EachPropertyInfo(this object instance, Action<PropertyInfo> action)
         {

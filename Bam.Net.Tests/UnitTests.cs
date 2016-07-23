@@ -58,6 +58,18 @@ namespace Bam.Net.Tests
         }
 
         [UnitTest]
+        public void ReadUntilTest()
+        {
+            string first = "1234567890";
+            string then = "More after that: ".RandomLetters(5);
+            string toRead = $"{first}:{then}";
+            string remainder;
+            string read = toRead.ReadUntil(':', out remainder);
+            Expect.AreEqual(first, read);
+            Expect.AreEqual(then, remainder);
+        }
+
+        [UnitTest]
         public void ShouldSubscribe()
         {
             TestLoggable loggable = new TestLoggable();

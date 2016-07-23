@@ -15,21 +15,12 @@ namespace Bam.Net.Data.MsSql
     {
         // TODO: update this to retrieve all meta data using fewer queries along the lines of  
         //SELECT COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH FROM {GetSchemaName()}.INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'TestTable'
-
-        Database _daoDatabase;
-
-        public MsSqlSchemaExtractor(string connectionName)
-            : base()
-        {
-            _daoDatabase = Db.For(connectionName);
-            string connectionString = ConfigurationManager.ConnectionStrings[connectionName].ConnectionString;
-            ConnectionString = connectionString;
-        }
+      
 
         public MsSqlSchemaExtractor(MsSqlDatabase database)
             : base()
         {
-            _daoDatabase = database;
+            Database = database;
             ConnectionString = database.ConnectionString;
         }
 
@@ -37,18 +28,7 @@ namespace Bam.Net.Data.MsSql
         {
             this.NameFormatter = nameFormatter;
         }
-        public override string ConnectionString
-        {
-            get
-            {
-                return base.ConnectionString;
-            }
-            set
-            {
-                base.ConnectionString = value;
-                SetConnection(value);
-            }
-        }
+
         public override DataTypes GetColumnDataType(string tableName, string columnName)
         {
             return TranslateDataType(GetColumnDbDataType(tableName, columnName).ToLowerInvariant());
@@ -65,27 +45,21 @@ namespace Bam.Net.Data.MsSql
             return value == null ? "MAX" : value.ToString();
         }
 
-        private object GetColumnAttribute(string tableName, string columnName, string attributeName)
-        {
-            string sql = $"SELECT {attributeName} FROM {GetSchemaName()}.INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = @TableName AND COLUMN_NAME = @ColumnName";
-            return  _daoDatabase.GetFirstRowFromSql(sql, new { TableName = tableName, ColumnName = columnName }.ToDbParameters(_daoDatabase).ToArray())[0];
-        }
-
         public override string[] GetColumnNames(string tableName)
         {
             string sql = $"SELECT COLUMN_NAME FROM {GetSchemaName()}.INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = @TableName";
-            return _daoDatabase.GetValues<string>(sql, new { TableName = tableName }.ToDbParameters(_daoDatabase).ToArray()).ToArray();
+            return Database.GetSingleColumnResults<string>(sql, new { TableName = tableName }.ToDbParameters(Database).ToArray()).ToArray();
         }
 
         public override bool GetColumnNullable(string tableName, string columnName)
         {
             string sql = "SELECT COLUMNPROPERTY(OBJECT_ID(@TableName, 'U'), @ColumnName, 'AllowsNull')";
-            return _daoDatabase.GetValue<int>(sql, new { TableName = tableName, ColumnName = columnName }.ToDbParameters(_daoDatabase).ToArray()) == 1;
+            return Database.GetValue<int>(sql, new { TableName = tableName, ColumnName = columnName }.ToDbParameters(Database).ToArray()) == 1;
         }
 
         public override ForeignKeyColumn[] GetForeignKeyColumns()
         {
-            DataTable foreignKeyData = GetForeignKeyData(_daoDatabase);
+            DataTable foreignKeyData = GetForeignKeyData(Database);
             List<ForeignKeyColumn> results = new List<ForeignKeyColumn>();
             foreach (DataRow row in foreignKeyData.Rows)
             {
@@ -94,7 +68,6 @@ namespace Bam.Net.Data.MsSql
                 fk.ReferenceName = row["ForeignKeyName"].ToString();
                 fk.Name = row["ForeignKeyColumn"].ToString();
                 fk.ReferencedKey = row["PrimaryKeyColumn"].ToString();
-
                 fk.ReferencedTable = row["PrimaryKeyTable"].ToString();
                 results.Add(fk);
             }
@@ -108,18 +81,18 @@ namespace Bam.Net.Data.MsSql
 FROM {GetSchemaName()}.INFORMATION_SCHEMA.KEY_COLUMN_USAGE
 WHERE OBJECTPROPERTY(OBJECT_ID(CONSTRAINT_SCHEMA + '.' + CONSTRAINT_NAME), 'IsPrimaryKey') = 1
 AND TABLE_NAME = @TableName";            
-            return _daoDatabase.GetValue<string>(sql, new { TableName = tableName }.ToDbParameters(_daoDatabase).ToArray());            
+            return Database.GetValue<string>(sql, new { TableName = tableName }.ToDbParameters(Database).ToArray());            
         }
 
         public override string GetSchemaName()
         {
-            return _daoDatabase.ConnectionName;
+            return Database.ConnectionName;
         }
 
         public override string[] GetTableNames()
         {
             string sql = $"SELECT TABLE_NAME FROM {GetSchemaName()}.INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE'";
-            DataTable results = _daoDatabase.GetDataTableFromSql(sql);
+            DataTable results = Database.GetDataTable(sql);
             List<string> tableNames = new List<string>();
             foreach(DataRow row in results.Rows)
             {
@@ -229,14 +202,12 @@ AND TABLE_NAME = @TableName";
                 ON UKU.constraint_name = UK.constraint_name AND
                 UKU.ordinal_position =FKU.ordinal_position";
             #endregion
-            DataTable foreignKeyData = db.GetDataTableFromSql(sql, CommandType.Text);
+            DataTable foreignKeyData = db.GetDataTable(sql, CommandType.Text);
             return foreignKeyData;
         }
-        private void SetConnection(string connectionString)
+        protected override void SetConnectionName(string connectionString)
         {
-            SqlConnection _connection = new SqlConnection(ConnectionString);
-
-            SqlConnectionStringBuilder connectionStringBuilder = new SqlConnectionStringBuilder(connectionString);
+            SqlConnectionStringBuilder connectionStringBuilder = Database.CreateConnectionStringBuilder<SqlConnectionStringBuilder>();
             string databaseName = connectionStringBuilder["Initial Catalog"] as string;
             if (string.IsNullOrWhiteSpace(databaseName))
             {
@@ -250,7 +221,14 @@ AND TABLE_NAME = @TableName";
                     connectionString));
             }
 
-            _daoDatabase.ConnectionName = databaseName;
+            Database.ConnectionName = databaseName;
         }
+
+        private object GetColumnAttribute(string tableName, string columnName, string attributeName)
+        {
+            string sql = $"SELECT {attributeName} FROM {GetSchemaName()}.INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = @TableName AND COLUMN_NAME = @ColumnName";
+            return Database.GetFirstRow(sql, new { TableName = tableName, ColumnName = columnName }.ToDbParameters(Database).ToArray())[0];
+        }
+
     }
 }

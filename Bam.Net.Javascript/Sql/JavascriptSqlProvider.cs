@@ -29,7 +29,7 @@ namespace Bam.Net.Javascript.Sql
 			SqlResponse result = new SqlResponse();
 			try
 			{
-				DataTable results = Database.GetDataTableFromSql(sql, CommandType.Text);
+				DataTable results = Database.GetDataTable(sql, CommandType.Text);
 				result.Results = results.ToDynamicList().ToArray();
 				result.Count = results.Rows.Count;
 			}

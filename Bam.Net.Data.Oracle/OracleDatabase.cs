@@ -125,7 +125,7 @@ namespace Bam.Net.Data.Oracle
             return command;
         }
 
-        public override DataTable GetDataTableFromSql(string sqlStatement, CommandType commandType, params DbParameter[] dbParamaters)
+        public override DataTable GetDataTable(string sqlStatement, CommandType commandType, params DbParameter[] dbParamaters)
         {
             DbProviderFactory providerFactory = ServiceProvider.Get<DbProviderFactory>();
             DbConnection conn = GetDbConnection();
