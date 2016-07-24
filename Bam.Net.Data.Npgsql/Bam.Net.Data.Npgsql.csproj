@@ -71,6 +71,7 @@
     <Compile Include="NpgsqlQuerySet.cs" />
     <Compile Include="NpgsqlRegistrar.cs" />
     <Compile Include="NpgsqlRegistrarCaller.cs" />
+    <Compile Include="NpgsqlSchemaExtractor.cs" />
     <Compile Include="NpgsqlSqlStringBuilder.cs" />
     <Compile Include="NpgsqlConnectionStringResolver.cs" />
     <Compile Include="NpgsqlCredentials.cs" />

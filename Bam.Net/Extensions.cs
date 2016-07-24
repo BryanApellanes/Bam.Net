@@ -95,6 +95,33 @@ namespace Bam.Net
         }
 
         /// <summary>
+        /// Read the specified string up to the first instance of the specified charToFind
+        /// returning the characters read and producing remainder as an out parameter.  Discards
+        /// the specified charToFind returning only values on either side
+        /// </summary>
+        /// <param name="toRead"></param>
+        /// <param name="charToFind"></param>
+        /// <param name="remainder"></param>
+        /// <returns></returns>
+        public static string ReadUntil(this string toRead, char charToFind, out string remainder)
+        {
+            StringBuilder result = new StringBuilder();
+            int pos = 0;
+            remainder = string.Empty;
+            foreach(char c in toRead)
+            {
+                if (c.Equals(charToFind))
+                {
+                    remainder = toRead.Substring(pos + 1);
+                    break;
+                }
+                ++pos;
+                result.Append(c);
+            }
+            return result.ToString();
+        }
+
+        /// <summary>
         /// Return a copy of the specified DateTime with milliseconds
         /// set to 0
         /// </summary>
@@ -1322,10 +1349,7 @@ namespace Bam.Net
 
         public static string Hash(this string toBeHashed, HashAlgorithms algorithm, Encoding encoding = null)
         {
-            if (encoding == null)
-            {
-                encoding = Encoding.UTF8;
-            }
+            encoding = encoding ?? Encoding.UTF8;
             HashAlgorithm alg = _hashAlgorithms[algorithm]();
             byte[] bytes = encoding.GetBytes(toBeHashed);
             byte[] hashBytes = alg.ComputeHash(bytes);
@@ -3218,6 +3242,15 @@ namespace Bam.Net
             return instances;
         }
 
+        public static IEnumerable<dynamic> ToDynamicEnumerable(this DataTable table, string typeName = null)
+        {
+            typeName = typeName ?? table.TableName.Or(8.RandomLetters());
+            foreach (DataRow row in table.Rows)
+            {
+                yield return row.ToDynamic(typeName);
+            }
+        }
+
         public static Type ToDynamicType(this DataRow row)
         {
             AssemblyBuilder ignore;
@@ -3314,7 +3347,7 @@ namespace Bam.Net
             else
             {
                 string name = typeName;
-                AssemblyName assemblyName = new AssemblyName("DynamicGenerator");
+                AssemblyName assemblyName = new AssemblyName("Bam.Net.DynamicGenerator");
                 assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.RunAndSave);
                 ModuleBuilder moduleBuilder = assemblyBuilder.DefineDynamicModule(assemblyName.Name, assemblyName.Name + ".dll");
 

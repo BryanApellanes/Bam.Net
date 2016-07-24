@@ -19,6 +19,8 @@ namespace Bam.Net.Data.Schema
             NameMap = new SchemaNameMap();
         }
 
+        public Database Database { get; protected set; }
+
         public event EventHandler ProcessingTable;
         public event EventHandler ProcessingTableComplete;
         public event EventHandler ProcessingColumn;
@@ -40,9 +42,22 @@ namespace Bam.Net.Data.Schema
         public abstract string GetColumnDbDataType(string tableName, string columnName);
         public abstract string GetColumnMaxLength(string tableName, string columnName);
         public abstract bool GetColumnNullable(string tableName, string columnName);
-        public abstract ForeignKeyColumn[] GetForeignKeyColumns();              
+        public abstract ForeignKeyColumn[] GetForeignKeyColumns();
+        protected abstract void SetConnectionName(string connectionString);
 
-        public virtual string ConnectionString { get; set; }
+        string _connectionString;
+        public virtual string ConnectionString
+        {
+            get
+            {
+                return _connectionString;
+            }
+            set
+            {
+                _connectionString = value;
+                SetConnectionName(value);
+            }
+        }
         public SchemaNameMap NameMap { get; set; }
         public INameFormatter NameFormatter { get; set; }
         public virtual TableNameToClassName GetClassName(string tableName)
@@ -129,10 +144,6 @@ namespace Bam.Net.Data.Schema
                 {
                     col.TableClassName = NameMap.GetClassName(table.Name);
                 });
-            });
-            result.ForeignKeys.Each(fk =>
-            {
-                
             });
             return result;
         }

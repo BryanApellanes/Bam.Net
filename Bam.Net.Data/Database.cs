@@ -195,13 +195,123 @@ namespace Bam.Net.Data
                 ReleaseConnection(conn);
             }
         }
-        
-		public virtual DataRow GetFirstRowFromSql(string sqlStatement, CommandType commandType, params DbParameter[] dbParameters)
+        public virtual T QuerySingle<T>(string singleValueQuery, object dynamicParamters)
+        {
+            return QuerySingle<T>(singleValueQuery, dynamicParamters.ToDbParameters(this).ToArray());
+        }
+        public virtual T QuerySingle<T>(string singleValueQuery, params DbParameter[] dbParameters)
+        {
+            DataRow row = GetFirstRow(singleValueQuery, dbParameters);
+            if(row.Table.Columns.Count > 0 && row[0] != DBNull.Value)
+            {                
+                return (T)row[0];
+            }
+            return default(T);
+        }
+
+        public virtual IEnumerable<T> QuerySingleColumn<T>(string singleColumnQuery, object dynamicParameters)
+        {
+            return QuerySingleColumn<T>(singleColumnQuery, dynamicParameters.ToDbParameters(this).ToArray());
+        }
+        /// <summary>
+        /// Execute a query that returns a single column of results casting
+        /// each to the specified generic type T
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="singleColumnQuery"></param>
+        /// <param name="dbParameters"></param>
+        /// <returns></returns>
+        public virtual IEnumerable<T> QuerySingleColumn<T>(string singleColumnQuery, params DbParameter[] dbParameters)
+        {
+            return Query<T>(singleColumnQuery, (row) => (T)row[0], dbParameters);
+        }
+
+        /// <summary>
+        /// Execute the specified sqlQuery and return results as an Enumerable of
+        /// dynamic object instances.  Property access can be done using column names 
+        /// directly.
+        /// </summary>
+        /// <param name="sqlQuery"></param>
+        /// <param name="dynamicDbParameters"></param>
+        /// <param name="typeName"></param>
+        /// <returns></returns>
+        public IEnumerable<dynamic> Query(string sqlQuery, object dynamicDbParameters, string typeName = null)
+        {
+            DbParameter[] dbParameters = dynamicDbParameters.ToDbParameters(this).ToArray();            
+            return Query(sqlQuery, dbParameters, typeName);
+        }
+
+        public IEnumerable<dynamic> Query(string sqlQuery, Dictionary<string, object> dictDbParameters, string typeName = null)
+        {
+            DbParameter[] dbParameters = dictDbParameters.ToDbParameters(this).ToArray();
+            return Query(sqlQuery, dbParameters, typeName);
+        }
+
+        public IEnumerable<dynamic> Query(string sqlQuery, DbParameter[] dbParameters, string typeName = null)
+        {
+            DataTable table = GetDataTable(sqlQuery, dbParameters);
+            typeName = typeName ?? new SqlInfo(sqlQuery, dbParameters).ToInfoString();
+            return table.ToDynamicEnumerable(typeName);
+        }
+
+        public IEnumerable<T> Query<T>(string sqlQuery, object dynamicDbParameters)
+        {
+            return Query<T>(sqlQuery, dynamicDbParameters.ToDbParameters(this).ToArray());
+        }
+        public IEnumerable<T> Query<T>(string sqlQuery, Dictionary<string, object> dbParameters)
+        {
+            return Query<T>(sqlQuery, dbParameters.ToDbParameters(this).ToArray());
+        }
+        public IEnumerable<T> Query<T>(string sqlQuery, params DbParameter[] dbParameters)
+        {
+            return Query<T>(sqlQuery, (row) => row.ToInstanceOf<T>(), dbParameters);
+        }
+
+        public IEnumerable<T> Query<T>(string sqlQuery, Func<DataRow, T> rowProcessor, params DbParameter[] dbParameters)
+        {
+            DataTable table = GetDataTable(sqlQuery, dbParameters);
+            foreach(DataRow row in table.Rows)
+            {
+                yield return rowProcessor(row);
+            }
+        }
+
+		public virtual DataRow GetFirstRow(string sqlStatement, CommandType commandType, params DbParameter[] dbParameters)
 		{
-			return GetDataTableFromSql(sqlStatement, commandType, dbParameters).Rows[0];
+			return GetDataTable(sqlStatement, commandType, dbParameters).Rows[0];
 		}
 
-		public virtual DataTable GetDataTableFromSql(string sqlStatement, CommandType commandType, params DbParameter[] dbParameters)
+        public virtual DataRow GetFirstRow(string sqlStatement, Dictionary<string, object> dbParameters)
+        {
+            return GetFirstRow(sqlStatement, dbParameters.ToDbParameters(this).ToArray());
+        }
+
+        public virtual DataRow GetFirstRow(string sqlStatement, params DbParameter[] dbParameters)
+        {
+            DataTable table = GetDataTable(sqlStatement, CommandType.Text, dbParameters);
+            if(table.Rows.Count > 0)
+            {
+                return table.Rows[0];
+            }
+            return table.NewRow();
+        }
+
+        public virtual DataTable GetDataTable(string sqlStatement, object dynamicParameters)
+        {
+            return GetDataTable(sqlStatement, dynamicParameters.ToDbParameters(this).ToArray());
+        }
+
+        public virtual DataTable GetDataTable(string sqlStatement, Dictionary<string, object> parameters)
+        {
+            return GetDataTable(sqlStatement, parameters.ToDbParameters(this).ToArray());
+        }
+
+        public virtual DataTable GetDataTable(string sqlStatement, params DbParameter[] dbParameters)
+        {
+            return GetDataTable(sqlStatement, CommandType.Text, dbParameters);
+        }
+
+        public virtual DataTable GetDataTable(string sqlStatement, CommandType commandType, params DbParameter[] dbParameters)
         {
             DbProviderFactory providerFactory = ServiceProvider.Get<DbProviderFactory>();
             DbConnection conn = GetDbConnection();
@@ -263,7 +373,15 @@ namespace Bam.Net.Data
         {
             return ServiceProvider.Get<DbProviderFactory>().CreateCommand();
         }
+        public virtual T CreateConnectionStringBuilder<T>() where T : DbConnectionStringBuilder, new()
+        {
+            return (T)CreateConnectionStringBuilder();
+        }
 
+        public virtual DbParameter CreateParameter(string name, object value)
+        {
+            return ServiceProvider.Get<IParameterBuilder>().BuildParameter(name, value);
+        }
         public virtual DbConnectionStringBuilder CreateConnectionStringBuilder()
         {
             return ServiceProvider.Get<DbProviderFactory>().CreateConnectionStringBuilder();

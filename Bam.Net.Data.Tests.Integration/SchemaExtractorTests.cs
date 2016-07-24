@@ -28,96 +28,138 @@ using System.Configuration;
 using Bam.Net.Data.Tests;
 using Bam.Net.Analytics;
 using Bam.Net.Testing.Integration;
+using Bam.Net.Data.SQLite;
+using Bam.Net.Data.MySql;
+using Bam.Net.Data.Npgsql;
 
 namespace Bam.Net.Data.Tests.Integration
 {
+    class TestNameFormatter : INameFormatter
+    {
+        public string FormatClassName(string tableName)
+        {
+            return "Test_{0}"._Format(tableName);
+        }
+
+        public string FormatPropertyName(string tableName, string columnName)
+        {
+            return "Test_{0}"._Format(columnName);
+        }
+    }
+    [IntegrationTestContainer]
     public class SchemaExtractorTests : CommandLineTestInterface
     {
+        HashSet<Database> _testDatabases;
+        [IntegrationTestSetup]
+        public void SetupTests()
+        {
+            OutLine("Setting up tests...", ConsoleColor.Green);
+            _testDatabases = DataTools.Setup();
+        }
+
+        [IntegrationTestCleanup]
+        public void CleanupTests()
+        {
+            DataTools.Cleanup(_testDatabases);
+        }
+
         [IntegrationTest("SchemaExtractor: Get Table Names")]
         public void GetTableNamesShouldReturnTableNames()
         {
-            SchemaExtractor extractor = GetSchemaExtractor();
-            string[] tableNames = extractor.GetTableNames();
-            Expect.IsNotNull(tableNames);
-            Expect.AreEqual(2, tableNames.Length);
+            GetSchemaExtractors().Each(extractor =>
+            {
+                string[] tableNames = extractor.GetTableNames();
+                Expect.IsNotNull(tableNames);
+                Expect.AreEqual(7, tableNames.Length);
+            });
         }
 
         [IntegrationTest("SchemaExtractor: Get Column Names")]
         public void GetColumnNamesShouldReturnColumnNames()
         {
-            SchemaExtractor extractor = GetSchemaExtractor();
-            string[] columnNames = extractor.GetColumnNames("t_cust");
-            Expect.IsNotNull(columnNames);
-            Expect.AreEqual(5, columnNames.Length);
+            GetSchemaExtractors().Each(extractor =>
+            {
+                string[] columnNames = extractor.GetColumnNames("DaoReferenceObject");
+                Expect.IsNotNull(columnNames);
+                Expect.AreEqual(9, columnNames.Length);
+            });
         }
 
         [IntegrationTest("SchemaExtractor: Get Column Data type")]
         public void GetColumnDataTypeShouldReturnColumnDataType()
         {
-            SchemaExtractor extractor = GetSchemaExtractor();
-            DataTypes dataType = extractor.GetColumnDataType("t_cust", "b_day");
-            Expect.AreEqual(DataTypes.DateTime, dataType);
+            GetSchemaExtractors().Each(extractor =>
+            {
+                DataTypes dataType = extractor.GetColumnDataType("DaoReferenceObject", "DateTimeProperty");
+                Expect.AreEqual(DataTypes.DateTime, dataType);
+            });
         }
 
         [IntegrationTest("SchemaExtractor: Get Foreign Key Columns")]
         public void GetForeignKeyColumnsShouldReturnForeignKeyColumns()
         {
-            SchemaExtractor extractor = GetSchemaExtractor();
-            ForeignKeyColumn[] fks = extractor.GetForeignKeyColumns();
-            Expect.IsNotNull(fks);
-            fks.Each(fk =>
+            GetSchemaExtractors().Each(extractor =>
             {
-                OutLine(fk.PropertiesToString(), ConsoleColor.Cyan);
+                ForeignKeyColumn[] fks = extractor.GetForeignKeyColumns();
+                Expect.IsNotNull(fks);
+                Expect.IsGreaterThan(fks.Length, 0);
+                fks.Each(fk =>
+                {
+                    OutLine(fk.PropertiesToString(), ConsoleColor.Cyan);
+                });
             });
         }
 
-        class TestNameFormatter: INameFormatter
-        {
-            public string FormatClassName(string tableName)
-            {
-                return "Test_{0}"._Format(tableName);
-            }
-
-            public string FormatPropertyName(string tableName, string columnName)
-            {
-                return "Test_{0}"._Format(columnName);
-            }
-        }
         [IntegrationTest]
         public void TransformTableNameShouldTransformTableName()
         {
-            SchemaExtractor extractor = GetSchemaExtractor();
-            extractor.NameFormatter = new TestNameFormatter();
-            string className = extractor.GetClassName("Monkey");
-            Expect.AreEqual("Test_Monkey", className);
+            GetSchemaExtractors().Each(extractor =>
+            {
+                extractor.NameFormatter = new TestNameFormatter();
+                string className = extractor.GetClassName("Monkey");
+                Expect.AreEqual("Test_Monkey", className);
+            });
         }
 
         [IntegrationTest]
         public void TransformColumnNameShouldTransformColumnName()
         {
-            SchemaExtractor extractor = GetSchemaExtractor();
-            extractor.NameFormatter = new TestNameFormatter();
-            string className = extractor.GetPropertyName("Table", "Monkey");
-            Expect.AreEqual("Test_Monkey", className);
+            GetSchemaExtractors().Each(extractor =>
+            {
+                extractor.NameFormatter = new TestNameFormatter();
+                string className = extractor.GetPropertyName("Table", "Monkey");
+                Expect.AreEqual("Test_Monkey", className);
+            });
         }
 
         [IntegrationTest]
         public void ExtractShouldPopulateNameMap()
         {
-            SchemaExtractor extractor = GetSchemaExtractor();
-            Expect.AreEqual(0, extractor.NameMap.ColumnNamesToPropertyNames.Count);
-            Expect.AreEqual(0, extractor.NameMap.TableNamesToClassNames.Count);
-            extractor.Extract();
-            Expect.IsTrue(extractor.NameMap.ColumnNamesToPropertyNames.Count > 0);
-            Expect.IsTrue(extractor.NameMap.TableNamesToClassNames.Count > 0);
-            Out(extractor.NameMap.ToJson(), ConsoleColor.DarkBlue);
-            extractor.NameMap.Save("c:\\testData\\Db_SillydatabaseNameMap_test_output.json");
+            GetSchemaExtractors().Each(extractor =>
+            {
+                Expect.AreEqual(0, extractor.NameMap.ColumnNamesToPropertyNames.Count);
+                Expect.AreEqual(0, extractor.NameMap.TableNamesToClassNames.Count);
+                extractor.Extract();
+                Expect.IsTrue(extractor.NameMap.ColumnNamesToPropertyNames.Count > 0);
+                Expect.IsTrue(extractor.NameMap.TableNamesToClassNames.Count > 0);
+                Out(extractor.NameMap.ToJson(), ConsoleColor.DarkBlue);
+                extractor.NameMap.Save($"c:\\testData\\{extractor.GetType().Name}_NameMap_test_output.json");
+            });
         }
 
-        private SchemaExtractor GetSchemaExtractor()
+        public IEnumerable<SchemaExtractor> GetSchemaExtractors()
         {
-            return DataTools.GetMsSqlSmoSchemaExtractor(new MsSqlDatabase("chumsql2", "Db_Sillydatabase", new MsSqlCredentials { UserName = "mssqluser", Password = "mssqlP455w0rd" }));
+            yield return new MsSqlSmoSchemaExtractor(GetDatabase<MsSqlDatabase>());
+            yield return new MsSqlSchemaExtractor(GetDatabase<MsSqlDatabase>());
+            yield return new SQLiteSchemaExtractor(GetDatabase<SQLiteDatabase>());
+            yield return new MySqlSchemaExtractor(GetDatabase<MySqlDatabase>());
+            //yield return new NpgsqlSchemaExtractor(GetDatabase<NpgsqlDatabase>()); // not fully implemented
         }
+        
 
+        private T GetDatabase<T>() where T : Database
+        {
+            return (T)_testDatabases.Where(db => db.GetType() == typeof(T)).FirstOrDefault();
+        }
     }
 }

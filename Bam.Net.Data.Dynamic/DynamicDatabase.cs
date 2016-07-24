@@ -213,13 +213,13 @@ namespace Bam.Net.Data.Dynamic
         /// <param name="sql"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public IEnumerable<dynamic> Execute(string sql, Dictionary<string, object> parameters)
+        public IEnumerable<dynamic> Query(string sql, Dictionary<string, object> parameters)
         {
             try
             {
                 Database db = Database;
-                List<DbParameter> dbParameters = parameters.ToDbParameters(db);
-                return Database.GetDataTableFromSql(sql, System.Data.CommandType.Text, dbParameters.ToArray()).ToDynamicList();
+                IEnumerable<DbParameter> dbParameters = parameters.ToDbParameters(db);
+                return Database.GetDataTable(sql, System.Data.CommandType.Text, dbParameters.ToArray()).ToDynamicList();
             }
             catch (Exception ex)
             {

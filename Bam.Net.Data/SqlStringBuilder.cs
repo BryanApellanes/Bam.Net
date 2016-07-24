@@ -63,7 +63,7 @@ namespace Bam.Net.Data
         {
             if (!string.IsNullOrEmpty(this))
             {
-                DataTable val = db.GetDataTableFromSql(this, CommandType.Text, db.ServiceProvider.Get<IParameterBuilder>().GetParameters(this));
+                DataTable val = db.GetDataTable(this, CommandType.Text, db.ServiceProvider.Get<IParameterBuilder>().GetParameters(this));
                 OnExecuted(db);
                 return val;
             }

@@ -190,7 +190,7 @@ namespace Bam.Net.Data
 			db = db ?? Db.For<T>();
             IParameterBuilder parameterBuilder = db.ServiceProvider.Get<IParameterBuilder>();
             DbParameter[] parameters = parameterBuilder.GetParameters(sql);
-            return db.GetDataTableFromSql(sql, System.Data.CommandType.Text, parameters);
+            return db.GetDataTable(sql, System.Data.CommandType.Text, parameters);
         }
 
         private SqlStringBuilder GetSqlStringBuilder(Database db)

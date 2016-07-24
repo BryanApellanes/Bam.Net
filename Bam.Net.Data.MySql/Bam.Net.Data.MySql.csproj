@@ -71,6 +71,7 @@
     <Compile Include="MySqlQuerySet.cs" />
     <Compile Include="MySqlRegistrar.cs" />
     <Compile Include="MySqlRegistrarCaller.cs" />
+    <Compile Include="MySqlSchemaExtractor.cs" />
     <Compile Include="MySqlSqlStringBuilder.cs" />
     <Compile Include="MySqlConnectionStringResolver.cs" />
     <Compile Include="MySqlCredentials.cs" />

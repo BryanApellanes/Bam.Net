@@ -14,6 +14,7 @@ namespace Bam.Net.Data
 {
     public abstract class ParameterBuilder: IParameterBuilder
     {
+        public abstract DbParameter BuildParameter(string name, object value);
         public abstract DbParameter BuildParameter(IParameterInfo c);
 
         public DbParameter[] BuildParamters(InComparison c)

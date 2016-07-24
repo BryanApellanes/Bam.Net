@@ -18,7 +18,8 @@ namespace Bam.Net.Data.MySql
     {
         public MySqlDatabase(string serverName, string databaseName, MySqlCredentials credentials = null)
             : this(serverName, databaseName, databaseName, credentials)
-        { }
+        {
+        }
 
         public MySqlDatabase(string serverName, string databaseName, string connectionName, MySqlCredentials credentials = null)
             : base()

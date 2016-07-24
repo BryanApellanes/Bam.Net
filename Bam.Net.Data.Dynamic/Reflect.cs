@@ -90,7 +90,7 @@ namespace Bam.Net.Data.Dynamic
         public static IEnumerable<dynamic> ExecuteSqlQuery(this string sql, Database db, Dictionary<string, object> parameters = null)
         {
             DynamicDatabase ddb = new DynamicDatabase(db);
-            return ddb.Execute(sql, parameters ?? new Dictionary<string, object>());
+            return ddb.Query(sql, parameters ?? new Dictionary<string, object>());
         }
     }
 }

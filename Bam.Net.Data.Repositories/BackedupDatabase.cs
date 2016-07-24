@@ -120,7 +120,7 @@ namespace Bam.Net.Data.Repositories
 
 		public System.Data.DataTable GetDataTableFromSql(string sqlStatement, System.Data.CommandType commandType, params System.Data.Common.DbParameter[] dbParamaters)
 		{
-			return Database.GetDataTableFromSql(sqlStatement, commandType, dbParamaters);
+			return Database.GetDataTable(sqlStatement, commandType, dbParamaters);
 		}
 
 		public System.Data.Common.DbConnection GetDbConnection()

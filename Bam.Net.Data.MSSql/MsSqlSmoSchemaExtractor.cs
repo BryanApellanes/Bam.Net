@@ -50,19 +50,6 @@ namespace Bam.Net.Data.MsSql
             this.NameFormatter = nameFormatter;
         }
 
-        public override string ConnectionString
-        {
-            get
-            {
-                return base.ConnectionString;
-            }
-            set
-            {
-                base.ConnectionString = value;
-                SetConnection(value);
-            }
-        }
-
         public override BAS.ForeignKeyColumn[] GetForeignKeyColumns()
         {
             DataTable foreignKeyData = GetForeignKeyData(_daoDatabase);
@@ -107,7 +94,7 @@ namespace Bam.Net.Data.MsSql
                 ON UKU.constraint_name = UK.constraint_name AND
                 UKU.ordinal_position =FKU.ordinal_position";
             #endregion
-            DataTable foreignKeyData = db.GetDataTableFromSql(sql, CommandType.Text);
+            DataTable foreignKeyData = db.GetDataTable(sql, CommandType.Text);
             return foreignKeyData;
         }
 
@@ -267,7 +254,7 @@ namespace Bam.Net.Data.MsSql
             }
         }
         
-        private void SetConnection(string connectionString)
+        protected override void SetConnectionName(string connectionString)
         {
             _connection = new SqlConnection(ConnectionString);
             _serverConnection = new ServerConnection(_connection);

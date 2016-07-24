@@ -132,7 +132,7 @@ namespace Bam.Net.Data.Repositories
 
 				SqlStringBuilder oldSelector = source.GetService<SqlStringBuilder>();
 				oldSelector.Select(fk.ReferencedTable);
-				List<object> oldReferencedDaos = source.GetDataTableFromSql(oldSelector, CommandType.Text, oldParameterBuilder.GetParameters(oldSelector)).ToListOf(referencedDaoType);
+				List<object> oldReferencedDaos = source.GetDataTable(oldSelector, CommandType.Text, oldParameterBuilder.GetParameters(oldSelector)).ToListOf(referencedDaoType);
 
 				foreach (object oldReferenced in oldReferencedDaos)
 				{
@@ -147,7 +147,7 @@ namespace Bam.Net.Data.Repositories
 					});
 					SqlStringBuilder oldReferencerSelector = source.GetService<SqlStringBuilder>();
 					oldReferencerSelector.Select(fk.Table).Where(new AssignValue(fk.Name, oldReferencedDao.IdValue));
-					List<object> oldReferencingDaoInstances = source.GetDataTableFromSql(oldReferencerSelector, CommandType.Text, oldParameterBuilder.GetParameters(oldReferencerSelector)).ToListOf(referencingDaoType);
+					List<object> oldReferencingDaoInstances = source.GetDataTable(oldReferencerSelector, CommandType.Text, oldParameterBuilder.GetParameters(oldReferencerSelector)).ToListOf(referencingDaoType);
 
 					if (oldReferencingDaoInstances.Count > 0)
 					{
@@ -219,7 +219,7 @@ namespace Bam.Net.Data.Repositories
 			SqlStringBuilder sql = DatabaseToRestoreTo.ServiceProvider.Get<SqlStringBuilder>();
 			IParameterBuilder parameterBuilder = DatabaseToRestoreTo.ServiceProvider.Get<IParameterBuilder>();
 			sql.Select(dao.TableName()).Where(Query.Where("Uuid") == uuid);
-			DataTable table = DatabaseToRestoreTo.GetDataTableFromSql(sql.ToString(), CommandType.Text, parameterBuilder.GetParameters(sql));
+			DataTable table = DatabaseToRestoreTo.GetDataTable(sql.ToString(), CommandType.Text, parameterBuilder.GetParameters(sql));
 
 			if (table.Rows.Count == 1)
 			{

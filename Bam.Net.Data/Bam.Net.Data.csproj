@@ -214,6 +214,7 @@
     <Compile Include="SetFormat.cs" />
     <Compile Include="SqlDialect.cs" />
     <Compile Include="SqlExecuteDelegate.cs" />
+    <Compile Include="SqlInfo.cs" />
     <Compile Include="SqlStringBuilder.cs" />
     <Compile Include="SqlStringBuilderDelegate.cs" />
     <Compile Include="StartsWithComparison.cs" />

@@ -9,8 +9,6 @@ using System.IO;
 using System.Web.Script.Serialization;
 using Bam.Net;
 using Bam.Net.Data;
-using Bam.Net.ServiceProxy;
-using Bam.Net.ServiceProxy.Js;
 using Newtonsoft.Json;
 using Bam.Net.Configuration;
 

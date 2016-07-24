@@ -46,40 +46,75 @@ namespace Bam.Net.Data
             return returnValues.ToArray();
         }
 
-		public static List<object> ToListOf(this DataTable table, Type type, bool throwIfColumnPropertyNotFound = false)
-		{
-			List<object> result = new List<object>();
-			foreach (DataRow row in table.Rows)
-			{
-				result.Add(row.ToInstanceOf(type, throwIfColumnPropertyNotFound));
-			}
+        public static IEnumerable<dynamic> Query(string sqlQuery, Database db, object dynamicDbParameters, string typeName = null)
+        {
+            return db.Query(sqlQuery, dynamicDbParameters);
+        }
 
-			return result;
+        public static IEnumerable<dynamic> Query(string sqlQuery, Database db, Dictionary<string, object> dictDbParameters, string typeName = null)
+        {
+            return db.Query(sqlQuery, dictDbParameters);
+        }
+        public static IEnumerable<dynamic> Query(string sqlQuery, Database db, DbParameter[] dbParameters, string typeName = null)
+        {
+            return db.Query(sqlQuery, dbParameters, typeName);
+        }
+
+        public static IEnumerable<T> Query<T>(this string sqlQuery, Database db, object dynamicDbProperties)
+        {
+            return db.Query<T>(sqlQuery, dynamicDbProperties);
+        }
+
+        public static IEnumerable<T> Query<T>(this string sqlQuery, Database db, Dictionary<string, object> dbParameters)
+        {
+            return db.Query<T>(sqlQuery, dbParameters);
+        }
+
+        public static IEnumerable<T> Query<T>(this string sqlQuery, Database db, params DbParameter[] dbParameters)
+        {
+            return db.Query<T>(sqlQuery, dbParameters);
+        }
+
+        public static IEnumerable<T> Query<T>(string sqlQuery, Database db, Func<DataRow, T> rowProcessor, params DbParameter[] dbParameters)
+        {
+            return db.Query<T>(sqlQuery, rowProcessor, dbParameters);
+        }
+
+        public static IEnumerable<T> ToEnumerableOf<T>(this DataTable table, bool throwIfColumnPropertyNotFound = false)
+        {
+            foreach(DataRow row in table.Rows)
+            {
+                yield return row.ToInstanceOf<T>(throwIfColumnPropertyNotFound);
+            }
+        }
+
+        public static List<T> ToListOf<T>(this DataTable table, bool throwIfColumnPropertyNotFound = false)
+		{
+            return ToEnumerableOf<T>(table, throwIfColumnPropertyNotFound).ToList();
 		}
 
-		public static List<T> ToListOf<T>(this DataTable table, bool throwIfColumnPropertyNotFound = false)
-		{
-			List<T> result = new List<T>();
-			foreach(DataRow row in table.Rows)
-			{
-				result.Add(row.ToInstanceOf<T>(throwIfColumnPropertyNotFound));
-			}
-
-			return result;
-		}
-
-		public static T ToInstanceOf<T>(this DataRow row, bool throwIfColumnPropertyNotFound = false)
+        public static T ToInstanceOf<T>(this DataRow row, bool throwIfColumnPropertyNotFound = false)
 		{
 			return (T)row.ToInstanceOf(typeof(T), throwIfColumnPropertyNotFound);
 		}
-
-		public static object ToInstanceOf(this DataRow row, Type type, bool throwIfColumnPropertyNotFound = false)
+        public static IEnumerable<object> ToEnumerableOf(this DataTable table, Type type, bool throwIfColumnPropertyNotFound = false)
+        {
+            foreach(DataRow row in table.Rows)
+            {
+                yield return row.ToInstanceOf(type, throwIfColumnPropertyNotFound);
+            }
+        }
+        public static List<object> ToListOf(this DataTable table, Type type, bool throwIfColumnPropertyNotFound = false)
+        {
+            return ToEnumerableOf(table, type, throwIfColumnPropertyNotFound).ToList();
+        }
+        public static object ToInstanceOf(this DataRow row, Type type, bool throwIfColumnPropertyNotFound = false)
 		{
 			object result = type.Construct();
 			foreach(DataColumn column in row.Table.Columns)
 			{
 				object value = row[column];
-				result.Property(column.ColumnName, value, throwIfColumnPropertyNotFound);
+				result.Property(type, column.ColumnName, value, throwIfColumnPropertyNotFound);
 			}
 			return result;
 		}
@@ -105,17 +140,77 @@ namespace Bam.Net.Data
 			return table.Rows.Add(rowValues.ToArray());
 		}
 
-        public static List<DbParameter> ToDbParameters(this Dictionary<string, object> parameters, Database db)
+        public static string Sha1(this DbParameter[] dbParameters, Encoding encoding = null)
         {
-            List<DbParameter> dbParameters = new List<DbParameter>();
+            return Hash(dbParameters, HashAlgorithms.SHA1, encoding);
+        }
+
+        public static string Md5(this DbParameter[] dbParameters, Encoding encoding = null)
+        {
+            return Hash(dbParameters, HashAlgorithms.MD5, encoding);
+        }
+
+        public static string Hash(this DbParameter[] dbParameters, HashAlgorithms algorithm, Encoding encoding = null)
+        {
+            string infoString = ToInfoString(dbParameters, encoding);
+            return infoString.Hash(algorithm, encoding);
+        }
+
+        public static string ToInfoString(this DbParameter[] dbParameters, Encoding encoding = null)
+        {
+            List<DbParameter> sorted = new List<DbParameter>(dbParameters);
+            sorted.Sort((left, right) => left.ParameterName.CompareTo(right.ParameterName));
+            StringBuilder info = new StringBuilder();
+            sorted.ForEach(p =>
+            {
+                info.AppendLine(ToInfoString(p, encoding));
+            });
+            string infoString = info.ToString();
+            return infoString;
+        }
+
+        public static string ToInfoString(this DbParameter dbParameter, Encoding encoding = null)
+        {
+            return $"--{dbParameter.ParameterName}={dbParameter.Value.ToString()}";
+        }
+        public static string Sha1(this DbParameter dbParameter, Encoding encoding = null)
+        {
+            return Hash(dbParameter, HashAlgorithms.SHA1, encoding);
+        }
+
+        public static string Md5(this DbParameter dbParameter, Encoding encoding = null)
+        {
+            return Hash(dbParameter, HashAlgorithms.MD5, encoding);
+        }
+
+        public static string Hash(this DbParameter dbParameter, HashAlgorithms algorithm, Encoding encoding = null)
+        {
+            return $"{dbParameter.ParameterName}={dbParameter.Value.ToString()}".Hash(algorithm, encoding);
+        }
+
+        public static IEnumerable<DbParameter> ToDbParameters(this object dynamicDbParameters, Database db)
+        {
+            Args.ThrowIfNull(dynamicDbParameters, "parameters");
+            Type type = dynamicDbParameters.GetType();
+            foreach (PropertyInfo pi in type.GetProperties())
+            {
+                //DbParameter parameter = db.ServiceProvider.Get<DbProviderFactory>().CreateParameter();
+                //parameter.ParameterName = pi.Name;
+                //parameter.Value = pi.GetValue(parameters);
+                yield return db.CreateParameter(pi.Name, pi.GetValue(dynamicDbParameters));
+            }
+        }
+
+        public static IEnumerable<DbParameter> ToDbParameters(this Dictionary<string, object> parameters, Database db)
+        {
+            Args.ThrowIfNull(parameters, "parameters");
             foreach (string key in parameters.Keys)
             {
                 DbParameter parameter = db.ServiceProvider.Get<DbProviderFactory>().CreateParameter();
                 parameter.ParameterName = key;
                 parameter.Value = parameters[key];
-                dbParameters.Add(parameter);
-            }
-            return dbParameters;
+                yield return parameter;
+            }         
         }
     }
 }

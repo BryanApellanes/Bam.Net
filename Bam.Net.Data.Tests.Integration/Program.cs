@@ -16,6 +16,8 @@ using Bam.Net;
 using Bam.Net.Testing;
 using Bam.Net.Testing.Integration;
 using Bam.Net.Encryption;
+using System.Data.SQLite;
+using Bam.Net.Data.SQLite;
 
 namespace Bam.Net.Data.Tests.Integration
 {
@@ -33,11 +35,26 @@ namespace Bam.Net.Data.Tests.Integration
 			Initialize(args);
 		}
 
+        [ConsoleAction]
+        public void OneOff()
+        {
+            string connectionName = 8.RandomLetters();
+            SQLiteDatabase db = new SQLiteDatabase(".\\OneOffTest", connectionName);
+            SQLiteConnectionStringBuilder b = new SQLiteConnectionStringBuilder(db.ConnectionString);
+            Expect.AreEqual(connectionName, b.BaseSchemaName);
+        }
+
 		[ConsoleAction]
 		public void RunIntegrationTests()
 		{
 			IntegrationTestRunner.RunAllIntegrationTests(typeof(Program).Assembly);
 		}
+
+        [ConsoleAction]
+        public void RunSchemaExtractorTests()
+        {
+            IntegrationTestRunner.RunIntegrationTests(typeof(SchemaExtractorTests));
+        }
 
 		[ConsoleAction]
 		public void RunQueryTests()

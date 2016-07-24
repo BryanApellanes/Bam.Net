@@ -47,6 +47,8 @@ namespace laotzu
             this.textBoxServerName = new System.Windows.Forms.TextBox();
             this.labelServerName = new System.Windows.Forms.Label();
             this.tabPageConnectionString = new System.Windows.Forms.TabPage();
+            this.TextBoxConnectionString = new System.Windows.Forms.TextBox();
+            this.buttonTestConnectionString = new System.Windows.Forms.Button();
             this.TextBoxOutput = new System.Windows.Forms.TextBox();
             this.statusStripSettingsTab = new System.Windows.Forms.StatusStrip();
             this.SettingsStatus = new System.Windows.Forms.ToolStripStatusLabel();
@@ -83,8 +85,7 @@ namespace laotzu
             this.AboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.buttonTestConnectionString = new System.Windows.Forms.Button();
-            this.TextBoxConnectionString = new System.Windows.Forms.TextBox();
+            this.comboBoxDatabaseType = new System.Windows.Forms.ComboBox();
             this.TabControlMain.SuspendLayout();
             this.tabPageSettings.SuspendLayout();
             this.tabControlConnectionInfo.SuspendLayout();
@@ -116,6 +117,7 @@ namespace laotzu
             this.tabPageSettings.Controls.Add(this.buttonGenerateAssemblySettingsTab);
             this.tabPageSettings.Controls.Add(this.buttonExtractSchema);
             this.tabPageSettings.Controls.Add(this.groupBoxOptions);
+            this.tabPageSettings.Controls.Add(this.comboBoxDatabaseType);
             this.tabPageSettings.Location = new System.Drawing.Point(4, 22);
             this.tabPageSettings.Name = "tabPageSettings";
             this.tabPageSettings.Padding = new System.Windows.Forms.Padding(3);
@@ -272,6 +274,29 @@ namespace laotzu
             this.tabPageConnectionString.TabIndex = 1;
             this.tabPageConnectionString.Text = "Connection String";
             this.tabPageConnectionString.UseVisualStyleBackColor = true;
+            // 
+            // TextBoxConnectionString
+            // 
+            this.TextBoxConnectionString.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.TextBoxConnectionString.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TextBoxConnectionString.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TextBoxConnectionString.Location = new System.Drawing.Point(6, 20);
+            this.TextBoxConnectionString.Name = "TextBoxConnectionString";
+            this.TextBoxConnectionString.Size = new System.Drawing.Size(318, 22);
+            this.TextBoxConnectionString.TabIndex = 36;
+            this.TextBoxConnectionString.Tag = "ConnectionString";
+            // 
+            // buttonTestConnectionString
+            // 
+            this.buttonTestConnectionString.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonTestConnectionString.Location = new System.Drawing.Point(215, 153);
+            this.buttonTestConnectionString.Name = "buttonTestConnectionString";
+            this.buttonTestConnectionString.Size = new System.Drawing.Size(112, 23);
+            this.buttonTestConnectionString.TabIndex = 35;
+            this.buttonTestConnectionString.Tag = "TestConnection";
+            this.buttonTestConnectionString.Text = "Test Connection";
+            this.buttonTestConnectionString.UseVisualStyleBackColor = true;
             // 
             // TextBoxOutput
             // 
@@ -603,28 +628,15 @@ namespace laotzu
             // 
             this.OpenFileDialog.Filter = "LaoTzu files|*.laotzu.json";
             // 
-            // buttonTestConnectionString
+            // comboBoxDatabaseType
             // 
-            this.buttonTestConnectionString.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonTestConnectionString.Location = new System.Drawing.Point(215, 153);
-            this.buttonTestConnectionString.Name = "buttonTestConnectionString";
-            this.buttonTestConnectionString.Size = new System.Drawing.Size(112, 23);
-            this.buttonTestConnectionString.TabIndex = 35;
-            this.buttonTestConnectionString.Tag = "TestConnection";
-            this.buttonTestConnectionString.Text = "Test Connection";
-            this.buttonTestConnectionString.UseVisualStyleBackColor = true;
-            // 
-            // TextBoxConnectionString
-            // 
-            this.TextBoxConnectionString.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.comboBoxDatabaseType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.TextBoxConnectionString.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.TextBoxConnectionString.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TextBoxConnectionString.Location = new System.Drawing.Point(6, 20);
-            this.TextBoxConnectionString.Name = "TextBoxConnectionString";
-            this.TextBoxConnectionString.Size = new System.Drawing.Size(318, 22);
-            this.TextBoxConnectionString.TabIndex = 36;
-            this.TextBoxConnectionString.Tag = "ConnectionString";
+            this.comboBoxDatabaseType.FormattingEnabled = true;
+            this.comboBoxDatabaseType.Location = new System.Drawing.Point(12, 265);
+            this.comboBoxDatabaseType.Name = "comboBoxDatabaseType";
+            this.comboBoxDatabaseType.Size = new System.Drawing.Size(336, 21);
+            this.comboBoxDatabaseType.TabIndex = 23;
             // 
             // LaoTzuForm
             // 
@@ -720,6 +732,6 @@ namespace laotzu
         private System.Windows.Forms.TabPage tabPageConnectionString;
         protected internal System.Windows.Forms.Button buttonTestConnectionString;
         public System.Windows.Forms.TextBox TextBoxConnectionString;
-
+        private System.Windows.Forms.ComboBox comboBoxDatabaseType;
     }
 }

@@ -42,25 +42,25 @@ namespace Bam.Net.Testing.Integration
 			});
 		}
 
-		public static void RunIntegrationTests(Type type, EventHandler<Exception> onFailed = null)
+		public static void RunIntegrationTests(Type containerType, EventHandler<Exception> onFailed = null)
 		{
-			IntegrationTestContainerAttribute containerAttr = type.GetCustomAttributeOfType<IntegrationTestContainerAttribute>();
+			IntegrationTestContainerAttribute containerAttr = containerType.GetCustomAttributeOfType<IntegrationTestContainerAttribute>();
 			if (containerAttr == null)
 			{
-				throw new InvalidOperationException("The specified type ({0}) is not a valid IntegrationTestcontainer, it is missing the IntegrationTestContainer attribute"._Format(type.Name));
+				throw new InvalidOperationException("The specified type ({0}) is not a valid IntegrationTestcontainer, it is missing the IntegrationTestContainer attribute"._Format(containerType.Name));
 			}
-			string containerDescription = string.IsNullOrEmpty(containerAttr.Description) ? type.Name.PascalSplit(" ") : containerAttr.Description;
+			string containerDescription = string.IsNullOrEmpty(containerAttr.Description) ? containerType.Name.PascalSplit(" ") : containerAttr.Description;
 			OutLineFormat("Running ({0})", ConsoleColor.DarkGreen, containerDescription);
-			object testContainer = type.Construct();
+			object testContainer = containerType.Construct();
 			// get the IntegrationTestSetup and run them
-			MethodInfo setup = type.GetMethods().FirstOrDefault(methodInfo => methodInfo.HasCustomAttributeOfType<IntegrationTestSetupAttribute>());
+			MethodInfo setup = containerType.GetMethods().FirstOrDefault(methodInfo => methodInfo.HasCustomAttributeOfType<IntegrationTestSetupAttribute>());
 			if (setup != null)
 			{
 				setup.Invoke(testContainer, null);
 			}
 			// get all the IntegrationTests and run them
-			MethodInfo[] testMethods = type.GetMethods().Where(methodInfo => methodInfo.HasCustomAttributeOfType<IntegrationTestAttribute>()).ToArray();
-			OutLineFormat("Found {0} Integration Tests", ConsoleColor.Cyan, testMethods.Length);
+			IEnumerable<MethodInfo> testMethods = containerType.GetMethods().Where(methodInfo => methodInfo.HasCustomAttributeOfType<IntegrationTestAttribute>());
+			OutLineFormat("Found {0} Integration Tests", ConsoleColor.Cyan, testMethods.Count());
 			testMethods.Each(testMethod =>
 			{
 				try
@@ -88,7 +88,7 @@ namespace Bam.Net.Testing.Integration
 				}
 			});
 			// get the IntegrationTestCleanup and run it
-			MethodInfo cleanup = type.GetMethods().FirstOrDefault(methodInfo => methodInfo.HasCustomAttributeOfType<IntegrationTestCleanupAttribute>());
+			MethodInfo cleanup = containerType.GetMethods().FirstOrDefault(methodInfo => methodInfo.HasCustomAttributeOfType<IntegrationTestCleanupAttribute>());
 			if (cleanup != null)
 			{
 				try
