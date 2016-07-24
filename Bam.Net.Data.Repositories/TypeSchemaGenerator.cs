@@ -25,7 +25,7 @@ namespace Bam.Net.Data.Repositories
             DefaultDataTypeBehavior = DefaultDataTypeBehaviors.Exclude;
             TypeSchemaTempPathProvider = schemaTempPathProvider ?? ((sd, ts) => RuntimeSettings.AppDataFolder);
             _schemaManager = new UuidSchemaManager();            
-            _tableNameProvider = tableNameProvider ?? new DaoSuffixTypeTableNameProvider();
+            _tableNameProvider = tableNameProvider ?? new EchoTypeTableNameProvider();
         }
 
         public ITypeTableNameProvider TableNameProvider
@@ -123,7 +123,7 @@ namespace Bam.Net.Data.Repositories
             FireEvent(WritingDaoSchemaStarted, EventArgs.Empty);
             List<KeyColumn> missingKeyColumns = new List<KeyColumn>();
             List<ForeignKeyColumn> missingForeignKeyColumns = new List<ForeignKeyColumn>();
-            WriteDaoSchema(typeSchema, _schemaManager, missingKeyColumns, missingForeignKeyColumns);
+            WriteDaoSchema(typeSchema, _schemaManager, missingKeyColumns, missingForeignKeyColumns, TableNameProvider);
             FireEvent(WritingDaoSchemaFinished, EventArgs.Empty);
 
             SchemaDefinitionCreateResult result = new SchemaDefinitionCreateResult(_schemaManager.GetCurrentSchema(), typeSchema,
@@ -206,7 +206,7 @@ namespace Bam.Net.Data.Repositories
                     PropertyInfo keyProperty = GetKeyProperty(foreignKey.PrimaryKeyType, missingKeyColumns);
                     string referencedKeyName = keyProperty.Name;
 
-                    ForeignKeyColumn fk = fkInfo.ToForeignKeyColumn();
+                    ForeignKeyColumn fk = fkInfo.ToForeignKeyColumn(tableNameProvider);
                     fk.AllowNull = true;
                     schemaManager.AddColumn(fk.TableName, fk);
                     schemaManager.SetForeignKey(fk.ReferencedTable, fk.TableName, fk.Name, referencedKeyName);
@@ -416,7 +416,7 @@ namespace Bam.Net.Data.Repositories
 
         protected internal static PropertyInfo GetKeyProperty(Type type, List<KeyColumn> keyColumnsToCheck = null, ITypeTableNameProvider tableNameProvider = null)
         {
-            tableNameProvider = tableNameProvider ?? new DaoSuffixTypeTableNameProvider();
+            tableNameProvider = tableNameProvider ?? new EchoTypeTableNameProvider();
             PropertyInfo keyProperty = type.GetFirstProperyWithAttributeOfType<KeyAttribute>();
             if (keyProperty == null)
             {
@@ -436,7 +436,7 @@ namespace Bam.Net.Data.Repositories
         
         protected internal static string GetTableNameForType(Type type, ITypeTableNameProvider tableNameProvider = null)
         {
-            tableNameProvider = tableNameProvider ?? new DaoSuffixTypeTableNameProvider();
+            tableNameProvider = tableNameProvider ?? new EchoTypeTableNameProvider();
             return tableNameProvider.GetTableName(type);
         }
 

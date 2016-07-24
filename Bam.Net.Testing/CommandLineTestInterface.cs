@@ -501,7 +501,7 @@ namespace Bam.Net.Testing
 		private static void RunAllUnitTests(bool generateParameters, bool finalOut, List<ConsoleInvokeableMethod> tests)
 		{
 			int passedCount = 0;
-			int failedCount = 0;
+            TestFailureSummary summary = new TestFailureSummary();
 			OnTestsStarting();
 			foreach (ConsoleInvokeableMethod consoleMethod in tests)
 			{
@@ -521,7 +521,7 @@ namespace Bam.Net.Testing
                     }
 
 					OnTestFailed(consoleMethod, ex);
-					failedCount++;
+                    summary.FailedTests.Add(consoleMethod);
 				}
 				OnTestFinished();
 			}
@@ -529,10 +529,15 @@ namespace Bam.Net.Testing
 			{
 				Out();
 				OutLine("********");
-				if (failedCount > 0)
+				if (summary.FailedTests.Count > 0)
 				{
 					OutLineFormat("({0}) tests passed", ConsoleColor.Green, passedCount);
-					OutLineFormat("({0}) tests failed", ConsoleColor.Red, failedCount);
+					OutLineFormat("({0}) tests failed", ConsoleColor.Red, summary.FailedTests.Count);
+                    summary.FailedTests.ForEach(cim =>
+                    {
+                        Out("\t");
+                        OutLineFormat("{0}", new ConsoleColorCombo(ConsoleColor.Yellow, ConsoleColor.Red), cim.Information);
+                    });
 				}
 				else
 				{

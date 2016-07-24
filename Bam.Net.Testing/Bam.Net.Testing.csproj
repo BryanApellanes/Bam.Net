@@ -132,6 +132,7 @@
     <Compile Include="TestContext.cs" />
     <Compile Include="AssertionWrapper.cs" />
     <Compile Include="Integration\IntegrationTestRunner.cs" />
+    <Compile Include="TestFailureSummary.cs" />
     <Compile Include="TestType.cs" />
     <Compile Include="UnitTest.cs" />
     <Compile Include="Integration\IntegrationTestContainerAttribute.cs" />

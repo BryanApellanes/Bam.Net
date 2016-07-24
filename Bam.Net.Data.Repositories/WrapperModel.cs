@@ -13,24 +13,25 @@ using System.Reflection;
 
 namespace Bam.Net.Data.Repositories
 {
-	public class PocoModel
+	public class WrapperModel
 	{
-		public PocoModel(Type pocoType, TypeSchema schema, string nameSpace = "TypePocos")
+		public WrapperModel(Type pocoType, TypeSchema schema, string wrapperNamespace = "TypeWrappers", string daoNameSpace = "Daos")
 		{
-			this.DtoType = pocoType;
-			this.Namespace = nameSpace;
+			this.BaseType = pocoType;
+			this.WrapperNamespace = wrapperNamespace;
+            this.DaoNamespace = daoNameSpace;
 			this.TypeNamespace = pocoType.Namespace;
 			this.TypeName = pocoType.Name;
 			this.ForeignKeys = schema.ForeignKeys.Where(fk => fk.PrimaryKeyType.Equals(pocoType)).ToArray();
 			this.ChildPrimaryKeys = schema.ForeignKeys.Where(fk => fk.ForeignKeyType.Equals(pocoType)).ToArray();
-			this.LeftXrefs = schema.Xrefs.Where(xref => xref.Left.Equals(pocoType)).ToArray();
-			this.RightXrefs = schema.Xrefs.Where(xref => xref.Right.Equals(pocoType)).ToArray();
+            this.LeftXrefs = schema.Xrefs.Where(xref => xref.Left.Equals(pocoType)).Select(xref => TypeXrefModel.FromTypeXref(xref, daoNameSpace)).ToArray();
+            this.RightXrefs = schema.Xrefs.Where(xref => xref.Right.Equals(pocoType)).Select(xref => TypeXrefModel.FromTypeXref(xref, daoNameSpace)).ToArray();
 		}
 
-		public string Namespace { get; set; }
+		public string WrapperNamespace { get; set; }
 
 		public string TypeNamespace { get; set; }
-
+        public string DaoNamespace { get; set; }
 		public string TypeName { get; set; }
 
 		public TypeFk[] ForeignKeys { get; set; }
@@ -41,22 +42,22 @@ namespace Bam.Net.Data.Repositories
 		/// Xrefs where the current DtoType is the left
 		/// side of the cross reference table
 		/// </summary>
-		public TypeXref[] LeftXrefs { get; set; }
+		public TypeXrefModel[] LeftXrefs { get; set; }
 
 		/// <summary>
 		/// Xrefs where the current DtoType is the Right
 		/// side of the cross reference table
 		/// </summary>
-		public TypeXref[] RightXrefs { get; set; }
+		public TypeXrefModel[] RightXrefs { get; set; }
 		
-		private Type DtoType { get; set; }
+		private Type BaseType { get; set; }
 
 		public string Render()
 		{
 			List<Assembly> references = new List<Assembly>(GetDefaultAssembliesToReference());
-			references.Add(DtoType.Assembly);
-			RazorParser<PocoTemplate> parser = new RazorParser<PocoTemplate>(RazorBaseTemplate.DefaultInspector);
-			string output = parser.ExecuteResource("Poco.tmpl", "Bam.Net.Data.Repositories.Templates.", typeof(PocoGenerator).Assembly,
+			references.Add(BaseType.Assembly);
+			RazorParser<WrapperTemplate> parser = new RazorParser<WrapperTemplate>(RazorBaseTemplate.DefaultInspector);
+			string output = parser.ExecuteResource("Wrapper.tmpl", "Bam.Net.Data.Repositories.Templates.", typeof(WrapperGenerator).Assembly,
 				new { Model = this }, references.ToArray());
 
 			return output;
@@ -64,7 +65,7 @@ namespace Bam.Net.Data.Repositories
 
         private static Assembly[] GetDefaultAssembliesToReference()
         {
-            Assembly[] assembliesToReference = new Assembly[]{typeof(PocoTemplate).Assembly, 
+            Assembly[] assembliesToReference = new Assembly[]{typeof(WrapperTemplate).Assembly, 
 					typeof(DaoGenerator).Assembly,
 					typeof(ServiceProxySystem).Assembly, 
 					typeof(Providers).Assembly};

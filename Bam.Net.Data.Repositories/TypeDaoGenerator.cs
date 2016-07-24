@@ -22,14 +22,14 @@ namespace Bam.Net.Data.Repositories
     public class TypeDaoGenerator : Loggable, IGeneratesDaoAssembly, IHasTypeSchemaTempPathProvider
     {
         DaoGenerator _daoGenerator;
-        PocoGenerator _pocoGenerator;
+        WrapperGenerator _wrapperGenerator;
         TypeSchemaGenerator _schemaGenerator;
         HashSet<Assembly> _additonalReferenceAssemblies;
         public TypeDaoGenerator(ILogger logger = null, IEnumerable<Type> types = null)
         {
             _namespace = "TypeDaos";
-            _daoGenerator = new DaoGenerator(_namespace);
-            _pocoGenerator = new PocoGenerator(_namespace);
+            _daoGenerator = new DaoGenerator(DaoNamespace);
+            _wrapperGenerator = new WrapperGenerator(WrapperNamespace, DaoNamespace);
             _schemaGenerator = new TypeSchemaGenerator();
             _additonalReferenceAssemblies = new HashSet<Assembly>();
 
@@ -60,7 +60,7 @@ namespace Bam.Net.Data.Repositories
 
         string _namespace;
         /// <summary>
-        /// The namespace to place generated Dao objects into
+        /// The namespace to place generated classes into
         /// </summary>
         public string Namespace
         {
@@ -71,9 +71,19 @@ namespace Bam.Net.Data.Repositories
             set
             {
                 _namespace = value;
-                _daoGenerator.Namespace = value;
-                _pocoGenerator.Namespace = value;
+                _daoGenerator.Namespace = DaoNamespace;
+                _wrapperGenerator.WrapperNamespace = WrapperNamespace;
             }
+        }
+
+        public string DaoNamespace
+        {
+            get { return $"{_namespace}.Daos"; }
+        }
+
+        public string WrapperNamespace
+        {
+            get { return $"{_namespace}.Wrappers"; }
         }
 
         string _schemaName;
@@ -327,7 +337,7 @@ namespace Bam.Net.Data.Repositories
             EmitWarnings();
             ThrowWarningsIfWarningsAsErrors();
             GenerateDaos(SchemaDefinitionCreateResult.SchemaDefinition, writeSourceTo);
-            GeneratePocos(SchemaDefinitionCreateResult.TypeSchema, writeSourceTo);
+            GenerateWrappers(SchemaDefinitionCreateResult.TypeSchema, writeSourceTo);
         }
 
         protected internal void GenerateDaos(SchemaDefinition schema, string writeSourceTo)
@@ -335,9 +345,9 @@ namespace Bam.Net.Data.Repositories
             _daoGenerator.Generate(schema, writeSourceTo);
         }
 
-        protected internal void GeneratePocos(TypeSchema schema, string writeSourceTo)
+        protected internal void GenerateWrappers(TypeSchema schema, string writeSourceTo)
         {
-            _pocoGenerator.Generate(schema, writeSourceTo);
+            _wrapperGenerator.Generate(schema, writeSourceTo);
         }
 
         protected internal CompilerResults Compile(string assemblyNameToCreate, string writeSourceTo)

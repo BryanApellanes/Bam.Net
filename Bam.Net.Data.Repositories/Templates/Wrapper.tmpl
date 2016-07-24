@@ -9,14 +9,16 @@ using Bam.Net;
 using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 using Newtonsoft.Json;
+using @Model.TypeNamespace;
+using @Model.DaoNamespace;
 
-namespace @Model.Namespace
+namespace @Model.WrapperNamespace
 {
 	// generated
 	[Serializable]
-	public class @(Model.TypeName)Poco: @(Model.TypeNamespace).@(Model.TypeName), IHasUpdatedXrefCollectionProperties
+	public class @(Model.TypeName)Wrapper: @(Model.TypeNamespace).@(Model.TypeName), IHasUpdatedXrefCollectionProperties
 	{
-		public @(Model.TypeName)Poco(DaoRepository repository)
+		public @(Model.TypeName)Wrapper(DaoRepository repository)
 		{
 			this.Repository = repository;
 			this.UpdatedXrefCollectionProperties = new Dictionary<string, PropertyInfo>();
@@ -49,12 +51,12 @@ namespace @Model.Namespace
 			WriteChildPrimaryKeyProperty(fk);
 		}
 
-		@foreach(TypeXref xref in Model.LeftXrefs)
+		@foreach(TypeXrefModel xref in Model.LeftXrefs)
 		{
 			WriteLeftXrefProperty(xref);
 		}
 
-		@foreach(TypeXref xref in Model.RightXrefs)
+		@foreach(TypeXrefModel xref in Model.RightXrefs)
 		{
 			WriteRightXrefProperty(xref);
 		}
