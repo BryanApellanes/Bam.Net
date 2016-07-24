@@ -143,6 +143,7 @@
     <Compile Include="ITypeTableNameProvider.cs" />
     <Compile Include="MissingForeignKeyPropertyException.cs" />
     <Compile Include="DaoToDtoGenerator.cs" />
+    <Compile Include="SchemaTypeModel.cs" />
     <Compile Include="TypeXrefModel.cs" />
     <Compile Include="WrapperExtensions.cs" />
     <Compile Include="WrapperGenerator.cs" />

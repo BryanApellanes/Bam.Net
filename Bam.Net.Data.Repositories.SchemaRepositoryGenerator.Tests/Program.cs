@@ -23,6 +23,8 @@ namespace Bam.Net.Data.Repositories.Tests
     {
         static void Main(string[] args)
         {
+            IsolateMethodCalls = false;
+            SQLiteBitMonitor.MonitorBitness();
             PreInit();
 
             AddValidArgument("t", true);

@@ -1,50 +1,50 @@
 ﻿		
-		public @(Model.FullName) GetOne@(Model.Name)Where(WhereDelegate<@(Model.Name)DaoColumns> where)
+		public @(Model.Type.FullName) GetOne@(Model.Type.Name)Where(WhereDelegate<@(Model.Type.Name)Columns> where)
 		{
-			Type wrapperType = GetWrapperType<@(Model.FullName)>();
-			return (@(Model.FullName))@(Model.Name)Dao.GetOneWhere(where, Database).CopyAs(wrapperType, this);
+			Type wrapperType = GetWrapperType<@(Model.Type.FullName)>();
+			return (@(Model.Type.FullName))@(Model.DaoNamespace).@(Model.Type.Name).GetOneWhere(where, Database).CopyAs(wrapperType, this);
 		}
 
-		public @(Model.FullName) One@(Model.Name)Where(WhereDelegate<@(Model.Name)DaoColumns> where)
+		public @(Model.Type.FullName) One@(Model.Type.Name)Where(WhereDelegate<@(Model.Type.Name)Columns> where)
         {
-            Type wrapperType = GetWrapperType<@(Model.FullName)>();
-            return (@(Model.FullName))@(Model.Name)Dao.OneWhere(where, Database).CopyAs(wrapperType, this);
+            Type wrapperType = GetWrapperType<@(Model.Type.FullName)>();
+            return (@(Model.Type.FullName))@(Model.DaoNamespace).@(Model.Type.Name).OneWhere(where, Database).CopyAs(wrapperType, this);
         }
 
-		public IEnumerable<@(Model.FullName)> Top@(Model.Name.Pluralize())Where(int count, WhereDelegate<@(Model.Name)DaoColumns> where)
+		public IEnumerable<@(Model.Type.FullName)> Top@(Model.Type.Name.Pluralize())Where(int count, WhereDelegate<@(Model.Type.Name)Columns> where)
         {
-            return Wrap<@(Model.FullName)>(@(Model.Name)Dao.Top(count, where, Database));
+            return Wrap<@(Model.Type.FullName)>(@(Model.DaoNamespace).@(Model.Type.Name).Top(count, where, Database));
         }
 		
-        public IEnumerable<@(Model.FullName)> @(Model.Name.Pluralize())Where(WhereDelegate<@(Model.Name)DaoColumns> where)
+        public IEnumerable<@(Model.Type.FullName)> @(Model.Type.Name.Pluralize())Where(WhereDelegate<@(Model.Type.Name)Columns> where)
         {
-            return Query<@(Model.FullName)>(where(new @(Model.Name)DaoColumns()));
+            return Query<@(Model.Type.FullName)>(where(new @(Model.Type.Name)Columns()));
         }
 	    
-		public long Count@(Model.Name.Pluralize())()
+		public long Count@(Model.Type.Name.Pluralize())()
         {
-            return @(Model.Name)Dao.Count(Database);
+            return @(Model.DaoNamespace).@(Model.Type.Name).Count(Database);
         }
 
-        public long Count@(Model.Name.Pluralize())Where(WhereDelegate<@(Model.Name)DaoColumns> where)
+        public long Count@(Model.Type.Name.Pluralize())Where(WhereDelegate<@(Model.Type.Name)Columns> where)
         {
-            return @(Model.Name)Dao.Count(where, Database);
+            return @(Model.DaoNamespace).@(Model.Type.Name).Count(where, Database);
         }
         
-        public async Task BatchQuery@(Model.Name.Pluralize())(int batchSize, WhereDelegate<@(Model.Name)DaoColumns> where, Action<IEnumerable<@(Model.FullName)>> batchProcessor)
+        public async Task BatchQuery@(Model.Type.Name.Pluralize())(int batchSize, WhereDelegate<@(Model.Type.Name)Columns> where, Action<IEnumerable<@(Model.Type.FullName)>> batchProcessor)
         {
-            await @(Model.Name)Dao.BatchQuery(batchSize, where, (batch) =>
+            await @(Model.DaoNamespace).@(Model.Type.Name).BatchQuery(batchSize, where, (batch) =>
             {
-				batchProcessor(Wrap<@(Model.FullName)>(batch));
+				batchProcessor(Wrap<@(Model.Type.FullName)>(batch));
             }, Database);
         }
 
 		
-        public async Task BatchAll@(Model.Name.Pluralize())(int batchSize, Action<IEnumerable<@(Model.FullName)>> batchProcessor)
+        public async Task BatchAll@(Model.Type.Name.Pluralize())(int batchSize, Action<IEnumerable<@(Model.Type.FullName)>> batchProcessor)
         {
-            await @(Model.Name)Dao.BatchAll(batchSize, (batch) =>
+            await @(Model.DaoNamespace).@(Model.Type.Name).BatchAll(batchSize, (batch) =>
             {
-				batchProcessor(Wrap<@(Model.FullName)>(batch));
+				batchProcessor(Wrap<@(Model.Type.FullName)>(batch));
             }, Database);
         }
 

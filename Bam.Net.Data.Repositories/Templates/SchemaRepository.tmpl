@@ -10,7 +10,7 @@ using Bam.Net;
 using Bam.Net.Data;
 using @(Model.SourceNamespace);
 
-namespace @(Model.DestinationNamespace)
+namespace @(Model.SchemaRepositoryNamespace)
 {
 	[Serializable]
 	public class @(Model.SchemaName)Repository: DaoRepository
@@ -18,14 +18,14 @@ namespace @(Model.DestinationNamespace)
 		public @(Model.SchemaName)Repository()
 		{
 			SchemaName = "@(Model.SchemaName)";
-			@foreach(Type type in Model.Types)
+			@foreach(SchemaTypeModel model in Model.Types)
 			{
-				WriteAddType(type);
+				WriteAddType(model.Type);
 			}
 
 		}
 
-		@foreach(Type type in Model.Types)
+		@foreach(SchemaTypeModel type in Model.Types)
 		{
 			WriteMethods(type);
 		}

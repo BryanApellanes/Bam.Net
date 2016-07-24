@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_;
+using Bam.Net.Data.Repositories.Tests.ClrTypes.Daos;
 using Bam.Net.Data.SQLite;
 
 namespace Bam.Net.Data.Repositories.Tests
@@ -16,35 +16,35 @@ namespace Bam.Net.Data.Repositories.Tests
             AddType<ClrTypes.Parent>();
         }
 
-        public ClrTypes.Parent GetOneParentWhere(WhereDelegate<ParentDaoColumns> where)
+        public ClrTypes.Parent GetOneParentWhere(WhereDelegate<ParentColumns> where)
         {
             Type wrapperType = GetWrapperType<ClrTypes.Parent>();
-            return (ClrTypes.Parent)ParentDao.GetOneWhere(where, Database).CopyAs(wrapperType, this);
+            return (ClrTypes.Parent)Parent.GetOneWhere(where, Database).CopyAs(wrapperType, this);
         }
 
-        public ClrTypes.Parent OneParentWhere(WhereDelegate<ParentDaoColumns> where)
+        public ClrTypes.Parent OneParentWhere(WhereDelegate<ParentColumns> where)
         {
             Type wrapperType = GetWrapperType<ClrTypes.Parent>();
-            return (ClrTypes.Parent)ParentDao.OneWhere(where, Database).CopyAs(wrapperType, this);
+            return (ClrTypes.Parent)Parent.OneWhere(where, Database).CopyAs(wrapperType, this);
         }
-        public IEnumerable<ClrTypes.Parent> TopParentsWhere(int count, WhereDelegate<ParentDaoColumns> where)
+        public IEnumerable<ClrTypes.Parent> TopParentsWhere(int count, WhereDelegate<ParentColumns> where)
         {
-            return Wrap<ClrTypes.Parent>(ParentDao.Top(count, where, Database));
-        }
-
-        public IEnumerable<ClrTypes.Parent> ParentsWhere(WhereDelegate<ParentDaoColumns> where)
-        {
-            return Query<ClrTypes.Parent>(where(new ParentDaoColumns()));
+            return Wrap<ClrTypes.Parent>(Parent.Top(count, where, Database));
         }
 
-        public long CountParentsWhere(WhereDelegate<ParentDaoColumns> where)
+        public IEnumerable<ClrTypes.Parent> ParentsWhere(WhereDelegate<ParentColumns> where)
         {
-            return ParentDao.Count(where, Database);
+            return Query<ClrTypes.Parent>(where(new ParentColumns()));
+        }
+
+        public long CountParentsWhere(WhereDelegate<ParentColumns> where)
+        {
+            return Parent.Count(where, Database);
         }
         
-        public async Task BatchQueryParents(int batchSize, WhereDelegate<ParentDaoColumns> where, Action<IEnumerable<ClrTypes.Parent>> batchProcessor)
+        public async Task BatchQueryParents(int batchSize, WhereDelegate<ParentColumns> where, Action<IEnumerable<ClrTypes.Parent>> batchProcessor)
         {
-            await ParentDao.BatchQuery(batchSize, where, (batch) =>
+            await Parent.BatchQuery(batchSize, where, (batch) =>
             {
                 batchProcessor(Wrap<ClrTypes.Parent>(batch));
             }, Database);
@@ -52,7 +52,7 @@ namespace Bam.Net.Data.Repositories.Tests
 
         public async Task BatchAllParents(int batchSize, Action<IEnumerable<ClrTypes.Parent>> batchProcessor)
         {
-            await ParentDao.BatchAll(batchSize, (batch) =>
+            await Parent.BatchAll(batchSize, (batch) =>
             {
                 batchProcessor(Wrap<ClrTypes.Parent>(batch));
             }, Database);
@@ -60,7 +60,7 @@ namespace Bam.Net.Data.Repositories.Tests
 
         public long CountParents()
         {
-            return ParentDao.Count(Database);
+            return Parent.Count(Database);
         }
     }
 }

@@ -17,9 +17,9 @@ namespace Bam.Net.Data.Repositories
             Write(Render<Type>("SchemaRepositoryAddType.tmpl", new { Model = type }));
         }
 
-        public void WriteMethods(Type type)
+        public void WriteMethods(SchemaTypeModel type)
         {
-            Write(Render<Type>("SchemaRepositoryMethods.tmpl", new { Model = type }));
+            Write(Render<SchemaTypeModel>("SchemaRepositoryMethods.tmpl", new { Model = type }));
         }
 
         private string Render<T>(string templateName, object options)

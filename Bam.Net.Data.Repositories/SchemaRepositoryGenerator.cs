@@ -18,19 +18,14 @@ namespace Bam.Net.Data.Repositories
         public SchemaRepositoryGenerator(Assembly typeAssembly, string sourceNamespace, ILogger logger = null):base(typeAssembly, sourceNamespace, logger)
         {
             SourceNamespace = sourceNamespace;
-            DestinationNamespace = $"{sourceNamespace}._Dao_";
         }
         public string SourceNamespace { get; set; }
         
-        public string DestinationNamespace
+        public string SchemaRepositoryNamespace
         {
             get
             {
-                return Namespace;
-            }
-            set
-            {
-                Namespace = value;
+                return $"{DaoNamespace}.Repository";
             }
         }
         public override void GenerateSource(string writeSourceTo)
@@ -42,8 +37,8 @@ namespace Bam.Net.Data.Repositories
         {
             schemaName = schemaName ?? SchemaName;
             SchemaName = schemaName;
-            base.GenerateSource(writeSourceTo);            
-            SchemaRepositoryModel schemaModel = new SchemaRepositoryModel { SourceNamespace = SourceNamespace, DestinationNamespace = DestinationNamespace, SchemaName = schemaName, Types = Types };
+            base.GenerateSource(writeSourceTo);
+            SchemaRepositoryModel schemaModel = new SchemaRepositoryModel { SourceNamespace = SourceNamespace, SchemaRepositoryNamespace = SchemaRepositoryNamespace, SchemaName = schemaName, Types = Types.Select(t => SchemaTypeModel.FromType(t, DaoNamespace)).ToArray() };
             string code = schemaModel.Render();
             code.SafeWriteToFile(Path.Combine(writeSourceTo, $"{schemaName}Repository.cs"));
         }

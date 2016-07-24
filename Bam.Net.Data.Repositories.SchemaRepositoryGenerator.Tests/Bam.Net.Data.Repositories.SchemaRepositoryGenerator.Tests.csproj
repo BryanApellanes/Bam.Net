@@ -102,6 +102,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite, Version=1.0.99.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\System.Data.SQLite.Core.1.0.99.0\lib\net45\System.Data.SQLite.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
@@ -144,40 +148,40 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SchemaRepositoryGeneratorUnitTests.cs" />
     <Compile Include="TestDaoRepository.cs" />
-    <Compile Include="TestDaos_Generated\DaughterDao.cs" />
-    <Compile Include="TestDaos_Generated\DaughterDaoCollection.cs" />
-    <Compile Include="TestDaos_Generated\DaughterDaoColumns.cs" />
-    <Compile Include="TestDaos_Generated\DaughterDaoPagedQuery.cs" />
-    <Compile Include="TestDaos_Generated\DaughterDaoQuery.cs" />
-    <Compile Include="TestDaos_Generated\DaughterPoco.cs" />
-    <Compile Include="TestDaos_Generated\HouseDao.cs" />
-    <Compile Include="TestDaos_Generated\HouseDaoCollection.cs" />
-    <Compile Include="TestDaos_Generated\HouseDaoColumns.cs" />
-    <Compile Include="TestDaos_Generated\HouseDaoPagedQuery.cs" />
-    <Compile Include="TestDaos_Generated\HouseDaoParentDao.cs" />
-    <Compile Include="TestDaos_Generated\HouseDaoParentDaoCollection.cs" />
-    <Compile Include="TestDaos_Generated\HouseDaoParentDaoColumns.cs" />
-    <Compile Include="TestDaos_Generated\HouseDaoParentDaoPagedQuery.cs" />
-    <Compile Include="TestDaos_Generated\HouseDaoParentDaoQuery.cs" />
-    <Compile Include="TestDaos_Generated\HouseDaoQuery.cs" />
-    <Compile Include="TestDaos_Generated\HousePoco.cs" />
-    <Compile Include="TestDaos_Generated\ParentDao.cs" />
-    <Compile Include="TestDaos_Generated\ParentDaoCollection.cs" />
-    <Compile Include="TestDaos_Generated\ParentDaoColumns.cs" />
-    <Compile Include="TestDaos_Generated\ParentDaoPagedQuery.cs" />
-    <Compile Include="TestDaos_Generated\ParentDaoQuery.cs" />
-    <Compile Include="TestDaos_Generated\ParentPoco.cs" />
-    <Compile Include="TestDaos_Generated\Qi\DaughterDao.cs" />
-    <Compile Include="TestDaos_Generated\Qi\HouseDao.cs" />
-    <Compile Include="TestDaos_Generated\Qi\HouseDaoParentDao.cs" />
-    <Compile Include="TestDaos_Generated\Qi\ParentDao.cs" />
-    <Compile Include="TestDaos_Generated\Qi\SonDao.cs" />
-    <Compile Include="TestDaos_Generated\SonDao.cs" />
-    <Compile Include="TestDaos_Generated\SonDaoCollection.cs" />
-    <Compile Include="TestDaos_Generated\SonDaoColumns.cs" />
-    <Compile Include="TestDaos_Generated\SonDaoPagedQuery.cs" />
-    <Compile Include="TestDaos_Generated\SonDaoQuery.cs" />
-    <Compile Include="TestDaos_Generated\SonPoco.cs" />
+    <Compile Include="TestDaos_Generated\Daughter.cs" />
+    <Compile Include="TestDaos_Generated\DaughterCollection.cs" />
+    <Compile Include="TestDaos_Generated\DaughterColumns.cs" />
+    <Compile Include="TestDaos_Generated\DaughterPagedQuery.cs" />
+    <Compile Include="TestDaos_Generated\DaughterQuery.cs" />
+    <Compile Include="TestDaos_Generated\DaughterWrapper.cs" />
+    <Compile Include="TestDaos_Generated\House.cs" />
+    <Compile Include="TestDaos_Generated\HouseCollection.cs" />
+    <Compile Include="TestDaos_Generated\HouseColumns.cs" />
+    <Compile Include="TestDaos_Generated\HousePagedQuery.cs" />
+    <Compile Include="TestDaos_Generated\HouseParent.cs" />
+    <Compile Include="TestDaos_Generated\HouseParentCollection.cs" />
+    <Compile Include="TestDaos_Generated\HouseParentColumns.cs" />
+    <Compile Include="TestDaos_Generated\HouseParentPagedQuery.cs" />
+    <Compile Include="TestDaos_Generated\HouseParentQuery.cs" />
+    <Compile Include="TestDaos_Generated\HouseQuery.cs" />
+    <Compile Include="TestDaos_Generated\HouseWrapper.cs" />
+    <Compile Include="TestDaos_Generated\Parent.cs" />
+    <Compile Include="TestDaos_Generated\ParentCollection.cs" />
+    <Compile Include="TestDaos_Generated\ParentColumns.cs" />
+    <Compile Include="TestDaos_Generated\ParentPagedQuery.cs" />
+    <Compile Include="TestDaos_Generated\ParentQuery.cs" />
+    <Compile Include="TestDaos_Generated\ParentWrapper.cs" />
+    <Compile Include="TestDaos_Generated\Qi\Daughter.cs" />
+    <Compile Include="TestDaos_Generated\Qi\House.cs" />
+    <Compile Include="TestDaos_Generated\Qi\HouseParent.cs" />
+    <Compile Include="TestDaos_Generated\Qi\Parent.cs" />
+    <Compile Include="TestDaos_Generated\Qi\Son.cs" />
+    <Compile Include="TestDaos_Generated\Son.cs" />
+    <Compile Include="TestDaos_Generated\SonCollection.cs" />
+    <Compile Include="TestDaos_Generated\SonColumns.cs" />
+    <Compile Include="TestDaos_Generated\SonPagedQuery.cs" />
+    <Compile Include="TestDaos_Generated\SonQuery.cs" />
+    <Compile Include="TestDaos_Generated\SonWrapper.cs" />
     <Compile Include="TestDaos_Generated\TestDaoSchemaContext.cs" />
     <Compile Include="TestDaos_Generated\TestDaoSchemaRepository.cs" />
   </ItemGroup>
@@ -228,9 +232,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
