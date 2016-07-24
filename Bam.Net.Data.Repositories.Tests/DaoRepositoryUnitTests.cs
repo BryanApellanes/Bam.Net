@@ -172,7 +172,7 @@ namespace Bam.Net.Data.Repositories.Tests
         {
             TypeSchemaGenerator generator = new TypeSchemaGenerator();
             TypeSchema typeSchema = generator.CreateTypeSchema(typeof(TestContainer));
-            PocoModel dtoModel = new PocoModel(typeof(TestContainer), typeSchema);
+            WrapperModel dtoModel = new WrapperModel(typeof(TestContainer), typeSchema);
             string output = dtoModel.Render();
             OutLine(output, ConsoleColor.Cyan);
         }
@@ -324,7 +324,7 @@ namespace Bam.Net.Data.Repositories.Tests
                 OutLineFormat("{0}", type.FullName);
             }
 
-            Type daoType = daoAssembly.GetType("TypeDaos.TestContainerDao");
+            Type daoType = daoAssembly.GetType("TypeDaos.Daos.TestContainer");
 
             Expect.IsNotNull(daoType);
         }

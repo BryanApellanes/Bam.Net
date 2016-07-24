@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Data.Repositories
 {
-    public static class PocoExtensions
+    public class EchoTypeTableNameProvider : ITypeTableNameProvider
     {
-        public static T Wrap<T>(this object instance, DaoRepository repo)
+        public string GetTableName(Type type)
         {
-            return (T)repo.Wrap(typeof(T), instance);
+            return type.Name;
         }
     }
 }

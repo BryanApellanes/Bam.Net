@@ -495,7 +495,7 @@ namespace Bam.Net.Data.Repositories
 		{
 			Assembly daoAssembly = EnsureDaoAssemblyAndSchema();
             Type baseType = GetBaseType(pocoType);
-			Type daoType = daoAssembly.GetType("{0}.{1}Dao"._Format(_typeDaoGenerator.Namespace, baseType.Name));
+			Type daoType = daoAssembly.GetType("{0}.{1}"._Format(_typeDaoGenerator.DaoNamespace, baseType.Name));
 			return daoType;
 		}
 
@@ -519,13 +519,13 @@ namespace Bam.Net.Data.Repositories
 		/// <returns></returns>
 		public Type GetWrapperType(Type baseOrWrapperType)
 		{
-			if (baseOrWrapperType.Name.EndsWith("Poco"))
+			if (baseOrWrapperType.Name.EndsWith("Wrapper"))
 			{
 				return baseOrWrapperType;
 			}
 
 			Type daoType = GetDaoType(baseOrWrapperType);
-			Type dto = daoType.Assembly.GetType("{0}.{1}Poco"._Format(_typeDaoGenerator.Namespace, baseOrWrapperType.Name));
+			Type dto = daoType.Assembly.GetType("{0}.{1}Wrapper"._Format(_typeDaoGenerator.WrapperNamespace, baseOrWrapperType.Name));
 			Type result = dto ?? baseOrWrapperType;
 			return result;
 		}
@@ -538,9 +538,9 @@ namespace Bam.Net.Data.Repositories
         /// <returns></returns>
 		public Type GetBaseType(Type wrapperType)
 		{
-			string basePocoName = wrapperType.Name.EndsWith("Poco") ? wrapperType.Name.Truncate("Poco".Length) : wrapperType.Name;
-			Type poco = TypeSchema.Tables.FirstOrDefault(t => t.Name.Equals(basePocoName));
-			Type result = poco ?? wrapperType;
+			string baseTypeName = wrapperType.Name.EndsWith("Wrapper") ? wrapperType.Name.Truncate("Wrapper".Length) : wrapperType.Name;
+			Type baseType = TypeSchema.Tables.FirstOrDefault(t => t.Name.Equals(baseTypeName));
+			Type result = baseType ?? wrapperType;
 			return result;
 		}
 
@@ -666,7 +666,7 @@ namespace Bam.Net.Data.Repositories
 			TypeXref[] leftXrefs = TypeSchema.Xrefs.Where(xref => xref.Left.Equals(baseType)).ToArray();
 			foreach (TypeXref leftXref in leftXrefs)
 			{
-				string daoXrefPropertyName = "{0}Dao"._Format(leftXref.Right.Name).Pluralize();
+				string daoXrefPropertyName = "{0}"._Format(leftXref.Right.Name).Pluralize();
 				if (!handledProperties.Contains(daoXrefPropertyName))
 				{
 					PropertyInfo daoXrefProperty = daoType.GetProperty(daoXrefPropertyName);
@@ -679,7 +679,7 @@ namespace Bam.Net.Data.Repositories
 			TypeXref[] rightXrefs = TypeSchema.Xrefs.Where(xref => xref.Right.Equals(baseType)).ToArray();
 			foreach (TypeXref rightXref in rightXrefs)
 			{
-				string daoXrefPropertyName = "{0}Dao"._Format(rightXref.Left.Name).Pluralize();
+				string daoXrefPropertyName = "{0}"._Format(rightXref.Left.Name).Pluralize();
 				if (!handledProperties.Contains(daoXrefPropertyName))
 				{
 					PropertyInfo daoXrefProperty = daoType.GetProperty(daoXrefPropertyName);
@@ -826,14 +826,14 @@ namespace Bam.Net.Data.Repositories
 			return GetDaoInstanceById(typeof(T), id);
 		}
 
-		private Dao GetDaoInstanceById(Type dtoOrPocoType, long id)
+		private Dao GetDaoInstanceById(Type baseOrWrapperType, long id)
 		{
-			return GetDaoInstanceByMethod("GetById", dtoOrPocoType, (object)id);
+			return GetDaoInstanceByMethod("GetById", baseOrWrapperType, (object)id);
 		}
 
-		private Dao GetDaoInstanceByUuid(Type dtoOrPocoType, string uuid)
+		private Dao GetDaoInstanceByUuid(Type baseOrWrapperType, string uuid)
 		{
-			return GetDaoInstanceByMethod("GetByUuid", dtoOrPocoType, (object)uuid);
+			return GetDaoInstanceByMethod("GetByUuid", baseOrWrapperType, (object)uuid);
 		}
 
 		private Dao GetDaoInstanceByMethod(string methodName, Type baseOrWrapperType, object parameter)

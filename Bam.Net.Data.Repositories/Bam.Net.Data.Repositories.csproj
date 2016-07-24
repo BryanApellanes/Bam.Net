@@ -124,6 +124,7 @@
     <Compile Include="BackedupDatabase.cs" />
     <Compile Include="DaoGenerationException.cs" />
     <Compile Include="DaoBackup.cs" />
+    <Compile Include="EchoTypeTableNameProvider.cs" />
     <Compile Include="GeneratedDaoAssemblyInfo.cs" />
     <Compile Include="IHasTypeSchemaTempPathProvider.cs" />
     <Compile Include="ICrudProvider.cs" />
@@ -142,14 +143,15 @@
     <Compile Include="ITypeTableNameProvider.cs" />
     <Compile Include="MissingForeignKeyPropertyException.cs" />
     <Compile Include="DaoToDtoGenerator.cs" />
-    <Compile Include="PocoExtensions.cs" />
-    <Compile Include="PocoGenerator.cs" />
-    <Compile Include="PocoModel.cs" />
+    <Compile Include="TypeXrefModel.cs" />
+    <Compile Include="WrapperExtensions.cs" />
+    <Compile Include="WrapperGenerator.cs" />
+    <Compile Include="WrapperModel.cs" />
     <Compile Include="OldToNewIdMapping.cs" />
     <Compile Include="Dto.cs" />
     <Compile Include="DtoPropertyModel.cs" />
     <Compile Include="DtoTemplate.cs" />
-    <Compile Include="PocoTemplate.cs" />
+    <Compile Include="WrapperTemplate.cs" />
     <Compile Include="IHasUpdatedXrefCollectionProperties.cs" />
     <Compile Include="IMetaProvider.cs" />
     <Compile Include="IObjectReaderWriter.cs" />
@@ -187,7 +189,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <EmbeddedResource Include="Templates\Poco.tmpl" />
+    <EmbeddedResource Include="Templates\Wrapper.tmpl" />
     <EmbeddedResource Include="Templates\ForeignKeyProperty.tmpl" />
     <EmbeddedResource Include="Templates\XrefLeftProperty.tmpl" />
     <EmbeddedResource Include="Templates\ChildPrimaryKeyProperty.tmpl" />

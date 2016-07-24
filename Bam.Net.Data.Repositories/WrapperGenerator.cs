@@ -17,18 +17,20 @@ namespace Bam.Net.Data.Repositories
 	/// enable lazy loading of IEnumerable properties.  This type
     /// is not thread safe
 	/// </summary>
-	public class PocoGenerator: IAssemblyGenerator
+	public class WrapperGenerator: IAssemblyGenerator
 	{
-		public PocoGenerator(string nameSpace, TypeSchema typeSchema = null)
+		public WrapperGenerator(string wrapperNamespace, string daoNamespace, TypeSchema typeSchema = null)
 		{
-			Namespace = nameSpace;
+			WrapperNamespace = wrapperNamespace;
+            DaoNamespace = daoNamespace;
             TypeSchema = typeSchema;
 		}
 
-		public string Namespace { get; set; }
+		public string WrapperNamespace { get; set; }
+        public string DaoNamespace { get; set; }
         public TypeSchema TypeSchema { get; set; }
         public string WriteSourceTo { get; set; }
-        public string InfoFileName => $"{Namespace}.Poco.genInfo.json";
+        public string InfoFileName => $"{WrapperNamespace}.Wrapper.genInfo.json";
 
         public void Generate(TypeSchema schema, string writeTo)
 		{
@@ -44,7 +46,7 @@ namespace Bam.Net.Data.Repositories
         public GeneratedAssemblyInfo GenerateAssembly()
         {
             CompilerResults results;
-            string fileName = $"{Namespace}.Poco.dll";
+            string fileName = $"{WrapperNamespace}.Wrapper.dll";
             new DirectoryInfo(WriteSourceTo).ToAssembly(fileName, out results);
             GeneratedAssemblyInfo result = new GeneratedAssemblyInfo(fileName, results);
             result.Save();
@@ -56,8 +58,8 @@ namespace Bam.Net.Data.Repositories
             WriteSourceTo = writeSourceDir;
             foreach (Type type in TypeSchema.Tables)
             {
-                PocoModel model = new PocoModel(type, TypeSchema, Namespace);
-                string fileName = "{0}Poco.cs"._Format(type.Name);
+                WrapperModel model = new WrapperModel(type, TypeSchema, WrapperNamespace, DaoNamespace);
+                string fileName = "{0}Wrapper.cs"._Format(type.Name);
                 using (StreamWriter sw = new StreamWriter(Path.Combine(writeSourceDir, fileName)))
                 {
                     sw.Write(model.Render());

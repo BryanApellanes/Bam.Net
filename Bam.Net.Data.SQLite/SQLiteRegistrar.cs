@@ -28,7 +28,7 @@ namespace Bam.Net.Data
 
         /// <summary>
         /// Register the SQLite components with the ServiceProvider 
-        /// of the specified database.  This Register method will
+        /// of the specified database.  This Register method wil
         /// not call SetInitializerAndConnectionStringResolver
         /// like the other Register methods do.
         /// </summary>

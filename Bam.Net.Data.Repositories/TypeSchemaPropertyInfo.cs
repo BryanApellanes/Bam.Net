@@ -146,9 +146,9 @@ namespace Bam.Net.Data.Repositories
 		}
 
 		Type _foreignKeyTableType;
-		public ForeignKeyColumn ToForeignKeyColumn() {
+		public ForeignKeyColumn ToForeignKeyColumn(ITypeTableNameProvider tableNameProvider = null) {
 			ForeignKeyColumn result = new ForeignKeyColumn(Name, TypeSchemaGenerator.GetTableNameForType(_foreignKeyTableType),
-				TypeSchemaGenerator.GetTableNameForType(DeclaringType));
+				TypeSchemaGenerator.GetTableNameForType(DeclaringType, tableNameProvider));
 
 			result.DataType = DataTypes.Long;
 

@@ -21,7 +21,7 @@ namespace Bam.Net.Data.Repositories
     {
         public TypeXref()
         {
-            TableNameProvider = new DaoSuffixTypeTableNameProvider();
+            TableNameProvider = new EchoTypeTableNameProvider();
         }
         public Type Left { get; set; }
         public Type Right { get; set; }
