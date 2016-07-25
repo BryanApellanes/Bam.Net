@@ -211,6 +211,11 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Group.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of Groups
+            </summary>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.Group.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.GroupColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the number of results
@@ -423,6 +428,11 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.UserAccounts.Data.GroupPermission.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of GroupPermissions
+            </summary>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.GroupPermission.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.GroupPermissionColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the number of results
@@ -430,6 +440,874 @@
             <param name="where">A WhereDelegate that recieves a GroupPermissionColumns 
             and returns a IQueryFilter which is the result of any comparisons
             between GroupPermissionColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Permission.GetUniqueFilter">
+            <summary>
+            Gets a query filter that should uniquely identify
+            the current instance.  The default implementation
+            compares the Id/key field to the current instance's.
+            </summary> 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Permission.LoadAll(Bam.Net.Data.Database)">
+            <summary>
+            Return every record in the Permission table.
+            </summary>
+            <param name="database">
+            The database to load from or null
+            </param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Permission.Where(System.Func{Bam.Net.UserAccounts.Data.PermissionColumns,Bam.Net.Data.QueryFilter{Bam.Net.UserAccounts.Data.PermissionColumns}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A Func delegate that recieves a PermissionColumns 
+            and returns a QueryFilter which is the result of any comparisons
+            between PermissionColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Permission.Where(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a PermissionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between PermissionColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Permission.Where(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a PermissionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between PermissionColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Permission.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;PermissionColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Permission.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Permission.OneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Permission.GetOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Permission.OneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  This method is most commonly used to retrieve a
+            single Permission instance by its Id/Key value
+            </summary>
+            <param name="where">A WhereDelegate that recieves a PermissionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between PermissionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.Permission.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.Permission.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a PermissionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between PermissionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Permission.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a PermissionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between PermissionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Permission.FirstOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Shortcut for Top(1, where, orderBy, database)
+            </summary>
+            <param name="where">A WhereDelegate that recieves a PermissionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between PermissionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Permission.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number
+            of values. This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a PermissionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between PermissionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Permission.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a PermissionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between PermissionColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Permission.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Permission.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Permission.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of Permissions
+            </summary>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Permission.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the number of results
+            </summary>
+            <param name="where">A WhereDelegate that recieves a PermissionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between PermissionColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.GetUniqueFilter">
+            <summary>
+            Gets a query filter that should uniquely identify
+            the current instance.  The default implementation
+            compares the Id/key field to the current instance's.
+            </summary> 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.LoadAll(Bam.Net.Data.Database)">
+            <summary>
+            Return every record in the TreeNode table.
+            </summary>
+            <param name="database">
+            The database to load from or null
+            </param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.Where(System.Func{Bam.Net.UserAccounts.Data.TreeNodeColumns,Bam.Net.Data.QueryFilter{Bam.Net.UserAccounts.Data.TreeNodeColumns}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A Func delegate that recieves a TreeNodeColumns 
+            and returns a QueryFilter which is the result of any comparisons
+            between TreeNodeColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.Where(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TreeNodeColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TreeNodeColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.Where(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TreeNodeColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TreeNodeColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;TreeNodeColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.OneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.GetOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.OneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  This method is most commonly used to retrieve a
+            single TreeNode instance by its Id/Key value
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TreeNodeColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TreeNodeColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.TreeNode.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TreeNodeColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TreeNodeColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TreeNodeColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TreeNodeColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.FirstOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.Database)">
+            <summary>
+            Shortcut for Top(1, where, orderBy, database)
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TreeNodeColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TreeNodeColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number
+            of values. This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a TreeNodeColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TreeNodeColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a TreeNodeColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TreeNodeColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of TreeNodes
+            </summary>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the number of results
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TreeNodeColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TreeNodeColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.GetUniqueFilter">
+            <summary>
+            Gets a query filter that should uniquely identify
+            the current instance.  The default implementation
+            compares the Id/key field to the current instance's.
+            </summary> 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.LoadAll(Bam.Net.Data.Database)">
+            <summary>
+            Return every record in the UserGroup table.
+            </summary>
+            <param name="database">
+            The database to load from or null
+            </param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.Where(System.Func{Bam.Net.UserAccounts.Data.UserGroupColumns,Bam.Net.Data.QueryFilter{Bam.Net.UserAccounts.Data.UserGroupColumns}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A Func delegate that recieves a UserGroupColumns 
+            and returns a QueryFilter which is the result of any comparisons
+            between UserGroupColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.Where(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a UserGroupColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between UserGroupColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.Where(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a UserGroupColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between UserGroupColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;UserGroupColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.OneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.GetOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.OneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  This method is most commonly used to retrieve a
+            single UserGroup instance by its Id/Key value
+            </summary>
+            <param name="where">A WhereDelegate that recieves a UserGroupColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between UserGroupColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.UserGroup.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a UserGroupColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between UserGroupColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a UserGroupColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between UserGroupColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.FirstOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.Database)">
+            <summary>
+            Shortcut for Top(1, where, orderBy, database)
+            </summary>
+            <param name="where">A WhereDelegate that recieves a UserGroupColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between UserGroupColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number
+            of values. This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a UserGroupColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between UserGroupColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a UserGroupColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between UserGroupColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of UserGroups
+            </summary>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the number of results
+            </summary>
+            <param name="where">A WhereDelegate that recieves a UserGroupColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between UserGroupColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.GetUniqueFilter">
+            <summary>
+            Gets a query filter that should uniquely identify
+            the current instance.  The default implementation
+            compares the Id/key field to the current instance's.
+            </summary> 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.LoadAll(Bam.Net.Data.Database)">
+            <summary>
+            Return every record in the UserPermission table.
+            </summary>
+            <param name="database">
+            The database to load from or null
+            </param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.Where(System.Func{Bam.Net.UserAccounts.Data.UserPermissionColumns,Bam.Net.Data.QueryFilter{Bam.Net.UserAccounts.Data.UserPermissionColumns}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A Func delegate that recieves a UserPermissionColumns 
+            and returns a QueryFilter which is the result of any comparisons
+            between UserPermissionColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.Where(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a UserPermissionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between UserPermissionColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.Where(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a UserPermissionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between UserPermissionColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;UserPermissionColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.OneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.GetOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.OneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  This method is most commonly used to retrieve a
+            single UserPermission instance by its Id/Key value
+            </summary>
+            <param name="where">A WhereDelegate that recieves a UserPermissionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between UserPermissionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.UserPermission.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a UserPermissionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between UserPermissionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a UserPermissionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between UserPermissionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.FirstOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Shortcut for Top(1, where, orderBy, database)
+            </summary>
+            <param name="where">A WhereDelegate that recieves a UserPermissionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between UserPermissionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number
+            of values. This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a UserPermissionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between UserPermissionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a UserPermissionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between UserPermissionColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of UserPermissions
+            </summary>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the number of results
+            </summary>
+            <param name="where">A WhereDelegate that recieves a UserPermissionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between UserPermissionColumns and other values
             </param>
             <param name="db"></param>
         </member>
@@ -634,6 +1512,11 @@
             Specifies what column and direction to order the results by
             </param>
             <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Account.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of Accounts
+            </summary>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Account.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.AccountColumns},Bam.Net.Data.Database)">
             <summary>
@@ -859,6 +1742,11 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.UserAccounts.Data.LockOut.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of LockOuts
+            </summary>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.LockOut.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.LockOutColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the number of results
@@ -1071,6 +1959,11 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Login.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of Logins
+            </summary>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.Login.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.LoginColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the number of results
@@ -1282,6 +2175,11 @@
             Specifies what column and direction to order the results by
             </param>
             <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Password.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of Passwords
+            </summary>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Password.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PasswordColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1503,6 +2401,11 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.UserAccounts.Data.PasswordFailure.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of PasswordFailures
+            </summary>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.PasswordFailure.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PasswordFailureColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the number of results
@@ -1714,6 +2617,11 @@
             Specifies what column and direction to order the results by
             </param>
             <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.PasswordQuestion.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of PasswordQuestions
+            </summary>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.PasswordQuestion.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PasswordQuestionColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1927,6 +2835,11 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.UserAccounts.Data.PasswordReset.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of PasswordResets
+            </summary>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.PasswordReset.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PasswordResetColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the number of results
@@ -1944,218 +2857,6 @@
             <param name="user"></param>
             <param name="expiresInMinutesFromNow"></param>
             <returns></returns>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.Permission.GetUniqueFilter">
-            <summary>
-            Gets a query filter that should uniquely identify
-            the current instance.  The default implementation
-            compares the Id/key field to the current instance's.
-            </summary> 
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.Permission.LoadAll(Bam.Net.Data.Database)">
-            <summary>
-            Return every record in the Permission table.
-            </summary>
-            <param name="database">
-            The database to load from or null
-            </param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.Permission.Where(System.Func{Bam.Net.UserAccounts.Data.PermissionColumns,Bam.Net.Data.QueryFilter{Bam.Net.UserAccounts.Data.PermissionColumns}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the results. 
-            </summary>
-            <param name="where">A Func delegate that recieves a PermissionColumns 
-            and returns a QueryFilter which is the result of any comparisons
-            between PermissionColumns and other values
-            </param>
-            <param name="db"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.Permission.Where(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the results. 
-            </summary>
-            <param name="where">A WhereDelegate that recieves a PermissionColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between PermissionColumns and other values
-            </param>
-            <param name="db"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.Permission.Where(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the results. 
-            </summary>
-            <param name="where">A WhereDelegate that recieves a PermissionColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between PermissionColumns and other values
-            </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
-            </param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.Permission.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            This method is intended to respond to client side Qi queries.
-            Use of this method from .Net should be avoided in favor of 
-            one of the methods that take a delegate of type
-            WhereDelegate&lt;PermissionColumns&gt;.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.Permission.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
-            <summary>
-            Get one entry matching the specified filter.  If none exists 
-            one will be created; success will depend on the nullability
-            of the specified columns.
-            </summary>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.Permission.OneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
-            <summary>
-            Execute a query that should return only one result.  If more
-            than one result is returned a MultipleEntriesFoundException will 
-            be thrown.  
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.Permission.GetOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.Database)">
-            <summary>
-            Get one entry matching the specified filter.  If none exists 
-            one will be created; success will depend on the nullability
-            of the specified columns.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.Permission.OneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query that should return only one result.  If more
-            than one result is returned a MultipleEntriesFoundException will 
-            be thrown.  This method is most commonly used to retrieve a
-            single Permission instance by its Id/Key value
-            </summary>
-            <param name="where">A WhereDelegate that recieves a PermissionColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between PermissionColumns and other values
-            </param>
-            <param name="database"></param>
-        </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.Permission.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
-        <member name="M:Bam.Net.UserAccounts.Data.Permission.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
-            specified number of values will be returned.
-            </summary>
-            <param name="where">A WhereDelegate that recieves a PermissionColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between PermissionColumns and other values
-            </param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.Permission.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
-            specified number of values will be returned.
-            </summary>
-            <param name="where">A WhereDelegate that recieves a PermissionColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between PermissionColumns and other values
-            </param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.Permission.FirstOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.Database)">
-            <summary>
-            Shortcut for Top(1, where, orderBy, database)
-            </summary>
-            <param name="where">A WhereDelegate that recieves a PermissionColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between PermissionColumns and other values
-            </param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.Permission.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the specified number
-            of values. This method will issue a sql TOP clause so only the 
-            specified number of values will be returned.
-            </summary>
-            <param name="count">The number of values to return.
-            This value is used in the sql query so no more than this 
-            number of values will be returned by the database.
-            </param>
-            <param name="where">A WhereDelegate that recieves a PermissionColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between PermissionColumns and other values
-            </param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.Permission.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the specified number of values.  This method
-            will issue a sql TOP clause so only the specified number of values
-            will be returned.
-            </summary>
-            <param name="count">The number of values to return.
-            This value is used in the sql query so no more than this 
-            number of values will be returned by the database.
-            </param>
-            <param name="where">A WhereDelegate that recieves a PermissionColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between PermissionColumns and other values
-            </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
-            </param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.Permission.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the specified number of values.  This method
-            will issue a sql TOP clause so only the specified number of values
-            will be returned.
-            of values
-            </summary>
-            <param name="count">The number of values to return.
-            This value is used in the sql query so no more than this 
-            number of values will be returned by the database.
-            </param>
-            <param name="where">A QueryFilter used to filter the 
-            results
-            </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
-            </param>
-            <param name="db"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.Permission.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the specified number of values.  This method
-            will issue a sql TOP clause so only the specified number of values
-            will be returned.
-            of values
-            </summary>
-            <param name="count">The number of values to return.
-            This value is used in the sql query so no more than this 
-            number of values will be returned by the database.
-            </param>
-            <param name="where">A QueryFilter used to filter the 
-            results
-            </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
-            </param>
-            <param name="db"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.Permission.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the number of results
-            </summary>
-            <param name="where">A WhereDelegate that recieves a PermissionColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between PermissionColumns and other values
-            </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Role.GetUniqueFilter">
             <summary>
@@ -2358,6 +3059,11 @@
             Specifies what column and direction to order the results by
             </param>
             <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Role.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of Roles
+            </summary>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Role.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.RoleColumns},Bam.Net.Data.Database)">
             <summary>
@@ -2570,6 +3276,11 @@
             Specifies what column and direction to order the results by
             </param>
             <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Session.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of Sessions
+            </summary>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Session.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.SessionColumns},Bam.Net.Data.Database)">
             <summary>
@@ -2808,6 +3519,11 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.UserAccounts.Data.SessionState.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of SessionStates
+            </summary>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.SessionState.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.SessionStateColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the number of results
@@ -3020,6 +3736,11 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Setting.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of Settings
+            </summary>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.Setting.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.SettingColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the number of results
@@ -3027,218 +3748,6 @@
             <param name="where">A WhereDelegate that recieves a SettingColumns 
             and returns a IQueryFilter which is the result of any comparisons
             between SettingColumns and other values
-            </param>
-            <param name="db"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.GetUniqueFilter">
-            <summary>
-            Gets a query filter that should uniquely identify
-            the current instance.  The default implementation
-            compares the Id/key field to the current instance's.
-            </summary> 
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.LoadAll(Bam.Net.Data.Database)">
-            <summary>
-            Return every record in the TreeNode table.
-            </summary>
-            <param name="database">
-            The database to load from or null
-            </param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.Where(System.Func{Bam.Net.UserAccounts.Data.TreeNodeColumns,Bam.Net.Data.QueryFilter{Bam.Net.UserAccounts.Data.TreeNodeColumns}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the results. 
-            </summary>
-            <param name="where">A Func delegate that recieves a TreeNodeColumns 
-            and returns a QueryFilter which is the result of any comparisons
-            between TreeNodeColumns and other values
-            </param>
-            <param name="db"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.Where(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the results. 
-            </summary>
-            <param name="where">A WhereDelegate that recieves a TreeNodeColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between TreeNodeColumns and other values
-            </param>
-            <param name="db"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.Where(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the results. 
-            </summary>
-            <param name="where">A WhereDelegate that recieves a TreeNodeColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between TreeNodeColumns and other values
-            </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
-            </param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            This method is intended to respond to client side Qi queries.
-            Use of this method from .Net should be avoided in favor of 
-            one of the methods that take a delegate of type
-            WhereDelegate&lt;TreeNodeColumns&gt;.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
-            <summary>
-            Get one entry matching the specified filter.  If none exists 
-            one will be created; success will depend on the nullability
-            of the specified columns.
-            </summary>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.OneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
-            <summary>
-            Execute a query that should return only one result.  If more
-            than one result is returned a MultipleEntriesFoundException will 
-            be thrown.  
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.GetOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.Database)">
-            <summary>
-            Get one entry matching the specified filter.  If none exists 
-            one will be created; success will depend on the nullability
-            of the specified columns.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.OneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query that should return only one result.  If more
-            than one result is returned a MultipleEntriesFoundException will 
-            be thrown.  This method is most commonly used to retrieve a
-            single TreeNode instance by its Id/Key value
-            </summary>
-            <param name="where">A WhereDelegate that recieves a TreeNodeColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between TreeNodeColumns and other values
-            </param>
-            <param name="database"></param>
-        </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.TreeNode.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
-        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
-            specified number of values will be returned.
-            </summary>
-            <param name="where">A WhereDelegate that recieves a TreeNodeColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between TreeNodeColumns and other values
-            </param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
-            specified number of values will be returned.
-            </summary>
-            <param name="where">A WhereDelegate that recieves a TreeNodeColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between TreeNodeColumns and other values
-            </param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.FirstOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.Database)">
-            <summary>
-            Shortcut for Top(1, where, orderBy, database)
-            </summary>
-            <param name="where">A WhereDelegate that recieves a TreeNodeColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between TreeNodeColumns and other values
-            </param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the specified number
-            of values. This method will issue a sql TOP clause so only the 
-            specified number of values will be returned.
-            </summary>
-            <param name="count">The number of values to return.
-            This value is used in the sql query so no more than this 
-            number of values will be returned by the database.
-            </param>
-            <param name="where">A WhereDelegate that recieves a TreeNodeColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between TreeNodeColumns and other values
-            </param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the specified number of values.  This method
-            will issue a sql TOP clause so only the specified number of values
-            will be returned.
-            </summary>
-            <param name="count">The number of values to return.
-            This value is used in the sql query so no more than this 
-            number of values will be returned by the database.
-            </param>
-            <param name="where">A WhereDelegate that recieves a TreeNodeColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between TreeNodeColumns and other values
-            </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
-            </param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the specified number of values.  This method
-            will issue a sql TOP clause so only the specified number of values
-            will be returned.
-            of values
-            </summary>
-            <param name="count">The number of values to return.
-            This value is used in the sql query so no more than this 
-            number of values will be returned by the database.
-            </param>
-            <param name="where">A QueryFilter used to filter the 
-            results
-            </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
-            </param>
-            <param name="db"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the specified number of values.  This method
-            will issue a sql TOP clause so only the specified number of values
-            will be returned.
-            of values
-            </summary>
-            <param name="count">The number of values to return.
-            This value is used in the sql query so no more than this 
-            number of values will be returned by the database.
-            </param>
-            <param name="where">A QueryFilter used to filter the 
-            results
-            </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
-            </param>
-            <param name="db"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the number of results
-            </summary>
-            <param name="where">A WhereDelegate that recieves a TreeNodeColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between TreeNodeColumns and other values
             </param>
             <param name="db"></param>
         </member>
@@ -3443,6 +3952,11 @@
             Specifies what column and direction to order the results by
             </param>
             <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.User.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of Users
+            </summary>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.User.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserColumns},Bam.Net.Data.Database)">
             <summary>
@@ -3687,6 +4201,11 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserBehavior.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of UserBehaviors
+            </summary>
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserBehavior.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserBehaviorColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the number of results
@@ -3694,430 +4213,6 @@
             <param name="where">A WhereDelegate that recieves a UserBehaviorColumns 
             and returns a IQueryFilter which is the result of any comparisons
             between UserBehaviorColumns and other values
-            </param>
-            <param name="db"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.GetUniqueFilter">
-            <summary>
-            Gets a query filter that should uniquely identify
-            the current instance.  The default implementation
-            compares the Id/key field to the current instance's.
-            </summary> 
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.LoadAll(Bam.Net.Data.Database)">
-            <summary>
-            Return every record in the UserGroup table.
-            </summary>
-            <param name="database">
-            The database to load from or null
-            </param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.Where(System.Func{Bam.Net.UserAccounts.Data.UserGroupColumns,Bam.Net.Data.QueryFilter{Bam.Net.UserAccounts.Data.UserGroupColumns}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the results. 
-            </summary>
-            <param name="where">A Func delegate that recieves a UserGroupColumns 
-            and returns a QueryFilter which is the result of any comparisons
-            between UserGroupColumns and other values
-            </param>
-            <param name="db"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.Where(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the results. 
-            </summary>
-            <param name="where">A WhereDelegate that recieves a UserGroupColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between UserGroupColumns and other values
-            </param>
-            <param name="db"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.Where(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the results. 
-            </summary>
-            <param name="where">A WhereDelegate that recieves a UserGroupColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between UserGroupColumns and other values
-            </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
-            </param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            This method is intended to respond to client side Qi queries.
-            Use of this method from .Net should be avoided in favor of 
-            one of the methods that take a delegate of type
-            WhereDelegate&lt;UserGroupColumns&gt;.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
-            <summary>
-            Get one entry matching the specified filter.  If none exists 
-            one will be created; success will depend on the nullability
-            of the specified columns.
-            </summary>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.OneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
-            <summary>
-            Execute a query that should return only one result.  If more
-            than one result is returned a MultipleEntriesFoundException will 
-            be thrown.  
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.GetOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.Database)">
-            <summary>
-            Get one entry matching the specified filter.  If none exists 
-            one will be created; success will depend on the nullability
-            of the specified columns.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.OneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query that should return only one result.  If more
-            than one result is returned a MultipleEntriesFoundException will 
-            be thrown.  This method is most commonly used to retrieve a
-            single UserGroup instance by its Id/Key value
-            </summary>
-            <param name="where">A WhereDelegate that recieves a UserGroupColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between UserGroupColumns and other values
-            </param>
-            <param name="database"></param>
-        </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.UserGroup.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
-        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
-            specified number of values will be returned.
-            </summary>
-            <param name="where">A WhereDelegate that recieves a UserGroupColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between UserGroupColumns and other values
-            </param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
-            specified number of values will be returned.
-            </summary>
-            <param name="where">A WhereDelegate that recieves a UserGroupColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between UserGroupColumns and other values
-            </param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.FirstOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.Database)">
-            <summary>
-            Shortcut for Top(1, where, orderBy, database)
-            </summary>
-            <param name="where">A WhereDelegate that recieves a UserGroupColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between UserGroupColumns and other values
-            </param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the specified number
-            of values. This method will issue a sql TOP clause so only the 
-            specified number of values will be returned.
-            </summary>
-            <param name="count">The number of values to return.
-            This value is used in the sql query so no more than this 
-            number of values will be returned by the database.
-            </param>
-            <param name="where">A WhereDelegate that recieves a UserGroupColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between UserGroupColumns and other values
-            </param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the specified number of values.  This method
-            will issue a sql TOP clause so only the specified number of values
-            will be returned.
-            </summary>
-            <param name="count">The number of values to return.
-            This value is used in the sql query so no more than this 
-            number of values will be returned by the database.
-            </param>
-            <param name="where">A WhereDelegate that recieves a UserGroupColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between UserGroupColumns and other values
-            </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
-            </param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the specified number of values.  This method
-            will issue a sql TOP clause so only the specified number of values
-            will be returned.
-            of values
-            </summary>
-            <param name="count">The number of values to return.
-            This value is used in the sql query so no more than this 
-            number of values will be returned by the database.
-            </param>
-            <param name="where">A QueryFilter used to filter the 
-            results
-            </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
-            </param>
-            <param name="db"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the specified number of values.  This method
-            will issue a sql TOP clause so only the specified number of values
-            will be returned.
-            of values
-            </summary>
-            <param name="count">The number of values to return.
-            This value is used in the sql query so no more than this 
-            number of values will be returned by the database.
-            </param>
-            <param name="where">A QueryFilter used to filter the 
-            results
-            </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
-            </param>
-            <param name="db"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the number of results
-            </summary>
-            <param name="where">A WhereDelegate that recieves a UserGroupColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between UserGroupColumns and other values
-            </param>
-            <param name="db"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.GetUniqueFilter">
-            <summary>
-            Gets a query filter that should uniquely identify
-            the current instance.  The default implementation
-            compares the Id/key field to the current instance's.
-            </summary> 
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.LoadAll(Bam.Net.Data.Database)">
-            <summary>
-            Return every record in the UserPermission table.
-            </summary>
-            <param name="database">
-            The database to load from or null
-            </param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.Where(System.Func{Bam.Net.UserAccounts.Data.UserPermissionColumns,Bam.Net.Data.QueryFilter{Bam.Net.UserAccounts.Data.UserPermissionColumns}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the results. 
-            </summary>
-            <param name="where">A Func delegate that recieves a UserPermissionColumns 
-            and returns a QueryFilter which is the result of any comparisons
-            between UserPermissionColumns and other values
-            </param>
-            <param name="db"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.Where(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the results. 
-            </summary>
-            <param name="where">A WhereDelegate that recieves a UserPermissionColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between UserPermissionColumns and other values
-            </param>
-            <param name="db"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.Where(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the results. 
-            </summary>
-            <param name="where">A WhereDelegate that recieves a UserPermissionColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between UserPermissionColumns and other values
-            </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
-            </param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            This method is intended to respond to client side Qi queries.
-            Use of this method from .Net should be avoided in favor of 
-            one of the methods that take a delegate of type
-            WhereDelegate&lt;UserPermissionColumns&gt;.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
-            <summary>
-            Get one entry matching the specified filter.  If none exists 
-            one will be created; success will depend on the nullability
-            of the specified columns.
-            </summary>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.OneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
-            <summary>
-            Execute a query that should return only one result.  If more
-            than one result is returned a MultipleEntriesFoundException will 
-            be thrown.  
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.GetOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.Database)">
-            <summary>
-            Get one entry matching the specified filter.  If none exists 
-            one will be created; success will depend on the nullability
-            of the specified columns.
-            </summary>
-            <param name="where"></param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.OneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query that should return only one result.  If more
-            than one result is returned a MultipleEntriesFoundException will 
-            be thrown.  This method is most commonly used to retrieve a
-            single UserPermission instance by its Id/Key value
-            </summary>
-            <param name="where">A WhereDelegate that recieves a UserPermissionColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between UserPermissionColumns and other values
-            </param>
-            <param name="database"></param>
-        </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.UserAccounts.Data.UserPermission.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
-        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
-            specified number of values will be returned.
-            </summary>
-            <param name="where">A WhereDelegate that recieves a UserPermissionColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between UserPermissionColumns and other values
-            </param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
-            specified number of values will be returned.
-            </summary>
-            <param name="where">A WhereDelegate that recieves a UserPermissionColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between UserPermissionColumns and other values
-            </param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.FirstOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.Database)">
-            <summary>
-            Shortcut for Top(1, where, orderBy, database)
-            </summary>
-            <param name="where">A WhereDelegate that recieves a UserPermissionColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between UserPermissionColumns and other values
-            </param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the specified number
-            of values. This method will issue a sql TOP clause so only the 
-            specified number of values will be returned.
-            </summary>
-            <param name="count">The number of values to return.
-            This value is used in the sql query so no more than this 
-            number of values will be returned by the database.
-            </param>
-            <param name="where">A WhereDelegate that recieves a UserPermissionColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between UserPermissionColumns and other values
-            </param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the specified number of values.  This method
-            will issue a sql TOP clause so only the specified number of values
-            will be returned.
-            </summary>
-            <param name="count">The number of values to return.
-            This value is used in the sql query so no more than this 
-            number of values will be returned by the database.
-            </param>
-            <param name="where">A WhereDelegate that recieves a UserPermissionColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between UserPermissionColumns and other values
-            </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
-            </param>
-            <param name="database"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the specified number of values.  This method
-            will issue a sql TOP clause so only the specified number of values
-            will be returned.
-            of values
-            </summary>
-            <param name="count">The number of values to return.
-            This value is used in the sql query so no more than this 
-            number of values will be returned by the database.
-            </param>
-            <param name="where">A QueryFilter used to filter the 
-            results
-            </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
-            </param>
-            <param name="db"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the specified number of values.  This method
-            will issue a sql TOP clause so only the specified number of values
-            will be returned.
-            of values
-            </summary>
-            <param name="count">The number of values to return.
-            This value is used in the sql query so no more than this 
-            number of values will be returned by the database.
-            </param>
-            <param name="where">A QueryFilter used to filter the 
-            results
-            </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
-            </param>
-            <param name="db"></param>
-        </member>
-        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.Database)">
-            <summary>
-            Execute a query and return the number of results
-            </summary>
-            <param name="where">A WhereDelegate that recieves a UserPermissionColumns 
-            and returns a IQueryFilter which is the result of any comparisons
-            between UserPermissionColumns and other values
             </param>
             <param name="db"></param>
         </member>
@@ -4322,6 +4417,11 @@
             Specifies what column and direction to order the results by
             </param>
             <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserRole.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of UserRoles
+            </summary>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserRole.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserRoleColumns},Bam.Net.Data.Database)">
             <summary>

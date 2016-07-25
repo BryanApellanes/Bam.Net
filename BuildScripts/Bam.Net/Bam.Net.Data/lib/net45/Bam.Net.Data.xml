@@ -585,6 +585,27 @@
             <typeparam name="T"></typeparam>
             <param name="builder"></param>
         </member>
+        <member name="M:Bam.Net.Data.Database.QuerySingleColumn``1(System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            Execute a query that returns a single column of results casting
+            each to the specified generic type T
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="singleColumnQuery"></param>
+            <param name="dbParameters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Database.Query(System.String,System.Object,System.String)">
+            <summary>
+            Execute the specified sqlQuery and return results as an Enumerable of
+            dynamic object instances.  Property access can be done using column names 
+            directly.
+            </summary>
+            <param name="sqlQuery"></param>
+            <param name="dynamicDbParameters"></param>
+            <param name="typeName"></param>
+            <returns></returns>
+        </member>
         <member name="M:Bam.Net.Data.DatabaseContainer.For``1">
             <summary>
             Gets the Database for the specified type.
@@ -744,7 +765,7 @@
             Allows
             one to specify a sequence of sql statements
             that result in the return of potentially
-            multiple result sets (similar to a DataSet).
+            multiple result sets.
             </summary>
         </member>
         <member name="M:Bam.Net.Data.QuerySet.Count``1">
@@ -812,6 +833,27 @@
             </summary>
             <typeparam name="T"></typeparam>
             <param name="topCount"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.SqlStringBuilder.Count``1">
+            <summary>
+            Select count from the table for the specified type T
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.SqlStringBuilder.SelectCount``1">
+            <summary>
+            Select count from the table for the specified type T
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.SqlStringBuilder.Count(System.String)">
+            <summary>
+            Select count from the specified table
+            </summary>
+            <param name="tableName"></param>
             <returns></returns>
         </member>
         <member name="P:Bam.Net.Data.SqlStringBuilder.Builder">
