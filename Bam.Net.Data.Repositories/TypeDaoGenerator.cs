@@ -48,6 +48,7 @@ namespace Bam.Net.Data.Repositories
         public TypeDaoGenerator(Assembly typeAssembly, string nameSpace, ILogger logger = null)
             : this(logger)
         {
+            Namespace = nameSpace;
             Args.ThrowIfNull(typeAssembly, "typeAssembly");
             AddTypes(typeAssembly.GetTypes().Where(t => t.Namespace != null && t.Namespace.Equals(nameSpace) && !t.IsAbstract));
         }
@@ -73,6 +74,7 @@ namespace Bam.Net.Data.Repositories
                 _namespace = value;
                 _daoGenerator.Namespace = DaoNamespace;
                 _wrapperGenerator.WrapperNamespace = WrapperNamespace;
+                _wrapperGenerator.DaoNamespace = DaoNamespace;
             }
         }
 

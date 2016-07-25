@@ -13,9 +13,9 @@ namespace Bam.Net.Data.Repositories
     public class SchemaRepositoryModel
     {
         public string SchemaName { get; set; }
-        public Type[] Types { get; set; }
+        public SchemaTypeModel[] Types { get; set; }
         public string SourceNamespace { get; set; }
-        public string DestinationNamespace { get; set; }
+        public string SchemaRepositoryNamespace { get; set; }
 
         public string Render()
         {

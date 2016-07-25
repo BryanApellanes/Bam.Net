@@ -9,7 +9,7 @@ using Bam.Net;
 using Bam.Net.Data;
 using Bam.Net.Data.Qi;
 
-namespace Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_
+namespace Bam.Net.Data.Repositories.Tests.ClrTypes.Daos
 {
 	// schema = TestDaoSchema 
     public static class TestDaoSchemaContext
@@ -31,264 +31,264 @@ namespace Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_
 		}
 
 
-	public class DaughterDaoQueryContext
+	public class DaughterQueryContext
 	{
-			public DaughterDaoCollection Where(WhereDelegate<DaughterDaoColumns> where, Database db = null)
+			public DaughterCollection Where(WhereDelegate<DaughterColumns> where, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.DaughterDao.Where(where, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.Daughter.Where(where, db);
 			}
 		   
-			public DaughterDaoCollection Where(WhereDelegate<DaughterDaoColumns> where, OrderBy<DaughterDaoColumns> orderBy = null, Database db = null)
+			public DaughterCollection Where(WhereDelegate<DaughterColumns> where, OrderBy<DaughterColumns> orderBy = null, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.DaughterDao.Where(where, orderBy, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.Daughter.Where(where, orderBy, db);
 			}
 
-			public DaughterDao OneWhere(WhereDelegate<DaughterDaoColumns> where, Database db = null)
+			public Daughter OneWhere(WhereDelegate<DaughterColumns> where, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.DaughterDao.OneWhere(where, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.Daughter.OneWhere(where, db);
 			}
 
-			public static DaughterDao GetOneWhere(WhereDelegate<DaughterDaoColumns> where, Database db = null)
+			public static Daughter GetOneWhere(WhereDelegate<DaughterColumns> where, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.DaughterDao.GetOneWhere(where, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.Daughter.GetOneWhere(where, db);
 			}
 		
-			public DaughterDao FirstOneWhere(WhereDelegate<DaughterDaoColumns> where, Database db = null)
+			public Daughter FirstOneWhere(WhereDelegate<DaughterColumns> where, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.DaughterDao.FirstOneWhere(where, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.Daughter.FirstOneWhere(where, db);
 			}
 
-			public DaughterDaoCollection Top(int count, WhereDelegate<DaughterDaoColumns> where, Database db = null)
+			public DaughterCollection Top(int count, WhereDelegate<DaughterColumns> where, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.DaughterDao.Top(count, where, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.Daughter.Top(count, where, db);
 			}
 
-			public DaughterDaoCollection Top(int count, WhereDelegate<DaughterDaoColumns> where, OrderBy<DaughterDaoColumns> orderBy, Database db = null)
+			public DaughterCollection Top(int count, WhereDelegate<DaughterColumns> where, OrderBy<DaughterColumns> orderBy, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.DaughterDao.Top(count, where, orderBy, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.Daughter.Top(count, where, orderBy, db);
 			}
 
-			public long Count(WhereDelegate<DaughterDaoColumns> where, Database db = null)
+			public long Count(WhereDelegate<DaughterColumns> where, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.DaughterDao.Count(where, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.Daughter.Count(where, db);
 			}
 	}
 
-	static DaughterDaoQueryContext _daughterDaos;
-	static object _daughterDaosLock = new object();
-	public static DaughterDaoQueryContext DaughterDaos
+	static DaughterQueryContext _daughters;
+	static object _daughtersLock = new object();
+	public static DaughterQueryContext Daughters
 	{
 		get
 		{
-			return _daughterDaosLock.DoubleCheckLock<DaughterDaoQueryContext>(ref _daughterDaos, () => new DaughterDaoQueryContext());
+			return _daughtersLock.DoubleCheckLock<DaughterQueryContext>(ref _daughters, () => new DaughterQueryContext());
 		}
 	}
-	public class HouseDaoQueryContext
+	public class HouseQueryContext
 	{
-			public HouseDaoCollection Where(WhereDelegate<HouseDaoColumns> where, Database db = null)
+			public HouseCollection Where(WhereDelegate<HouseColumns> where, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.HouseDao.Where(where, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.House.Where(where, db);
 			}
 		   
-			public HouseDaoCollection Where(WhereDelegate<HouseDaoColumns> where, OrderBy<HouseDaoColumns> orderBy = null, Database db = null)
+			public HouseCollection Where(WhereDelegate<HouseColumns> where, OrderBy<HouseColumns> orderBy = null, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.HouseDao.Where(where, orderBy, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.House.Where(where, orderBy, db);
 			}
 
-			public HouseDao OneWhere(WhereDelegate<HouseDaoColumns> where, Database db = null)
+			public House OneWhere(WhereDelegate<HouseColumns> where, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.HouseDao.OneWhere(where, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.House.OneWhere(where, db);
 			}
 
-			public static HouseDao GetOneWhere(WhereDelegate<HouseDaoColumns> where, Database db = null)
+			public static House GetOneWhere(WhereDelegate<HouseColumns> where, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.HouseDao.GetOneWhere(where, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.House.GetOneWhere(where, db);
 			}
 		
-			public HouseDao FirstOneWhere(WhereDelegate<HouseDaoColumns> where, Database db = null)
+			public House FirstOneWhere(WhereDelegate<HouseColumns> where, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.HouseDao.FirstOneWhere(where, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.House.FirstOneWhere(where, db);
 			}
 
-			public HouseDaoCollection Top(int count, WhereDelegate<HouseDaoColumns> where, Database db = null)
+			public HouseCollection Top(int count, WhereDelegate<HouseColumns> where, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.HouseDao.Top(count, where, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.House.Top(count, where, db);
 			}
 
-			public HouseDaoCollection Top(int count, WhereDelegate<HouseDaoColumns> where, OrderBy<HouseDaoColumns> orderBy, Database db = null)
+			public HouseCollection Top(int count, WhereDelegate<HouseColumns> where, OrderBy<HouseColumns> orderBy, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.HouseDao.Top(count, where, orderBy, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.House.Top(count, where, orderBy, db);
 			}
 
-			public long Count(WhereDelegate<HouseDaoColumns> where, Database db = null)
+			public long Count(WhereDelegate<HouseColumns> where, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.HouseDao.Count(where, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.House.Count(where, db);
 			}
 	}
 
-	static HouseDaoQueryContext _houseDaos;
-	static object _houseDaosLock = new object();
-	public static HouseDaoQueryContext HouseDaos
+	static HouseQueryContext _houses;
+	static object _housesLock = new object();
+	public static HouseQueryContext Houses
 	{
 		get
 		{
-			return _houseDaosLock.DoubleCheckLock<HouseDaoQueryContext>(ref _houseDaos, () => new HouseDaoQueryContext());
+			return _housesLock.DoubleCheckLock<HouseQueryContext>(ref _houses, () => new HouseQueryContext());
 		}
 	}
-	public class ParentDaoQueryContext
+	public class ParentQueryContext
 	{
-			public ParentDaoCollection Where(WhereDelegate<ParentDaoColumns> where, Database db = null)
+			public ParentCollection Where(WhereDelegate<ParentColumns> where, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.ParentDao.Where(where, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.Parent.Where(where, db);
 			}
 		   
-			public ParentDaoCollection Where(WhereDelegate<ParentDaoColumns> where, OrderBy<ParentDaoColumns> orderBy = null, Database db = null)
+			public ParentCollection Where(WhereDelegate<ParentColumns> where, OrderBy<ParentColumns> orderBy = null, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.ParentDao.Where(where, orderBy, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.Parent.Where(where, orderBy, db);
 			}
 
-			public ParentDao OneWhere(WhereDelegate<ParentDaoColumns> where, Database db = null)
+			public Parent OneWhere(WhereDelegate<ParentColumns> where, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.ParentDao.OneWhere(where, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.Parent.OneWhere(where, db);
 			}
 
-			public static ParentDao GetOneWhere(WhereDelegate<ParentDaoColumns> where, Database db = null)
+			public static Parent GetOneWhere(WhereDelegate<ParentColumns> where, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.ParentDao.GetOneWhere(where, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.Parent.GetOneWhere(where, db);
 			}
 		
-			public ParentDao FirstOneWhere(WhereDelegate<ParentDaoColumns> where, Database db = null)
+			public Parent FirstOneWhere(WhereDelegate<ParentColumns> where, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.ParentDao.FirstOneWhere(where, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.Parent.FirstOneWhere(where, db);
 			}
 
-			public ParentDaoCollection Top(int count, WhereDelegate<ParentDaoColumns> where, Database db = null)
+			public ParentCollection Top(int count, WhereDelegate<ParentColumns> where, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.ParentDao.Top(count, where, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.Parent.Top(count, where, db);
 			}
 
-			public ParentDaoCollection Top(int count, WhereDelegate<ParentDaoColumns> where, OrderBy<ParentDaoColumns> orderBy, Database db = null)
+			public ParentCollection Top(int count, WhereDelegate<ParentColumns> where, OrderBy<ParentColumns> orderBy, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.ParentDao.Top(count, where, orderBy, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.Parent.Top(count, where, orderBy, db);
 			}
 
-			public long Count(WhereDelegate<ParentDaoColumns> where, Database db = null)
+			public long Count(WhereDelegate<ParentColumns> where, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.ParentDao.Count(where, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.Parent.Count(where, db);
 			}
 	}
 
-	static ParentDaoQueryContext _parentDaos;
-	static object _parentDaosLock = new object();
-	public static ParentDaoQueryContext ParentDaos
+	static ParentQueryContext _parents;
+	static object _parentsLock = new object();
+	public static ParentQueryContext Parents
 	{
 		get
 		{
-			return _parentDaosLock.DoubleCheckLock<ParentDaoQueryContext>(ref _parentDaos, () => new ParentDaoQueryContext());
+			return _parentsLock.DoubleCheckLock<ParentQueryContext>(ref _parents, () => new ParentQueryContext());
 		}
 	}
-	public class SonDaoQueryContext
+	public class SonQueryContext
 	{
-			public SonDaoCollection Where(WhereDelegate<SonDaoColumns> where, Database db = null)
+			public SonCollection Where(WhereDelegate<SonColumns> where, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.SonDao.Where(where, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.Son.Where(where, db);
 			}
 		   
-			public SonDaoCollection Where(WhereDelegate<SonDaoColumns> where, OrderBy<SonDaoColumns> orderBy = null, Database db = null)
+			public SonCollection Where(WhereDelegate<SonColumns> where, OrderBy<SonColumns> orderBy = null, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.SonDao.Where(where, orderBy, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.Son.Where(where, orderBy, db);
 			}
 
-			public SonDao OneWhere(WhereDelegate<SonDaoColumns> where, Database db = null)
+			public Son OneWhere(WhereDelegate<SonColumns> where, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.SonDao.OneWhere(where, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.Son.OneWhere(where, db);
 			}
 
-			public static SonDao GetOneWhere(WhereDelegate<SonDaoColumns> where, Database db = null)
+			public static Son GetOneWhere(WhereDelegate<SonColumns> where, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.SonDao.GetOneWhere(where, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.Son.GetOneWhere(where, db);
 			}
 		
-			public SonDao FirstOneWhere(WhereDelegate<SonDaoColumns> where, Database db = null)
+			public Son FirstOneWhere(WhereDelegate<SonColumns> where, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.SonDao.FirstOneWhere(where, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.Son.FirstOneWhere(where, db);
 			}
 
-			public SonDaoCollection Top(int count, WhereDelegate<SonDaoColumns> where, Database db = null)
+			public SonCollection Top(int count, WhereDelegate<SonColumns> where, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.SonDao.Top(count, where, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.Son.Top(count, where, db);
 			}
 
-			public SonDaoCollection Top(int count, WhereDelegate<SonDaoColumns> where, OrderBy<SonDaoColumns> orderBy, Database db = null)
+			public SonCollection Top(int count, WhereDelegate<SonColumns> where, OrderBy<SonColumns> orderBy, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.SonDao.Top(count, where, orderBy, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.Son.Top(count, where, orderBy, db);
 			}
 
-			public long Count(WhereDelegate<SonDaoColumns> where, Database db = null)
+			public long Count(WhereDelegate<SonColumns> where, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.SonDao.Count(where, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.Son.Count(where, db);
 			}
 	}
 
-	static SonDaoQueryContext _sonDaos;
-	static object _sonDaosLock = new object();
-	public static SonDaoQueryContext SonDaos
+	static SonQueryContext _sons;
+	static object _sonsLock = new object();
+	public static SonQueryContext Sons
 	{
 		get
 		{
-			return _sonDaosLock.DoubleCheckLock<SonDaoQueryContext>(ref _sonDaos, () => new SonDaoQueryContext());
+			return _sonsLock.DoubleCheckLock<SonQueryContext>(ref _sons, () => new SonQueryContext());
 		}
 	}
-	public class HouseDaoParentDaoQueryContext
+	public class HouseParentQueryContext
 	{
-			public HouseDaoParentDaoCollection Where(WhereDelegate<HouseDaoParentDaoColumns> where, Database db = null)
+			public HouseParentCollection Where(WhereDelegate<HouseParentColumns> where, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.HouseDaoParentDao.Where(where, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.HouseParent.Where(where, db);
 			}
 		   
-			public HouseDaoParentDaoCollection Where(WhereDelegate<HouseDaoParentDaoColumns> where, OrderBy<HouseDaoParentDaoColumns> orderBy = null, Database db = null)
+			public HouseParentCollection Where(WhereDelegate<HouseParentColumns> where, OrderBy<HouseParentColumns> orderBy = null, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.HouseDaoParentDao.Where(where, orderBy, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.HouseParent.Where(where, orderBy, db);
 			}
 
-			public HouseDaoParentDao OneWhere(WhereDelegate<HouseDaoParentDaoColumns> where, Database db = null)
+			public HouseParent OneWhere(WhereDelegate<HouseParentColumns> where, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.HouseDaoParentDao.OneWhere(where, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.HouseParent.OneWhere(where, db);
 			}
 
-			public static HouseDaoParentDao GetOneWhere(WhereDelegate<HouseDaoParentDaoColumns> where, Database db = null)
+			public static HouseParent GetOneWhere(WhereDelegate<HouseParentColumns> where, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.HouseDaoParentDao.GetOneWhere(where, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.HouseParent.GetOneWhere(where, db);
 			}
 		
-			public HouseDaoParentDao FirstOneWhere(WhereDelegate<HouseDaoParentDaoColumns> where, Database db = null)
+			public HouseParent FirstOneWhere(WhereDelegate<HouseParentColumns> where, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.HouseDaoParentDao.FirstOneWhere(where, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.HouseParent.FirstOneWhere(where, db);
 			}
 
-			public HouseDaoParentDaoCollection Top(int count, WhereDelegate<HouseDaoParentDaoColumns> where, Database db = null)
+			public HouseParentCollection Top(int count, WhereDelegate<HouseParentColumns> where, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.HouseDaoParentDao.Top(count, where, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.HouseParent.Top(count, where, db);
 			}
 
-			public HouseDaoParentDaoCollection Top(int count, WhereDelegate<HouseDaoParentDaoColumns> where, OrderBy<HouseDaoParentDaoColumns> orderBy, Database db = null)
+			public HouseParentCollection Top(int count, WhereDelegate<HouseParentColumns> where, OrderBy<HouseParentColumns> orderBy, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.HouseDaoParentDao.Top(count, where, orderBy, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.HouseParent.Top(count, where, orderBy, db);
 			}
 
-			public long Count(WhereDelegate<HouseDaoParentDaoColumns> where, Database db = null)
+			public long Count(WhereDelegate<HouseParentColumns> where, Database db = null)
 			{
-				return Bam.Net.Data.Repositories.Tests.ClrTypes._Dao_.HouseDaoParentDao.Count(where, db);
+				return Bam.Net.Data.Repositories.Tests.ClrTypes.Daos.HouseParent.Count(where, db);
 			}
 	}
 
-	static HouseDaoParentDaoQueryContext _houseDaoParentDaos;
-	static object _houseDaoParentDaosLock = new object();
-	public static HouseDaoParentDaoQueryContext HouseDaoParentDaos
+	static HouseParentQueryContext _houseParents;
+	static object _houseParentsLock = new object();
+	public static HouseParentQueryContext HouseParents
 	{
 		get
 		{
-			return _houseDaoParentDaosLock.DoubleCheckLock<HouseDaoParentDaoQueryContext>(ref _houseDaoParentDaos, () => new HouseDaoParentDaoQueryContext());
+			return _houseParentsLock.DoubleCheckLock<HouseParentQueryContext>(ref _houseParents, () => new HouseParentQueryContext());
 		}
 	}    }
 }																								
