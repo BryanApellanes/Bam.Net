@@ -6,6 +6,7 @@ nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.Automation.%1.nupkg
 nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.%1.nupkg
 nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.CommandLine.%1.nupkg
 nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.CoreServices.%1.nupkg
+nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.Data.%1.nupkg
 nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.Data.Dynamic.%1.nupkg
 nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.Data.Repositories.%1.nupkg
 nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.Distributed.%1.nupkg
