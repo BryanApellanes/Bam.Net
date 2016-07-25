@@ -206,6 +206,11 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.Analytics.Category.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of Categories
+            </summary>
+        </member>
         <member name="M:Bam.Net.Analytics.Category.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.CategoryColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the number of results
@@ -417,6 +422,11 @@
             Specifies what column and direction to order the results by
             </param>
             <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Analytics.ClickCounter.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of ClickCounters
+            </summary>
         </member>
         <member name="M:Bam.Net.Analytics.ClickCounter.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.ClickCounterColumns},Bam.Net.Data.Database)">
             <summary>
@@ -630,6 +640,11 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.Analytics.Counter.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of Counters
+            </summary>
+        </member>
         <member name="M:Bam.Net.Analytics.Counter.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.CounterColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the number of results
@@ -841,6 +856,11 @@
             Specifies what column and direction to order the results by
             </param>
             <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Analytics.Crawler.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of Crawlers
+            </summary>
         </member>
         <member name="M:Bam.Net.Analytics.Crawler.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.CrawlerColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1054,6 +1074,11 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.Analytics.CustomTimer.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of CustomTimers
+            </summary>
+        </member>
         <member name="M:Bam.Net.Analytics.CustomTimer.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.CustomTimerColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the number of results
@@ -1265,6 +1290,11 @@
             Specifies what column and direction to order the results by
             </param>
             <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Analytics.Domain.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of Domains
+            </summary>
         </member>
         <member name="M:Bam.Net.Analytics.Domain.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.DomainColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1478,6 +1508,11 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.Analytics.Feature.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of Features
+            </summary>
+        </member>
         <member name="M:Bam.Net.Analytics.Feature.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.FeatureColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the number of results
@@ -1689,6 +1724,11 @@
             Specifies what column and direction to order the results by
             </param>
             <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Analytics.Fragment.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of Fragments
+            </summary>
         </member>
         <member name="M:Bam.Net.Analytics.Fragment.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.FragmentColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1902,6 +1942,11 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.Analytics.Image.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of Images
+            </summary>
+        </member>
         <member name="M:Bam.Net.Analytics.Image.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.ImageColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the number of results
@@ -2113,6 +2158,11 @@
             Specifies what column and direction to order the results by
             </param>
             <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Analytics.ImageTag.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of ImageTags
+            </summary>
         </member>
         <member name="M:Bam.Net.Analytics.ImageTag.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.ImageTagColumns},Bam.Net.Data.Database)">
             <summary>
@@ -2326,6 +2376,11 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.Analytics.LoadCounter.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of LoadCounters
+            </summary>
+        </member>
         <member name="M:Bam.Net.Analytics.LoadCounter.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.LoadCounterColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the number of results
@@ -2537,6 +2592,11 @@
             Specifies what column and direction to order the results by
             </param>
             <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Analytics.LoadTimer.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of LoadTimers
+            </summary>
         </member>
         <member name="M:Bam.Net.Analytics.LoadTimer.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.LoadTimerColumns},Bam.Net.Data.Database)">
             <summary>
@@ -2750,6 +2810,11 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.Analytics.LoginCounter.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of LoginCounters
+            </summary>
+        </member>
         <member name="M:Bam.Net.Analytics.LoginCounter.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.LoginCounterColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the number of results
@@ -2961,6 +3026,11 @@
             Specifies what column and direction to order the results by
             </param>
             <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Analytics.MethodCounter.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of MethodCounters
+            </summary>
         </member>
         <member name="M:Bam.Net.Analytics.MethodCounter.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.MethodCounterColumns},Bam.Net.Data.Database)">
             <summary>
@@ -3174,6 +3244,11 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.Analytics.MethodTimer.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of MethodTimers
+            </summary>
+        </member>
         <member name="M:Bam.Net.Analytics.MethodTimer.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.MethodTimerColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the number of results
@@ -3385,6 +3460,11 @@
             Specifies what column and direction to order the results by
             </param>
             <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Analytics.Path.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of Paths
+            </summary>
         </member>
         <member name="M:Bam.Net.Analytics.Path.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.PathColumns},Bam.Net.Data.Database)">
             <summary>
@@ -3598,6 +3678,11 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.Analytics.Port.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of Ports
+            </summary>
+        </member>
         <member name="M:Bam.Net.Analytics.Port.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.PortColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the number of results
@@ -3809,6 +3894,11 @@
             Specifies what column and direction to order the results by
             </param>
             <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Analytics.Protocol.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of Protocols
+            </summary>
         </member>
         <member name="M:Bam.Net.Analytics.Protocol.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.ProtocolColumns},Bam.Net.Data.Database)">
             <summary>
@@ -4022,6 +4112,11 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.Analytics.QueryString.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of QueryStrings
+            </summary>
+        </member>
         <member name="M:Bam.Net.Analytics.QueryString.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.QueryStringColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the number of results
@@ -4233,6 +4328,11 @@
             Specifies what column and direction to order the results by
             </param>
             <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Analytics.Tag.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of Tags
+            </summary>
         </member>
         <member name="M:Bam.Net.Analytics.Tag.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.TagColumns},Bam.Net.Data.Database)">
             <summary>
@@ -4446,6 +4546,11 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.Analytics.Timer.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of Timers
+            </summary>
+        </member>
         <member name="M:Bam.Net.Analytics.Timer.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.TimerColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the number of results
@@ -4657,6 +4762,11 @@
             Specifies what column and direction to order the results by
             </param>
             <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Analytics.Url.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of Urls
+            </summary>
         </member>
         <member name="M:Bam.Net.Analytics.Url.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.UrlColumns},Bam.Net.Data.Database)">
             <summary>
@@ -4870,6 +4980,11 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.Analytics.UrlTag.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of UrlTags
+            </summary>
+        </member>
         <member name="M:Bam.Net.Analytics.UrlTag.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.UrlTagColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the number of results
@@ -5081,6 +5196,11 @@
             Specifies what column and direction to order the results by
             </param>
             <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Analytics.UserIdentifier.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of UserIdentifiers
+            </summary>
         </member>
         <member name="M:Bam.Net.Analytics.UserIdentifier.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.UserIdentifierColumns},Bam.Net.Data.Database)">
             <summary>

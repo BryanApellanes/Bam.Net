@@ -1117,6 +1117,13 @@
             <param name="templateName"></param>
             <returns></returns>
         </member>
+        <member name="T:Bam.Net.Razor.RazorTemplate`1">
+            <summary>
+            A base razor template whose model is of type 
+            TModel
+            </summary>
+            <typeparam name="TModel">The type of the model</typeparam>
+        </member>
         <member name="T:Bam.Net.Validate">
             <summary>
             Symantec convenience class
@@ -1293,11 +1300,36 @@
         </member>
         <member name="M:Bam.Net.ReflectionExtensions.Property(System.Object,System.String,System.Object,System.Boolean)">
             <summary>
-            Set the property with the specified name
+            Set the property with the specified name and return the instance 
+            to enable chaining
             </summary>
             <param name="instance"></param>
             <param name="propertyName"></param>
             <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ReflectionExtensions.Property(System.Object,System.Type,System.String,System.Object,System.Boolean)">
+            <summary>      
+            Set the property with the specified name and return the instance 
+            to enable chaining
+            </summary>
+            <param name="instance"></param>
+            <param name="instanceType"></param>
+            <param name="propertyName"></param>
+            <param name="value"></param>
+            <param name="throwIfPropertyNotFound"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ReflectionExtensions.Property``1(``0,System.String,System.Object,System.Boolean)">
+            <summary>      
+            Set the property with the specified name and return the instance 
+            to enable chaining
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="instance"></param>
+            <param name="propertyName"></param>
+            <param name="value"></param>
+            <param name="throwIfPropertyNotFound"></param>
             <returns></returns>
         </member>
         <member name="M:Bam.Net.ReflectionExtensions.ToTypeString(System.Type,System.Boolean)">
@@ -1644,6 +1676,17 @@
             <param name="path"></param>
             <returns></returns>
         </member>
+        <member name="M:Bam.Net.Extensions.ReadUntil(System.String,System.Char,System.String@)">
+            <summary>
+            Read the specified string up to the first instance of the specified charToFind
+            returning the characters read and producing remainder as an out parameter.  Discards
+            the specified charToFind returning only values on either side
+            </summary>
+            <param name="toRead"></param>
+            <param name="charToFind"></param>
+            <param name="remainder"></param>
+            <returns></returns>
+        </member>
         <member name="M:Bam.Net.Extensions.Trim(System.DateTime)">
             <summary>
             Return a copy of the specified DateTime with milliseconds
@@ -1671,7 +1714,7 @@
             <param name="instance"></param>
             <returns></returns>
         </member>
-        <member name="M:Bam.Net.Extensions.CopyAs(System.Object,System.Type)">
+        <member name="M:Bam.Net.Extensions.CopyAs(System.Object,System.Type,System.Object[])">
             <summary>
             Copy the current sourcce instance as the spcified type
             copying all properties that match in name and type

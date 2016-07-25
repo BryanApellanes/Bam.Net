@@ -216,6 +216,11 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.Automation.Data.DeferredJobData.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of DeferredJobDatas
+            </summary>
+        </member>
         <member name="M:Bam.Net.Automation.Data.DeferredJobData.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.Data.DeferredJobDataColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the number of results
@@ -428,6 +433,11 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.Automation.Data.JobData.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of JobDatas
+            </summary>
+        </member>
         <member name="M:Bam.Net.Automation.Data.JobData.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.Data.JobDataColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the number of results
@@ -639,6 +649,11 @@
             Specifies what column and direction to order the results by
             </param>
             <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.Data.JobRunData.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of JobRunDatas
+            </summary>
         </member>
         <member name="M:Bam.Net.Automation.Data.JobRunData.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.Data.JobRunDataColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1098,6 +1113,11 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildJob.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of BuildJobs
+            </summary>
+        </member>
         <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildJob.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.ContinuousIntegration.Data.BuildJobColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the number of results
@@ -1309,6 +1329,11 @@
             Specifies what column and direction to order the results by
             </param>
             <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildResult.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of BuildResults
+            </summary>
         </member>
         <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildResult.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.ContinuousIntegration.Data.BuildResultColumns},Bam.Net.Data.Database)">
             <summary>

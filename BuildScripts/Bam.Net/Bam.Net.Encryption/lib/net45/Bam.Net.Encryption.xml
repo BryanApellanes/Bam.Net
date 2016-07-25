@@ -245,6 +245,11 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.Encryption.Vault.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of Vaults
+            </summary>
+        </member>
         <member name="M:Bam.Net.Encryption.Vault.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Encryption.VaultColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the number of results
@@ -477,6 +482,11 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.Encryption.VaultItem.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of VaultItems
+            </summary>
+        </member>
         <member name="M:Bam.Net.Encryption.VaultItem.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Encryption.VaultItemColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the number of results
@@ -688,6 +698,11 @@
             Specifies what column and direction to order the results by
             </param>
             <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Encryption.VaultKey.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of VaultKeys
+            </summary>
         </member>
         <member name="M:Bam.Net.Encryption.VaultKey.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Encryption.VaultKeyColumns},Bam.Net.Data.Database)">
             <summary>

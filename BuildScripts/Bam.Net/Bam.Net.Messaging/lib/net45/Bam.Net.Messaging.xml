@@ -215,6 +215,11 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.Messaging.Data.DirectMessage.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of DirectMessages
+            </summary>
+        </member>
         <member name="M:Bam.Net.Messaging.Data.DirectMessage.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Messaging.Data.DirectMessageColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the number of results
@@ -427,6 +432,11 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.Messaging.Data.EmailMessage.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of EmailMessages
+            </summary>
+        </member>
         <member name="M:Bam.Net.Messaging.Data.EmailMessage.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Messaging.Data.EmailMessageColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the number of results
@@ -638,6 +648,11 @@
             Specifies what column and direction to order the results by
             </param>
             <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Messaging.Data.Message.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of Messages
+            </summary>
         </member>
         <member name="M:Bam.Net.Messaging.Data.Message.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Messaging.Data.MessageColumns},Bam.Net.Data.Database)">
             <summary>

@@ -220,6 +220,11 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.Logging.Data.CategoryName.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of CategoryNames
+            </summary>
+        </member>
         <member name="M:Bam.Net.Logging.Data.CategoryName.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.CategoryNameColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the number of results
@@ -431,6 +436,11 @@
             Specifies what column and direction to order the results by
             </param>
             <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Logging.Data.ComputerName.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of ComputerNames
+            </summary>
         </member>
         <member name="M:Bam.Net.Logging.Data.ComputerName.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.ComputerNameColumns},Bam.Net.Data.Database)">
             <summary>
@@ -644,6 +654,11 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.Logging.Data.Event.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of Events
+            </summary>
+        </member>
         <member name="M:Bam.Net.Logging.Data.Event.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.EventColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the number of results
@@ -855,6 +870,11 @@
             Specifies what column and direction to order the results by
             </param>
             <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Logging.Data.EventParam.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of EventParams
+            </summary>
         </member>
         <member name="M:Bam.Net.Logging.Data.EventParam.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.EventParamColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1068,6 +1088,11 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.Logging.Data.Param.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of Params
+            </summary>
+        </member>
         <member name="M:Bam.Net.Logging.Data.Param.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.ParamColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the number of results
@@ -1279,6 +1304,11 @@
             Specifies what column and direction to order the results by
             </param>
             <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Logging.Data.Signature.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of Signatures
+            </summary>
         </member>
         <member name="M:Bam.Net.Logging.Data.Signature.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.SignatureColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1492,6 +1522,11 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.Logging.Data.SourceName.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of SourceNames
+            </summary>
+        </member>
         <member name="M:Bam.Net.Logging.Data.SourceName.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.SourceNameColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the number of results
@@ -1704,6 +1739,11 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.Logging.Data.UserName.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of UserNames
+            </summary>
+        </member>
         <member name="M:Bam.Net.Logging.Data.UserName.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.UserNameColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the number of results
@@ -1915,6 +1955,11 @@
             Specifies what column and direction to order the results by
             </param>
             <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Logging.Data.LogEvent.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of LogEvents
+            </summary>
         </member>
         <member name="M:Bam.Net.Logging.Data.LogEvent.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.LogEventColumns},Bam.Net.Data.Database)">
             <summary>

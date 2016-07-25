@@ -39,6 +39,12 @@
             The database that the backup will be restored to
             </summary>
         </member>
+        <member name="T:Bam.Net.Data.Repositories.SchemaRepositoryGenerator">
+            <summary>
+            A code and assembly generator used to generate schema
+            specific dao repositories
+            </summary>
+        </member>
         <member name="T:Bam.Net.Data.Repositories.DaoSuffixTypeTableNameProvider">
             <summary>
             A table name provider that returns the type name
@@ -119,20 +125,20 @@
             <param name="nameSpace"></param>
             <param name="writeSourceTo"></param>
         </member>
-        <member name="T:Bam.Net.Data.Repositories.PocoGenerator">
+        <member name="T:Bam.Net.Data.Repositories.WrapperGenerator">
             <summary>
             A class used to generate Poco type wrappers which 
             enable lazy loading of IEnumerable properties.  This type
             is not thread safe
             </summary>
         </member>
-        <member name="P:Bam.Net.Data.Repositories.PocoModel.LeftXrefs">
+        <member name="P:Bam.Net.Data.Repositories.WrapperModel.LeftXrefs">
             <summary>
             Xrefs where the current DtoType is the left
             side of the cross reference table
             </summary>
         </member>
-        <member name="P:Bam.Net.Data.Repositories.PocoModel.RightXrefs">
+        <member name="P:Bam.Net.Data.Repositories.WrapperModel.RightXrefs">
             <summary>
             Xrefs where the current DtoType is the Right
             side of the cross reference table
@@ -228,18 +234,10 @@
             won't be populated).  To ensure full hydration of
             the values call Retrieve(id) or Retrieve(uuid).
             </summary>
-            <typeparam name="T"></typeparam>
         </member>
         <member name="P:Bam.Net.Data.Repositories.DaoRepository.Namespace">
             <summary>
             The namespace to place generated classes into
-            </summary>
-        </member>
-        <member name="P:Bam.Net.Data.Repositories.DaoRepository.MissingProperties">
-            <summary>
-            Returns true if the schema definition for the added types
-            are missing key columns (as represented by a property on the class)
-            or missing foreign key columns (as represented by a property on the class)
             </summary>
         </member>
         <member name="M:Bam.Net.Data.Repositories.DaoRepository.EnsureDaoAssemblyAndSchema(System.Boolean)">
@@ -287,6 +285,14 @@
             </summary>
             <typeparam name="T"></typeparam>
             <param name="toUpdate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.DaoRepository.GetWrapperType``1">
+            <summary>
+            Get the wrapper type for the specified developer defined 
+            dto of type T
+            </summary>
+            <typeparam name="T"></typeparam>
             <returns></returns>
         </member>
         <member name="M:Bam.Net.Data.Repositories.DaoRepository.GetWrapperType(System.Type)">
@@ -447,7 +453,7 @@
         </member>
         <member name="P:Bam.Net.Data.Repositories.TypeDaoGenerator.Namespace">
             <summary>
-            The namespace to place generated Dao objects into
+            The namespace to place generated classes into
             </summary>
         </member>
         <member name="M:Bam.Net.Data.Repositories.TypeDaoGenerator.CreateSchemaDefinition(System.String)">
@@ -457,6 +463,12 @@
             </summary>
             <param name="schemaName"></param>
             <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.TypeDaoGenerator.GenerateSource(System.String)">
+            <summary>
+            Generate source code for the current set of types
+            </summary>
+            <param name="writeSourceTo"></param>
         </member>
         <member name="T:Bam.Net.Data.Repositories.TypeSchema">
             <summary>
