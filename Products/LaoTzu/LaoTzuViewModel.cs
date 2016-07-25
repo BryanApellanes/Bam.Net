@@ -126,12 +126,11 @@ namespace laotzu
         [ModelSetting]
         public string WorkspaceFolder { get; set; }
         [ModelSetting]
-        public string ServerName { get; set; }
+        public string ServerName { get; set; }        
         [ModelSetting]
         public string DatabaseName { get; set; }
         [ModelSetting]
         public string UserName { get; set; }
-
         [ModelSetting]
         public CheckState IntegratedSecurity { get; set; }
 
@@ -166,25 +165,29 @@ namespace laotzu
         }
 
         public MappedSchemaDefinition MappedSchemaDefinition { get; set; }
+        public void ServerNameOnTextChanged(object sender, EventArgs e)
+        {
+            ServerName = Form.TextBoxServerName.Text;
+        }
 
         public void DatabaseNameOnTextChanged(object sender, EventArgs e)
         {
-            this.DatabaseName = Form.TextBoxDatabaseName.Text;
+            DatabaseName = Form.TextBoxDatabaseName.Text;
         }
 
         public void UserNameOnTextChanged(object sender, EventArgs e)
-        {
-            this.UserName = Form.TextBoxUserName.Text;
+        { 
+            UserName = Form.TextBoxUserName.Text;
         }
 
         public void NamespaceOnTextChanged(object sender, EventArgs e)
         {
-            this.Namespace = Form.TextBoxNamespace.Text;
+            Namespace = Form.TextBoxNamespace.Text;
         }
 
         public void ConnectionStringOnTextChanged(object sender, EventArgs e)
         {
-            this.ConnectionString = Form.TextBoxConnectionString.Text;
+            ConnectionString = Form.TextBoxConnectionString.Text;
         }
 
         public void IntegratedSecurityOnCheckedChanged(object sender, EventArgs e)
