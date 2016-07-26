@@ -360,7 +360,7 @@ namespace Bam.Net.Data.Tests
 			SchemaManager sm = new SchemaManager();
 			sm.SetSchema(schemaName);
 
-			Expect.IsTrue(SchemaManager.SchemaExists(schemaName));
+			Expect.IsTrue(sm.SchemaExists(schemaName));
 		}
 
 		[UnitTest]

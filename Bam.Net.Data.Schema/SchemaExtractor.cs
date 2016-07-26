@@ -8,15 +8,17 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Logging;
 using System.IO;
+using Bam.Net.Configuration;
 
 namespace Bam.Net.Data.Schema
 {
-    public abstract class SchemaExtractor: Loggable, ISchemaExtractor
+    public abstract class SchemaExtractor: Loggable, ISchemaExtractor, IHasSchemaTempPathProvider
     {
         public SchemaExtractor()
         {
             NameFormatter = new EchoNameFormatter();
             NameMap = new SchemaNameMap();
+            SchemaTempPathProvider = sd => RuntimeSettings.AppDataFolder;
         }
 
         public Database Database { get; protected set; }
@@ -60,6 +62,9 @@ namespace Bam.Net.Data.Schema
         }
         public SchemaNameMap NameMap { get; set; }
         public INameFormatter NameFormatter { get; set; }
+
+        public Func<SchemaDefinition, string> SchemaTempPathProvider { get; set; }
+
         public virtual TableNameToClassName GetClassName(string tableName)
         {
             return new TableNameToClassName { TableName = tableName, ClassName = NameFormatter.FormatClassName(tableName) };
@@ -90,7 +95,10 @@ namespace Bam.Net.Data.Schema
         public virtual SchemaDefinition Extract()
         {
             SchemaManager schemaManager = new SchemaManager();
-            schemaManager.SetSchema(GetSchemaName(), false);
+            schemaManager.AutoSave = false;
+            schemaManager.SchemaTempPathProvider = SchemaTempPathProvider;
+            SchemaDefinition result = new SchemaDefinition { Name = GetSchemaName() };
+            schemaManager.ManageSchema(result);
 
             // GetTableNames
             GetTableNames().Each(tableName =>
@@ -131,21 +139,19 @@ namespace Bam.Net.Data.Schema
             });
 
             NameMap.Save(Path.Combine(this.GetAppDataFolder(), "{0}_NameMap.json"._Format(schemaManager.CurrentSchema.Name)));
-            SchemaDefinition result = SetClassNamesOnColumns(schemaManager);
+            SetClassNamesOnColumns(schemaManager);
             return result;
         }
 
-        private SchemaDefinition SetClassNamesOnColumns(SchemaManager schemaManager)
+        private void SetClassNamesOnColumns(SchemaManager schemaManager)
         {
-            SchemaDefinition result = schemaManager.GetCurrentSchema();
-            result.Tables.Each(table =>
+            schemaManager.CurrentSchema.Tables.Each(table =>
             {
                 table.Columns.Each(col =>
                 {
                     col.TableClassName = NameMap.GetClassName(table.Name);
                 });
             });
-            return result;
         }
     }
 }

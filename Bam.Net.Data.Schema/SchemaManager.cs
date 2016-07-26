@@ -28,9 +28,10 @@ namespace Bam.Net.Data.Schema
     {
         public SchemaManager()
         {
-            this.PreColumnAugmentations = new List<SchemaManagerAugmentation>();
-            this.PostColumnAugmentations = new List<SchemaManagerAugmentation>();
-            SchemaTempPathProvider = sd => RuntimeSettings.AppDataFolder;
+            PreColumnAugmentations = new List<SchemaManagerAugmentation>();
+            PostColumnAugmentations = new List<SchemaManagerAugmentation>();
+            SchemaTempPathProvider = sd => Path.Combine(RuntimeSettings.AppDataFolder, "Schemas");
+            AutoSave = true;
         }
 
         public SchemaManager(string schemaFilePath)
@@ -51,6 +52,8 @@ namespace Bam.Net.Data.Schema
 
         public Func<SchemaDefinition, string> SchemaTempPathProvider { get; set; }  //TODO: wire this up
 
+        public bool AutoSave { get; set; }
+
         SchemaDefinition _currentSchema;
         object _currentSchemaLock = new object();
         public SchemaDefinition CurrentSchema
@@ -68,15 +71,14 @@ namespace Bam.Net.Data.Schema
 
         public void ManageSchema(string schemaFile)
         {
-            ManageSchema(schemaFile.FromJsonFile<SchemaDefinition>());
+            SchemaDefinition schemaDefinition = schemaFile.FromJsonFile<SchemaDefinition>();
+            schemaDefinition.File = schemaFile;
+            ManageSchema(schemaDefinition);
         }
 
         public void ManageSchema(SchemaDefinition schema)
         {
-            lock (_sync)
-            {
-                CurrentSchema = schema;
-            }
+            CurrentSchema = schema;
         }
 
         /// <summary>
@@ -86,25 +88,22 @@ namespace Bam.Net.Data.Schema
         /// <returns></returns>
         public SchemaDefinition SetSchema(string schemaName, bool useExisting = true)
         {
-            lock (_sync)
+            string filePath = SchemaNameToFilePath(schemaName);
+            if (!useExisting && File.Exists(filePath))
             {
-                string filePath = SchemaNameToFilePath(schemaName);
-                if (!useExisting && File.Exists(filePath))
+                if (BackupExisting)
                 {
-                    if (BackupExisting)
-                    {
-                        string backUpPath = SchemaNameToFilePath("{0}_{1}_{2}"._Format(schemaName, DateTime.UtcNow.ToJulianDate(), 4.RandomLetters()));
-                        File.Move(filePath, backUpPath);
-                    }
-                    else
-                    {
-                        File.Delete(filePath);
-                    }
+                    string backUpPath = SchemaNameToFilePath("{0}_{1}_{2}"._Format(schemaName, DateTime.UtcNow.ToJulianDate(), 4.RandomLetters()));
+                    File.Move(filePath, backUpPath);
                 }
-                SchemaDefinition schema = LoadSchema(schemaName);
-                CurrentSchema = schema;
-                return schema;
+                else
+                {
+                    File.Delete(filePath);
+                }
             }
+            SchemaDefinition schema = LoadSchema(schemaName);
+            CurrentSchema = schema;
+            return schema;
         }
 
         /// <summary>
@@ -139,15 +138,9 @@ namespace Bam.Net.Data.Schema
             return CurrentSchema.GetXref(tableName);
         }
 
-        public static bool SchemaExists(string schemaName)
+        public bool SchemaExists(string schemaName)
         {
             return File.Exists(SchemaNameToFilePath(schemaName));
-        }
-
-        private static string SchemaNameToFilePath(string schemaName)
-        {
-            string schemaFile = Path.Combine(RuntimeSettings.AppDataFolder, "{0}.json"._Format(schemaName));
-            return schemaFile;
         }
 
         public SchemaDefinition GetCurrentSchema()
@@ -157,41 +150,41 @@ namespace Bam.Net.Data.Schema
 
         public SchemaResult AddTable(string tableName, string className = null)
         {
-            lock (_sync)
+            try
             {
-                try
+                SchemaDefinition schema = CurrentSchema;
+                Table t = new Table();
+                t.ClassName = className ?? tableName;
+                t.Name = tableName;
+                SchemaResult result = schema.AddTable(t);
+                if (AutoSave)
                 {
-                    SchemaDefinition schema = CurrentSchema;
-                    Table t = new Table();
-                    t.ClassName = className ?? tableName;
-                    t.Name = tableName;
-                    SchemaResult result = schema.AddTable(t);
                     schema.Save();
-                    return result;
                 }
-                catch (Exception ex)
-                {
-                    return GetErrorResult(ex);
-                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(ex);
             }
         }
 
         public SchemaResult AddXref(string left, string right)
         {
-            lock (_sync)
+            try
             {
-                try
+                SchemaDefinition schema = CurrentSchema;
+                XrefTable x = new XrefTable(left, right);
+                SchemaResult result = schema.AddXref(x);
+                if (AutoSave)
                 {
-                    SchemaDefinition schema = CurrentSchema;
-                    XrefTable x = new XrefTable(left, right);
-                    SchemaResult result = schema.AddXref(x);
                     schema.Save();
-                    return result;
                 }
-                catch (Exception ex)
-                {
-                    return GetErrorResult(ex);
-                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(ex);
             }
         }
 
@@ -205,42 +198,42 @@ namespace Bam.Net.Data.Schema
         /// <returns></returns>
         public SchemaResult SetColumnPropertyName(string tableName, string columnName, string propertyName)
         {
-            lock (_sync)
+            try
             {
-                try
+                Table table = CurrentSchema.GetTable(tableName);
+                table.SetPropertyName(columnName, propertyName);
+                if (AutoSave)
                 {
-                    Table table = CurrentSchema.GetTable(tableName);
-                    table.SetPropertyName(columnName, propertyName);
                     CurrentSchema.Save();
-                    return new SchemaResult("column property name set");
                 }
-                catch (Exception ex)
-                {
-                    return GetErrorResult(ex);
-                }
+                return new SchemaResult("column property name set");
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(ex);
             }
         }
 
         public SchemaResult SetTableClassName(string tableName, string className)
         {
-            lock (_sync)
+            try
             {
-                try
+                Table table = CurrentSchema.GetTable(tableName);
+                table.ClassName = className;
+                table.Columns.Each(col =>
                 {
-                    Table table = CurrentSchema.GetTable(tableName);
-                    table.ClassName = className;
-                    table.Columns.Each(col =>
-                    {
-                        col.TableClassName = className;
-                    });
-                    SetForeignKeyClassNames();
+                    col.TableClassName = className;
+                });
+                SetForeignKeyClassNames();
+                if (AutoSave)
+                {
                     CurrentSchema.Save();
-                    return new SchemaResult("class name set");
                 }
-                catch (Exception ex)
-                {
-                    return GetErrorResult(ex);
-                }
+                return new SchemaResult("class name set");
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(ex);
             }
         }
         
@@ -257,90 +250,88 @@ namespace Bam.Net.Data.Schema
         /// <returns></returns>
         public SchemaResult AddColumn(string tableName, Column column)
         {
-            lock (_sync)
+            try
             {
-                try
+                Table table = CurrentSchema.GetTable(tableName);
+                table.AddColumn(column);
+                if (AutoSave)
                 {
-                    Table table = CurrentSchema.GetTable(tableName);
-                    table.AddColumn(column);
                     CurrentSchema.Save();
-                    return new SchemaResult("column added");
                 }
-                catch (Exception ex)
-                {
-                    return GetErrorResult(ex);
-                }
+                return new SchemaResult("column added");
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(ex);
             }
         }
 
         public SchemaResult RemoveColumn(string tableName, string columnName)
         {
-            lock (_sync)
+            try
             {
-                try
+                Table table = CurrentSchema.GetTable(tableName);
+                table.RemoveColumn(columnName);
+                if (AutoSave)
                 {
-                    Table table = CurrentSchema.GetTable(tableName);
-                    table.RemoveColumn(columnName);
                     CurrentSchema.Save();
-                    return new SchemaResult("column removed");
                 }
-                catch (Exception ex)
-                {
-                    return GetErrorResult(ex);
-                }
+                return new SchemaResult("column removed");
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(ex);
             }
         }
 
         public SchemaResult SetKeyColumn(string tableName, string columnName)
         {
-            lock (_sync)
+            try
             {
-                try
+                Table table = CurrentSchema.GetTable(tableName);
+                table.SetKeyColumn(columnName);
+                if (AutoSave)
                 {
-                    Table table = CurrentSchema.GetTable(tableName);
-                    table.SetKeyColumn(columnName);
                     CurrentSchema.Save();
-                    return new SchemaResult("Key column set");
                 }
-                catch (Exception ex)
-                {
-                    return GetErrorResult(ex);
-                }
+                return new SchemaResult("Key column set");
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(ex);
             }
         }
 
         public SchemaResult SetForeignKey(string targetTable, string referencingTable, string referencingColumn, string referencedKey = null, INameFormatter nameFormatter = null)
         {
-            lock (_sync)
+
+            try
             {
-                try
+                Table table = CurrentSchema.GetTable(referencingTable);
+                Table target = CurrentSchema.GetTable(targetTable);
+                Column col = table[referencingColumn];
+                if (col.DataType == DataTypes.Int || col.DataType == DataTypes.Long)
                 {
-                    Table table = CurrentSchema.GetTable(referencingTable);
-                    Table target = CurrentSchema.GetTable(targetTable);
-                    Column col = table[referencingColumn];
-                    if (col.DataType == DataTypes.Int || col.DataType == DataTypes.Long)
+                    ForeignKeyColumn fk = new ForeignKeyColumn(col, targetTable);
+                    fk.ReferencedKey = referencedKey != null ? referencedKey : target.Key != null ? target.Key.Name : "Id";
+                    fk.ReferencedTable = target.Name;
+                    if (nameFormatter != null)
                     {
-                        ForeignKeyColumn fk = new ForeignKeyColumn(col, targetTable);
-                        fk.ReferencedKey = referencedKey != null ? referencedKey : target.Key != null ? target.Key.Name : "Id";
-                        fk.ReferencedTable = target.Name;
-                        if (nameFormatter != null)
-                        {
-                            fk.ReferencedClass = nameFormatter.FormatClassName(targetTable);
-                            fk.ReferencingClass = nameFormatter.FormatClassName(referencingTable);
-                            fk.TableClassName = nameFormatter.FormatClassName(fk.TableName);
-                            fk.PropertyName = nameFormatter.FormatPropertyName(fk.TableName, fk.Name);
-                        }
-                        return SetForeignKey(table, target, fk);
+                        fk.ReferencedClass = nameFormatter.FormatClassName(targetTable);
+                        fk.ReferencingClass = nameFormatter.FormatClassName(referencingTable);
+                        fk.TableClassName = nameFormatter.FormatClassName(fk.TableName);
+                        fk.PropertyName = nameFormatter.FormatPropertyName(fk.TableName, fk.Name);
                     }
-                    else
-                    {
-                        throw new InvalidOperationException("The specified column must be a number type");
-                    }
+                    return SetForeignKey(table, target, fk);
                 }
-                catch (Exception ex)
+                else
                 {
-                    return GetErrorResult(ex);
+                    throw new InvalidOperationException("The specified column must be a number type");
                 }
+            }
+            catch (Exception ex)
+            {
+                return GetErrorResult(ex);
             }
         }
 
@@ -359,7 +350,10 @@ namespace Bam.Net.Data.Schema
                     fk.ReferencingClass = table.ClassName;
                     fk.TableClassName = table.ClassName;
                 });
-                CurrentSchema.Save();
+                if (AutoSave)
+                {
+                    CurrentSchema.Save();
+                }
             });
         }
 
@@ -370,7 +364,10 @@ namespace Bam.Net.Data.Schema
             table.AddColumn(fk);
             target.ReferencingForeignKeys = GetReferencingForeignKeysForTable(target.Name);
             table.ForeignKeys = GetForeignKeysForTable(table.Name);
-            CurrentSchema.Save();
+            if (AutoSave)
+            {
+                CurrentSchema.Save();
+            }
             return new SchemaResult("ForeignKeyColumn set");
         }
 
@@ -406,6 +403,7 @@ namespace Bam.Net.Data.Schema
                     select f).ToArray();
         }
 
+        object _sync = new object();
         public void Save()
         {
             lock (_sync)
@@ -443,8 +441,6 @@ namespace Bam.Net.Data.Schema
             return GenerateDao(simpleSchemaJson, compileTo, false, temp.FullName);
         }
 
-        object _sync = new object();
-
         /// <summary>
         /// Generate 
         /// </summary>
@@ -454,54 +450,51 @@ namespace Bam.Net.Data.Schema
         {
             try
             {
-                lock (_sync)
+                bool compile = compileTo != null;
+                SchemaResult result = new SchemaResult("Generation completed");
+                dynamic rehydrated = JsonConvert.DeserializeObject<dynamic>(simpleSchemaJson);
+                if (rehydrated["nameSpace"] == null)// || rehydrated["schemaName"] == null)
                 {
-                    bool compile = compileTo != null;
-                    SchemaResult result = new SchemaResult("Generation completed");
-                    dynamic rehydrated = JsonConvert.DeserializeObject<dynamic>(simpleSchemaJson);
-                    if (rehydrated["nameSpace"] == null)// || rehydrated["schemaName"] == null)
-                    {
-                        result.ExceptionMessage = "Please specify nameSpace";
-                        result.Message = string.Empty;
-                        result.Success = false;
-                    }
-                    else if (rehydrated["schemaName"] == null)
-                    {
-                        result.ExceptionMessage = "Please specify schemaName";
-                        result.Message = string.Empty;
-                        result.Success = false;
-                    }
-                    else
-                    {
-                        string nameSpace = (string)rehydrated["nameSpace"];
-                        string schemaName = (string)rehydrated["schemaName"];
-                        result.Namespace = nameSpace;
-                        result.SchemaName = schemaName;
-                        List<dynamic> foreignKeys = new List<dynamic>();
-
-                        SetSchema(schemaName, false);
-
-                        ProcessTables(rehydrated, foreignKeys);
-                        ProcessXrefs(rehydrated, foreignKeys);
-
-                        foreach (dynamic fk in foreignKeys)
-                        {
-                            AddColumn(fk.ForeignKeyTable, new Column(fk.ReferencingColumn, DataTypes.Long));
-                            SetForeignKey(fk.PrimaryTable, fk.ForeignKeyTable, fk.ReferencingColumn);
-                        }
-
-                        DirectoryInfo daoDir = new DirectoryInfo(tempDir);
-                        if (!daoDir.Exists)
-                        {
-                            daoDir.Create();
-                        }
-
-                        DaoGenerator generator = GetDaoGenerator(compileTo, keepSource, partialsDir, compile, result, nameSpace, daoDir);
-                        generator.Generate(CurrentSchema, daoDir.FullName, partialsDir);
-                        result.DaoAssembly = generator.DaoAssemblyFile;
-                    }
-                    return result;
+                    result.ExceptionMessage = "Please specify nameSpace";
+                    result.Message = string.Empty;
+                    result.Success = false;
                 }
+                else if (rehydrated["schemaName"] == null)
+                {
+                    result.ExceptionMessage = "Please specify schemaName";
+                    result.Message = string.Empty;
+                    result.Success = false;
+                }
+                else
+                {
+                    string nameSpace = (string)rehydrated["nameSpace"];
+                    string schemaName = (string)rehydrated["schemaName"];
+                    result.Namespace = nameSpace;
+                    result.SchemaName = schemaName;
+                    List<dynamic> foreignKeys = new List<dynamic>();
+
+                    SetSchema(schemaName, false);
+
+                    ProcessTables(rehydrated, foreignKeys);
+                    ProcessXrefs(rehydrated, foreignKeys);
+
+                    foreach (dynamic fk in foreignKeys)
+                    {
+                        AddColumn(fk.ForeignKeyTable, new Column(fk.ReferencingColumn, DataTypes.Long));
+                        SetForeignKey(fk.PrimaryTable, fk.ForeignKeyTable, fk.ReferencingColumn);
+                    }
+
+                    DirectoryInfo daoDir = new DirectoryInfo(tempDir);
+                    if (!daoDir.Exists)
+                    {
+                        daoDir.Create();
+                    }
+
+                    DaoGenerator generator = GetDaoGenerator(compileTo, keepSource, partialsDir, compile, result, nameSpace, daoDir);
+                    generator.Generate(CurrentSchema, daoDir.FullName, partialsDir);
+                    result.DaoAssembly = generator.DaoAssemblyFile;
+                }
+                return result;
             }
             catch (Exception ex)
             {
@@ -551,7 +544,7 @@ namespace Bam.Net.Data.Schema
                 }
                 else
                 {
-                    return _rootDir ?? ".";
+                    return _rootDir ?? SchemaTempPathProvider(CurrentSchema);
                 }
             }
 
@@ -818,7 +811,7 @@ namespace Bam.Net.Data.Schema
         }
 
 
-        private static SchemaDefinition LoadSchema(string schemaName)
+        private SchemaDefinition LoadSchema(string schemaName)
         {
             string schemaFile = SchemaNameToFilePath(schemaName);
             SchemaDefinition schema = SchemaDefinition.Load(schemaFile);
@@ -889,21 +882,11 @@ namespace Bam.Net.Data.Schema
             }
             return generator;
         }
-
-        //public static string AppDataFolder
-        //{
-        //    get
-        //    {
-        //        if (HttpContext.Current == null)
-        //        {
-        //            return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        //        }
-        //        else
-        //        {
-        //            return HttpContext.Current.Server.MapPath("~/App_Data/");
-        //        }
-        //    }
-        //}
-
+        
+        private string SchemaNameToFilePath(string schemaName)
+        {
+            string schemaFile = Path.Combine(SchemaTempPathProvider(new SchemaDefinition { Name = schemaName }), "{0}.json"._Format(schemaName));
+            return schemaFile;
+        }
     }
 }
