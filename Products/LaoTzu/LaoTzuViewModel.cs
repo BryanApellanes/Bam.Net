@@ -126,12 +126,11 @@ namespace laotzu
         [ModelSetting]
         public string WorkspaceFolder { get; set; }
         [ModelSetting]
-        public string ServerName { get; set; }
+        public string ServerName { get; set; }        
         [ModelSetting]
         public string DatabaseName { get; set; }
         [ModelSetting]
         public string UserName { get; set; }
-
         [ModelSetting]
         public CheckState IntegratedSecurity { get; set; }
 
@@ -166,25 +165,29 @@ namespace laotzu
         }
 
         public MappedSchemaDefinition MappedSchemaDefinition { get; set; }
+        public void ServerNameOnTextChanged(object sender, EventArgs e)
+        {
+            ServerName = Form.TextBoxServerName.Text;
+        }
 
         public void DatabaseNameOnTextChanged(object sender, EventArgs e)
         {
-            this.DatabaseName = Form.TextBoxDatabaseName.Text;
+            DatabaseName = Form.TextBoxDatabaseName.Text;
         }
 
         public void UserNameOnTextChanged(object sender, EventArgs e)
-        {
-            this.UserName = Form.TextBoxUserName.Text;
+        { 
+            UserName = Form.TextBoxUserName.Text;
         }
 
         public void NamespaceOnTextChanged(object sender, EventArgs e)
         {
-            this.Namespace = Form.TextBoxNamespace.Text;
+            Namespace = Form.TextBoxNamespace.Text;
         }
 
         public void ConnectionStringOnTextChanged(object sender, EventArgs e)
         {
-            this.ConnectionString = Form.TextBoxConnectionString.Text;
+            ConnectionString = Form.TextBoxConnectionString.Text;
         }
 
         public void IntegratedSecurityOnCheckedChanged(object sender, EventArgs e)
@@ -240,7 +243,7 @@ namespace laotzu
         {
             try
             {
-                SchemaExtractor extractor = GetExtractor(); //new MsSqlSmoSchemaExtractor(new MsSqlDatabase(this.ServerName, this.DatabaseName, credentials));
+                SchemaExtractor extractor = GetExtractor();
                 extractor.NameMap = MappedSchemaDefinition.SchemaNameMap;
                 extractor.ProcessingTable += (o, args) =>
                 {
@@ -257,15 +260,15 @@ namespace laotzu
                 FormModelBinder.SetText(Form.TextBoxOutput, "");
                 DisableInputs();
                 SchemaDefinition schema = extractor.Extract();
-                schema.Save(Path.Combine(WorkspaceFolder, "{0}.schema.json"._Format(schema.Name)));
+                schema.Save(Path.Combine(extractor.SchemaTempPathProvider(schema), "{0}.schema.json"._Format(schema.Name)));
                 MappedSchemaDefinition.SchemaDefinition = schema;
                 MappedSchemaDefinition.SchemaNameMap = extractor.NameMap;
                 FormModelBinder.AppendText(Form.TextBoxOutput, "... Extraction Done ...");
-                FormModelBinder.AppendText(Form.TextBoxOutput, "Populating schema tab ...");
+                FormModelBinder.AppendText(Form.TextBoxOutput, "\r\nPopulating schema tab ...");
                 Task.Run(() =>
                 {
                     PopulateTableNameMapList();
-                    FormModelBinder.AppendText(Form.TextBoxOutput, "... Schema tab populated ...");
+                    FormModelBinder.AppendText(Form.TextBoxOutput, "\r\n... Schema tab populated ...");
                 });
                 EnableInputs();
                 Form.TabControlMain.SelectedTab = Form.TabPageSchemaInfo;
@@ -555,7 +558,9 @@ namespace laotzu
 
         private SchemaExtractor GetExtractor()
         {
-            return new MsSqlSchemaExtractor(GetMsSqlDatabase());
+            MsSqlSchemaExtractor extractor = new MsSqlSchemaExtractor(GetMsSqlDatabase());
+            extractor.SchemaTempPathProvider = sd => Path.Combine(WorkspaceFolder, "Schemas");
+            return extractor;
         }
 
         private MsSqlDatabase GetMsSqlDatabase()

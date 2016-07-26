@@ -35,15 +35,6 @@ namespace Bam.Net.Data.Tests.Integration
 			Initialize(args);
 		}
 
-        [ConsoleAction]
-        public void OneOff()
-        {
-            string connectionName = 8.RandomLetters();
-            SQLiteDatabase db = new SQLiteDatabase(".\\OneOffTest", connectionName);
-            SQLiteConnectionStringBuilder b = new SQLiteConnectionStringBuilder(db.ConnectionString);
-            Expect.AreEqual(connectionName, b.BaseSchemaName);
-        }
-
 		[ConsoleAction]
 		public void RunIntegrationTests()
 		{

@@ -224,11 +224,22 @@ AND TABLE_NAME = @TableName";
 
             Database.ConnectionName = databaseName;
         }
-
+        Dictionary<string, DataTable> _tableColumnInfo = new Dictionary<string, DataTable>();
         private object GetColumnAttribute(string tableName, string columnName, string attributeName)
         {
-            string sql = $"SELECT {attributeName} FROM {GetSchemaName()}.INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = @TableName AND COLUMN_NAME = @ColumnName";
-            return Database.GetFirstRow(sql, new { TableName = tableName, ColumnName = columnName }.ToDbParameters(Database).ToArray())[0];
+            if (!_tableColumnInfo.ContainsKey(tableName))
+            {
+                string sql = $"SELECT * FROM {GetSchemaName()}.INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = @TableName";
+                _tableColumnInfo.Add(tableName, Database.GetDataTable(sql, new { TableName = tableName }));
+            }
+            foreach(DataRow row in _tableColumnInfo[tableName].Rows)
+            {
+                if (row["COLUMN_NAME"].Equals(columnName))
+                {
+                    return row[attributeName];
+                }
+            }
+            return null;
         }
 
     }

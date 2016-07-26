@@ -36,15 +36,15 @@ namespace Bam.Net.Data.Schema
         /// </summary>
         public string Name { get; set; }
 
-        FileInfo file;
+        FileInfo _file;
         [Exclude]
         public string File
         {
             get
             {
-                if (file != null)
+                if (_file != null)
                 {
-                    return file.FullName;
+                    return _file.FullName;
                 }
                 else
                 {
@@ -55,11 +55,15 @@ namespace Bam.Net.Data.Schema
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    this.file = new FileInfo(Path.Combine(RuntimeSettings.AppDataFolder, this.Name));
+                    _file = new FileInfo(Path.Combine(RuntimeSettings.AppDataFolder, this.Name));
                 }
                 else
                 {
-                    this.file = new FileInfo(value);
+                    _file = new FileInfo(value);
+                    if (!_file.Directory.Exists)
+                    {
+                        _file.Directory.Create();
+                    }
                 }
             }
         }
@@ -74,16 +78,6 @@ namespace Bam.Net.Data.Schema
             if (this._tables.ContainsKey(tableName))
             {
                 this._tables.Remove(tableName);
-            }
-        }
-
-        public void RenameTable(string tableName, string newName)
-        {
-            Table table = GetTable(tableName);
-            if (table != null)
-            {
-                table.Name = newName;
-                this.Save();
             }
         }
 
@@ -218,32 +212,28 @@ namespace Bam.Net.Data.Schema
             }
         }
 
-        object _tableLock = new object();
         public SchemaResult AddTable(Table table)
         {
-            lock (_tableLock)
+            SchemaResult r = new SchemaResult(string.Format("Table {0} was added.", table.Name));
+            try
             {
-                SchemaResult r = new SchemaResult(string.Format("Table {0} was added.", table.Name));
-                try
+                table.ConnectionName = this.Name;
+                if (this._tables.ContainsKey(table.Name))
                 {
-                    table.ConnectionName = this.Name;
-                    if (this._tables.ContainsKey(table.Name))
-                    {
-                        this._tables[table.Name] = table;
-                        r.Message = string.Format("Table {0} was updated.", table.Name);
-                    }
-                    else
-                    {
-                        this._tables.Add(table.Name, table);
-                    }
+                    this._tables[table.Name] = table;
+                    r.Message = string.Format("Table {0} was updated.", table.Name);
                 }
-                catch (Exception ex)
+                else
                 {
-                    SetErrorDetails(r, ex);
+                    this._tables.Add(table.Name, table);
                 }
-
-                return r;
             }
+            catch (Exception ex)
+            {
+                SetErrorDetails(r, ex);
+            }
+
+            return r;
         }
 
         public SchemaResult AddForeignKey(ForeignKeyColumn fk)
@@ -279,24 +269,7 @@ namespace Bam.Net.Data.Schema
 
             return r;
         }
-
-        internal SchemaResult SetKeyColumn(string tableName, string columnName)
-        {
-            SchemaResult r = new SchemaResult(string.Format("Key for table [{0}] set to [{1}]", tableName, columnName));
-            try
-            {
-                Table table = GetTable(tableName);
-                table.SetKeyColumn(columnName);
-            }
-            catch (Exception ex)
-            {
-                SetErrorDetails(r, ex);
-            }
-
-            this.Save();
-            return r;
-        }
-
+        
         private void SetErrorDetails(SchemaResult r, Exception ex)
         {
             this.LastException = ex;
@@ -356,9 +329,13 @@ namespace Bam.Net.Data.Schema
             Save(this);
         }
 
+        static object _saveLock = new object();
         private static void Save(SchemaDefinition schema)
         {
-            schema.ToJsonFile(schema.File);
+            lock (_saveLock)
+            {
+                schema.ToJsonFile(schema.File);
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.Automation.%1.nupkg
 nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.%1.nupkg
 nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.CommandLine.%1.nupkg
 nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.CoreServices.%1.nupkg
+nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.Data.%1.nupkg
 nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.Data.Dynamic.%1.nupkg
 nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.Data.Repositories.%1.nupkg
 nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.Distributed.%1.nupkg
@@ -29,6 +30,5 @@ nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.Syndication.%1.nupkg
 nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.Testing.%1.nupkg
 nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.UserAccounts.%1.nupkg
 nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.Yaml.%1.nupkg
-nuget push Z:\Workspace\NugetPackages\Push\Bam.Net.ServiceProxy.Tests.%1.nupkg
 call git_commit_all.cmd %1
 call git_tag_version.cmd %1

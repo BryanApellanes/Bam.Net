@@ -44,7 +44,7 @@ namespace laotzu
             this.labelUserName = new System.Windows.Forms.Label();
             this.TextBoxPassword = new System.Windows.Forms.TextBox();
             this.labelPassword = new System.Windows.Forms.Label();
-            this.textBoxServerName = new System.Windows.Forms.TextBox();
+            this.TextBoxServerName = new System.Windows.Forms.TextBox();
             this.labelServerName = new System.Windows.Forms.Label();
             this.tabPageConnectionString = new System.Windows.Forms.TabPage();
             this.TextBoxConnectionString = new System.Windows.Forms.TextBox();
@@ -58,6 +58,7 @@ namespace laotzu
             this.textBoxWorkspaceFolder = new System.Windows.Forms.TextBox();
             this.ButtonBrowseForWorkspace = new System.Windows.Forms.Button();
             this.labelWorkspace = new System.Windows.Forms.Label();
+            this.comboBoxDatabaseType = new System.Windows.Forms.ComboBox();
             this.TabPageSchemaInfo = new System.Windows.Forms.TabPage();
             this.labelNamespace = new System.Windows.Forms.Label();
             this.TextBoxNamespace = new System.Windows.Forms.TextBox();
@@ -85,7 +86,6 @@ namespace laotzu
             this.AboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.OpenFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.comboBoxDatabaseType = new System.Windows.Forms.ComboBox();
             this.TabControlMain.SuspendLayout();
             this.tabPageSettings.SuspendLayout();
             this.tabControlConnectionInfo.SuspendLayout();
@@ -146,7 +146,7 @@ namespace laotzu
             this.tabPageConnectionInfo.Controls.Add(this.labelUserName);
             this.tabPageConnectionInfo.Controls.Add(this.TextBoxPassword);
             this.tabPageConnectionInfo.Controls.Add(this.labelPassword);
-            this.tabPageConnectionInfo.Controls.Add(this.textBoxServerName);
+            this.tabPageConnectionInfo.Controls.Add(this.TextBoxServerName);
             this.tabPageConnectionInfo.Controls.Add(this.labelServerName);
             this.tabPageConnectionInfo.Location = new System.Drawing.Point(4, 22);
             this.tabPageConnectionInfo.Name = "tabPageConnectionInfo";
@@ -242,17 +242,17 @@ namespace laotzu
             this.labelPassword.TabIndex = 33;
             this.labelPassword.Text = "Password";
             // 
-            // textBoxServerName
+            // TextBoxServerName
             // 
-            this.textBoxServerName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.TextBoxServerName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxServerName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBoxServerName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxServerName.Location = new System.Drawing.Point(94, 17);
-            this.textBoxServerName.Name = "textBoxServerName";
-            this.textBoxServerName.Size = new System.Drawing.Size(233, 22);
-            this.textBoxServerName.TabIndex = 26;
-            this.textBoxServerName.Tag = "ServerName";
+            this.TextBoxServerName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TextBoxServerName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TextBoxServerName.Location = new System.Drawing.Point(94, 17);
+            this.TextBoxServerName.Name = "TextBoxServerName";
+            this.TextBoxServerName.Size = new System.Drawing.Size(233, 22);
+            this.TextBoxServerName.TabIndex = 26;
+            this.TextBoxServerName.Tag = "ServerName";
             // 
             // labelServerName
             // 
@@ -392,6 +392,16 @@ namespace laotzu
             this.labelWorkspace.Size = new System.Drawing.Size(94, 13);
             this.labelWorkspace.TabIndex = 15;
             this.labelWorkspace.Text = "Workspace Folder";
+            // 
+            // comboBoxDatabaseType
+            // 
+            this.comboBoxDatabaseType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBoxDatabaseType.FormattingEnabled = true;
+            this.comboBoxDatabaseType.Location = new System.Drawing.Point(12, 265);
+            this.comboBoxDatabaseType.Name = "comboBoxDatabaseType";
+            this.comboBoxDatabaseType.Size = new System.Drawing.Size(336, 21);
+            this.comboBoxDatabaseType.TabIndex = 23;
             // 
             // TabPageSchemaInfo
             // 
@@ -628,16 +638,6 @@ namespace laotzu
             // 
             this.OpenFileDialog.Filter = "LaoTzu files|*.laotzu.json";
             // 
-            // comboBoxDatabaseType
-            // 
-            this.comboBoxDatabaseType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBoxDatabaseType.FormattingEnabled = true;
-            this.comboBoxDatabaseType.Location = new System.Drawing.Point(12, 265);
-            this.comboBoxDatabaseType.Name = "comboBoxDatabaseType";
-            this.comboBoxDatabaseType.Size = new System.Drawing.Size(336, 21);
-            this.comboBoxDatabaseType.TabIndex = 23;
-            // 
             // LaoTzuForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -727,11 +727,11 @@ namespace laotzu
         protected internal System.Windows.Forms.Label labelUserName;
         public System.Windows.Forms.TextBox TextBoxPassword;
         protected internal System.Windows.Forms.Label labelPassword;
-        protected internal System.Windows.Forms.TextBox textBoxServerName;
         protected internal System.Windows.Forms.Label labelServerName;
         private System.Windows.Forms.TabPage tabPageConnectionString;
         protected internal System.Windows.Forms.Button buttonTestConnectionString;
         public System.Windows.Forms.TextBox TextBoxConnectionString;
         private System.Windows.Forms.ComboBox comboBoxDatabaseType;
+        public System.Windows.Forms.TextBox TextBoxServerName;
     }
 }

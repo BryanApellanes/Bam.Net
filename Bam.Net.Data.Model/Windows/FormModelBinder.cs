@@ -270,6 +270,18 @@ namespace Bam.Net.Data.Model.Windows
             }
         }
 
+        public void AppendText(TextBox textBox, string text)
+        {
+            if (textBox.InvokeRequired)
+            {
+                textBox.Invoke((Action)(() => AppendText(textBox, text)));
+            }
+            else
+            {
+                textBox.AppendText(text);
+            }
+        }
+
         public void AppendText(Control control, string text)
         {
             if (control.InvokeRequired)
