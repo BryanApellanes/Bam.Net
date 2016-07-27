@@ -101,6 +101,7 @@ namespace Bam.Net.Data.Schema
         {
             FireEvent(PropertyNameFormatting, new SchemaExtractorEventArgs { Column = columnName });
             string propertyName = AvoidCollision(GetPropertyName(tableName, columnName), tableName, columnName);
+            propertyName = AvoidNameOfContainingType(propertyName, tableName, columnName);
             NameMap.Set(new ColumnNameToPropertyName { ColumnName = columnName, PropertyName = propertyName, TableName = tableName });
             FireEvent(PropertyNameFormatted, new SchemaExtractorEventArgs { Column = columnName });
 
@@ -225,10 +226,40 @@ namespace Bam.Net.Data.Schema
                 "OneWhere",
                 "FirstOneWhere",
                 "Top",
-                "Count"
+                "Count",
+                "IsEmpty",
+                "Filters",
+                "Parameters",
+                "Where",
+                "Parse",
+                "Add",
+                "StartsWith",
+                "EndsWith",
+                "Contains",
+                "In",
+                "And",
+                "Or",
+                "Equals",
+                "GetHashCode",
+                "ToString",
+                "GetType"
+
             });
 
         }
+
+        private string AvoidNameOfContainingType(string propertyName, string tableName, string columnName)
+        {
+            string className = NameMap.GetClassName(tableName);
+            string result = propertyName;
+            if (propertyName.Equals(className))
+            {
+                result = _namingCollisionHandlers[SchemaExtractorNamingCollisionStrategy](propertyName, tableName, columnName);
+                FireEvent(PropertyNameCollisionAvoided, new SchemaExtractorEventArgs { Table = tableName, Column = columnName, Property = propertyName });
+            }
+            return result;
+        }
+
         private string AvoidCollision(string propertyName, string tableName, string columnName)
         {
             string result = propertyName;

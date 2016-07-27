@@ -364,6 +364,7 @@ namespace laotzu
             }
             else
             {
+                MappedSchemaDefinition.MapSchemaClassAndPropertyNames();
                 generator.Generate(MappedSchemaDefinition.SchemaDefinition, srcDir.FullName);
             }
             string text = "Code generated to: {0}"._Format(srcDir.FullName);

@@ -67,17 +67,15 @@ namespace Bam.Net.Data.Schema
         public static SchemaDefinition MapSchemaClassAndPropertyNames(SchemaNameMap nameMap, SchemaDefinition schema)
         {
             SchemaManager mgr = new SchemaManager(schema);
-            nameMap.TableNamesToClassNames.Each(map =>
+            mgr.AutoSave = false;
+            Parallel.ForEach(nameMap.TableNamesToClassNames, (map) =>
             {
                 mgr.SetTableClassName(map.TableName, map.ClassName);
-                schema.Tables.Each(table =>
-                {
-                    table.Columns.Each(column =>
-                    {
-                        mgr.SetColumnPropertyName(table.Name, column.Name, nameMap.GetPropertyName(table.Name, column.Name));
-                    });
-                });
             });
+            Parallel.ForEach(schema.Tables, (table) =>
+            {
+                Parallel.ForEach(table.Columns, column => mgr.SetColumnPropertyName(table.Name, column.Name, nameMap.GetPropertyName(table.Name, column.Name)));
+            });            
             return mgr.CurrentSchema;
         }
     }

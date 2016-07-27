@@ -98,18 +98,25 @@ namespace Bam.Net.Data.Schema
             }
         }
 
+
         public Column[] Columns
         {
             get
             {
-                return this._columns.Values.ToArray();
+                lock (_columnLock)
+                {
+                    return _columns.Values.ToArray();
+                }
             }
             set
             {
-                _columns.Clear();
-                foreach (Column val in value)
+                lock (_columnLock)
                 {
-                    _columns.Add(val.Name, val);
+                    _columns.Clear();
+                    foreach (Column val in value)
+                    {
+                        _columns.Add(val.Name, val);
+                    }
                 }
             }
         }
@@ -118,14 +125,20 @@ namespace Bam.Net.Data.Schema
         {
             get
             {
-                return this._foreignKeys.Values.ToArray();
+                lock (_columnLock)
+                {
+                    return _foreignKeys.Values.ToArray();
+                }
             }
             set
             {
-                _foreignKeys.Clear();
-                foreach (ForeignKeyColumn fk in value)
+                lock (_columnLock)
                 {
-                    _foreignKeys.Add(fk.Name, fk);
+                    _foreignKeys.Clear();
+                    foreach (ForeignKeyColumn fk in value)
+                    {
+                        _foreignKeys.Add(fk.Name, fk);
+                    }
                 }
             }
         }
@@ -137,11 +150,17 @@ namespace Bam.Net.Data.Schema
         {
             get
             {
-                return this._referencingForeignKeys.ToArray();
+                lock (_columnLock)
+                {
+                    return _referencingForeignKeys.ToArray();
+                }
             }
             set
             {
-                this._referencingForeignKeys = new List<ForeignKeyColumn>(value);
+                lock (_columnLock)
+                {
+                    _referencingForeignKeys = new List<ForeignKeyColumn>(value);
+                }
             }
         }
         
@@ -193,7 +212,7 @@ namespace Bam.Net.Data.Schema
         private void UnsetKeyColumn(string columnName)
         {
             Column col = this[columnName];            
-            this._columns.Remove(col.Name);
+            RemoveColumn(col.Name);
             this.AddColumn(new Column { 
                 AllowNull = col.AllowNull, 
                 Name = col.Name, 
@@ -239,9 +258,12 @@ namespace Bam.Net.Data.Schema
 
         public void RemoveColumn(string columnName)
         {
-            if (this._columns.ContainsKey(columnName))
+            lock (_columnLock)
             {
-                this._columns.Remove(columnName);
+                if (this._columns.ContainsKey(columnName))
+                {
+                    this._columns.Remove(columnName);
+                }
             }
         }
 
