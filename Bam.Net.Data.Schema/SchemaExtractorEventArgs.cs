@@ -14,6 +14,7 @@ namespace Bam.Net.Data.Schema
 		public SchemaExtractorEventArgs() {}
 		public string Table { get; set; }
 		public string Column { get; set; }
+        public string Property { get; set; }
         public ForeignKeyColumn ForeignKeyColumn { get; set; }
 	}
 }

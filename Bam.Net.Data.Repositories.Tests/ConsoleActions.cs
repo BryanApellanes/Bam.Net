@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Bam.Net;
 using Bam.Net.CommandLine;
 using Bam.Net.Testing;
 using Bam.Net.Yaml;
@@ -65,5 +66,35 @@ namespace Bam.Net.Data.Repositories.Tests
 			DtoModel model = new DtoModel(o, "Test");
 			OutLine(model.Render());
 		}
+
+        [ConsoleAction]
+        public void OutputPropertiesAndMethods()
+        {
+            HashSet<string> daoProperties = new HashSet<string>(typeof(Dao).GetProperties().Select(p => p.Name).ToArray());
+            HashSet<string> daoMethods = new HashSet<string>(typeof(Dao).GetMethods().Where(m=> !m.IsProperty() && !m.IsSpecialName).Select(m => m.Name).ToArray());
+            HashSet<string> generatedMethods = new HashSet<string>(typeof(MainObject).GetMethods().Where(mi => !mi.IsSpecialName && !mi.IsProperty() && !daoMethods.Contains(mi.Name)).Select(mi => mi.Name).ToArray());
+            OutLine("Dao Props:", ConsoleColor.Cyan);
+            using (StreamWriter sw = new StreamWriter(".\\reserved.txt"))
+            {
+                daoProperties.Each(s =>
+                {
+                    OutLineFormat("\t{0}", ConsoleColor.Cyan, s);
+                    sw.WriteLine(s);
+                });
+                OutLine("Dao Methods:", ConsoleColor.DarkBlue);
+                daoMethods.Each(s =>
+                {
+                    OutLineFormat("\t{0}", ConsoleColor.DarkBlue, s);
+                    sw.WriteLine(s);
+                });
+                OutLine("Generated Methods:", ConsoleColor.DarkCyan);
+                generatedMethods.Each(s =>
+                {
+                    OutLineFormat("\t{0}", ConsoleColor.DarkCyan, s);
+                    sw.WriteLine(s);
+                });
+            }
+            "notepad .\\reserved.txt".Run();
+        }
     }
 }

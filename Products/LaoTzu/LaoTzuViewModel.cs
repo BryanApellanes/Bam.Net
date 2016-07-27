@@ -263,7 +263,7 @@ namespace laotzu
                 schema.Save(Path.Combine(extractor.SchemaTempPathProvider(schema), "{0}.schema.json"._Format(schema.Name)));
                 MappedSchemaDefinition.SchemaDefinition = schema;
                 MappedSchemaDefinition.SchemaNameMap = extractor.NameMap;
-                FormModelBinder.AppendText(Form.TextBoxOutput, "... Extraction Done ...");
+                FormModelBinder.AppendText(Form.TextBoxOutput, "\r\n... Extraction Done ...");
                 FormModelBinder.AppendText(Form.TextBoxOutput, "\r\nPopulating schema tab ...");
                 Task.Run(() =>
                 {
@@ -386,11 +386,11 @@ namespace laotzu
             }
             if (result == DialogResult.Yes || result == DialogResult.No)
             {
-                GenerateAssembly(generator, srcDir, out dest);            
+                GenerateAssembly(generator, srcDir, out dest);
+                text = "Assembly File: {0}"._Format(dest);
+                SetStatus(text);
             }
 
-            text = "Assemlby File: {0}"._Format(dest);
-            SetStatus(text);
             EnableInputs();
         }
 

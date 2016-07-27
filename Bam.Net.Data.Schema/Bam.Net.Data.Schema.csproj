@@ -130,6 +130,7 @@
     <Compile Include="INameFormatter.cs" />
     <Compile Include="EchoNameFormatter.cs" />
     <Compile Include="MappedSchemaDefinition.cs" />
+    <Compile Include="SchemaExtractorNamingCollisionStrategy.cs" />
     <Compile Include="SchemaNameMap.cs" />
     <Compile Include="SchemaExtractor.cs" />
     <Compile Include="Column.cs" />

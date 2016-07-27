@@ -12,13 +12,26 @@ using Bam.Net.Configuration;
 
 namespace Bam.Net.Data.Schema
 {
-    public abstract class SchemaExtractor: Loggable, ISchemaExtractor, IHasSchemaTempPathProvider
+    public abstract class SchemaExtractor : Loggable, ISchemaExtractor, IHasSchemaTempPathProvider
     {
+        Dictionary<SchemaExtractorNamingCollisionStrategy, Func<string, string, string, string>> _namingCollisionHandlers = new Dictionary<SchemaExtractorNamingCollisionStrategy, Func<string, string, string, string>>();
         public SchemaExtractor()
         {
-            NameFormatter = new EchoNameFormatter();
             NameMap = new SchemaNameMap();
+            NameFormatter = new SchemaNameMapNameFormatter(NameMap);
             SchemaTempPathProvider = sd => RuntimeSettings.AppDataFolder;
+            _namingCollisionHandlers.Add(SchemaExtractorNamingCollisionStrategy.LeadingUnderscore, (tableName, columnName, propertyName) => $"_{columnName}");
+            _namingCollisionHandlers.Add(SchemaExtractorNamingCollisionStrategy.TrailingUnderscore, (tableName, columnName, propertyName) => $"{columnName}_");
+            _namingCollisionHandlers.Add(SchemaExtractorNamingCollisionStrategy.TypePrefix, (tableName, columnName, propertyName) => $"{GetColumnDataType(tableName, columnName).ToString()}{columnName}");
+            _namingCollisionHandlers.Add(SchemaExtractorNamingCollisionStrategy.TypeSuffix, (tableName, columnName, propertyName) => $"{columnName}{GetColumnDataType(tableName, columnName).ToString()}");
+            _namingCollisionHandlers.Add(SchemaExtractorNamingCollisionStrategy.UnderscoreDelimit, (tableName, columnName, propertyName) => $"_{columnName}_");
+            _namingCollisionHandlers.Add(SchemaExtractorNamingCollisionStrategy.Custom, (tableName, columnName, propertyName) => CustomNamingCollisionHandler(tableName, columnName, propertyName));
+            _namingCollisionHandlers.Add(SchemaExtractorNamingCollisionStrategy.Invalid, (tableName, columnName, propertyName) =>
+            {
+                throw new InvalidOperationException("Invalid SchemaExtractorNamingCollisionStrategy specified");
+            });
+            CustomNamingCollisionHandler = _namingCollisionHandlers[SchemaExtractorNamingCollisionStrategy.TrailingUnderscore];
+            SchemaExtractorNamingCollisionStrategy = SchemaExtractorNamingCollisionStrategy.TrailingUnderscore;
         }
 
         public Database Database { get; protected set; }
@@ -35,6 +48,7 @@ namespace Bam.Net.Data.Schema
 
         public event EventHandler PropertyNameFormatting;
         public event EventHandler PropertyNameFormatted;
+        public event EventHandler PropertyNameCollisionAvoided;
 
         public abstract string GetSchemaName();
         public abstract string[] GetTableNames();
@@ -60,6 +74,14 @@ namespace Bam.Net.Data.Schema
                 SetConnectionName(value);
             }
         }
+
+        /// <summary>
+        /// A function used to avoid naming collisions on property names and reserved
+        /// Dao keywords.  Receives tableName, columnName and propertyName; should return
+        /// desired propertyName
+        /// </summary>
+        public Func<string, string, string, string> CustomNamingCollisionHandler { get; set; }
+        public SchemaExtractorNamingCollisionStrategy SchemaExtractorNamingCollisionStrategy { get; set; }
         public SchemaNameMap NameMap { get; set; }
         public INameFormatter NameFormatter { get; set; }
 
@@ -78,7 +100,7 @@ namespace Bam.Net.Data.Schema
         public Column CreateColumn(string tableName, string columnName)
         {
             FireEvent(PropertyNameFormatting, new SchemaExtractorEventArgs { Column = columnName });
-            string propertyName = GetPropertyName(tableName, columnName);
+            string propertyName = AvoidCollision(GetPropertyName(tableName, columnName), tableName, columnName);
             NameMap.Set(new ColumnNameToPropertyName { ColumnName = columnName, PropertyName = propertyName, TableName = tableName });
             FireEvent(PropertyNameFormatted, new SchemaExtractorEventArgs { Column = columnName });
 
@@ -104,7 +126,7 @@ namespace Bam.Net.Data.Schema
             GetTableNames().Each(tableName =>
             {
                 FireEvent(ProcessingTable, new SchemaExtractorEventArgs { Table = tableName });
-                
+
                 FireEvent(ClassNameFormatting, new SchemaExtractorEventArgs { Table = tableName });
                 string className = GetClassName(tableName);
                 NameMap.Set(new TableNameToClassName { TableName = tableName, ClassName = className });
@@ -135,11 +157,86 @@ namespace Bam.Net.Data.Schema
                 FireEvent(ProcessingForeignKey, new SchemaExtractorEventArgs { ForeignKeyColumn = fk });
                 //  set each foreignkey
                 schemaManager.SetForeignKey(fk.ReferencedTable, fk.TableName, fk.Name, GetKeyColumnName(fk.ReferencedTable), NameFormatter);
-                FireEvent(ProcessingForeignComplete, new SchemaExtractorEventArgs { ForeignKeyColumn = fk});
+                FireEvent(ProcessingForeignComplete, new SchemaExtractorEventArgs { ForeignKeyColumn = fk });
             });
 
             NameMap.Save(Path.Combine(this.GetAppDataFolder(), "{0}_NameMap.json"._Format(schemaManager.CurrentSchema.Name)));
             SetClassNamesOnColumns(schemaManager);
+            return result;
+        }
+
+        protected HashSet<string> GetKeyWords()
+        {
+            return new HashSet<string>(new[] {
+                "ProxyTypeProvider",
+                "PostConstructActions",
+                "Initializer",
+                "GlobalInitializer",
+                "Database",
+                "AutoDeleteChildren",
+                "Validator",
+                "GlobalValidator",
+                "UniqueFilterProvider",
+                "IdValue",
+                "KeyColumnName",
+                "ForceInsert",
+                "ForceUpdate",
+                "IsNew",
+                "ServiceProvider",
+                "DataRow",
+                "WriteDelete",
+                "WriteCommit",
+                "WriteUpdate",
+                "WriteInsert",
+                "Undo",
+                "Undelete",
+                "ToJsonSafe",
+                "GetUniqueFilter",
+                "ConnectionName",
+                "UnproxyConnection",
+                "ProxyConnection",
+                "TableName",
+                "GetKeyColumnName",
+                "RegisterDaoTypes",
+                "GetSchemaTypes",
+                "OnInitialize",
+                "GetHashCode",
+                "Equals",
+                "ResetChildren",
+                "Validate",
+                "Save",
+                "Commit",
+                "Update",
+                "Insert",
+                "WriteChildDeletes",
+                "Delete",
+                "PreLoadChildCollections",
+                "ToString",
+                "GetType",
+                "LoadAll",
+                "BatchAll",
+                "BatchQuery",
+                "GetById",
+                "GetByUuid",
+                "GetByCuid",
+                "Query",
+                "Where",
+                "GetOneWhere",
+                "OneWhere",
+                "FirstOneWhere",
+                "Top",
+                "Count"
+            });
+
+        }
+        private string AvoidCollision(string propertyName, string tableName, string columnName)
+        {
+            string result = propertyName;
+            if (GetKeyWords().Contains(propertyName))
+            {
+                result = _namingCollisionHandlers[SchemaExtractorNamingCollisionStrategy](tableName, columnName, propertyName);
+                FireEvent(PropertyNameCollisionAvoided, new SchemaExtractorEventArgs { Table = tableName, Column = columnName, Property = propertyName });
+            }
             return result;
         }
 
@@ -153,5 +250,7 @@ namespace Bam.Net.Data.Schema
                 });
             });
         }
+
+
     }
 }
