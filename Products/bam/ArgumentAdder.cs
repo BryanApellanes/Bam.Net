@@ -19,6 +19,7 @@ namespace bam
 
         private static void AddBuildArguments()
         {
+            AddValidArgument("mergeDllNamesFile", false, addAcronym: true, description: "generateBamDotExeScript: The path to the text file containing the names of the dlls to merge");
             AddValidArgument("dllNamesFile", false, addAcronym: true, description: "generateNugetScripts: The path to the text file containing the names of the dlls");
             AddValidArgument("exeNamesFile", false, addAcronym: true, description: "generateNugetScripts: The path to the text file containing the names of the exes");
             AddValidArgument("templateFile", false, addAcronym: true, description: "generateNugetScripts: The path to the template file to use");
