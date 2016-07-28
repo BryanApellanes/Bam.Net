@@ -59,7 +59,7 @@ namespace Bam.Net.Data.MsSql
 			{
 				if (string.IsNullOrEmpty(_connectionString))
 				{
-					_connectionString = ConnectionStringResolver.Resolve(ConnectionName).ConnectionString;
+					_connectionString = ConnectionStringResolver?.Resolve(ConnectionName)?.ConnectionString;
 				}
 
 				return _connectionString;
