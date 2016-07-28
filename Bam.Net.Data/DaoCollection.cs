@@ -344,6 +344,12 @@ namespace Bam.Net.Data
             sql.Execute(db);
         }
 
+        /// <summary>
+        /// If true, will cause dao instances in this collection
+        /// to load their child collections on delete for auto deletion
+        /// </summary>
+        [Exclude]
+        public bool AutoHydrateChildrenOnDelete { get; set; }
 		/// <summary>
 		/// Write the necessary Sql statements into the specified SqlStringBuilder 
 		/// to delete all the records represented by the current collection.
@@ -371,6 +377,7 @@ namespace Bam.Net.Data
                 {
                     if (d.AutoDeleteChildren)
                     {
+                        d.AutoHydrateChildrenOnDelete = AutoHydrateChildrenOnDelete;
                         d.WriteChildDeletes(sql);
                         sql.Go();
                     }

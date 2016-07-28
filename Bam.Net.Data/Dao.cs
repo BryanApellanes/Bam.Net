@@ -245,9 +245,20 @@ namespace Bam.Net.Data
         /// If true, any references to the current
         /// record will be deleted prior to deleting
         /// the current record in a call to Delete()
+        /// if those references have been hydrated on
+        /// the current instance
         /// </summary>
         [Exclude]
         public bool AutoDeleteChildren { get; set; }
+
+        /// <summary>
+        /// If true, will hydrate child collections
+        /// prior to deletion so that they can be deleted.
+        /// Incurs performance cost if many child 
+        /// collections must be loaded
+        /// </summary>
+        [Exclude]
+        public bool AutoHydrateChildrenOnDelete { get; set; }
 
         public event DaoDelegate BeforeWriteCommit;
         public static event DaoDelegate BeforeWriteCommitAny;
@@ -564,9 +575,14 @@ namespace Bam.Net.Data
 
         public void WriteChildDeletes(SqlStringBuilder sql)
         {
-            foreach (string key in this.ChildCollections.Keys)
+            foreach (string key in ChildCollections.Keys)
             {
-                this.ChildCollections[key].WriteDelete(sql);
+                ILoadable collection = ChildCollections[key];
+                if (AutoHydrateChildrenOnDelete)
+                {
+                   collection.Load(Database);
+                }
+                ChildCollections[key].WriteDelete(sql);
             }
         }
 
