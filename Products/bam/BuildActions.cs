@@ -29,7 +29,6 @@ namespace bam
 SET CONFIG=%1
 IF [%1]==[] SET CONFIG=Release
 SET LIB=net45
-SET VER=v4.5
 cd .\\BuildOutput\\%CONFIG%\\%VER%
 ..\\..\\..\\ilmerge.exe bam.exe");
             
@@ -37,7 +36,7 @@ cd .\\BuildOutput\\%CONFIG%\\%VER%
             {
                 script.Append($" {dll}");
             });
-            script.Append("/out:..\\..\\..\\BamDotExe\bam.exe");
+            script.Append(" /out:..\\..\\..\\BamDotExe\\%CONFIG%\\%LIB%\\bam.exe");
             script.ToString().SafeWriteToFile("generate_bam_dot_exe.cmd");
         }
 
