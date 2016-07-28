@@ -11,17 +11,17 @@ namespace Bam.Net
 {
     public static class Resolver
     {
-        public static void Register(bool downloadIfNotFound = true)
+        public static void Register()
         {
             AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
             {
                 WriteLog($"Resolving assembly {args.Name}");
                 string resourceName = $"BamCore.{new AssemblyName(args.Name).Name}.dll";
-                return Assembly.Load(Download(args));
+                return Assembly.Load(ResolveAssembly(args));
             };
         }
         
-        public static byte[] Download(ResolveEventArgs rea)
+        public static byte[] ResolveAssembly(ResolveEventArgs rea)
         {
             // download from BamApps.net; not yet implemented
 
