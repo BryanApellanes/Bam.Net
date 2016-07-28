@@ -34,7 +34,7 @@ cd .\\BuildOutput\\%CONFIG%\\%VER%
             
             dllList.Each(dll =>
             {
-                script.Append($" {dll}");
+                script.Append($" {dll}.dll");
             });
             script.Append(" /out:..\\..\\..\\BamDotExe\\%CONFIG%\\%LIB%\\bam.exe");
             script.ToString().SafeWriteToFile("generate_bam_dot_exe.cmd");
