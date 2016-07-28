@@ -23,7 +23,7 @@ namespace Bam.Net.Data.Oracle
         {
             this.ConnectionStringResolver = new NullConnectionStringResolver(this);
             this.ConnectionName = "Oracle";
-            RegisterServices();
+            Register();
         }
         /// <summary>
         /// Instantiate a new OracleDatabase instance using the specified serverName
@@ -36,7 +36,7 @@ namespace Bam.Net.Data.Oracle
         {
             this.ConnectionStringResolver = new OracleConnectionStringResolver(serverName, creds);
             this.ConnectionName = connectionName;
-            RegisterServices();
+            Register();
         }
 
         /// <summary>
@@ -57,6 +57,11 @@ namespace Bam.Net.Data.Oracle
         public OracleDatabase(string serverName, string userId, string password)
             : this(serverName, new OracleCredentials { UserId = userId, Password = password })
         { }
+
+        public OracleDatabase(string connectionString, string connectionName = null)
+            : base(connectionString, connectionName)
+        {
+        }
 
         public IConnectionStringResolver ConnectionStringResolver
         {
@@ -215,11 +220,10 @@ namespace Bam.Net.Data.Oracle
             return result;
         }
 
-        private void RegisterServices()
+        private void Register()
         {
-            this.ServiceProvider = new Incubator();
-            this.ServiceProvider.Set<DbProviderFactory>(OracleClientFactory.Instance);
-
+            ServiceProvider = new Incubator();
+            ServiceProvider.Set<DbProviderFactory>(OracleClientFactory.Instance);
             OracleRegistrar.Register(this);
             Infos.Add(new DatabaseInfo(this));
         }

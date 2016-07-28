@@ -38,15 +38,20 @@ namespace Bam.Net.Data.SQLite
             {
                 directory.Create();
             }
-            this.ConnectionStringResolver = new SQLiteConnectionStringResolver
+            ConnectionStringResolver = new SQLiteConnectionStringResolver
             {
                 Directory = directory
             };
 
-            this.ConnectionName = connectionName;
-            this.ServiceProvider = new Incubator();
-            this.ServiceProvider.Set<DbProviderFactory>(SQLiteFactory.Instance);
-            SQLiteRegistrar.Register(this);            
+            ConnectionName = connectionName;
+            ServiceProvider = new Incubator();
+            ServiceProvider.Set<DbProviderFactory>(SQLiteFactory.Instance);
+            Register();
+        }
+        
+        private void Register()
+        {
+            SQLiteRegistrar.Register(this);
             Infos.Add(new DatabaseInfo(this));
         }
 

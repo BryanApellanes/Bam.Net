@@ -21,14 +21,22 @@ namespace Bam.Net.Data.Npgsql
         { }
 
         public NpgsqlDatabase(string serverName, string databaseName, string connectionName, NpgsqlCredentials credentials = null)
-            : base()
         {
-            this.ColumnNameProvider = (c) => "\"{0}\""._Format(c.Name);
-            this.ConnectionStringResolver = new NpgsqlConnectionStringResolver(serverName, databaseName, credentials);
+            ColumnNameProvider = (c) => "\"{0}\""._Format(c.Name);
+            ConnectionStringResolver = new NpgsqlConnectionStringResolver(serverName, databaseName, credentials);
+            ConnectionName = connectionName;
+            Register();
+        }
 
-            this.ConnectionName = connectionName;
-            this.ServiceProvider = new Incubator();
-            this.ServiceProvider.Set<DbProviderFactory>(NpgsqlFactory.Instance);
+        public NpgsqlDatabase(string connectionString, string connectionName = null)
+            : base(connectionString, connectionName)
+        {
+        }
+
+        private void Register()
+        {
+            ServiceProvider = new Incubator();
+            ServiceProvider.Set<DbProviderFactory>(NpgsqlFactory.Instance);
             NpgsqlRegistrar.Register(this);
             Infos.Add(new DatabaseInfo(this));
         }

@@ -22,17 +22,27 @@ namespace Bam.Net.Data.MySql
         }
 
         public MySqlDatabase(string serverName, string databaseName, string connectionName, MySqlCredentials credentials = null)
-            : base()
         {
-            this.ColumnNameProvider = (c) => c.Name;
-            this.ConnectionStringResolver = new MySqlConnectionStringResolver(serverName, databaseName, credentials);
+            ColumnNameProvider = (c) => c.Name;
+            ConnectionStringResolver = new MySqlConnectionStringResolver(serverName, databaseName, credentials);
+            ConnectionName = connectionName;
+            Register();
+        }
 
-            this.ConnectionName = connectionName;
-            this.ServiceProvider = new Incubator();
-            this.ServiceProvider.Set<DbProviderFactory>(MySqlClientFactory.Instance);
+        public MySqlDatabase(string connectionString, string connectionName = null)
+            : base(connectionString, connectionName)
+        {
+            Register();
+        }
+
+        private void Register()
+        {
+            ServiceProvider = new Incubator();
+            ServiceProvider.Set<DbProviderFactory>(MySqlClientFactory.Instance);
             MySqlRegistrar.Register(this);
             Infos.Add(new DatabaseInfo(this));
         }
+
 
         public IConnectionStringResolver ConnectionStringResolver
         {

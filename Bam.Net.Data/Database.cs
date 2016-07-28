@@ -25,7 +25,7 @@ namespace Bam.Net.Data
 			this._connections = new List<DbConnection>();
 			this._schemaNames = new HashSet<string>();
             this.ServiceProvider = Incubator.Default;           
-            this.MaxConnections = 25;
+            this.MaxConnections = 50;
         }
 
         public Database(Incubator serviceProvider, string connectionString, string connectionName = null)
@@ -35,6 +35,15 @@ namespace Bam.Net.Data
             this.ConnectionString = connectionString;
             this.ConnectionName = connectionName;
 			this.ParameterPrefix = "@";
+            if (!string.IsNullOrEmpty(ConnectionName))
+            {
+                Db.For(ConnectionName, this);
+            }
+        }
+
+        public Database(string connectionString, string connectionName = null)
+            : this(new Incubator(), connectionString, connectionName)
+        {
         }
 
         static HashSet<DatabaseInfo> _infos;

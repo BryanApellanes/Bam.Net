@@ -17,7 +17,7 @@ namespace Bam.Net.Data.MsSql
         public MsSqlDatabase()
         {
             ConnectionStringResolver = DefaultConnectionStringResolver.Instance;
-            RegisterServices();
+            Register();
         }
 		public MsSqlDatabase(string serverName, string databaseName, MsSqlCredentials credentials = null)
 			: this(serverName, databaseName, databaseName, credentials)
@@ -28,17 +28,17 @@ namespace Bam.Net.Data.MsSql
 		{
 			ConnectionStringResolver = new MsSqlConnectionStringResolver(serverName, databaseName, credentials);
 			ConnectionName = connectionName;
-            RegisterServices();
+            Register();
 		}
 
         public MsSqlDatabase(MsSqlConnectionStringResolver connectionStringResolver)
         {
             ConnectionName = connectionStringResolver.DatabaseName;
             ConnectionStringResolver = connectionStringResolver;
-            RegisterServices();
+            Register();
         }
 
-        private void RegisterServices()
+        private void Register()
         {
             ServiceProvider = new Incubator();
             ServiceProvider.Set<DbProviderFactory>(SqlClientFactory.Instance);
