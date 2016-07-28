@@ -8,6 +8,7 @@ using System.Text;
 using System.Configuration;
 using System.IO;
 using System.Web;
+using System.Data.Common;
 
 namespace Bam.Net.Data
 {
@@ -89,6 +90,11 @@ namespace Bam.Net.Data
             s.ConnectionString = string.Format("Data Source={0};Version=3;", dbFile);
 
             return s;
+        }
+
+        public DbConnectionStringBuilder GetConnectionStringBuilder()
+        {
+            return new DbConnectionStringBuilder { ConnectionString = Resolve("Default")?.ConnectionString };
         }
 
 		internal string GetDatabaseFilePath(string connectionName)

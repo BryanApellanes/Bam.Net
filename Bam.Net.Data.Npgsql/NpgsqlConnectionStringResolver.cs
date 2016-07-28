@@ -37,13 +37,21 @@ namespace Bam.Net.Data.Npgsql
 		#region IConnectionStringResolver Members
 
 		public ConnectionStringSettings Resolve(string connectionName)
-		{
-			ConnectionStringSettings s = new ConnectionStringSettings();
-			s.Name = connectionName;
+        {
+            ConnectionStringSettings s = new ConnectionStringSettings();
+            s.Name = connectionName;
             s.ProviderName = typeof(NpgsqlFactory).AssemblyQualifiedName;
-			DbConnectionStringBuilder connectionStringBuilder = NpgsqlFactory.Instance.CreateConnectionStringBuilder();
-			connectionStringBuilder.Add("Host", ServerName);
-			connectionStringBuilder.Add("Database", DatabaseName);
+            DbConnectionStringBuilder connectionStringBuilder = GetConnectionStringBuilder();
+            s.ConnectionString = connectionStringBuilder.ConnectionString;
+
+            return s;
+        }
+
+        public DbConnectionStringBuilder GetConnectionStringBuilder()
+        {
+            DbConnectionStringBuilder connectionStringBuilder = NpgsqlFactory.Instance.CreateConnectionStringBuilder();
+            connectionStringBuilder.Add("Host", ServerName);
+            connectionStringBuilder.Add("Database", DatabaseName);
             connectionStringBuilder.Add("User ID", Credentials.UserId);
             connectionStringBuilder.Add("Password", Credentials.Password);
             if (Port > 0)
@@ -54,11 +62,10 @@ namespace Bam.Net.Data.Npgsql
             {
                 connectionStringBuilder.Add("Pooling", "true");
             }
-			s.ConnectionString = connectionStringBuilder.ConnectionString;
 
-			return s;
-		}
+            return connectionStringBuilder;
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

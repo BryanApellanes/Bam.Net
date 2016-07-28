@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Configuration;
+using System.Data.Common;
 
 namespace Bam.Net.Data
 {
@@ -18,5 +19,6 @@ namespace Bam.Net.Data
         /// <param name="connectionName"></param>
         /// <returns></returns>
         ConnectionStringSettings Resolve(string connectionName);
+        DbConnectionStringBuilder GetConnectionStringBuilder();
     }
 }

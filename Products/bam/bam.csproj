@@ -92,6 +92,7 @@
     <None Include="App.config" />
     <None Include="copy_content_root_files.cmd" />
     <None Include="packages.config" />
+    <None Include="README.MD" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="bamtoolkit_files.txt">

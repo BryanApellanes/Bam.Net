@@ -19,6 +19,11 @@ namespace bam
             public string LibraryName { get; set; }
             public string Ext { get; set; }
         }
+        [ConsoleAction("mergeToBam", "Generate single dll containing all Bam.Net using ILMerge")]
+        public static void MergeToBam()
+        {
+
+        }
 
         [ConsoleAction("generateNugetScripts", "Generate copy commands for build process")]
         public static void GenerateNugetScripts()

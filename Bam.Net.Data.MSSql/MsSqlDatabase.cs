@@ -16,8 +16,8 @@ namespace Bam.Net.Data.MsSql
 	{
         public MsSqlDatabase()
         {
-            RegisterServices();
             ConnectionStringResolver = DefaultConnectionStringResolver.Instance;
+            RegisterServices();
         }
 		public MsSqlDatabase(string serverName, string databaseName, MsSqlCredentials credentials = null)
 			: this(serverName, databaseName, databaseName, credentials)

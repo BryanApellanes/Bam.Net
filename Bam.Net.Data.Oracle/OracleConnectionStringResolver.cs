@@ -9,6 +9,7 @@ using System.Configuration;
 using System.IO;
 using System.Web;
 using Oracle.ManagedDataAccess;
+using System.Data.Common;
 
 namespace Bam.Net.Data
 {
@@ -44,6 +45,11 @@ namespace Bam.Net.Data
 			connSettings.ConnectionString = "Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST={ServerName})(PORT={Port}))(CONNECT_DATA=(SERVICE_NAME={InstanceName})));User Id={UserId};Password={Password};".NamedFormat(this);
 
 			return connSettings;
+        }
+
+        public DbConnectionStringBuilder GetConnectionStringBuilder()
+        {
+            return new DbConnectionStringBuilder { ConnectionString = Resolve("Default")?.ConnectionString };
         }
         #endregion
     }

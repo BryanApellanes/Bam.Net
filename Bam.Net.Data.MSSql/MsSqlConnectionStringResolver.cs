@@ -32,29 +32,36 @@ namespace Bam.Net.Data.MsSql
 		#region IConnectionStringResolver Members
 
 		public ConnectionStringSettings Resolve(string connectionName)
-		{
-			ConnectionStringSettings s = new ConnectionStringSettings();
-			s.Name = connectionName;
-			s.ProviderName = typeof(SqlClientFactory).AssemblyQualifiedName;
+        {
+            ConnectionStringSettings s = new ConnectionStringSettings();
+            s.Name = connectionName;
+            s.ProviderName = typeof(SqlClientFactory).AssemblyQualifiedName;
 
-			DbConnectionStringBuilder connectionStringBuilder = SqlClientFactory.Instance.CreateConnectionStringBuilder();
-			connectionStringBuilder.Add("Data Source", ServerName);
-			connectionStringBuilder.Add("Initial Catalog", DatabaseName);
-			if (TrustedConnection)
-			{
-				connectionStringBuilder.Add("Integrated Security", "SSPI");
-			}
-			else
-			{
-				connectionStringBuilder.Add("User ID", Credentials.UserName);
-				connectionStringBuilder.Add("Password", Credentials.Password);
-			}
+            DbConnectionStringBuilder connectionStringBuilder = GetConnectionStringBuilder();
 
-			s.ConnectionString = connectionStringBuilder.ConnectionString;
+            s.ConnectionString = connectionStringBuilder.ConnectionString;
 
-			return s;
-		}
+            return s;
+        }
 
-		#endregion
-	}
+        public DbConnectionStringBuilder GetConnectionStringBuilder()
+        {
+            DbConnectionStringBuilder connectionStringBuilder = SqlClientFactory.Instance.CreateConnectionStringBuilder();
+            connectionStringBuilder.Add("Data Source", ServerName);
+            connectionStringBuilder.Add("Initial Catalog", DatabaseName);
+            if (TrustedConnection)
+            {
+                connectionStringBuilder.Add("Integrated Security", "SSPI");
+            }
+            else
+            {
+                connectionStringBuilder.Add("User ID", Credentials.UserName);
+                connectionStringBuilder.Add("Password", Credentials.Password);
+            }
+
+            return connectionStringBuilder;
+        }
+
+        #endregion
+    }
 }
