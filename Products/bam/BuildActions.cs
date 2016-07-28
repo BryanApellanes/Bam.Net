@@ -37,7 +37,9 @@ md ..\..\..\BamDotExe\lib\%LIB%\
             {
                 script.Append($" {dll}.dll");
             });
-            script.Append(" /closed /targetplatform:v4 /lib:\"C:\\Program Files(x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.5\" /out:..\\..\\..\\BamDotExe\\lib\\%LIB%\\bam.exe");
+            string lib = @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5";
+            script.Append($" /closed /targetplatform:v4 /lib:\"{lib}\" /out:..\\..\\..\\BamDotExe\\lib\\%LIB%\\bam.exe");
+            
             script.ToString().SafeWriteToFile("generate_bam_dot_exe.cmd");
         }
 

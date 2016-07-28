@@ -3,6 +3,7 @@
 */
 using System;
 using System.IO;
+using System.Text;
 using Bam.Net.Logging;
 using Bam.Net.Testing;
 
