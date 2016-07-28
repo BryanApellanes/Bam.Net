@@ -29,7 +29,8 @@ namespace bam
 SET CONFIG=%1
 IF [%1]==[] SET CONFIG=Release
 SET LIB=net45
-cd .\\BuildOutput\\%CONFIG%\\%VER%
+cd .\BuildOutput\%CONFIG%\%VER%
+md ..\..\..\BamDotExe\%CONFIG%\%LIB%\
 ..\\..\\..\\ilmerge.exe bam.exe");
             
             dllList.Each(dll =>
