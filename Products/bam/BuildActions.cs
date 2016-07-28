@@ -21,23 +21,23 @@ namespace bam
         }
 
         [ConsoleAction("generateBamDotExeScript", "Generate ILMerge script")]
-        public static void MergeToBam()
+        public static void GenerateBamDotExeScript()
         {
-            string[] dllList = new FileInfo(GetDllNameTextFile()).ReadAllText().DelimitSplit("\r", "\n");
+            string[] dllList = new FileInfo(GetMergeDllNameTextFile()).ReadAllText().DelimitSplit("\r", "\n");
             StringBuilder script = new StringBuilder(@"
 @echo on
 SET CONFIG=%1
 IF [%1]==[] SET CONFIG=Release
 SET LIB=net45
 cd .\BuildOutput\%CONFIG%\%VER%
-md ..\..\..\BamDotExe\%CONFIG%\%LIB%\
+md ..\..\..\BamDotExe\lib\%LIB%\
 ..\\..\\..\\ilmerge.exe bam.exe");
             
             dllList.Each(dll =>
             {
                 script.Append($" {dll}.dll");
             });
-            script.Append(" /out:..\\..\\..\\BamDotExe\\%CONFIG%\\%LIB%\\bam.exe");
+            script.Append(" /closed /targetplatform:v4 /lib:\"C:\\Program Files(x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.5\" /out:..\\..\\..\\BamDotExe\\lib\\%LIB%\\bam.exe");
             script.ToString().SafeWriteToFile("generate_bam_dot_exe.cmd");
         }
 
@@ -60,10 +60,13 @@ SET NEXT=END
 RMDIR /S /Q .\BuildOutput
 RMDIR /S /Q ..\..\Products\BUILD");
             string packData = "nuget pack Bam.Net.Data\\Bam.Net.Data.nuspec";
+            string packDotExe = "nuget pack BamDotExe\\BamDotExe.nuspec";
             StringBuilder packScript = GetPackScriptStart();
             packScript.AppendLine(packData);
+            packScript.AppendLine(packDotExe);
             StringBuilder packScriptDebug = GetPackScriptStart("Debug");
             packScriptDebug.AppendLine(packData);
+            packScriptDebug.AppendLine(packDotExe);
 
             StringBuilder pushScript = new StringBuilder();
             pushScript.AppendLine("@echo on");
@@ -120,6 +123,12 @@ call git_tag_version.cmd %1");
             packScript.AppendLine($"call copy_all.cmd {config}");
             packScript.AppendLine();
             return packScript;
+        }
+
+        private static string GetMergeDllNameTextFile()
+        {
+            string value = Arguments["mdnf"].Or(Arguments["mergeDllNamesFile"]);
+            return PromptIfNullOrEmpty(value, "Please enter the path to the merge dll names file");
         }
 
         private static string GetDllNameTextFile()

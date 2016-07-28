@@ -108,6 +108,5 @@ namespace Bam.Net.Tests
 
             Expect.IsFalse(thrown, "Remove attribute threw exception");
         }
-
     }
 }

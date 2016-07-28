@@ -11,6 +11,7 @@ using Bam.Net.Logging;
 using Bam.Net.CommandLine;
 using Bam.Net.Configuration;
 using Bam.Net;
+using Bam.Net.ExceptionHandling;
 
 namespace Bam.Net.Testing
 {
@@ -207,11 +208,25 @@ namespace Bam.Net.Testing
 
         public static void Interactive()
         {
-			IsInteractive = true;
-            AddMenu(Assembly.GetEntryAssembly(), "Main", 'm', new ConsoleMenuDelegate(ShowMenu));
-            AddMenu(Assembly.GetEntryAssembly(), "Test", 't', new ConsoleMenuDelegate(UnitTestMenu));
+            try
+            {
+                IsInteractive = true;
+                AddMenu(Assembly.GetEntryAssembly(), "Main", 'm', new ConsoleMenuDelegate(ShowMenu));
+                AddMenu(Assembly.GetEntryAssembly(), "Test", 't', new ConsoleMenuDelegate(UnitTestMenu));
 
-            ShowMenu(Assembly.GetEntryAssembly(), OtherMenus.ToArray(), "Main");
+                ShowMenu(Assembly.GetEntryAssembly(), OtherMenus.ToArray(), "Main");
+            }
+            catch (Exception ex)
+            {
+                ReflectionTypeLoadException typeLoadEx = ex as ReflectionTypeLoadException;
+                if(typeLoadEx != null)
+                {
+                    ex = new ReflectionTypeLoadAggregateException(typeLoadEx);
+                }
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+                throw;
+            }
         }
 
         protected static void MainMenu(string header)
@@ -513,17 +528,15 @@ namespace Bam.Net.Testing
 					passedCount++;
 					OnTestPassed(consoleMethod);
 				}
+                catch(ReflectionTypeLoadException rtle)
+                {
+                    ReportException(summary, consoleMethod, new ReflectionTypeLoadAggregateException(rtle));
+                }
 				catch (Exception ex)
-				{
-                    if (ex.InnerException != null)
-                    {
-                        ex = ex.InnerException;
-                    }
-
-					OnTestFailed(consoleMethod, ex);
-                    summary.FailedTests.Add(consoleMethod);
-				}
-				OnTestFinished();
+                {
+                    ReportException(summary, consoleMethod, ex);
+                }
+                OnTestFinished();
 			}
 			if (finalOut)
 			{
@@ -548,7 +561,18 @@ namespace Bam.Net.Testing
 			OnTestsFinished();
 		}
 
-		private static void OnTestPassed(ConsoleInvokeableMethod consoleMethod)
+        private static void ReportException(TestFailureSummary summary, ConsoleInvokeableMethod consoleMethod, Exception ex)
+        {
+            if (ex.InnerException != null)
+            {
+                ex = ex.InnerException;
+            }
+
+            OnTestFailed(consoleMethod, ex);
+            summary.FailedTests.Add(consoleMethod);
+        }
+
+        private static void OnTestPassed(ConsoleInvokeableMethod consoleMethod)
 		{
 			if (TestPassed != null)
 			{

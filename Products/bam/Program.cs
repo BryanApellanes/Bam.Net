@@ -27,6 +27,7 @@ namespace bam
     {
 		static void Main(string[] args)
 		{
+            Resolver.Register();
 			IsolateMethodCalls = false;
 
 			Type type = typeof(Program);
