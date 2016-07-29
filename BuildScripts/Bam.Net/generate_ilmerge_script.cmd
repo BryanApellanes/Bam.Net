@@ -1,1 +1,0 @@
-bam /generateBamDotExeScript /dnf:.\dll_names.txt

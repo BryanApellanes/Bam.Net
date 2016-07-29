@@ -10,6 +10,8 @@ call generate_nuget_scripts.cmd
 call set_msi_version.cmd %1.%2.%3 %ROOT%
 call build_solution.cmd Release %ROOT%
 call build_bamcore.cmd Release %ROOT%
+call generate_bam_dot_exe_script.cmd
+call generate_bam_dot_exe.cmd
 call pack.cmd
 
 echo "Ready to push Nuget packages"
