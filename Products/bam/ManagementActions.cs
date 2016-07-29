@@ -2,42 +2,17 @@
 	Copyright © Bryan Apellanes 2015  
 */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Reflection;
-using System.IO;
-using Ionic.Zip;
-using Bam.Net.CommandLine;
-using Bam.Net.Testing;
 using Bam.Net;
-using Bam.Net.Javascript;
-using Bam.Net.ServiceProxy;
+using Bam.Net.CommandLine;
 using Bam.Net.Server;
-using Bam.Net.Dust;
-using Bam.Net.Web;
-using Bam.Net.Data;
-using dotless.Core;
+using Bam.Net.Testing;
 
 namespace bam
 {
-	[Serializable]
+    [Serializable]
 	public class ManagementActions : CommandLineTestInterface
 	{
-		[ConsoleAction("packToolkit", "Pack toolkit")]
-		public void PackToolkit()
-		{
-			string root;
-			string saveTo;
-			GetRootAndSaveTarget(out root, out saveTo);
-
-			ContentManager contentMgr = new ContentManager();
-			ZipFile toolkit = contentMgr.PackToolkit(root);
-			toolkit.Save(saveTo);
-		}
-
-		[ConsoleAction("packServer", "Pack Server")]
+        [ConsoleAction("packServer", "Pack Server")]
 		public void PackServer()
 		{
 			throw new NotImplementedException();

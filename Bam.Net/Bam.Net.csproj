@@ -86,10 +86,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ionic.Zip, Version=1.9.8.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetZip.1.9.8\lib\net20\Ionic.Zip.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
@@ -103,6 +99,8 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Management" />
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Web" />
@@ -144,6 +142,7 @@
     <Compile Include="AdHocCSharpCompiler.cs" />
     <Compile Include="ApplicationNameProvider.cs" />
     <Compile Include="Args.cs" />
+    <Compile Include="AssemblyResolve.cs" />
     <Compile Include="CompilationException.cs" />
     <Compile Include="Configuration\Configurable.cs" />
     <Compile Include="Configuration\DefaultConfigurationApplicationNameProvider.cs" />
@@ -167,6 +166,7 @@
     <Compile Include="ExceptionHandling\IArbitrateExceptions.cs" />
     <Compile Include="ExceptionHandling\ReflectionTypeLoadAggregateException.cs" />
     <Compile Include="ExcludeAttribute.cs" />
+    <Compile Include="ExtractExistingFileAction.cs" />
     <Compile Include="FileSystemWatchingExtensions.cs" />
     <Compile Include="GeneratedAssemblies.cs" />
     <Compile Include="GeneratedAssemblyInfo.cs" />

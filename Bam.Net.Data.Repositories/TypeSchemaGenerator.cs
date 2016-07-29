@@ -164,7 +164,7 @@ namespace Bam.Net.Data.Repositories
             return new TypeSchema { Tables = tableTypes, ForeignKeys = foreignKeyTypes, Xrefs = xrefTypes, DefaultDataTypeBehavior = this.DefaultDataTypeBehavior };
         }
 
-        protected internal static void WriteDaoSchema(TypeSchema typeSchema, SchemaManager schemaManager, List<KeyColumn> missingKeyColumns = null, List<ForeignKeyColumn> missingForeignKeyColumns = null, ITypeTableNameProvider tableNameProvider = null)
+        protected internal virtual void WriteDaoSchema(TypeSchema typeSchema, SchemaManager schemaManager, List<KeyColumn> missingKeyColumns = null, List<ForeignKeyColumn> missingForeignKeyColumns = null, ITypeTableNameProvider tableNameProvider = null)
         {
             HashSet<Type> tableTypes = typeSchema.Tables;
             HashSet<TypeFk> foreignKeyTypes = typeSchema.ForeignKeys;
@@ -483,7 +483,7 @@ namespace Bam.Net.Data.Repositories
             return dataType;
         }
 
-        private static void AddPropertyColumns(Type type, SchemaManager schemaManager, DefaultDataTypeBehaviors defaultDataTypeBehavior, ITypeTableNameProvider tableNameProvider = null)
+        protected virtual void AddPropertyColumns(Type type, SchemaManager schemaManager, DefaultDataTypeBehaviors defaultDataTypeBehavior, ITypeTableNameProvider tableNameProvider = null)
         {
             string tableName = GetTableNameForType(type, tableNameProvider);
             foreach (PropertyInfo property in type.GetProperties())

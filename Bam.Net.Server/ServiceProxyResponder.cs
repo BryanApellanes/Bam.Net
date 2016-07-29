@@ -300,7 +300,10 @@ namespace Bam.Net.Server
         public string[] AppServices(string appName)
         {
             List<string> services = new List<string>();
-            services.AddRange(_appServiceProviders[appName].ClassNames);
+            if (_appServiceProviders.ContainsKey(appName))
+            {
+                services.AddRange(_appServiceProviders[appName].ClassNames);
+            }
             services.AddRange(CommonServices);
             return services.ToArray();
         }

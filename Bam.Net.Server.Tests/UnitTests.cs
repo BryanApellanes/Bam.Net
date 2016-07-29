@@ -142,6 +142,14 @@ namespace Bam.Net.Server.Tests
         }
 
         [UnitTest]
+        public void GetHostPrefixesShouldReturnDefault()
+        {
+            BamServer server = new BamServer(new BamConf());
+            HostPrefix[] results = server.GetHostPrefixes();
+            Expect.IsGreaterThan(results.Length, 0, "no host prefixes were returned");
+        }
+        
+        [UnitTest]
         public void StartShouldFireInitEvents()
         {
             string testAppName = MethodBase.GetCurrentMethod().Name;
@@ -193,45 +201,6 @@ namespace Bam.Net.Server.Tests
            
 
             server.Stop();
-        }
-
-        [UnitTest]
-        public void FileSystemInitializationEventsShouldFireOnFirstRequest()
-        {
-            string testAppName = MethodBase.GetCurrentMethod().Name;
-            DirectoryInfo dir = new DirectoryInfo("C:\\temp\\{0}_"._Format(testAppName).RandomLetters(4));
-            CreateTestRootAndSetDefaultConfig(dir);
-            BamServer server = CreateServer(dir.FullName);
-            bool? ingFired = false;
-            server.ContentResponder.FileSystemInitializing += (content) =>
-            {
-                ingFired = true;
-            };
-
-            bool? izedFired = false;
-            server.ContentResponder.FileSystemInitialized += (content) =>
-            {
-                izedFired = true;
-            };
-
-            Expect.IsFalse(ingFired.Value);
-            Expect.IsFalse(izedFired.Value);
-
-            server.Start();
-            try
-            {
-                string value = Http.GetString("http://localhost:9092");
-            }
-            catch (Exception ex)
-            {
-                // catch the 404 that may happen in the GET
-            }
-
-            Expect.IsTrue(ingFired.Value);
-            Expect.IsTrue(izedFired.Value);
-
-            server.Stop();
-            Thread.Sleep(1000);
         }
 
         [UnitTest]

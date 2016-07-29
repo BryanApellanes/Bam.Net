@@ -457,7 +457,7 @@ namespace Bam.Net.Server
         /// the ~s:/apps folder.  For example, if there is a subfolder named
         /// Monkey in ~s:/apps then this method will search for ~s:/apps/Monkey/appConf.json
         /// then ~s:/apps/Monkey/appConf.yaml if the json file isn't found.  If neither
-        /// is found a new AppConf is created and and serialized to the json file
+        /// is found a new AppConf is created and serialized to the json file
         /// specified above.
         /// </summary>
         /// <returns></returns>

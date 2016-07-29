@@ -170,6 +170,8 @@ namespace Bam.Net.ServiceProxy.Tests
                 return _servers;
             }
         }
+
+        // TODO: this crap needs to be refactored, oh my
         public static void StartTestServerGetEchoClient(out BamServer server, out SecureServiceProxyClient<Echo> sspc)
         {
             string baseAddress;

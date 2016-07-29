@@ -30,7 +30,18 @@ namespace Bam.Net.Logging
 				_defaultLogger = value;				
 			}
         }
-
+        public static void Info(string messageSignature, params object[] args)
+        {
+            Default.AddEntry(messageSignature, LogEventType.Information, args.Select(a => a.ToString()).ToArray());
+        }
+        public static void Warn(string messageSignature, params object[] args)
+        {
+            Default.AddEntry(messageSignature, LogEventType.Warning, args.Select(a => a.ToString()).ToArray());
+        }
+        public static void Error(string messageSignature, Exception ex, params object[] args)
+        {
+            Default.AddEntry(messageSignature, ex, args.Select(a => a.ToString()).ToArray());
+        }
         /// <summary>
         /// Reset Log.Current to null.  Used primarily for testing.
         /// </summary>

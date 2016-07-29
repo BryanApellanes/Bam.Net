@@ -3,23 +3,15 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Reflection;
-using Ionic.Zip;
 using System.IO;
-using Bam.Net.Logging;
-using Bam.Net.ServiceProxy;
-using Bam.Net.Server.Renderers;
-using Bam.Net.Javascript;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
-using Bam.Net.Server;
-using Yahoo.Yui.Compressor;
-using Bam.Net.UserAccounts.Data;
+using Bam.Net.Logging;
+using Bam.Net.Server.Renderers;
+using Bam.Net.ServiceProxy;
 using Bam.Net.UserAccounts;
+using Bam.Net.UserAccounts.Data;
+using Yahoo.Yui.Compressor;
 
 namespace Bam.Net.Server
 {
@@ -132,7 +124,6 @@ namespace Bam.Net.Server
         public override void Initialize()
         {
             OnAppInitializing();
-            ExtractBaseApp();
             WriteAppScripts();
             WriteCompiledTemplates();
 
@@ -389,30 +380,6 @@ namespace Bam.Net.Server
         {
             base.SetBaseIgnorePrefixes();
             AddIgnorPrefix("content");
-        }
-
-        // TODO: move this into the bam.exe as part of the create app process
-        private void ExtractBaseApp()
-        {
-            if (AppConf.ExtractBaseApp)
-            {
-                string baseDirectory = Path.Combine(BamConf.ContentRoot, "apps", ApplicationName);
-                Assembly currentAssembly = Assembly.GetExecutingAssembly();
-                string[] resourceNames = currentAssembly.GetManifestResourceNames();
-                resourceNames.Each(rn =>
-                {
-                    bool isBase = Path.GetExtension(rn).ToLowerInvariant().Equals(".base");
-                    if (isBase)
-                    {
-                        Stream zipStream = currentAssembly.GetManifestResourceStream(rn);
-                        ZipFile zipFile = ZipFile.Read(zipStream);
-                        zipFile.Each(entry =>
-                        {
-                            entry.Extract(baseDirectory, ExtractExistingFileAction.DoNotOverwrite);
-                        });
-                    }
-                });
-            }
         }
     }
 }
