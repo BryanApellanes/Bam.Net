@@ -33,6 +33,17 @@ namespace Bam.Net.Testing
 
 		public static void Initialize(string[] args, ConsoleArgsParsedDelegate parseErrorHandler = null)
 		{
+            AssemblyResolve.Monitor(()=>
+            {
+                ILogger logger = Logger;
+                if(logger == null)
+                {
+                    logger = new ConsoleLogger { AddDetails = false };
+                    logger.StartLoggingThread();
+                }
+                return logger;
+            });
+
             if(parseErrorHandler == null)
             {
                 parseErrorHandler = (a)=>

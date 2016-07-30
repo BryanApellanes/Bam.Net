@@ -520,13 +520,27 @@ namespace Bam.Net.Server
         public HostPrefix[] GetHostPrefixes()
         {
             BamConf serverConfig = GetCurrentConf(false);
-            List<HostPrefix> results = new List<HostPrefix>();
+            HashSet<HostPrefix> results = new HashSet<HostPrefix>();
+            results.Add(DefaultHostPrefix);         
             serverConfig.AppConfigs.Each(appConf =>
             {
-                results.AddRange(appConf.Bindings);
+                appConf.Bindings.Each(hp => results.Add(hp));
             });
-
             return results.ToArray();
+        }
+
+        HostPrefix _defaultHostPrefix;
+        object _defaultHostPrefixLock = new object();
+        public HostPrefix DefaultHostPrefix
+        {
+            get
+            {
+                return _defaultHostPrefixLock.DoubleCheckLock(ref _defaultHostPrefix, () => new HostPrefix("localhost", 8080));
+            }
+            set
+            {
+                _defaultHostPrefix = value;
+            }
         }
 
         // config values here to ensure proper sync

@@ -16,7 +16,6 @@ namespace Bam.Net
             AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
             {
                 WriteLog($"Resolving assembly {args.Name}");
-                string resourceName = $"BamCore.{new AssemblyName(args.Name).Name}.dll";
                 return Assembly.Load(ResolveAssembly(args));
             };
         }

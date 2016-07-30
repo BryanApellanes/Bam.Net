@@ -11,8 +11,6 @@ using System.CodeDom.Compiler;
 using Microsoft.CSharp;
 using Bam.Net.ServiceProxy;
 using Bam.Net.Razor;
-using Ionic.Zip;
-using Ionic.Zlib;
 
 namespace Bam.Net.Data.Schema
 {

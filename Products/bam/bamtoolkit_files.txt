@@ -215,8 +215,6 @@ FakeItEasy.xml
 boss.exe
 boss.exe.config
 boss.pdb
-Ionic.Zip.dll
-Ionic.Zip.xml
 laotze.exe
 laotze.exe.config
 laotze.XML

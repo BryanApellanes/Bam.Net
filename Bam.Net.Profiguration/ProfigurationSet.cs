@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.IO;
 using Bam.Net.Configuration;
 using Bam.Net.Logging;
-using Ionic.Zip;
 
 namespace Bam.Net.Profiguration
 {
@@ -157,43 +156,6 @@ namespace Bam.Net.Profiguration
                 NamedProfigurations[name] = toSave;
                 return toSave;
             }
-        }
-
-        public ZipFile Pack()
-        {
-            return RootDirectory.Zip();
-        }
-
-        public ZipFile Pack(string saveToPath)
-        {
-            ZipFile zip;
-            RootDirectory.ZipAndSave(saveToPath, out zip);
-            return zip;
-        }
-
-        public static ProfigurationSet Unpack(ZipFile profigurationPackage, string rootDirectory, bool replaceExisting = false)
-        {
-            return Unpack(profigurationPackage, new DirectoryInfo(rootDirectory), replaceExisting);
-        }
-
-        public static ProfigurationSet Unpack(ZipFile profigurationPackage, DirectoryInfo rootDirectory, bool replaceExisting = false)
-        {
-            if (rootDirectory.Exists && replaceExisting == false)
-            {
-                throw new InvalidOperationException("The specified directory already exists, specify replaceExisting = true or delete the Directory: {0}"._Format(rootDirectory.FullName));
-            }
-
-            if(rootDirectory.Exists && replaceExisting)
-            {
-                rootDirectory.Delete(true);
-            }
-
-            profigurationPackage.Each(entry =>
-            {
-                entry.Extract(rootDirectory.FullName, ExtractExistingFileAction.OverwriteSilently);
-            });
-
-            return new ProfigurationSet(rootDirectory);
         }
     }
 }

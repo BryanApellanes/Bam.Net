@@ -21,7 +21,6 @@ using System.Web.Script.Serialization;
 using System.Xml;
 using System.CodeDom;
 using System.CodeDom.Compiler;
-using Ionic.Zip;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.IO.Compression;
@@ -32,6 +31,7 @@ namespace Bam.Net
     public static class Extensions
     {
         static Dictionary<HashAlgorithms, Func<HashAlgorithm>> _hashAlgorithms;
+        static Dictionary<ExtractExistingFileAction, Action<ZipArchiveEntry, string>> _extractActions;
         static Extensions()
         {
             _hashAlgorithms = new Dictionary<HashAlgorithms, Func<HashAlgorithm>>();
@@ -41,6 +41,11 @@ namespace Bam.Net
             _hashAlgorithms.Add(HashAlgorithms.SHA256, () => SHA256.Create());
             _hashAlgorithms.Add(HashAlgorithms.SHA384, () => SHA384.Create());
             _hashAlgorithms.Add(HashAlgorithms.SHA512, () => SHA512.Create());
+
+            _extractActions = new Dictionary<ExtractExistingFileAction, Action<ZipArchiveEntry, string>>();
+            _extractActions.Add(ExtractExistingFileAction.Throw, (zip, dest) => Args.Throw<InvalidOperationException>("File exists, can't extract {0}", dest));
+            _extractActions.Add(ExtractExistingFileAction.OverwriteSilently, (zip, dest) => zip.ExtractToFile(dest, true));
+            _extractActions.Add(ExtractExistingFileAction.DoNotOverwrite, (zip, dest) => Logging.Log.Warn("File exists, can't extract {0}", dest));
         }
         
         /// <summary>
@@ -297,16 +302,34 @@ namespace Bam.Net
                 if (thisIsTheOne)
                 {
                     found = true;
+
                     Stream zipStream = assembly.GetManifestResourceStream(rn);
-                    ZipFile zipFile = ZipFile.Read(zipStream);
-                    zipFile.Each(entry =>
-                    {
-                        entry.Extract(extractTo.FullName, existingFileAction);
-                    });
+                    UnzipStream(zipStream, extractTo, existingFileAction);
                 }
             });
 
             return found;
+        }
+
+        public static void UnzipStream(this Stream zipStream, DirectoryInfo extractTo, ExtractExistingFileAction existingFileAction)
+        {
+            ZipArchive zipArchive = new ZipArchive(zipStream);
+            zipArchive.Entries.Each(zipFile =>
+            {
+                FileInfo destinationFile = new FileInfo(Path.Combine(extractTo.FullName, zipFile.FullName));                
+                if (destinationFile.Exists)
+                {
+                    _extractActions[existingFileAction](zipFile, destinationFile.FullName);
+                }
+                else
+                {
+                    if (!destinationFile.Directory.Exists)
+                    {
+                        destinationFile.Directory.Create();
+                    }
+                    zipFile.ExtractToFile(destinationFile.FullName);
+                }
+            });
         }
 
         public static void UnzipTo(this string zipFilePath, string extractToDirectory)
@@ -316,50 +339,10 @@ namespace Bam.Net
 
         public static void UnzipTo(this FileInfo file, DirectoryInfo extractTo, ExtractExistingFileAction existingFileAction = ExtractExistingFileAction.DoNotOverwrite)
         {
-            ZipFile zipFile = ZipFile.Read(file.FullName);
-            zipFile.Each(entry =>
+            using (FileStream fs = new FileStream(file.FullName, FileMode.Open))
             {
-                entry.Extract(extractTo.FullName, existingFileAction);
-            });
-        }
-
-        public static void ZipAndSave(this DirectoryInfo dirToZip, string saveTo)
-        {
-            ZipFile ignore;
-            ZipAndSave(dirToZip, saveTo, out ignore);
-        }
-
-        public static void ZipAndSave(this DirectoryInfo dirToZip, string saveTo, out ZipFile zip)
-        {
-            zip = dirToZip.Zip();
-            zip.Save(saveTo);
-        }
-
-        public static ZipFile Zip(this DirectoryInfo dirToZip, string excludePattern = null)
-        {
-            List<DirectoryInfo> excludeDirs = excludePattern == null ? new List<DirectoryInfo>() : new List<DirectoryInfo>(dirToZip.GetDirectories(excludePattern));
-            List<FileInfo> excludeFiles = excludePattern == null ? new List<FileInfo>() : new List<FileInfo>(dirToZip.GetFiles(excludePattern));
-
-            ZipFile zipFile = new ZipFile();
-            DirectoryInfo[] dirs = dirToZip.GetDirectories();
-            dirs.Each(new { Exclude = excludeDirs }, (ctx, dir) =>
-            {
-                if (!ctx.Exclude.Contains(dir))
-                {
-                    zipFile.AddDirectory(dir.FullName, dir.Name);
-                }
-            });
-
-            FileInfo[] files = dirToZip.GetFiles();
-            files.Each(new { Exclude = excludeFiles }, (ctx, f) =>
-            {
-                if (!ctx.Exclude.Contains(f))
-                {
-                    zipFile.AddFile(f.FullName, "");
-                }
-            });
-
-            return zipFile;
+                fs.UnzipStream(extractTo, existingFileAction);
+            }
         }
 
         public static T ToEnum<T>(this string value)
@@ -1905,18 +1888,6 @@ namespace Bam.Net
 
             return path.ToString();
         }
-
-        //public static Dictionary<TKey, TSource> ToDictionary<TSource, TKey>(this IEnumerable source, Func<TSource, TKey> keySelector)
-        //{
-        //    Dictionary<TKey, TSource> result = new Dictionary<TKey, TSource>();
-        //    foreach (object o in source)
-        //    {
-        //        TSource s = (TSource)o;
-        //        result.Add(keySelector(s), s);
-        //    }
-
-        //    return result;
-        //}
 
         public static Dictionary<string, object> PropertiesToDictionary(this object value)
         {

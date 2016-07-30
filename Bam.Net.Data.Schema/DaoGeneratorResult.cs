@@ -13,6 +13,7 @@ using Ionic.Zip;
 using System.CodeDom.Compiler;
 using System.Web;
 using System.IO;
+using System.IO.Compression;
 
 namespace Bam.Net.Data.Schema
 {

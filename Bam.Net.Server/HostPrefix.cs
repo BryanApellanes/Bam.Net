@@ -33,5 +33,15 @@ namespace Bam.Net.Server
             string protocol = Ssl ? "https://": "http://";
             return string.Format("{0}{1}:{2}/", protocol, HostName, Port);
         }
+
+        public override bool Equals(object obj)
+        {
+            HostPrefix compareTo = obj as HostPrefix;
+            if(compareTo != null)
+            {
+                return compareTo.ToString().Equals(this.ToString());
+            }
+            return base.Equals(obj);
+        }
     }
 }

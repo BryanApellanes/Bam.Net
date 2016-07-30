@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
 using System.IO;
-using Ionic.Zip;
 using Bam.Net.CommandLine;
 using Bam.Net.Testing;
 using Bam.Net;

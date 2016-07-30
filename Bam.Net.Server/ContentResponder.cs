@@ -2,26 +2,20 @@
 	Copyright © Bryan Apellanes 2015  
 */
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.IO;
-using System.Reflection;
-using Ionic.Zip;
-using Bam.Net.Yaml;
-using Bam.Net;
-using Bam.Net.ServiceProxy.Secure;
-using Bam.Net.Logging;
-using Bam.Net.ServiceProxy;
-using Bam.Net.Server.Renderers;
-using Bam.Net.Javascript;
-using Bam.Net.UserAccounts.Data;
-using Bam.Net.Server;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Yahoo.Yui.Compressor;
 using System.Threading.Tasks;
-using System.Collections.Concurrent;
+using Bam.Net;
+using Bam.Net.Javascript;
+using Bam.Net.Logging;
+using Bam.Net.Server.Renderers;
+using Bam.Net.ServiceProxy;
+using Bam.Net.ServiceProxy.Secure;
+using Bam.Net.UserAccounts.Data;
+using Newtonsoft.Json.Linq;
 
 namespace Bam.Net.Server
 {
@@ -161,14 +155,6 @@ namespace Bam.Net.Server
                 }
 
                 string className = typeof(ContentResponder).Name;
-                this.FileSystemInitializing += (c) =>
-                {
-                    logger.AddEntry("{0}::FileSystemInitializ(ING)", className);
-                };
-                this.FileSystemInitialized += (c) =>
-                {
-                    logger.AddEntry("{0}::FileSystemInitializ(ED)", className);
-                };
                 this.AppContentRespondersInitializing += (c) =>
                 {
                     logger.AddEntry("{0}::AppContentRespondersInitializ(ING)", className);
@@ -310,100 +296,6 @@ namespace Bam.Net.Server
                 AppContentResponders[appName] = responder;
 
                 OnAppContentResponderInitialized(ac);
-            });
-        }
-
-        public bool IsFileSystemInitialized { get; private set; }
-
-        public event Action<ContentResponder> FileSystemInitializing;
-        public event Action<ContentResponder> FileSystemInitialized;
-
-        protected void OnFileSystemInitializing()
-        {
-            if (FileSystemInitializing != null)
-            {
-                FileSystemInitializing(this);
-            }
-        }
-
-        protected void OnFileSystemInitialized()
-        {
-            if (FileSystemInitialized != null)
-            {
-                FileSystemInitialized(this);
-            }
-        }
-
-        object _initFsLock = new object();
-        /// <summary>
-        /// Creates the default files in the path specified by
-        /// BamConf.ContentRoot.  Existing files will NOT be
-        /// overwritten.  The source of the initial content will be retrieved
-        /// either from the compiled resource zip file or
-        /// the zip file specified in BamConf.ZipPath
-        /// overwritten depending on the value specified in
-        /// BamConf.InitializeFileSystemFrom.  Valid 
-        /// values are "Resource" or "ZipPath"
-        /// </summary>
-        protected void InitializeFileSystem()
-        {
-            OnFileSystemInitializing();
-
-            lock (_initFsLock)
-            {
-                if (!IsFileSystemInitialized)
-                {
-                    InitializeFileSystemFrom(BamConf.InitializeFileSystemFromEnum);
-                }
-            }
-            OnFileSystemInitialized();
-        }
-
-        private void InitializeFileSystemFrom(InitializeFrom from)
-        {
-            switch (from)
-            {
-                case InitializeFrom.Invalid:
-                    Logger.AddEntry("Invalid InitializeFileSystemFrom entry specified", LogEventType.Warning);
-                    break;
-                case InitializeFrom.Resource:
-                    InitializeFileSystemFromResource();
-                    break;
-                case InitializeFrom.ZipPath:
-                    InitializeFileSystemFromZipFile(BamConf.ZipPath);
-                    break;
-            }
-            IsFileSystemInitialized = true;
-        }
-
-        private void InitializeFileSystemFromZipFile(string path)
-        {
-            if (File.Exists(path))
-            {
-                ZipFile zipFile = ZipFile.Read(path);
-                zipFile.Each(entry =>
-                {
-                    entry.Extract(BamConf.ContentRoot, ExtractExistingFileAction.DoNotOverwrite);
-                });
-            }
-        }
-
-        private void InitializeFileSystemFromResource()
-        {
-            Assembly currentAssembly = Assembly.GetExecutingAssembly();
-            string[] resourceNames = currentAssembly.GetManifestResourceNames();
-            resourceNames.Each(rn =>
-            {
-                bool isRoot = Path.GetExtension(rn).ToLowerInvariant().Equals(".root"); //the resource file content.root is a zip file
-                if (isRoot)
-                {
-                    Stream zipStream = currentAssembly.GetManifestResourceStream(rn);
-                    ZipFile zipFile = ZipFile.Read(zipStream);
-                    zipFile.Each(entry =>
-                    {
-                        entry.Extract(BamConf.ContentRoot, ExtractExistingFileAction.DoNotOverwrite);
-                    });
-                }
             });
         }
 
@@ -726,7 +618,6 @@ namespace Bam.Net.Server
                         {
                             Logger.AddEntry("GZipping the minified bytes of ({0}) COMPLETED", LogEventType.Information, path);
                             byte[] zippedMinBytes = g.Result;
-                            //SetZippedMinCacheBytes(path, zippedMinBytes);
                             SetZippedMinCacheBytes(minPath, zippedMinBytes);
                         });
                     }
@@ -799,7 +690,7 @@ namespace Bam.Net.Server
         {
             get
             {
-                return IsFileSystemInitialized && IsAppsInitialized;
+                return IsAppsInitialized;
             }
         }
 
@@ -808,8 +699,6 @@ namespace Bam.Net.Server
             if (!IsInitialized)
             {
                 OnInitializing();
-
-                InitializeFileSystem();
                 InitializeCommonTemplateRenderer();
                 InitializeAppResponders();
 

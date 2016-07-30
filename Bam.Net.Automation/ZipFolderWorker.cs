@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Bam.Net;
 using Bam.Net.Configuration;
 using System.IO;
+using System.IO.Compression;
 
 namespace Bam.Net.Automation
 {
@@ -40,8 +41,7 @@ namespace Bam.Net.Automation
             Validate.RequiredProperties(this);
             
             DirectoryInfo dir = new DirectoryInfo(SourceDirectory);
-            dir.ZipAndSave(TargetPath);
-
+            ZipFile.CreateFromDirectory(dir.FullName, TargetPath);
             WorkState workstate = new WorkState(this, "Sucessfully zipped file to {0}"._Format(SourceDirectory));
             return workstate;
         }

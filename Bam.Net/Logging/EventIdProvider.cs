@@ -12,7 +12,7 @@ namespace Bam.Net.Logging
     {
         public virtual int GetEventId(string applicationName, string messageSignature)
         {
-            return (applicationName + messageSignature).GetHashCode();
+            return (applicationName + messageSignature).GetHashCode(); // TODO: change this to use sha1 and hex conversion rather than string.GetHashCode()
         }
     }
 }
