@@ -375,11 +375,6 @@
             and EnableServiceProxy is true
             </summary>
         </member>
-        <member name="T:Bam.Net.Server.ContentManager">
-            <summary>
-            A manager of content files in a bam application
-            </summary>
-        </member>
         <member name="M:Bam.Net.Server.DaoConf.GetDefault(System.Type,Bam.Net.Server.BamConf)">
             <summary>
             Get a DaoConf with default settings (uses SQLite)
@@ -762,7 +757,7 @@
             the ~s:/apps folder.  For example, if there is a subfolder named
             Monkey in ~s:/apps then this method will search for ~s:/apps/Monkey/appConf.json
             then ~s:/apps/Monkey/appConf.yaml if the json file isn't found.  If neither
-            is found a new AppConf is created and and serialized to the json file
+            is found a new AppConf is created and serialized to the json file
             specified above.
             </summary>
             <returns></returns>
@@ -810,18 +805,6 @@
             <summary>
             Initialize all the AppContentResponders for the 
             apps found in the ~s:/apps folder
-            </summary>
-        </member>
-        <member name="M:Bam.Net.Server.ContentResponder.InitializeFileSystem">
-            <summary>
-            Creates the default files in the path specified by
-            BamConf.ContentRoot.  Existing files will NOT be
-            overwritten.  The source of the initial content will be retrieved
-            either from the compiled resource zip file or
-            the zip file specified in BamConf.ZipPath
-            overwritten depending on the value specified in
-            BamConf.InitializeFileSystemFrom.  Valid 
-            values are "Resource" or "ZipPath"
             </summary>
         </member>
         <member name="M:Bam.Net.Server.ContentResponder.GetAppIncludes(Bam.Net.Server.AppConf)">

@@ -334,6 +334,16 @@
             If true, any references to the current
             record will be deleted prior to deleting
             the current record in a call to Delete()
+            if those references have been hydrated on
+            the current instance
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Dao.AutoHydrateChildrenOnDelete">
+            <summary>
+            If true, will hydrate child collections
+            prior to deletion so that they can be deleted.
+            Incurs performance cost if many child 
+            collections must be loaded
             </summary>
         </member>
         <member name="M:Bam.Net.Data.Dao.ResetChildren">
@@ -533,6 +543,12 @@
             <summary>
             Reload the current collection using the original query
             used to populate it
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.DaoCollection`2.AutoHydrateChildrenOnDelete">
+            <summary>
+            If true, will cause dao instances in this collection
+            to load their child collections on delete for auto deletion
             </summary>
         </member>
         <member name="M:Bam.Net.Data.DaoCollection`2.WriteDelete(Bam.Net.Data.SqlStringBuilder)">

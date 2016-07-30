@@ -50,10 +50,6 @@ RMDIR /S /Q ..\..\Bam.Net.Server\obj\
 del /F /Q .\Bam.Net.Server\lib\%LIB%\*
 RMDIR /S /Q ..\..\Bam.Net.ServiceProxy\obj\
 del /F /Q .\Bam.Net.ServiceProxy\lib\%LIB%\*
-RMDIR /S /Q ..\..\Bam.Net.ServiceProxy.Tests\obj\
-del /F /Q .\Bam.Net.ServiceProxy.Tests\lib\%LIB%\*
-RMDIR /S /Q ..\..\Bam.Net.SourceControl\obj\
-del /F /Q .\Bam.Net.SourceControl\lib\%LIB%\*
 RMDIR /S /Q ..\..\Bam.Net.Syndication\obj\
 del /F /Q .\Bam.Net.Syndication\lib\%LIB%\*
 RMDIR /S /Q ..\..\Bam.Net.Testing\obj\
@@ -64,3 +60,5 @@ RMDIR /S /Q ..\..\Bam.Net.Yaml\obj\
 del /F /Q .\Bam.Net.Yaml\lib\%LIB%\*
 RMDIR /S /Q ..\..\Bam.Net.ServiceProxy.Tests\obj\
 del /F /Q .\Bam.Net.ServiceProxy.Tests\lib\%LIB%\*
+RMDIR /S /Q ..\..\Bam\obj\
+del /F /Q .\Bam\lib\%LIB%\*
