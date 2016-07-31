@@ -11,11 +11,11 @@ namespace Bam.Net.Data
 {
     public abstract class SchemaWriter: SqlStringBuilder
     {
-        protected static string CreateTableFormat = "CREATE TABLE [{0}] ({1})";
         public SchemaWriter()
         {
-            this.KeyColumnFormat = "{0} IDENTITY (1,1) PRIMARY KEY";
-            this.AddForeignKeyColumnFormat = "ALTER TABLE [{0}] ADD CONSTRAINT {1} FOREIGN KEY ({2}) REFERENCES [{3}] ({4})";
+            KeyColumnFormat = "{0} IDENTITY (1,1) PRIMARY KEY";
+            AddForeignKeyColumnFormat = "ALTER TABLE [{0}] ADD CONSTRAINT {1} FOREIGN KEY ({2}) REFERENCES [{3}] ({4})";
+            CreateTableFormat= "CREATE TABLE [{0}] ({1})"; 
         }
 
         public event SqlStringBuilderDelegate DropEnabled;
@@ -26,6 +26,12 @@ namespace Bam.Net.Data
             {
                 DropEnabled(this);
             }
+        }
+
+        public string CreateTableFormat
+        {
+            get;
+            protected set;
         }
 
         public string KeyColumnFormat
@@ -161,6 +167,8 @@ namespace Bam.Net.Data
                     }
                 }));
         }
+
+        public abstract string GetKeyColumnDefinition(KeyColumnAttribute keyColumn);
 
         /// <summary>
         /// Gets the text used to declare the specified column in a 

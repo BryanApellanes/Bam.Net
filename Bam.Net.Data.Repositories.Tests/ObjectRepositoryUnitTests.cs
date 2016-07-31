@@ -246,41 +246,6 @@ namespace Bam.Net.Data.Repositories.Tests
 			Expect.IsTrue(check.BooleanProperty);
 			Expect.AreEqual(date, check.BirthDate);
 		}
-
-		//[UnitTest]
-		//public void TimeSaveOfTenThousandRecordsNonSerializable()
-		//{
-		//	ObjectRepository repo = GetTestObjectRepository(MethodBase.GetCurrentMethod().Name);
-
-		//	TimeSpan took = Timed.Execution(() =>
-		//	{
-		//		10000.Times((i) =>
-		//		{
-		//			repo.Save(GetTestObject(i));
-		//		});
-		//	});
-
-		//	OutFormat("Saving 10000 objects took took {0}", took.ToString());
-		//}
-
-		//private NotSerializable GetTestObject(int num)
-		//{
-		//	return new NotSerializable { Name = "Name: {0} "._Format(num).RandomString(6), BirthDate = DateTime.Now.Subtract(TimeSpan.FromDays(365 * RandomNumber.Between(1, 100))), BooleanProperty = RandomHelper.Bool() };
-		//}
-
-		//[UnitTest]
-		//public void Mongo_ShouldBeAbleToSaveAndQuerySerializable()
-		//{
-		//	ObjectRepository repo = GetTestMongoObjectRepository(MethodBase.GetCurrentMethod().Name);
-		//	string name = "This is a the name";
-			
-		//	Parent value = new Parent { Name = name };
-		//	repo.Save(value);
-
-		//	Parent check = repo.Query<Parent>((ns) => ns.Name == name).FirstOrDefault();
-		//	Expect.IsNotNull(check);
-		//	Expect.AreEqual(name, check.Name);
-		//}
 		
 		[UnitTest]
 		public void ObjectRepoSavingParentXrefShouldSetChildXref()

@@ -90,14 +90,20 @@ namespace Bam.Net.Data.Repositories
 		public override T Retrieve<T>(long id)
 		{
 			T value = ObjectReaderWriter.Read<T>(id);
-			LoadXrefCollectionValues(value);
+            if(value != null)
+            {
+                LoadXrefCollectionValues(value);
+            }
 			return value;
 		}
 
 		public override object Retrieve(Type objectType, long id)
 		{
 			object obj = ObjectReaderWriter.Read(objectType, id);
-			LoadXrefCollectionValues(obj);
+            if(obj != null)
+            {
+                LoadXrefCollectionValues(obj);
+            }
 			return obj;
 		}
 

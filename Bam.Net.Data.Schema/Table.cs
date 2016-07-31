@@ -244,7 +244,8 @@ namespace Bam.Net.Data.Schema
                         this._foreignKeys.Add(fk.Name, fk);
                     }
                 }
-                else if (!this._columns.ContainsKey(column.Name))
+
+                if (!this._columns.ContainsKey(column.Name))
                 {
                     this._columns.Add(column.Name, column);
                 }

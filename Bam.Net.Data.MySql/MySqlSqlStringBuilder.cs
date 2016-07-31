@@ -20,9 +20,10 @@ namespace Bam.Net.Data
             : base()
         {
             GoText = ";\r\n";
-            this.AddForeignKeyColumnFormat = "ALTER TABLE `{0}` ADD CONSTRAINT {1} FOREIGN KEY ({2}) REFERENCES `{3}` ({4})";
-            this.TableNameFormatter = (s) => "`{0}`"._Format(s);
-            this.ColumnNameFormatter = (s) => s;
+            CreateTableFormat = "CREATE TABLE `{0}` ({1})";
+            AddForeignKeyColumnFormat = "ALTER TABLE `{0}` ADD CONSTRAINT {1} FOREIGN KEY ({2}) REFERENCES `{3}` ({4})";
+            TableNameFormatter = (s) => "`{0}`"._Format(s);
+            ColumnNameFormatter = (s) => s;
         }
         public override SqlStringBuilder Id(string idAs)
         {
@@ -39,6 +40,11 @@ namespace Bam.Net.Data
             MySqlSqlStringBuilder builder = new MySqlSqlStringBuilder();
             incubator.Set(typeof(SqlStringBuilder), builder);
             incubator.Set<SqlStringBuilder>(builder);
+        }
+
+        public override string GetKeyColumnDefinition(KeyColumnAttribute keyColumn)
+        {
+            return string.Format("{0} AUTO_INCREMENT PRIMARY KEY ", GetColumnDefinition(keyColumn));
         }
 
         public override string GetColumnDefinition(ColumnAttribute column)
@@ -67,7 +73,6 @@ namespace Bam.Net.Data
                 max = "";
             }
 
-
             return string.Format("{0} {1}{2}{3}", column.Name, type, max, column.AllowNull ? "" : " NOT NULL");
         }
         public override SqlStringBuilder Where(IQueryFilter filter)
@@ -89,13 +94,13 @@ namespace Bam.Net.Data
         {
             ColumnAttribute[] columns = GetColumns(daoType);
 
-            Builder.AppendFormat("CREATE TABLE `{0}` ({1})",
+            Builder.AppendFormat(CreateTableFormat,
                 Dao.TableName(daoType),
                 columns.ToDelimited(c =>
                 {
                     if (c is KeyColumnAttribute)
                     {
-                        return string.Format("{0} AUTO_INCREMENT PRIMARY KEY ", GetColumnDefinition(c));
+                        return GetKeyColumnDefinition((KeyColumnAttribute)c);
                     }
                     else
                     {

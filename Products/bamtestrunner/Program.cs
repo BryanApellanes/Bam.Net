@@ -169,7 +169,7 @@ namespace Bam.Net.Testing
             try
             {
                 Assembly assembly = Assembly.LoadFrom(assemblyPath);
-                IntegrationTestRunner.RunAllIntegrationTests(assembly);
+                IntegrationTestRunner.RunIntegrationTests(assembly);
             }
             catch (Exception ex)
             {

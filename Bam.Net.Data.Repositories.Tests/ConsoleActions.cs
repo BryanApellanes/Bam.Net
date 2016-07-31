@@ -11,7 +11,11 @@ using System.Threading.Tasks;
 using Bam.Net;
 using Bam.Net.CommandLine;
 using Bam.Net.Testing;
+using Bam.Net.Testing.Integration;
 using Bam.Net.Yaml;
+using Bam.Net.Data.Tests.Integration;
+using Bam.Net.Schema.Org;
+using Bam.Net.Data.Schema;
 
 namespace Bam.Net.Data.Repositories.Tests
 {
@@ -59,57 +63,52 @@ namespace Bam.Net.Data.Repositories.Tests
 			"notepad {0}"._Format(fileName).Run();
 		}
 
-		[ConsoleAction]
-		public void OutputDtoTest()
-		{
-			MainObject o = new MainObject();
-			DtoModel model = new DtoModel(o, "Test");
-			OutLine(model.Render());
-		}
+        [ConsoleAction]
+        public void RunRepositoryIntegrationTests()
+        {
+            IntegrationTestRunner.RunIntegrationTests(typeof(RepositoryIntegrationTests));
+        }
 
         [ConsoleAction]
-        public void OutputPropertiesAndMethods()
+        public void WriteSchemaScriptTest()
         {
-            HashSet<string> daoProperties = new HashSet<string>(typeof(Dao).GetProperties().Select(p => p.Name).ToArray());
-            HashSet<string> daoMethods = new HashSet<string>(typeof(Dao).GetMethods().Where(m=> !m.IsProperty() && !m.IsSpecialName).Select(m => m.Name).ToArray());
-            HashSet<string> generatedMethods = new HashSet<string>(typeof(MainObject).GetMethods().Where(mi => !mi.IsSpecialName && !mi.IsProperty() && !daoMethods.Contains(mi.Name)).Select(mi => mi.Name).ToArray());
-            HashSet<string> queryFilterProperties = new HashSet<string>(typeof(QueryFilter).GetProperties().Select(p => p.Name).ToArray());
-            HashSet<string> queryFilterMethods = new HashSet<string>(typeof(QueryFilter).GetMethods().Where(mi=> !mi.IsSpecialName && !mi.IsProperty()).Select(p => p.Name).ToArray());
-            OutLine("Dao Props:", ConsoleColor.Cyan);
-            using (StreamWriter sw = new StreamWriter(".\\reserved.txt"))
+            TypeInheritanceSchemaGenerator gen = new TypeInheritanceSchemaGenerator();
+            gen.SchemaManager = new SchemaManager { AutoSave = false };
+            SchemaDefinitionCreateResult sd = gen.CreateSchemaDefinition(new Type[] { typeof(Airport) });
+            DataTools.Setup(db => { }).Each(sd, (result, db) =>
             {
-                daoProperties.Each(s =>
-                {
-                    OutLineFormat("\t{0}", ConsoleColor.Cyan, s);
-                    sw.WriteLine($"\"{s}\",");
-                });
-                OutLine("Dao Methods:", ConsoleColor.DarkBlue);
-                daoMethods.Each(s =>
-                {
-                    OutLineFormat("\t{0}", ConsoleColor.DarkBlue, s);
-                    sw.WriteLine($"\"{s}\",");
-                });
-                OutLine("Generated Methods:", ConsoleColor.DarkCyan);
-                generatedMethods.Each(s =>
-                {
-                    OutLineFormat("\t{0}", ConsoleColor.DarkCyan, s);
-                    sw.WriteLine($"\"{s}\",");
-                });
-                OutLine("Query filter Properties:", ConsoleColor.DarkCyan);
-                queryFilterProperties.Each(s =>
-                {
-                    OutLineFormat("\t{0}", ConsoleColor.DarkCyan, s);
-                    sw.WriteLine($"\"{s}\",");
-                });
-                OutLine("Query filter Methods:", ConsoleColor.DarkCyan);
-                queryFilterMethods.Each(s =>
-                {
-                    OutLineFormat("\t{0}", ConsoleColor.DarkCyan, s);
-                    sw.WriteLine($"\"{s}\",");
-                });
-            }
+                StringBuilder schemaScript = db.WriteSchemaScript((SchemaDefinitionCreateResult)result);
+                OutLineFormat("Db Type: {0}", ConsoleColor.Cyan, db.GetType().Name);
+                Out(schemaScript.ToString(), ConsoleColor.DarkCyan);
+            });
+        }
 
-            "notepad .\\reserved.txt".Run();
+        [ConsoleAction]
+        public void OutputDeepestChainLength()
+        {
+            int deepest = 0;
+            int outOf = 0;
+            Type[] types = typeof(Thing).Assembly.GetTypes();
+            TypeInheritanceDescriptor theOne = null;
+            OutLineFormat("{0} types", types.Length);
+            types.Each(type =>
+            {
+                outOf++;
+                TypeInheritanceDescriptor inheritance = new TypeInheritanceDescriptor(type);
+                if (inheritance.Chain.Count > deepest)
+                {
+                    theOne = inheritance;
+                    deepest = inheritance.Chain.Count;
+                    OutLineFormat("Deepest so far {0}/{1}", ConsoleColor.Cyan, deepest, outOf);
+                    OutLine(inheritance.ToString(), ConsoleColor.DarkCyan);
+                }
+                else
+                {
+                    OutLineFormat("{0}: Only {1}", ConsoleColor.Yellow, type.Name, inheritance.Chain.Count);
+                }
+            });
+            OutLineFormat("The deepest is {0} with {1}", ConsoleColor.DarkBlue, theOne.Type.Name, theOne.Chain.Count);
+            OutLine(theOne.ToString(), ConsoleColor.Blue);
         }
     }
 }

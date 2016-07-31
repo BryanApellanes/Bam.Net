@@ -23,7 +23,10 @@ namespace @Namespace
 				
 		@foreach(Column column in Model.Columns)
 		{
-			WriteColumnsClassProperty(column);
+			if(!(column is ForeignKeyColumn))
+			{
+				WriteColumnsClassProperty(column);
+			}
 		}
 
 		@foreach(Column column in Model.ForeignKeys)

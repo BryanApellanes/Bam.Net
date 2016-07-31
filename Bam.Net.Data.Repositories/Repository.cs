@@ -49,6 +49,12 @@ namespace Bam.Net.Data.Repositories
 			_storableTypes.Add(type);
 		}
 
+        /// <summary>
+        /// Add all the types from the specified assembly
+        /// that are in the specified nameSpace
+        /// </summary>
+        /// <param name="assembly"></param>
+        /// <param name="nameSpace"></param>
 		public void AddNamespace(Assembly assembly, string nameSpace)
 		{
 			AddTypes(assembly.GetTypes().Where(t => t.Namespace != null && t.Namespace.Equals(nameSpace) && !t.IsAbstract));
@@ -64,6 +70,11 @@ namespace Bam.Net.Data.Repositories
 			return (T)Save((object)toSave);
 		}
 
+        /// <summary>
+        /// Add all the types in the same namespace
+        /// as the specified type
+        /// </summary>
+        /// <param name="type"></param>
         public void AddNamespace(Type type)
         {
             AddNamespace(type.Assembly, type.Namespace);

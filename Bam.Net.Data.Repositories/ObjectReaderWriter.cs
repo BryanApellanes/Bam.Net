@@ -285,9 +285,9 @@ namespace Bam.Net.Data.Repositories
 					return false;
 				Type type = data.GetType();
 				string idHash = GetIdHash(data);
-				IpcMessage.Delete(idHash, type);
+				IpcMessage.Delete(idHash, type, RootDirectory);
 				string uuidHash = GetUuidHash(data);
-				IpcMessage.Delete(uuidHash, type);
+				IpcMessage.Delete(uuidHash, type, RootDirectory);
 				DeleteObjectProperties(data);
 				DeleteHash(data);
 				return true;

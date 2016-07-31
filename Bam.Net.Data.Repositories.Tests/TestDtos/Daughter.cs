@@ -13,5 +13,6 @@ namespace Bam.Net.Data.Repositories.Tests.TestDtos
         public long Id { get; set; }
         public string Uuid { get; set; }
         public string Name { get; set; }
+        public long ParentId { get; set; }
     }
 }

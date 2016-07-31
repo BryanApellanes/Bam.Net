@@ -980,6 +980,7 @@
     <Compile Include="Things\VideoGame.cs" />
     <Compile Include="Things\VideoGameClip.cs" />
     <Compile Include="Things\VideoGameSeries.cs" />
+    <Compile Include="Things\VideoGame_1.cs" />
     <Compile Include="Things\VideoObject.cs" />
     <Compile Include="Things\ViewAction.cs" />
     <Compile Include="Things\VinylFormat.cs" />

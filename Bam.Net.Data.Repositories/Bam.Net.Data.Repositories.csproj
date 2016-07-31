@@ -124,10 +124,14 @@
     <Compile Include="BackedupDatabase.cs" />
     <Compile Include="DaoGenerationException.cs" />
     <Compile Include="DaoBackup.cs" />
+    <Compile Include="DatabaseExtensions.cs" />
+    <Compile Include="DatabaseRepository.cs" />
     <Compile Include="EchoTypeTableNameProvider.cs" />
     <Compile Include="GeneratedDaoAssemblyInfo.cs" />
     <Compile Include="IHasTypeSchemaTempPathProvider.cs" />
     <Compile Include="ICrudProvider.cs" />
+    <Compile Include="PropertyColumn.cs" />
+    <Compile Include="TypeInheritanceSchemaGenerator.cs" />
     <Compile Include="SchemaDifferenceEventArgs.cs" />
     <Compile Include="SchemaRepositoryModel.cs" />
     <Compile Include="SchemaRepositoryGenerator.cs" />
@@ -144,6 +148,9 @@
     <Compile Include="MissingForeignKeyPropertyException.cs" />
     <Compile Include="DaoToDtoGenerator.cs" />
     <Compile Include="SchemaTypeModel.cs" />
+    <Compile Include="TypeInheritanceDescriptor.cs" />
+    <Compile Include="TypeInheritanceWriter.cs" />
+    <Compile Include="TypeTable.cs" />
     <Compile Include="TypeXrefModel.cs" />
     <Compile Include="WrapperExtensions.cs" />
     <Compile Include="WrapperGenerator.cs" />
@@ -217,6 +224,10 @@
     <ProjectReference Include="..\Bam.Net.Data.MySql\Bam.Net.Data.MySql.csproj">
       <Project>{aeaaa461-99de-4daf-9e3d-0301582784e7}</Project>
       <Name>Bam.Net.Data.MySql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.Npgsql\Bam.Net.Data.Npgsql.csproj">
+      <Project>{49e255c4-c8eb-4ec9-baea-50ff7a9d16db}</Project>
+      <Name>Bam.Net.Data.Npgsql</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Data.Oracle\Bam.Net.Data.Oracle.csproj">
       <Project>{296d4f9e-09f3-48c1-9968-d161c9666756}</Project>

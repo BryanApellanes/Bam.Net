@@ -39,12 +39,11 @@ namespace Bam.Net.Data
                 {
                     if (c is KeyColumnAttribute)
                     {
-                        return string.Format(KeyColumnFormat, string.Format("{0} INTEGER", c.Name)); 
+                        return GetKeyColumnDefinition((KeyColumnAttribute)c);
                     }
                     else
                     {
-                        string columnDef = GetColumnDefinition(c);
-                        return columnDef;
+                        return GetColumnDefinition(c);                        
                     }
                 }),
                 fks.Length > 0 ? ",": "",
@@ -86,6 +85,11 @@ namespace Bam.Net.Data
         {
             StringBuilder.AppendFormat("{0}SELECT last_insert_rowid() AS {1}", this.GoText, idAs);
             return this;
+        }
+
+        public override string GetKeyColumnDefinition(KeyColumnAttribute keyColumn)
+        {
+            return string.Format(KeyColumnFormat, string.Format("{0} INTEGER", keyColumn.Name));
         }
 
         public override string GetColumnDefinition(ColumnAttribute column)

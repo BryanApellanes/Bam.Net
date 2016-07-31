@@ -20,9 +20,10 @@ namespace Bam.Net.Data
             : base()
         {
             GoText = ";\r\n";
-            this.AddForeignKeyColumnFormat = "ALTER TABLE \"{0}\" ADD CONSTRAINT {1} FOREIGN KEY (\"{2}\") REFERENCES \"{3}\" (\"{4}\")";
-            this.TableNameFormatter = (s) => "\"{0}\""._Format(s);
-            this.ColumnNameFormatter = (s) => "\"{0}\""._Format(s);
+            CreateTableFormat = "CREATE TABLE {0} ({1})";
+            AddForeignKeyColumnFormat = "ALTER TABLE \"{0}\" ADD CONSTRAINT {1} FOREIGN KEY (\"{2}\") REFERENCES \"{3}\" (\"{4}\")";
+            TableNameFormatter = (s) => "\"{0}\""._Format(s);
+            ColumnNameFormatter = (s) => "\"{0}\""._Format(s);
         }
         public override SqlStringBuilder Id(string idAs)
         {
@@ -40,7 +41,12 @@ namespace Bam.Net.Data
             incubator.Set(typeof(SqlStringBuilder), builder);
             incubator.Set<SqlStringBuilder>(builder);
         }
-
+        public override string GetKeyColumnDefinition(KeyColumnAttribute keyColumn)
+        {
+            KeyColumnAttribute key = keyColumn.CopyAs<KeyColumnAttribute>();
+            key.DbDataType = "SERIAL";
+            return string.Format("{0} PRIMARY KEY ", GetColumnDefinition(key));
+        }
         public override string GetColumnDefinition(ColumnAttribute column)
         {
             string max = string.Format("({0})", column.MaxLength);
@@ -96,15 +102,13 @@ namespace Bam.Net.Data
         {
             ColumnAttribute[] columns = GetColumns(daoType);
 
-            Builder.AppendFormat("CREATE TABLE {0} ({1})",
+            Builder.AppendFormat(CreateTableFormat,
                 TableNameFormatter(Dao.TableName(daoType)),
                 columns.ToDelimited(c =>
                 {
                     if (c is KeyColumnAttribute)
                     {
-                        KeyColumnAttribute key = c.CopyAs<KeyColumnAttribute>();
-                        key.DbDataType = "SERIAL";
-                        return string.Format("{0} PRIMARY KEY ", GetColumnDefinition(key));
+                        return GetKeyColumnDefinition((KeyColumnAttribute)c);
                     }
                     else
                     {

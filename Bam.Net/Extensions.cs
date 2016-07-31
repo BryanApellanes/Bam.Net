@@ -99,6 +99,31 @@ namespace Bam.Net
             return currentPath;
         }
 
+        public static string GetNextDirectoryName(this string path)
+        {
+            int num;
+            return GetNextDirectoryName(path, out num);
+        }
+        /// <summary>
+        /// If the specified directory exists a new path with 
+        /// a number appended will be returned where the 
+        /// new path does not exist
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static string GetNextDirectoryName(this string path, out int num)
+        {
+            DirectoryInfo dirInfo = new DirectoryInfo(path);
+            num = 0;
+            string currentPath = path;
+            while (Directory.Exists(currentPath))
+            {
+                num++;
+                currentPath = $"{path}_{num}";
+            }
+            return currentPath;
+        }
+
         /// <summary>
         /// Read the specified string up to the first instance of the specified charToFind
         /// returning the characters read and producing remainder as an out parameter.  Discards
@@ -513,6 +538,14 @@ namespace Bam.Net
             }
         }
 
+        /// <summary>
+        /// Execute the specified Func this 
+        /// many times
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="count"></param>
+        /// <param name="func"></param>
+        /// <returns></returns>
         public static T[] Times<T>(this int count, Func<int, T> func)
         {
             T[] results = new T[count];

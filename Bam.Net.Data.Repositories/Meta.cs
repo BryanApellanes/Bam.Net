@@ -10,6 +10,7 @@ using System.Reflection;
 using System.IO;
 using Bam.Net;
 using Bam.Net.Logging;
+using NCuid;
 
 namespace Bam.Net.Data.Repositories
 {
@@ -245,6 +246,7 @@ namespace Bam.Net.Data.Repositories
 				{
 					SetUuid(Data);
 				}
+                SetCuid(Data);
 			}
 		}
 
@@ -312,7 +314,7 @@ namespace Bam.Net.Data.Repositories
 			}
 			return result;
 		}
-
+        
 		protected internal static bool HasKeyProperty(object data, out PropertyInfo prop)
 		{
 			prop = GetKeyProperty(data.GetType(), false);
@@ -430,10 +432,27 @@ namespace Bam.Net.Data.Repositories
 				{
 					guid = Guid.NewGuid();
 				}
-
 				uuidProp.SetValue(data, guid.ToString());
 			}
 		}
+
+        internal static void SetCuid(object data, string cuid = "", RandomSource randomSource = RandomSource.Simple)
+        {
+            Type type = data.GetType();
+            PropertyInfo cuidProp = type.GetProperty("Cuid");
+            if(cuidProp != null)
+            {
+                if (string.IsNullOrEmpty(cuid))
+                {
+                    cuid = (string)cuidProp.GetValue(data);
+                }
+                if (string.IsNullOrEmpty(cuid))
+                {
+                    cuid = Cuid.Generate(randomSource);
+                }
+                cuidProp.SetValue(data, cuid);
+            }
+        }
 
 		protected internal static int GetNextVersionNumber(DirectoryInfo propRoot, PropertyInfo prop, string hash)
 		{
