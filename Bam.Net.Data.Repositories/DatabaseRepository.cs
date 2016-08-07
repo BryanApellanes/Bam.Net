@@ -62,8 +62,8 @@ namespace Bam.Net.Data.Repositories
                 try
                 {
                     _ensured = true;
-                    StringBuilder sql = Database.WriteSchemaScript(SchemaDefinitionCreateResult);
-                    Database.ExecuteSql(sql.ToString(), CommandType.Text);
+                    SqlStringBuilder sql = Database.WriteSchemaScript(SchemaDefinitionCreateResult);
+                    Database.ExecuteSql(sql);
                 }
                 catch (Exception ex)
                 {

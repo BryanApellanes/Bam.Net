@@ -30,28 +30,24 @@ namespace Bam.Net.Data
 
         protected override void WriteCreateTable(Type daoType)
         {
-            ColumnAttribute[] columns = GetColumns(daoType);
-            ForeignKeyAttribute[] fks = GetForeignKeys(daoType);
-
-            Builder.AppendFormat("CREATE TABLE [{0}] ({1}{2}{3})",
-                daoType.GetCustomAttributeOfType<TableAttribute>().TableName,
-                columns.ToDelimited(c =>
-                {
-                    if (c is KeyColumnAttribute)
-                    {
-                        return GetKeyColumnDefinition((KeyColumnAttribute)c);
-                    }
-                    else
-                    {
-                        return GetColumnDefinition(c);                        
-                    }
-                }),
-                fks.Length > 0 ? ",": "",
-                fks.ToDelimited(f =>
-                {
-                    return string.Format("FOREIGN KEY({0}) REFERENCES [{1}]({2})", f.Name, f.ReferencedTable, f.ReferencedKey);
-                }));
+            ColumnAttribute[] columns = GetColumns(daoType);           
+            string tableName = Dao.TableName(daoType);
+            string columnDefinitions = GetColumnDefinitions(columns);
+            WriteCreateTable(tableName, columnDefinitions, GetForeignKeys(daoType));
         }
+
+        public override void WriteCreateTable(string tableName, string columnDefinitions, dynamic[] fks) // ForeignKeyAttribute[]
+        {
+            Builder.AppendFormat("CREATE TABLE [{0}] ({1}{2}{3})",
+                            tableName,
+                            columnDefinitions,
+                            fks.Length > 0 ? "," : "",
+                            fks.ToDelimited(f =>
+                            {
+                                return string.Format("FOREIGN KEY({0}) REFERENCES [{1}]({2})", f.Name, f.ReferencedTable, f.ReferencedKey);
+                            }));
+        }
+
 
         protected override void WriteForeignKeys(Type daoType)
         {
@@ -70,15 +66,17 @@ namespace Bam.Net.Data
 			// empty implementation 
 			// SQLite can't alter a table to add foreign keys
 		}
-
-        protected override void WriteDropTable(Type daoType)
+        public override void WriteAddForeignKey(string tableName, string nameOfReference, string nameOfColumn, string referencedTable, string referencedKey)
         {
-            TableAttribute attr = null;
-            if (daoType.HasCustomAttributeOfType<TableAttribute>(out attr))
-            {
-                Builder.AppendFormat("DROP TABLE IF EXISTS {0}\r\n", attr.TableName);
-                Go();
-            }
+            // empty implementation
+            // SQLite can't alter a table to add foreign keys
+        }
+
+        public override SchemaWriter WriteDropTable(string tableName)
+        {
+            Builder.AppendFormat("DROP TABLE IF EXISTS {0}\r\n", tableName);
+            Go();
+            return this;
         }
 
         public override SqlStringBuilder Id(string idAs)

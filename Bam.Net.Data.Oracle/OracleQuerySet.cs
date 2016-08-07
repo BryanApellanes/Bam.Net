@@ -16,7 +16,7 @@ namespace Bam.Net.Data
 		public OracleQuerySet(): base()
 		{
 			GoText = "\r\n";
-			TableNameFormatter = (t) => string.Format("\"{0}\"", t);
+			TableNameFormatter = (t) => string.Format("\"{0}\"", t.ToUpperInvariant());
 			ColumnNameFormatter = (c) => c;
 		}
 

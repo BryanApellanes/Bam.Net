@@ -77,7 +77,7 @@ namespace Bam.Net.Data.Repositories.Tests
             SchemaDefinitionCreateResult sd = gen.CreateSchemaDefinition(new Type[] { typeof(Airport) });
             DataTools.Setup(db => { }).Each(sd, (result, db) =>
             {
-                StringBuilder schemaScript = db.WriteSchemaScript((SchemaDefinitionCreateResult)result);
+                SqlStringBuilder schemaScript = db.WriteSchemaScript((SchemaDefinitionCreateResult)result);
                 OutLineFormat("Db Type: {0}", ConsoleColor.Cyan, db.GetType().Name);
                 Out(schemaScript.ToString(), ConsoleColor.DarkCyan);
             });

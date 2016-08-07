@@ -189,6 +189,11 @@ namespace Bam.Net.Data
             ExecuteSql(sprocName, CommandType.StoredProcedure, dbParameters);
         }
 
+        public virtual void ExecuteSql(string sqlStatement, params DbParameter[] dbParameters)
+        {
+            ExecuteSql(sqlStatement, CommandType.Text, dbParameters);
+        }
+
         public virtual void ExecuteSql(string sqlStatement, CommandType commandType, params DbParameter[] dbParameters)
         {
             DbProviderFactory providerFactory = ServiceProvider.Get<DbProviderFactory>();

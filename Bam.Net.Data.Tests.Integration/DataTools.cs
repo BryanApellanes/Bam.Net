@@ -30,7 +30,7 @@ namespace Bam.Net.Data.Tests.Integration
 		/// </summary>
 		/// <returns></returns>
 		[ConsoleAction]
-		public static HashSet<Database> Setup(Action<Database> initializer = null)
+		public static HashSet<Database> Setup(Action<Database> initializer = null, string databaseName = "DaoRef")
 		{
             if(initializer == null)
             {
@@ -39,23 +39,23 @@ namespace Bam.Net.Data.Tests.Integration
 
 			HashSet<Database> testDatabases = new HashSet<Database>();
 
-            MsSqlDatabase msDatabase = new MsSqlDatabase("chumsql2", "DaoRef", new MsSqlCredentials { UserName = "mssqluser", Password = "mssqlP455w0rd" });
+            MsSqlDatabase msDatabase = new MsSqlDatabase("chumsql2", databaseName, new MsSqlCredentials { UserName = "mssqluser", Password = "mssqlP455w0rd" });
             initializer(msDatabase);
             testDatabases.Add(msDatabase);
 
-            SQLiteDatabase sqliteDatabase = new SQLiteDatabase(".\\DaoCrudTests", "DaoRef");
+            SQLiteDatabase sqliteDatabase = new SQLiteDatabase(".\\Chumsql2", databaseName);
             initializer(sqliteDatabase);
             testDatabases.Add(sqliteDatabase);
 
-            OracleDatabase oracleDatabase = new OracleDatabase("chumsql2", "DaoRef", new OracleCredentials { UserId = "C##ORACLEUSER", Password = "oracleP455w0rd" });
+            OracleDatabase oracleDatabase = new OracleDatabase("chumsql2", databaseName, new OracleCredentials { UserId = "C##ORACLEUSER", Password = "oracleP455w0rd" });
             initializer(oracleDatabase);
             testDatabases.Add(oracleDatabase);
 
-            MySqlDatabase mySqlDatabase = new MySqlDatabase("chumsql2", "DaoRef", new MySqlCredentials { UserId = "mysql", Password = "mysqlP455w0rd" });
+            MySqlDatabase mySqlDatabase = new MySqlDatabase("chumsql2", databaseName, new MySqlCredentials { UserId = "mysql", Password = "mysqlP455w0rd" });
             initializer(mySqlDatabase);
             testDatabases.Add(mySqlDatabase);
 
-            NpgsqlDatabase npgsqlDatabase = new NpgsqlDatabase("chumsql2", "DaoRef", new NpgsqlCredentials { UserId = "postgres", Password = "postgresP455w0rd" });
+            NpgsqlDatabase npgsqlDatabase = new NpgsqlDatabase("chumsql2", databaseName, new NpgsqlCredentials { UserId = "postgres", Password = "postgresP455w0rd" });
             initializer(npgsqlDatabase);
             testDatabases.Add(npgsqlDatabase);
 

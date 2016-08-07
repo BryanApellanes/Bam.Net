@@ -21,7 +21,7 @@ namespace Bam.Net.Data
         {
             GoText = ";\r\n";
             CreateTableFormat = "CREATE TABLE {0} ({1})";
-            AddForeignKeyColumnFormat = "ALTER TABLE \"{0}\" ADD CONSTRAINT {1} FOREIGN KEY (\"{2}\") REFERENCES \"{3}\" (\"{4}\")";
+            AddForeignKeyColumnFormat = "ALTER TABLE {0} ADD CONSTRAINT {1} FOREIGN KEY (\"{2}\") REFERENCES {3} (\"{4}\")";
             TableNameFormatter = (s) => "\"{0}\""._Format(s);
             ColumnNameFormatter = (s) => "\"{0}\""._Format(s);
         }
@@ -135,14 +135,11 @@ namespace Bam.Net.Data
             }
         }
 
-        protected override void WriteDropTable(Type daoType)
+        public override SchemaWriter WriteDropTable(string tableName)
         {
-            TableAttribute attr = null;
-            if (daoType.HasCustomAttributeOfType<TableAttribute>(out attr))
-            {
-                Builder.AppendFormat("DROP TABLE IF EXISTS {0}", TableNameFormatter(attr.TableName));
-                Go();
-            }
+            Builder.AppendFormat("DROP TABLE IF EXISTS {0}", TableNameFormatter(tableName));
+            Go();
+            return this;
         }
     }
 }

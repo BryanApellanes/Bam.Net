@@ -21,19 +21,21 @@ namespace Bam.Net.Testing
 		public UnitTestResult(ConsoleInvokeableMethod cim)
 		{
 			MethodInfo method = cim.Method;
-			this.MethodName = method.Name;
-			this.Description = cim.Information;
-			this.AssemblyFullName = method.DeclaringType.Assembly.FullName;
-			this.Passed = true;
-		}
+			MethodName = method.Name;
+			Description = cim.Information;
+			AssemblyFullName = method.DeclaringType.Assembly.FullName;
+			Passed = true;
+            ComputerName = Environment.MachineName;
+        }
 		public UnitTestResult(TestExceptionEventArgs args)
 			: this(args.ConsoleInvokeableMethod)
 		{
-			this.Passed = false;
-			this.Exception = args.Exception.Message;
-			this.StackTrace = args.Exception.StackTrace;
+			Passed = false;
+			Exception = args.Exception.Message;
+			StackTrace = args.Exception.StackTrace;
+            ComputerName = Environment.MachineName;
 		}
-
+        public string ComputerName { get; set; }
         /// <summary>
         /// Boolean indicating whether the test passed
         /// </summary>

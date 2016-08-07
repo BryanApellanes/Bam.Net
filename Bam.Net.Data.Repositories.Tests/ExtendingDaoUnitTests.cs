@@ -10,6 +10,8 @@ using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Data.Schema;
 using Bam.Net.Schema.Org;
+using Bam.Net.Data.SQLite;
+using Bam.Net.Data.Tests.Integration;
 
 namespace Bam.Net.Data.Repositories.Tests
 {
@@ -63,12 +65,45 @@ namespace Bam.Net.Data.Repositories.Tests
             Expect.AreEqual("Id", fk.ReferencedKey);
         }
 
-        //[UnitTest]
-        //public void TypeInheritanceWriterWritesToMultipleTables()
-        //{
-        //    TypeInheritanceWriter writer = new TypeInheritanceWriter();
-        //}
+        [UnitTest]
+        public void TypeInheritanceWriterWritesToMultipleTables()
+        {
+            TypeInheritanceWriter writer = new TypeInheritanceWriter();
+            SQLiteDatabase db = new SQLiteDatabase($".\\{nameof(TypeInheritanceSchemaGeneratorShouldAddTablesForInheritedTypes)}", "Data");            
+            SqlStringBuilder sql = writer.GetInsertStatement(new Employee { Name = "test", Salary = 500 }, db);
+            OutLine(sql.ToString(), ConsoleColor.Cyan);
+        }
 
+        [UnitTest]
+        public void WriteSchemaScriptTest()
+        {
+            DataTools.Setup(db => 
+            {
+                TryDrop(db, "Employee");
+                TryDrop(db, "Person");
+            }, "ExtendedDao")
+            .Each(db =>
+            {
+                OutLineFormat("Database Type: {0}", ConsoleColor.Cyan, db.GetType().Name);
+                TypeSchemaScriptWriter schemaScriptWriter = new TypeSchemaScriptWriter();
+                SqlStringBuilder sql = schemaScriptWriter.WriteSchemaScript(db, typeof(Employee));
+                OutLine(sql.ToString());
+                db.ExecuteSql(sql.ToString());
+                Pass(db.GetType().Name);
+            });            
+        }
+
+        private void TryDrop(Database db, string tableName)
+        {
+            try
+            {
+                db.ExecuteSql(db.GetService<SchemaWriter>().WriteDropTable(tableName));
+            }
+            catch (Exception ex)
+            {
+                OutLineFormat("Attempt to drop table {0} threw exception: {1}", ConsoleColor.Yellow, tableName, ex.Message);
+            }
+        }
         [UnitTest]
         public void SchemaManagerIdAsForeignKeyTest()
         {

@@ -8,11 +8,14 @@ using System.Text;
 
 namespace Bam.Net.Data
 {
+    /// <summary>
+    /// Statement used to assign a value to a variable or parameter
+    /// </summary>
     public class AssignValue: IParameterInfo
     {
         public AssignValue(string columnName, object value, Func<string, string> columnNameformatter = null)
         {
-            this.ColumnName = string.Format("{0}", columnName);
+            this.ColumnName = columnName;
             this.Value = value;
             this.number = new int?();
             this.ColumnNameFormatter = columnNameformatter ?? (Func<string, string>)((c) => c);

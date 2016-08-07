@@ -105,7 +105,12 @@ namespace Bam.Net.Data.Repositories
             get;
             set;
         }
-
+        public IEnumerable<Type> Types { get; set; }
+        public SchemaDefinitionCreateResult CreateSchemaDefinition(string schemaName = null)
+        {
+            Args.ThrowIf(Types.Count() == 0, "No types specified");
+            return CreateSchemaDefinition(Types, schemaName);
+        }
         public SchemaDefinitionCreateResult CreateSchemaDefinition(IEnumerable<Type> types, string schemaName = null)
         {
             SchemaName = schemaName ?? "null";
