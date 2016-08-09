@@ -11,21 +11,28 @@ using Bam.Net;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Data;
 using Bam.Net.CommandLine;
+using System.Runtime.Serialization;
 
 namespace Bam.Net.Testing
 {
 	public class UnitTestResult: RepoData
 	{
         public UnitTestResult() : base()
-        { }
-		public UnitTestResult(ConsoleInvokeableMethod cim)
+        {
+            ComputerName = Environment.MachineName;
+        }
+        public UnitTestResult(string description, bool passed) : this()
+        {
+            Description = description;
+            Passed = passed;
+        }
+		public UnitTestResult(ConsoleInvokeableMethod cim):this()
 		{
 			MethodInfo method = cim.Method;
 			MethodName = method.Name;
 			Description = cim.Information;
 			AssemblyFullName = method.DeclaringType.Assembly.FullName;
 			Passed = true;
-            ComputerName = Environment.MachineName;
         }
 		public UnitTestResult(TestExceptionEventArgs args)
 			: this(args.ConsoleInvokeableMethod)
@@ -33,7 +40,6 @@ namespace Bam.Net.Testing
 			Passed = false;
 			Exception = args.Exception.Message;
 			StackTrace = args.Exception.StackTrace;
-            ComputerName = Environment.MachineName;
 		}
         public string ComputerName { get; set; }
         /// <summary>

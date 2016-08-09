@@ -161,6 +161,13 @@ namespace Bam.Net.Data
 			return new Query<C, T>(where, this);
 		}
 
+        public DbParameter[] GetParameters(SqlStringBuilder sqlStrinbuilder)
+        {
+            IParameterBuilder paramBuilder = GetService<IParameterBuilder>();
+            Args.ThrowIfNull(paramBuilder, "IParameterBuilder");
+            return paramBuilder.GetParameters(sqlStrinbuilder);
+        }
+
         /// <summary>
         /// Execute the specified SqlStringBuilder using the 
         /// specified generic type to determine which database
@@ -209,10 +216,17 @@ namespace Bam.Net.Data
                 ReleaseConnection(conn);
             }
         }
+
+        public virtual T QuerySingle<T>(SqlStringBuilder sql)
+        {
+            return QuerySingle<T>(sql, GetService<IParameterBuilder>().GetParameters(sql));
+        }
+
         public virtual T QuerySingle<T>(string singleValueQuery, object dynamicParamters)
         {
             return QuerySingle<T>(singleValueQuery, dynamicParamters.ToDbParameters(this).ToArray());
         }
+
         public virtual T QuerySingle<T>(string singleValueQuery, params DbParameter[] dbParameters)
         {
             DataRow row = GetFirstRow(singleValueQuery, dbParameters);

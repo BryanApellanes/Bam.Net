@@ -465,7 +465,7 @@ namespace {0}
                 StringBuilder interfaceMethods = new StringBuilder();
                 foreach (MethodInfo method in ServiceProxySystem.GetProxiedMethods(type))
                 {
-                    ParameterInfo[] parameters = method.GetParameters();
+                    System.Reflection.ParameterInfo[] parameters = method.GetParameters();
                     MethodGenerationInfo methodGenInfo = new MethodGenerationInfo(method);
                     bool isVoidReturn = methodGenInfo.IsVoidReturn;
                     string returnType = methodGenInfo.ReturnTypeCodeString;
@@ -581,7 +581,7 @@ namespace {0}
         internal static string GetMethodCall(Type type, MethodInfo method)
         {
             StringBuilder builder = new StringBuilder();
-            ParameterInfo[] parameterInfos = method.GetParameters();
+            System.Reflection.ParameterInfo[] parameterInfos = method.GetParameters();
             string defaultMethodName;
             string otherMethodName;
             GetMethodDetails(method, out defaultMethodName, out otherMethodName);

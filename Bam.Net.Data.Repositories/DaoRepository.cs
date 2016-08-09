@@ -151,7 +151,7 @@ namespace Bam.Net.Data.Repositories
         public event EventHandler SchemaWarning;
 
         Assembly _daoAssembly;
-        EnsureSchemaStatus _schemaStatus;
+        protected EnsureSchemaStatus SchemaStatus { get; set; }
         /// <summary>
         /// Generates a Dao Assembly for the underlying 
         /// storable types if it has not yet been generated
@@ -165,12 +165,11 @@ namespace Bam.Net.Data.Repositories
             }
 
             Args.ThrowIfNull(Database, "Database");
-            if (_schemaStatus == EnsureSchemaStatus.Invalid || // not done
-                _schemaStatus == EnsureSchemaStatus.Error) // failed
+            if (SchemaStatus == EnsureSchemaStatus.Invalid) 
             {
                 MultiTargetLogger logger = new MultiTargetLogger();
                 Subscribers.Each(l => logger.AddLogger(l));
-                _schemaStatus = Database.TryEnsureSchema(_daoAssembly.GetTypes().First(type => type.HasCustomAttributeOfType<TableAttribute>()), logger);
+                SchemaStatus = Database.TryEnsureSchema(_daoAssembly.GetTypes().First(type => type.HasCustomAttributeOfType<TableAttribute>()), logger);
             }
 
             return _daoAssembly;
@@ -192,7 +191,7 @@ namespace Bam.Net.Data.Repositories
 
         bool isInitialized;
 		readonly object _initLock = new object();
-		public void Initialize()
+		public virtual void Initialize()
 		{
             if (!isInitialized)
             {
@@ -863,7 +862,7 @@ namespace Bam.Net.Data.Repositories
 			SaveDaoInstance(typeof(T), daoInstance);
 		}
 
-		private void SaveDaoInstance(Type dtoOrPocoType, object daoInstance)
+		protected void SaveDaoInstance(Type dtoOrPocoType, object daoInstance)
 		{
 			MethodInfo saveMethod = GetDaoType(dtoOrPocoType).GetMethod("Save", new Type[] { typeof(Database) });
             try
@@ -898,7 +897,7 @@ namespace Bam.Net.Data.Repositories
 			}
 		}
 
-		private object SetDaoInstancePropertiesAndSave(object poco, Dao daoInstance)
+		protected object SetDaoInstancePropertiesAndSave(object poco, Dao daoInstance)
 		{
 			Meta.SetUuid(poco);
             Meta.SetCuid(poco);

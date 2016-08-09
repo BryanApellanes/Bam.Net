@@ -13,23 +13,23 @@ using System.Collections.Concurrent;
 
 namespace Bam.Net.Caching
 {
-	public class Cache: Loggable
+	public class ConcurrentCache: Loggable
 	{
 		bool _keepGrooming;
 		Thread _groomerThread;
 		AutoResetEvent _groomerSignal;
 		ConcurrentQueue<CacheItem> _evictionQueue;
 		
-		public Cache() : this(true) { }
+		public ConcurrentCache() : this(true) { }
 
-		public Cache(bool groomInBackground)
+		public ConcurrentCache(bool groomInBackground)
 			: this(System.Guid.NewGuid().ToString(), groomInBackground)
 		{ }
-		public Cache(string name, bool groomInBackground)
+		public ConcurrentCache(string name, bool groomInBackground)
 			: this(name, 524288, groomInBackground) // 512 kilobytes
 		{ }
 
-		public Cache(string name, int maxBytes, bool groomInBackground)
+		public ConcurrentCache(string name, int maxBytes, bool groomInBackground)
 		{
 			this.Items = new HashSet<CacheItem>();
 			this.ItemsByHits = new List<CacheItem>();

@@ -82,10 +82,6 @@
       <Project>{296d4f9e-09f3-48c1-9968-d161c9666756}</Project>
       <Name>Bam.Net.Data.Oracle</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Bam.Net.Data.Repositories\Bam.Net.Data.Repositories.csproj">
-      <Project>{222ef625-a115-49c7-8bdb-5879725a7d17}</Project>
-      <Name>Bam.Net.Data.Repositories</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Data.Schema\Bam.Net.Data.Schema.csproj">
       <Project>{d2c2b1c0-1047-4211-92fc-37f332861161}</Project>
       <Name>Bam.Net.Data.Schema</Name>

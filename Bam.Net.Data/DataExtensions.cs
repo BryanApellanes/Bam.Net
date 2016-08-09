@@ -190,15 +190,24 @@ namespace Bam.Net.Data
 
         public static IEnumerable<DbParameter> ToDbParameters(this object dynamicDbParameters, Database db)
         {
-            Args.ThrowIfNull(dynamicDbParameters, "parameters");
+            Args.ThrowIfNull(dynamicDbParameters, nameof(dynamicDbParameters));
             Type type = dynamicDbParameters.GetType();
             foreach (PropertyInfo pi in type.GetProperties())
             {
-                //DbParameter parameter = db.ServiceProvider.Get<DbProviderFactory>().CreateParameter();
-                //parameter.ParameterName = pi.Name;
-                //parameter.Value = pi.GetValue(parameters);
                 yield return db.CreateParameter(pi.Name, pi.GetValue(dynamicDbParameters));
             }
+        }
+
+        public static Dictionary<string, object> ToDictionary(this object instance)
+        {
+            Args.ThrowIfNull(instance, nameof(instance));
+
+            Dictionary<string, object> result = new Dictionary<string, object>();
+            instance.GetType().GetProperties().Each(pi =>
+            {
+                result.Add(pi.Name, pi.GetValue(instance));
+            });
+            return result;
         }
 
         public static IEnumerable<DbParameter> ToDbParameters(this Dictionary<string, object> parameters, Database db)
@@ -206,10 +215,7 @@ namespace Bam.Net.Data
             Args.ThrowIfNull(parameters, "parameters");
             foreach (string key in parameters.Keys)
             {
-                DbParameter parameter = db.ServiceProvider.Get<DbProviderFactory>().CreateParameter();
-                parameter.ParameterName = key;
-                parameter.Value = parameters[key];
-                yield return parameter;
+                yield return db.CreateParameter(key, parameters[key]);
             }         
         }
     }

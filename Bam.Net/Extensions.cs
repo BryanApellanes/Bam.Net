@@ -164,6 +164,16 @@ namespace Bam.Net
             return copy.ToDateTime();
         }
 
+        public static bool In<T>(this T obj, IEnumerable<T> options)
+        {
+            return new List<T>(options).Contains(obj);
+        }
+
+        public static bool In<T>(this T obj, params T[] options)
+        {
+            return new List<T>(options).Contains(obj);
+        }
+
         public static T Clone<T>(this ICloneable clonable)
         {
             return (T)clonable.Clone();

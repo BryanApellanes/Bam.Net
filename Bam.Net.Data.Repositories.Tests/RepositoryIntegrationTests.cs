@@ -24,14 +24,19 @@ namespace Bam.Net.Data.Repositories.Tests
         [IntegrationTestSetup]
         public void Setup()
         {
-            DaoRepository daoRepo = new DaoRepository(new SQLiteDatabase(RootDir, "DaoRepoTest"));
-            AddTypes(daoRepo);
-            ObjectRepository objRepo = new ObjectRepository(Path.Combine(RootDir, "ObjectRepo"));
-            AddTypes(objRepo);
-
             _repos = new HashSet<IRepository>();
-            _repos.Add(daoRepo);
-            _repos.Add(objRepo);
+
+            //DaoRepository daoRepo = new DaoRepository(new SQLiteDatabase(RootDir, "DaoRepoTest"));
+            //AddTypes(daoRepo);
+            //_repos.Add(daoRepo);
+
+            //ObjectRepository objRepo = new ObjectRepository(Path.Combine(RootDir, "ObjectRepo"));
+            //AddTypes(objRepo);
+            //_repos.Add(objRepo);
+
+            DatabaseRepository dbRepo = new DatabaseRepository(new SQLiteDatabase(RootDir, "DbRepoTest"));
+            AddTypes(dbRepo);
+            _repos.Add(dbRepo);
         }
 
         [IntegrationTest]
@@ -146,11 +151,11 @@ namespace Bam.Net.Data.Repositories.Tests
             });
         }
 
-        [IntegrationTest]
-        public void SaveOfInheritingTypeTest()
-        {
+        //[IntegrationTest]
+        //public void SaveOfInheritingTypeTest()
+        //{
 
-        }
+        //}
 
         private void AddTypes(IRepository repo)
         {

@@ -52,7 +52,12 @@ namespace Bam.Net.Data.Repositories
             Args.ThrowIfNull(typeAssembly, "typeAssembly");
             AddTypes(typeAssembly.GetTypes().Where(t => t.Namespace != null && t.Namespace.Equals(nameSpace) && !t.IsAbstract));
         }
-        
+
+        public TypeDaoGenerator(TypeSchemaGenerator typeSchemaGenerator) : this()
+        {
+            _typeSchemaGenerator = typeSchemaGenerator;
+        }
+
         public bool AddAuditFields { get; set; }
 
         public bool IncludeModifiedBy { get; set; }

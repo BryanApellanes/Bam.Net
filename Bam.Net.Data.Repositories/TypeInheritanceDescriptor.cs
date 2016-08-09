@@ -12,6 +12,7 @@ namespace Bam.Net.Data.Repositories
         public TypeInheritanceDescriptor(Type type)
         {
             Type = type;
+            RootType = type;
             Chain = new List<TypeTable>();
             Chain.Add(new TypeTable(type));
             Type baseType = type.BaseType;

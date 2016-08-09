@@ -327,7 +327,7 @@ namespace Bam.Net.Data
         }
     }
 
-    public class QueryFilter<C> : QueryFilter where C : IFilterToken, new() // C column type
+    public class QueryFilter<C> : QueryFilter where C : IFilterToken, new() 
     {   
         public QueryFilter(): base()
         {

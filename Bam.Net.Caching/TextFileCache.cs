@@ -14,14 +14,14 @@ namespace Bam.Net.Caching
 	/// <summary>
 	/// A caching mechanism for text files. 
 	/// </summary>
-	public class TextFileCache: Cache
+	public class TextFileCache: ConcurrentCache
 	{
 		public TextFileCache() { this.FileExtension = ".txt"; }
 
 		public string FileExtension { get; protected set; }
 		public static void RegisterWithCacheManager()
 		{
-			CacheManager.Default.CacheFor<FileInfo>(new TextFileCache());
+			ConcurrentCacheManager.Default.CacheFor<FileInfo>(new TextFileCache());
 		}
 		public override CacheItem Add(object value)
 		{

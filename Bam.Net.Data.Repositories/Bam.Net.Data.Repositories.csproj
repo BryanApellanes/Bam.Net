@@ -122,9 +122,12 @@
     <Compile Include="AsyncRepository.cs" />
     <Compile Include="AuditRepoData.cs" />
     <Compile Include="BackedupDatabase.cs" />
+    <Compile Include="BackgroundThreadQueue.cs" />
     <Compile Include="DaoGenerationException.cs" />
     <Compile Include="DaoBackup.cs" />
     <Compile Include="DatabaseExtensions.cs" />
+    <Compile Include="InheritanceInsertFormat.cs" />
+    <Compile Include="TypeSchemaPropertyManager.cs" />
     <Compile Include="TypeSchemaScriptWriter.cs" />
     <Compile Include="DatabaseRepository.cs" />
     <Compile Include="EchoTypeTableNameProvider.cs" />
@@ -150,7 +153,7 @@
     <Compile Include="DaoToDtoGenerator.cs" />
     <Compile Include="SchemaTypeModel.cs" />
     <Compile Include="TypeInheritanceDescriptor.cs" />
-    <Compile Include="TypeInheritanceWriter.cs" />
+    <Compile Include="TypeInheritanceSqlWriter.cs" />
     <Compile Include="TypeTable.cs" />
     <Compile Include="TypeXrefModel.cs" />
     <Compile Include="WrapperExtensions.cs" />
@@ -217,6 +220,10 @@
     <ProjectReference Include="..\Bam.Net.CommandLine\Bam.Net.CommandLine.csproj">
       <Project>{ea9863a9-8e0b-4497-b7fd-abf450a3e468}</Project>
       <Name>Bam.Net.CommandLine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.Dynamic\Bam.Net.Data.Dynamic.csproj">
+      <Project>{ca7f3115-848c-49ac-a0c3-f156afb6c844}</Project>
+      <Name>Bam.Net.Data.Dynamic</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Data.MSSql\Bam.Net.Data.MsSql.csproj">
       <Project>{f373eaf9-b69c-4322-9659-a53a8fb7d43f}</Project>

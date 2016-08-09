@@ -255,7 +255,9 @@ namespace Bam.Net.Data
         /// If true, will hydrate child collections
         /// prior to deletion so that they can be deleted.
         /// Incurs performance cost if many child 
-        /// collections must be loaded
+        /// collections must be loaded; can cause intense
+        /// memory pressure if large amounts of data
+        /// need to be loaded
         /// </summary>
         [Exclude]
         public bool AutoHydrateChildrenOnDelete { get; set; }
@@ -580,9 +582,13 @@ namespace Bam.Net.Data
                 ILoadable collection = ChildCollections[key];
                 if (AutoHydrateChildrenOnDelete)
                 {
-                   collection.Load(Database);
+                    if (collection.HasProperty(nameof(AutoHydrateChildrenOnDelete))) // it might be an XrefDaoCollection which doesn't have that property
+                    {
+                        collection.Property(nameof(AutoHydrateChildrenOnDelete), true);
+                        collection.Load(Database);
+                    }
                 }
-                ChildCollections[key].WriteDelete(sql);
+                collection.WriteDelete(sql);
             }
         }
 

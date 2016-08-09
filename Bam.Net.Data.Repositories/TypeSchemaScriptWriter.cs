@@ -10,13 +10,22 @@ namespace Bam.Net.Data.Repositories
     public class TypeSchemaScriptWriter
     {
         public SchemaDefinitionCreateResult LastSchemaDefinitionCreateResult { get; set; }
+        public void CommitSchema(Database database, IEnumerable<Type> types)
+        {
+            database.ExecuteSql(WriteSchemaScript(database, types));
+        }
+        public void CommitSchema(Database database, params Type[] types)
+        {
+            database.ExecuteSql(WriteSchemaScript(database, types));
+        }
+
         public SqlStringBuilder WriteSchemaScript(Database database, IEnumerable<Type> types)
         {
             return WriteSchemaScript(database, types.ToArray());
         }
 
         /// <summary>
-        /// Write the schema script using a TypeInheritanceSchemaGenerator
+        /// Write and return the sql schema script using a TypeInheritanceSchemaGenerator
         /// </summary>
         /// <param name="database"></param>
         /// <param name="types"></param>

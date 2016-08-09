@@ -425,7 +425,75 @@ namespace Bam.Net
                 action(pi, value, i);
             });
         }
+        /// <summary>
+        /// Return the results of the eacher by passing the PropertyInfo and value
+        /// of each of the properties of instance where the property type is one
+        /// of the base supported data types; bool, int, long, decimal, string, 
+        /// byte[], DateTime or their nullable equivalent
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="instance"></param>
+        /// <param name="eacher"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> EachDataProperty<T>(this object instance, Func<PropertyInfo, object, T> eacher)
+        {
+            return EachDataProperty(instance, instance.GetType(), (pi) => true, eacher);
+        }
+        /// <summary>
+        /// Return the results of the eacher by passing the PropertyInfo and value
+        /// of each of the properties of instance where the property type is one
+        /// of the base supported data types; bool, int, long, decimal, string, 
+        /// byte[], DateTime or their nullable equivalent 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="instance"></param>
+        /// <param name="type"></param>
+        /// <param name="eacher"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> EachDataProperty<T>(this object instance, Type type, Func<PropertyInfo, object, T> eacher)
+        {
+            return EachDataProperty(instance, type, (pi) => true, eacher);
+        }
+        /// <summary>
+        /// Return the results of the eacher by passing the PropertyInfo and value
+        /// of each of the properties of instance where the property type is one
+        /// of the base supported data types; bool, int, long, decimal, string, 
+        /// byte[], DateTime or their nullable equivalent
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="instance"></param>
+        /// <param name="propertyPredicate"></param>
+        /// <param name="eacher"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> EachDataProperty<T>(this object instance, Func<PropertyInfo, bool> propertyPredicate, Func<PropertyInfo, object, T> eacher)
+        {
+            return EachDataProperty<T>(instance, instance.GetType(), propertyPredicate, eacher);
+        }
 
+        /// <summary>
+        /// Return the results of the eacher by passing the PropertyInfo and value
+        /// of each of the properties of instance where the property is declared
+        /// on the specified type and the property type is one of the base 
+        /// supported data types; bool, int, long, decimal, string, byte[], 
+        /// DateTime or their nullable equivalent
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="instance"></param>
+        /// <param name="type"></param>
+        /// <param name="propertyPredicate"></param>
+        /// <param name="eacher"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> EachDataProperty<T>(this object instance, Type type, Func<PropertyInfo, bool> propertyPredicate, Func<PropertyInfo, object, T> eacher)
+        {
+            Args.ThrowIfNull(propertyPredicate, nameof(propertyPredicate));
+            foreach (PropertyInfo pi in type.GetProperties().Where(pi => pi.DeclaringType == type && pi.PropertyType.In(typeof(bool?), typeof(bool), typeof(int), typeof(int?), typeof(long), typeof(long?), typeof(decimal), typeof(decimal?), typeof(string), typeof(byte[]), typeof(DateTime), typeof(DateTime?))))
+            {
+                if (propertyPredicate(pi))
+                {
+                    yield return eacher(pi, pi.GetValue(instance));
+                }
+            };
+        }
         /// <summary>
         /// Return the Type as the string that can be used to 
         /// declare it in code

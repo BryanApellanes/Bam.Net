@@ -168,6 +168,8 @@
     <Compile Include="Qi\QiOperator.cs" />
     <Compile Include="Qi\QiQuery.cs" />
     <Compile Include="QueryFilter.cs" />
+    <Compile Include="RawFormat.cs" />
+    <Compile Include="ParameterInfo.cs" />
     <Compile Include="Registrar.cs" />
     <Compile Include="RegistrarCallerFactory.cs" />
     <Compile Include="SchemaInitializer.cs" />

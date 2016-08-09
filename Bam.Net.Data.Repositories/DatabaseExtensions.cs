@@ -13,5 +13,10 @@ namespace Bam.Net.Data.Repositories
             TypeSchemaScriptWriter writer = new TypeSchemaScriptWriter();
             return writer.WriteSchemaScript(db, schemaInfo);
         }
+
+        public static void CommitSchema(this Database db, SchemaDefinitionCreateResult schemaInfo)
+        {
+            db.ExecuteSql(WriteSchemaScript(db, schemaInfo));
+        }
     }
 }

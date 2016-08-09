@@ -53,6 +53,18 @@ namespace Bam.Net.Testing
         {
             return A<T>(actionDescription, new T(), test);
         }
+        /// <summary>
+        /// Prepares the test Context with an empty SetupContext instantiating the 
+        /// object under test to an instance of T using the default constructor of type T.
+        /// </summary>
+        /// <typeparam name="T">The type of the </typeparam>
+        /// <param name="actionDescription"></param>
+        /// <param name="test"></param>
+        /// <returns></returns>
+        public static TestContext<T> A<T>(string actionDescription, Action<T, SetupContext> test) where T : new()
+        {
+            return A<T>(actionDescription, new T(), test);
+        }
 
         /// <summary>
         /// Prepares the test Context with an empty SetupContext setting the object under test
@@ -68,6 +80,21 @@ namespace Bam.Net.Testing
             SetupContext setupContext = new SetupContext();
             setupContext.Set<T>(objectUnderTest);
             return new TestContext<T>(setupContext, SetupContext.GetActionDescription<T>(actionDescription), test);
-        }        
+        }
+        /// <summary>
+        /// Prepares the test Context with an empty SetupContext setting the object under test
+        /// to the specified objectUnderTest
+        /// </summary>
+        /// <typeparam name="T">The type of the object under test.</typeparam>
+        /// <param name="actionDescription">A description of what the test action will do</param>
+        /// <param name="objectUnderTest">The object instance being tested</param>
+        /// <param name="test">the test delegate</param>
+        /// <returns>Context</returns>
+        public static TestContext<T> A<T>(string actionDescription, T objectUnderTest, Action<T, SetupContext> test)
+        {
+            SetupContext setupContext = new SetupContext();
+            setupContext.Set<T>(objectUnderTest);
+            return new TestContext<T>(setupContext, SetupContext.GetActionDescription<T>(actionDescription), test);
+        }
     }
 }

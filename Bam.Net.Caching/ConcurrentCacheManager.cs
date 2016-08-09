@@ -12,12 +12,12 @@ using Bam.Net.Logging;
 
 namespace Bam.Net.Caching
 {
-	public class CacheManager: Loggable
-	{
-		ConcurrentDictionary<Type, Cache> _cacheDictionary;
-		public CacheManager()
+	public class ConcurrentCacheManager : Loggable, ICacheManager
+    {
+		ConcurrentDictionary<Type, ConcurrentCache> _cacheDictionary;
+		public ConcurrentCacheManager()
 		{
-			_cacheDictionary = new ConcurrentDictionary<Type, Cache>();
+			_cacheDictionary = new ConcurrentDictionary<Type, ConcurrentCache>();
 		}
 
         public void Clear()
@@ -34,12 +34,12 @@ namespace Bam.Net.Caching
 		}
 
 		object _getLock = new object();
-		public Cache CacheFor<T>()
+		public ConcurrentCache CacheFor<T>()
 		{
 			return CacheFor(typeof(T));
 		}
 
-		public void CacheFor<T>(Cache cache)
+		public void CacheFor<T>(ConcurrentCache cache)
 		{
 			CacheFor(typeof(T), cache);
 		}
@@ -47,13 +47,13 @@ namespace Bam.Net.Caching
         [Verbosity(LogEventType.Warning, MessageFormat = "Failed to get Cache for type {TypeName}")]
         public event EventHandler GetCacheFailed;
 
-        public Cache CacheFor(Type type)
+        public ConcurrentCache CacheFor(Type type)
         {
             if (!_cacheDictionary.ContainsKey(type))
             {
-                _cacheDictionary.TryAdd(type, new Cache());
+                _cacheDictionary.TryAdd(type, new ConcurrentCache());
             }
-            Cache result;
+            ConcurrentCache result;
             if(!_cacheDictionary.TryGetValue(type, out result))
             {
                 FireEvent(GetCacheFailed, new CacheManagerEventArgs { Type = type });
@@ -66,9 +66,9 @@ namespace Bam.Net.Caching
         [Verbosity(LogEventType.Information, MessageFormat = "Set Cache for type {TypeName}")]
         public event EventHandler CacheSet;
 
-        public void CacheFor(Type type, Cache cache)
+        public void CacheFor(Type type, ConcurrentCache cache)
         {
-            Cache removed;
+            ConcurrentCache removed;
             if (_cacheDictionary.TryRemove(type, out removed))
             {
                 FireEvent(CacheRemoved, new CacheManagerEventArgs { Type = type, Cache = removed });
@@ -78,13 +78,13 @@ namespace Bam.Net.Caching
             FireEvent(CacheSet, new CacheManagerEventArgs { Type = type, Cache = cache });
         }
 
-		static CacheManager _defaultCacheManager;
+		static ConcurrentCacheManager _defaultCacheManager;
 		static object _defaultCacheManagerLock = new object();
-		public static CacheManager Default
+		public static ConcurrentCacheManager Default
 		{
 			get
 			{
-				return _defaultCacheManagerLock.DoubleCheckLock(ref _defaultCacheManager, () => new CacheManager());
+				return _defaultCacheManagerLock.DoubleCheckLock(ref _defaultCacheManager, () => new ConcurrentCacheManager());
 			}
 		}
 	}

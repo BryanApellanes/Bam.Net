@@ -16,15 +16,19 @@ namespace Bam.Net.Testing
     /// <typeparam name="T"></typeparam>
     public class TestContext<T>
     {
-        SetupContext context;
+        SetupContext setupContext;
         Because because;
         Action<T> testMethod;
+        Action<T, SetupContext> altTestMethod;
         Func<T, object> outputAction;
 
         internal TestContext(SetupContext setupContext, string testDescription)
         {
-            this.context = setupContext;
+            this.setupContext = setupContext;
             this.because = new Because(testDescription, setupContext);
+            this.testMethod = (o) => { };
+            this.altTestMethod = (o, c) => { };
+            this.outputAction = (o) => o;
         }
 
         /// <summary>
@@ -39,6 +43,12 @@ namespace Bam.Net.Testing
             : this(setupContext, testDescription)
         {
             this.testMethod = testMethod;
+        }
+
+        public TestContext(SetupContext setupContext, string testDescription, Action<T, SetupContext> altTestMethod)
+            : this(setupContext, testDescription)
+        {
+            this.altTestMethod = altTestMethod;
         }
 
         /// <summary>
@@ -80,19 +90,11 @@ namespace Bam.Net.Testing
                     run = true;
                     try
                     {
-                        T objectUnderTest = context.Get<T>();                        
-
-                        if (testMethod != null)
-                        {
-                            testMethod(objectUnderTest);
-                        }
-
-                        if (outputAction != null)
-                        {
-                            because.Result = outputAction(objectUnderTest);
-                        }
-
-                        context.ObjectUnderTest = objectUnderTest;
+                        T objectUnderTest = setupContext.Get<T>();
+                        testMethod(objectUnderTest);
+                        altTestMethod(objectUnderTest, setupContext);
+                        because.Result = outputAction(objectUnderTest);
+                        setupContext.ObjectUnderTest = objectUnderTest;
                     }
                     catch (Exception ex)
                     {
@@ -125,13 +127,13 @@ namespace Bam.Net.Testing
         /// <returns></returns>
         public TestContext<T> ShouldPass(Action<Because, T> actionToAssertResults)
         {
-            actionToAssertResults(because, (T)context.ObjectUnderTest);
+            actionToAssertResults(because, (T)setupContext.ObjectUnderTest);
             return this;
         }
 
         public TestContext<T> ShouldPass(Action<Because, AssertionWrapper> actionToAssertResults)
         {
-            actionToAssertResults(because, new AssertionWrapper(because, context.ObjectUnderTest, "Object Under Test"));
+            actionToAssertResults(because, new AssertionWrapper(because, setupContext.ObjectUnderTest, "Object Under Test"));
             return this;
         }
 

@@ -39,10 +39,10 @@ namespace Bam.Net.Data.Dynamic.Tests
             })
             .ExecuteSql(db, new Dictionary<string, object>
             {
-                {"@FirstName", "Yan"},
-                {"@LastName", "Ipa"},
-                {"@Birthday", new DateTime(1976, 11, 1)},
-                {"@Age", 39}
+                {"FirstName", "Yan"},
+                {"LastName", "Ipa"},
+                {"Birthday", new DateTime(1976, 11, 1)},
+                {"Age", 39}
             });
 
             DynamicDatabase ddb = new DynamicDatabase(db, map);
@@ -73,6 +73,7 @@ namespace Bam.Net.Data.Dynamic.Tests
             results = ddb.Retrieve(queryFilter);
             Expect.AreEqual(0, results.Count());
         }
+        
         [UnitTest]
         public void DynamicCrudTest()
         {
