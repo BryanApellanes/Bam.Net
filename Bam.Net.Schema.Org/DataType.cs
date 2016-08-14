@@ -14,8 +14,29 @@ namespace Bam.Net.Schema.Org
     {
         public DataType()
         {
-            this.Name = "DataType";
+            Name = "DataType";            
         }
+        public long Id { get; set; }
+        string _uuid;
+        public string Uuid
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_uuid))
+                {
+                    _uuid = Guid.NewGuid().ToString();
+                }
+                return _uuid;
+            }
+            set
+            {
+                if (string.IsNullOrEmpty(_uuid))
+                {
+                    _uuid = value;
+                }
+            }
+        }
+        public string Cuid { get; set; }
         public string Name { get; set; }
 
         public static implicit operator DateTime(DataType type)
@@ -29,16 +50,15 @@ namespace Bam.Net.Schema.Org
             dt.Value<DateTime>(dateTime);
             return dt;
         }
+        object _value;
         public virtual T Value<T>(object value = null)
         {
-            Type type = this.GetType();
-            PropertyInfo property = type.GetProperty("Value");
             if (value != null)
             {
-                property.SetValue(this, value, null);
+                _value = value;
             }
 
-            return (T)property.GetValue(this, null);
+            return (T)_value;
         }
 
         public static T GetDataType<T>(string typeName) where T: DataType, new()

@@ -11,6 +11,7 @@ namespace Bam.Net.Schema.Org
 {
     public class SchemaDotOrgProperty
     {
+        public long Id { get; set; }
         public string Name { get; set; }
 
         string _expectedType;
@@ -24,6 +25,7 @@ namespace Bam.Net.Schema.Org
             {
                 _expectedType = value;
                 string[] split = _expectedType.Split(new string[] { " or ", " OR ", "\r\nor\r\n", "\r\nOR\r\n", " ", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+                split = split.Select(s => s.PascalCase(!s.IsAllCaps())).ToArray();
                 if (split.Length == 2)
                 {
                     if(split[0].Trim().Equals("Date") || split[0].Trim().Equals("DateTime"))

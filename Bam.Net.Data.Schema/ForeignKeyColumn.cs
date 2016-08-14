@@ -108,7 +108,7 @@ namespace Bam.Net.Data.Schema
         {
             get
             {
-                return string.IsNullOrEmpty(_referencedClass) ? ReferencedTable.PascalCase(true, " ", "_").DropLeadingNonLetters() : _referencedClass;
+                return string.IsNullOrEmpty(_referencedClass) ? ReferencedTable.PascalCase(true, " ", "_").TrimNonLetters() : _referencedClass;
             }
             set
             {
@@ -121,7 +121,7 @@ namespace Bam.Net.Data.Schema
         {
             get
             {
-                return string.IsNullOrEmpty(_referencingClass) ? TableName.PascalCase(true, " ", "_").DropLeadingNonLetters() : _referencingClass;
+                return string.IsNullOrEmpty(_referencingClass) ? TableName.PascalCase(true, " ", "_").TrimNonLetters() : _referencingClass;
             }
             set
             {

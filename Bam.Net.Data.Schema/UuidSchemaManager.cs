@@ -17,10 +17,9 @@ namespace Bam.Net.Data.Schema
     /// </summary>
     public class UuidSchemaManager: AutoIdSchemaManager
     {
-        public UuidSchemaManager()
-            : base()
+        public UuidSchemaManager(bool autoSave = true) : base(autoSave)
         {
-            this.PreColumnAugmentations.Add(new AddColumnAugmentation { ColumnName = "Uuid", DataType = DataTypes.String, AllowNull = false });
+            PreColumnAugmentations.Add(new AddColumnAugmentation { ColumnName = "Uuid", DataType = DataTypes.String, AllowNull = false });
         }
     }
 }

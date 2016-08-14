@@ -19,19 +19,17 @@ namespace Bam.Net.Schema.Org
         public Boolean(bool value)
             : this()
         {
-            this.Value = value;
+            Value<bool>(value);
         }
 
         public static implicit operator bool(Boolean boolean)
         {
-            return boolean.Value;
+            return boolean.Value<bool>();
         }
 
         public static implicit operator Boolean(bool boolean)
         {
             return new Boolean(boolean);
-        }
-
-        public bool Value { get; set; }
+        }        
     }
 }

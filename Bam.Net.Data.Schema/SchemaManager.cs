@@ -26,12 +26,12 @@ namespace Bam.Net.Data.Schema
     [Proxy("dbm")]
     public class SchemaManager: IHasSchemaTempPathProvider
     {
-        public SchemaManager()
+        public SchemaManager(bool autoSave = true)
         {
             PreColumnAugmentations = new List<SchemaManagerAugmentation>();
             PostColumnAugmentations = new List<SchemaManagerAugmentation>();
             SchemaTempPathProvider = sd => Path.Combine(RuntimeSettings.AppDataFolder, "Schemas");
-            AutoSave = true;
+            AutoSave = autoSave;
         }
 
         public SchemaManager(string schemaFilePath)

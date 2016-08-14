@@ -18,7 +18,7 @@ namespace Bam.Net.Schema.Org
 
         public URL(string value)
         {
-            this.Value = value;
+            Value<string>(value);
         }
 
         public static implicit operator Uri(URL url)

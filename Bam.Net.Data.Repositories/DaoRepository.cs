@@ -28,7 +28,7 @@ namespace Bam.Net.Data.Repositories
 	/// </summary>
 	public class DaoRepository : Repository, IGeneratesDaoAssembly, IHasTypeSchemaTempPathProvider
     {
-        public DaoRepository()
+        public DaoRepository(ITypeTableNameProvider tableNameProvider = null, Func<SchemaDefinition, TypeSchema, string> schemaTempPathProvider = null)
         {
             TypeDaoGenerator = new TypeDaoGenerator();
             TypeSchemaGenerator = new TypeSchemaGenerator();
@@ -267,8 +267,8 @@ namespace Bam.Net.Data.Repositories
 				Type daoType = GetDaoType(GetBaseType(toCreate.GetType()));
 				Dao daoInstance = daoType.Construct<Dao>();
 				daoInstance.ForceInsert = true;
-				object dto = SetDaoInstancePropertiesAndSave(toCreate, daoInstance);
-				return dto;
+				object poco = SetDaoInstancePropertiesAndSave(toCreate, daoInstance);
+				return poco;
 			}
 			catch (Exception ex)
 			{
@@ -407,8 +407,8 @@ namespace Bam.Net.Data.Repositories
 				Initialize();
 				Type pocoType = toUpdate.GetType();
 				Dao daoInstance = GetDaoInstanceById(pocoType, GetIdValue(toUpdate)); 
-				object dto = SetDaoInstancePropertiesAndSave(toUpdate, daoInstance);
-				return dto;
+				object poco = SetDaoInstancePropertiesAndSave(toUpdate, daoInstance);
+				return poco;
 			}
 			catch (Exception ex)
 			{
@@ -820,7 +820,12 @@ namespace Bam.Net.Data.Repositories
 			return childCollectionPropertyForTypeFk;
 		}
 
-		private object GetWrapperInstance(Type objectType, Dao daoInstance)
+        protected Dao GetDaoInstanceById(Type baseOrWrapperType, long id)
+        {
+            return GetDaoInstanceByMethod("GetById", baseOrWrapperType, (object)id);
+        }
+
+        private object GetWrapperInstance(Type objectType, Dao daoInstance)
 		{
 			object result = ConstructWrapper(objectType);
 			result.CopyProperties(daoInstance);
@@ -832,11 +837,6 @@ namespace Bam.Net.Data.Repositories
 		private Dao GetDaoInstanceById<T>(long id) where T : new()
 		{
 			return GetDaoInstanceById(typeof(T), id);
-		}
-
-		private Dao GetDaoInstanceById(Type baseOrWrapperType, long id)
-		{
-			return GetDaoInstanceByMethod("GetById", baseOrWrapperType, (object)id);
 		}
 
 		private Dao GetDaoInstanceByUuid(Type baseOrWrapperType, string uuid)

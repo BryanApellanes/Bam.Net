@@ -62,9 +62,9 @@ namespace Bam.Net.Server.Tvg
             DefaultConfiguration
             .GetAppSetting("SearchPattern")
             .Or("*Services.dll,*Proxyables.dll,*Gloo.dll")
-            .DelimitSplit(",", "|").Each(searchPattern =>
+            .DelimitSplit(",", "|").Each(new { Directory = directory }, (ctx, searchPattern) =>
             {
-                FileInfo[] files = directory.GetFiles(searchPattern, SearchOption.AllDirectories);
+                FileInfo[] files = ctx.Directory.GetFiles(searchPattern, SearchOption.AllDirectories);
                 files.Each(file =>
                 {
                     try
@@ -90,11 +90,11 @@ namespace Bam.Net.Server.Tvg
         {
             GlooResponder gloo = (GlooResponder)Responder;
             ServiceProxyResponder responder = gloo.ServiceProxyResponder;
-            ServiceTypes.Each(serviceType =>
+            ServiceTypes.Each(new { Logger = Logger, Responder = responder }, (ctx, serviceType) =>
             {
-                responder.RemoveCommonService(serviceType);
-                responder.AddCommonService(serviceType, serviceType.Construct());
-                Logger.AddEntry("Added service: {0}", serviceType.FullName);
+                ctx.Responder.RemoveCommonService(serviceType);
+                ctx.Responder.AddCommonService(serviceType, serviceType.Construct());
+                ctx.Logger.AddEntry("Added service: {0}", serviceType.FullName);
             });
             return responder;
         }

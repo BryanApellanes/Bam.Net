@@ -295,26 +295,34 @@ namespace Bam.Net.Data.Repositories
 			string hash = "{0}::{1}"._Format(Uuid, type.FullName).Md5();
 			return hash;
 		}
-
-		protected internal static string GetUuid(object data, bool throwIfUuidPropertyMissing = false)
+        protected internal static string GetUuid(object data, bool throwIfUuidPropertyMissing = false)
+        {
+            return GetPropValue(data, "Uuid", throwIfUuidPropertyMissing);
+        }
+        protected internal static string GetCuid(object data, bool throwIfCuidPropertyMissing = false)
+        {
+            return GetPropValue(data, "Cuid", throwIfCuidPropertyMissing);
+        }
+        protected internal static string GetPropValue(object data, string propName, bool throwIfPropertyMissing = false)
 		{
 			string result = string.Empty;
 			if (data != null)
 			{
 				Type dataType = data.GetType();
-				PropertyInfo uuidProp = dataType.GetProperty("Uuid");
-				if (uuidProp != null)
+				PropertyInfo prop = dataType.GetProperty(propName);
+				if (prop != null)
 				{
-					result = (string)uuidProp.GetValue(data);
+					result = (string)prop.GetValue(data);
 				}
-				else if (throwIfUuidPropertyMissing)
+				else if (throwIfPropertyMissing)
 				{
-					Args.Throw<InvalidOperationException>("The specified object of type {0} doesn't have a Uuid property", dataType.Name);
+					Args.Throw<InvalidOperationException>("The specified object of type {0} doesn't have a {1} property", dataType.Name, propName);
 				}
 			}
 			return result;
 		}
-        
+
+
 		protected internal static bool HasKeyProperty(object data, out PropertyInfo prop)
 		{
 			prop = GetKeyProperty(data.GetType(), false);

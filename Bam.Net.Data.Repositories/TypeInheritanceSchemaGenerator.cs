@@ -18,6 +18,11 @@ namespace Bam.Net.Data.Repositories
     /// </summary>
     public class TypeInheritanceSchemaGenerator: TypeSchemaGenerator
     {
+        public TypeInheritanceSchemaGenerator(ITypeTableNameProvider tableNameProvider = null, Func<SchemaDefinition, TypeSchema, string> schemaTempPathProvider = null)
+            : base(tableNameProvider, schemaTempPathProvider)
+        {
+        }
+
         protected override void AddSchemaTables(TypeSchema typeSchema, SchemaManager schemaManager, ITypeTableNameProvider tableNameProvider = null)
         {
             tableNameProvider = tableNameProvider ?? new EchoTypeTableNameProvider();

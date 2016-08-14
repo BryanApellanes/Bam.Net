@@ -2441,6 +2441,26 @@ namespace Bam.Net
             return (val > 96 && val < 123) || (val > 64 && val < 91);
         }
 
+        public static bool IsAllCaps(this string value)
+        {
+            bool result = true; 
+            for(int i = 0; i < value.Length; i++)
+            {
+                char c = value[i];
+                result = char.IsUpper(c);
+                if (!result)
+                {
+                    break;
+                }
+            }
+            return result;
+        }
+
+        public static string TrimNonLetters(this string targetString)
+        {
+            return targetString.DropLeadingNonLetters().DropTrailingNonLetters();
+        }
+
         public static string DropTrailingNonLetters(this string targetString)
         {
             StringBuilder temp = new StringBuilder();
@@ -2468,8 +2488,9 @@ namespace Bam.Net
         {
             StringBuilder result = new StringBuilder();
             bool foundLetter = false;
-            foreach (char c in targetString)
+            for(int i = 0; i < targetString.Length; i++)
             {
+                char c = targetString[i];
                 if (c.IsLetter())
                 {
                     foundLetter = true;
@@ -2860,7 +2881,8 @@ namespace Bam.Net
 
         /// <summary>
         /// Copies all properties from source to destination where the name and
-        /// type match.
+        /// type match.  Accounts for nullability and treats non nullable and
+        /// nullable primitives as compatible
         /// </summary>
         /// <param name="destination"></param>
         /// <param name="source"></param>

@@ -16,12 +16,17 @@ namespace Bam.Net.Data.Repositories
 	{
 		public Repository()
 		{
-			this._storableTypes = new HashSet<Type>();
-		}
+			_storableTypes = new HashSet<Type>();
+            RequireUuid = true;
+            RequireCuid = false;
+        }
 
-		#region IRepository Members
+        public bool RequireUuid { get; set; }
+        public bool RequireCuid { get; set; }
 
-		HashSet<Type> _storableTypes;
+        #region IRepository Members
+
+        HashSet<Type> _storableTypes;
 
 		public IEnumerable<Type> StorableTypes
 		{
@@ -87,6 +92,7 @@ namespace Bam.Net.Data.Repositories
         /// <returns></returns>
         public object Save(object toSave)
 		{
+            SetMeta(toSave);
 			long id = GetIdValue(toSave);
 			object result = null;
 			if (id > 0)
@@ -174,8 +180,19 @@ namespace Bam.Net.Data.Repositories
 			FireEvent(DeleteFailed, args);
 		}
 
+        protected void SetMeta(object instance)
+        {
+            if (RequireUuid)
+            {
+                Meta.SetUuid(instance);
+            }
+            if (RequireCuid)
+            {
+                Meta.SetCuid(instance);
+            }
+        }
 
-		protected internal static PropertyInfo GetKeyProperty(Type type)
+        protected internal static PropertyInfo GetKeyProperty(Type type)
 		{
 			return Meta.GetKeyProperty(type);
 		}

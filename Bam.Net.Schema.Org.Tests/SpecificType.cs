@@ -20,13 +20,15 @@ namespace Bam.Net.Schema.Org.Tests
             {
                 if(_className == null)
                 {
-                    _className = TypeName.LettersOnly();
+                    string typeName = TypeName.LettersOnly();
+                    _className = typeName.PascalCase(!typeName.IsAllCaps());
                 }
                 return _className;
             }
             set
             {
-                _className = value;
+                string t = value.LettersOnly();
+                _className = t.PascalCase(!t.IsAllCaps());
             }
         }
 		string _typeName;
@@ -38,7 +40,8 @@ namespace Bam.Net.Schema.Org.Tests
 			}
 			set
 			{
-				_typeName = value.LettersOnly().PascalCase();
+                string t = value.LettersOnly();
+                _typeName = t.PascalCase(!t.IsAllCaps());
 			}
 		}
 		public string Extends { get; set; }

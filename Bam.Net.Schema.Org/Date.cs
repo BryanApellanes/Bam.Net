@@ -19,14 +19,12 @@ namespace Bam.Net.Schema.Org
         public Date(DateTime value)
             : this()
         {
-            this.Value = value;
+            Value<DateTime>(value);
         }
-
-        public DateTime Value { get; set; }
-
+        
         public override string ToString()
         {
-            return Value.ToString("s");
+            return Value<DateTime>().ToString("s");
         }
     }
 }

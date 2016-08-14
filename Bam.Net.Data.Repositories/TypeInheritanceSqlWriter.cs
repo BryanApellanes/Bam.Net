@@ -45,7 +45,7 @@ namespace Bam.Net.Data.Repositories
             Type type = instance.GetType();
             TypeInheritanceDescriptor inheritance = new TypeInheritanceDescriptor(type);
             Type rootType = inheritance.RootType;
-            rootInsert.Insert(Dao.TableName(rootType), GetAssignValues(rootType, instance, rootInsert.ColumnNameFormatter, BaseTypePropertyPredicate).ToArray());
+            rootInsert.Insert(Dao.TableName(rootType), GetBaseTypeAssignValues(rootType, instance, rootInsert.ColumnNameFormatter).ToArray());
             rootInsert.Id();
             rootInsert.Go();
             results.Add(rootInsert);
@@ -55,17 +55,14 @@ namespace Bam.Net.Data.Repositories
                 if (tableType != rootType)
                 {
                     SqlStringBuilder inheritor = db.GetService<SqlStringBuilder>();
-                    inheritor.FormatInsert<InsertInheritanceFormat>(Dao.TableName(tableType), GetAssignValues(tableType, instance, inheritor.ColumnNameFormatter, InheritingTypePropertyPredicate).ToArray());
+                    inheritor.Insert(Dao.TableName(tableType), GetInheritingTypeAssignValues(tableType, instance, inheritor.ColumnNameFormatter).ToArray());                    
                     inheritor.Go();
                     results.Add(inheritor);
                 }
             });
             return results; 
         }
-        public List<SqlStringBuilder> GetUpdateStatements(object instance)
-        {
-            return GetUpdateStatements(instance, instance.GetType());
-        }
+ 
         public List<SqlStringBuilder> GetUpdateStatements(object instance, Type type)
         {
             return GetUpdateStatements(instance, type, Database);
@@ -79,13 +76,12 @@ namespace Bam.Net.Data.Repositories
         {
             List<SqlStringBuilder> results = new List<SqlStringBuilder>();
             db = db ?? Database;
-            long id = Meta.GetId(instance);
             SqlStringBuilder rootUpdate = db.GetService<SqlStringBuilder>();
-            Func<string, string> columNameFormatter = rootUpdate.ColumnNameFormatter;
-            AssignValue idAssignment = new AssignValue("Id", id, rootUpdate.ColumnNameFormatter);
+            Func<string, string> columnNameFormatter = rootUpdate.ColumnNameFormatter;
+            AssignValue uniqueness = GetUniquenessFilter(instance, columnNameFormatter);
             TypeInheritanceDescriptor inheritance = new TypeInheritanceDescriptor(type);
             Type rootType = inheritance.RootType;
-            rootUpdate.Update(Dao.TableName(rootType), GetAssignValues(rootType, instance, columNameFormatter, BaseTypePropertyPredicate).ToArray()).Where(idAssignment);
+            rootUpdate.Update(Dao.TableName(rootType), GetBaseTypeAssignValues(rootType, instance, columnNameFormatter).ToArray()).Where(uniqueness);
             results.Add(rootUpdate);            
             inheritance.Chain.BackwardsEach(typeTable =>
             {
@@ -93,7 +89,7 @@ namespace Bam.Net.Data.Repositories
                 if(tableType != rootType)
                 {
                     SqlStringBuilder inheritor = db.GetService<SqlStringBuilder>();
-                    inheritor.Update(Dao.TableName(tableType), GetAssignValues(tableType, instance, columNameFormatter, InheritingTypePropertyPredicate).ToArray()).Where(idAssignment);
+                    inheritor.Update(Dao.TableName(tableType), GetInheritingTypeAssignValues(tableType, instance, columnNameFormatter).ToArray()).Where(uniqueness);
                     inheritor.Go();
                     results.Add(inheritor);
                 }
@@ -101,12 +97,91 @@ namespace Bam.Net.Data.Repositories
             return results;
         }
 
-        protected Func<PropertyInfo, bool> BaseTypePropertyPredicate { get; set; }
-        protected Func<PropertyInfo, bool> InheritingTypePropertyPredicate { get; set; }
+        public List<SqlStringBuilder> GetDeleteStatements(object instance, Type type)
+        {
+            return GetDeleteStatements(instance, type, Database);
+        }
+
+        public List<SqlStringBuilder> GetDeleteStatements(object instance, Type type, Database db)
+        {
+            List<SqlStringBuilder> results = new List<SqlStringBuilder>();
+            db = db ?? Database;
+            SqlStringBuilder rootDelete = db.GetService<SqlStringBuilder>();
+            Func<string, string> columnNameFormatter = rootDelete.ColumnNameFormatter;
+            AssignValue uniqueness = GetUniquenessFilter(instance, columnNameFormatter);
+            TypeInheritanceDescriptor inheritance = new TypeInheritanceDescriptor(type);
+            Type rootType = inheritance.RootType;
+            rootDelete.Delete(Dao.TableName(rootType)).Where(uniqueness);
+            results.Add(rootDelete);
+            inheritance.Chain.BackwardsEach(typeTable =>
+            {
+                Type tableType = typeTable.Type;
+                if(tableType != rootType)
+                {
+                    SqlStringBuilder inheritor = db.GetService<SqlStringBuilder>();
+                    inheritor.Delete(Dao.TableName(tableType)).Where(uniqueness);
+                    inheritor.Go();
+                    results.Add(inheritor);
+                }
+            });
+            return results;
+        }
+
+        public Func<PropertyInfo, bool> BaseTypePropertyPredicate { get; set; }
+        public Func<PropertyInfo, bool> InheritingTypePropertyPredicate { get; set; }
+        private IEnumerable<AssignValue> GetInheritingTypeAssignValues(Type type, object instance, Func<string, string> columnNameFormatter)
+        {
+            foreach(AssignValue valueAssignment in GetAssignValues(type, instance, columnNameFormatter, InheritingTypePropertyPredicate))
+            {
+                yield return valueAssignment;
+            }
+            foreach (AssignValue valueAssignment in GetUuidAndCuidAssignValues(instance, columnNameFormatter))
+            {
+                yield return valueAssignment;
+            }
+        }
+
+        private IEnumerable<AssignValue> GetBaseTypeAssignValues(Type type, object instance, Func<string, string> columnNameFormatter)
+        {
+            foreach(AssignValue valueAssignment in GetAssignValues(type, instance, columnNameFormatter, BaseTypePropertyPredicate))
+            {
+                yield return valueAssignment;
+            }
+            foreach(AssignValue valueAssignment in GetUuidAndCuidAssignValues(instance, columnNameFormatter))
+            {
+                yield return valueAssignment;
+            }
+        }
+
+        private IEnumerable<AssignValue> GetUuidAndCuidAssignValues(object instance, Func<string, string> columnNameFormatter)
+        {
+            object uuid = instance.Property("Uuid", false);
+            if (uuid != null)
+            {
+                yield return new AssignValue("Uuid", uuid, columnNameFormatter);
+            }
+            object cuid = instance.Property("Cuid", false);
+            if (cuid != null)
+            {
+                yield return new AssignValue("Cuid", cuid, columnNameFormatter);
+            }
+        }
+
         private IEnumerable<AssignValue> GetAssignValues(Type type, object instance, Func<string, string> columnNameFormatter, Func<PropertyInfo, bool> propertyPredicate = null)
         {
             propertyPredicate = propertyPredicate ?? BaseTypePropertyPredicate;
             return instance.EachDataProperty(type, propertyPredicate, (pi, v) => new AssignValue(pi.Name, v, columnNameFormatter));
-        }        
+        }
+
+        private AssignValue GetUniquenessFilter(object instance, Func<string, string> columnNameFormatter)
+        {
+            Args.ThrowIfNull(instance, nameof(instance));
+            object identifier = Meta.GetId(instance);
+            if (identifier.Equals(default(long)))
+            {
+                Args.Throw<InvalidOperationException>("Unable to get unique identifier for specified data: {0}", instance.ToString());
+            }
+            return new AssignValue("Id", identifier, columnNameFormatter);
+        }
     }
 }

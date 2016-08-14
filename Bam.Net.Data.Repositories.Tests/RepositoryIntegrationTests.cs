@@ -26,13 +26,13 @@ namespace Bam.Net.Data.Repositories.Tests
         {
             _repos = new HashSet<IRepository>();
 
-            //DaoRepository daoRepo = new DaoRepository(new SQLiteDatabase(RootDir, "DaoRepoTest"));
-            //AddTypes(daoRepo);
-            //_repos.Add(daoRepo);
+            DaoRepository daoRepo = new DaoRepository(new SQLiteDatabase(RootDir, "DaoRepoTest"));
+            AddTypes(daoRepo);
+            _repos.Add(daoRepo);
 
-            //ObjectRepository objRepo = new ObjectRepository(Path.Combine(RootDir, "ObjectRepo"));
-            //AddTypes(objRepo);
-            //_repos.Add(objRepo);
+            ObjectRepository objRepo = new ObjectRepository(Path.Combine(RootDir, "ObjectRepo"));
+            AddTypes(objRepo);
+            _repos.Add(objRepo);
 
             DatabaseRepository dbRepo = new DatabaseRepository(new SQLiteDatabase(RootDir, "DbRepoTest"));
             AddTypes(dbRepo);
@@ -151,11 +151,24 @@ namespace Bam.Net.Data.Repositories.Tests
             });
         }
 
-        //[IntegrationTest]
-        //public void SaveOfInheritingTypeTest()
-        //{
+        [ConsoleAction]
+        public void Testing()
+        {
+            SaveOfInheritingTypeTest();
+        }
 
-        //}
+        [IntegrationTest]
+        public void SaveOfInheritingTypeTest()
+        {
+            CivicStructure toSave = new CivicStructure();
+            toSave.OpeningHours = new Text { Value = "Opening hours" };
+            toSave.Name = "The name of the civic structure";
+            toSave.Photo = new OneOfThese<ImageObject, Photograph>();
+            toSave.Photo.Value<Photograph>(new Photograph { Name = "The photograph" });
+            DatabaseRepository repo = new DatabaseRepository(new SQLiteDatabase($".\\{nameof(SaveOfInheritingTypeTest)}", "SchemaDotOrg"));
+            repo.AddNamespace(typeof(CivicStructure));
+            repo.Save(toSave);
+        }
 
         private void AddTypes(IRepository repo)
         {

@@ -17,22 +17,26 @@ namespace Bam.Net.Data.Repositories
 	{
 		public WrapperModel(Type pocoType, TypeSchema schema, string wrapperNamespace = "TypeWrappers", string daoNameSpace = "Daos")
 		{
-			this.BaseType = pocoType;
-			this.WrapperNamespace = wrapperNamespace;
-            this.DaoNamespace = daoNameSpace;
-			this.TypeNamespace = pocoType.Namespace;
-			this.TypeName = pocoType.Name;
-			this.ForeignKeys = schema.ForeignKeys.Where(fk => fk.PrimaryKeyType.Equals(pocoType)).ToArray();
-			this.ChildPrimaryKeys = schema.ForeignKeys.Where(fk => fk.ForeignKeyType.Equals(pocoType)).ToArray();
-            this.LeftXrefs = schema.Xrefs.Where(xref => xref.Left.Equals(pocoType)).Select(xref => TypeXrefModel.FromTypeXref(xref, daoNameSpace)).ToArray();
-            this.RightXrefs = schema.Xrefs.Where(xref => xref.Right.Equals(pocoType)).Select(xref => TypeXrefModel.FromTypeXref(xref, daoNameSpace)).ToArray();
+			BaseType = pocoType;
+			WrapperNamespace = wrapperNamespace;
+            DaoNamespace = daoNameSpace;
+			TypeNamespace = pocoType.Namespace;
+            TypeName = pocoType.Name.TrimNonLetters();
+            WrapperTypeName = pocoType.ToTypeString(false).Replace(TypeName, $"{TypeName}Wrapper");
+            BaseTypeName = pocoType.ToTypeString(false);
+			ForeignKeys = schema.ForeignKeys.Where(fk => fk.PrimaryKeyType.Equals(pocoType)).ToArray();
+			ChildPrimaryKeys = schema.ForeignKeys.Where(fk => fk.ForeignKeyType.Equals(pocoType)).ToArray();
+            LeftXrefs = schema.Xrefs.Where(xref => xref.Left.Equals(pocoType)).Select(xref => TypeXrefModel.FromTypeXref(xref, daoNameSpace)).ToArray();
+            RightXrefs = schema.Xrefs.Where(xref => xref.Right.Equals(pocoType)).Select(xref => TypeXrefModel.FromTypeXref(xref, daoNameSpace)).ToArray();
 		}
 
 		public string WrapperNamespace { get; set; }
 
 		public string TypeNamespace { get; set; }
         public string DaoNamespace { get; set; }
-		public string TypeName { get; set; }
+        public string TypeName { get; set; }
+		public string WrapperTypeName { get; set; }
+        public string BaseTypeName { get; set; }
 
 		public TypeFk[] ForeignKeys { get; set; }
 

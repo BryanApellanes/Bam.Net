@@ -19,25 +19,21 @@ namespace Bam.Net.Data.Repositories
     /// </summary>
     public class DatabaseRepository : DaoRepository
     {
-        public DatabaseRepository():base()
+        public DatabaseRepository(ITypeTableNameProvider tableNameProvider = null, Func<SchemaDefinition, TypeSchema, string> schemaTempPathProvider = null)
+            :base(tableNameProvider, schemaTempPathProvider)
         {
-            RequireUuid = true;
-            RequireCuid = false;
             BlockOnChildWrites = true;
             BackgroundThreadQueue = new BackgroundThreadQueue<SqlStringBuilder> { Process = Execute };
         }
 
-        public DatabaseRepository(Database database) : this()
+        public DatabaseRepository(Database database, ILogger logger = null, ITypeTableNameProvider tableNameProvider = null, Func<SchemaDefinition, TypeSchema, string> schemaTempPathProvider = null) : this(tableNameProvider, schemaTempPathProvider)
         {
             Database = database;
-            TypeSchemaGenerator = new TypeInheritanceSchemaGenerator();
+            TypeSchemaGenerator = new TypeInheritanceSchemaGenerator(tableNameProvider, schemaTempPathProvider);
             TypeDaoGenerator = new TypeDaoGenerator(TypeSchemaGenerator);
-            if(Logger != null)
-            {
-                TypeDaoGenerator.Subscribe(Logger);
-                TypeSchemaGenerator.Subscribe(Logger);
-            }
-            TypeDaoGenerator.GenerateDaoAssemblySucceeded += GenerateDaoAssemblySucceeded;
+            Logger = logger ?? Log.Default;
+            TypeDaoGenerator.Subscribe(Logger);
+            TypeSchemaGenerator.Subscribe(Logger);
         }
         
         TypeSchema _typeSchema;
@@ -131,9 +127,6 @@ namespace Bam.Net.Data.Repositories
                 }
             }
         }
-        
-        public bool RequireUuid { get; set; }
-        public bool RequireCuid { get; set; }
 
         public override T Create<T>(T toCreate)
         {
@@ -147,12 +140,11 @@ namespace Bam.Net.Data.Repositories
         public override object Create(object toCreate)
         {
             Initialize();
-            Type type = toCreate.GetType();
+            Type pocoType = GetBaseType(toCreate.GetType());
             if (ValidateTypes)
             {
-                ValidateType(toCreate.GetType());
+                ValidateType(pocoType);
             }
-            SetMeta(toCreate);
 
             // TODO: implement transaction functionality in sqlstringbuilder            
             List<SqlStringBuilder> sqls = SqlWriter.GetInsertStatements(toCreate, Database); // due to supporting some database types that don't allow for (or make it easy to do) multiline scripts or multi table inserts, each insert is returned as a separate sqlstring builder
@@ -165,20 +157,32 @@ namespace Bam.Net.Data.Repositories
                 dbParams.AddRange(Database.GetParameters(sql));
                 Database.ExecuteSql(sql, dbParams.ToArray());
             });
-            // - end TODO
-            
+            // - end TODO            
             SaveChildCollections(toCreate);
+            SaveXrefs(toCreate, pocoType);
+
             return toCreate;
-        }
-        
-        public override bool Delete(object toDelete)
-        {
-            throw new NotImplementedException();
         }
 
         public override bool Delete<T>(T toDelete)
         {
-            throw new NotImplementedException();
+            return Delete((object)toDelete);
+        }
+
+        public override bool Delete(object toDelete)
+        {
+            try
+            {
+                List<SqlStringBuilder> sqls = SqlWriter.GetDeleteStatements(toDelete, GetBaseType(toDelete.GetType()));
+                sqls.Each(sql => Execute(sql));
+                return true;
+            }
+            catch(Exception ex)
+            {
+                string value = toDelete == null ? "null" : toDelete.ToString();
+                Logger.AddEntry("Exception occurred on delete of {0}: {1}", ex, value, ex.Message);
+                return false;
+            }
         }
 
         public override T Update<T>(T toUpdate)
@@ -188,8 +192,10 @@ namespace Bam.Net.Data.Repositories
 
         public override object Update(object toUpdate)
         {
-            List<SqlStringBuilder> sqls = SqlWriter.GetUpdateStatements(toUpdate, GetBaseType(toUpdate.GetType()));
-            sqls.Each(sql => Execute(sql)); 
+            Type pocoType = GetBaseType(toUpdate.GetType());
+            List<SqlStringBuilder> sqls = SqlWriter.GetUpdateStatements(toUpdate, pocoType);
+            sqls.Each(sql => Execute(sql));
+            SaveXrefs(toUpdate, pocoType);
             return toUpdate;
         }
 
@@ -200,6 +206,7 @@ namespace Bam.Net.Data.Repositories
                 List<SqlStringBuilder> sqls = new List<SqlStringBuilder>();
                 foreach(object child in coll)
                 {
+                    TypeSchemaPropertyManager.SetParentProperties(parent, child);
                     if(child.Property<long>("Id") > 0)
                     {
                         sqls.AddRange(SqlWriter.GetUpdateStatements(child, Database));
@@ -229,21 +236,14 @@ namespace Bam.Net.Data.Repositories
             Args.ThrowIf<InvalidOperationException>(RequireCuid && !type.HasProperty("Cuid"), errorFormat, "Cuid");
         }
 
-        private void SetMeta(object instance)
+        private void SaveXrefs(object instance, Type pocoType)
         {
-            if (RequireUuid)
+            Dao dao = GetDaoInstanceById(pocoType, GetIdValue(instance));
+            if (SetXrefDaoCollectionValues(instance, dao))
             {
-                Meta.SetUuid(instance);
+                dao.ForceUpdate = true;
+                SaveDaoInstance(pocoType, dao);
             }
-            if (RequireCuid)
-            {
-                Meta.SetCuid(instance);
-            }
-        }
-
-        private bool HasId(object instance)
-        {
-            return Meta.GetId(instance, true) > 0;
         }
     }
 }

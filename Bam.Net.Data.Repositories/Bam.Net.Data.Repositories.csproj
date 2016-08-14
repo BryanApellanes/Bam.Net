@@ -126,7 +126,6 @@
     <Compile Include="DaoGenerationException.cs" />
     <Compile Include="DaoBackup.cs" />
     <Compile Include="DatabaseExtensions.cs" />
-    <Compile Include="InheritanceInsertFormat.cs" />
     <Compile Include="TypeSchemaPropertyManager.cs" />
     <Compile Include="TypeSchemaScriptWriter.cs" />
     <Compile Include="DatabaseRepository.cs" />

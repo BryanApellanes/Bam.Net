@@ -18,7 +18,7 @@ namespace Bam.Net.Schema.Org
         public Integer(int value)
             : this()
         {
-            this.Value = value;
+            Value<int>(value);
         }
     }
 }

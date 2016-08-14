@@ -23,7 +23,7 @@ namespace Bam.Net.Data.Repositories
         {
             DefaultDataTypeBehavior = DefaultDataTypeBehaviors.Exclude;
             TypeSchemaTempPathProvider = schemaTempPathProvider ?? ((sd, ts) => RuntimeSettings.AppDataFolder);
-            SchemaManager = new UuidSchemaManager();            
+            SchemaManager = new CuidSchemaManager(false);            
             _tableNameProvider = tableNameProvider ?? new EchoTypeTableNameProvider();
         }
 
