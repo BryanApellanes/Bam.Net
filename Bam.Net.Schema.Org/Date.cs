@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.DataTypes
 {
     public class Date: DataType
     {
@@ -19,14 +19,12 @@ namespace Bam.Net.Schema.Org
         public Date(DateTime value)
             : this()
         {
-            this.Value = value;
+            Value<DateTime>(value);
         }
-
-        public DateTime Value { get; set; }
-
+        
         public override string ToString()
         {
-            return Value.ToString("s");
+            return Value<DateTime>().ToString("s");
         }
     }
 }

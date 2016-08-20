@@ -1,9 +1,9 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
 	///<summary>A type of Bank Account with a main purpose of depositing funds to gain interest or other benefits.</summary>
-	public class DepositAccount1: InvestmentOrDeposit
+	public class DepositAccount_1: InvestmentOrDeposit
 	{
 	}
 }

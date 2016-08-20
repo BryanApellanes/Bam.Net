@@ -28,11 +28,11 @@ namespace Bam.Net.Caching
 
 	public class CachingRepository: Repository
 	{
-		CacheManager _cacheManager;
+		ConcurrentCacheManager _cacheManager;
 		public CachingRepository(IRepository sourceRepository)
 		{
 			SourceRepository = sourceRepository;
-			_cacheManager = new CacheManager();
+			_cacheManager = new ConcurrentCacheManager();
 		}
 
         public override IEnumerable<T> Query<T>(QueryFilter query)
@@ -104,7 +104,7 @@ namespace Bam.Net.Caching
 
 		public override object Retrieve(Type objectType, long id)
 		{
-			Cache cache = _cacheManager.CacheFor(objectType);
+			ConcurrentCache cache = _cacheManager.CacheFor(objectType);
 			CacheItem cacheItem = cache.Retrieve(id);
 			object result;
 			if (cacheItem == null)
@@ -122,7 +122,7 @@ namespace Bam.Net.Caching
 
 		public override object Retrieve(Type objectType, string uuid)
 		{
-			Cache cache = _cacheManager.CacheFor(objectType);
+			ConcurrentCache cache = _cacheManager.CacheFor(objectType);
 			CacheItem cacheItem = cache.Retrieve(uuid);
 			object result;
 			if (cacheItem == null)
@@ -208,7 +208,7 @@ namespace Bam.Net.Caching
 		{
             Task.Run(() =>
             {
-                Cache cache = _cacheManager.CacheFor<T>();
+                ConcurrentCache cache = _cacheManager.CacheFor<T>();
                 CacheItem fromCache = cache.Retrieve(toUpdate);
                 if (fromCache != null)
                 {
@@ -223,7 +223,7 @@ namespace Bam.Net.Caching
 		{
             Task.Run(() =>
             {
-                Cache cache = _cacheManager.CacheFor(toUpdate.GetType());
+                ConcurrentCache cache = _cacheManager.CacheFor(toUpdate.GetType());
                 CacheItem fromCache = cache.Retrieve(toUpdate);
                 if (fromCache != null)
                 {
@@ -293,9 +293,9 @@ namespace Bam.Net.Caching
             }
         }
 
-        private T Retrieve<T>(Func<Cache, CacheItem> cacheRetriever, Func<T> sourceRetriever)
+        private T Retrieve<T>(Func<ConcurrentCache, CacheItem> cacheRetriever, Func<T> sourceRetriever)
         {
-            Cache cache = _cacheManager.CacheFor<T>();
+            ConcurrentCache cache = _cacheManager.CacheFor<T>();
             CacheItem cacheItem = cacheRetriever(cache);
             T result;
             if (cacheItem == null)

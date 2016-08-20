@@ -23,14 +23,14 @@ namespace Bam.Net.Data.Repositories
     {
         DaoGenerator _daoGenerator;
         WrapperGenerator _wrapperGenerator;
-        TypeSchemaGenerator _schemaGenerator;
+        TypeSchemaGenerator _typeSchemaGenerator;
         HashSet<Assembly> _additonalReferenceAssemblies;
         public TypeDaoGenerator(ILogger logger = null, IEnumerable<Type> types = null)
         {
             _namespace = "TypeDaos";
             _daoGenerator = new DaoGenerator(DaoNamespace);
             _wrapperGenerator = new WrapperGenerator(WrapperNamespace, DaoNamespace);
-            _schemaGenerator = new TypeSchemaGenerator();
+            _typeSchemaGenerator = new TypeSchemaGenerator();
             _additonalReferenceAssemblies = new HashSet<Assembly>();
 
             TypeSchemaTempPathProvider = (schemaDef, typeSchema) => System.IO.Path.Combine("".GetAppDataFolder(), "DaoTemp_{0}"._Format(schemaDef.Name));
@@ -52,7 +52,12 @@ namespace Bam.Net.Data.Repositories
             Args.ThrowIfNull(typeAssembly, "typeAssembly");
             AddTypes(typeAssembly.GetTypes().Where(t => t.Namespace != null && t.Namespace.Equals(nameSpace) && !t.IsAbstract));
         }
-        
+
+        public TypeDaoGenerator(TypeSchemaGenerator typeSchemaGenerator) : this()
+        {
+            _typeSchemaGenerator = typeSchemaGenerator;
+        }
+
         public bool AddAuditFields { get; set; }
 
         public bool IncludeModifiedBy { get; set; }
@@ -109,7 +114,7 @@ namespace Bam.Net.Data.Repositories
 
         public override void Subscribe(ILogger logger)
         {
-            _schemaGenerator.Subscribe(logger);
+            _typeSchemaGenerator.Subscribe(logger);
             base.Subscribe(logger);
         }
 
@@ -283,7 +288,7 @@ namespace Bam.Net.Data.Repositories
         /// <returns></returns>
         protected internal SchemaDefinitionCreateResult CreateSchemaDefinition(string schemaName = null)
         {
-            return _schemaGenerator.CreateSchemaDefinition(_types, schemaName);
+            return _typeSchemaGenerator.CreateSchemaDefinition(_types, schemaName);
         }
         protected internal bool GenerateDaoAssembly(TypeSchema typeSchema, out CompilationException compilationEx)
         {
@@ -383,7 +388,8 @@ namespace Bam.Net.Data.Repositories
             string tempPath = TypeSchemaTempPathProvider(schema, typeSchema);
             if (Directory.Exists(tempPath))
             {
-                Directory.Move(tempPath, $"{tempPath}_{DateTime.UtcNow.ToJulianDate().ToString()}");
+                string newPath = tempPath.GetNextDirectoryName();
+                Directory.Move(tempPath, newPath);
             }
             CompilationException compilationException;
             if (!GenerateDaoAssembly(typeSchema, out compilationException))

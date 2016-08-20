@@ -27,14 +27,14 @@ namespace Bam.Net.Testing.Integration
         /// </summary>
         public static event EventHandler<ConsoleInvokeableMethod> IntegrationTestPassed;
 
-        public static void RunAllIntegrationTests(FileInfo file, EventHandler<Exception> onFailed = null)
+        public static void RunIntegrationTests(FileInfo file, EventHandler<Exception> onFailed = null)
 		{
 			// get all the IntegrationTestContainers
 			Assembly assembly = Assembly.LoadFrom(file.FullName);
-			RunAllIntegrationTests(assembly, onFailed);
+			RunIntegrationTests(assembly, onFailed);
 		}
 
-		public static void RunAllIntegrationTests(Assembly assembly, EventHandler<Exception> onFailed = null)
+		public static void RunIntegrationTests(Assembly assembly, EventHandler<Exception> onFailed = null)
 		{
 			assembly.GetTypes().Where(type => type.HasCustomAttributeOfType<IntegrationTestContainerAttribute>()).Each(type =>
 			{

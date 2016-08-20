@@ -1,6 +1,6 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
 	///<summary>The act of notifying someone of information pertinent to them, with no expectation of a response.</summary>
 	public class InformAction: CommunicateAction

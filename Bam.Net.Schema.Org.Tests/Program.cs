@@ -22,6 +22,7 @@ using System.Xml;
 using Bam.Net.Web;
 using System.Threading.Tasks;
 using System.Threading;
+using Dt = Bam.Net.Schema.Org.DataTypes;
 
 namespace Bam.Net.Schema.Org.Tests
 {
@@ -71,16 +72,23 @@ namespace Bam.Net.Schema.Org.Tests
 			}
 		}
 
+        static string _genDir = "C:\\Schema.org";
+        static string _tmpDir = "C:\\Schema.org.tmp";
+        private void Create(string dir)
+        {
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+        }
 		public static HashSet<string> FailedTypeNames { get; private set; }
         static HashSet<string> _writtenTypes;
         [ConsoleAction("Generate Schema.org.cs files")]
         public void Generate()
         {
-            if (!Directory.Exists("C:\\Schema.org"))
-            {
-                Directory.CreateDirectory("C:\\Schema.org");
-            }
-			
+            Create(_genDir);
+            Create(_tmpDir);
+
 			FailedTypeNames = new HashSet<string>();
             _writtenTypes = new HashSet<string>();
             HashSet<SpecificType> types = GetTypes();
@@ -91,8 +99,8 @@ namespace Bam.Net.Schema.Org.Tests
             
 			foreach(string failedType in FailedTypeNames)
 			{
-				FileInfo file = new FileInfo("C:\\Schema.org\\{0}.cs"._Format(failedType));
-				try
+				FileInfo file = new FileInfo($"{_genDir}\\{0}.cs"._Format(failedType));
+                try
 				{
 					file.Delete();
 				}
@@ -135,7 +143,7 @@ namespace Bam.Net.Schema.Org.Tests
             string path = specified.GetNextFileName(out num);
             if (num > 0)
             {
-                currentType.ClassName = $"{currentType.ClassName}{num}";
+                currentType.ClassName = $"{currentType.ClassName}_{num}";
             }
             string code = GetCsCode(currentType);
             TryWrite(code, path);
@@ -145,7 +153,9 @@ namespace Bam.Net.Schema.Org.Tests
         {
             HashSet<SpecificType> results = new HashSet<SpecificType>();
             Queue<SpecificType> queue = new Queue<SpecificType>();
-            queue.Enqueue(new SpecificType { TypeName = "Thing", Extends = "DataType" });
+            SpecificType thing = new SpecificType { TypeName = "Thing", Extends = "DataType" };
+            results.Add(thing);
+            queue.Enqueue(thing);
 
             while(queue.Count > 0)
             {
@@ -200,12 +210,12 @@ namespace Bam.Net.Schema.Org.Tests
             SchemaDotOrgProperty[] properties = GetProperties(currentType.TypeName);
 
             StringBuilder result = new StringBuilder();
-            result.AppendLine("using System;");
+            result.AppendLine("using Bam.Net.Schema.Org.DataTypes;");
             result.AppendLine();
-            result.AppendLine("namespace Bam.Net.Schema.Org");
+            result.AppendLine("namespace Bam.Net.Schema.Org.Things");
             result.AppendLine("{");
             result.AppendFormat("\t///<summary>{0}</summary>\r\n", GetTypeDescription(currentType.TypeName));
-            result.AppendFormat("\tpublic class {0}", currentType.ClassName.PascalCase());
+            result.AppendFormat("\tpublic class {0}", currentType.ClassName);
             if (!string.IsNullOrEmpty(currentType.Extends))
             {
                 result.AppendFormat(": {0}", currentType.Extends);
@@ -264,9 +274,16 @@ namespace Bam.Net.Schema.Org.Tests
         {
 			try
 			{
+                FileInfo typeFile = new FileInfo(Path.Combine(_tmpDir, $"{typeName}.html"));
+                if (typeFile.Exists)
+                {
+                    return typeFile.ReadAllText();
+                }
+
 				string baseUrl = "http://schema.org/";
 				WebClient client = new WebClient();
 				string html = client.DownloadString(string.Format("{0}{1}", baseUrl, typeName));
+                html.SafeWriteToFile(typeFile.FullName);
 				return html;
 			}
 			catch (Exception ex)
@@ -294,8 +311,8 @@ namespace Bam.Net.Schema.Org.Tests
             string[] types = new string[] { "Boolean", "Date", "Number", "Text", "Time", "Url" };
             foreach (string typeName in types)
             {
-                object dataType = DataType.GetDataType(typeName);
-                Type sysType = DataType.GetTypeOfDataType(typeName);
+                object dataType = Dt.DataType.GetDataType(typeName);
+                Type sysType = Dt.DataType.GetTypeOfDataType(typeName);
                 Expect.AreSame(sysType, dataType.GetType());
             }            
         }
@@ -308,8 +325,8 @@ namespace Bam.Net.Schema.Org.Tests
         [UnitTest("Schema Integer should be implicitly int")]
         public void SchemaInteger()
         {
-            Integer three = new Integer(3);
-            Integer four = new Integer(4);
+            Dt.Integer three = new Dt.Integer(3);
+            Dt.Integer four = new Dt.Integer(4);
             int result = AddTest(three, four);
             Expect.IsTrue(result == 7);
         }
@@ -317,19 +334,19 @@ namespace Bam.Net.Schema.Org.Tests
         [UnitTest("DataType.GetDataType should get expected generic types")]
         public void DataTypeGetGenericDataType()
         {
-            Boolean b = DataType.GetDataType<Boolean>("Boolean");
+            Dt.Boolean b = Dt.DataType.GetDataType<Dt.Boolean>("Boolean");
             Expect.IsNotNull(b);
 
-            Date d = DataType.GetDataType<Date>("Date");
+            Dt.Date d = Dt.DataType.GetDataType<Dt.Date>("Date");
             Expect.IsNotNull(d);
 
-            Number n = DataType.GetDataType<Number>("Number");
+            Dt.Number n = Dt.DataType.GetDataType<Dt.Number>("Number");
             Expect.IsNotNull(n);
 
-            Text t = DataType.GetDataType<Text>("Text");
+            Dt.Text t = Dt.DataType.GetDataType<Dt.Text>("Text");
             Expect.IsNotNull(t);
 
-            Url u = DataType.GetDataType<Url>("Url");
+            Dt.Url u = Dt.DataType.GetDataType<Dt.Url>("Url");
             Expect.IsNotNull(u);
         }
 

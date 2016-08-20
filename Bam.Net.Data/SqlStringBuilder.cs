@@ -10,8 +10,9 @@ using System.Data.Common;
 
 namespace Bam.Net.Data
 {
-    public class SqlStringBuilder: IHasFilters
+    public class SqlStringBuilder : IHasFilters
     {
+        const string InsertFormat = "INSERT INTO {0} ";
         StringBuilder _stringBuilder;
         protected List<IParameterInfo> parameters;
         public static implicit operator string(SqlStringBuilder sqlStringBuilder)
@@ -22,20 +23,20 @@ namespace Bam.Net.Data
         public SqlStringBuilder()
         {
             Reset();
-			TableNameFormatter = t => string.Format("[{0}]", t);
-			ColumnNameFormatter = c => string.Format("[{0}]", c);
+            TableNameFormatter = t => string.Format("[{0}]", t);
+            ColumnNameFormatter = c => string.Format("[{0}]", c);
             this.Executed += (s, d) =>
             {
                 s.Reset();
             };
         }
 
-		public SqlStringBuilder(string command)
-			: this()
-		{
-			this._stringBuilder = new StringBuilder(command);
-		}
-		
+        public SqlStringBuilder(string command)
+            : this()
+        {
+            this._stringBuilder = new StringBuilder(command);
+        }
+
         public virtual void Reset()
         {
             _stringBuilder = new StringBuilder();
@@ -44,17 +45,17 @@ namespace Bam.Net.Data
             NextNumber = 1;
         }
 
-		public Func<string, string> TableNameFormatter
-		{
-			get;
-			set;
-		}
+        public Func<string, string> TableNameFormatter
+        {
+            get;
+            set;
+        }
 
-		public Func<string, string> ColumnNameFormatter
-		{
-			get;
-			set;
-		}
+        public Func<string, string> ColumnNameFormatter
+        {
+            get;
+            set;
+        }
 
         public event SqlExecuteDelegate Executed;
 
@@ -63,7 +64,8 @@ namespace Bam.Net.Data
         {
             if (!string.IsNullOrEmpty(this))
             {
-                DataTable val = db.GetDataTable(this, CommandType.Text, db.ServiceProvider.Get<IParameterBuilder>().GetParameters(this));
+                DbParameter[] dbParameters = db.ServiceProvider.Get<IParameterBuilder>().GetParameters(this);
+                DataTable val = db.GetDataTable(this, CommandType.Text, dbParameters);
                 OnExecuted(db);
                 return val;
             }
@@ -109,10 +111,10 @@ namespace Bam.Net.Data
                 OnExecuted(db);
             }
         }
-		public virtual DataSet GetDataSet(Database db, bool releaseConnection = true, DbConnection conn = null, DbTransaction tx = null)
-		{
-			return GetDataSet<object>(db, releaseConnection, conn, tx);
-		}
+        public virtual DataSet GetDataSet(Database db, bool releaseConnection = true, DbConnection conn = null, DbTransaction tx = null)
+        {
+            return GetDataSet<object>(db, releaseConnection, conn, tx);
+        }
 
         public virtual DataSet GetDataSet<T>(Database db, bool releaseConnection = true, DbConnection conn = null, DbTransaction tx = null)
         {
@@ -120,18 +122,18 @@ namespace Bam.Net.Data
             {
                 conn = db.GetDbConnection();
             }
-			IParameterBuilder parameterBuilder;
-			if(db.ServiceProvider.TryGet<IParameterBuilder>(out parameterBuilder))
-			{
-				DataSet ds = db.GetDataSetFromSql(this, CommandType.Text, releaseConnection, conn, tx, parameterBuilder.GetParameters(this));
-				OnExecuted(db);
-				return ds;
-			}
-			else
-			{
-				Args.Throw<InvalidOperationException>("Unable to get IParameterBuilder for the database with connection string ({0}), should you specify a Database instance of your own instead of depending on the default database initializer?  Be sure to call the appropriate Registrar method first", db.ConnectionString);
-				return null;
-			}
+            IParameterBuilder parameterBuilder;
+            if (db.ServiceProvider.TryGet<IParameterBuilder>(out parameterBuilder))
+            {
+                DataSet ds = db.GetDataSetFromSql(this, CommandType.Text, releaseConnection, conn, tx, parameterBuilder.GetParameters(this));
+                OnExecuted(db);
+                return ds;
+            }
+            else
+            {
+                Args.Throw<InvalidOperationException>("Unable to get IParameterBuilder for the database with connection string ({0}), should you specify a Database instance of your own instead of depending on the default database initializer?  Be sure to call the appropriate Registrar method first", db.ConnectionString);
+                return null;
+            }
         }
 
         public IEnumerable<IFilterToken> Filters
@@ -141,7 +143,7 @@ namespace Bam.Net.Data
                 return this.parameters.ToArray();
             }
         }
-        
+
         public string GoText { get; set; }
 
         public int? NextNumber { get; set; }
@@ -172,7 +174,7 @@ namespace Bam.Net.Data
 
         public virtual SqlStringBuilder Update(string tableName, params AssignValue[] values)
         {
-			_stringBuilder.AppendFormat("UPDATE {0} ", TableNameFormatter(tableName));
+            _stringBuilder.AppendFormat("UPDATE {0} ", TableNameFormatter(tableName));
             SetFormat set = new SetFormat();
             foreach (AssignValue value in values)
             {
@@ -198,18 +200,23 @@ namespace Bam.Net.Data
 
         public virtual SqlStringBuilder Insert(string tableName, params AssignValue[] values)
         {
-            _stringBuilder.AppendFormat("INSERT INTO {0} ", TableNameFormatter(tableName));
-            InsertFormat insert = new InsertFormat();
+            return FormatInsert<InsertFormat>(tableName, values);
+        }
+
+        public virtual SqlStringBuilder FormatInsert<T>(string tableName, params AssignValue[] values) where T : SetFormat, new()
+        {
+            _stringBuilder.AppendFormat(InsertFormat, TableNameFormatter(tableName));
+            T insert = new T();
             foreach (AssignValue value in values)
             {
-				insert.ColumnNameFormatter = ColumnNameFormatter;
+                insert.ColumnNameFormatter = ColumnNameFormatter;
                 insert.AddAssignment(value);
             }
 
             insert.StartNumber = NextNumber;
             _stringBuilder.Append(insert.Parse());
             NextNumber = insert.NextNumber;
-            this.parameters.AddRange(insert.Parameters);
+            parameters.AddRange(insert.Parameters);
             return this;
         }
 
@@ -383,7 +390,7 @@ namespace Bam.Net.Data
 
         public override string ToString()
         {
-			return (string)this;//_stringBuilder.ToString();
+			return (string)this;
         }
 		
 		protected internal void OnExecuted(Database db)

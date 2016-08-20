@@ -1,6 +1,6 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
 	///<summary>The delivery of a parcel either via the postal service or a commercial service.</summary>
 	public class ParcelDelivery: Intangible
@@ -10,9 +10,9 @@ namespace Bam.Net.Schema.Org
 		///<summary>New entry added as the package passes through each leg of its journey (from shipment to final delivery).</summary>
 		public DeliveryEvent DeliveryStatus {get; set;}
 		///<summary>The earliest date the package may arrive.</summary>
-		public DateTime ExpectedArrivalFrom {get; set;}
+		public Bam.Net.Schema.Org.DataTypes.Date ExpectedArrivalFrom {get; set;}
 		///<summary>The latest date the package may arrive.</summary>
-		public DateTime ExpectedArrivalUntil {get; set;}
+		public Bam.Net.Schema.Org.DataTypes.Date ExpectedArrivalUntil {get; set;}
 		///<summary>Method used for delivery or shipping.</summary>
 		public DeliveryMethod HasDeliveryMethod {get; set;}
 		///<summary>Item(s) being shipped.</summary>
@@ -22,10 +22,10 @@ namespace Bam.Net.Schema.Org
 		///<summary>The overall order the items in this delivery were included in.</summary>
 		public Order PartOfOrder {get; set;}
 		///<summary>The service provider, service operator, or service performer; the goods producer. Another party (a seller) may offer those services or goods on behalf of the provider. A provider may also serve as the seller. Supersedes carrier.</summary>
-		public OneOfThese<Organization , Person> Provider {get; set;}
+		public OneOfThese<Organization,Person> Provider {get; set;}
 		///<summary>Shipper tracking number.</summary>
 		public Text TrackingNumber {get; set;}
 		///<summary>Tracking url for the parcel delivery.</summary>
-		public URL TrackingUrl {get; set;}
+		public Url TrackingUrl {get; set;}
 	}
 }

@@ -1,6 +1,6 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
 	///<summary>An list item, e.g. a step in a checklist or how-to description.</summary>
 	public class ListItem: Intangible
@@ -10,7 +10,7 @@ namespace Bam.Net.Schema.Org
 		///<summary>A link to the ListItem that follows the current one.</summary>
 		public ListItem NextItem {get; set;}
 		///<summary>The position of an item in a series or sequence of items.</summary>
-		public OneOfThese<Integer , Text> Position {get; set;}
+		public OneOfThese<Integer,Text> Position {get; set;}
 		///<summary>A link to the ListItem that preceeds the current one.</summary>
 		public ListItem PreviousItem {get; set;}
 	}

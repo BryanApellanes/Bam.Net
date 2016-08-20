@@ -11,15 +11,15 @@ namespace Bam.Net.Data.Schema
 {
     /// <summary>
     /// A schema manager that will automatically add a
-    /// Uuid column to every table when generating a 
+    /// Id column to every table when generating a 
     /// schema and related Data Access Objects from a *.db.js
     /// file
     /// </summary>
     public class AutoIdSchemaManager: SchemaManager
     {
-        public AutoIdSchemaManager():base()
+        public AutoIdSchemaManager(bool autoSave = true):base(autoSave)
         {
-            this.PreColumnAugmentations.Add(new AddIdKeyColumnAugmentation());            
+            PreColumnAugmentations.Add(new AddIdKeyColumnAugmentation());            
         }
     }
 }

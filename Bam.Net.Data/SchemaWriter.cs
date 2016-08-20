@@ -11,11 +11,11 @@ namespace Bam.Net.Data
 {
     public abstract class SchemaWriter: SqlStringBuilder
     {
-        protected static string CreateTableFormat = "CREATE TABLE [{0}] ({1})";
         public SchemaWriter()
         {
-            this.KeyColumnFormat = "{0} IDENTITY (1,1) PRIMARY KEY";
-            this.AddForeignKeyColumnFormat = "ALTER TABLE [{0}] ADD CONSTRAINT {1} FOREIGN KEY ({2}) REFERENCES [{3}] ({4})";
+            KeyColumnFormat = "{0} IDENTITY (1,1) PRIMARY KEY";
+            AddForeignKeyColumnFormat = "ALTER TABLE {0} ADD CONSTRAINT {1} FOREIGN KEY ({2}) REFERENCES {3} ({4})";
+            CreateTableFormat= "CREATE TABLE {0} ({1})"; 
         }
 
         public event SqlStringBuilderDelegate DropEnabled;
@@ -26,6 +26,12 @@ namespace Bam.Net.Data
             {
                 DropEnabled(this);
             }
+        }
+
+        public string CreateTableFormat
+        {
+            get;
+            protected set;
         }
 
         public string KeyColumnFormat
@@ -145,22 +151,34 @@ namespace Bam.Net.Data
 
         protected virtual void WriteCreateTable(Type daoType)
         {
-            ColumnAttribute[] columns = GetColumns(daoType);
-            
-            Builder.AppendFormat(CreateTableFormat,
-                Dao.TableName(daoType),
-                columns.ToDelimited(c =>
-                {
-                    if (c is KeyColumnAttribute)
-                    {
-                        return string.Format(KeyColumnFormat, GetColumnDefinition(c));
-                    }
-                    else
-                    {
-                        return GetColumnDefinition(c);
-                    }
-                }));
+            ColumnAttribute[] columns = GetColumns(daoType);            
+            string columnDefinitions = GetColumnDefinitions(columns);
+            WriteCreateTable(Dao.TableName(daoType), columnDefinitions);            
         }
+
+        public virtual void WriteCreateTable(string tableName, string columnDefinitions, dynamic[] fks = null)
+        {
+            tableName = TableNameFormatter(tableName);
+            Builder.AppendFormat(CreateTableFormat,
+                tableName,
+                columnDefinitions);
+        }
+
+        protected virtual string GetColumnDefinitions(ColumnAttribute[] columns)
+        {
+            return columns.ToDelimited(c =>
+            {
+                if (c is KeyColumnAttribute)
+                {
+                    return GetKeyColumnDefinition((KeyColumnAttribute)c);
+                }
+                else
+                {
+                    return GetColumnDefinition(c);
+                }
+            });
+        }
+        public abstract string GetKeyColumnDefinition(KeyColumnAttribute keyColumn);
 
         /// <summary>
         /// Gets the text used to declare the specified column in a 
@@ -181,7 +199,7 @@ namespace Bam.Net.Data
                 {
                     if (Dao.ConnectionName(type).Equals(datasetName))
                     {
-                        AppendAddForeignKey(type);
+                        WriteAddForeignKey(type);
                     }
                 }
             }
@@ -195,26 +213,29 @@ namespace Bam.Net.Data
 			{
 				if (typePredicate(type))
 				{
-                    AppendAddForeignKey(type);
+                    WriteAddForeignKey(type);
 				}				
 			}
 		}
 
-        protected virtual void AppendAddForeignKey(Type type)
+        protected virtual void WriteAddForeignKey(Type type)
         {
             ForeignKeyAttribute[] columns = GetForeignKeys(type);
             foreach (ForeignKeyAttribute fk in columns)
             {
                 if (fk != null)
                 {
-                    // table1Name, fkName, column1Name, table2Name, column2Name
-                    // "ALTER TABLE [{0}] ADD CONSTRAINT {1} FOREIGN KEY ({2}) REFERENCES [{3}] ({4})";
-                    Builder.AppendFormat(AddForeignKeyColumnFormat,
-                        fk.Table, fk.ForeignKeyName, fk.Name, fk.ReferencedTable, fk.ReferencedKey);
-
-                    Go();
+                    WriteAddForeignKey(fk.Table, fk.ForeignKeyName, fk.Name, fk.ReferencedTable, fk.ReferencedKey);                    
                 }
             }
+        }
+
+        public virtual void WriteAddForeignKey(string tableName, string nameOfReference, string nameOfColumn, string referencedTable, string referencedKey)
+        {
+            tableName = TableNameFormatter(tableName);
+            referencedTable = TableNameFormatter(referencedTable);
+            Builder.AppendFormat(AddForeignKeyColumnFormat, tableName, nameOfReference, nameOfColumn, referencedTable, referencedKey);
+            Go();
         }
 
         protected virtual void WriteDropTable(Type daoType)
@@ -222,9 +243,15 @@ namespace Bam.Net.Data
             TableAttribute attr = null;
             if (daoType.HasCustomAttributeOfType<TableAttribute>(out attr))
             {
-                Builder.AppendFormat("IF OBJECT_ID(N'dbo.{0}') IS NOT NULL\r\nBEGIN\r\nDROP TABLE [{0}]\r\nEND", attr.TableName);
-                Go();
+                WriteDropTable(attr.TableName);
             }
+        }
+
+        public virtual SchemaWriter WriteDropTable(string tableName)
+        {
+            Builder.AppendFormat("IF OBJECT_ID(N'dbo.{0}') IS NOT NULL\r\nBEGIN\r\nDROP TABLE [{0}]\r\nEND", tableName);
+            Go();
+            return this;
         }
 
         protected virtual void WriteDropForeignKeys(Type daoType)

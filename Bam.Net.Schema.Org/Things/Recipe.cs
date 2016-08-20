@@ -1,8 +1,8 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
-	///<summary>A recipe. For dietary restrictions covered by the recipe,    a few common restrictions are enumerated via suitableForDiet.    The keywords property can also be used to add more detail.</summary>
+	///<summary>A recipe. For dietary restrictions covered by the recipe, a few common restrictions are enumerated via suitableForDiet. The keywords property can also be used to add more detail.</summary>
 	public class Recipe: CreativeWork
 	{
 		///<summary>The time it takes to actually cook the dish, in ISO 8601 duration format.</summary>
@@ -20,7 +20,7 @@ namespace Bam.Net.Schema.Org
 		///<summary>A single ingredient used in the recipe, e.g. sugar, flour or garlic. Supersedes ingredients.</summary>
 		public Text RecipeIngredient {get; set;}
 		///<summary>A step or instruction involved in making the recipe.</summary>
-		public OneOfThese<ItemList , Text> RecipeInstructions {get; set;}
+		public OneOfThese<ItemList,Text> RecipeInstructions {get; set;}
 		///<summary>The quantity produced by the recipe (for example, number of people served, number of servings, etc).</summary>
 		public Text RecipeYield {get; set;}
 		///<summary>Indicates a dietary restriction or guideline for which this recipe is suitable, e.g. diabetic, halal etc.</summary>

@@ -1,6 +1,6 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
 	///<summary>A technical article - Example: How-to (task) topics, step-by-step, procedural troubleshooting, specifications, etc.</summary>
 	public class TechArticle: Article

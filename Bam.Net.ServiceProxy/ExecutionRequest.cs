@@ -410,8 +410,8 @@ namespace Bam.Net.ServiceProxy
             }
         }
 
-        ParameterInfo[] _parameterInfos;
-        public ParameterInfo[] ParameterInfos
+        System.Reflection.ParameterInfo[] _parameterInfos;
+        public System.Reflection.ParameterInfo[] ParameterInfos
         {
             get
             {
@@ -587,7 +587,7 @@ namespace Bam.Net.ServiceProxy
             object[] results = new object[ParameterInfos.Length];
             for (int i = 0; i < ParameterInfos.Length; i++)
             {
-                ParameterInfo paramInfo = ParameterInfos[i];
+                System.Reflection.ParameterInfo paramInfo = ParameterInfos[i];
                 Type paramType = paramInfo.ParameterType;
                 string value = Request.QueryString[paramInfo.Name];
                 SetValue(results, i, paramType, value);
@@ -650,7 +650,7 @@ namespace Bam.Net.ServiceProxy
 
             for (int i = 0; i < ParameterInfos.Length; i++)
             {
-                ParameterInfo param = ParameterInfos[i];
+                System.Reflection.ParameterInfo param = ParameterInfos[i];
                 Type currentParameterType = param.ParameterType;
                 object parameterValue = GetParameterValue(inputValues, currentParameterType);
 

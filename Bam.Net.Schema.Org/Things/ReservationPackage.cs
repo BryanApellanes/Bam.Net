@@ -1,6 +1,6 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
 	///<summary>A group of multiple reservations with common values for all sub-reservations.</summary>
 	public class ReservationPackage: Reservation

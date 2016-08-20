@@ -98,6 +98,10 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.SQLite, Version=1.0.102.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
@@ -140,6 +144,7 @@
   <ItemGroup>
     <Compile Include="BackupDatabaseTests.cs" />
     <Compile Include="ConsoleActions.cs" />
+    <Compile Include="DatabaseRepositoryUnitTests.cs" />
     <Compile Include="ObjectRepositoryUnitTests.cs" />
     <Compile Include="Partials\MainObject.cs" />
     <Compile Include="Partials\SecondaryObject.cs" />
@@ -148,6 +153,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DaoRepositoryUnitTests.cs" />
+    <Compile Include="RepositoryIntegrationTests.cs" />
     <Compile Include="TestDtos\Daughter.cs" />
     <Compile Include="TestDtos\House.cs" />
     <Compile Include="TestDtos\Parent.cs" />
@@ -240,6 +246,10 @@
       <Project>{ea9863a9-8e0b-4497-b7fd-abf450a3e468}</Project>
       <Name>Bam.Net.CommandLine</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.Dynamic\Bam.Net.Data.Dynamic.csproj">
+      <Project>{ca7f3115-848c-49ac-a0c3-f156afb6c844}</Project>
+      <Name>Bam.Net.Data.Dynamic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Data.MSSql\Bam.Net.Data.MsSql.csproj">
       <Project>{f373eaf9-b69c-4322-9659-a53a8fb7d43f}</Project>
       <Name>Bam.Net.Data.MsSql</Name>
@@ -260,9 +270,21 @@
       <Project>{ae48f655-c3eb-49d6-98d3-42c428e39a1d}</Project>
       <Name>Bam.Net.Data.SQLite</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.Tests.Integration\Bam.Net.Data.Tests.Integration.csproj">
+      <Project>{e0d32890-13d7-4827-a299-56726c6cd67c}</Project>
+      <Name>Bam.Net.Data.Tests.Integration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Data\Bam.Net.Data.csproj">
       <Project>{3b52b739-58fd-4b49-b815-6b317e701520}</Project>
       <Name>Bam.Net.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Incubation\Bam.Net.Incubation.csproj">
+      <Project>{aa186331-a0d0-4f77-bea2-e7b7650d3ff5}</Project>
+      <Name>Bam.Net.Incubation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Schema.Org\Bam.Net.Schema.Org.csproj">
+      <Project>{8d98e22b-3c6d-47c0-b028-0c3e3fc6b4fd}</Project>
+      <Name>Bam.Net.Schema.Org</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Testing\Bam.Net.Testing.csproj">
       <Project>{85212881-c676-4b40-b311-37c2d1706042}</Project>

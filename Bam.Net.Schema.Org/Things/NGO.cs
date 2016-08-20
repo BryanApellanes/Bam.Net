@@ -1,9 +1,9 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
-	///<summary>Organization: Non-governmental Organization.</summary>
-	public class NGO: Organization
+	///<summary></summary>
+	public class Ngo: Organization
 	{
 	}
 }

@@ -1,9 +1,9 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
 	///<summary></summary>
-	public class ComicCoverArt1: CoverArt
+	public class ComicCoverArt_1: CoverArt
 	{
 	}
 }

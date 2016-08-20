@@ -1,11 +1,9 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
 	///<summary>A television station.</summary>
 	public class TelevisionStation: LocalBusiness
 	{
-		///<summary>The type of screening or video broadcast used (e.g. IMAX, 3D, SD, HD, etc.).</summary>
-		public Text VideoFormat {get; set;}
 	}
 }

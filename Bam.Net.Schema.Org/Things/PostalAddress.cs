@@ -1,12 +1,12 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
 	///<summary>The mailing address.</summary>
 	public class PostalAddress: ContactPoint
 	{
 		///<summary>The country. For example, USA. You can also provide the two-letter ISO 3166-1 alpha-2 country code.</summary>
-		public OneOfThese<Country , Text> AddressCountry {get; set;}
+		public OneOfThese<Country,Text> AddressCountry {get; set;}
 		///<summary>The locality. For example, Mountain View.</summary>
 		public Text AddressLocality {get; set;}
 		///<summary>The region. For example, CA.</summary>

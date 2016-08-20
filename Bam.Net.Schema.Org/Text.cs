@@ -7,10 +7,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.DataTypes
 {
     public class Text: DataType
     {
+        public static implicit operator string(Text text)
+        {
+            return text.Value;
+        }
+
+        public static implicit operator Text(string text)
+        {
+            return new Text { Value = text };
+        }
+
         public Text()
         {
             this.Name = "Text";

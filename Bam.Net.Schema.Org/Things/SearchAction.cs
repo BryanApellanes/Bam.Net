@@ -1,6 +1,6 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
 	///<summary>The act of searching for an object.Related actions:FindAction: SearchAction generally leads to a FindAction, but not necessarily.</summary>
 	public class SearchAction: Action

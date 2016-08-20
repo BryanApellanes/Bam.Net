@@ -1,9 +1,9 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
 	///<summary>A health club.</summary>
-	public class HealthClub1: SportsActivityLocation
+	public class HealthClub_1: SportsActivityLocation
 	{
 	}
 }

@@ -12,11 +12,15 @@ namespace Bam.Net.Data.Repositories
 {
     public class SchemaRepositoryModel
     {
+        public SchemaRepositoryModel()
+        {
+            BaseRepositoryType = "DaoRepository";
+        }
         public string SchemaName { get; set; }
         public SchemaTypeModel[] Types { get; set; }
         public string SourceNamespace { get; set; }
         public string SchemaRepositoryNamespace { get; set; }
-
+        public string BaseRepositoryType { get; set; }
         public string Render()
         {
             List<Assembly> referenceAssemblies = new List<Assembly>{

@@ -1,6 +1,6 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
 	///<summary>An intangible item that describes an alignment between a learning resource and a node in an educational framework.</summary>
 	public class AlignmentObject: Intangible
@@ -14,6 +14,6 @@ namespace Bam.Net.Schema.Org
 		///<summary>The name of a node in an established educational framework.</summary>
 		public Text TargetName {get; set;}
 		///<summary>The URL of a node in an established educational framework.</summary>
-		public URL TargetUrl {get; set;}
+		public Url TargetUrl {get; set;}
 	}
 }

@@ -13,20 +13,21 @@ namespace Bam.Net.Data.Repositories
 {
     /// <summary>
     /// A class used to generate TypeSchemas.  A TypeSchema is 
-    /// a class that provides database schema like relationships
-	/// for CLR types.
+    /// a class that provides database schema like relationship
+	/// descriptors for CLR types.
     /// </summary>
     public class TypeSchemaGenerator : Loggable, IHasTypeSchemaTempPathProvider
     {
-        UuidSchemaManager _schemaManager;
         ITypeTableNameProvider _tableNameProvider;
         public TypeSchemaGenerator(ITypeTableNameProvider tableNameProvider = null, Func<SchemaDefinition, TypeSchema, string> schemaTempPathProvider = null)
         {
             DefaultDataTypeBehavior = DefaultDataTypeBehaviors.Exclude;
             TypeSchemaTempPathProvider = schemaTempPathProvider ?? ((sd, ts) => RuntimeSettings.AppDataFolder);
-            _schemaManager = new UuidSchemaManager();            
+            SchemaManager = new CuidSchemaManager(false);            
             _tableNameProvider = tableNameProvider ?? new EchoTypeTableNameProvider();
         }
+
+        public SchemaManager SchemaManager { get; set; }
 
         public ITypeTableNameProvider TableNameProvider
         {
@@ -104,7 +105,12 @@ namespace Bam.Net.Data.Repositories
             get;
             set;
         }
-
+        public IEnumerable<Type> Types { get; set; }
+        public SchemaDefinitionCreateResult CreateSchemaDefinition(string schemaName = null)
+        {
+            Args.ThrowIf(Types.Count() == 0, "No types specified");
+            return CreateSchemaDefinition(Types, schemaName);
+        }
         public SchemaDefinitionCreateResult CreateSchemaDefinition(IEnumerable<Type> types, string schemaName = null)
         {
             SchemaName = schemaName ?? "null";
@@ -117,16 +123,16 @@ namespace Bam.Net.Data.Repositories
             FireEvent(CreatingTypeSchemaFinished, EventArgs.Empty);
 
             schemaName = schemaName ?? string.Format("_{0}_", typeSchema.Hash);
-            _schemaManager.SetSchema(schemaName, false); //TODO: enable more granular manipulation of schema file path in schema manager by giving it a PathProvider property
+            SchemaManager.SetSchema(schemaName, false); //TODO: enable more granular manipulation of schema file path in schema manager by giving it a PathProvider property
             SchemaName = schemaName;
 
             FireEvent(WritingDaoSchemaStarted, EventArgs.Empty);
             List<KeyColumn> missingKeyColumns = new List<KeyColumn>();
             List<ForeignKeyColumn> missingForeignKeyColumns = new List<ForeignKeyColumn>();
-            WriteDaoSchema(typeSchema, _schemaManager, missingKeyColumns, missingForeignKeyColumns, TableNameProvider);
+            WriteDaoSchema(typeSchema, SchemaManager, missingKeyColumns, missingForeignKeyColumns, TableNameProvider);
             FireEvent(WritingDaoSchemaFinished, EventArgs.Empty);
 
-            SchemaDefinitionCreateResult result = new SchemaDefinitionCreateResult(_schemaManager.GetCurrentSchema(), typeSchema,
+            SchemaDefinitionCreateResult result = new SchemaDefinitionCreateResult(SchemaManager.GetCurrentSchema(), typeSchema,
                 missingKeyColumns.ToArray(), missingForeignKeyColumns.ToArray());
 
             return result;
@@ -166,19 +172,10 @@ namespace Bam.Net.Data.Repositories
 
         protected internal virtual void WriteDaoSchema(TypeSchema typeSchema, SchemaManager schemaManager, List<KeyColumn> missingKeyColumns = null, List<ForeignKeyColumn> missingForeignKeyColumns = null, ITypeTableNameProvider tableNameProvider = null)
         {
-            HashSet<Type> tableTypes = typeSchema.Tables;
+            AddSchemaTables(typeSchema, schemaManager, tableNameProvider);
+
             HashSet<TypeFk> foreignKeyTypes = typeSchema.ForeignKeys;
             HashSet<TypeXref> xrefTypes = typeSchema.Xrefs;
-
-            foreach (Type tableType in tableTypes)
-            {
-                string tableName = GetTableNameForType(tableType, tableNameProvider);
-                schemaManager.AddTable(tableName);
-                schemaManager.ExecutePreColumnAugmentations(tableName);
-                AddPropertyColumns(tableType, schemaManager, typeSchema.DefaultDataTypeBehavior);
-                schemaManager.ExecutePostColumnAugmentations(tableName);
-            }
-
             // accounting for missing columns
             // loop primary keys and fks separately to ensure 
             // missing keys get recorded prior to trying to add the
@@ -229,6 +226,19 @@ namespace Bam.Net.Data.Repositories
             foreach (TypeXref xref in xrefTypes)
             {
                 schemaManager.SetXref(GetTableNameForType(xref.Left, tableNameProvider), GetTableNameForType(xref.Right, tableNameProvider));
+            }
+        }
+
+        protected virtual void AddSchemaTables(TypeSchema typeSchema, SchemaManager schemaManager, ITypeTableNameProvider tableNameProvider = null)
+        {
+            tableNameProvider = tableNameProvider ?? new EchoTypeTableNameProvider();
+            foreach (Type tableType in typeSchema.Tables)
+            {
+                string tableName = GetTableNameForType(tableType, tableNameProvider);
+                schemaManager.AddTable(tableName);
+                schemaManager.ExecutePreColumnAugmentations(tableName);
+                AddPropertyColumns(tableType, schemaManager, typeSchema.DefaultDataTypeBehavior);
+                schemaManager.ExecutePostColumnAugmentations(tableName);
             }
         }
 
@@ -488,32 +498,37 @@ namespace Bam.Net.Data.Repositories
             string tableName = GetTableNameForType(type, tableNameProvider);
             foreach (PropertyInfo property in type.GetProperties())
             {
-                DataTypes dataType = GetColumnDataType(property);
-                if (dataType == DataTypes.Default)
-                {
-                    switch (defaultDataTypeBehavior)
-                    {
-                        case DefaultDataTypeBehaviors.Invalid:
-                        case DefaultDataTypeBehaviors.Exclude:
-                            break;
-                        case DefaultDataTypeBehaviors.IncludeAsString:
-                            AddSchemaColumn(schemaManager, tableName, property, DataTypes.String);
-                            break;
-                        case DefaultDataTypeBehaviors.IncludeAsByteArray:
-                            AddSchemaColumn(schemaManager, tableName, property, DataTypes.ByteArray);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                else
-                {
-                    AddSchemaColumn(schemaManager, tableName, property, dataType);
-                }
+                AddPropertyColumn(schemaManager, defaultDataTypeBehavior, tableName, property);
             }
         }
 
-        private static void AddSchemaColumn(SchemaManager schemaManager, string tableName, PropertyInfo property, DataTypes dataType)
+        protected virtual void AddPropertyColumn(SchemaManager schemaManager, DefaultDataTypeBehaviors defaultDataTypeBehavior, string tableName, PropertyInfo property)
+        {
+            DataTypes dataType = GetColumnDataType(property);
+            if (dataType == DataTypes.Default)
+            {
+                switch (defaultDataTypeBehavior)
+                {
+                    case DefaultDataTypeBehaviors.Invalid:
+                    case DefaultDataTypeBehaviors.Exclude:
+                        break;
+                    case DefaultDataTypeBehaviors.IncludeAsString:
+                        AddSchemaColumn(schemaManager, tableName, property, DataTypes.String);
+                        break;
+                    case DefaultDataTypeBehaviors.IncludeAsByteArray:
+                        AddSchemaColumn(schemaManager, tableName, property, DataTypes.ByteArray);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                AddSchemaColumn(schemaManager, tableName, property, dataType);
+            }
+        }
+
+        protected static void AddSchemaColumn(SchemaManager schemaManager, string tableName, PropertyInfo property, DataTypes dataType)
         {
             if (!property.IsEnumerable() || property.PropertyType == typeof(string))
             {
@@ -565,12 +580,12 @@ namespace Bam.Net.Data.Repositories
         {
             if (AddIdField)
             {
-                _schemaManager.PreColumnAugmentations.Add(new AddIdKeyColumnAugmentation());
+                SchemaManager.PreColumnAugmentations.Add(new AddIdKeyColumnAugmentation());
             }
 
             if (AddAuditFields)
             {
-                _schemaManager.PostColumnAugmentations.Add(new AddAuditColumnsAugmentation { IncludeModifiedBy = IncludeModifiedBy, IncludeCreatedBy = IncludeCreatedBy });
+                SchemaManager.PostColumnAugmentations.Add(new AddAuditColumnsAugmentation { IncludeModifiedBy = IncludeModifiedBy, IncludeCreatedBy = IncludeCreatedBy });
             }
         }
 

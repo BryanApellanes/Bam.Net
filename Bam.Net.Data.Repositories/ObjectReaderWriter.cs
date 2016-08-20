@@ -28,7 +28,8 @@ namespace Bam.Net.Data.Repositories
 		public ObjectReaderWriter(string rootDirectory)
 			: base()
 		{
-			this.RootDirectory = rootDirectory;
+			RootDirectory = rootDirectory;
+            BackgroundThreadQueue = new BackgroundThreadQueue<object> { Process = Write };
 		}
 		static IObjectReaderWriter _objectReaderWriter;
 		static object _readerWriterLock = new object();
@@ -104,11 +105,17 @@ namespace Bam.Net.Data.Repositories
 			return msg.Read<object>();
 		}
 
+        public BackgroundThreadQueue<object> BackgroundThreadQueue
+        {
+            get;
+            set;
+        }
+        
 		public int WriteQueueCount
 		{
 			get
 			{
-				return _writeQueue.Count;
+                return BackgroundThreadQueue.WriteQueueCount;
 			}
 		}
 
@@ -116,50 +123,9 @@ namespace Bam.Net.Data.Repositories
 		object _writeQueueLock = new object();
 		public void Enqueue(object data)
 		{
-			if (WriteThread.ThreadState != ThreadState.Running)
-			{
-				_writeThread = null;
-				WriteThread.Start();
-			}
-
-			lock (_writeQueueLock)
-			{
-				_writeQueue.Enqueue(data);
-				_waitSignal.Set();
-			}
+            BackgroundThreadQueue.Enqueue(data);
 		}
-
-		Thread _writeThread;
-		AutoResetEvent _waitSignal = new AutoResetEvent(false);
-		object _writeThreadLock = new object();
-		public Thread WriteThread
-		{
-			get
-			{
-				return _writeThreadLock.DoubleCheckLock(ref _writeThread, () =>
-				{
-					_writeThread = new Thread(() =>
-					{
-						while (true)
-						{
-							_waitSignal.WaitOne();
-							lock (_writeQueueLock)
-							{
-								while (_writeQueue.Count > 0)
-								{
-									Write(_writeQueue.Dequeue());
-								}
-							}
-						}
-					});
-
-					_writeThread.IsBackground = true;					
-
-					return _writeThread;
-				});
-			}
-		}
-
+        
 		[Verbosity(VerbosityLevel.Warning, MessageFormat = "IpcMessage Failed:: RootDirectory={RootDirectory}\r\nMessage={Message}")]
 		public event EventHandler WriteObjectFailed;
 		
@@ -285,9 +251,9 @@ namespace Bam.Net.Data.Repositories
 					return false;
 				Type type = data.GetType();
 				string idHash = GetIdHash(data);
-				IpcMessage.Delete(idHash, type);
+				IpcMessage.Delete(idHash, type, RootDirectory);
 				string uuidHash = GetUuidHash(data);
-				IpcMessage.Delete(uuidHash, type);
+				IpcMessage.Delete(uuidHash, type, RootDirectory);
 				DeleteObjectProperties(data);
 				DeleteHash(data);
 				return true;

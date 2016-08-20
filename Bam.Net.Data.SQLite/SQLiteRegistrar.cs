@@ -95,7 +95,7 @@ namespace Bam.Net.Data
             SQLiteConnectionStringResolver.Register();
 
             incubator.Set<IParameterBuilder>(() => new SQLiteParameterBuilder());
-            incubator.Set<SqlStringBuilder>(() => new SqlStringBuilder());
+            incubator.Set<SqlStringBuilder>(() => new SQLiteSqlStringBuilder());
             incubator.Set<SchemaWriter>(() => new SQLiteSqlStringBuilder());
             incubator.Set<QuerySet>(() => new SQLiteQuerySet());
         }

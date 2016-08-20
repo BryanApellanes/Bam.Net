@@ -1,6 +1,6 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
 	///<summary>A single, identifiable product instance (e.g. a laptop with a particular serial number).</summary>
 	public class IndividualProduct: Product

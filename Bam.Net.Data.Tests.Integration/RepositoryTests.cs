@@ -13,6 +13,7 @@ using Bam.Net.Data.SQLite;
 using Bam.Net.Data.Repositories;
 using System.IO;
 using System.Reflection;
+using Bam.Net.DaoRef;
 
 namespace Bam.Net.Data.Tests.Integration
 {
@@ -51,7 +52,7 @@ namespace Bam.Net.Data.Tests.Integration
 			_objectDir.Delete(true);
 		}
 
-		[IntegrationTest]
+        [IntegrationTest]
 		public void UpdateShouldntResetId()
 		{
 			string testName = MethodBase.GetCurrentMethod().Name;

@@ -10,6 +10,7 @@ using System.Reflection;
 using System.IO;
 using Bam.Net;
 using Bam.Net.Logging;
+using NCuid;
 
 namespace Bam.Net.Data.Repositories
 {
@@ -245,6 +246,7 @@ namespace Bam.Net.Data.Repositories
 				{
 					SetUuid(Data);
 				}
+                SetCuid(Data);
 			}
 		}
 
@@ -293,25 +295,33 @@ namespace Bam.Net.Data.Repositories
 			string hash = "{0}::{1}"._Format(Uuid, type.FullName).Md5();
 			return hash;
 		}
-
-		protected internal static string GetUuid(object data, bool throwIfUuidPropertyMissing = false)
+        protected internal static string GetUuid(object data, bool throwIfUuidPropertyMissing = false)
+        {
+            return GetPropValue(data, "Uuid", throwIfUuidPropertyMissing);
+        }
+        protected internal static string GetCuid(object data, bool throwIfCuidPropertyMissing = false)
+        {
+            return GetPropValue(data, "Cuid", throwIfCuidPropertyMissing);
+        }
+        protected internal static string GetPropValue(object data, string propName, bool throwIfPropertyMissing = false)
 		{
 			string result = string.Empty;
 			if (data != null)
 			{
 				Type dataType = data.GetType();
-				PropertyInfo uuidProp = dataType.GetProperty("Uuid");
-				if (uuidProp != null)
+				PropertyInfo prop = dataType.GetProperty(propName);
+				if (prop != null)
 				{
-					result = (string)uuidProp.GetValue(data);
+					result = (string)prop.GetValue(data);
 				}
-				else if (throwIfUuidPropertyMissing)
+				else if (throwIfPropertyMissing)
 				{
-					Args.Throw<InvalidOperationException>("The specified object of type {0} doesn't have a Uuid property", dataType.Name);
+					Args.Throw<InvalidOperationException>("The specified object of type {0} doesn't have a {1} property", dataType.Name, propName);
 				}
 			}
 			return result;
 		}
+
 
 		protected internal static bool HasKeyProperty(object data, out PropertyInfo prop)
 		{
@@ -430,10 +440,27 @@ namespace Bam.Net.Data.Repositories
 				{
 					guid = Guid.NewGuid();
 				}
-
 				uuidProp.SetValue(data, guid.ToString());
 			}
 		}
+
+        internal static void SetCuid(object data, string cuid = "", RandomSource randomSource = RandomSource.Simple)
+        {
+            Type type = data.GetType();
+            PropertyInfo cuidProp = type.GetProperty("Cuid");
+            if(cuidProp != null)
+            {
+                if (string.IsNullOrEmpty(cuid))
+                {
+                    cuid = (string)cuidProp.GetValue(data);
+                }
+                if (string.IsNullOrEmpty(cuid))
+                {
+                    cuid = Cuid.Generate(randomSource);
+                }
+                cuidProp.SetValue(data, cuid);
+            }
+        }
 
 		protected internal static int GetNextVersionNumber(DirectoryInfo propRoot, PropertyInfo prop, string hash)
 		{

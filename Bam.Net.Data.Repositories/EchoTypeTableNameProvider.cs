@@ -10,7 +10,7 @@ namespace Bam.Net.Data.Repositories
     {
         public string GetTableName(Type type)
         {
-            return type.Name;
+            return type.Name.TrimNonLetters();
         }
     }
 }

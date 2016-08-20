@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.DataTypes
 {
     public class Number: DataType
     {
@@ -19,19 +19,19 @@ namespace Bam.Net.Schema.Org
         public Number(int value)
             : this()
         {
-            this.Value = value;
+            Value<int>(value);
         }
 
         public Number(long value)
             : this()
         {
-            this.Value = value;
+            Value<long>(value);
         }
 
         public Number(float value)
             : this()
         {
-            this.Value = value;
+            Value<float>(value);
         }
 
         public static implicit operator int(Number number)
@@ -62,12 +62,6 @@ namespace Bam.Net.Schema.Org
         public static implicit operator Number(long l)
         {
             return new Number(l);
-        }
-
-        public object Value
-        {
-            get;
-            set;
         }
     }
 }

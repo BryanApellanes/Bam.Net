@@ -252,13 +252,13 @@ namespace Bam.Net.Html
                 defaults = new Dictionary<string, object>();
             }
 
-            ParameterInfo[] parameters = method.GetParameters();
+            System.Reflection.ParameterInfo[] parameters = method.GetParameters();
             paramCount = parameters.Length;
             TagBuilder form = new TagBuilder(wrapperTagName);
 
             for (int i = 0; i < parameters.Length; i++)
             {
-                ParameterInfo parameter = parameters[i];
+                System.Reflection.ParameterInfo parameter = parameters[i];
                 object defaultValue = defaults.ContainsKey(parameter.Name) ? defaults[parameter.Name] : null;
                 string defaultString = defaultValue == null ? string.Empty : defaultValue.ToString();
                 
@@ -329,7 +329,7 @@ namespace Bam.Net.Html
             }
         }
 
-        private void TryBuildPrimitiveInput(ParameterInfo parameter, object defaultValue, ref bool addValue, ref bool handled, out TagBuilder toAdd, out Type paramType)
+        private void TryBuildPrimitiveInput(System.Reflection.ParameterInfo parameter, object defaultValue, ref bool addValue, ref bool handled, out TagBuilder toAdd, out Type paramType)
         {
             toAdd = null;
 

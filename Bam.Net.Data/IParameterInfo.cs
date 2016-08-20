@@ -8,7 +8,7 @@ namespace Bam.Net.Data
     {
 		Func<string, string> ColumnNameFormatter { get; set; }
 		string ParameterPrefix { get; set; }
-        string ColumnName { get; set; }
+        string ColumnName { get; set; } // TODO: rename this to ParameterName
         int? Number { get; set; }
         int? SetNumber(int? value);
         object Value { get; set; }

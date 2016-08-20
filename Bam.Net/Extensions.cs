@@ -74,9 +74,9 @@ namespace Bam.Net
             return GetNextFileName(path, out num);
         }
         /// <summary>
-        /// If the specified file exists a new path with 
-        /// a number appended will be returned where the 
-        /// new path does not exist
+        /// If the specified file exists, a new path with 
+        /// an underscore and a number appended will be 
+        /// returned where the new path does not exist
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -95,6 +95,31 @@ namespace Bam.Net
                 string nextFile = $"{fileName}_{i}{extension}";
                 currentPath = Path.Combine(dir.FullName, nextFile);
                 num = i;
+            }
+            return currentPath;
+        }
+
+        public static string GetNextDirectoryName(this string path)
+        {
+            int num;
+            return GetNextDirectoryName(path, out num);
+        }
+        /// <summary>
+        /// If the specified directory exists a new path with 
+        /// a number appended will be returned where the 
+        /// new path does not exist
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static string GetNextDirectoryName(this string path, out int num)
+        {
+            DirectoryInfo dirInfo = new DirectoryInfo(path);
+            num = 0;
+            string currentPath = path;
+            while (Directory.Exists(currentPath))
+            {
+                num++;
+                currentPath = $"{path}_{num}";
             }
             return currentPath;
         }
@@ -137,6 +162,16 @@ namespace Bam.Net
             Instant copy = new Instant(dateTime);
             copy.Millisecond = 0;
             return copy.ToDateTime();
+        }
+
+        public static bool In<T>(this T obj, IEnumerable<T> options)
+        {
+            return new List<T>(options).Contains(obj);
+        }
+
+        public static bool In<T>(this T obj, params T[] options)
+        {
+            return new List<T>(options).Contains(obj);
         }
 
         public static T Clone<T>(this ICloneable clonable)
@@ -513,6 +548,14 @@ namespace Bam.Net
             }
         }
 
+        /// <summary>
+        /// Execute the specified Func this 
+        /// many times
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="count"></param>
+        /// <param name="func"></param>
+        /// <returns></returns>
         public static T[] Times<T>(this int count, Func<int, T> func)
         {
             T[] results = new T[count];
@@ -2398,6 +2441,26 @@ namespace Bam.Net
             return (val > 96 && val < 123) || (val > 64 && val < 91);
         }
 
+        public static bool IsAllCaps(this string value)
+        {
+            bool result = true; 
+            for(int i = 0; i < value.Length; i++)
+            {
+                char c = value[i];
+                result = char.IsUpper(c);
+                if (!result)
+                {
+                    break;
+                }
+            }
+            return result;
+        }
+
+        public static string TrimNonLetters(this string targetString)
+        {
+            return targetString.DropLeadingNonLetters().DropTrailingNonLetters();
+        }
+
         public static string DropTrailingNonLetters(this string targetString)
         {
             StringBuilder temp = new StringBuilder();
@@ -2425,8 +2488,9 @@ namespace Bam.Net
         {
             StringBuilder result = new StringBuilder();
             bool foundLetter = false;
-            foreach (char c in targetString)
+            for(int i = 0; i < targetString.Length; i++)
             {
+                char c = targetString[i];
                 if (c.IsLetter())
                 {
                     foundLetter = true;
@@ -2817,7 +2881,8 @@ namespace Bam.Net
 
         /// <summary>
         /// Copies all properties from source to destination where the name and
-        /// type match.
+        /// type match.  Accounts for nullability and treats non nullable and
+        /// nullable primitives as compatible
         /// </summary>
         /// <param name="destination"></param>
         /// <param name="source"></param>

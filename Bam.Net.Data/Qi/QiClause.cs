@@ -149,17 +149,15 @@ namespace Bam.Net.Data.Qi
         {
             get
             {
-                return this.num;//throw new NotImplementedException();
+                return this.num;
             }
             set
             {
-                //throw new NotImplementedException();
             }
         }
 
         public int? SetNumber(int? value)
         {
-            // do nothing numbers get set by qi.js
             return this.num + 1;
         }
 

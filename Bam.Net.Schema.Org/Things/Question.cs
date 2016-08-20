@@ -1,6 +1,6 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
 	///<summary>A specific question - e.g. from a user seeking answers online, or collected in a Frequently Asked Questions (FAQ) document.</summary>
 	public class Question: CreativeWork

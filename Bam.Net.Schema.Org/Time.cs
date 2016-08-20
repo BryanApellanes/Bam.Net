@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.DataTypes
 {
     public class Time: DataType
     {
@@ -18,28 +18,22 @@ namespace Bam.Net.Schema.Org
 
         public Time(DateTime value)
         {
-            this.Value = value;
+            Value<DateTime>(value);
         }
 
         public static implicit operator DateTime(Time time)
         {
-            return time.Value;
+            return time.Value<DateTime>();
         }
 
         public static implicit operator Time(DateTime value)
         {
             return new Time(value);
         }
-
-        public DateTime Value
-        {
-            get;
-            set;
-        }
-
+        
         public override string ToString()
         {
-            return Value.ToString("s");
+            return Value<DateTime>().ToString("s");
         }
     }
 }

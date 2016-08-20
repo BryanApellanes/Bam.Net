@@ -14,7 +14,7 @@ namespace Bam.Net.Data.Repositories
     {
         public string GetTableName(Type type)
         {
-            return "{0}Dao"._Format(type.Name);
+            return "{0}Dao"._Format(type.Name.TrimNonLetters());
         }
     }
 }

@@ -1,6 +1,6 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
 	///<summary>A permit issued by an organization, e.g. a parking pass.</summary>
 	public class Permit: Intangible
@@ -14,10 +14,10 @@ namespace Bam.Net.Schema.Org
 		///<summary>The time validity of the permit.</summary>
 		public Duration ValidFor {get; set;}
 		///<summary>The date when the item becomes valid.</summary>
-		public DateTime ValidFrom {get; set;}
+		public Bam.Net.Schema.Org.DataTypes.Date ValidFrom {get; set;}
 		///<summary>The geographic area where the permit is valid.</summary>
 		public AdministrativeArea ValidIn {get; set;}
 		///<summary>The date when the item is no longer valid.</summary>
-		public Date ValidUntil {get; set;}
+		public Bam.Net.Schema.Org.DataTypes.Date ValidUntil {get; set;}
 	}
 }

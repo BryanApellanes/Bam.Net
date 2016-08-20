@@ -41,6 +41,11 @@ namespace Bam.Net.Testing
             return new TestContext<T>(this, GetActionDescription<T>(actionDescription), test);
         }
 
+        public TestContext<T> WhenA<T>(string actionDescription, Action<T, SetupContext> test)
+        {
+            return new TestContext<T>(this, GetActionDescription<T>(actionDescription), test);
+        }
+
         /// <summary>
         /// Prepares the test context for object under test of type T.
         /// </summary>

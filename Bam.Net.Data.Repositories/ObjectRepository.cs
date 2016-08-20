@@ -23,17 +23,17 @@ namespace Bam.Net.Data.Repositories
 	{
 		public ObjectRepository() 
 		{
-			this.ObjectReaderWriter = Repositories.ObjectReaderWriter.Default;
-			this.MetaProvider = Repositories.MetaProvider.Default;
-			this.BlockOnChildWrites = false;
-			this.TypeSchemaGenerator = new TypeSchemaGenerator();
+			ObjectReaderWriter = Repositories.ObjectReaderWriter.Default;
+			MetaProvider = Repositories.MetaProvider.Default;
+			BlockOnChildWrites = false;
+			TypeSchemaGenerator = new TypeSchemaGenerator();            
 		}
 
 		public ObjectRepository(string rootDirectory)
 			: this()
 		{
-			this.ObjectReaderWriter = new Repositories.ObjectReaderWriter(rootDirectory);
-			this.BlockOnChildWrites = false;
+			ObjectReaderWriter = new Repositories.ObjectReaderWriter(rootDirectory);
+			BlockOnChildWrites = false;
 		}
 
 		bool isInitialized;
@@ -90,14 +90,20 @@ namespace Bam.Net.Data.Repositories
 		public override T Retrieve<T>(long id)
 		{
 			T value = ObjectReaderWriter.Read<T>(id);
-			LoadXrefCollectionValues(value);
+            if(value != null)
+            {
+                LoadXrefCollectionValues(value);
+            }
 			return value;
 		}
 
 		public override object Retrieve(Type objectType, long id)
 		{
 			object obj = ObjectReaderWriter.Read(objectType, id);
-			LoadXrefCollectionValues(obj);
+            if(obj != null)
+            {
+                LoadXrefCollectionValues(obj);
+            }
 			return obj;
 		}
 
@@ -210,18 +216,7 @@ namespace Bam.Net.Data.Repositories
 		/// <param name="child"></param>
 		public void SetParentProperties(object parent, object child)
 		{
-			Type parentType = parent.GetType();
-			Type childType = child.GetType();
-			long parentId = Meta.GetId(parent);
-			foreach (TypeFk typeFk in TypeSchema.ForeignKeys.Where(fk => fk.ForeignKeyType == childType && fk.PrimaryKeyType == parentType))
-			{
-				typeFk.ForeignKeyProperty.SetValue(child, parentId);
-				PropertyInfo parentInstanceProperty = childType.GetProperty(typeFk.PrimaryKeyType.Name);
-				if (parentInstanceProperty != null)
-				{
-					parentInstanceProperty.SetValue(child, parent);
-				}
-			}
+            TypeSchemaPropertyManager.SetParentProperties(parent, child);			
 		}
 		
 		public void LoadXrefCollectionValues<T>(IEnumerable<T> results)
@@ -244,7 +239,7 @@ namespace Bam.Net.Data.Repositories
 			foreach(TypeXref leftXref in leftXrefs)
 			{
 				Type genericRight = listType.MakeGenericType(leftXref.Right);
-				IList listInstance = (IList)Activator.CreateInstance(genericRight);
+                IList listInstance = genericRight.Construct<IList>();
 
 				XrefInfo[] xrefs = ObjectReaderWriter.Query<XrefInfo>(xref => xref.LeftHash.Equals(dataHash));
 				foreach (XrefInfo xref in xrefs)
@@ -274,7 +269,7 @@ namespace Bam.Net.Data.Repositories
 			foreach (TypeXref rightXref in rightXrefs)
 			{				
 				Type genericLeft = listType.MakeGenericType(rightXref.Left);
-				IList listInstance = (IList)Activator.CreateInstance(genericLeft);
+                IList listInstance = genericLeft.Construct<IList>();
 
 				XrefInfo[] xrefs = ObjectReaderWriter.Query<XrefInfo>(xref => xref.RightHash.Equals(dataHash));
 				foreach (XrefInfo xref in xrefs)
@@ -323,7 +318,16 @@ namespace Bam.Net.Data.Repositories
 		}
 
 		protected Action<object> ChildWriter { get; set; }
-		
+        TypeSchemaPropertyManager _typeSchemaPropertyManager;
+        object _typeSchemaPropertyManagerLock = new object();
+        protected TypeSchemaPropertyManager TypeSchemaPropertyManager
+        {
+            get
+            {
+                return _typeSchemaPropertyManagerLock.DoubleCheckLock(ref _typeSchemaPropertyManager, () => new TypeSchemaPropertyManager(TypeSchema));
+            }
+        }
+            
 		protected internal IObjectReaderWriter ObjectReaderWriter { get; set; }
 		protected internal IMetaProvider MetaProvider { get; set; }
 		protected TypeSchemaGenerator TypeSchemaGenerator { get; private set; }
@@ -347,56 +351,42 @@ namespace Bam.Net.Data.Repositories
 
 		protected void SaveChildCollections(object parent)
 		{
-			Type parentType = parent.GetType();
-			List<TypeFk> fkDescriptors = TypeSchema.ForeignKeys.Where(tfk => tfk.PrimaryKeyType == parentType).ToList();
-			foreach (TypeFk fk in fkDescriptors)
-			{
-				IEnumerable collection = (IEnumerable)fk.CollectionProperty.GetValue(parent);
-				if (collection != null)
-				{
-					foreach (object child in collection)
-					{
-						Meta.SetUuid(child);
-						SetParentProperties(parent, child);
-						ChildWriter(child);						
-					}
-				}
-			}
+            TypeSchemaPropertyManager.SaveCollections(parent, ChildWriter);
 		}
 
 		protected void SaveXrefCollections(object parent)
 		{
-			Type type = parent.GetType();
-			TypeXref[] leftXrefs = TypeSchema.Xrefs.Where(xref => xref.Left.Equals(type)).ToArray();
-			foreach (TypeXref leftXref in leftXrefs)
-			{
-				IEnumerable collection = (IEnumerable)leftXref.RightCollectionProperty.GetValue(parent);
-				if (collection != null)
-				{
-					foreach (object obj in collection)
-					{
-						ChildWriter(new Meta(obj, ObjectReaderWriter));
-						XrefInfo xrefInfo = new XrefInfo(parent, obj, MetaProvider.GetMeta(parent).Hash, MetaProvider.GetMeta(obj).Hash);
-						ChildWriter(xrefInfo);
-					}
-				}
-			}
+            Type type = parent.GetType();
+            TypeXref[] leftXrefs = TypeSchema.Xrefs.Where(xref => xref.Left.Equals(type)).ToArray();
+            foreach (TypeXref leftXref in leftXrefs)
+            {
+                IEnumerable collection = (IEnumerable)leftXref.RightCollectionProperty.GetValue(parent);
+                if (collection != null)
+                {
+                    foreach (object obj in collection)
+                    {
+                        ChildWriter(new Meta(obj, ObjectReaderWriter));
+                        XrefInfo xrefInfo = new XrefInfo(parent, obj, MetaProvider.GetMeta(parent).Hash, MetaProvider.GetMeta(obj).Hash);
+                        ChildWriter(xrefInfo);
+                    }
+                }
+            }
 
-			TypeXref[] rightXrefs = TypeSchema.Xrefs.Where(xref => xref.Right.Equals(type)).ToArray();
-			foreach (TypeXref rightXref in rightXrefs)
-			{
-				IEnumerable collection = (IEnumerable)rightXref.LeftCollectionProperty.GetValue(parent);
-				if (collection != null)
-				{
-					foreach (object obj in collection)
-					{
-						ChildWriter(new Meta(obj, ObjectReaderWriter));
-						XrefInfo xrefInfo = new XrefInfo(obj, parent, MetaProvider.GetMeta(obj).Hash, MetaProvider.GetMeta(parent).Hash);
-						ChildWriter(xrefInfo);
-					}
-				}
-			}
-		}
+            TypeXref[] rightXrefs = TypeSchema.Xrefs.Where(xref => xref.Right.Equals(type)).ToArray();
+            foreach (TypeXref rightXref in rightXrefs)
+            {
+                IEnumerable collection = (IEnumerable)rightXref.LeftCollectionProperty.GetValue(parent);
+                if (collection != null)
+                {
+                    foreach (object obj in collection)
+                    {
+                        ChildWriter(new Meta(obj, ObjectReaderWriter));
+                        XrefInfo xrefInfo = new XrefInfo(obj, parent, MetaProvider.GetMeta(obj).Hash, MetaProvider.GetMeta(parent).Hash);
+                        ChildWriter(xrefInfo);
+                    }
+                }
+            }
+        }
 		
 	}
 }

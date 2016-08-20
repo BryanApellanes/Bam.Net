@@ -1,6 +1,6 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
 	///<summary>The act of transferring/moving (abstract or concrete) animate or inanimate objects from one place to another.</summary>
 	public class TransferAction: Action

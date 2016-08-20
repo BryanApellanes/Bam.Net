@@ -1,6 +1,6 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
 	///<summary>The act of asking someone to attend an event. Reciprocal of RsvpAction.</summary>
 	public class InviteAction: CommunicateAction

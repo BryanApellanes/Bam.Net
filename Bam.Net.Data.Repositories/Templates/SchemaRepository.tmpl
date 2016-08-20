@@ -13,7 +13,7 @@ using @(Model.SourceNamespace);
 namespace @(Model.SchemaRepositoryNamespace)
 {
 	[Serializable]
-	public class @(Model.SchemaName)Repository: DaoRepository
+	public class @(Model.SchemaName)Repository: @(Model.BaseRepositoryType)
 	{
 		public @(Model.SchemaName)Repository()
 		{

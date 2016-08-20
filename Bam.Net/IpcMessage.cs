@@ -25,11 +25,6 @@ namespace Bam.Net
     {
         internal IpcMessage(string name, Type messageType)
         {
-			//AppDomain.CurrentDomain.DomainUnload += (s, e) =>
-			//{
-			//	Delete(name, messageType);
-			//};
-
             this.Name = name;           
             this.LockTimeout = 1500;
             this.MessageType = messageType;
@@ -116,9 +111,9 @@ namespace Bam.Net
             return File.Exists(result.MessageFile);
         }
 
-        public static void Delete(string name, Type type)
+        public static void Delete(string name, Type type, string rootDir = null)
         {
-            IpcMessage toDelete = new IpcMessage(name, type);
+            IpcMessage toDelete = new IpcMessage(name, type, rootDir);
             if (Directory.Exists(toDelete.RootDirectory))
             {
                 Directory.Delete(toDelete.RootDirectory, true);

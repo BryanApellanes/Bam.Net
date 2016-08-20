@@ -13,7 +13,7 @@ namespace Bam.Net.Caching.Tests
         [UnitTest]
         public void GetCacheFailedShouldNotFire()
         {
-            CacheManager cacheMan = new CacheManager();
+            ConcurrentCacheManager cacheMan = new ConcurrentCacheManager();
             Type missing = typeof(object);
             bool? fired = false;
             cacheMan.GetCacheFailed += (o, args) =>
@@ -21,7 +21,7 @@ namespace Bam.Net.Caching.Tests
                 fired = true;
             };
 
-            Cache cache = cacheMan.CacheFor<object>();
+            ConcurrentCache cache = cacheMan.CacheFor<object>();
             Expect.IsFalse(fired.Value);
             Expect.IsNotNull(cache);
         }

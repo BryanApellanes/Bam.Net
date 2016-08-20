@@ -1,9 +1,9 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
 	///<summary>An auto parts store.</summary>
-	public class AutoPartsStore1: Store
+	public class AutoPartsStore_1: Store
 	{
 	}
 }

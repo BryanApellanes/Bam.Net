@@ -1,6 +1,6 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
 	///<summary>A media episode (e.g. TV, radio, video game) which can be part of a series or season.</summary>
 	public class Episode: CreativeWork
@@ -10,9 +10,9 @@ namespace Bam.Net.Schema.Org
 		///<summary>A director of e.g. tv, radio, movie, video gaming etc. content, or of an event. Directors can be associated with individual items or with a series, episode, clip. Supersedes directors.</summary>
 		public Person Director {get; set;}
 		///<summary>Position of the episode within an ordered group of episodes.</summary>
-		public OneOfThese<Integer , Text> EpisodeNumber {get; set;}
+		public OneOfThese<Integer,Text> EpisodeNumber {get; set;}
 		///<summary>The composer of the soundtrack.</summary>
-		public OneOfThese<MusicGroup , Person> MusicBy {get; set;}
+		public OneOfThese<MusicGroup,Person> MusicBy {get; set;}
 		///<summary>The season to which this episode belongs.</summary>
 		public CreativeWorkSeason PartOfSeason {get; set;}
 		///<summary>The series to which this episode or season belongs. Supersedes partOfTVSeries.</summary>

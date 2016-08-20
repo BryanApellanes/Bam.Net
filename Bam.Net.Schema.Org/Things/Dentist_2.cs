@@ -1,9 +1,9 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
 	///<summary>A dentist.</summary>
-	public class Dentist2: ProfessionalService
+	public class Dentist_2: MedicalBusiness
 	{
 	}
 }

@@ -15,7 +15,7 @@ namespace Bam.Net.Data.Dynamic
     using Bam.Net.Data;
     using Bam.Net.Data.Schema;
     using Bam.Net.Data.MsSql;
-    using Bam.Net.Data.Repositories;
+    //using Bam.Net.Data.Repositories;
     using Bam.Net.ExceptionHandling;
     using System.Data.Common;
     using System.Reflection;
@@ -54,20 +54,30 @@ namespace Bam.Net.Data.Dynamic
         }
         public void Create(bool execute, params dynamic[] values)
         {
-            SqlStringBuilder sql = CurrentSql ?? Database.GetService<SqlStringBuilder>();
-            foreach (dynamic value in values)
-            {
-                string tableName = GetTableName(value);
-                List<AssignValue> assignValues = GetValueAssignments(value, tableName);
-                sql.Insert(tableName, assignValues.ToArray());
-            }
-            sql.Go();
-            CurrentSql = sql;
+            CurrentSql = WriteInsert(values);
             if (execute)
             {
                 Execute();
             }
         }
+
+        public SqlStringBuilder WriteInsert(params dynamic[] values)
+        {
+            return WriteInsert(CurrentSql ?? Database.GetService<SqlStringBuilder>(), values);
+        }
+
+        public SqlStringBuilder WriteInsert(SqlStringBuilder sql, dynamic[] values)
+        {            
+            foreach (dynamic value in values)
+            {
+                string tableName = GetTableName(value);
+                List<AssignValue> assignValues = GetValueAssignments(value, tableName);
+                sql.Insert(tableName, assignValues.ToArray());
+                sql.Go();
+            }
+            return sql;
+        }
+
         /// <summary>
         /// Execute the specified querySpec and return the first 
         /// result or null
@@ -104,24 +114,19 @@ namespace Bam.Net.Data.Dynamic
          * */
         public IEnumerable<dynamic> Retrieve(dynamic querySpec)
         {
-            string table = GetTableName(querySpec);
-            string columns = ReflectionExtensions.Property<string>(querySpec, "Columns", false) ?? "*";
-            string[] columnNames = new string[] { columns };
-            if (!columns.Equals("*"))
-            {
-                columnNames = columns.DelimitSplit(",").Select(s => NameMap.GetColumnName(table, s)).ToArray();
-            }
-
-            dynamic whereSpec = ReflectionExtensions.Property(querySpec, "Where") ?? ReflectionExtensions.Property(querySpec, "where");
             SqlStringBuilder sql = CurrentSql ?? Database.GetService<SqlStringBuilder>();
+            string table = GetTableName(querySpec);
+            WriteRetrieve(table, sql, querySpec);
 
-            sql.Select(table);
-            if (whereSpec != null)
-            {
-                sql.Where(ParseWhere(table, whereSpec));
-            }
             CurrentSql = sql;
             return Retrieve(table);
+        }
+
+        public SqlStringBuilder WriteRetrieve(dynamic querySpec)
+        {
+            string tableName = GetTableName(querySpec);
+            SqlStringBuilder sql = CurrentSql ?? Database.GetService<SqlStringBuilder>();
+            return WriteRetrieve(tableName, sql, querySpec);
         }
 
         public void Update(params dynamic[] values)
@@ -357,6 +362,23 @@ namespace Bam.Net.Data.Dynamic
                 result.Rows.Add(newRow);
             }
             return result;
+        }
+
+        private SqlStringBuilder WriteRetrieve(string table, SqlStringBuilder sql, dynamic querySpec)
+        {
+            string columns = ReflectionExtensions.Property<string>(querySpec, "Columns", false) ?? "*";
+            string[] columnNames = new string[] { columns };
+            if (!columns.Equals("*"))
+            {
+                columnNames = columns.DelimitSplit(",").Select(s => NameMap.GetColumnName(table, s)).ToArray();
+            }
+            dynamic whereSpec = ReflectionExtensions.Property(querySpec, "Where") ?? ReflectionExtensions.Property(querySpec, "where");
+            sql.Select(table);
+            if (whereSpec != null)
+            {
+                sql.Where(ParseWhere(table, whereSpec));
+            }
+            return sql;
         }
     }
 }

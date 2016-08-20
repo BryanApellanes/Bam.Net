@@ -59,7 +59,7 @@ namespace Bam.Net.Data.Repositories
 			return null;
 		}
 
-		public override ParameterInfo[] GetIndexParameters()
+		public override System.Reflection.ParameterInfo[] GetIndexParameters()
 		{
 			throw new NotImplementedException();
 		}
