@@ -1,6 +1,6 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
 	///<summary>The costs of settling the payment using a particular payment method.</summary>
 	public class PaymentChargeSpecification: PriceSpecification

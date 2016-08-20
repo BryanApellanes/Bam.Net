@@ -1,6 +1,6 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
 	///<summary>A set of characteristics belonging to people, e.g. who compose an item's target audience.</summary>
 	public class PeopleAudience: Audience

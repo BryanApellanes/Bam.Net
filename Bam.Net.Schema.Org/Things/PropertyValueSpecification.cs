@@ -1,12 +1,12 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
 	///<summary>A Property value specification.</summary>
 	public class PropertyValueSpecification: Intangible
 	{
 		///<summary>The default value of the input.  For properties that expect a literal, the default is a literal value, for properties that expect an object, it's an ID reference to one of the current values.</summary>
-		public OneOfThese<Text , Thing> DefaultValue {get; set;}
+		public OneOfThese<Text,Thing> DefaultValue {get; set;}
 		///<summary>The upper value of some characteristic or property.</summary>
 		public Number MaxValue {get; set;}
 		///<summary>The lower value of some characteristic or property.</summary>

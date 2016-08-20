@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.DataTypes
 {
     public class Boolean: DataType
     {

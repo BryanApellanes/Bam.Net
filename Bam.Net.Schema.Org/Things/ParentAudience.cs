@@ -1,6 +1,6 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
 	///<summary>A set of characteristics describing parents, who can be interested in viewing some content.</summary>
 	public class ParentAudience: PeopleAudience

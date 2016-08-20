@@ -1,6 +1,6 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
 	///<summary>The act of generating a comment about a subject.</summary>
 	public class CommentAction: CommunicateAction

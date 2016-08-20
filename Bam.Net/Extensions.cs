@@ -74,9 +74,9 @@ namespace Bam.Net
             return GetNextFileName(path, out num);
         }
         /// <summary>
-        /// If the specified file exists a new path with 
-        /// a number appended will be returned where the 
-        /// new path does not exist
+        /// If the specified file exists, a new path with 
+        /// an underscore and a number appended will be 
+        /// returned where the new path does not exist
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>

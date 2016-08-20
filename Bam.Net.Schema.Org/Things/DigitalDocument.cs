@@ -1,6 +1,6 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
 	///<summary>An electronic file or document.</summary>
 	public class DigitalDocument: CreativeWork

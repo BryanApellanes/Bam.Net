@@ -14,8 +14,10 @@ using Bam.Net.Testing;
 using Bam.Net.Testing.Integration;
 using Bam.Net.Yaml;
 using Bam.Net.Data.Tests.Integration;
-using Bam.Net.Schema.Org;
+using Bam.Net.Schema.Org.Things;
+using Bam.Net.Schema.Org.DataTypes;
 using Bam.Net.Data.Schema;
+using Bam.Net.Data.SQLite;
 
 namespace Bam.Net.Data.Repositories.Tests
 {
@@ -62,53 +64,23 @@ namespace Bam.Net.Data.Repositories.Tests
 
 			"notepad {0}"._Format(fileName).Run();
 		}
+        [ConsoleAction]
+        public void SaveOfInheritingTypeTest()
+        {
+            CivicStructure toSave = new CivicStructure();
+            toSave.OpeningHours = new Text { Value = "Opening hours" };
+            toSave.Name = "The name of the civic structure";
+            toSave.Photo = new OneOfThese<ImageObject, Photograph>();
+            toSave.Photo.Value<Photograph>(new Photograph { Name = "The photograph" });
+            DatabaseRepository repo = new DatabaseRepository(new SQLiteDatabase($".\\{nameof(SaveOfInheritingTypeTest)}", "SchemaDotOrg"));
+            repo.AddNamespace(typeof(CivicStructure));
+            repo.Save(toSave);
+        }
 
         [ConsoleAction]
         public void RunRepositoryIntegrationTests()
         {
             IntegrationTestRunner.RunIntegrationTests(typeof(RepositoryIntegrationTests));
-        }
-
-        [ConsoleAction]
-        public void WriteSchemaScriptTest()
-        {
-            TypeInheritanceSchemaGenerator gen = new TypeInheritanceSchemaGenerator();
-            gen.SchemaManager = new SchemaManager { AutoSave = false };
-            SchemaDefinitionCreateResult sd = gen.CreateSchemaDefinition(new Type[] { typeof(Airport) });
-            DataTools.Setup(db => { }).Each(sd, (result, db) =>
-            {
-                SqlStringBuilder schemaScript = db.WriteSchemaScript((SchemaDefinitionCreateResult)result);
-                OutLineFormat("Db Type: {0}", ConsoleColor.Cyan, db.GetType().Name);
-                Out(schemaScript.ToString(), ConsoleColor.DarkCyan);
-            });
-        }
-
-        [ConsoleAction]
-        public void OutputDeepestChainLength()
-        {
-            int deepest = 0;
-            int outOf = 0;
-            Type[] types = typeof(Thing).Assembly.GetTypes();
-            TypeInheritanceDescriptor theOne = null;
-            OutLineFormat("{0} types", types.Length);
-            types.Each(type =>
-            {
-                outOf++;
-                TypeInheritanceDescriptor inheritance = new TypeInheritanceDescriptor(type);
-                if (inheritance.Chain.Count > deepest)
-                {
-                    theOne = inheritance;
-                    deepest = inheritance.Chain.Count;
-                    OutLineFormat("Deepest so far {0}/{1}", ConsoleColor.Cyan, deepest, outOf);
-                    OutLine(inheritance.ToString(), ConsoleColor.DarkCyan);
-                }
-                else
-                {
-                    OutLineFormat("{0}: Only {1}", ConsoleColor.Yellow, type.Name, inheritance.Chain.Count);
-                }
-            });
-            OutLineFormat("The deepest is {0} with {1}", ConsoleColor.DarkBlue, theOne.Type.Name, theOne.Chain.Count);
-            OutLine(theOne.ToString(), ConsoleColor.Blue);
         }
     }
 }

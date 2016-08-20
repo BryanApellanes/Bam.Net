@@ -1,6 +1,6 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
 	///<summary>A video game series.</summary>
 	public class VideoGameSeries: CreativeWorkSeries
@@ -20,11 +20,11 @@ namespace Bam.Net.Schema.Org
 		///<summary>An item is an object within the game world that can be collected by a player or, occasionally, a non-player character.</summary>
 		public Thing GameItem {get; set;}
 		///<summary>Real or fictional location of the game (or part of game).</summary>
-		public OneOfThese<Place , PostalAddress , URL> GameLocation {get; set;}
+		public OneOfThese<Place,PostalAddress,Url> GameLocation {get; set;}
 		///<summary>The electronic systems used to play video games.</summary>
-		public OneOfThese<Text , Thing , URL> GamePlatform {get; set;}
+		public OneOfThese<Text,Thing,Url> GamePlatform {get; set;}
 		///<summary>The composer of the soundtrack.</summary>
-		public OneOfThese<MusicGroup , Person> MusicBy {get; set;}
+		public OneOfThese<MusicGroup,Person> MusicBy {get; set;}
 		///<summary>The number of episodes in this season or series.</summary>
 		public Integer NumberOfEpisodes {get; set;}
 		///<summary>Indicate how many people can play this game (minimum, maximum, or range).</summary>

@@ -1,6 +1,6 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
 	///<summary>The act of producing a balanced opinion about the object for an audience. An agent reviews an object with participants resulting in a review.</summary>
 	public class ReviewAction: AssessAction

@@ -11,7 +11,7 @@ using Bam.Net.Data.SQLite;
 using Bam.Net.Data.Repositories.Tests.TestDtos;
 using System.IO;
 using Bam.Net.Data.Tests.Integration;
-using Bam.Net.Schema.Org;
+//using Bam.Net.Schema.Org;
 
 namespace Bam.Net.Data.Repositories.Tests
 {
@@ -151,24 +151,13 @@ namespace Bam.Net.Data.Repositories.Tests
             });
         }
 
-        [ConsoleAction]
-        public void Testing()
-        {
-            SaveOfInheritingTypeTest();
-        }
+        //[ConsoleAction]
+        //public void Testing()
+        //{
+        //    SaveOfInheritingTypeTest();
+        //}
 
-        [IntegrationTest]
-        public void SaveOfInheritingTypeTest()
-        {
-            CivicStructure toSave = new CivicStructure();
-            toSave.OpeningHours = new Text { Value = "Opening hours" };
-            toSave.Name = "The name of the civic structure";
-            toSave.Photo = new OneOfThese<ImageObject, Photograph>();
-            toSave.Photo.Value<Photograph>(new Photograph { Name = "The photograph" });
-            DatabaseRepository repo = new DatabaseRepository(new SQLiteDatabase($".\\{nameof(SaveOfInheritingTypeTest)}", "SchemaDotOrg"));
-            repo.AddNamespace(typeof(CivicStructure));
-            repo.Save(toSave);
-        }
+
 
         private void AddTypes(IRepository repo)
         {

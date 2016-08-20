@@ -20,15 +20,13 @@ namespace Bam.Net.Schema.Org.Tests
             {
                 if(_className == null)
                 {
-                    string typeName = TypeName.LettersOnly();
-                    _className = typeName.PascalCase(!typeName.IsAllCaps());
+                    _className = TypeName;
                 }
                 return _className;
             }
             set
             {
-                string t = value.LettersOnly();
-                _className = t.PascalCase(!t.IsAllCaps());
+                _className = value;
             }
         }
 		string _typeName;

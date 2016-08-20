@@ -1,6 +1,6 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
 	///<summary>A datasheet or vendor specification of a product (in the sense of a prototypical description).</summary>
 	public class ProductModel: Product

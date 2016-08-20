@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.DataTypes
 {
     public abstract class DataType
     {

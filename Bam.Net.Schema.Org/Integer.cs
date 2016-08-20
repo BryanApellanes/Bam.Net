@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.DataTypes
 {
     public class Integer: Number
     {

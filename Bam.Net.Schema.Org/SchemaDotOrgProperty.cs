@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using Bam.Net;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Tests
 {
     public class SchemaDotOrgProperty
     {
@@ -19,23 +19,31 @@ namespace Bam.Net.Schema.Org
         {
             get
             {
-                return _expectedType;
+                return _expectedType.PascalCase(!_expectedType.IsAllCaps());
             }
             set
             {
                 _expectedType = value;
                 string[] split = _expectedType.Split(new string[] { " or ", " OR ", "\r\nor\r\n", "\r\nOR\r\n", " ", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
-                split = split.Select(s => s.PascalCase(!s.IsAllCaps())).ToArray();
+                split = split.Select(s => 
+                {
+                    s = s.PascalCase(!s.IsAllCaps());
+                    if (s.Trim().Equals("Date") || s.Trim().Equals("DateTime"))
+                    {
+                        s = "Bam.Net.Schema.Org.DataTypes.Date";
+                        _expectedType = s;
+                    }
+                    if (s.Trim().Equals("Time"))
+                    {
+                        s = "Bam.Net.Schema.Org.DataTypes.Time";
+                        _expectedType = s;
+                    }
+                    return s;
+                }).ToArray();
+
                 if (split.Length == 2)
                 {
-                    if(split[0].Trim().Equals("Date") || split[0].Trim().Equals("DateTime"))
-                    {
-                        _expectedType = "DateTime";
-                    }
-                    else
-                    {
-                        _expectedType = string.Format("OneOfThese<{0}, {1}>", split[0], split[1]);
-                    }
+                    _expectedType = string.Format("OneOfThese<{0}, {1}>", split[0], split[1]);
                 }
                 else if (split.Length == 3)
                 {

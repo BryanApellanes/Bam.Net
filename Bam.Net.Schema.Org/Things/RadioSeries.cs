@@ -1,6 +1,6 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
 	///<summary>CreativeWorkSeries dedicated to radio broadcast and associated online delivery.</summary>
 	public class RadioSeries: CreativeWorkSeries
@@ -14,7 +14,7 @@ namespace Bam.Net.Schema.Org
 		///<summary>An episode of a tv, radio or game media within a series or season. Supersedes episodes.</summary>
 		public Episode Episode {get; set;}
 		///<summary>The composer of the soundtrack.</summary>
-		public OneOfThese<MusicGroup , Person> MusicBy {get; set;}
+		public OneOfThese<MusicGroup,Person> MusicBy {get; set;}
 		///<summary>The number of episodes in this season or series.</summary>
 		public Integer NumberOfEpisodes {get; set;}
 		///<summary>The number of seasons in this series.</summary>

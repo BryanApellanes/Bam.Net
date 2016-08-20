@@ -1,6 +1,6 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
 	///<summary>A post to a social media platform, including blog posts, tweets, Facebook posts, etc.</summary>
 	public class SocialMediaPosting: Article

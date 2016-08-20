@@ -7,28 +7,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.DataTypes
 {
-    public class URL: Text
+    public class Url: Text
     {
-        public URL()
+        public Url()
         {
             this.Name = "Url";
         }
 
-        public URL(string value)
+        public Url(string value)
         {
-            Value<string>(value);
+            this.Value = value;
         }
 
-        public static implicit operator Uri(URL url)
+        public static implicit operator Uri(Url url)
         {
             return url.Uri;
         }
 
-        public static implicit operator URL(Uri uri)
+        public static implicit operator Url(Uri uri)
         {
-            return new URL(uri.ToString());
+            return new Url(uri.ToString());
         }
 
         public Uri Uri

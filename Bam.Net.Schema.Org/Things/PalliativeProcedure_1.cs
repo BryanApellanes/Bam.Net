@@ -1,9 +1,9 @@
-using System;
+using Bam.Net.Schema.Org.DataTypes;
 
-namespace Bam.Net.Schema.Org
+namespace Bam.Net.Schema.Org.Things
 {
 	///<summary></summary>
-	public class PalliativeProcedure1: MedicalTherapy
+	public class PalliativeProcedure_1: MedicalTherapy
 	{
 	}
 }
