@@ -6,7 +6,7 @@ using System.Collections;
 using Bam.Net.Data;
 using System.IO;
 
-namespace Bam.Net.CoreServices.Proxyables
+namespace Bam.Net.CoreServices.Services
 {
     [Encrypt]
     [Proxy("persistence")]

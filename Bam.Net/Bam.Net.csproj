@@ -166,7 +166,7 @@
     <Compile Include="ExceptionHandling\IArbitrateExceptions.cs" />
     <Compile Include="ExceptionHandling\ReflectionTypeLoadAggregateException.cs" />
     <Compile Include="ExcludeAttribute.cs" />
-    <Compile Include="ExtractExistingFileAction.cs" />
+    <Compile Include="ExistingFileAction.cs" />
     <Compile Include="FileSystemWatchingExtensions.cs" />
     <Compile Include="GeneratedAssemblies.cs" />
     <Compile Include="GeneratedAssemblyInfo.cs" />
@@ -193,6 +193,7 @@
     <Compile Include="Razor\RazorTemplate.cs" />
     <Compile Include="Resolver.cs" />
     <Compile Include="SQLiteBitMonitor.cs" />
+    <Compile Include="Timed.cs" />
     <Compile Include="Validate.cs" />
     <Compile Include="Web\CookieEnabledWebClient.cs">
       <SubType>Component</SubType>

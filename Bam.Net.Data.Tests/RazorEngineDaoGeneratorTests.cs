@@ -5,25 +5,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-//using Naizari.Extensions;
 using System.Reflection;
 using System.Data;
 using System.Data.Common;
 using System.Data.Sql;
 using System.Data.SqlClient;
-//using Naizari.Testing;
 using System.IO;
-//using Naizari.Data;
-//using Naizari.Helpers;
 using Bam.Net.Data;
 using Bam.Net;
 using Bam;
 using System.Configuration;
 using MySql.Data.MySqlClient;
 using Bam.Net.Incubation;
-//using System.Web.Razor.Generator;
 using System.Data.OleDb;
-//using System.Web.Razor;
 using Bam.Net.Data.Schema;
 using Microsoft.CSharp;
 using System.CodeDom.Compiler;
@@ -100,12 +94,6 @@ namespace Bam.Net.Data.Tests
         public static void LettersOnlyTest()
         {
             Expect.AreEqual("Monkey", "**()@@__98374M`~1!22#$45 %6^7&8*9(0)-_=+{[}]|;;:'\",<.>/?onkey".LettersOnly());
-        }
-        
-        [UnitTest]
-        public static void AssemlyNameTest()
-        {
-            OutLine(typeof(Table).Assembly.CodeBase.Replace("file:///", "").Replace("/", "\\"), ConsoleColor.Cyan);
         }
 
         private static void Compare(string result, FileInfo compareToFile)

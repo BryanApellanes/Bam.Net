@@ -3,34 +3,15 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Collections;
-using System.Linq;
-using System.Text;
-using System.Reflection;
 using System.Data;
-using System.Data.Common;
-using System.Data.Sql;
-using System.Data.SqlClient;
-using System.IO;
-using Bam.Net.Data;
+using System.Linq;
 using Bam.Net;
-using Bam.Net.Testing;
-using System.Configuration;
-using Bam.Net.Incubation;
-using System.Data.OleDb;
-using Bam.Net.CommandLine;
-using Bam.Net.Data.Schema;
 using Bam.Net.Data.MsSql;
-using Bam.Net.Logging;
-using Microsoft.CSharp;
-using System.CodeDom.Compiler;
-using System.Configuration;
-using Bam.Net.Data.Tests;
-using Bam.Net.Analytics;
-using Bam.Net.Testing.Integration;
-using Bam.Net.Data.SQLite;
 using Bam.Net.Data.MySql;
-using Bam.Net.Data.Npgsql;
+using Bam.Net.Data.Schema;
+using Bam.Net.Data.SQLite;
+using Bam.Net.Testing;
+using Bam.Net.Testing.Integration;
 
 namespace Bam.Net.Data.Tests.Integration
 {

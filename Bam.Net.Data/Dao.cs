@@ -1260,7 +1260,7 @@ namespace Bam.Net.Data
             object val = GetCurrentValue(columnName);
             if (val != null && val != DBNull.Value)
             {
-                return new decimal?((decimal)val);
+                return new decimal?(Convert.ToDecimal(val));
             }
 
             return new decimal?();
@@ -1296,7 +1296,7 @@ namespace Bam.Net.Data
         protected byte[] GetByteArrayValue(string columnName)
         {
             object val = GetCurrentValue(columnName);
-            if (val == null || val == DBNull.Value)
+            if (val == null || val == DBNull.Value || val is string)
             {
                 return new byte[] { };
             }

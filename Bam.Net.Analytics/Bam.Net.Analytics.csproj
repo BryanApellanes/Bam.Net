@@ -258,7 +258,6 @@
     <Compile Include="ICrawler.cs" />
     <Compile Include="ImageCrawler.cs" />
     <Compile Include="UrlCrawler.cs" />
-    <Compile Include="Timed.cs" />
     <Compile Include="Partials\Category.cs" />
     <Compile Include="Partials\ClickCounter.cs" />
     <Compile Include="Partials\Counter.cs" />

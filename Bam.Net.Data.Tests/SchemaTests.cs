@@ -3,53 +3,15 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-//using Naizari.Extensions;
-using System.Reflection;
-using System.Data;
-using System.Data.Common;
-using System.Data.Sql;
-using System.Data.SqlClient;
-//using Naizari.Testing;
 using System.IO;
-//using Naizari.Data;
-//using Naizari.Helpers;
-using Bam.Net.Data;
-using Bam.Net;
-using Bam.Net.Testing;
-using System.Configuration;
-using MySql.Data.MySqlClient;
-using Bam.Net.Incubation;
-//using System.Web.Razor.Generator;
-using System.Data.OleDb;
-//using System.Web.Razor;
-using Bam.Net.CommandLine;
+using System.Reflection;
 using Bam.Net.Data.Schema;
-using Microsoft.CSharp;
-using System.CodeDom.Compiler;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Reflection;
-using System.Data;
-using System.Data.Common;
-using System.Data.Sql;
-using System.Data.SqlClient;
-using System.IO;
-using Bam.Net.CommandLine;
-using Bam.Net;
-using Bam.Net.Testing;
-using Bam.Net.Encryption;
-using Newtonsoft.Json;
-using System.ComponentModel;
 using Bam.Net.Javascript;
-using Bam.Net.Data.Schema;
+using Bam.Net.Testing;
 
 namespace Bam.Net.Data.Tests
 {
-	[Serializable]
+    [Serializable]
     public class SchemaTests: CommandLineTestInterface
     {
         [UnitTest]
@@ -186,7 +148,7 @@ namespace Bam.Net.Data.Tests
 
             string refering = "Referencer";
             mgr.AddTable(refering);
-            mgr.AddColumn(refering, new Column("fk", DataTypes.Long));// { Name = "fk", Type = DataTypes.Long });
+            mgr.AddColumn(refering, new Column("fk", DataTypes.Long));
 
             int initCount = schema.ForeignKeys.Length;
             mgr.SetForeignKey(tableName, refering, "fk");

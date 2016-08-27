@@ -269,7 +269,8 @@ namespace Bam.Net
         {
             if (((expected == null && actual != null) ||
                 (actual == null && expected != null)) ||
-                !expected.Equals(actual))
+                (expected != null && !expected.Equals(actual))
+                )
             {
                 if (string.IsNullOrEmpty(failureMessage))
                 {

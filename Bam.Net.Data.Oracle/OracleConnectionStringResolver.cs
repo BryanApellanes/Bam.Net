@@ -14,8 +14,7 @@ using System.Data.Common;
 namespace Bam.Net.Data
 {
     /// <summary>
-    /// Resolves connection string requests to a Oracle database in the
-    /// directory specified by the Directory property.
+    /// Resolves connection string requests to a Oracle database
     /// </summary>
     public class OracleConnectionStringResolver: IConnectionStringResolver
     {
@@ -49,6 +48,7 @@ namespace Bam.Net.Data
 
         public DbConnectionStringBuilder GetConnectionStringBuilder()
         {
+            
             return new DbConnectionStringBuilder { ConnectionString = Resolve("Default")?.ConnectionString };
         }
         #endregion

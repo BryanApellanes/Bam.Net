@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net
 {
-    public enum ExtractExistingFileAction
+    public enum ExistingFileAction
     {
         Throw,
         OverwriteSilently,

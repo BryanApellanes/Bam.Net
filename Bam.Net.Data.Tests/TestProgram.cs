@@ -66,11 +66,6 @@ namespace Bam.Net.Data.Tests
           * the TestMethod attribute will be run automatically when the
           * compiled executable is run.  To run ConsoleAction methods use
           * the command line argument /i.
-          * 
-          * All methods addorned with ConsoleAction and TestMethod attributes 
-          * must be static for the purposes of extending CommandLineTestInterface
-          * or an exception will be thrown.
-          * 
           */
 
 		[UnitTest]
@@ -146,6 +141,27 @@ namespace Bam.Net.Data.Tests
                 Out(etnse.Message, ConsoleColor.Cyan);
             }
             Expect.IsTrue(thrown);
+        }
+
+        [UnitTest]
+        public static void ExecuteReaderTest()
+        {
+            Database database = new SQLiteDatabase(".\\", MethodBase.GetCurrentMethod().Name);
+            ConsoleLogger logger = PrepareDatabaseAndGetLogger(database);
+            TestTable one = new TestTable();
+            one.Name = "banana";
+            one.Save(database);
+            TestTable two = new TestTable();
+            two.Name = one.Name;
+            two.Save(database);
+            SqlStringBuilder sql = database.GetSqlStringBuilder();
+            sql.Select("TestTable").Where("Name", "banana");
+            List<TestTable> retrieved = database.ExecuteReader<TestTable>(sql).ToList();
+            Expect.AreEqual(2, retrieved.Count);
+            retrieved.Each(t =>
+            {
+                OutLineFormat("{0}, {1}", t.Id, t.Name);
+            });
         }
 
         private static ConsoleLogger PrepareDatabaseAndGetLogger(Database database)
