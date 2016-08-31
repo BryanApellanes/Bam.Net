@@ -39,6 +39,30 @@
             The database that the backup will be restored to
             </summary>
         </member>
+        <member name="M:Bam.Net.Data.Repositories.TypeSchemaScriptWriter.WriteSchemaScript(Bam.Net.Data.Database,System.Type[])">
+            <summary>
+            Write and return the sql schema script using a TypeInheritanceSchemaGenerator
+            </summary>
+            <param name="database"></param>
+            <param name="types"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Bam.Net.Data.Repositories.DatabaseRepository">
+            <summary>
+            An extension to the DaoRepository that supports saving
+            types that extend other types in a schema that reflects
+            the inheritance chain
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Data.Repositories.TypeInheritanceSchemaGenerator">
+            <summary>
+            A class used to generate TypeSchemas.  A TypeSchema is 
+            a class that provides database schema like relationship
+            descriptors for CLR types. This implementation accounts
+            for inheritance relationships in the CLR types and
+            breaks sub types into separate tables.
+            </summary>
+        </member>
         <member name="T:Bam.Net.Data.Repositories.SchemaRepositoryGenerator">
             <summary>
             A code and assembly generator used to generate schema
@@ -124,6 +148,24 @@
             </summary>
             <param name="nameSpace"></param>
             <param name="writeSourceTo"></param>
+        </member>
+        <member name="T:Bam.Net.Data.Repositories.TypeInheritanceSqlWriter">
+            <summary>
+            A class used to write sql statements that can be used
+            to persist CLR types to a database.  This class
+            assumes that the tables in the database are setup 
+            to recieve properties of object instances in their
+            inheritance chain.  For example if a type A extends 
+            type B then there will be tables in the database
+            representing each.  This structure can be achieved
+            by using <see cref="M:Bam.Net.Data.Repositories.TypeSchemaScriptWriter.WriteSchemaScript(Bam.Net.Data.Database,System.Collections.Generic.IEnumerable{System.Type})"/>
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Data.Repositories.TypeTable">
+            <summary>
+            Used to describe the shape of a database table
+            given a CLR type
+            </summary>
         </member>
         <member name="T:Bam.Net.Data.Repositories.WrapperGenerator">
             <summary>
@@ -480,8 +522,8 @@
         <member name="T:Bam.Net.Data.Repositories.TypeSchemaGenerator">
             <summary>
             A class used to generate TypeSchemas.  A TypeSchema is 
-            a class that provides database schema like relationships
-            for CLR types.
+            a class that provides database schema like relationship
+            descriptors for CLR types.
             </summary>
         </member>
         <member name="E:Bam.Net.Data.Repositories.TypeSchemaGenerator.CreatingSchemaStarted">
@@ -581,6 +623,21 @@
             </summary>
             <param name="parentType"></param>
             <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.Repository.AddNamespace(System.Reflection.Assembly,System.String)">
+            <summary>
+            Add all the types from the specified assembly
+            that are in the specified nameSpace
+            </summary>
+            <param name="assembly"></param>
+            <param name="nameSpace"></param>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.Repository.AddNamespace(System.Type)">
+            <summary>
+            Add all the types in the same namespace
+            as the specified type
+            </summary>
+            <param name="type"></param>
         </member>
         <member name="M:Bam.Net.Data.Repositories.Repository.Save(System.Object)">
             <summary>

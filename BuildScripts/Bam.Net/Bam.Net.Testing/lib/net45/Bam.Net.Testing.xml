@@ -434,7 +434,28 @@
             <param name="test"></param>
             <returns></returns>
         </member>
+        <member name="M:Bam.Net.Testing.When.A``1(System.String,System.Action{``0,Bam.Net.Testing.SetupContext})">
+            <summary>
+            Prepares the test Context with an empty SetupContext instantiating the 
+            object under test to an instance of T using the default constructor of type T.
+            </summary>
+            <typeparam name="T">The type of the </typeparam>
+            <param name="actionDescription"></param>
+            <param name="test"></param>
+            <returns></returns>
+        </member>
         <member name="M:Bam.Net.Testing.When.A``1(System.String,``0,System.Action{``0})">
+            <summary>
+            Prepares the test Context with an empty SetupContext setting the object under test
+            to the specified objectUnderTest
+            </summary>
+            <typeparam name="T">The type of the object under test.</typeparam>
+            <param name="actionDescription">A description of what the test action will do</param>
+            <param name="objectUnderTest">The object instance being tested</param>
+            <param name="test">the test delegate</param>
+            <returns>Context</returns>
+        </member>
+        <member name="M:Bam.Net.Testing.When.A``1(System.String,``0,System.Action{``0,Bam.Net.Testing.SetupContext})">
             <summary>
             Prepares the test Context with an empty SetupContext setting the object under test
             to the specified objectUnderTest
