@@ -28,7 +28,7 @@ namespace Bam.Net.Data
         }
 
         /// <summary>
-        /// Register the MS implementation of IParameterBuilder, SchemaWriter and QuerySet for the 
+        /// Register the OledB implementation of IParameterBuilder, SchemaWriter and QuerySet for the 
         /// database associated with the specified type.
         /// </summary>
         public static void Register(Type daoType)
@@ -37,7 +37,7 @@ namespace Bam.Net.Data
         }
 
         /// <summary>
-        /// Register the MS implementation of IParameterBuilder, SchemaWriter and QuerySet for the 
+        /// Register the OledB implementation of IParameterBuilder, SchemaWriter and QuerySet for the 
         /// database associated with the specified type.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -47,7 +47,7 @@ namespace Bam.Net.Data
         }
 
         /// <summary>
-        /// Register the MS implementation of IParameterBuilder, SchemaWriter and QuerySet for the
+        /// Register the OledB implementation of IParameterBuilder, SchemaWriter and QuerySet for the
         /// specified database
         /// </summary>
         /// <param name="database"></param>
@@ -57,7 +57,7 @@ namespace Bam.Net.Data
         }
 
         /// <summary>
-        /// Registser the MS implementation of IParameterBuilder, SchemaWriter and QuerySet  
+        /// Registser the OledB implementation of IParameterBuilder, SchemaWriter and QuerySet  
         /// into the specified incubator
         /// </summary>
         /// <param name="incubator"></param>
