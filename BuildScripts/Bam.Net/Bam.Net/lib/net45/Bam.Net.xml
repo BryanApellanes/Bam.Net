@@ -1332,6 +1332,59 @@
             <param name="throwIfPropertyNotFound"></param>
             <returns></returns>
         </member>
+        <member name="M:Bam.Net.ReflectionExtensions.EachDataProperty``1(System.Object,System.Func{System.Reflection.PropertyInfo,System.Object,``0})">
+            <summary>
+            Return the results of the eacher by passing the PropertyInfo and value
+            of each of the properties of instance where the property type is one
+            of the base supported data types; bool, int, long, decimal, string, 
+            byte[], DateTime or their nullable equivalent
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="instance"></param>
+            <param name="eacher"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ReflectionExtensions.EachDataProperty``1(System.Object,System.Type,System.Func{System.Reflection.PropertyInfo,System.Object,``0})">
+            <summary>
+            Return the results of the eacher by passing the PropertyInfo and value
+            of each of the properties of instance where the property type is one
+            of the base supported data types; bool, int, long, decimal, string, 
+            byte[], DateTime or their nullable equivalent 
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="instance"></param>
+            <param name="type"></param>
+            <param name="eacher"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ReflectionExtensions.EachDataProperty``1(System.Object,System.Func{System.Reflection.PropertyInfo,System.Boolean},System.Func{System.Reflection.PropertyInfo,System.Object,``0})">
+            <summary>
+            Return the results of the eacher by passing the PropertyInfo and value
+            of each of the properties of instance where the property type is one
+            of the base supported data types; bool, int, long, decimal, string, 
+            byte[], DateTime or their nullable equivalent
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="instance"></param>
+            <param name="propertyPredicate"></param>
+            <param name="eacher"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ReflectionExtensions.EachDataProperty``1(System.Object,System.Type,System.Func{System.Reflection.PropertyInfo,System.Boolean},System.Func{System.Reflection.PropertyInfo,System.Object,``0})">
+            <summary>
+            Return the results of the eacher by passing the PropertyInfo and value
+            of each of the properties of instance where the property is declared
+            on the specified type and the property type is one of the base 
+            supported data types; bool, int, long, decimal, string, byte[], 
+            DateTime or their nullable equivalent
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="instance"></param>
+            <param name="type"></param>
+            <param name="propertyPredicate"></param>
+            <param name="eacher"></param>
+            <returns></returns>
+        </member>
         <member name="M:Bam.Net.ReflectionExtensions.ToTypeString(System.Type,System.Boolean)">
             <summary>
             Return the Type as the string that can be used to 
@@ -1669,7 +1722,16 @@
         </member>
         <member name="M:Bam.Net.Extensions.GetNextFileName(System.String,System.Int32@)">
             <summary>
-            If the specified file exists a new path with 
+            If the specified file exists, a new path with 
+            an underscore and a number appended will be 
+            returned where the new path does not exist
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Extensions.GetNextDirectoryName(System.String,System.Int32@)">
+            <summary>
+            If the specified directory exists a new path with 
             a number appended will be returned where the 
             new path does not exist
             </summary>
@@ -1721,6 +1783,16 @@
             </summary>
             <param name="source"></param>
             <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Extensions.Times``1(System.Int32,System.Func{System.Int32,``0})">
+            <summary>
+            Execute the specified Func this 
+            many times
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="count"></param>
+            <param name="func"></param>
             <returns></returns>
         </member>
         <member name="M:Bam.Net.Extensions.Each``1(System.Collections.Generic.IEnumerable{``0},System.Action{``0})">
@@ -1988,6 +2060,28 @@
             <param name="sync"></param>
             <param name="toInit"></param>
             <param name="ifNull"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Extensions.ToJsonFile(System.Object,System.String)">
+            <summary>
+            Serialize the current object to json in the specified path
+            </summary>
+            <param name="value"></param>
+            <param name="path"></param>
+        </member>
+        <member name="M:Bam.Net.Extensions.ToJsonFile(System.Object,System.IO.FileInfo)">
+            <summary>
+            Serialize the current object to json to the specified file
+            </summary>
+            <param name="value"></param>
+            <param name="file"></param>
+        </member>
+        <member name="M:Bam.Net.Extensions.ToJsonStream(System.Object)">
+            <summary>
+            Return a Stream containing the current
+            object as json
+            </summary>
+            <param name="value"></param>
             <returns></returns>
         </member>
         <member name="M:Bam.Net.Extensions.FromJsonFile``1(System.IO.FileInfo)">
@@ -2465,7 +2559,8 @@
         <member name="M:Bam.Net.Extensions.CopyProperties(System.Object,System.Object)">
             <summary>
             Copies all properties from source to destination where the name and
-            type match.
+            type match.  Accounts for nullability and treats non nullable and
+            nullable primitives as compatible
             </summary>
             <param name="destination"></param>
             <param name="source"></param>

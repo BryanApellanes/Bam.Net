@@ -343,7 +343,9 @@
             If true, will hydrate child collections
             prior to deletion so that they can be deleted.
             Incurs performance cost if many child 
-            collections must be loaded
+            collections must be loaded; can cause intense
+            memory pressure if large amounts of data
+            need to be loaded
             </summary>
         </member>
         <member name="M:Bam.Net.Data.Dao.ResetChildren">
@@ -888,6 +890,11 @@
             <summary>
             Logical name given to the schema that
             the table is part of.  
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Data.AssignValue">
+            <summary>
+            Statement used to assign a value to a variable or parameter
             </summary>
         </member>
         <member name="T:Bam.Net.Data.XrefDaoCollection`2">
