@@ -123,7 +123,7 @@ namespace Bam.Net.Data
 			OracleDatasetProvider dsp = new OracleDatasetProvider(this);
 			DataSet = dsp.GetDataSet(db);
 			OnExecuted(db);
-			this.Reset();
+			Reset();
 		}
 
 		public override SqlStringBuilder Go()
@@ -150,7 +150,7 @@ namespace Bam.Net.Data
 						InsertResult insertResult = result as InsertResult;
 						if (insertResult != null)
 						{
-							long id = long.Parse(IdParameter.Value.ToString());//Convert.ToInt64(IdParameter.Value);
+							long id = long.Parse(IdParameter.Value.ToString());
 							insertResult.Value.Property("Id", id);
 						}
 						else

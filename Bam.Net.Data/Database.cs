@@ -161,6 +161,11 @@ namespace Bam.Net.Data
 			return new Query<C, T>(where, this);
 		}
 
+        public SqlStringBuilder GetSqlStringBuilder()
+        {
+            return ServiceProvider.Get<SqlStringBuilder>();
+        }
+
         public DbParameter[] GetParameters(SqlStringBuilder sqlStrinbuilder)
         {
             IParameterBuilder paramBuilder = GetService<IParameterBuilder>();
@@ -203,19 +208,213 @@ namespace Bam.Net.Data
 
         public virtual void ExecuteSql(string sqlStatement, CommandType commandType, params DbParameter[] dbParameters)
         {
-            DbProviderFactory providerFactory = ServiceProvider.Get<DbProviderFactory>();
-            DbConnection conn = GetDbConnection();
+            DbConnection conn = GetOpenDbConnection();
+            ExecuteSql(sqlStatement, commandType, dbParameters, conn);
+        }
+
+        public virtual void ExecuteSql(string sqlStatement, DbParameter[] dbParameters, DbConnection conn = null, bool releaseConnection = true)
+        {
+            ExecuteSql(sqlStatement, CommandType.Text, dbParameters, conn ?? GetOpenDbConnection(), releaseConnection);
+        }
+
+        public virtual void ExecuteSql(string sqlStatement, CommandType commandType, DbParameter[] dbParameters, DbConnection conn, bool releaseConnectin = true)
+        {
             try
             {
-                conn.Open();
-                DbCommand cmd = this.BuildCommand(sqlStatement, commandType, dbParameters, providerFactory, conn);
+                DbCommand cmd = PrepareCommand(sqlStatement, commandType, dbParameters, conn);
                 cmd.ExecuteNonQuery();
             }
             finally
             {
-                ReleaseConnection(conn);
+                if (releaseConnectin)
+                {
+                    ReleaseConnection(conn);
+                }
             }
         }
+
+        public virtual IEnumerable<T> ExecuteReader<T>(SqlStringBuilder sqlStatement) where T : class, new()
+        {
+            return ExecuteReader<T>(sqlStatement.ToString(), GetParameters(sqlStatement));
+        }
+
+        public virtual IEnumerable<T> ExecuteReader<T>(string sqlStatement, object dbParameters) where T : class, new()
+        {
+            return ExecuteReader<T>(sqlStatement, dbParameters.ToDbParameters(this).ToArray());
+        }
+
+        public virtual IEnumerable<T> ExecuteReader<T>(string sqlStatement, DbParameter[] dbParameters, out DbConnection conn) where T : class, new()
+        {
+            conn = GetOpenDbConnection();
+            return ExecuteReader<T>(sqlStatement, dbParameters, conn, false);
+        }
+        public virtual IEnumerable<T> ExecuteReader<T>(string sqlStatement, DbParameter[] dbParameters, DbConnection conn = null, bool closeConnection = true) where T : class, new()
+        {
+            return ExecuteReader<T>(sqlStatement, CommandType.Text, dbParameters, conn ?? GetOpenDbConnection(), closeConnection);
+        }
+
+        public virtual IEnumerable<T> ExecuteReader<T>(string sqlStatement, CommandType commandType, DbParameter[] dbParameters, DbConnection conn, bool closeConnection = true) where T: class, new()
+        {
+            DbDataReader reader = ExecuteReader(sqlStatement, commandType, dbParameters, conn);
+            if (reader.HasRows)
+            {
+                List<string> columnNames = GetColumnNames(reader);
+                while (reader.Read())
+                {
+                    T next = new T();
+                    columnNames.Each(new { Value = next, Reader = reader }, (ctx, cn) =>
+                    {
+                        ReflectionExtensions.Property(ctx.Value, cn, ctx.Reader[cn]);
+                    });
+                    yield return next;
+                }
+            }
+            if (closeConnection)
+            {
+                ReleaseConnection(conn);
+            }
+            yield break;
+        }
+
+        public virtual DbDataReader ExecuteReader(SqlStringBuilder sqlStatement)
+        {
+            return ExecuteReader(sqlStatement.ToString(), GetParameters(sqlStatement));
+        }
+
+        public virtual DbDataReader ExecuteReader(string sqlStatement, object dbParameters)
+        {
+            DbConnection ignore;
+            return ExecuteReader(sqlStatement, dbParameters, out ignore);
+        }
+        public virtual DbDataReader ExecuteReader(string sqlStatement, object dbParameters, out DbConnection conn)
+        {
+            return ExecuteReader(sqlStatement, dbParameters.ToDbParameters(this).ToArray(), out conn);
+        }
+
+        public virtual DbDataReader ExecuteReader(string sqlStatement, DbParameter[] dbParameters, out DbConnection conn)
+        {
+            conn = GetOpenDbConnection();
+            return ExecuteReader(sqlStatement, CommandType.Text, dbParameters, conn);
+        }
+
+        public virtual DbDataReader ExecuteReader(string sqlStatement, DbParameter[] dbParameters, DbConnection conn = null)
+        {
+            return ExecuteReader(sqlStatement, CommandType.Text, dbParameters, conn ?? GetOpenDbConnection());
+        }
+
+        public virtual DbDataReader ExecuteReader(string sqlStatement, CommandType commandType, DbParameter[] dbParameters, DbConnection conn)
+        {
+            DbCommand cmd = PrepareCommand(sqlStatement, commandType, dbParameters, conn);
+            return cmd.ExecuteReader();
+        }
+
+        // -- start datatable readers
+        public virtual DataTable GetDataTableFromReader(SqlStringBuilder sqlStatement)
+        {
+            return GetDataTableFromReader(sqlStatement.ToString(), GetParameters(sqlStatement));
+        }
+        public virtual DataTable GetDataTableFromReader(string sqlStatement, object dbParameters)
+        {
+            DbConnection ignore;
+            return GetDataTableFromReader(sqlStatement, dbParameters, out ignore);
+        }
+        public virtual DataTable GetDataTableFromReader(string sqlStatement, object dbParameters, out DbConnection conn)
+        {
+            return GetDataTableFromReader(sqlStatement, dbParameters.ToDbParameters(this).ToArray(), out conn);
+        }
+
+        public virtual DataTable GetDataTableFromReader(string sqlStatement, DbParameter[] dbParameters, out DbConnection conn)
+        {
+            conn = GetOpenDbConnection();
+            return GetDataTableFromReader(sqlStatement, CommandType.Text, dbParameters, conn, false);
+        }
+
+        public virtual DataTable GetDataTableFromReader(string sqlStatement, DbParameter[] dbParameters, DbConnection conn = null)
+        {
+            return GetDataTableFromReader(sqlStatement, CommandType.Text, dbParameters, conn ?? GetOpenDbConnection(), false);
+        }
+
+        public virtual DataTable GetDataTableFromReader(string sqlStatement, CommandType commandType, DbParameter[] dbParameters, DbConnection conn, bool closeConnection = true)
+        {
+            DbDataReader reader = ExecuteReader(sqlStatement, commandType, dbParameters, conn);
+            DataTable table = new DataTable(8.RandomLetters());
+            if (reader.HasRows)
+            {
+                table = table ?? new DataTable(8.RandomLetters());
+                List<string> columnNames = GetColumnNames(reader);
+                columnNames.Each(new { Table = table }, (ctx, cn) =>
+                {
+                    ctx.Table.Columns.Add(new DataColumn(cn));
+                });
+                while (reader.Read())
+                {
+                    DataRow row = table.NewRow();
+                    columnNames.Each(new { Row = row, Reader = reader }, (ctx, cn) =>
+                    {
+                        ctx.Row[cn] = ctx.Reader[cn];
+                    });
+                    table.Rows.Add(row);
+                }
+            }
+            if (closeConnection)
+            {
+                ReleaseConnection(conn);
+            }
+            return table;
+        }
+
+        public virtual IEnumerable<DataRow> GetDataRowsFromReader(SqlStringBuilder sqlStatement)
+        {
+            DbConnection ignore;
+            return GetDataRowsFromReader(sqlStatement.ToString(), GetParameters(sqlStatement), out ignore);
+        }
+
+        public virtual IEnumerable<DataRow> GetDataRowsFromReader(SqlStringBuilder sqlStatement, out DbConnection conn)
+        {
+            return GetDataRowsFromReader(sqlStatement.ToString(), GetParameters(sqlStatement), out conn);
+        }
+
+        public virtual IEnumerable<DataRow> GetDataRowsFromReader(string sqlStatement, DbParameter[] dbParameters, out DbConnection conn)
+        {
+            conn = GetOpenDbConnection();
+            return GetDataRowsFromReader(sqlStatement, dbParameters, conn);
+        }
+
+        public virtual IEnumerable<DataRow> GetDataRowsFromReader(string sqlStatement, DbParameter[] dbParameters, DbConnection conn)
+        {
+            return GetDataRowsFromReader(sqlStatement, CommandType.Text, dbParameters, conn);
+        }
+
+        public virtual IEnumerable<DataRow> GetDataRowsFromReader(string sqlStatement, CommandType commandType, DbParameter[] dbParameters, DbConnection conn)
+        {
+            DbDataReader reader = ExecuteReader(sqlStatement, commandType, dbParameters, conn);
+            return GetDataRowsFromReader(reader);
+        }
+
+        protected virtual IEnumerable<DataRow> GetDataRowsFromReader(DbDataReader reader, DataTable table = null)
+        {
+            if (reader.HasRows)
+            {
+                table = table ?? new DataTable(8.RandomLetters());
+                List<string> columnNames = GetColumnNames(reader);
+                columnNames.Each(new { Table = table }, (ctx, cn) =>
+                {
+                    ctx.Table.Columns.Add(new DataColumn(cn));
+                });
+                while (reader.Read())
+                {
+                    DataRow row = table.NewRow();                    
+                    columnNames.Each(new { Row = row, Reader = reader }, (ctx, cn) =>
+                    {
+                        ctx.Row[cn] = ctx.Reader[cn];
+                    });
+                    table.Rows.Add(row);
+                    yield return row;
+                }
+            }
+            yield break;
+        }
+        // -- end datatable readers
 
         public virtual T QuerySingle<T>(SqlStringBuilder sql)
         {
@@ -383,13 +582,12 @@ namespace Bam.Net.Data
 		public virtual long? GetLongValue(string columnName, DataRow row)
 		{
 			object value = row[columnName];
-			long? id = null;
-			if (value is long || value is long?)
+			if (value != null && value != DBNull.Value)
 			{
-				id = (long)value;
+                return new long?(Convert.ToInt64(value));
 			}
 
-			return id;
+            return new long?();
 		}
 
 		public virtual long? GetIdValue<T>(DataRow row) where T: Dao, new()
@@ -462,6 +660,18 @@ namespace Bam.Net.Data
 			return new AssignValue(keyColumn, value, columnNameformatter);
 		}
 
+        protected internal virtual DbCommand PrepareCommand(string sqlStatement, CommandType commandType, DbParameter[] dbParameters, DbConnection conn)
+        {
+            if (conn.State == ConnectionState.Closed)
+            {
+                conn.Open();
+            }
+
+            DbProviderFactory providerFactory = ServiceProvider.Get<DbProviderFactory>();
+            DbCommand cmd = BuildCommand(sqlStatement, commandType, dbParameters, providerFactory, conn);
+            return cmd;
+        }
+
         protected internal virtual DbCommand BuildCommand(string sqlStatement, CommandType commandType, DbParameter[] dbParameters, DbProviderFactory providerFactory, DbConnection conn, DbTransaction tx  =null)
         {
             DbCommand command = providerFactory.CreateCommand();
@@ -522,6 +732,13 @@ namespace Bam.Net.Data
 				return base.GetHashCode();
 			}
 		}
+
+        public DbConnection GetOpenDbConnection()
+        {
+            DbConnection conn = GetDbConnection();
+            conn.Open();
+            return conn;
+        }
 
         public DbConnection GetDbConnection()
         {
@@ -603,7 +820,7 @@ namespace Bam.Net.Data
 		}
 
         object connectionLock = new object();
-        protected void ReleaseConnection(DbConnection conn)
+        public void ReleaseConnection(DbConnection conn)
         {
             try
             {
@@ -663,5 +880,16 @@ namespace Bam.Net.Data
 			}
 			return conn;
 		}
+
+        private static List<string> GetColumnNames(DbDataReader reader)
+        {
+            List<string> columnNames = new List<string>();
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                columnNames.Add(reader.GetName(i));
+            }
+
+            return columnNames;
+        }
     }
 }

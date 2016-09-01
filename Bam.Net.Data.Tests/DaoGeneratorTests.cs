@@ -5,25 +5,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-//using Naizari.Extensions;
 using System.Reflection;
 using System.Data;
 using System.Data.Common;
 using System.Data.Sql;
 using System.Data.SqlClient;
-//using Naizari.Testing;
 using System.IO;
-//using Naizari.Data;
-//using Naizari.Helpers;
 using Bam.Net.Data;
 using Bam.Net;
 using Bam.Net.Testing;
 using System.Configuration;
 using MySql.Data.MySqlClient;
 using Bam.Net.Incubation;
-//using System.Web.Razor.Generator;
 using System.Data.OleDb;
-//using System.Web.Razor;
 using Bam.Net.CommandLine;
 using Bam.Net.Data.Schema;
 using Microsoft.CSharp;
@@ -51,7 +45,6 @@ namespace Bam.Net.Data.Tests
             protected override void WriteClassToStream(string result, Stream s)
             {
                 Called = true;
-                //base.WriteResult(result, s);
             }
 
             public void TestWriteResult(string result, Stream s)

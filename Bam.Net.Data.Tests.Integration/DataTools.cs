@@ -20,6 +20,7 @@ using Bam.Net.Data.Npgsql;
 using Bam.Net.Testing.Integration;
 using Bam.Net.Data.Schema;
 using System.Configuration;
+using Bam.Net.Data.OleDb;
 
 namespace Bam.Net.Data.Tests.Integration
 {
@@ -46,6 +47,10 @@ namespace Bam.Net.Data.Tests.Integration
             SQLiteDatabase sqliteDatabase = new SQLiteDatabase(".\\Chumsql2", databaseName);
             initializer(sqliteDatabase);
             testDatabases.Add(sqliteDatabase);
+
+            OleDbDatabase oleDatabase = new OleDbDatabase("Microsoft.ACE.OLEDB.12.0", 4.RandomLetters());
+            initializer(oleDatabase);
+            testDatabases.Add(oleDatabase);
 
             OracleDatabase oracleDatabase = new OracleDatabase("chumsql2", databaseName, new OracleCredentials { UserId = "C##ORACLEUSER", Password = "oracleP455w0rd" });
             initializer(oracleDatabase);

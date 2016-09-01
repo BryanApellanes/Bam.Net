@@ -351,6 +351,10 @@ namespace Bam.Net.Data
             return this;
         }
 
+        public virtual SqlStringBuilder Where(string columnName, object value)
+        {
+            return Where(new AssignValue(columnName, value, ColumnNameFormatter));
+        }
 
         public virtual SqlStringBuilder Where(AssignValue filter)
         {

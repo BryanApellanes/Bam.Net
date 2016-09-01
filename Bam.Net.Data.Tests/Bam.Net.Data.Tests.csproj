@@ -109,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsoleActions.cs" />
+    <Compile Include="OleDbTests.cs" />
     <Compile Include="RazorEngineDaoGeneratorTests.cs" />
     <Compile Include="DaoGeneratorTests.cs" />
     <Compile Include="DatabaseContainerTests.cs" />
@@ -131,6 +132,10 @@
     <ProjectReference Include="..\Bam.Net.Data.MSSql\Bam.Net.Data.MsSql.csproj">
       <Project>{F373EAF9-B69C-4322-9659-A53A8FB7D43F}</Project>
       <Name>Bam.Net.Data.MsSql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.OleDb\Bam.Net.Data.OleDb.csproj">
+      <Project>{a4699d0a-d312-416d-93f0-c487a24737a1}</Project>
+      <Name>Bam.Net.Data.OleDb</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Data.Oracle\Bam.Net.Data.Oracle.csproj">
       <Project>{296d4f9e-09f3-48c1-9968-d161c9666756}</Project>

@@ -31,7 +31,8 @@ namespace Bam.Net
     public static class Extensions
     {
         static Dictionary<HashAlgorithms, Func<HashAlgorithm>> _hashAlgorithms;
-        static Dictionary<ExtractExistingFileAction, Action<ZipArchiveEntry, string>> _extractActions;
+        static Dictionary<ExistingFileAction, Action<ZipArchiveEntry, string>> _extractActions;
+        static Dictionary<ExistingFileAction, Action<Stream, FileInfo>> _writeResourceActions;
         static Extensions()
         {
             _hashAlgorithms = new Dictionary<HashAlgorithms, Func<HashAlgorithm>>();
@@ -42,10 +43,15 @@ namespace Bam.Net
             _hashAlgorithms.Add(HashAlgorithms.SHA384, () => SHA384.Create());
             _hashAlgorithms.Add(HashAlgorithms.SHA512, () => SHA512.Create());
 
-            _extractActions = new Dictionary<ExtractExistingFileAction, Action<ZipArchiveEntry, string>>();
-            _extractActions.Add(ExtractExistingFileAction.Throw, (zip, dest) => Args.Throw<InvalidOperationException>("File exists, can't extract {0}", dest));
-            _extractActions.Add(ExtractExistingFileAction.OverwriteSilently, (zip, dest) => zip.ExtractToFile(dest, true));
-            _extractActions.Add(ExtractExistingFileAction.DoNotOverwrite, (zip, dest) => Logging.Log.Warn("File exists, can't extract {0}", dest));
+            _extractActions = new Dictionary<ExistingFileAction, Action<ZipArchiveEntry, string>>();
+            _extractActions.Add(ExistingFileAction.Throw, (zip, dest) => Args.Throw<InvalidOperationException>("File exists, can't extract {0}", dest));
+            _extractActions.Add(ExistingFileAction.OverwriteSilently, (zip, dest) => zip.ExtractToFile(dest, true));
+            _extractActions.Add(ExistingFileAction.DoNotOverwrite, (zip, dest) => Logging.Log.Warn("File exists, can't extract {0}", dest));
+
+            _writeResourceActions = new Dictionary<ExistingFileAction, Action<Stream, FileInfo>>();
+            _writeResourceActions.Add(ExistingFileAction.Throw, (resource, output) => Args.Throw<InvalidOperationException>("File exists, can't write resource to {0}", output.FullName));
+            _writeResourceActions.Add(ExistingFileAction.OverwriteSilently, (resource, output) => resource.CopyTo(output.Create()));
+            _writeResourceActions.Add(ExistingFileAction.DoNotOverwrite, (resource, output) => Logging.Log.Warn("File exists, can't write resource to {0}", output.FullName));
         }
         
         /// <summary>
@@ -317,17 +323,61 @@ namespace Bam.Net
             return data;
         }
 
-        public static bool UnzipResource(this Assembly assembly, Type siblingOfResource, string resourceName, string extractTo, ExtractExistingFileAction existingFileAction = ExtractExistingFileAction.DoNotOverwrite)
+        public static bool WriteResource(this Assembly assembly, Type siblingOfResource, string resourceName, FileInfo writeTo, ExistingFileAction existingFileAction = ExistingFileAction.DoNotOverwrite)
+        {
+            return WriteResource(assembly, $"{siblingOfResource.Namespace}.{resourceName}", writeTo, existingFileAction);
+        }
+
+        public static bool WriteResource(this Assembly assembly, Type siblingOfResource, string resourceName, string writeTo, ExistingFileAction existingFileAction = ExistingFileAction.DoNotOverwrite)
+        {
+            return WriteResource(assembly, $"{siblingOfResource.Namespace}.{resourceName}", writeTo, existingFileAction);
+        }
+
+        public static bool WriteResource(this Assembly assembly, string resourceName, string writeTo, ExistingFileAction existingFileAction = ExistingFileAction.DoNotOverwrite)
+        {
+            return WriteResource(assembly, resourceName, new FileInfo(writeTo), existingFileAction);
+        }
+
+        public static bool WriteResource(this Assembly assembly, string resourceName, FileInfo writeTo, ExistingFileAction existingFileAction = ExistingFileAction.DoNotOverwrite)
+        {
+            string[] resourceNames = assembly.GetManifestResourceNames();
+            bool found = false;
+            resourceNames.Each(rn =>
+            {
+                bool thisIsTheOne = Path.GetFileName(rn).Equals(resourceName);
+                if (thisIsTheOne)
+                {
+                    found = true;                    
+                    using(Stream resource = assembly.GetManifestResourceStream(rn))
+                    {
+                        if (File.Exists(writeTo.FullName))
+                        {
+                            _writeResourceActions[existingFileAction](resource, writeTo);
+                        }
+                        else
+                        {
+                            using(Stream writeStream = writeTo.Create())
+                            {
+                                resource.CopyTo(writeStream);
+                            }
+                        }
+                    }
+                }
+            });
+
+            return found;
+        }
+        public static bool UnzipResource(this Assembly assembly, Type siblingOfResource, string resourceName, string extractTo, ExistingFileAction existingFileAction = ExistingFileAction.DoNotOverwrite)
         {
             return UnzipResource(assembly, Path.Combine(siblingOfResource.Namespace, resourceName).Replace("\\", "."), extractTo, existingFileAction);
         }
 
-        public static bool UnzipResource(this Assembly assembly, string resourceName, string extractTo, ExtractExistingFileAction existingFileAction = ExtractExistingFileAction.DoNotOverwrite)
+        public static bool UnzipResource(this Assembly assembly, string resourceName, string extractTo, ExistingFileAction existingFileAction = ExistingFileAction.DoNotOverwrite)
         {
             return UnzipResource(assembly, resourceName, new DirectoryInfo(extractTo));
         }
 
-        public static bool UnzipResource(this Assembly assembly, string resourceName, DirectoryInfo extractTo, ExtractExistingFileAction existingFileAction = ExtractExistingFileAction.DoNotOverwrite)
+        public static bool UnzipResource(this Assembly assembly, string resourceName, DirectoryInfo extractTo, ExistingFileAction existingFileAction = ExistingFileAction.DoNotOverwrite)
         {
             string[] resourceNames = assembly.GetManifestResourceNames();
             bool found = false;
@@ -345,8 +395,8 @@ namespace Bam.Net
 
             return found;
         }
-
-        public static void UnzipStream(this Stream zipStream, DirectoryInfo extractTo, ExtractExistingFileAction existingFileAction)
+        
+        public static void UnzipStream(this Stream zipStream, DirectoryInfo extractTo, ExistingFileAction existingFileAction)
         {
             ZipArchive zipArchive = new ZipArchive(zipStream);
             zipArchive.Entries.Each(zipFile =>
@@ -372,7 +422,7 @@ namespace Bam.Net
             new FileInfo(zipFilePath).UnzipTo(new DirectoryInfo(extractToDirectory));
         }
 
-        public static void UnzipTo(this FileInfo file, DirectoryInfo extractTo, ExtractExistingFileAction existingFileAction = ExtractExistingFileAction.DoNotOverwrite)
+        public static void UnzipTo(this FileInfo file, DirectoryInfo extractTo, ExistingFileAction existingFileAction = ExistingFileAction.DoNotOverwrite)
         {
             using (FileStream fs = new FileStream(file.FullName, FileMode.Open))
             {
@@ -1174,11 +1224,21 @@ namespace Bam.Net
             return toInit;
         }
 
+        /// <summary>
+        /// Serialize the current object to json in the specified path
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="path"></param>
         public static void ToJsonFile(this object value, string path)
         {
             ToJsonFile(value, new FileInfo(path));
         }
 
+        /// <summary>
+        /// Serialize the current object to json to the specified file
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="file"></param>
         public static void ToJsonFile(this object value, FileInfo file)
         {
             using (StreamWriter sw = new StreamWriter(file.FullName))
@@ -1187,6 +1247,12 @@ namespace Bam.Net
             }
         }
 
+        /// <summary>
+        /// Return a Stream containing the current
+        /// object as json
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static Stream ToJsonStream(this object value)
         {
             MemoryStream stream = new MemoryStream();

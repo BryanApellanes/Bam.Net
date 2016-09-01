@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 
-namespace Bam.Net.Analytics
+namespace Bam.Net
 {
     public class Timed
     {

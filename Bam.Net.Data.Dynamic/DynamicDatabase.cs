@@ -15,7 +15,6 @@ namespace Bam.Net.Data.Dynamic
     using Bam.Net.Data;
     using Bam.Net.Data.Schema;
     using Bam.Net.Data.MsSql;
-    //using Bam.Net.Data.Repositories;
     using Bam.Net.ExceptionHandling;
     using System.Data.Common;
     using System.Reflection;
@@ -25,7 +24,6 @@ namespace Bam.Net.Data.Dynamic
     /// A dynamic crud interface to a database
     /// </summary>
     /// <typeparam name="Db"></typeparam>
-    //public class DynamicDatabase<Db>: IArbitrateExceptions where Db : Database, new()
     public class DynamicDatabase: IArbitrateExceptions
     {  
         public DynamicDatabase(){}

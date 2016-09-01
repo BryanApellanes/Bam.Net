@@ -63,7 +63,7 @@ namespace Bam.Net.Data
 		protected override void WriteForeignKeys(Type daoType)
 		{
 			Args.ThrowIfNull(daoType, "daoType");
-			string datasetName = Dao.ConnectionName(daoType);//(daoType.GetConstructor(Type.EmptyTypes).Invoke(null) as Dao).ConnectionName();
+			string datasetName = Dao.ConnectionName(daoType);
 			foreach (Type type in daoType.Assembly.GetTypes())
 			{
 				TableAttribute tableAttr = null;

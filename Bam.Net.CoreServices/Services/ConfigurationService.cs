@@ -6,7 +6,7 @@ using System.Linq;
 using Bam.Net.Data;
 using ServiceProxySecure = Bam.Net.ServiceProxy.Secure;
 
-namespace Bam.Net.CoreServices.Proxyables
+namespace Bam.Net.CoreServices.Services
 {
     [Proxy("config")]
     [Encrypt]

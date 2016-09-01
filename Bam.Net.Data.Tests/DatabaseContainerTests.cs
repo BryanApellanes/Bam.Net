@@ -5,16 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-//using Naizari.Extensions;
 using System.Reflection;
 using System.Data;
 using System.Data.Common;
 using System.Data.Sql;
 using System.Data.SqlClient;
-//using Naizari.Testing;
 using System.IO;
-//using Naizari.Data;
-//using Naizari.Helpers;
 using Bam.Net.Data;
 using Bam.Net;
 using Bam.Net.Testing;
@@ -32,7 +28,6 @@ namespace Bam.Net.Data.Tests
         public override IQueryFilter GetUniqueFilter()
         {
             return null;
-            //throw new NotImplementedException();
         }
 
         public override void Delete(Database db = null)

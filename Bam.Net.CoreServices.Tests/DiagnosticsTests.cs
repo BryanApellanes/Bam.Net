@@ -12,7 +12,7 @@ using Bam.Net.Data.MsSql;
 using Bam.Net.Data.MySql;
 using Bam.Net.Data.Oracle;
 using Bam.Net.Yaml;
-using Bam.Net.CoreServices.Proxyables;
+using Bam.Net.CoreServices.Services;
 
 namespace Bam.Net.CoreServices.Tests
 {

@@ -8,7 +8,7 @@ using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.UserAccounts;
 using Bam.Net.UserAccounts.Data;
 
-namespace Bam.Net.CoreServices.Proxyables
+namespace Bam.Net.CoreServices.Services
 {
     [Encrypt]
     [Proxy("userAccounts")]

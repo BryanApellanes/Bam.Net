@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Data.Schema
 {
+    /// <summary>
+    /// A class used to de-sillyfy database naming conventions
+    /// </summary>
     public class SchemaNameMap
     {
         public SchemaNameMap()
