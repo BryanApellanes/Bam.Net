@@ -46,16 +46,16 @@ namespace Bam.Net.Data
             return returnValues.ToArray();
         }
 
-        public static IEnumerable<dynamic> Query(string sqlQuery, Database db, object dynamicDbParameters, string typeName = null)
+        public static IEnumerable<dynamic> Query(this string sqlQuery, Database db, object dynamicDbParameters, string typeName = null)
         {
             return db.Query(sqlQuery, dynamicDbParameters);
         }
 
-        public static IEnumerable<dynamic> Query(string sqlQuery, Database db, Dictionary<string, object> dictDbParameters, string typeName = null)
+        public static IEnumerable<dynamic> Query(this string sqlQuery, Database db, Dictionary<string, object> dictDbParameters, string typeName = null)
         {
             return db.Query(sqlQuery, dictDbParameters);
         }
-        public static IEnumerable<dynamic> Query(string sqlQuery, Database db, DbParameter[] dbParameters, string typeName = null)
+        public static IEnumerable<dynamic> Query(this string sqlQuery, Database db, DbParameter[] dbParameters, string typeName = null)
         {
             return db.Query(sqlQuery, dbParameters, typeName);
         }
@@ -139,6 +139,48 @@ namespace Bam.Net.Data
 
 			return table.Rows.Add(rowValues.ToArray());
 		}
+
+        public static SerializableQuery ToSerializable(this SqlStringBuilder sql, Database db)
+        {
+            return new SerializableQuery(sql, db);
+        }
+
+        public static bool EqualTo(this SqlStringBuilder left, SqlStringBuilder right, Database db, HashAlgorithms hashAlgorithm = HashAlgorithms.MD5)
+        {
+            string leftMd5 = left.ToInfoString(db).Hash(hashAlgorithm);
+            string rightMd5 = right.ToInfoString(db).Hash(hashAlgorithm);
+            return leftMd5.Equals(rightMd5);
+        }
+
+        public static string Sha256(this SqlStringBuilder sql, Database db)
+        {
+            return sql.Hash(db, HashAlgorithms.SHA256);
+        }
+
+        public static string Sha1(this SqlStringBuilder sql, Database db)
+        {
+            return sql.Hash(db, HashAlgorithms.SHA1);
+        }
+
+        public static string Md5(this SqlStringBuilder sql, Database db)
+        {
+            return sql.Hash(db, HashAlgorithms.MD5);
+        }
+
+        public static string Hash(this SqlStringBuilder sql, Database db, HashAlgorithms hashAlgorithm = HashAlgorithms.MD5)
+        {
+            return sql.ToInfoString(db).Hash(hashAlgorithm);
+        }
+
+        public static string ToInfoString(this SqlStringBuilder sql, Database db)
+        {
+            StringBuilder sqlString = new StringBuilder(sql);
+            DbParameter[] dbParams = db.GetParameters(sql);
+            sqlString.AppendLine();
+            sqlString.AppendLine(dbParams.ToInfoString());
+
+            return sqlString.ToString();
+        }
 
         public static string Sha1(this DbParameter[] dbParameters, Encoding encoding = null)
         {

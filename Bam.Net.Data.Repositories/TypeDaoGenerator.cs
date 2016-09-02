@@ -58,11 +58,11 @@ namespace Bam.Net.Data.Repositories
             _typeSchemaGenerator = typeSchemaGenerator;
         }
 
-        public bool AddAuditFields { get; set; }
+        //public bool AddAuditFields { get; set; }
 
         public bool IncludeModifiedBy { get; set; }
 
-        public bool AddIdField { get; set; }
+        public bool CheckIdField { get; set; }
 
         string _namespace;
         /// <summary>
@@ -141,7 +141,7 @@ namespace Bam.Net.Data.Repositories
         {
             if (type.GetProperty("Id") == null &&
                 !type.HasCustomAttributeOfType<KeyAttribute>() &&
-                !AddIdField)
+                CheckIdField)
             {
                 throw new NoIdPropertyException(type);
             }

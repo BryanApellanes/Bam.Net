@@ -86,7 +86,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(GroupPermission));
+				query.table = Dao.TableName(typeof(Bam.Net.UserAccounts.Data.GroupPermission));
 				object value = Bam.Net.UserAccounts.Data.GroupPermission.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(GroupPermission));
+				query.table = Dao.TableName(typeof(Bam.Net.UserAccounts.Data.GroupPermission));
 				object[] value = Bam.Net.UserAccounts.Data.GroupPermission.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

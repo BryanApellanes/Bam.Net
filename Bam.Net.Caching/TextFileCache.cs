@@ -14,15 +14,15 @@ namespace Bam.Net.Caching
 	/// <summary>
 	/// A caching mechanism for text files. 
 	/// </summary>
-	public class TextFileCache: ConcurrentCache
+	public class TextFileCache: Cache
 	{
 		public TextFileCache() { this.FileExtension = ".txt"; }
 
 		public string FileExtension { get; protected set; }
 		public static void RegisterWithCacheManager()
 		{
-			ConcurrentCacheManager.Default.CacheFor<FileInfo>(new TextFileCache());
-		}
+			CacheManager.Default.CacheFor<FileInfo>(new TextFileCache());
+		}        
 		public override CacheItem Add(object value)
 		{
 			Args.ThrowIfNull(value, "value");
@@ -40,7 +40,7 @@ namespace Bam.Net.Caching
 					throw new NotSupportedException("The specified object of type ({0}) is not supported by the {1}"._Format(value.GetType().Name, typeof(TextFileCache).Name));
 				}
 			}
-			return base.Add(toAdd);
+			return base.Add((object)toAdd);
 		}
 
 		public void AddFile(string path)
@@ -51,7 +51,7 @@ namespace Bam.Net.Caching
 		{
 			if (file.Extension.ToLowerInvariant().Equals(FileExtension))
 			{
-				return Add(file);
+				return Add((object)file);
 			}
 			return null;
 		}

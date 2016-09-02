@@ -16,6 +16,16 @@ namespace Bam.Net.Messaging.Data
 		public MessageQuery(WhereDelegate<MessageColumns> where, OrderBy<MessageColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public MessageQuery(Func<MessageColumns, QueryFilter<MessageColumns>> where, OrderBy<MessageColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public MessageQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static MessageQuery Where(WhereDelegate<MessageColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static MessageQuery Where(WhereDelegate<MessageColumns> where, OrderBy<MessageColumns> orderBy = null, Database db = null)
+        {
+            return new MessageQuery(where, orderBy, db);
+        }
 
 		public MessageCollection Execute()
 		{

@@ -16,6 +16,16 @@ namespace Bam.Net.UserAccounts.Data
 		public TreeNodeQuery(WhereDelegate<TreeNodeColumns> where, OrderBy<TreeNodeColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public TreeNodeQuery(Func<TreeNodeColumns, QueryFilter<TreeNodeColumns>> where, OrderBy<TreeNodeColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public TreeNodeQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static TreeNodeQuery Where(WhereDelegate<TreeNodeColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static TreeNodeQuery Where(WhereDelegate<TreeNodeColumns> where, OrderBy<TreeNodeColumns> orderBy = null, Database db = null)
+        {
+            return new TreeNodeQuery(where, orderBy, db);
+        }
 
 		public TreeNodeCollection Execute()
 		{

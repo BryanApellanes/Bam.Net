@@ -3,7 +3,9 @@
 */
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,5 +32,11 @@ namespace Bam.Net.Web
 
         public static string FFAndMob = "Mozilla/5.0 (Android; Mobile; rv:13.0) Gecko/13.0 Firefox/13.0";
         public static string FFAndTab = "Mozilla/5.0 (Android; Tablet; rv:13.0) Gecko/13.0 Firefox/13.0";
+
+        public static string ServiceProxyClient()
+        {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            return $"Bam.Net/{FileVersionInfo.GetVersionInfo(assembly.Location).FileVersion} (Windows; process client)";
+        }
     }
 }

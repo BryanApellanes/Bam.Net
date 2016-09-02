@@ -47,6 +47,7 @@ namespace Bam.Net.Logging.Data
 			this.SetChildren();
 		}
 
+		[Bam.Net.Exclude]
 		public static implicit operator SourceName(DataRow data)
 		{
 			return new SourceName(data);
@@ -105,7 +106,7 @@ namespace Bam.Net.Logging.Data
 
 				
 
-	[Exclude]	
+	[Bam.Net.Exclude]	
 	public EventCollection EventsBySourceNameId
 	{
 		get
@@ -134,7 +135,8 @@ namespace Bam.Net.Logging.Data
 		/// Gets a query filter that should uniquely identify
 		/// the current instance.  The default implementation
 		/// compares the Id/key field to the current instance's.
-		/// </summary> 
+		/// </summary>
+		[Bam.Net.Exclude] 
 		public override IQueryFilter GetUniqueFilter()
 		{
 			if(UniqueFilterProvider != null)
@@ -164,12 +166,13 @@ namespace Bam.Net.Logging.Data
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<SourceName>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				SourceNameColumns columns = new SourceNameColumns();
-				var orderBy = Order.By<SourceNameColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<SourceNameColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -181,19 +184,21 @@ namespace Bam.Net.Logging.Data
 					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
 				}
 			});			
-		}	 
-
+		}
+			 
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<SourceName>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
 
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<SourceNameColumns> where, Action<IEnumerable<SourceName>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				SourceNameColumns columns = new SourceNameColumns();
-				var orderBy = Order.By<SourceNameColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<SourceNameColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -227,11 +232,13 @@ namespace Bam.Net.Logging.Data
 			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
+		[Bam.Net.Exclude]
 		public static SourceNameCollection Query(QueryFilter filter, Database database = null)
 		{
 			return Where(filter, database);
 		}
-				
+
+		[Bam.Net.Exclude]		
 		public static SourceNameCollection Where(QueryFilter filter, Database database = null)
 		{
 			WhereDelegate<SourceNameColumns> whereDelegate = (c) => filter;
@@ -246,6 +253,7 @@ namespace Bam.Net.Logging.Data
 		/// between SourceNameColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static SourceNameCollection Where(Func<SourceNameColumns, QueryFilter<SourceNameColumns>> where, OrderBy<SourceNameColumns> orderBy = null, Database database = null)
 		{
 			database = database ?? Db.For<SourceName>();
@@ -260,6 +268,7 @@ namespace Bam.Net.Logging.Data
 		/// between SourceNameColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static SourceNameCollection Where(WhereDelegate<SourceNameColumns> where, Database database = null)
 		{		
 			database = database ?? Db.For<SourceName>();
@@ -278,6 +287,7 @@ namespace Bam.Net.Logging.Data
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static SourceNameCollection Where(WhereDelegate<SourceNameColumns> where, OrderBy<SourceNameColumns> orderBy = null, Database database = null)
 		{		
 			database = database ?? Db.For<SourceName>();
@@ -304,6 +314,7 @@ namespace Bam.Net.Logging.Data
 		/// one will be created; success will depend on the nullability
 		/// of the specified columns.
 		/// </summary>
+		[Bam.Net.Exclude]
 		public static SourceName GetOneWhere(QueryFilter where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -322,6 +333,7 @@ namespace Bam.Net.Logging.Data
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static SourceName OneWhere(QueryFilter where, Database database = null)
 		{
 			WhereDelegate<SourceNameColumns> whereDelegate = (c) => where;
@@ -336,6 +348,7 @@ namespace Bam.Net.Logging.Data
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static SourceName GetOneWhere(WhereDelegate<SourceNameColumns> where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -360,6 +373,7 @@ namespace Bam.Net.Logging.Data
 		/// between SourceNameColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static SourceName OneWhere(WhereDelegate<SourceNameColumns> where, Database database = null)
 		{
 			var result = Top(1, where, database);
@@ -389,6 +403,7 @@ namespace Bam.Net.Logging.Data
 		/// between SourceNameColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static SourceName FirstOneWhere(WhereDelegate<SourceNameColumns> where, Database database = null)
 		{
 			var results = Top(1, where, database);
@@ -411,6 +426,7 @@ namespace Bam.Net.Logging.Data
 		/// between SourceNameColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static SourceName FirstOneWhere(WhereDelegate<SourceNameColumns> where, OrderBy<SourceNameColumns> orderBy, Database database = null)
 		{
 			var results = Top(1, where, orderBy, database);
@@ -432,6 +448,7 @@ namespace Bam.Net.Logging.Data
 		/// between SourceNameColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static SourceName FirstOneWhere(QueryFilter where, OrderBy<SourceNameColumns> orderBy = null, Database database = null)
 		{
 			WhereDelegate<SourceNameColumns> whereDelegate = (c) => where;
@@ -460,6 +477,7 @@ namespace Bam.Net.Logging.Data
 		/// between SourceNameColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static SourceNameCollection Top(int count, WhereDelegate<SourceNameColumns> where, Database database = null)
 		{
 			return Top(count, where, null, database);
@@ -482,6 +500,7 @@ namespace Bam.Net.Logging.Data
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static SourceNameCollection Top(int count, WhereDelegate<SourceNameColumns> where, OrderBy<SourceNameColumns> orderBy, Database database = null)
 		{
 			SourceNameColumns c = new SourceNameColumns();
@@ -503,6 +522,7 @@ namespace Bam.Net.Logging.Data
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static SourceNameCollection Top(int count, QueryFilter where, Database database)
 		{
 			return Top(count, where, null, database);
@@ -524,6 +544,7 @@ namespace Bam.Net.Logging.Data
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static SourceNameCollection Top(int count, QueryFilter where, OrderBy<SourceNameColumns> orderBy = null, Database database = null)
 		{
 			Database db = database ?? Db.For<SourceName>();
@@ -591,6 +612,7 @@ namespace Bam.Net.Logging.Data
 		/// between SourceNameColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<SourceNameColumns> where, Database database = null)
 		{
 			SourceNameColumns c = new SourceNameColumns();
@@ -603,6 +625,16 @@ namespace Bam.Net.Logging.Data
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
 		}
+		 
+		public static long Count(QiQuery where, Database database = null)
+		{
+		    Database db = database ?? Db.For<SourceName>();
+			QuerySet query = GetQuerySet(db);	 
+			query.Count<SourceName>();
+			query.Where(where);	  
+			query.Execute(db);
+			return query.Results.As<CountResult>(0).Value;
+		} 		
 
 		private static SourceName CreateFromFilter(IQueryFilter filter, Database database = null)
 		{

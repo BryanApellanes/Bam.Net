@@ -16,6 +16,16 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		public BuildResultQuery(WhereDelegate<BuildResultColumns> where, OrderBy<BuildResultColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public BuildResultQuery(Func<BuildResultColumns, QueryFilter<BuildResultColumns>> where, OrderBy<BuildResultColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public BuildResultQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static BuildResultQuery Where(WhereDelegate<BuildResultColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static BuildResultQuery Where(WhereDelegate<BuildResultColumns> where, OrderBy<BuildResultColumns> orderBy = null, Database db = null)
+        {
+            return new BuildResultQuery(where, orderBy, db);
+        }
 
 		public BuildResultCollection Execute()
 		{

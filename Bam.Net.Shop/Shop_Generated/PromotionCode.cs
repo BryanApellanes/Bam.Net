@@ -47,6 +47,7 @@ namespace Bam.Net.Shop
 			this.SetChildren();
 		}
 
+		[Bam.Net.Exclude]
 		public static implicit operator PromotionCode(DataRow data)
 		{
 			return new PromotionCode(data);
@@ -144,7 +145,8 @@ namespace Bam.Net.Shop
 		/// Gets a query filter that should uniquely identify
 		/// the current instance.  The default implementation
 		/// compares the Id/key field to the current instance's.
-		/// </summary> 
+		/// </summary>
+		[Bam.Net.Exclude] 
 		public override IQueryFilter GetUniqueFilter()
 		{
 			if(UniqueFilterProvider != null)
@@ -174,12 +176,13 @@ namespace Bam.Net.Shop
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<PromotionCode>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				PromotionCodeColumns columns = new PromotionCodeColumns();
-				var orderBy = Order.By<PromotionCodeColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<PromotionCodeColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -191,19 +194,21 @@ namespace Bam.Net.Shop
 					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
 				}
 			});			
-		}	 
-
+		}
+			 
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<PromotionCode>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
 
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<PromotionCodeColumns> where, Action<IEnumerable<PromotionCode>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				PromotionCodeColumns columns = new PromotionCodeColumns();
-				var orderBy = Order.By<PromotionCodeColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<PromotionCodeColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -237,11 +242,13 @@ namespace Bam.Net.Shop
 			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
+		[Bam.Net.Exclude]
 		public static PromotionCodeCollection Query(QueryFilter filter, Database database = null)
 		{
 			return Where(filter, database);
 		}
-				
+
+		[Bam.Net.Exclude]		
 		public static PromotionCodeCollection Where(QueryFilter filter, Database database = null)
 		{
 			WhereDelegate<PromotionCodeColumns> whereDelegate = (c) => filter;
@@ -256,6 +263,7 @@ namespace Bam.Net.Shop
 		/// between PromotionCodeColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static PromotionCodeCollection Where(Func<PromotionCodeColumns, QueryFilter<PromotionCodeColumns>> where, OrderBy<PromotionCodeColumns> orderBy = null, Database database = null)
 		{
 			database = database ?? Db.For<PromotionCode>();
@@ -270,6 +278,7 @@ namespace Bam.Net.Shop
 		/// between PromotionCodeColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static PromotionCodeCollection Where(WhereDelegate<PromotionCodeColumns> where, Database database = null)
 		{		
 			database = database ?? Db.For<PromotionCode>();
@@ -288,6 +297,7 @@ namespace Bam.Net.Shop
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static PromotionCodeCollection Where(WhereDelegate<PromotionCodeColumns> where, OrderBy<PromotionCodeColumns> orderBy = null, Database database = null)
 		{		
 			database = database ?? Db.For<PromotionCode>();
@@ -314,6 +324,7 @@ namespace Bam.Net.Shop
 		/// one will be created; success will depend on the nullability
 		/// of the specified columns.
 		/// </summary>
+		[Bam.Net.Exclude]
 		public static PromotionCode GetOneWhere(QueryFilter where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -332,6 +343,7 @@ namespace Bam.Net.Shop
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static PromotionCode OneWhere(QueryFilter where, Database database = null)
 		{
 			WhereDelegate<PromotionCodeColumns> whereDelegate = (c) => where;
@@ -346,6 +358,7 @@ namespace Bam.Net.Shop
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static PromotionCode GetOneWhere(WhereDelegate<PromotionCodeColumns> where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -370,6 +383,7 @@ namespace Bam.Net.Shop
 		/// between PromotionCodeColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static PromotionCode OneWhere(WhereDelegate<PromotionCodeColumns> where, Database database = null)
 		{
 			var result = Top(1, where, database);
@@ -399,6 +413,7 @@ namespace Bam.Net.Shop
 		/// between PromotionCodeColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static PromotionCode FirstOneWhere(WhereDelegate<PromotionCodeColumns> where, Database database = null)
 		{
 			var results = Top(1, where, database);
@@ -421,6 +436,7 @@ namespace Bam.Net.Shop
 		/// between PromotionCodeColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static PromotionCode FirstOneWhere(WhereDelegate<PromotionCodeColumns> where, OrderBy<PromotionCodeColumns> orderBy, Database database = null)
 		{
 			var results = Top(1, where, orderBy, database);
@@ -442,6 +458,7 @@ namespace Bam.Net.Shop
 		/// between PromotionCodeColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static PromotionCode FirstOneWhere(QueryFilter where, OrderBy<PromotionCodeColumns> orderBy = null, Database database = null)
 		{
 			WhereDelegate<PromotionCodeColumns> whereDelegate = (c) => where;
@@ -470,6 +487,7 @@ namespace Bam.Net.Shop
 		/// between PromotionCodeColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static PromotionCodeCollection Top(int count, WhereDelegate<PromotionCodeColumns> where, Database database = null)
 		{
 			return Top(count, where, null, database);
@@ -492,6 +510,7 @@ namespace Bam.Net.Shop
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static PromotionCodeCollection Top(int count, WhereDelegate<PromotionCodeColumns> where, OrderBy<PromotionCodeColumns> orderBy, Database database = null)
 		{
 			PromotionCodeColumns c = new PromotionCodeColumns();
@@ -513,6 +532,7 @@ namespace Bam.Net.Shop
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static PromotionCodeCollection Top(int count, QueryFilter where, Database database)
 		{
 			return Top(count, where, null, database);
@@ -534,6 +554,7 @@ namespace Bam.Net.Shop
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static PromotionCodeCollection Top(int count, QueryFilter where, OrderBy<PromotionCodeColumns> orderBy = null, Database database = null)
 		{
 			Database db = database ?? Db.For<PromotionCode>();
@@ -601,6 +622,7 @@ namespace Bam.Net.Shop
 		/// between PromotionCodeColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<PromotionCodeColumns> where, Database database = null)
 		{
 			PromotionCodeColumns c = new PromotionCodeColumns();
@@ -613,6 +635,16 @@ namespace Bam.Net.Shop
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
 		}
+		 
+		public static long Count(QiQuery where, Database database = null)
+		{
+		    Database db = database ?? Db.For<PromotionCode>();
+			QuerySet query = GetQuerySet(db);	 
+			query.Count<PromotionCode>();
+			query.Where(where);	  
+			query.Execute(db);
+			return query.Results.As<CountResult>(0).Value;
+		} 		
 
 		private static PromotionCode CreateFromFilter(IQueryFilter filter, Database database = null)
 		{

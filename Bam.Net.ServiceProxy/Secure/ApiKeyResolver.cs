@@ -14,32 +14,35 @@ using Bam.Net.Configuration;
 
 namespace Bam.Net.ServiceProxy.Secure
 {
-    public class ApiKeyResolver: IApiKeyProvider, IApplicationNameProvider
+    /// <summary>
+    /// A class used to provide the functionality
+    /// of both an ApiKeyProvider and an ApplicationNameProvider
+    /// </summary>
+    public class ApiKeyResolver : IApiKeyProvider, IApplicationNameProvider, IApiKeyResolver
     {
-        public const string KeyTokenName = "KeyToken";
-
         public ApiKeyResolver()
         {
-            this.ApiKeyProvider = DefaultConfigurationApiKeyProvider.Instance;
-            this.ApplicationNameProvider = DefaultConfigurationApplicationNameProvider.Instance;
+            ApiKeyProvider = DefaultConfigurationApiKeyProvider.Instance;
+            ApplicationNameProvider = DefaultConfigurationApplicationNameProvider.Instance;
+            HashAlgorithm = HashAlgorithms.SHA1;
         }
 
         public ApiKeyResolver(IApiKeyProvider apiKeyProvider)
             : this()
         {
-            this.ApiKeyProvider = apiKeyProvider;
+            ApiKeyProvider = apiKeyProvider;
         }
 
         public ApiKeyResolver(IApplicationNameProvider nameProvider)
             : this()
         {
-            this.ApplicationNameProvider = nameProvider;
+            ApplicationNameProvider = nameProvider;
         }
 
-        public ApiKeyResolver(IApiKeyProvider apiKeyProvider, IApplicationNameProvider nameProvider)
+        public ApiKeyResolver(IApiKeyProvider apiKeyProvider, IApplicationNameProvider nameProvider) : this()
         {
-            this.ApiKeyProvider = apiKeyProvider;
-            this.ApplicationNameProvider = nameProvider;
+            ApiKeyProvider = apiKeyProvider;
+            ApplicationNameProvider = nameProvider;
         }
 
         public IApiKeyProvider ApiKeyProvider
@@ -53,6 +56,8 @@ namespace Bam.Net.ServiceProxy.Secure
             get;
             set;
         }
+
+        public HashAlgorithms HashAlgorithm { get; set; }
 
         #region IApiKeyProvider Members
 
@@ -94,32 +99,24 @@ namespace Bam.Net.ServiceProxy.Secure
        
         public void SetToken(NameValueCollection headers, string stringToHash)
         {
-            headers[KeyTokenName] = CreateToken(stringToHash);
+            headers[ApiParameters.KeyTokenName] = CreateToken(stringToHash);
         }
 
         public string CreateToken(string stringToHash)
         {
-            // token is the hash of key/shared secret plus plainpost
             ApiKeyInfo apiKey = this.GetApiKeyInfo(this);
-            return CreateToken(apiKey.ApiKey, stringToHash);
+            return "{0}:{1}"._Format(apiKey.ApiKey, stringToHash).Hash(HashAlgorithm);
         }
 
-        public static string CreateToken(string apiKey, string stringToHash)
-        {
-            return "{0}:{1}"._Format(apiKey, stringToHash).Sha1();
-        }
-
-        public bool IsValid(ExecutionRequest request)
+        public bool IsValidRequest(ExecutionRequest request)
         {
             Args.ThrowIfNull(request, "request");
-            ApiKeyResolver resolver = request.ApiKeyResolver;
-            ValidateResolver(resolver);
 			
             string className = request.ClassName;
             string methodName = request.MethodName;
             string stringToHash = ApiParameters.GetStringToHash(className, methodName, request.JsonParams);
 
-            string token = request.Context.Request.Headers[KeyTokenName];
+            string token = request.Context.Request.Headers[ApiParameters.KeyTokenName];
             bool result = false;
             if (!string.IsNullOrEmpty(token))
             {
@@ -133,13 +130,6 @@ namespace Bam.Net.ServiceProxy.Secure
         {
             string checkToken = CreateToken(stringToHash);
             return token.Equals(checkToken);
-        }
-
-        private static void ValidateResolver(ApiKeyResolver resolver)
-        {
-            Args.ThrowIfNull(resolver, "ApiKeyResolver");
-            Args.ThrowIfNull(resolver.ApplicationNameProvider, "ApiKeyResolver.ApplicationNameProvider");
-            Args.ThrowIfNull(resolver.ApiKeyProvider, "ApiKeyResolver.ApiKeyProvider");
         }
     }
 }

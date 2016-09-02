@@ -36,7 +36,8 @@ namespace Bam.Net.ServiceProxy
             Type[] genericTypesOfReturn;
             if (method.ReturnType.HasGenericArguments(out genericTypesOfReturn))
             {
-                ReturnTypeCodeString = string.Format("{0}<{1}>", method.ReturnType.Name.DropTrailingNonLetters(), genericTypesOfReturn.ToDelimited(t => t.Name));
+                string returnTypeName = method.ReturnType == typeof(int) ? method.ReturnType.Name: method.ReturnType.Name.DropTrailingNonLetters();
+                ReturnTypeCodeString = string.Format("{0}<{1}>", returnTypeName, genericTypesOfReturn.ToDelimited(t => t.ToTypeString()));
                 genericTypesOfReturn.Each(t =>
                 {
                     KnownTypes.Add(t);
@@ -44,7 +45,7 @@ namespace Bam.Net.ServiceProxy
                 });
             }
 
-            MethodSignature = Parameters.ToDelimited(p => string.Format("{0} {1}", p.ParameterType.Name, p.Name.CamelCase())); // method signature
+            MethodSignature = Parameters.ToDelimited(p => string.Format("{0} {1}", p.ParameterType.ToTypeString(), p.Name.CamelCase())); // method signature
             ParameterInstances = Parameters.ToDelimited(p => p.Name.CamelCase());
         }
         public MethodInfo Method { get; set; }

@@ -28,6 +28,11 @@ namespace Bam.Net.ServiceProxy
     /// </summary>
     public class ApiParameters
     {
+        public const string KeyTokenName = "KeyToken";
+        public static string GetStringToHash(ExecutionRequest request)
+        {
+            return GetStringToHash(request.ClassName, request.MethodName, request.JsonParams);
+        }
         public static string GetStringToHash(string className, string methodName, string jsonParams)
         {
             return string.Format("{0}.{1}.{2}", className, methodName, jsonParams);

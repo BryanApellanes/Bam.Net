@@ -47,6 +47,7 @@ namespace Bam.Net.Analytics
 			this.SetChildren();
 		}
 
+		[Bam.Net.Exclude]
 		public static implicit operator Counter(DataRow data)
 		{
 			return new Counter(data);
@@ -108,7 +109,7 @@ namespace Bam.Net.Analytics
 
 				
 
-	[Exclude]	
+	[Bam.Net.Exclude]	
 	public MethodCounterCollection MethodCountersByCounterId
 	{
 		get
@@ -132,7 +133,7 @@ namespace Bam.Net.Analytics
 		}
 	}
 	
-	[Exclude]	
+	[Bam.Net.Exclude]	
 	public LoadCounterCollection LoadCountersByCounterId
 	{
 		get
@@ -156,7 +157,7 @@ namespace Bam.Net.Analytics
 		}
 	}
 	
-	[Exclude]	
+	[Bam.Net.Exclude]	
 	public ClickCounterCollection ClickCountersByCounterId
 	{
 		get
@@ -180,7 +181,7 @@ namespace Bam.Net.Analytics
 		}
 	}
 	
-	[Exclude]	
+	[Bam.Net.Exclude]	
 	public LoginCounterCollection LoginCountersByCounterId
 	{
 		get
@@ -209,7 +210,8 @@ namespace Bam.Net.Analytics
 		/// Gets a query filter that should uniquely identify
 		/// the current instance.  The default implementation
 		/// compares the Id/key field to the current instance's.
-		/// </summary> 
+		/// </summary>
+		[Bam.Net.Exclude] 
 		public override IQueryFilter GetUniqueFilter()
 		{
 			if(UniqueFilterProvider != null)
@@ -239,12 +241,13 @@ namespace Bam.Net.Analytics
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<Counter>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				CounterColumns columns = new CounterColumns();
-				var orderBy = Order.By<CounterColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<CounterColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -256,19 +259,21 @@ namespace Bam.Net.Analytics
 					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
 				}
 			});			
-		}	 
-
+		}
+			 
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<Counter>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
 
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<CounterColumns> where, Action<IEnumerable<Counter>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				CounterColumns columns = new CounterColumns();
-				var orderBy = Order.By<CounterColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<CounterColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -302,11 +307,13 @@ namespace Bam.Net.Analytics
 			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
+		[Bam.Net.Exclude]
 		public static CounterCollection Query(QueryFilter filter, Database database = null)
 		{
 			return Where(filter, database);
 		}
-				
+
+		[Bam.Net.Exclude]		
 		public static CounterCollection Where(QueryFilter filter, Database database = null)
 		{
 			WhereDelegate<CounterColumns> whereDelegate = (c) => filter;
@@ -321,6 +328,7 @@ namespace Bam.Net.Analytics
 		/// between CounterColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static CounterCollection Where(Func<CounterColumns, QueryFilter<CounterColumns>> where, OrderBy<CounterColumns> orderBy = null, Database database = null)
 		{
 			database = database ?? Db.For<Counter>();
@@ -335,6 +343,7 @@ namespace Bam.Net.Analytics
 		/// between CounterColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static CounterCollection Where(WhereDelegate<CounterColumns> where, Database database = null)
 		{		
 			database = database ?? Db.For<Counter>();
@@ -353,6 +362,7 @@ namespace Bam.Net.Analytics
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static CounterCollection Where(WhereDelegate<CounterColumns> where, OrderBy<CounterColumns> orderBy = null, Database database = null)
 		{		
 			database = database ?? Db.For<Counter>();
@@ -379,6 +389,7 @@ namespace Bam.Net.Analytics
 		/// one will be created; success will depend on the nullability
 		/// of the specified columns.
 		/// </summary>
+		[Bam.Net.Exclude]
 		public static Counter GetOneWhere(QueryFilter where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -397,6 +408,7 @@ namespace Bam.Net.Analytics
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Counter OneWhere(QueryFilter where, Database database = null)
 		{
 			WhereDelegate<CounterColumns> whereDelegate = (c) => where;
@@ -411,6 +423,7 @@ namespace Bam.Net.Analytics
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Counter GetOneWhere(WhereDelegate<CounterColumns> where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -435,6 +448,7 @@ namespace Bam.Net.Analytics
 		/// between CounterColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Counter OneWhere(WhereDelegate<CounterColumns> where, Database database = null)
 		{
 			var result = Top(1, where, database);
@@ -464,6 +478,7 @@ namespace Bam.Net.Analytics
 		/// between CounterColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Counter FirstOneWhere(WhereDelegate<CounterColumns> where, Database database = null)
 		{
 			var results = Top(1, where, database);
@@ -486,6 +501,7 @@ namespace Bam.Net.Analytics
 		/// between CounterColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Counter FirstOneWhere(WhereDelegate<CounterColumns> where, OrderBy<CounterColumns> orderBy, Database database = null)
 		{
 			var results = Top(1, where, orderBy, database);
@@ -507,6 +523,7 @@ namespace Bam.Net.Analytics
 		/// between CounterColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Counter FirstOneWhere(QueryFilter where, OrderBy<CounterColumns> orderBy = null, Database database = null)
 		{
 			WhereDelegate<CounterColumns> whereDelegate = (c) => where;
@@ -535,6 +552,7 @@ namespace Bam.Net.Analytics
 		/// between CounterColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static CounterCollection Top(int count, WhereDelegate<CounterColumns> where, Database database = null)
 		{
 			return Top(count, where, null, database);
@@ -557,6 +575,7 @@ namespace Bam.Net.Analytics
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static CounterCollection Top(int count, WhereDelegate<CounterColumns> where, OrderBy<CounterColumns> orderBy, Database database = null)
 		{
 			CounterColumns c = new CounterColumns();
@@ -578,6 +597,7 @@ namespace Bam.Net.Analytics
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static CounterCollection Top(int count, QueryFilter where, Database database)
 		{
 			return Top(count, where, null, database);
@@ -599,6 +619,7 @@ namespace Bam.Net.Analytics
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static CounterCollection Top(int count, QueryFilter where, OrderBy<CounterColumns> orderBy = null, Database database = null)
 		{
 			Database db = database ?? Db.For<Counter>();
@@ -666,6 +687,7 @@ namespace Bam.Net.Analytics
 		/// between CounterColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<CounterColumns> where, Database database = null)
 		{
 			CounterColumns c = new CounterColumns();
@@ -678,6 +700,16 @@ namespace Bam.Net.Analytics
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
 		}
+		 
+		public static long Count(QiQuery where, Database database = null)
+		{
+		    Database db = database ?? Db.For<Counter>();
+			QuerySet query = GetQuerySet(db);	 
+			query.Count<Counter>();
+			query.Where(where);	  
+			query.Execute(db);
+			return query.Results.As<CountResult>(0).Value;
+		} 		
 
 		private static Counter CreateFromFilter(IQueryFilter filter, Database database = null)
 		{

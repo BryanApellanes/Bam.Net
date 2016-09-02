@@ -4,7 +4,7 @@ using Bam.Net.UserAccounts.Data;
 
 namespace Bam.Net.UserAccounts
 {
-    public interface IUserManager
+    public interface IUserManager: ICloneable, IRequiresHttpContext
     {
         IApplicationNameProvider ApplicationNameProvider { get; set; }
         Func<string, string> GetConfirmationUrlFunction { get; set; }

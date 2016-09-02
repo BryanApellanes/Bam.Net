@@ -48,7 +48,7 @@ namespace Bam.Net.Incubation
         public Incubator Returns<T>(Func<T> instanciator)
         {
             Incubator inc = Incubator ?? new Incubator();
-            inc.Set(instanciator);
+            inc.Set(instanciator, false);
             return inc;
         }
         public Incubator Use<T>(Func<Incubator, T> instanciator)

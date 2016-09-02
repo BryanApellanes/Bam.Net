@@ -225,6 +225,12 @@ namespace Bam.Net.Testing
                 return this.assertions.ToArray();
             }
         }
+
+        public T ResultAs<T>()
+        {
+            return (T)Result;
+        }
+
         /// <summary>
         /// The return value of the test method execution
         /// </summary>        
@@ -248,6 +254,11 @@ namespace Bam.Net.Testing
         {
             cleanup(setupContext);
             return this;
+        }
+
+        public void OrNot(string message = "TestFailed")
+        {
+            ThrowExceptionIfTheTestFailed(message);
         }
 
         /// <summary>

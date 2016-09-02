@@ -86,7 +86,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(ConfigSetting));
+				query.table = Dao.TableName(typeof(Bam.Net.ServiceProxy.Secure.ConfigSetting));
 				object value = Bam.Net.ServiceProxy.Secure.ConfigSetting.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(ConfigSetting));
+				query.table = Dao.TableName(typeof(Bam.Net.ServiceProxy.Secure.ConfigSetting));
 				object[] value = Bam.Net.ServiceProxy.Secure.ConfigSetting.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

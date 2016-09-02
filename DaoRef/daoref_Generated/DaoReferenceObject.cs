@@ -47,6 +47,7 @@ namespace Bam.Net.DaoRef
 			this.SetChildren();
 		}
 
+		[Bam.Net.Exclude]
 		public static implicit operator DaoReferenceObject(DataRow data)
 		{
 			return new DaoReferenceObject(data);
@@ -189,7 +190,7 @@ namespace Bam.Net.DaoRef
 
 				
 
-	[Exclude]	
+	[Bam.Net.Exclude]	
 	public DaoReferenceObjectWithForeignKeyCollection DaoReferenceObjectWithForeignKeysByDaoReferenceObjectId
 	{
 		get
@@ -218,7 +219,8 @@ namespace Bam.Net.DaoRef
 		/// Gets a query filter that should uniquely identify
 		/// the current instance.  The default implementation
 		/// compares the Id/key field to the current instance's.
-		/// </summary> 
+		/// </summary>
+		[Bam.Net.Exclude] 
 		public override IQueryFilter GetUniqueFilter()
 		{
 			if(UniqueFilterProvider != null)
@@ -248,12 +250,13 @@ namespace Bam.Net.DaoRef
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<DaoReferenceObject>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				DaoReferenceObjectColumns columns = new DaoReferenceObjectColumns();
-				var orderBy = Order.By<DaoReferenceObjectColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<DaoReferenceObjectColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -265,19 +268,21 @@ namespace Bam.Net.DaoRef
 					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
 				}
 			});			
-		}	 
-
+		}
+			 
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<DaoReferenceObject>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
 
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<DaoReferenceObjectColumns> where, Action<IEnumerable<DaoReferenceObject>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				DaoReferenceObjectColumns columns = new DaoReferenceObjectColumns();
-				var orderBy = Order.By<DaoReferenceObjectColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<DaoReferenceObjectColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -311,11 +316,13 @@ namespace Bam.Net.DaoRef
 			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
+		[Bam.Net.Exclude]
 		public static DaoReferenceObjectCollection Query(QueryFilter filter, Database database = null)
 		{
 			return Where(filter, database);
 		}
-				
+
+		[Bam.Net.Exclude]		
 		public static DaoReferenceObjectCollection Where(QueryFilter filter, Database database = null)
 		{
 			WhereDelegate<DaoReferenceObjectColumns> whereDelegate = (c) => filter;
@@ -330,6 +337,7 @@ namespace Bam.Net.DaoRef
 		/// between DaoReferenceObjectColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static DaoReferenceObjectCollection Where(Func<DaoReferenceObjectColumns, QueryFilter<DaoReferenceObjectColumns>> where, OrderBy<DaoReferenceObjectColumns> orderBy = null, Database database = null)
 		{
 			database = database ?? Db.For<DaoReferenceObject>();
@@ -344,6 +352,7 @@ namespace Bam.Net.DaoRef
 		/// between DaoReferenceObjectColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static DaoReferenceObjectCollection Where(WhereDelegate<DaoReferenceObjectColumns> where, Database database = null)
 		{		
 			database = database ?? Db.For<DaoReferenceObject>();
@@ -362,6 +371,7 @@ namespace Bam.Net.DaoRef
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static DaoReferenceObjectCollection Where(WhereDelegate<DaoReferenceObjectColumns> where, OrderBy<DaoReferenceObjectColumns> orderBy = null, Database database = null)
 		{		
 			database = database ?? Db.For<DaoReferenceObject>();
@@ -388,6 +398,7 @@ namespace Bam.Net.DaoRef
 		/// one will be created; success will depend on the nullability
 		/// of the specified columns.
 		/// </summary>
+		[Bam.Net.Exclude]
 		public static DaoReferenceObject GetOneWhere(QueryFilter where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -406,6 +417,7 @@ namespace Bam.Net.DaoRef
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static DaoReferenceObject OneWhere(QueryFilter where, Database database = null)
 		{
 			WhereDelegate<DaoReferenceObjectColumns> whereDelegate = (c) => where;
@@ -420,6 +432,7 @@ namespace Bam.Net.DaoRef
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static DaoReferenceObject GetOneWhere(WhereDelegate<DaoReferenceObjectColumns> where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -444,6 +457,7 @@ namespace Bam.Net.DaoRef
 		/// between DaoReferenceObjectColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static DaoReferenceObject OneWhere(WhereDelegate<DaoReferenceObjectColumns> where, Database database = null)
 		{
 			var result = Top(1, where, database);
@@ -473,6 +487,7 @@ namespace Bam.Net.DaoRef
 		/// between DaoReferenceObjectColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static DaoReferenceObject FirstOneWhere(WhereDelegate<DaoReferenceObjectColumns> where, Database database = null)
 		{
 			var results = Top(1, where, database);
@@ -495,6 +510,7 @@ namespace Bam.Net.DaoRef
 		/// between DaoReferenceObjectColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static DaoReferenceObject FirstOneWhere(WhereDelegate<DaoReferenceObjectColumns> where, OrderBy<DaoReferenceObjectColumns> orderBy, Database database = null)
 		{
 			var results = Top(1, where, orderBy, database);
@@ -516,6 +532,7 @@ namespace Bam.Net.DaoRef
 		/// between DaoReferenceObjectColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static DaoReferenceObject FirstOneWhere(QueryFilter where, OrderBy<DaoReferenceObjectColumns> orderBy = null, Database database = null)
 		{
 			WhereDelegate<DaoReferenceObjectColumns> whereDelegate = (c) => where;
@@ -544,6 +561,7 @@ namespace Bam.Net.DaoRef
 		/// between DaoReferenceObjectColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static DaoReferenceObjectCollection Top(int count, WhereDelegate<DaoReferenceObjectColumns> where, Database database = null)
 		{
 			return Top(count, where, null, database);
@@ -566,6 +584,7 @@ namespace Bam.Net.DaoRef
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static DaoReferenceObjectCollection Top(int count, WhereDelegate<DaoReferenceObjectColumns> where, OrderBy<DaoReferenceObjectColumns> orderBy, Database database = null)
 		{
 			DaoReferenceObjectColumns c = new DaoReferenceObjectColumns();
@@ -587,6 +606,7 @@ namespace Bam.Net.DaoRef
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static DaoReferenceObjectCollection Top(int count, QueryFilter where, Database database)
 		{
 			return Top(count, where, null, database);
@@ -608,6 +628,7 @@ namespace Bam.Net.DaoRef
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static DaoReferenceObjectCollection Top(int count, QueryFilter where, OrderBy<DaoReferenceObjectColumns> orderBy = null, Database database = null)
 		{
 			Database db = database ?? Db.For<DaoReferenceObject>();
@@ -675,6 +696,7 @@ namespace Bam.Net.DaoRef
 		/// between DaoReferenceObjectColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<DaoReferenceObjectColumns> where, Database database = null)
 		{
 			DaoReferenceObjectColumns c = new DaoReferenceObjectColumns();
@@ -687,6 +709,16 @@ namespace Bam.Net.DaoRef
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
 		}
+		 
+		public static long Count(QiQuery where, Database database = null)
+		{
+		    Database db = database ?? Db.For<DaoReferenceObject>();
+			QuerySet query = GetQuerySet(db);	 
+			query.Count<DaoReferenceObject>();
+			query.Where(where);	  
+			query.Execute(db);
+			return query.Results.As<CountResult>(0).Value;
+		} 		
 
 		private static DaoReferenceObject CreateFromFilter(IQueryFilter filter, Database database = null)
 		{

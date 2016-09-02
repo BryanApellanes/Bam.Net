@@ -45,7 +45,6 @@ namespace Bam.Net.Logging
             get { return requiredProperties.ToArray(); }
         }
 
-
         public virtual ILogger RestartLoggingThread()
         {
             this.StopLoggingThread();

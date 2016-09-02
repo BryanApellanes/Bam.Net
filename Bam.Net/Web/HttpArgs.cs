@@ -69,11 +69,11 @@ namespace Bam.Net.Web
                 if (keyVal.Length == 2)
                 {
                     string val = Uri.UnescapeDataString(keyVal[1]);
-                    this.Add(keyVal[0], val);//this._pairs.Add(keyVal[0], val);
+                    this.Add(keyVal[0], val);
                 }
                 else
                 {
-                    this.Add(keyVal[0], "");//this._pairs.Add(keyVal[0], "");
+                    this.Add(keyVal[0], "");
                 }
             }
         }
@@ -89,7 +89,7 @@ namespace Bam.Net.Web
                     JProperty prop = jtoken as JProperty;
                     if (prop != null)
                     {
-                        this.Add(prop.Name, prop.Value.ToString());//this._pairs.Add(prop.Name, prop.Value.ToString());
+                        this.Add(prop.Name, prop.Value.ToString());
                     }
                 });
             }

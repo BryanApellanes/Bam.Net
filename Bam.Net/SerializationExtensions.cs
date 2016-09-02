@@ -168,18 +168,34 @@ namespace Bam.Net
 
         public static void ToBinaryFile(this object target, string filePath)
         {
-            FileMode mode = File.Exists(filePath) ? FileMode.Truncate : FileMode.Create;
 			FileInfo file = new FileInfo(filePath);
 			if (!file.Directory.Exists)
 			{
 				file.Directory.Create();
 			}
-            using (FileStream fs = new FileStream(filePath, mode))
+            TryWrite(target, filePath);
+        }
+
+        private static void TryWrite(object target, string filePath, int retryCount = 10)
+        {
+            try
             {
-                byte[] binary = target.ToBinaryBytes();
-                fs.Write(binary, 0, binary.Length);
-				fs.Flush();				
-            }            
+                File.WriteAllBytes(filePath, target.ToBinaryBytes());
+            }
+            catch (Exception ex)
+            {
+                Logging.Log.Warn("Failed to write BinaryFile: {0}\r\nType:{1}\r\nMessage: {2}\r\nWillRetry: {3}",
+                    filePath, target == null ? "[null]" : target.GetType().Name, ex.Message, retryCount);
+                if (retryCount > 0)
+                {
+                    TryWrite(target, filePath, --retryCount);
+                }
+                else
+                {
+                    Logging.Log.Error("Failed to write BinaryFile: {0}\r\nType:{1}\r\nMessage: {2}", ex,
+                        filePath, target == null ? "[null]" : target.GetType().Name, ex.Message);
+                }
+            }
         }
 
         public static T FromBinaryFile<T>(this FileInfo file)

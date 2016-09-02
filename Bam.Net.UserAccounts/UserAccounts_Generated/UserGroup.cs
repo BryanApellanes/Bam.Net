@@ -47,6 +47,7 @@ namespace Bam.Net.UserAccounts.Data
 			this.SetChildren();
 		}
 
+		[Bam.Net.Exclude]
 		public static implicit operator UserGroup(DataRow data)
 		{
 			return new UserGroup(data);
@@ -165,7 +166,8 @@ namespace Bam.Net.UserAccounts.Data
 		/// Gets a query filter that should uniquely identify
 		/// the current instance.  The default implementation
 		/// compares the Id/key field to the current instance's.
-		/// </summary> 
+		/// </summary>
+		[Bam.Net.Exclude] 
 		public override IQueryFilter GetUniqueFilter()
 		{
 			if(UniqueFilterProvider != null)
@@ -195,12 +197,13 @@ namespace Bam.Net.UserAccounts.Data
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<UserGroup>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				UserGroupColumns columns = new UserGroupColumns();
-				var orderBy = Order.By<UserGroupColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<UserGroupColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -212,19 +215,21 @@ namespace Bam.Net.UserAccounts.Data
 					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
 				}
 			});			
-		}	 
-
+		}
+			 
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<UserGroup>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
 
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<UserGroupColumns> where, Action<IEnumerable<UserGroup>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				UserGroupColumns columns = new UserGroupColumns();
-				var orderBy = Order.By<UserGroupColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<UserGroupColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -258,11 +263,13 @@ namespace Bam.Net.UserAccounts.Data
 			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
+		[Bam.Net.Exclude]
 		public static UserGroupCollection Query(QueryFilter filter, Database database = null)
 		{
 			return Where(filter, database);
 		}
-				
+
+		[Bam.Net.Exclude]		
 		public static UserGroupCollection Where(QueryFilter filter, Database database = null)
 		{
 			WhereDelegate<UserGroupColumns> whereDelegate = (c) => filter;
@@ -277,6 +284,7 @@ namespace Bam.Net.UserAccounts.Data
 		/// between UserGroupColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static UserGroupCollection Where(Func<UserGroupColumns, QueryFilter<UserGroupColumns>> where, OrderBy<UserGroupColumns> orderBy = null, Database database = null)
 		{
 			database = database ?? Db.For<UserGroup>();
@@ -291,6 +299,7 @@ namespace Bam.Net.UserAccounts.Data
 		/// between UserGroupColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static UserGroupCollection Where(WhereDelegate<UserGroupColumns> where, Database database = null)
 		{		
 			database = database ?? Db.For<UserGroup>();
@@ -309,6 +318,7 @@ namespace Bam.Net.UserAccounts.Data
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static UserGroupCollection Where(WhereDelegate<UserGroupColumns> where, OrderBy<UserGroupColumns> orderBy = null, Database database = null)
 		{		
 			database = database ?? Db.For<UserGroup>();
@@ -335,6 +345,7 @@ namespace Bam.Net.UserAccounts.Data
 		/// one will be created; success will depend on the nullability
 		/// of the specified columns.
 		/// </summary>
+		[Bam.Net.Exclude]
 		public static UserGroup GetOneWhere(QueryFilter where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -353,6 +364,7 @@ namespace Bam.Net.UserAccounts.Data
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static UserGroup OneWhere(QueryFilter where, Database database = null)
 		{
 			WhereDelegate<UserGroupColumns> whereDelegate = (c) => where;
@@ -367,6 +379,7 @@ namespace Bam.Net.UserAccounts.Data
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static UserGroup GetOneWhere(WhereDelegate<UserGroupColumns> where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -391,6 +404,7 @@ namespace Bam.Net.UserAccounts.Data
 		/// between UserGroupColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static UserGroup OneWhere(WhereDelegate<UserGroupColumns> where, Database database = null)
 		{
 			var result = Top(1, where, database);
@@ -420,6 +434,7 @@ namespace Bam.Net.UserAccounts.Data
 		/// between UserGroupColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static UserGroup FirstOneWhere(WhereDelegate<UserGroupColumns> where, Database database = null)
 		{
 			var results = Top(1, where, database);
@@ -442,6 +457,7 @@ namespace Bam.Net.UserAccounts.Data
 		/// between UserGroupColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static UserGroup FirstOneWhere(WhereDelegate<UserGroupColumns> where, OrderBy<UserGroupColumns> orderBy, Database database = null)
 		{
 			var results = Top(1, where, orderBy, database);
@@ -463,6 +479,7 @@ namespace Bam.Net.UserAccounts.Data
 		/// between UserGroupColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static UserGroup FirstOneWhere(QueryFilter where, OrderBy<UserGroupColumns> orderBy = null, Database database = null)
 		{
 			WhereDelegate<UserGroupColumns> whereDelegate = (c) => where;
@@ -491,6 +508,7 @@ namespace Bam.Net.UserAccounts.Data
 		/// between UserGroupColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static UserGroupCollection Top(int count, WhereDelegate<UserGroupColumns> where, Database database = null)
 		{
 			return Top(count, where, null, database);
@@ -513,6 +531,7 @@ namespace Bam.Net.UserAccounts.Data
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static UserGroupCollection Top(int count, WhereDelegate<UserGroupColumns> where, OrderBy<UserGroupColumns> orderBy, Database database = null)
 		{
 			UserGroupColumns c = new UserGroupColumns();
@@ -534,6 +553,7 @@ namespace Bam.Net.UserAccounts.Data
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static UserGroupCollection Top(int count, QueryFilter where, Database database)
 		{
 			return Top(count, where, null, database);
@@ -555,6 +575,7 @@ namespace Bam.Net.UserAccounts.Data
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static UserGroupCollection Top(int count, QueryFilter where, OrderBy<UserGroupColumns> orderBy = null, Database database = null)
 		{
 			Database db = database ?? Db.For<UserGroup>();
@@ -622,6 +643,7 @@ namespace Bam.Net.UserAccounts.Data
 		/// between UserGroupColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<UserGroupColumns> where, Database database = null)
 		{
 			UserGroupColumns c = new UserGroupColumns();
@@ -634,6 +656,16 @@ namespace Bam.Net.UserAccounts.Data
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
 		}
+		 
+		public static long Count(QiQuery where, Database database = null)
+		{
+		    Database db = database ?? Db.For<UserGroup>();
+			QuerySet query = GetQuerySet(db);	 
+			query.Count<UserGroup>();
+			query.Where(where);	  
+			query.Execute(db);
+			return query.Results.As<CountResult>(0).Value;
+		} 		
 
 		private static UserGroup CreateFromFilter(IQueryFilter filter, Database database = null)
 		{

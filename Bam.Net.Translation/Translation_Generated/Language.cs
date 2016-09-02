@@ -47,6 +47,7 @@ namespace Bam.Net.Translation
 			this.SetChildren();
 		}
 
+		[Bam.Net.Exclude]
 		public static implicit operator Language(DataRow data)
 		{
 			return new Language(data);
@@ -87,6 +88,20 @@ namespace Bam.Net.Translation
 		set
 		{
 			SetValue("Uuid", value);
+		}
+	}
+
+	// property:Cuid, columnName:Cuid	
+	[Bam.Net.Data.Column(Name="Cuid", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string Cuid
+	{
+		get
+		{
+			return GetStringValue("Cuid");
+		}
+		set
+		{
+			SetValue("Cuid", value);
 		}
 	}
 
@@ -164,7 +179,7 @@ namespace Bam.Net.Translation
 
 				
 
-	[Exclude]	
+	[Bam.Net.Exclude]	
 	public TextCollection TextsByLanguageId
 	{
 		get
@@ -188,7 +203,7 @@ namespace Bam.Net.Translation
 		}
 	}
 	
-	[Exclude]	
+	[Bam.Net.Exclude]	
 	public LanguageDetectionCollection LanguageDetectionsByLanguageId
 	{
 		get
@@ -212,7 +227,7 @@ namespace Bam.Net.Translation
 		}
 	}
 	
-	[Exclude]	
+	[Bam.Net.Exclude]	
 	public TranslationCollection TranslationsByLanguageId
 	{
 		get
@@ -236,7 +251,7 @@ namespace Bam.Net.Translation
 		}
 	}
 	
-	[Exclude]	
+	[Bam.Net.Exclude]	
 	public OtherNameCollection OtherNamesByLanguageId
 	{
 		get
@@ -265,7 +280,8 @@ namespace Bam.Net.Translation
 		/// Gets a query filter that should uniquely identify
 		/// the current instance.  The default implementation
 		/// compares the Id/key field to the current instance's.
-		/// </summary> 
+		/// </summary>
+		[Bam.Net.Exclude] 
 		public override IQueryFilter GetUniqueFilter()
 		{
 			if(UniqueFilterProvider != null)
@@ -295,12 +311,13 @@ namespace Bam.Net.Translation
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<Language>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				LanguageColumns columns = new LanguageColumns();
-				var orderBy = Order.By<LanguageColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<LanguageColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -312,19 +329,21 @@ namespace Bam.Net.Translation
 					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
 				}
 			});			
-		}	 
-
+		}
+			 
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<Language>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
 
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<LanguageColumns> where, Action<IEnumerable<Language>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				LanguageColumns columns = new LanguageColumns();
-				var orderBy = Order.By<LanguageColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<LanguageColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -358,11 +377,13 @@ namespace Bam.Net.Translation
 			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
+		[Bam.Net.Exclude]
 		public static LanguageCollection Query(QueryFilter filter, Database database = null)
 		{
 			return Where(filter, database);
 		}
-				
+
+		[Bam.Net.Exclude]		
 		public static LanguageCollection Where(QueryFilter filter, Database database = null)
 		{
 			WhereDelegate<LanguageColumns> whereDelegate = (c) => filter;
@@ -377,6 +398,7 @@ namespace Bam.Net.Translation
 		/// between LanguageColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static LanguageCollection Where(Func<LanguageColumns, QueryFilter<LanguageColumns>> where, OrderBy<LanguageColumns> orderBy = null, Database database = null)
 		{
 			database = database ?? Db.For<Language>();
@@ -391,6 +413,7 @@ namespace Bam.Net.Translation
 		/// between LanguageColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static LanguageCollection Where(WhereDelegate<LanguageColumns> where, Database database = null)
 		{		
 			database = database ?? Db.For<Language>();
@@ -409,6 +432,7 @@ namespace Bam.Net.Translation
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static LanguageCollection Where(WhereDelegate<LanguageColumns> where, OrderBy<LanguageColumns> orderBy = null, Database database = null)
 		{		
 			database = database ?? Db.For<Language>();
@@ -435,6 +459,7 @@ namespace Bam.Net.Translation
 		/// one will be created; success will depend on the nullability
 		/// of the specified columns.
 		/// </summary>
+		[Bam.Net.Exclude]
 		public static Language GetOneWhere(QueryFilter where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -453,6 +478,7 @@ namespace Bam.Net.Translation
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Language OneWhere(QueryFilter where, Database database = null)
 		{
 			WhereDelegate<LanguageColumns> whereDelegate = (c) => where;
@@ -467,6 +493,7 @@ namespace Bam.Net.Translation
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Language GetOneWhere(WhereDelegate<LanguageColumns> where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -491,6 +518,7 @@ namespace Bam.Net.Translation
 		/// between LanguageColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Language OneWhere(WhereDelegate<LanguageColumns> where, Database database = null)
 		{
 			var result = Top(1, where, database);
@@ -520,6 +548,7 @@ namespace Bam.Net.Translation
 		/// between LanguageColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Language FirstOneWhere(WhereDelegate<LanguageColumns> where, Database database = null)
 		{
 			var results = Top(1, where, database);
@@ -542,6 +571,7 @@ namespace Bam.Net.Translation
 		/// between LanguageColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Language FirstOneWhere(WhereDelegate<LanguageColumns> where, OrderBy<LanguageColumns> orderBy, Database database = null)
 		{
 			var results = Top(1, where, orderBy, database);
@@ -563,6 +593,7 @@ namespace Bam.Net.Translation
 		/// between LanguageColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Language FirstOneWhere(QueryFilter where, OrderBy<LanguageColumns> orderBy = null, Database database = null)
 		{
 			WhereDelegate<LanguageColumns> whereDelegate = (c) => where;
@@ -591,6 +622,7 @@ namespace Bam.Net.Translation
 		/// between LanguageColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static LanguageCollection Top(int count, WhereDelegate<LanguageColumns> where, Database database = null)
 		{
 			return Top(count, where, null, database);
@@ -613,6 +645,7 @@ namespace Bam.Net.Translation
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static LanguageCollection Top(int count, WhereDelegate<LanguageColumns> where, OrderBy<LanguageColumns> orderBy, Database database = null)
 		{
 			LanguageColumns c = new LanguageColumns();
@@ -634,6 +667,7 @@ namespace Bam.Net.Translation
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static LanguageCollection Top(int count, QueryFilter where, Database database)
 		{
 			return Top(count, where, null, database);
@@ -655,6 +689,7 @@ namespace Bam.Net.Translation
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static LanguageCollection Top(int count, QueryFilter where, OrderBy<LanguageColumns> orderBy = null, Database database = null)
 		{
 			Database db = database ?? Db.For<Language>();
@@ -722,6 +757,7 @@ namespace Bam.Net.Translation
 		/// between LanguageColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<LanguageColumns> where, Database database = null)
 		{
 			LanguageColumns c = new LanguageColumns();
@@ -734,6 +770,16 @@ namespace Bam.Net.Translation
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
 		}
+		 
+		public static long Count(QiQuery where, Database database = null)
+		{
+		    Database db = database ?? Db.For<Language>();
+			QuerySet query = GetQuerySet(db);	 
+			query.Count<Language>();
+			query.Where(where);	  
+			query.Execute(db);
+			return query.Results.As<CountResult>(0).Value;
+		} 		
 
 		private static Language CreateFromFilter(IQueryFilter filter, Database database = null)
 		{

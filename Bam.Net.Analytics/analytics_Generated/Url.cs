@@ -47,6 +47,7 @@ namespace Bam.Net.Analytics
 			this.SetChildren();
 		}
 
+		[Bam.Net.Exclude]
 		public static implicit operator Url(DataRow data)
 		{
 			return new Url(data);
@@ -304,7 +305,7 @@ namespace Bam.Net.Analytics
 	
 				
 
-	[Exclude]	
+	[Bam.Net.Exclude]	
 	public ImageCollection ImagesByUrlId
 	{
 		get
@@ -328,7 +329,7 @@ namespace Bam.Net.Analytics
 		}
 	}
 	
-	[Exclude]	
+	[Bam.Net.Exclude]	
 	public UrlTagCollection UrlTagsByUrlId
 	{
 		get
@@ -381,7 +382,8 @@ namespace Bam.Net.Analytics
 		/// Gets a query filter that should uniquely identify
 		/// the current instance.  The default implementation
 		/// compares the Id/key field to the current instance's.
-		/// </summary> 
+		/// </summary>
+		[Bam.Net.Exclude] 
 		public override IQueryFilter GetUniqueFilter()
 		{
 			if(UniqueFilterProvider != null)
@@ -411,12 +413,13 @@ namespace Bam.Net.Analytics
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<Url>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				UrlColumns columns = new UrlColumns();
-				var orderBy = Order.By<UrlColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<UrlColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -428,19 +431,21 @@ namespace Bam.Net.Analytics
 					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
 				}
 			});			
-		}	 
-
+		}
+			 
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<Url>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
 
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<UrlColumns> where, Action<IEnumerable<Url>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				UrlColumns columns = new UrlColumns();
-				var orderBy = Order.By<UrlColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<UrlColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -474,11 +479,13 @@ namespace Bam.Net.Analytics
 			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
+		[Bam.Net.Exclude]
 		public static UrlCollection Query(QueryFilter filter, Database database = null)
 		{
 			return Where(filter, database);
 		}
-				
+
+		[Bam.Net.Exclude]		
 		public static UrlCollection Where(QueryFilter filter, Database database = null)
 		{
 			WhereDelegate<UrlColumns> whereDelegate = (c) => filter;
@@ -493,6 +500,7 @@ namespace Bam.Net.Analytics
 		/// between UrlColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static UrlCollection Where(Func<UrlColumns, QueryFilter<UrlColumns>> where, OrderBy<UrlColumns> orderBy = null, Database database = null)
 		{
 			database = database ?? Db.For<Url>();
@@ -507,6 +515,7 @@ namespace Bam.Net.Analytics
 		/// between UrlColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static UrlCollection Where(WhereDelegate<UrlColumns> where, Database database = null)
 		{		
 			database = database ?? Db.For<Url>();
@@ -525,6 +534,7 @@ namespace Bam.Net.Analytics
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static UrlCollection Where(WhereDelegate<UrlColumns> where, OrderBy<UrlColumns> orderBy = null, Database database = null)
 		{		
 			database = database ?? Db.For<Url>();
@@ -551,6 +561,7 @@ namespace Bam.Net.Analytics
 		/// one will be created; success will depend on the nullability
 		/// of the specified columns.
 		/// </summary>
+		[Bam.Net.Exclude]
 		public static Url GetOneWhere(QueryFilter where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -569,6 +580,7 @@ namespace Bam.Net.Analytics
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Url OneWhere(QueryFilter where, Database database = null)
 		{
 			WhereDelegate<UrlColumns> whereDelegate = (c) => where;
@@ -583,6 +595,7 @@ namespace Bam.Net.Analytics
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Url GetOneWhere(WhereDelegate<UrlColumns> where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -607,6 +620,7 @@ namespace Bam.Net.Analytics
 		/// between UrlColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Url OneWhere(WhereDelegate<UrlColumns> where, Database database = null)
 		{
 			var result = Top(1, where, database);
@@ -636,6 +650,7 @@ namespace Bam.Net.Analytics
 		/// between UrlColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Url FirstOneWhere(WhereDelegate<UrlColumns> where, Database database = null)
 		{
 			var results = Top(1, where, database);
@@ -658,6 +673,7 @@ namespace Bam.Net.Analytics
 		/// between UrlColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Url FirstOneWhere(WhereDelegate<UrlColumns> where, OrderBy<UrlColumns> orderBy, Database database = null)
 		{
 			var results = Top(1, where, orderBy, database);
@@ -679,6 +695,7 @@ namespace Bam.Net.Analytics
 		/// between UrlColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Url FirstOneWhere(QueryFilter where, OrderBy<UrlColumns> orderBy = null, Database database = null)
 		{
 			WhereDelegate<UrlColumns> whereDelegate = (c) => where;
@@ -707,6 +724,7 @@ namespace Bam.Net.Analytics
 		/// between UrlColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static UrlCollection Top(int count, WhereDelegate<UrlColumns> where, Database database = null)
 		{
 			return Top(count, where, null, database);
@@ -729,6 +747,7 @@ namespace Bam.Net.Analytics
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static UrlCollection Top(int count, WhereDelegate<UrlColumns> where, OrderBy<UrlColumns> orderBy, Database database = null)
 		{
 			UrlColumns c = new UrlColumns();
@@ -750,6 +769,7 @@ namespace Bam.Net.Analytics
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static UrlCollection Top(int count, QueryFilter where, Database database)
 		{
 			return Top(count, where, null, database);
@@ -771,6 +791,7 @@ namespace Bam.Net.Analytics
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static UrlCollection Top(int count, QueryFilter where, OrderBy<UrlColumns> orderBy = null, Database database = null)
 		{
 			Database db = database ?? Db.For<Url>();
@@ -838,6 +859,7 @@ namespace Bam.Net.Analytics
 		/// between UrlColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<UrlColumns> where, Database database = null)
 		{
 			UrlColumns c = new UrlColumns();
@@ -850,6 +872,16 @@ namespace Bam.Net.Analytics
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
 		}
+		 
+		public static long Count(QiQuery where, Database database = null)
+		{
+		    Database db = database ?? Db.For<Url>();
+			QuerySet query = GetQuerySet(db);	 
+			query.Count<Url>();
+			query.Where(where);	  
+			query.Execute(db);
+			return query.Results.As<CountResult>(0).Value;
+		} 		
 
 		private static Url CreateFromFilter(IQueryFilter filter, Database database = null)
 		{

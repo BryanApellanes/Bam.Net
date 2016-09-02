@@ -16,6 +16,16 @@ namespace Bam.Net.Analytics
 		public QueryStringQuery(WhereDelegate<QueryStringColumns> where, OrderBy<QueryStringColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public QueryStringQuery(Func<QueryStringColumns, QueryFilter<QueryStringColumns>> where, OrderBy<QueryStringColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public QueryStringQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static QueryStringQuery Where(WhereDelegate<QueryStringColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static QueryStringQuery Where(WhereDelegate<QueryStringColumns> where, OrderBy<QueryStringColumns> orderBy = null, Database db = null)
+        {
+            return new QueryStringQuery(where, orderBy, db);
+        }
 
 		public QueryStringCollection Execute()
 		{

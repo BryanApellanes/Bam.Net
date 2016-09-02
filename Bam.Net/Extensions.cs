@@ -55,7 +55,7 @@ namespace Bam.Net
         }
         
         /// <summary>
-        /// Returns true if the string equals "true", "yes" or "1" using a case
+        /// Returns true if the string equals "true", "t", "yes", "y" or "1" using a case
         /// insensitive comparison
         /// </summary>
         /// <param name="value"></param>
@@ -64,13 +64,23 @@ namespace Bam.Net
         {
             return value.Equals("true", StringComparison.InvariantCultureIgnoreCase) || 
                 value.Equals("yes", StringComparison.InvariantCultureIgnoreCase) ||
+                value.Equals("t", StringComparison.InvariantCultureIgnoreCase) ||
+                value.Equals("y", StringComparison.InvariantCultureIgnoreCase) ||
                 value.Equals("1");
         }
 
+        /// <summary>
+        /// Returns true if the string equals "false", "f", "no", "n" or 0 using a case
+        /// insensitive comparison
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static bool IsNegative(this string value)
         {
             return value.Equals("false", StringComparison.InvariantCultureIgnoreCase) ||
                 value.Equals("no", StringComparison.InvariantCultureIgnoreCase) ||
+                value.Equals("f", StringComparison.InvariantCultureIgnoreCase) ||
+                value.Equals("n", StringComparison.InvariantCultureIgnoreCase) ||
                 value.Equals("0");
         }
 
@@ -105,6 +115,13 @@ namespace Bam.Net
             return currentPath;
         }
 
+        /// <summary>
+        /// If the specified directory exists a new path with 
+        /// a number appended will be returned where the 
+        /// new path does not exist
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public static string GetNextDirectoryName(this string path)
         {
             int num;
@@ -276,6 +293,10 @@ namespace Bam.Net
         /// <returns></returns>
         public static object CopyAs(this object source, Type type, params object[] ctorParams)
         {
+            if(source == null)
+            {
+                return source;
+            }
             object result = type.Construct(ctorParams);
             result.CopyProperties(source);
             return result;
@@ -785,6 +806,12 @@ namespace Bam.Net
                 }
             }
         }
+
+        //public static void AsyncEach<T>(this IEnumerable<T> values, dynamic context, Action<dynamic, T> action)
+        //{
+            // need async loop info { HowManyAtATime = 5}
+        //}
+
         public static void Each<T>(this IEnumerable<T> arr, dynamic context, Action<dynamic, T> action)
         {
             Each<T>(arr.ToArray(), context, action);
@@ -1101,11 +1128,44 @@ namespace Bam.Net
         /// <returns></returns>
         public static T DynamicConstruct<T>(this Type type, params object[] ctorParams)
         {
+            ParameterExpression param;
+            NewExpression newExp;
+            GetExpressions(type, ctorParams, out param, out newExp);
+
+            LambdaExpression lambda = Expression.Lambda(typeof(CompiledLambdaCtor<T>), newExp, param);
+            CompiledLambdaCtor<T> compiled = (CompiledLambdaCtor<T>)lambda.Compile();
+            return compiled(ctorParams);
+        }
+
+        private delegate object CompiledLambdaCtor(params object[] ctorParams);
+        /// <summary>
+        /// Construct an instance of the type using a dynamically defined and
+        /// compiled lambda.  This "should" replace existing Construct&lt;T&gt;
+        /// implementation after benchmarks prove this one is faster.
+        /// Testing shows this is actually roughly 2x slower than the existing 
+        /// Construct methods.  Keeping here for novelty reference
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type"></param>
+        /// <param name="ctorParams"></param>
+        /// <returns></returns>
+        public static object DynamicConstruct(this Type type, params object[] ctorParams)
+        {
+            ParameterExpression param;
+            NewExpression newExp;
+            GetExpressions(type, ctorParams, out param, out newExp);
+
+            LambdaExpression lambda = Expression.Lambda(typeof(CompiledLambdaCtor), newExp, param);
+            CompiledLambdaCtor compiled = (CompiledLambdaCtor)lambda.Compile();
+            return compiled(ctorParams);
+        }
+
+        private static void GetExpressions(Type type, object[] ctorParams, out ParameterExpression param, out NewExpression newExp)
+        {
             ConstructorInfo ctor = GetConstructor(type, ctorParams);
             ParameterInfo[] parameterInfos = ctor.GetParameters();
 
-            ParameterExpression param = Expression.Parameter(typeof(object[]), "args");
-
+            param = Expression.Parameter(typeof(object[]), "args");
             Expression[] argsExp = new Expression[parameterInfos.Length];
             for (int i = 0; i < parameterInfos.Length; i++)
             {
@@ -1118,11 +1178,7 @@ namespace Bam.Net
                 argsExp[i] = paramCastExp;
             };
 
-            NewExpression newExp = Expression.New(ctor, argsExp);
-
-            LambdaExpression lambda = Expression.Lambda(typeof(CompiledLambdaCtor<T>), newExp, param);
-            CompiledLambdaCtor<T> compiled = (CompiledLambdaCtor<T>)lambda.Compile();
-            return compiled(ctorParams);
+            newExp = Expression.New(ctor, argsExp);
         }
 
         /// <summary>
@@ -2071,6 +2127,17 @@ namespace Bam.Net
             return string.Empty;
         }
 
+        /// <summary>
+        /// Read the properties of the specified object and return the 
+        /// values as a string on a single line
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static string PropertiesToLine(this object obj)
+        {
+            return PropertiesToString(obj, "~");
+        }
+
         public static string PropertiesToString(this object obj, string separator = "\r\n")
         {
             Args.ThrowIfNull(obj);
@@ -2410,7 +2477,8 @@ namespace Bam.Net
         }
         
         /// <summary>
-        /// Return an acronym for the specified string  
+        /// Return an acronym for the specified string using the 
+        /// captial letters in the string
         /// </summary>
         /// <param name="stringToAcronymize"></param>
         /// <param name="alwaysUseFirst"></param>
@@ -2653,6 +2721,10 @@ namespace Bam.Net
 
         public static bool IsEnumerable(this Type type)
         {
+            if(type == typeof(string))
+            {
+                return false; // it is but that's not what we're looking for
+            }
             return type.IsArray ||
                 typeof(IEnumerable).IsAssignableFrom(type) ||
                 type.GetInterface(typeof(IEnumerable<>).FullName) != null;
@@ -2955,6 +3027,11 @@ namespace Bam.Net
         /// <returns></returns>
         public static object CopyProperties(this object destination, object source)
         {
+            if(destination == null || source == null)
+            {
+                return destination;
+            }
+
             Type destinationType = destination.GetType();
             Type sourceType = source.GetType();
 
@@ -2967,6 +3044,13 @@ namespace Bam.Net
             return destination;
         }
 
+        /// <summary>
+        /// Copy the value of the specified property from the source
+        /// to the destination
+        /// </summary>
+        /// <param name="destination"></param>
+        /// <param name="source"></param>
+        /// <param name="propertyName"></param>
         public static void CopyProperty(this object destination, object source, string propertyName)
         {
             PropertyInfo destProp = destination.GetType().GetProperty(propertyName);
@@ -3038,7 +3122,7 @@ namespace Bam.Net
 
         /// <summary>
         /// Clone the specified instance copying only properties
-        /// that are of represented in the Bam.Net.DataTypes enum
+        /// that are represented in the Bam.Net.Data.Schema.DataTypes enum
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="instance"></param>
@@ -3117,6 +3201,15 @@ namespace Bam.Net
             return CreateDynamicType(typeName, typeBuilder);
         }
 
+        /// <summary>
+        /// Create a dynamic type for the object with the specified typeName
+        /// using the specified propertyPredicate to determine what properties
+        /// of the original type to include
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <param name="typeName"></param>
+        /// <param name="propertyPredicate"></param>
+        /// <returns></returns>
         public static Type ToDynamicType(this object instance, string typeName, Func<PropertyInfo, bool> propertyPredicate)
         {
             AssemblyBuilder ignore;

@@ -16,12 +16,10 @@ using Bam.Net.UserAccounts.Data;
 
 namespace Bam.Net.CoreServices
 {
+    [Encrypt]
     public abstract class ProxyableService: Loggable, IRequiresHttpContext
     {
-        [Exclude]
-        public abstract object Clone();
-
-        UserManager _userManager;
+        public ProxyableService() { }
         public ProxyableService(DaoRepository repository, AppConf appConf)
         {
             AppConf = appConf;
@@ -33,7 +31,32 @@ namespace Bam.Net.CoreServices
         {
             Repository = genericRepo;
         }
+
+        public IDatabaseProvider DatabaseProvider { get; set; }
+
+        public string UserName
+        {
+            get
+            {
+                return CurrentUser.UserName;
+            }
+        }
         
+        public virtual LoginResponse Login(string userName, string passHash)
+        {
+            IUserManager mgr = (IUserManager)UserManager.Clone();
+            mgr.HttpContext = HttpContext;
+            return mgr.Login(userName, passHash);
+        }
+        
+        public virtual string WhoAmI()
+        {
+            return UserName;
+        }
+
+        [Exclude]
+        public abstract object Clone();
+
         [Exclude]
         public ILogger Logger { get; set; }
 
@@ -52,6 +75,36 @@ namespace Bam.Net.CoreServices
                     _context = value;
                     SetHttpContext();
                 }
+            }
+        }
+
+        [Exclude]
+        public string HostName
+        {
+            get
+            {
+                return HttpContext?.Request?.Url?.Host;
+            }
+        }
+
+        [Exclude]
+        public string ApplicationName
+        {
+            get
+            {
+                return HttpContext?.Request?.Headers[ServiceProxyClient.ApplicationNameHeader]
+                        .Or($"{ServiceProxyClient.ApplicationNameHeader}-UNKNOWN");
+            }
+        }
+
+
+        [Exclude]
+        public string ClientIp
+        {
+            get
+            {
+                return HttpContext?.Request?.Headers["HTTP_X_FORWARDED_FOR"]
+                        .Or(HttpContext?.Request?.Headers["REMOTE_ADDR"]);
             }
         }
 
@@ -77,19 +130,35 @@ namespace Bam.Net.CoreServices
         public User CurrentUser
         {
             get
-            {
-                UserManager mgr = GetUserManager();
-                return mgr.GetUser(HttpContext);
+            {                
+                return UserManager.GetUser(HttpContext);
             }
         }
-        
-        public string UserName
+
+        IUserManager _userManager;
+        [Exclude]
+        public IUserManager UserManager
         {
             get
             {
-                return CurrentUser.UserName;
+                if(_userManager == null)
+                {
+                    _userManager = GetUserManager();
+                    _userManager.HttpContext = HttpContext;
+                }
+                return _userManager;
+            }
+            set
+            {
+                _userManager = value;
             }
         }
+
+        [Exclude]
+        public IUserResolver UserResolver { get; set; }
+
+        [Exclude]
+        public IRoleResolver RoleResolver { get; set; }
 
         [Exclude]
         public DaoRepository DaoRepository { get; set; }
@@ -146,7 +215,7 @@ namespace Bam.Net.CoreServices
         {
             GetType().GetProperties().Where(pi => pi.PropertyType.ImplementsInterface<IRequiresHttpContext>()).Each(pi =>
             {
-                pi.GetValue(this).Property("HttpContext", HttpContext);
+                pi.GetValue(this)?.Property("HttpContext", HttpContext);
             });
         }
 

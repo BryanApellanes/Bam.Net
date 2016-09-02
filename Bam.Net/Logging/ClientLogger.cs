@@ -11,7 +11,7 @@ using Bam.Net.Logging;
 namespace Bam.Net.Logging
 {
     [Proxy("log")]
-    public class ClientLogger
+    public class ClientLogger: ILog
     {
         public ClientLogger()
         {
@@ -32,6 +32,21 @@ namespace Bam.Net.Logging
         public void AddEntry(string messageSignature, int verbosity, string[] formatArgs)
         {
             Logger.AddEntry(messageSignature, verbosity, formatArgs);
+        }
+
+        public void Error(string messageSignature, params object[] args)
+        {
+            Logger.AddEntry(messageSignature, Args.Exception(messageSignature, args), args.Select(a => a.ToString()).ToArray());
+        }
+
+        public void Info(string messageSignature, params object[] args)
+        {
+            Logger.AddEntry(messageSignature, args.Select(a => a.ToString()).ToArray());
+        }
+
+        public void Warning(string messageSignature, params object[] args)
+        {
+            Logger.AddEntry(messageSignature, LogEventType.Warning, args.Select(a => a.ToString()).ToArray());
         }
     }
 }

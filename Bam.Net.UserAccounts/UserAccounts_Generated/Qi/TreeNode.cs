@@ -86,7 +86,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(TreeNode));
+				query.table = Dao.TableName(typeof(Bam.Net.UserAccounts.Data.TreeNode));
 				object value = Bam.Net.UserAccounts.Data.TreeNode.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(TreeNode));
+				query.table = Dao.TableName(typeof(Bam.Net.UserAccounts.Data.TreeNode));
 				object[] value = Bam.Net.UserAccounts.Data.TreeNode.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

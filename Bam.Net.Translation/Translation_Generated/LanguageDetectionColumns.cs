@@ -35,6 +35,13 @@ namespace Bam.Net.Translation
                 return new LanguageDetectionColumns("Uuid");
             }
         }
+        public LanguageDetectionColumns Cuid
+        {
+            get
+            {
+                return new LanguageDetectionColumns("Cuid");
+            }
+        }
         public LanguageDetectionColumns Detector
         {
             get

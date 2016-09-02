@@ -1,15 +1,8 @@
 /*
 	Copyright © Bryan Apellanes 2015  
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web;
-using Bam.Net;
-using Bam.Net.Configuration;
-//using Bam.Net;
 using System.IO;
+using Bam.Net.Configuration;
 
 namespace Bam.Net.Logging
 {

@@ -141,9 +141,13 @@
     <Compile Include="ContinuousIntegration\continuousIntegration_Generated\BuildJob.cs" />
     <Compile Include="ContinuousIntegration\continuousIntegration_Generated\BuildJobCollection.cs" />
     <Compile Include="ContinuousIntegration\continuousIntegration_Generated\BuildJobColumns.cs" />
+    <Compile Include="ContinuousIntegration\continuousIntegration_Generated\BuildJobPagedQuery.cs" />
+    <Compile Include="ContinuousIntegration\continuousIntegration_Generated\BuildJobQuery.cs" />
     <Compile Include="ContinuousIntegration\continuousIntegration_Generated\BuildResult.cs" />
     <Compile Include="ContinuousIntegration\continuousIntegration_Generated\BuildResultCollection.cs" />
     <Compile Include="ContinuousIntegration\continuousIntegration_Generated\BuildResultColumns.cs" />
+    <Compile Include="ContinuousIntegration\continuousIntegration_Generated\BuildResultPagedQuery.cs" />
+    <Compile Include="ContinuousIntegration\continuousIntegration_Generated\BuildResultQuery.cs" />
     <Compile Include="ContinuousIntegration\continuousIntegration_Generated\ContinuousIntegrationContext.cs" />
     <Compile Include="ContinuousIntegration\continuousIntegration_Generated\Qi\BuildJob.cs" />
     <Compile Include="ContinuousIntegration\continuousIntegration_Generated\Qi\BuildResult.cs" />
@@ -271,10 +275,6 @@
     <ProjectReference Include="..\Bam.Net.Data\Bam.Net.Data.csproj">
       <Project>{3b52b739-58fd-4b49-b815-6b317e701520}</Project>
       <Name>Bam.Net.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Bam.Net.Distributed\Bam.Net.Distributed.csproj">
-      <Project>{35cfb5c2-8456-4d5b-b421-9d91365f783a}</Project>
-      <Name>Bam.Net.Distributed</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Html\Bam.Net.Html.csproj">
       <Project>{795d5552-94d6-4373-b4f1-551b1d5bdafb}</Project>

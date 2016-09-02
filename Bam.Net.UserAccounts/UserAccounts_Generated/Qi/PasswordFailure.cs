@@ -86,7 +86,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(PasswordFailure));
+				query.table = Dao.TableName(typeof(Bam.Net.UserAccounts.Data.PasswordFailure));
 				object value = Bam.Net.UserAccounts.Data.PasswordFailure.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(PasswordFailure));
+				query.table = Dao.TableName(typeof(Bam.Net.UserAccounts.Data.PasswordFailure));
 				object[] value = Bam.Net.UserAccounts.Data.PasswordFailure.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

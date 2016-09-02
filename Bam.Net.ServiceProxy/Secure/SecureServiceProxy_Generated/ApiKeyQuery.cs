@@ -16,6 +16,16 @@ namespace Bam.Net.ServiceProxy.Secure
 		public ApiKeyQuery(WhereDelegate<ApiKeyColumns> where, OrderBy<ApiKeyColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public ApiKeyQuery(Func<ApiKeyColumns, QueryFilter<ApiKeyColumns>> where, OrderBy<ApiKeyColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public ApiKeyQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static ApiKeyQuery Where(WhereDelegate<ApiKeyColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static ApiKeyQuery Where(WhereDelegate<ApiKeyColumns> where, OrderBy<ApiKeyColumns> orderBy = null, Database db = null)
+        {
+            return new ApiKeyQuery(where, orderBy, db);
+        }
 
 		public ApiKeyCollection Execute()
 		{

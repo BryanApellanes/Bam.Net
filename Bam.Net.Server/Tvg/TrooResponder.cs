@@ -11,10 +11,10 @@ using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.Server.Tvg
 {
-    public class TrooResponder : ResponderBase, IInitialize<TrooResponder>
+    public class TrooResponder : RestResponder, IInitialize<TrooResponder>
     {
-        public TrooResponder(BamConf conf, ILogger logger, IRepository repository)
-            : base(conf, logger)
+        public TrooResponder(BamConf conf, IRepository repository, ILogger logger)
+            : base(conf, repository, logger)
         {
             this.RendererFactory = new RendererFactory(logger);
             this.Repository = repository;

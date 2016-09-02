@@ -16,6 +16,16 @@ namespace Bam.Net.Analytics
 		public LoginCounterQuery(WhereDelegate<LoginCounterColumns> where, OrderBy<LoginCounterColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public LoginCounterQuery(Func<LoginCounterColumns, QueryFilter<LoginCounterColumns>> where, OrderBy<LoginCounterColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public LoginCounterQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static LoginCounterQuery Where(WhereDelegate<LoginCounterColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static LoginCounterQuery Where(WhereDelegate<LoginCounterColumns> where, OrderBy<LoginCounterColumns> orderBy = null, Database db = null)
+        {
+            return new LoginCounterQuery(where, orderBy, db);
+        }
 
 		public LoginCounterCollection Execute()
 		{

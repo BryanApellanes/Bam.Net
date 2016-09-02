@@ -60,6 +60,7 @@ namespace Bam.Net.Data.Repositories
 			return instance.CopyAs(TypeFor(instance));
 		}
 
+        static object _genLock = new object();
 		/// <summary>
 		/// Generates an assembly containing Dto's that represent all the 
 		/// Dao's found in the sepecified daoAssembly.  A Dto or (DTO) is
@@ -71,11 +72,14 @@ namespace Bam.Net.Data.Repositories
 		/// <returns></returns>
 		public static GeneratedAssemblyInfo GetGeneratedDtoAssemblyInfo(Assembly daoAssembly, string fileName = null)
 		{
-			DaoToDtoGenerator generator;
-			string defaultFileName = GetDefaultFileName(daoAssembly, out generator);
-			fileName = fileName ?? defaultFileName;
-            GeneratedAssemblyInfo assemblyInfo = GeneratedAssemblyInfo.GetGeneratedAssembly(fileName, generator);
-			return assemblyInfo;
+            lock (_genLock)
+            {
+                DaoToDtoGenerator generator;
+                string defaultFileName = GetDefaultFileName(daoAssembly, out generator);
+                fileName = fileName ?? defaultFileName;
+                GeneratedAssemblyInfo assemblyInfo = GeneratedAssemblyInfo.GetGeneratedAssembly(fileName, generator);
+                return assemblyInfo;
+            }
 		}
 
 		public static string GetDefaultFileName(Assembly daoAssembly)
@@ -94,7 +98,12 @@ namespace Bam.Net.Data.Repositories
 		{
 			DtoModel pocoModel = new DtoModel(dynamicDtoType, nameSpace);
 			string csFile = "{0}.cs"._Format(pocoModel.TypeName);
-			using (StreamWriter sw = new StreamWriter(Path.Combine(writeSourceTo, csFile)))
+            FileInfo csFileInfo = new FileInfo(Path.Combine(writeSourceTo, csFile));
+            if (!csFileInfo.Directory.Exists)
+            {
+                csFileInfo.Directory.Create();
+            }
+			using (StreamWriter sw = new StreamWriter(csFileInfo.FullName))
 			{
 				sw.Write(pocoModel.Render());
 			}

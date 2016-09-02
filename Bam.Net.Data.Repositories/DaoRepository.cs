@@ -5,29 +5,27 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using Bam.Net.Data;
-using Bam.Net.Logging;
-using System.Linq;
 using System.Linq.Expressions;
-using Bam.Net.Data;
-using Bam.Net.Data.Repositories;
+using System.Reflection;
 using Bam.Net.Data.Schema;
+using Bam.Net.Logging;
 
 namespace Bam.Net.Data.Repositories
 {
-	/// <summary>
-	/// A repository that will generate an underlying Dao
-	/// for the types added.  Any values returned by a 
-	/// call to Query will not be fully hydrated (child lists
-	/// won't be populated).  To ensure full hydration of
-	/// the values call Retrieve(id) or Retrieve(uuid).
-	/// </summary>
-	public class DaoRepository : Repository, IGeneratesDaoAssembly, IHasTypeSchemaTempPathProvider
+    /// <summary>
+    /// A repository that will generate an underlying Dao
+    /// for the types added.  Any values returned by a 
+    /// call to Query will not be fully hydrated (child lists
+    /// won't be populated).  To ensure full hydration of
+    /// the values call Retrieve(id) or Retrieve(uuid).
+    /// </summary>
+    public class DaoRepository : Repository, IGeneratesDaoAssembly, IHasTypeSchemaTempPathProvider
     {
+        /// <summary>
+        /// Create an instance of DaoRepository
+        /// </summary>
+        /// <param name="tableNameProvider"></param>
+        /// <param name="schemaTempPathProvider"></param>
         public DaoRepository(ITypeTableNameProvider tableNameProvider = null, Func<SchemaDefinition, TypeSchema, string> schemaTempPathProvider = null)
         {
             TypeDaoGenerator = new TypeDaoGenerator();
@@ -526,7 +524,7 @@ namespace Bam.Net.Data.Repositories
 		/// <returns></returns>
 		public Type GetWrapperType(Type baseOrWrapperType)
 		{
-			if (baseOrWrapperType.Name.EndsWith("Wrapper"))
+			if (baseOrWrapperType == null || baseOrWrapperType.Name.EndsWith("Wrapper"))
 			{
 				return baseOrWrapperType;
 			}
@@ -933,7 +931,7 @@ namespace Bam.Net.Data.Repositories
 
         private void WarnRetrieveAll(Type type)
         {
-            string msgSignature = "Use of this method ({0}) can have a potential detrimental performance hit because it will retrieve all records for type ({1}) to execute the predicate against each";
+            string msgSignature = "Use of this method ({0}) can have a potential detrimental performance hit because it will retrieve all records for type ({1})";
             string[] messageArgs = new string[] { "RetrieveAll", type.Name };
             Logger.AddEntry(msgSignature, LogEventType.Warning, messageArgs);
             if (WarningsAsErrors)

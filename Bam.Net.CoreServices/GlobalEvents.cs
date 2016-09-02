@@ -24,7 +24,7 @@ namespace Bam.Net.CoreServices
             src.SubscribeOnce(eventName, (o, a) =>
             {
                 EventMessage msg = new EventMessage { Name = eventName, Created = DateTime.UtcNow, Json = a?.ToJson(), Sender = o, EventArgs = a };
-                FireListenersAsync(src.GetType(), eventName, o, new EventSourceArgs { EventMessage = msg });
+                FireListenersAsync(src.GetType(), eventName, o, new EventSourceServiceArgs { EventMessage = msg });
             });
             Subscribe(src.GetType(), eventName, listener);
         }

@@ -10,6 +10,6 @@ namespace Bam.Net.Caching
     {
         public string TypeName { get { return Type.Name; } }
         public Type Type { get; set; }
-        public ConcurrentCache Cache { get; set; }
+        public Cache Cache { get; set; }
     }
 }

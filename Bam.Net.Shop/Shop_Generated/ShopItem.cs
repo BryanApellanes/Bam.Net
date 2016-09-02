@@ -47,6 +47,7 @@ namespace Bam.Net.Shop
 			this.SetChildren();
 		}
 
+		[Bam.Net.Exclude]
 		public static implicit operator ShopItem(DataRow data)
 		{
 			return new ShopItem(data);
@@ -174,7 +175,7 @@ namespace Bam.Net.Shop
 
 				
 
-	[Exclude]	
+	[Bam.Net.Exclude]	
 	public ShoppingCartItemCollection ShoppingCartItemsByShopItemId
 	{
 		get
@@ -198,7 +199,7 @@ namespace Bam.Net.Shop
 		}
 	}
 	
-	[Exclude]	
+	[Bam.Net.Exclude]	
 	public PriceCollection PricesByShopItemId
 	{
 		get
@@ -222,7 +223,7 @@ namespace Bam.Net.Shop
 		}
 	}
 	
-	[Exclude]	
+	[Bam.Net.Exclude]	
 	public ShoppingListShopItemCollection ShoppingListShopItemsByShopItemId
 	{
 		get
@@ -246,7 +247,7 @@ namespace Bam.Net.Shop
 		}
 	}
 	
-	[Exclude]	
+	[Bam.Net.Exclude]	
 	public ShopShopItemCollection ShopShopItemsByShopItemId
 	{
 		get
@@ -270,7 +271,7 @@ namespace Bam.Net.Shop
 		}
 	}
 	
-	[Exclude]	
+	[Bam.Net.Exclude]	
 	public ShopItemShopItemAttributeCollection ShopItemShopItemAttributesByShopItemId
 	{
 		get
@@ -294,7 +295,7 @@ namespace Bam.Net.Shop
 		}
 	}
 	
-	[Exclude]	
+	[Bam.Net.Exclude]	
 	public ShopItemPromotionCollection ShopItemPromotionsByShopItemId
 	{
 		get
@@ -419,7 +420,8 @@ namespace Bam.Net.Shop
 		/// Gets a query filter that should uniquely identify
 		/// the current instance.  The default implementation
 		/// compares the Id/key field to the current instance's.
-		/// </summary> 
+		/// </summary>
+		[Bam.Net.Exclude] 
 		public override IQueryFilter GetUniqueFilter()
 		{
 			if(UniqueFilterProvider != null)
@@ -449,12 +451,13 @@ namespace Bam.Net.Shop
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<ShopItem>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				ShopItemColumns columns = new ShopItemColumns();
-				var orderBy = Order.By<ShopItemColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<ShopItemColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -466,19 +469,21 @@ namespace Bam.Net.Shop
 					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
 				}
 			});			
-		}	 
-
+		}
+			 
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<ShopItem>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
 
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<ShopItemColumns> where, Action<IEnumerable<ShopItem>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				ShopItemColumns columns = new ShopItemColumns();
-				var orderBy = Order.By<ShopItemColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<ShopItemColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -512,11 +517,13 @@ namespace Bam.Net.Shop
 			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
+		[Bam.Net.Exclude]
 		public static ShopItemCollection Query(QueryFilter filter, Database database = null)
 		{
 			return Where(filter, database);
 		}
-				
+
+		[Bam.Net.Exclude]		
 		public static ShopItemCollection Where(QueryFilter filter, Database database = null)
 		{
 			WhereDelegate<ShopItemColumns> whereDelegate = (c) => filter;
@@ -531,6 +538,7 @@ namespace Bam.Net.Shop
 		/// between ShopItemColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static ShopItemCollection Where(Func<ShopItemColumns, QueryFilter<ShopItemColumns>> where, OrderBy<ShopItemColumns> orderBy = null, Database database = null)
 		{
 			database = database ?? Db.For<ShopItem>();
@@ -545,6 +553,7 @@ namespace Bam.Net.Shop
 		/// between ShopItemColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static ShopItemCollection Where(WhereDelegate<ShopItemColumns> where, Database database = null)
 		{		
 			database = database ?? Db.For<ShopItem>();
@@ -563,6 +572,7 @@ namespace Bam.Net.Shop
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static ShopItemCollection Where(WhereDelegate<ShopItemColumns> where, OrderBy<ShopItemColumns> orderBy = null, Database database = null)
 		{		
 			database = database ?? Db.For<ShopItem>();
@@ -589,6 +599,7 @@ namespace Bam.Net.Shop
 		/// one will be created; success will depend on the nullability
 		/// of the specified columns.
 		/// </summary>
+		[Bam.Net.Exclude]
 		public static ShopItem GetOneWhere(QueryFilter where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -607,6 +618,7 @@ namespace Bam.Net.Shop
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static ShopItem OneWhere(QueryFilter where, Database database = null)
 		{
 			WhereDelegate<ShopItemColumns> whereDelegate = (c) => where;
@@ -621,6 +633,7 @@ namespace Bam.Net.Shop
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static ShopItem GetOneWhere(WhereDelegate<ShopItemColumns> where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -645,6 +658,7 @@ namespace Bam.Net.Shop
 		/// between ShopItemColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static ShopItem OneWhere(WhereDelegate<ShopItemColumns> where, Database database = null)
 		{
 			var result = Top(1, where, database);
@@ -674,6 +688,7 @@ namespace Bam.Net.Shop
 		/// between ShopItemColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static ShopItem FirstOneWhere(WhereDelegate<ShopItemColumns> where, Database database = null)
 		{
 			var results = Top(1, where, database);
@@ -696,6 +711,7 @@ namespace Bam.Net.Shop
 		/// between ShopItemColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static ShopItem FirstOneWhere(WhereDelegate<ShopItemColumns> where, OrderBy<ShopItemColumns> orderBy, Database database = null)
 		{
 			var results = Top(1, where, orderBy, database);
@@ -717,6 +733,7 @@ namespace Bam.Net.Shop
 		/// between ShopItemColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static ShopItem FirstOneWhere(QueryFilter where, OrderBy<ShopItemColumns> orderBy = null, Database database = null)
 		{
 			WhereDelegate<ShopItemColumns> whereDelegate = (c) => where;
@@ -745,6 +762,7 @@ namespace Bam.Net.Shop
 		/// between ShopItemColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static ShopItemCollection Top(int count, WhereDelegate<ShopItemColumns> where, Database database = null)
 		{
 			return Top(count, where, null, database);
@@ -767,6 +785,7 @@ namespace Bam.Net.Shop
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static ShopItemCollection Top(int count, WhereDelegate<ShopItemColumns> where, OrderBy<ShopItemColumns> orderBy, Database database = null)
 		{
 			ShopItemColumns c = new ShopItemColumns();
@@ -788,6 +807,7 @@ namespace Bam.Net.Shop
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static ShopItemCollection Top(int count, QueryFilter where, Database database)
 		{
 			return Top(count, where, null, database);
@@ -809,6 +829,7 @@ namespace Bam.Net.Shop
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static ShopItemCollection Top(int count, QueryFilter where, OrderBy<ShopItemColumns> orderBy = null, Database database = null)
 		{
 			Database db = database ?? Db.For<ShopItem>();
@@ -876,6 +897,7 @@ namespace Bam.Net.Shop
 		/// between ShopItemColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<ShopItemColumns> where, Database database = null)
 		{
 			ShopItemColumns c = new ShopItemColumns();
@@ -888,6 +910,16 @@ namespace Bam.Net.Shop
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
 		}
+		 
+		public static long Count(QiQuery where, Database database = null)
+		{
+		    Database db = database ?? Db.For<ShopItem>();
+			QuerySet query = GetQuerySet(db);	 
+			query.Count<ShopItem>();
+			query.Where(where);	  
+			query.Execute(db);
+			return query.Results.As<CountResult>(0).Value;
+		} 		
 
 		private static ShopItem CreateFromFilter(IQueryFilter filter, Database database = null)
 		{

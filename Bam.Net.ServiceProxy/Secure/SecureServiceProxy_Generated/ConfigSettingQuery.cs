@@ -16,6 +16,16 @@ namespace Bam.Net.ServiceProxy.Secure
 		public ConfigSettingQuery(WhereDelegate<ConfigSettingColumns> where, OrderBy<ConfigSettingColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public ConfigSettingQuery(Func<ConfigSettingColumns, QueryFilter<ConfigSettingColumns>> where, OrderBy<ConfigSettingColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public ConfigSettingQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static ConfigSettingQuery Where(WhereDelegate<ConfigSettingColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static ConfigSettingQuery Where(WhereDelegate<ConfigSettingColumns> where, OrderBy<ConfigSettingColumns> orderBy = null, Database db = null)
+        {
+            return new ConfigSettingQuery(where, orderBy, db);
+        }
 
 		public ConfigSettingCollection Execute()
 		{

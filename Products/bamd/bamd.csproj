@@ -130,10 +130,6 @@
       <Project>{3b52b739-58fd-4b49-b815-6b317e701520}</Project>
       <Name>Bam.Net.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Bam.Net.Distributed\Bam.Net.Distributed.csproj">
-      <Project>{35cfb5c2-8456-4d5b-b421-9d91365f783a}</Project>
-      <Name>Bam.Net.Distributed</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Bam.Net.Drawing\Bam.Net.Drawing.csproj">
       <Project>{1db5bac4-f6fd-48d7-a89a-228f41036b78}</Project>
       <Name>Bam.Net.Drawing</Name>

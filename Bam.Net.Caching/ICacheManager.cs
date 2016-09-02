@@ -10,10 +10,10 @@ namespace Bam.Net.Caching
         event EventHandler CacheSet;
         event EventHandler GetCacheFailed;
 
-        ConcurrentCache CacheFor(Type type);
-        void CacheFor(Type type, ConcurrentCache cache);
-        ConcurrentCache CacheFor<T>();
-        void CacheFor<T>(ConcurrentCache cache);
+        Cache CacheFor(Type type);
+        void CacheFor(Type type, Cache cache);
+        Cache CacheFor<T>();
+        void CacheFor<T>(Cache cache);
         void Clear();
     }
 }

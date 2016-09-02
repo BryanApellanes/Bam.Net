@@ -22,6 +22,10 @@ namespace troo
             AddValidArgument("fromNameSpace", false, addAcronym: true, description: "The namespace containing types to generate daos for");
             AddValidArgument("toNameSpace", false, addAcronym: true, description: "The namespace to write generated daos into");
             AddValidArgument("writeTo", false, addAcronym: true, description: "Copy the resulting assembly to the specified directory");
+            AddValidArgument("writeSrc", false, addAcronym: true, description: "The path to write source files to");
+            AddValidArgument("schemaRepositoryName", false, addAcronym: true, description: "The name to assign to the schema repository");
+            AddValidArgument("checkForIds", false, addAcronym: true, description: "Check the specified data classes for Id properties");
+            AddValidArgument("useInheritanceSchema", false, addAcronym: true, description: "If yes the generated Repository will inherit from DatabaseRepository otherwise DaoRepository");
         }
     }
 }

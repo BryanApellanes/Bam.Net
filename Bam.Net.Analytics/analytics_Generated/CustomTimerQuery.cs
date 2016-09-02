@@ -16,6 +16,16 @@ namespace Bam.Net.Analytics
 		public CustomTimerQuery(WhereDelegate<CustomTimerColumns> where, OrderBy<CustomTimerColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public CustomTimerQuery(Func<CustomTimerColumns, QueryFilter<CustomTimerColumns>> where, OrderBy<CustomTimerColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public CustomTimerQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static CustomTimerQuery Where(WhereDelegate<CustomTimerColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static CustomTimerQuery Where(WhereDelegate<CustomTimerColumns> where, OrderBy<CustomTimerColumns> orderBy = null, Database db = null)
+        {
+            return new CustomTimerQuery(where, orderBy, db);
+        }
 
 		public CustomTimerCollection Execute()
 		{

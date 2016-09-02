@@ -52,27 +52,12 @@ namespace Bam.Net.Encryption
             this.Cipher = Encrypt();
         }
 
-        //protected void SetKeyAndIV(string keySeed, string initializationVectorSeed)
-        //{
-        //    string passwordHash = keySeed.Sha1();
-        //    string ivHash = initializationVectorSeed.Sha1();
-        //    this.Key = Encoding.UTF8.GetBytes(passwordHash.First(16));
-        //    this.IV = Encoding.UTF8.GetBytes(ivHash.First(16));
-        //}
-
         public Encrypted(byte[] cipher, byte[] key, byte[] iv)
         {
             this.Key = key;
             this.Cipher = cipher;
             this.IV = iv;
         }
-
-        //public Encrypted(byte[] cipher, byte[] key, string iv)
-        //{
-        //    this.Key = key;
-        //    this.IV = Encoding.UTF8.GetBytes(iv);
-        //    this.Cipher = cipher;
-        //}
 
         public static implicit operator string(Encrypted enc)
         {
@@ -173,35 +158,7 @@ namespace Bam.Net.Encryption
         protected byte[] Encrypt()
         {
             Base64Cipher = Aes.Encrypt(string.Concat(Plain, Salt), Base64Key, Base64IV);
-            //byte[] data = Encoding.UTF8.GetBytes(string.Concat(Plain, Salt));
-            //Cipher = GetBytes(data, Key, IV);
             return Cipher;
         }
-
-        //public static byte[] GetBytes(byte[] data, byte[] key, byte[] iv)
-        //{
-        //    byte[] encryptedData;
-
-        //    using (SymmetricAlgorithm aes = SymmetricAlgorithm.Create())
-        //    {
-        //        aes.Mode = CipherMode.CBC;
-        //        aes.Key = key;
-        //        aes.IV = iv;
-        //        aes.Padding = PaddingMode.PKCS7;
-        //        ICryptoTransform encryptor = aes.CreateEncryptor();
-        //        using (MemoryStream mStream = new MemoryStream())
-        //        {
-        //            using (CryptoStream cStream = new CryptoStream(mStream, encryptor, CryptoStreamMode.Write))
-        //            {
-        //                cStream.Write(data, 0, data.Length);
-        //                cStream.FlushFinalBlock();
-        //                encryptedData = mStream.ToArray();
-        //            }
-        //        }
-        //    }
-
-        //    return encryptedData;
-        //}
-
     }
 }

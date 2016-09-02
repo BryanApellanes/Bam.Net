@@ -16,6 +16,16 @@ namespace Bam.Net.Analytics
 		public FeatureQuery(WhereDelegate<FeatureColumns> where, OrderBy<FeatureColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public FeatureQuery(Func<FeatureColumns, QueryFilter<FeatureColumns>> where, OrderBy<FeatureColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public FeatureQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static FeatureQuery Where(WhereDelegate<FeatureColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static FeatureQuery Where(WhereDelegate<FeatureColumns> where, OrderBy<FeatureColumns> orderBy = null, Database db = null)
+        {
+            return new FeatureQuery(where, orderBy, db);
+        }
 
 		public FeatureCollection Execute()
 		{

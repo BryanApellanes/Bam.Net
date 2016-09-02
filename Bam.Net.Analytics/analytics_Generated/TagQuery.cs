@@ -16,6 +16,16 @@ namespace Bam.Net.Analytics
 		public TagQuery(WhereDelegate<TagColumns> where, OrderBy<TagColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public TagQuery(Func<TagColumns, QueryFilter<TagColumns>> where, OrderBy<TagColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public TagQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static TagQuery Where(WhereDelegate<TagColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static TagQuery Where(WhereDelegate<TagColumns> where, OrderBy<TagColumns> orderBy = null, Database db = null)
+        {
+            return new TagQuery(where, orderBy, db);
+        }
 
 		public TagCollection Execute()
 		{

@@ -16,6 +16,16 @@ namespace Bam.Net.Analytics
 		public CategoryQuery(WhereDelegate<CategoryColumns> where, OrderBy<CategoryColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public CategoryQuery(Func<CategoryColumns, QueryFilter<CategoryColumns>> where, OrderBy<CategoryColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public CategoryQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static CategoryQuery Where(WhereDelegate<CategoryColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static CategoryQuery Where(WhereDelegate<CategoryColumns> where, OrderBy<CategoryColumns> orderBy = null, Database db = null)
+        {
+            return new CategoryQuery(where, orderBy, db);
+        }
 
 		public CategoryCollection Execute()
 		{

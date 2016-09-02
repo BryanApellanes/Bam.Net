@@ -121,7 +121,7 @@ namespace Bam.Net.ServiceProxy.Tests
         public static void ClientTestSetup()
         {
             RegisterDb();
-            ApiKeyManager.Default.UserResolver = new TestUserResolver();
+            LocalApiKeyManager.Default.UserResolver = new TestUserResolver();
         }
 
         [UnitTest] // RegisterDb is defined in Program.cs
@@ -148,7 +148,7 @@ namespace Bam.Net.ServiceProxy.Tests
             ApiKeyResolver resolver = new ApiKeyResolver(keyProvider, new TestApplicationNameProvider(testName));
             resolver.SetToken(nvc, data);
 
-            Expect.IsNotNullOrEmpty(nvc[ApiKeyResolver.KeyTokenName], "Key token was not set");
+            Expect.IsNotNullOrEmpty(nvc[ApiParameters.KeyTokenName], "Key token was not set");
 			ClearApps();
         }
 
@@ -165,7 +165,7 @@ namespace Bam.Net.ServiceProxy.Tests
 
             resolver.SetToken(nvc, data);
 
-            string token = nvc[ApiKeyResolver.KeyTokenName];
+            string token = nvc[ApiParameters.KeyTokenName];
             bool isValid = resolver.IsValidToken(data, token);
             Expect.IsTrue(isValid, "token was not valid");
 			ClearApps();

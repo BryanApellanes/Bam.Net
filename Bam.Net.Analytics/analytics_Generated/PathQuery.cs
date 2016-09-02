@@ -16,6 +16,16 @@ namespace Bam.Net.Analytics
 		public PathQuery(WhereDelegate<PathColumns> where, OrderBy<PathColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public PathQuery(Func<PathColumns, QueryFilter<PathColumns>> where, OrderBy<PathColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public PathQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static PathQuery Where(WhereDelegate<PathColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static PathQuery Where(WhereDelegate<PathColumns> where, OrderBy<PathColumns> orderBy = null, Database db = null)
+        {
+            return new PathQuery(where, orderBy, db);
+        }
 
 		public PathCollection Execute()
 		{

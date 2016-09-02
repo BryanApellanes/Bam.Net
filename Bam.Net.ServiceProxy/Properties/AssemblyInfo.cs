@@ -39,6 +39,8 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("Bam.Net.Html")]
 [assembly: InternalsVisibleTo("Bam.Net.Automation.Tests")]
 [assembly: InternalsVisibleTo("Bam.Net.Server")]
+[assembly: InternalsVisibleTo("Bam.Net.CoreServices")]
+[assembly: InternalsVisibleTo("Bam.Net.CoreServices.Tests")]
 [assembly: InternalsVisibleTo("Bam.Net.Server.Tests")]
 [assembly: InternalsVisibleTo("Bam.Net.ServiceProxy.Tests")]
 [assembly: AssemblyVersion("1.3.4")]

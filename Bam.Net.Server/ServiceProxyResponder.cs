@@ -213,6 +213,12 @@ namespace Bam.Net.Server
                 CommonServiceAdded(type, instance);
             }
         }
+
+        public void AddCommoneService(Type type, Func<object> instanciator)
+        {
+            _commonServiceProvider.Set(type, instanciator);
+            OnCommonServiceAdded(type, instanciator());
+        }
         /// <summary>
         /// Add the specified instance as an executor
         /// </summary>
@@ -609,8 +615,8 @@ namespace Bam.Net.Server
             }
 
             string[] classNames = request.QueryString["classes"] == null ? combined.ClassNames : request.QueryString["classes"].DelimitSplit(",", ";");
-
-            StringBuilder csharpCode = ServiceProxySystem.GenerateCSharpProxyCode(defaultBaseAddress, classNames, nameSpace, contractNameSpace, combined);
+            
+            StringBuilder csharpCode = ServiceProxySystem.GenerateCSharpProxyCode(defaultBaseAddress, classNames, nameSpace, contractNameSpace, combined, this.Logger);
 
             response.Headers.Add("Content-Disposition", "attachment;filename=" + nameSpace + ".cs");
             response.Headers.Add("Content-Type", "text/plain");

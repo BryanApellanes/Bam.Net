@@ -16,6 +16,16 @@ namespace Bam.Net.Analytics
 		public ClickCounterQuery(WhereDelegate<ClickCounterColumns> where, OrderBy<ClickCounterColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public ClickCounterQuery(Func<ClickCounterColumns, QueryFilter<ClickCounterColumns>> where, OrderBy<ClickCounterColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public ClickCounterQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static ClickCounterQuery Where(WhereDelegate<ClickCounterColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static ClickCounterQuery Where(WhereDelegate<ClickCounterColumns> where, OrderBy<ClickCounterColumns> orderBy = null, Database db = null)
+        {
+            return new ClickCounterQuery(where, orderBy, db);
+        }
 
 		public ClickCounterCollection Execute()
 		{

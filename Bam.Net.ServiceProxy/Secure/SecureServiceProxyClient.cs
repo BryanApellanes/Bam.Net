@@ -20,6 +20,7 @@ using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Security;
 using System.IO;
+using System.Reflection;
 
 namespace Bam.Net.ServiceProxy.Secure
 {
@@ -41,29 +42,9 @@ namespace Bam.Net.ServiceProxy.Secure
             this.Initialize();
         }
 
-        private void Initialize()
-        {            
-            this.InvokingMethod += (s, a) =>
-            {
-                TryStartSession();
-            };
-        }
-
-        private void TryStartSession()
-        {
-            try
-            {
-                StartSession();
-            }
-            catch (Exception ex)
-            {
-                SessionStartException = ex;
-            }
-        }
-
-        ApiKeyResolver _apiKeyResolver;
+        IApiKeyResolver _apiKeyResolver;
         object _apiKeyResolverSync = new object();
-        public ApiKeyResolver ApiKeyResolver
+        public IApiKeyResolver ApiKeyResolver
         {
             get
             {
@@ -92,34 +73,80 @@ namespace Bam.Net.ServiceProxy.Secure
         public Cookie SessionCookie
         {
             get;
-            protected set;
+            protected internal set;
         }
 
         ClientSessionInfo _sessionInfo;
-        protected internal ClientSessionInfo SessionInfo
+        public ClientSessionInfo SessionInfo
         {
             get
             {
                 return _sessionInfo;
             }
-            internal set
+            set
             {
                 _sessionInfo = value;
             }
         }
-
-        protected bool RequiresApiKey
+        Type _type;
+        /// <summary>
+        /// The proxied type
+        /// </summary>
+        protected Type Type
         {
             get
             {
-                return typeof(T).HasCustomAttributeOfType<ApiKeyRequiredAttribute>();
+                if (_type == null)
+                {
+                    _type = GetType();
+                    if (IsSecureServiceProxyClient)
+                    {
+                        _type = _type.GetGenericArguments().Single();
+                    }
+                }
+                return _type;
             }
+        }
+
+        /// <summary>
+        /// Return true if the current instance is
+        /// a SecureServiceProxyClient and not an
+        /// inheriting class instance
+        /// </summary>
+        protected bool IsSecureServiceProxyClient
+        {
+            get
+            {
+                if (Type.Name.Equals("SecureServiceProxyClient`1")) // Can this hackishness be avoided?
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        protected internal bool TypeRequiresApiKey
+        {
+            get
+            {                
+                return Type.HasCustomAttributeOfType<ApiKeyRequiredAttribute>();
+            }
+        }
+
+        protected internal bool MethodRequiresApiKey(string methodName)
+        {
+            MethodInfo method = Type.GetMethod(methodName);
+            if(method == null)
+            {
+                return false;
+            }
+            return method.HasCustomAttributeOfType<ApiKeyRequiredAttribute>();
         }
 
         /// <summary>
         /// The key for the current session.
         /// </summary>
-        protected string SessionKey
+        protected internal string SessionKey
         {
             get;
             set;
@@ -128,7 +155,7 @@ namespace Bam.Net.ServiceProxy.Secure
         /// <summary>
         /// The initialization vector for the current session
         /// </summary>
-        protected string SessionIV
+        protected internal string SessionIV
         {
             get;
             set;
@@ -178,9 +205,6 @@ namespace Bam.Net.ServiceProxy.Secure
 
                         try
                         {
-                            // client.startSession->server
-                            //SecureChannelMessage<SessionInfo> response = this.Get<SecureChannelMessage<SessionInfo>>(typeof(SecureChannelServer).Name, "StartSession", new object[] { });
-                            //"{BaseAddress}{Verb}/{ClassName}/{MethodName}.json?{Parameters}";
                             HttpWebRequest request = GetServiceProxyRequest<SecureChannel>(ServiceProxyVerbs.GET, "InitSession", new Instant());
 
                             using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
@@ -268,7 +292,10 @@ namespace Bam.Net.ServiceProxy.Secure
                 HttpArgs args = new HttpArgs();
                 args.ParseJson(jsonParams);
 
-                ApiKeyResolver.SetToken(request, ApiParameters.GetStringToHash(actualClassName, actualMethodName, args["jsonParams"]));
+                if (TypeRequiresApiKey || MethodRequiresApiKey(actualMethodName))
+                {
+                    ApiKeyResolver.SetToken(request, ApiParameters.GetStringToHash(actualClassName, actualMethodName, args["jsonParams"]));
+                }
             }
             return base.Post(baseAddress, className, methodName, parameters, request);
         }
@@ -301,11 +328,6 @@ namespace Bam.Net.ServiceProxy.Secure
             return CreateValidationToken(jsonParamsString, publicKeyPem);
         }
 
-        private static ValidationToken CreateValidationToken(string jsonParamsString, string publicKeyPem)
-        {
-            return ApiValidation.CreateValidationToken(jsonParamsString, publicKeyPem);
-        }
-        
         protected internal override HttpWebRequest GetServiceProxyRequest(ServiceProxyVerbs verb, string className, string methodName, string queryStringParameters = "")
         {
             HttpWebRequest request = base.GetServiceProxyRequest(verb, className, methodName, queryStringParameters);           
@@ -317,6 +339,10 @@ namespace Bam.Net.ServiceProxy.Secure
             else
             {
                 request.Headers.Add(ServiceProxySystem.SecureSessionName, SessionCookie.Value);
+            }
+            if (ClientApplicationNameProvider != null)
+            {
+                request.Headers[ApplicationNameHeader] = ClientApplicationNameProvider.GetApplicationName();
             }
             return request;
         }
@@ -350,5 +376,29 @@ namespace Bam.Net.ServiceProxy.Secure
             request = new SetSessionKeyRequest(keyCipher, keyHashCipher, ivCipher, ivHashCipher);
         }
 
+        private static ValidationToken CreateValidationToken(string jsonParamsString, string publicKeyPem)
+        {
+            return ApiValidation.CreateValidationToken(jsonParamsString, publicKeyPem);
+        }
+
+        private void Initialize()
+        {
+            this.InvokingMethod += (s, a) =>
+            {
+                TryStartSession();
+            };
+        }
+
+        private void TryStartSession()
+        {
+            try
+            {
+                StartSession();
+            }
+            catch (Exception ex)
+            {
+                SessionStartException = ex;
+            }
+        }
     }
 }

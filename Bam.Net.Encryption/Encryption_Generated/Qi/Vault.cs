@@ -86,7 +86,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Vault));
+				query.table = Dao.TableName(typeof(Bam.Net.Encryption.Vault));
 				object value = Bam.Net.Encryption.Vault.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Vault));
+				query.table = Dao.TableName(typeof(Bam.Net.Encryption.Vault));
 				object[] value = Bam.Net.Encryption.Vault.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

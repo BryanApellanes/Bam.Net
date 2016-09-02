@@ -11,7 +11,7 @@ namespace Bam.Net.Translation
 {
     public interface ITranslationProvider
     {
-        string Translate(long languageIdFrom, long lanugageIdTo, string input);
+        string Translate(long languageIdFrom, long languageIdTo, string input);
         string Translate(string uuidFrom, string uuidTo, string input);
         string Translate(Language from, Language to, string input);
     }

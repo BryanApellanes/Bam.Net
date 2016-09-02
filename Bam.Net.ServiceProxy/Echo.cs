@@ -48,28 +48,28 @@ namespace Bam.Net.ServiceProxy
             return TestStringParameter(value);
         }
 
-        public string TestStringParameter(string value)
+        public virtual string TestStringParameter(string value)
         {
             return value;
         }
 
-        public string TestObjectParameter(EchoData data, string more)
+        public virtual string TestObjectParameter(EchoData data, string more)
         {
             return string.Format("The data was: {0}\r\n***\r\nMore: {1}", data.PropertiesToString(), more);
         }
 
-        public string TestCompoundParameter(TestObject test)
+        public virtual string TestCompoundParameter(TestObject test)
         {
             return string.Format("Name: {0}, Number: {1}, SubNumber: {2}, SubObject: {3}"
                 ._Format(test.Name, test.Number, test.SubNumber, test.SubObject.PropertiesToString()));
         }
 
-        public EchoData TestObjectOut(string value, bool bp = false, int ip = 500)
+        public virtual EchoData TestObjectOut(string value, bool bp = false, int ip = 500)
         {
             return new EchoData { StringProperty = value, BoolProperty = bp, IntProperty = ip };
         }
 
-        public EchoData TestObjectInObjectOut(EchoData data)
+        public virtual EchoData TestObjectInObjectOut(EchoData data)
         {
             return data;
         }

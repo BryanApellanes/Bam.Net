@@ -322,6 +322,11 @@ namespace Bam.Net.ServiceProxy
             string methodUrl = MethodUrlFormat.NamedFormat(new { BaseAddress = BaseAddress, Verb = verb, ClassName = className, MethodName = methodName, Format = Format, Parameters = queryStringParameters, NamedOrNumberd = namedOrNumbered });
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(methodUrl);
             request.CookieContainer = Cookies ?? new CookieContainer();
+            request.UserAgent = UserAgent;
+            Headers.AllKeys.Where(k=> !k.Equals("User-Agent")).Each(key =>
+            {                
+                request.Headers.Add(key, Headers[key]);
+            });
             request.Proxy = null;
             request.Method = verb.ToString();
             

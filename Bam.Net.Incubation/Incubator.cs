@@ -155,9 +155,15 @@ namespace Bam.Net.Incubation
             PropertyInfo[] properties = type.GetProperties();
             foreach (PropertyInfo prop in properties)
             {
-                if (prop.CanWrite && this[prop.PropertyType] != null)
+                object value = this[prop.PropertyType];
+                Delegate getter = value as Delegate;
+                value = getter != null ? getter.DynamicInvoke() : value;
+                // TODO: if value is null add a check for a 
+                // custom attribute (not yet defined) to determine if we should do
+                // Get(prop.PropertyType)
+                if (prop.CanWrite && value != null)
                 {
-                    prop.SetValue(instance, this[prop.PropertyType], null);
+                    prop.SetValue(instance, value, null);
                 }
             }
         }
@@ -280,6 +286,11 @@ namespace Bam.Net.Incubation
             return Get(className, out t);
         }
 
+        public object Get(Type type)
+        {
+            return Get(type, GetCtorParams(type).ToArray());
+        }
+
         public object Get(string className, out Type type)
         {
             type = this[className];
@@ -364,7 +375,11 @@ namespace Bam.Net.Incubation
         {
             if (this[typeof(T)] == null)
             {
-                this[typeof(T)] = Construct<T>();
+                T getInternal = GetInternal<T>();
+                if(getInternal == null)
+                {
+                    this[typeof(T)] = Construct<T>();
+                }
             }
 
             return GetInternal<T>();
@@ -649,7 +664,7 @@ namespace Bam.Net.Incubation
                 {
                     foreach (ParameterInfo paramInfo in parameters)
                     {
-                        object existing = Get(paramInfo.ParameterType, GetCtorParams(paramInfo.ParameterType).ToArray());
+                        object existing = this[paramInfo.ParameterType] ?? Get(paramInfo.ParameterType, GetCtorParams(paramInfo.ParameterType).ToArray());
                         if (existing != null)
                         {
                             ctorParams.Add(existing);

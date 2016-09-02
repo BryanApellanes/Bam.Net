@@ -15,12 +15,12 @@ namespace Bam.Net.Distributed.Tests
 		class TestRing : Ring
 		{
 			public bool SetSlotsWasCalled { get; set; }
-			protected override void InitializeSlots(int count)
+			protected override void InitializeArcs(int count)
 			{
 				SetSlotsWasCalled = true;
 			}
 
-			protected internal override Slot CreateSlot()
+			protected internal override Arc CreateArc()
 			{
 				throw new NotImplementedException();
 			}
@@ -35,7 +35,7 @@ namespace Bam.Net.Distributed.Tests
 				throw new NotImplementedException();
 			}
 
-			protected override Slot FindSlotByKey(int key)
+			protected override Arc FindArcByKey(int key)
 			{
 				throw new NotImplementedException();
 			}
@@ -55,7 +55,7 @@ namespace Bam.Net.Distributed.Tests
 		{
 			ComputeRing ring = new ComputeRing();
 			ring.SetSlotCount(2);
-			Expect.AreEqual(2, ring.Slots.Length);
+			Expect.AreEqual(2, ring.Arcs.Length);
 		}
 
 		[UnitTest]
@@ -66,9 +66,9 @@ namespace Bam.Net.Distributed.Tests
 			ring.SetSlotCount(slotCount);
 			PrintSlots(ring);
 
-			Expect.AreEqual(slotCount, ring.Slots.Length);
+			Expect.AreEqual(slotCount, ring.Arcs.Length);
 			double fullCircle = 360;
-			double endAngle = ring.Slots[ring.Slots.Length - 1].EndAngle;
+			double endAngle = ring.Arcs[ring.Arcs.Length - 1].EndAngle;
 			Expect.AreEqual(fullCircle, endAngle);
 		}
 
@@ -80,15 +80,15 @@ namespace Bam.Net.Distributed.Tests
 			ring.SetSlotCount(slotCount);
 			PrintSlots(ring);
 
-			Expect.AreEqual(slotCount, ring.Slots.Length);
+			Expect.AreEqual(slotCount, ring.Arcs.Length);
 			double fullCircle = 360;
-			double endAngle = ring.Slots[ring.Slots.Length - 1].EndAngle;
+			double endAngle = ring.Arcs[ring.Arcs.Length - 1].EndAngle;
 			Expect.AreEqual(fullCircle, endAngle);
 		}
 
 		private static void PrintSlots(ComputeRing ring)
 		{
-			ring.Slots.Each((s, i) =>
+			ring.Arcs.Each((s, i) =>
 			{
 				OutLineFormat("Slot {0}", ConsoleColor.Blue, i);
 				OutLineFormat("\tstart angle: {0}", ConsoleColor.White, s.StartAngle);
@@ -103,8 +103,8 @@ namespace Bam.Net.Distributed.Tests
 		{
 			int slotCount = RandomNumber.Between(8, 16);
 			ComputeRing ring = new ComputeRing(slotCount);
-			ring.AddComputeNode(new ComputeNode());
-			Expect.AreEqual(slotCount + 1, ring.Slots.Length);
+			ring.AddComputeNode(new ComputeArc());
+			Expect.AreEqual(slotCount + 1, ring.Arcs.Length);
 
 			PrintSlots(ring);
 		}
@@ -112,7 +112,7 @@ namespace Bam.Net.Distributed.Tests
 		[UnitTest]
 		public void ComputeNodeFromCurrentHostShouldBeSelf()
 		{
-			ComputeNode current = ComputeNode.FromCurrentHost();
+			ComputeArc current = ComputeArc.FromCurrentHost();
 			string hostName = Dns.GetHostName();
 			Expect.AreEqual(hostName, current.HostName);
 			object info = current.GetInfo();
@@ -123,7 +123,7 @@ namespace Bam.Net.Distributed.Tests
 		[UnitTest]
 		public void ComputeNodeGetInfoStringsTest()
 		{
-			ComputeNode current = ComputeNode.FromCurrentHost();
+			ComputeArc current = ComputeArc.FromCurrentHost();
 			Dictionary<string, string> info = current.GetInfoDictionary();
 			info.Keys.Each((k) =>
 			{
@@ -144,7 +144,7 @@ namespace Bam.Net.Distributed.Tests
 		[UnitTest]
 		public void ComputeNodeFromCurrentShouldHaveHostname()
 		{
-			ComputeNode current = ComputeNode.FromCurrentHost();
+			ComputeArc current = ComputeArc.FromCurrentHost();
 			Expect.AreEqual(current.HostName, Dns.GetHostName());
 		}
 
@@ -154,18 +154,18 @@ namespace Bam.Net.Distributed.Tests
 			Before();
 			ComputeRing ring = new ComputeRing();
 
-			ComputeNode node = new ComputeNode();
+			ComputeArc node = new ComputeArc();
 			node.HostName = "HostName_".RandomLetters(4);
 			ring.AddComputeNode(node);
-			Expect.AreEqual(1, ring.Slots.Length);
+			Expect.AreEqual(1, ring.Arcs.Length);
 
-			ComputeNode check = ring.Slots[0].GetProvider<ComputeNode>();
+			ComputeArc check = ring.Arcs[0].GetProvider<ComputeArc>();
 			Expect.IsNotNull(check);
 
 			ring.SetSlotCount(3);
 
-			Expect.AreEqual(3, ring.Slots.Length);
-			check = ring.Slots[0].GetProvider<ComputeNode>();
+			Expect.AreEqual(3, ring.Arcs.Length);
+			check = ring.Arcs[0].GetProvider<ComputeArc>();
 
 			Expect.AreEqual(node.HostName, check.HostName);
 

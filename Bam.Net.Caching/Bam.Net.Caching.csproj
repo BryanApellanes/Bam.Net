@@ -63,10 +63,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConcurrentCache.cs" />
+    <Compile Include="Cache.cs" />
     <Compile Include="CacheEventArgs.cs" />
     <Compile Include="CacheItem.cs" />
-    <Compile Include="ConcurrentCacheManager.cs" />
+    <Compile Include="CacheManager.cs" />
     <Compile Include="CacheManagerEventArgs.cs" />
     <Compile Include="DeleteNotSupportedException.cs" />
     <Compile Include="Extensions.cs" />

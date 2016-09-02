@@ -16,6 +16,16 @@ namespace Bam.Net.Logging.Data
 		public CategoryNameQuery(WhereDelegate<CategoryNameColumns> where, OrderBy<CategoryNameColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public CategoryNameQuery(Func<CategoryNameColumns, QueryFilter<CategoryNameColumns>> where, OrderBy<CategoryNameColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public CategoryNameQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static CategoryNameQuery Where(WhereDelegate<CategoryNameColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static CategoryNameQuery Where(WhereDelegate<CategoryNameColumns> where, OrderBy<CategoryNameColumns> orderBy = null, Database db = null)
+        {
+            return new CategoryNameQuery(where, orderBy, db);
+        }
 
 		public CategoryNameCollection Execute()
 		{

@@ -86,7 +86,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(DirectMessage));
+				query.table = Dao.TableName(typeof(Bam.Net.Messaging.Data.DirectMessage));
 				object value = Bam.Net.Messaging.Data.DirectMessage.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(DirectMessage));
+				query.table = Dao.TableName(typeof(Bam.Net.Messaging.Data.DirectMessage));
 				object[] value = Bam.Net.Messaging.Data.DirectMessage.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

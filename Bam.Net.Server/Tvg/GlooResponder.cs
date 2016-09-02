@@ -9,6 +9,7 @@ using Bam.Net.Server.Rest;
 using Bam.Net.Server.Renderers;
 using Bam.Net.ServiceProxy;
 using Bam.Net.Server.Rpc;
+using Bam.Net.ServiceProxy.Secure;
 
 namespace Bam.Net.Server.Tvg
 {
@@ -58,8 +59,9 @@ namespace Bam.Net.Server.Tvg
         public override void Initialize()
         {
             OnInitializing();
-            ServiceProxyResponder.Initialize();
-            RpcResponder.Initialize();
+            //ServiceProxyResponder.Initialize();
+            //RpcResponder.Initialize();
+            //ServiceProxyResponder.RemoveCommonService<BamApplicationManager>();
             base.Initialize();
             OnInitialized();
         }

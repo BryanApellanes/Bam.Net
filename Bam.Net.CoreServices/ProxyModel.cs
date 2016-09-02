@@ -31,9 +31,20 @@ namespace Bam.Net.CoreServices
         public string Host { get; private set; }
         public string Protocol { get; set; }
         public int Port { get; set; }
-
+        public string[] Usings
+        {
+            get
+            {
+                HashSet<string> usings = new HashSet<string>();
+                foreach (string u in Methods.Select(pmm => $"using {pmm.MethodGenerationInfo.Method.ReturnType.Namespace};"))
+                {
+                    usings.Add(u);
+                }
+                return usings.ToArray();
+            }
+        }
         public string TypeName { get { return BaseType.Name; } }
-
+        public string Interfaces { get; set; }
         public ProxyMethodModel[] Methods
         {
             get
@@ -63,7 +74,7 @@ namespace Bam.Net.CoreServices
             {
                 HashSet<Assembly> assemblies = new HashSet<Assembly>();
                 assemblies.Add(typeof(ProxyModel).Assembly);
-                ServiceGenerationInfo.ReferenceAssemblies.Each(a => assemblies.Add(a));
+                ServiceGenerationInfo.ReferenceAssemblies.Each(new { Assemblies = assemblies }, (ctx, a) => ctx.Assemblies.Add(a));
                 return assemblies.ToArray();
             }
         }

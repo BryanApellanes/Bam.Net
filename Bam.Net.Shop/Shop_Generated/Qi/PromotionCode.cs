@@ -86,7 +86,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(PromotionCode));
+				query.table = Dao.TableName(typeof(Bam.Net.Shop.PromotionCode));
 				object value = Bam.Net.Shop.PromotionCode.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(PromotionCode));
+				query.table = Dao.TableName(typeof(Bam.Net.Shop.PromotionCode));
 				object[] value = Bam.Net.Shop.PromotionCode.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

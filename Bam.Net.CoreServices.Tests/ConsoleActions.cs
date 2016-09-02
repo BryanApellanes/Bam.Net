@@ -11,6 +11,8 @@ using Bam.Net.CommandLine;
 using Bam.Net;
 using Bam.Net.Testing;
 using Bam.Net.Encryption;
+using System.Net.NetworkInformation;
+using System.Net;
 
 namespace Bam.Net.CoreServices.Tests
 {
@@ -50,5 +52,23 @@ namespace Bam.Net.CoreServices.Tests
             Error("This is an error", new Exception("This is an exception"));
         }
         #endregion
+
+        [ConsoleAction]
+        public void ListIpAddresses()
+        {
+            foreach (NetworkInterface netif in NetworkInterface.GetAllNetworkInterfaces())
+            {
+                Console.WriteLine("Network Interface: {0}", netif.Name);
+                IPInterfaceProperties properties = netif.GetIPProperties();
+                foreach (IPAddress dns in properties.DnsAddresses)
+                    Console.WriteLine("\tDNS: {0}", dns);
+                foreach (IPAddressInformation anycast in properties.AnycastAddresses)
+                    Console.WriteLine("\tAnyCast: {0}", anycast.Address);
+                foreach (IPAddressInformation multicast in properties.MulticastAddresses)
+                    Console.WriteLine("\tMultiCast: {0}", multicast.Address);
+                foreach (IPAddressInformation unicast in properties.UnicastAddresses)
+                    Console.WriteLine("\tUniCast: {0}", unicast.Address);
+            }
+        }
     }
 }

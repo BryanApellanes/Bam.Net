@@ -16,6 +16,16 @@ namespace Bam.Net.UserAccounts.Data
 		public UserPermissionQuery(WhereDelegate<UserPermissionColumns> where, OrderBy<UserPermissionColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public UserPermissionQuery(Func<UserPermissionColumns, QueryFilter<UserPermissionColumns>> where, OrderBy<UserPermissionColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public UserPermissionQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static UserPermissionQuery Where(WhereDelegate<UserPermissionColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static UserPermissionQuery Where(WhereDelegate<UserPermissionColumns> where, OrderBy<UserPermissionColumns> orderBy = null, Database db = null)
+        {
+            return new UserPermissionQuery(where, orderBy, db);
+        }
 
 		public UserPermissionCollection Execute()
 		{

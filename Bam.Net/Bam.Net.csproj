@@ -178,6 +178,7 @@
     <Compile Include="IWriteSource.cs" />
     <Compile Include="Logging\ClientLogger.cs" />
     <Compile Include="ApplicationDiagnosticInfo.cs" />
+    <Compile Include="Logging\ILog.cs" />
     <Compile Include="Logging\ILoggable.cs" />
     <Compile Include="Logging\Loggable.cs" />
     <Compile Include="Logging\VerbosityAttribute.cs" />
@@ -187,6 +188,7 @@
     <Compile Include="IpcMessageRoot.cs" />
     <Compile Include="Month.cs" />
     <Compile Include="NamedThread.cs" />
+    <Compile Include="NetworkExtensions.cs" />
     <Compile Include="Razor\RazorBaseTemplate.cs" />
     <Compile Include="Razor\RazorParser.cs" />
     <Compile Include="Razor\RazorRenderer.cs" />

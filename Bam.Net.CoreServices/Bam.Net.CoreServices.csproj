@@ -86,26 +86,115 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApiKeyService.cs" />
+    <Compile Include="CoreExtensions.cs" />
+    <Compile Include="NamespaceStorableTypesProvider.cs" />
+    <Compile Include="ProxySettingsInfo.cs" />
+    <Compile Include="Services\ApplicationFactory.cs" />
+    <Compile Include="DatabaseProvider.cs" />
+    <Compile Include="IDatabaseProvider.cs" />
+    <Compile Include="MaximumLimitEnforcer.cs" />
+    <Compile Include="ProxySettingsValidation.cs" />
+    <Compile Include="ProxySettingsValidationException.cs" />
+    <Compile Include="Clients\CoreClient.cs" />
+    <Compile Include="SchemasAttribute.cs" />
+    <Compile Include="Services\ApplicationRegistrationResult.cs" />
+    <Compile Include="Services\ApplicationRegistrationStatus.cs" />
+    <Compile Include="Services\CoreApplicationRegistryServiceConfig.cs" />
+    <Compile Include="Services\CoreEventHubService.cs" />
+    <Compile Include="Services\CoreRepository.cs" />
+    <Compile Include="Services\ServiceProcessIdentifier.cs" />
+    <Compile Include="Services\CoreTranslationDatabase.cs" />
+    <Compile Include="Services\CoreTranslationService.cs" />
+    <Compile Include="Services\Data\ApiKey.cs" />
+    <Compile Include="Services\Data\ApplicationInstance.cs" />
+    <Compile Include="Services\Data\Generated\ApiKey.cs" />
+    <Compile Include="Services\Data\Generated\ApiKeyCollection.cs" />
+    <Compile Include="Services\Data\Generated\ApiKeyColumns.cs" />
+    <Compile Include="Services\Data\Generated\ApiKeyPagedQuery.cs" />
+    <Compile Include="Services\Data\Generated\ApiKeyQuery.cs" />
+    <Compile Include="Services\Data\Generated\ApiKeyWrapper.cs" />
+    <Compile Include="Services\Data\Generated\Application.cs" />
+    <Compile Include="Services\Data\Generated\ApplicationCollection.cs" />
+    <Compile Include="Services\Data\Generated\ApplicationColumns.cs" />
+    <Compile Include="Services\Data\Generated\ApplicationInstance.cs" />
+    <Compile Include="Services\Data\Generated\ApplicationInstanceCollection.cs" />
+    <Compile Include="Services\Data\Generated\ApplicationInstanceColumns.cs" />
+    <Compile Include="Services\Data\Generated\ApplicationInstancePagedQuery.cs" />
+    <Compile Include="Services\Data\Generated\ApplicationInstanceQuery.cs" />
+    <Compile Include="Services\Data\Generated\ApplicationInstanceWrapper.cs" />
+    <Compile Include="Services\Data\Generated\ApplicationPagedQuery.cs" />
+    <Compile Include="Services\Data\Generated\ApplicationQuery.cs" />
+    <Compile Include="Services\Data\Generated\ApplicationRegistryContext.cs" />
+    <Compile Include="Services\Data\Generated\ApplicationRegistryRepository.cs" />
+    <Compile Include="Services\Data\Generated\ApplicationWrapper.cs" />
+    <Compile Include="Services\Data\Generated\HostName.cs" />
+    <Compile Include="Services\Data\Generated\HostNameCollection.cs" />
+    <Compile Include="Services\Data\Generated\HostNameColumns.cs" />
+    <Compile Include="Services\Data\Generated\HostNamePagedQuery.cs" />
+    <Compile Include="Services\Data\Generated\HostNameQuery.cs" />
+    <Compile Include="Services\Data\Generated\HostNameWrapper.cs" />
+    <Compile Include="Services\Data\Generated\Organization.cs" />
+    <Compile Include="Services\Data\Generated\OrganizationCollection.cs" />
+    <Compile Include="Services\Data\Generated\OrganizationColumns.cs" />
+    <Compile Include="Services\Data\Generated\OrganizationPagedQuery.cs" />
+    <Compile Include="Services\Data\Generated\OrganizationQuery.cs" />
+    <Compile Include="Services\Data\Generated\OrganizationWrapper.cs" />
+    <Compile Include="Services\Data\Generated\Qi\ApiKey.cs" />
+    <Compile Include="Services\Data\Generated\Qi\Application.cs" />
+    <Compile Include="Services\Data\Generated\Qi\ApplicationInstance.cs" />
+    <Compile Include="Services\Data\Generated\Qi\HostName.cs" />
+    <Compile Include="Services\Data\Generated\Qi\Organization.cs" />
+    <Compile Include="Services\Data\Generated\Qi\Subscription.cs" />
+    <Compile Include="Services\Data\Generated\Qi\User.cs" />
+    <Compile Include="Services\Data\Generated\Qi\UserOrganization.cs" />
+    <Compile Include="Services\Data\Generated\Subscription.cs" />
+    <Compile Include="Services\Data\Generated\SubscriptionCollection.cs" />
+    <Compile Include="Services\Data\Generated\SubscriptionColumns.cs" />
+    <Compile Include="Services\Data\Generated\SubscriptionPagedQuery.cs" />
+    <Compile Include="Services\Data\Generated\SubscriptionQuery.cs" />
+    <Compile Include="Services\Data\Generated\SubscriptionWrapper.cs" />
+    <Compile Include="Services\Data\Generated\User.cs" />
+    <Compile Include="Services\Data\Generated\UserCollection.cs" />
+    <Compile Include="Services\Data\Generated\UserColumns.cs" />
+    <Compile Include="Services\Data\Generated\UserOrganization.cs" />
+    <Compile Include="Services\Data\Generated\UserOrganizationCollection.cs" />
+    <Compile Include="Services\Data\Generated\UserOrganizationColumns.cs" />
+    <Compile Include="Services\Data\Generated\UserOrganizationPagedQuery.cs" />
+    <Compile Include="Services\Data\Generated\UserOrganizationQuery.cs" />
+    <Compile Include="Services\Data\Generated\UserPagedQuery.cs" />
+    <Compile Include="Services\Data\Generated\UserQuery.cs" />
+    <Compile Include="Services\Data\Generated\UserWrapper.cs" />
+    <Compile Include="Services\Data\HostName.cs" />
+    <Compile Include="Services\Data\ServiceProcessIdentifier.cs" />
+    <Compile Include="Services\Data\Subscription.cs" />
+    <Compile Include="Services\Data\User.cs" />
+    <Compile Include="Services\ExternalEventSubscription.cs" />
+    <Compile Include="Services\Data\ExternalEventSubscriptionInfo.cs" />
+    <Compile Include="Services\OrganizationFactory.cs" />
+    <Compile Include="Services\SubscriptionLevel.cs" />
+    <Compile Include="Services\TranslationInfo.cs" />
+    <Compile Include="Services\YandexApiKeyVaultInfo.cs" />
+    <Compile Include="SQLiteDatabaseProvider.cs" />
+    <Compile Include="Services\CoreRegistry.cs" />
+    <Compile Include="Services\Data\Application.cs" />
+    <Compile Include="Services\Data\Organization.cs" />
+    <Compile Include="Services\CoreApplicationRegistryService.cs" />
     <Compile Include="AssemblyGenerationEventEmitter.cs" />
-    <Compile Include="EventSourceArgs.cs" />
+    <Compile Include="Services\EventSourceServiceArgs.cs" />
     <Compile Include="CompositeRepository.cs" />
     <Compile Include="GlobalEvents.cs" />
-    <Compile Include="ISessionProvider.cs" />
-    <Compile Include="Services\ConfigurationService.cs" />
+    <Compile Include="Services\CoreUserManagerService.cs" />
+    <Compile Include="Services\CoreConfigurationService.cs" />
     <Compile Include="Distributed\CreateOperation.cs" />
     <Compile Include="Distributed\DeleteOperation.cs" />
-    <Compile Include="DiagnosticInfo.cs" />
-    <Compile Include="Services\DiagnosticService.cs" />
-    <Compile Include="Distributed\ComputeNode.cs" />
-    <Compile Include="Distributed\ComputeNodeInfo.cs" />
+    <Compile Include="Services\DiagnosticInfo.cs" />
+    <Compile Include="Services\CoreDiagnosticService.cs" />
+    <Compile Include="Distributed\ComputeArc.cs" />
+    <Compile Include="Distributed\ComputeArcInfo.cs" />
     <Compile Include="Distributed\ComputeRing.cs" />
-    <Compile Include="Distributed\DistributedObjectReaderWriter.cs" />
     <Compile Include="Distributed\Files\DistributedFileInfo.cs" />
     <Compile Include="Distributed\Files\DistributedFileManager.cs" />
     <Compile Include="Distributed\Files\FileChunk.cs" />
-    <Compile Include="Distributed\HubElection.cs" />
-    <Compile Include="Distributed\HubNode.cs" />
     <Compile Include="Distributed\IDistributedRepository.cs" />
     <Compile Include="Distributed\IHasInfo.cs" />
     <Compile Include="Distributed\InfoAttribute.cs" />
@@ -116,18 +205,16 @@
     <Compile Include="Distributed\ReplicationResult.cs" />
     <Compile Include="Distributed\RepositoryKey.cs" />
     <Compile Include="Distributed\Ring.cs" />
-    <Compile Include="Distributed\Slot.cs" />
-    <Compile Include="EventSource.cs" />
-    <Compile Include="Services\LoggerService.cs" />
+    <Compile Include="Distributed\Arc.cs" />
+    <Compile Include="Services\EventSourceService.cs" />
+    <Compile Include="Services\CoreLoggerService.cs" />
     <Compile Include="Distributed\Operation.cs" />
-    <Compile Include="MetricsEventSource.cs" />
-    <Compile Include="NotificationEventSource.cs" />
+    <Compile Include="Services\MetricsEventSourceService.cs" />
+    <Compile Include="Services\NotificationEventSourceService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Protocols.cs" />
     <Compile Include="Distributed\QueryOperation.cs" />
-    <Compile Include="Services\PersistenceService.cs" />
     <Compile Include="Distributed\RetrieveOperation.cs" />
-    <Compile Include="Services\UserAccountsService.cs" />
     <Compile Include="ProxyAssemblyGenerator.cs" />
     <Compile Include="AssemblyGenerationEventArgs.cs" />
     <Compile Include="ProxyFactory.cs" />
@@ -138,7 +225,9 @@
     <Compile Include="Distributed\UpdateOperation.cs" />
     <Compile Include="ProxyableService.cs" />
     <Compile Include="ServiceResponse.cs" />
-    <Compile Include="EventMessage.cs" />
+    <Compile Include="Services\EventMessage.cs" />
+    <Compile Include="StaticApplicationNameProvider.cs" />
+    <Compile Include="IStorableTypesLoader.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bam.Net.Caching\Bam.Net.Caching.csproj">
@@ -152,6 +241,10 @@
     <ProjectReference Include="..\Bam.Net.Data.Schema\Bam.Net.Data.Schema.csproj">
       <Project>{d2c2b1c0-1047-4211-92fc-37f332861161}</Project>
       <Name>Bam.Net.Data.Schema</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.SQLite\Bam.Net.Data.SQLite.csproj">
+      <Project>{ae48f655-c3eb-49d6-98d3-42c428e39a1d}</Project>
+      <Name>Bam.Net.Data.SQLite</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Data\Bam.Net.Data.csproj">
       <Project>{3b52b739-58fd-4b49-b815-6b317e701520}</Project>
@@ -189,6 +282,10 @@
       <Project>{8987d8c8-033b-4993-99f0-8dd5a4d6dd0d}</Project>
       <Name>Bam.Net.ServiceProxy</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Translation\Bam.Net.Translation.csproj">
+      <Project>{1821effd-3722-4580-8464-401d472e89b5}</Project>
+      <Name>Bam.Net.Translation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.UserAccounts\Bam.Net.UserAccounts.csproj">
       <Project>{74d5a262-b0b9-40e6-a3fd-b120dc8e9f54}</Project>
       <Name>Bam.Net.UserAccounts</Name>
@@ -210,7 +307,8 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy $(TargetPath) c:\BamContent\apps\stickerize\services\</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

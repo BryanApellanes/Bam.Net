@@ -86,7 +86,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(ComputerName));
+				query.table = Dao.TableName(typeof(Bam.Net.Logging.Data.ComputerName));
 				object value = Bam.Net.Logging.Data.ComputerName.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(ComputerName));
+				query.table = Dao.TableName(typeof(Bam.Net.Logging.Data.ComputerName));
 				object[] value = Bam.Net.Logging.Data.ComputerName.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

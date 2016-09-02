@@ -1,1 +1,1 @@
-msiexec /x %temp%\BamToolkit-debug.msi /q 
+msiexec /x %temp%\BamToolkit-debug.msi /qn 

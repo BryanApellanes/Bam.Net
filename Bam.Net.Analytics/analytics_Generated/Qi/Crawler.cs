@@ -86,7 +86,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Crawler));
+				query.table = Dao.TableName(typeof(Bam.Net.Analytics.Crawler));
 				object value = Bam.Net.Analytics.Crawler.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Crawler));
+				query.table = Dao.TableName(typeof(Bam.Net.Analytics.Crawler));
 				object[] value = Bam.Net.Analytics.Crawler.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

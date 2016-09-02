@@ -7,6 +7,7 @@ using Bam.Net.Logging;
 using System.IO;
 using System.Reflection;
 using Bam.Net.Configuration;
+using System.Timers;
 
 namespace Bam.Net.Server.Tvg
 {
@@ -16,31 +17,49 @@ namespace Bam.Net.Server.Tvg
             : base(new GlooResponder(conf, logger), logger)
         {
             Responder.Initialize();
-            this.CreatedOrChangedHandler = (o, fsea) =>
+            CreatedOrChangedHandler = (o, fsea) =>
             {
                 ReloadServices(fsea);
             };
-            this.RenamedHandler = (o, rea) =>
+            RenamedHandler = (o, rea) =>
             {                
                 ReloadServices(GetDirectory(rea.FullPath));
             };
-            this.ServiceTypes = new HashSet<Type>();
+            ServiceTypes = new HashSet<Type>();
         }
 
         public override void Start()
         {
-            this.ServiceTypes.Clear();
+            ServiceTypes.Clear();
+            MonitorDirectories.Each(new { Server = this }, (ctx, dir) =>
+            {
+                ctx.Server.ReloadServices(new DirectoryInfo(dir));
+            });
             base.Start();
         }
         protected HashSet<Type> ServiceTypes { get; private set; }
+        Timer reloadDelay;
         private void ReloadServices(FileSystemEventArgs fsea)
         {
-            string path = fsea.FullPath;
-            DirectoryInfo directory = GetDirectory(path);
-            if (directory != null)
+            if(reloadDelay != null)
             {
-                ReloadServices(directory);
+                reloadDelay.Stop();
+                reloadDelay.Dispose();
             }
+
+            reloadDelay = new Timer(3000);
+            reloadDelay.Elapsed += (o, args) =>
+            {
+                string path = fsea.FullPath;
+
+                DirectoryInfo directory = GetDirectory(path);
+                if (directory != null)
+                {
+                    ReloadServices(directory);
+                }
+            };
+            reloadDelay.AutoReset = false;
+            reloadDelay.Enabled = true;            
         }
 
         private static DirectoryInfo GetDirectory(string path)
@@ -60,7 +79,7 @@ namespace Bam.Net.Server.Tvg
         private void ReloadServices(DirectoryInfo directory)
         {
             DefaultConfiguration
-            .GetAppSetting("SearchPattern")
+            .GetAppSetting("AssemblySearchPattern")
             .Or("*Services.dll,*Proxyables.dll,*Gloo.dll")
             .DelimitSplit(",", "|").Each(new { Directory = directory }, (ctx, searchPattern) =>
             {
@@ -91,12 +110,24 @@ namespace Bam.Net.Server.Tvg
             GlooResponder gloo = (GlooResponder)Responder;
             ServiceProxyResponder responder = gloo.ServiceProxyResponder;
             ServiceTypes.Each(new { Logger = Logger, Responder = responder }, (ctx, serviceType) =>
-            {
+            {                
                 ctx.Responder.RemoveCommonService(serviceType);
-                ctx.Responder.AddCommonService(serviceType, serviceType.Construct());
+                ctx.Responder.AddCommonService(serviceType, GetServiceRetriever(serviceType));
                 ctx.Logger.AddEntry("Added service: {0}", serviceType.FullName);
             });
             return responder;
         }
+
+        private Func<object> GetServiceRetriever(Type type)
+        {
+            Type glooRegistryContainer = type.Assembly.GetTypes().Where(t => t.HasCustomAttributeOfType<GlooContainerAttribute>()).FirstOrDefault();
+            if(glooRegistryContainer != null)
+            {
+                MethodInfo provider = glooRegistryContainer.GetMethods().Where(mi => mi.HasCustomAttributeOfType<GlooRegistryProviderAttribute>() || mi.Name.Equals("Get")).FirstOrDefault();
+                GlooRegistry reg = (GlooRegistry)provider.Invoke(null, null);
+                return () => reg.Get(type);
+            }
+            return () => type.Construct();
+        }                
     }
 }

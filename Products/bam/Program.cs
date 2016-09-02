@@ -17,7 +17,6 @@ using Bam.Net.Server;
 using Bam.Net.Dust;
 using Bam.Net.Web;
 using Bam.Net.Data;
-using dotless.Core;
 
 namespace bam
 {
@@ -31,10 +30,6 @@ namespace bam
 
 			Type type = typeof(Program);
 			AddSwitches(typeof(Program));
-            AddSwitches(typeof(UtilityActions));
-            AddSwitches(typeof(BuildActions));
-            AddSwitches(typeof(VaultActions));
-            AddSwitches(typeof(GlooActions));
             AddSwitches(typeof(ManagementActions));
 			AddConfigurationSwitches();
             ArgumentAdder.AddArguments();
@@ -46,10 +41,6 @@ namespace bam
 			if (Arguments.Length > 0 && !Arguments.Contains("i"))
 			{
 				ExecuteSwitches(Arguments, type);
-                ExecuteSwitches(Arguments, typeof(UtilityActions));
-                ExecuteSwitches(Arguments, typeof(BuildActions));
-                ExecuteSwitches(Arguments, typeof(VaultActions));
-                ExecuteSwitches(Arguments, typeof(GlooActions));
                 ExecuteSwitches(Arguments, typeof(ManagementActions));
 			}
 			else

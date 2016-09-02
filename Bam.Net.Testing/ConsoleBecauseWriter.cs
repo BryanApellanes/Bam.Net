@@ -15,13 +15,13 @@ namespace Bam.Net.Testing
 
         public void Write(Because because)
         {
-            ConsoleExtensions.SetTextColor(ConsoleColor.Cyan);
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.Write("{0} ", because.TestDescription);
             string result = because.Passed ? "passed" : "failed";
-            ConsoleColor color = because.Passed ? ConsoleColor.Green : ConsoleColor.Red;
-            ConsoleExtensions.SetTextColor(color);
-            Console.WriteLine("{0} ", result);
-            ConsoleExtensions.SetTextColor(ConsoleColor.Cyan);
+            ConsoleColor color = because.Passed ? ConsoleColor.Green : ConsoleColor.Red;            
+            Console.ForegroundColor = color;
+            Console.WriteLine("{0} ", result);            
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.Write("\tbecause ");
 
             if (because.Passed)
@@ -33,13 +33,13 @@ namespace Bam.Net.Testing
             {
                 Assertion[] failed = (from assertion in because.Assertions
                              where !assertion.Passed
-                             select assertion).ToArray();
-                ConsoleExtensions.SetTextColor(ConsoleColor.Red);
+                             select assertion).ToArray();                
+                Console.ForegroundColor = ConsoleColor.Red;
                 WriteFailedAssertions(failed);
             }
 
             Console.WriteLine();
-            ConsoleExtensions.SetTextColor();
+            Console.ResetColor();
         }
 
         public void WriteFailedAssertions(Assertion[] failed)
@@ -48,8 +48,8 @@ namespace Bam.Net.Testing
             {
                 if (i >= 1)
                 {
-                    ConsoleExtensions.SetTextColor(ConsoleColor.Cyan);
-                    Console.Write("\t\tand ");
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.Write("\tand ");
                 }
                 Assertion assertion = failed[i];
                 Console.WriteLine("{0}", assertion.FailureMessage);
@@ -63,11 +63,11 @@ namespace Bam.Net.Testing
                 Assertion assertion = passedAssertions[i];
                 if (i >= 1)
                 {
-                    ConsoleExtensions.SetTextColor(ConsoleColor.Cyan);
-                    Console.Write("\t\tand ");
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.Write("\tand ");
                 }
 
-                ConsoleExtensions.SetTextColor(ConsoleColor.Green);
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("{0}", assertion.SuccessMessage);
             }
         }

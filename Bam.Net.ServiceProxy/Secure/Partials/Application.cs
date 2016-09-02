@@ -20,10 +20,10 @@ namespace Bam.Net.ServiceProxy.Secure
         /// <returns></returns>
         public static ApplicationCreateResult Create(string applicationName)
         {
-            return Create(applicationName, ApiKeyManager.Default);
+            return Create(applicationName, LocalApiKeyManager.Default);
         }
 
-        public static ApplicationCreateResult Create(string applicationName, ApiKeyManager keyManager)
+        public static ApplicationCreateResult Create(string applicationName, LocalApiKeyManager keyManager)
         {
             return keyManager.CreateApplication(applicationName);
         }

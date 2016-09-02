@@ -11,7 +11,7 @@ namespace Bam.Net.Server.Tvg
     public class TrooServer: SimpleServer<TrooResponder>
     {
         public TrooServer(BamConf conf, ILogger logger, IRepository repository)
-            : base(new TrooResponder(conf, logger, repository), logger)
+            : base(new TrooResponder(conf, repository, logger), logger)
         {
             this.Responder.Initialize();
         }

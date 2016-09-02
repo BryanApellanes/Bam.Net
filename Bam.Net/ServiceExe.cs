@@ -294,9 +294,7 @@ namespace Bam.Net
 
                 Console.WriteLine("INFO:: ServiceName={0},DisplayName={1},Description={2}",
                     serviceName, displayName, description);
-                
-                //string acctName = network ? ".\\Local System" : ".\\Network Service";
-                
+                                
                 object ret = win32Service.InvokeMethod("Create", new object[] { serviceName, displayName, cur.Location, 16, 0, "Automatic", allowDesktopInteract, startName, startPassword, null, null, null });
                 if (ret.ToString().Equals("0"))
                 {

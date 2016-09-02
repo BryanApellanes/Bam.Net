@@ -207,10 +207,6 @@
       <Project>{3b52b739-58fd-4b49-b815-6b317e701520}</Project>
       <Name>Bam.Net.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Bam.Net.Distributed\Bam.Net.Distributed.csproj">
-      <Project>{35cfb5c2-8456-4d5b-b421-9d91365f783a}</Project>
-      <Name>Bam.Net.Distributed</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Dust\Bam.Net.Dust.csproj">
       <Project>{2a4347ab-3e15-4698-9020-722320307754}</Project>
       <Name>Bam.Net.Dust</Name>

@@ -47,6 +47,7 @@ namespace Bam.Net.Automation.Data
 			this.SetChildren();
 		}
 
+		[Bam.Net.Exclude]
 		public static implicit operator DeferredJobData(DataRow data)
 		{
 			return new DeferredJobData(data);
@@ -151,7 +152,8 @@ namespace Bam.Net.Automation.Data
 		/// Gets a query filter that should uniquely identify
 		/// the current instance.  The default implementation
 		/// compares the Id/key field to the current instance's.
-		/// </summary> 
+		/// </summary>
+		[Bam.Net.Exclude] 
 		public override IQueryFilter GetUniqueFilter()
 		{
 			if(UniqueFilterProvider != null)
@@ -181,12 +183,13 @@ namespace Bam.Net.Automation.Data
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<DeferredJobData>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				DeferredJobDataColumns columns = new DeferredJobDataColumns();
-				var orderBy = Order.By<DeferredJobDataColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<DeferredJobDataColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -198,19 +201,21 @@ namespace Bam.Net.Automation.Data
 					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
 				}
 			});			
-		}	 
-
+		}
+			 
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<DeferredJobData>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
 
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<DeferredJobDataColumns> where, Action<IEnumerable<DeferredJobData>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				DeferredJobDataColumns columns = new DeferredJobDataColumns();
-				var orderBy = Order.By<DeferredJobDataColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<DeferredJobDataColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -244,11 +249,13 @@ namespace Bam.Net.Automation.Data
 			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
+		[Bam.Net.Exclude]
 		public static DeferredJobDataCollection Query(QueryFilter filter, Database database = null)
 		{
 			return Where(filter, database);
 		}
-				
+
+		[Bam.Net.Exclude]		
 		public static DeferredJobDataCollection Where(QueryFilter filter, Database database = null)
 		{
 			WhereDelegate<DeferredJobDataColumns> whereDelegate = (c) => filter;
@@ -263,6 +270,7 @@ namespace Bam.Net.Automation.Data
 		/// between DeferredJobDataColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static DeferredJobDataCollection Where(Func<DeferredJobDataColumns, QueryFilter<DeferredJobDataColumns>> where, OrderBy<DeferredJobDataColumns> orderBy = null, Database database = null)
 		{
 			database = database ?? Db.For<DeferredJobData>();
@@ -277,6 +285,7 @@ namespace Bam.Net.Automation.Data
 		/// between DeferredJobDataColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static DeferredJobDataCollection Where(WhereDelegate<DeferredJobDataColumns> where, Database database = null)
 		{		
 			database = database ?? Db.For<DeferredJobData>();
@@ -295,6 +304,7 @@ namespace Bam.Net.Automation.Data
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static DeferredJobDataCollection Where(WhereDelegate<DeferredJobDataColumns> where, OrderBy<DeferredJobDataColumns> orderBy = null, Database database = null)
 		{		
 			database = database ?? Db.For<DeferredJobData>();
@@ -321,6 +331,7 @@ namespace Bam.Net.Automation.Data
 		/// one will be created; success will depend on the nullability
 		/// of the specified columns.
 		/// </summary>
+		[Bam.Net.Exclude]
 		public static DeferredJobData GetOneWhere(QueryFilter where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -339,6 +350,7 @@ namespace Bam.Net.Automation.Data
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static DeferredJobData OneWhere(QueryFilter where, Database database = null)
 		{
 			WhereDelegate<DeferredJobDataColumns> whereDelegate = (c) => where;
@@ -353,6 +365,7 @@ namespace Bam.Net.Automation.Data
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static DeferredJobData GetOneWhere(WhereDelegate<DeferredJobDataColumns> where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -377,6 +390,7 @@ namespace Bam.Net.Automation.Data
 		/// between DeferredJobDataColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static DeferredJobData OneWhere(WhereDelegate<DeferredJobDataColumns> where, Database database = null)
 		{
 			var result = Top(1, where, database);
@@ -406,6 +420,7 @@ namespace Bam.Net.Automation.Data
 		/// between DeferredJobDataColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static DeferredJobData FirstOneWhere(WhereDelegate<DeferredJobDataColumns> where, Database database = null)
 		{
 			var results = Top(1, where, database);
@@ -428,6 +443,7 @@ namespace Bam.Net.Automation.Data
 		/// between DeferredJobDataColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static DeferredJobData FirstOneWhere(WhereDelegate<DeferredJobDataColumns> where, OrderBy<DeferredJobDataColumns> orderBy, Database database = null)
 		{
 			var results = Top(1, where, orderBy, database);
@@ -449,6 +465,7 @@ namespace Bam.Net.Automation.Data
 		/// between DeferredJobDataColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static DeferredJobData FirstOneWhere(QueryFilter where, OrderBy<DeferredJobDataColumns> orderBy = null, Database database = null)
 		{
 			WhereDelegate<DeferredJobDataColumns> whereDelegate = (c) => where;
@@ -477,6 +494,7 @@ namespace Bam.Net.Automation.Data
 		/// between DeferredJobDataColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static DeferredJobDataCollection Top(int count, WhereDelegate<DeferredJobDataColumns> where, Database database = null)
 		{
 			return Top(count, where, null, database);
@@ -499,6 +517,7 @@ namespace Bam.Net.Automation.Data
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static DeferredJobDataCollection Top(int count, WhereDelegate<DeferredJobDataColumns> where, OrderBy<DeferredJobDataColumns> orderBy, Database database = null)
 		{
 			DeferredJobDataColumns c = new DeferredJobDataColumns();
@@ -520,6 +539,7 @@ namespace Bam.Net.Automation.Data
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static DeferredJobDataCollection Top(int count, QueryFilter where, Database database)
 		{
 			return Top(count, where, null, database);
@@ -541,6 +561,7 @@ namespace Bam.Net.Automation.Data
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static DeferredJobDataCollection Top(int count, QueryFilter where, OrderBy<DeferredJobDataColumns> orderBy = null, Database database = null)
 		{
 			Database db = database ?? Db.For<DeferredJobData>();
@@ -608,6 +629,7 @@ namespace Bam.Net.Automation.Data
 		/// between DeferredJobDataColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<DeferredJobDataColumns> where, Database database = null)
 		{
 			DeferredJobDataColumns c = new DeferredJobDataColumns();
@@ -620,6 +642,16 @@ namespace Bam.Net.Automation.Data
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
 		}
+		 
+		public static long Count(QiQuery where, Database database = null)
+		{
+		    Database db = database ?? Db.For<DeferredJobData>();
+			QuerySet query = GetQuerySet(db);	 
+			query.Count<DeferredJobData>();
+			query.Where(where);	  
+			query.Execute(db);
+			return query.Results.As<CountResult>(0).Value;
+		} 		
 
 		private static DeferredJobData CreateFromFilter(IQueryFilter filter, Database database = null)
 		{

@@ -86,7 +86,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(SecureSession));
+				query.table = Dao.TableName(typeof(Bam.Net.ServiceProxy.Secure.SecureSession));
 				object value = Bam.Net.ServiceProxy.Secure.SecureSession.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(SecureSession));
+				query.table = Dao.TableName(typeof(Bam.Net.ServiceProxy.Secure.SecureSession));
 				object[] value = Bam.Net.ServiceProxy.Secure.SecureSession.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

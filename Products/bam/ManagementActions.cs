@@ -12,19 +12,19 @@ namespace bam
     [Serializable]
 	public class ManagementActions : CommandLineTestInterface
 	{
-        [ConsoleAction("packServer", "Pack Server")]
-		public void PackServer()
+        [ConsoleAction("signUp", "Sign Up")]
+		public void SignUp()
 		{
 			throw new NotImplementedException();
 		}
 
-		[ConsoleAction("packApplication", "Pack application")]
+		[ConsoleAction("registerApplication", "Register Application")]
 		public void PackApp()
 		{
 			throw new NotImplementedException();
 		}
 		
-		[ConsoleAction("createApplication", "Create application")]
+		[ConsoleAction("createClientApplication", "Create Client Application")]
 		public void CreateApp()
 		{
 			BamServer server = new BamServer(BamConf.Load(GetRoot()));

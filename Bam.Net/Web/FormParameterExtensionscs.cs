@@ -11,6 +11,12 @@ namespace Bam.Net.Web
 {
     public static class FormParameterExtensionscs
     {
+        /// <summary>
+        /// Encode the specified value as though it were submitted by
+        /// a form element on an html page
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static string FormEncode(this object value)
         {
             StringBuilder result = new StringBuilder();

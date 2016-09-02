@@ -16,6 +16,16 @@ namespace Bam.Net.Analytics
 		public LoadTimerQuery(WhereDelegate<LoadTimerColumns> where, OrderBy<LoadTimerColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public LoadTimerQuery(Func<LoadTimerColumns, QueryFilter<LoadTimerColumns>> where, OrderBy<LoadTimerColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public LoadTimerQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static LoadTimerQuery Where(WhereDelegate<LoadTimerColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static LoadTimerQuery Where(WhereDelegate<LoadTimerColumns> where, OrderBy<LoadTimerColumns> orderBy = null, Database db = null)
+        {
+            return new LoadTimerQuery(where, orderBy, db);
+        }
 
 		public LoadTimerCollection Execute()
 		{
