@@ -2,8 +2,12 @@
 	Copyright © Bryan Apellanes 2015  
 */
 using System;
+using System.Reflection;
 using System.Text;
+using Bam.Net.ServiceProxy;
 using Bam.Net.Web;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Bam.Net.CoreServices
 {
@@ -14,6 +18,14 @@ namespace Bam.Net.CoreServices
         public int Port { get; set; }
         public Type ServiceType { get; set; }
         public StringBuilder ClientCode { get; set; }
+
+        public ProxySettingsInfo ToInfo()
+        {
+            ProxySettingsInfo info = new ProxySettingsInfo();
+            info.CopyProperties(this);
+            info.ServiceType = ServiceType.FullName;
+            return info;
+        }
 
         public override string ToString()
         {
@@ -61,12 +73,39 @@ namespace Bam.Net.CoreServices
         }
 
         /// <summary>
-        /// Copy the current ServiceSettings instance
+        /// Copy the current ProxySettings instance
         /// </summary>
         /// <returns></returns>
         public ProxySettings Clone()
         {
             return this.CopyAs<ProxySettings>();
+        }
+
+        public ProxySettingsValidation Validate()
+        {
+            Args.ThrowIfNull(ServiceType, nameof(ServiceType));
+            ProxySettingsValidation result = new ProxySettingsValidation();
+            List<MethodInfo> nonOverridableMethods = new List<MethodInfo>();
+            ServiceProxySystem.GetProxiedMethods(ServiceType).Where(mi => !mi.IsOverridable()).Each(new { NonOverridableMethods = nonOverridableMethods }, (ctx, mi) =>
+            {
+                ctx.NonOverridableMethods.Add(mi);
+            });
+            
+            string nonVirtualMethodsMessage = $"Non virtual proxied methods were found; proxies cannot be automatically generated for the specified type {ServiceType.Namespace}.{ServiceType.Name} because proxyable methods were not declared virtual and will subsequently not properly delegate to the remote {Host}";
+            nonVirtualMethodsMessage += $"\r\n\t{string.Join("\r\n\t", nonOverridableMethods.Select(m=> m.Name))}\r\n";            
+            result.Success = nonOverridableMethods.Count == 0;
+            result.Message = result.Success ? string.Empty : nonVirtualMethodsMessage;
+            result.NonVirtualMethods = nonOverridableMethods.ToArray();
+            return result;
+        }
+
+        public void ValidateOrThrow()
+        {
+            ProxySettingsValidation validation = Validate();
+            if (!validation.Success)
+            {
+                throw new ProxySettingsValidationException(validation);
+            }
         }
     }
 }

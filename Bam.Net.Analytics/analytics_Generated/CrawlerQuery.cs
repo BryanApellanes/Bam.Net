@@ -16,6 +16,16 @@ namespace Bam.Net.Analytics
 		public CrawlerQuery(WhereDelegate<CrawlerColumns> where, OrderBy<CrawlerColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public CrawlerQuery(Func<CrawlerColumns, QueryFilter<CrawlerColumns>> where, OrderBy<CrawlerColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public CrawlerQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static CrawlerQuery Where(WhereDelegate<CrawlerColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static CrawlerQuery Where(WhereDelegate<CrawlerColumns> where, OrderBy<CrawlerColumns> orderBy = null, Database db = null)
+        {
+            return new CrawlerQuery(where, orderBy, db);
+        }
 
 		public CrawlerCollection Execute()
 		{

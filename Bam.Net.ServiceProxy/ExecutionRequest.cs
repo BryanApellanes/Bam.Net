@@ -221,9 +221,9 @@ namespace Bam.Net.ServiceProxy
             }
         }
 
-        ApiKeyResolver _apiKeyResolver;
+        IApiKeyResolver _apiKeyResolver;
         object _apiKeyResolverSync = new object();
-        public ApiKeyResolver ApiKeyResolver
+        public IApiKeyResolver ApiKeyResolver
         {
             get
             {

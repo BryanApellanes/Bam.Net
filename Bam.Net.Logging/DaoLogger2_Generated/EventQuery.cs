@@ -16,6 +16,16 @@ namespace Bam.Net.Logging.Data
 		public EventQuery(WhereDelegate<EventColumns> where, OrderBy<EventColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public EventQuery(Func<EventColumns, QueryFilter<EventColumns>> where, OrderBy<EventColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public EventQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static EventQuery Where(WhereDelegate<EventColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static EventQuery Where(WhereDelegate<EventColumns> where, OrderBy<EventColumns> orderBy = null, Database db = null)
+        {
+            return new EventQuery(where, orderBy, db);
+        }
 
 		public EventCollection Execute()
 		{

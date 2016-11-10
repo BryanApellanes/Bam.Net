@@ -12,6 +12,11 @@ using Bam.Net.Data.Schema;
 
 namespace Bam.Net.CoreServices
 {
+    /// <summary>
+    /// A repository that is made up of a variety of different
+    /// types of repositories used for different purposes such
+    /// as reading, writing, caching and backup
+    /// </summary>
     public class CompositeRepository : AsyncRepository, IHasTypeSchemaTempPathProvider
     {      
         public CompositeRepository(DaoRepository sourceRepository, string workspacePath)
@@ -222,16 +227,19 @@ namespace Bam.Net.CoreServices
         {
             if (database == SourceDatabase)
             {
-                object dtoInstance = Dto.Copy(dao);
-                object existing = BackupRepository.Retrieve(dtoInstance.GetType(), dtoInstance.Property<string>("Uuid"));
-                if (existing != null)
+                Task.Run(() =>
                 {
-                    BackupRepository.Save(dtoInstance);
-                }
-                else
-                {
-                    BackupRepository.Create(dtoInstance);
-                }
+                    object dtoInstance = Dto.Copy(dao);
+                    object existing = BackupRepository.Retrieve(dtoInstance.GetType(), dtoInstance.Property<string>("Uuid"));
+                    if (existing != null)
+                    {
+                        BackupRepository.Save(dtoInstance);
+                    }
+                    else
+                    {
+                        BackupRepository.Create(dtoInstance);
+                    }
+                }).ConfigureAwait(false);
             }
         }
 

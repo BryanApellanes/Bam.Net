@@ -16,6 +16,16 @@ namespace Bam.Net.UserAccounts.Data
 		public LoginQuery(WhereDelegate<LoginColumns> where, OrderBy<LoginColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public LoginQuery(Func<LoginColumns, QueryFilter<LoginColumns>> where, OrderBy<LoginColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public LoginQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static LoginQuery Where(WhereDelegate<LoginColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static LoginQuery Where(WhereDelegate<LoginColumns> where, OrderBy<LoginColumns> orderBy = null, Database db = null)
+        {
+            return new LoginQuery(where, orderBy, db);
+        }
 
 		public LoginCollection Execute()
 		{

@@ -102,7 +102,7 @@ namespace Bam.Net.Data
         public DataTable Where(Func<C, QueryFilter<C>> where, OrderBy<C> orderBy = null, Database db = null)
         {  
             Establish(where, orderBy, db);
-            SqlStringBuilder sql = GetFilteredQuery(db);
+            SqlStringBuilder sql = ToSqlStringBuilder(db);
             db = EstablishOrderAndDb(orderBy, db, sql);
 
             return GetDataTable(db, sql);
@@ -111,7 +111,7 @@ namespace Bam.Net.Data
         public DataTable Where(WhereDelegate<C> where, OrderBy<C> orderBy = null, Database db = null)
         {
             Establish(where, orderBy, db);
-            SqlStringBuilder sql = GetFilteredQuery(db);
+            SqlStringBuilder sql = ToSqlStringBuilder(db);
             db = EstablishOrderAndDb(orderBy, db, sql);
 
             return GetDataTable(db, sql);
@@ -143,9 +143,22 @@ namespace Bam.Net.Data
 
         public DataTable GetDataTable(Database database)
         {
-            SqlStringBuilder sql = GetFilteredQuery(database);
+            SqlStringBuilder sql = ToSqlStringBuilder(database);
             Database db = EstablishOrderAndDb(OrderBy, database, sql);
             return GetDataTable(db, sql);
+        }
+
+        public SqlStringBuilder ToSqlStringBuilder(Database db)
+        {
+            if (FilterDelegate == null)
+            {
+                throw new ArgumentNullException("FilterDelegate was not set");
+            }
+
+            db = db ?? Db.For<T>();
+            C columns = new C();
+            IQueryFilter queryFilter = (IQueryFilter)FilterDelegate.DynamicInvoke(columns);
+            return GetSqlStringBuilder(db).Where(queryFilter);
         }
 
         private Database EstablishOrderAndDb(OrderBy<C> orderBy, Database db, SqlStringBuilder sql)
@@ -170,19 +183,6 @@ namespace Bam.Net.Data
             this.FilterDelegate = where;
             this.OrderBy = orderBy;
             this.Database = db;
-        }
-
-        private SqlStringBuilder GetFilteredQuery(Database db)
-        {
-            if (FilterDelegate == null)
-            {
-                throw new ArgumentNullException("FilterDelegate was not set");
-            }
-			
-			db = db ?? Db.For<T>();
-            C columns = new C();
-            IQueryFilter queryFilter = (IQueryFilter)FilterDelegate.DynamicInvoke(columns);
-            return GetSqlStringBuilder(db).Where(queryFilter);
         }
 
         private static DataTable GetDataTable(Database db, SqlStringBuilder sql)

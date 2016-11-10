@@ -25,6 +25,8 @@ namespace gloo
     {
         static void Main(string[] args)
         {
+            IsolateMethodCalls = false;
+            BamResolver.Register();
             GlooService.SetInfo(GlooService.ServiceInfo);
             if (!GlooService.ProcessCommandLineArgs(args))
             {

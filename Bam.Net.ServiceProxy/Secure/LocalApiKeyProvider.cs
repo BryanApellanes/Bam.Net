@@ -14,12 +14,12 @@ namespace Bam.Net.ServiceProxy.Secure
     {
         public override string GetApplicationClientId(IApplicationNameProvider nameProvider)
         {
-            return ApiKeyManager.Default.GetClientId(nameProvider);
+            return LocalApiKeyManager.Default.GetClientId(nameProvider);
         }
 
         public override string GetApplicationApiKey(string applicationClientId, int index)
         {
-            return ApiKeyManager.Default.GetApplicationApiKey(applicationClientId, index);
+            return LocalApiKeyManager.Default.GetApplicationApiKey(applicationClientId, index);
         }
     }
 }

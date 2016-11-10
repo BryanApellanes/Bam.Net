@@ -16,6 +16,16 @@ namespace Bam.Net.Shop
 		public ShopItemPromotionQuery(WhereDelegate<ShopItemPromotionColumns> where, OrderBy<ShopItemPromotionColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public ShopItemPromotionQuery(Func<ShopItemPromotionColumns, QueryFilter<ShopItemPromotionColumns>> where, OrderBy<ShopItemPromotionColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public ShopItemPromotionQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static ShopItemPromotionQuery Where(WhereDelegate<ShopItemPromotionColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static ShopItemPromotionQuery Where(WhereDelegate<ShopItemPromotionColumns> where, OrderBy<ShopItemPromotionColumns> orderBy = null, Database db = null)
+        {
+            return new ShopItemPromotionQuery(where, orderBy, db);
+        }
 
 		public ShopItemPromotionCollection Execute()
 		{

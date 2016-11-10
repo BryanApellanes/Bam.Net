@@ -133,7 +133,8 @@
     <Compile Include="Secure\ApiKeyNotFoundException.cs" />
     <Compile Include="Secure\ApiKeyProvider.cs" />
     <Compile Include="ApiParameters.cs" />
-    <Compile Include="Secure\ApiKeyManager.cs" />
+    <Compile Include="Secure\IApiKeyResolver.cs" />
+    <Compile Include="Secure\LocalApiKeyManager.cs" />
     <Compile Include="Secure\ApiKeyResolver.cs" />
     <Compile Include="Secure\IApiKeyProvider.cs" />
     <Compile Include="Secure\DefaultConfigurationApiKeyProvider.cs" />
@@ -145,6 +146,7 @@
     <Compile Include="Secure\Partials\SecureSession.cs" />
     <Compile Include="Secure\SecureChannelMessage.cs" />
     <Compile Include="Secure\SecureChannelConfig.cs" />
+    <Compile Include="Secure\SecureClientSessionInfo.cs" />
     <Compile Include="Secure\SecureExecutionRequest.cs" />
     <Compile Include="Secure\SecureServiceProxyClient.cs">
       <SubType>Component</SubType>
@@ -164,20 +166,26 @@
     <Compile Include="RequestWrapper.cs" />
     <Compile Include="ResponseWrapper.cs" />
     <Compile Include="RolesController.cs" />
-    <Compile Include="Secure\RemoteApiKeyProvider.cs" />
-    <Compile Include="Secure\RemoteApiKeyProviderBehavior.cs" />
     <Compile Include="Secure\SecureServiceProxy_Generated\ApiKey.cs" />
     <Compile Include="Secure\SecureServiceProxy_Generated\ApiKeyCollection.cs" />
     <Compile Include="Secure\SecureServiceProxy_Generated\ApiKeyColumns.cs" />
+    <Compile Include="Secure\SecureServiceProxy_Generated\ApiKeyPagedQuery.cs" />
+    <Compile Include="Secure\SecureServiceProxy_Generated\ApiKeyQuery.cs" />
     <Compile Include="Secure\SecureServiceProxy_Generated\Application.cs" />
     <Compile Include="Secure\SecureServiceProxy_Generated\ApplicationCollection.cs" />
     <Compile Include="Secure\SecureServiceProxy_Generated\ApplicationColumns.cs" />
+    <Compile Include="Secure\SecureServiceProxy_Generated\ApplicationPagedQuery.cs" />
+    <Compile Include="Secure\SecureServiceProxy_Generated\ApplicationQuery.cs" />
     <Compile Include="Secure\SecureServiceProxy_Generated\ConfigSetting.cs" />
     <Compile Include="Secure\SecureServiceProxy_Generated\ConfigSettingCollection.cs" />
     <Compile Include="Secure\SecureServiceProxy_Generated\ConfigSettingColumns.cs" />
+    <Compile Include="Secure\SecureServiceProxy_Generated\ConfigSettingPagedQuery.cs" />
+    <Compile Include="Secure\SecureServiceProxy_Generated\ConfigSettingQuery.cs" />
     <Compile Include="Secure\SecureServiceProxy_Generated\Configuration.cs" />
     <Compile Include="Secure\SecureServiceProxy_Generated\ConfigurationCollection.cs" />
     <Compile Include="Secure\SecureServiceProxy_Generated\ConfigurationColumns.cs" />
+    <Compile Include="Secure\SecureServiceProxy_Generated\ConfigurationPagedQuery.cs" />
+    <Compile Include="Secure\SecureServiceProxy_Generated\ConfigurationQuery.cs" />
     <Compile Include="Secure\SecureServiceProxy_Generated\Qi\ApiKey.cs" />
     <Compile Include="Secure\SecureServiceProxy_Generated\Qi\Application.cs" />
     <Compile Include="Secure\SecureServiceProxy_Generated\Qi\ConfigSetting.cs" />
@@ -187,6 +195,8 @@
     <Compile Include="Secure\SecureServiceProxy_Generated\SecureSession.cs" />
     <Compile Include="Secure\SecureServiceProxy_Generated\SecureSessionCollection.cs" />
     <Compile Include="Secure\SecureServiceProxy_Generated\SecureSessionColumns.cs" />
+    <Compile Include="Secure\SecureServiceProxy_Generated\SecureSessionPagedQuery.cs" />
+    <Compile Include="Secure\SecureServiceProxy_Generated\SecureSessionQuery.cs" />
     <Compile Include="Secure\ServiceProxyInvocationFailedException.cs" />
     <Compile Include="Secure\SetSessionKeyRequest.cs" />
     <Compile Include="Secure\ApiValidation.cs" />

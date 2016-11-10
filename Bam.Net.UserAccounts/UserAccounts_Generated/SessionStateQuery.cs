@@ -16,6 +16,16 @@ namespace Bam.Net.UserAccounts.Data
 		public SessionStateQuery(WhereDelegate<SessionStateColumns> where, OrderBy<SessionStateColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public SessionStateQuery(Func<SessionStateColumns, QueryFilter<SessionStateColumns>> where, OrderBy<SessionStateColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public SessionStateQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static SessionStateQuery Where(WhereDelegate<SessionStateColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static SessionStateQuery Where(WhereDelegate<SessionStateColumns> where, OrderBy<SessionStateColumns> orderBy = null, Database db = null)
+        {
+            return new SessionStateQuery(where, orderBy, db);
+        }
 
 		public SessionStateCollection Execute()
 		{

@@ -16,6 +16,16 @@ namespace Bam.Net.Analytics
 		public CounterQuery(WhereDelegate<CounterColumns> where, OrderBy<CounterColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public CounterQuery(Func<CounterColumns, QueryFilter<CounterColumns>> where, OrderBy<CounterColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public CounterQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static CounterQuery Where(WhereDelegate<CounterColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static CounterQuery Where(WhereDelegate<CounterColumns> where, OrderBy<CounterColumns> orderBy = null, Database db = null)
+        {
+            return new CounterQuery(where, orderBy, db);
+        }
 
 		public CounterCollection Execute()
 		{

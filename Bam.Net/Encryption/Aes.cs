@@ -14,7 +14,7 @@ namespace Bam.Net.Encryption
     public static class Aes
     {
         /// <summary>
-        /// Gets a Base64 encoded value representing the cypher of the specified
+        /// Gets a Base64 encoded value representing the cypher of the specified value
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -97,9 +97,9 @@ namespace Bam.Net.Encryption
                     {
                         if (b == 0)
                             break;
-                        //{
+                        
                         retBytes.Add(b);
-                        //}
+                        
                     }
 
                     return Encoding.UTF8.GetString(retBytes.ToArray());

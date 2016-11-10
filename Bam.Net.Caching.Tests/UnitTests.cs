@@ -7,7 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bam.Net;
-
+using Bam.Net.Data;
+using Bam.Net.Data.SQLite;
 using Bam.Net.Caching;
 using Bam.Net.Testing;
 using Bam.Net.CommandLine;
@@ -21,11 +22,11 @@ namespace Bam.Net.Caching.Tests
 		[UnitTest]
 		public void RegisterTextFileCacheManagerTest()
 		{
-			ConcurrentCacheManager.Default.Clear();
-			ConcurrentCache fileCache = ConcurrentCacheManager.Default.CacheFor<FileInfo>();
+			CacheManager.Default.Clear();
+			Cache fileCache = CacheManager.Default.CacheFor<FileInfo>();
 			Type typeBeforeRegistering = fileCache.GetType();
 			TextFileCache.RegisterWithCacheManager();
-			fileCache = ConcurrentCacheManager.Default.CacheFor<FileInfo>();
+			fileCache = CacheManager.Default.CacheFor<FileInfo>();
 			Type checkType = fileCache.GetType();
 			Expect.IsFalse(typeBeforeRegistering.Equals(checkType));
 			Expect.AreEqual(typeof(TextFileCache), checkType);
@@ -39,12 +40,20 @@ namespace Bam.Net.Caching.Tests
 		public void TryingToCacheSomethingOtherThanStringOrFileShouldThrow()
 		{
 			TextFileCache.RegisterWithCacheManager();
-			ConcurrentCache textFileCache = ConcurrentCacheManager.Default.CacheFor<FileInfo>();
-			Expect.Throws(() =>
-			{
-				CantCacheAsTextFile test = new CantCacheAsTextFile();
-				textFileCache.Add(test);
-			}, "Exception wasn't thrown as expected");
+            TextFileCache textFileCache = CacheManager.Default.CacheFor<FileInfo>() as TextFileCache;
+            Expect.IsNotNull(textFileCache);
+            bool thrown = false;
+            try
+            {
+                CantCacheAsTextFile test = new CantCacheAsTextFile();
+                textFileCache.Add((object)test);
+            }
+            catch(Exception ex)
+            {
+                OutLineFormat("{0}", ConsoleColor.DarkCyan, ex.Message);
+                thrown = true;
+            }
+			Expect.IsTrue(thrown, "Exception wasn't thrown as expected");
 		}
 
 		[UnitTest]
@@ -53,10 +62,10 @@ namespace Bam.Net.Caching.Tests
 			TextFileCache.RegisterWithCacheManager();
 			string testFilePath = ".\\TestFile1.txt";
 			FileInfo testFile = new FileInfo(testFilePath);
-			ConcurrentCache textFileCache = ConcurrentCacheManager.Default.CacheFor<FileInfo>();
+			Cache textFileCache = CacheManager.Default.CacheFor<FileInfo>();
 			textFileCache.MaxBytes = File.ReadAllBytes(testFilePath).Length * 2;
 			textFileCache.Subscribe(new ConsoleLogger());
-			CacheItem cacheItem = textFileCache.Add(testFile);			
+			CacheItem cacheItem = textFileCache.Add((object)testFile);			
 
 			Func<string, string> readFromFile = (filePath) =>
 			{
@@ -88,5 +97,6 @@ namespace Bam.Net.Caching.Tests
 			OutLineFormat("Time from file: {0}", fromFileTime.ToString());
 			OutLineFormat("Time from cache: {0}", fromCacheTime.ToString());
 		}
+
 	}
 }

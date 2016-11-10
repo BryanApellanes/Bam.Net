@@ -84,7 +84,7 @@ namespace laotze
                         try
                         {
                             OutLineFormat("Processing {0}...", ConsoleColor.Yellow, file.FullName);
-							UuidSchemaManager manager = new UuidSchemaManager();                        
+							CuidSchemaManager manager = new CuidSchemaManager();                        
 
                             DirectoryInfo fileParent = file.Directory;
                             DirectoryInfo genToDir = GetTargetDirectory(file);

@@ -86,7 +86,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(BuildResult));
+				query.table = Dao.TableName(typeof(Bam.Net.Automation.ContinuousIntegration.Data.BuildResult));
 				object value = Bam.Net.Automation.ContinuousIntegration.Data.BuildResult.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(BuildResult));
+				query.table = Dao.TableName(typeof(Bam.Net.Automation.ContinuousIntegration.Data.BuildResult));
 				object[] value = Bam.Net.Automation.ContinuousIntegration.Data.BuildResult.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

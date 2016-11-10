@@ -86,7 +86,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(MethodCounter));
+				query.table = Dao.TableName(typeof(Bam.Net.Analytics.MethodCounter));
 				object value = Bam.Net.Analytics.MethodCounter.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(MethodCounter));
+				query.table = Dao.TableName(typeof(Bam.Net.Analytics.MethodCounter));
 				object[] value = Bam.Net.Analytics.MethodCounter.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

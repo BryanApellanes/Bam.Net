@@ -19,6 +19,41 @@ namespace troo
     public class UtilityActions : CommandLineTestInterface
     {
         static FileInfo LastGenerationInfo = new FileInfo(".\\troo_generation_info.json");
+        [ConsoleAction("generateSchemaRepository", "Generate a schema sepcific DaoRepository")]
+        public static void GenerateSchemaRepository()
+        {
+            GenerationInfo genInfo = GetGenerationInfo();
+            ConsoleLogger logger = new ConsoleLogger();
+            logger.StartLoggingThread();
+            SchemaRepositoryGenerator schemaGen = new SchemaRepositoryGenerator(genInfo.Assembly, genInfo.FromNameSpace, logger);            
+            schemaGen.CheckIdField = GetArgument("checkForIds", "Check for Id field?").IsAffirmative();
+            schemaGen.BaseRepositoryType = GetArgument("useInheritanceSchema", "Use inheritance schema?").IsAffirmative() ? "DatabaseRepository" : "DaoRepository";
+            string targetDir = GetArgument("writeSrc", "Please enter the directory to write source to");
+            if (Directory.Exists(targetDir))
+            {
+                Directory.Move(targetDir, targetDir.GetNextDirectoryName());
+            }
+            schemaGen.GenerateRepositorySource(
+                targetDir,
+                GetArgument("schemaRepositoryName", "Please enter the name of the schema to assign to the repository"));
+
+            if(schemaGen.Warnings.MissingKeyColumns.Length > 0)
+            {
+                OutLine("Missing key/id columns", ConsoleColor.Yellow);
+                schemaGen.Warnings.MissingKeyColumns.Each(kc =>
+                {
+                    OutLineFormat("\t{0}", kc.TableClassName, ConsoleColor.DarkYellow);
+                });
+            }
+            if(schemaGen.Warnings.MissingForeignKeyColumns.Length > 0)
+            {
+                OutLine("Missing ForeignKey columns", ConsoleColor.Cyan);
+                schemaGen.Warnings.MissingForeignKeyColumns.Each(fkc =>
+                {
+                    OutLineFormat("\t{0}.{1}", ConsoleColor.DarkCyan, fkc.TableClassName, fkc.Name);
+                });
+            }
+        }
 
         [ConsoleAction("generateDaoAssemblyForTypes", "Generate Dao Assebly for types")]
         public static void GenerateDaoForTypes()
@@ -67,12 +102,41 @@ namespace troo
             logger.BlockUntilEventQueueIsEmpty(1000);
         }
 
+        [ConsoleAction("generateDtosForDaos", "Generate Dtos for Daos")]
+        public static void GenerateDtosForDaos()
+        {
+            DaoToDtoGenerator generator = new DaoToDtoGenerator();
+            string assemblyPath = GetArgument("assemblyPath", "Please enter the path to the dao assembly");
+            FileInfo file = new FileInfo(assemblyPath);
+            if (!file.Exists)
+            {
+                OutLineFormat("File not found: {0}", ConsoleColor.Magenta, file.FullName);
+                Exit(1);
+            }
+            string defaultPath = $".\\{file.Name}_Dto_Generated\\";
+            string sourcePath = GetArgument("srcPath", $"Please enter the path to the write source to [{defaultPath}]").Or(defaultPath);
+            bool keepSource = Confirm("Keep source files?");
+            bool compile = Confirm("Generate assembly?");
+            generator.DaoAssembly = Assembly.LoadFrom(file.FullName);
+            generator.WriteDtoSource(sourcePath);
+            DirectoryInfo srcDir = new DirectoryInfo(sourcePath);
+            if (compile)
+            {
+                Assembly result = srcDir.ToAssembly($"{file.Name}_Dtos.dll");
+                OutLineFormat("Created assembly {0}", ConsoleColor.Cyan, result.GetFilePath());
+            }
+            if (!keepSource)
+            {
+                Directory.Delete(sourcePath, true);
+            }
+        }
+
         private static GenerationInfo GetGenerationInfo()
         {
             Assembly typeAssembly = Assembly.LoadFrom(GetArgument("typeAssembly", "Please enter the path to the assembly containing the types to generate daos for"));
             string schemaName = GetArgument("schemaName", "Please enter the schema name to use").Replace(".", "_");
             string fromNameSpace = GetArgument("fromNameSpace", "Please enter the namespace containing the types to generate daos for");
-            string toNameSpace = $"{fromNameSpace}._Dao_";
+            string toNameSpace = $"{fromNameSpace}.Dao";
             GenerationInfo result = new GenerationInfo { Assembly = typeAssembly, SchemaName = schemaName, FromNameSpace = fromNameSpace, ToNameSpace = toNameSpace };           
             return result;
         }

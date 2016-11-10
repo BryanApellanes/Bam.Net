@@ -47,6 +47,7 @@ namespace Bam.Net.Analytics
 			this.SetChildren();
 		}
 
+		[Bam.Net.Exclude]
 		public static implicit operator Protocol(DataRow data)
 		{
 			return new Protocol(data);
@@ -105,7 +106,7 @@ namespace Bam.Net.Analytics
 
 				
 
-	[Exclude]	
+	[Bam.Net.Exclude]	
 	public UrlCollection UrlsByProtocolId
 	{
 		get
@@ -134,7 +135,8 @@ namespace Bam.Net.Analytics
 		/// Gets a query filter that should uniquely identify
 		/// the current instance.  The default implementation
 		/// compares the Id/key field to the current instance's.
-		/// </summary> 
+		/// </summary>
+		[Bam.Net.Exclude] 
 		public override IQueryFilter GetUniqueFilter()
 		{
 			if(UniqueFilterProvider != null)
@@ -164,12 +166,13 @@ namespace Bam.Net.Analytics
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<Protocol>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				ProtocolColumns columns = new ProtocolColumns();
-				var orderBy = Order.By<ProtocolColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<ProtocolColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -181,19 +184,21 @@ namespace Bam.Net.Analytics
 					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
 				}
 			});			
-		}	 
-
+		}
+			 
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<Protocol>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
 
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<ProtocolColumns> where, Action<IEnumerable<Protocol>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				ProtocolColumns columns = new ProtocolColumns();
-				var orderBy = Order.By<ProtocolColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<ProtocolColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -227,11 +232,13 @@ namespace Bam.Net.Analytics
 			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
+		[Bam.Net.Exclude]
 		public static ProtocolCollection Query(QueryFilter filter, Database database = null)
 		{
 			return Where(filter, database);
 		}
-				
+
+		[Bam.Net.Exclude]		
 		public static ProtocolCollection Where(QueryFilter filter, Database database = null)
 		{
 			WhereDelegate<ProtocolColumns> whereDelegate = (c) => filter;
@@ -246,6 +253,7 @@ namespace Bam.Net.Analytics
 		/// between ProtocolColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static ProtocolCollection Where(Func<ProtocolColumns, QueryFilter<ProtocolColumns>> where, OrderBy<ProtocolColumns> orderBy = null, Database database = null)
 		{
 			database = database ?? Db.For<Protocol>();
@@ -260,6 +268,7 @@ namespace Bam.Net.Analytics
 		/// between ProtocolColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static ProtocolCollection Where(WhereDelegate<ProtocolColumns> where, Database database = null)
 		{		
 			database = database ?? Db.For<Protocol>();
@@ -278,6 +287,7 @@ namespace Bam.Net.Analytics
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static ProtocolCollection Where(WhereDelegate<ProtocolColumns> where, OrderBy<ProtocolColumns> orderBy = null, Database database = null)
 		{		
 			database = database ?? Db.For<Protocol>();
@@ -304,6 +314,7 @@ namespace Bam.Net.Analytics
 		/// one will be created; success will depend on the nullability
 		/// of the specified columns.
 		/// </summary>
+		[Bam.Net.Exclude]
 		public static Protocol GetOneWhere(QueryFilter where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -322,6 +333,7 @@ namespace Bam.Net.Analytics
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Protocol OneWhere(QueryFilter where, Database database = null)
 		{
 			WhereDelegate<ProtocolColumns> whereDelegate = (c) => where;
@@ -336,6 +348,7 @@ namespace Bam.Net.Analytics
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Protocol GetOneWhere(WhereDelegate<ProtocolColumns> where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -360,6 +373,7 @@ namespace Bam.Net.Analytics
 		/// between ProtocolColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Protocol OneWhere(WhereDelegate<ProtocolColumns> where, Database database = null)
 		{
 			var result = Top(1, where, database);
@@ -389,6 +403,7 @@ namespace Bam.Net.Analytics
 		/// between ProtocolColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Protocol FirstOneWhere(WhereDelegate<ProtocolColumns> where, Database database = null)
 		{
 			var results = Top(1, where, database);
@@ -411,6 +426,7 @@ namespace Bam.Net.Analytics
 		/// between ProtocolColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Protocol FirstOneWhere(WhereDelegate<ProtocolColumns> where, OrderBy<ProtocolColumns> orderBy, Database database = null)
 		{
 			var results = Top(1, where, orderBy, database);
@@ -432,6 +448,7 @@ namespace Bam.Net.Analytics
 		/// between ProtocolColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Protocol FirstOneWhere(QueryFilter where, OrderBy<ProtocolColumns> orderBy = null, Database database = null)
 		{
 			WhereDelegate<ProtocolColumns> whereDelegate = (c) => where;
@@ -460,6 +477,7 @@ namespace Bam.Net.Analytics
 		/// between ProtocolColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static ProtocolCollection Top(int count, WhereDelegate<ProtocolColumns> where, Database database = null)
 		{
 			return Top(count, where, null, database);
@@ -482,6 +500,7 @@ namespace Bam.Net.Analytics
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static ProtocolCollection Top(int count, WhereDelegate<ProtocolColumns> where, OrderBy<ProtocolColumns> orderBy, Database database = null)
 		{
 			ProtocolColumns c = new ProtocolColumns();
@@ -503,6 +522,7 @@ namespace Bam.Net.Analytics
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static ProtocolCollection Top(int count, QueryFilter where, Database database)
 		{
 			return Top(count, where, null, database);
@@ -524,6 +544,7 @@ namespace Bam.Net.Analytics
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static ProtocolCollection Top(int count, QueryFilter where, OrderBy<ProtocolColumns> orderBy = null, Database database = null)
 		{
 			Database db = database ?? Db.For<Protocol>();
@@ -591,6 +612,7 @@ namespace Bam.Net.Analytics
 		/// between ProtocolColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<ProtocolColumns> where, Database database = null)
 		{
 			ProtocolColumns c = new ProtocolColumns();
@@ -603,6 +625,16 @@ namespace Bam.Net.Analytics
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
 		}
+		 
+		public static long Count(QiQuery where, Database database = null)
+		{
+		    Database db = database ?? Db.For<Protocol>();
+			QuerySet query = GetQuerySet(db);	 
+			query.Count<Protocol>();
+			query.Where(where);	  
+			query.Execute(db);
+			return query.Results.As<CountResult>(0).Value;
+		} 		
 
 		private static Protocol CreateFromFilter(IQueryFilter filter, Database database = null)
 		{

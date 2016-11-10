@@ -86,7 +86,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(EventParam));
+				query.table = Dao.TableName(typeof(Bam.Net.Logging.Data.EventParam));
 				object value = Bam.Net.Logging.Data.EventParam.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(EventParam));
+				query.table = Dao.TableName(typeof(Bam.Net.Logging.Data.EventParam));
 				object[] value = Bam.Net.Logging.Data.EventParam.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using Bam.Net.Logging;
+using Bam.Net.Incubation;
 
 namespace Bam.Net.CoreServices
 {
@@ -17,15 +18,22 @@ namespace Bam.Net.CoreServices
             : this(".", logger)
         { }
 
-        public ProxyFactory(string workspaceDirectory, ILogger logger = null)
+        public ProxyFactory(Incubator incubator) 
+            : this(".", null, incubator)
+        { }
+
+        public ProxyFactory(string workspaceDirectory, ILogger logger = null, Incubator serviceProvider = null)
         {
-            this.WorkspaceDirectory = workspaceDirectory;
-            this.DefaultSettings = new ProxySettings { Protocol = Protocols.Http, Host = "localhost", Port = 8080 };
-            this.Logger = logger ?? Log.Default;
+            WorkspaceDirectory = workspaceDirectory;
+            DefaultSettings = new ProxySettings { Protocol = Protocols.Http, Host = "localhost", Port = 8080 };
+            Logger = logger ?? Log.Default;
+            ServiceProvider = serviceProvider ?? Incubator.Default;
         }
 
+        public Incubator ServiceProvider { get; set; }
+
         /// <summary>
-        /// The logger used to log events in the current ServiceFactory
+        /// The logger used to log events in the current ProxyFactory
         /// </summary>
         public ILogger Logger { get; set; }
         /// <summary>
@@ -46,7 +54,7 @@ namespace Bam.Net.CoreServices
         public T GetProxy<T>(string hostName, int port = 8080)
         {
             Assembly assembly = GetAssembly<T>(hostName, port);
-            return ConstructProxy<T>(assembly);
+            return ConstructProxy<T>(assembly, ServiceProvider);
         }
 
         /// <summary>
@@ -90,7 +98,8 @@ namespace Bam.Net.CoreServices
         /// <returns></returns>
         protected internal Assembly GetAssembly(ProxySettings settings)
         {
-            Args.ThrowIfNull(settings.ServiceType, "Settings.ServiceType");
+            Args.ThrowIfNull(settings.ServiceType, "ProxySettings.ServiceType");
+            settings.ValidateOrThrow();
 
             settings = settings ?? DefaultSettings;
             ProxyAssemblyGenerator generator = new ProxyAssemblyGenerator(settings, WorkspaceDirectory, Logger);
@@ -109,7 +118,7 @@ namespace Bam.Net.CoreServices
             return generator.GetAssembly();
         }
 
-        private static T ConstructProxy<T>(Assembly assembly)
+        private static T ConstructProxy<T>(Assembly assembly, Incubator serviceProvider = null)
         {
             string proxyTypeName = "{0}Proxy"._Format(typeof(T).Name);
             Type proxyType = assembly.GetTypes().FirstOrDefault(t => t.Name.Equals(proxyTypeName));
@@ -117,7 +126,12 @@ namespace Bam.Net.CoreServices
             {
                 Args.Throw<ArgumentException>("The proxy {0} for type {1} was not found in the specified assembly: {2}", proxyTypeName, typeof(T).Name, assembly.FullName);
             }
-            return proxyType.Construct<T>();
+            T result = proxyType.Construct<T>();
+            if(serviceProvider != null)
+            {
+                serviceProvider.SetProperties(result);
+            }
+            return result;
         }
     }
 }

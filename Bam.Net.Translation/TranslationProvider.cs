@@ -1,20 +1,17 @@
 /*
 	Copyright © Bryan Apellanes 2015  
 */
-using Bam.Net.Data;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CsQuery;
 using Bam.Net.Data;
-using Bam.Net;
-using Bam.Net.Web;
 using Bam.Net.Logging;
+using Bam.Net.Web;
+using CsQuery;
 
 namespace Bam.Net.Translation
 {
+    /// <summary>
+    /// A component that provides language translation
+    /// </summary>
     public abstract class TranslationProvider: Loggable, ITranslationProvider
     {
         public TranslationProvider()
@@ -27,6 +24,7 @@ namespace Bam.Net.Translation
             this.Logger = logger;
             this.DownloadLanguages = true;
         }
+
         public Database LanguageDatabase { get; set; }
         /// <summary>
         /// The Database to store and retrieve translated
@@ -50,6 +48,11 @@ namespace Bam.Net.Translation
         public event EventHandler LanguageOtherNameSaved;
         public ILogger Logger { get; set; }
         public bool DownloadLanguages { get; set; }
+
+        /// <summary>
+        /// Retrieves language information from https://www.loc.gov/standards/iso639-2/php/code_list.php
+        /// and stores it in the LanguageDatabase
+        /// </summary>
         public void EnsureLanguages()
         {
             if (DownloadLanguages)

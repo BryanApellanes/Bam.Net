@@ -16,6 +16,16 @@ namespace Bam.Net.Analytics
 		public ImageQuery(WhereDelegate<ImageColumns> where, OrderBy<ImageColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public ImageQuery(Func<ImageColumns, QueryFilter<ImageColumns>> where, OrderBy<ImageColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public ImageQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static ImageQuery Where(WhereDelegate<ImageColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static ImageQuery Where(WhereDelegate<ImageColumns> where, OrderBy<ImageColumns> orderBy = null, Database db = null)
+        {
+            return new ImageQuery(where, orderBy, db);
+        }
 
 		public ImageCollection Execute()
 		{

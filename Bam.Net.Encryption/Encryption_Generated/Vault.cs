@@ -47,6 +47,7 @@ namespace Bam.Net.Encryption
 			this.SetChildren();
 		}
 
+		[Bam.Net.Exclude]
 		public static implicit operator Vault(DataRow data)
 		{
 			return new Vault(data);
@@ -106,7 +107,7 @@ namespace Bam.Net.Encryption
 
 				
 
-	[Exclude]	
+	[Bam.Net.Exclude]	
 	public VaultItemCollection VaultItemsByVaultId
 	{
 		get
@@ -130,7 +131,7 @@ namespace Bam.Net.Encryption
 		}
 	}
 	
-	[Exclude]	
+	[Bam.Net.Exclude]	
 	public VaultKeyCollection VaultKeysByVaultId
 	{
 		get
@@ -159,7 +160,8 @@ namespace Bam.Net.Encryption
 		/// Gets a query filter that should uniquely identify
 		/// the current instance.  The default implementation
 		/// compares the Id/key field to the current instance's.
-		/// </summary> 
+		/// </summary>
+		[Bam.Net.Exclude] 
 		public override IQueryFilter GetUniqueFilter()
 		{
 			if(UniqueFilterProvider != null)
@@ -189,12 +191,13 @@ namespace Bam.Net.Encryption
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<Vault>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				VaultColumns columns = new VaultColumns();
-				var orderBy = Order.By<VaultColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<VaultColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -206,19 +209,21 @@ namespace Bam.Net.Encryption
 					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
 				}
 			});			
-		}	 
-
+		}
+			 
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<Vault>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
 
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<VaultColumns> where, Action<IEnumerable<Vault>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				VaultColumns columns = new VaultColumns();
-				var orderBy = Order.By<VaultColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<VaultColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -252,11 +257,13 @@ namespace Bam.Net.Encryption
 			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
+		[Bam.Net.Exclude]
 		public static VaultCollection Query(QueryFilter filter, Database database = null)
 		{
 			return Where(filter, database);
 		}
-				
+
+		[Bam.Net.Exclude]		
 		public static VaultCollection Where(QueryFilter filter, Database database = null)
 		{
 			WhereDelegate<VaultColumns> whereDelegate = (c) => filter;
@@ -271,6 +278,7 @@ namespace Bam.Net.Encryption
 		/// between VaultColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static VaultCollection Where(Func<VaultColumns, QueryFilter<VaultColumns>> where, OrderBy<VaultColumns> orderBy = null, Database database = null)
 		{
 			database = database ?? Db.For<Vault>();
@@ -285,6 +293,7 @@ namespace Bam.Net.Encryption
 		/// between VaultColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static VaultCollection Where(WhereDelegate<VaultColumns> where, Database database = null)
 		{		
 			database = database ?? Db.For<Vault>();
@@ -303,6 +312,7 @@ namespace Bam.Net.Encryption
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static VaultCollection Where(WhereDelegate<VaultColumns> where, OrderBy<VaultColumns> orderBy = null, Database database = null)
 		{		
 			database = database ?? Db.For<Vault>();
@@ -329,6 +339,7 @@ namespace Bam.Net.Encryption
 		/// one will be created; success will depend on the nullability
 		/// of the specified columns.
 		/// </summary>
+		[Bam.Net.Exclude]
 		public static Vault GetOneWhere(QueryFilter where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -347,6 +358,7 @@ namespace Bam.Net.Encryption
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Vault OneWhere(QueryFilter where, Database database = null)
 		{
 			WhereDelegate<VaultColumns> whereDelegate = (c) => where;
@@ -361,6 +373,7 @@ namespace Bam.Net.Encryption
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Vault GetOneWhere(WhereDelegate<VaultColumns> where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -385,6 +398,7 @@ namespace Bam.Net.Encryption
 		/// between VaultColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Vault OneWhere(WhereDelegate<VaultColumns> where, Database database = null)
 		{
 			var result = Top(1, where, database);
@@ -414,6 +428,7 @@ namespace Bam.Net.Encryption
 		/// between VaultColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Vault FirstOneWhere(WhereDelegate<VaultColumns> where, Database database = null)
 		{
 			var results = Top(1, where, database);
@@ -436,6 +451,7 @@ namespace Bam.Net.Encryption
 		/// between VaultColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Vault FirstOneWhere(WhereDelegate<VaultColumns> where, OrderBy<VaultColumns> orderBy, Database database = null)
 		{
 			var results = Top(1, where, orderBy, database);
@@ -457,6 +473,7 @@ namespace Bam.Net.Encryption
 		/// between VaultColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Vault FirstOneWhere(QueryFilter where, OrderBy<VaultColumns> orderBy = null, Database database = null)
 		{
 			WhereDelegate<VaultColumns> whereDelegate = (c) => where;
@@ -485,6 +502,7 @@ namespace Bam.Net.Encryption
 		/// between VaultColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static VaultCollection Top(int count, WhereDelegate<VaultColumns> where, Database database = null)
 		{
 			return Top(count, where, null, database);
@@ -507,6 +525,7 @@ namespace Bam.Net.Encryption
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static VaultCollection Top(int count, WhereDelegate<VaultColumns> where, OrderBy<VaultColumns> orderBy, Database database = null)
 		{
 			VaultColumns c = new VaultColumns();
@@ -528,6 +547,7 @@ namespace Bam.Net.Encryption
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static VaultCollection Top(int count, QueryFilter where, Database database)
 		{
 			return Top(count, where, null, database);
@@ -549,6 +569,7 @@ namespace Bam.Net.Encryption
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static VaultCollection Top(int count, QueryFilter where, OrderBy<VaultColumns> orderBy = null, Database database = null)
 		{
 			Database db = database ?? Db.For<Vault>();
@@ -616,6 +637,7 @@ namespace Bam.Net.Encryption
 		/// between VaultColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<VaultColumns> where, Database database = null)
 		{
 			VaultColumns c = new VaultColumns();
@@ -628,6 +650,16 @@ namespace Bam.Net.Encryption
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
 		}
+		 
+		public static long Count(QiQuery where, Database database = null)
+		{
+		    Database db = database ?? Db.For<Vault>();
+			QuerySet query = GetQuerySet(db);	 
+			query.Count<Vault>();
+			query.Where(where);	  
+			query.Execute(db);
+			return query.Results.As<CountResult>(0).Value;
+		} 		
 
 		private static Vault CreateFromFilter(IQueryFilter filter, Database database = null)
 		{

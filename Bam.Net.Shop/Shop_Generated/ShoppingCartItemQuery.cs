@@ -16,6 +16,16 @@ namespace Bam.Net.Shop
 		public ShoppingCartItemQuery(WhereDelegate<ShoppingCartItemColumns> where, OrderBy<ShoppingCartItemColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public ShoppingCartItemQuery(Func<ShoppingCartItemColumns, QueryFilter<ShoppingCartItemColumns>> where, OrderBy<ShoppingCartItemColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public ShoppingCartItemQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static ShoppingCartItemQuery Where(WhereDelegate<ShoppingCartItemColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static ShoppingCartItemQuery Where(WhereDelegate<ShoppingCartItemColumns> where, OrderBy<ShoppingCartItemColumns> orderBy = null, Database db = null)
+        {
+            return new ShoppingCartItemQuery(where, orderBy, db);
+        }
 
 		public ShoppingCartItemCollection Execute()
 		{

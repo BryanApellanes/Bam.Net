@@ -86,7 +86,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(UrlTag));
+				query.table = Dao.TableName(typeof(Bam.Net.Analytics.UrlTag));
 				object value = Bam.Net.Analytics.UrlTag.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(UrlTag));
+				query.table = Dao.TableName(typeof(Bam.Net.Analytics.UrlTag));
 				object[] value = Bam.Net.Analytics.UrlTag.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

@@ -11,7 +11,7 @@ namespace Bam.Net
 {
     /// <summary>
     /// Denotes a class that requires clients use
-    /// encrypted channels for method invokation calls
+    /// encrypted channels for method invocation calls
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class EncryptAttribute: Attribute

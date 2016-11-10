@@ -17,14 +17,17 @@ namespace Bam.Net.CoreServices
         public ServiceResponse(T value)
         {
             Data = value;
-            Data = TypedData();
+            TypedData(value);
         }
 
-        public T TypedData()
+        T _typedData;
+        public T TypedData(T typedData = default(T))
         {
-            T t = new T();
-            t.CopyProperties(Data);            
-            return t;
+            if(typedData != null)
+            {
+                _typedData = typedData;
+            }
+            return _typedData;
         }
 
         public O Cast<O>()
@@ -40,6 +43,7 @@ namespace Bam.Net.CoreServices
 
     public class ServiceResponse
     {
+        public ServiceResponse() { }
         public bool Success { get; set; }
         public string Message { get; set; }
         public object Data { get; set; }    

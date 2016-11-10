@@ -16,6 +16,16 @@ namespace Bam.Net.Logging.Data
 		public SourceNameQuery(WhereDelegate<SourceNameColumns> where, OrderBy<SourceNameColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public SourceNameQuery(Func<SourceNameColumns, QueryFilter<SourceNameColumns>> where, OrderBy<SourceNameColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public SourceNameQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static SourceNameQuery Where(WhereDelegate<SourceNameColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static SourceNameQuery Where(WhereDelegate<SourceNameColumns> where, OrderBy<SourceNameColumns> orderBy = null, Database db = null)
+        {
+            return new SourceNameQuery(where, orderBy, db);
+        }
 
 		public SourceNameCollection Execute()
 		{

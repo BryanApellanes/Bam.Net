@@ -16,6 +16,16 @@ namespace Bam.Net.Analytics
 		public UrlTagQuery(WhereDelegate<UrlTagColumns> where, OrderBy<UrlTagColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public UrlTagQuery(Func<UrlTagColumns, QueryFilter<UrlTagColumns>> where, OrderBy<UrlTagColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public UrlTagQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static UrlTagQuery Where(WhereDelegate<UrlTagColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static UrlTagQuery Where(WhereDelegate<UrlTagColumns> where, OrderBy<UrlTagColumns> orderBy = null, Database db = null)
+        {
+            return new UrlTagQuery(where, orderBy, db);
+        }
 
 		public UrlTagCollection Execute()
 		{

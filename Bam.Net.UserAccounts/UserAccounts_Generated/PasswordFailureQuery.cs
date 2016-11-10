@@ -16,6 +16,16 @@ namespace Bam.Net.UserAccounts.Data
 		public PasswordFailureQuery(WhereDelegate<PasswordFailureColumns> where, OrderBy<PasswordFailureColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public PasswordFailureQuery(Func<PasswordFailureColumns, QueryFilter<PasswordFailureColumns>> where, OrderBy<PasswordFailureColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public PasswordFailureQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static PasswordFailureQuery Where(WhereDelegate<PasswordFailureColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static PasswordFailureQuery Where(WhereDelegate<PasswordFailureColumns> where, OrderBy<PasswordFailureColumns> orderBy = null, Database db = null)
+        {
+            return new PasswordFailureQuery(where, orderBy, db);
+        }
 
 		public PasswordFailureCollection Execute()
 		{

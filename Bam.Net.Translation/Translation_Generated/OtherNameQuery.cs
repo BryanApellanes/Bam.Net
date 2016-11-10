@@ -16,6 +16,16 @@ namespace Bam.Net.Translation
 		public OtherNameQuery(WhereDelegate<OtherNameColumns> where, OrderBy<OtherNameColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public OtherNameQuery(Func<OtherNameColumns, QueryFilter<OtherNameColumns>> where, OrderBy<OtherNameColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public OtherNameQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static OtherNameQuery Where(WhereDelegate<OtherNameColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static OtherNameQuery Where(WhereDelegate<OtherNameColumns> where, OrderBy<OtherNameColumns> orderBy = null, Database db = null)
+        {
+            return new OtherNameQuery(where, orderBy, db);
+        }
 
 		public OtherNameCollection Execute()
 		{

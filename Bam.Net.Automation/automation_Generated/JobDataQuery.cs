@@ -16,6 +16,16 @@ namespace Bam.Net.Automation.Data
 		public JobDataQuery(WhereDelegate<JobDataColumns> where, OrderBy<JobDataColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public JobDataQuery(Func<JobDataColumns, QueryFilter<JobDataColumns>> where, OrderBy<JobDataColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public JobDataQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static JobDataQuery Where(WhereDelegate<JobDataColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static JobDataQuery Where(WhereDelegate<JobDataColumns> where, OrderBy<JobDataColumns> orderBy = null, Database db = null)
+        {
+            return new JobDataQuery(where, orderBy, db);
+        }
 
 		public JobDataCollection Execute()
 		{

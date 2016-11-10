@@ -16,6 +16,16 @@ namespace Bam.Net.Logging.Data
 		public SignatureQuery(WhereDelegate<SignatureColumns> where, OrderBy<SignatureColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public SignatureQuery(Func<SignatureColumns, QueryFilter<SignatureColumns>> where, OrderBy<SignatureColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public SignatureQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static SignatureQuery Where(WhereDelegate<SignatureColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static SignatureQuery Where(WhereDelegate<SignatureColumns> where, OrderBy<SignatureColumns> orderBy = null, Database db = null)
+        {
+            return new SignatureQuery(where, orderBy, db);
+        }
 
 		public SignatureCollection Execute()
 		{

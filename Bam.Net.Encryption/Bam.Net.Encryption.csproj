@@ -115,9 +115,15 @@
     <Compile Include="Encryption_Generated\VaultItem.cs" />
     <Compile Include="Encryption_Generated\VaultItemCollection.cs" />
     <Compile Include="Encryption_Generated\VaultItemColumns.cs" />
+    <Compile Include="Encryption_Generated\VaultItemPagedQuery.cs" />
+    <Compile Include="Encryption_Generated\VaultItemQuery.cs" />
     <Compile Include="Encryption_Generated\VaultKey.cs" />
     <Compile Include="Encryption_Generated\VaultKeyCollection.cs" />
     <Compile Include="Encryption_Generated\VaultKeyColumns.cs" />
+    <Compile Include="Encryption_Generated\VaultKeyPagedQuery.cs" />
+    <Compile Include="Encryption_Generated\VaultKeyQuery.cs" />
+    <Compile Include="Encryption_Generated\VaultPagedQuery.cs" />
+    <Compile Include="Encryption_Generated\VaultQuery.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Partials\Vault.cs" />
     <Compile Include="Partials\VaultItem.cs" />

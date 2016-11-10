@@ -16,6 +16,16 @@ namespace Bam.Net.Shop
 		public PriceQuery(WhereDelegate<PriceColumns> where, OrderBy<PriceColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public PriceQuery(Func<PriceColumns, QueryFilter<PriceColumns>> where, OrderBy<PriceColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public PriceQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static PriceQuery Where(WhereDelegate<PriceColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static PriceQuery Where(WhereDelegate<PriceColumns> where, OrderBy<PriceColumns> orderBy = null, Database db = null)
+        {
+            return new PriceQuery(where, orderBy, db);
+        }
 
 		public PriceCollection Execute()
 		{

@@ -16,6 +16,16 @@ namespace Bam.Net.UserAccounts.Data
 		public LockOutQuery(WhereDelegate<LockOutColumns> where, OrderBy<LockOutColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public LockOutQuery(Func<LockOutColumns, QueryFilter<LockOutColumns>> where, OrderBy<LockOutColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public LockOutQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static LockOutQuery Where(WhereDelegate<LockOutColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static LockOutQuery Where(WhereDelegate<LockOutColumns> where, OrderBy<LockOutColumns> orderBy = null, Database db = null)
+        {
+            return new LockOutQuery(where, orderBy, db);
+        }
 
 		public LockOutCollection Execute()
 		{

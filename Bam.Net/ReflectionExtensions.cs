@@ -507,16 +507,22 @@ namespace Bam.Net
             {
                 output.AppendFormat("{0}.", type.Namespace);
             }
-            output.Append(type.Name.DropTrailingNonLetters());
+            output.Append(type == typeof(int) ? type.Name: type.Name.DropTrailingNonLetters());
             if (type.IsGenericType)
             {
-                output.AppendFormat("<{0}>", type.GetGenericArguments().ToDelimited(t => includeNamespace ? "{0}.{1}"._Format(t.Namespace, t.Name): t.Name));
+                output.AppendFormat("<{0}>", type.GetGenericArguments().ToDelimited(t => includeNamespace ? "{0}.{1}"._Format(t.Namespace, t.ToTypeString(false)): t.ToTypeString(false)));
             }
             if (type.IsArray)
             {
                 output.Append("[]");
             }
             return output.ToString();
+        }
+
+        public static bool IsOverridable(this MethodInfo method)
+        {
+            //https://msdn.microsoft.com/en-us/library/system.reflection.methodbase.isvirtual(v=vs.110).aspx
+            return method.IsVirtual && !method.IsFinal;
         }
 
         private static void PropertyNotFound(string propertyName, Type type)

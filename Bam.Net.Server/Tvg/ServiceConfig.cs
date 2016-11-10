@@ -16,9 +16,18 @@ namespace Bam.Net.Server.Tvg
         {
             get
             {
-                return DefaultConfiguration.GetAppSetting("ContentRoot");
+                return DefaultConfiguration.GetAppSetting("ContentRoot").Or(".\\");
             }
         }
+
+        public static string ApplicationName
+        {
+            get
+            {
+                return DefaultConfiguration.GetAppSetting("ApplicationName").Or("UNKOWN");
+            }
+        }
+
         public static Database GetConfiguredDatabase()
         {
             // read dialect from config and instantiate as appropriate

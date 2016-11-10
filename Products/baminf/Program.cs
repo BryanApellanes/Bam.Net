@@ -37,8 +37,20 @@ namespace baminf
             AddValidArgument("nuspecRoot", "The root directory to search for nuspec files");
             AddValidArgument("aip", false, addAcronym: false, description: "The path to the aip (Advanced Installer Project) file");
             AddValidArgument("smsiv", true, addAcronym: false, description: "Set msi version in aip (Advanced Installer Project) file");
+
+            AddBuildArguments();
+            AddSwitches(typeof(BuildActions));
         }
 
+        private static void AddBuildArguments()
+        {
+            AddValidArgument("mergeDllNamesFile", false, addAcronym: true, description: "generateBamDotExeScript: The path to the text file containing the names of the dlls to merge");
+            AddValidArgument("dllNamesFile", false, addAcronym: true, description: "generateNugetScripts: The path to the text file containing the names of the dlls");
+            AddValidArgument("exeNamesFile", false, addAcronym: true, description: "generateNugetScripts: The path to the text file containing the names of the exes");
+            AddValidArgument("templateFile", false, addAcronym: true, description: "generateNugetScripts: The path to the template file to use");
+            AddValidArgument("fileNameFormat", false, addAcronym: true, description: "generateNugetScripts: The file name format for generated files: default is copy_{0}.cmd, where 0 is the name of the library in dllNamesFile");
+            AddValidArgument("outputDir", false, addAcronym: true, description: "generateNugetScripts: The directory to write files to");
+        }
         #region do not modify
         public static void Start()
         {

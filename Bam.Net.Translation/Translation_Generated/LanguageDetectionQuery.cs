@@ -16,6 +16,16 @@ namespace Bam.Net.Translation
 		public LanguageDetectionQuery(WhereDelegate<LanguageDetectionColumns> where, OrderBy<LanguageDetectionColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public LanguageDetectionQuery(Func<LanguageDetectionColumns, QueryFilter<LanguageDetectionColumns>> where, OrderBy<LanguageDetectionColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public LanguageDetectionQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static LanguageDetectionQuery Where(WhereDelegate<LanguageDetectionColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static LanguageDetectionQuery Where(WhereDelegate<LanguageDetectionColumns> where, OrderBy<LanguageDetectionColumns> orderBy = null, Database db = null)
+        {
+            return new LanguageDetectionQuery(where, orderBy, db);
+        }
 
 		public LanguageDetectionCollection Execute()
 		{

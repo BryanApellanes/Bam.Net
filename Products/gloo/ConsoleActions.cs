@@ -25,7 +25,7 @@ namespace gloo
         static GlooServer glooServer;
         
         [ConsoleAction]
-        public void StartConsole()
+        public void StartGlooServer()
         {
             ConsoleLogger logger = GetLogger();
             CreateGlooServer(logger);
@@ -33,7 +33,7 @@ namespace gloo
         }
 
         [ConsoleAction]
-        public void StopConsole()
+        public void StopGlooServer()
         {
             if (glooServer != null)
             {

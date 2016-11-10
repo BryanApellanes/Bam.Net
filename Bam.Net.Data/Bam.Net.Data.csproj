@@ -176,6 +176,7 @@
     <Compile Include="SchemaInitializer.cs" />
     <Compile Include="Select.cs" />
     <Compile Include="SelectColumn.cs" />
+    <Compile Include="SerializableQuery.cs" />
     <Compile Include="SortOrder.cs" />
     <Compile Include="SchemaWriter.cs" />
     <Compile Include="ConnectionStringResolveResult.cs" />

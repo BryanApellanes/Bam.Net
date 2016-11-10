@@ -16,6 +16,16 @@ namespace Bam.Net.Encryption
 		public VaultItemQuery(WhereDelegate<VaultItemColumns> where, OrderBy<VaultItemColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public VaultItemQuery(Func<VaultItemColumns, QueryFilter<VaultItemColumns>> where, OrderBy<VaultItemColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public VaultItemQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static VaultItemQuery Where(WhereDelegate<VaultItemColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static VaultItemQuery Where(WhereDelegate<VaultItemColumns> where, OrderBy<VaultItemColumns> orderBy = null, Database db = null)
+        {
+            return new VaultItemQuery(where, orderBy, db);
+        }
 
 		public VaultItemCollection Execute()
 		{

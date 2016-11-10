@@ -17,6 +17,16 @@ namespace Bam.Net.DaoRef
 		public TestTableQuery(Func<TestTableColumns, QueryFilter<TestTableColumns>> where, OrderBy<TestTableColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public TestTableQuery(Delegate where, Database db = null) : base(where, db) { }
 
+        public static TestTableQuery Where(WhereDelegate<TestTableColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static TestTableQuery Where(WhereDelegate<TestTableColumns> where, OrderBy<TestTableColumns> orderBy = null, Database db = null)
+        {
+            return new TestTableQuery(where, orderBy, db);
+        }
+
 		public TestTableCollection Execute()
 		{
 			return new TestTableCollection(this, true);

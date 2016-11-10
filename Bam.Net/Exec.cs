@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Bam.Net
 {
@@ -26,6 +27,31 @@ namespace Bam.Net
             else
             {
                 return null;
+            }
+        }
+        public static void Try(Action action, Action<Exception> onException = null)
+        {
+            Action<Exception> exceptionHandler = onException ?? ((ex) => { });
+            try
+            {
+                action();
+            }
+            catch (Exception e)
+            {
+                exceptionHandler(e);
+            }
+        }
+
+        public static void TryAsync(Action action, Action<Exception> onException = null)
+        {
+            Action<Exception> exceptionHandler = onException ?? ((ex) => { });
+            try
+            {
+                Task.Run(action);
+            }
+            catch (Exception e)
+            {
+                exceptionHandler(e);
             }
         }
 

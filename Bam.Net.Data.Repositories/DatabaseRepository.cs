@@ -80,6 +80,10 @@ namespace Bam.Net.Data.Repositories
         }
 
         bool _blockOnChildWrites;
+        /// <summary>
+        /// If true writing of child collections
+        /// will block on saving of the parent
+        /// </summary>
         public bool BlockOnChildWrites
         {
             get

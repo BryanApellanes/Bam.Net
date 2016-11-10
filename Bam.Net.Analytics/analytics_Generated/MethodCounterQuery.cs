@@ -16,6 +16,16 @@ namespace Bam.Net.Analytics
 		public MethodCounterQuery(WhereDelegate<MethodCounterColumns> where, OrderBy<MethodCounterColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public MethodCounterQuery(Func<MethodCounterColumns, QueryFilter<MethodCounterColumns>> where, OrderBy<MethodCounterColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public MethodCounterQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static MethodCounterQuery Where(WhereDelegate<MethodCounterColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static MethodCounterQuery Where(WhereDelegate<MethodCounterColumns> where, OrderBy<MethodCounterColumns> orderBy = null, Database db = null)
+        {
+            return new MethodCounterQuery(where, orderBy, db);
+        }
 
 		public MethodCounterCollection Execute()
 		{

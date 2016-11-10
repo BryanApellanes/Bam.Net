@@ -16,16 +16,29 @@ namespace Bam.Net.ServiceProxy.Secure
         {
             this.ApplicationNameProvider = new DefaultConfigurationApplicationNameProvider();
         }
+        public ApiKeyInfo(IApplicationNameProvider nameProvider)
+        {
+            ApplicationNameProvider = nameProvider;
+        }
         protected internal IApplicationNameProvider ApplicationNameProvider
         {
             get;
             set;
         }
+        string _appName;
         public string ApplicationName
         {
             get
             {
-                return ApplicationNameProvider.GetApplicationName();
+                if (string.IsNullOrEmpty(_appName))
+                {
+                    _appName = ApplicationNameProvider.GetApplicationName();
+                }
+                return _appName;
+            }
+            set
+            {
+                _appName = value;
             }
         }
 

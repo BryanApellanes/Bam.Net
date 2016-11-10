@@ -710,6 +710,7 @@ namespace Bam.Net.Server.Tests
             MethodInfo method = bam.GetMethod("getpages", BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
             Expect.IsNotNull(method);
         }
+
         class TestExecutor
         {
             public TestExecutor()

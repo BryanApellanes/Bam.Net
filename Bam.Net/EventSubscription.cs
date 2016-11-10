@@ -7,6 +7,10 @@ using System.Reflection;
 
 namespace Bam.Net
 {
+    /// <summary>
+    /// A descriptor for the constituent pieces of an
+    /// EventSubscription
+    /// </summary>
     public class EventSubscription
     {
         public string EventName { get; set; }
@@ -14,7 +18,7 @@ namespace Bam.Net
         public FieldInfo FieldInfo { get; set; }
         public EventInfo EventInfo { get; set; }
 
-        public object Invoke(params object[] args)
+        public virtual object Invoke(params object[] args)
         {
             return Delegate.DynamicInvoke(args);
         }

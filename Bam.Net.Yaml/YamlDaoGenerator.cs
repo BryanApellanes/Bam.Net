@@ -19,15 +19,14 @@ namespace Bam.Net.Yaml
 	/// uses a YamlSchemaGenerator to generate a YamlSchema, a 
 	/// YamlTypeSchemaGenerator to transform the YamlSchema into 
 	/// a TypeSchema and a TypeDaoGenerator to create a Dao Assembly
-	/// from the TypeSchema
+	/// from the TypeSchema.  NOTE: this is not well tested
 	/// </summary>
 	public class YamlDaoGenerator : TypeDaoGenerator
 	{
 		public YamlDaoGenerator(ILogger logger = null): base()
 		{
 			this.YamlSchemaGenerator = new YamlSchemaGenerator();
-			this.AddAuditFields = true;
-			this.AddIdField = true;
+			this.CheckIdField = true;
 			this.IncludeModifiedBy = true;
 			
 			if (logger != null)

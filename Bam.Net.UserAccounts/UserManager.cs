@@ -86,6 +86,10 @@ namespace Bam.Net.UserAccounts
                     return serviceProvider;
                 });
             }
+            set
+            {
+                _serviceProvider = value;
+            }
         }
 
         protected internal DaoUserResolver DaoUserResolver
@@ -183,6 +187,7 @@ namespace Bam.Net.UserAccounts
             }
         }
 
+        [Exclude]
         public Email CreateEmail(string fromAddress = null, string fromDisplayName = null)
         {
             return SmtpSettingsProvider.CreateEmail(fromAddress, fromDisplayName);
@@ -368,7 +373,7 @@ namespace Bam.Net.UserAccounts
             set
             {
                 _database = value;
-                DaoUserResolver.UserDatabase = _database;
+                DaoUserResolver.Database = _database;
                 User.UserDatabase = _database;
             }
         }
@@ -767,7 +772,7 @@ namespace Bam.Net.UserAccounts
             {
                 return User.Anonymous;
             }
-            return Session.UserOfUserId ?? User.Anonymous;
+            return Session.Get(context).UserOfUserId ?? User.Anonymous;
         }
 
         [Exclude]

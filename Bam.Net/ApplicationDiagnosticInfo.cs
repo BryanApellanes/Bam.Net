@@ -98,7 +98,7 @@ namespace Bam.Net
                 }
                 return appName;
             }
-            private set
+            set
             {
                 appName = value;
             }

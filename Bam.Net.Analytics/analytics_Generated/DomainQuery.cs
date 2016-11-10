@@ -16,6 +16,16 @@ namespace Bam.Net.Analytics
 		public DomainQuery(WhereDelegate<DomainColumns> where, OrderBy<DomainColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public DomainQuery(Func<DomainColumns, QueryFilter<DomainColumns>> where, OrderBy<DomainColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public DomainQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static DomainQuery Where(WhereDelegate<DomainColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static DomainQuery Where(WhereDelegate<DomainColumns> where, OrderBy<DomainColumns> orderBy = null, Database db = null)
+        {
+            return new DomainQuery(where, orderBy, db);
+        }
 
 		public DomainCollection Execute()
 		{

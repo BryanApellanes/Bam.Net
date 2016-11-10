@@ -16,6 +16,16 @@ namespace Bam.Net.UserAccounts.Data
 		public UserRoleQuery(WhereDelegate<UserRoleColumns> where, OrderBy<UserRoleColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public UserRoleQuery(Func<UserRoleColumns, QueryFilter<UserRoleColumns>> where, OrderBy<UserRoleColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public UserRoleQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static UserRoleQuery Where(WhereDelegate<UserRoleColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static UserRoleQuery Where(WhereDelegate<UserRoleColumns> where, OrderBy<UserRoleColumns> orderBy = null, Database db = null)
+        {
+            return new UserRoleQuery(where, orderBy, db);
+        }
 
 		public UserRoleCollection Execute()
 		{

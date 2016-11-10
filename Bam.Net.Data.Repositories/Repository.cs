@@ -36,11 +36,21 @@ namespace Bam.Net.Data.Repositories
 			}
 		}
 
+        /// <summary>
+        /// Add the specified type as a type that
+        /// can be persisted by this repository
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
 		public virtual void AddType<T>()
 		{
 			AddType(typeof(T));
 		}
 
+        /// <summary>
+        /// Add the specified types as types that
+        /// can be persisted by this repository
+        /// </summary>
+        /// <param name="types"></param>
 		public void AddTypes(IEnumerable<Type> types)
 		{
 			types.Each(type =>
@@ -49,6 +59,11 @@ namespace Bam.Net.Data.Repositories
 			});
 		}
 
+        /// <summary>
+        /// Add the specified type as a type that
+        /// can be persisted by this repository
+        /// </summary>
+        /// <param name="type"></param>
 		public virtual void AddType(Type type)
 		{
 			_storableTypes.Add(type);

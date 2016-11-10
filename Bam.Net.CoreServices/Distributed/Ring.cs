@@ -11,37 +11,37 @@ namespace Bam.Net.CoreServices.Distributed
 {
     public abstract class Ring<T> : Ring where T: IDistributedRepository
     {
-        public void AddSlot(T slotValue)
+        public void AddArc(T arcValue)
         {
-            AddSlot(new Slot<T>(slotValue));
+            AddArc(new Arc<T>(arcValue));
         }
 
-        public void AddSlot(Slot<T> slot)
+        public void AddArc(Arc<T> arc)
         {
-            base.AddSlot(slot);
+            base.AddArc(arc);
         }
 
-        public Slot<T> GetSlot(int index)
+        public Arc<T> GetArc(int index)
         {
-            return Slots[index] as Slot<T>;
+            return Arcs[index] as Arc<T>;
         }
 
-        public void AddRange(IEnumerable<Slot<T>> slots)
+        public void AddRange(IEnumerable<Arc<T>> slots)
         {
-            List<Slot> newSlots = new List<Slot>(Slots);
-            newSlots.AddRange(slots);
-            ConfigureSlots(newSlots);
+            List<Arc> newArcs = new List<Arc>(Arcs);
+            newArcs.AddRange(slots);
+            ConfigureArcs(newArcs);
 
-            Slots = newSlots.ToArray();            
+            Arcs = newArcs.ToArray();            
         }
     }
 
     public abstract class Ring
     {
-        List<Slot> _slots;
+        List<Arc> _arcs;
         public Ring()
         {
-            this._slots = new List<Slot>();
+            this._arcs = new List<Arc>();
         }
 
         public Ring(int slotCount)
@@ -51,48 +51,48 @@ namespace Bam.Net.CoreServices.Distributed
 
         public void SetSlotCount(int count)
         {
-            InitializeSlots(count);
+            InitializeArcs(count);
         }
 
         public int SlotCount
         {
             get
             {
-                return _slots.Count;
+                return _arcs.Count;
             }
         }
 
-        public int SlotSize
+        public int ArcSize
         {
             get;
             private set;
         }
 
-        public Slot[] Slots
+        public Arc[] Arcs
         {
             get
             {
-                return _slots.ToArray();
+                return _arcs.ToArray();
             }
             internal protected set
             {
-                _slots = new List<Slot>(value);
+                _arcs = new List<Arc>(value);
             }
         }
 
-        public void AddSlot(Slot slot)
+        public void AddArc(Arc arc)
         {
-            _slots.Add(slot);
-            ConfigureSlots(_slots);
+            _arcs.Add(arc);
+            ConfigureArcs(_arcs);
         }
 
-        protected internal abstract Slot CreateSlot();
+        protected internal abstract Arc CreateArc();
         
         public abstract string GetHashString(object value);
 
         public abstract int GetRepositoryKey(object value);
 
-        protected abstract Slot FindSlotByKey(int key);
+        protected abstract Arc FindArcByKey(int key);
 
         /// <summary>
         /// When implemented by a derived class should 
@@ -100,63 +100,63 @@ namespace Bam.Net.CoreServices.Distributed
         /// method is called each time the SlotCount
         /// is set.
         /// </summary>        
-        protected virtual void InitializeSlots(int count)
+        protected virtual void InitializeArcs(int count)
         {
-            List<Slot> slots = new List<Slot>(count);
+            List<Arc> arcs = new List<Arc>(count);
 
             count.Times((i) =>
             {
                 // if there are existing slots then don't
                 // lose them since they may already have
                 // configured providers
-                if (_slots != null && i < _slots.Count)
+                if (_arcs != null && i < _arcs.Count)
                 {
-                    slots.Add(_slots[i]);
+                    arcs.Add(_arcs[i]);
                 }
                 else
                 {
-                    slots.Add(CreateSlot());
+                    arcs.Add(CreateArc());
                 }
             });
             
 
-            ConfigureSlots(slots);
+            ConfigureArcs(arcs);
 
-            Slots = slots.ToArray();
+            Arcs = arcs.ToArray();
         }
                 
-        protected virtual void ConfigureSlots(IEnumerable<Slot> slots)
+        protected virtual void ConfigureArcs(IEnumerable<Arc> arcs)
         {
-            int slotCount = slots.Count();
-            int keysPerSlot = int.MaxValue / slotCount;
+            int arcCount = arcs.Count();
+            int keysPerArc = int.MaxValue / arcCount;
             int startKey = 0;
-            int endKey = startKey + keysPerSlot;
+            int endKey = startKey + keysPerArc;
 
-            double slotDegrees = 360 / slotCount;
+            double arcDegrees = 360 / arcCount;
             double startAngle = 0;
-            double endAngle = startAngle + slotDegrees;
+            double endAngle = startAngle + arcDegrees;
 
-            SlotSize = keysPerSlot;
-            slots.Each((s, i) =>
+            ArcSize = keysPerArc;
+            arcs.Each((a, i) =>
             {
-				s.Index = i;
-                s.Parent = this;
-                s.Keyspace = new Keyspace(startKey, endKey);
+				a.Index = i;
+                a.Parent = this;
+                a.Keyspace = new Keyspace(startKey, endKey);
                 startKey = endKey + 1;
-                endKey = startKey + keysPerSlot;
+                endKey = startKey + keysPerArc;
                 endKey = endKey < 0 ? int.MaxValue : endKey;
 
-                s.StartAngle = startAngle;
-                s.EndAngle = endAngle;
+                a.StartAngle = startAngle;
+                a.EndAngle = endAngle;
 
-                if (i == slotCount - 1 && endAngle < 360)
+                if (i == arcCount - 1 && endAngle < 360)
                 {
-                    s.EndAngle = 360;
+                    a.EndAngle = 360;
                 }
                 else
                 {
                     startAngle = endAngle;
-                    endAngle = endAngle + slotDegrees;
+                    endAngle = endAngle + arcDegrees;
                 }                
             });
         }        

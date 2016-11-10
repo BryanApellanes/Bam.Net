@@ -35,6 +35,13 @@ namespace Bam.Net.Translation
                 return new TranslationColumns("Uuid");
             }
         }
+        public TranslationColumns Cuid
+        {
+            get
+            {
+                return new TranslationColumns("Cuid");
+            }
+        }
         public TranslationColumns TranslatorUuid
         {
             get

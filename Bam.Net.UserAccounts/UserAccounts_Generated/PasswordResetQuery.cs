@@ -16,6 +16,16 @@ namespace Bam.Net.UserAccounts.Data
 		public PasswordResetQuery(WhereDelegate<PasswordResetColumns> where, OrderBy<PasswordResetColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public PasswordResetQuery(Func<PasswordResetColumns, QueryFilter<PasswordResetColumns>> where, OrderBy<PasswordResetColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public PasswordResetQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static PasswordResetQuery Where(WhereDelegate<PasswordResetColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static PasswordResetQuery Where(WhereDelegate<PasswordResetColumns> where, OrderBy<PasswordResetColumns> orderBy = null, Database db = null)
+        {
+            return new PasswordResetQuery(where, orderBy, db);
+        }
 
 		public PasswordResetCollection Execute()
 		{

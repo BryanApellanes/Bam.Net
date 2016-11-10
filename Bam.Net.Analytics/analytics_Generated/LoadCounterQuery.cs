@@ -16,6 +16,16 @@ namespace Bam.Net.Analytics
 		public LoadCounterQuery(WhereDelegate<LoadCounterColumns> where, OrderBy<LoadCounterColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public LoadCounterQuery(Func<LoadCounterColumns, QueryFilter<LoadCounterColumns>> where, OrderBy<LoadCounterColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public LoadCounterQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static LoadCounterQuery Where(WhereDelegate<LoadCounterColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static LoadCounterQuery Where(WhereDelegate<LoadCounterColumns> where, OrderBy<LoadCounterColumns> orderBy = null, Database db = null)
+        {
+            return new LoadCounterQuery(where, orderBy, db);
+        }
 
 		public LoadCounterCollection Execute()
 		{

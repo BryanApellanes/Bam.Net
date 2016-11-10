@@ -62,7 +62,7 @@ namespace Bam.Net.UserAccounts.Data
             if (sessionIdCookie != null)
             {
                 identifier = sessionIdCookie.Value;
-                session = Session.OneWhere(c => c.Identifier == identifier, db);
+                session = OneWhere(c => c.Identifier == identifier, db);
             }
 
             if (session == null)

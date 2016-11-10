@@ -47,6 +47,7 @@ namespace Bam.Net.Analytics
 			this.SetChildren();
 		}
 
+		[Bam.Net.Exclude]
 		public static implicit operator Feature(DataRow data)
 		{
 			return new Feature(data);
@@ -158,7 +159,8 @@ namespace Bam.Net.Analytics
 		/// Gets a query filter that should uniquely identify
 		/// the current instance.  The default implementation
 		/// compares the Id/key field to the current instance's.
-		/// </summary> 
+		/// </summary>
+		[Bam.Net.Exclude] 
 		public override IQueryFilter GetUniqueFilter()
 		{
 			if(UniqueFilterProvider != null)
@@ -188,12 +190,13 @@ namespace Bam.Net.Analytics
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<Feature>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				FeatureColumns columns = new FeatureColumns();
-				var orderBy = Order.By<FeatureColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<FeatureColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -205,19 +208,21 @@ namespace Bam.Net.Analytics
 					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
 				}
 			});			
-		}	 
-
+		}
+			 
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<Feature>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
 
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<FeatureColumns> where, Action<IEnumerable<Feature>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				FeatureColumns columns = new FeatureColumns();
-				var orderBy = Order.By<FeatureColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<FeatureColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -251,11 +256,13 @@ namespace Bam.Net.Analytics
 			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
+		[Bam.Net.Exclude]
 		public static FeatureCollection Query(QueryFilter filter, Database database = null)
 		{
 			return Where(filter, database);
 		}
-				
+
+		[Bam.Net.Exclude]		
 		public static FeatureCollection Where(QueryFilter filter, Database database = null)
 		{
 			WhereDelegate<FeatureColumns> whereDelegate = (c) => filter;
@@ -270,6 +277,7 @@ namespace Bam.Net.Analytics
 		/// between FeatureColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static FeatureCollection Where(Func<FeatureColumns, QueryFilter<FeatureColumns>> where, OrderBy<FeatureColumns> orderBy = null, Database database = null)
 		{
 			database = database ?? Db.For<Feature>();
@@ -284,6 +292,7 @@ namespace Bam.Net.Analytics
 		/// between FeatureColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static FeatureCollection Where(WhereDelegate<FeatureColumns> where, Database database = null)
 		{		
 			database = database ?? Db.For<Feature>();
@@ -302,6 +311,7 @@ namespace Bam.Net.Analytics
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static FeatureCollection Where(WhereDelegate<FeatureColumns> where, OrderBy<FeatureColumns> orderBy = null, Database database = null)
 		{		
 			database = database ?? Db.For<Feature>();
@@ -328,6 +338,7 @@ namespace Bam.Net.Analytics
 		/// one will be created; success will depend on the nullability
 		/// of the specified columns.
 		/// </summary>
+		[Bam.Net.Exclude]
 		public static Feature GetOneWhere(QueryFilter where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -346,6 +357,7 @@ namespace Bam.Net.Analytics
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Feature OneWhere(QueryFilter where, Database database = null)
 		{
 			WhereDelegate<FeatureColumns> whereDelegate = (c) => where;
@@ -360,6 +372,7 @@ namespace Bam.Net.Analytics
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Feature GetOneWhere(WhereDelegate<FeatureColumns> where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -384,6 +397,7 @@ namespace Bam.Net.Analytics
 		/// between FeatureColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Feature OneWhere(WhereDelegate<FeatureColumns> where, Database database = null)
 		{
 			var result = Top(1, where, database);
@@ -413,6 +427,7 @@ namespace Bam.Net.Analytics
 		/// between FeatureColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Feature FirstOneWhere(WhereDelegate<FeatureColumns> where, Database database = null)
 		{
 			var results = Top(1, where, database);
@@ -435,6 +450,7 @@ namespace Bam.Net.Analytics
 		/// between FeatureColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Feature FirstOneWhere(WhereDelegate<FeatureColumns> where, OrderBy<FeatureColumns> orderBy, Database database = null)
 		{
 			var results = Top(1, where, orderBy, database);
@@ -456,6 +472,7 @@ namespace Bam.Net.Analytics
 		/// between FeatureColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Feature FirstOneWhere(QueryFilter where, OrderBy<FeatureColumns> orderBy = null, Database database = null)
 		{
 			WhereDelegate<FeatureColumns> whereDelegate = (c) => where;
@@ -484,6 +501,7 @@ namespace Bam.Net.Analytics
 		/// between FeatureColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static FeatureCollection Top(int count, WhereDelegate<FeatureColumns> where, Database database = null)
 		{
 			return Top(count, where, null, database);
@@ -506,6 +524,7 @@ namespace Bam.Net.Analytics
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static FeatureCollection Top(int count, WhereDelegate<FeatureColumns> where, OrderBy<FeatureColumns> orderBy, Database database = null)
 		{
 			FeatureColumns c = new FeatureColumns();
@@ -527,6 +546,7 @@ namespace Bam.Net.Analytics
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static FeatureCollection Top(int count, QueryFilter where, Database database)
 		{
 			return Top(count, where, null, database);
@@ -548,6 +568,7 @@ namespace Bam.Net.Analytics
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static FeatureCollection Top(int count, QueryFilter where, OrderBy<FeatureColumns> orderBy = null, Database database = null)
 		{
 			Database db = database ?? Db.For<Feature>();
@@ -615,6 +636,7 @@ namespace Bam.Net.Analytics
 		/// between FeatureColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<FeatureColumns> where, Database database = null)
 		{
 			FeatureColumns c = new FeatureColumns();
@@ -627,6 +649,16 @@ namespace Bam.Net.Analytics
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
 		}
+		 
+		public static long Count(QiQuery where, Database database = null)
+		{
+		    Database db = database ?? Db.For<Feature>();
+			QuerySet query = GetQuerySet(db);	 
+			query.Count<Feature>();
+			query.Where(where);	  
+			query.Execute(db);
+			return query.Results.As<CountResult>(0).Value;
+		} 		
 
 		private static Feature CreateFromFilter(IQueryFilter filter, Database database = null)
 		{

@@ -86,7 +86,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(ClickCounter));
+				query.table = Dao.TableName(typeof(Bam.Net.Analytics.ClickCounter));
 				object value = Bam.Net.Analytics.ClickCounter.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(ClickCounter));
+				query.table = Dao.TableName(typeof(Bam.Net.Analytics.ClickCounter));
 				object[] value = Bam.Net.Analytics.ClickCounter.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

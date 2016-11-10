@@ -35,7 +35,7 @@ namespace Bam.Net.Exegete
 
 			if (languages.Length > 0)
 			{
-				CultureInfo fromLanguages = TryGetFirstCultureFromLangugages(languages);
+				CultureInfo fromLanguages = TryGetFirstCultureFromLanguages(languages);
 				if (fromLanguages != null)
 				{
 					result = fromLanguages;
@@ -67,7 +67,7 @@ namespace Bam.Net.Exegete
 
 		#endregion
 		
-		private static CultureInfo TryGetFirstCultureFromLangugages(string[] languages)
+		private static CultureInfo TryGetFirstCultureFromLanguages(string[] languages)
 		{
 			CultureInfo result = null;
 			if (languages != null && languages.Length > 0)
@@ -84,6 +84,7 @@ namespace Bam.Net.Exegete
 			}
 			return result;
 		}
+
 		private static void OnResolveCultureException(Exception ex)
 		{
 			if (ResolveCultureException != null)
@@ -99,6 +100,5 @@ namespace Bam.Net.Exegete
 				ResolveRegionException(null, new UnhandledExceptionEventArgs(ex, false));
 			}
 		}
-
 	}
 }

@@ -15,6 +15,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using System.Reflection;
 using System.IO;
+using Bam.Net.ServiceProxy.Secure;
 using Org.BouncyCastle.Security;
 
 namespace Bam.Net.ServiceProxy
@@ -358,11 +359,11 @@ This file was generated from {0}serviceproxy/csharpproxies.  This file should no
         {
             get
             {
-                return @"
-        public {0} {1}({2})
+                return @"{0}
+        public {1} {2}({3})
         {{
-            object[] parameters = new object[] {{ {3} }};
-            {4}(""{1}"", parameters);
+            object[] parameters = new object[] {{ {4} }};
+            {5}(""{2}"", parameters);
         }}";
             }
         }
@@ -385,18 +386,18 @@ namespace {0}
         {
             get
             {
-                return @"
-    public class {0}Client: ServiceProxyClient<{1}.I{2}>, {1}.I{2}
+                return @"{0}
+    public class {1}Client: ServiceProxyClient<{2}.I{3}>, {2}.I{3}
     {{
-        public {0}Client(): base(DefaultConfiguration.GetAppSetting(""{2}Url"", ""{3}""))
+        public {1}Client(): base(DefaultConfiguration.GetAppSetting(""{3}Url"", ""{4}""))
         {{            
         }}
 
-        public {0}Client(string baseAddress): base(baseAddress)
+        public {1}Client(string baseAddress): base(baseAddress)
         {{
         }}
         
-        {4}
+        {5}
     }}
 ";
             }
@@ -406,18 +407,18 @@ namespace {0}
         {
             get
             {
-                return @"
-    public class {0}Client: SecureServiceProxyClient<{1}.I{2}>, {1}.I{2}
+                return @"{0}
+    public class {1}Client: SecureServiceProxyClient<{2}.I{3}>, {2}.I{3}
     {{
-        public {0}Client(): base(DefaultConfiguration.GetAppSetting(""{2}Url"", ""{3}""))
-        {{            
+        public {1}Client(): base(DefaultConfiguration.GetAppSetting(""{3}Url"", ""{4}""))
+        {{
         }}
 
-        public {0}Client(string baseAddress): base(baseAddress)
+        public {1}Client(string baseAddress): base(baseAddress)
         {{
         }}
         
-        {4}
+        {5}
     }}
 ";
             }
@@ -429,7 +430,7 @@ namespace {0}
                 return @"
         public interface I{0}
         {{
-            {1}
+{1}
         }}
 ";
             }
@@ -438,13 +439,26 @@ namespace {0}
         {
             get
             {
-                return "{0} {1}({2});\r\n";
+                return "\t{0} {1}({2});\r\n";
             }
         }
-        public static StringBuilder GenerateCSharpProxyCode(string defaultBaseAddress, string[] classNames, string nameSpace, string contractNamespace, Incubator incubator)
+        public static StringBuilder GenerateCSharpProxyCode(string defaultBaseAddress, string[] classNames, string nameSpace, string contractNamespace, Incubator incubator, ILogger logger = null)
         {
+            logger = logger ?? Log.Default;
             List<Type> types = new List<Type>();
-            classNames.Each(cn => types.Add(incubator[cn]));
+            classNames.Each(new { Logger = logger, Types = types }, (ctx, cn) =>
+            {
+                Type type = incubator[cn];
+                if(type == null)
+                {
+                    ctx.Logger.AddEntry("Specified class name was not registered: {0}", LogEventType.Warning, cn);
+                }
+                else
+                {
+                    ctx.Types.Add(type);
+                }
+            });
+            Args.ThrowIf(types.Count == 0, "None of the specified classes were found: {0}", string.Join(", ", classNames));
             return GenerateCSharpProxyCode(defaultBaseAddress, nameSpace, contractNamespace, types.ToArray());
         }
         public static StringBuilder GenerateCSharpProxyCode(string defaultBaseAddress, string nameSpace, string contractNamespace, Type[] types)
@@ -480,7 +494,8 @@ namespace {0}
 
                     string methodParams = methodGenInfo.MethodSignature;//parameters.ToDelimited(p => string.Format("{0} {1}", p.ParameterType.Name, p.Name.CamelCase())); // method signature
                     string wrapped = parameters.ToDelimited(p => p.Name.CamelCase()); // wrapped as object array
-                    methods.AppendFormat(MethodFormat, returnType, method.Name, methodParams, wrapped, invoke);
+                    string methodApiKeyRequired = method.HasCustomAttributeOfType<ApiKeyRequiredAttribute>() ? "\r\n\t[ApiKeyRequired]" : "";
+                    methods.AppendFormat(MethodFormat, methodApiKeyRequired, returnType, method.Name, methodParams, wrapped, invoke);
                     interfaceMethods.AppendFormat(InterfaceMethodFormat, returnType, method.Name, methodParams);
                 }
 
@@ -492,7 +507,8 @@ namespace {0}
                 }
 
                 string classFormatToUse = type.HasCustomAttributeOfType<EncryptAttribute>() ? SecureClassFormat : ClassFormat;
-                classes.AppendFormat(classFormatToUse, clientName, contractNamespace, serverName, defaultBaseAddress, methods.ToString());
+                string typeApiKeyRequired = type.HasCustomAttributeOfType<ApiKeyRequiredAttribute>() ? "\r\n\t[ApiKeyRequired]" : "";
+                classes.AppendFormat(classFormatToUse, typeApiKeyRequired, clientName, contractNamespace, serverName, defaultBaseAddress, methods.ToString());
                 interfaces.AppendFormat(InterfaceFormat, serverName, interfaceMethods.ToString());
             }
 

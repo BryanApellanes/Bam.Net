@@ -16,6 +16,16 @@ namespace Bam.Net.Analytics
 		public TimerQuery(WhereDelegate<TimerColumns> where, OrderBy<TimerColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public TimerQuery(Func<TimerColumns, QueryFilter<TimerColumns>> where, OrderBy<TimerColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public TimerQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static TimerQuery Where(WhereDelegate<TimerColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static TimerQuery Where(WhereDelegate<TimerColumns> where, OrderBy<TimerColumns> orderBy = null, Database db = null)
+        {
+            return new TimerQuery(where, orderBy, db);
+        }
 
 		public TimerCollection Execute()
 		{

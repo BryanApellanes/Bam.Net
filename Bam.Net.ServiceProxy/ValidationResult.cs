@@ -126,8 +126,8 @@ namespace Bam.Net.ServiceProxy
 
         private void ValidateApiKeyToken(List<ValidationFailures> failures, List<string> messages)
         {
-            ApiKeyResolver resolver = _toValidate.ApiKeyResolver;
-            if (!resolver.IsValid(_toValidate))
+            IApiKeyResolver resolver = _toValidate.ApiKeyResolver;
+            if (!resolver.IsValidRequest(_toValidate))
             {
                 failures.Add(ValidationFailures.InvalidApiKeyToken);
                 messages.Add("ApiKeyValidation failed");

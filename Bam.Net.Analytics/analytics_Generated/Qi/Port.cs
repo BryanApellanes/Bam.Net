@@ -86,7 +86,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Port));
+				query.table = Dao.TableName(typeof(Bam.Net.Analytics.Port));
 				object value = Bam.Net.Analytics.Port.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Port));
+				query.table = Dao.TableName(typeof(Bam.Net.Analytics.Port));
 				object[] value = Bam.Net.Analytics.Port.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

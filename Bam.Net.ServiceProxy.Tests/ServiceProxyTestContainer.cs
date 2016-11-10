@@ -129,7 +129,7 @@ namespace Bam.Net.ServiceProxy.Tests
         public void ApiKeyProviderShouldNotBeNull()
         {
             TestApiKeyClient client = new TestApiKeyClient();
-            Expect.IsNotNull(client.ApiKeyResolver.ApiKeyProvider, "ApiKeyProvider was null");
+            Expect.IsNotNull(((ApiKeyResolver)client.ApiKeyResolver).ApiKeyProvider, "ApiKeyProvider was null");
         }
 
 
@@ -657,7 +657,7 @@ namespace Bam.Net.ServiceProxy.Tests
             ApiKeyResolver resolver = new ApiKeyResolver(keyProvider, nameProvider);
             resolver.SetToken(er.Request.Headers, data);
 
-            er.Request.Headers[ApiKeyResolver.KeyTokenName] = "bad token value";
+            er.Request.Headers[ApiParameters.KeyTokenName] = "bad token value";
 
             ValidationResult result = er.Validate();
             
@@ -696,7 +696,7 @@ namespace Bam.Net.ServiceProxy.Tests
 
         private static ApplicationCreateResult CreateTestApp()
         {
-            ApiKeyManager.Default.UserResolver = new TestUserResolver();
+            LocalApiKeyManager.Default.UserResolver = new TestUserResolver();
             ApplicationCreateResult result = Application.Create("Test_AppName_".RandomLetters(6));
             return result;
         }

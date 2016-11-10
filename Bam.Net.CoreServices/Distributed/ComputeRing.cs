@@ -13,7 +13,7 @@ using Bam.Net.Data;
 
 namespace Bam.Net.CoreServices.Distributed
 {
-    public class ComputeRing: Ring<ComputeNode>, IDistributedRepository
+    public class ComputeRing: Ring<ComputeArc>, IDistributedRepository
     {
         public ComputeRing()
             : base()
@@ -26,30 +26,30 @@ namespace Bam.Net.CoreServices.Distributed
             this.SetSlotCount(slotCount);
         }
 
-        public void AddComputeNode(ComputeNode node)
+        public void AddComputeNode(ComputeArc node)
         {
-            AddSlot(new Slot<ComputeNode>(node));
+            AddArc(new Arc<ComputeArc>(node));
         }
         
 
-        protected internal override Slot CreateSlot()
+        protected internal override Arc CreateArc()
         {
-            return new Slot<ComputeNode>();
+            return new Arc<ComputeArc>();
         }
 
-        protected Slot FindSlot(object value)
+        protected Arc FindArc(object value)
         {
             int key = GetRepositoryKey(value);
-			return FindSlotByKey(key);
+			return FindArcByKey(key);
         }
 
-        protected override Slot FindSlotByKey(int key)
+        protected override Arc FindArcByKey(int key)
         {
-            double slotIndex = Math.Floor((double)(key / SlotSize));
-            Slot result = null;
-            if (slotIndex < Slots.Length)
+            double slotIndex = Math.Floor((double)(key / ArcSize));
+            Arc result = null;
+            if (slotIndex < Arcs.Length)
             {
-                result = Slots[(int)slotIndex];
+                result = Arcs[(int)slotIndex];
             }
 
             return result;
@@ -84,9 +84,9 @@ namespace Bam.Net.CoreServices.Distributed
         public IEnumerable<T> Query<T>(QueryOperation query)
         {
             List<T> results = new List<T>();
-            Parallel.ForEach<Slot>(Slots, (s) =>
+            Parallel.ForEach<Arc>(Arcs, (s) =>
             {
-                IDistributedRepository provider = s.GetProvider<ComputeNode>();
+                IDistributedRepository provider = s.GetProvider<ComputeArc>();
                 results.AddRange(provider.Query<T>(query));
             });
 
@@ -99,12 +99,6 @@ namespace Bam.Net.CoreServices.Distributed
 		}
 
         #endregion
-
-		public HubNode HubNode
-		{
-			get;
-			protected set;
-		}
 
         public override string GetHashString(object value)
         {
@@ -166,8 +160,8 @@ namespace Bam.Net.CoreServices.Distributed
 
         private IDistributedRepository GetRepositoryProvider(object value)
         {
-            Slot slot = FindSlot(value);
-            IDistributedRepository provider = slot.GetProvider<ComputeNode>();
+            Arc slot = FindArc(value);
+            IDistributedRepository provider = slot.GetProvider<ComputeArc>();
             return provider;
         }
     }

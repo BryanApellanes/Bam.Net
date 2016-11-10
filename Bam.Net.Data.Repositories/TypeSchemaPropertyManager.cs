@@ -55,7 +55,5 @@ namespace Bam.Net.Data.Repositories
                 }
             }
         }
-
-
     }
 }

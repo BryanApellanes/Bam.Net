@@ -16,6 +16,16 @@ namespace Bam.Net.Analytics
 		public UserIdentifierQuery(WhereDelegate<UserIdentifierColumns> where, OrderBy<UserIdentifierColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public UserIdentifierQuery(Func<UserIdentifierColumns, QueryFilter<UserIdentifierColumns>> where, OrderBy<UserIdentifierColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public UserIdentifierQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static UserIdentifierQuery Where(WhereDelegate<UserIdentifierColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static UserIdentifierQuery Where(WhereDelegate<UserIdentifierColumns> where, OrderBy<UserIdentifierColumns> orderBy = null, Database db = null)
+        {
+            return new UserIdentifierQuery(where, orderBy, db);
+        }
 
 		public UserIdentifierCollection Execute()
 		{

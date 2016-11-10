@@ -18,6 +18,9 @@ using System.Xml.Serialization;
 
 namespace Bam.Net.Server
 {
+    /// <summary>
+    /// Configuration for a Bam Application
+    /// </summary>
     public class AppConf
     {
 		public const string DefaultPageConst = "start";

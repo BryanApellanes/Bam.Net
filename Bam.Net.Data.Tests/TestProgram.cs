@@ -164,6 +164,24 @@ namespace Bam.Net.Data.Tests
             });
         }
 
+        [UnitTest]
+        public void SqlStringBuildersShouldBeEqual()
+        {
+            SQLiteDatabase db = new SQLiteDatabase($".\\{nameof(SqlStringBuildersShouldBeEqual)}", nameof(SqlStringBuildersShouldBeEqual));
+            string name = 8.RandomLetters();
+            TimeSpan elapsed = Timed.Execution(() =>
+            {
+                SqlStringBuilder one = TestTableQuery.Where(c => c.Name == name).ToSqlStringBuilder(db);
+                SqlStringBuilder two = TestTableQuery.Where(c => c.Name == name).ToSqlStringBuilder(db);
+                SqlStringBuilder three = TestTableQuery.Where(c => c.Name == "something else").ToSqlStringBuilder(db);
+
+                Expect.IsTrue(one.EqualTo(two, db));
+                Expect.IsFalse(one.EqualTo(three, db));
+            });
+
+            OutLineFormat("Operation took: {0}", elapsed.ToString());
+        }
+
         private static ConsoleLogger PrepareDatabaseAndGetLogger(Database database)
         {
             ConsoleLogger logger = new ConsoleLogger();

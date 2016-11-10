@@ -19,8 +19,9 @@ namespace Bam.Net.ServiceProxy
 {
     public abstract class ServiceProxyClient : CookieEnabledWebClient
     {
+        public const string ApplicationNameHeader = "X-APPNAME";
         public ServiceProxyClient()
-            : base() //Ensure that the cookicontainer is initialized
+            : base() //Ensure that the cookiecontainer is initialized
         {
         }
 
@@ -28,7 +29,7 @@ namespace Bam.Net.ServiceProxy
             : this()
         {
             this.BaseAddress = baseAddress;
-            this.Headers["User-Agent"] = UserAgents.FF10;
+            this.Headers["User-Agent"] = UserAgents.ServiceProxyClient();
             this.UseDefaultCredentials = true;
         }
 
@@ -40,7 +41,17 @@ namespace Bam.Net.ServiceProxy
             {
                 return _loggerSync.DoubleCheckLock(ref _logger, () => Log.Default);
             }
+            set
+            {
+                _logger = value;
+            }
         }
+
+        /// <summary>
+        /// The class responsible for providing the name of the
+        /// current application
+        /// </summary>
+        public IApplicationNameProvider ClientApplicationNameProvider { get; set; }
 
         public string UserAgent
         {

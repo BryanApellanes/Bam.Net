@@ -19,7 +19,7 @@ namespace Bam.Net
             logger = logger ?? Log.Default;
             AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
             {
-                logger.AddEntry("Assembly {0}\r\nAt {1}\r\nRequested {2}\r\n\t, but it was not found", LogEventType.Warning, args.RequestingAssembly.FullName, args.RequestingAssembly.GetFileInfo().FullName, args.Name);
+                logger.AddEntry("Assembly {0}\r\nAt {1}\r\nRequested {2}\r\n\t, but it was not found", LogEventType.Warning, args.RequestingAssembly?.FullName, args.RequestingAssembly?.GetFileInfo().FullName, args.Name);
                 return null;
             };
         }

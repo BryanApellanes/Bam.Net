@@ -10,6 +10,9 @@ using System.IO;
 
 namespace Bam.Net.Logging
 {
+    /// <summary>
+    /// A logger that logs to an xml file
+    /// </summary>
     public class XmlLogger: TextFileLogger
     {
         LogEventCollection _xmlLog;
@@ -32,8 +35,6 @@ namespace Bam.Net.Logging
             {
                 _xmlLog = new LogEventCollection();
             }
-
-            //this.RestartLoggingThread();
         }
 
         public int MaxEntriesPerFile

@@ -48,5 +48,25 @@ namespace Bam.Net.ServiceProxy.Secure
             get;
             set;
         }
+
+        public override bool Equals(object obj)
+        {
+            ClientSessionInfo info = obj as ClientSessionInfo;
+            if(info != null)
+            {
+                return info.SessionId == SessionId && info.ClientIdentifier.Equals(ClientIdentifier) && info.PublicKey.Equals(PublicKey);
+            }
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return SessionId.GetHashCode() + ClientIdentifier.GetHashCode() + PublicKey.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return $"SessionId={SessionId};ClientIdentifier={ClientIdentifier};PublicKey={PublicKey}";
+        }
     }
 }

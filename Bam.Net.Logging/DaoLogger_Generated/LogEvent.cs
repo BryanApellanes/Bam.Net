@@ -47,6 +47,7 @@ namespace Bam.Net.Logging.Data
 			this.SetChildren();
 		}
 
+		[Bam.Net.Exclude]
 		public static implicit operator LogEvent(DataRow data)
 		{
 			return new LogEvent(data);
@@ -235,7 +236,8 @@ namespace Bam.Net.Logging.Data
 		/// Gets a query filter that should uniquely identify
 		/// the current instance.  The default implementation
 		/// compares the Id/key field to the current instance's.
-		/// </summary> 
+		/// </summary>
+		[Bam.Net.Exclude] 
 		public override IQueryFilter GetUniqueFilter()
 		{
 			if(UniqueFilterProvider != null)
@@ -265,12 +267,13 @@ namespace Bam.Net.Logging.Data
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<LogEvent>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				LogEventColumns columns = new LogEventColumns();
-				var orderBy = Order.By<LogEventColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<LogEventColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -282,19 +285,21 @@ namespace Bam.Net.Logging.Data
 					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
 				}
 			});			
-		}	 
-
+		}
+			 
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<LogEvent>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
 
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<LogEventColumns> where, Action<IEnumerable<LogEvent>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				LogEventColumns columns = new LogEventColumns();
-				var orderBy = Order.By<LogEventColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<LogEventColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -328,11 +333,13 @@ namespace Bam.Net.Logging.Data
 			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
+		[Bam.Net.Exclude]
 		public static LogEventCollection Query(QueryFilter filter, Database database = null)
 		{
 			return Where(filter, database);
 		}
-				
+
+		[Bam.Net.Exclude]		
 		public static LogEventCollection Where(QueryFilter filter, Database database = null)
 		{
 			WhereDelegate<LogEventColumns> whereDelegate = (c) => filter;
@@ -347,6 +354,7 @@ namespace Bam.Net.Logging.Data
 		/// between LogEventColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static LogEventCollection Where(Func<LogEventColumns, QueryFilter<LogEventColumns>> where, OrderBy<LogEventColumns> orderBy = null, Database database = null)
 		{
 			database = database ?? Db.For<LogEvent>();
@@ -361,6 +369,7 @@ namespace Bam.Net.Logging.Data
 		/// between LogEventColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static LogEventCollection Where(WhereDelegate<LogEventColumns> where, Database database = null)
 		{		
 			database = database ?? Db.For<LogEvent>();
@@ -379,6 +388,7 @@ namespace Bam.Net.Logging.Data
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static LogEventCollection Where(WhereDelegate<LogEventColumns> where, OrderBy<LogEventColumns> orderBy = null, Database database = null)
 		{		
 			database = database ?? Db.For<LogEvent>();
@@ -405,6 +415,7 @@ namespace Bam.Net.Logging.Data
 		/// one will be created; success will depend on the nullability
 		/// of the specified columns.
 		/// </summary>
+		[Bam.Net.Exclude]
 		public static LogEvent GetOneWhere(QueryFilter where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -423,6 +434,7 @@ namespace Bam.Net.Logging.Data
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static LogEvent OneWhere(QueryFilter where, Database database = null)
 		{
 			WhereDelegate<LogEventColumns> whereDelegate = (c) => where;
@@ -437,6 +449,7 @@ namespace Bam.Net.Logging.Data
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static LogEvent GetOneWhere(WhereDelegate<LogEventColumns> where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -461,6 +474,7 @@ namespace Bam.Net.Logging.Data
 		/// between LogEventColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static LogEvent OneWhere(WhereDelegate<LogEventColumns> where, Database database = null)
 		{
 			var result = Top(1, where, database);
@@ -490,6 +504,7 @@ namespace Bam.Net.Logging.Data
 		/// between LogEventColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static LogEvent FirstOneWhere(WhereDelegate<LogEventColumns> where, Database database = null)
 		{
 			var results = Top(1, where, database);
@@ -512,6 +527,7 @@ namespace Bam.Net.Logging.Data
 		/// between LogEventColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static LogEvent FirstOneWhere(WhereDelegate<LogEventColumns> where, OrderBy<LogEventColumns> orderBy, Database database = null)
 		{
 			var results = Top(1, where, orderBy, database);
@@ -533,6 +549,7 @@ namespace Bam.Net.Logging.Data
 		/// between LogEventColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static LogEvent FirstOneWhere(QueryFilter where, OrderBy<LogEventColumns> orderBy = null, Database database = null)
 		{
 			WhereDelegate<LogEventColumns> whereDelegate = (c) => where;
@@ -561,6 +578,7 @@ namespace Bam.Net.Logging.Data
 		/// between LogEventColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static LogEventCollection Top(int count, WhereDelegate<LogEventColumns> where, Database database = null)
 		{
 			return Top(count, where, null, database);
@@ -583,6 +601,7 @@ namespace Bam.Net.Logging.Data
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static LogEventCollection Top(int count, WhereDelegate<LogEventColumns> where, OrderBy<LogEventColumns> orderBy, Database database = null)
 		{
 			LogEventColumns c = new LogEventColumns();
@@ -604,6 +623,7 @@ namespace Bam.Net.Logging.Data
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static LogEventCollection Top(int count, QueryFilter where, Database database)
 		{
 			return Top(count, where, null, database);
@@ -625,6 +645,7 @@ namespace Bam.Net.Logging.Data
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static LogEventCollection Top(int count, QueryFilter where, OrderBy<LogEventColumns> orderBy = null, Database database = null)
 		{
 			Database db = database ?? Db.For<LogEvent>();
@@ -692,6 +713,7 @@ namespace Bam.Net.Logging.Data
 		/// between LogEventColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<LogEventColumns> where, Database database = null)
 		{
 			LogEventColumns c = new LogEventColumns();
@@ -704,6 +726,16 @@ namespace Bam.Net.Logging.Data
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
 		}
+		 
+		public static long Count(QiQuery where, Database database = null)
+		{
+		    Database db = database ?? Db.For<LogEvent>();
+			QuerySet query = GetQuerySet(db);	 
+			query.Count<LogEvent>();
+			query.Where(where);	  
+			query.Execute(db);
+			return query.Results.As<CountResult>(0).Value;
+		} 		
 
 		private static LogEvent CreateFromFilter(IQueryFilter filter, Database database = null)
 		{

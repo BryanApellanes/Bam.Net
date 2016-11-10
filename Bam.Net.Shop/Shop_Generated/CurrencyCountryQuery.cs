@@ -16,6 +16,16 @@ namespace Bam.Net.Shop
 		public CurrencyCountryQuery(WhereDelegate<CurrencyCountryColumns> where, OrderBy<CurrencyCountryColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public CurrencyCountryQuery(Func<CurrencyCountryColumns, QueryFilter<CurrencyCountryColumns>> where, OrderBy<CurrencyCountryColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public CurrencyCountryQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static CurrencyCountryQuery Where(WhereDelegate<CurrencyCountryColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static CurrencyCountryQuery Where(WhereDelegate<CurrencyCountryColumns> where, OrderBy<CurrencyCountryColumns> orderBy = null, Database db = null)
+        {
+            return new CurrencyCountryQuery(where, orderBy, db);
+        }
 
 		public CurrencyCountryCollection Execute()
 		{

@@ -16,6 +16,16 @@ namespace Bam.Net.UserAccounts.Data
 		public SettingQuery(WhereDelegate<SettingColumns> where, OrderBy<SettingColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public SettingQuery(Func<SettingColumns, QueryFilter<SettingColumns>> where, OrderBy<SettingColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public SettingQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static SettingQuery Where(WhereDelegate<SettingColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static SettingQuery Where(WhereDelegate<SettingColumns> where, OrderBy<SettingColumns> orderBy = null, Database db = null)
+        {
+            return new SettingQuery(where, orderBy, db);
+        }
 
 		public SettingCollection Execute()
 		{

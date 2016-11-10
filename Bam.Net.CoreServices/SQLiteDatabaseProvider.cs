@@ -1,0 +1,70 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Bam.Net.Data;
+using Bam.Net.Data.SQLite;
+using System.IO;
+using Bam.Net.Logging;
+
+namespace Bam.Net.CoreServices
+{
+    /// <summary>
+    /// Sets database properties for a given object instance.
+    /// </summary>
+    public class SQLiteDatabaseProvider : IDatabaseProvider
+    {
+        public SQLiteDatabaseProvider(string root, ILogger logger = null)
+        {
+            Root = root;
+            Logger = logger ?? Log.Default;
+        }
+        public ILogger Logger { get; set; }
+        public string Root { get; set; }
+
+        /// <summary>
+        /// Sets all properties on the specified instances, where the property type 
+        /// is Database, to a SQLiteDatabase with it's root folder set to Root
+        /// and the name of the database to {Type.Name}.{PropertyInfo.Name}
+        /// </summary>
+        /// <param name="instance"></param>
+        public void SetDatabases(params object[] instances)
+        {
+            instances.Each(new { Provider = this }, (ctx, instance) =>
+            {
+                ctx.Provider.SetDatabases(instance, Root);
+            });
+        }
+
+        /// <summary>
+        /// Sets all properties on the specified instances, where the property type 
+        /// is Database, to a SQLiteDatabase with it's root folder set to Root
+        /// and the name of the database to {Type.Name}.{PropertyInfo.Name}
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <param name="root"></param>
+        public void SetDatabases(object instance, string root)
+        {
+            Type type = instance.GetType();
+            type.GetProperties().Where(pi => pi.PropertyType.Equals(typeof(Database))).Each(new { Instance = instance }, (ctx, pi) =>
+            {
+                Database db = new SQLiteDatabase(root, $"{type.Name}.{pi.Name}");                
+                SchemasAttribute schemas;
+                if(pi.HasCustomAttributeOfType(out schemas))
+                {
+                    TryEnsureSchemas(db, schemas.DaoSchemaTypes);
+                }
+                pi.SetValue(ctx.Instance, db);
+            });
+        }
+
+        private void TryEnsureSchemas(Database db, params Type[] daoTypes)
+        {
+            daoTypes.Each(new { Database = db, Logger = Logger }, (daoContext, dao) =>
+            {
+                daoContext.Database.TryEnsureSchema(dao, daoContext.Logger);
+            });
+        }
+    }
+}

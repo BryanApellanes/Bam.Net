@@ -16,6 +16,16 @@ namespace Bam.Net.UserAccounts.Data
 		public UserGroupQuery(WhereDelegate<UserGroupColumns> where, OrderBy<UserGroupColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public UserGroupQuery(Func<UserGroupColumns, QueryFilter<UserGroupColumns>> where, OrderBy<UserGroupColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public UserGroupQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static UserGroupQuery Where(WhereDelegate<UserGroupColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static UserGroupQuery Where(WhereDelegate<UserGroupColumns> where, OrderBy<UserGroupColumns> orderBy = null, Database db = null)
+        {
+            return new UserGroupQuery(where, orderBy, db);
+        }
 
 		public UserGroupCollection Execute()
 		{

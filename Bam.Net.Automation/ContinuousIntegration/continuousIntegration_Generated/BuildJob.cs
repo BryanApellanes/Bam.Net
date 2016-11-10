@@ -47,6 +47,7 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 			this.SetChildren();
 		}
 
+		[Bam.Net.Exclude]
 		public static implicit operator BuildJob(DataRow data)
 		{
 			return new BuildJob(data);
@@ -147,7 +148,7 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 
 				
 
-	[Exclude]	
+	[Bam.Net.Exclude]	
 	public BuildResultCollection BuildResultsByBuildJobId
 	{
 		get
@@ -176,7 +177,8 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		/// Gets a query filter that should uniquely identify
 		/// the current instance.  The default implementation
 		/// compares the Id/key field to the current instance's.
-		/// </summary> 
+		/// </summary>
+		[Bam.Net.Exclude] 
 		public override IQueryFilter GetUniqueFilter()
 		{
 			if(UniqueFilterProvider != null)
@@ -206,12 +208,13 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<BuildJob>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				BuildJobColumns columns = new BuildJobColumns();
-				var orderBy = Order.By<BuildJobColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<BuildJobColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -223,19 +226,21 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
 				}
 			});			
-		}	 
-
+		}
+			 
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<BuildJob>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
 
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<BuildJobColumns> where, Action<IEnumerable<BuildJob>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				BuildJobColumns columns = new BuildJobColumns();
-				var orderBy = Order.By<BuildJobColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<BuildJobColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -269,11 +274,13 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
+		[Bam.Net.Exclude]
 		public static BuildJobCollection Query(QueryFilter filter, Database database = null)
 		{
 			return Where(filter, database);
 		}
-				
+
+		[Bam.Net.Exclude]		
 		public static BuildJobCollection Where(QueryFilter filter, Database database = null)
 		{
 			WhereDelegate<BuildJobColumns> whereDelegate = (c) => filter;
@@ -288,6 +295,7 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		/// between BuildJobColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static BuildJobCollection Where(Func<BuildJobColumns, QueryFilter<BuildJobColumns>> where, OrderBy<BuildJobColumns> orderBy = null, Database database = null)
 		{
 			database = database ?? Db.For<BuildJob>();
@@ -302,6 +310,7 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		/// between BuildJobColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static BuildJobCollection Where(WhereDelegate<BuildJobColumns> where, Database database = null)
 		{		
 			database = database ?? Db.For<BuildJob>();
@@ -320,6 +329,7 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static BuildJobCollection Where(WhereDelegate<BuildJobColumns> where, OrderBy<BuildJobColumns> orderBy = null, Database database = null)
 		{		
 			database = database ?? Db.For<BuildJob>();
@@ -346,6 +356,7 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		/// one will be created; success will depend on the nullability
 		/// of the specified columns.
 		/// </summary>
+		[Bam.Net.Exclude]
 		public static BuildJob GetOneWhere(QueryFilter where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -364,6 +375,7 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static BuildJob OneWhere(QueryFilter where, Database database = null)
 		{
 			WhereDelegate<BuildJobColumns> whereDelegate = (c) => where;
@@ -378,6 +390,7 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static BuildJob GetOneWhere(WhereDelegate<BuildJobColumns> where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -402,6 +415,7 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		/// between BuildJobColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static BuildJob OneWhere(WhereDelegate<BuildJobColumns> where, Database database = null)
 		{
 			var result = Top(1, where, database);
@@ -431,6 +445,7 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		/// between BuildJobColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static BuildJob FirstOneWhere(WhereDelegate<BuildJobColumns> where, Database database = null)
 		{
 			var results = Top(1, where, database);
@@ -453,6 +468,7 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		/// between BuildJobColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static BuildJob FirstOneWhere(WhereDelegate<BuildJobColumns> where, OrderBy<BuildJobColumns> orderBy, Database database = null)
 		{
 			var results = Top(1, where, orderBy, database);
@@ -474,6 +490,7 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		/// between BuildJobColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static BuildJob FirstOneWhere(QueryFilter where, OrderBy<BuildJobColumns> orderBy = null, Database database = null)
 		{
 			WhereDelegate<BuildJobColumns> whereDelegate = (c) => where;
@@ -502,6 +519,7 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		/// between BuildJobColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static BuildJobCollection Top(int count, WhereDelegate<BuildJobColumns> where, Database database = null)
 		{
 			return Top(count, where, null, database);
@@ -524,6 +542,7 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static BuildJobCollection Top(int count, WhereDelegate<BuildJobColumns> where, OrderBy<BuildJobColumns> orderBy, Database database = null)
 		{
 			BuildJobColumns c = new BuildJobColumns();
@@ -545,6 +564,7 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static BuildJobCollection Top(int count, QueryFilter where, Database database)
 		{
 			return Top(count, where, null, database);
@@ -566,6 +586,7 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static BuildJobCollection Top(int count, QueryFilter where, OrderBy<BuildJobColumns> orderBy = null, Database database = null)
 		{
 			Database db = database ?? Db.For<BuildJob>();
@@ -633,6 +654,7 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		/// between BuildJobColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<BuildJobColumns> where, Database database = null)
 		{
 			BuildJobColumns c = new BuildJobColumns();
@@ -645,6 +667,16 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
 		}
+		 
+		public static long Count(QiQuery where, Database database = null)
+		{
+		    Database db = database ?? Db.For<BuildJob>();
+			QuerySet query = GetQuerySet(db);	 
+			query.Count<BuildJob>();
+			query.Where(where);	  
+			query.Execute(db);
+			return query.Results.As<CountResult>(0).Value;
+		} 		
 
 		private static BuildJob CreateFromFilter(IQueryFilter filter, Database database = null)
 		{

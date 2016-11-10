@@ -12,6 +12,34 @@ namespace Bam.Net
 {
     public class Timed
     {
+        public static void TryAsyncExecution(Action action, Action<TimeSpan> onComplete, Action<Exception> exceptionHandler = null, Action<Task> continueWith = null)
+        {
+            try
+            {
+                AsyncExecution(action, onComplete, continueWith);
+            }
+            catch (Exception ex)
+            {
+                Action<Exception> handler = exceptionHandler ?? ((e) => { });
+                handler(ex);
+            }
+        }
+
+        public static TimeSpan TryExecution(Action action, Action<Exception> exceptionHandler = null)
+        {
+            DateTime now = DateTime.UtcNow;
+            try
+            {
+                return Execution(action);
+            }
+            catch (Exception ex)
+            {
+                Action<Exception> handler = exceptionHandler ?? ((e) => { });
+                handler(ex);
+                return DateTime.UtcNow.Subtract(now);
+            }
+        }
+
         public static TimeSpan Execution(Action action)
         {
             DateTime now = DateTime.UtcNow;

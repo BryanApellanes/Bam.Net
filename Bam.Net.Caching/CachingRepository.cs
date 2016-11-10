@@ -28,21 +28,42 @@ namespace Bam.Net.Caching
 
 	public class CachingRepository: Repository
 	{
-		ConcurrentCacheManager _cacheManager;
+		CacheManager _cacheManager;
 		public CachingRepository(IRepository sourceRepository)
 		{
 			SourceRepository = sourceRepository;
-			_cacheManager = new ConcurrentCacheManager();
+			_cacheManager = new CacheManager();
 		}
 
+        /// <summary>
+        /// Queries the source repository and adds the results to the internal cache
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="query"></param>
+        /// <returns></returns>
         public override IEnumerable<T> Query<T>(QueryFilter query)
         {
-            return DelegateGenericOrThrow<IEnumerable<T>, T>("Query", query);
+            IEnumerable<T> results = DelegateGenericOrThrow<IEnumerable<T>, T>("Query", query);
+            foreach(CacheItem item in _cacheManager.CacheFor<T>().Add(results))
+            {
+                yield return item.ValueAs<T>();
+            }
         }
 
+        /// <summary>
+        /// Queries the source repository and adds the results to the internal
+        /// cache
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
         public override IEnumerable Query(Type type, QueryFilter query)
         {
-            return DelegateOrThrow<IEnumerable>("Query", type, query);
+            IEnumerable results = DelegateOrThrow<IEnumerable>("Query", type, query);            
+            foreach(CacheItem item in _cacheManager.CacheFor(type).Add(results))
+            {
+                yield return item.Value;
+            }
         }
 
         public override T Create<T>(T toCreate)
@@ -104,7 +125,7 @@ namespace Bam.Net.Caching
 
 		public override object Retrieve(Type objectType, long id)
 		{
-			ConcurrentCache cache = _cacheManager.CacheFor(objectType);
+			Cache cache = _cacheManager.CacheFor(objectType);
 			CacheItem cacheItem = cache.Retrieve(id);
 			object result;
 			if (cacheItem == null)
@@ -122,7 +143,7 @@ namespace Bam.Net.Caching
 
 		public override object Retrieve(Type objectType, string uuid)
 		{
-			ConcurrentCache cache = _cacheManager.CacheFor(objectType);
+			Cache cache = _cacheManager.CacheFor(objectType);
 			CacheItem cacheItem = cache.Retrieve(uuid);
 			object result;
 			if (cacheItem == null)
@@ -168,7 +189,7 @@ namespace Bam.Net.Caching
         /// <param name="query"></param>
         /// <returns></returns>
 		public override IEnumerable<T> Query<T>(Func<T, bool> query)
-        {
+        {          
             HashSet<T> cacheResults = QueryCache(query);
             HashSet<T> results = new HashSet<T>(DelegateGenericOrThrow<IEnumerable<T>, T>("Query", query));
 
@@ -208,7 +229,7 @@ namespace Bam.Net.Caching
 		{
             Task.Run(() =>
             {
-                ConcurrentCache cache = _cacheManager.CacheFor<T>();
+                Cache cache = _cacheManager.CacheFor<T>();
                 CacheItem fromCache = cache.Retrieve(toUpdate);
                 if (fromCache != null)
                 {
@@ -223,7 +244,7 @@ namespace Bam.Net.Caching
 		{
             Task.Run(() =>
             {
-                ConcurrentCache cache = _cacheManager.CacheFor(toUpdate.GetType());
+                Cache cache = _cacheManager.CacheFor(toUpdate.GetType());
                 CacheItem fromCache = cache.Retrieve(toUpdate);
                 if (fromCache != null)
                 {
@@ -293,9 +314,9 @@ namespace Bam.Net.Caching
             }
         }
 
-        private T Retrieve<T>(Func<ConcurrentCache, CacheItem> cacheRetriever, Func<T> sourceRetriever)
+        private T Retrieve<T>(Func<Cache, CacheItem> cacheRetriever, Func<T> sourceRetriever)
         {
-            ConcurrentCache cache = _cacheManager.CacheFor<T>();
+            Cache cache = _cacheManager.CacheFor<T>();
             CacheItem cacheItem = cacheRetriever(cache);
             T result;
             if (cacheItem == null)

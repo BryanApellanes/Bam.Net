@@ -16,6 +16,16 @@ namespace Bam.Net.UserAccounts.Data
 		public PasswordQuestionQuery(WhereDelegate<PasswordQuestionColumns> where, OrderBy<PasswordQuestionColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public PasswordQuestionQuery(Func<PasswordQuestionColumns, QueryFilter<PasswordQuestionColumns>> where, OrderBy<PasswordQuestionColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public PasswordQuestionQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static PasswordQuestionQuery Where(WhereDelegate<PasswordQuestionColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static PasswordQuestionQuery Where(WhereDelegate<PasswordQuestionColumns> where, OrderBy<PasswordQuestionColumns> orderBy = null, Database db = null)
+        {
+            return new PasswordQuestionQuery(where, orderBy, db);
+        }
 
 		public PasswordQuestionCollection Execute()
 		{

@@ -22,33 +22,33 @@ namespace Bam.Net.UserAccounts
             clone.CopyProperties(this);
             return clone;
         }
-        Database _userDatabase;
-        public Database UserDatabase
+        Database _database;
+        public Database Database
         {
             get
             {
-                if(_userDatabase == null)
+                if(_database == null)
                 {
-                    _userDatabase = Db.For<User>();
+                    _database = Db.For<User>();
                 }
-                return _userDatabase;
+                return _database;
             }
             set
             {
-                _userDatabase = value;
-                Db.For<User>(_userDatabase);
+                _database = value;
+                Db.For<User>(_database);
             }
         }
 
         public string GetCurrentUser()
         {
-            Session session = Session.Get(HttpContext);
+            Session session = Session.Get(HttpContext, Database);
             return session.UserOfUserId.UserName;
         }
 
         public string GetUser(IHttpContext context)
         {
-            Session session = Session.Get(context, UserDatabase);
+            Session session = Session.Get(context, Database);
             return session.UserOfUserId?.UserName;
         }
 
@@ -60,7 +60,7 @@ namespace Bam.Net.UserAccounts
 
         public void SetUser(IHttpContext context, User user, bool isAuthenticated, Database db = null)
         {
-            Session session = Session.Get(context);
+            Session session = Session.Get(context, Database);
             session.UserId = user.Id;
             session.Save(db);
 

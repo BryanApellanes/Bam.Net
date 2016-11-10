@@ -9,8 +9,9 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Translation
 {
-    interface IDetectLanguage
+    public interface IDetectLanguage
     {
         Language DetectLanguage(string text);
+        string Translate(string input, string languageIdentifier);
     }
 }

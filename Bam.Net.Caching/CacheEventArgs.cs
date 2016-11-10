@@ -13,7 +13,7 @@ namespace Bam.Net.Caching
 	{
 		public CacheEventArgs() { }
 
-		public ConcurrentCache Cache { get; set; }
+		public Cache Cache { get; set; }
 		public CacheItem[] RemovedItems { get; set; }
 	}
 }
