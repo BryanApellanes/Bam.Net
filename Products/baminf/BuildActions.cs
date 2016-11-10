@@ -28,7 +28,7 @@ namespace baminf
 @echo on
 SET CONFIG=%1
 IF [%1]==[] SET CONFIG=Release
-SET LIB=net45
+SET LIB=net462
 cd .\BuildOutput\%CONFIG%\%VER%
 md ..\..\..\BamDotExe\lib\%LIB%\
 ..\\..\\..\\ilmerge.exe bam.exe");
@@ -37,7 +37,7 @@ md ..\..\..\BamDotExe\lib\%LIB%\
             {
                 script.Append($" {dll}.dll");
             });
-            string lib = @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5";
+            string lib = @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2";
             script.Append($" /closed /targetplatform:v4 /lib:\"{lib}\" /out:..\\..\\..\\BamDotExe\\lib\\%LIB%\\bam.exe");
             
             script.ToString().SafeWriteToFile("generate_bam_dot_exe.cmd");
@@ -55,8 +55,8 @@ md ..\..\..\BamDotExe\lib\%LIB%\
             copyAllScript.AppendLine("call copy_Bam.Net.Data.cmd %1");
             StringBuilder cleanScript = new StringBuilder();
             cleanScript.Append(@"@echo on
-SET LIB=net45
-SET VER=v4.5
+SET LIB=net462
+SET VER=v4.6.2
 SET NEXT=END
 
 RMDIR /S /Q .\BuildOutput
