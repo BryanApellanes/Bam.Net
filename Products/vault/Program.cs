@@ -7,6 +7,7 @@ using Bam.Net.Encryption;
 using Bam.Net.CommandLine;
 using Bam.Net.Testing;
 using Bam.Net;
+using Bam.Net.Logging;
 
 namespace vault
 {
@@ -27,7 +28,7 @@ namespace vault
 
             if (Arguments.Length > 0 && !Arguments.Contains("i"))
             {
-                ExecuteSwitches(Arguments, type);
+                ExecuteSwitches(Arguments, type, false, Log.Default);
             }
             else
             {

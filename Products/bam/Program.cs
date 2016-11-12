@@ -17,6 +17,7 @@ using Bam.Net.Server;
 using Bam.Net.Dust;
 using Bam.Net.Web;
 using Bam.Net.Data;
+using Bam.Net.Logging;
 
 namespace bam
 {
@@ -40,8 +41,8 @@ namespace bam
 
 			if (Arguments.Length > 0 && !Arguments.Contains("i"))
 			{
-				ExecuteSwitches(Arguments, type);
-                ExecuteSwitches(Arguments, typeof(ManagementActions));
+                ExecuteSwitches(Arguments, type, false, Log.Default);
+                ExecuteSwitches(Arguments, typeof(ManagementActions), false, Log.Default);
 			}
 			else
 			{

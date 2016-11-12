@@ -41,7 +41,7 @@ namespace troo
 
                 if (Arguments.Length > 0 && !Arguments.Contains("i"))
                 {
-                    ExecuteSwitches(Arguments, typeof(UtilityActions));
+                    ExecuteSwitches(Arguments, typeof(UtilityActions), false, Log.Default);
                 }
                 else if (Arguments.Contains("i"))
                 {
