@@ -1,0 +1,2 @@
+Bam.Net.ServiceProxy.Tests
+Bam

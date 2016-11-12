@@ -1,0 +1,9 @@
+@echo on
+SET CONFIG=%1
+IF [%1]==[] SET CONFIG=Release
+SET LIB=net462
+SET VER=v4.6.2
+
+MD {LibraryName}\lib\%LIB%
+copy /Y .\BuildOutput\%CONFIG%\%VER%\{LibraryName}.{Ext} {LibraryName}\lib\%LIB%\{LibraryName}.{Ext}
+copy /Y .\BuildOutput\%CONFIG%\%VER%\{LibraryName}.xml {LibraryName}\lib\%LIB%\{LibraryName}.xml

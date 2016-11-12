@@ -57,7 +57,6 @@
     <EmbeddedResource Include="Bam.Net.Data.Repositories.dll" />
     <EmbeddedResource Include="Bam.Net.Data.Schema.dll" />
     <EmbeddedResource Include="Bam.Net.Data.SQLite.dll" />
-    <EmbeddedResource Include="Bam.Net.Distributed.dll" />
     <EmbeddedResource Include="Bam.Net.dll" />
     <EmbeddedResource Include="Bam.Net.Documentation.dll" />
     <EmbeddedResource Include="Bam.Net.Drawing.dll" />
@@ -85,6 +84,7 @@
     <EmbeddedResource Include="Bam.Net.Yaml.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
     <Compile Include="BamResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
