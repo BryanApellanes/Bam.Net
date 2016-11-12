@@ -84,7 +84,6 @@
     <EmbeddedResource Include="Bam.Net.Yaml.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.cs" />
     <Compile Include="BamResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
