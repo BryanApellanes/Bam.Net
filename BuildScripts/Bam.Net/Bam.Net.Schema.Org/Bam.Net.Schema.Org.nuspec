@@ -2,7 +2,7 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Schema.Org</id>
-    <version>1.3.4</version>
+    <version>1.4.0</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
@@ -11,7 +11,7 @@
     <description>
 	Schema.Org generated classes representing schema.org things
 	</description>
-    <releaseNotes>bamcore plus fixes</releaseNotes>
+    <releaseNotes>Bug fixes</releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2016</copyright>
     <dependencies />
   </metadata>
