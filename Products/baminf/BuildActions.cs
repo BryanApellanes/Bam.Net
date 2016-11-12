@@ -7,6 +7,9 @@ using Bam.Net.CommandLine;
 using Bam.Net.Testing;
 using Bam.Net;
 using System.IO;
+using Bam.Net.Automation.AdvancedInstaller;
+using Bam.Net.Automation.Nuget;
+using Bam.Net.Automation;
 
 namespace baminf
 {
@@ -14,6 +17,30 @@ namespace baminf
     public class BuildActions: CommandLineTestInterface
     {
         const string NugetReleaseDirectory = @"Z:\Workspace\NugetPackages\Push\";
+        static string _lib;
+        public static string Lib
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_lib))
+                {
+                    _lib = ".\\lib.txt".SafeReadFile();
+                }
+                return _lib;
+            }
+        }
+        static string _ver;
+        public static string Ver
+        {
+            get
+            {
+                if(string.IsNullOrEmpty(_ver))
+                {
+                    _ver = ".\\ver.txt".SafeReadFile();
+                }
+                return _ver;
+            }
+        }
         internal class AssemblyNameContainer
         {
             public string LibraryName { get; set; }
@@ -24,11 +51,11 @@ namespace baminf
         public static void GenerateBamDotExeScript()
         {
             string[] dllList = new FileInfo(GetMergeDllNameTextFile()).ReadAllText().DelimitSplit("\r", "\n");
-            StringBuilder script = new StringBuilder(@"
+            StringBuilder script = new StringBuilder($@"
 @echo on
 SET CONFIG=%1
 IF [%1]==[] SET CONFIG=Release
-SET LIB=net462
+SET LIB={Lib}
 cd .\BuildOutput\%CONFIG%\%VER%
 md ..\..\..\BamDotExe\lib\%LIB%\
 ..\\..\\..\\ilmerge.exe bam.exe");
@@ -37,7 +64,7 @@ md ..\..\..\BamDotExe\lib\%LIB%\
             {
                 script.Append($" {dll}.dll");
             });
-            string lib = @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2";
+            string lib = $@"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\{Ver}";
             script.Append($" /closed /targetplatform:v4 /lib:\"{lib}\" /out:..\\..\\..\\BamDotExe\\lib\\%LIB%\\bam.exe");
             
             script.ToString().SafeWriteToFile("generate_bam_dot_exe.cmd");
@@ -54,9 +81,9 @@ md ..\..\..\BamDotExe\lib\%LIB%\
             copyAllScript.AppendLine("@echo on");
             copyAllScript.AppendLine("call copy_Bam.Net.Data.cmd %1");
             StringBuilder cleanScript = new StringBuilder();
-            cleanScript.Append(@"@echo on
-SET LIB=net462
-SET VER=v4.6.2
+            cleanScript.Append($@"@echo on
+SET LIB={Lib}
+SET VER={Ver}
 SET NEXT=END
 
 RMDIR /S /Q .\BuildOutput
@@ -99,6 +126,182 @@ call git_tag_version.cmd %1");
             packScriptDebug.ToString().SafeWriteToFile(Path.Combine(outputDir.FullName, "pack_debug.cmd"), true);
             pushScript.ToString().SafeWriteToFile(Path.Combine(outputDir.FullName, "push.cmd"), true);
             cleanScript.ToString().SafeWriteToFile(Path.Combine(outputDir.FullName, "clean.cmd"), true);
+        }
+        
+        [ConsoleAction("baminfo.json", "specify the path to the baminfo.json file to use")]
+        public static void SetBamInfo()
+        {
+            string nuspecRoot = GetNuspecRoot();
+            string bamInfoPath = (Arguments["baminfo.json"] ?? Prompt("Enter the path to the baminfo.json file"));
+            string versionString = GetVersion();
+            BamInfo info = bamInfoPath.FromJsonFile<BamInfo>();
+            Out("*** baminfo.json ***", ConsoleColor.Cyan);
+            OutLine(info.PropertiesToString(), ConsoleColor.Cyan);
+            OutLine("***", ConsoleColor.Cyan);
+            OutLineFormat("Updating version from {0} to {1}", ConsoleColor.Yellow, info.VersionString, versionString);
+            info.VersionString = versionString;
+            info.ToJsonFile(bamInfoPath);
+            DirectoryInfo nuspecRootDir = new DirectoryInfo(nuspecRoot);
+            FileInfo[] nuspecFiles = nuspecRootDir.GetFiles("*.nuspec", SearchOption.AllDirectories);
+            foreach (FileInfo file in nuspecFiles)
+            {
+                NuspecFile nuspecFile = new NuspecFile(file.FullName);
+                nuspecFile.Authors = info.Authors;
+                nuspecFile.Owners = info.Owners;
+                nuspecFile.ReleaseNotes = info.ReleaseNotes;
+                nuspecFile.Copyright = "Copyright © {0} {1}"._Format(info.Owners, DateTime.UtcNow.Year);
+                nuspecFile.LicenseUrl = info.LicenseUrl;
+                nuspecFile.ProjectUrl = info.ProjectUrl;
+                string buildNumber = !string.IsNullOrEmpty(info.BuildNumber) ? "-{0}"._Format(info.BuildNumber) : "";
+                string patch = string.Format("{0}{1}", info.PatchVersion.ToString(), buildNumber);
+                nuspecFile.Version.Major = info.MajorVersion.ToString();
+                nuspecFile.Version.Minor = info.MinorVersion.ToString();
+                nuspecFile.Version.Patch = patch;
+                List<NugetPackageIdentifier> bamDependencies = new List<NugetPackageIdentifier>();
+                if (nuspecFile.Dependencies != null)
+                {
+                    nuspecFile.Dependencies.Where(npi => npi.Id.StartsWith(typeof(Args).Namespace)).Each(npi =>
+                    {
+                        bamDependencies.Add(new NugetPackageIdentifier(npi.Id, info.VersionString));
+                    });
+                    nuspecFile.Dependencies = bamDependencies.ToArray();
+                }
+                nuspecFile.Save();
+            }
+        }
+
+        [ConsoleAction("sai", "Set assembly info")]
+        public static void SetAssemblyInfo()
+        {
+            string srcRoot, version, nuspecRoot;
+            GetParameters(out srcRoot, out version, out nuspecRoot);
+
+            DirectoryInfo srcRootDir = new DirectoryInfo(srcRoot);
+            srcRootDir.GetFiles("AssemblyInfo.cs", SearchOption.AllDirectories).Each(infoFile =>
+            {
+                OutLineFormat("Writing assembly info into: {0}", ConsoleColor.Blue, infoFile.FullName);
+                StringBuilder newContent = new StringBuilder();
+                DirectoryInfo dotDot = infoFile.Directory.Parent;
+                List<AssemblyAttributeInfo> attributeInfos = GetAssemblyAttributeInfos(dotDot.Name, version, nuspecRoot);
+                using (StreamReader reader = new StreamReader(infoFile.FullName))
+                {
+                    while (!reader.EndOfStream)
+                    {
+                        string currentLine = reader.ReadLine();
+                        foreach (AssemblyAttributeInfo attributeInfo in attributeInfos)
+                        {
+                            if (currentLine.StartsWith(attributeInfo.StartsWith))
+                            {
+                                currentLine = attributeInfo.AssemblyAttribute;
+                                attributeInfo.WroteInfo = true;
+                            }
+                        }
+                        newContent.AppendLine(currentLine);
+                    }
+                }
+                foreach (AssemblyAttributeInfo attributeInfo in attributeInfos)
+                {
+                    if (!attributeInfo.WroteInfo)
+                    {
+                        newContent.AppendLine(attributeInfo.AssemblyAttribute);
+                    }
+                }
+                newContent.ToString().SafeWriteToFile(infoFile.FullName, true);
+            });
+        }
+
+        [ConsoleAction("smsiv", "Set msi version")]
+        public static void SetMsiVersion()
+        {
+            string aipPath = GetAdvancedInstallerProjectFilePath();
+            DOCUMENT aip = aipPath.FromXmlFile<DOCUMENT>();
+            List<DOCUMENTCOMPONENTROW> rows = new List<DOCUMENTCOMPONENTROW>(aip.COMPONENT[0].ROW);
+            int versionRow = rows.FindIndex(r => r.Property.Equals("ProductVersion"));
+            DOCUMENTCOMPONENTROW row = rows[versionRow];
+            row.Value = GetVersion();
+            rows[versionRow] = row;
+            aip.COMPONENT[0].ROW = rows.ToArray();
+            aip.XmlSerialize(aipPath);
+        }
+
+        private static void GetParameters(out string srcRoot, out string version, out string nuspecRoot)
+        {
+            srcRoot = GetSourceRoot();
+            version = GetVersion();
+            nuspecRoot = GetNuspecRoot();
+        }
+
+        private static string GetSourceRoot()
+        {
+            return Arguments["root"] ?? Prompt("Please enter the root of the source tree");
+        }
+
+        private static string GetVersion()
+        {
+            return Arguments["v"] ?? Prompt("Please enter the version number");
+        }
+
+        private static string GetNuspecRoot()
+        {
+            return Arguments["nuspecRoot"] ?? Prompt("Please enter the root to search for nuspec files");
+        }
+
+        private static string GetAdvancedInstallerProjectFilePath()
+        {
+            return Arguments["aip"] ?? Prompt("Please enter the path to the aip (Advanced Installer Project) file");
+        }
+                
+        private static List<AssemblyAttributeInfo> GetAssemblyAttributeInfos(string fileName, string version, string nuspecRoot)
+        {
+            List<AssemblyAttributeInfo> _assemblyAttributeInfos = new List<AssemblyAttributeInfo>();
+            NuspecFile nuspecFile = GetNuspecFile(fileName, nuspecRoot);
+
+            _assemblyAttributeInfos = new List<AssemblyAttributeInfo>();
+            _assemblyAttributeInfos.Add(new AssemblyAttributeInfo { AttributeName = "AssemblyVersion", Value = version });
+            _assemblyAttributeInfos.Add(new AssemblyAttributeInfo { AttributeName = "AssemblyFileVersion", Value = version });
+            _assemblyAttributeInfos.Add(new AssemblyAttributeInfo { AttributeName = "AssemblyCompany", NuspecFile = nuspecFile, NuspecProperty = "Owners" });
+            _assemblyAttributeInfos.Add(new AssemblyAttributeInfo { AttributeName = "AssemblyDescription", NuspecFile = nuspecFile, NuspecProperty = "Description" });
+
+            return _assemblyAttributeInfos;
+        }
+
+        private static NuspecFile GetNuspecFile(string fileName, string nuspecRoot)
+        {
+            DirectoryInfo nuspecRootDir = new DirectoryInfo(nuspecRoot);
+            FileInfo[] nuspecFiles = nuspecRootDir.GetFiles("{0}.nuspec"._Format(fileName), SearchOption.AllDirectories);
+            string nuspecFilePath = string.Empty;
+            NuspecFile nuspecFile = null;
+            if (nuspecFiles.Length == 1)
+            {
+                nuspecFilePath = nuspecFiles[0].FullName;
+            }
+            else if (nuspecFiles.Length > 1)
+            {
+                nuspecFilePath = SelectNuspecFile(nuspecFiles);
+            }
+
+            if (!string.IsNullOrEmpty(nuspecFilePath))
+            {
+                nuspecFile = new NuspecFile(nuspecFilePath);
+            }
+
+            return nuspecFile;
+        }
+
+        private static string SelectNuspecFile(FileInfo[] files)
+        {
+            OutLineFormat("Multiple nuspec files found named {0}\r\n{1}Select from the list:\r\n", Path.GetFileNameWithoutExtension(files[0].FullName));
+            for (int i = 0; i < files.Length; i++)
+            {
+                OutLineFormat("{0}. {1}", i + 1, files[i].FullName);
+            }
+            int selection = IntPrompt(string.Format("[1 - {0}]", files.Length));
+            if (selection < 0 || selection > files.Length)
+            {
+                OutLineFormat("Invalid selection", ConsoleColor.Red);
+                Environment.Exit(1);
+            }
+            return files[selection - 1].FullName;
         }
 
         private static void Append(string template, string fileNameFormat, StringBuilder copyAllScript, StringBuilder cleanScript, StringBuilder packScript, StringBuilder packScriptDebug, StringBuilder pushScript, DirectoryInfo outputDir, StreamReader sr, string ext)

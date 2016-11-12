@@ -38,6 +38,10 @@ namespace Bam.Net.Logging
         {
             Default.AddEntry(messageSignature, LogEventType.Warning, args.Select(a => a.ToString()).ToArray());
         }
+        public static void Error(string messageSignature, params object[] args)
+        {
+            Error(messageSignature, new Exception(string.Format(messageSignature, args)), args);
+        }
         public static void Error(string messageSignature, Exception ex, params object[] args)
         {
             Default.AddEntry(messageSignature, ex, args.Select(a => a.ToString()).ToArray());
@@ -232,16 +236,6 @@ namespace Bam.Net.Logging
         public static void Stop()
         {
             Default.StopLoggingThread();
-        }
-
-        /// <summary>
-        /// Flushes the current LogEvent queue without committing them.
-        /// May throw an InvalidCastException if the ILogger implementation
-        /// referenced by Log.Default doesn't extend Logger.
-        /// </summary>
-        public static void AbandonQueue()
-        {
-            ((Logger)Default).LogEventQueue.Clear();
-        }
+        }        
     }
 }

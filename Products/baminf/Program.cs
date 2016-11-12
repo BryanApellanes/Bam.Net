@@ -37,6 +37,7 @@ namespace baminf
             AddValidArgument("nuspecRoot", "The root directory to search for nuspec files");
             AddValidArgument("aip", false, addAcronym: false, description: "The path to the aip (Advanced Installer Project) file");
             AddValidArgument("smsiv", true, addAcronym: false, description: "Set msi version in aip (Advanced Installer Project) file");
+            AddValidArgument("pause", true, addAcronym: false, description: "pause before exiting, only valid if command line switches are specified");
 
             AddBuildArguments();
             AddSwitches(typeof(BuildActions));
@@ -54,25 +55,15 @@ namespace baminf
         #region do not modify
         public static void Start()
         {
-            if (Arguments.Contains("sai") || 
-                Arguments.Contains("baminfo.json") || 
-                Arguments.Contains("smsiv") ||
-                Arguments.Contains("generateNugetScripts") ||
-                Arguments.Contains("generateBamDotExeScript"))
+            ConsoleLogger logger = new ConsoleLogger();
+            logger.AddDetails = false;
+            logger.StartLoggingThread();
+            if (ExecuteSwitches(Arguments, typeof(BuildActions), false, logger))
             {
-                if (Arguments.Contains("sai"))
+                logger.BlockUntilEventQueueIsEmpty();
+                if (Arguments.Contains("pause"))
                 {
-                    ConsoleActions.SetAssemblyInfo();
-                }
-
-                if (Arguments.Contains("baminfo.json"))
-                {
-                    ConsoleActions.SetBamInfo();
-                }
-
-                if (Arguments.Contains("smsiv"))
-                {
-                    ConsoleActions.SetMsiVersion();
+                    Pause();
                 }
             }
             else

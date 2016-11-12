@@ -1020,55 +1020,86 @@ namespace Bam.Net.CommandLine
 			ExecuteSwitches(arguments, instance.GetType(), instance, logger);
 		}
 
-		/// <summary>
-		/// Execute the methods on the specified instance that are addorned with ConsoleAction
-		/// attributes that have CommandLineSwitch(es) defined that match keys in the
-		/// specified ParsedArguments using the specified ILogger to report any switches not
-		/// found.  An ExpectFailedException will be thrown if more than one method is found
-		/// with a matching CommandLineSwitch defined in ConsoleAction attributes
-		/// </summary>
-		/// <param name="arguments"></param>
-		/// <param name="instance"></param>
-		/// <param name="logger"></param>
-		public static void ExecuteSwitches(ParsedArguments arguments, Type type, object instance = null, ILogger logger = null)
+        /// <summary>
+        /// Execute the methods on the specified instance that are addorned with ConsoleAction
+        /// attributes that have CommandLineSwitch(es) defined that match keys in the
+        /// specified ParsedArguments using the specified ILogger to report any switches not
+        /// found.  An ExpectFailedException will be thrown if more than one method is found
+        /// with a matching CommandLineSwitch defined in ConsoleAction attributes
+        /// </summary>
+        /// <param name="arguments"></param>
+        /// <param name="type"></param>
+        /// <param name="isolateMethodCalls"></param>
+        /// <param name="logger"></param>
+        /// <returns></returns>
+        public static bool ExecuteSwitches(ParsedArguments arguments, Type type, bool isolateMethodCalls, ILogger logger = null)
+        {
+            bool originalValue = IsolateMethodCalls;
+            IsolateMethodCalls = isolateMethodCalls;
+            bool result = ExecuteSwitches(arguments, type, false, null, logger);
+            IsolateMethodCalls = originalValue;
+            return result;
+        }
+
+        /// <summary>
+        /// Execute the methods on the specified instance that are addorned with ConsoleAction
+        /// attributes that have CommandLineSwitch(es) defined that match keys in the
+        /// specified ParsedArguments using the specified ILogger to report any switches not
+        /// found.  An ExpectFailedException will be thrown if more than one method is found
+        /// with a matching CommandLineSwitch defined in ConsoleAction attributes
+        /// </summary>
+        /// <param name="arguments"></param>
+        /// <param name="type"></param>
+        /// <param name="instance"></param>
+        /// <param name="logger"></param>
+        /// <returns></returns>
+        public static bool ExecuteSwitches(ParsedArguments arguments, Type type, object instance = null, ILogger logger = null)
+        {
+            return ExecuteSwitches(arguments, type, true, instance, logger);
+        }
+        
+        /// <summary>
+        /// Execute the methods on the specified instance that are addorned with ConsoleAction
+        /// attributes that have CommandLineSwitch(es) defined that match keys in the
+        /// specified ParsedArguments using the specified ILogger to report any switches not
+        /// found.  An ExpectFailedException will be thrown if more than one method is found
+        /// with a matching CommandLineSwitch defined in ConsoleAction attributes
+        /// </summary>
+        /// <param name="arguments"></param>
+        /// <param name="type"></param>
+        /// <param name="warnForNotFoundSwitches"></param>
+        /// <param name="instance"></param>
+        /// <param name="logger"></param>
+        /// <returns>true if command line switches were executed otherwise false</returns>
+        public static bool ExecuteSwitches(ParsedArguments arguments, Type type, bool warnForNotFoundSwitches = true, object instance = null, ILogger logger = null)
 		{
+            bool executed = false;
 			foreach (string key in arguments.Keys)
-			{
-				string commandLineSwitch = key;
-				string switchValue = arguments[key];
-				MethodInfo[] methods = type.GetMethods();
-				List<ConsoleInvokeableMethod> toExecute = new List<ConsoleInvokeableMethod>();
-				foreach (MethodInfo method in methods)
-				{
-					ConsoleAction consoleAction;
-					if (method.HasCustomAttributeOfType<ConsoleAction>(out consoleAction))
-					{
-						if (consoleAction.CommandLineSwitch.Or("").Equals(commandLineSwitch))
-						{
-							toExecute.Add(new ConsoleInvokeableMethod(method, consoleAction, instance, switchValue));
-						}
-					}
-				}
+            {
+                ConsoleInvokeableMethod methodToInvoke = GetConsoleInvokeableMethod(arguments, type, key, instance);
 
-				Expect.IsFalse(toExecute.Count > 1, "Multiple ConsoleActions found with the specified command line switch: {0}"._Format(commandLineSwitch));
-
-				if (toExecute.Count == 0)
-				{
-					logger = logger ?? Log.Default;
-					logger.AddEntry("Specified command line switch was not found: {0}"._Format(commandLineSwitch));
-					continue;
-				}
-
-				ConsoleInvokeableMethod methodToInvoke = toExecute[0];
-				if (IsolateMethodCalls)
-				{
-					methodToInvoke.InvokeInSeparateAppDomain();
-				}
-				else
-				{
-					methodToInvoke.InvokeInCurrentAppDomain();
-				}
-			}
+                if (methodToInvoke != null)
+                {
+                    if (IsolateMethodCalls)
+                    {
+                        methodToInvoke.InvokeInSeparateAppDomain();
+                    }
+                    else
+                    {
+                        methodToInvoke.InvokeInCurrentAppDomain();
+                    }
+                    executed = true;
+                    logger?.AddEntry("Executed {0}: {1}", key, methodToInvoke.Information);
+                }
+                else
+                {
+                    if(logger != null && warnForNotFoundSwitches)
+                    {
+                        logger.AddEntry("Specified command line switch was not found {0}", LogEventType.Warning, key);
+                    }
+                }
+            }
+            return executed;
 		}
 
         /// <summary>
@@ -1102,5 +1133,32 @@ namespace Bam.Net.CommandLine
             }
         }
 
+        private static ConsoleInvokeableMethod GetConsoleInvokeableMethod(ParsedArguments arguments, Type type, string key, object instance = null)
+        {
+            string commandLineSwitch = key;
+            string switchValue = arguments[key];
+            MethodInfo[] methods = type.GetMethods();
+            List<ConsoleInvokeableMethod> toExecute = new List<ConsoleInvokeableMethod>();
+            foreach (MethodInfo method in methods)
+            {
+                ConsoleAction consoleAction;
+                if (method.HasCustomAttributeOfType<ConsoleAction>(out consoleAction))
+                {
+                    if (consoleAction.CommandLineSwitch.Or("").Equals(commandLineSwitch))
+                    {
+                        toExecute.Add(new ConsoleInvokeableMethod(method, consoleAction, instance, switchValue));
+                    }
+                }
+            }
+
+            Expect.IsFalse(toExecute.Count > 1, "Multiple ConsoleActions found with the specified command line switch: {0}"._Format(commandLineSwitch));
+
+            if (toExecute.Count == 0)
+            {
+                return null;
+            }
+
+            return toExecute[0];
+        }
     }
 }

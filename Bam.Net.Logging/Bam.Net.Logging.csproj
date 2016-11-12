@@ -157,6 +157,7 @@
     <Compile Include="DaoLogger_Generated\Qi\LogEvent.cs" />
     <Compile Include="IDaoLogger.cs" />
     <Compile Include="ILogReader.cs" />
+    <Compile Include="EzLog.cs" />
     <Compile Include="LogEntry.cs" />
     <Compile Include="LogReader.cs" />
     <Compile Include="LogReaderFactory.cs" />

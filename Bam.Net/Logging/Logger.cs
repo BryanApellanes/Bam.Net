@@ -8,13 +8,14 @@ using System.Text;
 using System.Threading;
 using System.Diagnostics;
 using Bam.Net.Configuration;
+using System.Collections.Concurrent;
 //using Bam.Net.Helpers;
 
 namespace Bam.Net.Logging
 {
     public abstract class Logger : ILogger, IHasRequiredProperties
     {
-        Queue<LogEvent> logEventQueue;
+        ConcurrentQueue<LogEvent> logEventQueue;
         Thread loggingThread;
         AutoResetEvent waitForEnqueueLogEvent;
         AutoResetEvent waitForQueueToBeEmpty;
@@ -23,7 +24,7 @@ namespace Bam.Net.Logging
         public Logger()
         {
             AppDomain.CurrentDomain.DomainUnload += new EventHandler(OnDomainUnload);
-            logEventQueue = new Queue<LogEvent>();
+            logEventQueue = new ConcurrentQueue<LogEvent>();
             waitForEnqueueLogEvent = new AutoResetEvent(false);
             waitForQueueToBeEmpty = new AutoResetEvent(false);
 
@@ -104,16 +105,17 @@ namespace Bam.Net.Logging
             while (true)
             {
                 waitForEnqueueLogEvent.WaitOne();
-                lock (logEventQueue)
+                while (logEventQueue.Count > 0)
                 {
-                    while (logEventQueue.Count > 0)
+                    LogEvent logEvent;
+                    if (logEventQueue.TryDequeue(out logEvent))
                     {
-                        LogEvent logEvent = logEventQueue.Dequeue();
                         if (logEvent != null && (int)logEvent.Severity <= (int)Verbosity)
                         {
                             CommitLogEvent(logEvent);
                         }
                     }
+                    Thread.Sleep(3); // three millisecond sleep to reduce cpu pressure                   
                 }
                 waitForQueueToBeEmpty.Set();
             }
@@ -140,7 +142,7 @@ namespace Bam.Net.Logging
             Thread.Sleep(sleep);
         }
 
-        internal Queue<LogEvent> LogEventQueue
+        internal ConcurrentQueue<LogEvent> LogEventQueue
         {
             get
             {

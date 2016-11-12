@@ -43,7 +43,7 @@ namespace Bam.Net
         {
             try
             {
-                DateTime now = DateTime.Now;
+                DateTime now = DateTime.UtcNow;
                 FileInfo logFile = new FileInfo(".\\Bam.Net.Resolver.log");
                 string line = $"[Time({now.ToString()} ms {now.Millisecond})]::Bam.Net.Resolver::{message}";
                 using (StreamWriter sw = new StreamWriter(logFile.FullName))
