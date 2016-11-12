@@ -114,7 +114,7 @@ namespace Bam.Net.Data.Repositories.Tests
                     catch (Exception ex)
                     {
                         results.Add(new UnitTestResult { Exception = ex.Message, StackTrace = ex.StackTrace, MethodName = nameof(WriteSchemaScriptTest) });
-                    }                    
+                    }
                 });
                 ctx.Set(results);
             })
@@ -122,7 +122,7 @@ namespace Bam.Net.Data.Repositories.Tests
             .ShouldPass(because =>
             {
                 var results = because.SetupContext.Get<List<UnitTestResult>>();
-                because.ItsTrue("no exceptions were thrown", results.Where(utr => utr.Passed == false).Count() == 0);
+                because.ItsTrue("no exceptions were thrown", results.Where(utr => utr.Passed == false).Count() == 0, $"exceptions were thrown: {string.Join("\r\n", results.Select(r => r.Exception).ToArray())}");
             })
             .SoBeHappy(ctx =>
             {
@@ -131,7 +131,8 @@ namespace Bam.Net.Data.Repositories.Tests
                     TryDrop(db, "Employee");
                     TryDrop(db, "Person");
                 });
-            });           
+            })
+            .UnlessItFailed();
         }
 
         [UnitTest]
