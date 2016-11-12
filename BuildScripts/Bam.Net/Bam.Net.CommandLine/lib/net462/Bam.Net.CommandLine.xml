@@ -1,0 +1,283 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Bam.Net.CommandLine</name>
+    </assembly>
+    <members>
+        <member name="P:Bam.Net.CommandLine.CommandLineInterface.Arguments">
+            <summary>
+            Represents arguments after parsing with a call to ParseArgs.  Arguments should be 
+            passed in on the command line in the format /&lt;name&gt;:&lt;value&gt;.
+            </summary>
+        </member>
+        <member name="P:Bam.Net.CommandLine.CommandLineInterface.AutoReturn">
+            <summary>
+            If false a prompt to confirm to the last menu will be presented
+            after every selection, if true the last menu will be presented
+            automatically
+            </summary>
+        </member>
+        <member name="E:Bam.Net.CommandLine.CommandLineInterface.ArgsParsed">
+            <summary>
+            Event fired after command line arguments are parsed by a call to ParseArgs.
+            </summary>
+        </member>
+        <member name="E:Bam.Net.CommandLine.CommandLineInterface.ArgsParsedError">
+            <summary>
+            Event fired after command line arguments are parsed by a call to ParseArgs
+            and there was an error.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.CommandLine.CommandLineInterface.EnsureAdminRights">
+            <summary>
+            Checks if the owner of the current process has admin rights,
+            if not the original command line is rebuilt and run with 
+            the runas verb set on the startinfo.  The current
+            process will exit.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.CommandLine.CommandLineInterface.WeHaveAdminRights">
+            <summary>
+            Determines if the current process is being run by a user with administrative 
+            rights
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.CommandLine.CommandLineInterface.Elevate">
+            <summary>
+            Runs the current process again, prompting for admin rights
+            </summary>
+        </member>
+        <member name="M:Bam.Net.CommandLine.CommandLineInterface.Confirm">
+            <summary>
+            Prompts the user for [y]es or [n]o returning true for [y] and false for [n].
+            </summary>
+            <returns>boolean</returns>
+        </member>
+        <member name="M:Bam.Net.CommandLine.CommandLineInterface.Confirm(System.String)">
+            <summary>
+            Prompts the user for [y]es or [n]o returning true for [y] and false for [n].
+            </summary>
+            <param name="message">Optional message for the user.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.CommandLine.CommandLineInterface.Confirm(System.String,System.ConsoleColor,System.Boolean)">
+            <summary>
+            Prompts the user for [y]es or [n]o returning true for [y] and false for [n].
+            </summary>
+            <param name="message">Optional message for the user.</param>
+            <param name="allowQuit">If true provides an additional [q]uit option which if selected
+            will call Environment.Exit(0).</param>
+            <returns>boolean</returns>
+        </member>
+        <member name="M:Bam.Net.CommandLine.CommandLineInterface.Prompt(System.String,System.ConsoleColor)">
+            <summary>
+            Prompts the user for input.
+            </summary>
+            <param name="message">The message.</param>
+            <returns>string</returns>
+        </member>
+        <member name="M:Bam.Net.CommandLine.CommandLineInterface.AddConfigurationSwitches">
+            <summary>
+            Reads all keys in the appSettings section of the default configuration
+            file and adds them all as valid arguments so that they may be 
+            specified on the command line.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.CommandLine.CommandLineInterface.Out">
+            <summary>
+            Writes a newline character to the console using Console.WriteLine()
+            </summary>
+        </member>
+        <member name="M:Bam.Net.CommandLine.CommandLineInterface.OutLineFormat(System.String,System.ConsoleColor,System.Object[])">
+            <summary>
+            Print the specified message in the specified
+            color to the console using the specified string.format
+            args to format the message.
+            </summary>
+            <param name="message"></param>
+            <param name="color"></param>
+            <param name="formatArgs"></param>
+        </member>
+        <member name="M:Bam.Net.CommandLine.CommandLineInterface.OutLineFormat(System.String,System.ConsoleColor,System.ConsoleColor,System.Object[])">
+            <summary>
+            Print the specified message in the specified
+            colors to the console using the specified string.format
+            args to format the message.
+            </summary>
+            <param name="message"></param>
+            <param name="foreground"></param>
+            <param name="background"></param>
+            <param name="formatArgs"></param>
+        </member>
+        <member name="P:Bam.Net.CommandLine.CommandLineInterface.IsolateMethodCalls">
+            <summary>
+            If true will cause all calls to InvokeSelection to be 
+            run in a separate AppDomain.  This is primarily for 
+            UnitTest isolation.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.CommandLine.CommandLineInterface.AddValidArgument(System.String,System.String)">
+            <summary>
+            Makes the specified name a valid command line argument.  Command line
+            arguments are assumed to be in the format /&lt;name&gt;:&lt;value&gt;.
+            </summary>
+            <param name="name"></param>
+        </member>
+        <member name="M:Bam.Net.CommandLine.CommandLineInterface.AddSwitches(System.Type)">
+            <summary>
+            Calls AddValidArgument for every ConsoleAction that has a 
+            CommandLineSwitch defined
+            </summary>
+            <param name="type"></param>
+        </member>
+        <member name="M:Bam.Net.CommandLine.CommandLineInterface.ReceivedSwitchArguments(System.Type)">
+            <summary>
+            Determines if any command line switches were provided as arguments
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.CommandLine.CommandLineInterface.ExecuteSwitches(Bam.Net.CommandLine.ParsedArguments,System.Object,Bam.Net.Logging.ILogger)">
+            <summary>
+            Execute the methods on the specified instance that are addorned with ConsoleAction
+            attributes that have CommandLineSwitch(es) defined that match keys in the
+            specified ParsedArguments using the specified ILogger to report any switches not
+            found.  An ExpectFailedException will be thrown if more than one method is found
+            with a matching CommandLineSwitch defined in ConsoleAction attributes
+            </summary>
+            <param name="arguments"></param>
+            <param name="instance"></param>
+            <param name="logger"></param>
+        </member>
+        <member name="M:Bam.Net.CommandLine.CommandLineInterface.ExecuteSwitches(Bam.Net.CommandLine.ParsedArguments,System.Type,System.Boolean,Bam.Net.Logging.ILogger)">
+            <summary>
+            Execute the methods on the specified instance that are addorned with ConsoleAction
+            attributes that have CommandLineSwitch(es) defined that match keys in the
+            specified ParsedArguments using the specified ILogger to report any switches not
+            found.  An ExpectFailedException will be thrown if more than one method is found
+            with a matching CommandLineSwitch defined in ConsoleAction attributes
+            </summary>
+            <param name="arguments"></param>
+            <param name="type"></param>
+            <param name="isolateMethodCalls"></param>
+            <param name="logger"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.CommandLine.CommandLineInterface.ExecuteSwitches(Bam.Net.CommandLine.ParsedArguments,System.Type,System.Object,Bam.Net.Logging.ILogger)">
+            <summary>
+            Execute the methods on the specified instance that are addorned with ConsoleAction
+            attributes that have CommandLineSwitch(es) defined that match keys in the
+            specified ParsedArguments using the specified ILogger to report any switches not
+            found.  An ExpectFailedException will be thrown if more than one method is found
+            with a matching CommandLineSwitch defined in ConsoleAction attributes
+            </summary>
+            <param name="arguments"></param>
+            <param name="type"></param>
+            <param name="instance"></param>
+            <param name="logger"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.CommandLine.CommandLineInterface.ExecuteSwitches(Bam.Net.CommandLine.ParsedArguments,System.Type,System.Boolean,System.Object,Bam.Net.Logging.ILogger)">
+            <summary>
+            Execute the methods on the specified instance that are addorned with ConsoleAction
+            attributes that have CommandLineSwitch(es) defined that match keys in the
+            specified ParsedArguments using the specified ILogger to report any switches not
+            found.  An ExpectFailedException will be thrown if more than one method is found
+            with a matching CommandLineSwitch defined in ConsoleAction attributes
+            </summary>
+            <param name="arguments"></param>
+            <param name="type"></param>
+            <param name="warnForNotFoundSwitches"></param>
+            <param name="instance"></param>
+            <param name="logger"></param>
+            <returns>true if command line switches were executed otherwise false</returns>
+        </member>
+        <member name="M:Bam.Net.CommandLine.CommandLineInterface.AddValidArgument(System.String,System.Boolean,System.Boolean,System.String,System.String)">
+            <summary>
+            Makes the specified name a valid command line argument.  Command line
+            arguments are assumed to be in the format /&lt;name&gt;:&lt;value&gt;.
+            </summary>
+            <param name="name">The name of the command line argument.</param>
+            <param name="allowNull">If true no value for the specified name is necessary.</param>
+            <param name="addAcronym">Add another valid argument of the acronym of the specified name</param>
+        </member>
+        <member name="T:Bam.Net.CommandLine.ConsoleAction">
+            <summary>
+            An attribute used to designate a method as runnable from a command line
+            menu interface
+            </summary>
+        </member>
+        <member name="M:Bam.Net.CommandLine.ConsoleAction.#ctor">
+            <summary>
+            Instantiate a ConsoleAction attribute
+            </summary>
+        </member>
+        <member name="P:Bam.Net.CommandLine.ConsoleAction.ValueExample">
+            <summary>
+            A string representing an example of a valid value, for example [filename]
+            </summary>
+        </member>
+        <member name="T:Bam.Net.CommandLine.ConsoleExtensions">
+            <summary>
+            This class exists because of an initial limitation
+            requiring all code to be compatible to .net 1.1.
+            All code has since been converted to take advantage
+            of the ConsoleColor enumeration.  This class was
+            left in place to catch any calls that are still
+            being made to it.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.CommandLine.ConsoleExtensions.SetTextColor">
+            <summary>
+            Calls Console.ResetColor()
+            </summary>
+        </member>
+        <member name="M:Bam.Net.CommandLine.ConsoleExtensions.SetTextColor(System.ConsoleColor)">
+            <summary>
+            This method exists because this toolkit was written 
+            prior to the introduction of the ConsoleColor class
+            and this was originally using PInvoke style console
+            color setting.  This method has been updated to use
+            ConsoleColor and left in place so all existing 
+            calls to this method don't break.
+            </summary>
+            <param name="textColor"></param>
+        </member>
+        <member name="P:Bam.Net.CommandLine.ConsoleInvokeableMethod.SwitchValue">
+            <summary>
+            Used to help build usage examples for /? 
+            </summary>
+        </member>
+        <member name="P:Bam.Net.CommandLine.ConsoleLogger.ShowTime">
+            <summary>
+            If true the Local time will prefix the output
+            </summary>
+        </member>
+        <member name="M:Bam.Net.CommandLine.Extensions.Run(System.String,System.Text.StringBuilder,System.Text.StringBuilder,System.Int32)">
+            <summary>
+            Executes the current string on the command line
+            and returns the output.
+            </summary>
+            <param name="command">a valid command line</param>
+            <returns>ProcessOutput</returns>
+        </member>
+        <member name="M:Bam.Net.CommandLine.Extensions.Run(System.String,System.Boolean,System.Text.StringBuilder,System.Text.StringBuilder,System.Int32)">
+            <summary>
+            Executes the current string on the command line
+            and returns the output.
+            </summary>
+            <param name="command"></param>
+            <param name="promptForAdmin"></param>
+            <param name="timeout"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Bam.Net.CommandLine.ParsedArguments">
+            <summary>
+            Class used to parse command line arguments.  All arguments are 
+            assumed to be in the format /&lt;name&gt;:&lt;value&gt; or an ArgumentException will be thrown 
+            during parsing.
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,6 +1,6 @@
 @echo on
-SET LIB=net45
-SET VER=v4.5
+SET LIB=net462
+SET VER=v4.6.2
 SET NEXT=END
 
 RMDIR /S /Q .\BuildOutput

@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Bam.Net.Yaml</name>
+    </assembly>
+    <members>
+        <member name="M:Bam.Net.Yaml.Extensions.ToYaml(System.Object,System.Yaml.YamlConfig)">
+            <summary>
+            Serialize the specified object to yaml
+            </summary>
+            <param name="val"></param>
+            <param name="conf"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Yaml.ServiceProxySystemYaml.Register">
+            <summary>
+            Registers the yaml file extension and the delegate used
+            to handle it.
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Yaml.YamlDaoGenerator">
+            <summary>
+            A class used to generate Daos.  Internally
+            uses a YamlSchemaGenerator to generate a YamlSchema, a 
+            YamlTypeSchemaGenerator to transform the YamlSchema into 
+            a TypeSchema and a TypeDaoGenerator to create a Dao Assembly
+            from the TypeSchema.  NOTE: this is not well tested
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Yaml.YamlSchema.GetNamespace(System.IO.FileInfo)">
+            <summary>
+            Returns the full directory path of the specified file
+            with the root removed (based on RootDirectory) and 
+            the path separator changed to "."
+            </summary>
+            <param name="file"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Bam.Net.Yaml.YamlSchemaGenerator">
+            <summary>
+            A class used to generate a YamlSchema from a specified directory
+            which presumably contains yaml files.  Uses DirectoryInfo.GetFiles("*.yaml", SearchOption.AllDirectories) 
+            internally so an OutOfMemoryExcepion may occur if there are too 
+            many files.
+            </summary>
+        </member>
+    </members>
+</doc>

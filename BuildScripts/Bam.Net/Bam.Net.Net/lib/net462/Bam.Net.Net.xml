@@ -1,0 +1,408 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Bam.Net.Net</name>
+    </assembly>
+    <members>
+        <member name="T:Bam.Net.Net.Dns.ANameRecord">
+            <summary>
+            ANAME Resource Record (RR) (RFC1035 3.4.1)
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Net.Dns.ANameRecord.#ctor(Bam.Net.Net.Dns.Pointer)">
+            <summary>
+            Constructs an ANAME record by reading bytes from a return message
+            </summary>
+            <param name="pointer">A logical pointer to the bytes holding the record</param>
+        </member>
+        <member name="T:Bam.Net.Net.Dns.DnsClient">
+            <summary>
+            Summary description for Dns.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Net.Dns.DnsClient.#ctor">
+            <summary>
+            Private constructor - this static class should never be instantiated
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Net.Dns.DnsClient.Lookup(Bam.Net.Net.Dns.DnsRequest,System.Net.IPAddress)">
+            <summary>
+            The principal look up function, which sends a request message to the given
+            DNS server and collects a response. This implementation re-sends the message
+            via UDP up to two times in the event of no response/packet loss
+            </summary>
+            <param name="request">The logical request to send to the server</param>
+            <param name="dnsServer">The IP address of the DNS server we are querying</param>
+            <returns>The logical response from the DNS server or null if no response</returns>
+        </member>
+        <member name="T:Bam.Net.Net.Dns.DnsRequest">
+            <summary>
+            A Request logically consists of a number of questions to ask the DNS Server. Create a request and
+            add questions to it, then pass the request to Resolver.Lookup to query the DNS Server. It is important
+            to note that many DNS Servers DO NOT SUPPORT MORE THAN 1 QUESTION PER REQUEST, and it is advised that
+            you only add one question to a request. If not ensure you check Response.ReturnCode to see what the
+            server has to say about it.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Net.Dns.DnsRequest.#ctor">
+            <summary>
+            Construct this object with the default values and create an ArrayList to hold
+            the questions as they are added
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Net.Dns.DnsRequest.AddQuestion(Bam.Net.Net.Dns.Question)">
+            <summary>
+            Adds a question to the request to be sent to the DNS server.
+            </summary>
+            <param name="question">The question to add to the request</param>
+        </member>
+        <member name="M:Bam.Net.Net.Dns.DnsRequest.GetMessage">
+            <summary>
+            Convert this request into a byte array ready to send direct to the DNS server
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Net.Dns.DnsRequest.AddDomain(System.Collections.ArrayList,System.String)">
+            <summary>
+            Adds a domain name to the ArrayList of bytes. This implementation does not use
+            the domain name compression used in the class Pointer - maybe it should.
+            </summary>
+            <param name="data">The ArrayList representing the byte array message</param>
+            <param name="domainName">the domain name to encode and add to the array</param>
+        </member>
+        <member name="T:Bam.Net.Net.Dns.DnsResponse">
+            <summary>
+            A Response is a logical representation of the byte data returned from a DNS query
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Net.Dns.DnsResponse.#ctor(System.Byte[])">
+            <summary>
+            Construct a Response object from the supplied byte array
+            </summary>
+            <param name="message">a byte array returned from a DNS server query</param>
+        </member>
+        <member name="M:Bam.Net.Net.Dns.DnsResponse.GetShort(System.Byte[],System.Int32)">
+            <summary>
+            Convert 2 bytes to a short. It would have been nice to use BitConverter for this,
+            it however reads the bytes in the wrong order (at least on Windows)
+            </summary>
+            <param name="message">byte array to look in</param>
+            <param name="position">position to look at</param>
+            <returns>short representation of the two bytes</returns>
+        </member>
+        <member name="T:Bam.Net.Net.Dns.DnsType">
+            <summary>
+            The DNS TYPE (RFC1035 3.2.2/3) - 4 types are currently supported. Also, I know that this
+            enumeration goes against naming guidelines, but I have done this as an ANAME is most
+            definetely an 'ANAME' and not an 'Aname'
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Net.Dns.DnsClass">
+            <summary>
+            The DNS CLASS (RFC1035 3.2.4/5)
+            Internet will be the one we'll be using (IN), the others are for completeness
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Net.Dns.ReturnCode">
+            <summary>
+            (RFC1035 4.1.1) These are the return codes the server can send back
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Net.Dns.Opcode">
+            <summary>
+            (RFC1035 4.1.1) These are the Query Types which apply to all questions in a request
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Net.Dns.InvalidResponseException">
+            <summary>
+            Thrown when the server delivers a response we are not expecting to hear
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Net.Dns.MXRecord">
+            <summary>
+            An MX (Mail Exchanger) Resource Record (RR) (RFC1035 3.3.9)
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Net.Dns.MXRecord.#ctor(Bam.Net.Net.Dns.Pointer)">
+            <summary>
+            Constructs an MX record by reading bytes from a return message
+            </summary>
+            <param name="pointer">A logical pointer to the bytes holding the record</param>
+        </member>
+        <member name="M:Bam.Net.Net.Dns.MXRecord.CompareTo(System.Object)">
+            <summary>
+            Implements the IComparable interface so that we can sort the MX records by their
+            lowest preference
+            </summary>
+            <param name="other">the other MxRecord to compare against</param>
+            <returns>1, 0, -1</returns>
+        </member>
+        <member name="T:Bam.Net.Net.Dns.NoResponseException">
+            <summary>
+            Thrown when the server does not respond
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Net.Dns.NSRecord">
+            <summary>
+            A Name Server Resource Record (RR) (RFC1035 3.3.11)
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Net.Dns.NSRecord.#ctor(Bam.Net.Net.Dns.Pointer)">
+            <summary>
+            Constructs a NS record by reading bytes from a return message
+            </summary>
+            <param name="pointer">A logical pointer to the bytes holding the record</param>
+        </member>
+        <member name="T:Bam.Net.Net.Dns.Pointer">
+            <summary>
+            Logical representation of a pointer, but in fact a byte array reference and a position in it. This
+            is used to read logical units (bytes, shorts, integers, domain names etc.) from a byte array, keeping
+            the pointer updated and pointing to the next record. This type of Pointer can be considered the logical
+            equivalent of an (unsigned char*) in C++
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Net.Dns.Pointer.Copy">
+            <summary>
+            Shallow copy function
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Net.Dns.Pointer.SetPosition(System.Int32)">
+            <summary>
+            Adjust the pointers position within the message
+            </summary>
+            <param name="position">new position in the message</param>
+        </member>
+        <member name="M:Bam.Net.Net.Dns.Pointer.op_Addition(Bam.Net.Net.Dns.Pointer,System.Int32)">
+            <summary>
+            Overloads the + operator to allow advancing the pointer by so many bytes
+            </summary>
+            <param name="pointer">the initial pointer</param>
+            <param name="offset">the offset to add to the pointer in bytes</param>
+            <returns>a reference to a new pointer moved forward by offset bytes</returns>
+        </member>
+        <member name="M:Bam.Net.Net.Dns.Pointer.Peek">
+            <summary>
+            Reads a single byte at the current pointer, does not advance pointer
+            </summary>
+            <returns>the byte at the pointer</returns>
+        </member>
+        <member name="M:Bam.Net.Net.Dns.Pointer.ReadByte">
+            <summary>
+            Reads a single byte at the current pointer, advancing pointer
+            </summary>
+            <returns>the byte at the pointer</returns>
+        </member>
+        <member name="M:Bam.Net.Net.Dns.Pointer.ReadShort">
+            <summary>
+            Reads two bytes to form a short at the current pointer, advancing pointer
+            </summary>
+            <returns>the byte at the pointer</returns>
+        </member>
+        <member name="M:Bam.Net.Net.Dns.Pointer.ReadInt">
+            <summary>
+            Reads four bytes to form a int at the current pointer, advancing pointer
+            </summary>
+            <returns>the byte at the pointer</returns>
+        </member>
+        <member name="M:Bam.Net.Net.Dns.Pointer.ReadChar">
+            <summary>
+            Reads a single byte as a char at the current pointer, advancing pointer
+            </summary>
+            <returns>the byte at the pointer</returns>
+        </member>
+        <member name="M:Bam.Net.Net.Dns.Pointer.ReadDomain">
+            <summary>
+            Reads a domain name from the byte array. The method by which this works is described
+            in RFC1035 - 4.1.4. Essentially to minimise the size of the message, if part of a domain
+            name already been seen in the message, rather than repeating it, a pointer to the existing
+            definition is used. Each word in a domain name is a label, and is preceded by its length
+            
+            eg. bigdevelopments.co.uk
+            
+            is [15] (size of bigdevelopments) + "bigdevelopments"
+               [2]  "co"
+               [2]  "uk"
+               [1]  0 (NULL)
+            </summary>
+            <returns>the byte at the pointer</returns>
+        </member>
+        <member name="T:Bam.Net.Net.Dns.Question">
+            <summary>
+            Represents a DNS Question, comprising of a domain to query, the type of query (QTYPE) and the class
+            of query (QCLASS). This class is an encapsulation of these three things, and extensive argument checking
+            in the constructor as this may well be created outside the assembly (public protection)
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Net.Dns.Question.#ctor(System.String,Bam.Net.Net.Dns.DnsType,Bam.Net.Net.Dns.DnsClass)">
+            <summary>
+            Construct the question from parameters, checking for safety
+            </summary>
+            <param name="domain">the domain name to query eg. bigdevelopments.co.uk</param>
+            <param name="dnsType">the QTYPE of query eg. DnsType.MX</param>
+            <param name="dnsClass">the CLASS of query, invariably DnsClass.IN</param>
+        </member>
+        <member name="M:Bam.Net.Net.Dns.Question.#ctor(Bam.Net.Net.Dns.Pointer)">
+            <summary>
+            Construct the question reading from a DNS Server response. Consult RFC1035 4.1.2
+            for byte-wise details of this structure in byte array form
+            </summary>
+            <param name="pointer">a logical pointer to the Question in byte array form</param>
+        </member>
+        <member name="T:Bam.Net.Net.Dns.RecordBase">
+            <summary>
+            A simple base class for the different ResourceRecords, ANAME, MX, SOA, NS etc.
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Net.Dns.ResourceRecord">
+            <summary>
+            Represents a Resource Record as detailed in RFC1035 4.1.3
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Net.Dns.ResourceRecord.#ctor(Bam.Net.Net.Dns.Pointer)">
+            <summary>
+            Construct a resource record from a pointer to a byte array
+            </summary>
+            <param name="pointer">the position in the byte array of the record</param>
+        </member>
+        <member name="T:Bam.Net.Net.Dns.SoaRecord">
+            <summary>
+            An SOA Resource Record (RR) (RFC1035 3.3.13)
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Net.Dns.SoaRecord.#ctor(Bam.Net.Net.Dns.Pointer)">
+            <summary>
+            Constructs an SOA record by reading bytes from a return message
+            </summary>
+            <param name="pointer">A logical pointer to the bytes holding the record</param>
+        </member>
+        <member name="M:Bam.Net.Net.Dfs.Add(System.String,System.String,System.String,System.String)">
+             <summary>
+             Creates a new Distributed File System (DFS) link or adds targets to an existing link in a DFS namespace.
+             see http://msdn.microsoft.com/en-us/library/bb524805(VS.85).aspx
+             </summary>
+             <param name="DfsEntryPath">
+            Pointer to a string that specifies the Universal Naming Convention (UNC) path of a DFS link in a DFS namespace.
+            The string can be in one of two forms. The first form is as follows:
+            
+            \\ServerName\DfsName\link_path
+            
+            where ServerName is the name of the root target server that hosts a stand-alone DFS namespace; DfsName is the name of the DFS namespace; and link_path is a DFS link.
+            The second form is as follows:
+            \\DomainName\DomDfsname\link_path
+            
+            where DomainName is the name of the domain that hosts a domain-based DFS namespace; DomDfsname is the name of the domain-based DFS namespace; and link_path is a DFS link.
+            This parameter is required.
+            </param>
+             <param name="ServerName">Pointer to a string that specifies the link target server name. This parameter is required.</param>
+             <param name="PathName">Pointer to a string that specifies the link target share name. This can also be a share name with a path relative to the share. 
+             For example, share1\mydir1\mydir2. This parameter is required.</param>
+             <param name="Comment">Pointer to a string that specifies an optional comment associated with the DFS link. 
+             This parameter is ignored when the function adds a target to an existing link.</param>
+             <param name="flags"></param>
+             <returns></returns>
+             <remarks>
+             The DFS namespace must already exist. This function does not create a new DFS namespace.
+            
+            The caller must have Administrator privilege on the DFS server. For more information about calling functions that require administrator privileges, 
+            see Running with Special Privileges.
+            
+            Use of the DFS_ADD_VOLUME flag is optional. If you specify DFS_ADD_VOLUME and the link already exists, NetDfsAdd fails.
+            If you do not specify DFS_ADD_VOLUME, NetDfsAdd creates the link, if required, and adds the target to the link. You should specify this value when you need to determine when new links are created.
+             </remarks>
+        </member>
+        <member name="M:Bam.Net.Net.IcmpPacket.ToByteArray">
+            <summary>
+            Converts an IcmpPacket to a byte array.
+            </summary>
+            <returns>Byte array of contents of ICMP packet</returns>
+        </member>
+        <member name="M:Bam.Net.Net.IcmpPacket.ToUInt16Array">
+            <summary>
+            Converts ICMP packet to UInt16 array
+            </summary>
+            <returns>UInt16 array of contents of ICMP packet</returns>
+        </member>
+        <member name="M:Bam.Net.Net.IcmpPacket.UpdateChecksum">
+            <summary>
+            This Method has the algorithm to make the checksum
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Net.NetworkUtilities">
+            <summary>
+            Common network functions.
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Net.Ping">
+            <summary>
+            Performs a network ping similar to the 'ping' command.
+            </summary>
+            <remarks>Based on the code found at http://msdn.microsoft.com/msdnmag/issues/01/02/netpeers/default.aspx by Lance Olson</remarks>
+            <see cref="!:http://msdn.microsoft.com/msdnmag/issues/01/02/netpeers/default.aspx"/>
+        </member>
+        <member name="M:Bam.Net.Net.Ping.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Net.Ping.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Net.Ping.PingHost(System.String)">
+            <summary>
+            Attempts to ping a host.
+            </summary>
+            <param name="hostname">Host to ping</param>
+            <returns>Ping results</returns>
+        </member>
+        <member name="M:Bam.Net.Net.Ping.PingHost(System.String,System.Int32)">
+            <summary>
+            Attempts to ping a host.
+            </summary>
+            <param name="hostname">Host to ping</param>
+            <param name="pingCount">Ping count</param>
+            <returns>Ping results</returns>
+        </member>
+        <member name="M:Bam.Net.Net.Ping.PingHost(System.Net.IPAddress)">
+            <summary>
+            Attempts to ping a host.
+            </summary>
+            <param name="serverAddress">IPAddress to ping</param>
+            <returns>Ping results</returns>
+        </member>
+        <member name="M:Bam.Net.Net.Ping.PingHost(System.Net.IPAddress,System.Int32)">
+            <summary>
+            Attempts to ping a host.
+            </summary>
+            <param name="serverAddress">IPAddress to ping</param>
+            <param name="pingCount">Ping count</param>
+            <returns>Ping results</returns>
+        </member>
+        <member name="M:Bam.Net.Net.Ping.PingHost(System.Net.IPEndPoint)">
+            <summary>
+            Attempts to ping a host.
+            </summary>
+            <param name="serverEndPoint">EndPoint to ping</param>
+            <returns>Ping results</returns>
+        </member>
+        <member name="M:Bam.Net.Net.Ping.PingHost(System.Net.IPEndPoint,System.Int32)">
+            <summary>
+            Attempts to ping a host.
+            </summary>
+            <param name="serverEndPoint">EndPoint to ping</param>
+            <param name="pingCount">Ping count</param>
+            <returns>Ping results</returns>
+        </member>
+        <member name="M:Bam.Net.Net.Smb.DeleteShare(System.String,System.String)">
+            <summary>
+            Deletes the specified share on the speicifed server.
+            </summary>
+            <param name="server">The name of the server</param>
+            <param name="shareName">The name of the share</param>
+            <returns>0 on success another value on failure</returns>
+        </member>
+    </members>
+</doc>
