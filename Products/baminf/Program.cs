@@ -54,7 +54,11 @@ namespace baminf
         #region do not modify
         public static void Start()
         {
-            if (Arguments.Contains("sai") || Arguments.Contains("baminfo.json") || Arguments.Contains("smsiv"))
+            if (Arguments.Contains("sai") || 
+                Arguments.Contains("baminfo.json") || 
+                Arguments.Contains("smsiv") ||
+                Arguments.Contains("generateNugetScripts") ||
+                Arguments.Contains("generateBamDotExeScript"))
             {
                 if (Arguments.Contains("sai"))
                 {
