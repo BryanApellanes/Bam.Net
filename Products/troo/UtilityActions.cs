@@ -19,7 +19,7 @@ namespace troo
     public class UtilityActions : CommandLineTestInterface
     {
         static FileInfo LastGenerationInfo = new FileInfo(".\\troo_generation_info.json");
-        [ConsoleAction("generateSchemaRepository", "Generate a schema sepcific DaoRepository")]
+        [ConsoleAction("generateSchemaRepository", "Generate a schema specific DaoRepository")]
         public static void GenerateSchemaRepository()
         {
             GenerationInfo genInfo = GetGenerationInfo();
@@ -55,7 +55,7 @@ namespace troo
             }
         }
 
-        [ConsoleAction("generateDaoAssemblyForTypes", "Generate Dao Assebly for types")]
+        [ConsoleAction("generateDaoAssemblyForTypes", "Generate Dao Assembly for types")]
         public static void GenerateDaoForTypes()
         {
             GenerationInfo genInfo = GetGenerationInfo();

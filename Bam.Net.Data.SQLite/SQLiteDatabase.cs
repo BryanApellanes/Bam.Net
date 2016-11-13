@@ -22,6 +22,11 @@ namespace Bam.Net.Data.SQLite
         {
             SQLiteBitMonitor.MonitorBitness();
         }
+
+        public SQLiteDatabase() : this(".\\SQLiteDbFiles", "SQLiteDatabase")
+        {
+        }
+
         /// <summary>
         /// Instantiate a new SQLiteDatabase instance where the database
         /// file will be placed into the specified directoryPath using the

@@ -54,6 +54,8 @@ namespace Bam.Net.UserAccounts.Data
             return Get(context.Request, context.Response, db);    
         }
 
+        static Dictionary<string, Session> _sessionCache = new Dictionary<string, Session>();
+
         public static Session Get(IRequest request, IResponse response, Database db = null)
         {
             Cookie sessionIdCookie = request.Cookies[CookieName];
@@ -62,7 +64,14 @@ namespace Bam.Net.UserAccounts.Data
             if (sessionIdCookie != null)
             {
                 identifier = sessionIdCookie.Value;
-                session = OneWhere(c => c.Identifier == identifier, db);
+                if (_sessionCache.ContainsKey(identifier))
+                {
+                    session = _sessionCache[identifier];
+                }
+                if(session == null)
+                {
+                    session = OneWhere(c => c.Identifier == identifier, db);
+                }
             }
 
             if (session == null)
@@ -72,8 +81,9 @@ namespace Bam.Net.UserAccounts.Data
             else
             {
                 session.LastActivity = DateTime.UtcNow;
-                session.Save(db);
+                session.SaveAsync(db);
             }
+            _sessionCache.Set(identifier, session);
             return session;
         }
 
@@ -93,9 +103,9 @@ namespace Bam.Net.UserAccounts.Data
                 }
                 logger.AddEntry("Ending session ({0}) for user ({1})", this.Id.ToString(), user.UserName);
 
-                this.Identifier = this.Identifier + "-Ended";
-                this.IsActive = false;
-                this.Save(db);
+                Identifier = Identifier + "-Ended";
+                IsActive = false;
+                SaveAsync(db);
             }
             catch (Exception ex)
             {
@@ -138,7 +148,7 @@ namespace Bam.Net.UserAccounts.Data
                     session.IsActive = false;
                 }
 
-                session.Save(db);            
+                session.SaveAsync(db);            
             }
 
             return session;
@@ -172,7 +182,6 @@ namespace Bam.Net.UserAccounts.Data
             }
             return session;
         }
-
         
         protected internal static string GenId()
         {
@@ -191,7 +200,7 @@ namespace Bam.Net.UserAccounts.Data
 
             if (save)
             {
-                Save();
+                SaveAsync();
             }
         }
 

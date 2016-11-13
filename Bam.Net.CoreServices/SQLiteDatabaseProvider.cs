@@ -25,10 +25,10 @@ namespace Bam.Net.CoreServices
 
         /// <summary>
         /// Sets all properties on the specified instances, where the property type 
-        /// is Database, to a SQLiteDatabase with it's root folder set to Root
+        /// is Database, to a SQLiteDatabase with it's root folder set to {Root}
         /// and the name of the database to {Type.Name}.{PropertyInfo.Name}
         /// </summary>
-        /// <param name="instance"></param>
+        /// <param name="instances"></param>
         public void SetDatabases(params object[] instances)
         {
             instances.Each(new { Provider = this }, (ctx, instance) =>
@@ -39,7 +39,7 @@ namespace Bam.Net.CoreServices
 
         /// <summary>
         /// Sets all properties on the specified instances, where the property type 
-        /// is Database, to a SQLiteDatabase with it's root folder set to Root
+        /// is Database, to a SQLiteDatabase with it's root folder set to {Root}
         /// and the name of the database to {Type.Name}.{PropertyInfo.Name}
         /// </summary>
         /// <param name="instance"></param>

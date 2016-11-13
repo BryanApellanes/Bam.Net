@@ -89,7 +89,7 @@ namespace Bam.Net.CoreServices.Tests
         }
 
         [UnitTest]
-        public void FireNamedEventTest()
+        public async void FireNamedEventTest()
         {
             TestEventSourceLoggable src = GetTestEventSource();
             bool? fired = false;
@@ -98,7 +98,7 @@ namespace Bam.Net.CoreServices.Tests
             {
                 fired = true;
             });
-            src.Test();
+            await src.Test();
             Thread.Sleep(300);
             Expect.IsTrue(fired.Value);
             OutLineFormat("fire named event test ran to completion", ConsoleColor.Green);

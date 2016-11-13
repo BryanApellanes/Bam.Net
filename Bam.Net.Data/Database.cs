@@ -25,7 +25,7 @@ namespace Bam.Net.Data
 			this._connections = new List<DbConnection>();
 			this._schemaNames = new HashSet<string>();
             this.ServiceProvider = Incubator.Default;           
-            this.MaxConnections = 50;
+            this.MaxConnections = 200;
         }
 
         public Database(Incubator serviceProvider, string connectionString, string connectionName = null)

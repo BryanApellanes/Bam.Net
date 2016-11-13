@@ -10,6 +10,7 @@ using System.Data;
 using Bam.Net;
 using Bam.Net.Incubation;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Bam.Net.Data
 {
@@ -480,6 +481,19 @@ namespace Bam.Net.Data
         public void Save()
         {
             Commit();
+        }
+
+        /// <summary>
+        /// Saves the current instance asynchronously
+        /// </summary>
+        /// <param name="db"></param>
+        /// <returns></returns>
+        public Task SaveAsync(Database db = null)
+        {
+            return Task.Run(() =>
+            {
+                Save(db);
+            });
         }
         /// <summary>
         /// Save the current instance.  If the Id is less than or
