@@ -56,7 +56,7 @@ namespace Bam.Net.UserAccounts.Data
 
         static Dictionary<string, Session> _sessionCache = new Dictionary<string, Session>();
 
-        public static Session Get(IRequest request, IResponse response, Database db = null)
+        public static Session Get(IRequest request, IResponse response, Database db = null, bool useCache = false)
         {
             Cookie sessionIdCookie = request.Cookies[CookieName];
             Session session = null;
@@ -64,7 +64,7 @@ namespace Bam.Net.UserAccounts.Data
             if (sessionIdCookie != null)
             {
                 identifier = sessionIdCookie.Value;
-                if (_sessionCache.ContainsKey(identifier))
+                if (_sessionCache.ContainsKey(identifier) && useCache)
                 {
                     session = _sessionCache[identifier];
                 }
@@ -81,9 +81,12 @@ namespace Bam.Net.UserAccounts.Data
             else
             {
                 session.LastActivity = DateTime.UtcNow;
-                session.SaveAsync(db);
+                session.Save(db);
             }
-            _sessionCache.Set(identifier, session);
+            if (useCache)
+            {
+                _sessionCache.Set(identifier, session);
+            }
             return session;
         }
 
@@ -105,7 +108,7 @@ namespace Bam.Net.UserAccounts.Data
 
                 Identifier = Identifier + "-Ended";
                 IsActive = false;
-                SaveAsync(db);
+                Save(db);
             }
             catch (Exception ex)
             {
@@ -148,7 +151,7 @@ namespace Bam.Net.UserAccounts.Data
                     session.IsActive = false;
                 }
 
-                session.SaveAsync(db);            
+                session.Save(db);            
             }
 
             return session;
@@ -200,7 +203,7 @@ namespace Bam.Net.UserAccounts.Data
 
             if (save)
             {
-                SaveAsync();
+                Save();
             }
         }
 

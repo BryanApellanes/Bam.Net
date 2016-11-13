@@ -758,6 +758,11 @@ namespace Bam.Net.Data
             }
         }
 
+        public EnsureSchemaStatus TryEnsureSchema<T>(ILogger logger = null)
+        {
+            return TryEnsureSchema(typeof(T), logger);
+        }
+
 		public EnsureSchemaStatus TryEnsureSchema(Type type, ILogger logger = null)
 		{
 			Exception e;

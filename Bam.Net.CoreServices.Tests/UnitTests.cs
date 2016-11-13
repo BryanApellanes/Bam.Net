@@ -329,8 +329,8 @@ namespace Bam.Net.CoreServices.Tests
             Expect.AreEqual(userName, user.UserName);
             UserAccounts.Data.User sessionUser = Session.Get(svc.HttpContext).UserOfUserId;
             Expect.IsNotNull(sessionUser);
-            Expect.AreEqual(userName, sessionUser.UserName);
-            Expect.AreEqual(sessionUser, svc.CurrentUser);
+            Expect.AreEqual(userName, sessionUser.UserName, "UserName didn't match");
+            Expect.AreEqual(sessionUser, svc.CurrentUser, "Users didn't match");
         }
  
         private CoreApplicationRegistryService GetTestServiceWithUser(string userName)
