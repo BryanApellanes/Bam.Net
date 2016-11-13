@@ -112,7 +112,7 @@ namespace Bam.Net.Data
 
         /// <summary>
         /// Creates the tables for the specified type and 
-        /// associated sibling tables
+        /// associated sibling types
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns>true on success, false if an error was thrown, possibly due to the 
@@ -124,7 +124,7 @@ namespace Bam.Net.Data
 
         /// <summary>
         /// Creates the tables for the specified type and 
-        /// associated sibling tables
+        /// associated sibling types
         /// </summary>
         /// <param name="type"></param>
         /// <returns>true on success, false if an error was thrown, possibly due to the 

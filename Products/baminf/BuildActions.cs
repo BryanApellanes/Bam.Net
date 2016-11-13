@@ -121,11 +121,26 @@ RMDIR /S /Q ..\..\Products\BUILD");
             packScriptDebug.AppendLine("call build_toolkit_debug.cmd");
             pushScript.Append(@"call git_commit_all.cmd %1
 call git_tag_version.cmd %1");
-            copyAllScript.ToString().SafeWriteToFile(Path.Combine(outputDir.FullName, "copy_all.cmd"), true);
-            packScript.ToString().SafeWriteToFile(Path.Combine(outputDir.FullName, "pack.cmd"), true);
-            packScriptDebug.ToString().SafeWriteToFile(Path.Combine(outputDir.FullName, "pack_debug.cmd"), true);
-            pushScript.ToString().SafeWriteToFile(Path.Combine(outputDir.FullName, "push.cmd"), true);
-            cleanScript.ToString().SafeWriteToFile(Path.Combine(outputDir.FullName, "clean.cmd"), true);
+            string copyAllPath = Path.Combine(outputDir.FullName, "copy_all.cmd");
+            string packPath = Path.Combine(outputDir.FullName, "pack.cmd");
+            string packDebug = Path.Combine(outputDir.FullName, "pack_debug.cmd");
+            string pushPath = Path.Combine(outputDir.FullName, "push.cmd");
+            string cleanPath = Path.Combine(outputDir.FullName, "clean.cmd");
+
+            copyAllScript.ToString().SafeWriteToFile(copyAllPath, true);
+            OutLineFormat("Wrote file {0}", copyAllPath);
+
+            packScript.ToString().SafeWriteToFile(packPath, true);
+            OutLineFormat("Wrote file {0}", packPath);
+
+            packScriptDebug.ToString().SafeWriteToFile(packDebug, true);
+            OutLineFormat("Wrote file {0}", packDebug);
+
+            pushScript.ToString().SafeWriteToFile(pushPath, true);
+            OutLineFormat("Wrote file {0}", pushPath);
+
+            cleanScript.ToString().SafeWriteToFile(cleanPath, true);
+            OutLineFormat("Wrote file {0}", cleanPath);
         }
         
         [ConsoleAction("baminfo.json", "specify the path to the baminfo.json file to use")]
