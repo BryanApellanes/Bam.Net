@@ -25,7 +25,7 @@ namespace Bam.Net.Data
 			this._connections = new List<DbConnection>();
 			this._schemaNames = new HashSet<string>();
             this.ServiceProvider = Incubator.Default;           
-            this.MaxConnections = 50;
+            this.MaxConnections = 200;
         }
 
         public Database(Incubator serviceProvider, string connectionString, string connectionName = null)
@@ -756,6 +756,11 @@ namespace Bam.Net.Data
             {
                 return TryEnsureSchema(daoType, logger);
             }
+        }
+
+        public EnsureSchemaStatus TryEnsureSchema<T>(ILogger logger = null)
+        {
+            return TryEnsureSchema(typeof(T), logger);
         }
 
 		public EnsureSchemaStatus TryEnsureSchema(Type type, ILogger logger = null)

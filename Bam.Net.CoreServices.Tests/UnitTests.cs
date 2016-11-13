@@ -89,7 +89,7 @@ namespace Bam.Net.CoreServices.Tests
         }
 
         [UnitTest]
-        public void FireNamedEventTest()
+        public async void FireNamedEventTest()
         {
             TestEventSourceLoggable src = GetTestEventSource();
             bool? fired = false;
@@ -98,7 +98,7 @@ namespace Bam.Net.CoreServices.Tests
             {
                 fired = true;
             });
-            src.Test();
+            await src.Test();
             Thread.Sleep(300);
             Expect.IsTrue(fired.Value);
             OutLineFormat("fire named event test ran to completion", ConsoleColor.Green);
@@ -329,8 +329,8 @@ namespace Bam.Net.CoreServices.Tests
             Expect.AreEqual(userName, user.UserName);
             UserAccounts.Data.User sessionUser = Session.Get(svc.HttpContext).UserOfUserId;
             Expect.IsNotNull(sessionUser);
-            Expect.AreEqual(userName, sessionUser.UserName);
-            Expect.AreEqual(sessionUser, svc.CurrentUser);
+            Expect.AreEqual(userName, sessionUser.UserName, "UserName didn't match");
+            Expect.AreEqual(sessionUser, svc.CurrentUser, "Users didn't match");
         }
  
         private CoreApplicationRegistryService GetTestServiceWithUser(string userName)

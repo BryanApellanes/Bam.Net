@@ -54,7 +54,9 @@ namespace Bam.Net.UserAccounts.Data
             return Get(context.Request, context.Response, db);    
         }
 
-        public static Session Get(IRequest request, IResponse response, Database db = null)
+        static Dictionary<string, Session> _sessionCache = new Dictionary<string, Session>();
+
+        public static Session Get(IRequest request, IResponse response, Database db = null, bool useCache = false)
         {
             Cookie sessionIdCookie = request.Cookies[CookieName];
             Session session = null;
@@ -62,7 +64,14 @@ namespace Bam.Net.UserAccounts.Data
             if (sessionIdCookie != null)
             {
                 identifier = sessionIdCookie.Value;
-                session = OneWhere(c => c.Identifier == identifier, db);
+                if (_sessionCache.ContainsKey(identifier) && useCache)
+                {
+                    session = _sessionCache[identifier];
+                }
+                if(session == null)
+                {
+                    session = OneWhere(c => c.Identifier == identifier, db);
+                }
             }
 
             if (session == null)
@@ -73,6 +82,10 @@ namespace Bam.Net.UserAccounts.Data
             {
                 session.LastActivity = DateTime.UtcNow;
                 session.Save(db);
+            }
+            if (useCache)
+            {
+                _sessionCache.Set(identifier, session);
             }
             return session;
         }
@@ -93,9 +106,9 @@ namespace Bam.Net.UserAccounts.Data
                 }
                 logger.AddEntry("Ending session ({0}) for user ({1})", this.Id.ToString(), user.UserName);
 
-                this.Identifier = this.Identifier + "-Ended";
-                this.IsActive = false;
-                this.Save(db);
+                Identifier = Identifier + "-Ended";
+                IsActive = false;
+                Save(db);
             }
             catch (Exception ex)
             {
@@ -172,7 +185,6 @@ namespace Bam.Net.UserAccounts.Data
             }
             return session;
         }
-
         
         protected internal static string GenId()
         {

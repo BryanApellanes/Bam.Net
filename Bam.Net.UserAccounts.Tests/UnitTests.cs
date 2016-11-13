@@ -23,6 +23,7 @@ using Bam.Net.Messaging;
 using Bam.Net.ServiceProxy.Secure;
 using System.Threading;
 using Bam.Net.Testing.Integration;
+using Bam.Net.Data.SQLite;
 
 namespace Bam.Net.UserAccounts.Tests
 {
@@ -221,7 +222,9 @@ namespace Bam.Net.UserAccounts.Tests
         {
             IHttpContext context = A.Fake<IHttpContext>();
             context.Request = new TestRequest();
-
+            Database db = new SQLiteDatabase();
+            db.TryEnsureSchema<Session>();
+            Db.For<Session>(db);
             Session session = Session.Init(context);
 
             Instant created = new Instant(session.CreationDate.Value);
