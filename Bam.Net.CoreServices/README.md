@@ -1,19 +1,19 @@
 # Core Services
-- UserAccountsService
+- CoreUserManagerService
 	- manage user accounts
-- ApiKeyService
+- CoreApplicationRegistryService
 	- manage application names, owners and api keys
-- PersistenceService
+- CorePersistenceService [todo]
 	- manage data repositories.  
-- ConfigurationService
+- CoreConfigurationService
 	- manage application configurations by application name and base addresses
-- PermissionsService
+- CorePermissionsService [todo]
 	- maintains acls for paths.  (Uses UserAccountsService)
-- FileSystemService
+- CoreFileSystemService [todo]
 	- maintain logical directories and files.  (Uses PermissionsService)
-- StateService
+- CoreStateService [todo]
 	- track global state (key value pairs) and session state (key value pairs of key value pairs)
-- LoggerService
+- CoreLoggerService
 	- duh
 
 # Secondary Services
