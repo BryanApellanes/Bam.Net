@@ -37,7 +37,7 @@ namespace Bam.Net.Translation
                 }
             }
 
-            Args.ThrowIf<ArgumentException>(toLanguage == null, "Unable to identify specified language: {0}", languageIdentifier);
+            Args.ThrowIf<ArgumentException>(toLanguage == null, "Unable to identify specified language {0}, supported values are:\r\n{1}", languageIdentifier, string.Join("\r\n", Language.LoadAll(LanguageDatabase).Select(lang => lang.ISO6391).ToArray()));
             
             return Translate(input, toLanguage);
         }
@@ -45,28 +45,28 @@ namespace Bam.Net.Translation
         public string Translate(string input, Language toLanguage)
         {
             Text text = Text.OneWhere(t => t.Value == input, TranslationDatabase);
-            Language from = null;
+            Language fromLanguage = null;
             LanguageDetection detection = null;
             if (text != null && text.LanguageOfLanguageId != null)
             {
-                from = text.LanguageOfLanguageId;
+                fromLanguage = text.LanguageOfLanguageId;
             }
             else
             {
-                from = DetectLanguage(input);
+                fromLanguage = DetectLanguage(input);
                 detection = new LanguageDetection();
-                detection.LanguageId = from.Id;
+                detection.LanguageId = fromLanguage.Id;
 
                 text = new Text();
                 text.Value = input;
-                text.LanguageId = from.Id;
+                text.LanguageId = fromLanguage.Id;
                 text.Save(TranslationDatabase);
                 detection.TextId = text.Id;
-                detection.Detector = this.GetType().Name;
+                detection.Detector = this.GetType().FullName;
                 detection.Save(TranslationDatabase);
             }
             
-            return Translate(from, toLanguage, input);
+            return Translate(fromLanguage, toLanguage, input);
         }
     }
 }

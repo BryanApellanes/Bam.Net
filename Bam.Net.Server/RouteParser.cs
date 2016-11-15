@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace Bam.Net.Server
 {
+    // Taken from: https://gist.github.com/wcharczuk/2284226
     /// <summary>
     /// Utiltiy to parse routes based on a token format.
     /// </summary>
