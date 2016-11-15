@@ -16,6 +16,11 @@ namespace Bam.Net.Data.Npgsql
 {
     public class NpgsqlDatabase : Database, IHasConnectionStringResolver
     {
+        public NpgsqlDatabase()
+        {
+            ConnectionStringResolver = DefaultConnectionStringResolver.Instance;
+            Register();
+        }
         public NpgsqlDatabase(string serverName, string databaseName, NpgsqlCredentials credentials = null)
             : this(serverName, databaseName, databaseName, credentials)
         { }

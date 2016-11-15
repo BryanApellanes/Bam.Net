@@ -16,6 +16,11 @@ namespace Bam.Net.Data.MySql
 {
     public class MySqlDatabase : Database, IHasConnectionStringResolver
     {
+        public MySqlDatabase()
+        {
+            ConnectionStringResolver = DefaultConnectionStringResolver.Instance;
+            Register();
+        }
         public MySqlDatabase(string serverName, string databaseName, MySqlCredentials credentials = null)
             : this(serverName, databaseName, databaseName, credentials)
         {
@@ -42,7 +47,6 @@ namespace Bam.Net.Data.MySql
             MySqlRegistrar.Register(this);
             Infos.Add(new DatabaseInfo(this));
         }
-
 
         public IConnectionStringResolver ConnectionStringResolver
         {

@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.CoreServices
 {
+    /// <summary>
+    /// Attribute used to mark a database property
+    /// with Dao types used to initialize the
+    /// schema in the database
+    /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
     public class SchemasAttribute: Attribute
     {
