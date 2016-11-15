@@ -22,12 +22,6 @@ namespace Bam.Net.CoreServices.Distributed
 
 		public string Uuid { get; set; }
 
-		public T Execute<T>(ComputeArc arcToExecuteOn)
-		{
-			return (T)Execute();
-		}
-
-		public abstract object Execute();
-		
+		public abstract object Execute();		
 	}
 }

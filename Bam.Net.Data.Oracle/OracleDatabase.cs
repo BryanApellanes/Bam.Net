@@ -21,8 +21,8 @@ namespace Bam.Net.Data.Oracle
         public OracleDatabase()
             : base()
         {
-            this.ConnectionStringResolver = new NullConnectionStringResolver(this);
-            this.ConnectionName = "Oracle";
+            ConnectionStringResolver = new NullConnectionStringResolver(this);
+            ConnectionName = "Oracle";
             Register();
         }
         /// <summary>
@@ -34,8 +34,8 @@ namespace Bam.Net.Data.Oracle
         public OracleDatabase(string serverName, string connectionName, OracleCredentials creds = null)
             : base()
         {
-            this.ConnectionStringResolver = new OracleConnectionStringResolver(serverName, creds);
-            this.ConnectionName = connectionName;
+            ConnectionStringResolver = new OracleConnectionStringResolver(serverName, creds);
+            ConnectionName = connectionName;
             Register();
         }
 

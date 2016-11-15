@@ -134,9 +134,7 @@ namespace Bam.Net.CoreServices.Distributed
         }
 
         #endregion
-
-
-
+        
         public override string ToString()
         {
 			return Identifier();
