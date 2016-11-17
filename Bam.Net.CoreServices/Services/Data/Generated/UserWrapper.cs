@@ -58,7 +58,8 @@ Bam.Net.CoreServices.Data.Subscription[] _subscriptions;
 			}
 		}
 
-// Xref property: Left -> User ; Right -> Organization
+
+// Xref property: Left -> Organization ; Right -> User
 
 		List<Bam.Net.CoreServices.Data.Organization> _organizations;
 		public override List<Bam.Net.CoreServices.Data.Organization> Organizations
@@ -67,7 +68,7 @@ Bam.Net.CoreServices.Data.Subscription[] _subscriptions;
 			{
 				if(_organizations == null)
 				{
-					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.Data.Daos.UserOrganization,  Bam.Net.CoreServices.Data.Daos.Organization>(Repository.GetDaoInstance(this), false);
+					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.Data.Daos.OrganizationUser, Bam.Net.CoreServices.Data.Daos.Organization>(Repository.GetDaoInstance(this), false);
 					 xref.Load(Repository.Database);
 					 _organizations = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.Data.Organization>().ToList();
 					 SetUpdatedXrefCollectionProperty("Organizations", this.GetType().GetProperty("Organizations"));
@@ -80,7 +81,6 @@ Bam.Net.CoreServices.Data.Subscription[] _subscriptions;
 				_organizations = value;
 				SetUpdatedXrefCollectionProperty("Organizations", this.GetType().GetProperty("Organizations"));
 			}
-		}
-	}
+		}	}
 	// -- generated
 }																								

@@ -13,9 +13,9 @@ namespace Bam.Net.CoreServices
     /// A subscription made by a process outside of
     /// the core set of services and processes
     /// </summary>
-    public class ExternalEventSubscription: EventSubscription
+    public class CoreExternalEventSubscription: EventSubscription
     {
-        public ExternalEventSubscription()
+        public CoreExternalEventSubscription()
         {
             ExceptionHandler = ((ex) => { });
         }
@@ -28,9 +28,9 @@ namespace Bam.Net.CoreServices
             return inProcessResult;
         }
 
-        public ExternalEventSubscriptionInfo ToData()
+        public ExternalEventSubscription ToRepoData()
         {
-            return ExternalEventSubscriptionInfo.FromExternalEventSubscription(this);
+            return ExternalEventSubscription.FromCoreExternalEventSubscription(this);
         }
     }
 }

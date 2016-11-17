@@ -14,10 +14,10 @@ using Bam.Net.Data.Qi;
 
 namespace Bam.Net.CoreServices.Data.Daos
 {
-	// schema = ApplicationRegistry
-	// connection Name = ApplicationRegistry
+	// schema = CoreRegistry
+	// connection Name = CoreRegistry
 	[Serializable]
-	[Bam.Net.Data.Table("Subscription", "ApplicationRegistry")]
+	[Bam.Net.Data.Table("Subscription", "CoreRegistry")]
 	public partial class Subscription: Dao
 	{
 		public Subscription():base()

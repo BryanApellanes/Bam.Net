@@ -10,7 +10,7 @@ namespace Bam.Net.CoreServices
 {
     public class OrganizationFactory : MaximumLimitEnforcer<ServiceResponse<Organization>>
     {
-        public OrganizationFactory(ApplicationRegistryRepository repo, User user, string organizationName)
+        public OrganizationFactory(CoreRegistryRepository repo, User user, string organizationName)
         {
             User = user;
             OrganizationName = organizationName;
@@ -18,7 +18,7 @@ namespace Bam.Net.CoreServices
         }
         public User User { get; set; }
         public string OrganizationName { get; set; }
-        public ApplicationRegistryRepository ApplicationRegistryRepository { get; set; }
+        public CoreRegistryRepository ApplicationRegistryRepository { get; set; }
         public override int GetMaximumLimit()
         {
             int max = 1;

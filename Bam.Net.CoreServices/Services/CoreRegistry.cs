@@ -21,7 +21,7 @@ using Bam.Net.CoreServices.Data.Daos.Repository;
 
 namespace Bam.Net.CoreServices.Services
 {
-    [GlooContainer]  // must have a static Get method
+    [GlooContainer] 
     public static class CoreRegistry
     {
         static object _coreIncubatorLock = new object();
@@ -44,20 +44,20 @@ namespace Bam.Net.CoreServices.Services
                 DaoUserResolver userResolver = new DaoUserResolver();
                 DaoRoleResolver roleResolver = new DaoRoleResolver();
                 SQLiteDatabaseProvider dbProvider = new SQLiteDatabaseProvider(databasesPath, Log.Default);
-                DaoRepository daoRepo = new CoreRepository();
-                dbProvider.SetDatabases(daoRepo);
+                DaoRepository coreRepo = new CoreRegistryRepository();
+                dbProvider.SetDatabases(coreRepo);
                 dbProvider.SetDatabases(userMgr);
                 userMgr.Database.TryEnsureSchema(typeof(UserAccounts.Data.User), Log.Default);
                 userResolver.Database = userMgr.Database;
                 roleResolver.Database = userMgr.Database;
 
                 CoreApplicationRegistryServiceConfig config = new CoreApplicationRegistryServiceConfig { DatabaseProvider = dbProvider, WorkspacePath = databasesPath, Logger = Log.Default };
-                CompositeRepository compositeRepo = new CompositeRepository(daoRepo, databasesPath);
+                CompositeRepository compositeRepo = new CompositeRepository(coreRepo, databasesPath);
                 GlooRegistry reg = (GlooRegistry)(new GlooRegistry())
                     .For<ILogger>().Use(Log.Default)
-                    .For<IRepository>().Use(daoRepo)
-                    .For<DaoRepository>().Use(daoRepo)
-                    .For<CoreRepository>().Use(daoRepo)
+                    .For<IRepository>().Use(coreRepo)
+                    .For<DaoRepository>().Use(coreRepo)
+                    .For<CoreRegistryRepository>().Use(coreRepo)
                     .For<AppConf>().Use(conf)
                     .For<IDatabaseProvider>().Use(dbProvider)
                     .For<IUserManager>().Use(userMgr)

@@ -7,7 +7,7 @@ using Bam.Net.Data.Repositories;
 
 namespace Bam.Net.CoreServices.Data
 {
-    public class ServiceProcessIdentifierData: RepoData
+    public class ServiceProcessIdentifier: RepoData
     {
         public string MachineName { get; set; }
         public int ProcessId { get; set; }
@@ -24,7 +24,7 @@ namespace Bam.Net.CoreServices.Data
         }
         public override bool Equals(object obj)
         {
-            if(!(obj is ServiceProcessIdentifierData))
+            if(!(obj is ServiceProcessIdentifier))
             {
                 return false;
             }

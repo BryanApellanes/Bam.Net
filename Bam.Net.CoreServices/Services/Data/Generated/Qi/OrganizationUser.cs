@@ -12,13 +12,13 @@ using Bam.Net.CoreServices.Data.Daos;
 
 namespace Qi
 {
-    public class UserOrganizationController : DaoController
+    public class OrganizationUserController : DaoController
     {	
-		public ActionResult Save(Bam.Net.CoreServices.Data.Daos.UserOrganization[] values)
+		public ActionResult Save(Bam.Net.CoreServices.Data.Daos.OrganizationUser[] values)
 		{
 			try
 			{
-				UserOrganizationCollection saver = new UserOrganizationCollection();
+				OrganizationUserCollection saver = new OrganizationUserCollection();
 				saver.AddRange(values);
 				saver.Save();
 				return Json(new { Success = true, Message = "", Dao = "" });
@@ -29,7 +29,7 @@ namespace Qi
 			}
 		}
 
-		public ActionResult Create(Bam.Net.CoreServices.Data.Daos.UserOrganization dao)
+		public ActionResult Create(Bam.Net.CoreServices.Data.Daos.OrganizationUser dao)
 		{
 			return Update(dao);
 		}
@@ -38,7 +38,7 @@ namespace Qi
         {
 			try
 			{
-				object value = Bam.Net.CoreServices.Data.Daos.UserOrganization.OneWhere(c => c.KeyColumn == id).ToJsonSafe();
+				object value = Bam.Net.CoreServices.Data.Daos.OrganizationUser.OneWhere(c => c.KeyColumn == id).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
 			catch(Exception ex)
@@ -47,7 +47,7 @@ namespace Qi
 			}
         }
 
-		public ActionResult Update(Bam.Net.CoreServices.Data.Daos.UserOrganization dao)
+		public ActionResult Update(Bam.Net.CoreServices.Data.Daos.OrganizationUser dao)
         {
 			try
 			{
@@ -65,14 +65,14 @@ namespace Qi
 			try
 			{
 				string msg = "";
-				Bam.Net.CoreServices.Data.Daos.UserOrganization dao = Bam.Net.CoreServices.Data.Daos.UserOrganization.OneWhere(c => c.KeyColumn == id);				
+				Bam.Net.CoreServices.Data.Daos.OrganizationUser dao = Bam.Net.CoreServices.Data.Daos.OrganizationUser.OneWhere(c => c.KeyColumn == id);				
 				if(dao != null)
 				{
 					dao.Delete();	
 				}
 				else
 				{
-					msg = string.Format("The specified id ({0}) was not found in the table (UserOrganization)", id);
+					msg = string.Format("The specified id ({0}) was not found in the table (OrganizationUser)", id);
 				}
 				return Json(new { Success = true, Message = msg, Dao = "" });
 			}
@@ -86,8 +86,8 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Bam.Net.CoreServices.Data.Daos.UserOrganization));
-				object value = Bam.Net.CoreServices.Data.Daos.UserOrganization.OneWhere(query).ToJsonSafe();
+				query.table = Dao.TableName(typeof(Bam.Net.CoreServices.Data.Daos.OrganizationUser));
+				object value = Bam.Net.CoreServices.Data.Daos.OrganizationUser.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
 			catch(Exception ex)
@@ -100,8 +100,8 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Bam.Net.CoreServices.Data.Daos.UserOrganization));
-				object[] value = Bam.Net.CoreServices.Data.Daos.UserOrganization.Where(query).ToJsonSafe();
+				query.table = Dao.TableName(typeof(Bam.Net.CoreServices.Data.Daos.OrganizationUser));
+				object[] value = Bam.Net.CoreServices.Data.Daos.OrganizationUser.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
 			catch(Exception ex)

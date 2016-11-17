@@ -14,33 +14,33 @@ using Bam.Net.Data.Qi;
 
 namespace Bam.Net.CoreServices.Data.Daos
 {
-	// schema = ApplicationRegistry
-	// connection Name = ApplicationRegistry
+	// schema = CoreRegistry
+	// connection Name = CoreRegistry
 	[Serializable]
-	[Bam.Net.Data.Table("UserOrganization", "ApplicationRegistry")]
-	public partial class UserOrganization: Dao
+	[Bam.Net.Data.Table("OrganizationUser", "CoreRegistry")]
+	public partial class OrganizationUser: Dao
 	{
-		public UserOrganization():base()
+		public OrganizationUser():base()
 		{
 			this.SetKeyColumnName();
 			this.SetChildren();
 		}
 
-		public UserOrganization(DataRow data)
+		public OrganizationUser(DataRow data)
 			: base(data)
 		{
 			this.SetKeyColumnName();
 			this.SetChildren();
 		}
 
-		public UserOrganization(Database db)
+		public OrganizationUser(Database db)
 			: base(db)
 		{
 			this.SetKeyColumnName();
 			this.SetChildren();
 		}
 
-		public UserOrganization(Database db, DataRow data)
+		public OrganizationUser(Database db, DataRow data)
 			: base(db, data)
 		{
 			this.SetKeyColumnName();
@@ -48,9 +48,9 @@ namespace Bam.Net.CoreServices.Data.Daos
 		}
 
 		[Bam.Net.Exclude]
-		public static implicit operator UserOrganization(DataRow data)
+		public static implicit operator OrganizationUser(DataRow data)
 		{
-			return new UserOrganization(data);
+			return new OrganizationUser(data);
 		}
 
 		private void SetChildren()
@@ -89,51 +89,16 @@ namespace Bam.Net.CoreServices.Data.Daos
 
 
 
-	// start UserId -> UserId
-	[Bam.Net.Data.ForeignKey(
-        Table="UserOrganization",
-		Name="UserId", 
-		DbDataType="BigInt", 
-		MaxLength="",
-		AllowNull=false, 
-		ReferencedKey="Id",
-		ReferencedTable="User",
-		Suffix="1")]
-	public long? UserId
-	{
-		get
-		{
-			return GetLongValue("UserId");
-		}
-		set
-		{
-			SetValue("UserId", value);
-		}
-	}
-
-	User _userOfUserId;
-	public User UserOfUserId
-	{
-		get
-		{
-			if(_userOfUserId == null)
-			{
-				_userOfUserId = Bam.Net.CoreServices.Data.Daos.User.OneWhere(c => c.KeyColumn == this.UserId, this.Database);
-			}
-			return _userOfUserId;
-		}
-	}
-	
 	// start OrganizationId -> OrganizationId
 	[Bam.Net.Data.ForeignKey(
-        Table="UserOrganization",
+        Table="OrganizationUser",
 		Name="OrganizationId", 
 		DbDataType="BigInt", 
 		MaxLength="",
 		AllowNull=false, 
 		ReferencedKey="Id",
 		ReferencedTable="Organization",
-		Suffix="2")]
+		Suffix="1")]
 	public long? OrganizationId
 	{
 		get
@@ -159,6 +124,41 @@ namespace Bam.Net.CoreServices.Data.Daos
 		}
 	}
 	
+	// start UserId -> UserId
+	[Bam.Net.Data.ForeignKey(
+        Table="OrganizationUser",
+		Name="UserId", 
+		DbDataType="BigInt", 
+		MaxLength="",
+		AllowNull=false, 
+		ReferencedKey="Id",
+		ReferencedTable="User",
+		Suffix="2")]
+	public long? UserId
+	{
+		get
+		{
+			return GetLongValue("UserId");
+		}
+		set
+		{
+			SetValue("UserId", value);
+		}
+	}
+
+	User _userOfUserId;
+	public User UserOfUserId
+	{
+		get
+		{
+			if(_userOfUserId == null)
+			{
+				_userOfUserId = Bam.Net.CoreServices.Data.Daos.User.OneWhere(c => c.KeyColumn == this.UserId, this.Database);
+			}
+			return _userOfUserId;
+		}
+	}
+	
 				
 		
 
@@ -176,34 +176,34 @@ namespace Bam.Net.CoreServices.Data.Daos
 			}
 			else
 			{
-				var colFilter = new UserOrganizationColumns();
+				var colFilter = new OrganizationUserColumns();
 				return (colFilter.KeyColumn == IdValue);
 			}			
 		}
 
 		/// <summary>
-		/// Return every record in the UserOrganization table.
+		/// Return every record in the OrganizationUser table.
 		/// </summary>
 		/// <param name="database">
 		/// The database to load from or null
 		/// </param>
-		public static UserOrganizationCollection LoadAll(Database database = null)
+		public static OrganizationUserCollection LoadAll(Database database = null)
 		{
 			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<UserOrganization>();
-			Database db = database ?? Db.For<UserOrganization>();
-			var results = new UserOrganizationCollection(sql.GetDataTable(db));
+			sql.Select<OrganizationUser>();
+			Database db = database ?? Db.For<OrganizationUser>();
+			var results = new OrganizationUserCollection(sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
 
 		[Bam.Net.Exclude]
-		public static async Task BatchAll(int batchSize, Action<IEnumerable<UserOrganization>> batchProcessor, Database database = null)
+		public static async Task BatchAll(int batchSize, Action<IEnumerable<OrganizationUser>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
-				UserOrganizationColumns columns = new UserOrganizationColumns();
-				var orderBy = Bam.Net.Data.Order.By<UserOrganizationColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
+				OrganizationUserColumns columns = new OrganizationUserColumns();
+				var orderBy = Bam.Net.Data.Order.By<OrganizationUserColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -218,18 +218,18 @@ namespace Bam.Net.CoreServices.Data.Daos
 		}
 			 
 		[Bam.Net.Exclude]
-		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<UserOrganization>> batchProcessor, Database database = null)
+		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<OrganizationUser>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
 
 		[Bam.Net.Exclude]
-		public static async Task BatchQuery(int batchSize, WhereDelegate<UserOrganizationColumns> where, Action<IEnumerable<UserOrganization>> batchProcessor, Database database = null)
+		public static async Task BatchQuery(int batchSize, WhereDelegate<OrganizationUserColumns> where, Action<IEnumerable<OrganizationUser>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
-				UserOrganizationColumns columns = new UserOrganizationColumns();
-				var orderBy = Bam.Net.Data.Order.By<UserOrganizationColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
+				OrganizationUserColumns columns = new OrganizationUserColumns();
+				var orderBy = Bam.Net.Data.Order.By<OrganizationUserColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -238,91 +238,91 @@ namespace Bam.Net.CoreServices.Data.Daos
 						batchProcessor(results);
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
-					results = Top(batchSize, (UserOrganizationColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+					results = Top(batchSize, (OrganizationUserColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
 				}
 			});			
 		}
 
-		public static UserOrganization GetById(int id, Database database = null)
+		public static OrganizationUser GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
-		public static UserOrganization GetById(long id, Database database = null)
+		public static OrganizationUser GetById(long id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}
 
-		public static UserOrganization GetByUuid(string uuid, Database database = null)
+		public static OrganizationUser GetByUuid(string uuid, Database database = null)
 		{
 			return OneWhere(c => Bam.Net.Data.Query.Where("Uuid") == uuid, database);
 		}
 
-		public static UserOrganization GetByCuid(string cuid, Database database = null)
+		public static OrganizationUser GetByCuid(string cuid, Database database = null)
 		{
 			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
 		[Bam.Net.Exclude]
-		public static UserOrganizationCollection Query(QueryFilter filter, Database database = null)
+		public static OrganizationUserCollection Query(QueryFilter filter, Database database = null)
 		{
 			return Where(filter, database);
 		}
 
 		[Bam.Net.Exclude]		
-		public static UserOrganizationCollection Where(QueryFilter filter, Database database = null)
+		public static OrganizationUserCollection Where(QueryFilter filter, Database database = null)
 		{
-			WhereDelegate<UserOrganizationColumns> whereDelegate = (c) => filter;
+			WhereDelegate<OrganizationUserColumns> whereDelegate = (c) => filter;
 			return Where(whereDelegate, database);
 		}
 
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A Func delegate that recieves a UserOrganizationColumns 
+		/// <param name="where">A Func delegate that recieves a OrganizationUserColumns 
 		/// and returns a QueryFilter which is the result of any comparisons
-		/// between UserOrganizationColumns and other values
+		/// between OrganizationUserColumns and other values
 		/// </param>
 		/// <param name="db"></param>
 		[Bam.Net.Exclude]
-		public static UserOrganizationCollection Where(Func<UserOrganizationColumns, QueryFilter<UserOrganizationColumns>> where, OrderBy<UserOrganizationColumns> orderBy = null, Database database = null)
+		public static OrganizationUserCollection Where(Func<OrganizationUserColumns, QueryFilter<OrganizationUserColumns>> where, OrderBy<OrganizationUserColumns> orderBy = null, Database database = null)
 		{
-			database = database ?? Db.For<UserOrganization>();
-			return new UserOrganizationCollection(database.GetQuery<UserOrganizationColumns, UserOrganization>(where, orderBy), true);
+			database = database ?? Db.For<OrganizationUser>();
+			return new OrganizationUserCollection(database.GetQuery<OrganizationUserColumns, OrganizationUser>(where, orderBy), true);
 		}
 		
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a UserOrganizationColumns 
+		/// <param name="where">A WhereDelegate that recieves a OrganizationUserColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between UserOrganizationColumns and other values
+		/// between OrganizationUserColumns and other values
 		/// </param>
 		/// <param name="db"></param>
 		[Bam.Net.Exclude]
-		public static UserOrganizationCollection Where(WhereDelegate<UserOrganizationColumns> where, Database database = null)
+		public static OrganizationUserCollection Where(WhereDelegate<OrganizationUserColumns> where, Database database = null)
 		{		
-			database = database ?? Db.For<UserOrganization>();
-			var results = new UserOrganizationCollection(database, database.GetQuery<UserOrganizationColumns, UserOrganization>(where), true);
+			database = database ?? Db.For<OrganizationUser>();
+			var results = new OrganizationUserCollection(database, database.GetQuery<OrganizationUserColumns, OrganizationUser>(where), true);
 			return results;
 		}
 		   
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a UserOrganizationColumns 
+		/// <param name="where">A WhereDelegate that recieves a OrganizationUserColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between UserOrganizationColumns and other values
+		/// between OrganizationUserColumns and other values
 		/// </param>
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static UserOrganizationCollection Where(WhereDelegate<UserOrganizationColumns> where, OrderBy<UserOrganizationColumns> orderBy = null, Database database = null)
+		public static OrganizationUserCollection Where(WhereDelegate<OrganizationUserColumns> where, OrderBy<OrganizationUserColumns> orderBy = null, Database database = null)
 		{		
-			database = database ?? Db.For<UserOrganization>();
-			var results = new UserOrganizationCollection(database, database.GetQuery<UserOrganizationColumns, UserOrganization>(where, orderBy), true);
+			database = database ?? Db.For<OrganizationUser>();
+			var results = new OrganizationUserCollection(database, database.GetQuery<OrganizationUserColumns, OrganizationUser>(where, orderBy), true);
 			return results;
 		}
 
@@ -330,13 +330,13 @@ namespace Bam.Net.CoreServices.Data.Daos
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate&lt;UserOrganizationColumns&gt;.
+		/// WhereDelegate&lt;OrganizationUserColumns&gt;.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
-		public static UserOrganizationCollection Where(QiQuery where, Database database = null)
+		public static OrganizationUserCollection Where(QiQuery where, Database database = null)
 		{
-			var results = new UserOrganizationCollection(database, Select<UserOrganizationColumns>.From<UserOrganization>().Where(where, database));
+			var results = new OrganizationUserCollection(database, Select<OrganizationUserColumns>.From<OrganizationUser>().Where(where, database));
 			return results;
 		}
 				
@@ -346,7 +346,7 @@ namespace Bam.Net.CoreServices.Data.Daos
 		/// of the specified columns.
 		/// </summary>
 		[Bam.Net.Exclude]
-		public static UserOrganization GetOneWhere(QueryFilter where, Database database = null)
+		public static OrganizationUser GetOneWhere(QueryFilter where, Database database = null)
 		{
 			var result = OneWhere(where, database);
 			if(result == null)
@@ -365,9 +365,9 @@ namespace Bam.Net.CoreServices.Data.Daos
 		/// <param name="where"></param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static UserOrganization OneWhere(QueryFilter where, Database database = null)
+		public static OrganizationUser OneWhere(QueryFilter where, Database database = null)
 		{
-			WhereDelegate<UserOrganizationColumns> whereDelegate = (c) => where;
+			WhereDelegate<OrganizationUserColumns> whereDelegate = (c) => where;
 			var result = Top(1, whereDelegate, database);
 			return OneOrThrow(result);
 		}
@@ -380,12 +380,12 @@ namespace Bam.Net.CoreServices.Data.Daos
 		/// <param name="where"></param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static UserOrganization GetOneWhere(WhereDelegate<UserOrganizationColumns> where, Database database = null)
+		public static OrganizationUser GetOneWhere(WhereDelegate<OrganizationUserColumns> where, Database database = null)
 		{
 			var result = OneWhere(where, database);
 			if(result == null)
 			{
-				UserOrganizationColumns c = new UserOrganizationColumns();
+				OrganizationUserColumns c = new OrganizationUserColumns();
 				IQueryFilter filter = where(c); 
 				result = CreateFromFilter(filter, database);
 			}
@@ -397,15 +397,15 @@ namespace Bam.Net.CoreServices.Data.Daos
 		/// Execute a query that should return only one result.  If more
 		/// than one result is returned a MultipleEntriesFoundException will 
 		/// be thrown.  This method is most commonly used to retrieve a
-		/// single UserOrganization instance by its Id/Key value
+		/// single OrganizationUser instance by its Id/Key value
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a UserOrganizationColumns 
+		/// <param name="where">A WhereDelegate that recieves a OrganizationUserColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between UserOrganizationColumns and other values
+		/// between OrganizationUserColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static UserOrganization OneWhere(WhereDelegate<UserOrganizationColumns> where, Database database = null)
+		public static OrganizationUser OneWhere(WhereDelegate<OrganizationUserColumns> where, Database database = null)
 		{
 			var result = Top(1, where, database);
 			return OneOrThrow(result);
@@ -415,11 +415,11 @@ namespace Bam.Net.CoreServices.Data.Daos
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate<UserOrganizationColumns>.
+		/// WhereDelegate<OrganizationUserColumns>.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
-		public static UserOrganization OneWhere(QiQuery where, Database database = null)
+		public static OrganizationUser OneWhere(QiQuery where, Database database = null)
 		{
 			var results = Top(1, where, database);
 			return OneOrThrow(results);
@@ -429,13 +429,13 @@ namespace Bam.Net.CoreServices.Data.Daos
 		/// Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
 		/// specified number of values will be returned.
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a UserOrganizationColumns 
+		/// <param name="where">A WhereDelegate that recieves a OrganizationUserColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between UserOrganizationColumns and other values
+		/// between OrganizationUserColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static UserOrganization FirstOneWhere(WhereDelegate<UserOrganizationColumns> where, Database database = null)
+		public static OrganizationUser FirstOneWhere(WhereDelegate<OrganizationUserColumns> where, Database database = null)
 		{
 			var results = Top(1, where, database);
 			if(results.Count > 0)
@@ -452,13 +452,13 @@ namespace Bam.Net.CoreServices.Data.Daos
 		/// Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
 		/// specified number of values will be returned.
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a UserOrganizationColumns 
+		/// <param name="where">A WhereDelegate that recieves a OrganizationUserColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between UserOrganizationColumns and other values
+		/// between OrganizationUserColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static UserOrganization FirstOneWhere(WhereDelegate<UserOrganizationColumns> where, OrderBy<UserOrganizationColumns> orderBy, Database database = null)
+		public static OrganizationUser FirstOneWhere(WhereDelegate<OrganizationUserColumns> where, OrderBy<OrganizationUserColumns> orderBy, Database database = null)
 		{
 			var results = Top(1, where, orderBy, database);
 			if(results.Count > 0)
@@ -474,15 +474,15 @@ namespace Bam.Net.CoreServices.Data.Daos
 		/// <summary>
 		/// Shortcut for Top(1, where, orderBy, database)
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a UserOrganizationColumns 
+		/// <param name="where">A WhereDelegate that recieves a OrganizationUserColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between UserOrganizationColumns and other values
+		/// between OrganizationUserColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static UserOrganization FirstOneWhere(QueryFilter where, OrderBy<UserOrganizationColumns> orderBy = null, Database database = null)
+		public static OrganizationUser FirstOneWhere(QueryFilter where, OrderBy<OrganizationUserColumns> orderBy = null, Database database = null)
 		{
-			WhereDelegate<UserOrganizationColumns> whereDelegate = (c) => where;
+			WhereDelegate<OrganizationUserColumns> whereDelegate = (c) => where;
 			var results = Top(1, whereDelegate, orderBy, database);
 			if(results.Count > 0)
 			{
@@ -503,13 +503,13 @@ namespace Bam.Net.CoreServices.Data.Daos
 		/// This value is used in the sql query so no more than this 
 		/// number of values will be returned by the database.
 		/// </param>
-		/// <param name="where">A WhereDelegate that recieves a UserOrganizationColumns 
+		/// <param name="where">A WhereDelegate that recieves a OrganizationUserColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between UserOrganizationColumns and other values
+		/// between OrganizationUserColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static UserOrganizationCollection Top(int count, WhereDelegate<UserOrganizationColumns> where, Database database = null)
+		public static OrganizationUserCollection Top(int count, WhereDelegate<OrganizationUserColumns> where, Database database = null)
 		{
 			return Top(count, where, null, database);
 		}
@@ -523,38 +523,38 @@ namespace Bam.Net.CoreServices.Data.Daos
 		/// This value is used in the sql query so no more than this 
 		/// number of values will be returned by the database.
 		/// </param>
-		/// <param name="where">A WhereDelegate that recieves a UserOrganizationColumns 
+		/// <param name="where">A WhereDelegate that recieves a OrganizationUserColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between UserOrganizationColumns and other values
+		/// between OrganizationUserColumns and other values
 		/// </param>
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static UserOrganizationCollection Top(int count, WhereDelegate<UserOrganizationColumns> where, OrderBy<UserOrganizationColumns> orderBy, Database database = null)
+		public static OrganizationUserCollection Top(int count, WhereDelegate<OrganizationUserColumns> where, OrderBy<OrganizationUserColumns> orderBy, Database database = null)
 		{
-			UserOrganizationColumns c = new UserOrganizationColumns();
+			OrganizationUserColumns c = new OrganizationUserColumns();
 			IQueryFilter filter = where(c);         
 			
-			Database db = database ?? Db.For<UserOrganization>();
+			Database db = database ?? Db.For<OrganizationUser>();
 			QuerySet query = GetQuerySet(db); 
-			query.Top<UserOrganization>(count);
+			query.Top<OrganizationUser>(count);
 			query.Where(filter);
 
 			if(orderBy != null)
 			{
-				query.OrderBy<UserOrganizationColumns>(orderBy);
+				query.OrderBy<OrganizationUserColumns>(orderBy);
 			}
 
 			query.Execute(db);
-			var results = query.Results.As<UserOrganizationCollection>(0);
+			var results = query.Results.As<OrganizationUserCollection>(0);
 			results.Database = db;
 			return results;
 		}
 
 		[Bam.Net.Exclude]
-		public static UserOrganizationCollection Top(int count, QueryFilter where, Database database)
+		public static OrganizationUserCollection Top(int count, QueryFilter where, Database database)
 		{
 			return Top(count, where, null, database);
 		}
@@ -576,20 +576,20 @@ namespace Bam.Net.CoreServices.Data.Daos
 		/// </param>
 		/// <param name="db"></param>
 		[Bam.Net.Exclude]
-		public static UserOrganizationCollection Top(int count, QueryFilter where, OrderBy<UserOrganizationColumns> orderBy = null, Database database = null)
+		public static OrganizationUserCollection Top(int count, QueryFilter where, OrderBy<OrganizationUserColumns> orderBy = null, Database database = null)
 		{
-			Database db = database ?? Db.For<UserOrganization>();
+			Database db = database ?? Db.For<OrganizationUser>();
 			QuerySet query = GetQuerySet(db);
-			query.Top<UserOrganization>(count);
+			query.Top<OrganizationUser>(count);
 			query.Where(where);
 
 			if(orderBy != null)
 			{
-				query.OrderBy<UserOrganizationColumns>(orderBy);
+				query.OrderBy<OrganizationUserColumns>(orderBy);
 			}
 
 			query.Execute(db);
-			var results = query.Results.As<UserOrganizationCollection>(0);
+			var results = query.Results.As<OrganizationUserCollection>(0);
 			results.Database = db;
 			return results;
 		}
@@ -611,26 +611,26 @@ namespace Bam.Net.CoreServices.Data.Daos
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="db"></param>
-		public static UserOrganizationCollection Top(int count, QiQuery where, Database database = null)
+		public static OrganizationUserCollection Top(int count, QiQuery where, Database database = null)
 		{
-			Database db = database ?? Db.For<UserOrganization>();
+			Database db = database ?? Db.For<OrganizationUser>();
 			QuerySet query = GetQuerySet(db);
-			query.Top<UserOrganization>(count);
+			query.Top<OrganizationUser>(count);
 			query.Where(where);
 			query.Execute(db);
-			var results = query.Results.As<UserOrganizationCollection>(0);
+			var results = query.Results.As<OrganizationUserCollection>(0);
 			results.Database = db;
 			return results;
 		}
 
 		/// <summary>
-		/// Return the count of UserOrganizations
+		/// Return the count of OrganizationUsers
 		/// </summary>
 		public static long Count(Database database = null)
         {
-			Database db = database ?? Db.For<UserOrganization>();
+			Database db = database ?? Db.For<OrganizationUser>();
             QuerySet query = GetQuerySet(db);
-            query.Count<UserOrganization>();
+            query.Count<OrganizationUser>();
             query.Execute(db);
             return (long)query.Results[0].DataRow[0];
         }
@@ -638,20 +638,20 @@ namespace Bam.Net.CoreServices.Data.Daos
 		/// <summary>
 		/// Execute a query and return the number of results
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a UserOrganizationColumns 
+		/// <param name="where">A WhereDelegate that recieves a OrganizationUserColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between UserOrganizationColumns and other values
+		/// between OrganizationUserColumns and other values
 		/// </param>
 		/// <param name="db"></param>
 		[Bam.Net.Exclude]
-		public static long Count(WhereDelegate<UserOrganizationColumns> where, Database database = null)
+		public static long Count(WhereDelegate<OrganizationUserColumns> where, Database database = null)
 		{
-			UserOrganizationColumns c = new UserOrganizationColumns();
+			OrganizationUserColumns c = new OrganizationUserColumns();
 			IQueryFilter filter = where(c) ;
 
-			Database db = database ?? Db.For<UserOrganization>();
+			Database db = database ?? Db.For<OrganizationUser>();
 			QuerySet query = GetQuerySet(db);	 
-			query.Count<UserOrganization>();
+			query.Count<OrganizationUser>();
 			query.Where(filter);	  
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
@@ -659,18 +659,18 @@ namespace Bam.Net.CoreServices.Data.Daos
 		 
 		public static long Count(QiQuery where, Database database = null)
 		{
-		    Database db = database ?? Db.For<UserOrganization>();
+		    Database db = database ?? Db.For<OrganizationUser>();
 			QuerySet query = GetQuerySet(db);	 
-			query.Count<UserOrganization>();
+			query.Count<OrganizationUser>();
 			query.Where(where);	  
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
 		} 		
 
-		private static UserOrganization CreateFromFilter(IQueryFilter filter, Database database = null)
+		private static OrganizationUser CreateFromFilter(IQueryFilter filter, Database database = null)
 		{
-			Database db = database ?? Db.For<UserOrganization>();			
-			var dao = new UserOrganization();
+			Database db = database ?? Db.For<OrganizationUser>();			
+			var dao = new OrganizationUser();
 			filter.Parameters.Each(p=>
 			{
 				dao.Property(p.ColumnName, p.Value);
@@ -679,7 +679,7 @@ namespace Bam.Net.CoreServices.Data.Daos
 			return dao;
 		}
 		
-		private static UserOrganization OneOrThrow(UserOrganizationCollection c)
+		private static OrganizationUser OneOrThrow(OrganizationUserCollection c)
 		{
 			if(c.Count == 1)
 			{

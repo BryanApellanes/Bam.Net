@@ -28,12 +28,12 @@ namespace Bam.Net.CoreServices
 
         protected CoreApplicationRegistryService() { }
 
-        public CoreApplicationRegistryService(CoreApplicationRegistryServiceConfig config, AppConf conf)
+        public CoreApplicationRegistryService(CoreApplicationRegistryServiceConfig config, AppConf conf, CoreRegistryRepository coreRepo)
         {
-            ApplicationRegistryRepository = new ApplicationRegistryRepository();
-            ApplicationRegistryRepository.WarningsAsErrors = false;
+            CoreRegistryRepository = coreRepo;
+            CoreRegistryRepository.WarningsAsErrors = false;
             config.DatabaseProvider.SetDatabases(this);
-            CompositeRepository = new CompositeRepository(ApplicationRegistryRepository, config.WorkspacePath);
+            CompositeRepository = new CompositeRepository(CoreRegistryRepository, config.WorkspacePath);
             _cacheManager = new CacheManager(100000000);
             _apiKeyResolver = new ApiKeyResolver(this, this);
             AppConf = conf;
@@ -45,23 +45,23 @@ namespace Bam.Net.CoreServices
         {
             get
             {
-                if(ApplicationRegistryRepository != null && ApplicationRegistryRepository.Database != null)
+                if(CoreRegistryRepository != null && CoreRegistryRepository.Database != null)
                 {
-                    _database = ApplicationRegistryRepository.Database;
+                    _database = CoreRegistryRepository.Database;
                 }
                 return _database;
             }
             set
             {
-                if(ApplicationRegistryRepository != null)
+                if(CoreRegistryRepository != null)
                 {
-                    ApplicationRegistryRepository.Database = value;
+                    CoreRegistryRepository.Database = value;
                 }
                 _database = value;
             }
         }
 
-        public ApplicationRegistryRepository ApplicationRegistryRepository { get; set; }
+        public CoreRegistryRepository CoreRegistryRepository { get; set; }
 
         public CompositeRepository CompositeRepository { get; set; }
 
@@ -87,7 +87,7 @@ namespace Bam.Net.CoreServices
                 throw new InvalidOperationException("Application not registered");
             }
             Data.ApiKey key;
-            AddApiKey(ApplicationRegistryRepository, app, out key);
+            AddApiKey(CoreRegistryRepository, app, out key);
             return key.SharedSecret;
         }
 
@@ -102,28 +102,28 @@ namespace Bam.Net.CoreServices
             return GetApiKeyInfo(this);
         }
 
-        public virtual ServiceResponse RegisterApplication(string organization, string appName)
+        public virtual ServiceResponse RegisterApplication(string organizationName, string appName)
         {
             if (CurrentUser.Equals(UserAccounts.Data.User.Anonymous))
             {
                 return new ServiceResponse<Data.Application> { Success = false, Message = "You must be logged in to do that", Data = new ApplicationRegistrationResult { Status = ApplicationRegistrationStatus.Unauthorized } };
             }
-            User user = ApplicationRegistryRepository.OneUserWhere(c => c.UserName == CurrentUser.UserName);
+            User user = CoreRegistryRepository.OneUserWhere(c => c.UserName == CurrentUser.UserName);
             if (user == null)
             {
                 user = new User();
                 user.UserName = CurrentUser.UserName;
                 user.Email = CurrentUser.Email;
-                user = ApplicationRegistryRepository.Save(user);
+                user = CoreRegistryRepository.Save(user);
             }
-            OrganizationFactory orgEnforcer = new OrganizationFactory(ApplicationRegistryRepository, user, organization);
+            OrganizationFactory orgEnforcer = new OrganizationFactory(CoreRegistryRepository, user, organizationName);
             ServiceResponse<Organization> response = orgEnforcer.Execute();
             if (!response.Success)
             {
                 return response;
             }
             Organization org = response.TypedData();
-            ApplicationFactory appEnforcer = new ApplicationFactory(ApplicationRegistryRepository, user, this, organization, appName);
+            ApplicationFactory appEnforcer = new ApplicationFactory(CoreRegistryRepository, user, this, organizationName, appName);
             ServiceResponse<Data.Application> appResponse = appEnforcer.Execute();
             if (appResponse.Success)
             {
@@ -158,7 +158,7 @@ namespace Bam.Net.CoreServices
         [Exclude]
         public override object Clone()
         {
-            CoreApplicationRegistryService result = new CoreApplicationRegistryService(Config, AppConf);
+            CoreApplicationRegistryService result = new CoreApplicationRegistryService(Config, AppConf, CoreRegistryRepository);
             result.CopyProperties(this);
             return result;
         }
@@ -183,7 +183,7 @@ namespace Bam.Net.CoreServices
         [Exclude]
         public string GetApplicationApiKey(string applicationClientId, int index)
         {
-            Data.Application app = ApplicationRegistryRepository.OneApplicationWhere(c => c.Cuid == applicationClientId);
+            Data.Application app = CoreRegistryRepository.OneApplicationWhere(c => c.Cuid == applicationClientId);
             if(app != null)
             {
                 return app.ApiKeys[index]?.SharedSecret;
@@ -194,7 +194,7 @@ namespace Bam.Net.CoreServices
         [Exclude]
         public string GetApplicationClientId(IApplicationNameProvider nameProvider)
         {
-            Data.Application app = ApplicationRegistryRepository.OneApplicationWhere(c => c.Name == nameProvider.GetApplicationName());
+            Data.Application app = CoreRegistryRepository.OneApplicationWhere(c => c.Name == nameProvider.GetApplicationName());
             return app?.Cuid;
         }
 
@@ -258,12 +258,12 @@ namespace Bam.Net.CoreServices
         /// <param name="repo"></param>
         /// <param name="app"></param>
         /// <returns></returns>
-        protected internal static Data.Application AddApiKey(ApplicationRegistryRepository repo, Data.Application app)
+        protected internal static Data.Application AddApiKey(CoreRegistryRepository repo, Data.Application app)
         {
             Data.ApiKey ignore;
             return AddApiKey(repo, app, out ignore);
         }
-        protected internal static Data.Application AddApiKey(ApplicationRegistryRepository repo, Data.Application app, out Data.ApiKey key)
+        protected internal static Data.Application AddApiKey(CoreRegistryRepository repo, Data.Application app, out Data.ApiKey key)
         {
             ApiKeyInfo keyInfo = GenerateApiKeyInfo(app);
             key = Data.ApiKey.FromKeyInfo(keyInfo);

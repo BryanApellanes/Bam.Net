@@ -75,9 +75,19 @@ namespace Bam.Net.CoreServices
             }
         }
 
-        public ServiceProcessIdentifierData ToRepoData()
+        static object _currentLock;
+        static CoreServiceProcessIdentifier _current;
+        public static CoreServiceProcessIdentifier Current
         {
-            return this.CopyAs<ServiceProcessIdentifierData>();
+            get
+            {
+                return _currentLock.DoubleCheckLock(ref _current, () => new CoreServiceProcessIdentifier());
+            }
+        }
+
+        public ServiceProcessIdentifier ToRepoData()
+        {
+            return this.CopyAs<ServiceProcessIdentifier>();
         }
     }
 }

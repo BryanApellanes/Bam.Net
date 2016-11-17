@@ -14,10 +14,10 @@ using Bam.Net.Data.Qi;
 
 namespace Bam.Net.CoreServices.Data.Daos
 {
-	// schema = ApplicationRegistry
-	// connection Name = ApplicationRegistry
+	// schema = CoreRegistry
+	// connection Name = CoreRegistry
 	[Serializable]
-	[Bam.Net.Data.Table("ApiKey", "ApplicationRegistry")]
+	[Bam.Net.Data.Table("ApiKey", "CoreRegistry")]
 	public partial class ApiKey: Dao
 	{
 		public ApiKey():base()

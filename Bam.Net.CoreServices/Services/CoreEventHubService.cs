@@ -29,26 +29,26 @@ namespace Bam.Net.CoreServices
             _metricsEvents = metricsEvents;
             _notificationEvents = notificationEvents;
 
-            daoRepo.AddType<ExternalEventSubscriptionInfo>();
+            daoRepo.AddType<ExternalEventSubscription>();
         }
 
         protected IDatabaseProvider DatabaseProvider { get; set; }
 
-        public virtual ExternalEventSubscriptionInfo SubscribeExternal(ExternalEventSubscriptionInfo subscriptionInfo)
+        public virtual ExternalEventSubscription SubscribeExternal(ExternalEventSubscription subscriptionInfo)
         {
             if(string.IsNullOrWhiteSpace(subscriptionInfo.CreatedBy))
             {
                 subscriptionInfo.CreatedBy = CurrentUser.UserName;
             }
-            string clientNameProp = nameof(ExternalEventSubscriptionInfo.ClientName);
-            string eventNameProp = nameof(ExternalEventSubscriptionInfo.EventName);
+            string clientNameProp = nameof(ExternalEventSubscription.ClientName);
+            string eventNameProp = nameof(ExternalEventSubscription.EventName);
             Args.ThrowIfNullOrEmpty(subscriptionInfo.ClientName, clientNameProp);
             Args.ThrowIfNullOrEmpty(subscriptionInfo.EventName, eventNameProp);
-            ExternalEventSubscriptionInfo lookedUp = DaoRepository.Query<ExternalEventSubscriptionInfo>
+            ExternalEventSubscription lookedUp = DaoRepository.Query<ExternalEventSubscription>
             (
                 Query.Where(clientNameProp) == subscriptionInfo.ClientName &&
                 Query.Where(eventNameProp) == subscriptionInfo.EventName &&
-                Query.Where(nameof(ExternalEventSubscriptionInfo.CreatedBy)) == subscriptionInfo.CreatedBy
+                Query.Where(nameof(ExternalEventSubscription.CreatedBy)) == subscriptionInfo.CreatedBy
             )
             .FirstOrDefault();
             if(lookedUp != null)
@@ -58,7 +58,7 @@ namespace Bam.Net.CoreServices
             return DaoRepository.Save(subscriptionInfo);
         }
 
-        public virtual ServiceResponse RecieveExternal(ExternalEventSubscriptionInfo info)
+        public virtual ServiceResponse RecieveExternal(ExternalEventSubscription info)
         {
             throw new NotImplementedException();
         }

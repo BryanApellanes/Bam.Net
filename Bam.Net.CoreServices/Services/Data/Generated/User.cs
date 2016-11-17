@@ -14,10 +14,10 @@ using Bam.Net.Data.Qi;
 
 namespace Bam.Net.CoreServices.Data.Daos
 {
-	// schema = ApplicationRegistry
-	// connection Name = ApplicationRegistry
+	// schema = CoreRegistry
+	// connection Name = CoreRegistry
 	[Serializable]
-	[Bam.Net.Data.Table("User", "ApplicationRegistry")]
+	[Bam.Net.Data.Table("User", "CoreRegistry")]
 	public partial class User: Dao
 	{
 		public User():base()
@@ -57,9 +57,9 @@ namespace Bam.Net.CoreServices.Data.Daos
 		{
 
             this.ChildCollections.Add("Subscription_UserId", new SubscriptionCollection(Database.GetQuery<SubscriptionColumns, Subscription>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));	
-            this.ChildCollections.Add("UserOrganization_UserId", new UserOrganizationCollection(Database.GetQuery<UserOrganizationColumns, UserOrganization>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));				
-            this.ChildCollections.Add("User_UserOrganization_Organization",  new XrefDaoCollection<UserOrganization, Organization>(this, false));
-							
+            this.ChildCollections.Add("OrganizationUser_UserId", new OrganizationUserCollection(Database.GetQuery<OrganizationUserColumns, OrganizationUser>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));							
+            this.ChildCollections.Add("User_OrganizationUser_Organization",  new XrefDaoCollection<OrganizationUser, Organization>(this, false));
+				
 		}
 
 	// property:Id, columnName:Id	
@@ -190,7 +190,7 @@ namespace Bam.Net.CoreServices.Data.Daos
 	}
 	
 	[Bam.Net.Exclude]	
-	public UserOrganizationCollection UserOrganizationsByUserId
+	public OrganizationUserCollection OrganizationUsersByUserId
 	{
 		get
 		{
@@ -199,12 +199,12 @@ namespace Bam.Net.CoreServices.Data.Daos
 				throw new InvalidOperationException("The current instance of type({0}) hasn't been saved and will have no child collections, call Save() or Save(Database) first."._Format(this.GetType().Name));
 			}
 
-			if(!this.ChildCollections.ContainsKey("UserOrganization_UserId"))
+			if(!this.ChildCollections.ContainsKey("OrganizationUser_UserId"))
 			{
 				SetChildren();
 			}
 
-			var c = (UserOrganizationCollection)this.ChildCollections["UserOrganization_UserId"];
+			var c = (OrganizationUserCollection)this.ChildCollections["OrganizationUser_UserId"];
 			if(!c.Loaded)
 			{
 				c.Load(Database);
@@ -214,8 +214,9 @@ namespace Bam.Net.CoreServices.Data.Daos
 	}
 			
 
+
 		// Xref       
-        public XrefDaoCollection<UserOrganization, Organization> Organizations
+        public XrefDaoCollection<OrganizationUser, Organization> Organizations
         {
             get
             {			
@@ -224,12 +225,12 @@ namespace Bam.Net.CoreServices.Data.Daos
 					throw new InvalidOperationException("The current instance of type({0}) hasn't been saved and will have no child collections, call Save() or Save(Database) first."._Format(this.GetType().Name));
 				}
 
-				if(!this.ChildCollections.ContainsKey("User_UserOrganization_Organization"))
+				if(!this.ChildCollections.ContainsKey("User_OrganizationUser_Organization"))
 				{
 					SetChildren();
 				}
 
-				var xref = (XrefDaoCollection<UserOrganization, Organization>)this.ChildCollections["User_UserOrganization_Organization"];
+				var xref = (XrefDaoCollection<OrganizationUser, Organization>)this.ChildCollections["User_OrganizationUser_Organization"];
 				if(!xref.Loaded)
 				{
 					xref.Load(Database);
@@ -237,8 +238,7 @@ namespace Bam.Net.CoreServices.Data.Daos
 
 				return xref;
             }
-        }
-		/// <summary>
+        }		/// <summary>
 		/// Gets a query filter that should uniquely identify
 		/// the current instance.  The default implementation
 		/// compares the Id/key field to the current instance's.
