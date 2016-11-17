@@ -79,7 +79,7 @@ namespace Bam.Net.CommandLine
                     {
                         if (validArguments[name] == null)
                         {
-                            Message = "Invalid argument name specified";
+                            Message = "Invalid argument name specified: " + name;
                             Status = ArgumentParseStatus.Error;
                         }
                         else

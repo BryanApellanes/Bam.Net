@@ -30,7 +30,7 @@ namespace Bam.Net.CommandLine
 
         public static string GetArgument(string name, string promptMessage = null)
         {
-            string acronym = name.CaseAcronym();
+            string acronym = name.CaseAcronym().ToLowerInvariant();
             string fromConfig = DefaultConfiguration.GetAppSetting(name, "").Or(DefaultConfiguration.GetAppSetting(acronym, ""));
             return Arguments.Contains(name) ? Arguments[name] : 
                 Arguments.Contains(acronym) ? Arguments[acronym] : 
@@ -437,7 +437,7 @@ namespace Bam.Net.CommandLine
 		{
 			DefaultConfiguration.GetAppSettings().AllKeys.Each(key =>
 			{
-				AddValidArgument(key);
+				AddValidArgument(key, $"Override value from config: {DefaultConfiguration.GetAppSetting(key)}");
 			});
 		}
 
@@ -1144,7 +1144,8 @@ namespace Bam.Net.CommandLine
                 ConsoleAction consoleAction;
                 if (method.HasCustomAttributeOfType<ConsoleAction>(out consoleAction))
                 {
-                    if (consoleAction.CommandLineSwitch.Or("").Equals(commandLineSwitch))
+                    if (consoleAction.CommandLineSwitch.Or("").Equals(commandLineSwitch) ||
+                        consoleAction.CommandLineSwitch.CaseAcronym().ToLowerInvariant().Or("").Equals(commandLineSwitch))
                     {
                         toExecute.Add(new ConsoleInvokeableMethod(method, consoleAction, instance, switchValue));
                     }

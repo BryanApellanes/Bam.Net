@@ -38,6 +38,14 @@ namespace Bam.Net.CommandLine
             return command.Run(false, output, error, timeout);
         }
 
+        /// <summary>
+        /// Executes the current string on the command line and returns the output.
+        /// This operation will block if a timeout greater than 0 is specified
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="promptForAdmin"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
         public static ProcessOutput Run(this string command, bool promptForAdmin, int timeout = 600000)
         {
             return command.Run(promptForAdmin, null, null, timeout);
@@ -63,10 +71,27 @@ namespace Bam.Net.CommandLine
             return Run(string.IsNullOrEmpty(exe) ? command : exe, arguments, promptForAdmin, output, error, timeout);
         }
 
+        /// <summary>
+        /// Start a new process for the specified startInfo.  This 
+        /// operation will block if a timeout greater than 0 is specified
+        /// </summary>
+        /// <param name="startInfo"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
         public static ProcessOutput Run(this ProcessStartInfo startInfo, int timeout = 600000)
         {
             return Run(startInfo, null, null, timeout);
         }
+
+        /// <summary>
+        /// Run the specified command in a separate process capturing the output
+        /// and error streams if any
+        /// </summary>
+        /// <param name="startInfo"></param>
+        /// <param name="output"></param>
+        /// <param name="error"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
         public static ProcessOutput Run(this ProcessStartInfo startInfo, StringBuilder output = null, StringBuilder error = null, int timeout = 600000)
         {
             output = output ?? new StringBuilder();
@@ -74,8 +99,35 @@ namespace Bam.Net.CommandLine
             ProcessOutputCollector receiver = new ProcessOutputCollector(d => output.Append(d), e => error.Append(e));
             return Run(startInfo, receiver, timeout);
         }
+        
+        public static ProcessOutput Run(this string command, Action<string> onStandardOut, Action<string> onErrorOut, bool promptForAdmin = false)
+        {
+            return Run(command, null, onStandardOut, onErrorOut, promptForAdmin);
+        }
+        /// <summary>
+        /// Run the specified command in a separate process
+        /// </summary>
+        /// <param name="command">The command to run</param>
+        /// <param name="onExit">EventHandler to execute when the process exits</param>
+        /// <param name="timeout">The number of milliseconds to block before returning, specify 0 not to block</param>
+        /// <returns></returns>
+        public static ProcessOutput Run(this string command, EventHandler onExit, int? timeout)
+        {
+            return Run(command, onExit, null, null, false, timeout);
+        }
 
-        public static ProcessOutput Run(this string command, Action<string> outputHandler, Action<string> errorHandler, bool promptForAdmin = false)
+        /// <summary>
+        /// Run the specified command in a separate process capturing the output
+        /// and error streams if any
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="onExit"></param>
+        /// <param name="onStandardOut"></param>
+        /// <param name="onErrorOut"></param>
+        /// <param name="promptForAdmin"></param>
+        /// <param name="timeout">The number of milliseconds to block before returning, specify 0 not to block</param>
+        /// <returns></returns>
+        public static ProcessOutput Run(this string command, EventHandler onExit, Action<string> onStandardOut = null, Action<string> onErrorOut = null, bool promptForAdmin = false, int? timeout = null)
         {
             string exe;
             string arguments;
@@ -84,71 +136,109 @@ namespace Bam.Net.CommandLine
             ProcessStartInfo startInfo = CreateStartInfo(promptForAdmin);
             startInfo.FileName = exe;
             startInfo.Arguments = arguments;
-            ProcessOutputCollector receiver = new ProcessOutputCollector(outputHandler, errorHandler);
-            return Run(startInfo, receiver);
+            ProcessOutputCollector receiver = new ProcessOutputCollector(onStandardOut, onErrorOut);            
+            return Run(startInfo, onExit, receiver, timeout);
         }
 
-        public static ProcessOutput Run(this ProcessStartInfo startInfo, ProcessOutputCollector output = null, int timeout = 600000)
+        /// <summary>
+        /// Run the specified command in a separate process capturing the output
+        /// and error streams if any
+        /// </summary>
+        /// <param name="startInfo"></param>
+        /// <param name="output"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        public static ProcessOutput Run(this ProcessStartInfo startInfo, ProcessOutputCollector output = null, int? timeout = null)
+        {
+            return Run(startInfo, null, output, timeout);
+        }
+
+        /// <summary>
+        /// Run the specified command in a separate process capturing the output
+        /// and error streams if any
+        /// </summary>
+        /// <param name="startInfo"></param>
+        /// <param name="onExit"></param>
+        /// <param name="output"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        public static ProcessOutput Run(this ProcessStartInfo startInfo, EventHandler onExit, ProcessOutputCollector output = null, int? timeout = null)
         {
             int exitCode = -1;
             bool timedOut = false;
-            using (Process process = new Process())
+            output = output ?? new ProcessOutputCollector();
+
+            Process process = new Process();
+            process.EnableRaisingEvents = true;
+            if (onExit != null)
             {
-                process.StartInfo = startInfo;
-                using (AutoResetEvent outputWaitHandle = new AutoResetEvent(false))
-                using (AutoResetEvent errorWaitHandle = new AutoResetEvent(false))
-                {
-                    process.OutputDataReceived += (sender, e) =>
-                    {
-                        if (e.Data == null)
-                        {
-                            outputWaitHandle.Set();
-                        }
-                        else
-                        {
-                            output.StandardOutput.AppendLine(e.Data);
-                            output.DataHandler(e.Data);
-                        }
-                    };
-                    process.ErrorDataReceived += (sender, e) =>
-                    {
-                        if (e.Data == null)
-                        {
-                            errorWaitHandle.Set();
-                        }
-                        else
-                        {
-                            output.StandardError.AppendLine(e.Data);
-                            output.ErrorHandler(e.Data);
-                        }
-                    };
-
-                    process.Start();
-                    process.BeginOutputReadLine();
-                    process.BeginErrorReadLine();
-
-                    if (process.WaitForExit(timeout) &&
-                        outputWaitHandle.WaitOne(timeout) &&
-                        errorWaitHandle.WaitOne(timeout))
-                    {
-                        exitCode = process.ExitCode;
-                        output.ExitCode = exitCode;
-                    }
-                    else
-                    {
-                        output.StandardError.AppendLine();
-                        output.StandardError.AppendLine("Timeout elapsed prior to process completion");
-                        timedOut = true;
-                    }
-                }
+                process.Exited += onExit;
             }
+            process.Exited += (o, a) =>
+            {
+                ((Process)o).Dispose();             
+            };
+            process.StartInfo = startInfo;
+            AutoResetEvent outputWaitHandle = new AutoResetEvent(false);
+            AutoResetEvent errorWaitHandle = new AutoResetEvent(false);
+            process.OutputDataReceived += (sender, e) =>
+            {
+                if (e.Data == null)
+                {
+                    outputWaitHandle.Set();
+                }
+                else
+                {
+                    output.StandardOutput.AppendLine(e.Data);
+                    output.DataHandler(e.Data);
+                }
+            };
+            process.ErrorDataReceived += (sender, e) =>
+            {
+                if (e.Data == null)
+                {
+                    errorWaitHandle.Set();
+                }
+                else
+                {
+                    output.StandardError.AppendLine(e.Data);
+                    output.ErrorHandler(e.Data);
+                }
+            };
 
-            return new ProcessOutput(output.ToString(), output.StandardError.ToString(), exitCode, timedOut);
+            process.Start();
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
+
+            if (timeout != null)
+            {
+                WaitForExit(output, timeout, ref exitCode, ref timedOut, process, outputWaitHandle, errorWaitHandle);
+                return new ProcessOutput(output.StandardOutput.ToString(), output.StandardError.ToString(), exitCode, timedOut);
+            }
+            
+            return new ProcessOutput(process, output.StandardOutput, output.StandardError);
+        }
+
+        private static void WaitForExit(ProcessOutputCollector output, int? timeout, ref int exitCode, ref bool timedOut, Process process, AutoResetEvent outputWaitHandle, AutoResetEvent errorWaitHandle)
+        {
+            if (process.WaitForExit(timeout.Value) &&
+                outputWaitHandle.WaitOne(timeout.Value) &&
+                errorWaitHandle.WaitOne(timeout.Value))
+            {
+                exitCode = process.ExitCode;
+                output.ExitCode = exitCode;
+            }
+            else
+            {
+                output.StandardError.AppendLine();
+                output.StandardError.AppendLine("Timeout elapsed prior to process completion");
+                timedOut = true;
+            }
         }
 
         private static void GetExeAndArguments(string command, out string exe, out string arguments)
         {
-            exe = string.Empty;
+            exe = command;
             arguments = string.Empty;
             string[] split = command.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
             if (split.Length > 1)
