@@ -15,6 +15,15 @@ namespace Bam.Net.Data.Repositories
     /// </summary>
     public class SchemaRepositoryGenerator: TypeDaoGenerator
     {
+        /// <summary>
+        /// Instantiate an instance of SchemaRepositoryGenerator that
+        /// can be used to generate a schema specific repository for the
+        /// specified typeAssembly for types in the specified 
+        /// sourceNamespace
+        /// </summary>
+        /// <param name="typeAssembly"></param>
+        /// <param name="sourceNamespace"></param>
+        /// <param name="logger"></param>
         public SchemaRepositoryGenerator(Assembly typeAssembly, string sourceNamespace, ILogger logger = null) 
             : base(typeAssembly, sourceNamespace, logger)
         {
@@ -22,6 +31,9 @@ namespace Bam.Net.Data.Repositories
             BaseRepositoryType = "DaoRepository";
         }
 
+        /// <summary>
+        /// The namespace to 
+        /// </summary>
         public string SourceNamespace { get; set; }
         public string BaseRepositoryType { get; set; }
         public string SchemaRepositoryNamespace

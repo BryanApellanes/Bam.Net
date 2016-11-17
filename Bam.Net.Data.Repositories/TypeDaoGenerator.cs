@@ -25,6 +25,12 @@ namespace Bam.Net.Data.Repositories
         WrapperGenerator _wrapperGenerator;
         TypeSchemaGenerator _typeSchemaGenerator;
         HashSet<Assembly> _additonalReferenceAssemblies;
+
+        /// <summary>
+        /// Instantiate a new instance of TypeDaoGenerator
+        /// </summary>
+        /// <param name="logger"></param>
+        /// <param name="types"></param>
         public TypeDaoGenerator(ILogger logger = null, IEnumerable<Type> types = null)
         {
             _namespace = "TypeDaos";
@@ -45,6 +51,12 @@ namespace Bam.Net.Data.Repositories
             }
         }
 
+        /// <summary>
+        /// Instantiate a new instance of TypeDaoGenerator
+        /// </summary>
+        /// <param name="typeAssembly"></param>
+        /// <param name="nameSpace"></param>
+        /// <param name="logger"></param>
         public TypeDaoGenerator(Assembly typeAssembly, string nameSpace, ILogger logger = null)
             : this(logger)
         {
@@ -57,8 +69,6 @@ namespace Bam.Net.Data.Repositories
         {
             _typeSchemaGenerator = typeSchemaGenerator;
         }
-
-        //public bool AddAuditFields { get; set; }
 
         public bool IncludeModifiedBy { get; set; }
 
