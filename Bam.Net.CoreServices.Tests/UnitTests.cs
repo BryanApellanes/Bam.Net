@@ -195,7 +195,7 @@ namespace Bam.Net.CoreServices.Tests
         {
             TimeSpan elapsed = Timed.Execution(() =>
             {
-                ApplicationRegistryRepository repo = new ApplicationRegistryRepository();
+                CoreRegistryRepository repo = new CoreRegistryRepository();
                 repo.Database = new SQLiteDatabase($"{nameof(ApplicationRegistryRepositoryGetOneUserShouldHaveNoOrganization)}", nameof(ApplicationRegistryRepositoryGetOneUserShouldHaveNoOrganization));
                 var user = repo.GetOneUserWhere(c => c.UserName == "bryan");
                 Expect.IsNotNull(user);
@@ -244,8 +244,8 @@ namespace Bam.Net.CoreServices.Tests
             CoreApplicationRegistryService svc = GetTestServiceWithUser(userName);
             ServiceResponse response = svc.RegisterApplication(orgName, appName);
             Expect.IsTrue(response.Success);
-            var user = svc.ApplicationRegistryRepository.OneUserWhere(c => c.UserName == userName);
-            user = svc.ApplicationRegistryRepository.Retrieve<Data.User>(user.Id);
+            var user = svc.CoreRegistryRepository.OneUserWhere(c => c.UserName == userName);
+            user = svc.CoreRegistryRepository.Retrieve<Data.User>(user.Id);
             Expect.IsNotNull(user);
             Expect.AreEqual(1, user.Organizations.Count);
             Thread.Sleep(1000);
@@ -308,11 +308,19 @@ namespace Bam.Net.CoreServices.Tests
         [UnitTest]
         public void IfMoreThanOneOrganizationForAUserThenFailIfNoSubscription()
         {
-            // create a user 
-            // create an organization
-            // save the user to the organization
+            GlooRegistry registry = CoreRegistry.Get();
+            CoreApplicationRegistryService appRegistry = registry.Get<CoreApplicationRegistryService>();
+            CoreRegistryRepository coreRepo = appRegistry.CoreRegistryRepository;
+            // signup a random user
+            Expect.Fail("This test isn't fully implemented");
+            // log in            
+            // register an application 
+            ServiceResponse response = appRegistry.RegisterApplication("TestOrg", "TestApp1");
+            Expect.IsTrue(response.Success, "Failed to register application");
             // try to register app for same user with a different organization
+            response = appRegistry.RegisterApplication("TestOrg", "TestApp2");
             // should fail
+            Expect.IsFalse(response.Success, "Should have failed to register application but was successful");            
         }
         //      - if app doesn't exist create it
 
@@ -371,13 +379,13 @@ namespace Bam.Net.CoreServices.Tests
             Session session = Session.Get(ctx);
             session.UserId = result.Id;
             session.Save();
-            IEnumerable<Organization> organizations = svc.ApplicationRegistryRepository.RetrieveAll<Organization>();
-            organizations.Each(o => svc.ApplicationRegistryRepository.Delete(o));
-            Expect.AreEqual(0, svc.ApplicationRegistryRepository.RetrieveAll<Organization>().Count());
-            IEnumerable<Data.Application> apps = svc.ApplicationRegistryRepository.RetrieveAll<Data.Application>();
-            apps.Each(a => svc.ApplicationRegistryRepository.Delete(a));
-            Expect.AreEqual(0, svc.ApplicationRegistryRepository.RetrieveAll<Data.Application>().Count());
-            svc.ApplicationRegistryRepository.RetrieveAll<Data.HostName>().Each(h => svc.ApplicationRegistryRepository.Delete(h));
+            IEnumerable<Organization> organizations = svc.CoreRegistryRepository.RetrieveAll<Organization>();
+            organizations.Each(o => svc.CoreRegistryRepository.Delete(o));
+            Expect.AreEqual(0, svc.CoreRegistryRepository.RetrieveAll<Organization>().Count());
+            IEnumerable<Data.Application> apps = svc.CoreRegistryRepository.RetrieveAll<Data.Application>();
+            apps.Each(a => svc.CoreRegistryRepository.Delete(a));
+            Expect.AreEqual(0, svc.CoreRegistryRepository.RetrieveAll<Data.Application>().Count());
+            svc.CoreRegistryRepository.RetrieveAll<Data.HostName>().Each(h => svc.CoreRegistryRepository.Delete(h));
             return result;
         }
 
