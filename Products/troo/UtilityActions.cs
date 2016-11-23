@@ -35,7 +35,7 @@ namespace troo
             }
             schemaGen.GenerateRepositorySource(
                 targetDir,
-                GetArgument("schemaRepositoryName", "Please enter the name of the schema to assign to the repository"));
+                genInfo.SchemaName);
 
             if(schemaGen.Warnings.MissingKeyColumns.Length > 0)
             {
