@@ -36,7 +36,7 @@ namespace Bam.Net.ServiceProxy
             Type[] genericTypesOfReturn;
             if (method.ReturnType.HasGenericArguments(out genericTypesOfReturn))
             {
-                string returnTypeName = method.ReturnType == typeof(int) ? method.ReturnType.Name: method.ReturnType.Name.DropTrailingNonLetters();
+                string returnTypeName = method.ReturnType == typeof(int) || method.ReturnType == typeof(long) ? method.ReturnType.Name: method.ReturnType.Name.DropTrailingNonLetters();
                 ReturnTypeCodeString = string.Format("{0}<{1}>", returnTypeName, genericTypesOfReturn.ToDelimited(t => t.ToTypeString()));
                 genericTypesOfReturn.Each(t =>
                 {

@@ -209,7 +209,7 @@ namespace Bam.Net.ServiceProxy.Secure
             SecureExecutionRequest request = new SecureExecutionRequest(HttpContext, className, methodName, parameters);
             request.ApiKeyResolver = ApiKeyResolver;
             request.ServiceProvider = ServiceProvider;
-            request.Execute();
+            bool success = request.Execute();
             
             ValidationResult validationResult = request.Result as ValidationResult;
             if (Debug && validationResult != null)
@@ -230,7 +230,7 @@ namespace Bam.Net.ServiceProxy.Secure
                 }
                 
                 result.Data = (string)request.Result; //this will throw an exception if validation failed causing 404 not found to be sent back which is what we want for security if debug is off
-                result.Success = true;
+                result.Success = success;
             }
 
             return result;
