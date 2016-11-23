@@ -14,6 +14,7 @@ using System.Data;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
 using Bam.Net;
+using Bam.Net.Logging;
 
 namespace Bam.Net
 {
@@ -215,22 +216,30 @@ namespace Bam.Net
 
         public static object FromBinaryFile(this string filePath, Type type)
         {
-            using (FileStream fs = new FileStream(filePath, FileMode.Open))
+            try
             {
-                MemoryStream outPut = new MemoryStream();
-                byte[] buffer = new byte[32768]; // max int size
-                while(true)
+                using (FileStream fs = new FileStream(filePath, FileMode.Open))
                 {
-                    int read = fs.Read(buffer, 0, buffer.Length);
-                    if (read <= 0)
+                    MemoryStream outPut = new MemoryStream();
+                    byte[] buffer = new byte[32768]; // max int size
+                    while (true)
                     {
-                        break;
+                        int read = fs.Read(buffer, 0, buffer.Length);
+                        if (read <= 0)
+                        {
+                            break;
+                        }
+                        outPut.Write(buffer, 0, read);
                     }
-                    outPut.Write(buffer, 0, read);
-                }
 
-                outPut.Seek(0, SeekOrigin.Begin);
-                return outPut.GetBuffer().FromBinaryBytes();
+                    outPut.Seek(0, SeekOrigin.Begin);
+                    return outPut.GetBuffer().FromBinaryBytes();
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Default.AddEntry("Exception occurred loading binary file {0}: {1}", ex, filePath, ex.Message);
+                return null;
             }
         }
 

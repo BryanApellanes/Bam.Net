@@ -145,7 +145,8 @@ namespace Bam.Net
 
                 // copy MessageFile to ReadFile
                 File.Copy(MessageFile, ReadFile, true);
-                File.Delete(LockFile);
+                File.Move(LockFile, TempLockFile);
+                File.Delete(TempLockFile);
                 return true;
             }
 
@@ -236,6 +237,14 @@ namespace Bam.Net
             }
         }
 
+        protected string TempLockFile
+        {
+            get
+            {
+                return $"{LockFile}.tmp";
+            }
+        }
+
         protected internal string WriteFile
         {
             get
@@ -268,36 +277,40 @@ namespace Bam.Net
             }
         }
 
+        static object _lock = new object();
         private bool AcquireLock(int timeoutInMilliseconds)
         {
             try
             {
                 EnsureRoot();
-                IpcMessageLockInfo lockInfo = new IpcMessageLockInfo();
-                bool timeoutExpired = Exec.TakesTooLong(() =>
+                lock (_lock)
                 {
-                    bool logged = false;
-                    while (File.Exists(LockFile))
+                    IpcMessageLockInfo lockInfo = new IpcMessageLockInfo();
+                    bool timeoutExpired = Exec.TakesTooLong(() =>
                     {
-                        if (!logged)
+                        bool logged = false;
+                        while (File.Exists(LockFile))
                         {
-                            logged = true;
-                            IpcMessageLockInfo currentLockInfo = LockFile.FromBinaryFile<IpcMessageLockInfo>();
-                            CurrentLockerId = currentLockInfo.ProcessId.ToString();
-                            CurrentLockerMachineName = currentLockInfo.MachineName;
-                            OnWaitingForLock();
+                            if (!logged)
+                            {
+                                logged = true;
+                                IpcMessageLockInfo currentLockInfo = LockFile.FromBinaryFile<IpcMessageLockInfo>();
+                                CurrentLockerId = currentLockInfo?.ProcessId.ToString();
+                                CurrentLockerMachineName = currentLockInfo?.MachineName;
+                                OnWaitingForLock();
+                            }
+
+                            Thread.Sleep(2);
                         }
+                        return LockFile;
+                    }, (lockFile) =>
+                    {
+                        lockInfo.ToBinaryFile(lockFile);
+                        return lockFile;
+                    }, TimeSpan.FromMilliseconds(timeoutInMilliseconds));
 
-                        Thread.Sleep(10);
-                    }
-                    return LockFile;
-                }, (lockFile) =>
-                {
-                    lockInfo.ToBinaryFile(lockFile);
-                    return lockFile;
-                }, TimeSpan.FromMilliseconds(timeoutInMilliseconds));
-
-                return !timeoutExpired;
+                    return !timeoutExpired;
+                }
             }
             catch (Exception ex)
             {

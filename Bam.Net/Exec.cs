@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Bam.Net.Logging;
 
 namespace Bam.Net
 {
@@ -152,7 +153,9 @@ namespace Bam.Net
 
         /// <summary>
         /// Executes the specified function in a separate thread waiting the specified timeToWait.  If
-        /// the function is not done executing in the specified timeToWait 
+        /// the function is not done executing in the specified timeToWait returns true otherwise false.
+        /// Will return true if the function throws an exception with the logic being that the 
+        /// function was not able to complete its work
         /// </summary>
         /// <typeparam name="TResult">The Type returned by the sepcified function, also the return and parameter type of the
         /// specified callBack.</typeparam>
@@ -162,52 +165,59 @@ namespace Bam.Net
         /// <returns>boolean</returns>
         public static bool TakesTooLong<TResult>(this Func<object, TResult> function, Func<TResult, TResult> callBack, TimeSpan timeToWait, object state = null, string threadName = null)
         {
-            // blocks thread until execution completion or timeToWait expires, see below .WaitOne()
-            AutoResetEvent returnThreadController = new AutoResetEvent(false);
-
-            int millisecondsToWait = (int)timeToWait.TotalMilliseconds;
-
-            bool? tookTooLong = false;
-            if (string.IsNullOrEmpty(threadName))
+            try
             {
-                threadName = "Bam.Net.Thread_".RandomString(8);
-            }
+                // blocks thread until execution completion or timeToWait expires, see below .WaitOne()
+                AutoResetEvent returnThreadController = new AutoResetEvent(false);
+                int millisecondsToWait = (int)timeToWait.TotalMilliseconds;
 
-            int suffix = 1;
-            while (_threads.ContainsKey(threadName))
-            {
-                threadName = string.Format("{0}_{1}", threadName, suffix.ToString());
-                suffix++;
-            }
-
-            Thread functionThread = new Thread(() =>
-            {
-                if (callBack != null)
+                bool? tookTooLong = false;
+                if (string.IsNullOrEmpty(threadName))
                 {
-                    callBack(function(state));
+                    threadName = "Bam.Net.Thread_".RandomString(8);
                 }
-                else
+
+                int suffix = 1;
+                while (_threads.ContainsKey(threadName))
                 {
-                    function(state);
+                    threadName = string.Format("{0}_{1}", threadName, suffix.ToString());
+                    suffix++;
                 }
-                returnThreadController.Set();
-                _threads.Remove(threadName);
-            });            
-            
-            functionThread.IsBackground = true;
-            _threads.Add(threadName, functionThread); // make sure the thread doesn't get garbage collected
-            // give the function a head start
-            functionThread.Start();
 
-            Timer timer = new Timer((o) =>
+                Thread functionThread = new Thread(() =>
+                {
+                    if (callBack != null)
+                    {
+                        callBack(function(state));
+                    }
+                    else
+                    {
+                        function(state);
+                    }
+                    returnThreadController.Set();
+                    _threads.Remove(threadName);
+                });
+
+                functionThread.IsBackground = true;
+                _threads.Add(threadName, functionThread); // make sure the thread doesn't get garbage collected
+                                                          // give the function a head start
+                functionThread.Start();
+
+                Timer timer = new Timer((o) =>
+                {
+                    tookTooLong = true;
+                    returnThreadController.Set(); // execution took too long
+                }, null, millisecondsToWait, Timeout.Infinite);
+
+                returnThreadController.WaitOne();
+
+                return tookTooLong.Value;
+            }
+            catch (Exception ex)
             {
-                tookTooLong = true;
-                returnThreadController.Set(); // execution took too long
-            }, null, millisecondsToWait, Timeout.Infinite);
-
-            returnThreadController.WaitOne();
-
-            return tookTooLong.Value;
+                Log.Default.AddEntry("Exception occurred in Exec.TakesTooLong: {0}", ex, ex.Message);
+                return true;
+            }
         }
 
 		/// <summary>
