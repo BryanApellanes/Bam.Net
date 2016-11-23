@@ -78,10 +78,17 @@ namespace Bam.Net.Server.Tvg
 
         private void ReloadServices(DirectoryInfo directory)
         {
+            List<string> excludeNamespaces = new List<string>();
+            excludeNamespaces.AddRange(DefaultConfiguration.GetAppSetting("ExcludeNamespaces").DelimitSplit(",", "|"));
+            List<string> excludeClasses = new List<string>();
+            excludeClasses.AddRange(DefaultConfiguration.GetAppSetting("ExcludeClasses").DelimitSplit(",", "|"));
+
             DefaultConfiguration
             .GetAppSetting("AssemblySearchPattern")
             .Or("*Services.dll,*Proxyables.dll,*Gloo.dll")
-            .DelimitSplit(",", "|").Each(new { Directory = directory }, (ctx, searchPattern) =>
+            .DelimitSplit(",", "|")
+            .Each(new { Directory = directory, ExcludeNamespaces = excludeNamespaces, ExcludeClasses = excludeClasses }, 
+            (ctx, searchPattern) =>
             {
                 FileInfo[] files = ctx.Directory.GetFiles(searchPattern, SearchOption.AllDirectories);
                 files.Each(file =>
@@ -90,7 +97,9 @@ namespace Bam.Net.Server.Tvg
                     {
                         Assembly.LoadFrom(file.FullName)
                         .GetTypes()
-                        .Where(type => type.HasCustomAttributeOfType<ProxyAttribute>())
+                        .Where(type => !ctx.ExcludeNamespaces.Contains(type.Namespace) && 
+                                !ctx.ExcludeClasses.Contains(type.Name) &&  
+                                type.HasCustomAttributeOfType<ProxyAttribute>())
                         .Each(serviceType =>
                         {
                             ServiceTypes.Add(serviceType);                                
