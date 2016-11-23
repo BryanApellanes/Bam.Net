@@ -25,7 +25,7 @@ namespace Bam.Net.Data
             Reset();
             TableNameFormatter = t => string.Format("[{0}]", t);
             ColumnNameFormatter = c => string.Format("[{0}]", c);
-            this.Executed += (s, d) =>
+            Executed += (s, d) =>
             {
                 s.Reset();
             };

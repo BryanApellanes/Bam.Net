@@ -12,6 +12,7 @@ namespace Bam.Net.CoreServices
     [Proxy("translationSvc")]
     public class CoreTranslationService : ProxyableService, IDetectLanguage, ITranslationProvider
     {
+        protected CoreTranslationService() { }
         public CoreTranslationService(
             IRepository genericRepo, 
             DaoRepository daoRepo, 
@@ -34,27 +35,33 @@ namespace Bam.Net.CoreServices
             return clone;
         }
 
-        public Language DetectLanguage(string text)
+        public virtual string DetectLanguageName(string text)
+        {
+            return DetectLanguage(text).EnglishName;
+        }
+
+        [Exclude]
+        public virtual Language DetectLanguage(string text)
         {
             return LanguageDetector.DetectLanguage(text);
         }
 
-        public string Translate(string input, string languageIdentifier)
+        public virtual string Translate(string input, string languageIdentifier)
         {
             return LanguageDetector.Translate(input, languageIdentifier);
         }
 
-        public string Translate(Language from, Language to, string input)
+        public virtual string Translate(Language from, Language to, string input)
         {
             return TranslationProvider.Translate(from, to, input);
         }
 
-        public string Translate(string uuidFrom, string uuidTo, string input)
+        public virtual string Translate(string uuidFrom, string uuidTo, string input)
         {
             return TranslationProvider.Translate(uuidFrom, uuidTo, input);
         }
 
-        public string Translate(long languageIdFrom, long languageIdTo, string input)
+        public virtual string Translate(long languageIdFrom, long languageIdTo, string input)
         {
             return TranslationProvider.Translate(languageIdFrom, languageIdTo, input);
         }

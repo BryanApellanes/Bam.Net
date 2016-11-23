@@ -12,7 +12,7 @@ namespace Bam.Net.CoreServices
     /// <summary>
     /// A class used for generating service proxies for use in code
     /// </summary>
-    public class ProxyFactory: AssemblyGenerationEventEmitter
+    public class ProxyFactory: AssemblyGenerationEventSource
     {
         public ProxyFactory(ILogger logger = null)
             : this(".", logger)

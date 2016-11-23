@@ -13,10 +13,27 @@ namespace Bam.Net.Data
 {
 	public static class Query
 	{
+        /// <summary>
+        /// Convenience entry point to
+        /// creating a QueryFilter
+        /// </summary>
+        /// <param name="columnName"></param>
+        /// <returns></returns>
 		public static QueryFilter Where(string columnName)
 		{
 			return new QueryFilter(columnName);
 		}
+
+        /// <summary>
+        /// Convenience entry point to
+        /// creating a QueryFilter
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public static QueryFilter Where(dynamic query)
+        {
+            return QueryFilter.FromDynamic(query);
+        }
 	}
 
     /// <summary>

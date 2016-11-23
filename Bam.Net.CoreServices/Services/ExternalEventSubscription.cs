@@ -28,9 +28,9 @@ namespace Bam.Net.CoreServices
             return inProcessResult;
         }
 
-        public ExternalEventSubscriptionInfo ToData()
+        public ExternalEventSubscriptionDescriptor ToRepoData()
         {
-            return ExternalEventSubscriptionInfo.FromExternalEventSubscription(this);
+            return ExternalEventSubscriptionDescriptor.FromExternalEventSubscription(this);
         }
     }
 }

@@ -24,15 +24,15 @@ namespace gloo
         static string defaultRoot = "C:\\tvg";
         static GlooServer glooServer;
         
-        [ConsoleAction]
+        [ConsoleAction("startGlooServer", "Start the gloo server")]
         public void StartGlooServer()
         {
             ConsoleLogger logger = GetLogger();
-            CreateGlooServer(logger);
+            StartGlooServer(logger);
             Pause("Gloo is running");
         }
 
-        [ConsoleAction]
+        [ConsoleAction("killGlooServer", "Kill the gloo server")]
         public void StopGlooServer()
         {
             if (glooServer != null)
@@ -46,7 +46,7 @@ namespace gloo
             }
         }
 
-        public static void CreateGlooServer(ConsoleLogger logger)
+        public static void StartGlooServer(ConsoleLogger logger)
         {
             BamConf conf = BamConf.Load(DefaultConfiguration.GetAppSetting(contentRootConfigKey).Or(defaultRoot));
             glooServer = new GlooServer(conf, logger);

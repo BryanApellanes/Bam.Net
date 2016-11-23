@@ -21,14 +21,14 @@ using Bam.Net.CoreServices.Data.Daos.Repository;
 
 namespace Bam.Net.CoreServices.Services
 {
-    [GlooContainer]  // must have a static Get method
+    [GlooContainer] 
     public static class CoreRegistry
     {
         static object _coreIncubatorLock = new object();
         static GlooRegistry _coreIncubator;
         
         [GlooRegistryProvider]
-        public static GlooRegistry Get()
+        public static GlooRegistry GetGlooRegistry()
         {
             return _coreIncubatorLock.DoubleCheckLock(ref _coreIncubator, () =>
             {
@@ -44,20 +44,20 @@ namespace Bam.Net.CoreServices.Services
                 DaoUserResolver userResolver = new DaoUserResolver();
                 DaoRoleResolver roleResolver = new DaoRoleResolver();
                 SQLiteDatabaseProvider dbProvider = new SQLiteDatabaseProvider(databasesPath, Log.Default);
-                DaoRepository daoRepo = new CoreRepository();
-                dbProvider.SetDatabases(daoRepo);
+                DaoRepository coreRepo = new CoreRegistryRepository();
+                dbProvider.SetDatabases(coreRepo);
                 dbProvider.SetDatabases(userMgr);
                 userMgr.Database.TryEnsureSchema(typeof(UserAccounts.Data.User), Log.Default);
                 userResolver.Database = userMgr.Database;
                 roleResolver.Database = userMgr.Database;
 
                 CoreApplicationRegistryServiceConfig config = new CoreApplicationRegistryServiceConfig { DatabaseProvider = dbProvider, WorkspacePath = databasesPath, Logger = Log.Default };
-                CompositeRepository compositeRepo = new CompositeRepository(daoRepo, databasesPath);
+                CompositeRepository compositeRepo = new CompositeRepository(coreRepo, databasesPath);
                 GlooRegistry reg = (GlooRegistry)(new GlooRegistry())
                     .For<ILogger>().Use(Log.Default)
-                    .For<IRepository>().Use(daoRepo)
-                    .For<DaoRepository>().Use(daoRepo)
-                    .For<CoreRepository>().Use(daoRepo)
+                    .For<IRepository>().Use(coreRepo)
+                    .For<DaoRepository>().Use(coreRepo)
+                    .For<CoreRegistryRepository>().Use(coreRepo)
                     .For<AppConf>().Use(conf)
                     .For<IDatabaseProvider>().Use(dbProvider)
                     .For<IUserManager>().Use(userMgr)
@@ -70,20 +70,20 @@ namespace Bam.Net.CoreServices.Services
                     .For<IApplicationNameProvider>().Use<CoreApplicationRegistryService>()
                     .For<CoreApplicationRegistryService>().Use<CoreApplicationRegistryService>()
                     .For<ISmtpSettingsProvider>().Use(userMgr)
-                    .For<CoreUserManagerService>().Use<CoreUserManagerService>()
+                    .For<CoreUserRegistryService>().Use<CoreUserRegistryService>()
                     .For<MetricsEventSourceService>().Use<MetricsEventSourceService>()
                     .For<NotificationEventSourceService>().Use<NotificationEventSourceService>()
-                    .For<CoreEventHubService>().Use<CoreEventHubService>()
+                    .For<CoreEventSourceService>().Use<CoreEventSourceService>()
                     .For<IDetectLanguage>().Use(translationProvider)
                     .For<ITranslationProvider>().Use(translationProvider)
-                    .For<IStorableTypesLoader>().Use<NamespaceStorableTypesProvider>()
+                    .For<IRepositoryStorableTypesProvider>().Use<NamespaceRepositoryStorableTypesProvider>()
                     .For<CoreTranslationService>().Use<CoreTranslationService>();                    
                     
                 reg.SetProperties(userMgr);
 
                 reg.For<CompositeRepository>().Use(() =>
                 {
-                    compositeRepo.AddTypes(reg.Get<NamespaceStorableTypesProvider>().GetTypes());
+                    compositeRepo.AddTypes(reg.Get<NamespaceRepositoryStorableTypesProvider>().GetTypes());
                     return compositeRepo;
                 });
                 return reg;

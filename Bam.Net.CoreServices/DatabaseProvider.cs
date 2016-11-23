@@ -24,7 +24,7 @@ namespace Bam.Net.CoreServices
         /// is Database, to an instance of T 
         /// </summary>
         /// <param name="instance"></param>
-        public void SetDatabases(params object[] instances)
+        public virtual void SetDatabases(params object[] instances)
         {
             instances.Each(instance =>
             {

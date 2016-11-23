@@ -24,17 +24,17 @@ namespace Bam.Net.CoreServices
             }
         }
 
-        public void Info(string messageSignature, params object[] formatArguments)
+        public virtual void Info(string messageSignature, params object[] formatArguments)
         {
             Logger.AddEntry(messageSignature, formatArguments.Select(a => a.ToString()).ToArray());
         }
 
-        public void Warning(string messageSignature, params object[] formatArguments)
+        public virtual void Warning(string messageSignature, params object[] formatArguments)
         {
             Logger.AddEntry(messageSignature, LogEventType.Warning, formatArguments.Select(a => a.ToString()).ToArray());
         }
 
-        public void Error(string messageSignature, params object[] formatArguments)
+        public virtual void Error(string messageSignature, params object[] formatArguments)
         {
             Logger.AddEntry(messageSignature, LogEventType.Error, formatArguments.Select(a => a.ToString()).ToArray());
         }

@@ -8,7 +8,6 @@ using Bam.Net.CommandLine;
 
 namespace Bam.Net.Automation.SourceControl
 {
-
     public class GitLog
     {
         [GitOption("%H", "Commit hash")]

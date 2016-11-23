@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Bam.Net.Data;
 using Bam.Net.ServiceProxy;
+using Bam.Net.CoreServices.Data;
 
 namespace Bam.Net.CoreServices
 {
@@ -22,11 +23,11 @@ namespace Bam.Net.CoreServices
             this.AppDiagInfo = new ApplicationDiagnosticInfo();
         }
         
-        public CoreServiceProcessIdentifier CoreServiceProcessIdentifier
+        public ProcessDescriptor ProcessDescriptor
         {
             get
             {
-                return new CoreServiceProcessIdentifier();
+                return ProcessDescriptor.Current;
             }
         }
 

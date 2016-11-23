@@ -25,6 +25,12 @@ namespace Bam.Net.Data.Repositories
         WrapperGenerator _wrapperGenerator;
         TypeSchemaGenerator _typeSchemaGenerator;
         HashSet<Assembly> _additonalReferenceAssemblies;
+
+        /// <summary>
+        /// Instantiate a new instance of TypeDaoGenerator
+        /// </summary>
+        /// <param name="logger"></param>
+        /// <param name="types"></param>
         public TypeDaoGenerator(ILogger logger = null, IEnumerable<Type> types = null)
         {
             _namespace = "TypeDaos";
@@ -45,20 +51,44 @@ namespace Bam.Net.Data.Repositories
             }
         }
 
+        /// <summary>
+        /// A filter function used to exclude anonymous types
+        /// that were created by the use of lambda functions from 
+        /// having dao types attempted to be generated
+        /// </summary>
+        public static Func<Type, bool> ClrDaoTypeFilter
+        {
+            get
+            {
+                return (t) => !t.IsAbstract && t.Attributes != (
+                                                                    TypeAttributes.NestedPrivate |
+                                                                    TypeAttributes.Sealed |
+                                                                    TypeAttributes.Serializable |
+                                                                    TypeAttributes.BeforeFieldInit
+                                                               );
+            }
+        }
+
+        /// <summary>
+        /// Instantiate a new instance of TypeDaoGenerator
+        /// </summary>
+        /// <param name="typeAssembly"></param>
+        /// <param name="nameSpace"></param>
+        /// <param name="logger"></param>
         public TypeDaoGenerator(Assembly typeAssembly, string nameSpace, ILogger logger = null)
             : this(logger)
         {
             Namespace = nameSpace;
             Args.ThrowIfNull(typeAssembly, "typeAssembly");
-            AddTypes(typeAssembly.GetTypes().Where(t => t.Namespace != null && t.Namespace.Equals(nameSpace) && !t.IsAbstract));
+            AddTypes(typeAssembly.GetTypes().Where(t => t.Namespace != null && 
+                                                    t.Namespace.Equals(nameSpace) && ClrDaoTypeFilter(t))
+                    );
         }
 
         public TypeDaoGenerator(TypeSchemaGenerator typeSchemaGenerator) : this()
         {
             _typeSchemaGenerator = typeSchemaGenerator;
         }
-
-        //public bool AddAuditFields { get; set; }
 
         public bool IncludeModifiedBy { get; set; }
 

@@ -66,6 +66,7 @@ namespace Bam.Net.Logging
                 // create a logger of the type specified by the config
                 // if no value is in the config create a null logger
                 _currentLogger = CreateLogger(DefaultConfiguration.GetAppSetting("LogType", "Null"));
+                _currentLogger.RestartLoggingThread();
             }
 
             return _currentLogger;

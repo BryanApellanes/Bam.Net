@@ -12,6 +12,15 @@ namespace Bam.Net
 {
     public static class ReflectionExtensions
     {
+        /// <summary>
+        /// Returns a hash representing the specified
+        /// types using the specified HashAlgorithm 
+        /// and encoding
+        /// </summary>
+        /// <param name="types"></param>
+        /// <param name="algorithm"></param>
+        /// <param name="encoding"></param>
+        /// <returns></returns>
         public static string ToInfoHash(this IEnumerable<Type> types, HashAlgorithms algorithm = HashAlgorithms.SHA1, Encoding encoding = null)
         {
             return types.ToInfoString().Hash(algorithm, encoding);
@@ -33,6 +42,16 @@ namespace Bam.Net
             return type.ToInfoString().Hash(algorithm, encoding);
         }
 
+        /// <summary>
+        /// Return a string representation of the specified 
+        /// type.  This is primarily used for hashing the
+        /// type for the purpose of uniquely identifying
+        /// it across processes.  The resulting
+        /// string cannot be easily converted back to 
+        /// the original type.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public static string ToInfoString(this Type type)
         {
             StringBuilder output = new StringBuilder();
@@ -46,6 +65,14 @@ namespace Bam.Net
             return output.ToString();
         }
 
+        /// <summary>
+        /// Return a string representation of the prop. This 
+        /// is primarily used for hashing the property and
+        /// the resulting string cannot be easily converted 
+        /// back to the original PropertyInfo
+        /// </summary>
+        /// <param name="prop"></param>
+        /// <returns></returns>
         public static string ToInfoString(this PropertyInfo prop)
         {
             return $"{{{prop.Name}:{prop.PropertyType.ToTypeString(false)}}}";
@@ -114,6 +141,13 @@ namespace Bam.Net
             instance.GetType().GetMethod(methodName).Invoke(instance, args);
         }
 
+        /// <summary>
+        /// Returns true if the specified instance is of a type
+        /// that has the specified propertyName
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
         public static bool HasProperty(this object instance, string propertyName)
         {
             Args.ThrowIfNull(instance, "instance");
@@ -121,6 +155,14 @@ namespace Bam.Net
             return HasProperty(instance, propertyName, out ignore);
         }
 
+        /// <summary>
+        /// Returns true if the specified instance is of a type
+        /// that has the specified propertyName
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <param name="propertyName"></param>
+        /// <param name="prop"></param>
+        /// <returns></returns>
         public static bool HasProperty(this object instance, string propertyName, out PropertyInfo prop)
         {
             Args.ThrowIfNull(instance, "instance");
@@ -507,7 +549,7 @@ namespace Bam.Net
             {
                 output.AppendFormat("{0}.", type.Namespace);
             }
-            output.Append(type == typeof(int) ? type.Name: type.Name.DropTrailingNonLetters());
+            output.Append(type == typeof(int) || type == typeof(long) ? type.Name: type.Name.DropTrailingNonLetters());
             if (type.IsGenericType)
             {
                 output.AppendFormat("<{0}>", type.GetGenericArguments().ToDelimited(t => includeNamespace ? "{0}.{1}"._Format(t.Namespace, t.ToTypeString(false)): t.ToTypeString(false)));

@@ -28,6 +28,7 @@ using Bam.Net.CoreServices.Services;
 using Bam.Net.Server.Tvg;
 using Bam.Net.CoreServices.Data;
 using System.Collections.Specialized;
+using Bam.Net.Data.Dynamic;
 
 namespace Bam.Net.CoreServices.Tests
 {
@@ -195,7 +196,7 @@ namespace Bam.Net.CoreServices.Tests
         {
             TimeSpan elapsed = Timed.Execution(() =>
             {
-                ApplicationRegistryRepository repo = new ApplicationRegistryRepository();
+                CoreRegistryRepository repo = new CoreRegistryRepository();
                 repo.Database = new SQLiteDatabase($"{nameof(ApplicationRegistryRepositoryGetOneUserShouldHaveNoOrganization)}", nameof(ApplicationRegistryRepositoryGetOneUserShouldHaveNoOrganization));
                 var user = repo.GetOneUserWhere(c => c.UserName == "bryan");
                 Expect.IsNotNull(user);
@@ -225,7 +226,8 @@ namespace Bam.Net.CoreServices.Tests
             CoreApplicationRegistryService svc = GetTestService();
             string orgName = 5.RandomLetters();
             string appName = 8.RandomLetters();
-            ServiceResponse response = svc.RegisterApplication(orgName, appName);
+            ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration("localhost", 8080, appName, orgName);
+            ServiceResponse response = svc.RegisterApplication(descriptor);
             Expect.IsFalse(response.Success);
             Expect.IsNotNull(response.Data);
             Expect.IsInstanceOfType<ApplicationRegistrationResult>(response.Data);
@@ -241,14 +243,16 @@ namespace Bam.Net.CoreServices.Tests
             string userName = 4.RandomLetters();
             string orgName = 5.RandomLetters();
             string appName = 8.RandomLetters();
+            ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration("localhost", 8080, appName, orgName);
             CoreApplicationRegistryService svc = GetTestServiceWithUser(userName);
-            ServiceResponse response = svc.RegisterApplication(orgName, appName);
+            ServiceResponse response = svc.RegisterApplication(descriptor);
             Expect.IsTrue(response.Success);
-            var user = svc.ApplicationRegistryRepository.OneUserWhere(c => c.UserName == userName);
-            user = svc.ApplicationRegistryRepository.Retrieve<Data.User>(user.Id);
+            var user = svc.CoreRegistryRepository.OneUserWhere(c => c.UserName == userName);
+            user = svc.CoreRegistryRepository.Retrieve<Data.User>(user.Id);
             Expect.IsNotNull(user);
             Expect.AreEqual(1, user.Organizations.Count);
             Thread.Sleep(1000);
+            Pass($"{nameof(OrganizationGetsCreated)} Test Passed");
         }
         
         [UnitTest]
@@ -256,11 +260,12 @@ namespace Bam.Net.CoreServices.Tests
         {
             After.Setup(ctx =>
             {
-                ctx.CopyFrom(CoreRegistry.Get());
+                ctx.CopyFrom(CoreRegistry.GetGlooRegistry());
             })
             .WhenA<CoreApplicationRegistryService>("tries to register application when not logged in", cars =>
             {
-                return cars.RegisterApplication("testorg", "testapp");
+                ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration("localhost", 8080, "testApp", "testOrg");
+                return cars.RegisterApplication(descriptor);
             })
             .TheTest
             .ShouldPass(because =>
@@ -277,7 +282,7 @@ namespace Bam.Net.CoreServices.Tests
         [UnitTest]
         public void CanSaveUserToCompositeRepo()
         {
-            CompositeRepository repo = CoreRegistry.Get().Get<CompositeRepository>();
+            CompositeRepository repo = CoreRegistry.GetGlooRegistry().Get<CompositeRepository>();
             Data.User user = new Data.User();
             user.UserName = 9.RandomLetters();
             user = repo.Save(user);
@@ -304,15 +309,78 @@ namespace Bam.Net.CoreServices.Tests
             Expect.IsTrue(foundOne);
         }
 
+        [UnitTest]
+        public void ProcessDescriptorWillSerialize()
+        {
+            OutLineFormat("{0}", ConsoleColor.Cyan, ProcessDescriptor.Current.ToJson());
+        }
+
+        [UnitTest]
+        public void MachineHasIpAddresses()
+        {
+            Machine machine = new Machine();
+            Expect.IsNotNull(machine.IpAddresses, $"{nameof(machine.IpAddresses)} was null");
+            Expect.IsGreaterThan(machine.IpAddresses.Count, 0, "No IpAddress entries were found");
+        }
+
+        [UnitTest]
+        public void ProcessDescriptorHasMachine()
+        {
+            ProcessDescriptor process = ProcessDescriptor.Current;
+            Expect.IsNotNull(process.Machine, $"{nameof(process.Machine)} was null");
+        }
+
+        [UnitTest]
+        public void EnsureSingleDoesntDuplicate()
+        {
+            GlooRegistry glooRegistry = CoreRegistry.GetGlooRegistry();
+            CoreRegistryRepository repo = glooRegistry.Get<CoreRegistryRepository>();
+            CompositeRepository compositeRepo = glooRegistry.Get<CompositeRepository>();
+            compositeRepo.UnwireBackup();
+            Machine machine = Machine.Current;
+            repo.Delete(machine);
+            Machine retrieved = repo.Query<Machine>(Filter.Where("Name") == machine.Name && Filter.Where("Cuid") == machine.Cuid).FirstOrDefault();
+            Expect.IsNull(retrieved);
+            Machine ensured = machine.EnsureSingle<Machine>(repo, "Name", "Cuid");
+            Expect.IsNotNull(ensured, "Ensured was null");
+            Machine ensuredAgain = ensured.EnsureSingle<Machine>(repo, "Name", "Cuid");
+            Expect.AreEqual(ensured.Id, ensuredAgain.Id);
+            Expect.AreEqual(ensured.Uuid, ensuredAgain.Uuid);
+            Expect.AreEqual(ensured.Cuid, ensuredAgain.Cuid);
+
+            Expect.AreEqual(1, repo.Query<Machine>(new { Name = machine.Name, Cuid = machine.Cuid }).Count());
+            repo.Delete(machine);
+        }
+
+        [UnitTest]
+        public void CoreClientCanSignup()
+        {
+            //throw new NotImplementedException();
+        }
+
+        [UnitTest]
+        public void CoreClientCanRegisterCurrentApp()
+        {
+            //throw new NotImplementedException();
+        }
+
         //      - if more than one organization for a user then fail if not premium
         [UnitTest]
         public void IfMoreThanOneOrganizationForAUserThenFailIfNoSubscription()
         {
-            // create a user 
-            // create an organization
-            // save the user to the organization
-            // try to register app for same user with a different organization
-            // should fail
+            //GlooRegistry registry = CoreRegistry.GetGlooRegistry();
+            //CoreApplicationRegistryService appRegistry = registry.Get<CoreApplicationRegistryService>();
+            //CoreRegistryRepository coreRepo = appRegistry.CoreRegistryRepository;
+            //// signup a random user
+            //Expect.Fail("This test isn't fully implemented");
+            //// log in            
+            //// register an application 
+            //ServiceResponse response = appRegistry.RegisterApplication("TestOrg", "TestApp1");
+            //Expect.IsTrue(response.Success, "Failed to register application");
+            //// try to register app for same user with a different organization
+            //response = appRegistry.RegisterApplication("TestOrg", "TestApp2");
+            //// should fail
+            //Expect.IsFalse(response.Success, "Should have failed to register application but was successful");            
         }
         //      - if app doesn't exist create it
 
@@ -342,7 +410,7 @@ namespace Bam.Net.CoreServices.Tests
 
         private CoreApplicationRegistryService GetTestService()
         {
-            GlooRegistry registry = CoreRegistry.Get();
+            GlooRegistry registry = CoreRegistry.GetGlooRegistry();
             CoreApplicationRegistryService svc = registry.Get<CoreApplicationRegistryService>();
             registry.SetProperties(svc);
             return svc;
@@ -371,13 +439,13 @@ namespace Bam.Net.CoreServices.Tests
             Session session = Session.Get(ctx);
             session.UserId = result.Id;
             session.Save();
-            IEnumerable<Organization> organizations = svc.ApplicationRegistryRepository.RetrieveAll<Organization>();
-            organizations.Each(o => svc.ApplicationRegistryRepository.Delete(o));
-            Expect.AreEqual(0, svc.ApplicationRegistryRepository.RetrieveAll<Organization>().Count());
-            IEnumerable<Data.Application> apps = svc.ApplicationRegistryRepository.RetrieveAll<Data.Application>();
-            apps.Each(a => svc.ApplicationRegistryRepository.Delete(a));
-            Expect.AreEqual(0, svc.ApplicationRegistryRepository.RetrieveAll<Data.Application>().Count());
-            svc.ApplicationRegistryRepository.RetrieveAll<Data.HostName>().Each(h => svc.ApplicationRegistryRepository.Delete(h));
+            IEnumerable<Organization> organizations = svc.CoreRegistryRepository.RetrieveAll<Organization>();
+            organizations.Each(o => svc.CoreRegistryRepository.Delete(o));
+            Expect.AreEqual(0, svc.CoreRegistryRepository.RetrieveAll<Organization>().Count());
+            IEnumerable<Data.Application> apps = svc.CoreRegistryRepository.RetrieveAll<Data.Application>();
+            apps.Each(a => svc.CoreRegistryRepository.Delete(a));
+            Expect.AreEqual(0, svc.CoreRegistryRepository.RetrieveAll<Data.Application>().Count());
+            svc.CoreRegistryRepository.RetrieveAll<Data.Machine>().Each(h => svc.CoreRegistryRepository.Delete(h));
             return result;
         }
 

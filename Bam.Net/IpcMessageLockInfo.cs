@@ -22,5 +22,19 @@ namespace Bam.Net
         public int ProcessId { get; set; }
 
         public string MachineName { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            IpcMessageLockInfo lockInfo = obj as IpcMessageLockInfo;
+            if(lockInfo != null)
+            {
+                return lockInfo.ProcessId == ProcessId && MachineName.Equals(MachineName);
+            }
+            return false;
+        }
+        public override int GetHashCode()
+        {
+            return $"{MachineName}:{ProcessId}".GetHashCode();
+        }
     }
 }

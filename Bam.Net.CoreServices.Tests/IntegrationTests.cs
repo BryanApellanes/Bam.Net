@@ -9,6 +9,7 @@ using Bam.Net.Testing;
 using Bam.Net.UserAccounts;
 using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.CoreServices.Services;
+using System.IO;
 
 namespace Bam.Net.CoreServices.Tests
 {
@@ -31,26 +32,30 @@ namespace Bam.Net.CoreServices.Tests
         [IntegrationTest]
         public void CoreUsermanagerClientProxyTest()
         {
+            OutLineFormat("This test requires a gloo server to be running on port 9100 of the localhost", ConsoleColor.Yellow);
             ConsoleLogger logger = new ConsoleLogger() { AddDetails = false };
             logger.StartLoggingThread();
             // get proxies
             ProxyFactory factory = new ProxyFactory();
-
-            CoreUserManagerService userService = factory.GetProxy<CoreUserManagerService>("localhost", 9100);
-            Expect.IsNotNull(userService);
-
             CoreClient coreClient = new CoreClient("ThreeHeadz", "CoreServicesTestApp", "localhost", 9100, logger);
+
+            CoreUserRegistryService userService = coreClient.UserRegistryService;
+            Expect.IsNotNull(userService);
+            Expect.AreSame(coreClient, userService.Property("ApiKeyResolver"));
+            Expect.AreSame(coreClient, userService.Property("ClientApplicationNameProvider"));
+
             bool? initFailed = false;
             coreClient.InitializationFailed += (o, a) =>
             {
                 initFailed = true;
             };
+            coreClient.Initialized += (o, a) =>
+            {
+                initFailed = false;
+            };
             coreClient.Initialize();
             Expect.IsTrue(initFailed.Value);
             Expect.AreEqual("You must be logged in to do that", coreClient.Message);
-            userService.Property("ApiKeyResolver", coreClient);
-            userService.Property("ClientApplicationNameProvider", coreClient);
-            OutLineFormat(userService.GetType().FullName);
 
             // sign up
             string email = $"{8.RandomLetters()}@threeheadz.com";
@@ -61,18 +66,23 @@ namespace Bam.Net.CoreServices.Tests
             if (!signupResponse.Success)
             {
                 OutLineFormat("Message: {0}", signupResponse.Message);
-            }else
+            }
+            else
             {
                 OutLine(signupResponse.TryPropertiesToString(), ConsoleColor.Cyan);
             }
             LoginResponse loginResponse = userService.Login(userName, passHash);
-            Expect.IsTrue(loginResponse.Success, "Unable to login");
-        }
+            Expect.IsTrue(loginResponse.Success, "Unable to login to userService");
 
-        //[IntegrationTest]
-        //public void CanSignup()
-        //{
-        //    "gloo "
-        //}
+            string youSayIAm = userService.WhoAmI();
+            Expect.AreEqual(userName, youSayIAm);
+
+            loginResponse = coreClient.ApplicationRegistryService.Login(userName, passHash);
+            Expect.IsTrue(loginResponse.Success, "Unable to login to application registry service");
+            Expect.IsTrue(coreClient.Initialize(), coreClient.Message);
+            Expect.IsFalse(initFailed.Value);
+            Expect.IsTrue(File.Exists(coreClient.ApiKeyFilePath));
+            Pass("No exceptions were thrown and all assertions passed");
+        }
     }
 }

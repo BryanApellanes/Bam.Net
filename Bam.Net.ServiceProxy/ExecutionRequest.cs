@@ -366,7 +366,7 @@ namespace Bam.Net.ServiceProxy
             {
                 if (_targetType == null && !string.IsNullOrWhiteSpace(ClassName))
                 {
-                    Instance = ServiceProvider.Get(ClassName, out _targetType);//ServiceProxySystem.Incubator.Get(ClassName, out _targetType);
+                    Instance = ServiceProvider.Get(ClassName, out _targetType);
                 }
 
                 return _targetType;

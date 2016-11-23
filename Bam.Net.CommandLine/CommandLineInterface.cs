@@ -28,9 +28,18 @@ namespace Bam.Net.CommandLine
             ValidArgumentInfo = new List<ArgumentInfo>();
         }
 
+        /// <summary>
+        /// Get the value specified for the argument with the 
+        /// specified name either from the command line or
+        /// from the default configuration file or prompt for
+        /// it if the value was not found
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="promptMessage"></param>
+        /// <returns></returns>
         public static string GetArgument(string name, string promptMessage = null)
         {
-            string acronym = name.CaseAcronym();
+            string acronym = name.CaseAcronym().ToLowerInvariant();
             string fromConfig = DefaultConfiguration.GetAppSetting(name, "").Or(DefaultConfiguration.GetAppSetting(acronym, ""));
             return Arguments.Contains(name) ? Arguments[name] : 
                 Arguments.Contains(acronym) ? Arguments[acronym] : 
@@ -437,7 +446,7 @@ namespace Bam.Net.CommandLine
 		{
 			DefaultConfiguration.GetAppSettings().AllKeys.Each(key =>
 			{
-				AddValidArgument(key);
+				AddValidArgument(key, $"Override value from config: {DefaultConfiguration.GetAppSetting(key)}");
 			});
 		}
 
@@ -1014,10 +1023,10 @@ namespace Bam.Net.CommandLine
 		/// <param name="arguments"></param>
 		/// <param name="instance"></param>
 		/// <param name="logger"></param>
-		public static void ExecuteSwitches(ParsedArguments arguments, object instance, ILogger logger = null)
+		public static bool ExecuteSwitches(ParsedArguments arguments, object instance, ILogger logger = null)
 		{
 			Expect.IsNotNull(instance, "instance can't be null, use a Type if executing static method");
-			ExecuteSwitches(arguments, instance.GetType(), instance, logger);
+			return ExecuteSwitches(arguments, instance.GetType(), instance, logger);
 		}
 
         /// <summary>
@@ -1144,7 +1153,8 @@ namespace Bam.Net.CommandLine
                 ConsoleAction consoleAction;
                 if (method.HasCustomAttributeOfType<ConsoleAction>(out consoleAction))
                 {
-                    if (consoleAction.CommandLineSwitch.Or("").Equals(commandLineSwitch))
+                    if (consoleAction.CommandLineSwitch.Or("").Equals(commandLineSwitch) ||
+                        consoleAction.CommandLineSwitch.CaseAcronym().ToLowerInvariant().Or("").Equals(commandLineSwitch))
                     {
                         toExecute.Add(new ConsoleInvokeableMethod(method, consoleAction, instance, switchValue));
                     }

@@ -27,6 +27,7 @@ namespace gloo
         {
             IsolateMethodCalls = false;
             BamResolver.Register();
+            AddSwitches(typeof(ConsoleActions));
             GlooService.SetInfo(GlooService.ServiceInfo);
             if (!GlooService.ProcessCommandLineArgs(args))
             {
@@ -39,7 +40,7 @@ namespace gloo
                 {
                     Interactive();
                 }
-                else
+                else if(!ExecuteSwitches(Arguments, new ConsoleActions()))
                 {
                     GlooService.RunService<GlooService>();
                 }

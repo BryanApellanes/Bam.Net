@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using Bam.Net.Data;
 
@@ -35,6 +36,28 @@ namespace Bam.Net.Data
             {
                 return string.IsNullOrWhiteSpace(ColumnName) && this._filters.Count == 0;
             }
+        }
+
+        public static QueryFilter FromDynamic(dynamic query)
+        {
+            Type type = query.GetType();
+            PropertyInfo[] properties = type.GetProperties();
+            QueryFilter filter = new QueryFilter();
+            bool first = true;
+            foreach(PropertyInfo prop in properties)
+            {
+                QueryFilter next = Query.Where(prop.Name) == prop.GetValue(query);
+                if (first) // trying to do filter == null will invoke implicit operator rather than doing an actual null comparison
+                {
+                    first = false;
+                    filter = next;
+                }
+                else
+                {
+                    filter = filter.And(next);
+                }
+            }
+            return filter;
         }
 
         public static QueryFilter Where(string columnName)

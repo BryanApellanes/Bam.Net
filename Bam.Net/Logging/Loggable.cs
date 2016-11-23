@@ -104,7 +104,7 @@ namespace Bam.Net.Logging
                                     string message = "";
                                     if(verbosity != null)
                                     {
-                                        if (!verbosity.TryGetMessage(this, out message))
+                                        if (!verbosity.TryGetMessage(s, out message))
                                         {
                                             verbosity.TryGetMessage(a, out message);
                                         }

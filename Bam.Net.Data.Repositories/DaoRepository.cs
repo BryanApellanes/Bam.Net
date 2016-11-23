@@ -363,15 +363,15 @@ namespace Bam.Net.Data.Repositories
             WarnRetrieveAll(type);
             return RetrieveAll(type).CopyAs(type).Where(predicate);
 		}
-
-		public override IEnumerable<object> Query(dynamic query)
+        
+        public override IEnumerable<object> Query(dynamic query)
 		{
-			return Query<object>((QueryFilter)query);
+            return Query<object>(QueryFilter.FromDynamic(query));
 		}
 
 		public override IEnumerable<T> Query<T>(dynamic query) 
 		{
-			return Query<T>((QueryFilter)query);
+            return Query<T>(QueryFilter.FromDynamic(query));
 		}
 
         public override IEnumerable<T> Query<T>(Dictionary<string, object> queryParameters)

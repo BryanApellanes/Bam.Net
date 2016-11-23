@@ -458,12 +458,20 @@ namespace Bam.Net
                 else
                     throw new ExpectFailedException("object", "null", ShouldHtmlEncodeExceptions);
             }
-        }    
+        }   
+        
+        /// <summary>
+        /// Throw an ExpectFailedException
+        /// </summary>
         public static void Fail()
         {
             Fail("Expect.Fail() was called to throw this exception.");
         }
 
+        /// <summary>
+        /// Throw an ExpectFailedException with the specified message
+        /// </summary>
+        /// <param name="message"></param>
         public static void Fail(string message)
         {
             throw new ExpectFailedException(message, ShouldHtmlEncodeExceptions);

@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Bam.Net.Data.Repositories;
+
+namespace Bam.Net.CoreServices.Data
+{
+    public class Configuration: RepoData
+    {
+        public virtual List<Machine> Machines { get; set; }
+        public virtual List<Application> Applications { get; set; }
+        public string Key { get; set; }
+        public string Value { get; set; }
+    }
+}

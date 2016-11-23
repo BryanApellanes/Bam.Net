@@ -537,7 +537,7 @@ namespace Bam.Net.UserAccounts.Tests
             Expect.IsNotNull(config.EmailTemplateDirectoryPath);
         }
 
-        static DirectoryInfo _testEmailComposerTemplateDir = new DirectoryInfo(".\\TestEmailComposerTempaltes");
+        static DirectoryInfo _testEmailComposerTemplateDir = new DirectoryInfo(".\\TestEmailComposerTemplates");
         static string _ext = ".TestEmailComposerExt";
         public class TestEmailComposer : EmailComposer
         {

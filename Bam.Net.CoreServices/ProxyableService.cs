@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Bam.Net.CoreServices.Data;
 using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Logging;
@@ -12,7 +13,7 @@ using Bam.Net.Server.Renderers;
 using Bam.Net.ServiceProxy;
 using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.UserAccounts;
-using Bam.Net.UserAccounts.Data;
+using U = Bam.Net.UserAccounts.Data;
 
 namespace Bam.Net.CoreServices
 {
@@ -41,7 +42,12 @@ namespace Bam.Net.CoreServices
                 return CurrentUser.UserName;
             }
         }
-        
+
+        public virtual ServiceResponse ConnectClient(Machine machine)
+        {
+            return Login(machine.ToString(), machine.Secret.Sha1()).CopyAs<ServiceResponse>();
+        }
+
         public virtual LoginResponse Login(string userName, string passHash)
         {
             IUserManager mgr = (IUserManager)UserManager.Clone();
@@ -49,6 +55,13 @@ namespace Bam.Net.CoreServices
             return mgr.Login(userName, passHash);
         }
         
+        public virtual SignOutResponse EndSession()
+        {
+            IUserManager mgr = (IUserManager)UserManager.Clone();
+            mgr.HttpContext = HttpContext;
+            return mgr.SignOut();
+        }
+
         public virtual string WhoAmI()
         {
             return UserName;
@@ -109,11 +122,11 @@ namespace Bam.Net.CoreServices
         }
 
         [Exclude]
-        public Session Session
+        public U.Session Session
         {
             get
             {
-                return Session.Init(HttpContext);
+                return U.Session.Init(HttpContext);
             }
         }
 
@@ -127,7 +140,7 @@ namespace Bam.Net.CoreServices
         }
 
         [Exclude]
-        public User CurrentUser
+        public U.User CurrentUser
         {
             get
             {                
@@ -165,10 +178,7 @@ namespace Bam.Net.CoreServices
 
         [Exclude]
         public IRepository Repository { get; set; }
-
-        [Exclude]
-        public ObjectRepository ObjectRepository { get; set; }
-
+        
         [Exclude]
         public AppConf AppConf { get; set; }
 

@@ -3,8 +3,11 @@
 */
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection;
+using Bam.Net.Data;
+using Bam.Net.Data.Repositories;
 using Bam.Net.Razor;
 using Bam.Net.ServiceProxy;
 
@@ -75,6 +78,11 @@ namespace Bam.Net.CoreServices
                 HashSet<Assembly> assemblies = new HashSet<Assembly>();
                 assemblies.Add(typeof(ProxyModel).Assembly);
                 ServiceGenerationInfo.ReferenceAssemblies.Each(new { Assemblies = assemblies }, (ctx, a) => ctx.Assemblies.Add(a));
+                TypeInheritanceDescriptor inheritance = new TypeInheritanceDescriptor(BaseType);
+                inheritance.Chain.Each(new { Assemblies = assemblies }, (ctx, tt) => ctx.Assemblies.Add(tt.Type.Assembly));
+                assemblies.Add(typeof(RepoData).Assembly);
+                assemblies.Add(typeof(Dao).Assembly);
+                assemblies.Add(typeof(DataRow).Assembly);
                 return assemblies.ToArray();
             }
         }
