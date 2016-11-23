@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Bam.Net.Caching;
 using Bam.Net.Data;
@@ -31,12 +32,25 @@ namespace Bam.Net.CoreServices
                 return Path.Combine(WorkspacePath, sd.Name, ts.Hash);
             };
 
-            Dao.AfterCommitAny -= Backup;            
-            Dao.AfterCommitAny += Backup;
+            WireBackup();
 
             sourceRepository.StorableTypes.Each(type => AddType(type));
-        } 
-          
+        }
+
+        public void WireBackup()
+        {
+            UnwireBackup();
+            Dao.AfterCommitAny += Backup;
+        }
+
+        public void UnwireBackup()
+        {
+            Dao.AfterCommitAny -= Backup;
+            BackupTask?.Dispose();
+        }
+
+        public Task BackupTask { get; protected set; }
+
         public DaoRepository SourceRepository { get; }
         public Database SourceDatabase { get { return SourceRepository?.Database; } }
         public CachingRepository ReadRepository { get;  }
@@ -227,7 +241,7 @@ namespace Bam.Net.CoreServices
         {
             if (database == SourceDatabase)
             {
-                Task.Run(() =>
+                BackupTask = Task.Run(() =>
                 {
                     object dtoInstance = Dto.Copy(dao);
                     object existing = BackupRepository.Retrieve(dtoInstance.GetType(), dtoInstance.Property<string>("Uuid"));
@@ -239,7 +253,8 @@ namespace Bam.Net.CoreServices
                     {
                         BackupRepository.Create(dtoInstance);
                     }
-                }).ConfigureAwait(false);
+                });
+                BackupTask.ConfigureAwait(false);
             }
         }
 

@@ -28,7 +28,7 @@ namespace Bam.Net.CoreServices
 
         protected CoreApplicationRegistryService() { }
 
-        public CoreApplicationRegistryService(CoreApplicationRegistryServiceConfig config, AppConf conf, CoreRegistryRepository coreRepo)
+        public CoreApplicationRegistryService(CoreApplicationRegistryServiceConfig config, AppConf conf, CoreRegistryRepository coreRepo, ILogger logger)
         {
             CoreRegistryRepository = coreRepo;
             CoreRegistryRepository.WarningsAsErrors = false;
@@ -38,6 +38,7 @@ namespace Bam.Net.CoreServices
             _apiKeyResolver = new ApiKeyResolver(this, this);
             AppConf = conf;
             Config = config;
+            Logger = logger;            
         }
 
         Database _database;
@@ -64,10 +65,6 @@ namespace Bam.Net.CoreServices
         public CoreRegistryRepository CoreRegistryRepository { get; set; }
 
         public CompositeRepository CompositeRepository { get; set; }
-
-        public MaximumLimitEnforcer<ServiceResponse> OrganizationLimitEnforcer { get; set; }
-
-        public MaximumLimitEnforcer<ServiceResponse> ApplicationLimitEnforcer { get; set; }
 
         public virtual ApiKeyInfo[] ListApiKeys()
         {
@@ -102,42 +99,75 @@ namespace Bam.Net.CoreServices
             return GetApiKeyInfo(this);
         }
 
-        public virtual ServiceResponse RegisterApplication(string organizationName, string appName)
+        public virtual ServiceResponse RegisterClient(Machine machine)
         {
-            if (CurrentUser.Equals(UserAccounts.Data.User.Anonymous))
+            try
             {
-                return new ServiceResponse<Data.Application> { Success = false, Message = "You must be logged in to do that", Data = new ApplicationRegistrationResult { Status = ApplicationRegistrationStatus.Unauthorized } };
+                Args.ThrowIfNull(machine?.Secret, nameof(machine.Secret));
+                Args.ThrowIfNull(machine?.ServerHost, nameof(machine.ServerHost));
+                Args.ThrowIf(machine.Port <= 0, "Server Port not specified");
+                IUserManager mgr = (IUserManager)UserManager.Clone();
+                mgr.HttpContext = HttpContext;
+                mgr.SignUp($"{machine.Name}@{machine.Name}", machine.ToString(), machine.Secret.Sha1(), false);
+
+                machine = machine.EnsureSingle<Machine>(CoreRegistryRepository, "Name", "ServerHost", "Port");
+                return new ServiceResponse { Success = true, Data = machine.ToJson() };
             }
-            User user = CoreRegistryRepository.OneUserWhere(c => c.UserName == CurrentUser.UserName);
-            if (user == null)
+            catch (Exception ex)
             {
-                user = new User();
-                user.UserName = CurrentUser.UserName;
-                user.Email = CurrentUser.Email;
-                user = CoreRegistryRepository.Save(user);
+                Logger.AddEntry("Exception occurred in {0}", ex, nameof(CoreApplicationRegistryService.RegisterClient));
+                return new ServiceResponse { Success = false, Message = ex.Message };
             }
-            OrganizationFactory orgEnforcer = new OrganizationFactory(CoreRegistryRepository, user, organizationName);
-            ServiceResponse<Organization> response = orgEnforcer.Execute();
-            if (!response.Success)
+        }
+
+        public virtual ServiceResponse RegisterApplication(ProcessDescriptor descriptor)
+        {
+            try
             {
-                return response;
+                Args.ThrowIfNull(descriptor?.Application?.Name, "descriptor.Application.Name");
+                Args.ThrowIfNull(descriptor?.Application?.Organization?.Name, "descriptor.Application.Organization.Name");
+
+                string organizationName = descriptor.Application.Organization.Name;
+                if (CurrentUser.Equals(UserAccounts.Data.User.Anonymous))
+                {
+                    return new ServiceResponse<Data.Application> { Success = false, Message = "You must be logged in to do that", Data = new ApplicationRegistrationResult { Status = ApplicationRegistrationStatus.Unauthorized } };
+                }
+                User user = CoreRegistryRepository.OneUserWhere(c => c.UserName == CurrentUser.UserName);
+                if (user == null)
+                {
+                    user = new User();
+                    user.UserName = CurrentUser.UserName;
+                    user.Email = CurrentUser.Email;
+                    user = CoreRegistryRepository.Save(user);
+                }
+                OrganizationFactory orgEnforcer = new OrganizationFactory(CoreRegistryRepository, user, organizationName);
+                ServiceResponse<Organization> response = orgEnforcer.Execute();
+                if (!response.Success)
+                {
+                    return response;
+                }
+                Organization org = response.TypedData();
+                ClientApplicationFactory appEnforcer = new ClientApplicationFactory(this, user, organizationName, descriptor);
+                ServiceResponse<Data.Application> appResponse = appEnforcer.Execute();
+                if (appResponse.Success)
+                {
+                    Data.Application app = appResponse.TypedData();
+                    return new ServiceResponse<ApplicationRegistrationResult>(
+                        new ApplicationRegistrationResult
+                        {
+                            Status = ApplicationRegistrationStatus.Success,
+                            ClientId = app.Cuid,
+                            ApiKey = app.ApiKeys.First().SharedSecret
+                        })
+                    { Success = true };
+                }
+                return appResponse;
             }
-            Organization org = response.TypedData();
-            ApplicationFactory appEnforcer = new ApplicationFactory(CoreRegistryRepository, user, this, organizationName, appName);
-            ServiceResponse<Data.Application> appResponse = appEnforcer.Execute();
-            if (appResponse.Success)
+            catch (Exception ex)
             {
-                Data.Application app = appResponse.TypedData();
-                return new ServiceResponse<ApplicationRegistrationResult>(
-                    new ApplicationRegistrationResult
-                    {
-                        Status = ApplicationRegistrationStatus.Success,
-                        ClientId = app.Cuid,
-                        ApiKey = app.ApiKeys.First().SharedSecret
-                    })
-                { Success = true };                    
+                Logger.AddEntry("Exception occurred in {0}", ex, nameof(CoreApplicationRegistryService.RegisterApplication));
+                return new ServiceResponse { Success = false, Message = ex.Message };
             }
-            return appResponse;
         }
 
         [Exclude]
@@ -158,7 +188,7 @@ namespace Bam.Net.CoreServices
         [Exclude]
         public override object Clone()
         {
-            CoreApplicationRegistryService result = new CoreApplicationRegistryService(Config, AppConf, CoreRegistryRepository);
+            CoreApplicationRegistryService result = new CoreApplicationRegistryService(Config, AppConf, CoreRegistryRepository, Logger);
             result.CopyProperties(this);
             return result;
         }
@@ -244,7 +274,7 @@ namespace Bam.Net.CoreServices
 
         protected CoreApplicationRegistryServiceConfig Config { get; set; }
 
-        protected internal static ApiKeyInfo GenerateApiKeyInfo(Data.Application app)
+        protected internal ApiKeyInfo GenerateApiKeyInfo(Data.Application app)
         {
             ApiKeyInfo info = new ApiKeyInfo();
             info.ApplicationNameProvider = new StaticApplicationNameProvider(app.Name);
@@ -258,15 +288,17 @@ namespace Bam.Net.CoreServices
         /// <param name="repo"></param>
         /// <param name="app"></param>
         /// <returns></returns>
-        protected internal static Data.Application AddApiKey(CoreRegistryRepository repo, Data.Application app)
+        protected internal Data.Application AddApiKey(CoreRegistryRepository repo, Data.Application app)
         {
             Data.ApiKey ignore;
             return AddApiKey(repo, app, out ignore);
         }
-        protected internal static Data.Application AddApiKey(CoreRegistryRepository repo, Data.Application app, out Data.ApiKey key)
+        protected internal Data.Application AddApiKey(CoreRegistryRepository repo, Data.Application app, out Data.ApiKey key)
         {
             ApiKeyInfo keyInfo = GenerateApiKeyInfo(app);
             key = Data.ApiKey.FromKeyInfo(keyInfo);
+            key.Created = DateTime.UtcNow;
+            key.CreatedBy = CurrentUser.UserName;
             app.ApiKeys.Add(key);
             app = repo.Save(app);
             return app;

@@ -11,7 +11,7 @@ using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.CoreServices
 {
-    public class ProxyAssemblyGenerator: AssemblyGenerationEventEmitter, IAssemblyGenerator
+    public class ProxyAssemblyGenerator: AssemblyGenerationEventSource, IAssemblyGenerator
     {
         public ProxyAssemblyGenerator(ProxySettings settings, string workspaceDirectory = ".", ILogger logger = null)
         {

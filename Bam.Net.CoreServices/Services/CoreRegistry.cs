@@ -28,7 +28,7 @@ namespace Bam.Net.CoreServices.Services
         static GlooRegistry _coreIncubator;
         
         [GlooRegistryProvider]
-        public static GlooRegistry Get()
+        public static GlooRegistry GetGlooRegistry()
         {
             return _coreIncubatorLock.DoubleCheckLock(ref _coreIncubator, () =>
             {
@@ -70,20 +70,20 @@ namespace Bam.Net.CoreServices.Services
                     .For<IApplicationNameProvider>().Use<CoreApplicationRegistryService>()
                     .For<CoreApplicationRegistryService>().Use<CoreApplicationRegistryService>()
                     .For<ISmtpSettingsProvider>().Use(userMgr)
-                    .For<CoreUserManagerService>().Use<CoreUserManagerService>()
+                    .For<CoreUserRegistryService>().Use<CoreUserRegistryService>()
                     .For<MetricsEventSourceService>().Use<MetricsEventSourceService>()
                     .For<NotificationEventSourceService>().Use<NotificationEventSourceService>()
-                    .For<CoreEventHubService>().Use<CoreEventHubService>()
+                    .For<CoreEventSourceService>().Use<CoreEventSourceService>()
                     .For<IDetectLanguage>().Use(translationProvider)
                     .For<ITranslationProvider>().Use(translationProvider)
-                    .For<IStorableTypesLoader>().Use<NamespaceStorableTypesProvider>()
+                    .For<IRepositoryStorableTypesProvider>().Use<NamespaceRepositoryStorableTypesProvider>()
                     .For<CoreTranslationService>().Use<CoreTranslationService>();                    
                     
                 reg.SetProperties(userMgr);
 
                 reg.For<CompositeRepository>().Use(() =>
                 {
-                    compositeRepo.AddTypes(reg.Get<NamespaceStorableTypesProvider>().GetTypes());
+                    compositeRepo.AddTypes(reg.Get<NamespaceRepositoryStorableTypesProvider>().GetTypes());
                     return compositeRepo;
                 });
                 return reg;

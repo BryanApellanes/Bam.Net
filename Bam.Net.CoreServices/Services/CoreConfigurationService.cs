@@ -27,7 +27,7 @@ namespace Bam.Net.CoreServices
             clone.CopyEventHandlers(this);
             return clone;
         }
-        public Dictionary<string, string> GetConfiguration(string applicationName, string configurationName = "")
+        public virtual Dictionary<string, string> GetConfiguration(string applicationName, string configurationName = "")
         {
             ServiceProxySecure.Configuration config = GetConfigurationInstance(applicationName, configurationName);
 
@@ -40,7 +40,7 @@ namespace Bam.Net.CoreServices
             return result;
         }
 
-        public void SetConfiguration(string applicationName, string configurationName, Dictionary<string, string> configuration)
+        public virtual void SetConfiguration(string applicationName, string configurationName, Dictionary<string, string> configuration)
         {
             ServiceProxySecure.Configuration config = GetConfigurationInstance(applicationName, configurationName);
             config.ConfigSettingsByConfigurationId.Delete();
