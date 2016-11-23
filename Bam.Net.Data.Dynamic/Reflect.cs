@@ -43,6 +43,18 @@ namespace Bam.Net.Data.Dynamic
         }
 
         /// <summary>
+        /// Returns true if the specified instance is of a type
+        /// that has the specified propertyName
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
+        public static bool HasProperty(this object instance, string propertyName)
+        {
+            return ReflectionExtensions.HasProperty(instance, propertyName);
+        }
+
+        /// <summary>
         /// Get the property of the current instance with the specified name
         /// </summary>
         /// <param name="instance"></param>
