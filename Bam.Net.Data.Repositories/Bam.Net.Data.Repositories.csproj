@@ -126,6 +126,9 @@
     <Compile Include="DaoGenerationException.cs" />
     <Compile Include="DaoBackup.cs" />
     <Compile Include="DatabaseExtensions.cs" />
+    <Compile Include="IRepositoryStorableTypesProvider.cs" />
+    <Compile Include="NamespaceRepositoryStorableTypesProvider.cs" />
+    <Compile Include="RepositoryStorableTypesProvider.cs" />
     <Compile Include="TypeSchemaPropertyManager.cs" />
     <Compile Include="TypeSchemaScriptWriter.cs" />
     <Compile Include="DatabaseRepository.cs" />
@@ -181,8 +184,6 @@
     <Compile Include="ObjectReaderWriter.cs" />
     <Compile Include="DtoModel.cs" />
     <Compile Include="RepoData.cs" />
-    <Compile Include="IRepositoryPathProvider.cs" />
-    <Compile Include="SavedObject.cs" />
     <Compile Include="TypeDaoGenerator.cs" />
     <Compile Include="TypeSchema.cs" />
     <Compile Include="TypeSchemaGenerator.cs" />
