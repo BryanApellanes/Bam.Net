@@ -28,6 +28,15 @@ namespace Bam.Net.CommandLine
             ValidArgumentInfo = new List<ArgumentInfo>();
         }
 
+        /// <summary>
+        /// Get the value specified for the argument with the 
+        /// specified name either from the command line or
+        /// from the default configuration file or prompt for
+        /// it if the value was not found
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="promptMessage"></param>
+        /// <returns></returns>
         public static string GetArgument(string name, string promptMessage = null)
         {
             string acronym = name.CaseAcronym().ToLowerInvariant();
@@ -1014,10 +1023,10 @@ namespace Bam.Net.CommandLine
 		/// <param name="arguments"></param>
 		/// <param name="instance"></param>
 		/// <param name="logger"></param>
-		public static void ExecuteSwitches(ParsedArguments arguments, object instance, ILogger logger = null)
+		public static bool ExecuteSwitches(ParsedArguments arguments, object instance, ILogger logger = null)
 		{
 			Expect.IsNotNull(instance, "instance can't be null, use a Type if executing static method");
-			ExecuteSwitches(arguments, instance.GetType(), instance, logger);
+			return ExecuteSwitches(arguments, instance.GetType(), instance, logger);
 		}
 
         /// <summary>
