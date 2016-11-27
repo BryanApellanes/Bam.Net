@@ -75,6 +75,22 @@
             specific dao repositories
             </summary>
         </member>
+        <member name="M:Bam.Net.Data.Repositories.SchemaRepositoryGenerator.#ctor(System.Reflection.Assembly,System.String,Bam.Net.Logging.ILogger)">
+            <summary>
+            Instantiate an instance of SchemaRepositoryGenerator that
+            can be used to generate a schema specific repository for the
+            specified typeAssembly for types in the specified 
+            sourceNamespace
+            </summary>
+            <param name="typeAssembly"></param>
+            <param name="sourceNamespace"></param>
+            <param name="logger"></param>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.SchemaRepositoryGenerator.SourceNamespace">
+            <summary>
+            The namespace to 
+            </summary>
+        </member>
         <member name="T:Bam.Net.Data.Repositories.DaoSuffixTypeTableNameProvider">
             <summary>
             A table name provider that returns the type name
@@ -86,7 +102,7 @@
             Defines an event named GenerateDaoAssemblySucceeded
             </summary>
         </member>
-        <member name="M:Bam.Net.Data.Repositories.LuceneIndex.#ctor(System.String)">
+        <member name="M:Bam.Net.Data.Repositories.LuceneIndex.#ctor(System.String,Lucene.Net.Util.Version)">
             <summary>
             Instantiate a new LuceneIndex
             </summary>
@@ -500,11 +516,69 @@
             save in a Repository
             </summary>
         </member>
+        <member name="M:Bam.Net.Data.Repositories.RepoData.EnsurePersisted``1(Bam.Net.Data.Repositories.IRepository)">
+            <summary>
+            Ensure the current RepoData instance has been 
+            persisted to the specified repo
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="repo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.RepoData.EnsureSingle``1(Bam.Net.Data.Repositories.IRepository,System.String[])">
+            <summary>
+            Ensures that an instance of the current RepoData
+            has been saved to the specified repo where the 
+            specified properties equal the values of those
+            properties on this instance
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="repo"></param>
+            <param name="propertyName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.RepoData.EnsureSingle``1(Bam.Net.Data.Repositories.IRepository,System.String,System.String[])">
+            <summary>
+            Ensures that an instance of the current RepoData
+            has been saved to the specified repo where the 
+            specified properties equal the values of those
+            properties on this instance.  Will cause the 
+            Id of this instance to be reset if a representative
+            value is not found in the repo
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="repo"></param>
+            <param name="modifiedBy"></param>
+            <param name="propertyNames"></param>
+            <returns></returns>
+        </member>
         <member name="T:Bam.Net.Data.Repositories.TypeDaoGenerator">
             <summary>
             A class used to generate data access objects from
             CLR types.
             </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.TypeDaoGenerator.#ctor(Bam.Net.Logging.ILogger,System.Collections.Generic.IEnumerable{System.Type})">
+            <summary>
+            Instantiate a new instance of TypeDaoGenerator
+            </summary>
+            <param name="logger"></param>
+            <param name="types"></param>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.TypeDaoGenerator.ClrDaoTypeFilter">
+            <summary>
+            A filter function used to exclude anonymous types
+            that were created by the use of lambda functions from 
+            having dao types attempted to be generated
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.TypeDaoGenerator.#ctor(System.Reflection.Assembly,System.String,Bam.Net.Logging.ILogger)">
+            <summary>
+            Instantiate a new instance of TypeDaoGenerator
+            </summary>
+            <param name="typeAssembly"></param>
+            <param name="nameSpace"></param>
+            <param name="logger"></param>
         </member>
         <member name="P:Bam.Net.Data.Repositories.TypeDaoGenerator.Namespace">
             <summary>

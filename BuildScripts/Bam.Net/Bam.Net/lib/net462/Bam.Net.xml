@@ -1180,6 +1180,39 @@
             An alias for a proxied service class
             </summary>
         </member>
+        <member name="M:Bam.Net.ReflectionExtensions.ToInfoHash(System.Collections.Generic.IEnumerable{System.Type},Bam.Net.HashAlgorithms,System.Text.Encoding)">
+            <summary>
+            Returns a hash representing the specified
+            types using the specified HashAlgorithm 
+            and encoding
+            </summary>
+            <param name="types"></param>
+            <param name="algorithm"></param>
+            <param name="encoding"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ReflectionExtensions.ToInfoString(System.Type)">
+            <summary>
+            Return a string representation of the specified 
+            type.  This is primarily used for hashing the
+            type for the purpose of uniquely identifying
+            it across processes.  The resulting
+            string cannot be easily converted back to 
+            the original type.
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ReflectionExtensions.ToInfoString(System.Reflection.PropertyInfo)">
+            <summary>
+            Return a string representation of the prop. This 
+            is primarily used for hashing the property and
+            the resulting string cannot be easily converted 
+            back to the original PropertyInfo
+            </summary>
+            <param name="prop"></param>
+            <returns></returns>
+        </member>
         <member name="M:Bam.Net.ReflectionExtensions.InvokeStatic``1(System.Type,System.String,System.Object[])">
             <summary>
             Invoke the specified static method of the 
@@ -1208,6 +1241,25 @@
             <param name="instance"></param>
             <param name="methodName"></param>
             <param name="args"></param>
+        </member>
+        <member name="M:Bam.Net.ReflectionExtensions.HasProperty(System.Object,System.String)">
+            <summary>
+            Returns true if the specified instance is of a type
+            that has the specified propertyName
+            </summary>
+            <param name="instance"></param>
+            <param name="propertyName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.ReflectionExtensions.HasProperty(System.Object,System.String,System.Reflection.PropertyInfo@)">
+            <summary>
+            Returns true if the specified instance is of a type
+            that has the specified propertyName
+            </summary>
+            <param name="instance"></param>
+            <param name="propertyName"></param>
+            <param name="prop"></param>
+            <returns></returns>
         </member>
         <member name="M:Bam.Net.ReflectionExtensions.On``1(``0,System.String,System.EventHandler)">
             <summary>
@@ -1723,6 +1775,17 @@
             <typeparam name="T"></typeparam>
             <param name="objectToCheck"></param>
             <param name="failureMessage"></param>
+        </member>
+        <member name="M:Bam.Net.Expect.Fail">
+            <summary>
+            Throw an ExpectFailedException
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Expect.Fail(System.String)">
+            <summary>
+            Throw an ExpectFailedException with the specified message
+            </summary>
+            <param name="message"></param>
         </member>
         <member name="M:Bam.Net.Extensions.IsAffirmative(System.String)">
             <summary>
@@ -2896,7 +2959,9 @@
         <member name="M:Bam.Net.Exec.TakesTooLong``1(System.Func{System.Object,``0},System.Func{``0,``0},System.TimeSpan,System.Object,System.String)">
             <summary>
             Executes the specified function in a separate thread waiting the specified timeToWait.  If
-            the function is not done executing in the specified timeToWait 
+            the function is not done executing in the specified timeToWait returns true otherwise false.
+            Will return true if the function throws an exception with the logic being that the 
+            function was not able to complete its work
             </summary>
             <typeparam name="TResult">The Type returned by the sepcified function, also the return and parameter type of the
             specified callBack.</typeparam>

@@ -4,6 +4,17 @@
         <name>Bam.Net.CommandLine</name>
     </assembly>
     <members>
+        <member name="M:Bam.Net.CommandLine.CommandLineInterface.GetArgument(System.String,System.String)">
+            <summary>
+            Get the value specified for the argument with the 
+            specified name either from the command line or
+            from the default configuration file or prompt for
+            it if the value was not found
+            </summary>
+            <param name="name"></param>
+            <param name="promptMessage"></param>
+            <returns></returns>
+        </member>
         <member name="P:Bam.Net.CommandLine.CommandLineInterface.Arguments">
             <summary>
             Represents arguments after parsing with a call to ParseArgs.  Arguments should be 
@@ -262,6 +273,16 @@
             <param name="command">a valid command line</param>
             <returns>ProcessOutput</returns>
         </member>
+        <member name="M:Bam.Net.CommandLine.Extensions.Run(System.String,System.Boolean,System.Int32)">
+            <summary>
+            Executes the current string on the command line and returns the output.
+            This operation will block if a timeout greater than 0 is specified
+            </summary>
+            <param name="command"></param>
+            <param name="promptForAdmin"></param>
+            <param name="timeout"></param>
+            <returns></returns>
+        </member>
         <member name="M:Bam.Net.CommandLine.Extensions.Run(System.String,System.Boolean,System.Text.StringBuilder,System.Text.StringBuilder,System.Int32)">
             <summary>
             Executes the current string on the command line
@@ -269,6 +290,69 @@
             </summary>
             <param name="command"></param>
             <param name="promptForAdmin"></param>
+            <param name="timeout"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.CommandLine.Extensions.Run(System.Diagnostics.ProcessStartInfo,System.Int32)">
+            <summary>
+            Start a new process for the specified startInfo.  This 
+            operation will block if a timeout greater than 0 is specified
+            </summary>
+            <param name="startInfo"></param>
+            <param name="timeout"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.CommandLine.Extensions.Run(System.Diagnostics.ProcessStartInfo,System.Text.StringBuilder,System.Text.StringBuilder,System.Int32)">
+            <summary>
+            Run the specified command in a separate process capturing the output
+            and error streams if any
+            </summary>
+            <param name="startInfo"></param>
+            <param name="output"></param>
+            <param name="error"></param>
+            <param name="timeout"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.CommandLine.Extensions.Run(System.String,System.EventHandler,System.Nullable{System.Int32})">
+            <summary>
+            Run the specified command in a separate process
+            </summary>
+            <param name="command">The command to run</param>
+            <param name="onExit">EventHandler to execute when the process exits</param>
+            <param name="timeout">The number of milliseconds to block before returning, specify 0 not to block</param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.CommandLine.Extensions.Run(System.String,System.EventHandler,System.Action{System.String},System.Action{System.String},System.Boolean,System.Nullable{System.Int32})">
+            <summary>
+            Run the specified command in a separate process capturing the output
+            and error streams if any
+            </summary>
+            <param name="command"></param>
+            <param name="onExit"></param>
+            <param name="onStandardOut"></param>
+            <param name="onErrorOut"></param>
+            <param name="promptForAdmin"></param>
+            <param name="timeout">The number of milliseconds to block before returning, specify 0 not to block</param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.CommandLine.Extensions.Run(System.Diagnostics.ProcessStartInfo,Bam.Net.CommandLine.ProcessOutputCollector,System.Nullable{System.Int32})">
+            <summary>
+            Run the specified command in a separate process capturing the output
+            and error streams if any
+            </summary>
+            <param name="startInfo"></param>
+            <param name="output"></param>
+            <param name="timeout"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.CommandLine.Extensions.Run(System.Diagnostics.ProcessStartInfo,System.EventHandler,Bam.Net.CommandLine.ProcessOutputCollector,System.Nullable{System.Int32})">
+            <summary>
+            Run the specified command in a separate process capturing the output
+            and error streams if any
+            </summary>
+            <param name="startInfo"></param>
+            <param name="onExit"></param>
+            <param name="output"></param>
             <param name="timeout"></param>
             <returns></returns>
         </member>
