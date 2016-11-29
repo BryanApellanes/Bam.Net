@@ -15,8 +15,8 @@ namespace Bam.Net.CommandLine
         {
             StandardOutput = new StringBuilder();
             StandardError = new StringBuilder();
-            DataHandler = dataHandler ?? ((s) => { StandardOutput.Append(s); });
-            ErrorHandler = errorHandler ?? ((e) => { StandardError.Append(e); });
+            DataHandler = dataHandler ?? ((s) => { StandardOutput.AppendLine(s); });
+            ErrorHandler = errorHandler ?? ((e) => { StandardError.AppendLine(e); });
             ExitCode = -100;
         }
 
