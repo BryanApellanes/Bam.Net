@@ -170,49 +170,6 @@ namespace Bam.Net.Automation.Tests
             }
         }
 
-        private void HandleSummary(summary summary)
-        {
-            OutLine("Summary line by line");
-            summary.Text.Each(text =>
-            {
-                OutLineFormat("{0}", text);
-            });
-            if (summary.Items != null)
-            {
-                OutLine("Iterating over summary.Items");
-                summary.Items.Each(o =>
-                {
-                    Type itemType = o.GetType();
-					OutLineFormat("\tItem type = {0}", ConsoleColor.Yellow, itemType.FullName);
-                });
-            }
-            else
-            {
-                OutLine("summary.Items was null");
-            }
-
-            if (summary.Items1 != null)
-            {
-                OutLine("Iterating over summary.Items1");
-                summary.Items1.Each(o =>
-                {
-                    Type itemType = o.GetType();
-					OutLineFormat("\tItem type = {0}", ConsoleColor.Blue, itemType.FullName);
-                });
-            }
-            else
-            {
-                OutLine("summary.Items1 was null");
-            }
-        }
-
-        private void OutFormat(int tabCount, string format, ConsoleColor color, params string[] args)
-        {
-            StringBuilder tabs = new StringBuilder();
-            tabCount.Times(i => tabs.Append("\t"));
-            OutLineFormat("{0}{1}", color, tabs, format._Format(args));
-        }
-
         [UnitTest]
         public void DocInfoFromXmlFileShouldHaveDeclaringTypeName()
         {
@@ -431,6 +388,49 @@ an empty string")]
             string content = file.Path.SafeReadFile();
             Out(content, ConsoleColor.Cyan);
             File.Delete(file.Path);
+        }
+        
+        private void HandleSummary(summary summary)
+        {
+            OutLine("Summary line by line");
+            summary.Text.Each(text =>
+            {
+                OutLineFormat("{0}", text);
+            });
+            if (summary.Items != null)
+            {
+                OutLine("Iterating over summary.Items");
+                summary.Items.Each(o =>
+                {
+                    Type itemType = o.GetType();
+                    OutLineFormat("\tItem type = {0}", ConsoleColor.Yellow, itemType.FullName);
+                });
+            }
+            else
+            {
+                OutLine("summary.Items was null");
+            }
+
+            if (summary.Items1 != null)
+            {
+                OutLine("Iterating over summary.Items1");
+                summary.Items1.Each(o =>
+                {
+                    Type itemType = o.GetType();
+                    OutLineFormat("\tItem type = {0}", ConsoleColor.Blue, itemType.FullName);
+                });
+            }
+            else
+            {
+                OutLine("summary.Items1 was null");
+            }
+        }
+
+        private void OutFormat(int tabCount, string format, ConsoleColor color, params string[] args)
+        {
+            StringBuilder tabs = new StringBuilder();
+            tabCount.Times(i => tabs.Append("\t"));
+            OutLineFormat("{0}{1}", color, tabs, format._Format(args));
         }
     }
 }

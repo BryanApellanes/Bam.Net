@@ -24,13 +24,14 @@ using System.Messaging;
 using System.Threading;
 using System.Diagnostics;
 using System.ComponentModel;
+using Bam.Net.Automation.SourceControl;
 
 namespace Bam.Net.Automation.Tests
 {
     [Serializable]
     public class ConsoleActions: CommandLineTestInterface
     {
-        public const string TFSServer = "http://tfs.BamApellanes.com:8080/tfs";
+        public const string TFSServer = "http://tfs.bamapps.com:8080/tfs";
         public const string TeamProjectCollection = "ISDEV";
 
         [Serializable]
@@ -75,6 +76,16 @@ namespace Bam.Net.Automation.Tests
             }, null, 0, 900);
 
             Pause();
+        }
+
+        [ConsoleAction("Test GitLog")]
+        public void TestGitLog()
+        {
+            HashSet<GitLog> logs = GitLog.GetSinceVersion("c:\\src\\Bam.Net", 1, 4, 2);
+            foreach(GitLog log in logs)
+            {
+                OutLine(log.PropertiesToString(), ConsoleColor.Cyan);
+            }
         }
     }
 }
