@@ -142,7 +142,24 @@ call git_tag_version.cmd %1");
             cleanScript.ToString().SafeWriteToFile(cleanPath, true);
             OutLineFormat("Wrote file {0}", cleanPath);
         }
-        
+
+        [ConsoleAction("setReleaseNotes", "Set release notes")]
+        public static void SetReleaseNotes()
+        {
+            // Read the baminfo.json file to get the previous version
+            // get the logs since the specified version
+            //    GitLog.GetSinceVersion(...)
+            // parse the commit subject for entries like:
+            //    Bam.Net: fix things
+            //    Bam.Net.ServiceProxy: add json api support
+            // split at the first colon and save in a dictionary of lists
+            //    [ProjectName, List<GitLog.Subject>]
+            // write to the root of the specified projects 
+            //   v<Version>
+            // anything without a specified project put into the srcRoot
+            throw new NotImplementedException();
+        }
+
         [ConsoleAction("baminfo.json", "specify the path to the baminfo.json file to use")]
         public static void SetBamInfo()
         {
