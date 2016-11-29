@@ -20,7 +20,6 @@ namespace Bam.Net.Logging
 		public DaoLogger()
 			: base()
 		{
-			//this.Database = Db.For<Data.LogEvent>();
 		}
 
 		public DaoLogger(Database logTo)
