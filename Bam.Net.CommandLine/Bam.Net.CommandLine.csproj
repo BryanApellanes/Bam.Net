@@ -88,6 +88,7 @@
     <Compile Include="ConsoleLogger.cs" />
     <Compile Include="ConsoleMenu.cs" />
     <Compile Include="ConsoleMenuDelegate.cs" />
+    <Compile Include="ConsoleMessage.cs" />
     <Compile Include="ExecutableDirectory.cs" />
     <Compile Include="ExitDelegate.cs" />
     <Compile Include="Extensions.cs" />
