@@ -122,7 +122,6 @@
     <Compile Include="AsyncRepository.cs" />
     <Compile Include="AuditRepoData.cs" />
     <Compile Include="BackedupDatabase.cs" />
-    <Compile Include="BackgroundThreadQueue.cs" />
     <Compile Include="DaoGenerationException.cs" />
     <Compile Include="DaoBackup.cs" />
     <Compile Include="DatabaseExtensions.cs" />
