@@ -83,7 +83,7 @@ namespace Bam.Net.CoreServices.Services
 
                 reg.For<CompositeRepository>().Use(() =>
                 {
-                    compositeRepo.AddTypes(reg.Get<NamespaceRepositoryStorableTypesProvider>().GetTypes());
+                    compositeRepo.AddTypes(reg.Get<IRepositoryStorableTypesProvider>().GetTypes());
                     return compositeRepo;
                 });
                 return reg;

@@ -30,6 +30,13 @@ namespace Bam.Net.CoreServices.Tests
         
         [ConsoleAction]
         [IntegrationTest]
+        public void ConsoleLogger()
+        {
+            typeof(ConsoleLogger).AssemblyQualifiedName.SafeWriteToFile("c:\\tvg\\consoleLogger.txt");
+        }
+
+        [ConsoleAction]
+        [IntegrationTest]
         public void CoreUsermanagerClientProxyTest()
         {
             OutLineFormat("This test requires a gloo server to be running on port 9100 of the localhost", ConsoleColor.Yellow);

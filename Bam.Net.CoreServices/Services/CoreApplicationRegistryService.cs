@@ -108,7 +108,11 @@ namespace Bam.Net.CoreServices
                 Args.ThrowIf(machine.Port <= 0, "Server Port not specified");
                 IUserManager mgr = (IUserManager)UserManager.Clone();
                 mgr.HttpContext = HttpContext;
-                mgr.SignUp($"{machine.Name}@{machine.Name}", machine.ToString(), machine.Secret.Sha1(), false);
+                SignUpResponse response = mgr.SignUp($"{machine.Name}@{machine.Name}", machine.ToString(), machine.Secret.Sha1(), false);
+                if (!response.Success)
+                {
+                    throw new Exception(response.Message);
+                }
 
                 machine = machine.EnsureSingle<Machine>(CoreRegistryRepository, "Name", "ServerHost", "Port");
                 return new ServiceResponse { Success = true, Data = machine.ToJson() };
