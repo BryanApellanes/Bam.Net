@@ -114,8 +114,7 @@ namespace Bam.Net.Logging
                         {
                             CommitLogEvent(logEvent);
                         }
-                    }
-                    Thread.Sleep(3); // three millisecond sleep to reduce cpu pressure                   
+                    }                    
                 }
                 waitForQueueToBeEmpty.Set();
             }
