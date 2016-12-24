@@ -71,7 +71,7 @@ namespace Bam.Net.Data.Repositories
         /// <returns></returns>
         public T EnsurePersisted<T>(IRepository repo) where T: RepoData, new()
         {
-            T instance = repo.Retrieve<T>(Uuid);
+            T instance = repo.Retrieve<T>(Cuid);
             if(instance == null)
             {
                 instance = repo.Save((T)this);
@@ -109,6 +109,7 @@ namespace Bam.Net.Data.Repositories
         /// <returns></returns>
         public T EnsureSingle<T>(IRepository repo, string modifiedBy, params string[] propertyNames) where T: RepoData, new()
         {
+            ValidatePropertyNamesOrDie(propertyNames);
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             propertyNames.Each(new { Parameters = parameters, Instance = this }, (ctx, pn) =>
             {

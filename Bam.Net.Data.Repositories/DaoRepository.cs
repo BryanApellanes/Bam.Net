@@ -65,7 +65,7 @@ namespace Bam.Net.Data.Repositories
         /// <summary>
         /// The namespace to place generated classes into
         /// </summary>
-        public string Namespace
+        public string BaseNamespace
         {
             get
             {
@@ -73,7 +73,7 @@ namespace Bam.Net.Data.Repositories
             }
             set
             {
-                TypeDaoGenerator.Namespace = value.Replace("Dao", "_Dao_");
+                TypeDaoGenerator.Namespace = value;
             }
         }
 
@@ -140,7 +140,7 @@ namespace Bam.Net.Data.Repositories
                 if(_typeSchema == null)
                 {
                     Initialize();
-                    _typeSchema = TypeSchemaGenerator.CreateTypeSchema(StorableTypes);
+                    _typeSchema = TypeSchemaGenerator.CreateTypeSchema(StorableTypes, SchemaName);
                 }
                 return _typeSchema;
 			}
@@ -149,6 +149,17 @@ namespace Bam.Net.Data.Repositories
         public event EventHandler SchemaWarning;
 
         Assembly _daoAssembly;
+        protected Assembly DaoAssembly
+        {
+            get
+            {
+                return _daoAssembly;
+            }
+            set
+            {
+                _daoAssembly = value;
+            }
+        }
         protected EnsureSchemaStatus SchemaStatus { get; set; }
         /// <summary>
         /// Generates a Dao Assembly for the underlying 

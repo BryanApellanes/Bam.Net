@@ -236,11 +236,7 @@ namespace Bam.Net.Data.Repositories
 				return false;
 			}
 		}
-
-		#endregion
-
-
-		#region IMongoRepository Members
+        
 		public override IEnumerable<object> Query(string propertyName, object value)
 		{
 			throw new NotImplementedException();

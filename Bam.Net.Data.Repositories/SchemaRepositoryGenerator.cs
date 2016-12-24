@@ -58,8 +58,7 @@ namespace Bam.Net.Data.Repositories
             SchemaRepositoryModel schemaModel = new SchemaRepositoryModel
             {
                 BaseRepositoryType = BaseRepositoryType,
-                DaoNamespace = DaoNamespace,
-                SourceNamespace = SourceNamespace,
+                BaseNamespace = SourceNamespace,
                 SchemaRepositoryNamespace = SchemaRepositoryNamespace,
                 SchemaName = schemaName,
                 Types = Types.Select(t => SchemaTypeModel.FromType(t, DaoNamespace)).ToArray()

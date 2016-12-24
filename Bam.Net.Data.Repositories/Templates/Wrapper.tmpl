@@ -27,6 +27,7 @@ namespace @Model.WrapperNamespace
 		[JsonIgnore]
 		public DaoRepository Repository { get; set; }
 
+		[JsonIgnore]
 		public Dictionary<string, PropertyInfo> UpdatedXrefCollectionProperties { get; set; }
 
 		protected void SetUpdatedXrefCollectionProperty(string propertyName, PropertyInfo correspondingProperty)
