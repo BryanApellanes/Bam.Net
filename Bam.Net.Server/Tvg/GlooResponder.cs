@@ -59,9 +59,6 @@ namespace Bam.Net.Server.Tvg
         public override void Initialize()
         {
             OnInitializing();
-            //ServiceProxyResponder.Initialize();
-            //RpcResponder.Initialize();
-            //ServiceProxyResponder.RemoveCommonService<BamApplicationManager>();
             base.Initialize();
             OnInitialized();
         }
