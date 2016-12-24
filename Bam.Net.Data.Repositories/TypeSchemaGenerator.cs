@@ -119,10 +119,10 @@ namespace Bam.Net.Data.Repositories
             AddAugmentations();
 
             FireEvent(CreatingTypeSchemaStarted, EventArgs.Empty);
-            TypeSchema typeSchema = CreateTypeSchema(types);
+            TypeSchema typeSchema = CreateTypeSchema(types, schemaName);
             FireEvent(CreatingTypeSchemaFinished, EventArgs.Empty);
 
-            schemaName = schemaName ?? string.Format("_{0}_", typeSchema.Hash);
+            schemaName = schemaName ?? string.Format("_{0}_", typeSchema.Name);
             SchemaManager.SetSchema(schemaName, false); //TODO: enable more granular manipulation of schema file path in schema manager by giving it a PathProvider property
             SchemaName = schemaName;
 
@@ -143,7 +143,13 @@ namespace Bam.Net.Data.Repositories
             return CreateTypeSchema((IEnumerable<Type>)types);
         }
 
-        public TypeSchema CreateTypeSchema(IEnumerable<Type> types)
+        /// <summary>
+        /// Create a TypeSchema from the specified types
+        /// </summary>
+        /// <param name="types"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public TypeSchema CreateTypeSchema(IEnumerable<Type> types, string name = null)
         {
             HashSet<Type> tableTypes = new HashSet<Type>();
             HashSet<TypeFk> foreignKeyTypes = new HashSet<TypeFk>();
@@ -167,7 +173,7 @@ namespace Bam.Net.Data.Repositories
                 xrefTypes.Add(xref);
             }
 
-            return new TypeSchema { Tables = tableTypes, ForeignKeys = foreignKeyTypes, Xrefs = xrefTypes, DefaultDataTypeBehavior = this.DefaultDataTypeBehavior };
+            return new TypeSchema { Name = name, Tables = tableTypes, ForeignKeys = foreignKeyTypes, Xrefs = xrefTypes, DefaultDataTypeBehavior = DefaultDataTypeBehavior };
         }
 
         protected internal virtual void WriteDaoSchema(TypeSchema typeSchema, SchemaManager schemaManager, List<KeyColumn> missingKeyColumns = null, List<ForeignKeyColumn> missingForeignKeyColumns = null, ITypeTableNameProvider tableNameProvider = null)
@@ -305,10 +311,10 @@ namespace Bam.Net.Data.Repositories
                     if (enumerableType != null)
                     {
                         PropertyInfo leftEnumerable;
-                        PropertyInfo righEnumerable;
-                        if (AreXrefs(type, enumerableType, out leftEnumerable, out righEnumerable))
+                        PropertyInfo rightEnumerable;
+                        if (AreXrefs(type, enumerableType, out leftEnumerable, out rightEnumerable))
                         {
-                            xrefTypes.Add(new TypeXref { Left = type, Right = enumerableType, LeftCollectionProperty = leftEnumerable, RightCollectionProperty = righEnumerable });
+                            xrefTypes.Add(new TypeXref { Left = type, Right = enumerableType, LeftCollectionProperty = leftEnumerable, RightCollectionProperty = rightEnumerable });
                         }
                     }
                 }
@@ -360,6 +366,7 @@ namespace Bam.Net.Data.Repositories
         [Verbosity(VerbosityLevel.Warning, MessageFormat = "[{Instant}]:: ReferencingPropertyNotFound: {Message}\r\n")]
         public event EventHandler ReferencingPropertyNotFound;
 
+        /// <summary>
         /// The event that occurs when a Type is found in the current
         /// TypeSchema hierarchy with an IEnumerable&lt;T&gt; property where the underlying type of
         /// the IEnumerable doesn't have a property of the parent Type to hold the instance of

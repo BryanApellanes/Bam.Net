@@ -12,7 +12,7 @@ namespace Bam.Net.CoreServices
     /// <summary>
     /// A class used for generating service proxies for use in code
     /// </summary>
-    public class ProxyFactory: AssemblyGenerationEventSource
+    public class ProxyFactory: ProxyAssemblyGenerationEventSource
     {
         public ProxyFactory(ILogger logger = null)
             : this(".", logger)
@@ -22,6 +22,13 @@ namespace Bam.Net.CoreServices
             : this(".", null, incubator)
         { }
 
+        /// <summary>
+        /// Instanciate a new ProxyFactory placing temporary code files
+        /// in the specified workspaceDirectory 
+        /// </summary>
+        /// <param name="workspaceDirectory">The directory to write temp files to</param>
+        /// <param name="logger">The logger used to log activity</param>
+        /// <param name="serviceProvider"></param>
         public ProxyFactory(string workspaceDirectory, ILogger logger = null, Incubator serviceProvider = null)
         {
             WorkspaceDirectory = workspaceDirectory;

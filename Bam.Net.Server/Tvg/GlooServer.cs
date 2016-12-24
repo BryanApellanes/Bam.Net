@@ -8,6 +8,7 @@ using System.IO;
 using System.Reflection;
 using Bam.Net.Configuration;
 using System.Timers;
+using Bam.Net.ServiceProxy.Secure;
 
 namespace Bam.Net.Server.Tvg
 {
@@ -22,8 +23,12 @@ namespace Bam.Net.Server.Tvg
                 ReloadServices(fsea);
             };
             RenamedHandler = (o, rea) =>
-            {                
-                ReloadServices(GetDirectory(rea.FullPath));
+            {
+                DirectoryInfo dir = GetDirectory(rea.FullPath);
+                if(dir != null)
+                {
+                    TryReloadServices(dir);
+                }
             };
             ServiceTypes = new HashSet<Type>();
         }
@@ -33,7 +38,7 @@ namespace Bam.Net.Server.Tvg
             ServiceTypes.Clear();
             MonitorDirectories.Each(new { Server = this }, (ctx, dir) =>
             {
-                ctx.Server.ReloadServices(new DirectoryInfo(dir));
+                ctx.Server.TryReloadServices(new DirectoryInfo(dir));
             });
             base.Start();
         }
@@ -55,7 +60,7 @@ namespace Bam.Net.Server.Tvg
                 DirectoryInfo directory = GetDirectory(path);
                 if (directory != null)
                 {
-                    ReloadServices(directory);
+                    TryReloadServices(directory);
                 }
             };
             reloadDelay.AutoReset = false;
@@ -76,42 +81,50 @@ namespace Bam.Net.Server.Tvg
             return directory;
         }
 
-        private void ReloadServices(DirectoryInfo directory)
+        private void TryReloadServices(DirectoryInfo directory)
         {
-            List<string> excludeNamespaces = new List<string>();
-            excludeNamespaces.AddRange(DefaultConfiguration.GetAppSetting("ExcludeNamespaces").DelimitSplit(",", "|"));
-            List<string> excludeClasses = new List<string>();
-            excludeClasses.AddRange(DefaultConfiguration.GetAppSetting("ExcludeClasses").DelimitSplit(",", "|"));
-
-            DefaultConfiguration
-            .GetAppSetting("AssemblySearchPattern")
-            .Or("*Services.dll,*Proxyables.dll,*Gloo.dll")
-            .DelimitSplit(",", "|")
-            .Each(new { Directory = directory, ExcludeNamespaces = excludeNamespaces, ExcludeClasses = excludeClasses }, 
-            (ctx, searchPattern) =>
+            try
             {
-                FileInfo[] files = ctx.Directory.GetFiles(searchPattern, SearchOption.AllDirectories);
-                files.Each(file =>
+
+                List<string> excludeNamespaces = new List<string>();
+                excludeNamespaces.AddRange(DefaultConfiguration.GetAppSetting("ExcludeNamespaces").DelimitSplit(",", "|"));
+                List<string> excludeClasses = new List<string>();
+                excludeClasses.AddRange(DefaultConfiguration.GetAppSetting("ExcludeClasses").DelimitSplit(",", "|"));
+
+                DefaultConfiguration
+                .GetAppSetting("AssemblySearchPattern")
+                .Or("*Services.dll,*Proxyables.dll,*Gloo.dll")
+                .DelimitSplit(",", "|")
+                .Each(new { Directory = directory, ExcludeNamespaces = excludeNamespaces, ExcludeClasses = excludeClasses },
+                (ctx, searchPattern) =>
                 {
-                    try
+                    FileInfo[] files = ctx.Directory.GetFiles(searchPattern, SearchOption.AllDirectories);
+                    files.Each(file =>
                     {
-                        Assembly.LoadFrom(file.FullName)
-                        .GetTypes()
-                        .Where(type => !ctx.ExcludeNamespaces.Contains(type.Namespace) && 
-                                !ctx.ExcludeClasses.Contains(type.Name) &&  
-                                type.HasCustomAttributeOfType<ProxyAttribute>())
-                        .Each(serviceType =>
+                        try
                         {
-                            ServiceTypes.Add(serviceType);                                
-                        });
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.AddEntry("An exception occurred loading services from file {0}: {1}", LogEventType.Warning, ex, file.FullName, ex.Message);
-                    }
+                            Assembly.LoadFrom(file.FullName)
+                            .GetTypes()
+                            .Where(type => !ctx.ExcludeNamespaces.Contains(type.Namespace) &&
+                                    !ctx.ExcludeClasses.Contains(type.Name) &&
+                                    type.HasCustomAttributeOfType<ProxyAttribute>())
+                            .Each(serviceType =>
+                            {
+                                ServiceTypes.Add(serviceType);
+                            });
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.AddEntry("An exception occurred loading services from file {0}: {1}", LogEventType.Warning, ex, file.FullName, ex.Message);
+                        }
+                    });
                 });
-            });
-            RegisterProxiedClasses();
+                RegisterProxiedClasses();
+            }
+            catch (Exception ex)
+            {
+                Logger.AddEntry("An exception occurred loading services: {0}", ex, ex.Message);
+            }
         }
 
         private ServiceProxyResponder RegisterProxiedClasses()
@@ -124,19 +137,22 @@ namespace Bam.Net.Server.Tvg
                 ctx.Responder.AddCommonService(serviceType, GetServiceRetriever(serviceType));
                 ctx.Logger.AddEntry("Added service: {0}", serviceType.FullName);
             });
+            IApiKeyResolver apiKeyResolver = _glooRegistry.Get<IApiKeyResolver>();
+            responder.CommonSecureChannel.ApiKeyResolver = apiKeyResolver;
+            responder.AppSecureChannels.Values.Each(sc => sc.ApiKeyResolver = apiKeyResolver);
             return responder;
         }
 
+        static GlooRegistry _glooRegistry;
         private Func<object> GetServiceRetriever(Type type)
         {
             Type glooRegistryContainer = type.Assembly.GetTypes().Where(t => t.HasCustomAttributeOfType<GlooContainerAttribute>()).FirstOrDefault();
-            if(glooRegistryContainer != null)
+            if(glooRegistryContainer != null && _glooRegistry == null)
             {
                 MethodInfo provider = glooRegistryContainer.GetMethods().Where(mi => mi.HasCustomAttributeOfType<GlooRegistryProviderAttribute>() || mi.Name.Equals("Get")).FirstOrDefault();
-                GlooRegistry reg = (GlooRegistry)provider.Invoke(null, null);
-                return () => reg.Get(type);
+                _glooRegistry = (GlooRegistry)provider.Invoke(null, null);
             }
-            return () => type.Construct();
+            return _glooRegistry == null ? (Func<object>)(() => type.Construct()): (Func<object>)(() => _glooRegistry.Get(type));
         }                
     }
 }

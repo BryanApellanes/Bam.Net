@@ -233,6 +233,12 @@ namespace Bam.Net.Data
             return dao;
         }
 
+        /// <summary>
+        /// Add the specified instance to the current
+        /// collection.  Will be automatically commited
+        /// if a parent is associated with this collection
+        /// </summary>
+        /// <param name="instance"></param>
         public virtual void Add(T instance)
         {
             if (instance == null)
@@ -318,6 +324,7 @@ namespace Bam.Net.Data
             Commit(Database);
         }
 
+        public event ICommittableDelegate AfterCommit;
         public void Commit(Database db)
         {
 			db = db ?? Database;
@@ -325,15 +332,28 @@ namespace Bam.Net.Data
             WriteCommit(sql, db);
 
             sql.Execute(db);
+
+            AfterCommit?.Invoke(db, this);
         }
 
         public void WriteCommit(SqlStringBuilder sql, Database db = null)
         {
 			db = db ?? Database;
+            List<T> children = new List<T>();
             foreach (T dao in this._values)
             {
-                dao.WriteCommit(sql, db);
+                if (dao.HasNewValues)
+                {
+                    dao.WriteCommit(sql, db);
+                    children.Add(dao);
+                }
             }
+
+            sql.Executed += (s, d) =>
+            {
+                children.Each(dao => dao.OnAfterCommit(d));
+                AfterCommit?.Invoke(d, this);
+            };
         }
 
         public void Delete(Database db = null)

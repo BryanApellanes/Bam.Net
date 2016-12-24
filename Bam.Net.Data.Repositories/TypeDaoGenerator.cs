@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Bam.Net.Analytics;
 using Bam.Net.CommandLine;
 using Bam.Net.Data.Schema;
@@ -60,12 +61,13 @@ namespace Bam.Net.Data.Repositories
         {
             get
             {
-                return (t) => !t.IsAbstract && t.Attributes != (
-                                                                    TypeAttributes.NestedPrivate |
-                                                                    TypeAttributes.Sealed |
-                                                                    TypeAttributes.Serializable |
-                                                                    TypeAttributes.BeforeFieldInit
-                                                               );
+                return (t) => !t.IsAbstract && !t.HasCustomAttributeOfType<CompilerGeneratedAttribute>() 
+                && t.Attributes != (
+                        TypeAttributes.NestedPrivate |
+                        TypeAttributes.Sealed |
+                        TypeAttributes.Serializable |
+                        TypeAttributes.BeforeFieldInit
+                    );
             }
         }
 
@@ -80,9 +82,7 @@ namespace Bam.Net.Data.Repositories
         {
             Namespace = nameSpace;
             Args.ThrowIfNull(typeAssembly, "typeAssembly");
-            AddTypes(typeAssembly.GetTypes().Where(t => t.Namespace != null && 
-                                                    t.Namespace.Equals(nameSpace) && ClrDaoTypeFilter(t))
-                    );
+            AddTypes(typeAssembly.GetTypes().Where(t => t.Namespace != null && t.Namespace.Equals(nameSpace)));
         }
 
         public TypeDaoGenerator(TypeSchemaGenerator typeSchemaGenerator) : this()
@@ -169,6 +169,9 @@ namespace Bam.Net.Data.Repositories
 
         public void AddType(Type type)
         {
+            if (!ClrDaoTypeFilter(type))
+                return;
+
             if (type.GetProperty("Id") == null &&
                 !type.HasCustomAttributeOfType<KeyAttribute>() &&
                 CheckIdField)

@@ -75,7 +75,7 @@ namespace Bam.Net.Data.Tests
         }
 
         [UnitTest]
-        public static void DaoEvaluatorTest()
+        public static void DaoExpressionFilterTest()
         {
             SQLiteBitMonitor.MonitorBitness();
             Database database = new SQLiteDatabase(".\\", MethodBase.GetCurrentMethod().Name);
@@ -97,6 +97,7 @@ namespace Bam.Net.Data.Tests
             Expect.AreEqual(check.Id, evalCheck.Id);
             Out(v.TraceLog, ConsoleColor.Cyan);
         }
+
         [UnitTest]
         public static void FilterOrExpression()
         {
@@ -123,6 +124,7 @@ namespace Bam.Net.Data.Tests
             Expect.AreEqual(2, evalCheck.Count);
             Out(v.TraceLog, ConsoleColor.Cyan);
         }
+
         [UnitTest]
         public static void ConditionalExpressionThrowsException()
         {
@@ -202,8 +204,6 @@ namespace Bam.Net.Data.Tests
             PreInit();
             Initialize(args);
         }
-
-
         #endregion
     }
 }

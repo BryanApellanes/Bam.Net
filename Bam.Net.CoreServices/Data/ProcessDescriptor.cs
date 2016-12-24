@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Data.Repositories;
 using System.Net.Sockets;
+using Bam.Net.CoreServices.Data.Daos.Repository;
 
 namespace Bam.Net.CoreServices.Data
 {
@@ -15,7 +16,7 @@ namespace Bam.Net.CoreServices.Data
     {
         public ProcessDescriptor()
         {
-            Machine = Machine.Current;
+            LocalMachine = Machine.Current;
         }
         #region client relevant
         public long ApplicationId { get; set; }
@@ -23,7 +24,8 @@ namespace Bam.Net.CoreServices.Data
         public string InstanceIdentifier { get; set; }
         #endregion
         public long MachineId { get; set; }
-        public virtual Machine Machine { get; set; }
+        public virtual Machine LocalMachine { get; set; }
+        public virtual Machine ServerMachine { get; set; }
         public string HashAlgorithm { get; set; }
         public string Hash { get; set; }
         public string MachineName { get; set; }
@@ -73,14 +75,15 @@ namespace Bam.Net.CoreServices.Data
             }
         }
 
-        public static ProcessDescriptor ForApplicationRegistration(string serverHost, int port, string applicationName, string organizationName = null)
+        public static ProcessDescriptor ForApplicationRegistration(CoreRegistryRepository repo, string serverHost, int port, string applicationName, string organizationName = null)
         {
+            Args.ThrowIfNull(repo, nameof(repo));
             Args.ThrowIfNullOrEmpty(serverHost, nameof(serverHost));
-            Args.ThrowIfNullOrEmpty(applicationName, nameof(applicationName));
+            Args.ThrowIfNullOrEmpty(applicationName, nameof(applicationName));            
 
             ProcessDescriptor result = new ProcessDescriptor();
             result.CopyProperties(Current);
-            result.Machine = Machine.ClientOf(serverHost, port);
+            result.LocalMachine = repo.GetOneMachineWhere(m => m.ServerHost == serverHost && m.Port == port);
             result.Application = new Application { Name = applicationName, Organization = new Organization { Name = organizationName.Or(applicationName) } };
             return result;
         }

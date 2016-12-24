@@ -136,6 +136,9 @@ namespace @Namespace
 			return results;
 		}
 
+		/// <summary>
+		/// Process all records in batches of the specified size
+		/// </summary>
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<@(Model.ClassName)>> batchProcessor, Database database = null)
 		{
@@ -155,13 +158,19 @@ namespace @Namespace
 				}
 			});			
 		}
-			 
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<@(Model.ClassName)>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
 
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<@(Model.ClassName)Columns> where, Action<IEnumerable<@(Model.ClassName)>> batchProcessor, Database database = null)
 		{

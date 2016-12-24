@@ -2,6 +2,7 @@
 	Copyright © Bryan Apellanes 2015  
 */
 using System;
+using Bam.Net.Configuration;
 using Bam.Net.Data;
 using Bam.Net.Logging;
 using Bam.Net.Web;
@@ -16,13 +17,13 @@ namespace Bam.Net.Translation
     {
         public TranslationProvider()
         {
-            this.Logger = Log.Default;
-            this.DownloadLanguages = true;
+            Logger = Log.Default;
+            DownloadLanguages = DefaultConfiguration.GetAppSetting("DownloadLanguages", "No").IsAffirmative();
         }
         public TranslationProvider(ILogger logger)
         {
-            this.Logger = logger;
-            this.DownloadLanguages = true;
+            Logger = logger;
+            DownloadLanguages = DefaultConfiguration.GetAppSetting("DownloadLanguages", "No").IsAffirmative();
         }
 
         public Database LanguageDatabase { get; set; }

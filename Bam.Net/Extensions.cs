@@ -53,7 +53,7 @@ namespace Bam.Net
             _writeResourceActions.Add(ExistingFileAction.OverwriteSilently, (resource, output) => resource.CopyTo(output.Create()));
             _writeResourceActions.Add(ExistingFileAction.DoNotOverwrite, (resource, output) => Logging.Log.Warn("File exists, can't write resource to {0}", output.FullName));
         }
-        
+
         /// <summary>
         /// Returns true if the string equals "true", "t", "yes", "y" or "1" using a case
         /// insensitive comparison
@@ -62,7 +62,7 @@ namespace Bam.Net
         /// <returns></returns>
         public static bool IsAffirmative(this string value)
         {
-            return value.Equals("true", StringComparison.InvariantCultureIgnoreCase) || 
+            return value.Equals("true", StringComparison.InvariantCultureIgnoreCase) ||
                 value.Equals("yes", StringComparison.InvariantCultureIgnoreCase) ||
                 value.Equals("t", StringComparison.InvariantCultureIgnoreCase) ||
                 value.Equals("y", StringComparison.InvariantCultureIgnoreCase) ||
@@ -84,11 +84,19 @@ namespace Bam.Net
                 value.Equals("0");
         }
 
+        /// <summary>
+        /// If the specified file exists, a new path with 
+        /// an underscore and a number appended will be 
+        /// returned where the new path does not exist
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public static string GetNextFileName(this string path)
         {
             int num;
             return GetNextFileName(path, out num);
         }
+
         /// <summary>
         /// If the specified file exists, a new path with 
         /// an underscore and a number appended will be 
@@ -161,7 +169,7 @@ namespace Bam.Net
             StringBuilder result = new StringBuilder();
             int pos = 0;
             remainder = string.Empty;
-            foreach(char c in toRead)
+            foreach (char c in toRead)
             {
                 if (c.Equals(charToFind))
                 {
@@ -214,12 +222,12 @@ namespace Bam.Net
 
         public static string ReadAllText(this FileInfo file)
         {
-            using(StreamReader reader = new StreamReader(file.FullName))
+            using (StreamReader reader = new StreamReader(file.FullName))
             {
                 return reader.ReadToEnd();
             }
         }
-        
+
         public static FileInfo GetFileInfo(this Assembly assembly)
         {
             return new FileInfo(assembly.CodeBase.Replace("file:///", "").Replace("/", "\\"));
@@ -241,7 +249,7 @@ namespace Bam.Net
             foreach (object o in enumerable)
             {
                 yield return o.CopyAs<T>();
-            }         
+            }
         }
 
         /// <summary>
@@ -262,7 +270,7 @@ namespace Bam.Net
         {
             foreach (object o in enumerable)
             {
-                yield return o.CopyAs(type, ctorParams);         
+                yield return o.CopyAs(type, ctorParams);
             }
         }
 
@@ -293,7 +301,7 @@ namespace Bam.Net
         /// <returns></returns>
         public static object CopyAs(this object source, Type type, params object[] ctorParams)
         {
-            if(source == null)
+            if (source == null)
             {
                 return source;
             }
@@ -368,8 +376,8 @@ namespace Bam.Net
                 bool thisIsTheOne = Path.GetFileName(rn).Equals(resourceName);
                 if (thisIsTheOne)
                 {
-                    found = true;                    
-                    using(Stream resource = assembly.GetManifestResourceStream(rn))
+                    found = true;
+                    using (Stream resource = assembly.GetManifestResourceStream(rn))
                     {
                         if (File.Exists(writeTo.FullName))
                         {
@@ -377,7 +385,7 @@ namespace Bam.Net
                         }
                         else
                         {
-                            using(Stream writeStream = writeTo.Create())
+                            using (Stream writeStream = writeTo.Create())
                             {
                                 resource.CopyTo(writeStream);
                             }
@@ -416,13 +424,13 @@ namespace Bam.Net
 
             return found;
         }
-        
+
         public static void UnzipStream(this Stream zipStream, DirectoryInfo extractTo, ExistingFileAction existingFileAction)
         {
             ZipArchive zipArchive = new ZipArchive(zipStream);
             zipArchive.Entries.Each(zipFile =>
             {
-                FileInfo destinationFile = new FileInfo(Path.Combine(extractTo.FullName, zipFile.FullName));                
+                FileInfo destinationFile = new FileInfo(Path.Combine(extractTo.FullName, zipFile.FullName));
                 if (destinationFile.Exists)
                 {
                     _extractActions[existingFileAction](zipFile, destinationFile.FullName);
@@ -708,10 +716,10 @@ namespace Bam.Net
         /// <param name="function"></param>
         public static void Each<T>(this IEnumerable<T> arr, Func<T, bool> function)
         {
-            foreach(T item in arr)
+            foreach (T item in arr)
             {
                 function(item);
-            }            
+            }
         }
 
         /// <summary>
@@ -809,7 +817,7 @@ namespace Bam.Net
 
         //public static void AsyncEach<T>(this IEnumerable<T> values, dynamic context, Action<dynamic, T> action)
         //{
-            // need async loop info { HowManyAtATime = 5}
+        // need async loop info { HowManyAtATime = 5}
         //}
 
         public static void Each<T>(this IEnumerable<T> arr, dynamic context, Action<dynamic, T> action)
@@ -1054,7 +1062,7 @@ namespace Bam.Net
 
         public static IEnumerable<T> OrEmpty<T>(this IEnumerable<T> arr)
         {
-            if(arr == null)
+            if (arr == null)
             {
                 return new T[] { };
             }
@@ -1063,7 +1071,7 @@ namespace Bam.Net
 
         public static IEnumerable<T> OrEmpty<T>(this T[] arr)
         {
-            if(arr == null)
+            if (arr == null)
             {
                 return new T[] { };
             }
@@ -1084,7 +1092,7 @@ namespace Bam.Net
                 constructed = Construct(type, ctorParams);
                 result = constructed != null;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 catcher(ex);
                 result = false;
@@ -1433,6 +1441,11 @@ namespace Bam.Net
         public static T FromJObject<T>(this object jObject)
         {
             return jObject.ToJson().FromJson<T>();
+        }
+
+        public static object FromJObject(this object jObject, Type type)
+        {
+            return jObject.ToJson().FromJson(type);
         }
 
         public static string ToHexString(this byte[] bytes)
@@ -1901,6 +1914,11 @@ namespace Bam.Net
             return results;
         }
 
+        /// <summary>
+        /// Return the specified number of random letters
+        /// </summary>
+        /// <param name="count"></param>
+        /// <returns></returns>
         public static string RandomLetters(this int count)
         {
             return count.RandomString();

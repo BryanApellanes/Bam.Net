@@ -226,7 +226,7 @@ namespace Bam.Net.CoreServices.Tests
             CoreApplicationRegistryService svc = GetTestService();
             string orgName = 5.RandomLetters();
             string appName = 8.RandomLetters();
-            ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration("localhost", 8080, appName, orgName);
+            ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration(svc.CoreRegistryRepository, "localhost", 8080, appName, orgName);
             ServiceResponse response = svc.RegisterApplication(descriptor);
             Expect.IsFalse(response.Success);
             Expect.IsNotNull(response.Data);
@@ -243,8 +243,8 @@ namespace Bam.Net.CoreServices.Tests
             string userName = 4.RandomLetters();
             string orgName = 5.RandomLetters();
             string appName = 8.RandomLetters();
-            ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration("localhost", 8080, appName, orgName);
             CoreApplicationRegistryService svc = GetTestServiceWithUser(userName);
+            ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration(svc.CoreRegistryRepository, "localhost", 8080, appName, orgName);
             ServiceResponse response = svc.RegisterApplication(descriptor);
             Expect.IsTrue(response.Success);
             var user = svc.CoreRegistryRepository.OneUserWhere(c => c.UserName == userName);
@@ -264,7 +264,7 @@ namespace Bam.Net.CoreServices.Tests
             })
             .WhenA<CoreApplicationRegistryService>("tries to register application when not logged in", cars =>
             {
-                ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration("localhost", 8080, "testApp", "testOrg");
+                ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration(cars.CoreRegistryRepository,"localhost", 8080, "testApp", "testOrg");
                 return cars.RegisterApplication(descriptor);
             })
             .TheTest
@@ -319,15 +319,15 @@ namespace Bam.Net.CoreServices.Tests
         public void MachineHasIpAddresses()
         {
             Machine machine = new Machine();
-            Expect.IsNotNull(machine.IpAddresses, $"{nameof(machine.IpAddresses)} was null");
-            Expect.IsGreaterThan(machine.IpAddresses.Count, 0, "No IpAddress entries were found");
+            Expect.IsNotNull(machine.NetworkInterfaces, $"{nameof(machine.NetworkInterfaces)} was null");
+            Expect.IsGreaterThan(machine.NetworkInterfaces.Count, 0, "No IpAddress entries were found");
         }
 
         [UnitTest]
         public void ProcessDescriptorHasMachine()
         {
             ProcessDescriptor process = ProcessDescriptor.Current;
-            Expect.IsNotNull(process.Machine, $"{nameof(process.Machine)} was null");
+            Expect.IsNotNull(process.LocalMachine, $"{nameof(process.LocalMachine)} was null");
         }
 
         [UnitTest]

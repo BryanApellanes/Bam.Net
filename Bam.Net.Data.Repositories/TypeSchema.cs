@@ -44,5 +44,21 @@ namespace Bam.Net.Data.Repositories
                 return ToString().Sha1();
             }
         }
+        string _name;
+        public string Name
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_name))
+                {
+                    _name = Hash;
+                }
+                return _name;
+            }
+            set
+            {
+                _name = value;
+            }
+        }
 	}
 }

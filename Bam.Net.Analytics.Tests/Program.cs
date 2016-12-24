@@ -19,6 +19,7 @@ using Bam.Net.Testing;
 using Bam.Net.Encryption;
 using Bam.Net.Data;
 using Bam.Net.Analytics;
+using Bam.Net.Analytics.Classification;
 
 namespace Bam.Net.Analytics.Crawlers.Tests
 {
@@ -124,65 +125,6 @@ namespace Bam.Net.Analytics.Crawlers.Tests
             }
         }
 
-        [UnitTest]
-        public void UrlShouldToStringCorrectly()
-        {
-            SQLiteRegistrar.Register<Url>();
-            Db.TryEnsureSchema<Url>();
-
-            Url test = Url.FromUri("http://twitter.github.com/bootstrap/base-css.html#tables");
-            Out(test.ToString());
-            Expect.AreEqual("http://twitter.github.com/bootstrap/base-css.html#tables", test.ToString());
-        }
-
-        [UnitTest]
-        public void ImageCrawlerCreateMineShouldSetRootUrlAndName()
-        {
-            Dictionary<string, string> testSettings = new Dictionary<string, string>();
-            string setAppNameTo = "TheMonkey";
-            testSettings.Add("ApplicationName", setAppNameTo);
-            DefaultConfiguration.SetAppSettings(testSettings);
-            SQLiteRegistrar.Register(Dao.ConnectionName(typeof(Url)));
-            Db.TryEnsureSchema<Url>();
-
-            string appName = DefaultConfiguration.GetAppSetting("ApplicationName", "BAD");
-            string rootUrl = "http://www.flickr.com/galleries/";
-
-            Expect.IsFalse(appName.Equals("BAD"),"ApplicationName was not set in the config file");
-            
-            ImageCrawler c = (ImageCrawler)ImageCrawler.CreateMine(rootUrl);
-            Expect.AreEqual(appName, setAppNameTo);
-            Expect.AreEqual(appName, c.Name);
-            Expect.AreEqual(rootUrl, c.Root);
-        }
-
-        [UnitTest("Should not create dupe")]
-        public void ShouldNotCreateDupeUrl()
-        {
-            SQLiteRegistrar.Register(Dao.ConnectionName(typeof(Url)));
-            Db.TryEnsureSchema<Url>();
-
-	        string uri = "http://www.funnycatpix.com/";
-            Url funnycatpix = Url.FromUri(uri, true);
-	        Url check = Url.FromUri(uri, true);
-			Expect.AreEqual(funnycatpix, check);
-			Expect.AreEqual(funnycatpix.Id, check.Id);
-        }
-
-        [UnitTest]
-        public void TestUriPieces()
-        {
-            Uri uri = new Uri("http://www.monkey.com/this/is/the/path?and=thisTheQueryString&some=more");
-            OutLineFormat("Port: {0}", uri.Port);
-			OutLineFormat("Host (Domain): {0}", uri.Host);
-			OutLineFormat("Path: {0}", uri.PathAndQuery.Split(new string[] { "?" }, StringSplitOptions.RemoveEmptyEntries)[0]);
-			OutLineFormat("Query: {0}", uri.Query);
-
-			OutLineFormat("No Query: {0}", new Uri("http://test.com/path").Query);
-			OutLineFormat("No Query w/ Question Mark: {0}", new Uri("http://test.com/path?").Query);
-
-        }
-        
         List<string> _srcs;
         [ConsoleAction]
         public void Crawl()
@@ -217,64 +159,6 @@ namespace Bam.Net.Analytics.Crawlers.Tests
             SQLiteRegistrar.Register<Url>();
             Db.TryEnsureSchema<Url>();
         }
-
-        [UnitTest]
-        public void ListUrls()
-        {
-            Init();
-            UrlCollection all = Url.Where(c => c.Id != null);
-            foreach (Url u in all)
-            {
-                OutLine(u.ToString());
-            }
-        }
-
-		[UnitTest]
-		public void ClassifierTest()
-		{
-			SQLiteRegistrar.Register<Feature>();
-			Db.EnsureSchema<Feature>();
-
-			When.A<NaiveBayesClassifier>("is trained", (classifer) =>
-			{
-				classifer.Train("The quick brown fox jumps over the lazy dog", "good");
-				classifer.Train("make quick money in the online casino", "bad");
-			})
-			.TheTest
-			.ShouldPass(because =>
-			{
-				Classifier classifier = because.ObjectUnderTest<Classifier>();
-				long quickGood = classifier.FeatureCount("quick", "good");
-				long quickBad = classifier.FeatureCount("quick", "bad");
-				because.ItsTrue("The good count of 'quick' is " + quickGood, quickGood > 0);
-				because.ItsTrue("The bad count of 'quick' is " + quickBad, quickBad > 0);
-			})
-			.SoBeHappy(c =>
-			{
-			})
-			.UnlessItFailed();
-		}
-
-        //[UnitTest]
-        //public void ClassifyTest()
-        //{
-        //    SqlClientRegistrar.Register<Feature>();
-        //    _.TryEnsureSchema<Feature>();
-        //    string resultOne = "";
-        //    string resultTwo = "";
-        //    NaiveBayesClassifier classifier = new NaiveBayesClassifier();
-
-        //}
-
-        private void SampleTrain(Classifier classifier)
-        {
-            classifier.Train("Nobody owns the water.", "good");
-            classifier.Train("the quick rabbit jumps fences", "good");
-            classifier.Train("buy phaarmaceuticals now", "bad");
-            classifier.Train("make quick money at the online casino", "bad");
-            classifier.Train("the quick brown fox jumps", "good");
-        }
-
     }
 
 }

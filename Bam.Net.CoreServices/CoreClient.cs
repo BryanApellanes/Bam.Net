@@ -15,6 +15,7 @@ using Bam.Net.Data.SQLite;
 using Bam.Net.CoreServices.Services;
 using Bam.Net.CoreServices.Data;
 using Bam.Net.CoreServices.Data.Daos.Repository;
+using Bam.Net.UserAccounts;
 
 namespace Bam.Net.CoreServices
 {
@@ -27,7 +28,7 @@ namespace Bam.Net.CoreServices
             HostName = hostName;
             Port = port;
             WorkingDirectory = workingDirectory ?? $".\\{nameof(CoreClient)}";
-            ProcessDescriptor = ProcessDescriptor.ForApplicationRegistration(hostName, port, applicationName, organizationName);
+            HashAlgorithm = HashAlgorithms.SHA1;
 
             ProxyFactory factory = new ProxyFactory(WorkingDirectory, logger);
             ApplicationRegistryService = factory.GetProxy<CoreApplicationRegistryService>(HostName, Port);
@@ -41,9 +42,11 @@ namespace Bam.Net.CoreServices
             SetApiKeyResolvers();
             SetClientApplicationNameProvider();
 
-            LocalRepository = new CoreRegistryRepository();
-            LocalRepository.Database = new SQLiteDatabase(WorkingDirectory, nameof(CoreClient));
-            CoreRegistry.GetGlooRegistry().Get<IRepositoryStorableTypesProvider>().AddTypes(LocalRepository);
+            LocalCoreRegistryRepository = new CoreRegistryRepository();
+            LocalCoreRegistryRepository.Database = new SQLiteDatabase(WorkingDirectory, nameof(CoreClient));
+            CoreRegistry.GetGlooRegistry().Get<IStorableTypesProvider>().AddTypes(LocalCoreRegistryRepository);
+
+            ProcessDescriptor = ProcessDescriptor.ForApplicationRegistration(LocalCoreRegistryRepository, hostName, port, applicationName, organizationName);
         }
 
         public CoreClient(string organizationName, string applicationName, string hostName, int port, ILogger logger = null) 
@@ -51,7 +54,7 @@ namespace Bam.Net.CoreServices
         { }
 
         public ProcessDescriptor ProcessDescriptor { get; }
-        public CoreRegistryRepository LocalRepository { get; set; }
+        public CoreRegistryRepository LocalCoreRegistryRepository { get; set; }
         
         [Verbosity(VerbosityLevel.Information, MessageFormat = "{OrganizationName}:{ApplicationName} initializING")]
         public event EventHandler Initializing;
@@ -162,7 +165,7 @@ namespace Bam.Net.CoreServices
                 else
                 {
                     FireEvent(ApiKeyFileNotFound);
-                    _apiKeyInfo = ApplicationRegistryService.GetApiKeyInfo();
+                    _apiKeyInfo = ApplicationRegistryService.GetClientApiKeyInfo();
                     _apiKeyInfo.ApplicationName = nameProvider.GetApplicationName();
                     EnsureApiKeyFileDirectory();
                     _apiKeyInfo.ToJsonFile(ApiKeyFilePath);
@@ -211,16 +214,58 @@ namespace Bam.Net.CoreServices
         }
         #endregion
         
+        public LoginResponse Login(string userName, string passHash)
+        {
+            return UserRegistryService.Login(userName, passHash);
+        }
+
+        public ServiceResponse Register()
+        {
+            Machine current = Machine.ClientOf(LocalCoreRegistryRepository, HostName, Port);
+            current.ServerHost = HostName;
+            current.Port = Port;
+            ServiceResponse registrationResponse = ApplicationRegistryService.RegisterClient(current);
+            if (!registrationResponse.Success)
+            {
+                throw new ClientRegistrationFailedException(registrationResponse);
+            }
+            return registrationResponse;
+        }
+
+        public ServiceResponse Connect()
+        {
+            Machine current = Machine.ClientOf(LocalCoreRegistryRepository, HostName, Port);
+            List<ServiceResponse> responses = new List<ServiceResponse>();
+            foreach(ProxyableService svc in ServiceClients)
+            {
+                responses.Add(svc.ConnectClient(current));
+            }
+            return new ServiceResponse { Data = responses, Success = !responses.Where(r => !r.Success).Any() };
+        }
+
         protected bool IsInitialized { get; set; }
         protected string HostName { get; }
         protected int Port { get; }
+        protected internal CoreUserRegistryService UserRegistryService { get; set; }
         protected internal CoreApplicationRegistryService ApplicationRegistryService { get; set; }
         protected internal CoreConfigurationService ConfigurationService { get; set; }
-        protected internal CoreDiagnosticService DiagnosticService { get; set; }
+        protected internal CoreEventSourceService EventHubService { get; set; }
         protected internal CoreLoggerService LoggerService { get; set; }
         protected internal CoreTranslationService TranslationService { get; set; }
-        protected internal CoreEventSourceService EventHubService { get; set; }
-        protected internal CoreUserRegistryService UserRegistryService { get; set; }
+        protected internal CoreDiagnosticService DiagnosticService { get; set; }
+        protected IEnumerable<ProxyableService> ServiceClients
+        {
+            get
+            {
+                yield return UserRegistryService;
+                yield return ApplicationRegistryService;                
+                yield return ConfigurationService;
+                yield return EventHubService;
+                yield return LoggerService;
+                yield return TranslationService;                
+                yield return DiagnosticService;
+            }
+        }
 
         private void EnsureApiKeyFileDirectory()
         {

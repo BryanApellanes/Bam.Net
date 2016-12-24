@@ -25,6 +25,8 @@ namespace Bam.Net.Automation.Tests
         static void Main(string[] args)
         {
 			AddValidArgument("t", true, description: "run all tests");
+            AddValidArgument("gitRepo", "The path to the git repo to test");
+            
 			DefaultMethod = typeof(Program).GetMethod("Start");
 
 			Initialize(args);

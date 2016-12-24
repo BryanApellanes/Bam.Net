@@ -24,13 +24,14 @@ using System.Messaging;
 using System.Threading;
 using System.Diagnostics;
 using System.ComponentModel;
+using Bam.Net.Automation.SourceControl;
 
 namespace Bam.Net.Automation.Tests
 {
     [Serializable]
     public class ConsoleActions: CommandLineTestInterface
     {
-        public const string TFSServer = "http://tfs.BamApellanes.com:8080/tfs";
+        public const string TFSServer = "http://tfs.bamapps.com:8080/tfs";
         public const string TeamProjectCollection = "ISDEV";
 
         [Serializable]
@@ -75,6 +76,32 @@ namespace Bam.Net.Automation.Tests
             }, null, 0, 900);
 
             Pause();
+        }
+
+        [ConsoleAction("Test GitLog")]
+        public void TestGitLog()
+        {
+            HashSet<GitLog> logs = GitLog.SinceVersion("c:\\src\\Bam.Net", 1, 4, 2);
+            foreach(GitLog log in logs)
+            {
+                OutLine(log.PropertiesToString(), ConsoleColor.Cyan);
+            }
+        }
+
+        [ConsoleAction("Test GitReleaseNotes")]
+        public void TestGitReleaseNotes()
+        {
+            GitReleaseNotes notes = GitReleaseNotes.SinceVersion("Bam.Net.CommandLine", "C:\\src\\Bam.Net", 1, 4, 3);
+            notes.Summary = "Put a nice summary here";
+            OutLineFormat("{0}", ConsoleColor.Cyan, notes.Value);
+        }
+
+        [ConsoleAction("Test Misc GitReleaseNotes")]
+        public void TestGitMiscReleaseNotes()
+        {
+            GitReleaseNotes notes = GitReleaseNotes.MiscSinceVersion("C:\\src\\Bam.Net", 1, 4, 3);
+            notes.Summary = "Misc";
+            OutLineFormat("{0}", ConsoleColor.Cyan, notes.Value);
         }
     }
 }

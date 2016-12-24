@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Bam.Net;
 using Bam.Net.CommandLine;
@@ -52,45 +53,72 @@ namespace Bam.Net.Automation.SourceControl
         [GitOption("%cr", "Committer date, relative")]
         public string CommitterDateRelative { get; set; }
 
+        [GitOption("%s", "(Subject) commit message")]
         public string Subject { get; set; }
 
-        public static List<GitLog> GetLogs(string gitRepoPath, int numberOfYearsBack = 10)
+        public override int GetHashCode()
         {
-            string startDirectory = Environment.CurrentDirectory;
-            Environment.CurrentDirectory = gitRepoPath;
-            string logFormat = "git --no-pager log --pretty=format:{0} --since \"{1} years ago\"";
-            string command = logFormat._Format(GetPrettyFormatArg(), numberOfYearsBack);
-            ProcessOutput output = command.Run();
-            Environment.CurrentDirectory = startDirectory;
-            List<GitLog> results = new List<GitLog>();
-            output.StandardOutput.DelimitSplit("\r", "\n").Each(log =>
-            {
-                results.Add(log.FromJson<GitLog>());
-            });
-            Dictionary<string, string> subjects = GetSubjectsByHash(gitRepoPath, numberOfYearsBack);
-            results.Each(gitlog =>
-            {
-                gitlog.Subject = subjects[gitlog.AbbreviatedCommitHash];
-            });
-            return results;
+            return CommitHash.GetHashCode();
         }
 
-        private static Dictionary<string, string> GetSubjectsByHash(string gitRepoPath, int numberOfYearsBack)
+        public override bool Equals(object obj)
+        {
+            GitLog log = obj as GitLog;
+            if(log != null)
+            {
+                return log.CommitHash.Equals(CommitHash);
+            }
+            return false;
+        }
+
+        static Dictionary<string, HashSet<GitLog>> _logCache = new Dictionary<string, HashSet<GitLog>>();
+        static object _logCacheLock = new object();
+        public static HashSet<GitLog> SinceVersion(string gitRepoPath, int major, int minor = 0, int patch = 0, bool useCache = true)
+        {
+            string version = $"v{major}.{minor}.{patch}";
+            if (!useCache)
+            {
+                return SinceTag(gitRepoPath, version);
+            }
+
+            lock (_logCacheLock)
+            {
+                if (!_logCache.ContainsKey(version))
+                {
+                    _logCache[version] = SinceTag(gitRepoPath, version);
+                }
+                return _logCache[version];
+            }
+        }
+
+        public static HashSet<GitLog> SinceTag(string gitRepoPath, string tag)
+        {
+            return SinceCommit(gitRepoPath, $"tags/{tag}");
+        }
+
+        public static HashSet<GitLog> SinceCommit(string gitRepoPath, string commitIdentifier)
+        {
+            return BetweenCommits(gitRepoPath, commitIdentifier);
+        }
+
+        public static HashSet<GitLog> BetweenCommits(string gitRepoPath, string commitIdentifier, string toCommit = "HEAD")
         {
             string startDirectory = Environment.CurrentDirectory;
             Environment.CurrentDirectory = gitRepoPath;
-            
-            string logFormat = "git --no-pager log --pretty=format:\"%h~::~%s\" --since \"{0} years ago\"";
-            string command = logFormat._Format(numberOfYearsBack);
-            ProcessOutput output = command.Run();
-            
-            Dictionary<string, string> results = new Dictionary<string, string>();
-            output.StandardOutput.DelimitSplit("\r", "\n").Each(log =>
+            string command = $"git --no-pager log --pretty=format:{GetPrettyFormatArg()} {commitIdentifier}..{toCommit}";
+            ProcessOutput output = null;
+            HashSet<GitLog> results = new HashSet<GitLog>();
+            AutoResetEvent wait = new AutoResetEvent(false);
+            output = command.Run((o, a) =>
             {
-                string[] split = log.DelimitSplit("~::~");
-                results.Add(split[0], split[1]);
+                Environment.CurrentDirectory = startDirectory;                
+                output.StandardOutput.DelimitSplit("\r", "\n").Each(log =>
+                {
+                    results.Add(log.FromJson<GitLog>());
+                });
+                wait.Set();
             });
-            Environment.CurrentDirectory = startDirectory;
+            wait.WaitOne();
             return results;
         }
 
@@ -109,7 +137,7 @@ namespace Bam.Net.Automation.SourceControl
                 result.AppendFormat("\\\"{0}\\\": \\\"{1}\\\"", propInfo.Name, option.Value);
                 first = false;
             });
-            result.Append("}\"");
+            result.Append("}\"\r\n");
             return result.ToString();
         }
     }

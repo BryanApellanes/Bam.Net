@@ -46,6 +46,14 @@ namespace Bam.Net
             _referenceAssemblies = value;
         }
 
+        /// <summary>
+        /// Compile all .cs files found in the specified directory to 
+        /// the specified assemblyFileName and return the assembly.  Does
+        /// a recursive search for .cs files
+        /// </summary>
+        /// <param name="direcotry"></param>
+        /// <param name="assemblyFileName"></param>
+        /// <returns></returns>
         public static Assembly ToAssembly(this DirectoryInfo direcotry, string assemblyFileName)
         {
             CompilerResults ignore;
@@ -53,7 +61,9 @@ namespace Bam.Net
         }
 
         /// <summary>
-        /// Compile the directory to the specified assemblyFileName and return the assembly
+        /// Compile all .cs files found in the specified directory to 
+        /// the specified assemblyFileName and return the assembly.  Does
+        /// a recursive search for .cs files
         /// </summary>
         /// <param name="directory"></param>
         /// <param name="assemblyFileName"></param>
@@ -64,6 +74,16 @@ namespace Bam.Net
             return ToAssembly(directory, assemblyFileName, out results, true);
         }
 
+        /// <summary>
+        /// Compile all .cs files found in the specified directory to 
+        /// the specified assemblyFileName and return the assembly.  Does
+        /// a recursive search for .cs files
+        /// </summary>
+        /// <param name="directory"></param>
+        /// <param name="assemblyFileName"></param>
+        /// <param name="results"></param>
+        /// <param name="throwOnError"></param>
+        /// <returns></returns>
         public static Assembly ToAssembly(this DirectoryInfo directory, string assemblyFileName, out CompilerResults results, bool throwOnError = true)
         {
             if (_referenceAssemblies.Length == 0)
@@ -153,7 +173,7 @@ namespace Bam.Net
             foreach (CompilerError error in compilerResults.Errors)
             {
                 message.AppendFormat("File=>{0}\r\n", error.FileName);
-                message.AppendFormat("Line {0}, Column {1}::{2}", error.Line, error.Column, error.ErrorText);
+                message.AppendFormat("Line {0}, Column {1}::{2}\r\n", error.Line, error.Column, error.ErrorText);
             }
 
             return message.ToString();

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Data.Repositories
 {
-    public abstract class RepositoryStorableTypesProvider : IRepositoryStorableTypesProvider
+    public abstract class RepositoryTypesProvider : IStorableTypesProvider
     {
         public void AddTypes(IRepository repository)
         {

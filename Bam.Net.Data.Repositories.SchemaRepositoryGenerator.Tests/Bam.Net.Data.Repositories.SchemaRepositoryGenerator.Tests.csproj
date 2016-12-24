@@ -184,6 +184,7 @@
     <Compile Include="TestDaos_Generated\SonWrapper.cs" />
     <Compile Include="TestDaos_Generated\TestDaoSchemaContext.cs" />
     <Compile Include="TestDaos_Generated\TestDaoSchemaRepository.cs" />
+    <Compile Include="UnitTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bam.Net.Analytics\Bam.Net.Analytics.csproj">

@@ -165,6 +165,7 @@
     <Compile Include="SourceControl\GitConfigStack.cs" />
     <Compile Include="SourceControl\GitLog.cs" />
     <Compile Include="SourceControl\GitOption.cs" />
+    <Compile Include="SourceControl\GitReleaseNotes.cs" />
     <Compile Include="SourceControl\GitToolsSetupResult.cs" />
     <Compile Include="SourceControl\UnableToConfigureGitException.cs" />
     <Compile Include="SourceControl\UnableToInitializeGitToolsException.cs" />

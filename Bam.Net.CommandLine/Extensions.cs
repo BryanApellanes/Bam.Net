@@ -189,7 +189,6 @@ namespace Bam.Net.CommandLine
                 }
                 else
                 {
-                    output.StandardOutput.AppendLine(e.Data);
                     output.DataHandler(e.Data);
                 }
             };
@@ -201,7 +200,6 @@ namespace Bam.Net.CommandLine
                 }
                 else
                 {
-                    output.StandardError.AppendLine(e.Data);
                     output.ErrorHandler(e.Data);
                 }
             };

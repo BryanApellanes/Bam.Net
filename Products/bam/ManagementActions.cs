@@ -24,8 +24,14 @@ namespace bam
 			throw new NotImplementedException();
 		}
 		
-		[ConsoleAction("createClientApplication", "Create Client Application")]
-		public void CreateApp()
+        [ConsoleAction("login", "Log in user to begin secure session")]
+        public void Login()
+        {
+            throw new NotImplementedException();
+        }
+
+		[ConsoleAction("registerClientApplication", "Register Client Application")]
+		public void RegisterApp()
 		{
 			BamServer server = new BamServer(BamConf.Load(GetRoot()));
 			ConsoleLogger logger = new ConsoleLogger();

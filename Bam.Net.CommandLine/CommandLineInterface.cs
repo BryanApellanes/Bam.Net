@@ -11,11 +11,12 @@ using Bam.Net;
 using System.Diagnostics;
 using Bam.Net.Logging;
 using Bam.Net.Configuration;
+using System.Threading;
 
 namespace Bam.Net.CommandLine
 {
     [Serializable]
-    public abstract class CommandLineInterface: MarshalByRefObject
+    public abstract class CommandLineInterface : MarshalByRefObject
     {
         static event ExitDelegate Exiting;
         static event ExitDelegate Exited;
@@ -41,9 +42,9 @@ namespace Bam.Net.CommandLine
         {
             string acronym = name.CaseAcronym().ToLowerInvariant();
             string fromConfig = DefaultConfiguration.GetAppSetting(name, "").Or(DefaultConfiguration.GetAppSetting(acronym, ""));
-            return Arguments.Contains(name) ? Arguments[name] : 
-                Arguments.Contains(acronym) ? Arguments[acronym] : 
-                !string.IsNullOrEmpty(fromConfig) ? fromConfig:  
+            return Arguments.Contains(name) ? Arguments[name] :
+                Arguments.Contains(acronym) ? Arguments[acronym] :
+                !string.IsNullOrEmpty(fromConfig) ? fromConfig :
                 Prompt(promptMessage ?? $"Please enter a value for {name}");
         }
 
@@ -60,7 +61,7 @@ namespace Bam.Net.CommandLine
             get { return validArgumentInfo; }
             set { validArgumentInfo = value; }
         }
-        
+
         protected static List<ConsoleMenu> otherMenus;
         protected static List<ConsoleMenu> OtherMenus
         {
@@ -96,7 +97,7 @@ namespace Bam.Net.CommandLine
         /// </summary>
         protected static event ConsoleArgsParsedDelegate ArgsParsedError;
 
-        
+
         /// <summary>
         /// Checks if the owner of the current process has admin rights,
         /// if not the original command line is rebuilt and run with 
@@ -243,26 +244,26 @@ namespace Bam.Net.CommandLine
             return result;
         }
 
-		public static string[] ArrayPrompt(string message, params string[] quitters)
-		{
-			return ArrayPrompt(message, (IEnumerable<string>)quitters);
-		}
+        public static string[] ArrayPrompt(string message, params string[] quitters)
+        {
+            return ArrayPrompt(message, (IEnumerable<string>)quitters);
+        }
 
-		public static string[] ArrayPrompt(string message, IEnumerable<string> quitters)
-		{
-			List<string> results = new List<string>();
-			string entry = string.Empty;
-			do
-			{
-				entry = Prompt(message);
-				if (!quitters.Contains(entry) && !results.Contains(entry) && !string.IsNullOrEmpty(entry))
-				{
-					results.Add(entry);
-				}
-			} while (!quitters.Contains(entry));
+        public static string[] ArrayPrompt(string message, IEnumerable<string> quitters)
+        {
+            List<string> results = new List<string>();
+            string entry = string.Empty;
+            do
+            {
+                entry = Prompt(message);
+                if (!quitters.Contains(entry) && !results.Contains(entry) && !string.IsNullOrEmpty(entry))
+                {
+                    results.Add(entry);
+                }
+            } while (!quitters.Contains(entry));
 
-			return results.ToArray();
-		}
+            return results.ToArray();
+        }
 
         public static string Prompt(string message)
         {
@@ -306,39 +307,39 @@ namespace Bam.Net.CommandLine
 
         public static string Prompt(string message, string promptTxt, ConsoleColorCombo colors, bool allowQuit)
         {
-			return PromptProvider(message, promptTxt, colors, allowQuit);
+            return PromptProvider(message, promptTxt, colors, allowQuit);
         }
 
-		static Func<string, string, ConsoleColorCombo, bool, string> _promptProvider;
-		public static Func<string, string, ConsoleColorCombo, bool, string> PromptProvider
-		{
-			get
-			{
-				if (_promptProvider == null)
-				{
-					_promptProvider = (message, promptTxt, colors, allowQuit) =>
-					{
-						Out(message, colors);
-						Console.Write(promptTxt);
-						string answer = Console.ReadLine();
-						//answer = answer.TruncateFront(message.Length + promptTxt.Length);
+        static Func<string, string, ConsoleColorCombo, bool, string> _promptProvider;
+        public static Func<string, string, ConsoleColorCombo, bool, string> PromptProvider
+        {
+            get
+            {
+                if (_promptProvider == null)
+                {
+                    _promptProvider = (message, promptTxt, colors, allowQuit) =>
+                    {
+                        Out(message, colors);
+                        Console.Write(promptTxt);
+                        string answer = Console.ReadLine();
+                        //answer = answer.TruncateFront(message.Length + promptTxt.Length);
 
-						if (allowQuit && answer.ToLowerInvariant().Equals("q"))
-						{
-							Environment.Exit(0);
-						}
+                        if (allowQuit && answer.ToLowerInvariant().Equals("q"))
+                        {
+                            Environment.Exit(0);
+                        }
 
-						return answer;
-					};
-				}
+                        return answer;
+                    };
+                }
 
-				return _promptProvider;
-			}
-			set
-			{
-				_promptProvider = value;
-			}
-		}
+                return _promptProvider;
+            }
+            set
+            {
+                _promptProvider = value;
+            }
+        }
 
         public static void Clear()
         {
@@ -373,7 +374,7 @@ namespace Bam.Net.CommandLine
                 Exited(code);
             }
         }
-        
+
         public static void Usage(Assembly assembly)
         {
             FileInfo info = new FileInfo(assembly.Location);
@@ -437,18 +438,18 @@ namespace Bam.Net.CommandLine
             ShowMenu(otherMenus, headerText, actions);
         }
 
-		/// <summary>
-		/// Reads all keys in the appSettings section of the default configuration
-		/// file and adds them all as valid arguments so that they may be 
-		/// specified on the command line.
-		/// </summary>
-		protected static void AddConfigurationSwitches()
-		{
-			DefaultConfiguration.GetAppSettings().AllKeys.Each(key =>
-			{
-				AddValidArgument(key, $"Override value from config: {DefaultConfiguration.GetAppSetting(key)}");
-			});
-		}
+        /// <summary>
+        /// Reads all keys in the appSettings section of the default configuration
+        /// file and adds them all as valid arguments so that they may be 
+        /// specified on the command line.
+        /// </summary>
+        protected static void AddConfigurationSwitches()
+        {
+            DefaultConfiguration.GetAppSettings().AllKeys.Each(key =>
+            {
+                AddValidArgument(key, $"Override value from config: {DefaultConfiguration.GetAppSetting(key)}");
+            });
+        }
 
         private static void ShowMenu(ConsoleMenu[] otherMenus, string headerText, List<ConsoleInvokeableMethod> actions)
         {
@@ -535,33 +536,33 @@ namespace Bam.Net.CommandLine
             Out();
         }
 
-		static Action _outProvider;
-		public static Action OutProvider
-		{
-			get
-			{
-				if (_outProvider == null)
-				{
-					_outProvider = () =>
-					{
-						Console.WriteLine();
-					};
-				}
+        static Action _outProvider;
+        public static Action OutProvider
+        {
+            get
+            {
+                if (_outProvider == null)
+                {
+                    _outProvider = () =>
+                    {
+                        Console.WriteLine();
+                    };
+                }
 
-				return _outProvider;
-			}
-			set
-			{
-				_outProvider = value;
-			}
-		}
+                return _outProvider;
+            }
+            set
+            {
+                _outProvider = value;
+            }
+        }
 
         /// <summary>
         /// Writes a newline character to the console using Console.WriteLine()
         /// </summary>
         public static void Out()
         {
-			OutProvider();
+            OutProvider();
         }
 
         public static void OutLineFormat(string message, params object[] formatArgs)
@@ -582,15 +583,15 @@ namespace Bam.Net.CommandLine
             OutLine(string.Format(message, formatArgs), color);
         }
 
-		/// <summary>
-		/// Print the specified message in the specified
-		/// colors to the console using the specified string.format
-		/// args to format the message.
-		/// </summary>
-		/// <param name="message"></param>
-		/// <param name="foreground"></param>
-		/// <param name="background"></param>
-		/// <param name="formatArgs"></param>
+        /// <summary>
+        /// Print the specified message in the specified
+        /// colors to the console using the specified string.format
+        /// args to format the message.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="foreground"></param>
+        /// <param name="background"></param>
+        /// <param name="formatArgs"></param>
         public static void OutLineFormat(string message, ConsoleColor foreground, ConsoleColor background, params object[] formatArgs)
         {
             OutLine(string.Format(message, formatArgs), new ConsoleColorCombo(foreground, background));
@@ -626,59 +627,71 @@ namespace Bam.Net.CommandLine
             Out(message, ConsoleColor.Gray);
         }
 
-		static Action<string, ConsoleColor> _coloredMessageProvider;
-		public static Action<string, ConsoleColor> ColoredMessageProvider
-		{
-			get
-			{
-				if (_coloredMessageProvider == null)
-				{
-					_coloredMessageProvider = (s, c) =>
-					{
-						Console.ForegroundColor = c;
-						Console.Write(s);
-						Console.ResetColor();
-					};
-				}
-				return _coloredMessageProvider;
-			}
-			set
-			{
-				_coloredMessageProvider = value;
-			}
-		}
+        static Action<string, ConsoleColor> _coloredMessageProvider;
+        static BackgroundThreadQueue<ConsoleMessage> _messageQueue;
+        public static Action<string, ConsoleColor> ColoredMessageProvider
+        {
+            get
+            {
+                if (_coloredMessageProvider == null)
+                {
+                    EnsureQueue();
+                    _coloredMessageProvider = (s, c) =>
+                    {
+                        _messageQueue.Enqueue(new ConsoleMessage(s, c));
+                    };
+                }
+                return _coloredMessageProvider;
+            }
+            set
+            {
+                _coloredMessageProvider = value;
+            }
+        }
+
+        static object _queueLock = new object();
+        private static void EnsureQueue()
+        {
+            _messageQueue = _queueLock.DoubleCheckLock(ref _messageQueue, () =>
+            {
+                return new BackgroundThreadQueue<ConsoleMessage>((msg) =>
+                {
+                    Console.ForegroundColor = msg.Colors.ForegroundColor;
+                    Console.Write(msg.Text);
+                    Console.ResetColor();
+                });
+            });
+        }
 
         public static void Out(string message, ConsoleColor color)
         {
-			ColoredMessageProvider(message, color);
+            ColoredMessageProvider(message, color);
         }
 
-		static Action<string, ConsoleColorCombo> _colorBackgroundMessageProvider;
-		public static Action<string, ConsoleColorCombo> ColoredBackgroundMessageProvider
-		{
-			get
-			{
-				if (_colorBackgroundMessageProvider== null)
-				{
-					_colorBackgroundMessageProvider = (s, c) =>
-					{
-						Console.BackgroundColor = c.BackgroundColor;
-						Console.ForegroundColor = c.ForegroundColor;
-						Console.Write(s);
-						Console.ResetColor();
-					};
-				}
-				return _colorBackgroundMessageProvider;
-			}
-			set
-			{
-				_colorBackgroundMessageProvider = value;
-			}
-		}
+        static Action<string, ConsoleColorCombo> _colorBackgroundMessageProvider;
+        public static Action<string, ConsoleColorCombo> ColoredBackgroundMessageProvider
+        {
+            get
+            {
+                if (_colorBackgroundMessageProvider == null)
+                {
+                    EnsureQueue();
+                    _colorBackgroundMessageProvider = (s, c) =>
+                    {
+                        _messageQueue.Enqueue(new ConsoleMessage(s, c));
+                    };
+                }
+                return _colorBackgroundMessageProvider;
+            }
+            set
+            {
+                _colorBackgroundMessageProvider = value;
+            }
+        }
 
         public static void Out(string message, ConsoleColorCombo colors)
         {
-			ColoredBackgroundMessageProvider(message, colors);
+            ColoredBackgroundMessageProvider(message, colors);
         }
 
         public static void OutLine(string message)
@@ -742,11 +755,11 @@ namespace Bam.Net.CommandLine
 
             InvokeMethod();
         }
-		
-		protected internal static void InvokeInSeparateAppDomain(MethodInfo method, object instance, object[] ps = null)
-		{
-			InvokeInSeparateAppDomain(method, instance, null, ps);
-		}
+
+        protected internal static void InvokeInSeparateAppDomain(MethodInfo method, object instance, object[] ps = null)
+        {
+            InvokeInSeparateAppDomain(method, instance, null, ps);
+        }
         protected internal static void InvokeInSeparateAppDomain(MethodInfo method, object instance, object state, object[] ps = null)
         {
             AppDomain isolationDomain = AppDomain.CreateDomain("TestAppDomain");
@@ -757,15 +770,15 @@ namespace Bam.Net.CommandLine
             isolationDomain.SetData("Method", method);
             isolationDomain.SetData("Instance", instance);
             isolationDomain.SetData("Parameters", parameters);
-			isolationDomain.SetData("State", state);
+            isolationDomain.SetData("State", state);
             isolationDomain.DoCallBack(InvokeMethod);
-			AppDomain.Unload(isolationDomain);
+            AppDomain.Unload(isolationDomain);
         }
 
-		protected internal static T PopState<T>()
-		{
-			return (T)AppDomain.CurrentDomain.GetData("State");
-		}
+        protected internal static T PopState<T>()
+        {
+            return (T)AppDomain.CurrentDomain.GetData("State");
+        }
 
         protected internal static void InvokeSelection(List<ConsoleInvokeableMethod> actions, string answer, string header, string footer, out int selectedNumber)
         {
@@ -828,19 +841,19 @@ namespace Bam.Net.CommandLine
             }
             catch (Exception ex)
             {
-				if (ex.InnerException != null)
-				{
-					throw ex.InnerException;
-				}
-				else
-				{
-					throw;
-				}
+                if (ex.InnerException != null)
+                {
+                    throw ex.InnerException;
+                }
+                else
+                {
+                    throw;
+                }
             }
-			if (!string.IsNullOrEmpty(footer))
-			{
-				Out(footer, ConsoleColor.White);
-			}
+            if (!string.IsNullOrEmpty(footer))
+            {
+                Out(footer, ConsoleColor.White);
+            }
 
             return selectedNumber;
         }
@@ -852,7 +865,7 @@ namespace Bam.Net.CommandLine
                 ConsoleInvokeableMethod consoleMethod = actions[i - 1];
                 string menuOption = consoleMethod.Information;
                 Console.WriteLine("{0}. {1}", i, menuOption);
-            }           
+            }
         }
 
         protected static List<ConsoleInvokeableMethod> GetConsoleInvokeableMethods(Assembly assemblyToAnalyze)
@@ -862,7 +875,7 @@ namespace Bam.Net.CommandLine
 
         protected static List<ConsoleInvokeableMethod> GetConsoleInvokeableMethods<TAttribute, TType>() where TAttribute : Attribute, new()
         {
-			return GetConsoleInvokeableMethods(typeof(TType), typeof(TAttribute));
+            return GetConsoleInvokeableMethods(typeof(TType), typeof(TAttribute));
         }
 
         protected static List<ConsoleInvokeableMethod> GetConsoleInvokeableMethods<TAttribute>(Type typeWhoseAssemblyWillBeAnalyzed) where TAttribute : Attribute, new()
@@ -881,12 +894,12 @@ namespace Bam.Net.CommandLine
             Type[] types = assemblyToAnalyze.GetTypes();
             foreach (Type type in types)
             {
-				actions.AddRange(GetConsoleInvokeableMethods(type, attrType));
+                actions.AddRange(GetConsoleInvokeableMethods(type, attrType));
             }
             return actions;
         }
 
-		protected static List<ConsoleInvokeableMethod> GetConsoleInvokeableMethods(Type typeToAnalyze, Type attributeAddorningMethod)
+        protected static List<ConsoleInvokeableMethod> GetConsoleInvokeableMethods(Type typeToAnalyze, Type attributeAddorningMethod)
         {
             List<ConsoleInvokeableMethod> actions = new List<ConsoleInvokeableMethod>();
             MethodInfo[] methods = typeToAnalyze.GetMethods();
@@ -933,7 +946,7 @@ namespace Bam.Net.CommandLine
                 if (parameterInfo.ParameterType != typeof(string))
                 {
                     OutLine(string.Format("The method {0} can't be invoked because it takes parameters that are not of type string.", method.Name)
-                        , ConsoleColor.Red);                    
+                        , ConsoleColor.Red);
                 }
 
                 if (generate)
@@ -950,7 +963,7 @@ namespace Bam.Net.CommandLine
             return Console.ReadLine();
         }
 
-        protected static bool HasCustomAttributeOfType<T>(MethodInfo method, out T attribute) where T: Attribute, new()
+        protected static bool HasCustomAttributeOfType<T>(MethodInfo method, out T attribute) where T : Attribute, new()
         {
             return CustomAttributeExtension.HasCustomAttributeOfType<T>(method, out attribute);
         }
@@ -995,10 +1008,10 @@ namespace Bam.Net.CommandLine
         {
             MethodInfo[] methods = type.GetMethods();
             bool receivedSwitches = false;
-            foreach(MethodInfo method in methods)
+            foreach (MethodInfo method in methods)
             {
                 ConsoleAction action = null;
-                if(method.HasCustomAttributeOfType<ConsoleAction>(out action))
+                if (method.HasCustomAttributeOfType<ConsoleAction>(out action))
                 {
                     if (!string.IsNullOrEmpty(action.CommandLineSwitch) && !receivedSwitches)
                     {
@@ -1013,21 +1026,21 @@ namespace Bam.Net.CommandLine
             return receivedSwitches;
         }
 
-		/// <summary>
-		/// Execute the methods on the specified instance that are addorned with ConsoleAction
-		/// attributes that have CommandLineSwitch(es) defined that match keys in the
-		/// specified ParsedArguments using the specified ILogger to report any switches not
-		/// found.  An ExpectFailedException will be thrown if more than one method is found
-		/// with a matching CommandLineSwitch defined in ConsoleAction attributes
-		/// </summary>
-		/// <param name="arguments"></param>
-		/// <param name="instance"></param>
-		/// <param name="logger"></param>
-		public static bool ExecuteSwitches(ParsedArguments arguments, object instance, ILogger logger = null)
-		{
-			Expect.IsNotNull(instance, "instance can't be null, use a Type if executing static method");
-			return ExecuteSwitches(arguments, instance.GetType(), instance, logger);
-		}
+        /// <summary>
+        /// Execute the methods on the specified instance that are addorned with ConsoleAction
+        /// attributes that have CommandLineSwitch(es) defined that match keys in the
+        /// specified ParsedArguments using the specified ILogger to report any switches not
+        /// found.  An ExpectFailedException will be thrown if more than one method is found
+        /// with a matching CommandLineSwitch defined in ConsoleAction attributes
+        /// </summary>
+        /// <param name="arguments"></param>
+        /// <param name="instance"></param>
+        /// <param name="logger"></param>
+        public static bool ExecuteSwitches(ParsedArguments arguments, object instance, ILogger logger = null)
+        {
+            Expect.IsNotNull(instance, "instance can't be null, use a Type if executing static method");
+            return ExecuteSwitches(arguments, instance.GetType(), instance, logger);
+        }
 
         /// <summary>
         /// Execute the methods on the specified instance that are addorned with ConsoleAction
@@ -1066,7 +1079,7 @@ namespace Bam.Net.CommandLine
         {
             return ExecuteSwitches(arguments, type, true, instance, logger);
         }
-        
+
         /// <summary>
         /// Execute the methods on the specified instance that are addorned with ConsoleAction
         /// attributes that have CommandLineSwitch(es) defined that match keys in the
@@ -1081,9 +1094,9 @@ namespace Bam.Net.CommandLine
         /// <param name="logger"></param>
         /// <returns>true if command line switches were executed otherwise false</returns>
         public static bool ExecuteSwitches(ParsedArguments arguments, Type type, bool warnForNotFoundSwitches = true, object instance = null, ILogger logger = null)
-		{
+        {
             bool executed = false;
-			foreach (string key in arguments.Keys)
+            foreach (string key in arguments.Keys)
             {
                 ConsoleInvokeableMethod methodToInvoke = GetConsoleInvokeableMethod(arguments, type, key, instance);
 
@@ -1102,14 +1115,14 @@ namespace Bam.Net.CommandLine
                 }
                 else
                 {
-                    if(logger != null && warnForNotFoundSwitches)
+                    if (logger != null && warnForNotFoundSwitches)
                     {
                         logger.AddEntry("Specified command line switch was not found {0}", LogEventType.Warning, key);
                     }
                 }
             }
             return executed;
-		}
+        }
 
         /// <summary>
         /// Makes the specified name a valid command line argument.  Command line
@@ -1119,7 +1132,7 @@ namespace Bam.Net.CommandLine
         /// <param name="allowNull">If true no value for the specified name is necessary.</param>
         /// <param name="addAcronym">Add another valid argument of the acronym of the specified name</param>
         public static void AddValidArgument(string name, bool allowNull, bool addAcronym = false, string description = null, string valueExample = null)
-        {            
+        {
             ValidArgumentInfo.Add(new ArgumentInfo(name, allowNull, description, valueExample));
             if (addAcronym)
             {

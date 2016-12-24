@@ -12,16 +12,23 @@ namespace Bam.Net
     {
         public static IPAddress[] GetUnicastAddresses(this object instance)
         {
+            NetworkInterface[] ignore;
+            return GetUnicastAddresses(instance, out ignore);
+        }
+        public static IPAddress[] GetUnicastAddresses(this object instance, out NetworkInterface[] nics)
+        {
             var context = new { IpAddresses = new List<IPAddress>()};
+            List<NetworkInterface> nicList = new List<NetworkInterface>();
             NetworkInterface.GetAllNetworkInterfaces().Each(context, (ctx, nic) =>
             {
+                nicList.Add(nic);
                 IPInterfaceProperties nicProperties = nic.GetIPProperties();
                 foreach(IPAddressInformation unicast in nicProperties.UnicastAddresses)
                 {
                     ctx.IpAddresses.Add(unicast.Address);
                 }
             });
-
+            nics = nicList.ToArray();
             return context.IpAddresses.ToArray();
         }
     }

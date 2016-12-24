@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace Bam.Net.CoreServices.Data
     {
         public Machine()
         {
-            SetIpAddresses();
+            SetNics();
             Name = Environment.MachineName;
             Secret = ServiceProxySystem.GenerateId();
         }
@@ -27,20 +28,20 @@ namespace Bam.Net.CoreServices.Data
         public string Secret { get; set; }
         public virtual List<ProcessDescriptor> Processes { get; set; }
 
-        List<IpAddress> _ipAddresses;
-        public List<IpAddress> IpAddresses
+        List<Nic> _nics;
+        public List<Nic> NetworkInterfaces
         {
             get
             {
-                if(_ipAddresses == null || _ipAddresses.Count == 0)
+                if(_nics == null || _nics.Count == 0)
                 {
-                    SetIpAddresses();
+                    SetNics();
                 }
-                return _ipAddresses;
+                return _nics;
             }
             set
             {
-                _ipAddresses = value;
+                _nics = value;
             }
         }
         public override string ToString()
@@ -57,25 +58,39 @@ namespace Bam.Net.CoreServices.Data
             }
         }
 
-        public static Machine ClientOf(string serverHost, int port)
+        public static Machine ClientOf(CoreRegistryRepository repo, string serverHost, int serverPort)
         {
-            Machine entry = new Machine();
-            entry.ServerHost = serverHost;
-            entry.Port = port;
-            return entry;
-        }
-
-        private void SetIpAddresses()
-        {
-            _ipAddresses = new List<IpAddress>();
-            foreach (IPAddress addr in NetworkExtensions.GetUnicastAddresses(null)
-                                .Where(ip => (ip.AddressFamily == AddressFamily.InterNetwork ||
-                                        ip.AddressFamily == AddressFamily.InterNetworkV6) &&
-                                        !IPAddress.IsLoopback(ip)))
+            Machine result = repo.OneMachineWhere(c => c.Name == Current.Name && c.ServerHost == serverHost && c.Port == serverPort);
+            if (result == null)
             {
-                _ipAddresses.Add(new IpAddress { AddressFamily = addr.AddressFamily.ToString(), Value = addr.ToString() });
+                result = new Machine();
+                result.Name = Current.Name;
+                result.ServerHost = serverHost;
+                result.Port = serverPort;
+                result = repo.Save(result);
             }
+            return result;
         }
 
+        private void SetNics()
+        {
+            var context = new { Nics = new List<Nic>() };
+            List<NetworkInterface> nicList = new List<NetworkInterface>();
+            NetworkInterface.GetAllNetworkInterfaces().Each(context, (ctx, nic) =>
+            {
+                IPInterfaceProperties nicProperties = nic.GetIPProperties();
+                foreach (IPAddressInformation unicast in nicProperties.UnicastAddresses)
+                {
+                    ctx.Nics.Add(
+                        new Nic
+                        {
+                            AddressFamily = unicast.Address.AddressFamily.ToString(),
+                            Value = unicast.Address.ToString(),
+                            MacAddress = nic.GetPhysicalAddress().ToString()
+                        });
+                }
+            });
+            _nics = context.Nics;
+        }
     }
 }

@@ -138,17 +138,24 @@ namespace Bam.Net.Logging
             return _subscribers.Contains(logger);
         }
 
+        /// <summary>
+        /// Fire the specified event if there are
+        /// subscribers
+        /// </summary>
+        /// <param name="eventHandler"></param>
         protected void FireEvent(EventHandler eventHandler)
         {
             FireEvent(eventHandler, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Fire the specified event if there are subscribers
+        /// </summary>
+        /// <param name="eventHandler"></param>
+        /// <param name="eventArgs"></param>
 		protected void FireEvent(EventHandler eventHandler, EventArgs eventArgs)
 		{
-			if (eventHandler != null)
-			{
-				eventHandler(this, eventArgs);
-			}
-		}
+            eventHandler?.Invoke(this, eventArgs);
+        }
     }
 }

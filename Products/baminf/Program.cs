@@ -51,6 +51,7 @@ namespace baminf
             AddValidArgument("templateFile", false, addAcronym: true, description: "generateNugetScripts: The path to the template file to use");
             AddValidArgument("fileNameFormat", false, addAcronym: true, description: "generateNugetScripts: The file name format for generated files: default is copy_{0}.cmd, where 0 is the name of the library in dllNamesFile");
             AddValidArgument("outputDir", false, addAcronym: true, description: "generateNugetScripts: The directory to write files to");
+            AddValidArgument("setReleaseNotes", true, addAcronym: true, description: "Set the release notes for each project by reading the git history");
         }
         #region do not modify
         public static void Start()

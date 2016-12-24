@@ -12,23 +12,39 @@ namespace Bam.Net.Data
         {
             SqlStringBuilder = sql;
             Database = db;
-            Sql = sql;
-            Parameters = new Dictionary<string, string>();
-            db.GetParameters(sql).Each(new { Parameters }, (ctx, p) =>
-            {
-                ctx.Parameters.Add(p.ParameterName, p.Value.ToString());
-            });
+            Sql = sql;            
         }
 
         protected SqlStringBuilder SqlStringBuilder { get; set; }
         protected Database Database { get; set; }
 
         public string Sql { get; set; }
-        public Dictionary<string, string> Parameters { get; set; }        
+        Dictionary<string, object> _parameters;
+        public Dictionary<string, object> Parameters
+        {
+            get
+            {
+                if(_parameters == null)
+                {
+                    Args.ThrowIfNull(Database, "Database");
+                    _parameters = new Dictionary<string, object>();
+                    Database.GetParameters(SqlStringBuilder).Each(new { Parameters }, (ctx, p) =>
+                    {
+                        ctx.Parameters.Add(p.ParameterName, p.Value.ToString());
+                    });
+                }
+                return _parameters;
+            }
+            set
+            {
+                _parameters = value;
+            }
+        }
 
         public IEnumerable<T> Execute<T>(Database db = null) where T : class, new()
         {
-            return db.ExecuteReader<T>(Sql, Parameters.ToDbParameters(db));
+            Database = db;
+            return db.ExecuteReader<T>(Sql, Parameters.ToDbParameters(Database));
         }
     }
 }

@@ -18,12 +18,18 @@ namespace Bam.Net.Data.SQLite
     /// </summary>
     public class SQLiteDatabase : Database, IHasConnectionStringResolver
     {
+        public const string DefaultFolder = ".\\SQLiteDbFiles";
+
         static SQLiteDatabase()
         {
             SQLiteBitMonitor.MonitorBitness();
         }
 
-        public SQLiteDatabase() : this(".\\SQLiteDbFiles", "SQLiteDatabase")
+        public SQLiteDatabase() : this(DefaultFolder, "SQLiteDatabase")
+        {
+        }
+
+        public SQLiteDatabase(string connectionName) : this(".\\SQLiteDbFiles", connectionName)
         {
         }
 

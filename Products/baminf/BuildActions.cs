@@ -10,6 +10,7 @@ using System.IO;
 using Bam.Net.Automation.AdvancedInstaller;
 using Bam.Net.Automation.Nuget;
 using Bam.Net.Automation;
+using Bam.Net.Automation.SourceControl;
 
 namespace baminf
 {
@@ -142,20 +143,51 @@ call git_tag_version.cmd %1");
             cleanScript.ToString().SafeWriteToFile(cleanPath, true);
             OutLineFormat("Wrote file {0}", cleanPath);
         }
-        
+
+        [ConsoleAction("setReleaseNotes", "Set release notes")]
+        public static void SetReleaseNotes()
+        {
+            // Read the baminfo.json file to get the previous version
+            // get the logs since the specified version
+            //    GitLog.GetSinceVersion(...)
+            // parse the commit subject for entries like:
+            //    Bam.Net: fix things
+            //    Bam.Net.ServiceProxy: add json api support
+            // split at the first colon and save in a dictionary of lists
+            //    [ProjectName, List<GitLog.Subject>]
+            // write to the root of the specified projects 
+            //   v<Version>
+            // anything without a specified project put into the srcRoot
+            throw new NotImplementedException();
+        }
+
         [ConsoleAction("baminfo.json", "specify the path to the baminfo.json file to use")]
         public static void SetBamInfo()
         {
             string nuspecRoot = GetNuspecRoot();
             string bamInfoPath = (Arguments["baminfo.json"] ?? Prompt("Enter the path to the baminfo.json file"));
             string versionString = GetVersion();
+            string srcRoot = GetSourceRoot();
+            
             BamInfo info = bamInfoPath.FromJsonFile<BamInfo>();
+            int sinceMajor = info.MajorVersion;
+            int sinceMinor = info.MinorVersion;
+            int sincePatch = info.PatchVersion;
             Out("*** baminfo.json ***", ConsoleColor.Cyan);
             OutLine(info.PropertiesToString(), ConsoleColor.Cyan);
             OutLine("***", ConsoleColor.Cyan);
             OutLineFormat("Updating version from {0} to {1}", ConsoleColor.Yellow, info.VersionString, versionString);
             info.VersionString = versionString;
             info.ToJsonFile(bamInfoPath);
+
+            GitReleaseNotes miscReleaseNotes = GitReleaseNotes.MiscSinceVersion(srcRoot, sinceMajor, sinceMinor, sincePatch);
+            miscReleaseNotes.Summary = $"Version {versionString}";
+            OutLineFormat("Updating release notes:\r\n{0}", ConsoleColor.DarkYellow, info.ReleaseNotes);
+            info.ReleaseNotes = miscReleaseNotes.Value;
+            info.ToJsonFile(bamInfoPath);
+            string rootReleaseNotes = Path.Combine(srcRoot, "RELEASENOTES");
+            miscReleaseNotes.Value.SafeWriteToFile(rootReleaseNotes);
+
             DirectoryInfo nuspecRootDir = new DirectoryInfo(nuspecRoot);
             FileInfo[] nuspecFiles = nuspecRootDir.GetFiles("*.nuspec", SearchOption.AllDirectories);
             foreach (FileInfo file in nuspecFiles)
@@ -163,7 +195,14 @@ call git_tag_version.cmd %1");
                 NuspecFile nuspecFile = new NuspecFile(file.FullName);
                 nuspecFile.Authors = info.Authors;
                 nuspecFile.Owners = info.Owners;
-                nuspecFile.ReleaseNotes = info.ReleaseNotes;
+                GitReleaseNotes releaseNotes = GitReleaseNotes.SinceVersion(nuspecFile.Id, srcRoot, sinceMajor, sinceMinor, sincePatch);
+                string projectRoot;
+                if(!WriteReleaseNotes(srcRoot, releaseNotes, out projectRoot))
+                {
+                    Warn("Unable to find project directory ({0}) to write release notes", projectRoot);
+                }
+                releaseNotes.Summary = $"Version {versionString}";
+                nuspecFile.ReleaseNotes = releaseNotes.Value;
                 nuspecFile.Copyright = "Copyright © {0} {1}"._Format(info.Owners, DateTime.UtcNow.Year);
                 nuspecFile.LicenseUrl = info.LicenseUrl;
                 nuspecFile.ProjectUrl = info.ProjectUrl;
@@ -386,6 +425,18 @@ call git_tag_version.cmd %1");
                 return Prompt(prompt);
             }
             return value;
+        }
+
+        private static bool WriteReleaseNotes(string srcRoot, GitReleaseNotes notes, out string projectRoot)
+        {
+            projectRoot = Path.Combine(srcRoot, notes.PackageId);
+            if (Directory.Exists(projectRoot))
+            {
+                string releaseNotesFile = Path.Combine(projectRoot, "RELEASENOTES");
+                notes.Value.SafeWriteToFile(releaseNotesFile);
+                return true;
+            }
+            return false;
         }
     }
 }

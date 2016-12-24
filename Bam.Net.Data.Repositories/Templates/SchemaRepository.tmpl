@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using Bam.Net;
 using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
-using @(Model.SourceNamespace);
+using @(Model.BaseNamespace);
 
 namespace @(Model.SchemaRepositoryNamespace)
 {
@@ -22,13 +22,24 @@ namespace @(Model.SchemaRepositoryNamespace)
 		public @(Model.SchemaName)Repository()
 		{
 			SchemaName = "@(Model.SchemaName)";
-			Namespace = "@(Model.DaoNamespace)";
+			BaseNamespace = "@(Model.BaseNamespace)";			
 			@foreach(SchemaTypeModel model in Model.Types)
 			{
 				WriteAddType(model.Type);
 			}
 
+			DaoAssembly = typeof(@(Model.SchemaName)Repository).Assembly;
 		}
+
+		object _addLock = new object();
+        public override void AddType(Type type)
+        {
+            lock (_addLock)
+            {
+                base.AddType(type);
+                DaoAssembly = typeof(@(Model.SchemaName)Repository).Assembly;
+            }
+        }
 
 		@foreach(SchemaTypeModel type in Model.Types)
 		{
