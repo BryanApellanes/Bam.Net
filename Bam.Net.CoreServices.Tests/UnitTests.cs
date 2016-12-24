@@ -319,15 +319,15 @@ namespace Bam.Net.CoreServices.Tests
         public void MachineHasIpAddresses()
         {
             Machine machine = new Machine();
-            Expect.IsNotNull(machine.IpAddresses, $"{nameof(machine.IpAddresses)} was null");
-            Expect.IsGreaterThan(machine.IpAddresses.Count, 0, "No IpAddress entries were found");
+            Expect.IsNotNull(machine.NetworkInterfaces, $"{nameof(machine.NetworkInterfaces)} was null");
+            Expect.IsGreaterThan(machine.NetworkInterfaces.Count, 0, "No IpAddress entries were found");
         }
 
         [UnitTest]
         public void ProcessDescriptorHasMachine()
         {
             ProcessDescriptor process = ProcessDescriptor.Current;
-            Expect.IsNotNull(process.Machine, $"{nameof(process.Machine)} was null");
+            Expect.IsNotNull(process.LocalMachine, $"{nameof(process.LocalMachine)} was null");
         }
 
         [UnitTest]

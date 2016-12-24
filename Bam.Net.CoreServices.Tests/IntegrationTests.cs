@@ -10,6 +10,12 @@ using Bam.Net.UserAccounts;
 using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.CoreServices.Services;
 using System.IO;
+using Bam.Net.CoreServices.Data;
+using Bam.Net.DaoRef;
+using Bam.Net.CoreServices.ProtoBuf;
+using Bam.Net.Data.Repositories;
+using System.Reflection;
+using Bam.Net.CoreServices.Data.Daos.Repository;
 
 namespace Bam.Net.CoreServices.Tests
 {
@@ -30,9 +36,78 @@ namespace Bam.Net.CoreServices.Tests
         
         [ConsoleAction]
         [IntegrationTest]
-        public void ConsoleLogger()
+        public void ProtoFileGeneratorCanGenerateFiles()
         {
-            typeof(ConsoleLogger).AssemblyQualifiedName.SafeWriteToFile("c:\\tvg\\consoleLogger.txt");
+            ProtoFileGenerator protoFileGenerator = new ProtoFileGenerator(new TypeSchemaGenerator(), new InMemoryPropertyNumberer());
+            protoFileGenerator.GenerateProtoFile(typeof(Left));
+            OutLine(new DirectoryInfo(protoFileGenerator.OutputDirectory).FullName);
+        }
+
+        [ConsoleAction]
+        [IntegrationTest]
+        public void DaoProtoFileGeneratorCanGenerateFiles()
+        {
+            ProtoFileGenerator protoFileGenerator = new DaoProtoFileGenerator(new TypeSchemaGenerator(), new InMemoryPropertyNumberer());
+            protoFileGenerator.GenerateProtoFile(typeof(Left));
+            OutLine(new DirectoryInfo(protoFileGenerator.OutputDirectory).FullName);
+        }
+
+        [ConsoleAction]
+        public void ProtocolBufferAssemblyGeneratorCanGenerateCs()
+        {
+            ProtocolBuffersAssemblyGenerator generator = new ProtocolBuffersAssemblyGenerator();
+            DirectoryInfo dir = generator.GenerateCsFiles(typeof(Left));
+            OutLine(dir.FullName);
+        }
+
+
+        [ConsoleAction]
+        [IntegrationTest]
+        public void ProtocolBufferAssemblyGeneratorCanCreateAssembly()
+        {
+            string filePathFile = ".\\thefile.txt";
+            if (File.Exists(filePathFile))
+            {
+                string theFilePath = File.ReadAllText(filePathFile);
+                if (File.Exists(theFilePath))
+                {
+                    File.Delete(theFilePath);
+                }
+            }
+            ProtocolBuffersAssemblyGenerator generator = new ProtocolBuffersAssemblyGenerator("TestProtoBuf.dll", typeof(Left));
+            Assembly ass = generator.GetAssembly();
+            Expect.IsNotNull(ass);
+            string filePath = ass.GetFileInfo().FullName;
+            OutLine(filePath);
+            Expect.IsTrue(File.Exists(filePath));
+            filePath.SafeWriteToFile(filePathFile, true);
+        }
+
+        [ConsoleAction]
+        [IntegrationTest]
+        public void CanSaveMachineInCoreRegistryRepo()
+        {
+            CoreRegistryRepository repo = CoreRegistry.GetGlooRegistry().Get<CoreRegistryRepository>();
+            Machine test = Machine.ClientOf(repo, "test", 80);
+            test = repo.Save(test);
+            Expect.IsTrue(test.Id > 0);
+            Machine test2 = Machine.ClientOf(repo, "test", 90);
+            test2 = repo.Save(test2);
+            Expect.IsTrue(test2.Id > 0);
+        }
+
+        [ConsoleAction]
+        [IntegrationTest]
+        public void CoreClientCanRegisterAndConnectClient()
+        {
+            ConsoleLogger logger = new ConsoleLogger() { AddDetails = false };
+            logger.StartLoggingThread();
+            CoreClient client = new CoreClient("ThreeHeadz", "CoreServicesTestApp", "localhost", 9100, logger);
+            ServiceResponse registrationResponse = client.Register();
+            Expect.IsTrue(registrationResponse.Success, registrationResponse.Message);
+            ServiceResponse response = client.Connect();
+            List<ServiceResponse> responses = response.Data.FromJObject<List<ServiceResponse>>();
+            Expect.IsTrue(response.Success, string.Join("\r\n", responses.Select(r => r.Message).ToArray()));
         }
 
         [ConsoleAction]

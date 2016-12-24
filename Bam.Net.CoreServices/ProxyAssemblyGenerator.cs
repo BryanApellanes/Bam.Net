@@ -11,7 +11,7 @@ using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.CoreServices
 {
-    public class ProxyAssemblyGenerator: AssemblyGenerationEventSource, IAssemblyGenerator
+    public class ProxyAssemblyGenerator: ProxyAssemblyGenerationEventSource, IAssemblyGenerator
     {
         public ProxyAssemblyGenerator(ProxySettings settings, string workspaceDirectory = ".", ILogger logger = null)
         {
@@ -51,7 +51,7 @@ namespace Bam.Net.CoreServices
 
         public GeneratedAssemblyInfo GenerateAssembly()
         {
-            OnAssemblyGenerating(new AssemblyGenerationEventArgs { ServiceType = ServiceType, ServiceSettings = ServiceSettings });
+            OnAssemblyGenerating(new ProxyAssemblyGenerationEventArgs { ServiceType = ServiceType, ServiceSettings = ServiceSettings });
 
             ProxyModel proxyModel = RenderCode();
 
@@ -63,7 +63,7 @@ namespace Bam.Net.CoreServices
 
             GeneratedAssemblyInfo result = new GeneratedAssemblyInfo(FileName, compileResult);
             result.Save();
-            OnAssemblyGenerated(new AssemblyGenerationEventArgs { ServiceType = ServiceType, ServiceSettings = ServiceSettings });
+            OnAssemblyGenerated(new ProxyAssemblyGenerationEventArgs { ServiceType = ServiceType, ServiceSettings = ServiceSettings });
             return result;
         }
 
@@ -90,7 +90,7 @@ namespace Bam.Net.CoreServices
                 if (!method.IsVirtual)
                 {
                     Logger.AddEntry("The method {0}.{1} is not marked virtual and as a result the generated proxy will not delegate properly to the designated remote", LogEventType.Warning, method.DeclaringType.Name, method.Name);
-                    OnMethodWarning(new AssemblyGenerationEventArgs { NonVirtualMethod = method });
+                    OnMethodWarning(new ProxyAssemblyGenerationEventArgs { NonVirtualMethod = method });
                 }
             });
         }

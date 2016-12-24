@@ -49,6 +49,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Google.Protobuf, Version=3.1.0.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Protobuf.3.1.0\lib\net45\Google.Protobuf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
@@ -86,112 +90,123 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientRegistrationFailedException.cs" />
     <Compile Include="CoreExtensions.cs" />
-    <Compile Include="Data\Generated\ApiKey.cs" />
-    <Compile Include="Data\Generated\ApiKeyCollection.cs" />
-    <Compile Include="Data\Generated\ApiKeyColumns.cs" />
-    <Compile Include="Data\Generated\ApiKeyPagedQuery.cs" />
-    <Compile Include="Data\Generated\ApiKeyQuery.cs" />
-    <Compile Include="Data\Generated\ApiKeyWrapper.cs" />
-    <Compile Include="Data\Generated\Application.cs" />
-    <Compile Include="Data\Generated\ApplicationCollection.cs" />
-    <Compile Include="Data\Generated\ApplicationColumns.cs" />
-    <Compile Include="Data\Generated\ApplicationPagedQuery.cs" />
-    <Compile Include="Data\Generated\ApplicationQuery.cs" />
-    <Compile Include="Data\Generated\ApplicationWrapper.cs" />
-    <Compile Include="Data\Generated\ClientServerConnection.cs" />
-    <Compile Include="Data\Generated\ClientServerConnectionCollection.cs" />
-    <Compile Include="Data\Generated\ClientServerConnectionColumns.cs" />
-    <Compile Include="Data\Generated\ClientServerConnectionPagedQuery.cs" />
-    <Compile Include="Data\Generated\ClientServerConnectionQuery.cs" />
-    <Compile Include="Data\Generated\ClientServerConnectionWrapper.cs" />
-    <Compile Include="Data\Generated\Configuration.cs" />
-    <Compile Include="Data\Generated\ConfigurationApplication.cs" />
-    <Compile Include="Data\Generated\ConfigurationApplicationCollection.cs" />
-    <Compile Include="Data\Generated\ConfigurationApplicationColumns.cs" />
-    <Compile Include="Data\Generated\ConfigurationApplicationPagedQuery.cs" />
-    <Compile Include="Data\Generated\ConfigurationApplicationQuery.cs" />
-    <Compile Include="Data\Generated\ConfigurationCollection.cs" />
-    <Compile Include="Data\Generated\ConfigurationColumns.cs" />
-    <Compile Include="Data\Generated\ConfigurationMachine.cs" />
-    <Compile Include="Data\Generated\ConfigurationMachineCollection.cs" />
-    <Compile Include="Data\Generated\ConfigurationMachineColumns.cs" />
-    <Compile Include="Data\Generated\ConfigurationMachinePagedQuery.cs" />
-    <Compile Include="Data\Generated\ConfigurationMachineQuery.cs" />
-    <Compile Include="Data\Generated\ConfigurationPagedQuery.cs" />
-    <Compile Include="Data\Generated\ConfigurationQuery.cs" />
-    <Compile Include="Data\Generated\ConfigurationWrapper.cs" />
-    <Compile Include="Data\Generated\CoreRegistryContext.cs" />
-    <Compile Include="Data\Generated\CoreRegistryRepository.cs" />
-    <Compile Include="Data\Generated\ExternalEventSubscriptionDescriptor.cs" />
-    <Compile Include="Data\Generated\ExternalEventSubscriptionDescriptorCollection.cs" />
-    <Compile Include="Data\Generated\ExternalEventSubscriptionDescriptorColumns.cs" />
-    <Compile Include="Data\Generated\ExternalEventSubscriptionDescriptorPagedQuery.cs" />
-    <Compile Include="Data\Generated\ExternalEventSubscriptionDescriptorQuery.cs" />
-    <Compile Include="Data\Generated\ExternalEventSubscriptionDescriptorWrapper.cs" />
-    <Compile Include="Data\Generated\IpAddress.cs" />
-    <Compile Include="Data\Generated\IpAddressCollection.cs" />
-    <Compile Include="Data\Generated\IpAddressColumns.cs" />
-    <Compile Include="Data\Generated\IpAddressPagedQuery.cs" />
-    <Compile Include="Data\Generated\IpAddressQuery.cs" />
-    <Compile Include="Data\Generated\IpAddressWrapper.cs" />
-    <Compile Include="Data\Generated\Machine.cs" />
-    <Compile Include="Data\Generated\MachineApplication.cs" />
-    <Compile Include="Data\Generated\MachineApplicationCollection.cs" />
-    <Compile Include="Data\Generated\MachineApplicationColumns.cs" />
-    <Compile Include="Data\Generated\MachineApplicationPagedQuery.cs" />
-    <Compile Include="Data\Generated\MachineApplicationQuery.cs" />
-    <Compile Include="Data\Generated\MachineCollection.cs" />
-    <Compile Include="Data\Generated\MachineColumns.cs" />
-    <Compile Include="Data\Generated\MachinePagedQuery.cs" />
-    <Compile Include="Data\Generated\MachineQuery.cs" />
-    <Compile Include="Data\Generated\MachineWrapper.cs" />
-    <Compile Include="Data\Generated\Organization.cs" />
-    <Compile Include="Data\Generated\OrganizationCollection.cs" />
-    <Compile Include="Data\Generated\OrganizationColumns.cs" />
-    <Compile Include="Data\Generated\OrganizationPagedQuery.cs" />
-    <Compile Include="Data\Generated\OrganizationQuery.cs" />
-    <Compile Include="Data\Generated\OrganizationUser.cs" />
-    <Compile Include="Data\Generated\OrganizationUserCollection.cs" />
-    <Compile Include="Data\Generated\OrganizationUserColumns.cs" />
-    <Compile Include="Data\Generated\OrganizationUserPagedQuery.cs" />
-    <Compile Include="Data\Generated\OrganizationUserQuery.cs" />
-    <Compile Include="Data\Generated\OrganizationWrapper.cs" />
-    <Compile Include="Data\Generated\ProcessDescriptor.cs" />
-    <Compile Include="Data\Generated\ProcessDescriptorCollection.cs" />
-    <Compile Include="Data\Generated\ProcessDescriptorColumns.cs" />
-    <Compile Include="Data\Generated\ProcessDescriptorPagedQuery.cs" />
-    <Compile Include="Data\Generated\ProcessDescriptorQuery.cs" />
-    <Compile Include="Data\Generated\ProcessDescriptorWrapper.cs" />
-    <Compile Include="Data\Generated\Qi\ApiKey.cs" />
-    <Compile Include="Data\Generated\Qi\Application.cs" />
-    <Compile Include="Data\Generated\Qi\ClientServerConnection.cs" />
-    <Compile Include="Data\Generated\Qi\Configuration.cs" />
-    <Compile Include="Data\Generated\Qi\ConfigurationApplication.cs" />
-    <Compile Include="Data\Generated\Qi\ConfigurationMachine.cs" />
-    <Compile Include="Data\Generated\Qi\ExternalEventSubscriptionDescriptor.cs" />
-    <Compile Include="Data\Generated\Qi\IpAddress.cs" />
-    <Compile Include="Data\Generated\Qi\Machine.cs" />
-    <Compile Include="Data\Generated\Qi\MachineApplication.cs" />
-    <Compile Include="Data\Generated\Qi\Organization.cs" />
-    <Compile Include="Data\Generated\Qi\OrganizationUser.cs" />
-    <Compile Include="Data\Generated\Qi\ProcessDescriptor.cs" />
-    <Compile Include="Data\Generated\Qi\Subscription.cs" />
-    <Compile Include="Data\Generated\Qi\User.cs" />
-    <Compile Include="Data\Generated\Subscription.cs" />
-    <Compile Include="Data\Generated\SubscriptionCollection.cs" />
-    <Compile Include="Data\Generated\SubscriptionColumns.cs" />
-    <Compile Include="Data\Generated\SubscriptionPagedQuery.cs" />
-    <Compile Include="Data\Generated\SubscriptionQuery.cs" />
-    <Compile Include="Data\Generated\SubscriptionWrapper.cs" />
-    <Compile Include="Data\Generated\User.cs" />
-    <Compile Include="Data\Generated\UserCollection.cs" />
-    <Compile Include="Data\Generated\UserColumns.cs" />
-    <Compile Include="Data\Generated\UserPagedQuery.cs" />
-    <Compile Include="Data\Generated\UserQuery.cs" />
-    <Compile Include="Data\Generated\UserWrapper.cs" />
-    <Compile Include="Data\IpAddress.cs" />
+    <Compile Include="Data\Generated_Dao\ApiKey.cs" />
+    <Compile Include="Data\Generated_Dao\ApiKeyCollection.cs" />
+    <Compile Include="Data\Generated_Dao\ApiKeyColumns.cs" />
+    <Compile Include="Data\Generated_Dao\ApiKeyPagedQuery.cs" />
+    <Compile Include="Data\Generated_Dao\ApiKeyQuery.cs" />
+    <Compile Include="Data\Generated_Dao\ApiKeyWrapper.cs" />
+    <Compile Include="Data\Generated_Dao\Application.cs" />
+    <Compile Include="Data\Generated_Dao\ApplicationCollection.cs" />
+    <Compile Include="Data\Generated_Dao\ApplicationColumns.cs" />
+    <Compile Include="Data\Generated_Dao\ApplicationPagedQuery.cs" />
+    <Compile Include="Data\Generated_Dao\ApplicationQuery.cs" />
+    <Compile Include="Data\Generated_Dao\ApplicationWrapper.cs" />
+    <Compile Include="Data\Generated_Dao\ClientServerConnection.cs" />
+    <Compile Include="Data\Generated_Dao\ClientServerConnectionCollection.cs" />
+    <Compile Include="Data\Generated_Dao\ClientServerConnectionColumns.cs" />
+    <Compile Include="Data\Generated_Dao\ClientServerConnectionPagedQuery.cs" />
+    <Compile Include="Data\Generated_Dao\ClientServerConnectionQuery.cs" />
+    <Compile Include="Data\Generated_Dao\ClientServerConnectionWrapper.cs" />
+    <Compile Include="Data\Generated_Dao\Configuration.cs" />
+    <Compile Include="Data\Generated_Dao\ConfigurationApplication.cs" />
+    <Compile Include="Data\Generated_Dao\ConfigurationApplicationCollection.cs" />
+    <Compile Include="Data\Generated_Dao\ConfigurationApplicationColumns.cs" />
+    <Compile Include="Data\Generated_Dao\ConfigurationApplicationPagedQuery.cs" />
+    <Compile Include="Data\Generated_Dao\ConfigurationApplicationQuery.cs" />
+    <Compile Include="Data\Generated_Dao\ConfigurationCollection.cs" />
+    <Compile Include="Data\Generated_Dao\ConfigurationColumns.cs" />
+    <Compile Include="Data\Generated_Dao\ConfigurationMachine.cs" />
+    <Compile Include="Data\Generated_Dao\ConfigurationMachineCollection.cs" />
+    <Compile Include="Data\Generated_Dao\ConfigurationMachineColumns.cs" />
+    <Compile Include="Data\Generated_Dao\ConfigurationMachinePagedQuery.cs" />
+    <Compile Include="Data\Generated_Dao\ConfigurationMachineQuery.cs" />
+    <Compile Include="Data\Generated_Dao\ConfigurationPagedQuery.cs" />
+    <Compile Include="Data\Generated_Dao\ConfigurationQuery.cs" />
+    <Compile Include="Data\Generated_Dao\ConfigurationWrapper.cs" />
+    <Compile Include="Data\Generated_Dao\CoreRegistryContext.cs" />
+    <Compile Include="Data\Generated_Dao\CoreRegistryRepository.cs" />
+    <Compile Include="Data\Generated_Dao\ExternalEventSubscriptionDescriptor.cs" />
+    <Compile Include="Data\Generated_Dao\ExternalEventSubscriptionDescriptorCollection.cs" />
+    <Compile Include="Data\Generated_Dao\ExternalEventSubscriptionDescriptorColumns.cs" />
+    <Compile Include="Data\Generated_Dao\ExternalEventSubscriptionDescriptorPagedQuery.cs" />
+    <Compile Include="Data\Generated_Dao\ExternalEventSubscriptionDescriptorQuery.cs" />
+    <Compile Include="Data\Generated_Dao\ExternalEventSubscriptionDescriptorWrapper.cs" />
+    <Compile Include="Data\Generated_Dao\Machine.cs" />
+    <Compile Include="Data\Generated_Dao\MachineApplication.cs" />
+    <Compile Include="Data\Generated_Dao\MachineApplicationCollection.cs" />
+    <Compile Include="Data\Generated_Dao\MachineApplicationColumns.cs" />
+    <Compile Include="Data\Generated_Dao\MachineApplicationPagedQuery.cs" />
+    <Compile Include="Data\Generated_Dao\MachineApplicationQuery.cs" />
+    <Compile Include="Data\Generated_Dao\MachineCollection.cs" />
+    <Compile Include="Data\Generated_Dao\MachineColumns.cs" />
+    <Compile Include="Data\Generated_Dao\MachinePagedQuery.cs" />
+    <Compile Include="Data\Generated_Dao\MachineQuery.cs" />
+    <Compile Include="Data\Generated_Dao\MachineWrapper.cs" />
+    <Compile Include="Data\Generated_Dao\Nic.cs" />
+    <Compile Include="Data\Generated_Dao\NicCollection.cs" />
+    <Compile Include="Data\Generated_Dao\NicColumns.cs" />
+    <Compile Include="Data\Generated_Dao\NicPagedQuery.cs" />
+    <Compile Include="Data\Generated_Dao\NicQuery.cs" />
+    <Compile Include="Data\Generated_Dao\NicWrapper.cs" />
+    <Compile Include="Data\Generated_Dao\Organization.cs" />
+    <Compile Include="Data\Generated_Dao\OrganizationCollection.cs" />
+    <Compile Include="Data\Generated_Dao\OrganizationColumns.cs" />
+    <Compile Include="Data\Generated_Dao\OrganizationPagedQuery.cs" />
+    <Compile Include="Data\Generated_Dao\OrganizationQuery.cs" />
+    <Compile Include="Data\Generated_Dao\OrganizationUser.cs" />
+    <Compile Include="Data\Generated_Dao\OrganizationUserCollection.cs" />
+    <Compile Include="Data\Generated_Dao\OrganizationUserColumns.cs" />
+    <Compile Include="Data\Generated_Dao\OrganizationUserPagedQuery.cs" />
+    <Compile Include="Data\Generated_Dao\OrganizationUserQuery.cs" />
+    <Compile Include="Data\Generated_Dao\OrganizationWrapper.cs" />
+    <Compile Include="Data\Generated_Dao\ProcessDescriptor.cs" />
+    <Compile Include="Data\Generated_Dao\ProcessDescriptorCollection.cs" />
+    <Compile Include="Data\Generated_Dao\ProcessDescriptorColumns.cs" />
+    <Compile Include="Data\Generated_Dao\ProcessDescriptorPagedQuery.cs" />
+    <Compile Include="Data\Generated_Dao\ProcessDescriptorQuery.cs" />
+    <Compile Include="Data\Generated_Dao\ProcessDescriptorWrapper.cs" />
+    <Compile Include="Data\Generated_Dao\Qi\ApiKey.cs" />
+    <Compile Include="Data\Generated_Dao\Qi\Application.cs" />
+    <Compile Include="Data\Generated_Dao\Qi\ClientServerConnection.cs" />
+    <Compile Include="Data\Generated_Dao\Qi\Configuration.cs" />
+    <Compile Include="Data\Generated_Dao\Qi\ConfigurationApplication.cs" />
+    <Compile Include="Data\Generated_Dao\Qi\ConfigurationMachine.cs" />
+    <Compile Include="Data\Generated_Dao\Qi\ExternalEventSubscriptionDescriptor.cs" />
+    <Compile Include="Data\Generated_Dao\Qi\Machine.cs" />
+    <Compile Include="Data\Generated_Dao\Qi\MachineApplication.cs" />
+    <Compile Include="Data\Generated_Dao\Qi\Nic.cs" />
+    <Compile Include="Data\Generated_Dao\Qi\Organization.cs" />
+    <Compile Include="Data\Generated_Dao\Qi\OrganizationUser.cs" />
+    <Compile Include="Data\Generated_Dao\Qi\ProcessDescriptor.cs" />
+    <Compile Include="Data\Generated_Dao\Qi\Subscription.cs" />
+    <Compile Include="Data\Generated_Dao\Qi\User.cs" />
+    <Compile Include="Data\Generated_Dao\Subscription.cs" />
+    <Compile Include="Data\Generated_Dao\SubscriptionCollection.cs" />
+    <Compile Include="Data\Generated_Dao\SubscriptionColumns.cs" />
+    <Compile Include="Data\Generated_Dao\SubscriptionPagedQuery.cs" />
+    <Compile Include="Data\Generated_Dao\SubscriptionQuery.cs" />
+    <Compile Include="Data\Generated_Dao\SubscriptionWrapper.cs" />
+    <Compile Include="Data\Generated_Dao\User.cs" />
+    <Compile Include="Data\Generated_Dao\UserCollection.cs" />
+    <Compile Include="Data\Generated_Dao\UserColumns.cs" />
+    <Compile Include="Data\Generated_Dao\UserPagedQuery.cs" />
+    <Compile Include="Data\Generated_Dao\UserQuery.cs" />
+    <Compile Include="Data\Generated_Dao\UserWrapper.cs" />
+    <Compile Include="Data\Generated_Protobuf\BamNetCoreServicesData.cs" />
+    <Compile Include="Data\Nic.cs" />
     <Compile Include="Data\Configuration.cs" />
+    <Compile Include="ProtoBuf\DaoProtocolBuffersAssemblyGenerator.cs" />
+    <Compile Include="ProtoBuf\DaoProtoFileGenerator.cs" />
+    <Compile Include="ProtoBuf\InMemoryPropertyNumberer.cs" />
+    <Compile Include="ProtoBuf\IPropertyNumberer.cs" />
+    <Compile Include="ProtoBuf\ProtocolBufferProperty.cs" />
+    <Compile Include="ProtoBuf\ProtocolBuffersAssemblyGenerator.cs" />
+    <Compile Include="ProtoBuf\ProtocolBufferType.cs" />
+    <Compile Include="ProtoBuf\ProtocolBufferTypeModel.cs" />
+    <Compile Include="ProtoBuf\ProtoFileGenerator.cs" />
     <Compile Include="ProxySettingsInfo.cs" />
     <Compile Include="ServiceRequest.cs" />
     <Compile Include="Services\ClientApplicationFactory.cs" />
@@ -225,7 +240,7 @@
     <Compile Include="SQLiteDatabaseProvider.cs" />
     <Compile Include="Services\CoreRegistry.cs" />
     <Compile Include="Services\CoreApplicationRegistryService.cs" />
-    <Compile Include="AssemblyGenerationEventSource.cs" />
+    <Compile Include="ProxyAssemblyGenerationEventSource.cs" />
     <Compile Include="Services\EventSourceServiceArgs.cs" />
     <Compile Include="CompositeRepository.cs" />
     <Compile Include="GlobalEvents.cs" />
@@ -262,7 +277,7 @@
     <Compile Include="Distributed\QueryOperation.cs" />
     <Compile Include="Distributed\RetrieveOperation.cs" />
     <Compile Include="ProxyAssemblyGenerator.cs" />
-    <Compile Include="AssemblyGenerationEventArgs.cs" />
+    <Compile Include="ProxyAssemblyGenerationEventArgs.cs" />
     <Compile Include="ProxyFactory.cs" />
     <Compile Include="ProxyMethodModel.cs" />
     <Compile Include="ProxyModel.cs" />
@@ -278,6 +293,10 @@
     <ProjectReference Include="..\Bam.Net.Caching\Bam.Net.Caching.csproj">
       <Project>{06bae7ad-8657-4415-bbc0-dad16bb29361}</Project>
       <Name>Bam.Net.Caching</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.CommandLine\Bam.Net.CommandLine.csproj">
+      <Project>{EA9863A9-8E0B-4497-B7FD-ABF450A3E468}</Project>
+      <Name>Bam.Net.CommandLine</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Data.Repositories\Bam.Net.Data.Repositories.csproj">
       <Project>{222ef625-a115-49c7-8bdb-5879725a7d17}</Project>
@@ -346,9 +365,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Data\regen.cmd" />
+    <None Include="Data\regen_dao.cmd" />
+    <None Include="Data\regen_protobuf.cmd" />
     <None Include="packages.config" />
     <None Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="protoc.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

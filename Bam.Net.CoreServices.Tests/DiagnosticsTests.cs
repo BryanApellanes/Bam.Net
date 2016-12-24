@@ -24,7 +24,7 @@ namespace Bam.Net.CoreServices.Tests
         {
             string name = 8.RandomLetters();
             SQLiteDatabase db = new SQLiteDatabase(".\\{0}"._Format(MethodBase.GetCurrentMethod().Name), name);
-            CoreDiagnosticService svc = new CoreDiagnosticService();
+            CoreDiagnosticService svc = new CoreDiagnosticService(null);
             DiagnosticInfo info = svc.GetDiagnosticInfo();
             DatabaseInfo dbInfo = info.Databases.FirstOrDefault(dbi => dbi.ConnectionName.Equals(name));
             Expect.IsNotNull(dbInfo);
@@ -38,7 +38,7 @@ namespace Bam.Net.CoreServices.Tests
         {
             string name = 8.RandomLetters();
             MsSqlDatabase msDatabase = new MsSqlDatabase("chumsql2", "DaoRef", name);
-            CoreDiagnosticService svc = new CoreDiagnosticService();
+            CoreDiagnosticService svc = new CoreDiagnosticService(null);
             DiagnosticInfo info = svc.GetDiagnosticInfo();
             DatabaseInfo dbInfo = info.Databases.FirstOrDefault(dbi => dbi.ConnectionName.Equals(name));
             Expect.IsNotNull(dbInfo);
@@ -52,7 +52,7 @@ namespace Bam.Net.CoreServices.Tests
         {
             string name = 8.RandomLetters();
             OracleDatabase msDatabase = new OracleDatabase("chumsql2", name);
-            CoreDiagnosticService svc = new CoreDiagnosticService();
+            CoreDiagnosticService svc = new CoreDiagnosticService(null);
             DiagnosticInfo info = svc.GetDiagnosticInfo();
             DatabaseInfo dbInfo = info.Databases.FirstOrDefault(dbi => dbi.ConnectionName.Equals(name));
             Expect.IsNotNull(dbInfo);
@@ -65,7 +65,7 @@ namespace Bam.Net.CoreServices.Tests
         {
             string name = 8.RandomLetters();
             MySqlDatabase msDatabase = new MySqlDatabase("chumsql2", "DaoRef", name);
-            CoreDiagnosticService svc = new CoreDiagnosticService();
+            CoreDiagnosticService svc = new CoreDiagnosticService(null);
             DiagnosticInfo info = svc.GetDiagnosticInfo();
             DatabaseInfo dbInfo = info.Databases.FirstOrDefault(dbi => dbi.ConnectionName.Equals(name));
             Expect.IsNotNull(dbInfo);

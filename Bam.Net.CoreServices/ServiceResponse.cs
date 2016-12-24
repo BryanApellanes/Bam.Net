@@ -23,7 +23,7 @@ namespace Bam.Net.CoreServices
         T _typedData;
         public T TypedData(T typedData = default(T))
         {
-            if(typedData != null)
+            if (typedData != null)
             {
                 _typedData = typedData;
             }
@@ -46,6 +46,6 @@ namespace Bam.Net.CoreServices
         public ServiceResponse() { }
         public bool Success { get; set; }
         public string Message { get; set; }
-        public object Data { get; set; }    
+        public object Data { get; set; }          
     }
 }

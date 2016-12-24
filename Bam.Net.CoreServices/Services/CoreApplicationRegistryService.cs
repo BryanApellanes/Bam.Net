@@ -38,7 +38,8 @@ namespace Bam.Net.CoreServices
             _apiKeyResolver = new ApiKeyResolver(this, this);
             AppConf = conf;
             Config = config;
-            Logger = logger;            
+            Logger = logger;
+            HashAlgorithm = HashAlgorithms.SHA1;         
         }
 
         Database _database;
@@ -92,9 +93,8 @@ namespace Bam.Net.CoreServices
         {
             return ApplicationName.Or(AppNameNotSpecified);
         }
-
-        [ApiKeyRequired]
-        public virtual ApiKeyInfo GetApiKeyInfo()
+        
+        public virtual ApiKeyInfo GetClientApiKeyInfo()
         {
             return GetApiKeyInfo(this);
         }
@@ -103,24 +103,34 @@ namespace Bam.Net.CoreServices
         {
             try
             {
-                Args.ThrowIfNull(machine?.Secret, nameof(machine.Secret));
-                Args.ThrowIfNull(machine?.ServerHost, nameof(machine.ServerHost));
-                Args.ThrowIf(machine.Port <= 0, "Server Port not specified");
+                Args.ThrowIfNullOrEmpty(machine?.Secret, nameof(machine.Secret));
+                Args.ThrowIfNullOrEmpty(machine?.ServerHost, nameof(machine.ServerHost));
+                Args.ThrowIf(machine.Port <= 0, "Server Port not specified");                
                 IUserManager mgr = (IUserManager)UserManager.Clone();
                 mgr.HttpContext = HttpContext;
-                SignUpResponse response = mgr.SignUp($"{machine.Name}@{machine.Name}", machine.ToString(), machine.Secret.Sha1(), false);
-                if (!response.Success)
+                string machineName = machine.ToString();
+                ServiceResponse response = new ServiceResponse();
+                CheckUserNameResponse checkUserName = mgr.IsUserNameAvailable(machineName);
+                if (!(bool)checkUserName.Data) // already exists
                 {
-                    throw new Exception(response.Message);
+                    response.Success = true;
+                    response.Message = "Already registered";
                 }
-
-                machine = machine.EnsureSingle<Machine>(CoreRegistryRepository, "Name", "ServerHost", "Port");
-                return new ServiceResponse { Success = true, Data = machine.ToJson() };
+                else
+                {
+                    SignUpResponse signupResponse = mgr.SignUp($"{machine.Name}@{machine.Name}", machineName, machine.Secret.Sha1(), false);
+                    if (!signupResponse.Success)
+                    {
+                        throw new Exception(response.Message);
+                    }
+                    machine = CoreRegistryRepository.GetOneMachineWhere(m => m.Name == machine.Name && m.ServerHost == machine.ServerHost && m.Port == machine.Port);                    
+                    response = new ServiceResponse { Success = true, Data = machine.ToJson() };
+                }
+                return response;
             }
             catch (Exception ex)
             {
-                Logger.AddEntry("Exception occurred in {0}", ex, nameof(CoreApplicationRegistryService.RegisterClient));
-                return new ServiceResponse { Success = false, Message = ex.Message };
+                return HandleException(ex, nameof(CoreApplicationRegistryService.RegisterClient));
             }
         }
 
@@ -307,5 +317,12 @@ namespace Bam.Net.CoreServices
             app = repo.Save(app);
             return app;
         }
+
+        private ServiceResponse HandleException(Exception ex, string methodName)
+        {
+            Logger.AddEntry("Exception occurred in {0}", ex, methodName);
+            return new ServiceResponse { Success = false, Message = ex.Message };
+        }
+
     }
 }

@@ -5,24 +5,28 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Bam.Net.Data;
-using ServiceProxySecure = Bam.Net.ServiceProxy.Secure;
+
 
 namespace Bam.Net.CoreServices
 {
+    using Server;
+    using ServiceProxySecure = ServiceProxy.Secure;
+
     [Proxy("configSvc")]
     [ServiceProxySecure.ApiKeyRequired]
     public class CoreConfigurationService: ProxyableService
     {
         protected CoreConfigurationService() { }
-        public CoreConfigurationService(IDatabaseProvider dbProvider)
+        public CoreConfigurationService(IDatabaseProvider dbProvider, AppConf conf)
         {
             dbProvider.SetDatabases(this);
             DatabaseProvider = dbProvider;
+            AppConf = conf;
         }
         [Exclude]
         public override object Clone()
         {
-            CoreConfigurationService clone = new CoreConfigurationService(DatabaseProvider);
+            CoreConfigurationService clone = new CoreConfigurationService(DatabaseProvider, AppConf);
             clone.CopyProperties(this);
             clone.CopyEventHandlers(this);
             return clone;

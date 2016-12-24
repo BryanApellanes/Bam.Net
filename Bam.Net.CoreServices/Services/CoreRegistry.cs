@@ -18,6 +18,7 @@ using Bam.Net.Data;
 using Bam.Net.Translation.Yandex;
 using Bam.Net.Translation;
 using Bam.Net.CoreServices.Data.Daos.Repository;
+using Bam.Net.ServiceProxy.Secure;
 
 namespace Bam.Net.CoreServices.Services
 {
@@ -69,23 +70,27 @@ namespace Bam.Net.CoreServices.Services
                     .For<CoreApplicationRegistryServiceConfig>().Use(config)
                     .For<IApplicationNameProvider>().Use<CoreApplicationRegistryService>()
                     .For<CoreApplicationRegistryService>().Use<CoreApplicationRegistryService>()
+                    .For<IApiKeyResolver>().Use<CoreApplicationRegistryService>()
                     .For<ISmtpSettingsProvider>().Use(userMgr)
                     .For<CoreUserRegistryService>().Use<CoreUserRegistryService>()
                     .For<MetricsEventSourceService>().Use<MetricsEventSourceService>()
+                    .For<CoreConfigurationService>().Use<CoreConfigurationService>()
                     .For<NotificationEventSourceService>().Use<NotificationEventSourceService>()
                     .For<CoreEventSourceService>().Use<CoreEventSourceService>()
                     .For<IDetectLanguage>().Use(translationProvider)
                     .For<ITranslationProvider>().Use(translationProvider)
-                    .For<IRepositoryStorableTypesProvider>().Use<NamespaceRepositoryStorableTypesProvider>()
-                    .For<CoreTranslationService>().Use<CoreTranslationService>();                    
+                    .For<IStorableTypesProvider>().Use<NamespaceRepositoryStorableTypesProvider>()
+                    .For<CoreTranslationService>().Use<CoreTranslationService>()
+                    .For<CoreDiagnosticService>().Use<CoreDiagnosticService>();                    
                     
                 reg.SetProperties(userMgr);
 
                 reg.For<CompositeRepository>().Use(() =>
                 {
-                    compositeRepo.AddTypes(reg.Get<IRepositoryStorableTypesProvider>().GetTypes());
+                    compositeRepo.AddTypes(reg.Get<IStorableTypesProvider>().GetTypes());
                     return compositeRepo;
                 });
+
                 return reg;
             });
         }

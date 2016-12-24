@@ -1,29 +1,24 @@
 /*
 	Copyright © Bryan Apellanes 2015  
 */
+using System;
 using System.Linq;
 using Bam.Net.Logging;
+using Bam.Net.Server;
 using Bam.Net.ServiceProxy.Secure;
 
 namespace Bam.Net.CoreServices
 {
     [Proxy("loggerSvc")]
-    public class CoreLoggerService: ILog
+    [ApiKeyRequired]
+    public class CoreLoggerService: ProxyableService, ILog
     {
-        object _loggerLock = new object();
-        ILogger _logger;
-        public ILogger Logger
+        protected CoreLoggerService() { }
+        public CoreLoggerService(AppConf conf)
         {
-            get
-            {
-                return _loggerLock.DoubleCheckLock(ref _logger, () => Log.Default);
-            }
-            set
-            {
-                this._logger = value;
-            }
+            AppConf = conf;
         }
-
+        
         public virtual void Info(string messageSignature, params object[] formatArguments)
         {
             Logger.AddEntry(messageSignature, formatArguments.Select(a => a.ToString()).ToArray());
@@ -37,6 +32,13 @@ namespace Bam.Net.CoreServices
         public virtual void Error(string messageSignature, params object[] formatArguments)
         {
             Logger.AddEntry(messageSignature, LogEventType.Error, formatArguments.Select(a => a.ToString()).ToArray());
+        }
+
+        public override object Clone()
+        {
+            CoreLoggerService clone = new CoreLoggerService(AppConf);
+            clone.CopyProperties(this);
+            return clone;
         }
     }
 }
