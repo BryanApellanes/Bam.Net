@@ -199,6 +199,48 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vault", "Products\vault\vau
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "arc", "Products\arc\arc.csproj", "{DFEBBEB9-E3B5-47DC-B827-859164ED7331}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{AF15178A-E3EA-4804-82A2-ECA4295F37D3}"
+	ProjectSection(SolutionItems) = preProject
+		BuildScripts\Bam.Net\backup_packages.cmd = BuildScripts\Bam.Net\backup_packages.cmd
+		BuildScripts\Bam.Net\build_and_install_toolkit.cmd = BuildScripts\Bam.Net\build_and_install_toolkit.cmd
+		BuildScripts\Bam.Net\build_and_install_toolkit_debug.cmd = BuildScripts\Bam.Net\build_and_install_toolkit_debug.cmd
+		BuildScripts\Bam.Net\build_and_run_tests_w_coverage.cmd = BuildScripts\Bam.Net\build_and_run_tests_w_coverage.cmd
+		BuildScripts\Bam.Net\build_bamcore.cmd = BuildScripts\Bam.Net\build_bamcore.cmd
+		BuildScripts\Bam.Net\build_solution.cmd = BuildScripts\Bam.Net\build_solution.cmd
+		BuildScripts\Bam.Net\build_toolkit.cmd = BuildScripts\Bam.Net\build_toolkit.cmd
+		BuildScripts\Bam.Net\build_toolkit_debug.cmd = BuildScripts\Bam.Net\build_toolkit_debug.cmd
+		BuildScripts\Bam.Net\clean.cmd = BuildScripts\Bam.Net\clean.cmd
+		BuildScripts\Bam.Net\copy_build_machine_scripts.cmd = BuildScripts\Bam.Net\copy_build_machine_scripts.cmd
+		BuildScripts\Bam.Net\copy_template.txt = BuildScripts\Bam.Net\copy_template.txt
+		BuildScripts\Bam.Net\Dll_Names.txt = BuildScripts\Bam.Net\Dll_Names.txt
+		BuildScripts\Bam.Net\Dll_Names_merge.txt = BuildScripts\Bam.Net\Dll_Names_merge.txt
+		BuildScripts\Bam.Net\exe_names.txt = BuildScripts\Bam.Net\exe_names.txt
+		BuildScripts\Bam.Net\generate_coverage_report.cmd = BuildScripts\Bam.Net\generate_coverage_report.cmd
+		BuildScripts\Bam.Net\generate_nuget_scripts.cmd = BuildScripts\Bam.Net\generate_nuget_scripts.cmd
+		BuildScripts\Bam.Net\git_commit_all.cmd = BuildScripts\Bam.Net\git_commit_all.cmd
+		BuildScripts\Bam.Net\git_tag_version.cmd = BuildScripts\Bam.Net\git_tag_version.cmd
+		BuildScripts\Bam.Net\install_toolkit.cmd = BuildScripts\Bam.Net\install_toolkit.cmd
+		BuildScripts\Bam.Net\install_toolkit_debug.cmd = BuildScripts\Bam.Net\install_toolkit_debug.cmd
+		BuildScripts\Bam.Net\lib.txt = BuildScripts\Bam.Net\lib.txt
+		BuildScripts\Bam.Net\move_nuget_packages.cmd = BuildScripts\Bam.Net\move_nuget_packages.cmd
+		BuildScripts\Bam.Net\move_nuget_packages_debug.cmd = BuildScripts\Bam.Net\move_nuget_packages_debug.cmd
+		BuildScripts\Bam.Net\pack.cmd = BuildScripts\Bam.Net\pack.cmd
+		BuildScripts\Bam.Net\pack_debug.cmd = BuildScripts\Bam.Net\pack_debug.cmd
+		BuildScripts\Bam.Net\push.cmd = BuildScripts\Bam.Net\push.cmd
+		BuildScripts\Bam.Net\README.md = BuildScripts\Bam.Net\README.md
+		BuildScripts\Bam.Net\restore.cmd = BuildScripts\Bam.Net\restore.cmd
+		BuildScripts\Bam.Net\run_tests_w_coverage.cmd = BuildScripts\Bam.Net\run_tests_w_coverage.cmd
+		BuildScripts\Bam.Net\run_tests_w_coverage_debug.cmd = BuildScripts\Bam.Net\run_tests_w_coverage_debug.cmd
+		BuildScripts\Bam.Net\set_assembly_version.cmd = BuildScripts\Bam.Net\set_assembly_version.cmd
+		BuildScripts\Bam.Net\set_msi_version.cmd = BuildScripts\Bam.Net\set_msi_version.cmd
+		BuildScripts\Bam.Net\set_msi_version_debug.cmd = BuildScripts\Bam.Net\set_msi_version_debug.cmd
+		BuildScripts\Bam.Net\set_nuspec_info.cmd = BuildScripts\Bam.Net\set_nuspec_info.cmd
+		BuildScripts\Bam.Net\uninstall_toolkit.cmd = BuildScripts\Bam.Net\uninstall_toolkit.cmd
+		BuildScripts\Bam.Net\uninstall_toolkit_debug.cmd = BuildScripts\Bam.Net\uninstall_toolkit_debug.cmd
+		BuildScripts\Bam.Net\ver.txt = BuildScripts\Bam.Net\ver.txt
+		BuildScripts\Bam.Net\zip_toolkit.cmd = BuildScripts\Bam.Net\zip_toolkit.cmd
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		CD_ROM|Any CPU = CD_ROM|Any CPU
@@ -5720,5 +5762,6 @@ Global
 		{A4699D0A-D312-416D-93F0-C487A24737A1} = {284C863A-715D-4BBB-AF94-C61C3DCFB8B9}
 		{2F5A9E6A-A8D7-459B-A5F1-C85D4691F480} = {480EE35F-D7E4-4EED-92D8-679274B336A2}
 		{DFEBBEB9-E3B5-47DC-B827-859164ED7331} = {480EE35F-D7E4-4EED-92D8-679274B336A2}
+		{AF15178A-E3EA-4804-82A2-ECA4295F37D3} = {6568D61E-47AF-46E3-8A70-9C1C5734ABEE}
 	EndGlobalSection
 EndGlobal

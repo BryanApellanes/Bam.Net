@@ -104,6 +104,21 @@ namespace CommandLineTests
         public class Apple : IFruit
         { }
 
+        interface IVegetable
+        { }
+
+        public class Tomato : IFruit
+        { }
+
+        public abstract class Eater
+        {
+            public Eater(IFruit food)
+            {
+                Food = food;
+            }
+            public IFruit Food { get; set; }
+        }
+
         [UnitTest]
         public static void IncubatorShouldGiveMeWhatISet()
         {
