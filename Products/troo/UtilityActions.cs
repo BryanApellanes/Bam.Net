@@ -12,6 +12,7 @@ using System.IO;
 using Bam.Net;
 using Bam.Net.Data.SQLite;
 using Bam.Net.Logging;
+using Bam.Net.CoreServices.ProtoBuf;
 
 namespace troo
 {
@@ -22,7 +23,7 @@ namespace troo
         [ConsoleAction("generateSchemaRepository", "Generate a schema specific DaoRepository")]
         public static void GenerateSchemaRepository()
         {
-            GenerationInfo genInfo = GetGenerationInfo();
+            GenerationInfo genInfo = GetDaoGenerationInfo();
             ConsoleLogger logger = new ConsoleLogger();
             logger.StartLoggingThread();
             SchemaRepositoryGenerator schemaGen = new SchemaRepositoryGenerator(genInfo.Assembly, genInfo.FromNameSpace, logger);            
@@ -58,14 +59,14 @@ namespace troo
         [ConsoleAction("generateDaoAssemblyForTypes", "Generate Dao Assembly for types")]
         public static void GenerateDaoForTypes()
         {
-            GenerationInfo genInfo = GetGenerationInfo();
+            GenerationInfo genInfo = GetDaoGenerationInfo();
             Assembly typeAssembly = genInfo.Assembly;
             string schemaName = genInfo.SchemaName;
             string fromNameSpace = genInfo.FromNameSpace;
             string toNameSpace = genInfo.ToNameSpace;
 
             DaoRepository repo = new DaoRepository(new SQLiteDatabase(".", schemaName), new ConsoleLogger(), schemaName);
-            repo.Namespace = toNameSpace;
+            repo.BaseNamespace = toNameSpace;
             repo.AddNamespace(typeAssembly, fromNameSpace);
             Assembly daoAssembly = repo.GenerateDaoAssembly(false);
             FileInfo fileInfo = daoAssembly.GetFileInfo();
@@ -78,7 +79,7 @@ namespace troo
         [ConsoleAction("generateDaoCodeForTypes", "Generate Dao code for types")]
         public static void GenerateDaoCodeForTypes()
         {
-            GenerationInfo genInfo = GetGenerationInfo();
+            GenerationInfo genInfo = GetDaoGenerationInfo();
             Assembly typeAssembly = genInfo.Assembly;
             string schemaName = genInfo.SchemaName;
             string fromNameSpace = genInfo.FromNameSpace;
@@ -86,7 +87,7 @@ namespace troo
             string defaultPath = $".\\{schemaName}_Generated";
             DirectoryInfo defaultDir = new DirectoryInfo(defaultPath);
             defaultPath = defaultDir.FullName;
-            string writeTo = GetArgument("writeTo", $"Please enter the path to write code to (default ({defaultPath}))").Or(defaultPath);
+            string writeTo = GetArgument("writeSrc", $"Please enter the path to write code to (default ({defaultPath}))").Or(defaultPath);
             DirectoryInfo writeToDir = new DirectoryInfo(writeTo);
             if (writeToDir.Exists)
             {
@@ -114,7 +115,7 @@ namespace troo
                 Exit(1);
             }
             string defaultPath = $".\\{file.Name}_Dto_Generated\\";
-            string sourcePath = GetArgument("srcPath", $"Please enter the path to the write source to [{defaultPath}]").Or(defaultPath);
+            string sourcePath = GetArgument("writeSrc", $"Please enter the path to write source code to [{defaultPath}]").Or(defaultPath);
             bool keepSource = Confirm("Keep source files?");
             bool compile = Confirm("Generate assembly?");
             generator.DaoAssembly = Assembly.LoadFrom(file.FullName);
@@ -131,13 +132,59 @@ namespace troo
             }
         }
 
-        private static GenerationInfo GetGenerationInfo()
+        [ConsoleAction("generateProtoBufClasses", "Generate CSharp code for types in a specified namespace of a specified assembly")]
+        public static void GenerateProtoBufClasses()
         {
-            Assembly typeAssembly = Assembly.LoadFrom(GetArgument("typeAssembly", "Please enter the path to the assembly containing the types to generate daos for"));
-            string schemaName = GetArgument("schemaName", "Please enter the schema name to use").Replace(".", "_");
+            GenerateProtoBuf<ProtocolBuffersAssemblyGenerator>();
+        }
+
+        [ConsoleAction("generateProtoBufClassesForDaos", "Generate CSharp code for types in a specified namespace of a specified dao assembly")]
+        public static void GenerateProtoBufClassesForDaos()
+        {
+            GenerateProtoBuf<DaoProtocolBuffersAssemblyGenerator>();
+        }
+
+        private static void GenerateProtoBuf<T>() where T: ProtocolBuffersAssemblyGenerator, new()
+        {
+            GenerationInfo genInfo = GetProtoBufGenerationInfo();
+            Type[] types = genInfo.Assembly.GetTypes().Where(t => !t.IsNested &&  !string.IsNullOrEmpty(t.Namespace) && t.Namespace.Equals(genInfo.FromNameSpace)).ToArray();
+            T generator = GetGenerator<T>($"{genInfo.ToNameSpace}.dll", types);
+            string defaultPath = $".\\{genInfo.ToNameSpace}_Protobuf_Generated";
+            string sourcePath = GetArgument("writeSrc", $"Please enter the path to write source code to [{defaultPath}]").Or(defaultPath);
+            generator.WriteSource(sourcePath);
+        }
+
+        private static T GetGenerator<T>(string assemblyName, IEnumerable<Type> types) where T: ProtocolBuffersAssemblyGenerator, new()
+        {
+            T generator = new T();
+            generator.AssemblyName = assemblyName;
+            generator.AddTypes(types);
+            return generator;
+        }
+
+        private static GenerationInfo GetDaoGenerationInfo()
+        {
             string fromNameSpace = GetArgument("fromNameSpace", "Please enter the namespace containing the types to generate daos for");
             string toNameSpace = $"{fromNameSpace}.Dao";
-            GenerationInfo result = new GenerationInfo { Assembly = typeAssembly, SchemaName = schemaName, FromNameSpace = fromNameSpace, ToNameSpace = toNameSpace };           
+            return GetGenerationInfo(fromNameSpace, toNameSpace);
+        }
+
+        private static GenerationInfo GetProtoBufGenerationInfo()
+        {
+            string fromNameSpace = GetArgument("fromNameSpace", "Please enter the namespace containing the types to generate ProtoBuf classes for");
+            string toNameSpace = $"{fromNameSpace}.ProtoBuf";
+            return GetGenerationInfo(fromNameSpace, toNameSpace, false);
+        }
+
+        private static GenerationInfo GetGenerationInfo(string fromNameSpace, string toNameSpace, bool setSchemaName = true)
+        {
+            Assembly typeAssembly = Assembly.LoadFrom(GetArgument("typeAssembly", "Please enter the path to the assembly containing the types to generate daos for"));
+            string schemaName = string.Empty;
+            if (setSchemaName)
+            {
+                schemaName = GetArgument("schemaName", "Please enter the schema name to use").Replace(".", "_");
+            }
+            GenerationInfo result = new GenerationInfo { Assembly = typeAssembly, SchemaName = schemaName, FromNameSpace = fromNameSpace, ToNameSpace = toNameSpace };
             return result;
         }
     }
