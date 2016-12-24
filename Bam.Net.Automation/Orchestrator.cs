@@ -25,7 +25,7 @@ namespace Bam.Net.Automation
     [Proxy]
     public class Orchestrator: Loggable
     {
-        const string ProfigurationSetKey = "ForemanSettings";
+        const string ProfigurationSetKey = "OrchestratorSettings";
 
         AutoResetEvent _enqueueSignal;
         AutoResetEvent _runCompleteSignal;

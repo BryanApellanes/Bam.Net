@@ -71,22 +71,37 @@ namespace Bam.Net.Automation.SourceControl
             return false;
         }
 
-        public static HashSet<GitLog> GetSinceVersion(string gitRepoPath, int major, int minor = 0, int patch = 0)
+        static Dictionary<string, HashSet<GitLog>> _logCache = new Dictionary<string, HashSet<GitLog>>();
+        static object _logCacheLock = new object();
+        public static HashSet<GitLog> SinceVersion(string gitRepoPath, int major, int minor = 0, int patch = 0, bool useCache = true)
         {
-            return GetSinceTag(gitRepoPath, $"v{major}.{minor}.{patch}");
+            string version = $"v{major}.{minor}.{patch}";
+            if (!useCache)
+            {
+                return SinceTag(gitRepoPath, version);
+            }
+
+            lock (_logCacheLock)
+            {
+                if (!_logCache.ContainsKey(version))
+                {
+                    _logCache[version] = SinceTag(gitRepoPath, version);
+                }
+                return _logCache[version];
+            }
         }
 
-        public static HashSet<GitLog> GetSinceTag(string gitRepoPath, string tag)
+        public static HashSet<GitLog> SinceTag(string gitRepoPath, string tag)
         {
-            return GetSinceCommit(gitRepoPath, $"tags/{tag}");
+            return SinceCommit(gitRepoPath, $"tags/{tag}");
         }
 
-        public static HashSet<GitLog> GetSinceCommit(string gitRepoPath, string commitIdentifier)
+        public static HashSet<GitLog> SinceCommit(string gitRepoPath, string commitIdentifier)
         {
-            return GetLogsBetweenCommits(gitRepoPath, commitIdentifier);
+            return BetweenCommits(gitRepoPath, commitIdentifier);
         }
 
-        public static HashSet<GitLog> GetLogsBetweenCommits(string gitRepoPath, string commitIdentifier, string toCommit = "HEAD")
+        public static HashSet<GitLog> BetweenCommits(string gitRepoPath, string commitIdentifier, string toCommit = "HEAD")
         {
             string startDirectory = Environment.CurrentDirectory;
             Environment.CurrentDirectory = gitRepoPath;
