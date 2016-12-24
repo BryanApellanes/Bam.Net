@@ -81,11 +81,27 @@ namespace Bam.Net.Automation.Tests
         [ConsoleAction("Test GitLog")]
         public void TestGitLog()
         {
-            HashSet<GitLog> logs = GitLog.GetSinceVersion("c:\\src\\Bam.Net", 1, 4, 2);
+            HashSet<GitLog> logs = GitLog.SinceVersion("c:\\src\\Bam.Net", 1, 4, 2);
             foreach(GitLog log in logs)
             {
                 OutLine(log.PropertiesToString(), ConsoleColor.Cyan);
             }
+        }
+
+        [ConsoleAction("Test GitReleaseNotes")]
+        public void TestGitReleaseNotes()
+        {
+            GitReleaseNotes notes = GitReleaseNotes.SinceVersion("Bam.Net.CommandLine", "C:\\src\\Bam.Net", 1, 4, 3);
+            notes.Summary = "Put a nice summary here";
+            OutLineFormat("{0}", ConsoleColor.Cyan, notes.Value);
+        }
+
+        [ConsoleAction("Test Misc GitReleaseNotes")]
+        public void TestGitMiscReleaseNotes()
+        {
+            GitReleaseNotes notes = GitReleaseNotes.MiscSinceVersion("C:\\src\\Bam.Net", 1, 4, 3);
+            notes.Summary = "Misc";
+            OutLineFormat("{0}", ConsoleColor.Cyan, notes.Value);
         }
     }
 }
