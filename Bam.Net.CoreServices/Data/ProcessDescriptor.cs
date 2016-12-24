@@ -75,10 +75,11 @@ namespace Bam.Net.CoreServices.Data
             }
         }
 
-        public static ProcessDescriptor ForApplicationRegistration(string serverHost, int port, string applicationName, string organizationName = null, CoreRegistryRepository repo = null)
+        public static ProcessDescriptor ForApplicationRegistration(CoreRegistryRepository repo, string serverHost, int port, string applicationName, string organizationName = null)
         {
+            Args.ThrowIfNull(repo, nameof(repo));
             Args.ThrowIfNullOrEmpty(serverHost, nameof(serverHost));
-            Args.ThrowIfNullOrEmpty(applicationName, nameof(applicationName));
+            Args.ThrowIfNullOrEmpty(applicationName, nameof(applicationName));            
 
             ProcessDescriptor result = new ProcessDescriptor();
             result.CopyProperties(Current);

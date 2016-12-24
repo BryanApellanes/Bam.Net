@@ -46,7 +46,7 @@ namespace Bam.Net.CoreServices
             LocalCoreRegistyrRepository.Database = new SQLiteDatabase(WorkingDirectory, nameof(CoreClient));
             CoreRegistry.GetGlooRegistry().Get<IStorableTypesProvider>().AddTypes(LocalCoreRegistyrRepository);
 
-            ProcessDescriptor = ProcessDescriptor.ForApplicationRegistration(hostName, port, applicationName, organizationName, LocalCoreRegistyrRepository);
+            ProcessDescriptor = ProcessDescriptor.ForApplicationRegistration(LocalCoreRegistyrRepository, hostName, port, applicationName, organizationName);
         }
 
         public CoreClient(string organizationName, string applicationName, string hostName, int port, ILogger logger = null) 

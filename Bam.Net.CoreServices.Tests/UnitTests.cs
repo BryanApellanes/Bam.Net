@@ -226,7 +226,7 @@ namespace Bam.Net.CoreServices.Tests
             CoreApplicationRegistryService svc = GetTestService();
             string orgName = 5.RandomLetters();
             string appName = 8.RandomLetters();
-            ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration("localhost", 8080, appName, orgName, svc.CoreRegistryRepository);
+            ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration(svc.CoreRegistryRepository, "localhost", 8080, appName, orgName);
             ServiceResponse response = svc.RegisterApplication(descriptor);
             Expect.IsFalse(response.Success);
             Expect.IsNotNull(response.Data);
@@ -244,7 +244,7 @@ namespace Bam.Net.CoreServices.Tests
             string orgName = 5.RandomLetters();
             string appName = 8.RandomLetters();
             CoreApplicationRegistryService svc = GetTestServiceWithUser(userName);
-            ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration("localhost", 8080, appName, orgName, svc.CoreRegistryRepository);
+            ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration(svc.CoreRegistryRepository, "localhost", 8080, appName, orgName);
             ServiceResponse response = svc.RegisterApplication(descriptor);
             Expect.IsTrue(response.Success);
             var user = svc.CoreRegistryRepository.OneUserWhere(c => c.UserName == userName);
@@ -264,7 +264,7 @@ namespace Bam.Net.CoreServices.Tests
             })
             .WhenA<CoreApplicationRegistryService>("tries to register application when not logged in", cars =>
             {
-                ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration("localhost", 8080, "testApp", "testOrg", cars.CoreRegistryRepository);
+                ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration(cars.CoreRegistryRepository,"localhost", 8080, "testApp", "testOrg");
                 return cars.RegisterApplication(descriptor);
             })
             .TheTest
