@@ -1,0 +1,3 @@
+
+ -   address concurrency issue with console output colors (e719879)
+ -   improve process output handling (b727240)

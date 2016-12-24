@@ -1,0 +1,6 @@
+Version 1.4.4
+ -  Merge pull request #53 from BryanApellanes/core-svcs (34e4ed6)
+ -  fix typo in property name (da2e61b)
+ -  add protoc.exe (bcbb153)
+ -  updates and bugfixes (12ee194)
+ -  updated tests (94e3117)

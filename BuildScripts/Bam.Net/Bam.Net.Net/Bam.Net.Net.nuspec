@@ -2,14 +2,15 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Net</id>
-    <version>1.4.3</version>
+    <version>1.4.4</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>http://bryanapellanes.github.io/Bam.Net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Network related tools.  Dfs, smb, ping, dns</description>
-    <releaseNotes>Bug fixes</releaseNotes>
+    <releaseNotes>Version 1.4.4
+</releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2016</copyright>
     <dependencies />
   </metadata>

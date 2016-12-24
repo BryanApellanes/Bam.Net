@@ -5212,7 +5212,7 @@
             </param>
             <param name="db"></param>
         </member>
-        <member name="M:Bam.Net.Analytics.Classifier.Probability(System.String,System.String)">
+        <member name="M:Bam.Net.Analytics.Classification.Classifier.Probability(System.String,System.String)">
             <summary>
             When implemented, should return the probablity that the specified
             document is in the specified category
@@ -5221,7 +5221,7 @@
             <param name="category"></param>
             <returns></returns>
         </member>
-        <member name="M:Bam.Net.Analytics.Classifier.Train(System.String,System.String)">
+        <member name="M:Bam.Net.Analytics.Classification.Classifier.Train(System.String,System.String)">
             <summary>
             Train the classifier assigning the specified doc to the 
             specified category
@@ -5229,45 +5229,74 @@
             <param name="doc"></param>
             <param name="category"></param>
         </member>
-        <member name="M:Bam.Net.Analytics.Classifier.DocumentCount">
+        <member name="M:Bam.Net.Analytics.Classification.Classifier.DocumentCount">
             <summary>
             Total number of documents (corresponds to totalcount in Collective Intelligence chapter 6)
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Bam.Net.Analytics.Classifier.DocumentsInCategoryCount(System.String)">
+        <member name="M:Bam.Net.Analytics.Classification.Classifier.DocumentsInCategoryCount(System.String)">
             <summary>
             Total number of documents in a category (corresponds to catcount in Collective Intelligence chapter 6)
             </summary>
             <param name="category"></param>
             <returns></returns>
         </member>
-        <member name="M:Bam.Net.Analytics.Classifier.IncreaseFeature(System.String,System.String)">
+        <member name="M:Bam.Net.Analytics.Classification.Classifier.IncreaseFeature(System.String,System.String)">
             <summary>
             Increase the count of a feature/category pair
             </summary>
             <param name="feature"></param>
             <param name="category"></param>
         </member>
-        <member name="M:Bam.Net.Analytics.Classifier.GetCategory(System.String)">
+        <member name="M:Bam.Net.Analytics.Classification.Classifier.GetCategory(System.String)">
             <summary>
             Get a Category entry for the specified category, creating it if necessary
             </summary>
             <param name="category"></param>
             <returns></returns>
         </member>
-        <member name="P:Bam.Net.Analytics.Classifier.FeatureExtractor">
+        <member name="P:Bam.Net.Analytics.Classification.Classifier.FeatureExtractor">
             <summary>
             The delegate used for extracting features from a
             given string.  Default is ExtractWords.
             </summary>
         </member>
-        <member name="M:Bam.Net.Analytics.Classifier.ExtractWords(System.String)">
+        <member name="M:Bam.Net.Analytics.Classification.Classifier.ExtractWords(System.String)">
             <summary>
             The default implementation of GetFeatures
             </summary>
             <param name="docContent"></param>
             <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Analytics.Classification.FisherClassifier.SetMinimum(System.String,System.Single)">
+            <summary>
+            Sets the minimum probability score for the specified
+            category.  The probablity score for a document must
+            be greater than the specified minimum for the category
+            for the document to be classified as being in 
+            the category.
+            </summary>
+            <param name="category"></param>
+            <param name="min"></param>
+        </member>
+        <member name="M:Bam.Net.Analytics.Classification.NaiveBayesClassifier.Classify(System.String,System.String)">
+            <summary>
+            Attempts to classify the specified document taking into 
+            consideration the threshold set by SetThreshold, default is 1.
+            </summary>
+            <param name="documentString"></param>
+            <param name="defaultCategory"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Analytics.Classification.NaiveBayesClassifier.SetThreshold(System.String,System.Single)">
+            <summary>
+            For a new document to be classified into a particular category, its 
+            probability must be a specified amount larger than the probablity
+            for any other category.  This specified amount is the threshold.
+            </summary>
+            <param name="category"></param>
+            <param name="threshold"></param>
         </member>
         <member name="T:Bam.Net.Analytics.Diff.Item">
             <summary>details of one difference.</summary>
@@ -5390,35 +5419,6 @@
             Saves this Report to the specified file overwriting if the file exists.
             </summary>
             <param name="filePath"></param>
-        </member>
-        <member name="M:Bam.Net.Analytics.FisherClassifier.SetMinimum(System.String,System.Single)">
-            <summary>
-            Sets the minimum probability score for the specified
-            category.  The probablity score for a document must
-            be greater than the specified minimum for the category
-            for the document to be classified as being in 
-            the category.
-            </summary>
-            <param name="category"></param>
-            <param name="min"></param>
-        </member>
-        <member name="M:Bam.Net.Analytics.NaiveBayesClassifier.Classify(System.String,System.String)">
-            <summary>
-            Attempts to classify the specified document taking into 
-            consideration the threshold set by SetThreshold, default is 1.
-            </summary>
-            <param name="documentString"></param>
-            <param name="defaultCategory"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Bam.Net.Analytics.NaiveBayesClassifier.SetThreshold(System.String,System.Single)">
-            <summary>
-            For a new document to be classified into a particular category, its 
-            probability must be a specified amount larger than the probablity
-            for any other category.  This specified amount is the threshold.
-            </summary>
-            <param name="category"></param>
-            <param name="threshold"></param>
         </member>
         <member name="M:Bam.Net.Analytics.BaseCrawler.ExtractTargets(System.String)">
             <summary>

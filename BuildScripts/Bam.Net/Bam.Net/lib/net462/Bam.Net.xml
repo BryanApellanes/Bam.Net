@@ -4,13 +4,37 @@
         <name>Bam.Net</name>
     </assembly>
     <members>
+        <member name="M:Bam.Net.AdHocCSharpCompiler.ToAssembly(System.IO.DirectoryInfo,System.String)">
+            <summary>
+            Compile all .cs files found in the specified directory to 
+            the specified assemblyFileName and return the assembly.  Does
+            a recursive search for .cs files
+            </summary>
+            <param name="direcotry"></param>
+            <param name="assemblyFileName"></param>
+            <returns></returns>
+        </member>
         <member name="M:Bam.Net.AdHocCSharpCompiler.ToAssembly(System.IO.DirectoryInfo,System.String,System.CodeDom.Compiler.CompilerResults@)">
             <summary>
-            Compile the directory to the specified assemblyFileName and return the assembly
+            Compile all .cs files found in the specified directory to 
+            the specified assemblyFileName and return the assembly.  Does
+            a recursive search for .cs files
             </summary>
             <param name="directory"></param>
             <param name="assemblyFileName"></param>
             <param name="results"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.AdHocCSharpCompiler.ToAssembly(System.IO.DirectoryInfo,System.String,System.CodeDom.Compiler.CompilerResults@,System.Boolean)">
+            <summary>
+            Compile all .cs files found in the specified directory to 
+            the specified assemblyFileName and return the assembly.  Does
+            a recursive search for .cs files
+            </summary>
+            <param name="directory"></param>
+            <param name="assemblyFileName"></param>
+            <param name="results"></param>
+            <param name="throwOnError"></param>
             <returns></returns>
         </member>
         <member name="M:Bam.Net.Args.ThrowIfNull(System.Object,System.String)">
@@ -91,6 +115,13 @@
             <param name="ex"></param>
             <param name="message"></param>
             <param name="stackTrace"></param>
+        </member>
+        <member name="T:Bam.Net.BackgroundThreadQueue`1">
+            <summary>
+            A queue processing facility that processes
+            enqueued items in a background thread
+            </summary>
+            <typeparam name="T"></typeparam>
         </member>
         <member name="P:Bam.Net.Configuration.Configurable.RequiredProperties">
             <summary>
@@ -789,6 +820,20 @@
             </summary>
             <param name="logger"></param>
             <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Logging.Loggable.FireEvent(System.EventHandler)">
+            <summary>
+            Fire the specified event if there are
+            subscribers
+            </summary>
+            <param name="eventHandler"></param>
+        </member>
+        <member name="M:Bam.Net.Logging.Loggable.FireEvent(System.EventHandler,System.EventArgs)">
+            <summary>
+            Fire the specified event if there are subscribers
+            </summary>
+            <param name="eventHandler"></param>
+            <param name="eventArgs"></param>
         </member>
         <member name="P:Bam.Net.Logging.VerbosityAttribute.MessageFormat">
             <summary>
@@ -1803,6 +1848,15 @@
             <param name="value"></param>
             <returns></returns>
         </member>
+        <member name="M:Bam.Net.Extensions.GetNextFileName(System.String)">
+            <summary>
+            If the specified file exists, a new path with 
+            an underscore and a number appended will be 
+            returned where the new path does not exist
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
         <member name="M:Bam.Net.Extensions.GetNextFileName(System.String,System.Int32@)">
             <summary>
             If the specified file exists, a new path with 
@@ -2345,6 +2399,13 @@
             <summary>
             Get a random boolean
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Extensions.RandomLetters(System.Int32)">
+            <summary>
+            Return the specified number of random letters
+            </summary>
+            <param name="count"></param>
             <returns></returns>
         </member>
         <member name="M:Bam.Net.Extensions.RandomLetters(System.String,System.Int32)">

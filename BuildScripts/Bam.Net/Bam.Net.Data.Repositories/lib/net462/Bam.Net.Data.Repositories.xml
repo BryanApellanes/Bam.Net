@@ -306,7 +306,7 @@
             <param name="tableNameProvider"></param>
             <param name="schemaTempPathProvider"></param>
         </member>
-        <member name="P:Bam.Net.Data.Repositories.DaoRepository.Namespace">
+        <member name="P:Bam.Net.Data.Repositories.DaoRepository.BaseNamespace">
             <summary>
             The namespace to place generated classes into
             </summary>
@@ -670,6 +670,14 @@
             properties whose type is not explicitly supported.
             </summary>
         </member>
+        <member name="M:Bam.Net.Data.Repositories.TypeSchemaGenerator.CreateTypeSchema(System.Collections.Generic.IEnumerable{System.Type},System.String)">
+            <summary>
+            Create a TypeSchema from the specified types
+            </summary>
+            <param name="types"></param>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
         <member name="M:Bam.Net.Data.Repositories.TypeSchemaGenerator.GetXrefTypesFor(System.Type)">
             <summary>
             Get the properties where the type of the
@@ -703,7 +711,14 @@
             the name of "Id")
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "E:Bam.Net.Data.Repositories.TypeSchemaGenerator.ChildParentPropertyNotFound" -->
+        <member name="E:Bam.Net.Data.Repositories.TypeSchemaGenerator.ChildParentPropertyNotFound">
+            <summary>
+            The event that occurs when a Type is found in the current
+            TypeSchema hierarchy with an IEnumerable&lt;T&gt; property where the underlying type of
+            the IEnumerable doesn't have a property of the parent Type to hold the instance of
+            the parent.
+            </summary>
+        </member>
         <member name="M:Bam.Net.Data.Repositories.TypeSchemaGenerator.GetReferencingForeignKeyTypesFor(System.Type)">
             <summary>
             Get the types for each IEnumerable property of the specified type

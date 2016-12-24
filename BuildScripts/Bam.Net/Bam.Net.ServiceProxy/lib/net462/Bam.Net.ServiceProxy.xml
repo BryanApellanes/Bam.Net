@@ -25,6 +25,12 @@
             particular method
             </summary>
         </member>
+        <member name="P:Bam.Net.ServiceProxy.RequestResponse.Data">
+            <summary>
+            Relevant data returned in response
+            to a request
+            </summary>
+        </member>
         <member name="T:Bam.Net.ServiceProxy.Secure.ApiKeyRequiredAttribute">
             <summary>
             Attribute used to addorn classes or methods that require

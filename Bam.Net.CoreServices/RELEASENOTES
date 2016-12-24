@@ -1,0 +1,4 @@
+
+ -   require CoreRegistryRepository for ProcessDescriptor.ForApplicationRegistration (904d5bc)
+ -   initial CoreClient implementation (d6e98a8)
+ -   wip (5c20ca6)
