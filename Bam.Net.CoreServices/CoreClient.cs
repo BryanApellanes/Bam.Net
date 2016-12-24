@@ -42,11 +42,11 @@ namespace Bam.Net.CoreServices
             SetApiKeyResolvers();
             SetClientApplicationNameProvider();
 
-            LocalCoreRegistyrRepository = new CoreRegistryRepository();
-            LocalCoreRegistyrRepository.Database = new SQLiteDatabase(WorkingDirectory, nameof(CoreClient));
-            CoreRegistry.GetGlooRegistry().Get<IStorableTypesProvider>().AddTypes(LocalCoreRegistyrRepository);
+            LocalCoreRegistryRepository = new CoreRegistryRepository();
+            LocalCoreRegistryRepository.Database = new SQLiteDatabase(WorkingDirectory, nameof(CoreClient));
+            CoreRegistry.GetGlooRegistry().Get<IStorableTypesProvider>().AddTypes(LocalCoreRegistryRepository);
 
-            ProcessDescriptor = ProcessDescriptor.ForApplicationRegistration(LocalCoreRegistyrRepository, hostName, port, applicationName, organizationName);
+            ProcessDescriptor = ProcessDescriptor.ForApplicationRegistration(LocalCoreRegistryRepository, hostName, port, applicationName, organizationName);
         }
 
         public CoreClient(string organizationName, string applicationName, string hostName, int port, ILogger logger = null) 
@@ -54,7 +54,7 @@ namespace Bam.Net.CoreServices
         { }
 
         public ProcessDescriptor ProcessDescriptor { get; }
-        public CoreRegistryRepository LocalCoreRegistyrRepository { get; set; }
+        public CoreRegistryRepository LocalCoreRegistryRepository { get; set; }
         
         [Verbosity(VerbosityLevel.Information, MessageFormat = "{OrganizationName}:{ApplicationName} initializING")]
         public event EventHandler Initializing;
@@ -221,7 +221,7 @@ namespace Bam.Net.CoreServices
 
         public ServiceResponse Register()
         {
-            Machine current = Machine.ClientOf(LocalCoreRegistyrRepository, HostName, Port);
+            Machine current = Machine.ClientOf(LocalCoreRegistryRepository, HostName, Port);
             current.ServerHost = HostName;
             current.Port = Port;
             ServiceResponse registrationResponse = ApplicationRegistryService.RegisterClient(current);
@@ -234,7 +234,7 @@ namespace Bam.Net.CoreServices
 
         public ServiceResponse Connect()
         {
-            Machine current = Machine.ClientOf(LocalCoreRegistyrRepository, HostName, Port);
+            Machine current = Machine.ClientOf(LocalCoreRegistryRepository, HostName, Port);
             List<ServiceResponse> responses = new List<ServiceResponse>();
             foreach(ProxyableService svc in ServiceClients)
             {
