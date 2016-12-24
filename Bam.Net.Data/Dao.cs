@@ -265,7 +265,7 @@ namespace Bam.Net.Data
 
         public event DaoDelegate BeforeWriteCommit;
         public static event DaoDelegate BeforeWriteCommitAny;
-        protected void OnBeforeWriteCommit(Database db)
+        protected internal void OnBeforeWriteCommit(Database db)
         {
             if (BeforeWriteCommit != null)
             {
@@ -280,11 +280,11 @@ namespace Bam.Net.Data
 
         public event DaoDelegate AfterWriteCommit;
         public static event DaoDelegate AfterWriteCommitAny;
-        protected void OnAfterWriteCommit(Database db)
+        protected internal void OnAfterWriteCommit(Database db)
         {
-            if (AfterCommit != null)
+            if (AfterWriteCommitAny != null)
             {
-                AfterCommit(db, this);
+                AfterWriteCommitAny(db, this);
             }
 
             if (AfterWriteCommitAny != null)
@@ -295,7 +295,7 @@ namespace Bam.Net.Data
 
         public event DaoDelegate BeforeCommit;
         public static event DaoDelegate BeforeCommitAny;
-        protected void OnBeforeCommit(Database db)
+        protected internal void OnBeforeCommit(Database db)
         {
             if (BeforeCommit != null)
             {
@@ -308,9 +308,16 @@ namespace Bam.Net.Data
             }
         }
 
-        public event DaoDelegate AfterCommit;
+        /// <summary>
+        /// Fires after this instance has been committed.
+        /// May be fired as the result of its membership in 
+        /// a DaoCollection, in that case the current
+        /// Dao instance may not be fully-hydrated at the
+        /// time of the firing of this event
+        /// </summary>
+        public event ICommittableDelegate AfterCommit;
         public static event DaoDelegate AfterCommitAny;
-        protected void OnAfterCommit(Database db)
+        protected internal void OnAfterCommit(Database db)
         {
             if (AfterCommit != null)
             {
@@ -498,7 +505,9 @@ namespace Bam.Net.Data
         /// <summary>
         /// Save the current instance.  If the Id is less than or
         /// equal to 0 the current instance will be Inserted, otherwise
-        /// it will be Updated. Same as commit
+        /// it will be Updated.  Will also commit any updates to its
+        /// children, though child commit events will not be triggerred.
+        /// Same as Save
         /// </summary>
         public void Save(Database db)
         {
@@ -507,7 +516,9 @@ namespace Bam.Net.Data
         /// <summary>
         /// Save the current instance.  If the Id is less than or
         /// equal to 0 the current instance will be Inserted, otherwise
-        /// it will be Updated. Same as Save
+        /// it will be Updated.  Will also commit any updates to its
+        /// children, though child commit events will not be triggerred.
+        /// Same as Save
         /// </summary>
         public virtual void Commit()
         {
@@ -518,18 +529,28 @@ namespace Bam.Net.Data
         /// <summary>
         /// Save the current instance.  If the Id is less than or
         /// equal to 0 the current instance will be Inserted, otherwise
-        /// it will be Updated. Same as Save
+        /// it will be Updated.  Will also commit any updates to its
+        /// children, though child commit events will not be triggerred.
+        /// Same as Save
         /// </summary>
         public virtual void Commit(DaoTransaction tx)
         {
             Commit(tx.Database);
         }
+        public void Commit(Database db)
+        {
+            Commit(db, true);
+        }
         /// <summary>
         /// Save the current instance.  If the Id is less than or
         /// equal to 0 the current instance will be Inserted, otherwise
-        /// it will be Updated. Same as Save
+        /// it will be Updated.  Will also commit any updates to its
+        /// children, though child commit events will be triggerred the 
+        /// children should be re-hydrated to ensure they are fully
+        /// hydrated.
+        /// Same as Save
         /// </summary>
-        public void Commit(Database db)
+        public void Commit(Database db, bool commitChildren)
         {
             db = db ?? Database;
 
@@ -538,7 +559,10 @@ namespace Bam.Net.Data
             QuerySet querySet = GetQuerySet(db);
 
             WriteCommit(querySet, db);
-            WriteChildCommits(querySet, db);
+            if (commitChildren)
+            {
+                WriteChildCommits(querySet, db);
+            }
 
             if (!string.IsNullOrWhiteSpace(querySet.ToString()))
             {
@@ -574,7 +598,7 @@ namespace Bam.Net.Data
             }
         }
 
-        protected void WriteChildCommits(SqlStringBuilder sql, Database db = null)
+        protected internal void WriteChildCommits(SqlStringBuilder sql, Database db = null)
         {
             db = db ?? Database;
             foreach (string key in this.ChildCollections.Keys)
@@ -721,7 +745,7 @@ namespace Bam.Net.Data
         public virtual void WriteCommit(SqlStringBuilder sqlStringBuilder, Database db)
         {
             OnBeforeWriteCommit(db);
-            if (this.NewValues.Count > 0)
+            if (HasNewValues)
             {
                 if (this.IsNew || this.ForceInsert)
                 {
@@ -1161,7 +1185,19 @@ namespace Bam.Net.Data
         [Exclude]
         public DataRow DataRow { get; set; }
 
-        internal Dictionary<string, object> NewValues
+        /// <summary>
+        /// Returns true if properties of the
+        /// current Dao instance have been set
+        /// since its instanciation
+        /// </summary>
+        protected internal bool HasNewValues
+        {
+            get
+            {
+                return NewValues.Count > 0;
+            }
+        }
+        protected internal Dictionary<string, object> NewValues
         {
             get;
             set;

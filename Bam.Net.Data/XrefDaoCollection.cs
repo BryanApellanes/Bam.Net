@@ -259,6 +259,7 @@ namespace Bam.Net.Data
             Commit(Database);
         }
 
+        public event ICommittableDelegate AfterCommit;
         public void Commit(Database db = null)
         {
             db = db ?? Database;
@@ -266,16 +267,25 @@ namespace Bam.Net.Data
             WriteCommit(sql);
 
             sql.Execute(db);
+            AfterCommit?.Invoke(db, this);
         }
 
         public void WriteCommit(SqlStringBuilder sql, Database db = null)
         {
             db = db ?? Database;
+            List<L> children = new List<L>();
             foreach (L item in this._values)
             {
                 EnsureXref(item, db);
                 item.WriteCommit(sql, db);
+                children.Add(item);
             }
+
+            sql.Executed += (s, d) =>
+            {
+                children.Each(dao => dao.OnAfterCommit(d));
+                AfterCommit?.Invoke(d, this);
+            };
         }
 
         private X EnsureXref(L item, Database db = null)

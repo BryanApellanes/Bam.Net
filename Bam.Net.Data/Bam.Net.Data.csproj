@@ -150,6 +150,7 @@
     <Compile Include="Filter.cs" />
     <Compile Include="FilterToken.cs" />
     <Compile Include="IAddable.cs" />
+    <Compile Include="ICommittableDelegate.cs" />
     <Compile Include="IDatabase.cs" />
     <Compile Include="IHasConnectionStringResolver.cs" />
     <Compile Include="ILoadable.cs" />
