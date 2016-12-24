@@ -17,7 +17,7 @@ using Bam.Net.Data;
 namespace Bam.Net.UserAccounts
 {
     [Proxy("roles")]
-    [RoleRequiredAttribute("Admin")]
+    [RoleRequired("Admin")]
     public class DaoRoleProvider : RoleProvider
     {
         public DaoRoleProvider() { }

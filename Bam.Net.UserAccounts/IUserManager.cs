@@ -38,6 +38,6 @@ namespace Bam.Net.UserAccounts
         SendEmailResponse RequestConfirmationEmail(string emailAddress, int accountIndex = 0);
         PasswordResetResponse ResetPassword(string passHash, string resetToken);
         SignOutResponse SignOut();
-        SignUpResponse SignUp(string emailAddress, string userName, string passHash, bool sendConfirmationEmail);
+        SignUpResponse SignUp(string emailAddress, string userName, string passwordHash, bool sendConfirmationEmail);
     }
 }

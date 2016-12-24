@@ -672,6 +672,11 @@ namespace Bam.Net.UserAccounts
             }
         }
 
+        protected internal bool UserExists(string userName)
+        {
+            return User.Exists(userName, Database);
+        }
+
         private T GetSuccess<T>(object data, string message = null) where T: RequestResponse, new()
         {
             T result = new T();

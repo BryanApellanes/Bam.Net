@@ -51,27 +51,19 @@ namespace Bam.Net.UserAccounts.Data
         {
             Args.ThrowIfNull(context, "context");
             
-            return Get(context.Request, context.Response, db);    
+            return Get(context.Request, context.Response, db);
         }
 
-        static Dictionary<string, Session> _sessionCache = new Dictionary<string, Session>();
-
-        public static Session Get(IRequest request, IResponse response, Database db = null, bool useCache = false)
+        public static Session Get(IRequest request, IResponse response, Database db = null)
         {
             Cookie sessionIdCookie = request.Cookies[CookieName];
+            sessionIdCookie = sessionIdCookie ?? response.Cookies[CookieName];
             Session session = null;
             string identifier = string.Empty;
             if (sessionIdCookie != null)
             {
-                identifier = sessionIdCookie.Value;
-                if (_sessionCache.ContainsKey(identifier) && useCache)
-                {
-                    session = _sessionCache[identifier];
-                }
-                if(session == null)
-                {
-                    session = OneWhere(c => c.Identifier == identifier, db);
-                }
+                identifier = sessionIdCookie.Value;                
+                session = OneWhere(c => c.Identifier == identifier, db);
             }
 
             if (session == null)
@@ -80,12 +72,8 @@ namespace Bam.Net.UserAccounts.Data
             }
             else
             {
-                session.LastActivity = DateTime.UtcNow;
+                session.LastActivity = DateTime.UtcNow;                
                 session.Save(db);
-            }
-            if (useCache)
-            {
-                _sessionCache.Set(identifier, session);
             }
             return session;
         }
