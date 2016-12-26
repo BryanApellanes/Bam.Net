@@ -35,6 +35,7 @@ namespace Bam.Net.CoreServices
             clone.CopyEventHandlers(this);
             return clone;
         }
+        
         public Func<string, string> GetConfirmationUrlFunction
         {
             get
@@ -47,7 +48,7 @@ namespace Bam.Net.CoreServices
                 UserManager.GetConfirmationUrlFunction = value;
             }
         }
-
+        
         public Func<string, string> GetPasswordResetUrlFunction
         {
             get

@@ -21,6 +21,15 @@ namespace Bam.Net.CoreServices
 {
     public class CoreClient: Loggable, IApiKeyResolver, IApiKeyProvider, IApplicationNameProvider
     {
+        /// <summary>
+        /// Instanciate a new CoreClient
+        /// </summary>
+        /// <param name="organizationName">The name of your organization</param>
+        /// <param name="applicationName">The name of your application</param>
+        /// <param name="hostName">The host to connect to</param>
+        /// <param name="port">The port to connect to</param>
+        /// <param name="workingDirectory">The local working directory to place temporary files in</param>
+        /// <param name="logger">The logger to use to log activity</param>
         public CoreClient(string organizationName, string applicationName, string hostName, int port, string workingDirectory = null, ILogger logger = null)
         {
             ApplicationName = applicationName;
@@ -238,7 +247,7 @@ namespace Bam.Net.CoreServices
             List<ServiceResponse> responses = new List<ServiceResponse>();
             foreach(ProxyableService svc in ServiceClients)
             {
-                responses.Add(svc.ConnectClient(current));
+                responses.Add(svc.ConnectClient(current).CopyAs<ServiceResponse>());
             }
             return new ServiceResponse { Data = responses, Success = !responses.Where(r => !r.Success).Any() };
         }

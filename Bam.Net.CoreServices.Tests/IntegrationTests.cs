@@ -15,7 +15,9 @@ using Bam.Net.DaoRef;
 using Bam.Net.CoreServices.ProtoBuf;
 using Bam.Net.Data.Repositories;
 using System.Reflection;
+using Google.Protobuf;
 using Bam.Net.CoreServices.Data.Daos.Repository;
+using Bam.Net.UserAccounts.Data;
 
 namespace Bam.Net.CoreServices.Tests
 {
@@ -84,6 +86,45 @@ namespace Bam.Net.CoreServices.Tests
         }
 
         [ConsoleAction]
+        public void WhoAmITest()
+        {
+            OutLineFormat("This test requires a gloo server to be running on port 9100 of the localhost", ConsoleColor.Yellow);
+            ConsoleLogger logger = new ConsoleLogger();
+            logger.AddDetails = false;
+            const string server  = "localhost";
+            const int port = 9100;
+            logger.StartLoggingThread();
+            CoreRegistryRepository repo = CoreRegistry.GetGlooRegistry().Get<CoreRegistryRepository>();
+            CoreClient client = new CoreClient("TestOrg", "TestApp", server, port, logger);
+            client.LocalCoreRegistryRepository = repo;
+            ServiceResponse registrationResponse = client.Register();
+            Machine current = Machine.ClientOf(client.LocalCoreRegistryRepository, server, port);
+
+            ServiceResponse response = client.Connect();
+
+            string whoAmI = client.UserRegistryService.WhoAmI();
+            Expect.AreEqual(current.ToString(), whoAmI);
+
+            whoAmI = client.ApplicationRegistryService.WhoAmI();
+            Expect.AreEqual(current.ToString(), whoAmI);
+
+            whoAmI = client.ConfigurationService.WhoAmI();
+            Expect.AreEqual(current.ToString(), whoAmI);
+
+            whoAmI = client.EventHubService.WhoAmI();
+            Expect.AreEqual(current.ToString(), whoAmI);
+
+            whoAmI = client.LoggerService.WhoAmI();
+            Expect.AreEqual(current.ToString(), whoAmI);
+
+            whoAmI = client.TranslationService.WhoAmI();
+            Expect.AreEqual(current.ToString(), whoAmI);
+
+            whoAmI = client.DiagnosticService.WhoAmI();
+            Expect.AreEqual(current.ToString(), whoAmI);
+        }
+
+        [ConsoleAction]
         [IntegrationTest]
         public void CanSaveMachineInCoreRegistryRepo()
         {
@@ -100,9 +141,12 @@ namespace Bam.Net.CoreServices.Tests
         [IntegrationTest]
         public void CoreClientCanRegisterAndConnectClient()
         {
+            OutLineFormat("This test requires a gloo server to be running on port 9100 of the localhost", ConsoleColor.Yellow);
+            CoreRegistryRepository repo = CoreRegistry.GetGlooRegistry().Get<CoreRegistryRepository>();
             ConsoleLogger logger = new ConsoleLogger() { AddDetails = false };
             logger.StartLoggingThread();
             CoreClient client = new CoreClient("ThreeHeadz", "CoreServicesTestApp", "localhost", 9100, logger);
+            client.LocalCoreRegistryRepository = repo;
             ServiceResponse registrationResponse = client.Register();
             Expect.IsTrue(registrationResponse.Success, registrationResponse.Message);
             ServiceResponse response = client.Connect();

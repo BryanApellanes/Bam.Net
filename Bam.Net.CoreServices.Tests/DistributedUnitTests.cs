@@ -103,7 +103,7 @@ namespace Bam.Net.Distributed.Tests
 		{
 			int slotCount = RandomNumber.Between(8, 16);
 			ComputeRing ring = new ComputeRing(slotCount);
-			ring.AddComputeNode(new ComputeArc());
+			ring.AddComputeArc(new ComputeArc());
 			Expect.AreEqual(slotCount + 1, ring.Arcs.Length);
 
 			PrintSlots(ring);
@@ -156,7 +156,7 @@ namespace Bam.Net.Distributed.Tests
 
 			ComputeArc node = new ComputeArc();
 			node.HostName = "HostName_".RandomLetters(4);
-			ring.AddComputeNode(node);
+			ring.AddComputeArc(node);
 			Expect.AreEqual(1, ring.Arcs.Length);
 
 			ComputeArc check = ring.Arcs[0].GetProvider<ComputeArc>();

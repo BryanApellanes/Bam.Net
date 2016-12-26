@@ -144,23 +144,6 @@ call git_tag_version.cmd %1");
             OutLineFormat("Wrote file {0}", cleanPath);
         }
 
-        [ConsoleAction("setReleaseNotes", "Set release notes")]
-        public static void SetReleaseNotes()
-        {
-            // Read the baminfo.json file to get the previous version
-            // get the logs since the specified version
-            //    GitLog.GetSinceVersion(...)
-            // parse the commit subject for entries like:
-            //    Bam.Net: fix things
-            //    Bam.Net.ServiceProxy: add json api support
-            // split at the first colon and save in a dictionary of lists
-            //    [ProjectName, List<GitLog.Subject>]
-            // write to the root of the specified projects 
-            //   v<Version>
-            // anything without a specified project put into the srcRoot
-            throw new NotImplementedException();
-        }
-
         [ConsoleAction("baminfo.json", "specify the path to the baminfo.json file to use")]
         public static void SetBamInfo()
         {
@@ -186,7 +169,7 @@ call git_tag_version.cmd %1");
             info.ReleaseNotes = miscReleaseNotes.Value;
             info.ToJsonFile(bamInfoPath);
             string rootReleaseNotes = Path.Combine(srcRoot, "RELEASENOTES");
-            miscReleaseNotes.Value.SafeWriteToFile(rootReleaseNotes);
+            miscReleaseNotes.Value.SafeWriteToFile(rootReleaseNotes, true);
 
             DirectoryInfo nuspecRootDir = new DirectoryInfo(nuspecRoot);
             FileInfo[] nuspecFiles = nuspecRootDir.GetFiles("*.nuspec", SearchOption.AllDirectories);
@@ -433,7 +416,7 @@ call git_tag_version.cmd %1");
             if (Directory.Exists(projectRoot))
             {
                 string releaseNotesFile = Path.Combine(projectRoot, "RELEASENOTES");
-                notes.Value.SafeWriteToFile(releaseNotesFile);
+                notes.Value.SafeWriteToFile(releaseNotesFile, true);
                 return true;
             }
             return false;

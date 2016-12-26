@@ -17,6 +17,6 @@ namespace Bam.Net.CoreServices.Distributed
         void Delete(DeleteOperation value);
         IEnumerable<T> Query<T>(QueryOperation query);
 
-		ReplicationResult RecieveReplica(Operation operation);
+		ReplicationResult RecieveReplica(ReplicateOperation operation);
     }
 }

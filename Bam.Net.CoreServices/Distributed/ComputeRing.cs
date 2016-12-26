@@ -26,12 +26,11 @@ namespace Bam.Net.CoreServices.Distributed
             this.SetSlotCount(slotCount);
         }
 
-        public void AddComputeNode(ComputeArc node)
+        public void AddComputeArc(ComputeArc node)
         {
             AddArc(new Arc<ComputeArc>(node));
         }
         
-
         protected internal override Arc CreateArc()
         {
             return new Arc<ComputeArc>();
@@ -93,7 +92,7 @@ namespace Bam.Net.CoreServices.Distributed
             return results.ToArray();
         }
 
-		public ReplicationResult RecieveReplica(Operation operation)
+		public ReplicationResult RecieveReplica(ReplicateOperation operation)
 		{
 			throw new NotImplementedException();
 		}

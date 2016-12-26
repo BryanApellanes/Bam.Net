@@ -20,7 +20,7 @@ namespace Bam.Net.CoreServices
     [Encrypt]
     public abstract class ProxyableService: Loggable, IRequiresHttpContext
     {
-        public ProxyableService() { }
+        protected ProxyableService() { }
         public ProxyableService(DaoRepository repository, AppConf appConf)
         {
             AppConf = appConf;
@@ -43,9 +43,9 @@ namespace Bam.Net.CoreServices
             }
         }
 
-        public virtual ServiceResponse ConnectClient(Machine machine)
+        public virtual LoginResponse ConnectClient(Machine machine)
         {
-            return Login(machine.ToString(), machine.Secret.Sha1()).CopyAs<ServiceResponse>();
+            return Login(machine.ToString(), machine.Secret.Sha1());
         }
 
         public virtual LoginResponse Login(string userName, string passHash)

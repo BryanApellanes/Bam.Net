@@ -115,7 +115,7 @@ namespace Bam.Net.CoreServices.Distributed
 			return Repository.Query<T>(query);
 		}
 
-		public ReplicationResult RecieveReplica(Operation operation)
+		public ReplicationResult RecieveReplica(ReplicateOperation operation)
 		{
 			throw new NotImplementedException();
 		}

@@ -13,5 +13,21 @@ namespace Bam.Net.CoreServices.Data
         public virtual List<Application> Applications { get; set; }
         public string Key { get; set; }
         public string Value { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            Configuration conf = obj as Configuration;
+            if(conf == null)
+            {
+                return false;
+            }
+
+            return conf.Key.Equals(Key) && conf.Value.Equals(Value);
+        }
+
+        public override int GetHashCode()
+        {
+            return $"{Key}.{Value}".GetHashCode();
+        }
     }
 }
