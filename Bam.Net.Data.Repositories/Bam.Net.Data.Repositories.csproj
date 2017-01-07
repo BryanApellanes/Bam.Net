@@ -117,6 +117,7 @@
     <Compile Include="DaoGenerationException.cs" />
     <Compile Include="DaoBackup.cs" />
     <Compile Include="DatabaseExtensions.cs" />
+    <Compile Include="IRepositoryPathProvider.cs" />
     <Compile Include="IStorableTypesProvider.cs" />
     <Compile Include="NamespaceStorableTypesProvider.cs" />
     <Compile Include="RepositoryStorableTypesProvider.cs" />
