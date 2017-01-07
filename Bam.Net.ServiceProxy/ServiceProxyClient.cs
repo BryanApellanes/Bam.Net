@@ -249,6 +249,5 @@ namespace Bam.Net.ServiceProxy
         }
 
         public abstract string Invoke(string methodName, object[] parameters);
-
     }
 }

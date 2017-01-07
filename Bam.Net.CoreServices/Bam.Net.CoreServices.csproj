@@ -204,6 +204,7 @@
     <Compile Include="ProtoBuf\IPropertyNumberer.cs" />
     <Compile Include="ProtoBuf\ProtocolBufferProperty.cs" />
     <Compile Include="ProtoBuf\ProtocolBuffersAssemblyGenerator.cs" />
+    <Compile Include="ProtoBuf\ProtocolBuffersExtensions.cs" />
     <Compile Include="ProtoBuf\ProtocolBufferType.cs" />
     <Compile Include="ProtoBuf\ProtocolBufferTypeModel.cs" />
     <Compile Include="ProtoBuf\ProtoFileGenerator.cs" />
@@ -375,7 +376,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Services\Persistence\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

@@ -85,7 +85,6 @@ namespace Bam.Net.Server.Tvg
         {
             try
             {
-
                 List<string> excludeNamespaces = new List<string>();
                 excludeNamespaces.AddRange(DefaultConfiguration.GetAppSetting("ExcludeNamespaces").DelimitSplit(",", "|"));
                 List<string> excludeClasses = new List<string>();
