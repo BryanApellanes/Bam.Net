@@ -824,6 +824,7 @@ namespace Bam.Net.Data
             this.Commit();
         }
 
+        static Dictionary<Type, object> _dynamicTypeLocks = new Dictionary<Type, object>();
         /// <summary>
         /// Creates an in memory dynamic type representing
         /// the current Dao's Columns only.
@@ -832,11 +833,16 @@ namespace Bam.Net.Data
         /// <returns></returns>
         public object ToJsonSafe()
         {
-            Type jsonSafeType = this.CreateDynamicType<ColumnAttribute>(false);
-            ConstructorInfo ctor = jsonSafeType.GetConstructor(new Type[] { });
-            object jsonSafeInstance = ctor.Invoke(null);
-            jsonSafeInstance.CopyProperties(this);
-            return jsonSafeInstance;
+            Type thisType = this.GetType();
+            _dynamicTypeLocks.AddMissing(thisType, new object());
+            lock (_dynamicTypeLocks[thisType])
+            {
+                Type jsonSafeType = this.CreateDynamicType<ColumnAttribute>(false);
+                ConstructorInfo ctor = jsonSafeType.GetConstructor(new Type[] { });
+                object jsonSafeInstance = ctor.Invoke(null);
+                jsonSafeInstance.CopyProperties(this);
+                return jsonSafeInstance;
+            }
         }
 
         /// <summary>
