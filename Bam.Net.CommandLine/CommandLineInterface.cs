@@ -650,15 +650,20 @@ namespace Bam.Net.CommandLine
         }
 
         static object _queueLock = new object();
+        static object _colorLock = new object();
         private static void EnsureQueue()
         {
             _messageQueue = _queueLock.DoubleCheckLock(ref _messageQueue, () =>
             {
                 return new BackgroundThreadQueue<ConsoleMessage>((msg) =>
                 {
-                    Console.ForegroundColor = msg.Colors.ForegroundColor;
-                    Console.Write(msg.Text);
-                    Console.ResetColor();
+                    lock (_colorLock)
+                    {
+                        Console.ForegroundColor = msg.Colors.ForegroundColor;
+                        Console.BackgroundColor = msg.Colors.BackgroundColor;
+                        Console.Write(msg.Text);
+                        Console.ResetColor();
+                    }
                 });
             });
         }
