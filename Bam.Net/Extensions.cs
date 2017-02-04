@@ -2923,14 +2923,7 @@ namespace Bam.Net
                         AddPropertyToDynamicType(typeBuilder, property);
                     }
                 }
-
-                Type jsonSafeType = typeBuilder.CreateType();
-                if (DynamicTypeStore.Current[typeName] == null)
-                {
-                    throw new InvalidOperationException("DynamicTypeInfo was null");
-                }
-                DynamicTypeStore.Current[typeName].DynamicType = jsonSafeType;
-                return jsonSafeType;
+                return CreateDynamicType(typeName, typeBuilder);
             }
         }
 
