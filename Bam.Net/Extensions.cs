@@ -492,12 +492,18 @@ namespace Bam.Net
             return ToCsv(new object[] { data }, false, false);
         }
 
-        public static string ToCsvLine(this object data)
+        public static string ToCsvLine(this object data, Func<Type, PropertyInfo[]> propertyGetter = null)
         {
-            return ToCsv(new object[] { data });
+            propertyGetter = propertyGetter ?? ((t) => t.GetProperties());
+            return ToCsv(new object[] { data }, propertyGetter, false, true);
         }
 
         public static string ToCsv(this object[] dataArr, bool includeHeader = false, bool newLine = true)
+        {
+            return ToCsv(dataArr, (t) => t.GetProperties(), includeHeader, newLine);
+        }
+
+        public static string ToCsv(this object[] dataArr, Func<Type, PropertyInfo[]> propertyGetter, bool includeHeader = false, bool newLine = true)
         {
             using (MemoryStream stream = new MemoryStream())
             {
@@ -510,7 +516,7 @@ namespace Bam.Net
 
                     dataArr.Each(data =>
                     {
-                        WriteCsv(data, writer);
+                        WriteCsv(data, propertyGetter, writer);
                         if (newLine)
                         {
                             writer.WriteLine();
@@ -542,8 +548,13 @@ namespace Bam.Net
 
         public static void WriteCsv(this object data, TextWriter writer)
         {
+            WriteCsv(data, (t) => t.GetProperties(), writer);
+        }
+
+        public static void WriteCsv(this object data, Func<Type, PropertyInfo[]> propertyGetter, TextWriter writer)
+        {
             Type type = data.GetType();
-            PropertyInfo[] propertyInfos = type.GetProperties();
+            PropertyInfo[] propertyInfos = propertyGetter(type);
             List<string> values = new List<string>();
             foreach (PropertyInfo prop in propertyInfos)
             {
@@ -2046,30 +2057,10 @@ namespace Bam.Net
         /// </summary>
         /// <param name="any"></param>
         /// <returns></returns>
+        [Obsolete("This extension method is deprecated and will be removed in a future release, use RuntimeSettings.AppDataFolder instead.")]
         public static string GetAppDataFolder(this object any) //TODO: move this into RuntimeSettings
         {
-            StringBuilder path = new StringBuilder();
-            if (HttpContext.Current == null)
-            {
-                path.Append(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData));
-                if (!path.ToString().EndsWith("\\"))
-                {
-                    path.Append("\\");
-                }
-
-                path.Append(DefaultConfiguration.GetAppSetting("ApplicationName", "UNKNOWN") + "\\");
-                FileInfo fileInfo = new FileInfo(path.ToString());
-                if (!Directory.Exists(fileInfo.Directory.FullName))
-                {
-                    Directory.CreateDirectory(fileInfo.Directory.FullName);
-                }
-            }
-            else
-            {
-                path.Append(HttpContext.Current.Server.MapPath("~/App_Data/"));
-            }
-
-            return path.ToString();
+            return RuntimeSettings.AppDataFolder;
         }
 
         public static Dictionary<string, object> PropertiesToDictionary(this object value)

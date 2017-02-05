@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,14 +14,28 @@ namespace Bam.Net.Configuration
         {
             get
             {
+                StringBuilder path = new StringBuilder();
                 if (HttpContext.Current == null)
                 {
-                    return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                    path.Append(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData));
+                    if (!path.ToString().EndsWith("\\"))
+                    {
+                        path.Append("\\");
+                    }
+
+                    path.Append(DefaultConfiguration.GetAppSetting("ApplicationName", "UNKNOWN") + "\\");
+                    FileInfo fileInfo = new FileInfo(path.ToString());
+                    if (!Directory.Exists(fileInfo.Directory.FullName))
+                    {
+                        Directory.CreateDirectory(fileInfo.Directory.FullName);
+                    }
                 }
                 else
                 {
-                    return HttpContext.Current.Server.MapPath("~/App_Data/");
+                    path.Append(HttpContext.Current.Server.MapPath("~/App_Data/"));
                 }
+
+                return path.ToString();
             }
         }
     }
