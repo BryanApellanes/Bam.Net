@@ -17,11 +17,16 @@ namespace Bam.Net.Data.OleDb
 {
 	public class OleDbDatabase: Database, IHasConnectionStringResolver
 	{
+        public const string DefaultProvider = "Microsoft.ACE.OLEDB.12.0";
         public OleDbDatabase()
         {
             ConnectionStringResolver = DefaultConnectionStringResolver.Instance;
             Register();
         }
+        public OleDbDatabase(string dataSource) 
+            : this(DefaultProvider, dataSource)
+        { }
+
 		public OleDbDatabase(string provider, string dataSource)
 			: this(provider, dataSource, dataSource)
 		{ }
