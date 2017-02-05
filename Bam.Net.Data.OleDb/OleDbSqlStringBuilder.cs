@@ -47,6 +47,10 @@ namespace Bam.Net.Data
             {
                 type = "VarBinary";
             }
+            else if (type.Equals("String"))
+            {
+                type = "Memo";
+            }
             return string.Format("[{0}] {1}{2}", column.Name, type, column.AllowNull ? "" : " NOT NULL");
         }
         public override SchemaWriter WriteDropTable(string tableName)

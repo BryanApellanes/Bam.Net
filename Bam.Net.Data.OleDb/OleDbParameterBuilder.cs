@@ -18,7 +18,7 @@ namespace Bam.Net.Data
     {
         public override DbParameter BuildParameter(string name, object value)
         {
-            OleDbParameter p = new OleDbParameter($"@{name}", value);
+            OleDbParameter p = new OleDbParameter($"@{name}", value ?? DBNull.Value);
             SetOleDbTypeForDateTime(value, p);
             return p;
         }
@@ -26,7 +26,7 @@ namespace Bam.Net.Data
         public override DbParameter BuildParameter(IParameterInfo c)
         {
             object value = c.Value;
-            OleDbParameter p = new OleDbParameter(string.Format("@{0}{1}", c.ColumnName, c.Number), value);
+            OleDbParameter p = new OleDbParameter(string.Format("@{0}{1}", c.ColumnName, c.Number), value ?? DBNull.Value);
             SetOleDbTypeForDateTime(value, p);
             return p;
         }
