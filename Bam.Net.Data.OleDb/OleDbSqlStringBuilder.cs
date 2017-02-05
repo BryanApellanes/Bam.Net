@@ -47,7 +47,7 @@ namespace Bam.Net.Data
             {
                 type = "VarBinary";
             }
-            return string.Format("{0} {1}{2}", column.Name, type, column.AllowNull ? "" : " NOT NULL");
+            return string.Format("[{0}] {1}{2}", column.Name, type, column.AllowNull ? "" : " NOT NULL");
         }
         public override SchemaWriter WriteDropTable(string tableName)
         {
@@ -66,7 +66,7 @@ namespace Bam.Net.Data
                     ForeignKeyAttribute fk = null;
                     if (prop.HasCustomAttributeOfType<ForeignKeyAttribute>(out fk))
                     {
-                        Builder.AppendFormat("ALTER TABLE {0} DROP CONSTRAINT {1}", table.TableName, fk.ForeignKeyName);
+                        Builder.AppendFormat("ALTER TABLE [{0}] DROP CONSTRAINT {1}", table.TableName, fk.ForeignKeyName);
                         Go();
                     }
                 }

@@ -156,6 +156,7 @@
     <Compile Include="Configuration\RequiredPropertiesNotSetException.cs" />
     <Compile Include="Configuration\RequiredPropertyNotFoundException.cs" />
     <Compile Include="Configuration\RuntimeSettings.cs" />
+    <Compile Include="CsvPropertyAttribute.cs" />
     <Compile Include="Date.cs" />
     <Compile Include="Documentation\doc.cs" />
     <Compile Include="DynamicTypeRecursionLimitReachedException.cs" />
@@ -201,7 +202,7 @@
     <Compile Include="Web\CookieEnabledWebClient.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Web\FormParameterExtensionscs.cs" />
+    <Compile Include="Web\FormParameterExtensions.cs" />
     <Compile Include="Web\Http.cs" />
     <Compile Include="Logging\CsvLogger.cs" />
     <Compile Include="ReflectionExtensions.cs" />
