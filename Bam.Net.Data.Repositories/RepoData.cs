@@ -18,6 +18,7 @@ namespace Bam.Net.Data.Repositories
 	/// save in a Repository
 	/// </summary>
     [Serializable]
+<<<<<<< Updated upstream
 	public abstract class RepoData
 	{
         public RepoData()
@@ -25,6 +26,11 @@ namespace Bam.Net.Data.Repositories
             Created = DateTime.UtcNow;
         }
 		public long Id { get; set; }
+=======
+    public abstract class RepoData
+    {
+        public long Id { get; set; }
+>>>>>>> Stashed changes
         string _uuid;
 		public string Uuid
         {
