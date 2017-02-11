@@ -57,8 +57,8 @@
       <HintPath>..\..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -128,12 +128,6 @@
     <Compile Include="Data\Generated_Dao\ConfigurationWrapper.cs" />
     <Compile Include="Data\Generated_Dao\CoreRegistryContext.cs" />
     <Compile Include="Data\Generated_Dao\CoreRegistryRepository.cs" />
-    <Compile Include="Data\Generated_Dao\ExternalEventSubscriptionDescriptor.cs" />
-    <Compile Include="Data\Generated_Dao\ExternalEventSubscriptionDescriptorCollection.cs" />
-    <Compile Include="Data\Generated_Dao\ExternalEventSubscriptionDescriptorColumns.cs" />
-    <Compile Include="Data\Generated_Dao\ExternalEventSubscriptionDescriptorPagedQuery.cs" />
-    <Compile Include="Data\Generated_Dao\ExternalEventSubscriptionDescriptorQuery.cs" />
-    <Compile Include="Data\Generated_Dao\ExternalEventSubscriptionDescriptorWrapper.cs" />
     <Compile Include="Data\Generated_Dao\Machine.cs" />
     <Compile Include="Data\Generated_Dao\MachineApplication.cs" />
     <Compile Include="Data\Generated_Dao\MachineApplicationCollection.cs" />
@@ -174,7 +168,6 @@
     <Compile Include="Data\Generated_Dao\Qi\Configuration.cs" />
     <Compile Include="Data\Generated_Dao\Qi\ConfigurationApplication.cs" />
     <Compile Include="Data\Generated_Dao\Qi\ConfigurationMachine.cs" />
-    <Compile Include="Data\Generated_Dao\Qi\ExternalEventSubscriptionDescriptor.cs" />
     <Compile Include="Data\Generated_Dao\Qi\Machine.cs" />
     <Compile Include="Data\Generated_Dao\Qi\MachineApplication.cs" />
     <Compile Include="Data\Generated_Dao\Qi\Nic.cs" />
@@ -198,16 +191,6 @@
     <Compile Include="Data\Generated_Protobuf\BamNetCoreServicesData.cs" />
     <Compile Include="Data\Nic.cs" />
     <Compile Include="Data\Configuration.cs" />
-    <Compile Include="ProtoBuf\DaoProtocolBuffersAssemblyGenerator.cs" />
-    <Compile Include="ProtoBuf\DaoProtoFileGenerator.cs" />
-    <Compile Include="ProtoBuf\InMemoryPropertyNumberer.cs" />
-    <Compile Include="ProtoBuf\IPropertyNumberer.cs" />
-    <Compile Include="ProtoBuf\ProtocolBufferProperty.cs" />
-    <Compile Include="ProtoBuf\ProtocolBuffersAssemblyGenerator.cs" />
-    <Compile Include="ProtoBuf\ProtocolBuffersExtensions.cs" />
-    <Compile Include="ProtoBuf\ProtocolBufferType.cs" />
-    <Compile Include="ProtoBuf\ProtocolBufferTypeModel.cs" />
-    <Compile Include="ProtoBuf\ProtoFileGenerator.cs" />
     <Compile Include="ProxySettingsInfo.cs" />
     <Compile Include="ServiceRequest.cs" />
     <Compile Include="Services\ClientApplicationFactory.cs" />
@@ -221,14 +204,11 @@
     <Compile Include="Services\ApplicationRegistrationResult.cs" />
     <Compile Include="Services\ApplicationRegistrationStatus.cs" />
     <Compile Include="Services\CoreApplicationRegistryServiceConfig.cs" />
-    <Compile Include="Services\CoreEventSourceService.cs" />
     <Compile Include="Services\CoreTranslationDatabase.cs" />
     <Compile Include="Services\CoreTranslationService.cs" />
-    <Compile Include="Services\ExternalEventSubscription.cs" />
     <Compile Include="Data\ApiKey.cs" />
     <Compile Include="Data\Application.cs" />
     <Compile Include="Data\ClientServerConnection.cs" />
-    <Compile Include="Data\ExternalEventSubscriptionDescriptor.cs" />
     <Compile Include="Data\Machine.cs" />
     <Compile Include="Data\Organization.cs" />
     <Compile Include="Data\ProcessDescriptor.cs" />
@@ -242,41 +222,14 @@
     <Compile Include="Services\CoreRegistry.cs" />
     <Compile Include="Services\CoreApplicationRegistryService.cs" />
     <Compile Include="ProxyAssemblyGenerationEventSource.cs" />
-    <Compile Include="Services\EventSourceServiceArgs.cs" />
     <Compile Include="CompositeRepository.cs" />
-    <Compile Include="GlobalEvents.cs" />
     <Compile Include="Services\CoreUserRegistryService.cs" />
     <Compile Include="Services\CoreConfigurationService.cs" />
-    <Compile Include="Distributed\CreateOperation.cs" />
-    <Compile Include="Distributed\DeleteOperation.cs" />
     <Compile Include="Services\DiagnosticInfo.cs" />
     <Compile Include="Services\CoreDiagnosticService.cs" />
-    <Compile Include="Distributed\ComputeArc.cs" />
-    <Compile Include="Distributed\ComputeArcInfo.cs" />
-    <Compile Include="Distributed\ComputeRing.cs" />
-    <Compile Include="Distributed\Files\DistributedFileInfo.cs" />
-    <Compile Include="Distributed\Files\DistributedFileManager.cs" />
-    <Compile Include="Distributed\Files\FileChunk.cs" />
-    <Compile Include="Distributed\IDistributedRepository.cs" />
-    <Compile Include="Distributed\IHasInfo.cs" />
-    <Compile Include="Distributed\InfoAttribute.cs" />
-    <Compile Include="Distributed\Keyspace.cs" />
-    <Compile Include="Distributed\PingOperation.cs" />
-    <Compile Include="Distributed\PongOperation.cs" />
-    <Compile Include="Distributed\ReplicateOperation.cs" />
-    <Compile Include="Distributed\ReplicationResult.cs" />
-    <Compile Include="Distributed\RepositoryKey.cs" />
-    <Compile Include="Distributed\Ring.cs" />
-    <Compile Include="Distributed\Arc.cs" />
-    <Compile Include="Services\EventSourceService.cs" />
     <Compile Include="Services\CoreLoggerService.cs" />
-    <Compile Include="Distributed\Operation.cs" />
-    <Compile Include="Services\MetricsEventSourceService.cs" />
-    <Compile Include="Services\NotificationEventSourceService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Protocols.cs" />
-    <Compile Include="Distributed\QueryOperation.cs" />
-    <Compile Include="Distributed\RetrieveOperation.cs" />
     <Compile Include="ProxyAssemblyGenerator.cs" />
     <Compile Include="ProxyAssemblyGenerationEventArgs.cs" />
     <Compile Include="ProxyFactory.cs" />
@@ -284,10 +237,8 @@
     <Compile Include="ProxyModel.cs" />
     <Compile Include="ProxySettings.cs" />
     <Compile Include="ProxyTemplate.cs" />
-    <Compile Include="Distributed\UpdateOperation.cs" />
     <Compile Include="ProxyableService.cs" />
     <Compile Include="ServiceResponse.cs" />
-    <Compile Include="Services\EventMessage.cs" />
     <Compile Include="StaticApplicationNameProvider.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -366,7 +317,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Data\regen_dao.cmd" />
+    <None Include="Data\regen_core_dao.cmd" />
     <None Include="Data\regen_protobuf.cmd" />
     <None Include="packages.config" />
     <None Include="README.md" />
@@ -377,12 +328,11 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Services\Persistence\" />
+    <Folder Include="ProtoBuf\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>copy $(TargetPath) c:\BamContent\apps\stickerize\services\</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

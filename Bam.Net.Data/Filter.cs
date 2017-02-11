@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Bam.Net.Data
 {
     /// <summary>
-    /// Convenience entry for contextually readable syntax; the same as Query
+    /// Convenience entry point for contextually readable syntax; the same as Query
     /// </summary>
     public static class Filter
     {

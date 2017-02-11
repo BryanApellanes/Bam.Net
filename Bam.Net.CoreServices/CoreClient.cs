@@ -45,7 +45,7 @@ namespace Bam.Net.CoreServices
             DiagnosticService = factory.GetProxy<CoreDiagnosticService>(HostName, Port);
             LoggerService = factory.GetProxy<CoreLoggerService>(HostName, Port);
             TranslationService = factory.GetProxy<CoreTranslationService>(HostName, Port);
-            EventHubService = factory.GetProxy<CoreEventSourceService>(HostName, Port);
+            //EventHubService = factory.GetProxy<CoreEventSourceService>(HostName, Port);
             UserRegistryService = factory.GetProxy<CoreUserRegistryService>(HostName, Port);
 
             SetApiKeyResolvers();
@@ -258,7 +258,7 @@ namespace Bam.Net.CoreServices
         protected internal CoreUserRegistryService UserRegistryService { get; set; }
         protected internal CoreApplicationRegistryService ApplicationRegistryService { get; set; }
         protected internal CoreConfigurationService ConfigurationService { get; set; }
-        protected internal CoreEventSourceService EventHubService { get; set; }
+        //protected internal CoreEventSourceService EventHubService { get; set; }
         protected internal CoreLoggerService LoggerService { get; set; }
         protected internal CoreTranslationService TranslationService { get; set; }
         protected internal CoreDiagnosticService DiagnosticService { get; set; }
@@ -269,7 +269,7 @@ namespace Bam.Net.CoreServices
                 yield return UserRegistryService;
                 yield return ApplicationRegistryService;                
                 yield return ConfigurationService;
-                yield return EventHubService;
+                //yield return EventHubService;
                 yield return LoggerService;
                 yield return TranslationService;                
                 yield return DiagnosticService;
@@ -302,7 +302,7 @@ namespace Bam.Net.CoreServices
             DiagnosticService.Property(propertyName, this);
             LoggerService.Property(propertyName, this);
             TranslationService.Property(propertyName, this);
-            EventHubService.Property(propertyName, this);
+            //EventHubService.Property(propertyName, this);
             UserRegistryService.Property(propertyName, this);
         }
     }

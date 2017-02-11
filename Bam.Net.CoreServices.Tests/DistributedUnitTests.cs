@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using Bam.Net.CoreServices.Distributed;
+using Bam.Net.Services.Distributed;
 using Bam.Net.Testing;
 
 namespace Bam.Net.Distributed.Tests
@@ -46,24 +47,24 @@ namespace Bam.Net.Distributed.Tests
 		{
 			TestRing ring = new TestRing();
 			Expect.IsFalse(ring.SetSlotsWasCalled);
-			ring.SetSlotCount(360);
+			ring.SetArcCount(360);
 			Expect.IsTrue(ring.SetSlotsWasCalled);
 		}
 
 		[UnitTest]
 		public void SetSlotCountShouldSetSlotLength()
 		{
-			ComputeRing ring = new ComputeRing();
-			ring.SetSlotCount(2);
+			RepositoryRing ring = new RepositoryRing();
+			ring.SetArcCount(2);
 			Expect.AreEqual(2, ring.Arcs.Length);
 		}
 
 		[UnitTest]
 		public void SlotShouldMakeFullCircleAfterInit()
 		{
-			ComputeRing ring = new ComputeRing();
+			RepositoryRing ring = new RepositoryRing();
 			int slotCount = RandomNumber.Between(8, 16);
-			ring.SetSlotCount(slotCount);
+			ring.SetArcCount(slotCount);
 			PrintSlots(ring);
 
 			Expect.AreEqual(slotCount, ring.Arcs.Length);
@@ -75,9 +76,9 @@ namespace Bam.Net.Distributed.Tests
 		[UnitTest]
 		public void SlotShouldMakeFullCircleAfterInit13()
 		{
-			ComputeRing ring = new ComputeRing();
+			RepositoryRing ring = new RepositoryRing();
 			int slotCount = 13;//RandomNumber.Between(8, 16);
-			ring.SetSlotCount(slotCount);
+			ring.SetArcCount(slotCount);
 			PrintSlots(ring);
 
 			Expect.AreEqual(slotCount, ring.Arcs.Length);
@@ -86,7 +87,7 @@ namespace Bam.Net.Distributed.Tests
 			Expect.AreEqual(fullCircle, endAngle);
 		}
 
-		private static void PrintSlots(ComputeRing ring)
+		private static void PrintSlots(RepositoryRing ring)
 		{
 			ring.Arcs.Each((s, i) =>
 			{
@@ -102,33 +103,11 @@ namespace Bam.Net.Distributed.Tests
 		public void AddComputeNodeShouldAddSlot()
 		{
 			int slotCount = RandomNumber.Between(8, 16);
-			ComputeRing ring = new ComputeRing(slotCount);
-			ring.AddComputeArc(new ComputeArc());
+			RepositoryRing ring = new RepositoryRing(slotCount);
+			ring.AddArc(new RepositoryService());
 			Expect.AreEqual(slotCount + 1, ring.Arcs.Length);
 
 			PrintSlots(ring);
-		}
-
-		[UnitTest]
-		public void ComputeNodeFromCurrentHostShouldBeSelf()
-		{
-			ComputeArc current = ComputeArc.FromCurrentHost();
-			string hostName = Dns.GetHostName();
-			Expect.AreEqual(hostName, current.HostName);
-			object info = current.GetInfo();
-			Expect.AreEqual(hostName, info.Property<string>("HostName"));
-			OutLine(info.PropertiesToString());
-		}
-
-		[UnitTest]
-		public void ComputeNodeGetInfoStringsTest()
-		{
-			ComputeArc current = ComputeArc.FromCurrentHost();
-			Dictionary<string, string> info = current.GetInfoDictionary();
-			info.Keys.Each((k) =>
-			{
-				OutLineFormat("Key: {0}, Val: {1}", k, info[k]);
-			});
 		}
 
 		public void Before()
@@ -141,34 +120,25 @@ namespace Bam.Net.Distributed.Tests
 			OutLine("AFTER RAN", ConsoleColor.Cyan);
 		}
 
-		[UnitTest]
-		public void ComputeNodeFromCurrentShouldHaveHostname()
-		{
-			ComputeArc current = ComputeArc.FromCurrentHost();
-			Expect.AreEqual(current.HostName, Dns.GetHostName());
-		}
 
 		[UnitTest("Set Slot count shouldn't overwrite existing slots")]
 		public void SetSlotCountShouldKeepExistingSlots()
 		{
 			Before();
-			ComputeRing ring = new ComputeRing();
+			RepositoryRing ring = new RepositoryRing();
 
-			ComputeArc node = new ComputeArc();
-			node.HostName = "HostName_".RandomLetters(4);
-			ring.AddComputeArc(node);
+            RepositoryService node = new RepositoryService();
+			ring.AddArc(node);
 			Expect.AreEqual(1, ring.Arcs.Length);
 
-			ComputeArc check = ring.Arcs[0].GetProvider<ComputeArc>();
+            RepositoryService check = (RepositoryService)ring.Arcs[0].GetServiceProvider();
 			Expect.IsNotNull(check);
 
-			ring.SetSlotCount(3);
+			ring.SetArcCount(3);
 
 			Expect.AreEqual(3, ring.Arcs.Length);
-			check = ring.Arcs[0].GetProvider<ComputeArc>();
-
-			Expect.AreEqual(node.HostName, check.HostName);
-
+			check = (RepositoryService)ring.Arcs[0].GetServiceProvider();
+            
 			PrintSlots(ring);
 			After();
 		}

@@ -19,6 +19,10 @@ namespace Bam.Net.Data.Repositories
 
         public DaoRepository DaoRepository { get; set; }
 
+        public override object Create(Type type, object toCreate)
+        {
+            return DaoRepository.Create(type, toCreate);
+        }
         public override object Create(object toCreate)
         {
             return DaoRepository.Create(toCreate);
@@ -29,7 +33,7 @@ namespace Bam.Net.Data.Repositories
             return DaoRepository.Query<T>(query);
         }
 
-        public override IEnumerable Query(Type type, QueryFilter query)
+        public override IEnumerable<object> Query(Type type, QueryFilter query)
         {
             return DaoRepository.Query(type, query);
         }
@@ -39,7 +43,10 @@ namespace Bam.Net.Data.Repositories
         {
             return DaoRepository.Create(toCreate);
         }
-
+        public override bool Delete(Type type, object toDelete)
+        {
+            return DaoRepository.Delete(type, toDelete);
+        }
         public override bool Delete(object toDelete)
         {
             return DaoRepository.Delete(toDelete);
@@ -55,7 +62,7 @@ namespace Bam.Net.Data.Repositories
             return DaoRepository.Query(query);
         }
 
-        public override IEnumerable Query(Type type, Dictionary<string, object> queryParameters)
+        public override IEnumerable<object> Query(Type type, Dictionary<string, object> queryParameters)
         {
             return DaoRepository.Query(type, queryParameters);
         }
@@ -122,7 +129,10 @@ namespace Bam.Net.Data.Repositories
         {
             return DaoRepository.Update(toUpdate);
         }
-
+        public override object Update(Type type, object toUpdate)
+        {
+            return DaoRepository.Update(type, toUpdate);
+        }
         public override T Update<T>(T toUpdate)
         {
             return DaoRepository.Update<T>(toUpdate);

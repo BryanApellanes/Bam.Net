@@ -39,6 +39,13 @@
             The database that the backup will be restored to
             </summary>
         </member>
+        <member name="T:Bam.Net.Data.Repositories.RepoData">
+            <summary>
+            An abstract base class defining common
+            properties for any object you may wish to 
+            save in a Repository
+            </summary>
+        </member>
         <member name="M:Bam.Net.Data.Repositories.TypeSchemaScriptWriter.WriteSchemaScript(Bam.Net.Data.Database,System.Type[])">
             <summary>
             Write and return the sql schema script using a TypeInheritanceSchemaGenerator
@@ -449,14 +456,6 @@
             <param name="toSave"></param>
             <returns></returns>
         </member>
-        <member name="M:Bam.Net.Data.Repositories.IRepository.Create(System.Object)">
-            <summary>
-            When implemented in a derived class, calls
-            Create or Update as appropriate
-            </summary>
-            <param name="toCreate"></param>
-            <returns></returns>
-        </member>
         <member name="M:Bam.Net.Data.Repositories.IRepository.Retrieve``1(System.Int32)">
             <summary>
             When implemented in a derived class retrieves
@@ -485,6 +484,14 @@
             <typeparam name="T"></typeparam>
             <returns></returns>
         </member>
+        <member name="M:Bam.Net.Data.Repositories.IRepository.Create(System.Object)">
+            <summary>
+            When implemented in a derived class, calls
+            Create or Update as appropriate
+            </summary>
+            <param name="toCreate"></param>
+            <returns></returns>
+        </member>
         <member name="T:Bam.Net.Data.Repositories.ObjectRepository">
             <summary>
             A class responsible for saving and retrieving
@@ -509,14 +516,16 @@
             the properties in crawlable files
             </summary>
         </member>
-        <member name="T:Bam.Net.Data.Repositories.RepoData">
+        <member name="T:Bam.Net.Data.Repositories.AuditRepoData">
             <summary>
             An abstract base class defining common
             properties for any object you may wish to 
-            save in a Repository
+            save in a Repository including fields useful
+            for auditing the modification of persisted
+            data
             </summary>
         </member>
-        <member name="M:Bam.Net.Data.Repositories.RepoData.EnsurePersisted``1(Bam.Net.Data.Repositories.IRepository)">
+        <member name="M:Bam.Net.Data.Repositories.AuditRepoData.EnsurePersisted``1(Bam.Net.Data.Repositories.IRepository)">
             <summary>
             Ensure the current RepoData instance has been 
             persisted to the specified repo
@@ -525,7 +534,7 @@
             <param name="repo"></param>
             <returns></returns>
         </member>
-        <member name="M:Bam.Net.Data.Repositories.RepoData.EnsureSingle``1(Bam.Net.Data.Repositories.IRepository,System.String[])">
+        <member name="M:Bam.Net.Data.Repositories.AuditRepoData.EnsureSingle``1(Bam.Net.Data.Repositories.IRepository,System.String[])">
             <summary>
             Ensures that an instance of the current RepoData
             has been saved to the specified repo where the 
@@ -537,7 +546,7 @@
             <param name="propertyName"></param>
             <returns></returns>
         </member>
-        <member name="M:Bam.Net.Data.Repositories.RepoData.EnsureSingle``1(Bam.Net.Data.Repositories.IRepository,System.String,System.String[])">
+        <member name="M:Bam.Net.Data.Repositories.AuditRepoData.EnsureSingle``1(Bam.Net.Data.Repositories.IRepository,System.String,System.String[])">
             <summary>
             Ensures that an instance of the current RepoData
             has been saved to the specified repo where the 

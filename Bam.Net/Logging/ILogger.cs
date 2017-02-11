@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Bam.Net.Logging
 {
-    public interface ILogger
+    public interface ILogger: ILog
     {
         bool IsNull { get; }
 

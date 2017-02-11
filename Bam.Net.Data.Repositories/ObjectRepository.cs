@@ -60,8 +60,11 @@ namespace Bam.Net.Data.Repositories
 			SaveCollections(toCreate);
 			return toCreate;
 		}
-
-		public override object Create(object toCreate)
+        public override object Create(Type type, object toCreate)
+        {
+            return Create(toCreate);
+        }
+        public override object Create(object toCreate)
 		{
 			ObjectReaderWriter.Write(toCreate);
 			SaveCollections(toCreate);
@@ -75,7 +78,12 @@ namespace Bam.Net.Data.Repositories
 			return toUpdate;
 		}
 
-		public override object Update(object toUpdate)
+        public override object Update(Type type, object toUpdate)
+        {
+            return Update(toUpdate);
+        }
+
+        public override object Update(object toUpdate)
 		{
 			ObjectReaderWriter.Write(toUpdate);
 			SaveCollections(toUpdate);
@@ -171,7 +179,7 @@ namespace Bam.Net.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public override IEnumerable Query(Type type, Dictionary<string, object> queryParameters)
+        public override IEnumerable<object> Query(Type type, Dictionary<string, object> queryParameters)
         {
             throw new NotImplementedException();
         }
@@ -188,7 +196,7 @@ namespace Bam.Net.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public override IEnumerable Query(Type type, QueryFilter query)
+        public override IEnumerable<object> Query(Type type, QueryFilter query)
         {
             throw new NotImplementedException();
         }
@@ -197,8 +205,11 @@ namespace Bam.Net.Data.Repositories
 		{
 			return ObjectReaderWriter.Delete(toDelete);
 		}
-
-		public override bool Delete(object toDelete)
+        public override bool Delete(Type type, object toDelete)
+        {
+            return Delete(toDelete);
+        }
+        public override bool Delete(object toDelete)
 		{
 			return ObjectReaderWriter.Delete(toDelete);
 		}

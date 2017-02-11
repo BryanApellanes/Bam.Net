@@ -267,13 +267,17 @@ namespace Bam.Net.Data.Repositories
 		{
 			return (T)Create((object)toCreate);
 		}
+        public override object Create(object toCreate)
+        {
+            return Create(toCreate.GetType(), toCreate);
+        }
 
-		public override object Create(object toCreate)
+        public override object Create(Type type, object toCreate)
 		{
 			try
 			{
 				Initialize();
-				Type daoType = GetDaoType(GetBaseType(toCreate.GetType()));
+				Type daoType = GetDaoType(GetBaseType(type));
 				Dao daoInstance = daoType.Construct<Dao>();
 				daoInstance.ForceInsert = true;
 				object poco = SetDaoInstancePropertiesAndSave(toCreate, daoInstance);
@@ -327,7 +331,7 @@ namespace Bam.Net.Data.Repositories
 			try
 			{
 				Initialize();
-				Dao daoInstance = GetDaoInstanceByUuid(objectType, uuid);
+				Dao daoInstance = GetDaoInstanceByUniversalIdentifier(objectType, uuid);
 				if (daoInstance != null)
 				{
 					return GetWrapperInstance(objectType, daoInstance);
@@ -391,7 +395,7 @@ namespace Bam.Net.Data.Repositories
             return Query<T>(filter);
         }
 
-        public override IEnumerable Query(Type type, Dictionary<string, object> queryParameters)
+        public override IEnumerable<object> Query(Type type, Dictionary<string, object> queryParameters)
         {
             QueryFilter filter = CreateQueryFilter(queryParameters);
             return Query(type, filter);
@@ -408,14 +412,17 @@ namespace Bam.Net.Data.Repositories
 		{
 			return (T)Update((object)toUpdate);
 		}
+        public override object Update(object toUpdate)
+        {
+            return Update(toUpdate.GetType(), toUpdate);
+        }
 
-		public override object Update(object toUpdate)
+        public override object Update(Type type, object toUpdate)
 		{
 			try
 			{
 				Initialize();
-				Type pocoType = toUpdate.GetType();
-				Dao daoInstance = GetDaoInstanceById(pocoType, GetIdValue(toUpdate)); 
+				Dao daoInstance = GetDaoInstanceById(type, GetIdValue(toUpdate)); 
 				object poco = SetDaoInstancePropertiesAndSave(toUpdate, daoInstance);
 				return poco;
 			}
@@ -431,14 +438,16 @@ namespace Bam.Net.Data.Repositories
 		{
 			return Delete((object)toDelete);
 		}
-
-		public override bool Delete(object toDelete)
+        public override bool Delete(object toDelete)
+        {
+            return Delete(toDelete.GetType(), toDelete);
+        }
+        public override bool Delete(Type type, object toDelete)
 		{
 			try
 			{
 				Initialize();
-				Type pocoType = toDelete.GetType();
-				object daoInstance = GetDaoInstanceById(pocoType, GetIdValue(toDelete));
+				object daoInstance = GetDaoInstanceById(type, GetIdValue(toDelete));
 				if (daoInstance != null)
 				{
 					MethodInfo deleteMethod = daoInstance.GetType().GetMethod("Delete", new Type[] { typeof(Database) });
@@ -470,7 +479,7 @@ namespace Bam.Net.Data.Repositories
             return Wrap<T>(daoResults);
 		}
 
-        public override IEnumerable Query(Type pocoType, QueryFilter query)
+        public override IEnumerable<object> Query(Type pocoType, QueryFilter query)
         {
             Type daoType = GetDaoType(pocoType);
             MethodInfo whereMethod = daoType.GetMethod("Where", new Type[] { typeof(QueryFilter), typeof(Database) });
@@ -848,7 +857,7 @@ namespace Bam.Net.Data.Repositories
 			return GetDaoInstanceById(typeof(T), id);
 		}
 
-		private Dao GetDaoInstanceByUuid(Type baseOrWrapperType, string uuid)
+		private Dao GetDaoInstanceByUniversalIdentifier(Type baseOrWrapperType, string uuid)
 		{
 			return GetDaoInstanceByMethod("GetByUuid", baseOrWrapperType, (object)uuid);
 		}

@@ -7,7 +7,7 @@ using Bam.Net.Data.Repositories;
 
 namespace Bam.Net.CoreServices.Data
 {
-    public class Organization: RepoData
+    public class Organization: AuditRepoData
     {
         public string Name { get; set; }
         public virtual Application[] Applications { get; set; }

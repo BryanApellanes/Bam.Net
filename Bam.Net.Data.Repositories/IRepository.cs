@@ -38,14 +38,6 @@ namespace Bam.Net.Data.Repositories
 		object Save(object toSave);
         IEnumerable SaveCollection(IEnumerable values);
         IEnumerable<T> SaveCollection<T>(IEnumerable<T> values) where T : class, new();
-        T Create<T>(T toCreate) where T : class, new();
-        /// <summary>
-        /// When implemented in a derived class, calls
-        /// Create or Update as appropriate
-        /// </summary>
-        /// <param name="toCreate"></param>
-        /// <returns></returns>
-		object Create(object toCreate);
 
         /// <summary>
         /// When implemented in a derived class retrieves
@@ -76,18 +68,29 @@ namespace Bam.Net.Data.Repositories
 		IEnumerable<object> RetrieveAll(Type type);
 		IEnumerable<object> Query(string propertyName, object propertyValue);
         IEnumerable<T> Query<T>(Dictionary<string, object> queryParams) where T: class, new();
-        IEnumerable Query(Type type, Dictionary<string, object> queryParams);
+        IEnumerable<object> Query(Type type, Dictionary<string, object> queryParams);
 		object Retrieve(Type objectType, long id);
 		object Retrieve(Type objectType, string uuid);
 		IEnumerable<T> Query<T>(dynamic query) where T : class, new();
         IEnumerable<T> Query<T>(Func<T, bool> query) where T : class, new();
 		IEnumerable<object> Query(Type type, Func<object, bool> predicate);
         IEnumerable<T> Query<T>(QueryFilter query) where T : class, new();
-        IEnumerable Query(Type type, QueryFilter query);
+        IEnumerable<object> Query(Type type, QueryFilter query);
 
+        T Create<T>(T toCreate) where T : class, new();
+        /// <summary>
+        /// When implemented in a derived class, calls
+        /// Create or Update as appropriate
+        /// </summary>
+        /// <param name="toCreate"></param>
+        /// <returns></returns>
+		object Create(object toCreate);
+        object Create(Type type, object toCreate);
         T Update<T>(T toUpdate) where T : new();
 		object Update(object toUpdate);
+        object Update(Type type, object toUpdate);
 		bool Delete<T>(T toDelete) where T : new();
 		bool Delete(object toDelete);
+        bool Delete(Type type, object toDelete);
     }
 }

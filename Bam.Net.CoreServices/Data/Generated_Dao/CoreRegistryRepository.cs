@@ -29,7 +29,7 @@ namespace Bam.Net.CoreServices.Data.Daos.Repository
 			AddType<Bam.Net.CoreServices.Data.ApiKey>();﻿			
 			AddType<Bam.Net.CoreServices.Data.Application>();﻿			
 			AddType<Bam.Net.CoreServices.Data.ClientServerConnection>();﻿			
-			AddType<Bam.Net.CoreServices.Data.ExternalEventSubscriptionDescriptor>();﻿			
+			//AddType<Bam.Net.CoreServices.Data.ExternalEventSubscriptionDescriptor>();﻿			
 			AddType<Bam.Net.CoreServices.Data.Machine>();﻿			
 			AddType<Bam.Net.CoreServices.Data.Organization>();﻿			
 			AddType<Bam.Net.CoreServices.Data.ProcessDescriptor>();﻿			
@@ -514,99 +514,7 @@ namespace Bam.Net.CoreServices.Data.Daos.Repository
 				batchProcessor(Wrap<Bam.Net.CoreServices.Data.ClientServerConnection>(batch));
             }, Database);
         }﻿		
-		/// <summary>
-		/// Get one entry matching the specified filter.  If none exists 
-		/// one will be created; success will depend on the nullability
-		/// of the specified columns.
-		/// </summary>
-		/// <param name="where"></param>
-		public Bam.Net.CoreServices.Data.ExternalEventSubscriptionDescriptor GetOneExternalEventSubscriptionDescriptorWhere(WhereDelegate<ExternalEventSubscriptionDescriptorColumns> where)
-		{
-			Type wrapperType = GetWrapperType<Bam.Net.CoreServices.Data.ExternalEventSubscriptionDescriptor>();
-			return (Bam.Net.CoreServices.Data.ExternalEventSubscriptionDescriptor)Bam.Net.CoreServices.Data.Daos.ExternalEventSubscriptionDescriptor.GetOneWhere(where, Database).CopyAs(wrapperType, this);
-		}
-
-		/// <summary>
-		/// Execute a query that should return only one result.  If more
-		/// than one result is returned a MultipleEntriesFoundException will 
-		/// be thrown.  This method is most commonly used to retrieve a
-		/// single ExternalEventSubscriptionDescriptor instance by its Id/Key value
-		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a ExternalEventSubscriptionDescriptorColumns 
-		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between ExternalEventSubscriptionDescriptorColumns and other values
-		/// </param>
-		public Bam.Net.CoreServices.Data.ExternalEventSubscriptionDescriptor OneExternalEventSubscriptionDescriptorWhere(WhereDelegate<ExternalEventSubscriptionDescriptorColumns> where)
-        {
-            Type wrapperType = GetWrapperType<Bam.Net.CoreServices.Data.ExternalEventSubscriptionDescriptor>();
-            return (Bam.Net.CoreServices.Data.ExternalEventSubscriptionDescriptor)Bam.Net.CoreServices.Data.Daos.ExternalEventSubscriptionDescriptor.OneWhere(where, Database).CopyAs(wrapperType, this);
-        }
-
-		/// <summary>
-		/// Execute a query and return the results. 
-		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a Bam.Net.CoreServices.Data.ExternalEventSubscriptionDescriptorColumns 
-		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between Bam.Net.CoreServices.Data.ExternalEventSubscriptionDescriptorColumns and other values
-		/// </param>
-		public IEnumerable<Bam.Net.CoreServices.Data.ExternalEventSubscriptionDescriptor> ExternalEventSubscriptionDescriptorsWhere(WhereDelegate<ExternalEventSubscriptionDescriptorColumns> where, OrderBy<ExternalEventSubscriptionDescriptorColumns> orderBy = null)
-        {
-            return Wrap<Bam.Net.CoreServices.Data.ExternalEventSubscriptionDescriptor>(Bam.Net.CoreServices.Data.Daos.ExternalEventSubscriptionDescriptor.Where(where, orderBy, Database));
-        }
-		
-		/// <summary>
-		/// Execute a query and return the specified number
-		/// of values. This method will issue a sql TOP clause so only the 
-		/// specified number of values will be returned.
-		/// </summary>
-		/// <param name="count">The number of values to return.
-		/// This value is used in the sql query so no more than this 
-		/// number of values will be returned by the database.
-		/// </param>
-		/// <param name="where">A WhereDelegate that recieves a ExternalEventSubscriptionDescriptorColumns 
-		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between ExternalEventSubscriptionDescriptorColumns and other values
-		/// </param>
-		public IEnumerable<Bam.Net.CoreServices.Data.ExternalEventSubscriptionDescriptor> TopExternalEventSubscriptionDescriptorsWhere(int count, WhereDelegate<ExternalEventSubscriptionDescriptorColumns> where)
-        {
-            return Wrap<Bam.Net.CoreServices.Data.ExternalEventSubscriptionDescriptor>(Bam.Net.CoreServices.Data.Daos.ExternalEventSubscriptionDescriptor.Top(count, where, Database));
-        }
-
-		/// <summary>
-		/// Return the count of ExternalEventSubscriptionDescriptors
-		/// </summary>
-		public long CountExternalEventSubscriptionDescriptors()
-        {
-            return Bam.Net.CoreServices.Data.Daos.ExternalEventSubscriptionDescriptor.Count(Database);
-        }
-
-		/// <summary>
-		/// Execute a query and return the number of results
-		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a ExternalEventSubscriptionDescriptorColumns 
-		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between ExternalEventSubscriptionDescriptorColumns and other values
-		/// </param>
-        public long CountExternalEventSubscriptionDescriptorsWhere(WhereDelegate<ExternalEventSubscriptionDescriptorColumns> where)
-        {
-            return Bam.Net.CoreServices.Data.Daos.ExternalEventSubscriptionDescriptor.Count(where, Database);
-        }
-        
-        public async Task BatchQueryExternalEventSubscriptionDescriptors(int batchSize, WhereDelegate<ExternalEventSubscriptionDescriptorColumns> where, Action<IEnumerable<Bam.Net.CoreServices.Data.ExternalEventSubscriptionDescriptor>> batchProcessor)
-        {
-            await Bam.Net.CoreServices.Data.Daos.ExternalEventSubscriptionDescriptor.BatchQuery(batchSize, where, (batch) =>
-            {
-				batchProcessor(Wrap<Bam.Net.CoreServices.Data.ExternalEventSubscriptionDescriptor>(batch));
-            }, Database);
-        }
-		
-        public async Task BatchAllExternalEventSubscriptionDescriptors(int batchSize, Action<IEnumerable<Bam.Net.CoreServices.Data.ExternalEventSubscriptionDescriptor>> batchProcessor)
-        {
-            await Bam.Net.CoreServices.Data.Daos.ExternalEventSubscriptionDescriptor.BatchAll(batchSize, (batch) =>
-            {
-				batchProcessor(Wrap<Bam.Net.CoreServices.Data.ExternalEventSubscriptionDescriptor>(batch));
-            }, Database);
-        }﻿		
+	
 		/// <summary>
 		/// Get one entry matching the specified filter.  If none exists 
 		/// one will be created; success will depend on the nullability

@@ -7,7 +7,7 @@ using Bam.Net.Data.Repositories;
 
 namespace Bam.Net.CoreServices.Data
 {
-    public class Subscription: RepoData
+    public class Subscription: AuditRepoData
     {
         public long UserId { get; set; }
         public virtual User User { get; set; }

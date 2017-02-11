@@ -11,7 +11,10 @@ using System.Data.Common;
 
 namespace Bam.Net.Data
 {
-	public static class Query
+    /// <summary>
+    /// Convenience entry point for contextually readable syntax; the same as Filter
+    /// </summary>
+    public static class Query
 	{
         /// <summary>
         /// Convenience entry point to
@@ -175,6 +178,8 @@ namespace Bam.Net.Data
             db = db ?? Db.For<T>();
             C columns = new C();
             IQueryFilter queryFilter = (IQueryFilter)FilterDelegate.DynamicInvoke(columns);
+            // TODO: add FilterInspector operations here
+            //  add FilterInspector to Database definition
             return GetSqlStringBuilder(db).Where(queryFilter);
         }
 

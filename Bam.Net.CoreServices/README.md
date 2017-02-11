@@ -9,19 +9,19 @@
 	- duh
 
 # Persistence Services
-- CorePersistenceService [todo]
+- PersistenceService [todo]
 	- manage data repositories.  
-- CorePermissionsService [todo]
-	- maintains acls for paths.  (Uses UserAccountsService)
-- CoreFileSystemService [todo]
+- FileSystemService [todo]
 	- maintain logical directories and files.  (Uses PermissionsService)
-- CoreStateService [todo]
+- StateService [todo]
 	- track global state (key value pairs) and session state (key value pairs of key value pairs)
 
-# Secondary Services
+# Other Services
+- PermissionsService [todo]
+	- maintains acls for paths.  (Uses CoreUserAccountsService)
 - TextService
 	- manage text, alternative text and translations
 - ListService
-	- sub types: Cart, Shopping, Wish
-- PubSubHubService
+	- sub types: Inventory, Cart, Shopping, Wish
+- EventHubService
 	- event subscription and notification

@@ -25,6 +25,7 @@ using System.Web.Routing;
 using System.Reflection;
 using Bam.Net.Data.Qi;
 using System.Collections;
+using Bam.Net.Data.Repositories;
 
 namespace Bam.Net.Server
 {
@@ -179,15 +180,17 @@ namespace Bam.Net.Server
                 }
                 else
                 {
-                    handled = TryExecuteCrudRequest(chunks, request, response, handled, appName);
+                    handled = TryExecuteCrudRequest(chunks, context, handled, appName);
                 }
             }
 
             return handled;
         }
 
-        private bool TryExecuteCrudRequest(string[] chunks, IRequest request, IResponse response, bool handled, string appName)
+        private bool TryExecuteCrudRequest(string[] chunks, IHttpContext context, bool handled, string appName)
         {
+            IRequest request = context.Request;
+            IResponse response = context.Response;
             string connectionName;
             string methodName;
             string daoName;
@@ -213,68 +216,12 @@ namespace Bam.Net.Server
                         RegisterDatabase(daoProxyReg);
                     }
 
-                    // TODO: Refactor this to DaoCrudProvider
-                    //  replace "SendResponse" with instanciation of the response
-                    // Extract interface ICrudProvider and implement: <= done
-                    //  Create
-                    //  Retrieve
-                    //  Update
-                    //  Delete
-                    //  Query
-                    //  SaveCollection
-                    MethodInfo daoMethod = null;
-                    object instance;
-                    QiQuery query;
-                    long id = -1;
-                    Database database = daoProxyReg.Database;
-                    switch (methodName.ToLowerInvariant())
+                    DaoCrudResponseProvider responseProvider = new DaoCrudResponseProvider(daoProxyReg, context);
+                    CrudResponse crudResponse = responseProvider.Execute();
+                    if (crudResponse.Success)
                     {
-                        case "create":
-                            daoMethod = daoType.GetMethod("Insert");
-                            instance = GetRequestBody(request).FromJson(daoType);
-                            daoMethod.Invoke(instance, new object[] { database });
-                            SendResponse(response, new { CxName = Dao.ConnectionName(daoType), Success = true, Message = "", Dao = instance.ToJsonSafe() }.ToJson());
-                            handled = true;
-                            break;
-                        case "retrieve":
-                            daoMethod = daoType.GetMethod("GetById", new Type[] { typeof(long), typeof(Database) });
-                            id = GetRequestBody(request).FromJson<long>();
-                            SendResponse(response, new { CxName = Dao.ConnectionName(daoType), Success = true, Message = "", Dao = daoMethod.Invoke(null, new object[] { id, database }).ToJsonSafe() }.ToJson());
-                            handled = true;
-                            break;
-                        case "update":
-                            daoMethod = daoType.GetMethod("Update", new Type[] { typeof(Database) });
-                            instance = GetRequestBody(request).FromJson(daoType);
-                            daoMethod.Invoke(instance, new object[] { database });
-                            SendResponse(response, new { CxName = Dao.ConnectionName(daoType), Success = true, Message = "", Dao = instance.ToJsonSafe() }.ToJson());
-                            handled = true;
-                            break;
-                        case "delete":
-                            daoMethod = daoType.GetMethod("Delete", new Type[] { typeof(Database) });
-                            instance = GetRequestBody(request).FromJson(daoType);
-                            daoMethod.Invoke(instance, new object[] { database });
-                            SendResponse(response, new { CxName = Dao.ConnectionName(daoType), Success = true, Message = "", Dao = instance.ToJsonSafe() }.ToJson());
-                            handled = true;
-                            break;
-                        case "query":
-                            daoMethod = daoType.GetMethod("Where", new Type[] { typeof(QiQuery), typeof(Database) });
-                            query = GetRequestBody(request).FromJson<QiQuery>();
-                            IEnumerable results = (IEnumerable)daoMethod.Invoke(null, new object[] { query, database });
-                            SendResponse(response, new { CxName = Dao.ConnectionName(daoType), Success = true, Message = "", Dao = results.ToJsonSafe() }.ToJson());
-                            handled = true;
-                            break;
-                        case "savecollection":
-                            Type collectionType = daoType.Assembly.GetType("{0}.{1}Collection"._Format(daoType.Namespace, daoType.Name));
-                            IEnumerable values = (IEnumerable)GetRequestBody(request).FromJson(daoType.MakeArrayType());
-                            object collection = collectionType.Construct();
-                            collection.Invoke("AddRange", values);
-                            MethodInfo saveMethod = collectionType.GetMethod("Save", new Type[] { typeof(Database) });
-                            saveMethod.Invoke(collection, new object[] { database });
-                            SendResponse(response, new { CxName = Dao.ConnectionName(daoType), Success = true, Message = "", Dao = values.ToJsonSafe() }.ToJson());
-                            handled = true;
-                            break;
-                        default:
-                            break;
+                        handled = true;
+                        SendResponse(response, crudResponse.ToJson());
                     }
                 }
             }

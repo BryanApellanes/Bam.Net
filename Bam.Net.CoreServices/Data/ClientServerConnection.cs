@@ -7,7 +7,7 @@ using Bam.Net.Data.Repositories;
 
 namespace Bam.Net.CoreServices.Data
 {
-    public class ClientServerConnection: RepoData
+    public class ClientServerConnection: AuditRepoData
     {
         public long ClientId { get; set; }
         public virtual ProcessDescriptor Client { get; set; }

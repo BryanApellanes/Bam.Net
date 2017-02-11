@@ -12,7 +12,7 @@ using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.CoreServices.Data
 {
-    public class Machine: RepoData
+    public class Machine: AuditRepoData
     {
         public Machine()
         {
@@ -85,7 +85,7 @@ namespace Bam.Net.CoreServices.Data
                         new Nic
                         {
                             AddressFamily = unicast.Address.AddressFamily.ToString(),
-                            Value = unicast.Address.ToString(),
+                            Address = unicast.Address.ToString(),
                             MacAddress = nic.GetPhysicalAddress().ToString()
                         });
                 }

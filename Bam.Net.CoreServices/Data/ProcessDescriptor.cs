@@ -12,7 +12,7 @@ using Bam.Net.CoreServices.Data.Daos.Repository;
 
 namespace Bam.Net.CoreServices.Data
 {
-    public class ProcessDescriptor : RepoData
+    public class ProcessDescriptor : AuditRepoData
     {
         public ProcessDescriptor()
         {
