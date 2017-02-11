@@ -8,7 +8,7 @@ using Bam.Net.ServiceProxy.Secure;
 
 namespace Bam.Net.CoreServices.Data
 {
-    public class ApiKey: RepoData
+    public class ApiKey: AuditRepoData
     {
         public long ApplicationId { get; set; }
         public virtual Application Application { get; set; }

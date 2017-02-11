@@ -154,6 +154,10 @@
       <Project>{296d4f9e-09f3-48c1-9968-d161c9666756}</Project>
       <Name>Bam.Net.Data.Oracle</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.Protobuf\Bam.Net.Data.Protobuf.csproj">
+      <Project>{f0ed71d9-6823-4e3d-a8f6-8652581fab01}</Project>
+      <Name>Bam.Net.Data.Protobuf</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Data.Repositories\Bam.Net.Data.Repositories.csproj">
       <Project>{222ef625-a115-49c7-8bdb-5879725a7d17}</Project>
       <Name>Bam.Net.Data.Repositories</Name>
@@ -193,6 +197,10 @@
     <ProjectReference Include="..\Bam.Net.ServiceProxy\Bam.Net.ServiceProxy.csproj">
       <Project>{8987d8c8-033b-4993-99f0-8dd5a4d6dd0d}</Project>
       <Name>Bam.Net.ServiceProxy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Services\Bam.Net.Services.csproj">
+      <Project>{f67630bf-5e73-46bf-a7f1-6d7e9648135f}</Project>
+      <Name>Bam.Net.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Testing\Bam.Net.Testing.csproj">
       <Project>{85212881-c676-4b40-b311-37c2d1706042}</Project>

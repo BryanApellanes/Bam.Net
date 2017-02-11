@@ -395,58 +395,6 @@ namespace Bam.Net.CoreServices.Data.Daos
 			return _clientServerConnectionsLock.DoubleCheckLock<ClientServerConnectionQueryContext>(ref _clientServerConnections, () => new ClientServerConnectionQueryContext());
 		}
 	}
-	public class ExternalEventSubscriptionDescriptorQueryContext
-	{
-			public ExternalEventSubscriptionDescriptorCollection Where(WhereDelegate<ExternalEventSubscriptionDescriptorColumns> where, Database db = null)
-			{
-				return Bam.Net.CoreServices.Data.Daos.ExternalEventSubscriptionDescriptor.Where(where, db);
-			}
-		   
-			public ExternalEventSubscriptionDescriptorCollection Where(WhereDelegate<ExternalEventSubscriptionDescriptorColumns> where, OrderBy<ExternalEventSubscriptionDescriptorColumns> orderBy = null, Database db = null)
-			{
-				return Bam.Net.CoreServices.Data.Daos.ExternalEventSubscriptionDescriptor.Where(where, orderBy, db);
-			}
-
-			public ExternalEventSubscriptionDescriptor OneWhere(WhereDelegate<ExternalEventSubscriptionDescriptorColumns> where, Database db = null)
-			{
-				return Bam.Net.CoreServices.Data.Daos.ExternalEventSubscriptionDescriptor.OneWhere(where, db);
-			}
-
-			public static ExternalEventSubscriptionDescriptor GetOneWhere(WhereDelegate<ExternalEventSubscriptionDescriptorColumns> where, Database db = null)
-			{
-				return Bam.Net.CoreServices.Data.Daos.ExternalEventSubscriptionDescriptor.GetOneWhere(where, db);
-			}
-		
-			public ExternalEventSubscriptionDescriptor FirstOneWhere(WhereDelegate<ExternalEventSubscriptionDescriptorColumns> where, Database db = null)
-			{
-				return Bam.Net.CoreServices.Data.Daos.ExternalEventSubscriptionDescriptor.FirstOneWhere(where, db);
-			}
-
-			public ExternalEventSubscriptionDescriptorCollection Top(int count, WhereDelegate<ExternalEventSubscriptionDescriptorColumns> where, Database db = null)
-			{
-				return Bam.Net.CoreServices.Data.Daos.ExternalEventSubscriptionDescriptor.Top(count, where, db);
-			}
-
-			public ExternalEventSubscriptionDescriptorCollection Top(int count, WhereDelegate<ExternalEventSubscriptionDescriptorColumns> where, OrderBy<ExternalEventSubscriptionDescriptorColumns> orderBy, Database db = null)
-			{
-				return Bam.Net.CoreServices.Data.Daos.ExternalEventSubscriptionDescriptor.Top(count, where, orderBy, db);
-			}
-
-			public long Count(WhereDelegate<ExternalEventSubscriptionDescriptorColumns> where, Database db = null)
-			{
-				return Bam.Net.CoreServices.Data.Daos.ExternalEventSubscriptionDescriptor.Count(where, db);
-			}
-	}
-
-	static ExternalEventSubscriptionDescriptorQueryContext _externalEventSubscriptionDescriptors;
-	static object _externalEventSubscriptionDescriptorsLock = new object();
-	public static ExternalEventSubscriptionDescriptorQueryContext ExternalEventSubscriptionDescriptors
-	{
-		get
-		{
-			return _externalEventSubscriptionDescriptorsLock.DoubleCheckLock<ExternalEventSubscriptionDescriptorQueryContext>(ref _externalEventSubscriptionDescriptors, () => new ExternalEventSubscriptionDescriptorQueryContext());
-		}
-	}
 	public class OrganizationQueryContext
 	{
 			public OrganizationCollection Where(WhereDelegate<OrganizationColumns> where, Database db = null)

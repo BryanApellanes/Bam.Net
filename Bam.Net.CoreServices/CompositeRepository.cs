@@ -80,6 +80,11 @@ namespace Bam.Net.CoreServices
             base.AddType(type);
         }
 
+        public override object Create(Type type, object toCreate)
+        {
+            return Create(toCreate);
+        }
+
         public override object Create(object toCreate)
         {
             object result = SourceRepository.Create(toCreate);
@@ -93,7 +98,10 @@ namespace Bam.Net.CoreServices
             CreateInWriteRepos(toCreate);
             return result;
         }
-
+        public override bool Delete(Type type, object toDelete)
+        {
+            return Delete(toDelete);
+        }
         public override bool Delete(object toDelete)
         {
             bool result = SourceRepository.Delete(toDelete);
@@ -113,12 +121,12 @@ namespace Bam.Net.CoreServices
             return ReadRepository.Query(query);
         }
 
-        public override IEnumerable Query(Type type, Dictionary<string, object> queryParameters)
+        public override IEnumerable<object> Query(Type type, Dictionary<string, object> queryParameters)
         {
             return ReadRepository.Query(type, queryParameters);
         }
 
-        public override IEnumerable Query(Type type, QueryFilter query)
+        public override IEnumerable<object> Query(Type type, QueryFilter query)
         {
             return ReadRepository.Query(type, query);
         }
@@ -182,7 +190,10 @@ namespace Bam.Net.CoreServices
         {
             return ReadRepository.RetrieveAll<T>();
         }
-
+        public override object Update(Type type, object toUpdate)
+        {
+            return Update(toUpdate);
+        }
         public override object Update(object toUpdate)
         {
             object result = SourceRepository.Update(toUpdate);

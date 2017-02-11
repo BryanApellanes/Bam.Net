@@ -57,7 +57,7 @@ namespace Bam.Net.Caching
         /// <param name="type"></param>
         /// <param name="query"></param>
         /// <returns></returns>
-        public override IEnumerable Query(Type type, QueryFilter query)
+        public override IEnumerable<object> Query(Type type, QueryFilter query)
         {
             IEnumerable results = DelegateOrThrow<IEnumerable>("Query", type, query);            
             foreach(CacheItem item in _cacheManager.CacheFor(type).Add(results))
@@ -75,8 +75,11 @@ namespace Bam.Net.Caching
 
 			return result;
 		}
-
-		public override object Create(object toCreate)
+        public override object Create(Type type, object toCreate)
+        {
+            return Create(toCreate);
+        }
+        public override object Create(object toCreate)
 		{
 			Args.ThrowIfNull(toCreate, "toCreate");
 
@@ -220,9 +223,9 @@ namespace Bam.Net.Caching
             return DelegateGenericOrThrow<IEnumerable<T>, T>("Query", queryParameters);
         }
 
-        public override IEnumerable Query(Type type, Dictionary<string, object> queryParameters)
+        public override IEnumerable<object> Query(Type type, Dictionary<string, object> queryParameters)
         {
-            return DelegateOrThrow<IEnumerable>("Query", type, queryParameters);
+            return DelegateOrThrow<IEnumerable<object>>("Query", type, queryParameters);
         }
 
 		public override T Update<T>(T toUpdate)
@@ -240,11 +243,15 @@ namespace Bam.Net.Caching
             return SourceRepository.Update<T>(toUpdate);
 		}
 
-		public override object Update(object toUpdate)
+        public override object Update(object toUpdate)
+        {
+            return Update(toUpdate.GetType(), toUpdate);
+        }
+        public override object Update(Type type, object toUpdate)
 		{
             Task.Run(() =>
             {
-                Cache cache = _cacheManager.CacheFor(toUpdate.GetType());
+                Cache cache = _cacheManager.CacheFor(type);
                 CacheItem fromCache = cache.Retrieve(toUpdate);
                 if (fromCache != null)
                 {
@@ -260,7 +267,12 @@ namespace Bam.Net.Caching
             throw new DeleteNotSupportedException(Meta.GetUuid(toDelete).Or(typeof(T).FullName));
 		}
 
-		public override bool Delete(object toDelete)
+        public override bool Delete(Type type, object toDelete)
+        {
+            return Delete(toDelete);
+        }
+
+        public override bool Delete(object toDelete)
 		{
             string id = toDelete == null ? "[null]" : Meta.GetUuid(toDelete);
             throw new DeleteNotSupportedException(id);

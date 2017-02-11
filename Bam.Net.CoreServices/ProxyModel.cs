@@ -80,7 +80,7 @@ namespace Bam.Net.CoreServices
                 ServiceGenerationInfo.ReferenceAssemblies.Each(new { Assemblies = assemblies }, (ctx, a) => ctx.Assemblies.Add(a));
                 TypeInheritanceDescriptor inheritance = new TypeInheritanceDescriptor(BaseType);
                 inheritance.Chain.Each(new { Assemblies = assemblies }, (ctx, tt) => ctx.Assemblies.Add(tt.Type.Assembly));
-                assemblies.Add(typeof(RepoData).Assembly);
+                assemblies.Add(typeof(AuditRepoData).Assembly);
                 assemblies.Add(typeof(Dao).Assembly);
                 assemblies.Add(typeof(DataRow).Assembly);
                 return assemblies.ToArray();

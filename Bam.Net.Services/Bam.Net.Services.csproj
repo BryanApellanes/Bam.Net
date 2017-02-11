@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F67630BF-5E73-46BF-A7F1-6D7E9648135F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Bam.Net.Services</RootNamespace>
+    <AssemblyName>Bam.Net.Services</AssemblyName>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Distributed\Data\OperationIntent.cs" />
+    <Compile Include="Distributed\Data\OpertionEventArgs.cs" />
+    <Compile Include="Distributed\EventAnnouncerService.cs" />
+    <Compile Include="EventHubService.cs" />
+    <Compile Include="Distributed\Arc.cs" />
+    <Compile Include="Distributed\Data\CreateOperation.cs" />
+    <Compile Include="Distributed\Data\DataProperty.cs" />
+    <Compile Include="Distributed\Data\DeleteEvent.cs" />
+    <Compile Include="Distributed\Data\DeleteOperation.cs" />
+    <Compile Include="Distributed\Data\Operation.cs" />
+    <Compile Include="Distributed\Data\QueryOperation.cs" />
+    <Compile Include="Distributed\Data\ReplicateOperation.cs" />
+    <Compile Include="Distributed\Data\ReplicationResult.cs" />
+    <Compile Include="Distributed\Data\RetrieveOperation.cs" />
+    <Compile Include="Distributed\Data\UpdateOperation.cs" />
+    <Compile Include="Distributed\Data\WriteEvent.cs" />
+    <Compile Include="Distributed\Data\WriteOperation.cs" />
+    <Compile Include="Distributed\EventMessage.cs" />
+    <Compile Include="Distributed\EventSourceService.cs" />
+    <Compile Include="Distributed\EventSourceServiceArgs.cs" />
+    <Compile Include="Distributed\ExternalEventSubscription.cs" />
+    <Compile Include="Distributed\Files\DistributedFileInfo.cs" />
+    <Compile Include="Distributed\Files\DistributedFileManager.cs" />
+    <Compile Include="Distributed\Files\FileChunk.cs" />
+    <Compile Include="Distributed\IDistributedRepository.cs" />
+    <Compile Include="Distributed\IHasInfo.cs" />
+    <Compile Include="Distributed\InfoAttribute.cs" />
+    <Compile Include="Distributed\ITypeResolver.cs" />
+    <Compile Include="Distributed\Keyspace.cs" />
+    <Compile Include="Distributed\MetricsEventSourceService.cs" />
+    <Compile Include="Distributed\NotificationEventSourceService.cs" />
+    <Compile Include="Distributed\RepositoryKey.cs" />
+    <Compile Include="Distributed\RepositoryRing.cs" />
+    <Compile Include="Distributed\RepositoryService.cs" />
+    <Compile Include="Distributed\RepositoryTypeResolver.cs" />
+    <Compile Include="Distributed\Ring.cs" />
+    <Compile Include="Distributed\UniversalIdentifier.cs" />
+    <Compile Include="ExternalEventSubscriptionDescriptor.cs" />
+    <Compile Include="GlobalEvents.cs" />
+    <Compile Include="ListService\Data\ItemDefinition.cs" />
+    <Compile Include="ListService\Data\ListDefinition.cs" />
+    <Compile Include="ListService\Data\ValidationResult.cs" />
+    <Compile Include="ListService\IListService.cs" />
+    <Compile Include="ListService\IListTransormer.cs" />
+    <Compile Include="ListService\IValidator.cs" />
+    <Compile Include="ListService\ItemTransformation.cs" />
+    <Compile Include="ListService\IValidatable.cs" />
+    <Compile Include="ListService\IValidationRule.cs" />
+    <Compile Include="ListService\ListService.cs" />
+    <Compile Include="ListService\ListValidator.cs" />
+    <Compile Include="ListService\TransformCheckResult.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VersioningService\Data\Versionable.cs" />
+    <Compile Include="VersioningService\IHashProvider.cs" />
+    <Compile Include="VersioningService\IVersioningService.cs" />
+    <Compile Include="VersioningService\Data\Version.cs" />
+    <Compile Include="VersioningService\VersioningExtensions.cs" />
+    <Compile Include="VersioningService\VersioningService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Distributed\Data\regen_distributed_dao.cmd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bam.Net.CoreServices\Bam.Net.CoreServices.csproj">
+      <Project>{5480d2a0-145b-4435-8e1c-4555ead0424a}</Project>
+      <Name>Bam.Net.CoreServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.Repositories\Bam.Net.Data.Repositories.csproj">
+      <Project>{222ef625-a115-49c7-8bdb-5879725a7d17}</Project>
+      <Name>Bam.Net.Data.Repositories</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data\Bam.Net.Data.csproj">
+      <Project>{3b52b739-58fd-4b49-b815-6b317e701520}</Project>
+      <Name>Bam.Net.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Messaging\Bam.Net.Messaging.csproj">
+      <Project>{e330d601-62ea-439e-acd7-7236744562ff}</Project>
+      <Name>Bam.Net.Messaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Server\Bam.Net.Server.csproj">
+      <Project>{6cd8ffb4-35ca-44ac-803d-cb9d4cb524a0}</Project>
+      <Name>Bam.Net.Server</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.ServiceProxy\Bam.Net.ServiceProxy.csproj">
+      <Project>{8987d8c8-033b-4993-99f0-8dd5a4d6dd0d}</Project>
+      <Name>Bam.Net.ServiceProxy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.UserAccounts\Bam.Net.UserAccounts.csproj">
+      <Project>{74d5a262-b0b9-40e6-a3fd-b120dc8e9f54}</Project>
+      <Name>Bam.Net.UserAccounts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net\Bam.Net.csproj">
+      <Project>{8794c09d-d72c-420c-812f-bfda251b64c9}</Project>
+      <Name>Bam.Net</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

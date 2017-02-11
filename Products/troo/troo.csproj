@@ -34,7 +34,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
+    <OutputPath>..\..\..\..\tvg\troo\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -82,6 +82,10 @@
     <ProjectReference Include="..\..\Bam.Net.CoreServices\Bam.Net.CoreServices.csproj">
       <Project>{5480D2A0-145B-4435-8E1C-4555EAD0424A}</Project>
       <Name>Bam.Net.CoreServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Bam.Net.Data.Protobuf\Bam.Net.Data.Protobuf.csproj">
+      <Project>{f0ed71d9-6823-4e3d-a8f6-8652581fab01}</Project>
+      <Name>Bam.Net.Data.Protobuf</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Bam.Net.Data.Repositories\Bam.Net.Data.Repositories.csproj">
       <Project>{222ef625-a115-49c7-8bdb-5879725a7d17}</Project>

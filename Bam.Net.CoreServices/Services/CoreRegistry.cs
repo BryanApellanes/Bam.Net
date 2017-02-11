@@ -19,6 +19,7 @@ using Bam.Net.Translation.Yandex;
 using Bam.Net.Translation;
 using Bam.Net.CoreServices.Data.Daos.Repository;
 using Bam.Net.ServiceProxy.Secure;
+//using Bam.Net.CoreServices.Distributed;
 
 namespace Bam.Net.CoreServices.Services
 {
@@ -73,10 +74,10 @@ namespace Bam.Net.CoreServices.Services
                     .For<IApiKeyResolver>().Use<CoreApplicationRegistryService>()
                     .For<ISmtpSettingsProvider>().Use(userMgr)
                     .For<CoreUserRegistryService>().Use<CoreUserRegistryService>()
-                    .For<MetricsEventSourceService>().Use<MetricsEventSourceService>()
+                    //.For<MetricsEventSourceService>().Use<MetricsEventSourceService>()
                     .For<CoreConfigurationService>().Use<CoreConfigurationService>()
-                    .For<NotificationEventSourceService>().Use<NotificationEventSourceService>()
-                    .For<CoreEventSourceService>().Use<CoreEventSourceService>()
+                    //.For<NotificationEventSourceService>().Use<NotificationEventSourceService>()
+                    //.For<CoreEventSourceService>().Use<CoreEventSourceService>()
                     .For<IDetectLanguage>().Use(translationProvider)
                     .For<ITranslationProvider>().Use(translationProvider)
                     .For<IStorableTypesProvider>().Use<NamespaceRepositoryStorableTypesProvider>()

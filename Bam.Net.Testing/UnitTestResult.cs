@@ -15,7 +15,7 @@ using System.Runtime.Serialization;
 
 namespace Bam.Net.Testing
 {
-	public class UnitTestResult: RepoData
+	public class UnitTestResult: AuditRepoData
 	{
         public UnitTestResult() : base()
         {
