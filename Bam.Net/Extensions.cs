@@ -274,22 +274,9 @@ namespace Bam.Net
             }
         }
 
-        /// <summary>
-        /// Copy the specified instance to a dynamic instance where the new
-        /// instance only has the properties addorned with the specified 
-        /// custom attribute T
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="instance"></param>
-        /// <returns></returns>
-        public static dynamic CopyAsDynamic<T>(this object instance) where T : Attribute
+        public static object CopyAs<T>(this object source, params object[] ctorParams)
         {
-            return instance.CopyAsDynamic(p => p.HasCustomAttributeOfType<T>());
-        }
-
-        public static dynamic CopyAsDynamic(this object instance, Func<PropertyInfo, bool> propertySelector)
-        {
-            return instance.ToDynamicType(instance.GetType().Name, propertySelector).Construct();
+            return CopyAs(source, typeof(T), ctorParams);
         }
 
         /// <summary>
@@ -308,6 +295,24 @@ namespace Bam.Net
             object result = type.Construct(ctorParams);
             result.CopyProperties(source);
             return result;
+        }
+
+        /// <summary>
+        /// Copy the specified instance to a dynamic instance where the new
+        /// instance only has the properties addorned with the specified 
+        /// custom attribute T
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="instance"></param>
+        /// <returns></returns>
+        public static dynamic CopyAsDynamic<T>(this object instance) where T : Attribute
+        {
+            return instance.CopyAsDynamic(p => p.HasCustomAttributeOfType<T>());
+        }
+
+        public static dynamic CopyAsDynamic(this object instance, Func<PropertyInfo, bool> propertySelector)
+        {
+            return instance.ToDynamicType(instance.GetType().Name, propertySelector).Construct();
         }
 
         public static T BinaryClone<T>(this T from) where T : class, new()
@@ -2959,10 +2964,22 @@ namespace Bam.Net
         /// <returns></returns>
         public static dynamic ValuePropertiesToDynamic(this object instance)
         {
+            Type ignore;
+            return ValuePropertiesToDynamic(instance, out ignore);
+        }
+
+        /// <summary>
+        /// Creates a dynamic object from the specified instance populating only
+        /// the properties that are of value types
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <returns></returns>
+        public static dynamic ValuePropertiesToDynamic(this object instance, out Type dynamicType)
+        {
             AssemblyBuilder ignore;
             Type instanceType = instance.GetType();
             string newTypeName = "ValuesOf.{0}.{1}"._Format(instanceType.Namespace, instanceType.Name);
-            Type dynamicType = ValuePropertiesToDynamicType(instance, newTypeName, out ignore);
+            dynamicType = ValuePropertiesToDynamicType(instance, newTypeName, out ignore);
             ConstructorInfo ctor = dynamicType.GetConstructor(new Type[] { });
             object valuesOnlyInstance = ctor.Invoke(null);
             DefaultConfiguration.CopyProperties(instance, valuesOnlyInstance);
@@ -3161,6 +3178,11 @@ namespace Bam.Net
             return instance.ToDynamicType(typeName, p => p.PropertyType.IsValueType, out assemblyBuilder, useCache);
         }
 
+        public static PropertyInfo[] GetValueProperties(this object instance)
+        {
+            return instance.GetType().GetProperties().Where(pi => pi.PropertyType.IsValueType).ToArray();
+        }
+
         /// <summary>
         /// Combines the current instance with the specified toMerge values
         /// creating a new type with all the properties of each and value 
@@ -3344,10 +3366,10 @@ namespace Bam.Net
             return created;
         }
 
-        public static Dictionary<string, object> ToDictionary(this object instance)
+        public static Dictionary<object, object> ToDictionary(this object instance)
         {
             Type dyn = instance.GetType();
-            Dictionary<string, object> result = new Dictionary<string, object>();
+            Dictionary<object, object> result = new Dictionary<object, object>();
             foreach (PropertyInfo prop in dyn.GetProperties())
             {
                 result[prop.Name] = prop.GetValue(instance);
