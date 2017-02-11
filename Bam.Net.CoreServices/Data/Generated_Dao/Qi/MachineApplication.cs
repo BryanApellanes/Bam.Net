@@ -10,7 +10,7 @@ using Bam.Net.Data;
 using Bam.Net.Data.Qi;
 using Bam.Net.CoreServices.Data.Daos;
 
-namespace Qi
+namespace Bam.Net.CoreServices.Data.Daos.Qi
 {
     public class MachineApplicationController : DaoController
     {	
