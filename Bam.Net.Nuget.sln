@@ -241,6 +241,24 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{AF15178A
 		BuildScripts\Bam.Net\zip_toolkit.cmd = BuildScripts\Bam.Net\zip_toolkit.cmd
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildMachineOnly", "BuildMachineOnly", "{9FCD3691-5734-42C5-B80B-30C0C0F5488E}"
+	ProjectSection(SolutionItems) = preProject
+		BuildScripts\Bam.Net\BuildMachineOnly\build.cmd = BuildScripts\Bam.Net\BuildMachineOnly\build.cmd
+		BuildScripts\Bam.Net\BuildMachineOnly\build_without_tests.cmd = BuildScripts\Bam.Net\BuildMachineOnly\build_without_tests.cmd
+		BuildScripts\Bam.Net\BuildMachineOnly\clean_build_machine.cmd = BuildScripts\Bam.Net\BuildMachineOnly\clean_build_machine.cmd
+		BuildScripts\Bam.Net\BuildMachineOnly\clone.cmd = BuildScripts\Bam.Net\BuildMachineOnly\clone.cmd
+		BuildScripts\Bam.Net\BuildMachineOnly\create_nuget.cmd = BuildScripts\Bam.Net\BuildMachineOnly\create_nuget.cmd
+		BuildScripts\Bam.Net\BuildMachineOnly\create_nuget_debug.cmd = BuildScripts\Bam.Net\BuildMachineOnly\create_nuget_debug.cmd
+		BuildScripts\Bam.Net\BuildMachineOnly\CreatePackAndPushBam.txt = BuildScripts\Bam.Net\BuildMachineOnly\CreatePackAndPushBam.txt
+		BuildScripts\Bam.Net\BuildMachineOnly\nugetrestore.cmd = BuildScripts\Bam.Net\BuildMachineOnly\nugetrestore.cmd
+		BuildScripts\Bam.Net\BuildMachineOnly\step_1-3.cmd = BuildScripts\Bam.Net\BuildMachineOnly\step_1-3.cmd
+		BuildScripts\Bam.Net\BuildMachineOnly\step_1-clone.cmd = BuildScripts\Bam.Net\BuildMachineOnly\step_1-clone.cmd
+		BuildScripts\Bam.Net\BuildMachineOnly\step_2-nugetrestore.cmd = BuildScripts\Bam.Net\BuildMachineOnly\step_2-nugetrestore.cmd
+		BuildScripts\Bam.Net\BuildMachineOnly\step_3-build_and_install_toolkit.cmd = BuildScripts\Bam.Net\BuildMachineOnly\step_3-build_and_install_toolkit.cmd
+		BuildScripts\Bam.Net\BuildMachineOnly\test_step_1-run_tests_w_coverage.cmd = BuildScripts\Bam.Net\BuildMachineOnly\test_step_1-run_tests_w_coverage.cmd
+		BuildScripts\Bam.Net\BuildMachineOnly\test_step_2-generate_coverage_report.cmd = BuildScripts\Bam.Net\BuildMachineOnly\test_step_2-generate_coverage_report.cmd
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		CD_ROM|Any CPU = CD_ROM|Any CPU
@@ -5763,5 +5781,6 @@ Global
 		{2F5A9E6A-A8D7-459B-A5F1-C85D4691F480} = {480EE35F-D7E4-4EED-92D8-679274B336A2}
 		{DFEBBEB9-E3B5-47DC-B827-859164ED7331} = {480EE35F-D7E4-4EED-92D8-679274B336A2}
 		{AF15178A-E3EA-4804-82A2-ECA4295F37D3} = {6568D61E-47AF-46E3-8A70-9C1C5734ABEE}
+		{9FCD3691-5734-42C5-B80B-30C0C0F5488E} = {AF15178A-E3EA-4804-82A2-ECA4295F37D3}
 	EndGlobalSection
 EndGlobal
