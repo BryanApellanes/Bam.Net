@@ -18,7 +18,7 @@ namespace Bam.Net.Data.Repositories
         Task<IEnumerable<object>> RetrieveAllAsync(Type type);
         Task<IEnumerable<object>> QueryAsync(string propertyName, object propertyValue);
         Task<IEnumerable<T>> QueryAsync<T>(Dictionary<string, object> queryParams) where T : class, new();
-        Task<IEnumerable> QueryAsync(Type type, Dictionary<string, object> queryParams);
+        Task<IEnumerable<object>> QueryAsync(Type type, Dictionary<string, object> queryParams);
         Task<object> RetrieveAsync(Type objectType, long id);
         Task<object> RetrieveAsync(Type objectType, string uuid);
         Task<IEnumerable<object>> QueryAsync(dynamic query);

@@ -4,13 +4,13 @@ using System.Collections.Generic;
 
 namespace Bam.Net.Data.Repositories
 {
-    public interface ICrudProvider
+    public interface ICrudProvider: IBaseCrudProvider
     {
         object Create(object toCreate);
         T Create<T>(T toCreate) where T : class, new();
         bool Delete(object toDelete);
         bool Delete<T>(T toDelete) where T : new();
-        IEnumerable Query(Type type, QueryFilter query);
+        IEnumerable<object> Query(Type type, QueryFilter query);
         IEnumerable<T> Query<T>(QueryFilter query) where T : class, new();
         object Retrieve(Type objectType, string uuid);
         T Retrieve<T>(string uuid) where T : class, new();

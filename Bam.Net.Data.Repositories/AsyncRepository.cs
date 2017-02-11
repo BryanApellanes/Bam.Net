@@ -29,7 +29,7 @@ namespace Bam.Net.Data.Repositories
             return Task.Run((Func<IEnumerable<object>>)(() => Query(query)));
         }
 
-        public Task<IEnumerable> QueryAsync(Type type, Dictionary<string, object> queryParams)
+        public Task<IEnumerable<object>> QueryAsync(Type type, Dictionary<string, object> queryParams)
         {
             return Task.Run(() => Query(type, queryParams));
         }

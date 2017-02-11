@@ -112,14 +112,20 @@
   <ItemGroup>
     <Compile Include="AsyncDaoRepository.cs" />
     <Compile Include="AsyncRepository.cs" />
-    <Compile Include="AuditRepoData.cs" />
     <Compile Include="BackedupDatabase.cs" />
+    <Compile Include="CrudMethods.cs" />
+    <Compile Include="CrudResponse.cs" />
+    <Compile Include="DaoCrudResponseProvider.cs" />
     <Compile Include="DaoGenerationException.cs" />
     <Compile Include="DaoBackup.cs" />
+    <Compile Include="DaoInfo.cs" />
     <Compile Include="DatabaseExtensions.cs" />
+    <Compile Include="IBaseCrudProvider.cs" />
+    <Compile Include="ICrudResponseProvider.cs" />
     <Compile Include="IRepositoryPathProvider.cs" />
     <Compile Include="IStorableTypesProvider.cs" />
     <Compile Include="NamespaceStorableTypesProvider.cs" />
+    <Compile Include="RepoData.cs" />
     <Compile Include="RepositoryStorableTypesProvider.cs" />
     <Compile Include="TypeSchemaPropertyManager.cs" />
     <Compile Include="TypeSchemaScriptWriter.cs" />
@@ -175,7 +181,7 @@
     <Compile Include="ObjectRepository.cs" />
     <Compile Include="ObjectReaderWriter.cs" />
     <Compile Include="DtoModel.cs" />
-    <Compile Include="RepoData.cs" />
+    <Compile Include="AuditRepoData.cs" />
     <Compile Include="TypeDaoGenerator.cs" />
     <Compile Include="TypeSchema.cs" />
     <Compile Include="TypeSchemaGenerator.cs" />

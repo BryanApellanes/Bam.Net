@@ -20,7 +20,7 @@ namespace Bam.Net.Data.Repositories
             RequireUuid = true;
             RequireCuid = false;
         }
-
+        
         public bool RequireUuid { get; set; }
         public bool RequireCuid { get; set; }
 
@@ -138,7 +138,7 @@ namespace Bam.Net.Data.Repositories
         public abstract T Create<T>(T toCreate) where T : class, new();
 
 		public abstract object Create(object toCreate);
-
+        public abstract object Create(Type type, object toCreate);
         public abstract T Retrieve<T>(int id) where T : class, new();
 		
 		public abstract T Retrieve<T>(long id) where T : class, new();
@@ -151,13 +151,15 @@ namespace Bam.Net.Data.Repositories
 		public abstract IEnumerable<object> Query(dynamic query);
         public abstract IEnumerable<T> Query<T>(Func<T, bool> query) where T : class, new();
         public abstract IEnumerable<T> Query<T>(Dictionary<string, object> queryParameters) where T : class, new();
-        public abstract IEnumerable Query(Type type, Dictionary<string, object> queryParameters);
+        public abstract IEnumerable<object> Query(Type type, Dictionary<string, object> queryParameters);
 		public abstract IEnumerable<object> Query(Type type, Func<object, bool> predicate);
 		public abstract IEnumerable<T> Query<T>(dynamic query) where T : class, new();
 		public abstract T Update<T>(T toUpdate) where T : new();
 		public abstract object Update(object toUpdate);
+        public abstract object Update(Type type, object toUpdate);
 		public abstract bool Delete<T>(T toDelete) where T : new();
 		public abstract bool Delete(object toDelete);
+        public abstract bool Delete(Type type, object toDelete);
 		#endregion
 
         public ILogger Logger { get; set; }
@@ -224,6 +226,6 @@ namespace Bam.Net.Data.Repositories
 
         public abstract IEnumerable<T> Query<T>(QueryFilter query) where T : class, new();
 
-        public abstract IEnumerable Query(Type type, QueryFilter query);
+        public abstract IEnumerable<object> Query(Type type, QueryFilter query);
     }
 }

@@ -80,12 +80,16 @@ namespace Bam.Net.Data.Repositories
 		{
 			return (T)Create((object)toCreate);
 		}
+        public override object Create(object toCreate)
+        {
+            return Create(toCreate.GetType(), toCreate);
+        }
 
-		public override object Create(object toCreate)
+        public override object Create(Type type, object toCreate)
 		{
 			try
 			{
-				MongoCollection collection = GetCollection(toCreate.GetType().FullName);
+				MongoCollection collection = GetCollection(type.FullName);
 				LastWriteConcernResult = collection.Insert(toCreate);
 				return toCreate;
 			}
@@ -171,7 +175,7 @@ namespace Bam.Net.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public override IEnumerable Query(Type type, Dictionary<string, object> queryParameters)
+        public override IEnumerable<object> Query(Type type, Dictionary<string, object> queryParameters)
         {
             throw new NotImplementedException();
         }
@@ -183,7 +187,7 @@ namespace Bam.Net.Data.Repositories
 			return results;
 		}
 
-        public override IEnumerable Query(Type type, QueryFilter query)
+        public override IEnumerable<object> Query(Type type, QueryFilter query)
         {
             throw new NotImplementedException();
         }
@@ -196,12 +200,16 @@ namespace Bam.Net.Data.Repositories
 		{
 			return (T)Update((object)toUpdate);
 		}
+        public override object Update(object toUpdate)
+        {
+            return Update(toUpdate.GetType(), toUpdate);
+        }
 
-		public override object Update(object toUpdate)
+        public override object Update(Type type, object toUpdate)
 		{
 			try
 			{
-				MongoCollection collection = GetCollection(toUpdate.GetType().FullName);
+				MongoCollection collection = GetCollection(type.FullName);
 				LastWriteConcernResult = collection.Save(toUpdate);
 				return toUpdate;
 			}
@@ -217,14 +225,16 @@ namespace Bam.Net.Data.Repositories
 		{
 			return Delete((object)toDelete);
 		}
-
-		public override bool Delete(object toDelete)
+        public override bool Delete(object toDelete)
+        {
+            return Delete(toDelete.GetType(), toDelete);
+        }
+        public override bool Delete(Type type, object toDelete)
 		{
 			try
 			{
-				Type pocoType = toDelete.GetType();
-				PropertyInfo keyProp = GetKeyProperty(pocoType);
-				MongoCollection collection = GetCollection(pocoType.FullName);
+				PropertyInfo keyProp = GetKeyProperty(type);
+				MongoCollection collection = GetCollection(type.FullName);
 				QueryDocument query = new QueryDocument(keyProp.Name, (BsonValue)keyProp.GetValue(toDelete));
 				LastWriteConcernResult = collection.Remove(query);
 				return true;
