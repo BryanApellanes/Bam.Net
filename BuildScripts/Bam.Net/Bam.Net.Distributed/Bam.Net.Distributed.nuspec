@@ -2,22 +2,22 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Distributed</id>
-    <version>1.4.4</version>
+    <version>1.4.5</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>http://bryanapellanes.github.io/Bam.Net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Tools for creating distributed compute nodes out of pocos</description>
-    <releaseNotes>Version 1.4.4
+    <releaseNotes>Version 1.4.5
 </releaseNotes>
-    <copyright>Copyright © Bryan Apellanes 2016</copyright>
+    <copyright>Copyright © Bryan Apellanes 2017</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.4.4" />
-      <dependency id="Bam.Net.Data" version="1.4.4" />
-      <dependency id="Bam.Net.Drawing" version="1.4.4" />
-      <dependency id="Bam.Net.Html" version="1.4.4" />
-      <dependency id="Bam.Net.ServiceProxy" version="1.4.4" />
+      <dependency id="Bam.Net" version="1.4.5" />
+      <dependency id="Bam.Net.Data" version="1.4.5" />
+      <dependency id="Bam.Net.Drawing" version="1.4.5" />
+      <dependency id="Bam.Net.Html" version="1.4.5" />
+      <dependency id="Bam.Net.ServiceProxy" version="1.4.5" />
     </dependencies>
   </metadata>
 </package>

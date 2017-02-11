@@ -684,7 +684,7 @@
         <member name="T:Bam.Net.EventSubscription">
             <summary>
             A descriptor for the constituent pieces of an
-            EventSubscription
+            in process EventSubscription
             </summary>
         </member>
         <member name="T:Bam.Net.ExceptionHandling.ExceptionArbiter">
@@ -1912,6 +1912,15 @@
             <param name="source"></param>
             <returns></returns>
         </member>
+        <member name="M:Bam.Net.Extensions.CopyAs(System.Object,System.Type,System.Object[])">
+            <summary>
+            Copy the current sourcce instance as the spcified type
+            copying all properties that match in name and type
+            </summary>
+            <param name="source"></param>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
         <member name="M:Bam.Net.Extensions.CopyAsDynamic``1(System.Object)">
             <summary>
             Copy the specified instance to a dynamic instance where the new
@@ -1920,15 +1929,6 @@
             </summary>
             <typeparam name="T"></typeparam>
             <param name="instance"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Bam.Net.Extensions.CopyAs(System.Object,System.Type,System.Object[])">
-            <summary>
-            Copy the current sourcce instance as the spcified type
-            copying all properties that match in name and type
-            </summary>
-            <param name="source"></param>
-            <param name="type"></param>
             <returns></returns>
         </member>
         <member name="M:Bam.Net.Extensions.Times``1(System.Int32,System.Func{System.Int32,``0})">
@@ -2700,6 +2700,14 @@
             <returns></returns>
         </member>
         <member name="M:Bam.Net.Extensions.ValuePropertiesToDynamic(System.Object)">
+            <summary>
+            Creates a dynamic object from the specified instance populating only
+            the properties that are of value types
+            </summary>
+            <param name="instance"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Extensions.ValuePropertiesToDynamic(System.Object,System.Type@)">
             <summary>
             Creates a dynamic object from the specified instance populating only
             the properties that are of value types
