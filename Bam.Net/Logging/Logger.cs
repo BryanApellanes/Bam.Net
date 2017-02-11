@@ -469,6 +469,24 @@ namespace Bam.Net.Logging
             AddEntry(messageSignature, (int)type, ex, variableMessageValues);
         }
 
+        public void Info(string messageSignature, params object[] args)
+        {
+            Args.ThrowIfNull(args);            
+            AddEntry(messageSignature, LogEventType.Information, args.Each(a => a.ToString()).ToArray());
+        }
+
+        public void Warning(string messageSignature, params object[] args)
+        {
+            Args.ThrowIfNull(args);
+            AddEntry(messageSignature, LogEventType.Warning, args.Each(a => a.ToString()).ToArray());
+        }
+
+        public void Error(string messageSignature, params object[] args)
+        {
+            Args.ThrowIfNull(args);
+            AddEntry(messageSignature, LogEventType.Error, args.Each(a => a.ToString()).ToArray());
+        }
+
         #endregion
     }
 }
