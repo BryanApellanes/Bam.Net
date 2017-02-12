@@ -1,0 +1,978 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Bam.Net.Data</name>
+    </assembly>
+    <members>
+        <member name="T:Bam.Net.Data.Book`1">
+            <summary>
+            Convenience collection like object for 
+            paging IEnumerables
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Bam.Net.Data.Book`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Instantiate a new Book with the specified items, using
+            a default PageSize of 10
+            </summary>
+            <param name="items"></param>
+        </member>
+        <member name="P:Bam.Net.Data.Book`1.AllPages">
+            <summary>
+            A list of lists representing the individual
+            pages
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Book`1.Item(System.Int32)">
+            <summary>
+            Retrieve the set of values on the specified
+            zero based page number
+            </summary>
+            <param name="zeroBasedPageNumber"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Book`1.PageNumber(System.Int32)">
+            <summary>
+            Retrieve the set of values on the specified
+            zero based page number
+            </summary>
+            <param name="zeroBasedPageNumber"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Book`1.ToArray">
+            <summary>
+            Convert the book to an array containing all items
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Bam.Net.Data.ColumnAttribute">
+            <summary>
+            Used to define a Column in a Table in Schema.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.DaoProxyRegistration.Initialize">
+            <summary>
+            Initialize the inner registration container and 
+            registers the mvc route for query interface (qi.js; pronounced "chi") 
+            calls.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.DaoProxyRegistration.RegisterConnection(System.String,System.Int32)">
+            <summary>
+            Register all the Dao types in the current domain that belong to the 
+            specified connectionName/schema
+            </summary>
+            <param name="connectionName"></param>
+            <param name="retryCount"></param>
+        </member>
+        <member name="M:Bam.Net.Data.DaoProxyRegistration.Register``1">
+            <summary>
+            Register siblings of the specified Dao type T along with
+            T itself
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="P:Bam.Net.Data.DaoProxyRegistrationInfo.ContextName">
+            <summary>
+            The context name, typically the same as the connection name
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Data.DaoProxySystem">
+            <summary>
+            This class exists for consisteny in the 
+            initialization calls intended to be called
+            from the Global.asax file and App_Start
+            classes.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.DaoProxySystem.Initialize">
+            <summary>
+            Registers the mvc route for query interface (qi.js; pronounced "chi") 
+            calls.  This route should be registered after the default route
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Data.Db">
+            <summary>
+            Utitlity for setting default databases
+            in the default database container.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Db.For``1">
+            <summary>
+            Get the Database for the specified generic type T
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Db.For(System.Type)">
+            <summary>
+            Get the Database for the specified type 
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Db.For``1(Bam.Net.Data.Database)">
+            <summary>
+            Set and return the Database for the specified generic type T
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="database"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Db.For(System.Type,Bam.Net.Data.Database)">
+            <summary>
+            Set and return the Database for the specified type
+            </summary>
+            <param name="type"></param>
+            <param name="database"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Db.For(System.String,Bam.Net.Data.Database)">
+            <summary>
+            Gets the Database for the specified connectionName.  If
+            a database is provided then the value is set and returned.
+            </summary>
+            <param name="connectionName"></param>
+            <param name="database"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Db.TryEnsureSchema``1(Bam.Net.Data.Database)">
+            <summary>
+            Creates the tables for the specified type and 
+            associated sibling types
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns>true on success, false if an error was thrown, possibly due to the 
+            schema already having been written.</returns>
+        </member>
+        <member name="M:Bam.Net.Data.Db.TryEnsureSchema(System.Type,Bam.Net.Data.Database)">
+            <summary>
+            Creates the tables for the specified type and 
+            associated sibling types
+            </summary>
+            <param name="type"></param>
+            <returns>true on success, false if an error was thrown, possibly due to the 
+            schema already having been written.</returns>
+        </member>
+        <member name="M:Bam.Net.Data.Db.TryEnsureSchema(System.String,Bam.Net.Data.Database,System.Exception@)">
+            <summary>
+            Creates the tables for the specified type and 
+            associated sibling tables
+            </summary>
+            <param name="connectionName">The name of the connection in the config file</param>
+        </member>
+        <member name="M:Bam.Net.Data.Db.EnsureSchema``1(Bam.Net.Data.Database)">
+            <summary>
+            Creates the tables for the specified type and 
+            associated sibling tables
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Bam.Net.Data.Db.EnsureSchema(System.String,Bam.Net.Data.Database)">
+            <summary>
+            Creates the tables for the specified type and 
+            associated sibling tables
+            </summary>
+            <param name="connectionName"></param>
+        </member>
+        <member name="M:Bam.Net.Data.Db.EnsureSchema(System.Type,Bam.Net.Data.Database)">
+            <summary>
+            Creates the tables for the specified type
+            </summary>
+            <param name="type"></param>
+        </member>
+        <member name="M:Bam.Net.Data.DataExtensions.ToJsonSafe(System.Object)">
+            <summary>
+            Create a json safe version of the object
+            by creating a dynamic type that represents
+            the properties on the original object
+            that are addorned with the ColumnAttribute
+            custom attribute.
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Bam.Net.Data.Filter">
+            <summary>
+            Convenience entry point for contextually readable syntax; the same as Query
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.PagedQuery`2.PageSize">
+            <summary>
+            The number of records per page, default is 5
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Data.Query">
+            <summary>
+            Convenience entry point for contextually readable syntax; the same as Filter
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Query.Where(System.String)">
+            <summary>
+            Convenience entry point to
+            creating a QueryFilter
+            </summary>
+            <param name="columnName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Query.Where(System.Object)">
+            <summary>
+            Convenience entry point to
+            creating a QueryFilter
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Bam.Net.Data.Query`2">
+            <summary>
+            Convenience class for queries
+            </summary>
+            <typeparam name="C">The type defining column names</typeparam>
+            <typeparam name="T">The matching table type T for columns C</typeparam>
+        </member>
+        <member name="T:Bam.Net.Data.Qi.QiQuery">
+            <summary>
+            A class that represents a query that
+            may be sent by JavaScript Query Interface
+            qi.js
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.QueryFilter.Parse">
+            <summary>
+            Parse the query filter
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.QueryFilter`1.InIfNotEmpty(System.Object[])">
+            <summary>
+            Adds an InComparison only if the specified object array is not empty
+            </summary>
+            <param name="values"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.QueryFilter`1.InIfNotEmpty(System.Int64[])">
+            <summary>
+            Adds an InComparison only if the specified object array is not empty
+            </summary>
+            <param name="values"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.QueryFilter`1.InIfNotEmpty(System.String[])">
+            <summary>
+            Adds an InComparison only if the specified object array is not empty
+            </summary>
+            <param name="values"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Bam.Net.Data.SchemaInitializer">
+            <summary>
+            This class takes responsibility for initializing databases and their 
+            related schemas.
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.SchemaInitializer.SchemaContext">
+            <summary>
+            The FullName of the database context to initialize if AssemblyPath is specified.
+            Otherwise, the assembly qualified type name.
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.SchemaInitializer.RegistrarCaller">
+            <summary>
+            The AssemblyQualifiedName of an IRegistrarCaller implementation
+            used to register the underlying database type (SQLite, SqlClient, etc.)
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.SchemaInitializer.SchemaAssemblyPath">
+            <summary>
+            If specified, should be the path to the assembly containing the 
+            SchemaContext to be initialized.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.SchemaWriter.WriteSchemaScript``1">
+            <summary>
+            Writes the sql script that will recreate the schema associated with the specified
+            Dao type.  
+            </summary>
+            <typeparam name="T">The type to analyse</typeparam>
+            <returns>False if the Assembly that the specified type 
+            is defined in has already been analysed, true otherwise</returns>
+        </member>
+        <member name="M:Bam.Net.Data.SchemaWriter.DropAllTables``1">
+            <summary>
+            Write the necessary script to drop  
+            all tables associated with the specified type
+            T.  Throws a DropNotEnabledException if
+            EnableDrop is false.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Bam.Net.Data.SchemaWriter.GetColumnDefinition(Bam.Net.Data.ColumnAttribute)">
+            <summary>
+            Gets the text used to declare the specified column in a 
+            create table sql statement.
+            </summary>
+            <param name="column"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Bam.Net.Data.Dao">
+            <summary>
+            Data Access Object
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Dao.RegisterDaoTypes(System.Type)">
+            <summary>
+            Instantiate all dao types found in the assembly that contains the
+            specified type and place them into the Incubator.Default
+            </summary>
+            <param name="daoSibling"></param>
+        </member>
+        <member name="M:Bam.Net.Data.Dao.RegisterDaoTypes(System.Type,Bam.Net.Incubation.Incubator)">
+            <summary>
+            Instantiate all Dao types in the assembly that contains the specified
+            type and place them into the specified
+            serviceProvider
+            </summary>
+            <param name="daoAssembly"></param>
+            <param name="serviceProvider"></param>
+        </member>
+        <member name="M:Bam.Net.Data.Dao.RegisterDaoTypes(System.Reflection.Assembly,Bam.Net.Incubation.Incubator)">
+            <summary>
+            Instantiate all Dao types in the specified assembly and place them into the specified
+            serviceProvider
+            </summary>
+            <param name="daoAssembly"></param>
+            <param name="serviceProvider"></param>
+        </member>
+        <member name="M:Bam.Net.Data.Dao.OnInitialize">
+            <summary>
+            An overridable method to provide constructor functionality since the constructors are generated.
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Dao.AutoDeleteChildren">
+            <summary>
+            If true, any references to the current
+            record will be deleted prior to deleting
+            the current record in a call to Delete()
+            if those references have been hydrated on
+            the current instance
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Dao.AutoHydrateChildrenOnDelete">
+            <summary>
+            If true, will hydrate child collections
+            prior to deletion so that they can be deleted.
+            Incurs performance cost if many child 
+            collections must be loaded; can cause intense
+            memory pressure if large amounts of data
+            need to be loaded
+            </summary>
+        </member>
+        <member name="E:Bam.Net.Data.Dao.AfterCommit">
+            <summary>
+            Fires after this instance has been committed.
+            May be fired as the result of its membership in 
+            a DaoCollection, in that case the current
+            Dao instance may not be fully-hydrated at the
+            time of the firing of this event
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Dao.ResetChildren">
+            <summary>
+            Reset the child collections for this instance forcing
+            them to be reloaded the next time they are referenced.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Dao.ValidateRequiredProperties(System.String[]@)">
+            <summary>
+            Checks that every required column has a value.  Untested as of 05/09/2013 :b
+            </summary>
+            <param name="messages"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Dao.Save">
+            <summary>
+            Save the current instance.  If the Id is less than or
+            equal to 0 the current instance will be Inserted, otherwise
+            it will be Updated. Same as Commit
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Dao.SaveAsync(Bam.Net.Data.Database)">
+            <summary>
+            Saves the current instance asynchronously
+            </summary>
+            <param name="db"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Dao.Save(Bam.Net.Data.Database)">
+            <summary>
+            Save the current instance.  If the Id is less than or
+            equal to 0 the current instance will be Inserted, otherwise
+            it will be Updated.  Will also commit any updates to its
+            children, though child commit events will not be triggerred.
+            Same as Save
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Dao.Commit">
+            <summary>
+            Save the current instance.  If the Id is less than or
+            equal to 0 the current instance will be Inserted, otherwise
+            it will be Updated.  Will also commit any updates to its
+            children, though child commit events will not be triggerred.
+            Same as Save
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Dao.Commit(Bam.Net.Data.DaoTransaction)">
+            <summary>
+            Save the current instance.  If the Id is less than or
+            equal to 0 the current instance will be Inserted, otherwise
+            it will be Updated.  Will also commit any updates to its
+            children, though child commit events will not be triggerred.
+            Same as Save
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Dao.Commit(Bam.Net.Data.Database,System.Boolean)">
+            <summary>
+            Save the current instance.  If the Id is less than or
+            equal to 0 the current instance will be Inserted, otherwise
+            it will be Updated.  Will also commit any updates to its
+            children, though child commit events will be triggerred the 
+            children should be re-hydrated to ensure they are fully
+            hydrated.
+            Same as Save
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Dao.WriteCommit(Bam.Net.Data.SqlStringBuilder)">
+            <summary>
+            Write the update or insert statement for the current instance
+            to the specified SqlStringBuilder.
+            </summary>
+            <param name="sqlStringBuilder"></param>
+        </member>
+        <member name="M:Bam.Net.Data.Dao.Undo(Bam.Net.Data.Database)">
+            <summary>
+            Undo any changes that have been made to the current instance
+            since it was loaded.
+            </summary>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Data.Dao.Undelete(Bam.Net.Data.Database)">
+            <summary>
+            Re-insert the current instance after it has been deleted
+            </summary>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Data.Dao.ToJsonSafe">
+            <summary>
+            Creates an in memory dynamic type representing
+            the current Dao's Columns only.
+            </summary>
+            <param name="daoObject"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Dao.GetNewAssignValues">
+            <summary>
+            Gets an array of AssignValue instances that represent 
+            the names and values of columns with new values
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Dao.GetOldAssignValues">
+            <summary>
+            Gets an array of AssignValue instances that represent 
+            the names and values of columns with old values (prior to any new sets)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Dao.GetUniqueFilter">
+            <summary>
+            When implemented by a derived class returns filters that should uniquely
+            identify a single record.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Dao.ConnectionName(System.Object)">
+            <summary>
+            Returns the connection name for the specified Dao instance or the proxied
+            name if the connection name for the specified Dao instance has been proxied
+            </summary>
+            <param name="instance"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Dao.ConnectionName(System.Type)">
+            <summary>
+            Returns the connection name for the specified type or the proxied
+            name if the connection name for the specified type has been proxied
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Dao.ProxiedConnectionName(System.Type)">
+            <summary>
+            Returns the proxied connection name for the specified
+            Type if the connection hasn't been proxied/redirected
+            then the real connection name will be returned.
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Dao.UnproxyConnection(System.Type)">
+            <summary>
+            Stop redirecting the connection name for the specified
+            type
+            </summary>
+            <param name="type"></param>
+        </member>
+        <member name="M:Bam.Net.Data.Dao.UnproxyConnection(System.String)">
+            <summary>
+            Stop redirecting the connection name for the specified type
+            </summary>
+            <param name="realName"></param>
+        </member>
+        <member name="M:Bam.Net.Data.Dao.ProxyConnection(System.Type,System.String)">
+            <summary>
+            Causes calls to ConnectionName for the specified type to 
+            return the specified newConnectionName.  This method must be
+            called prior to any XXXRegistrar.Register(Type, "CxName") calls
+            for example: SqlClientRegistrar.Register(typeof(Employee), "MyConnectionName")
+            </summary>
+            <param name="type"></param>
+            <param name="newConnectionName"></param>
+        </member>
+        <member name="M:Bam.Net.Data.Dao.ProxyConnection(System.String,System.String)">
+            <summary>
+            Causes calls to ConnectionName for the specified originalConnection 
+            name to return the specified newConnectionName
+            </summary>
+            <param name="originalConnectionName"></param>
+            <param name="newConnectionName"></param>
+        </member>
+        <member name="M:Bam.Net.Data.Dao.TableName(System.Type)">
+            <summary>
+            Returns the table name that represents the
+            current Dao type
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Bam.Net.Data.Dao.ForceInsert">
+            <summary>
+            Overrides default logic as to whether 
+            to insert or update the current instance
+            based on the state of its Id causing
+            Save to always insert instead of checking
+            whether it should insert or update
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Dao.ForceUpdate">
+            <summary>
+            Overrides default logic as to whether 
+            to insert or update the current instance
+            based on the state of its Id causing
+            Save to always update instead of checking
+            whether it should insert or update
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Dao.IsNew">
+            <summary>
+            Returns true if the current instance hasn't been committed
+            as determined by whether the IdValue is greater than 0
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Dao.HasNewValues">
+            <summary>
+            Returns true if properties of the
+            current Dao instance have been set
+            since its instanciation
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.DaoCollection`2.As``1">
+            <summary>
+            Instantiates a new instance of T and calls SetDataTable passing
+            in the DataTable from the current instance
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.DaoCollection`2.Reload">
+            <summary>
+            Reload the current collection using the original query
+            used to populate it
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.DaoCollection`2.Add(`1)">
+            <summary>
+            Add the specified instance to the current
+            collection.  Will be automatically commited
+            if a parent is associated with this collection
+            </summary>
+            <param name="instance"></param>
+        </member>
+        <member name="P:Bam.Net.Data.DaoCollection`2.AutoHydrateChildrenOnDelete">
+            <summary>
+            If true, will cause dao instances in this collection
+            to load their child collections on delete for auto deletion
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.DaoCollection`2.WriteDelete(Bam.Net.Data.SqlStringBuilder)">
+            <summary>
+            Write the necessary Sql statements into the specified SqlStringBuilder 
+            to delete all the records represented by the current collection.
+            </summary>
+            <param name="sql"></param>
+        </member>
+        <member name="M:Bam.Net.Data.DaoCollection`2.JustOne(System.Boolean)">
+            <summary>
+            Gets one value if it exists, creates it if it doesn't.  Throws MultipleEntriesFoundException
+            if more than one value is in this collection.
+            </summary>
+            <param name="saveIfNew">If true and a new entry is required, the Dao value will 
+            be saved prior to being returned </param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.DaoCollection`2.JustOne(Bam.Net.Data.Database,System.Boolean)">
+            <summary>
+            Gets one value if it exists, creates it if it doesn't.  Throws MultipleEntriesFoundException
+            if more than one value is in this collection.
+            </summary>
+            <param name="saveIfNew">If true and a new entry is required, the Dao value will 
+            be saved prior to being returned </param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.DaoCollection`2.GetPage(System.Int32)">
+            <summary>
+            Get the 1 based page number or an empty list
+            if the specified page number is not found.
+            </summary>
+            <param name="pageNum"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Bam.Net.Data.Database.ConnectionName">
+            <summary>
+            Used to locate the connection string in the 
+            configuration file as well as uniquely identify
+            types that are associated with a specific 
+            schema.  
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Database.ExecuteSql``1(Bam.Net.Data.SqlStringBuilder)">
+            <summary>
+            Execute the specified SqlStringBuilder using the 
+            specified generic type to determine which database
+            to use.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="builder"></param>
+        </member>
+        <member name="M:Bam.Net.Data.Database.QuerySingleColumn``1(System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            Execute a query that returns a single column of results casting
+            each to the specified generic type T
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="singleColumnQuery"></param>
+            <param name="dbParameters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Database.Query(System.String,System.Object,System.String)">
+            <summary>
+            Execute the specified sqlQuery and return results as an Enumerable of
+            dynamic object instances.  Property access can be done using column names 
+            directly.
+            </summary>
+            <param name="sqlQuery"></param>
+            <param name="dynamicDbParameters"></param>
+            <param name="typeName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.DatabaseContainer.For``1">
+            <summary>
+            Gets the Database for the specified type.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.DatabaseContainer.For(System.String)">
+            <summary>
+            Gets the Databse for the specified connection name.
+            This correlates to a connection in the default 
+            app config file
+            </summary>
+            <param name="connectionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Bam.Net.Data.DatabaseContainer.Item(System.Type)">
+            <summary>
+            Gets the database for the specified type.
+            </summary>
+            <param name="daoType"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Bam.Net.Data.DatabaseContainer.FallBack">
+            <summary>
+            The Action to execute if initialization fails
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Data.DatabaseInitializers">
+            <summary>
+            Acts as a convenience container for any IDatabaseInitializer
+            implementations that should be used to resolve Database 
+            requests when using generated Dao objects.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.DatabaseInitializers.Ignore``1(System.String)">
+            <summary>
+            If the specified IDatabaeInitializer of generic type T has been
+            added, this will cause it to ignore initialization requests for 
+            the speicfied connectionName to allow another initializer the
+            chance to initialize it.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="connectionName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.DatabaseInitializers.TryInitialize(System.String)">
+            <summary>
+            Tries to initialize the database for the specified connectionName using
+            the registered DatabaseInitializers
+            </summary>
+            <param name="connectionName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Bam.Net.Data.DefaultConnectionStringResolver.Resolver">
+            <summary>
+            If specified, is used as the default connection string resolver
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Data.DefaultDatabaseInitializer">
+            <summary>
+            A DatabaseInitializer that reads the connection string from the 
+            default configuration file
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.DefaultDatabaseInitializer.Instance">
+            <summary>
+            The DefaultInitilizer Instance
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.DefaultDatabaseInitializer.Ignore(System.Type[])">
+            <summary>
+            Causes the current DatabaseInitializer to NOT initialize the 
+            database for the connection name associated with the specified
+            types.
+            </summary>
+            <param name="types"></param>
+        </member>
+        <member name="M:Bam.Net.Data.DefaultDatabaseInitializer.Ignore(System.String[])">
+            <summary>
+            Causes the current DatabaseInitializer to NOT initialize the
+            database for the connection names specified.
+            </summary>
+            <param name="connectionNames"></param>
+        </member>
+        <member name="M:Bam.Net.Data.DefaultDatabaseInitializer.GetDatabase(System.Configuration.ConnectionStringSettings,System.Data.Common.DbProviderFactory)">
+            <summary>
+            Instantiates a database uing the specified ConnectionStringSettings and DbProviderFactory
+            </summary>
+            <param name="conn"></param>
+            <param name="factory"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.DefaultDatabaseInitializer.ResolveFactoryType(System.Configuration.ConnectionStringSettings)">
+            <summary>
+            Reads the ProviderName property of the specified ConnectionStringSettings
+            and uses Type.GetType() to find the type of the DbFactory.
+            NOTE: This requires the ProviderName to be set to a string value
+            that Type.GetType() can resolve to a CLI type.
+            </summary>
+            <param name="conn"></param>
+            <returns></returns>        
+        </member>
+        <member name="M:Bam.Net.Data.FormatPart.AddParameter(Bam.Net.Data.IParameterInfo)">
+            <summary>
+            Adds the specified IParameterInfo
+            </summary>
+            <param name="parameter"></param>
+        </member>
+        <member name="M:Bam.Net.Data.IConnectionStringResolver.Resolve(System.String)">
+            <summary>
+            When implemented in a derived class returns the ConnectionStringSettings 
+            for the specified connectionName or null if it cannot be resolved
+            </summary>
+            <param name="connectionName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.PagedEnumerator`1.MoveNextPage">
+            <summary>
+            When implemented by a derived class should set the 
+            CurrentPage property to the next page.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Bam.Net.Data.PagedEnumerator`1.CurrentItemIndex">
+            <summary>
+            Represents the current index of the 
+            current page.
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.PagedEnumerator`1.CurrentPageIndex">
+            <summary>
+            Represents the index of the current page.
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.PagedEnumerator`1.Current">
+            <summary>
+            Returns the item of the current page at 
+            the current index.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.PagedEnumerator`1.Reset">
+            <summary>
+            Reset the current item and page back to the start
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.QueryResult.As``1">
+            <summary>
+            Instantiates a new instance of T and calls SetDataTable passing
+            in the DataTable from the current instance
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="T:Bam.Net.Data.QuerySet">
+            <summary>
+            Allows
+            one to specify a sequence of sql statements
+            that result in the return of potentially
+            multiple result sets.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.QuerySet.Count``1">
+            <summary>
+            Same as SelectCount. Equivalent to (SELECT COUNT(*))
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.QuerySet.SelectCount``1">
+            <summary>
+            Same as Count. Equivalent to (SELECT COUNT(*))
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.QuerySet.SubscribeToExecute">
+            <summary>
+            This is what's responsible for setting the ID 
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.QuerySetResults.As``1(System.Int32)">
+            <summary>
+            Instantiates a new instance of T and calls SetDataTable passing
+            in the DataTable from the specified index
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.QuerySetResults.ToDao``1(System.Int32)">
+            <summary>
+            Returns the value of the specified index as the specified 
+            generic Dao type, only valid for inserts.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.SqlStringBuilder.TryExecute(Bam.Net.Data.Database,System.Exception@)">
+            <summary>
+            Tries to execute the script by wrapping a call to Execute
+            in a try catch; will return true if no exception occurred.
+            </summary>
+            <param name="db"></param>
+            <param name="ex"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.SqlStringBuilder.Go">
+            <summary>
+            Appends GoText to the end of the current string
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.SqlStringBuilder.Top``1(System.Int32)">
+            <summary>
+            Select Top [topCount].  Same as SelectTop
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="topCount"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.SqlStringBuilder.SelectTop``1(System.Int32)">
+            <summary>
+            Select Top [topCount].  Same as Top
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="topCount"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.SqlStringBuilder.Count``1">
+            <summary>
+            Select count from the table for the specified type T
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.SqlStringBuilder.SelectCount``1">
+            <summary>
+            Select count from the table for the specified type T
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.SqlStringBuilder.Count(System.String)">
+            <summary>
+            Select count from the specified table
+            </summary>
+            <param name="tableName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Bam.Net.Data.SqlStringBuilder.Builder">
+            <summary>
+            Contains the Sql statement thus far for this
+            SqlStringBuilder, same as StringBuilder
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.SqlStringBuilder.StringBuilder">
+            <summary>
+            Contains the Sql statement thus far for this
+            SqlStringBuilder, same as Builder
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.TableAttribute.ConnectionName">
+            <summary>
+            Logical name given to the schema that
+            the table is part of.  
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Data.AssignValue">
+            <summary>
+            Statement used to assign a value to a variable or parameter
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Data.XrefDaoCollection`2">
+            <summary>
+            A collection that represents a cross reference between its
+            parents and the table represented by L.
+            </summary>
+            <typeparam name="X">The Xref type</typeparam>
+            <typeparam name="L">The list type</typeparam>
+        </member>
+        <member name="M:Bam.Net.Data.XrefDaoCollection`2.Remove(`1)">
+            <summary>
+            Removes the specified item from this collection, deletes the xref entry but
+            does not delete the item from the database
+            </summary>
+            <param name="item"></param>
+        </member>
+    </members>
+</doc>

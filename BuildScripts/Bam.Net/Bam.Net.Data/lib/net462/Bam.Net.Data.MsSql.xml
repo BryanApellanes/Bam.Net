@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Bam.Net.Data.MsSql</name>
+    </assembly>
+    <members>
+        <member name="M:Bam.Net.Data.MsSql.MsSqlSmoSchemaExtractor.GetColumnMaxLength(System.String,System.String)">
+            <summary>
+            Get the max column length for the specified table and column
+            </summary>
+            <param name="tableName"></param>
+            <param name="columnName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.MsSqlRegistrar.Register(System.String)">
+            <summary>
+            Register the MS implementation of IParameterBuilder, SchemaWriter and QuerySet for the 
+            database associated with the specified connectionName.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.MsSqlRegistrar.Register(System.Type)">
+            <summary>
+            Register the MS implementation of IParameterBuilder, SchemaWriter and QuerySet for the 
+            database associated with the specified type.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.MsSqlRegistrar.Register``1">
+            <summary>
+            Register the MS implementation of IParameterBuilder, SchemaWriter and QuerySet for the 
+            database associated with the specified type.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Bam.Net.Data.MsSqlRegistrar.Register(Bam.Net.Data.Database)">
+            <summary>
+            Register the MS implementation of IParameterBuilder, SchemaWriter and QuerySet for the
+            specified database
+            </summary>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Data.MsSqlRegistrar.Register(Bam.Net.Incubation.Incubator)">
+            <summary>
+            Registser the MS implementation of IParameterBuilder, SchemaWriter and QuerySet  
+            into the specified incubator
+            </summary>
+            <param name="incubator"></param>
+        </member>
+    </members>
+</doc>

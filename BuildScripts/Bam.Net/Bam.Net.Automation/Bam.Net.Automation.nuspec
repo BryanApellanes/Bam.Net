@@ -2,32 +2,32 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Automation</id>
-    <version>1.4.5</version>
+    <version>1.4.6</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>http://bryanapellanes.github.io/Bam.Net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Automation tools</description>
-    <releaseNotes>Version 1.4.5
+    <releaseNotes>Version 1.4.6
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2017</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.4.5" />
-      <dependency id="Bam.Net.Analytics" version="1.4.5" />
-      <dependency id="Bam.Net.Data" version="1.4.5" />
-      <dependency id="Bam.Net.Html" version="1.4.5" />
-      <dependency id="Bam.Net.Incubation" version="1.4.5" />
-      <dependency id="Bam.Net.Javascript" version="1.4.5" />
-      <dependency id="Bam.Net.Logging" version="1.4.5" />
-      <dependency id="Bam.Net.Management" version="1.4.5" />
-      <dependency id="Bam.Net.Net" version="1.4.5" />
-      <dependency id="Bam.Net.Profiguration" version="1.4.5" />
-      <dependency id="Bam.Net.Schema.Org" version="1.4.5" />
-      <dependency id="Bam.Net.ServiceProxy" version="1.4.5" />
-      <dependency id="Bam.Net.SourceControl" version="1.4.5" />
-      <dependency id="Bam.Net.Testing" version="1.4.5" />
-      <dependency id="Bam.Net.Yaml" version="1.4.5" />
+      <dependency id="Bam.Net" version="1.4.6" />
+      <dependency id="Bam.Net.Analytics" version="1.4.6" />
+      <dependency id="Bam.Net.Data" version="1.4.6" />
+      <dependency id="Bam.Net.Html" version="1.4.6" />
+      <dependency id="Bam.Net.Incubation" version="1.4.6" />
+      <dependency id="Bam.Net.Javascript" version="1.4.6" />
+      <dependency id="Bam.Net.Logging" version="1.4.6" />
+      <dependency id="Bam.Net.Management" version="1.4.6" />
+      <dependency id="Bam.Net.Net" version="1.4.6" />
+      <dependency id="Bam.Net.Profiguration" version="1.4.6" />
+      <dependency id="Bam.Net.Schema.Org" version="1.4.6" />
+      <dependency id="Bam.Net.ServiceProxy" version="1.4.6" />
+      <dependency id="Bam.Net.SourceControl" version="1.4.6" />
+      <dependency id="Bam.Net.Testing" version="1.4.6" />
+      <dependency id="Bam.Net.Yaml" version="1.4.6" />
     </dependencies>
   </metadata>
 </package>
