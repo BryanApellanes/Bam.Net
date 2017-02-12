@@ -35,6 +35,13 @@ namespace Bam.Net.UserAccounts.Data
                 return new PasswordFailureColumns("Uuid");
             }
         }
+        public PasswordFailureColumns Cuid
+        {
+            get
+            {
+                return new PasswordFailureColumns("Cuid");
+            }
+        }
         public PasswordFailureColumns DateTime
         {
             get

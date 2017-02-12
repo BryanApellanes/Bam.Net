@@ -87,6 +87,20 @@ namespace Bam.Net.Messaging.Data
 		}
 	}
 
+	// property:Cuid, columnName:Cuid	
+	[Bam.Net.Data.Column(Name="Cuid", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string Cuid
+	{
+		get
+		{
+			return GetStringValue("Cuid");
+		}
+		set
+		{
+			SetValue("Cuid", value);
+		}
+	}
+
 	// property:Sent, columnName:Sent	
 	[Bam.Net.Data.Column(Name="Sent", DbDataType="Bit", MaxLength="1", AllowNull=true)]
 	public bool? Sent
@@ -204,6 +218,9 @@ namespace Bam.Net.Messaging.Data
 			return results;
 		}
 
+		/// <summary>
+		/// Process all records in batches of the specified size
+		/// </summary>
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<EmailMessage>> batchProcessor, Database database = null)
 		{
@@ -223,13 +240,19 @@ namespace Bam.Net.Messaging.Data
 				}
 			});			
 		}
-			 
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<EmailMessage>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
 
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<EmailMessageColumns> where, Action<IEnumerable<EmailMessage>> batchProcessor, Database database = null)
 		{

@@ -35,6 +35,13 @@ namespace Bam.Net.Instructions
                 return new StepColumns("Uuid");
             }
         }
+        public StepColumns Cuid
+        {
+            get
+            {
+                return new StepColumns("Cuid");
+            }
+        }
         public StepColumns Number
         {
             get

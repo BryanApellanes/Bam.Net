@@ -35,6 +35,13 @@ namespace Bam.Net.Data.Tests
                 return new CartItemColumns("Uuid");
             }
         }
+        public CartItemColumns Cuid
+        {
+            get
+            {
+                return new CartItemColumns("Cuid");
+            }
+        }
         public CartItemColumns Quantity
         {
             get

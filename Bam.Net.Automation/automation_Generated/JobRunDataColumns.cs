@@ -35,6 +35,13 @@ namespace Bam.Net.Automation.Data
                 return new JobRunDataColumns("Uuid");
             }
         }
+        public JobRunDataColumns Cuid
+        {
+            get
+            {
+                return new JobRunDataColumns("Cuid");
+            }
+        }
         public JobRunDataColumns Success
         {
             get

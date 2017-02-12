@@ -16,6 +16,16 @@ namespace Bam.Net.Data.Repositories.Tests
 		public SecondaryObjectQuery(WhereDelegate<SecondaryObjectColumns> where, OrderBy<SecondaryObjectColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public SecondaryObjectQuery(Func<SecondaryObjectColumns, QueryFilter<SecondaryObjectColumns>> where, OrderBy<SecondaryObjectColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public SecondaryObjectQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static SecondaryObjectQuery Where(WhereDelegate<SecondaryObjectColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static SecondaryObjectQuery Where(WhereDelegate<SecondaryObjectColumns> where, OrderBy<SecondaryObjectColumns> orderBy = null, Database db = null)
+        {
+            return new SecondaryObjectQuery(where, orderBy, db);
+        }
 
 		public SecondaryObjectCollection Execute()
 		{

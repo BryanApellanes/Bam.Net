@@ -35,6 +35,13 @@ namespace Bam.Net.Messaging.Data
                 return new MessageColumns("Uuid");
             }
         }
+        public MessageColumns Cuid
+        {
+            get
+            {
+                return new MessageColumns("Cuid");
+            }
+        }
         public MessageColumns CreatedDate
         {
             get

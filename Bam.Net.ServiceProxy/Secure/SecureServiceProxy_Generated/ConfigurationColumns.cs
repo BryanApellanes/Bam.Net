@@ -35,6 +35,13 @@ namespace Bam.Net.ServiceProxy.Secure
                 return new ConfigurationColumns("Uuid");
             }
         }
+        public ConfigurationColumns Cuid
+        {
+            get
+            {
+                return new ConfigurationColumns("Cuid");
+            }
+        }
         public ConfigurationColumns Name
         {
             get

@@ -35,6 +35,13 @@ namespace Bam.Net.Logging.Data
                 return new LogEventColumns("Uuid");
             }
         }
+        public LogEventColumns Cuid
+        {
+            get
+            {
+                return new LogEventColumns("Cuid");
+            }
+        }
         public LogEventColumns Source
         {
             get

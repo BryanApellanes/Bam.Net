@@ -35,6 +35,13 @@ namespace Bam.Net.Data.Repositories.Tests
                 return new SecondaryObjectColumns("Uuid");
             }
         }
+        public SecondaryObjectColumns Cuid
+        {
+            get
+            {
+                return new SecondaryObjectColumns("Cuid");
+            }
+        }
         public SecondaryObjectColumns Created
         {
             get

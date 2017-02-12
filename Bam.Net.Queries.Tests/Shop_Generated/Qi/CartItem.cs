@@ -10,7 +10,7 @@ using Bam.Net.Data;
 using Bam.Net.Data.Qi;
 using Bam.Net.Data.Tests;
 
-namespace Qi
+namespace Bam.Net.Data.Tests.Qi
 {
     public class CartItemController : DaoController
     {	
@@ -86,7 +86,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(CartItem));
+				query.table = Dao.TableName(typeof(Bam.Net.Data.Tests.CartItem));
 				object value = Bam.Net.Data.Tests.CartItem.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(CartItem));
+				query.table = Dao.TableName(typeof(Bam.Net.Data.Tests.CartItem));
 				object[] value = Bam.Net.Data.Tests.CartItem.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

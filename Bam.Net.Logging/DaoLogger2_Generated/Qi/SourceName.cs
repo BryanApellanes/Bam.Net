@@ -10,7 +10,7 @@ using Bam.Net.Data;
 using Bam.Net.Data.Qi;
 using Bam.Net.Logging.Data;
 
-namespace Qi
+namespace Bam.Net.Logging.Data.Qi
 {
     public class SourceNameController : DaoController
     {	

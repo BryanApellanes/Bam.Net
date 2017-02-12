@@ -47,6 +47,7 @@ namespace Bam.Net.Instructions
 			this.SetChildren();
 		}
 
+		[Bam.Net.Exclude]
 		public static implicit operator Section(DataRow data)
 		{
 			return new Section(data);
@@ -84,6 +85,20 @@ namespace Bam.Net.Instructions
 		set
 		{
 			SetValue("Uuid", value);
+		}
+	}
+
+	// property:Cuid, columnName:Cuid	
+	[Bam.Net.Data.Column(Name="Cuid", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string Cuid
+	{
+		get
+		{
+			return GetStringValue("Cuid");
+		}
+		set
+		{
+			SetValue("Cuid", value);
 		}
 	}
 
@@ -154,7 +169,7 @@ namespace Bam.Net.Instructions
 	
 				
 
-	[Exclude]	
+	[Bam.Net.Exclude]	
 	public StepCollection StepsBySectionId
 	{
 		get
@@ -183,7 +198,8 @@ namespace Bam.Net.Instructions
 		/// Gets a query filter that should uniquely identify
 		/// the current instance.  The default implementation
 		/// compares the Id/key field to the current instance's.
-		/// </summary> 
+		/// </summary>
+		[Bam.Net.Exclude] 
 		public override IQueryFilter GetUniqueFilter()
 		{
 			if(UniqueFilterProvider != null)
@@ -213,12 +229,16 @@ namespace Bam.Net.Instructions
 			return results;
 		}
 
+		/// <summary>
+		/// Process all records in batches of the specified size
+		/// </summary>
+		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<Section>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				SectionColumns columns = new SectionColumns();
-				var orderBy = Order.By<SectionColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<SectionColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -230,19 +250,27 @@ namespace Bam.Net.Instructions
 					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
 				}
 			});			
-		}	 
+		}
 
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<Section>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
 
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<SectionColumns> where, Action<IEnumerable<Section>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				SectionColumns columns = new SectionColumns();
-				var orderBy = Order.By<SectionColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<SectionColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -276,11 +304,13 @@ namespace Bam.Net.Instructions
 			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
+		[Bam.Net.Exclude]
 		public static SectionCollection Query(QueryFilter filter, Database database = null)
 		{
 			return Where(filter, database);
 		}
-				
+
+		[Bam.Net.Exclude]		
 		public static SectionCollection Where(QueryFilter filter, Database database = null)
 		{
 			WhereDelegate<SectionColumns> whereDelegate = (c) => filter;
@@ -295,6 +325,7 @@ namespace Bam.Net.Instructions
 		/// between SectionColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static SectionCollection Where(Func<SectionColumns, QueryFilter<SectionColumns>> where, OrderBy<SectionColumns> orderBy = null, Database database = null)
 		{
 			database = database ?? Db.For<Section>();
@@ -309,6 +340,7 @@ namespace Bam.Net.Instructions
 		/// between SectionColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static SectionCollection Where(WhereDelegate<SectionColumns> where, Database database = null)
 		{		
 			database = database ?? Db.For<Section>();
@@ -327,6 +359,7 @@ namespace Bam.Net.Instructions
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static SectionCollection Where(WhereDelegate<SectionColumns> where, OrderBy<SectionColumns> orderBy = null, Database database = null)
 		{		
 			database = database ?? Db.For<Section>();
@@ -353,6 +386,7 @@ namespace Bam.Net.Instructions
 		/// one will be created; success will depend on the nullability
 		/// of the specified columns.
 		/// </summary>
+		[Bam.Net.Exclude]
 		public static Section GetOneWhere(QueryFilter where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -371,6 +405,7 @@ namespace Bam.Net.Instructions
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Section OneWhere(QueryFilter where, Database database = null)
 		{
 			WhereDelegate<SectionColumns> whereDelegate = (c) => where;
@@ -385,6 +420,7 @@ namespace Bam.Net.Instructions
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Section GetOneWhere(WhereDelegate<SectionColumns> where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -409,6 +445,7 @@ namespace Bam.Net.Instructions
 		/// between SectionColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Section OneWhere(WhereDelegate<SectionColumns> where, Database database = null)
 		{
 			var result = Top(1, where, database);
@@ -438,6 +475,7 @@ namespace Bam.Net.Instructions
 		/// between SectionColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Section FirstOneWhere(WhereDelegate<SectionColumns> where, Database database = null)
 		{
 			var results = Top(1, where, database);
@@ -460,6 +498,7 @@ namespace Bam.Net.Instructions
 		/// between SectionColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Section FirstOneWhere(WhereDelegate<SectionColumns> where, OrderBy<SectionColumns> orderBy, Database database = null)
 		{
 			var results = Top(1, where, orderBy, database);
@@ -481,6 +520,7 @@ namespace Bam.Net.Instructions
 		/// between SectionColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Section FirstOneWhere(QueryFilter where, OrderBy<SectionColumns> orderBy = null, Database database = null)
 		{
 			WhereDelegate<SectionColumns> whereDelegate = (c) => where;
@@ -509,6 +549,7 @@ namespace Bam.Net.Instructions
 		/// between SectionColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static SectionCollection Top(int count, WhereDelegate<SectionColumns> where, Database database = null)
 		{
 			return Top(count, where, null, database);
@@ -531,6 +572,7 @@ namespace Bam.Net.Instructions
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static SectionCollection Top(int count, WhereDelegate<SectionColumns> where, OrderBy<SectionColumns> orderBy, Database database = null)
 		{
 			SectionColumns c = new SectionColumns();
@@ -552,6 +594,7 @@ namespace Bam.Net.Instructions
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static SectionCollection Top(int count, QueryFilter where, Database database)
 		{
 			return Top(count, where, null, database);
@@ -573,6 +616,7 @@ namespace Bam.Net.Instructions
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static SectionCollection Top(int count, QueryFilter where, OrderBy<SectionColumns> orderBy = null, Database database = null)
 		{
 			Database db = database ?? Db.For<Section>();
@@ -640,6 +684,7 @@ namespace Bam.Net.Instructions
 		/// between SectionColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<SectionColumns> where, Database database = null)
 		{
 			SectionColumns c = new SectionColumns();
@@ -652,6 +697,16 @@ namespace Bam.Net.Instructions
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
 		}
+		 
+		public static long Count(QiQuery where, Database database = null)
+		{
+		    Database db = database ?? Db.For<Section>();
+			QuerySet query = GetQuerySet(db);	 
+			query.Count<Section>();
+			query.Where(where);	  
+			query.Execute(db);
+			return query.Results.As<CountResult>(0).Value;
+		} 		
 
 		private static Section CreateFromFilter(IQueryFilter filter, Database database = null)
 		{

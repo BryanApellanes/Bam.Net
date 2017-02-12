@@ -35,6 +35,13 @@ namespace Bam.Net.Analytics
                 return new ImageColumns("Uuid");
             }
         }
+        public ImageColumns Cuid
+        {
+            get
+            {
+                return new ImageColumns("Cuid");
+            }
+        }
         public ImageColumns Date
         {
             get

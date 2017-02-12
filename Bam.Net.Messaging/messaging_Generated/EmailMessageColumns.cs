@@ -35,6 +35,13 @@ namespace Bam.Net.Messaging.Data
                 return new EmailMessageColumns("Uuid");
             }
         }
+        public EmailMessageColumns Cuid
+        {
+            get
+            {
+                return new EmailMessageColumns("Cuid");
+            }
+        }
         public EmailMessageColumns Sent
         {
             get

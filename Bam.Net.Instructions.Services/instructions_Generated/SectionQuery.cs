@@ -16,6 +16,16 @@ namespace Bam.Net.Instructions
 		public SectionQuery(WhereDelegate<SectionColumns> where, OrderBy<SectionColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public SectionQuery(Func<SectionColumns, QueryFilter<SectionColumns>> where, OrderBy<SectionColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public SectionQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static SectionQuery Where(WhereDelegate<SectionColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static SectionQuery Where(WhereDelegate<SectionColumns> where, OrderBy<SectionColumns> orderBy = null, Database db = null)
+        {
+            return new SectionQuery(where, orderBy, db);
+        }
 
 		public SectionCollection Execute()
 		{

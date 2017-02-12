@@ -10,7 +10,7 @@ using Bam.Net.Data;
 using Bam.Net.Data.Qi;
 using Bam.Net.UserAccounts.Data;
 
-namespace Qi
+namespace Bam.Net.UserAccounts.Data.Qi
 {
     public class UserBehaviorController : DaoController
     {	

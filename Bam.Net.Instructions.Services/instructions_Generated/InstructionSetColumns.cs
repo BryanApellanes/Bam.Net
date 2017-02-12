@@ -35,6 +35,13 @@ namespace Bam.Net.Instructions
                 return new InstructionSetColumns("Uuid");
             }
         }
+        public InstructionSetColumns Cuid
+        {
+            get
+            {
+                return new InstructionSetColumns("Cuid");
+            }
+        }
         public InstructionSetColumns Name
         {
             get

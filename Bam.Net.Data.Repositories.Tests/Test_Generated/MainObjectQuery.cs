@@ -16,6 +16,16 @@ namespace Bam.Net.Data.Repositories.Tests
 		public MainObjectQuery(WhereDelegate<MainObjectColumns> where, OrderBy<MainObjectColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public MainObjectQuery(Func<MainObjectColumns, QueryFilter<MainObjectColumns>> where, OrderBy<MainObjectColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public MainObjectQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static MainObjectQuery Where(WhereDelegate<MainObjectColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static MainObjectQuery Where(WhereDelegate<MainObjectColumns> where, OrderBy<MainObjectColumns> orderBy = null, Database db = null)
+        {
+            return new MainObjectQuery(where, orderBy, db);
+        }
 
 		public MainObjectCollection Execute()
 		{

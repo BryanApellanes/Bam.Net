@@ -35,6 +35,13 @@ namespace Bam.Net.Logging.Data
                 return new UserNameColumns("Uuid");
             }
         }
+        public UserNameColumns Cuid
+        {
+            get
+            {
+                return new UserNameColumns("Cuid");
+            }
+        }
         public UserNameColumns Value
         {
             get

@@ -35,6 +35,13 @@ namespace Bam.Net.Analytics
                 return new LoadCounterColumns("Uuid");
             }
         }
+        public LoadCounterColumns Cuid
+        {
+            get
+            {
+                return new LoadCounterColumns("Cuid");
+            }
+        }
         public LoadCounterColumns UrlUuid
         {
             get

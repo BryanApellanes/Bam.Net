@@ -35,6 +35,13 @@ namespace Bam.Net.UserAccounts.Data
                 return new UserColumns("Uuid");
             }
         }
+        public UserColumns Cuid
+        {
+            get
+            {
+                return new UserColumns("Cuid");
+            }
+        }
         public UserColumns CreationDate
         {
             get

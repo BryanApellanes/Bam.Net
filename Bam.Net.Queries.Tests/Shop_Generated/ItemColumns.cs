@@ -35,6 +35,13 @@ namespace Bam.Net.Data.Tests
                 return new ItemColumns("Uuid");
             }
         }
+        public ItemColumns Cuid
+        {
+            get
+            {
+                return new ItemColumns("Cuid");
+            }
+        }
         public ItemColumns Name
         {
             get

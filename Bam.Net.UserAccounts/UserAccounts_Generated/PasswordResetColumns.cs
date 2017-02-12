@@ -35,6 +35,13 @@ namespace Bam.Net.UserAccounts.Data
                 return new PasswordResetColumns("Uuid");
             }
         }
+        public PasswordResetColumns Cuid
+        {
+            get
+            {
+                return new PasswordResetColumns("Cuid");
+            }
+        }
         public PasswordResetColumns Token
         {
             get

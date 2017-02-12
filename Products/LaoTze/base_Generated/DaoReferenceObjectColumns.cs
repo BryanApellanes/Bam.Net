@@ -35,6 +35,13 @@ namespace Bam.Net.DaoRef
                 return new DaoReferenceObjectColumns("Uuid");
             }
         }
+        public DaoReferenceObjectColumns Cuid
+        {
+            get
+            {
+                return new DaoReferenceObjectColumns("Cuid");
+            }
+        }
         public DaoReferenceObjectColumns IntProperty
         {
             get

@@ -35,6 +35,13 @@ namespace Bam.Net.ServiceProxy.Secure
                 return new ApiKeyColumns("Uuid");
             }
         }
+        public ApiKeyColumns Cuid
+        {
+            get
+            {
+                return new ApiKeyColumns("Cuid");
+            }
+        }
         public ApiKeyColumns ClientId
         {
             get

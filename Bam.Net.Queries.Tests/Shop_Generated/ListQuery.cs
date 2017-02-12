@@ -16,6 +16,16 @@ namespace Bam.Net.Data.Tests
 		public ListQuery(WhereDelegate<ListColumns> where, OrderBy<ListColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public ListQuery(Func<ListColumns, QueryFilter<ListColumns>> where, OrderBy<ListColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public ListQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static ListQuery Where(WhereDelegate<ListColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static ListQuery Where(WhereDelegate<ListColumns> where, OrderBy<ListColumns> orderBy = null, Database db = null)
+        {
+            return new ListQuery(where, orderBy, db);
+        }
 
 		public ListCollection Execute()
 		{

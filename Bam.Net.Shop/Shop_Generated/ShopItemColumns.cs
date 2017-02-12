@@ -35,6 +35,13 @@ namespace Bam.Net.Shop
                 return new ShopItemColumns("Uuid");
             }
         }
+        public ShopItemColumns Cuid
+        {
+            get
+            {
+                return new ShopItemColumns("Cuid");
+            }
+        }
         public ShopItemColumns Name
         {
             get

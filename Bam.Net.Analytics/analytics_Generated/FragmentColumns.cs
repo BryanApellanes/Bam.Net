@@ -35,6 +35,13 @@ namespace Bam.Net.Analytics
                 return new FragmentColumns("Uuid");
             }
         }
+        public FragmentColumns Cuid
+        {
+            get
+            {
+                return new FragmentColumns("Cuid");
+            }
+        }
         public FragmentColumns Value
         {
             get

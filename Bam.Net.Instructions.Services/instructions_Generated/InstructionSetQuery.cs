@@ -16,6 +16,16 @@ namespace Bam.Net.Instructions
 		public InstructionSetQuery(WhereDelegate<InstructionSetColumns> where, OrderBy<InstructionSetColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public InstructionSetQuery(Func<InstructionSetColumns, QueryFilter<InstructionSetColumns>> where, OrderBy<InstructionSetColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public InstructionSetQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static InstructionSetQuery Where(WhereDelegate<InstructionSetColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static InstructionSetQuery Where(WhereDelegate<InstructionSetColumns> where, OrderBy<InstructionSetColumns> orderBy = null, Database db = null)
+        {
+            return new InstructionSetQuery(where, orderBy, db);
+        }
 
 		public InstructionSetCollection Execute()
 		{

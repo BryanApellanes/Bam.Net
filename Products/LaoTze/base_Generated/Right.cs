@@ -3,6 +3,7 @@
 */
 // Model is Table
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
@@ -46,6 +47,7 @@ namespace Bam.Net.DaoRef
 			this.SetChildren();
 		}
 
+		[Bam.Net.Exclude]
 		public static implicit operator Right(DataRow data)
 		{
 			return new Right(data);
@@ -60,7 +62,7 @@ namespace Bam.Net.DaoRef
 		}
 
 	// property:Id, columnName:Id	
-	[Exclude]
+	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
 	public long? Id
 	{
@@ -88,6 +90,20 @@ namespace Bam.Net.DaoRef
 		}
 	}
 
+	// property:Cuid, columnName:Cuid	
+	[Bam.Net.Data.Column(Name="Cuid", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string Cuid
+	{
+		get
+		{
+			return GetStringValue("Cuid");
+		}
+		set
+		{
+			SetValue("Cuid", value);
+		}
+	}
+
 	// property:Name, columnName:Name	
 	[Bam.Net.Data.Column(Name="Name", DbDataType="VarChar", MaxLength="4000", AllowNull=false)]
 	public string Name
@@ -106,7 +122,7 @@ namespace Bam.Net.DaoRef
 
 				
 
-	[Exclude]	
+	[Bam.Net.Exclude]	
 	public LeftRightCollection LeftRightsByRightId
 	{
 		get
@@ -159,7 +175,8 @@ namespace Bam.Net.DaoRef
 		/// Gets a query filter that should uniquely identify
 		/// the current instance.  The default implementation
 		/// compares the Id/key field to the current instance's.
-		/// </summary> 
+		/// </summary>
+		[Bam.Net.Exclude] 
 		public override IQueryFilter GetUniqueFilter()
 		{
 			if(UniqueFilterProvider != null)
@@ -189,37 +206,55 @@ namespace Bam.Net.DaoRef
 			return results;
 		}
 
-		public static async Task BatchAll(int batchSize, Func<RightCollection, Task> batchProcessor, Database database = null)
+		/// <summary>
+		/// Process all records in batches of the specified size
+		/// </summary>
+		[Bam.Net.Exclude]
+		public static async Task BatchAll(int batchSize, Action<IEnumerable<Right>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				RightColumns columns = new RightColumns();
-				var orderBy = Order.By<RightColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<RightColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await batchProcessor(results);
+					await Task.Run(()=>
+					{
+						batchProcessor(results);
+					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
 				}
 			});			
-		}	 
+		}
 
-		public static async Task BatchQuery(int batchSize, QueryFilter filter, Func<RightCollection, Task> batchProcessor, Database database = null)
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<Right>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
 
-		public static async Task BatchQuery(int batchSize, WhereDelegate<RightColumns> where, Func<RightCollection, Task> batchProcessor, Database database = null)
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery(int batchSize, WhereDelegate<RightColumns> where, Action<IEnumerable<Right>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				RightColumns columns = new RightColumns();
-				var orderBy = Order.By<RightColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<RightColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await batchProcessor(results);
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (RightColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
 				}
@@ -246,11 +281,13 @@ namespace Bam.Net.DaoRef
 			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
+		[Bam.Net.Exclude]
 		public static RightCollection Query(QueryFilter filter, Database database = null)
 		{
 			return Where(filter, database);
 		}
-				
+
+		[Bam.Net.Exclude]		
 		public static RightCollection Where(QueryFilter filter, Database database = null)
 		{
 			WhereDelegate<RightColumns> whereDelegate = (c) => filter;
@@ -265,6 +302,7 @@ namespace Bam.Net.DaoRef
 		/// between RightColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static RightCollection Where(Func<RightColumns, QueryFilter<RightColumns>> where, OrderBy<RightColumns> orderBy = null, Database database = null)
 		{
 			database = database ?? Db.For<Right>();
@@ -279,6 +317,7 @@ namespace Bam.Net.DaoRef
 		/// between RightColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static RightCollection Where(WhereDelegate<RightColumns> where, Database database = null)
 		{		
 			database = database ?? Db.For<Right>();
@@ -297,6 +336,7 @@ namespace Bam.Net.DaoRef
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static RightCollection Where(WhereDelegate<RightColumns> where, OrderBy<RightColumns> orderBy = null, Database database = null)
 		{		
 			database = database ?? Db.For<Right>();
@@ -323,6 +363,7 @@ namespace Bam.Net.DaoRef
 		/// one will be created; success will depend on the nullability
 		/// of the specified columns.
 		/// </summary>
+		[Bam.Net.Exclude]
 		public static Right GetOneWhere(QueryFilter where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -341,6 +382,7 @@ namespace Bam.Net.DaoRef
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Right OneWhere(QueryFilter where, Database database = null)
 		{
 			WhereDelegate<RightColumns> whereDelegate = (c) => where;
@@ -355,6 +397,7 @@ namespace Bam.Net.DaoRef
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Right GetOneWhere(WhereDelegate<RightColumns> where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -379,6 +422,7 @@ namespace Bam.Net.DaoRef
 		/// between RightColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Right OneWhere(WhereDelegate<RightColumns> where, Database database = null)
 		{
 			var result = Top(1, where, database);
@@ -389,7 +433,7 @@ namespace Bam.Net.DaoRef
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate&lt;RightColumns&gt;.
+		/// WhereDelegate<RightColumns>.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
@@ -408,6 +452,7 @@ namespace Bam.Net.DaoRef
 		/// between RightColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Right FirstOneWhere(WhereDelegate<RightColumns> where, Database database = null)
 		{
 			var results = Top(1, where, database);
@@ -430,6 +475,7 @@ namespace Bam.Net.DaoRef
 		/// between RightColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Right FirstOneWhere(WhereDelegate<RightColumns> where, OrderBy<RightColumns> orderBy, Database database = null)
 		{
 			var results = Top(1, where, orderBy, database);
@@ -451,6 +497,7 @@ namespace Bam.Net.DaoRef
 		/// between RightColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Right FirstOneWhere(QueryFilter where, OrderBy<RightColumns> orderBy = null, Database database = null)
 		{
 			WhereDelegate<RightColumns> whereDelegate = (c) => where;
@@ -479,6 +526,7 @@ namespace Bam.Net.DaoRef
 		/// between RightColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static RightCollection Top(int count, WhereDelegate<RightColumns> where, Database database = null)
 		{
 			return Top(count, where, null, database);
@@ -488,7 +536,6 @@ namespace Bam.Net.DaoRef
 		/// Execute a query and return the specified number of values.  This method
 		/// will issue a sql TOP clause so only the specified number of values
 		/// will be returned.
-		/// of values
 		/// </summary>
 		/// <param name="count">The number of values to return.
 		/// This value is used in the sql query so no more than this 
@@ -502,6 +549,7 @@ namespace Bam.Net.DaoRef
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static RightCollection Top(int count, WhereDelegate<RightColumns> where, OrderBy<RightColumns> orderBy, Database database = null)
 		{
 			RightColumns c = new RightColumns();
@@ -523,6 +571,7 @@ namespace Bam.Net.DaoRef
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static RightCollection Top(int count, QueryFilter where, Database database)
 		{
 			return Top(count, where, null, database);
@@ -544,6 +593,7 @@ namespace Bam.Net.DaoRef
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static RightCollection Top(int count, QueryFilter where, OrderBy<RightColumns> orderBy = null, Database database = null)
 		{
 			Database db = database ?? Db.For<Right>();
@@ -592,6 +642,18 @@ namespace Bam.Net.DaoRef
 		}
 
 		/// <summary>
+		/// Return the count of Rights
+		/// </summary>
+		public static long Count(Database database = null)
+        {
+			Database db = database ?? Db.For<Right>();
+            QuerySet query = GetQuerySet(db);
+            query.Count<Right>();
+            query.Execute(db);
+            return (long)query.Results[0].DataRow[0];
+        }
+
+		/// <summary>
 		/// Execute a query and return the number of results
 		/// </summary>
 		/// <param name="where">A WhereDelegate that recieves a RightColumns 
@@ -599,6 +661,7 @@ namespace Bam.Net.DaoRef
 		/// between RightColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<RightColumns> where, Database database = null)
 		{
 			RightColumns c = new RightColumns();
@@ -611,6 +674,16 @@ namespace Bam.Net.DaoRef
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
 		}
+		 
+		public static long Count(QiQuery where, Database database = null)
+		{
+		    Database db = database ?? Db.For<Right>();
+			QuerySet query = GetQuerySet(db);	 
+			query.Count<Right>();
+			query.Where(where);	  
+			query.Execute(db);
+			return query.Results.As<CountResult>(0).Value;
+		} 		
 
 		private static Right CreateFromFilter(IQueryFilter filter, Database database = null)
 		{

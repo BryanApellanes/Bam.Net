@@ -35,6 +35,13 @@ namespace Bam.Net.Messaging.Data
                 return new DirectMessageColumns("Uuid");
             }
         }
+        public DirectMessageColumns Cuid
+        {
+            get
+            {
+                return new DirectMessageColumns("Cuid");
+            }
+        }
         public DirectMessageColumns To
         {
             get

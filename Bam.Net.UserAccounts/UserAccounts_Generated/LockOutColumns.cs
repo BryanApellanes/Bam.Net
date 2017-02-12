@@ -35,6 +35,13 @@ namespace Bam.Net.UserAccounts.Data
                 return new LockOutColumns("Uuid");
             }
         }
+        public LockOutColumns Cuid
+        {
+            get
+            {
+                return new LockOutColumns("Cuid");
+            }
+        }
         public LockOutColumns DateTime
         {
             get

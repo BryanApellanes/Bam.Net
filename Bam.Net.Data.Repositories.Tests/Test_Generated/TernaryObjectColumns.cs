@@ -35,6 +35,13 @@ namespace Bam.Net.Data.Repositories.Tests
                 return new TernaryObjectColumns("Uuid");
             }
         }
+        public TernaryObjectColumns Cuid
+        {
+            get
+            {
+                return new TernaryObjectColumns("Cuid");
+            }
+        }
         public TernaryObjectColumns Created
         {
             get

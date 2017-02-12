@@ -35,6 +35,13 @@ namespace Bam.Net.UserAccounts.Data
                 return new LoginColumns("Uuid");
             }
         }
+        public LoginColumns Cuid
+        {
+            get
+            {
+                return new LoginColumns("Cuid");
+            }
+        }
         public LoginColumns DateTime
         {
             get

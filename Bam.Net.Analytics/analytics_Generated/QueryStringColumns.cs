@@ -35,6 +35,13 @@ namespace Bam.Net.Analytics
                 return new QueryStringColumns("Uuid");
             }
         }
+        public QueryStringColumns Cuid
+        {
+            get
+            {
+                return new QueryStringColumns("Cuid");
+            }
+        }
         public QueryStringColumns Value
         {
             get

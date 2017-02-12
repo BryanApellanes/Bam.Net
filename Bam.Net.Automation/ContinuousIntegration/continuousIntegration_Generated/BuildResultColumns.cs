@@ -35,6 +35,13 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
                 return new BuildResultColumns("Uuid");
             }
         }
+        public BuildResultColumns Cuid
+        {
+            get
+            {
+                return new BuildResultColumns("Cuid");
+            }
+        }
         public BuildResultColumns Success
         {
             get

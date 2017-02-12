@@ -16,6 +16,16 @@ namespace Bam.Net.DaoRef
 		public RightQuery(WhereDelegate<RightColumns> where, OrderBy<RightColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public RightQuery(Func<RightColumns, QueryFilter<RightColumns>> where, OrderBy<RightColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public RightQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static RightQuery Where(WhereDelegate<RightColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static RightQuery Where(WhereDelegate<RightColumns> where, OrderBy<RightColumns> orderBy = null, Database db = null)
+        {
+            return new RightQuery(where, orderBy, db);
+        }
 
 		public RightCollection Execute()
 		{

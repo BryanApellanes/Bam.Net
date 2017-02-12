@@ -16,6 +16,16 @@ namespace Bam.Net.Data.Tests
 		public CartItemQuery(WhereDelegate<CartItemColumns> where, OrderBy<CartItemColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public CartItemQuery(Func<CartItemColumns, QueryFilter<CartItemColumns>> where, OrderBy<CartItemColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public CartItemQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static CartItemQuery Where(WhereDelegate<CartItemColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static CartItemQuery Where(WhereDelegate<CartItemColumns> where, OrderBy<CartItemColumns> orderBy = null, Database db = null)
+        {
+            return new CartItemQuery(where, orderBy, db);
+        }
 
 		public CartItemCollection Execute()
 		{

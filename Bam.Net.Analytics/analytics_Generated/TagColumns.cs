@@ -35,6 +35,13 @@ namespace Bam.Net.Analytics
                 return new TagColumns("Uuid");
             }
         }
+        public TagColumns Cuid
+        {
+            get
+            {
+                return new TagColumns("Cuid");
+            }
+        }
         public TagColumns Value
         {
             get

@@ -35,6 +35,13 @@ namespace Bam.Net.Analytics
                 return new DomainColumns("Uuid");
             }
         }
+        public DomainColumns Cuid
+        {
+            get
+            {
+                return new DomainColumns("Cuid");
+            }
+        }
         public DomainColumns Value
         {
             get

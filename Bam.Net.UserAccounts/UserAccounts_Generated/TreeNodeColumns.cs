@@ -35,6 +35,13 @@ namespace Bam.Net.UserAccounts.Data
                 return new TreeNodeColumns("Uuid");
             }
         }
+        public TreeNodeColumns Cuid
+        {
+            get
+            {
+                return new TreeNodeColumns("Cuid");
+            }
+        }
         public TreeNodeColumns Name
         {
             get

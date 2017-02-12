@@ -35,6 +35,13 @@ namespace Bam.Net.Analytics
                 return new PortColumns("Uuid");
             }
         }
+        public PortColumns Cuid
+        {
+            get
+            {
+                return new PortColumns("Cuid");
+            }
+        }
         public PortColumns Value
         {
             get

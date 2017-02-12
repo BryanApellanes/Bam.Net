@@ -10,7 +10,7 @@ using Bam.Net.Data;
 using Bam.Net.Data.Qi;
 using Bam.Net.Automation.ContinuousIntegration.Data;
 
-namespace Qi
+namespace Bam.Net.Automation.ContinuousIntegration.Data.Qi
 {
     public class BuildJobController : DaoController
     {	

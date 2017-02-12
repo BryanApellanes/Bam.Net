@@ -35,6 +35,13 @@ namespace Bam.Net.UserAccounts.Data
                 return new GroupColumns("Uuid");
             }
         }
+        public GroupColumns Cuid
+        {
+            get
+            {
+                return new GroupColumns("Cuid");
+            }
+        }
         public GroupColumns Name
         {
             get

@@ -35,6 +35,13 @@ namespace Bam.Net.Logging.Data
                 return new ParamColumns("Uuid");
             }
         }
+        public ParamColumns Cuid
+        {
+            get
+            {
+                return new ParamColumns("Cuid");
+            }
+        }
         public ParamColumns Position
         {
             get

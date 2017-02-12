@@ -10,7 +10,7 @@ using Bam.Net.Data;
 using Bam.Net.Data.Qi;
 using Bam.Net.Shop;
 
-namespace Qi
+namespace Bam.Net.Shop.Qi
 {
     public class ShopPromotionController : DaoController
     {	

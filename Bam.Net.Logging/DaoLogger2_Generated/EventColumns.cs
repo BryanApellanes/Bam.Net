@@ -35,6 +35,13 @@ namespace Bam.Net.Logging.Data
                 return new EventColumns("Uuid");
             }
         }
+        public EventColumns Cuid
+        {
+            get
+            {
+                return new EventColumns("Cuid");
+            }
+        }
         public EventColumns Time
         {
             get

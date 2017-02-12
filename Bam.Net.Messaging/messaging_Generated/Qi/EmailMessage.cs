@@ -10,7 +10,7 @@ using Bam.Net.Data;
 using Bam.Net.Data.Qi;
 using Bam.Net.Messaging.Data;
 
-namespace Qi
+namespace Bam.Net.Messaging.Data.Qi
 {
     public class EmailMessageController : DaoController
     {	
