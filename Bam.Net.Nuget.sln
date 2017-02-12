@@ -209,6 +209,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{AF15178A
 		BuildScripts\Bam.Net\build_solution.cmd = BuildScripts\Bam.Net\build_solution.cmd
 		BuildScripts\Bam.Net\build_toolkit.cmd = BuildScripts\Bam.Net\build_toolkit.cmd
 		BuildScripts\Bam.Net\build_toolkit_debug.cmd = BuildScripts\Bam.Net\build_toolkit_debug.cmd
+		BuildScripts\Bam.Net\copy_Bam.Net.Data.cmd = BuildScripts\Bam.Net\copy_Bam.Net.Data.cmd
 		BuildScripts\Bam.Net\copy_build_machine_scripts.cmd = BuildScripts\Bam.Net\copy_build_machine_scripts.cmd
 		BuildScripts\Bam.Net\copy_template.txt = BuildScripts\Bam.Net\copy_template.txt
 		BuildScripts\Bam.Net\Dll_Names.txt = BuildScripts\Bam.Net\Dll_Names.txt
