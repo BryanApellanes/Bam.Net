@@ -11,7 +11,6 @@ nuget pack Bam.Net.CommandLine\Bam.Net.CommandLine.nuspec
 nuget pack Bam.Net.CoreServices\Bam.Net.CoreServices.nuspec
 nuget pack Bam.Net.Data.Dynamic\Bam.Net.Data.Dynamic.nuspec
 nuget pack Bam.Net.Data.Repositories\Bam.Net.Data.Repositories.nuspec
-nuget pack Bam.Net.Distributed\Bam.Net.Distributed.nuspec
 nuget pack Bam.Net.Documentation\Bam.Net.Documentation.nuspec
 nuget pack Bam.Net.Drawing\Bam.Net.Drawing.nuspec
 nuget pack Bam.Net.Dust\Bam.Net.Dust.nuspec

@@ -8,7 +8,6 @@ call copy_Bam.Net.CommandLine.cmd %1
 call copy_Bam.Net.CoreServices.cmd %1
 call copy_Bam.Net.Data.Dynamic.cmd %1
 call copy_Bam.Net.Data.Repositories.cmd %1
-call copy_Bam.Net.Distributed.cmd %1
 call copy_Bam.Net.Documentation.cmd %1
 call copy_Bam.Net.Drawing.cmd %1
 call copy_Bam.Net.Dust.cmd %1

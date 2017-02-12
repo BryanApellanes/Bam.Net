@@ -1,0 +1,337 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Bam.Net.Data.Schema</name>
+    </assembly>
+    <members>
+        <member name="T:Bam.Net.Data.Schema.AddAuditColumnsAugmentation">
+            <summary>
+            A Schema Manager augmentation that will 
+            add a Created and Modified column and 
+            optionally a ModifiedBy column.
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Data.Schema.AutoIdSchemaManager">
+            <summary>
+            A schema manager that will automatically add a
+            Id column to every table when generating a 
+            schema and related Data Access Objects from a *.db.js
+            file
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Data.Schema.SchemaNameMap">
+            <summary>
+            A class used to de-sillyfy database naming conventions
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Schema.SchemaExtractor.CustomNamingCollisionHandler">
+            <summary>
+            A function used to avoid naming collisions on property names and reserved
+            Dao keywords.  Receives tableName, columnName and propertyName; should return
+            desired propertyName
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Schema.Column.#ctor(System.String,System.String)">
+            <summary>
+            Instantiate a column where Type = Long, AllowNull = false, Key = true
+            </summary>
+            <param name="columnName"></param>
+            <param name="tableName"></param>
+        </member>
+        <member name="P:Bam.Net.Data.Schema.Column.PropertyName">
+            <summary>
+            Gets the value of the PropertyName this Column
+            will be converted to during code generation
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Schema.Column.DataType">
+            <summary>
+            The Dao defined DataType of the column
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Schema.Column.NativeType">
+            <summary>
+            The string representation of the  Dao defined data type 
+            translated to its native csharp type equivalent.  Used by
+            generator and not directly refernced in code
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Schema.Column.DbDataType">
+            <summary>
+            The database equivalent of the DataType
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Data.Schema.ForeignKeyColumn">
+            <summary>
+            A column that represents a foreign key
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Schema.ForeignKeyColumn.#ctor">
+            <summary>
+            Empty constructor provided for deserialization
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Schema.ForeignKeyColumn.#ctor(Bam.Net.Data.Schema.Column,System.String)">
+            <summary>
+            Instantiate a new ForeignKeyColumn based on the specified column
+            referencing the specified referencedTable
+            </summary>
+            <param name="column"></param>
+            <param name="referencedTable"></param>
+        </member>
+        <member name="M:Bam.Net.Data.Schema.ForeignKeyColumn.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Instantiate a new ForeignKeyColumn with the specified name
+            for the specified tableName referencing the specified referencedTable
+            </summary>
+            <param name="name"></param>
+            <param name="tableName"></param>
+            <param name="referencedTable"></param>
+        </member>
+        <member name="T:Bam.Net.Data.Schema.KeyColumn">
+            <summary>
+            A key/identity column.
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Data.Schema.DaoGenerator">
+            <summary>
+            A code generator that writes Dao code for a SchemaDefinition
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Schema.DaoGenerator.DisposeOnComplete">
+            <summary>
+            Gets or sets a value indicating whether dispose will
+            be called on the output streams after code generation.
+            </summary>
+        </member>
+        <member name="E:Bam.Net.Data.Schema.DaoGenerator.GenerateStarted">
+            <summary>
+            The event that fires prior to code generation
+            </summary>
+        </member>
+        <member name="E:Bam.Net.Data.Schema.DaoGenerator.GenerateComplete">
+            <summary>
+            The event that fires when code generation is complete
+            </summary>
+        </member>
+        <member name="E:Bam.Net.Data.Schema.DaoGenerator.CompileStarted">
+            <summary>
+            The event that fires when compilation starts
+            </summary>
+        </member>
+        <member name="E:Bam.Net.Data.Schema.DaoGenerator.CompileComplete">
+            <summary>
+            The event that fires when compilation is complete
+            </summary>
+        </member>
+        <member name="E:Bam.Net.Data.Schema.DaoGenerator.BeforeClassStreamResolved">
+            <summary>
+            The event that fires prior to resolving the target 
+            stream for a table
+            </summary>
+        </member>
+        <member name="E:Bam.Net.Data.Schema.DaoGenerator.AfterClassStreamResolved">
+            <summary>
+            The event that fires after the target stream is resolved for
+            a table
+            </summary>
+        </member>
+        <member name="E:Bam.Net.Data.Schema.DaoGenerator.BeforeCollectionStreamResolved">
+            <summary>
+            The event that fires before resolving the stream to write each
+            collection to
+            </summary>
+        </member>
+        <member name="E:Bam.Net.Data.Schema.DaoGenerator.AfterCollectionStreamResolved">
+            <summary>
+            The event that fires after resolving the stream to write each ccollection to
+            </summary>
+        </member>
+        <member name="E:Bam.Net.Data.Schema.DaoGenerator.BeforeWriteClass">
+            <summary>
+            The event that fires before writing code to the target stream
+            </summary>
+        </member>
+        <member name="E:Bam.Net.Data.Schema.DaoGenerator.AfterWriteClass">
+            <summary>
+            The event that fires after writing code to the target stream
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Schema.DaoGenerator.DaoAssemblyFile">
+            <summary>
+            If the generator compiled generated files, this will be the FileInfo 
+            representing the compiled assembly
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Schema.DaoGenerator.Generate(Bam.Net.Data.Schema.SchemaDefinition,System.String)">
+            <summary>
+            Generate code for the specified schema
+            </summary>
+            <param name="schema"></param>
+            <param name="root"></param>
+        </member>
+        <member name="M:Bam.Net.Data.Schema.DaoGenerator.Generate(Bam.Net.Data.Schema.SchemaDefinition,System.Func{System.String,System.IO.Stream},System.String,System.String)">
+            <summary>
+            Generate code for the specified schema
+            </summary>
+            <param name="schema">The schema to generate code for</param>
+            <param name="targetResolver">If specified, generated code will be 
+            written to the stream returned by this function</param>
+            <param name="root">The root file path to use if no target resolver is specified</param>
+        </member>
+        <member name="P:Bam.Net.Data.Schema.SchemaDefinition.DbType">
+            <summary>
+            Gets or sets the type of the database that this SchemaDefinition was
+            extracted from.  May be null.
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Schema.SchemaDefinition.Name">
+            <summary>
+            Gets or sets the name of the current SchemaDefinition.
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Schema.SchemaDefinition.LastException">
+            <summary>
+            The most recent exception that occurred after trying to add a table
+            or a foreign key
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Schema.SchemaDefinition.Load(System.String)">
+            <summary>
+            Loads a SchemaDefinition from the specified file, the file
+            will be created if it doesn't exist.
+            </summary>
+            <param name="schemaFile"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Schema.SchemaDefinition.Save">
+            <summary>
+            Serializes the current SchemaDefinition as json to the
+            file specified in the File property
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Schema.SchemaDefinition.Save(System.String)">
+            <summary>
+            Serializes the current SchemaDefinition as json to the
+            specified filePath
+            </summary>
+            <param name="filePath"></param>
+        </member>
+        <member name="M:Bam.Net.Data.Schema.SchemaManager.SetSchema(System.String,System.Boolean)">
+            <summary>
+            Loads the specified schema if it exists, saving it otherwise, and sets it as Current
+            </summary>
+            <param name="schemaName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Bam.Net.Data.Schema.SchemaManager.BackupExisting">
+            <summary>
+            If true backup any existing schema file appending the Julian date plus 4 random characters to the 
+            existing file name.  Otherwise the file will be deleted.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Schema.SchemaManager.SetNewSchema(System.String)">
+            <summary>
+            Calls SetSchema if the specified schema does not already
+            exist.
+            </summary>
+            <param name="schemaName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Schema.SchemaManager.SetColumnPropertyName(System.String,System.String,System.String)">
+            <summary>
+            Used to specify a different property name to use
+            on generated Dao instead of the column name
+            </summary>
+            <param name="tableName"></param>
+            <param name="columnName"></param>
+            <param name="propertyName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Schema.SchemaManager.AddColumn(System.String,Bam.Net.Data.Schema.Column)">
+            <summary>
+            Add the specified column to the specified table.
+            </summary>
+            <param name="tableName"></param>
+            <param name="column"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Schema.SchemaManager.GetReferencingForeignKeysForTable(System.String)">
+            <summary>
+            Get the ForeignKeyColumns where the specified table is the 
+            referenced table.
+            </summary>
+            <param name="tableName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Schema.SchemaManager.GetForeignKeysForTable(System.String)">
+            <summary>
+            Get the ForeignKeyColumns defined on the specified table
+            </summary>
+            <param name="tableName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Schema.SchemaManager.GenerateDao(System.String,System.IO.DirectoryInfo,System.Boolean,System.String,System.String)">
+            <summary>
+            Generate 
+            </summary>
+            <param name="simpleSchemaJson"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Bam.Net.Data.Schema.SchemaManager.PreColumnAugmentations">
+            <summary>
+            Augmentations that are executed prior to adding columns and 
+            foreign keys
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Schema.SchemaManager.PostColumnAugmentations">
+            <summary>
+            Augmentations that are executed after adding columns 
+            and foreign keys
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Schema.SchemaManager.SetXref(System.String,System.String)">
+            <summary>
+            Adds a cross reference table (xref) which creates a many
+            to many relationship between the two tables specified
+            </summary>
+            <param name="leftTableName"></param>
+            <param name="rightTableName"></param>
+        </member>
+        <member name="P:Bam.Net.Data.Schema.SchemaManager.CompilerErrors">
+            <summary>
+            Gets the most recent set of exceptions that occurred during an attempted
+            Generate -> Compile
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Data.Schema.SchemaManagerAugmentation">
+            <summary>
+            Augments the behavior of a SchemaManager.
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Data.Schema.SchemaNameMapNameFormatter">
+            <summary>
+            A name formatter that uses a SchemaNameMap to 
+            name classes and properties
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Data.Schema.Table">
+            <summary>
+            A database Table
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Schema.Table.ReferencingForeignKeys">
+            <summary>
+            All ForeignKeyColmns where the current table is referenced.
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Data.Schema.UuidSchemaManager">
+            <summary>
+            A schema manager that will automatically add an Id
+            and Uuid column to every table when generating a 
+            schema and related Data Access Objects from a *.db.js
+            file
+            </summary>
+        </member>
+    </members>
+</doc>

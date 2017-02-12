@@ -10,7 +10,7 @@ using Bam.Net.Data;
 using Bam.Net.Data.Qi;
 using Bam.Net.ServiceProxy.Secure;
 
-namespace Qi
+namespace Bam.Net.ServiceProxy.Secure.Qi
 {
     public class SecureSessionController : DaoController
     {	

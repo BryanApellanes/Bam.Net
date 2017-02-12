@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Bam.Net.Data.Model</name>
+    </assembly>
+    <members>
+        <member name="P:Bam.Net.Data.Model.ModelActionMenu.MethodMarkerType">
+            <summary>
+            The Attribute type that is marking the 
+            methods that will be runnable from this
+            menu
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Model.MenuContext.Writer">
+            <summary>
+            The menu writer
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Model.MenuContext.Type">
+            <summary>
+            The Type to work with
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Model.MenuContext.LastMenu">
+            <summary>
+            The previous menu
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Model.CommandLineMenuInterface.MenuContextType">
+            <summary>
+            Gets or sets the Type of the MenuContext to use.
+            The default is ConsoleMenuContext
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Model.CommandLineMenuInterface.MenuWriterType">
+            <summary>
+            Gets or sets the Type of the MenuWriter to use.
+            The default is ConsoleActionMenuWriter
+            </summary>
+        </member>
+    </members>
+</doc>
