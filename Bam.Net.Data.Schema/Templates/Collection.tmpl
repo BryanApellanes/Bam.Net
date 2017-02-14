@@ -13,9 +13,9 @@ namespace @Namespace
     public class @(Model.ClassName)Collection: DaoCollection<@(Model.ClassName)Columns, @(Model.ClassName)>
     { 
 		public @(Model.ClassName)Collection(){}
-		public @(Model.ClassName)Collection(Database db, DataTable table, Dao dao = null, string rc = null) : base(db, table, dao, rc) { }
-		public @(Model.ClassName)Collection(DataTable table, Dao dao = null, string rc = null) : base(table, dao, rc) { }
-		public @(Model.ClassName)Collection(Query<@(Model.ClassName)Columns, @(Model.ClassName)> q, Dao dao = null, string rc = null) : base(q, dao, rc) { }
+		public @(Model.ClassName)Collection(Database db, DataTable table, Bam.Net.Data.Dao dao = null, string rc = null) : base(db, table, dao, rc) { }
+		public @(Model.ClassName)Collection(DataTable table, Bam.Net.Data.Dao dao = null, string rc = null) : base(table, dao, rc) { }
+		public @(Model.ClassName)Collection(Query<@(Model.ClassName)Columns, @(Model.ClassName)> q, Bam.Net.Data.Dao dao = null, string rc = null) : base(q, dao, rc) { }
 		public @(Model.ClassName)Collection(Database db, Query<@(Model.ClassName)Columns, @(Model.ClassName)> q, bool load) : base(db, q, load) { }
 		public @(Model.ClassName)Collection(Query<@(Model.ClassName)Columns, @(Model.ClassName)> q, bool load) : base(q, load) { }
     }

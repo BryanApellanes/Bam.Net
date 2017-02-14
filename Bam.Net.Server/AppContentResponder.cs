@@ -137,8 +137,11 @@ namespace Bam.Net.Server
             string[] ignore;
             return TryRespond(context, out ignore);
         }
+
+
         public bool TryRespond(IHttpContext context, out string[] checkedPaths)
         {
+            // TODO: clean this mess up
             checkedPaths = new string[] { };
             IRequest request = context.Request;
             IResponse response = context.Response;

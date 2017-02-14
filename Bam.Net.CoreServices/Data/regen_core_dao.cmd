@@ -1,1 +1,1 @@
-﻿troo.exe /gsr /ta:C:\tvg\gloo\Bam.Net.CoreServices.dll /sn:CoreRegistry /fns:Bam.Net.CoreServices.Data /cfi:yes /uis:no /ws:C:\src\Bam.Net\Bam.Net.CoreServices\Data\Generated_Dao
+﻿troo.exe /gsr /ta:C:\tvg\gloo\Bam.Net.CoreServices.dll /sn:CoreRegistry /fns:Bam.Net.CoreServices.Data /cfi:yes /uis:no /ws:C:\src\Business\Submodule\Bam.Net\Bam.Net.CoreServices\Data\Generated_Dao

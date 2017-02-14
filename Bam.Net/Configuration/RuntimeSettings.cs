@@ -10,32 +10,37 @@ namespace Bam.Net.Configuration
 {
     public static class RuntimeSettings
     {
+        static string _appDataFolder;
+        static object _appDataFolderLock = new object();
         public static string AppDataFolder
         {
             get
             {
-                StringBuilder path = new StringBuilder();
-                if (HttpContext.Current == null)
+                return _appDataFolderLock.DoubleCheckLock(ref _appDataFolder, () =>
                 {
-                    path.Append(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData));
-                    if (!path.ToString().EndsWith("\\"))
+                    StringBuilder path = new StringBuilder();
+                    if (HttpContext.Current == null)
                     {
-                        path.Append("\\");
-                    }
+                        path.Append(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData));
+                        if (!path.ToString().EndsWith("\\"))
+                        {
+                            path.Append("\\");
+                        }
 
-                    path.Append(DefaultConfiguration.GetAppSetting("ApplicationName", "UNKNOWN") + "\\");
-                    FileInfo fileInfo = new FileInfo(path.ToString());
-                    if (!Directory.Exists(fileInfo.Directory.FullName))
+                        path.Append(DefaultConfiguration.GetAppSetting("ApplicationName", "UNKNOWN") + "\\");
+                        FileInfo fileInfo = new FileInfo(path.ToString());
+                        if (!Directory.Exists(fileInfo.Directory.FullName))
+                        {
+                            Directory.CreateDirectory(fileInfo.Directory.FullName);
+                        }
+                    }
+                    else
                     {
-                        Directory.CreateDirectory(fileInfo.Directory.FullName);
+                        path.Append(HttpContext.Current.Server.MapPath("~/App_Data/"));                        
                     }
-                }
-                else
-                {
-                    path.Append(HttpContext.Current.Server.MapPath("~/App_Data/"));
-                }
-
-                return path.ToString();
+                    _appDataFolder = path.ToString();
+                    return _appDataFolder;
+                });
             }
         }
     }

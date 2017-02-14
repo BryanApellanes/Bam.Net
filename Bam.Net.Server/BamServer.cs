@@ -1024,7 +1024,13 @@ namespace Bam.Net.Server
                 _exceptionHandler = value;
             }
         }
-
+        public Task HandleRequestAsync(IHttpContext context)
+        {
+            return Task.Run(() =>
+            {
+                HandleRequest(context);
+            });
+        }
         public void HandleRequest(IHttpContext context)
         {
             IRequest request = context.Request;
@@ -1266,7 +1272,7 @@ namespace Bam.Net.Server
             HttpListenerRequest request = context.Request;
             HttpListenerResponse response = context.Response;
 
-            HandleRequest(new HttpContextWrapper(new RequestWrapper(request), new ResponseWrapper(response)));
+            HandleRequestAsync(new HttpContextWrapper(new RequestWrapper(request), new ResponseWrapper(response)));
         }
 
         private void HandleResponderNotFound(IHttpContext context)

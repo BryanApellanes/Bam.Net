@@ -18,7 +18,7 @@ namespace Bam.Net.CoreServices.Data.Daos
 	// connection Name = CoreRegistry
 	[Serializable]
 	[Bam.Net.Data.Table("ApiKey", "CoreRegistry")]
-	public partial class ApiKey: Dao
+	public partial class ApiKey: Bam.Net.Data.Dao
 	{
 		public ApiKey():base()
 		{

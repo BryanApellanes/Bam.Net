@@ -33,7 +33,7 @@ namespace Bam.Net.Server
 
         public BamConf()
         {
-            this.Fs = new Fs(Fs.GetAppDataFolder());
+            this.Fs = new Fs(RuntimeSettings.AppDataFolder);
             this.MaxThreads = 50;
             this.GenerateDao = true;
             this.DaoConfigs = new DaoConf[] { };

@@ -56,18 +56,18 @@ namespace Bam.Net.CoreServices.Data.Daos
                 return new ClientServerConnectionColumns("ServerId");
             }
         }
-        public ClientServerConnectionColumns CreatedBy
-        {
-            get
-            {
-                return new ClientServerConnectionColumns("CreatedBy");
-            }
-        }
         public ClientServerConnectionColumns Created
         {
             get
             {
                 return new ClientServerConnectionColumns("Created");
+            }
+        }
+        public ClientServerConnectionColumns CreatedBy
+        {
+            get
+            {
+                return new ClientServerConnectionColumns("CreatedBy");
             }
         }
         public ClientServerConnectionColumns ModifiedBy

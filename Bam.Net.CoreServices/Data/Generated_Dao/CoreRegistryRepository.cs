@@ -29,7 +29,6 @@ namespace Bam.Net.CoreServices.Data.Daos.Repository
 			AddType<Bam.Net.CoreServices.Data.ApiKey>();﻿			
 			AddType<Bam.Net.CoreServices.Data.Application>();﻿			
 			AddType<Bam.Net.CoreServices.Data.ClientServerConnection>();﻿			
-			//AddType<Bam.Net.CoreServices.Data.ExternalEventSubscriptionDescriptor>();﻿			
 			AddType<Bam.Net.CoreServices.Data.Machine>();﻿			
 			AddType<Bam.Net.CoreServices.Data.Organization>();﻿			
 			AddType<Bam.Net.CoreServices.Data.ProcessDescriptor>();﻿			
@@ -514,7 +513,6 @@ namespace Bam.Net.CoreServices.Data.Daos.Repository
 				batchProcessor(Wrap<Bam.Net.CoreServices.Data.ClientServerConnection>(batch));
             }, Database);
         }﻿		
-	
 		/// <summary>
 		/// Get one entry matching the specified filter.  If none exists 
 		/// one will be created; success will depend on the nullability

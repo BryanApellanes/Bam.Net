@@ -56,18 +56,18 @@ namespace Bam.Net.CoreServices.Data.Daos
                 return new UserColumns("UserName");
             }
         }
-        public UserColumns CreatedBy
-        {
-            get
-            {
-                return new UserColumns("CreatedBy");
-            }
-        }
         public UserColumns Created
         {
             get
             {
                 return new UserColumns("Created");
+            }
+        }
+        public UserColumns CreatedBy
+        {
+            get
+            {
+                return new UserColumns("CreatedBy");
             }
         }
         public UserColumns ModifiedBy

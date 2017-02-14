@@ -69,7 +69,7 @@ namespace Bam.Net.Server
                 Includes commonIncludes = ContentResponder.GetCommonIncludes(conf.BamConf.ContentRoot, false);
                 includes = commonIncludes.Combine(includes);
             }
-
+            // TODO: add a config flag "Debug"
             layoutModel.ScriptTags = includes.GetScriptTags().ToHtmlString();
             layoutModel.StyleSheetLinkTags = includes.GetStyleSheetLinkTags().ToHtmlString();
         }
