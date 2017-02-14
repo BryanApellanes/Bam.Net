@@ -35,6 +35,13 @@ namespace Bam.Net.Shop
                 return new PriceColumns("Uuid");
             }
         }
+        public PriceColumns Cuid
+        {
+            get
+            {
+                return new PriceColumns("Cuid");
+            }
+        }
         public PriceColumns Value
         {
             get

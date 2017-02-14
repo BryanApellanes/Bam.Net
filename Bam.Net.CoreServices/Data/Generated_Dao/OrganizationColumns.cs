@@ -49,18 +49,18 @@ namespace Bam.Net.CoreServices.Data.Daos
                 return new OrganizationColumns("Name");
             }
         }
-        public OrganizationColumns CreatedBy
-        {
-            get
-            {
-                return new OrganizationColumns("CreatedBy");
-            }
-        }
         public OrganizationColumns Created
         {
             get
             {
                 return new OrganizationColumns("Created");
+            }
+        }
+        public OrganizationColumns CreatedBy
+        {
+            get
+            {
+                return new OrganizationColumns("CreatedBy");
             }
         }
         public OrganizationColumns ModifiedBy

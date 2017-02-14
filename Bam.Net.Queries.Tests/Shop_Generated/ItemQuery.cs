@@ -16,6 +16,16 @@ namespace Bam.Net.Data.Tests
 		public ItemQuery(WhereDelegate<ItemColumns> where, OrderBy<ItemColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public ItemQuery(Func<ItemColumns, QueryFilter<ItemColumns>> where, OrderBy<ItemColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public ItemQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static ItemQuery Where(WhereDelegate<ItemColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static ItemQuery Where(WhereDelegate<ItemColumns> where, OrderBy<ItemColumns> orderBy = null, Database db = null)
+        {
+            return new ItemQuery(where, orderBy, db);
+        }
 
 		public ItemCollection Execute()
 		{

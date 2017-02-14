@@ -35,6 +35,13 @@ namespace Bam.Net.Data.Tests
                 return new CartColumns("Uuid");
             }
         }
+        public CartColumns Cuid
+        {
+            get
+            {
+                return new CartColumns("Cuid");
+            }
+        }
 
 
 		protected internal Type TableType

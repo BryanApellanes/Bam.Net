@@ -10,7 +10,7 @@ using Bam.Net.Data;
 using Bam.Net.Data.Qi;
 using Bam.Net.Instructions;
 
-namespace Qi
+namespace Bam.Net.Instructions.Qi
 {
     public class SectionController : DaoController
     {	
@@ -86,7 +86,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Section));
+				query.table = Dao.TableName(typeof(Bam.Net.Instructions.Section));
 				object value = Bam.Net.Instructions.Section.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Section));
+				query.table = Dao.TableName(typeof(Bam.Net.Instructions.Section));
 				object[] value = Bam.Net.Instructions.Section.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

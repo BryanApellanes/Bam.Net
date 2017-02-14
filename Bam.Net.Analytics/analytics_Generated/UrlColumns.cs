@@ -35,6 +35,13 @@ namespace Bam.Net.Analytics
                 return new UrlColumns("Uuid");
             }
         }
+        public UrlColumns Cuid
+        {
+            get
+            {
+                return new UrlColumns("Cuid");
+            }
+        }
 
         public UrlColumns ProtocolId
         {

@@ -16,6 +16,16 @@ namespace Bam.Net.DaoRef
 		public LeftRightQuery(WhereDelegate<LeftRightColumns> where, OrderBy<LeftRightColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public LeftRightQuery(Func<LeftRightColumns, QueryFilter<LeftRightColumns>> where, OrderBy<LeftRightColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public LeftRightQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static LeftRightQuery Where(WhereDelegate<LeftRightColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static LeftRightQuery Where(WhereDelegate<LeftRightColumns> where, OrderBy<LeftRightColumns> orderBy = null, Database db = null)
+        {
+            return new LeftRightQuery(where, orderBy, db);
+        }
 
 		public LeftRightCollection Execute()
 		{

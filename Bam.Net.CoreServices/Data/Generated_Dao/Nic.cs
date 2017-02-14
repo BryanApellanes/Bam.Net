@@ -18,7 +18,7 @@ namespace Bam.Net.CoreServices.Data.Daos
 	// connection Name = CoreRegistry
 	[Serializable]
 	[Bam.Net.Data.Table("Nic", "CoreRegistry")]
-	public partial class Nic: Dao
+	public partial class Nic: Bam.Net.Data.Dao
 	{
 		public Nic():base()
 		{
@@ -115,17 +115,17 @@ namespace Bam.Net.CoreServices.Data.Daos
 		}
 	}
 
-	// property:Value, columnName:Value	
-	[Bam.Net.Data.Column(Name="Value", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string Value
+	// property:Address, columnName:Address	
+	[Bam.Net.Data.Column(Name="Address", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string Address
 	{
 		get
 		{
-			return GetStringValue("Value");
+			return GetStringValue("Address");
 		}
 		set
 		{
-			SetValue("Value", value);
+			SetValue("Address", value);
 		}
 	}
 
@@ -143,20 +143,6 @@ namespace Bam.Net.CoreServices.Data.Daos
 		}
 	}
 
-	// property:CreatedBy, columnName:CreatedBy	
-	[Bam.Net.Data.Column(Name="CreatedBy", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string CreatedBy
-	{
-		get
-		{
-			return GetStringValue("CreatedBy");
-		}
-		set
-		{
-			SetValue("CreatedBy", value);
-		}
-	}
-
 	// property:Created, columnName:Created	
 	[Bam.Net.Data.Column(Name="Created", DbDataType="DateTime", MaxLength="8", AllowNull=true)]
 	public DateTime? Created
@@ -168,6 +154,20 @@ namespace Bam.Net.CoreServices.Data.Daos
 		set
 		{
 			SetValue("Created", value);
+		}
+	}
+
+	// property:CreatedBy, columnName:CreatedBy	
+	[Bam.Net.Data.Column(Name="CreatedBy", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string CreatedBy
+	{
+		get
+		{
+			return GetStringValue("CreatedBy");
+		}
+		set
+		{
+			SetValue("CreatedBy", value);
 		}
 	}
 

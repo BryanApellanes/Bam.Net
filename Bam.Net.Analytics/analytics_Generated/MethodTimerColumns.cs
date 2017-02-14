@@ -35,6 +35,13 @@ namespace Bam.Net.Analytics
                 return new MethodTimerColumns("Uuid");
             }
         }
+        public MethodTimerColumns Cuid
+        {
+            get
+            {
+                return new MethodTimerColumns("Cuid");
+            }
+        }
         public MethodTimerColumns MethodName
         {
             get

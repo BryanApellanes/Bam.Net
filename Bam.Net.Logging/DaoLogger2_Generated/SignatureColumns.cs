@@ -35,6 +35,13 @@ namespace Bam.Net.Logging.Data
                 return new SignatureColumns("Uuid");
             }
         }
+        public SignatureColumns Cuid
+        {
+            get
+            {
+                return new SignatureColumns("Cuid");
+            }
+        }
         public SignatureColumns Value
         {
             get

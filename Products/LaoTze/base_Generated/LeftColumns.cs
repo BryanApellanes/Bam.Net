@@ -35,6 +35,13 @@ namespace Bam.Net.DaoRef
                 return new LeftColumns("Uuid");
             }
         }
+        public LeftColumns Cuid
+        {
+            get
+            {
+                return new LeftColumns("Cuid");
+            }
+        }
         public LeftColumns Name
         {
             get

@@ -35,6 +35,13 @@ namespace Bam.Net.Analytics
                 return new FeatureColumns("Uuid");
             }
         }
+        public FeatureColumns Cuid
+        {
+            get
+            {
+                return new FeatureColumns("Cuid");
+            }
+        }
         public FeatureColumns Value
         {
             get

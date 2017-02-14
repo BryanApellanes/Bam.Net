@@ -35,6 +35,13 @@ namespace Bam.Net.Instructions
                 return new SectionColumns("Uuid");
             }
         }
+        public SectionColumns Cuid
+        {
+            get
+            {
+                return new SectionColumns("Cuid");
+            }
+        }
         public SectionColumns Title
         {
             get

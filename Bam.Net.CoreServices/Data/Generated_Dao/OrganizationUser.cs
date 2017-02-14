@@ -18,7 +18,7 @@ namespace Bam.Net.CoreServices.Data.Daos
 	// connection Name = CoreRegistry
 	[Serializable]
 	[Bam.Net.Data.Table("OrganizationUser", "CoreRegistry")]
-	public partial class OrganizationUser: Dao
+	public partial class OrganizationUser: Bam.Net.Data.Dao
 	{
 		public OrganizationUser():base()
 		{

@@ -35,6 +35,13 @@ namespace Bam.Net.Shop
                 return new PromotionConditionColumns("Uuid");
             }
         }
+        public PromotionConditionColumns Cuid
+        {
+            get
+            {
+                return new PromotionConditionColumns("Cuid");
+            }
+        }
         public PromotionConditionColumns Description
         {
             get

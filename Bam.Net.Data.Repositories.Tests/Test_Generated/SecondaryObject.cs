@@ -47,6 +47,7 @@ namespace Bam.Net.Data.Repositories.Tests
 			this.SetChildren();
 		}
 
+		[Bam.Net.Exclude]
 		public static implicit operator SecondaryObject(DataRow data)
 		{
 			return new SecondaryObject(data);
@@ -86,6 +87,20 @@ namespace Bam.Net.Data.Repositories.Tests
 		set
 		{
 			SetValue("Uuid", value);
+		}
+	}
+
+	// property:Cuid, columnName:Cuid	
+	[Bam.Net.Data.Column(Name="Cuid", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string Cuid
+	{
+		get
+		{
+			return GetStringValue("Cuid");
+		}
+		set
+		{
+			SetValue("Cuid", value);
 		}
 	}
 
@@ -156,7 +171,7 @@ namespace Bam.Net.Data.Repositories.Tests
 	
 				
 
-	[Exclude]	
+	[Bam.Net.Exclude]	
 	public SecondaryObjectTernaryObjectCollection SecondaryObjectTernaryObjectsBySecondaryObjectId
 	{
 		get
@@ -209,7 +224,8 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// Gets a query filter that should uniquely identify
 		/// the current instance.  The default implementation
 		/// compares the Id/key field to the current instance's.
-		/// </summary> 
+		/// </summary>
+		[Bam.Net.Exclude] 
 		public override IQueryFilter GetUniqueFilter()
 		{
 			if(UniqueFilterProvider != null)
@@ -239,12 +255,16 @@ namespace Bam.Net.Data.Repositories.Tests
 			return results;
 		}
 
+		/// <summary>
+		/// Process all records in batches of the specified size
+		/// </summary>
+		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<SecondaryObject>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				SecondaryObjectColumns columns = new SecondaryObjectColumns();
-				var orderBy = Order.By<SecondaryObjectColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<SecondaryObjectColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -256,19 +276,27 @@ namespace Bam.Net.Data.Repositories.Tests
 					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
 				}
 			});			
-		}	 
+		}
 
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<SecondaryObject>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
 
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<SecondaryObjectColumns> where, Action<IEnumerable<SecondaryObject>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				SecondaryObjectColumns columns = new SecondaryObjectColumns();
-				var orderBy = Order.By<SecondaryObjectColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<SecondaryObjectColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -302,11 +330,13 @@ namespace Bam.Net.Data.Repositories.Tests
 			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
+		[Bam.Net.Exclude]
 		public static SecondaryObjectCollection Query(QueryFilter filter, Database database = null)
 		{
 			return Where(filter, database);
 		}
-				
+
+		[Bam.Net.Exclude]		
 		public static SecondaryObjectCollection Where(QueryFilter filter, Database database = null)
 		{
 			WhereDelegate<SecondaryObjectColumns> whereDelegate = (c) => filter;
@@ -321,6 +351,7 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// between SecondaryObjectColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static SecondaryObjectCollection Where(Func<SecondaryObjectColumns, QueryFilter<SecondaryObjectColumns>> where, OrderBy<SecondaryObjectColumns> orderBy = null, Database database = null)
 		{
 			database = database ?? Db.For<SecondaryObject>();
@@ -335,6 +366,7 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// between SecondaryObjectColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static SecondaryObjectCollection Where(WhereDelegate<SecondaryObjectColumns> where, Database database = null)
 		{		
 			database = database ?? Db.For<SecondaryObject>();
@@ -353,6 +385,7 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static SecondaryObjectCollection Where(WhereDelegate<SecondaryObjectColumns> where, OrderBy<SecondaryObjectColumns> orderBy = null, Database database = null)
 		{		
 			database = database ?? Db.For<SecondaryObject>();
@@ -379,6 +412,7 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// one will be created; success will depend on the nullability
 		/// of the specified columns.
 		/// </summary>
+		[Bam.Net.Exclude]
 		public static SecondaryObject GetOneWhere(QueryFilter where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -397,6 +431,7 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static SecondaryObject OneWhere(QueryFilter where, Database database = null)
 		{
 			WhereDelegate<SecondaryObjectColumns> whereDelegate = (c) => where;
@@ -411,6 +446,7 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static SecondaryObject GetOneWhere(WhereDelegate<SecondaryObjectColumns> where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -435,6 +471,7 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// between SecondaryObjectColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static SecondaryObject OneWhere(WhereDelegate<SecondaryObjectColumns> where, Database database = null)
 		{
 			var result = Top(1, where, database);
@@ -464,6 +501,7 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// between SecondaryObjectColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static SecondaryObject FirstOneWhere(WhereDelegate<SecondaryObjectColumns> where, Database database = null)
 		{
 			var results = Top(1, where, database);
@@ -486,6 +524,7 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// between SecondaryObjectColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static SecondaryObject FirstOneWhere(WhereDelegate<SecondaryObjectColumns> where, OrderBy<SecondaryObjectColumns> orderBy, Database database = null)
 		{
 			var results = Top(1, where, orderBy, database);
@@ -507,6 +546,7 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// between SecondaryObjectColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static SecondaryObject FirstOneWhere(QueryFilter where, OrderBy<SecondaryObjectColumns> orderBy = null, Database database = null)
 		{
 			WhereDelegate<SecondaryObjectColumns> whereDelegate = (c) => where;
@@ -535,6 +575,7 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// between SecondaryObjectColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static SecondaryObjectCollection Top(int count, WhereDelegate<SecondaryObjectColumns> where, Database database = null)
 		{
 			return Top(count, where, null, database);
@@ -557,6 +598,7 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static SecondaryObjectCollection Top(int count, WhereDelegate<SecondaryObjectColumns> where, OrderBy<SecondaryObjectColumns> orderBy, Database database = null)
 		{
 			SecondaryObjectColumns c = new SecondaryObjectColumns();
@@ -578,6 +620,7 @@ namespace Bam.Net.Data.Repositories.Tests
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static SecondaryObjectCollection Top(int count, QueryFilter where, Database database)
 		{
 			return Top(count, where, null, database);
@@ -599,6 +642,7 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static SecondaryObjectCollection Top(int count, QueryFilter where, OrderBy<SecondaryObjectColumns> orderBy = null, Database database = null)
 		{
 			Database db = database ?? Db.For<SecondaryObject>();
@@ -666,6 +710,7 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// between SecondaryObjectColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<SecondaryObjectColumns> where, Database database = null)
 		{
 			SecondaryObjectColumns c = new SecondaryObjectColumns();
@@ -678,6 +723,16 @@ namespace Bam.Net.Data.Repositories.Tests
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
 		}
+		 
+		public static long Count(QiQuery where, Database database = null)
+		{
+		    Database db = database ?? Db.For<SecondaryObject>();
+			QuerySet query = GetQuerySet(db);	 
+			query.Count<SecondaryObject>();
+			query.Where(where);	  
+			query.Execute(db);
+			return query.Results.As<CountResult>(0).Value;
+		} 		
 
 		private static SecondaryObject CreateFromFilter(IQueryFilter filter, Database database = null)
 		{

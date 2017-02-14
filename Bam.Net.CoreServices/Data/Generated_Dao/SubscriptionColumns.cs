@@ -70,18 +70,18 @@ namespace Bam.Net.CoreServices.Data.Daos
                 return new SubscriptionColumns("ExpirationDate");
             }
         }
-        public SubscriptionColumns CreatedBy
-        {
-            get
-            {
-                return new SubscriptionColumns("CreatedBy");
-            }
-        }
         public SubscriptionColumns Created
         {
             get
             {
                 return new SubscriptionColumns("Created");
+            }
+        }
+        public SubscriptionColumns CreatedBy
+        {
+            get
+            {
+                return new SubscriptionColumns("CreatedBy");
             }
         }
         public SubscriptionColumns ModifiedBy

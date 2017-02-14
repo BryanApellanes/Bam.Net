@@ -49,11 +49,11 @@ namespace Bam.Net.CoreServices.Data.Daos
                 return new NicColumns("AddressFamily");
             }
         }
-        public NicColumns Value
+        public NicColumns Address
         {
             get
             {
-                return new NicColumns("Value");
+                return new NicColumns("Address");
             }
         }
         public NicColumns MacAddress
@@ -63,18 +63,18 @@ namespace Bam.Net.CoreServices.Data.Daos
                 return new NicColumns("MacAddress");
             }
         }
-        public NicColumns CreatedBy
-        {
-            get
-            {
-                return new NicColumns("CreatedBy");
-            }
-        }
         public NicColumns Created
         {
             get
             {
                 return new NicColumns("Created");
+            }
+        }
+        public NicColumns CreatedBy
+        {
+            get
+            {
+                return new NicColumns("CreatedBy");
             }
         }
         public NicColumns ModifiedBy

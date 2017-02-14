@@ -35,6 +35,13 @@ namespace Bam.Net.Analytics
                 return new PathColumns("Uuid");
             }
         }
+        public PathColumns Cuid
+        {
+            get
+            {
+                return new PathColumns("Cuid");
+            }
+        }
         public PathColumns Value
         {
             get

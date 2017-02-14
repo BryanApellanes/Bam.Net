@@ -35,6 +35,13 @@ namespace Bam.Net.Analytics
                 return new ClickCounterColumns("Uuid");
             }
         }
+        public ClickCounterColumns Cuid
+        {
+            get
+            {
+                return new ClickCounterColumns("Cuid");
+            }
+        }
         public ClickCounterColumns UrlId
         {
             get

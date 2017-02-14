@@ -16,6 +16,16 @@ namespace Bam.Net.Instructions
 		public StepQuery(WhereDelegate<StepColumns> where, OrderBy<StepColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public StepQuery(Func<StepColumns, QueryFilter<StepColumns>> where, OrderBy<StepColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public StepQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static StepQuery Where(WhereDelegate<StepColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static StepQuery Where(WhereDelegate<StepColumns> where, OrderBy<StepColumns> orderBy = null, Database db = null)
+        {
+            return new StepQuery(where, orderBy, db);
+        }
 
 		public StepCollection Execute()
 		{

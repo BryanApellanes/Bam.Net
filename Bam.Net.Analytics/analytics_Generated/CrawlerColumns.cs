@@ -35,6 +35,13 @@ namespace Bam.Net.Analytics
                 return new CrawlerColumns("Uuid");
             }
         }
+        public CrawlerColumns Cuid
+        {
+            get
+            {
+                return new CrawlerColumns("Cuid");
+            }
+        }
         public CrawlerColumns Name
         {
             get

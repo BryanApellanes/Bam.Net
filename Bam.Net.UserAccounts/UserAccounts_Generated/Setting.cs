@@ -87,6 +87,20 @@ namespace Bam.Net.UserAccounts.Data
 		}
 	}
 
+	// property:Cuid, columnName:Cuid	
+	[Bam.Net.Data.Column(Name="Cuid", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string Cuid
+	{
+		get
+		{
+			return GetStringValue("Cuid");
+		}
+		set
+		{
+			SetValue("Cuid", value);
+		}
+	}
+
 	// property:Key, columnName:Key	
 	[Bam.Net.Data.Column(Name="Key", DbDataType="VarChar", MaxLength="4000", AllowNull=false)]
 	public string Key
@@ -204,6 +218,9 @@ namespace Bam.Net.UserAccounts.Data
 			return results;
 		}
 
+		/// <summary>
+		/// Process all records in batches of the specified size
+		/// </summary>
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<Setting>> batchProcessor, Database database = null)
 		{
@@ -223,13 +240,19 @@ namespace Bam.Net.UserAccounts.Data
 				}
 			});			
 		}
-			 
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<Setting>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
 
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<SettingColumns> where, Action<IEnumerable<Setting>> batchProcessor, Database database = null)
 		{

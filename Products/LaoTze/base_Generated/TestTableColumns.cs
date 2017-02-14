@@ -35,6 +35,13 @@ namespace Bam.Net.DaoRef
                 return new TestTableColumns("Uuid");
             }
         }
+        public TestTableColumns Cuid
+        {
+            get
+            {
+                return new TestTableColumns("Cuid");
+            }
+        }
         public TestTableColumns Name
         {
             get

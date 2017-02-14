@@ -35,6 +35,13 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
                 return new BuildJobColumns("Uuid");
             }
         }
+        public BuildJobColumns Cuid
+        {
+            get
+            {
+                return new BuildJobColumns("Cuid");
+            }
+        }
         public BuildJobColumns Name
         {
             get

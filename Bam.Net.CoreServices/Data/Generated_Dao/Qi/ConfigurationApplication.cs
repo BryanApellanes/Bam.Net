@@ -86,7 +86,7 @@ namespace Bam.Net.CoreServices.Data.Daos.Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Bam.Net.CoreServices.Data.Daos.ConfigurationApplication));
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.CoreServices.Data.Daos.ConfigurationApplication));
 				object value = Bam.Net.CoreServices.Data.Daos.ConfigurationApplication.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Bam.Net.CoreServices.Data.Daos.Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Bam.Net.CoreServices.Data.Daos.ConfigurationApplication));
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.CoreServices.Data.Daos.ConfigurationApplication));
 				object[] value = Bam.Net.CoreServices.Data.Daos.ConfigurationApplication.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

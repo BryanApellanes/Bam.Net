@@ -86,7 +86,7 @@ namespace @(Namespace).Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(@(Namespace).@Model.ClassName));
+				query.table = Bam.Net.Data.Dao.TableName(typeof(@(Namespace).@Model.ClassName));
 				object value = @(Namespace).@(Model.ClassName).OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace @(Namespace).Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(@(Namespace).@Model.ClassName));
+				query.table = Bam.Net.Data.Dao.TableName(typeof(@(Namespace).@Model.ClassName));
 				object[] value = @(Namespace).@(Model.ClassName).Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

@@ -11,10 +11,11 @@
     <description>Data access objects and tools for use with the Bam framework</description>
     <releaseNotes>Version 1.4.6
 </releaseNotes>
-    <copyright>Copyright © Bryan Apellanes 2017</copyright>
+    <copyright>Copyright © Bryan Apellanes 2006</copyright>
     <dependencies>
       <dependency id="Bam.Net" version="1.4.6" />
       <dependency id="Bam.Net.Incubation" version="1.4.6" />
+	  <dependency id="Google.Protobuf" version="3.1.0" targetFramework="net452" />
     </dependencies>
   </metadata>
 </package>

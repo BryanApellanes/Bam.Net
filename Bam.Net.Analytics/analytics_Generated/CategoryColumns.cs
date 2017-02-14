@@ -35,6 +35,13 @@ namespace Bam.Net.Analytics
                 return new CategoryColumns("Uuid");
             }
         }
+        public CategoryColumns Cuid
+        {
+            get
+            {
+                return new CategoryColumns("Cuid");
+            }
+        }
         public CategoryColumns Value
         {
             get

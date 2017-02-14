@@ -35,6 +35,13 @@ namespace Bam.Net.Analytics
                 return new LoadTimerColumns("Uuid");
             }
         }
+        public LoadTimerColumns Cuid
+        {
+            get
+            {
+                return new LoadTimerColumns("Cuid");
+            }
+        }
         public LoadTimerColumns UrlId
         {
             get

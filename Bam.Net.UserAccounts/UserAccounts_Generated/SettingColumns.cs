@@ -35,6 +35,13 @@ namespace Bam.Net.UserAccounts.Data
                 return new SettingColumns("Uuid");
             }
         }
+        public SettingColumns Cuid
+        {
+            get
+            {
+                return new SettingColumns("Cuid");
+            }
+        }
         public SettingColumns Key
         {
             get

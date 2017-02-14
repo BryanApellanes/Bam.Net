@@ -10,7 +10,7 @@ using Bam.Net.Data;
 using Bam.Net.Data.Qi;
 using Bam.Net.Data.Repositories.Tests;
 
-namespace Qi
+namespace Bam.Net.Data.Repositories.Tests.Qi
 {
     public class SecondaryObjectTernaryObjectController : DaoController
     {	
@@ -86,7 +86,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(SecondaryObjectTernaryObject));
+				query.table = Dao.TableName(typeof(Bam.Net.Data.Repositories.Tests.SecondaryObjectTernaryObject));
 				object value = Bam.Net.Data.Repositories.Tests.SecondaryObjectTernaryObject.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(SecondaryObjectTernaryObject));
+				query.table = Dao.TableName(typeof(Bam.Net.Data.Repositories.Tests.SecondaryObjectTernaryObject));
 				object[] value = Bam.Net.Data.Repositories.Tests.SecondaryObjectTernaryObject.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

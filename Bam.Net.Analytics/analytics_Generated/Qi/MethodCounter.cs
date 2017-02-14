@@ -10,7 +10,7 @@ using Bam.Net.Data;
 using Bam.Net.Data.Qi;
 using Bam.Net.Analytics;
 
-namespace Qi
+namespace Bam.Net.Analytics.Qi
 {
     public class MethodCounterController : DaoController
     {	

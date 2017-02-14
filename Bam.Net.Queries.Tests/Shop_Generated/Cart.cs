@@ -47,6 +47,7 @@ namespace Bam.Net.Data.Tests
 			this.SetChildren();
 		}
 
+		[Bam.Net.Exclude]
 		public static implicit operator Cart(DataRow data)
 		{
 			return new Cart(data);
@@ -87,11 +88,25 @@ namespace Bam.Net.Data.Tests
 		}
 	}
 
+	// property:Cuid, columnName:Cuid	
+	[Bam.Net.Data.Column(Name="Cuid", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string Cuid
+	{
+		get
+		{
+			return GetStringValue("Cuid");
+		}
+		set
+		{
+			SetValue("Cuid", value);
+		}
+	}
+
 
 
 				
 
-	[Exclude]	
+	[Bam.Net.Exclude]	
 	public CartItemCollection CartItemsByCartId
 	{
 		get
@@ -120,7 +135,8 @@ namespace Bam.Net.Data.Tests
 		/// Gets a query filter that should uniquely identify
 		/// the current instance.  The default implementation
 		/// compares the Id/key field to the current instance's.
-		/// </summary> 
+		/// </summary>
+		[Bam.Net.Exclude] 
 		public override IQueryFilter GetUniqueFilter()
 		{
 			if(UniqueFilterProvider != null)
@@ -150,12 +166,16 @@ namespace Bam.Net.Data.Tests
 			return results;
 		}
 
+		/// <summary>
+		/// Process all records in batches of the specified size
+		/// </summary>
+		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<Cart>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				CartColumns columns = new CartColumns();
-				var orderBy = Order.By<CartColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<CartColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -167,19 +187,27 @@ namespace Bam.Net.Data.Tests
 					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
 				}
 			});			
-		}	 
+		}
 
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<Cart>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
 
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<CartColumns> where, Action<IEnumerable<Cart>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				CartColumns columns = new CartColumns();
-				var orderBy = Order.By<CartColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<CartColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -213,11 +241,13 @@ namespace Bam.Net.Data.Tests
 			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
+		[Bam.Net.Exclude]
 		public static CartCollection Query(QueryFilter filter, Database database = null)
 		{
 			return Where(filter, database);
 		}
-				
+
+		[Bam.Net.Exclude]		
 		public static CartCollection Where(QueryFilter filter, Database database = null)
 		{
 			WhereDelegate<CartColumns> whereDelegate = (c) => filter;
@@ -232,6 +262,7 @@ namespace Bam.Net.Data.Tests
 		/// between CartColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static CartCollection Where(Func<CartColumns, QueryFilter<CartColumns>> where, OrderBy<CartColumns> orderBy = null, Database database = null)
 		{
 			database = database ?? Db.For<Cart>();
@@ -246,6 +277,7 @@ namespace Bam.Net.Data.Tests
 		/// between CartColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static CartCollection Where(WhereDelegate<CartColumns> where, Database database = null)
 		{		
 			database = database ?? Db.For<Cart>();
@@ -264,6 +296,7 @@ namespace Bam.Net.Data.Tests
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static CartCollection Where(WhereDelegate<CartColumns> where, OrderBy<CartColumns> orderBy = null, Database database = null)
 		{		
 			database = database ?? Db.For<Cart>();
@@ -290,6 +323,7 @@ namespace Bam.Net.Data.Tests
 		/// one will be created; success will depend on the nullability
 		/// of the specified columns.
 		/// </summary>
+		[Bam.Net.Exclude]
 		public static Cart GetOneWhere(QueryFilter where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -308,6 +342,7 @@ namespace Bam.Net.Data.Tests
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Cart OneWhere(QueryFilter where, Database database = null)
 		{
 			WhereDelegate<CartColumns> whereDelegate = (c) => where;
@@ -322,6 +357,7 @@ namespace Bam.Net.Data.Tests
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Cart GetOneWhere(WhereDelegate<CartColumns> where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -346,6 +382,7 @@ namespace Bam.Net.Data.Tests
 		/// between CartColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Cart OneWhere(WhereDelegate<CartColumns> where, Database database = null)
 		{
 			var result = Top(1, where, database);
@@ -375,6 +412,7 @@ namespace Bam.Net.Data.Tests
 		/// between CartColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Cart FirstOneWhere(WhereDelegate<CartColumns> where, Database database = null)
 		{
 			var results = Top(1, where, database);
@@ -397,6 +435,7 @@ namespace Bam.Net.Data.Tests
 		/// between CartColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Cart FirstOneWhere(WhereDelegate<CartColumns> where, OrderBy<CartColumns> orderBy, Database database = null)
 		{
 			var results = Top(1, where, orderBy, database);
@@ -418,6 +457,7 @@ namespace Bam.Net.Data.Tests
 		/// between CartColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static Cart FirstOneWhere(QueryFilter where, OrderBy<CartColumns> orderBy = null, Database database = null)
 		{
 			WhereDelegate<CartColumns> whereDelegate = (c) => where;
@@ -446,6 +486,7 @@ namespace Bam.Net.Data.Tests
 		/// between CartColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static CartCollection Top(int count, WhereDelegate<CartColumns> where, Database database = null)
 		{
 			return Top(count, where, null, database);
@@ -468,6 +509,7 @@ namespace Bam.Net.Data.Tests
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static CartCollection Top(int count, WhereDelegate<CartColumns> where, OrderBy<CartColumns> orderBy, Database database = null)
 		{
 			CartColumns c = new CartColumns();
@@ -489,6 +531,7 @@ namespace Bam.Net.Data.Tests
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static CartCollection Top(int count, QueryFilter where, Database database)
 		{
 			return Top(count, where, null, database);
@@ -510,6 +553,7 @@ namespace Bam.Net.Data.Tests
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static CartCollection Top(int count, QueryFilter where, OrderBy<CartColumns> orderBy = null, Database database = null)
 		{
 			Database db = database ?? Db.For<Cart>();
@@ -577,6 +621,7 @@ namespace Bam.Net.Data.Tests
 		/// between CartColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<CartColumns> where, Database database = null)
 		{
 			CartColumns c = new CartColumns();
@@ -589,6 +634,16 @@ namespace Bam.Net.Data.Tests
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
 		}
+		 
+		public static long Count(QiQuery where, Database database = null)
+		{
+		    Database db = database ?? Db.For<Cart>();
+			QuerySet query = GetQuerySet(db);	 
+			query.Count<Cart>();
+			query.Where(where);	  
+			query.Execute(db);
+			return query.Results.As<CountResult>(0).Value;
+		} 		
 
 		private static Cart CreateFromFilter(IQueryFilter filter, Database database = null)
 		{

@@ -16,6 +16,16 @@ namespace Bam.Net.DaoRef
 		public TestFkTableQuery(WhereDelegate<TestFkTableColumns> where, OrderBy<TestFkTableColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public TestFkTableQuery(Func<TestFkTableColumns, QueryFilter<TestFkTableColumns>> where, OrderBy<TestFkTableColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public TestFkTableQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static TestFkTableQuery Where(WhereDelegate<TestFkTableColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static TestFkTableQuery Where(WhereDelegate<TestFkTableColumns> where, OrderBy<TestFkTableColumns> orderBy = null, Database db = null)
+        {
+            return new TestFkTableQuery(where, orderBy, db);
+        }
 
 		public TestFkTableCollection Execute()
 		{

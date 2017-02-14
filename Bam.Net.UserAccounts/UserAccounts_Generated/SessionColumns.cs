@@ -35,6 +35,13 @@ namespace Bam.Net.UserAccounts.Data
                 return new SessionColumns("Uuid");
             }
         }
+        public SessionColumns Cuid
+        {
+            get
+            {
+                return new SessionColumns("Cuid");
+            }
+        }
         public SessionColumns Identifier
         {
             get

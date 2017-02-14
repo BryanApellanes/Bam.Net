@@ -70,18 +70,18 @@ namespace Bam.Net.CoreServices.Data.Daos
                 return new MachineColumns("Secret");
             }
         }
-        public MachineColumns CreatedBy
-        {
-            get
-            {
-                return new MachineColumns("CreatedBy");
-            }
-        }
         public MachineColumns Created
         {
             get
             {
                 return new MachineColumns("Created");
+            }
+        }
+        public MachineColumns CreatedBy
+        {
+            get
+            {
+                return new MachineColumns("CreatedBy");
             }
         }
         public MachineColumns ModifiedBy

@@ -13,9 +13,9 @@ namespace Bam.Net.CoreServices.Data.Daos
     public class ClientServerConnectionCollection: DaoCollection<ClientServerConnectionColumns, ClientServerConnection>
     { 
 		public ClientServerConnectionCollection(){}
-		public ClientServerConnectionCollection(Database db, DataTable table, Dao dao = null, string rc = null) : base(db, table, dao, rc) { }
-		public ClientServerConnectionCollection(DataTable table, Dao dao = null, string rc = null) : base(table, dao, rc) { }
-		public ClientServerConnectionCollection(Query<ClientServerConnectionColumns, ClientServerConnection> q, Dao dao = null, string rc = null) : base(q, dao, rc) { }
+		public ClientServerConnectionCollection(Database db, DataTable table, Bam.Net.Data.Dao dao = null, string rc = null) : base(db, table, dao, rc) { }
+		public ClientServerConnectionCollection(DataTable table, Bam.Net.Data.Dao dao = null, string rc = null) : base(table, dao, rc) { }
+		public ClientServerConnectionCollection(Query<ClientServerConnectionColumns, ClientServerConnection> q, Bam.Net.Data.Dao dao = null, string rc = null) : base(q, dao, rc) { }
 		public ClientServerConnectionCollection(Database db, Query<ClientServerConnectionColumns, ClientServerConnection> q, bool load) : base(db, q, load) { }
 		public ClientServerConnectionCollection(Query<ClientServerConnectionColumns, ClientServerConnection> q, bool load) : base(q, load) { }
     }

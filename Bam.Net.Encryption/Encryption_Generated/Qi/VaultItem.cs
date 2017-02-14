@@ -10,7 +10,7 @@ using Bam.Net.Data;
 using Bam.Net.Data.Qi;
 using Bam.Net.Encryption;
 
-namespace Qi
+namespace Bam.Net.Encryption.Qi
 {
     public class VaultItemController : DaoController
     {	

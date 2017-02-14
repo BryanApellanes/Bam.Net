@@ -35,6 +35,13 @@ namespace Bam.Net.Data.Tests
                 return new ListColumns("Uuid");
             }
         }
+        public ListColumns Cuid
+        {
+            get
+            {
+                return new ListColumns("Cuid");
+            }
+        }
         public ListColumns Name
         {
             get

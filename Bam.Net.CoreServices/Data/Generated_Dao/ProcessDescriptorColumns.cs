@@ -119,18 +119,18 @@ namespace Bam.Net.CoreServices.Data.Daos
                 return new ProcessDescriptorColumns("CommandLine");
             }
         }
-        public ProcessDescriptorColumns CreatedBy
-        {
-            get
-            {
-                return new ProcessDescriptorColumns("CreatedBy");
-            }
-        }
         public ProcessDescriptorColumns Created
         {
             get
             {
                 return new ProcessDescriptorColumns("Created");
+            }
+        }
+        public ProcessDescriptorColumns CreatedBy
+        {
+            get
+            {
+                return new ProcessDescriptorColumns("CreatedBy");
             }
         }
         public ProcessDescriptorColumns ModifiedBy

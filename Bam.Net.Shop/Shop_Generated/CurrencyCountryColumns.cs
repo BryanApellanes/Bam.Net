@@ -35,6 +35,13 @@ namespace Bam.Net.Shop
                 return new CurrencyCountryColumns("Uuid");
             }
         }
+        public CurrencyCountryColumns Cuid
+        {
+            get
+            {
+                return new CurrencyCountryColumns("Cuid");
+            }
+        }
         public CurrencyCountryColumns Name
         {
             get

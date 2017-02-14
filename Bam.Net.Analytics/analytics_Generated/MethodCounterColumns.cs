@@ -35,6 +35,13 @@ namespace Bam.Net.Analytics
                 return new MethodCounterColumns("Uuid");
             }
         }
+        public MethodCounterColumns Cuid
+        {
+            get
+            {
+                return new MethodCounterColumns("Cuid");
+            }
+        }
         public MethodCounterColumns MethodName
         {
             get

@@ -10,7 +10,7 @@ using Bam.Net.Data;
 using Bam.Net.Data.Qi;
 using Bam.Net.Translation;
 
-namespace Qi
+namespace Bam.Net.Translation.Qi
 {
     public class LanguageController : DaoController
     {	

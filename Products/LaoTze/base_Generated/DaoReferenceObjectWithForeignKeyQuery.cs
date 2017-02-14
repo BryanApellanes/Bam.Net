@@ -16,6 +16,16 @@ namespace Bam.Net.DaoRef
 		public DaoReferenceObjectWithForeignKeyQuery(WhereDelegate<DaoReferenceObjectWithForeignKeyColumns> where, OrderBy<DaoReferenceObjectWithForeignKeyColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }
 		public DaoReferenceObjectWithForeignKeyQuery(Func<DaoReferenceObjectWithForeignKeyColumns, QueryFilter<DaoReferenceObjectWithForeignKeyColumns>> where, OrderBy<DaoReferenceObjectWithForeignKeyColumns> orderBy = null, Database db = null) : base(where, orderBy, db) { }		
 		public DaoReferenceObjectWithForeignKeyQuery(Delegate where, Database db = null) : base(where, db) { }
+		
+        public static DaoReferenceObjectWithForeignKeyQuery Where(WhereDelegate<DaoReferenceObjectWithForeignKeyColumns> where)
+        {
+            return Where(where, null, null);
+        }
+
+        public static DaoReferenceObjectWithForeignKeyQuery Where(WhereDelegate<DaoReferenceObjectWithForeignKeyColumns> where, OrderBy<DaoReferenceObjectWithForeignKeyColumns> orderBy = null, Database db = null)
+        {
+            return new DaoReferenceObjectWithForeignKeyQuery(where, orderBy, db);
+        }
 
 		public DaoReferenceObjectWithForeignKeyCollection Execute()
 		{

@@ -35,6 +35,13 @@ namespace Bam.Net.Encryption
                 return new VaultItemColumns("Uuid");
             }
         }
+        public VaultItemColumns Cuid
+        {
+            get
+            {
+                return new VaultItemColumns("Cuid");
+            }
+        }
         public VaultItemColumns Key
         {
             get

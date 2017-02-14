@@ -35,6 +35,13 @@ namespace Bam.Net.UserAccounts.Data
                 return new UserBehaviorColumns("Uuid");
             }
         }
+        public UserBehaviorColumns Cuid
+        {
+            get
+            {
+                return new UserBehaviorColumns("Cuid");
+            }
+        }
         public UserBehaviorColumns DateTime
         {
             get

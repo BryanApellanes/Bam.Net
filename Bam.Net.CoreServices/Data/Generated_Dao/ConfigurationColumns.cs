@@ -56,18 +56,18 @@ namespace Bam.Net.CoreServices.Data.Daos
                 return new ConfigurationColumns("Value");
             }
         }
-        public ConfigurationColumns CreatedBy
-        {
-            get
-            {
-                return new ConfigurationColumns("CreatedBy");
-            }
-        }
         public ConfigurationColumns Created
         {
             get
             {
                 return new ConfigurationColumns("Created");
+            }
+        }
+        public ConfigurationColumns CreatedBy
+        {
+            get
+            {
+                return new ConfigurationColumns("CreatedBy");
             }
         }
         public ConfigurationColumns ModifiedBy

@@ -35,6 +35,13 @@ namespace Bam.Net.Automation.Data
                 return new DeferredJobDataColumns("Uuid");
             }
         }
+        public DeferredJobDataColumns Cuid
+        {
+            get
+            {
+                return new DeferredJobDataColumns("Cuid");
+            }
+        }
         public DeferredJobDataColumns Name
         {
             get

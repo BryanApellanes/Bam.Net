@@ -47,6 +47,7 @@ namespace Bam.Net.Data.Tests
 			this.SetChildren();
 		}
 
+		[Bam.Net.Exclude]
 		public static implicit operator ListItem(DataRow data)
 		{
 			return new ListItem(data);
@@ -165,7 +166,8 @@ namespace Bam.Net.Data.Tests
 		/// Gets a query filter that should uniquely identify
 		/// the current instance.  The default implementation
 		/// compares the Id/key field to the current instance's.
-		/// </summary> 
+		/// </summary>
+		[Bam.Net.Exclude] 
 		public override IQueryFilter GetUniqueFilter()
 		{
 			if(UniqueFilterProvider != null)
@@ -195,12 +197,16 @@ namespace Bam.Net.Data.Tests
 			return results;
 		}
 
+		/// <summary>
+		/// Process all records in batches of the specified size
+		/// </summary>
+		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<ListItem>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				ListItemColumns columns = new ListItemColumns();
-				var orderBy = Order.By<ListItemColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<ListItemColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -212,19 +218,27 @@ namespace Bam.Net.Data.Tests
 					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
 				}
 			});			
-		}	 
+		}
 
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<ListItem>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
 
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<ListItemColumns> where, Action<IEnumerable<ListItem>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				ListItemColumns columns = new ListItemColumns();
-				var orderBy = Order.By<ListItemColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<ListItemColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -258,11 +272,13 @@ namespace Bam.Net.Data.Tests
 			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
+		[Bam.Net.Exclude]
 		public static ListItemCollection Query(QueryFilter filter, Database database = null)
 		{
 			return Where(filter, database);
 		}
-				
+
+		[Bam.Net.Exclude]		
 		public static ListItemCollection Where(QueryFilter filter, Database database = null)
 		{
 			WhereDelegate<ListItemColumns> whereDelegate = (c) => filter;
@@ -277,6 +293,7 @@ namespace Bam.Net.Data.Tests
 		/// between ListItemColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static ListItemCollection Where(Func<ListItemColumns, QueryFilter<ListItemColumns>> where, OrderBy<ListItemColumns> orderBy = null, Database database = null)
 		{
 			database = database ?? Db.For<ListItem>();
@@ -291,6 +308,7 @@ namespace Bam.Net.Data.Tests
 		/// between ListItemColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static ListItemCollection Where(WhereDelegate<ListItemColumns> where, Database database = null)
 		{		
 			database = database ?? Db.For<ListItem>();
@@ -309,6 +327,7 @@ namespace Bam.Net.Data.Tests
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static ListItemCollection Where(WhereDelegate<ListItemColumns> where, OrderBy<ListItemColumns> orderBy = null, Database database = null)
 		{		
 			database = database ?? Db.For<ListItem>();
@@ -335,6 +354,7 @@ namespace Bam.Net.Data.Tests
 		/// one will be created; success will depend on the nullability
 		/// of the specified columns.
 		/// </summary>
+		[Bam.Net.Exclude]
 		public static ListItem GetOneWhere(QueryFilter where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -353,6 +373,7 @@ namespace Bam.Net.Data.Tests
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static ListItem OneWhere(QueryFilter where, Database database = null)
 		{
 			WhereDelegate<ListItemColumns> whereDelegate = (c) => where;
@@ -367,6 +388,7 @@ namespace Bam.Net.Data.Tests
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static ListItem GetOneWhere(WhereDelegate<ListItemColumns> where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -391,6 +413,7 @@ namespace Bam.Net.Data.Tests
 		/// between ListItemColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static ListItem OneWhere(WhereDelegate<ListItemColumns> where, Database database = null)
 		{
 			var result = Top(1, where, database);
@@ -420,6 +443,7 @@ namespace Bam.Net.Data.Tests
 		/// between ListItemColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static ListItem FirstOneWhere(WhereDelegate<ListItemColumns> where, Database database = null)
 		{
 			var results = Top(1, where, database);
@@ -442,6 +466,7 @@ namespace Bam.Net.Data.Tests
 		/// between ListItemColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static ListItem FirstOneWhere(WhereDelegate<ListItemColumns> where, OrderBy<ListItemColumns> orderBy, Database database = null)
 		{
 			var results = Top(1, where, orderBy, database);
@@ -463,6 +488,7 @@ namespace Bam.Net.Data.Tests
 		/// between ListItemColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static ListItem FirstOneWhere(QueryFilter where, OrderBy<ListItemColumns> orderBy = null, Database database = null)
 		{
 			WhereDelegate<ListItemColumns> whereDelegate = (c) => where;
@@ -491,6 +517,7 @@ namespace Bam.Net.Data.Tests
 		/// between ListItemColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static ListItemCollection Top(int count, WhereDelegate<ListItemColumns> where, Database database = null)
 		{
 			return Top(count, where, null, database);
@@ -513,6 +540,7 @@ namespace Bam.Net.Data.Tests
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static ListItemCollection Top(int count, WhereDelegate<ListItemColumns> where, OrderBy<ListItemColumns> orderBy, Database database = null)
 		{
 			ListItemColumns c = new ListItemColumns();
@@ -534,6 +562,7 @@ namespace Bam.Net.Data.Tests
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static ListItemCollection Top(int count, QueryFilter where, Database database)
 		{
 			return Top(count, where, null, database);
@@ -555,6 +584,7 @@ namespace Bam.Net.Data.Tests
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static ListItemCollection Top(int count, QueryFilter where, OrderBy<ListItemColumns> orderBy = null, Database database = null)
 		{
 			Database db = database ?? Db.For<ListItem>();
@@ -622,6 +652,7 @@ namespace Bam.Net.Data.Tests
 		/// between ListItemColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<ListItemColumns> where, Database database = null)
 		{
 			ListItemColumns c = new ListItemColumns();
@@ -634,6 +665,16 @@ namespace Bam.Net.Data.Tests
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
 		}
+		 
+		public static long Count(QiQuery where, Database database = null)
+		{
+		    Database db = database ?? Db.For<ListItem>();
+			QuerySet query = GetQuerySet(db);	 
+			query.Count<ListItem>();
+			query.Where(where);	  
+			query.Execute(db);
+			return query.Results.As<CountResult>(0).Value;
+		} 		
 
 		private static ListItem CreateFromFilter(IQueryFilter filter, Database database = null)
 		{

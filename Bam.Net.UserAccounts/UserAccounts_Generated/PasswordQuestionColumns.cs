@@ -35,6 +35,13 @@ namespace Bam.Net.UserAccounts.Data
                 return new PasswordQuestionColumns("Uuid");
             }
         }
+        public PasswordQuestionColumns Cuid
+        {
+            get
+            {
+                return new PasswordQuestionColumns("Cuid");
+            }
+        }
         public PasswordQuestionColumns Value
         {
             get

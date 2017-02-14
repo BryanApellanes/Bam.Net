@@ -10,7 +10,7 @@ using Bam.Net.Data;
 using Bam.Net.Data.Qi;
 using Bam.Net.DaoRef;
 
-namespace Qi
+namespace Bam.Net.DaoRef.Qi
 {
     public class DaoReferenceObjectWithForeignKeyController : DaoController
     {	

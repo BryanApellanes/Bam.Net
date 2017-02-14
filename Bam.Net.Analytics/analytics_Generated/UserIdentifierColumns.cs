@@ -35,6 +35,13 @@ namespace Bam.Net.Analytics
                 return new UserIdentifierColumns("Uuid");
             }
         }
+        public UserIdentifierColumns Cuid
+        {
+            get
+            {
+                return new UserIdentifierColumns("Cuid");
+            }
+        }
         public UserIdentifierColumns Value
         {
             get

@@ -35,6 +35,13 @@ namespace Bam.Net.UserAccounts.Data
                 return new RoleColumns("Uuid");
             }
         }
+        public RoleColumns Cuid
+        {
+            get
+            {
+                return new RoleColumns("Cuid");
+            }
+        }
         public RoleColumns Name
         {
             get

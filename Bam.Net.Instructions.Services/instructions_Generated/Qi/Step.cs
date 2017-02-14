@@ -10,7 +10,7 @@ using Bam.Net.Data;
 using Bam.Net.Data.Qi;
 using Bam.Net.Instructions;
 
-namespace Qi
+namespace Bam.Net.Instructions.Qi
 {
     public class StepController : DaoController
     {	
@@ -86,7 +86,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Step));
+				query.table = Dao.TableName(typeof(Bam.Net.Instructions.Step));
 				object value = Bam.Net.Instructions.Step.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Step));
+				query.table = Dao.TableName(typeof(Bam.Net.Instructions.Step));
 				object[] value = Bam.Net.Instructions.Step.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

@@ -35,6 +35,13 @@ namespace Bam.Net.Analytics
                 return new LoginCounterColumns("Uuid");
             }
         }
+        public LoginCounterColumns Cuid
+        {
+            get
+            {
+                return new LoginCounterColumns("Cuid");
+            }
+        }
 
         public LoginCounterColumns CounterId
         {

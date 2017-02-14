@@ -54,25 +54,25 @@ namespace Bam.Net.CoreServices
                 setting.Key = key;
                 setting.Value = configuration[key];
             });
-            config.Save(this.ConfigurationDatabase);
+            config.Save(ConfigurationDatabase);
         }
         
         private ServiceProxySecure.Configuration GetConfigurationInstance(string applicationName, string configurationName)
         {
-            ServiceProxySecure.Application app = ServiceProxySecure.Application.OneWhere(a => a.Name == applicationName);
+            ServiceProxySecure.Application app = ServiceProxySecure.Application.OneWhere(a => a.Name == applicationName, ConfigurationDatabase);
             if (app == null)
             {
                 app = new ServiceProxySecure.Application();
                 app.Name = applicationName;
-                app.Save(this.ConfigurationDatabase);
+                app.Save(ConfigurationDatabase);
             }
-
+            
             ServiceProxySecure.Configuration config = app.ConfigurationsByApplicationId.Where(c => c.Name.Equals(configurationName)).FirstOrDefault();
             if (config == null)
             {
                 config = app.ConfigurationsByApplicationId.AddNew();
                 config.Name = configurationName;
-                app.Save(this.ConfigurationDatabase);
+                app.Save(ConfigurationDatabase);
             }
             return config;
         }

@@ -35,6 +35,13 @@ namespace Bam.Net.Analytics
                 return new CustomTimerColumns("Uuid");
             }
         }
+        public CustomTimerColumns Cuid
+        {
+            get
+            {
+                return new CustomTimerColumns("Cuid");
+            }
+        }
         public CustomTimerColumns Name
         {
             get

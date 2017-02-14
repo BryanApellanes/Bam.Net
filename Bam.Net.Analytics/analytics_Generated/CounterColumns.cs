@@ -35,6 +35,13 @@ namespace Bam.Net.Analytics
                 return new CounterColumns("Uuid");
             }
         }
+        public CounterColumns Cuid
+        {
+            get
+            {
+                return new CounterColumns("Cuid");
+            }
+        }
         public CounterColumns Value
         {
             get

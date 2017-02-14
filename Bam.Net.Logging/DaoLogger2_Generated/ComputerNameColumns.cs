@@ -35,6 +35,13 @@ namespace Bam.Net.Logging.Data
                 return new ComputerNameColumns("Uuid");
             }
         }
+        public ComputerNameColumns Cuid
+        {
+            get
+            {
+                return new ComputerNameColumns("Cuid");
+            }
+        }
         public ComputerNameColumns Value
         {
             get

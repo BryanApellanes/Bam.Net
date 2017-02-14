@@ -49,18 +49,18 @@ namespace Bam.Net.CoreServices.Data.Daos
                 return new ApplicationColumns("Name");
             }
         }
-        public ApplicationColumns CreatedBy
-        {
-            get
-            {
-                return new ApplicationColumns("CreatedBy");
-            }
-        }
         public ApplicationColumns Created
         {
             get
             {
                 return new ApplicationColumns("Created");
+            }
+        }
+        public ApplicationColumns CreatedBy
+        {
+            get
+            {
+                return new ApplicationColumns("CreatedBy");
             }
         }
         public ApplicationColumns ModifiedBy

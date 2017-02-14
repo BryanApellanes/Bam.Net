@@ -3,6 +3,7 @@
 */
 // Model is Table
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
@@ -46,6 +47,7 @@ namespace Bam.Net.DaoRef
 			this.SetChildren();
 		}
 
+		[Bam.Net.Exclude]
 		public static implicit operator TestFkTable(DataRow data)
 		{
 			return new TestFkTable(data);
@@ -57,7 +59,7 @@ namespace Bam.Net.DaoRef
 		}
 
 	// property:Id, columnName:Id	
-	[Exclude]
+	[Bam.Net.Exclude]
 	[Bam.Net.Data.KeyColumn(Name="Id", DbDataType="BigInt", MaxLength="19")]
 	public long? Id
 	{
@@ -82,6 +84,20 @@ namespace Bam.Net.DaoRef
 		set
 		{
 			SetValue("Uuid", value);
+		}
+	}
+
+	// property:Cuid, columnName:Cuid	
+	[Bam.Net.Data.Column(Name="Cuid", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string Cuid
+	{
+		get
+		{
+			return GetStringValue("Cuid");
+		}
+		set
+		{
+			SetValue("Cuid", value);
 		}
 	}
 
@@ -143,7 +159,8 @@ namespace Bam.Net.DaoRef
 		/// Gets a query filter that should uniquely identify
 		/// the current instance.  The default implementation
 		/// compares the Id/key field to the current instance's.
-		/// </summary> 
+		/// </summary>
+		[Bam.Net.Exclude] 
 		public override IQueryFilter GetUniqueFilter()
 		{
 			if(UniqueFilterProvider != null)
@@ -173,37 +190,55 @@ namespace Bam.Net.DaoRef
 			return results;
 		}
 
-		public static async Task BatchAll(int batchSize, Func<TestFkTableCollection, Task> batchProcessor, Database database = null)
+		/// <summary>
+		/// Process all records in batches of the specified size
+		/// </summary>
+		[Bam.Net.Exclude]
+		public static async Task BatchAll(int batchSize, Action<IEnumerable<TestFkTable>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				TestFkTableColumns columns = new TestFkTableColumns();
-				var orderBy = Order.By<TestFkTableColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<TestFkTableColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
-					await batchProcessor(results);
+					await Task.Run(()=>
+					{
+						batchProcessor(results);
+					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
 				}
 			});			
-		}	 
+		}
 
-		public static async Task BatchQuery(int batchSize, QueryFilter filter, Func<TestFkTableCollection, Task> batchProcessor, Database database = null)
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<TestFkTable>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
 
-		public static async Task BatchQuery(int batchSize, WhereDelegate<TestFkTableColumns> where, Func<TestFkTableCollection, Task> batchProcessor, Database database = null)
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery(int batchSize, WhereDelegate<TestFkTableColumns> where, Action<IEnumerable<TestFkTable>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
 				TestFkTableColumns columns = new TestFkTableColumns();
-				var orderBy = Order.By<TestFkTableColumns>(c => c.KeyColumn, SortOrder.Ascending);
+				var orderBy = Bam.Net.Data.Order.By<TestFkTableColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
-					await batchProcessor(results);
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (TestFkTableColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
 				}
@@ -230,11 +265,13 @@ namespace Bam.Net.DaoRef
 			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
+		[Bam.Net.Exclude]
 		public static TestFkTableCollection Query(QueryFilter filter, Database database = null)
 		{
 			return Where(filter, database);
 		}
-				
+
+		[Bam.Net.Exclude]		
 		public static TestFkTableCollection Where(QueryFilter filter, Database database = null)
 		{
 			WhereDelegate<TestFkTableColumns> whereDelegate = (c) => filter;
@@ -249,6 +286,7 @@ namespace Bam.Net.DaoRef
 		/// between TestFkTableColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static TestFkTableCollection Where(Func<TestFkTableColumns, QueryFilter<TestFkTableColumns>> where, OrderBy<TestFkTableColumns> orderBy = null, Database database = null)
 		{
 			database = database ?? Db.For<TestFkTable>();
@@ -263,6 +301,7 @@ namespace Bam.Net.DaoRef
 		/// between TestFkTableColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static TestFkTableCollection Where(WhereDelegate<TestFkTableColumns> where, Database database = null)
 		{		
 			database = database ?? Db.For<TestFkTable>();
@@ -281,6 +320,7 @@ namespace Bam.Net.DaoRef
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static TestFkTableCollection Where(WhereDelegate<TestFkTableColumns> where, OrderBy<TestFkTableColumns> orderBy = null, Database database = null)
 		{		
 			database = database ?? Db.For<TestFkTable>();
@@ -307,6 +347,7 @@ namespace Bam.Net.DaoRef
 		/// one will be created; success will depend on the nullability
 		/// of the specified columns.
 		/// </summary>
+		[Bam.Net.Exclude]
 		public static TestFkTable GetOneWhere(QueryFilter where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -325,6 +366,7 @@ namespace Bam.Net.DaoRef
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static TestFkTable OneWhere(QueryFilter where, Database database = null)
 		{
 			WhereDelegate<TestFkTableColumns> whereDelegate = (c) => where;
@@ -339,6 +381,7 @@ namespace Bam.Net.DaoRef
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static TestFkTable GetOneWhere(WhereDelegate<TestFkTableColumns> where, Database database = null)
 		{
 			var result = OneWhere(where, database);
@@ -363,6 +406,7 @@ namespace Bam.Net.DaoRef
 		/// between TestFkTableColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static TestFkTable OneWhere(WhereDelegate<TestFkTableColumns> where, Database database = null)
 		{
 			var result = Top(1, where, database);
@@ -373,7 +417,7 @@ namespace Bam.Net.DaoRef
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate&lt;TestFkTableColumns&gt;.
+		/// WhereDelegate<TestFkTableColumns>.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
@@ -392,6 +436,7 @@ namespace Bam.Net.DaoRef
 		/// between TestFkTableColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static TestFkTable FirstOneWhere(WhereDelegate<TestFkTableColumns> where, Database database = null)
 		{
 			var results = Top(1, where, database);
@@ -414,6 +459,7 @@ namespace Bam.Net.DaoRef
 		/// between TestFkTableColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static TestFkTable FirstOneWhere(WhereDelegate<TestFkTableColumns> where, OrderBy<TestFkTableColumns> orderBy, Database database = null)
 		{
 			var results = Top(1, where, orderBy, database);
@@ -435,6 +481,7 @@ namespace Bam.Net.DaoRef
 		/// between TestFkTableColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static TestFkTable FirstOneWhere(QueryFilter where, OrderBy<TestFkTableColumns> orderBy = null, Database database = null)
 		{
 			WhereDelegate<TestFkTableColumns> whereDelegate = (c) => where;
@@ -463,6 +510,7 @@ namespace Bam.Net.DaoRef
 		/// between TestFkTableColumns and other values
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static TestFkTableCollection Top(int count, WhereDelegate<TestFkTableColumns> where, Database database = null)
 		{
 			return Top(count, where, null, database);
@@ -472,7 +520,6 @@ namespace Bam.Net.DaoRef
 		/// Execute a query and return the specified number of values.  This method
 		/// will issue a sql TOP clause so only the specified number of values
 		/// will be returned.
-		/// of values
 		/// </summary>
 		/// <param name="count">The number of values to return.
 		/// This value is used in the sql query so no more than this 
@@ -486,6 +533,7 @@ namespace Bam.Net.DaoRef
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
+		[Bam.Net.Exclude]
 		public static TestFkTableCollection Top(int count, WhereDelegate<TestFkTableColumns> where, OrderBy<TestFkTableColumns> orderBy, Database database = null)
 		{
 			TestFkTableColumns c = new TestFkTableColumns();
@@ -507,6 +555,7 @@ namespace Bam.Net.DaoRef
 			return results;
 		}
 
+		[Bam.Net.Exclude]
 		public static TestFkTableCollection Top(int count, QueryFilter where, Database database)
 		{
 			return Top(count, where, null, database);
@@ -528,6 +577,7 @@ namespace Bam.Net.DaoRef
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static TestFkTableCollection Top(int count, QueryFilter where, OrderBy<TestFkTableColumns> orderBy = null, Database database = null)
 		{
 			Database db = database ?? Db.For<TestFkTable>();
@@ -576,6 +626,18 @@ namespace Bam.Net.DaoRef
 		}
 
 		/// <summary>
+		/// Return the count of TestFkTables
+		/// </summary>
+		public static long Count(Database database = null)
+        {
+			Database db = database ?? Db.For<TestFkTable>();
+            QuerySet query = GetQuerySet(db);
+            query.Count<TestFkTable>();
+            query.Execute(db);
+            return (long)query.Results[0].DataRow[0];
+        }
+
+		/// <summary>
 		/// Execute a query and return the number of results
 		/// </summary>
 		/// <param name="where">A WhereDelegate that recieves a TestFkTableColumns 
@@ -583,6 +645,7 @@ namespace Bam.Net.DaoRef
 		/// between TestFkTableColumns and other values
 		/// </param>
 		/// <param name="db"></param>
+		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<TestFkTableColumns> where, Database database = null)
 		{
 			TestFkTableColumns c = new TestFkTableColumns();
@@ -595,6 +658,16 @@ namespace Bam.Net.DaoRef
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
 		}
+		 
+		public static long Count(QiQuery where, Database database = null)
+		{
+		    Database db = database ?? Db.For<TestFkTable>();
+			QuerySet query = GetQuerySet(db);	 
+			query.Count<TestFkTable>();
+			query.Where(where);	  
+			query.Execute(db);
+			return query.Results.As<CountResult>(0).Value;
+		} 		
 
 		private static TestFkTable CreateFromFilter(IQueryFilter filter, Database database = null)
 		{

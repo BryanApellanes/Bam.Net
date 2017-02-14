@@ -18,7 +18,7 @@ namespace Bam.Net.CoreServices.Data.Daos
 	// connection Name = CoreRegistry
 	[Serializable]
 	[Bam.Net.Data.Table("ConfigurationApplication", "CoreRegistry")]
-	public partial class ConfigurationApplication: Dao
+	public partial class ConfigurationApplication: Bam.Net.Data.Dao
 	{
 		public ConfigurationApplication():base()
 		{

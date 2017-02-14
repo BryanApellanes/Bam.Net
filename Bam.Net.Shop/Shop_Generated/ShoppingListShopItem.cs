@@ -197,6 +197,9 @@ namespace Bam.Net.Shop
 			return results;
 		}
 
+		/// <summary>
+		/// Process all records in batches of the specified size
+		/// </summary>
 		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<ShoppingListShopItem>> batchProcessor, Database database = null)
 		{
@@ -216,13 +219,19 @@ namespace Bam.Net.Shop
 				}
 			});			
 		}
-			 
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<ShoppingListShopItem>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
 
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
 		[Bam.Net.Exclude]
 		public static async Task BatchQuery(int batchSize, WhereDelegate<ShoppingListShopItemColumns> where, Action<IEnumerable<ShoppingListShopItem>> batchProcessor, Database database = null)
 		{

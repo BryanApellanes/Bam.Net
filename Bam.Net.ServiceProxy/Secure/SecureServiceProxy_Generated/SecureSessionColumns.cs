@@ -35,6 +35,13 @@ namespace Bam.Net.ServiceProxy.Secure
                 return new SecureSessionColumns("Uuid");
             }
         }
+        public SecureSessionColumns Cuid
+        {
+            get
+            {
+                return new SecureSessionColumns("Cuid");
+            }
+        }
         public SecureSessionColumns Identifier
         {
             get

@@ -10,7 +10,7 @@ using Bam.Net.Data;
 using Bam.Net.Data.Qi;
 using Bam.Net.Automation.Data;
 
-namespace Qi
+namespace Bam.Net.Automation.Data.Qi
 {
     public class DeferredJobDataController : DaoController
     {	

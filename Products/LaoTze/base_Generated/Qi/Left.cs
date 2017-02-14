@@ -10,7 +10,7 @@ using Bam.Net.Data;
 using Bam.Net.Data.Qi;
 using Bam.Net.DaoRef;
 
-namespace Qi
+namespace Bam.Net.DaoRef.Qi
 {
     public class LeftController : DaoController
     {	
@@ -86,7 +86,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Left));
+				query.table = Dao.TableName(typeof(Bam.Net.DaoRef.Left));
 				object value = Bam.Net.DaoRef.Left.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Left));
+				query.table = Dao.TableName(typeof(Bam.Net.DaoRef.Left));
 				object[] value = Bam.Net.DaoRef.Left.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

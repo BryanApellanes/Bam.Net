@@ -258,7 +258,6 @@ namespace Bam.Net.CoreServices
         protected internal CoreUserRegistryService UserRegistryService { get; set; }
         protected internal CoreApplicationRegistryService ApplicationRegistryService { get; set; }
         protected internal CoreConfigurationService ConfigurationService { get; set; }
-        //protected internal CoreEventSourceService EventHubService { get; set; }
         protected internal CoreLoggerService LoggerService { get; set; }
         protected internal CoreTranslationService TranslationService { get; set; }
         protected internal CoreDiagnosticService DiagnosticService { get; set; }
@@ -302,7 +301,6 @@ namespace Bam.Net.CoreServices
             DiagnosticService.Property(propertyName, this);
             LoggerService.Property(propertyName, this);
             TranslationService.Property(propertyName, this);
-            //EventHubService.Property(propertyName, this);
             UserRegistryService.Property(propertyName, this);
         }
     }

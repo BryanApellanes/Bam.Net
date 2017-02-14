@@ -35,6 +35,13 @@ namespace Bam.Net.UserAccounts.Data
                 return new PermissionColumns("Uuid");
             }
         }
+        public PermissionColumns Cuid
+        {
+            get
+            {
+                return new PermissionColumns("Cuid");
+            }
+        }
         public PermissionColumns Name
         {
             get
