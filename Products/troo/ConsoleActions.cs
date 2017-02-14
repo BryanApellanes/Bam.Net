@@ -24,14 +24,14 @@ namespace troo
         static string defaultRoot = "C:\\Troo";
         static TrooServer trooServer;
 
-        [ConsoleAction]
+        [ConsoleAction("startTrooServer", "Start the troo server")]
         public void StartConsole()
         {
             StartTrooServer(GetLogger(), GetRepository());
             Pause("Troo is running");
         }
 
-        [ConsoleAction]
+        [ConsoleAction("killTrooServer", "Kill the troo server")]
         public void StopConsole()
         {
             if (trooServer != null)

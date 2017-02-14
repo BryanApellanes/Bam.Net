@@ -104,6 +104,7 @@ namespace Bam.Net.Logging
 
             while (true)
             {
+
                 waitForEnqueueLogEvent.WaitOne();
                 while (logEventQueue.Count > 0)
                 {
