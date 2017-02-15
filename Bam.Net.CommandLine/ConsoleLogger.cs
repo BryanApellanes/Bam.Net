@@ -77,9 +77,9 @@ namespace Bam.Net.CommandLine
         private StringBuilder GetTimeString(LogEvent logEvent)
         {
             StringBuilder time = new StringBuilder();
-            DateTime local = GetLocalTime(logEvent.Time);
             if (ShowTime)
             {
+                DateTime local = GetLocalTime(logEvent.Time);
                 time.Append($"[Time({local.ToString()} ms {local.Millisecond})]");
             }
 

@@ -925,6 +925,10 @@ namespace Bam.Net.Server
             ServiceProxyResponder.AddAppService(appName, type, instanciator);
         }
 
+        public void AddAppServies(string appName, Incubator incubator)
+        {
+            ServiceProxyResponder.AddAppServices(appName, incubator);
+        }
         /// <summary>
         /// Add or update the app service using the specified instanciator
         /// </summary>

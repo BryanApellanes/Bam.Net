@@ -15,6 +15,7 @@ using Bam.Net.ServiceProxy;
 using Bam.Net.Server;
 using Newtonsoft.Json;
 using System.Xml.Serialization;
+using Bam.Net.Incubation;
 
 namespace Bam.Net.Server
 {
@@ -72,6 +73,11 @@ namespace Bam.Net.Server
         public BamServer GetServer()
         {
             return BamConf.Server;
+        }
+
+        public void AddServices(Incubator incubator)
+        {
+            BamConf.Server.AddAppServies(Name, incubator);
         }
 
         /// <summary>

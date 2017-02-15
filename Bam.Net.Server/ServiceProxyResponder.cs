@@ -19,6 +19,7 @@ using Bam.Net.Server.Renderers;
 using Bam.Net.Html;
 using Bam.Net.Configuration;
 using System.Web.Mvc;
+using System.Threading.Tasks;
 
 namespace Bam.Net.Server
 {
@@ -148,9 +149,8 @@ namespace Bam.Net.Server
         {
             if (_appServiceProviders.ContainsKey(appName))
             {
-
                 _appServiceProviders[appName].Set(instanciator, throwIfSet);
-                OnAppServiceAdded(appName, typeof(T), null);
+                OnAppServiceAdded(appName, typeof(T), instanciator);
             }
         }
 
@@ -159,6 +159,7 @@ namespace Bam.Net.Server
             if (_appServiceProviders.ContainsKey(appName))
             {
                 _appServiceProviders[appName].Set(type, instanciator, throwIfSet);
+                OnAppServiceAdded(appName, type, instanciator);
             }
         }
 
@@ -167,7 +168,7 @@ namespace Bam.Net.Server
             if (_appServiceProviders.ContainsKey(appName))
             {
                 _appServiceProviders[appName].Set(instanciator, throwIfSet);
-                OnAppServiceAdded(appName, typeof(T), null);
+                OnAppServiceAdded(appName, typeof(T), instanciator);
             }
         }
 
@@ -177,6 +178,18 @@ namespace Bam.Net.Server
             {
                 _appServiceProviders[appName].Set(type, instance);
                 OnAppServiceAdded(appName, type, instance);
+            }
+        }
+
+        public void AddAppServices(string appName, Incubator incubator)
+        {
+            if (_appServiceProviders.ContainsKey(appName))
+            {
+                _appServiceProviders[appName].CombineWith(incubator);
+                Parallel.ForEach(incubator.Types, type =>
+                {
+                    Task.Run(() => OnAppServiceAdded(appName, type, incubator[type]));
+                });
             }
         }
 

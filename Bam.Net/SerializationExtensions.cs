@@ -264,8 +264,7 @@ namespace Bam.Net
         {
             return (T)FromXmlFile(filePath, typeof(T));
         }
-        
-        static object fromXmlLock = new object();
+
         /// <summary>
         /// Deserialize the xml file as the speicified type
         /// </summary>
@@ -274,13 +273,9 @@ namespace Bam.Net
         /// <returns>instance of specified type deserialized from the specified file</returns>
         public static object FromXmlFile(this string filePath, Type type)
         {
-            XmlSerializer ser = new XmlSerializer(type);
-            lock (fromXmlLock)
+            using (StreamReader sr = new StreamReader(filePath))
             {
-                using (StreamReader sr = new StreamReader(filePath))
-                {
-                    return ser.Deserialize(sr);
-                }
+                return new XmlSerializer(type).Deserialize(sr);
             }
         }
         
