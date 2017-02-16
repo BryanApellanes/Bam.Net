@@ -464,12 +464,14 @@ namespace Bam.Net.Server
             if (!handled && !ShouldIgnore(path))
             {
                 string readFileFromPath;
-                if (!ServerRoot.FileExists(path, out readFileFromPath))
+                bool exists;
+                exists = ServerRoot.FileExists(path, out readFileFromPath);
+                if (!exists)
                 {
-                    ServerRoot.FileExists(commonPath, out readFileFromPath);
+                    exists = ServerRoot.FileExists(commonPath, out readFileFromPath);
                 }
 
-                if (!string.IsNullOrEmpty(readFileFromPath))
+                if (exists)
                 {
                     string ext = Path.GetExtension(readFileFromPath);
                     if (FileCachesByExtension.ContainsKey(ext))
