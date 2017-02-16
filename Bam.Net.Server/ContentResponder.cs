@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bam.Net;
+using Bam.Net.Caching.File;
 using Bam.Net.Javascript;
 using Bam.Net.Logging;
 using Bam.Net.Server.Renderers;
@@ -25,18 +26,33 @@ namespace Bam.Net.Server
     public class ContentResponder : ResponderBase, IInitialize<ContentResponder>
     {
         public const string IncludeFileName = "include.js";
+        public const string LayoutFileExtension = ".layout";
         public ContentResponder(BamConf conf)
             : base(conf)
         {
             CommonTemplateRenderer = new CommonDustRenderer(this);
-            this.UseCache = conf.UseCache;
+            UseCache = conf.UseCache;
+            FileCachesByExtension = new Dictionary<string, FileCache>();
+            InitializeCaches();
         }
 
         public ContentResponder(BamConf conf, ILogger logger)
             : base(conf, logger)
         {
             CommonTemplateRenderer = new CommonDustRenderer(this);
-            this.UseCache = conf.UseCache;
+            UseCache = conf.UseCache;
+            FileCachesByExtension = new Dictionary<string, FileCache>();
+            InitializeCaches();
+        }
+
+        protected Dictionary<string, FileCache> FileCachesByExtension { get; set; }
+
+        protected void InitializeCaches()
+        {
+            foreach(string ext in new[] { ".html", ".htm", ".js", ".json", ".css", ".layout", ".png", ".jpg", ".gif", ".woff" })
+            {
+                FileCachesByExtension.AddMissing(ext, CreateCache(ext));
+            }
         }
 
         /// <summary>
@@ -421,7 +437,6 @@ namespace Bam.Net.Server
         }
         #region IResponder Members
 
-        object _handleLock = new object();
         public override bool TryRespond(IHttpContext context)
         {
             if (!IsInitialized)
@@ -446,44 +461,41 @@ namespace Bam.Net.Server
                 handled = AppContentResponders[appName].TryRespond(context, out checkedPaths);
             }
 
-            lock (_handleLock)
+            if (!handled && !ShouldIgnore(path))
             {
-                if (!handled)
+                string readFileFromPath;
+                if (!ServerRoot.FileExists(path, out readFileFromPath))
                 {
-                    if(UseCache && ReadCache(request, path, out content))
+                    ServerRoot.FileExists(commonPath, out readFileFromPath);
+                }
+
+                if (!string.IsNullOrEmpty(readFileFromPath))
+                {
+                    string ext = Path.GetExtension(readFileFromPath);
+                    if (FileCachesByExtension.ContainsKey(ext))
                     {
-                        ConditionallySetGzipHeader(response, ShouldZip(request));
+                        FileCache cache = FileCachesByExtension[ext];
+                        if (ShouldZip(request))
+                        {
+                            SetGzipContentEncodingHeader(response);
+                            content = cache.GetZippedContent(readFileFromPath);
+                        }
+                        else
+                        {
+                            content = cache.GetContent(readFileFromPath);
+                        }
                         handled = true;
                     }
-                    else
-                    {
-                        string readFileFromPath = string.Empty;
-                        if (ServerRoot.FileExists(path))
-                        {
-                            readFileFromPath = path;
-                        }
-                        else if (ServerRoot.FileExists(commonPath))
-                        {
-                            readFileFromPath = commonPath;
-                        }
+                }
 
-                        if (!string.IsNullOrEmpty(readFileFromPath))
-                        {
-                            byte[] temp = ReadFile(ServerRoot, readFileFromPath);
-                            content = temp;
-                            handled = true;
-                        }
-                    }
-
-                    if (handled)
-                    {
-                        SetContentType(response, path);
-                        SendResponse(response, content);
-                    }
-                    else
-                    {
-                        LogContentNotFound(path, appName, checkedPaths);
-                    }
+                if (handled)
+                {
+                    SetContentType(response, path);
+                    SendResponse(response, content);
+                }
+                else
+                {
+                    LogContentNotFound(path, appName, checkedPaths);
                 }
             }
 
@@ -520,64 +532,6 @@ namespace Bam.Net.Server
             }
         }
 
-        protected byte[] ReadFile(string fullPath)
-        {
-            byte[] temp = null;
-            if (Path.GetExtension(fullPath).ToLowerInvariant().Equals(".js"))
-            {
-                temp = ReadScript(fullPath);
-            }
-            else
-            {
-                temp = File.ReadAllBytes(fullPath);
-                if (UseCache)
-                {
-                    SetCacheBytes(fullPath, temp);
-                    temp.GZipAsync().ContinueWith(b =>
-                    {
-                        SetZippedCacheBytes(fullPath, b.Result);
-                    });
-                }
-            }
-            return temp;
-        }
-
-        protected byte[] ReadFile(Fs fs, string path)
-        {
-            byte[] temp = null;
-            if (Path.GetExtension(path).ToLowerInvariant().Equals(".js"))
-            {
-                temp = ReadScript(fs, path);
-            }
-            else
-            {
-                temp = fs.ReadBytes(path);
-                if (UseCache)
-                {
-                    SetCacheBytes(path, temp);
-                    temp.GZipAsync().ContinueWith(b =>
-                    {
-                        SetZippedCacheBytes(path, b.Result);
-                    });
-                }
-            }
-            return temp;
-        }
-
-        protected byte[] ReadScript(string fullPath)
-        {
-            string script = File.ReadAllText(fullPath);
-            SetScriptCache(fullPath, script);
-            return Encoding.UTF8.GetBytes(script);
-        }
-
-        protected byte[] ReadScript(Fs fs, string path)
-        {
-            string script = fs.ReadAllText(path);
-            SetScriptCache(path, script);
-            return Encoding.UTF8.GetBytes(script);            
-        }
-
         static HashSet<string> _cachedScripts = new HashSet<string>();
         static object _cachedScriptLock = new object();
         protected internal void SetScriptCache(
@@ -598,9 +552,9 @@ namespace Bam.Net.Server
                 }
 
                 Logger.AddEntry("Minification of ({0}) STARTED", LogEventType.Information, path);
-                script.CompressAsync().ContinueWith(t =>
+                script.MinifyAsync().ContinueWith(t =>
                 {
-                    CompressionResult compression = t.Result;
+                    MinifyResult compression = t.Result;
                     if (compression.Success)
                     {
                         Logger.AddEntry("Minification of ({0}) COMPLETED", LogEventType.Information, path);
@@ -647,45 +601,7 @@ namespace Bam.Net.Server
             }          
         }
         #endregion
-        protected bool ReadCache(IRequest request, string path, out byte[] content)
-        {
-            if (ShouldZip(request))
-            {
-                if(!ZippedMinCache.TryGetValue(path, out content))
-                {
-                    return ZippedCache.TryGetValue(path, out content);
-                }
-            }
-            else
-            {
-                if(!MinCache.TryGetValue(path, out content))
-                {
-                    return Cache.TryGetValue(path, out content);
-                }
-            }
-            return true;
-        }
-        static object cacheLock = new object();
-        static object zippedCacheLock = new object();
-        static object minCacheLock = new object();
-        static object zippedMinCacheLock = new object();
-        private void SetCacheBytes(string path, byte[] content)
-        {
-            Cache.AddOrUpdate(path, content, (s, b) => content);
-        }
-        private void SetZippedCacheBytes(string path, byte[] content)
-        {
-            ZippedCache.AddOrUpdate(path, content, (s, b) => content);
-        }
-        private void SetMinCacheBytes(string path, byte[] content)
-        {
-            MinCache.AddOrUpdate(path, content, (s, b) => content);
-        }
 
-        private void SetZippedMinCacheBytes(string path, byte[] content)
-        {
-            ZippedCache.AddOrUpdate(path, content, (s, b) => content);
-        }
         public bool IsInitialized
         {
             get
@@ -723,6 +639,62 @@ namespace Bam.Net.Server
             {
                 Initialized(this);
             }
+        }
+
+        protected FileCache CreateCache(string fileExtension)
+        {
+            if (fileExtension.Equals(".js"))
+            {
+                return new JsFileCache();
+            }
+            else if (fileExtension.In(".htm", "html", ".txt", ".css", ".json"))
+            {
+                return new TextFileCache(fileExtension);
+            }
+            else
+            {
+                return new BinaryFileCache();
+            }
+        }
+
+        protected bool ReadCache(IRequest request, string path, out byte[] content)
+        {
+            if (ShouldZip(request))
+            {
+                if (!ZippedMinCache.TryGetValue(path, out content))
+                {
+                    return ZippedCache.TryGetValue(path, out content);
+                }
+            }
+            else
+            {
+                if (!MinCache.TryGetValue(path, out content))
+                {
+                    return Cache.TryGetValue(path, out content);
+                }
+            }
+            return true;
+        }
+        static object cacheLock = new object();
+        static object zippedCacheLock = new object();
+        static object minCacheLock = new object();
+        static object zippedMinCacheLock = new object();
+        private void SetCacheBytes(string path, byte[] content)
+        {
+            Cache.AddOrUpdate(path, content, (s, b) => content);
+        }
+        private void SetZippedCacheBytes(string path, byte[] content)
+        {
+            ZippedCache.AddOrUpdate(path, content, (s, b) => content);
+        }
+        private void SetMinCacheBytes(string path, byte[] content)
+        {
+            MinCache.AddOrUpdate(path, content, (s, b) => content);
+        }
+
+        private void SetZippedMinCacheBytes(string path, byte[] content)
+        {
+            ZippedCache.AddOrUpdate(path, content, (s, b) => content);
         }
     }
 }

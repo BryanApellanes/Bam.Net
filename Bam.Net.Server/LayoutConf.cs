@@ -20,7 +20,7 @@ namespace Bam.Net.Server
 
         public LayoutConf(AppConf conf)
         {
-            this.IncludeCommon = true;
+            IncludeCommon = true;
 			SetConf(conf);
         }
 
@@ -38,9 +38,9 @@ namespace Bam.Net.Server
 
 		public void SetConf(AppConf appConf)
 		{
-			this.RenderBody = appConf.RenderLayoutBody;
-			this.LayoutName = appConf.DefaultLayout;
-			this.AppConf = appConf;
+			RenderBody = appConf.RenderLayoutBody;
+			LayoutName = appConf.DefaultLayout;
+			AppConf = appConf;
 		}
 
         public LayoutModel CreateLayoutModel(string[] htmlPathSegments = null)

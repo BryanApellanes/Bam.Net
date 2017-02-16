@@ -357,6 +357,11 @@ namespace Bam.Net
             return data;
         }
 
+        public static byte[] GUnzip(this byte[] data)
+        {
+            throw new NotImplementedException();
+        }
+
         public static bool WriteResource(this Assembly assembly, Type siblingOfResource, string resourceName, FileInfo writeTo, ExistingFileAction existingFileAction = ExistingFileAction.DoNotOverwrite)
         {
             return WriteResource(assembly, $"{siblingOfResource.Namespace}.{resourceName}", writeTo, existingFileAction);

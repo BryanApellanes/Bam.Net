@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using Bam.Net.Caching.File;
 using Bam.Net.Logging;
 using Bam.Net.Server.Renderers;
 using Bam.Net.ServiceProxy;
@@ -17,7 +18,7 @@ namespace Bam.Net.Server
 {
     public class AppContentResponder : ContentResponder
     {
-        public const string CommonFolder = "common";
+        public const string CommonFolder = "common";        
 
         public AppContentResponder(ContentResponder serverRoot, AppConf conf)
             : base(serverRoot.BamConf)
@@ -141,7 +142,6 @@ namespace Bam.Net.Server
 
         public bool TryRespond(IHttpContext context, out string[] checkedPaths)
         {
-            // TODO: clean this mess up
             checkedPaths = new string[] { };
             IRequest request = context.Request;
             IResponse response = context.Response;
@@ -168,26 +168,26 @@ namespace Bam.Net.Server
                 result = true;
             }
             else if (string.IsNullOrEmpty(ext) && !ShouldIgnore(path) ||
-               (AppRoot.FileExists("~/pages{0}.html"._Format(path))))
+               (AppRoot.FileExists("~/pages{0}.html"._Format(path), out locatedPath)))
             {
                 content = RenderLayout(response, path);
                 result = true;
             }
             else if (AppContentLocator.Locate(path, out locatedPath, out checkedPaths))
             {
-                if (UseCache && ReadCache(request, locatedPath, out content))
+                string foundExt = Path.GetExtension(locatedPath);
+                if (FileCachesByExtension.ContainsKey(foundExt))
                 {
+                    FileCache cache = FileCachesByExtension[ext];
                     if (ShouldZip(request))
                     {
                         SetGzipContentEncodingHeader(response);
+                        content = cache.GetZippedContent(locatedPath);
                     }
-
-                    result = true;
-                }
-                else
-                {
-                    byte[] temp = ReadFile(locatedPath);
-                    content = temp;
+                    else
+                    {
+                        content = cache.GetContent(locatedPath);
+                    }
                     result = true;
                 }
             }
@@ -239,15 +239,16 @@ namespace Bam.Net.Server
             }
         }
 
-        protected internal LayoutModel GetLayoutModelForPath(string path, string ext = ".layout")
+        protected internal LayoutModel GetLayoutModelForPath(string path)
         {
             if (path.Equals("/"))
             {
                 path = "/{0}"._Format(AppConf.DefaultPage.Or(AppConf.DefaultLayoutConst));
             }
 
+            string absolutePath;
             string lowered = path.ToLowerInvariant();
-            string[] layoutSegments = string.Format("~/pages/{0}{1}", path, ext).DelimitSplit("/", "\\");
+            string[] layoutSegments = string.Format("~/pages/{0}{1}", path, LayoutFileExtension).DelimitSplit("/", "\\");
             string[] htmlSegments = string.Format("~/pages/{0}.html", path).DelimitSplit("/", "\\");
 
             LayoutModel result = null;
@@ -255,10 +256,10 @@ namespace Bam.Net.Server
             {
                 result = LayoutModelsByPath[lowered];
             }
-            else if (AppRoot.FileExists(layoutSegments))
+            else if (AppRoot.FileExists(out absolutePath, layoutSegments))
             {
                 LayoutConf layoutConf = new LayoutConf(AppConf);
-                LayoutConf fromLayoutFile = AppRoot.ReadAllText(layoutSegments).FromJson<LayoutConf>();
+                LayoutConf fromLayoutFile = FileCachesByExtension[LayoutFileExtension].GetText(new FileInfo(absolutePath)).FromJson<LayoutConf>();
                 layoutConf.CopyProperties(fromLayoutFile);
                 result = layoutConf.CreateLayoutModel(htmlSegments);
                 LayoutModelsByPath[lowered] = result;                

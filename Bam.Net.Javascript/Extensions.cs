@@ -17,18 +17,18 @@ namespace Bam.Net.Javascript
 {
     public static class Extensions
     {
-        public static Task<CompressionResult> CompressAsync(this string script)
+        public static Task<MinifyResult> MinifyAsync(this string script)
         {
             return Task.Run(() =>
             {
-                CompressionResult result;
-                script.TryCompress(out result);
+                MinifyResult result;
+                script.TryMinify(out result);
                 return result;
             });
         }
-        public static bool TryCompress(this string script, out CompressionResult result)
+        public static bool TryMinify(this string script, out MinifyResult result)
         {
-            result = new CompressionResult(script);
+            result = new MinifyResult(script);
             return result.Success;
         }
 
@@ -37,7 +37,7 @@ namespace Bam.Net.Javascript
         /// </summary>
         /// <param name="script"></param>
         /// <returns></returns>
-        public static string Compress(this string script)
+        public static string Minify(this string script)
         {
           JavaScriptCompressor compressor = new JavaScriptCompressor();
           return compressor.Compress(script);
