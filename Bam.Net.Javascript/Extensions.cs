@@ -39,7 +39,7 @@ namespace Bam.Net.Javascript
         /// <returns></returns>
         public static string Minify(this string script)
         {
-          JavaScriptCompressor compressor = new JavaScriptCompressor();
+          JavaScriptCompressor compressor = new JavaScriptCompressor(); // TODO: use gulp 
           return compressor.Compress(script);
         }
 

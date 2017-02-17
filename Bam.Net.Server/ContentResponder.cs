@@ -31,8 +31,8 @@ namespace Bam.Net.Server
             : base(conf)
         {
             CommonTemplateRenderer = new CommonDustRenderer(this);
-            UseCache = conf.UseCache;
             FileCachesByExtension = new Dictionary<string, FileCache>();
+            InitializeFileExtensions();
             InitializeCaches();
         }
 
@@ -40,16 +40,21 @@ namespace Bam.Net.Server
             : base(conf, logger)
         {
             CommonTemplateRenderer = new CommonDustRenderer(this);
-            UseCache = conf.UseCache;
             FileCachesByExtension = new Dictionary<string, FileCache>();
+            InitializeFileExtensions();
             InitializeCaches();
         }
-
+        public List<string> FileExtensions { get; set; }
+        public List<string> TextFileExtensions { get; set; }
         protected Dictionary<string, FileCache> FileCachesByExtension { get; set; }
-
+        protected void InitializeFileExtensions()
+        {
+            FileExtensions = new List<string> { ".html", ".htm", ".js", ".json", ".css", ".yml", ".yaml", ".txt", ".md", ".layout", ".png", ".jpg", ".jpeg", ".gif", ".woff" };
+            TextFileExtensions = new List<string> { ".html", ".htm", ".js", ".json", ".css", ".yml", ".yaml", ".layout", ".txt", ".md" };
+        }
         protected void InitializeCaches()
         {
-            foreach(string ext in new[] { ".html", ".htm", ".js", ".json", ".css", ".layout", ".png", ".jpg", ".gif", ".woff" })
+            foreach(string ext in FileExtensions)
             {
                 FileCachesByExtension.AddMissing(ext, CreateCache(ext));
             }
@@ -65,12 +70,6 @@ namespace Bam.Net.Server
             {
                 return ServerRoot.Root;
             }
-        }
-
-        public bool UseCache
-        {
-            get;
-            set;
         }
 
         public override bool MayRespond(IHttpContext context)
@@ -317,13 +316,13 @@ namespace Bam.Net.Server
 
         protected internal Includes GetCommonIncludes()
         {
-            return GetCommonIncludes(Root, UseCache);
+            return GetCommonIncludes(Root);
         }
 
-        protected static internal Includes GetCommonIncludes(string root, bool useCache)
+        protected static internal Includes GetCommonIncludes(string root)
         {
             string includeJs = Path.Combine(root, "apps", IncludeFileName);
-            return GetIncludesFromIncludeJs(includeJs, useCache);
+            return GetIncludesFromIncludeJs(includeJs);
         }
 
         /// <summary>
@@ -336,7 +335,7 @@ namespace Bam.Net.Server
         {
             string includeJs = Path.Combine(appConf.AppRoot.Root, IncludeFileName);
             string appRoot = Path.DirectorySeparatorChar.ToString();
-            Includes includes = GetIncludesFromIncludeJs(includeJs, appConf.BamConf.UseCache);
+            Includes includes = GetIncludesFromIncludeJs(includeJs);
             includes.Scripts.Each((scr, i) =>
             {
                 includes.Scripts[i] = Path.Combine(appRoot, scr).Replace("\\", "/");
@@ -414,11 +413,11 @@ namespace Bam.Net.Server
             }
         }
 
-        protected static internal Includes GetIncludesFromIncludeJs(string includeJs, bool useCache)
+        protected static internal Includes GetIncludesFromIncludeJs(string includeJs)
         {
             Includes returnValue = new Includes();
             string[] result = new string[] { };
-            if (IncludesCache.ContainsKey(includeJs) && useCache)
+            if (IncludesCache.ContainsKey(includeJs))
             {
                 returnValue = IncludesCache[includeJs];
             }
@@ -647,9 +646,9 @@ namespace Bam.Net.Server
         {
             if (fileExtension.Equals(".js"))
             {
-                return new JsFileCache();
+                return new JsFileCache(); 
             }
-            else if (fileExtension.In(".htm", "html", ".txt", ".css", ".json"))
+            else if (fileExtension.In(TextFileExtensions))
             {
                 return new TextFileCache(fileExtension);
             }

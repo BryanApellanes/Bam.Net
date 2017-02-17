@@ -71,7 +71,7 @@
     <Compile Include="DeleteNotSupportedException.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="File\BinaryFileCache.cs" />
-    <Compile Include="File\FileMeta.cs" />
+    <Compile Include="File\CachedFile.cs" />
     <Compile Include="File\IFileCache.cs" />
     <Compile Include="File\JsFileCache.cs" />
     <Compile Include="File\TextFileCache.cs" />

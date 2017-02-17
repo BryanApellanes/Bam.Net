@@ -20,25 +20,24 @@ namespace Bam.Net.Server
     {
         public const string CommonFolder = "common";        
 
-        public AppContentResponder(ContentResponder serverRoot, AppConf conf)
-            : base(serverRoot.BamConf)
+        public AppContentResponder(ContentResponder commonResponder, AppConf conf)
+            : base(commonResponder.BamConf)
         {
             if (conf.BamConf == null)
             {
-                conf.BamConf = serverRoot.BamConf;
+                conf.BamConf = commonResponder.BamConf;
             }
 
-            this.ContentResponder = serverRoot;
-            this.ServerRoot = serverRoot.ServerRoot;
-            this.AppConf = conf;
-            this.AppRoot = this.AppConf.AppRoot;
-            this.AppTemplateRenderer = new AppDustRenderer(this);
-            this.UseCache = serverRoot.UseCache;
-            this.AppContentLocator = ContentLocator.Load(this);
+            ContentResponder = commonResponder;
+            ServerRoot = commonResponder.ServerRoot;
+            AppConf = conf;
+            AppRoot = AppConf.AppRoot;
+            AppTemplateRenderer = new AppDustRenderer(this);
+            AppContentLocator = ContentLocator.Load(this);
             Fs commonRoot = new Fs(new DirectoryInfo(Path.Combine(ServerRoot.Root, CommonFolder)));
-            this.CommonContentLocator = ContentLocator.Load(commonRoot);
+            CommonContentLocator = ContentLocator.Load(commonRoot);
 
-            this.SetBaseIgnorePrefixes();
+            SetBaseIgnorePrefixes();
         }
 
         public ContentLocator AppContentLocator
@@ -138,7 +137,6 @@ namespace Bam.Net.Server
             string[] ignore;
             return TryRespond(context, out ignore);
         }
-
 
         public bool TryRespond(IHttpContext context, out string[] checkedPaths)
         {

@@ -159,13 +159,7 @@ namespace Bam.Net.Server
             get;
             set;
         }
-
-        public bool UseCache
-        {
-            get;
-            set;
-        }
-
+        
         /// <summary>
         /// The file search pattern used to filter 
         /// assemblies for Dao registration

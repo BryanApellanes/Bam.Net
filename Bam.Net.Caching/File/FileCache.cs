@@ -13,23 +13,24 @@ using System.Collections.Concurrent;
 namespace Bam.Net.Caching.File
 {
 	/// <summary>
-	/// A caching mechanism for text files. 
+	/// A caching mechanism for files. 
 	/// </summary>
 	public abstract class FileCache: IFileCache
 	{
-        Dictionary<string, FileMeta> _metaCache;
-        Dictionary<string, string> _textCache;
-        Dictionary<string, byte[]> _zippedTextCache;
-        Dictionary<string, byte[]> _byteCache;
-        Dictionary<string, byte[]> _zippedByteCache;
+        static object _lock = new object();
+        static ConcurrentDictionary<string, CachedFile> _cachedFiles;        
+        static ConcurrentDictionary<string, string> _textCache;
+        static ConcurrentDictionary<string, byte[]> _zippedTextCache;
+        static ConcurrentDictionary<string, byte[]> _byteCache;
+        static ConcurrentDictionary<string, byte[]> _zippedByteCache;
 
         public FileCache()
         {
-            _metaCache = new Dictionary<string, FileMeta>();
-            _textCache = new Dictionary<string, string>();
-            _zippedTextCache = new Dictionary<string, byte[]>();
-            _byteCache = new Dictionary<string, byte[]>();
-            _zippedByteCache = new Dictionary<string, byte[]>();
+            _lock.DoubleCheckLock(ref _cachedFiles, () => new ConcurrentDictionary<string, CachedFile>());
+            _lock.DoubleCheckLock(ref _textCache, () => new ConcurrentDictionary<string, string>());
+            _lock.DoubleCheckLock(ref _zippedTextCache, () => new ConcurrentDictionary<string, byte[]>());
+            _lock.DoubleCheckLock(ref _byteCache, () => new ConcurrentDictionary<string, byte[]>());
+            _lock.DoubleCheckLock(ref _zippedByteCache, () => new ConcurrentDictionary<string, byte[]>());
         }
         public string FileExtension { get; protected set; }
         public abstract byte[] GetContent(string filePath);
@@ -92,28 +93,36 @@ namespace Bam.Net.Caching.File
         }
         public virtual void Reload(FileInfo file)
         {
-            _textCache.Remove(file.FullName);
-            _byteCache.Remove(file.FullName);
-            _zippedByteCache.Remove(file.FullName);
-            _zippedTextCache.Remove(file.FullName);
+            string text;
+            byte[] bytes;
+            byte[] zipped;
+            byte[] zippedText;
+            _textCache.TryRemove(file.FullName, out text);
+            _byteCache.TryRemove(file.FullName, out bytes);
+            _zippedByteCache.TryRemove(file.FullName, out zipped);
+            _zippedTextCache.TryRemove(file.FullName, out zippedText);
             Load(file);
         }
         public virtual void Load(FileInfo file)
         {
-            EnsureFileMeta(file);
             string fullName = file.FullName;
-            _textCache.AddMissing(fullName, _metaCache[fullName].GetText());
-            _byteCache.AddMissing(fullName, _metaCache[fullName].GetBytes());
-            _zippedByteCache.AddMissing(fullName, _metaCache[fullName].GetZippedBytes());
-            _zippedTextCache.AddMissing(fullName, _metaCache[fullName].GetZippedText());
-        }
-        object _lock = new object();
-        private void EnsureFileMeta(FileInfo file)
-        {
-            lock (_lock)
+
+            CachedFile cachedFile = new CachedFile(file);
+            if(_cachedFiles.TryAdd(fullName, cachedFile))
             {
-                _metaCache.AddMissing(file.FullName, new FileMeta(file));
+                lock (_lock)
+                {
+                    string text = _cachedFiles[fullName].GetText();
+                    byte[] bytes = _cachedFiles[fullName].GetBytes();
+                    byte[] zippedBytes = _cachedFiles[fullName].GetZippedBytes();
+                    byte[] zippedText = _cachedFiles[fullName].GetZippedText();
+
+                    _textCache.TryAdd(fullName, text);
+                    _byteCache.TryAdd(fullName, bytes);
+                    _zippedByteCache.TryAdd(fullName, zippedBytes);
+                    _zippedTextCache.TryAdd(fullName, zippedText);
+                }
             }
-        }
+        }      
     }
 }

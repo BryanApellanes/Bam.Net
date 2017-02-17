@@ -4,28 +4,51 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Bam.Net.Logging;
 
 namespace Bam.Net.Caching.File
 {
-    public class FileMeta
+    public class CachedFile
     {
-        public static implicit operator FileMeta(FileInfo file)
+        public static implicit operator CachedFile(FileInfo file)
         {
-            return new FileMeta(file);
+            return new CachedFile(file);
         }
-        public static implicit operator FileInfo(FileMeta meta)
+
+        public static implicit operator FileInfo(CachedFile cached)
         {
-            return meta.File;
+            return cached.File;
         }
-        public FileMeta(FileInfo file)
+
+        public CachedFile(FileInfo file)
         {
             FullName = file.FullName;
             File = file;
             if (File.Exists)
             {
-                Task.Run(() => ContentHash = File.ContentHash(HashAlgorithms.MD5));                
+                Load(Log.Default);                
             }
         }
+
+        public async Task<bool> Load(ILogger logger = null)
+        {
+            try
+            {
+                logger = logger ?? Log.Default;
+                await Task.Run(() => ContentHash = File.ContentHash(HashAlgorithms.MD5));
+                await Task.Run(() => GetZippedText());
+                await Task.Run(() => GetZippedBytes());
+                return true;
+            }
+            catch (Exception ex)
+            {
+                logger.AddEntry("Error loading file {0}: {1}", ex, File?.FullName ?? "<null>", ex.Message);
+                return false;
+            }
+        }
+
+        public bool Loaded { get; set; }
+        protected internal Exception LoadException { get; set; }
         public string ContentHash { get; private set; }
         public string FullName { get; private set; }
         internal FileInfo File { get; set; }
@@ -59,7 +82,7 @@ namespace Bam.Net.Caching.File
         }
         public override bool Equals(object obj)
         {
-            FileMeta meta = obj as FileMeta;
+            CachedFile meta = obj as CachedFile;
             if (meta == null)
             {
                 return false;
@@ -73,23 +96,6 @@ namespace Bam.Net.Caching.File
         public override int GetHashCode()
         {
             return ContentHash.GetHashCode();
-        }
-
-        //protected void PrimeAsync()
-        //{
-        //    Task.Run(() =>
-        //    {
-        //        ContentHash = File.ContentHash(HashAlgorithms.MD5);
-        //        byte[] tempBytes = System.IO.File.ReadAllBytes(FullName);
-        //        byte[] tempZipped = tempBytes.GZip();
-        //        string tempText = System.IO.File.ReadAllText(FullName);
-        //        byte[] tempZippedText = tempText.GZip();
-
-        //        _bytes = tempBytes;
-        //        _text = tempText;
-        //        _gzippedBytes = tempZipped;
-        //        _gzippedText = tempZippedText;
-        //    });
-        //}
+        }        
     }
 }

@@ -66,7 +66,7 @@ namespace Bam.Net.Server
             Includes includes = AppContentResponder.GetAppIncludes(conf);
             if (IncludeCommon)
             {
-                Includes commonIncludes = ContentResponder.GetCommonIncludes(conf.BamConf.ContentRoot, false);
+                Includes commonIncludes = ContentResponder.GetCommonIncludes(conf.BamConf.ContentRoot);
                 includes = commonIncludes.Combine(includes);
             }
             // TODO: add a config flag "Debug"

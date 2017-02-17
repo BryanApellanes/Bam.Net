@@ -87,8 +87,12 @@ namespace Bam.Net.Server
         {
             while (_listener.IsListening)
             {
-                HttpListenerContext context = _listener.GetContext();
-                Task.Run(() => ProcessRequest(context));
+                try
+                {
+                    HttpListenerContext context = _listener.GetContext();
+                    Task.Run(() => ProcessRequest(context));
+                }
+                catch { }
             }
         }
 
