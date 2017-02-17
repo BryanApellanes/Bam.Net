@@ -91,9 +91,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BamCore, Version=1.4.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\BamCore.1.4.4\lib\net462\BamCore.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="BamCore, Version=1.4.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\BamCore.1.4.6\lib\net462\BamCore.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>

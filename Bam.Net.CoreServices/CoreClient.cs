@@ -45,7 +45,6 @@ namespace Bam.Net.CoreServices
             DiagnosticService = factory.GetProxy<CoreDiagnosticService>(HostName, Port);
             LoggerService = factory.GetProxy<CoreLoggerService>(HostName, Port);
             TranslationService = factory.GetProxy<CoreTranslationService>(HostName, Port);
-            //EventHubService = factory.GetProxy<CoreEventSourceService>(HostName, Port);
             UserRegistryService = factory.GetProxy<CoreUserRegistryService>(HostName, Port);
 
             SetApiKeyResolvers();
