@@ -75,7 +75,6 @@
     <EmbeddedResource Include="Bam.Net.Schema.Org.dll" />
     <EmbeddedResource Include="Bam.Net.Server.dll" />
     <EmbeddedResource Include="Bam.Net.ServiceProxy.dll" />
-    <EmbeddedResource Include="Bam.Net.Shop.dll" />
     <EmbeddedResource Include="Bam.Net.Syndication.dll" />
     <EmbeddedResource Include="Bam.Net.System.dll" />
     <EmbeddedResource Include="Bam.Net.Testing.dll" />
