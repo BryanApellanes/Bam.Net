@@ -110,10 +110,7 @@ namespace Bam.Net.CoreServices.Tests
 
             whoAmI = client.ConfigurationService.WhoAmI();
             Expect.AreEqual(current.ToString(), whoAmI);
-
-            //whoAmI = client.EventHubService.WhoAmI();
-            Expect.AreEqual(current.ToString(), whoAmI);
-
+            
             whoAmI = client.LoggerService.WhoAmI();
             Expect.AreEqual(current.ToString(), whoAmI);
 

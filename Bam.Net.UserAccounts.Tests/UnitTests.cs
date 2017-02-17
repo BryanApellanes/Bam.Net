@@ -411,8 +411,8 @@ namespace Bam.Net.UserAccounts.Tests
 
             Session session = Session.Init(context2);
 
-            Expect.IsNotNull(context2.User);
-            Expect.IsNotNull(context2.User.Identity);
+            Expect.IsNotNull(context2.User, "context2.User was null");
+            Expect.IsNotNull(context2.User.Identity, $"context2.User.Identity was null:\r\n   {session.Database.ConnectionString}");
             Expect.AreEqual(userName, context2.User.Identity.Name);
         }
 

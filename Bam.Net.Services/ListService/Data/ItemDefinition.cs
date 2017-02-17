@@ -13,8 +13,6 @@ namespace Bam.Net.Services.ListService.Data
     {
         public string Name { get; set; }
         public byte[] Data { get; set; }
-        public ListDefinition SubList { get; set; }
-
         public DataProperty[] GetDataProperties()
         {
             throw new NotImplementedException();
