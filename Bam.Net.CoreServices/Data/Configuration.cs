@@ -27,7 +27,7 @@ namespace Bam.Net.CoreServices.Data
 
         public override int GetHashCode()
         {
-            return this.GetHashCode(Key, Value);
+            return $"{Key}.{Value}".GetHashCode();
         }
     }
 }

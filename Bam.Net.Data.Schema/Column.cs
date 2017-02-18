@@ -235,7 +235,7 @@ namespace Bam.Net.Data.Schema
 
         public override int GetHashCode()
         {
-            return this.GetHashCode(TableName, Name);
+            return string.Format("{0}.{1}", this.TableName, this.Name).ToLowerInvariant().GetHashCode();
         }
 
         public override bool Equals(object obj)
