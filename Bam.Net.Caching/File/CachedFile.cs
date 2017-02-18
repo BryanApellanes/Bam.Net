@@ -20,13 +20,21 @@ namespace Bam.Net.Caching.File
             return cached.File;
         }
 
-        public CachedFile(FileInfo file)
+        public CachedFile(FileInfo file, ILogger logger = null)
         {
             FullName = file.FullName;
             File = file;
             if (File.Exists)
             {
-                Load(Log.Default);                
+                Task.Run(() => Load(logger ?? Log.Default));
+                file.OnChange(async (s, a) => 
+                {
+                    _zippedText = null;
+                    _zippedBytes = null;
+                    _text = null;
+                    _bytes = null;
+                    await Load(logger);
+                });
             }
         }
 
@@ -52,11 +60,11 @@ namespace Bam.Net.Caching.File
         public string ContentHash { get; private set; }
         public string FullName { get; private set; }
         internal FileInfo File { get; set; }
-        byte[] _gzippedBytes;
-        object _gzippedByteLock = new object();
+        byte[] _zippedBytes;
+        object _zippedByteLock = new object();
         public byte[] GetZippedBytes()
         {
-            byte[] gzipped = _gzippedByteLock.DoubleCheckLock(ref _gzippedBytes, () => GetBytes().GZip());
+            byte[] gzipped = _zippedByteLock.DoubleCheckLock(ref _zippedBytes, () => GetBytes().GZip());
             return gzipped;
         }
         byte[] _bytes;
@@ -73,11 +81,11 @@ namespace Bam.Net.Caching.File
             string text = _textLock.DoubleCheckLock(ref _text, () => System.IO.File.ReadAllText(FullName));
             return text;
         }
-        byte[] _gzippedText;
-        object _gzippedTextLock = new object();
+        byte[] _zippedText;
+        object _zippedTextLock = new object();
         public byte[] GetZippedText()
         {
-            byte[] zippedText = _gzippedTextLock.DoubleCheckLock(ref _gzippedText, () => GetText().GZip());
+            byte[] zippedText = _zippedTextLock.DoubleCheckLock(ref _zippedText, () => GetText().GZip());
             return zippedText; 
         }
         public override bool Equals(object obj)
