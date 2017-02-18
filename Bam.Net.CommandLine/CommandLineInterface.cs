@@ -418,7 +418,7 @@ namespace Bam.Net.CommandLine
         {
             OtherMenus.Add(menu);
         }
-
+        
         protected static void ShowMenu(Assembly assemblyToAnalyze, ConsoleMenu[] otherMenus, string headerText)
         {
             List<ConsoleInvokeableMethod> actions = GetConsoleInvokeableMethods<ConsoleAction>(assemblyToAnalyze);

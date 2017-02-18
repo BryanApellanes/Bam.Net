@@ -6,10 +6,23 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Services.Distributed.Data
 {
+    [Serializable]
     public class DataProperty
     {
-        public string Cuid { get; set; }
         public string Name { get; set; }
         public object Value { get; set; }
+        public override bool Equals(object obj)
+        {
+            DataProperty dataProp = obj as DataProperty;
+            if(dataProp != null)
+            {
+                return dataProp.Name.Equals(Name) && Value.Equals(dataProp.Value);
+            }
+            return false;
+        }
+        public override int GetHashCode()
+        {
+            return $"{Name}.{}"
+        }
     }
 }

@@ -59,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Distributed\Data\DataPropertyList.cs" />
     <Compile Include="Distributed\Data\OperationIntent.cs" />
     <Compile Include="Distributed\Data\OpertionEventArgs.cs" />
     <Compile Include="Distributed\EventAnnouncerService.cs" />
