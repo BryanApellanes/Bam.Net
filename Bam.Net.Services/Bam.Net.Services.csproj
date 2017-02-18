@@ -118,6 +118,7 @@
     <Compile Include="VersioningService\VersioningService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Distributed\Data\regen_distributed_dao.cmd" />
   </ItemGroup>
   <ItemGroup>
