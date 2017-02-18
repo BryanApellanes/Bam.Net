@@ -267,8 +267,8 @@ namespace Bam.Net.ServiceProxy.Secure
                 }
                 else
                 {
-                    string properties = result.Data.PropertiesToString();                    
-                    throw new ServiceProxyInvocationFailedException("{0}:\r\n{1}"._Format(result.Message, properties));
+                    string properties = result.PropertiesToString();                    
+                    throw new ServiceProxyInvocationFailedException("{0}"._Format(result.Message, properties));
                 }
             }
             catch (Exception ex)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Bam.Net.Services.VersioningService.Data;
 
 namespace Bam.Net.Services.VersioningService
 {
@@ -14,7 +15,7 @@ namespace Bam.Net.Services.VersioningService
         }
         public IHashProvider HashProvider { get; set; }
 
-        public Version GetVersion(params Type[] objects)
+        public Bam.Net.Services.VersioningService.Data.Version GetVersion(params Type[] objects)
         {
             throw new NotImplementedException();
         }

@@ -25,6 +25,7 @@ namespace Bam.Net.CoreServices
         {
             AppConf = appConf;
             DaoRepository = repository;
+            Repository = repository;
             Logger = appConf?.Logger ?? Log.Default;
         }
 

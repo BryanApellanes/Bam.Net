@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Services.ListService.Data
+namespace Bam.Net.Services.ValidationService
 {
     public class ValidationResult
     {
