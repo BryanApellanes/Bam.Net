@@ -218,7 +218,7 @@ namespace Bam.Net.Data
 
         public override int GetHashCode()
         {
-            return ContextName.GetHashCode() + Assembly.GetHashCode() + ServiceProvider.GetHashCode();
+            return this.GetHashCode(ContextName, Assembly, ServiceProvider);
         }
 
         public string ContextName { get; set; }

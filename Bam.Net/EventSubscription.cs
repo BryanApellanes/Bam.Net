@@ -25,9 +25,7 @@ namespace Bam.Net
 
         public override int GetHashCode()
         {
-            int code = EventName == null ? 0 : EventName.GetHashCode();
-            code += Delegate == null ? 0 : Delegate.GetHashCode();
-            return code;
+            return this.GetHashCode(EventName, Delegate);
         }
 
         public override bool Equals(object obj)

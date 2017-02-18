@@ -69,7 +69,7 @@ namespace Bam.Net.CoreServices
 
         public override int GetHashCode()
         {
-            return this.Protocol.GetHashCode() + this.Host.GetHashCode() + this.Port.GetHashCode();
+            return this.GetHashCode(Protocol, Host, Port);
         }
 
         /// <summary>

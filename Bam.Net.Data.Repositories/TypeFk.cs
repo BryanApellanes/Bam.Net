@@ -74,7 +74,7 @@ namespace Bam.Net.Data.Repositories
 
 		public override int GetHashCode() 
 		{
-			return PrimaryKeyType.GetHashCode() + ForeignKeyType.GetHashCode();
+            return this.GetHashCode(PrimaryKeyType, ForeignKeyType);
 		}
     }
 }

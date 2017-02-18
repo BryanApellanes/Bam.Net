@@ -54,6 +54,27 @@ namespace Bam.Net
             _writeResourceActions.Add(ExistingFileAction.DoNotOverwrite, (resource, output) => Logging.Log.Warn("File exists, can't write resource to {0}", output.FullName));
         }
 
+        public static int GetHashCode(this object instance, params string[] propertiesToInclude)
+        {
+            return GetHashCode(instance, propertiesToInclude.Select(p => instance.Property(p)).ToArray());
+        }
+
+        public static int GetHashCode(this object instance, params object[] propertiesToInclude)
+        {
+            unchecked
+            {
+                int hash = (int)2166136261;
+                foreach (object property in propertiesToInclude)
+                {
+                    if(property != null)
+                    {
+                        hash = (hash * 16777619) ^ property.GetHashCode();
+                    }
+                }                
+                return hash;
+            }
+        }
+
         /// <summary>
         /// Returns true if the string equals "true", "t", "yes", "y" or "1" using a case
         /// insensitive comparison

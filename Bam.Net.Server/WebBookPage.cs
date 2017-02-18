@@ -32,7 +32,7 @@ namespace Bam.Net.Server
         }
         public override int GetHashCode()
         {
-            return "{0}.{1}"._Format(this.Name, this.Layout).GetHashCode();
+            return this.GetHashCode(Name, Layout);
         }
     }
 

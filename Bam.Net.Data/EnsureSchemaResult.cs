@@ -24,7 +24,7 @@ namespace Bam.Net.Data
 
         public override int GetHashCode()
         {
-            return Database.GetHashCode() + SchemaName.GetHashCode();
+            return this.GetHashCode(Database, SchemaName);
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Bam.Net.CoreServices.Data
         public string MacAddress { get; set; }
         public override int GetHashCode()
         {
-            return $"{AddressFamily}:{Address}".GetHashCode();
+            return this.GetHashCode(AddressFamily, Address);
         }
         public override bool Equals(object obj)
         {

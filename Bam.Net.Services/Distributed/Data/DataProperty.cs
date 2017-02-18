@@ -22,7 +22,7 @@ namespace Bam.Net.Services.Distributed.Data
         }
         public override int GetHashCode()
         {
-            return $"{Name}.{}"
+            return this.GetHashCode(Name, Value);
         }
     }
 }
