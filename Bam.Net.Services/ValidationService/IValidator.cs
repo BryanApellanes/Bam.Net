@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Services.ListService.Data;
 
-namespace Bam.Net.Services.ListService
+namespace Bam.Net.Services.ValidationService
 {
-    public interface IListTransormer
+    public interface IValidator
     {
-        TransformCheckResult WillTransform(ListDefinition list);
+        ValidationResult Validate(string objectCuid);
     }
 }

@@ -357,15 +357,6 @@ namespace Bam.Net.Data.Repositories.Tests
             OutLine((new Type[] { typeof(Parent), typeof(Daughter), typeof(Son) }).ToInfoString());
         }
 
-        //[UnitTest]
-        //public void GenerateSchemaRepo()
-        //{
-        //    ConsoleLogger logger = new ConsoleLogger();
-        //    logger.StartLoggingThread();
-        //    SchemaRepositoryGenerator generator = new SchemaRepositoryGenerator(Assembly.GetExecutingAssembly(), "Bam.Net.Data.Repositories.Tests.ClrTypes", logger);
-        //    generator.GenerateSource("c:\\temp\\SchemaRepoTest", "TestDaoSchema");
-        //}
-
         protected static DaoRepository GetTestDaoRepository()
         {
             DaoRepository daoRepo = new DaoRepository();

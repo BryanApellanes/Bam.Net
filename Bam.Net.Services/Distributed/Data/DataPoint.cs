@@ -39,5 +39,24 @@ namespace Bam.Net.Services.Distributed.Data
         {
             return (T)Property(name, null).Value;
         }
+
+        public static DataPoint FromInstance(object instance)
+        {
+            Type instanceType = instance.GetType();
+            return new DataPoint { Description = $"{instanceType.Namespace}.{instanceType.Name}", DataPropertyCollection = DataPropertyCollection.FromInstance(instance) };
+        }
+
+        public T ToInsance<T>() where T: class, new()
+        {
+            T result = new T();
+            DataPropertyCollection.Each(dp => result.Property(dp.Name, dp.Value));            
+            return result;
+        }
+
+        //public DataPoint Save(IRepository repo)
+        //{
+        //    DataPoint point = repo.Save(this);
+        //    HashSet<DataRelationship> rels = 
+        //}
     }
 }

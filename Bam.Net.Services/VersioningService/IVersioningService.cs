@@ -9,6 +9,6 @@ namespace Bam.Net.Services.VersioningService
     public interface IVersioningService
     {
         IHashProvider HashProvider { get; set; }
-        Version GetVersion(params Type[] objects);
+        Bam.Net.Services.VersioningService.Data.Version GetVersion(params Type[] objects);
     }
 }
