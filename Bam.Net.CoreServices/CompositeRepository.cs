@@ -46,7 +46,6 @@ namespace Bam.Net.CoreServices
         public void UnwireBackup()
         {
             Dao.AfterCommitAny -= Backup;
-            BackupTask?.Dispose();
         }
 
         public Task BackupTask { get; protected set; }

@@ -80,7 +80,7 @@ namespace Bam.Net.Caching.Tests
             byte[] bytesFromCache;
             TimeSpan fromCacheTime = readFromCache.TimeExecution<dynamic, byte[]>(new { BinaryFileCache = cache }, out bytesFromCache);
 
-            Expect.IsGreaterThan(fromFileTime.Ticks, fromCacheTime.Ticks);
+            Expect.IsTrue(fromFileTime.CompareTo(fromCacheTime) == 1);
             
             OutLine("****", ConsoleColor.DarkGreen);
 

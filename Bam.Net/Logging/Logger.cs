@@ -15,30 +15,29 @@ namespace Bam.Net.Logging
 {
     public abstract class Logger : ILogger, IHasRequiredProperties
     {
-        ConcurrentQueue<LogEvent> logEventQueue;
-        Thread loggingThread;
-        AutoResetEvent waitForEnqueueLogEvent;
-        AutoResetEvent waitForQueueToBeEmpty;
+        ConcurrentQueue<LogEvent> _logEventQueue;
+        Thread _loggingThread;
+        AutoResetEvent _waitForEnqueueLogEvent;
+        AutoResetEvent _waitForQueueToBeEmpty;
 
         List<string> requiredProperties;
         public Logger()
         {
             AppDomain.CurrentDomain.DomainUnload += new EventHandler(OnDomainUnload);
-            logEventQueue = new ConcurrentQueue<LogEvent>();
-            waitForEnqueueLogEvent = new AutoResetEvent(false);
-            waitForQueueToBeEmpty = new AutoResetEvent(false);
+            _logEventQueue = new ConcurrentQueue<LogEvent>();
+            _waitForEnqueueLogEvent = new AutoResetEvent(false);
 
-            this.requiredProperties = new List<string>();
-            this.requiredProperties.Add("LogType");
-            this.requiredProperties.Add("ApplicationName");
-            this.Verbosity = VerbosityLevel.Information;
-            this.EventIdProvider = new EventIdProvider();
+            requiredProperties = new List<string>();
+            requiredProperties.Add("LogType");
+            requiredProperties.Add("ApplicationName");
+            Verbosity = VerbosityLevel.Information;
+            EventIdProvider = new EventIdProvider();
         }
 
         protected virtual void OnDomainUnload(object sender, EventArgs e)
         {
-            this.BlockUntilEventQueueIsEmpty();
-            this.StopLoggingThread();
+            BlockUntilEventQueueIsEmpty();
+            StopLoggingThread();
         }
 
         public string[] RequiredProperties
@@ -48,24 +47,44 @@ namespace Bam.Net.Logging
 
         public virtual ILogger RestartLoggingThread()
         {
-            this.StopLoggingThread();
-            this.StartLoggingThread();
+            StopLoggingThread();
+            StartLoggingThread();
             return this;
         }
 
         object _threadLock = new object();
+        bool _keepLogging = true;
         public virtual ILogger StopLoggingThread()
         {
-            if (loggingThread != null)
+            if (_loggingThread != null)
             {
                 lock (_threadLock)
                 {
-                    try
+                    _keepLogging = false;
+                    _waitForEnqueueLogEvent.Set();
+                    int wait = 3000;
+                    int waited = 0;
+                    if (Exec.TakesTooLong(() =>
                     {
-                        loggingThread.Abort();
-                        loggingThread.Join(3000);
+                        while (_loggingThread.ThreadState != System.Threading.ThreadState.AbortRequested &&
+                           _loggingThread.ThreadState != System.Threading.ThreadState.Aborted &&
+                           _loggingThread.ThreadState != System.Threading.ThreadState.Stopped)
+                        {
+                            Thread.Sleep(1);
+                            waited++;
+                            if (waited == wait)
+                            {
+                                break;
+                            }
+                        }
+                    }, 3500))
+                    {
+                        try
+                        {
+                            _loggingThread.Abort();
+                        }
+                        catch { } // not all ThreadStates are valid for a call to Abort
                     }
-                    catch { } // not all ThreadStates are valid for a call to Abort
                 }
             }
             return this;
@@ -79,36 +98,34 @@ namespace Bam.Net.Logging
         {
             lock (_threadLock)
             {
-                loggingThread = new Thread(new ThreadStart(LoggingThread));
-                loggingThread.IsBackground = true;
-                loggingThread.Start();
+                _loggingThread = new Thread(new ThreadStart(LoggingThread));
+                _loggingThread.IsBackground = true;
+                _keepLogging = true;
+                _loggingThread.Start();
             }
             return this;
         }
 
         protected virtual void QueueLogEvent(LogEvent logEvent)
         {
-            lock (logEventQueue)
-            {
-                logEventQueue.Enqueue(logEvent);
-            }
-            waitForEnqueueLogEvent.Set();
+            _logEventQueue.Enqueue(logEvent);
+            _waitForEnqueueLogEvent.Set();
         }
 
         private void LoggingThread()
         {
-            if (this.IsNull)
+            if (IsNull)
             {
                 return;
             }
 
-            while (true)
+            while (_keepLogging)
             {
-                waitForEnqueueLogEvent.WaitOne();
-                while (logEventQueue.Count > 0)
+                _waitForEnqueueLogEvent.WaitOne();
+                while (_logEventQueue.Count > 0)
                 {
                     LogEvent logEvent;
-                    if (logEventQueue.TryDequeue(out logEvent))
+                    if (_logEventQueue.TryDequeue(out logEvent))
                     {
                         if (logEvent != null && (int)logEvent.Severity <= (int)Verbosity)
                         {
@@ -116,7 +133,6 @@ namespace Bam.Net.Logging
                         }
                     }                    
                 }
-                waitForQueueToBeEmpty.Set();
             }
         }
 
@@ -129,14 +145,14 @@ namespace Bam.Net.Logging
         /// </summary>
         public void BlockUntilEventQueueIsEmpty(int sleep = 0)
         {
-            if(loggingThread != null && loggingThread.ThreadState == System.Threading.ThreadState.Running)
+            if(_loggingThread != null && _loggingThread.ThreadState == System.Threading.ThreadState.Running)
             {
-                if (logEventQueue.Count > 0)
+                _keepLogging = false;
+                while (_logEventQueue.Count > 0)
                 {
-                    waitForQueueToBeEmpty.WaitOne();
-                }
-                loggingThread.Abort();
-                loggingThread.Join(3000);
+                    _waitForEnqueueLogEvent.Set();
+                    Thread.Sleep(30);                    
+                }                
             }
             Thread.Sleep(sleep);
         }
@@ -145,7 +161,7 @@ namespace Bam.Net.Logging
         {
             get
             {
-                return logEventQueue;
+                return _logEventQueue;
             }
         }
 
