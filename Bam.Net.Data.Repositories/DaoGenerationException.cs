@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Data.Repositories
 {
+    [Serializable]
 	public class DaoGenerationException: Exception
 	{
 		public DaoGenerationException(string schemaName, string schemaHash, Type[] types, CompilationException compilationEx) : base(GetMessage(schemaName, schemaHash, types, compilationEx)) { }

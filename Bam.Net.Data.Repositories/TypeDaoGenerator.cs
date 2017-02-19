@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Bam.Net.Analytics;
 using Bam.Net.CommandLine;
+using Bam.Net.Configuration;
 using Bam.Net.Data.Schema;
 using Bam.Net.Logging;
 using Newtonsoft.Json;
@@ -34,13 +35,13 @@ namespace Bam.Net.Data.Repositories
         /// <param name="types"></param>
         public TypeDaoGenerator(ILogger logger = null, IEnumerable<Type> types = null)
         {
-            _namespace = "TypeDaos";
+            _namespace = "TypeDaos_".RandomLetters(8);
             _daoGenerator = new DaoGenerator(DaoNamespace);
             _wrapperGenerator = new WrapperGenerator(WrapperNamespace, DaoNamespace);
             _typeSchemaGenerator = new TypeSchemaGenerator();
             _additonalReferenceAssemblies = new HashSet<Assembly>();
 
-            TypeSchemaTempPathProvider = (schemaDef, typeSchema) => System.IO.Path.Combine("".GetAppDataFolder(), "DaoTemp_{0}"._Format(schemaDef.Name));
+            TypeSchemaTempPathProvider = (schemaDef, typeSchema) => System.IO.Path.Combine(RuntimeSettings.AppDataFolder, "DaoTemp_{0}"._Format(schemaDef.Name));
             _types = new HashSet<Type>();
             if (logger != null)
             {
@@ -49,25 +50,6 @@ namespace Bam.Net.Data.Repositories
             if(types != null)
             {
                 AddTypes(types);
-            }
-        }
-
-        /// <summary>
-        /// A filter function used to exclude anonymous types
-        /// that were created by the use of lambda functions from 
-        /// having dao types attempted to be generated
-        /// </summary>
-        public static Func<Type, bool> ClrDaoTypeFilter
-        {
-            get
-            {
-                return (t) => !t.IsAbstract && !t.HasCustomAttributeOfType<CompilerGeneratedAttribute>() 
-                && t.Attributes != (
-                        TypeAttributes.NestedPrivate |
-                        TypeAttributes.Sealed |
-                        TypeAttributes.Serializable |
-                        TypeAttributes.BeforeFieldInit
-                    );
             }
         }
 
@@ -88,6 +70,25 @@ namespace Bam.Net.Data.Repositories
         public TypeDaoGenerator(TypeSchemaGenerator typeSchemaGenerator) : this()
         {
             _typeSchemaGenerator = typeSchemaGenerator;
+        }
+
+        /// <summary>
+        /// A filter function used to exclude anonymous types
+        /// that were created by the use of lambda functions from 
+        /// having dao types attempted to be generated
+        /// </summary>
+        public static Func<Type, bool> ClrDaoTypeFilter
+        {
+            get
+            {
+                return (t) => !t.IsAbstract && !t.HasCustomAttributeOfType<CompilerGeneratedAttribute>()
+                && t.Attributes != (
+                        TypeAttributes.NestedPrivate |
+                        TypeAttributes.Sealed |
+                        TypeAttributes.Serializable |
+                        TypeAttributes.BeforeFieldInit
+                    );
+            }
         }
 
         public bool IncludeModifiedBy { get; set; }
