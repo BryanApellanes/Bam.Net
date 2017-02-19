@@ -293,7 +293,7 @@ namespace Bam.Net.ServiceProxy.Secure
                     ApiKeyResolver.SetToken(request, ApiParameters.GetStringToHash(actualClassName, actualMethodName, args["jsonParams"]));
                 }
             }
-            return base.Post(baseAddress, className, methodName, parameters, request);
+            return base.Post(argsIn, request);// baseAddress, className, methodName, parameters, request);
         }
 
         protected internal override void WriteJsonParams(string jsonParamsString, HttpWebRequest request)
