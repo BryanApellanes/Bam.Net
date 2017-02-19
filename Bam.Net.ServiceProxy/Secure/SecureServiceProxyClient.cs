@@ -248,9 +248,10 @@ namespace Bam.Net.ServiceProxy.Secure
             string className = args.ClassName;
             string methodName = args.MethodName;
             object[] parameters = args.PostParameters;
+            ServiceProxyInvokeEventArgs secureChannelArgs = new ServiceProxyInvokeEventArgs { Cuid = args.Cuid, BaseAddress = baseAddress, ClassName = typeof(SecureChannel).Name, MethodName = "Invoke", PostParameters = new object[] { className, methodName, ApiParameters.ParametersToJsonParamsObject(parameters) } };
             try
             {                   
-                SecureChannelMessage<string> result = Post(baseAddress, typeof(SecureChannel).Name, "Invoke", new object[] { className, methodName, ApiParameters.ParametersToJsonParamsObject(parameters) }).FromJson<SecureChannelMessage<string>>();
+                SecureChannelMessage<string> result = Post(secureChannelArgs).FromJson<SecureChannelMessage<string>>();
                 if (result.Success)
                 {
                     Decrypted decrypted = new Decrypted(result.Data, SessionKey, SessionIV);
