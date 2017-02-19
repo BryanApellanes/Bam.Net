@@ -133,7 +133,7 @@ namespace Bam.Net.Data.Repositories
 
 		public override int GetHashCode()
 		{
-            return this.GetHashCode(Left, Right);
-		}
+            return this.Left.GetHashCode() + this.Right.GetHashCode();
+        }
     }
 }

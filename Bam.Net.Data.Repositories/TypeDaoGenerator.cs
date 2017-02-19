@@ -35,7 +35,7 @@ namespace Bam.Net.Data.Repositories
         /// <param name="types"></param>
         public TypeDaoGenerator(ILogger logger = null, IEnumerable<Type> types = null)
         {
-            _namespace = "TypeDaos_".RandomLetters(8);
+            _namespace = "TypeDaos";
             _daoGenerator = new DaoGenerator(DaoNamespace);
             _wrapperGenerator = new WrapperGenerator(WrapperNamespace, DaoNamespace);
             _typeSchemaGenerator = new TypeSchemaGenerator();
