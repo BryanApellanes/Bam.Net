@@ -146,7 +146,7 @@ namespace Bam.Net.Data.Repositories
 			{
 				if (Data != null)
 				{
-					return GetId(Data, RequireIdProperty);
+					return GetId(RequireIdProperty);
 				}
 				return 0;
 			}
@@ -372,7 +372,10 @@ namespace Bam.Net.Data.Repositories
 			}
 			return keyProp;
 		}
-		
+		protected virtual long GetId(bool throwIfNoIdProperty = true)
+        {
+            return GetId(Data, throwIfNoIdProperty);
+        }
 		protected internal static long GetId(object value, bool throwIfNoIdProperty = true)
 		{
 			PropertyInfo pocoProp = GetKeyProperty(value.GetType(), throwIfNoIdProperty);

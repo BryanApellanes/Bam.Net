@@ -39,7 +39,7 @@ namespace Bam.Net
 
         public override int GetHashCode()
         {
-            return (Month + Day + Year).GetHashCode();
+            return this.GetHashCode(Month, Day, Year);
         }
         public override string ToString()
         {

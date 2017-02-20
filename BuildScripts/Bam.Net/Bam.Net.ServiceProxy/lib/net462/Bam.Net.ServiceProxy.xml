@@ -89,6 +89,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ApiKey.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.ServiceProxy.Secure.ApiKey}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ApiKey.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.ServiceProxy.Secure.ApiKey}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ApiKey.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ApiKeyColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.ServiceProxy.Secure.ApiKey}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.ApiKey.Where(System.Func{Bam.Net.ServiceProxy.Secure.ApiKeyColumns,Bam.Net.Data.QueryFilter{Bam.Net.ServiceProxy.Secure.ApiKeyColumns}},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ApiKeyColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -313,6 +328,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Application.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.ServiceProxy.Secure.Application}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Application.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.ServiceProxy.Secure.Application}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Application.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ApplicationColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.ServiceProxy.Secure.Application}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.Application.Where(System.Func{Bam.Net.ServiceProxy.Secure.ApplicationColumns,Bam.Net.Data.QueryFilter{Bam.Net.ServiceProxy.Secure.ApplicationColumns}},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ApplicationColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -530,6 +560,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ConfigSetting.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.ServiceProxy.Secure.ConfigSetting}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ConfigSetting.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.ServiceProxy.Secure.ConfigSetting}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ConfigSetting.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ConfigSettingColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.ServiceProxy.Secure.ConfigSetting}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.ConfigSetting.Where(System.Func{Bam.Net.ServiceProxy.Secure.ConfigSettingColumns,Bam.Net.Data.QueryFilter{Bam.Net.ServiceProxy.Secure.ConfigSettingColumns}},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ConfigSettingColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -746,6 +791,21 @@
             <param name="database">
             The database to load from or null
             </param>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Configuration.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.ServiceProxy.Secure.Configuration}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Configuration.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.ServiceProxy.Secure.Configuration}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Configuration.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ConfigurationColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.ServiceProxy.Secure.Configuration}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
         </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.Configuration.Where(System.Func{Bam.Net.ServiceProxy.Secure.ConfigurationColumns,Bam.Net.Data.QueryFilter{Bam.Net.ServiceProxy.Secure.ConfigurationColumns}},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ConfigurationColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1026,6 +1086,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.ServiceProxy.Secure.SecureSession}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.ServiceProxy.Secure.SecureSession}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.SecureSessionColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.ServiceProxy.Secure.SecureSession}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.Where(System.Func{Bam.Net.ServiceProxy.Secure.SecureSessionColumns,Bam.Net.Data.QueryFilter{Bam.Net.ServiceProxy.Secure.SecureSessionColumns}},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.SecureSessionColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -1275,12 +1350,6 @@
             secure session.
             </summary>
         </member>
-        <member name="E:Bam.Net.ServiceProxy.Secure.SecureServiceProxyClient`1.InvocationException">
-            <summary>
-            The event that will occur if an exception occurs during
-            method invocation
-            </summary>
-        </member>
         <member name="T:Bam.Net.ServiceProxy.Secure.SecureChannel">
             <summary>
             A secure communication channel.  Provides 
@@ -1433,6 +1502,18 @@
             <param name="pathAndQuery"></param>
             <param name="postData"></param>
             <returns></returns>
+        </member>
+        <member name="E:Bam.Net.ServiceProxy.ServiceProxyClient.InvocationException">
+            <summary>
+            The event that will occur if an exception occurs during
+            method invocation
+            </summary>
+        </member>
+        <member name="P:Bam.Net.ServiceProxy.ServiceProxyInvokeEventArgs.Cuid">
+            <summary>
+            Can be used to uniquely identify an invocation
+            when subscribing to events
+            </summary>
         </member>
         <member name="T:Bam.Net.ServiceProxy.ServiceProxyParameters">
             <summary>
@@ -1790,41 +1871,38 @@
             <param name="request"></param>
             <returns></returns>
         </member>
-        <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient`1.OnGetting(Bam.Net.ServiceProxy.ServiceProxyEventArgs{`0})">
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient`1.OnGetting(Bam.Net.ServiceProxy.ServiceProxyInvokeEventArgs{`0})">
             <summary>
             Fires the Getting event 
             </summary>
             <param name="args"></param>
         </member>
-        <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient`1.OnGot(Bam.Net.ServiceProxy.ServiceProxyEventArgs{`0})">
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient`1.OnGot(Bam.Net.ServiceProxy.ServiceProxyInvokeEventArgs{`0})">
             <summary>
             Fires the Got event
             </summary>
             <param name="args"></param>
         </member>
-        <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient`1.OnPosting(Bam.Net.ServiceProxy.ServiceProxyEventArgs{`0})">
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient`1.OnPosting(Bam.Net.ServiceProxy.ServiceProxyInvokeEventArgs{`0})">
             <summary>
             Fires the Getting event 
             </summary>
             <param name="args"></param>
         </member>
-        <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient`1.OnPosted(Bam.Net.ServiceProxy.ServiceProxyEventArgs{`0})">
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient`1.OnPosted(Bam.Net.ServiceProxy.ServiceProxyInvokeEventArgs{`0})">
             <summary>
             Fires the Got event
             </summary>
             <param name="args"></param>
         </member>
-        <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient`1.Post(System.String,System.String,System.String,System.Object[])">
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient`1.Post(Bam.Net.ServiceProxy.ServiceProxyInvokeEventArgs)">
             <summary>
             Post to the url representing the specified method call.  Content type used
             will be "application/json; charset=utf-8";.  This can be overridden in a derived
             class by overriding WriteJsonParams or GetServiceProxyResponse, each of which
             is called after the ContentType is set on the request.
             </summary>
-            <param name="baseAddress"></param>
-            <param name="className"></param>
-            <param name="methodName"></param>
-            <param name="parameters"></param>
+            <param name="args"></param>
             <returns></returns>
         </member>
         <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient`1.WriteJsonParams(System.String,System.Net.HttpWebRequest)">

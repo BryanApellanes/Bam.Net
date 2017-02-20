@@ -200,7 +200,6 @@ namespace Bam.Net.Data.Repositories.Tests
 		public void ObjectRepoSavingParentShouldSaveChildLists()
 		{
 			ObjectRepository repo = GetTestObjectRepository();
-			//repo.EnsureDaoAssembly();
 			House house = new House { Name = "TestHouse", Parents = new List<Parent> { new Parent { Name = "TestParent" } } };
 			repo.Save(house);
 			Thread.Sleep(1500); // ensure the background write thread has time to write the xrefs

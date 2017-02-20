@@ -24,6 +24,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Group.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Group}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Group.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Group}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Group.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.GroupColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Group}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.Group.Where(System.Func{Bam.Net.UserAccounts.Data.GroupColumns,Bam.Net.Data.QueryFilter{Bam.Net.UserAccounts.Data.GroupColumns}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.GroupColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -240,6 +255,21 @@
             <param name="database">
             The database to load from or null
             </param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.GroupPermission.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.GroupPermission}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.GroupPermission.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.GroupPermission}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.GroupPermission.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.GroupPermissionColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.GroupPermission}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.GroupPermission.Where(System.Func{Bam.Net.UserAccounts.Data.GroupPermissionColumns,Bam.Net.Data.QueryFilter{Bam.Net.UserAccounts.Data.GroupPermissionColumns}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.GroupPermissionColumns},Bam.Net.Data.Database)">
             <summary>
@@ -458,6 +488,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Permission.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Permission}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Permission.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Permission}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Permission.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PermissionColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Permission}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.Permission.Where(System.Func{Bam.Net.UserAccounts.Data.PermissionColumns,Bam.Net.Data.QueryFilter{Bam.Net.UserAccounts.Data.PermissionColumns}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -674,6 +719,21 @@
             <param name="database">
             The database to load from or null
             </param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.TreeNode}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.TreeNode}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.TreeNodeColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.TreeNode}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.TreeNode.Where(System.Func{Bam.Net.UserAccounts.Data.TreeNodeColumns,Bam.Net.Data.QueryFilter{Bam.Net.UserAccounts.Data.TreeNodeColumns}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.Database)">
             <summary>
@@ -892,6 +952,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.UserGroup}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.UserGroup}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserGroupColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.UserGroup}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserGroup.Where(System.Func{Bam.Net.UserAccounts.Data.UserGroupColumns,Bam.Net.Data.QueryFilter{Bam.Net.UserAccounts.Data.UserGroupColumns}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -1109,6 +1184,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.UserPermission}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.UserPermission}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserPermissionColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.UserPermission}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserPermission.Where(System.Func{Bam.Net.UserAccounts.Data.UserPermissionColumns,Bam.Net.Data.QueryFilter{Bam.Net.UserAccounts.Data.UserPermissionColumns}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -1325,6 +1415,21 @@
             <param name="database">
             The database to load from or null
             </param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Account.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Account}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Account.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Account}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Account.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.AccountColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Account}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Account.Where(System.Func{Bam.Net.UserAccounts.Data.AccountColumns,Bam.Net.Data.QueryFilter{Bam.Net.UserAccounts.Data.AccountColumns}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.AccountColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1555,6 +1660,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.UserAccounts.Data.LockOut.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.LockOut}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.LockOut.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.LockOut}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.LockOut.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.LockOutColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.LockOut}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.LockOut.Where(System.Func{Bam.Net.UserAccounts.Data.LockOutColumns,Bam.Net.Data.QueryFilter{Bam.Net.UserAccounts.Data.LockOutColumns}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.LockOutColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -1772,6 +1892,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Login.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Login}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Login.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Login}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Login.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.LoginColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Login}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.Login.Where(System.Func{Bam.Net.UserAccounts.Data.LoginColumns,Bam.Net.Data.QueryFilter{Bam.Net.UserAccounts.Data.LoginColumns}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.LoginColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -1988,6 +2123,21 @@
             <param name="database">
             The database to load from or null
             </param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Password.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Password}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Password.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Password}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Password.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PasswordColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Password}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Password.Where(System.Func{Bam.Net.UserAccounts.Data.PasswordColumns,Bam.Net.Data.QueryFilter{Bam.Net.UserAccounts.Data.PasswordColumns}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.PasswordColumns},Bam.Net.Data.Database)">
             <summary>
@@ -2214,6 +2364,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.UserAccounts.Data.PasswordFailure.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.PasswordFailure}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.PasswordFailure.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.PasswordFailure}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.PasswordFailure.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PasswordFailureColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.PasswordFailure}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.PasswordFailure.Where(System.Func{Bam.Net.UserAccounts.Data.PasswordFailureColumns,Bam.Net.Data.QueryFilter{Bam.Net.UserAccounts.Data.PasswordFailureColumns}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.PasswordFailureColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -2431,6 +2596,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.UserAccounts.Data.PasswordQuestion.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.PasswordQuestion}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.PasswordQuestion.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.PasswordQuestion}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.PasswordQuestion.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PasswordQuestionColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.PasswordQuestion}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.PasswordQuestion.Where(System.Func{Bam.Net.UserAccounts.Data.PasswordQuestionColumns,Bam.Net.Data.QueryFilter{Bam.Net.UserAccounts.Data.PasswordQuestionColumns}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.PasswordQuestionColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -2647,6 +2827,21 @@
             <param name="database">
             The database to load from or null
             </param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.PasswordReset.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.PasswordReset}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.PasswordReset.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.PasswordReset}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.PasswordReset.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PasswordResetColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.PasswordReset}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.PasswordReset.Where(System.Func{Bam.Net.UserAccounts.Data.PasswordResetColumns,Bam.Net.Data.QueryFilter{Bam.Net.UserAccounts.Data.PasswordResetColumns}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.PasswordResetColumns},Bam.Net.Data.Database)">
             <summary>
@@ -2873,6 +3068,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Role.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Role}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Role.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Role}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Role.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.RoleColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Role}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.Role.Where(System.Func{Bam.Net.UserAccounts.Data.RoleColumns,Bam.Net.Data.QueryFilter{Bam.Net.UserAccounts.Data.RoleColumns}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.RoleColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -3089,6 +3299,21 @@
             <param name="database">
             The database to load from or null
             </param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Session.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Session}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Session.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Session}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Session.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.SessionColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Session}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Session.Where(System.Func{Bam.Net.UserAccounts.Data.SessionColumns,Bam.Net.Data.QueryFilter{Bam.Net.UserAccounts.Data.SessionColumns}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.SessionColumns},Bam.Net.Data.Database)">
             <summary>
@@ -3332,6 +3557,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.UserAccounts.Data.SessionState.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.SessionState}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.SessionState.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.SessionState}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.SessionState.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.SessionStateColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.SessionState}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.SessionState.Where(System.Func{Bam.Net.UserAccounts.Data.SessionStateColumns,Bam.Net.Data.QueryFilter{Bam.Net.UserAccounts.Data.SessionStateColumns}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.SessionStateColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -3549,6 +3789,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Setting.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Setting}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Setting.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Setting}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Setting.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.SettingColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Setting}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.Setting.Where(System.Func{Bam.Net.UserAccounts.Data.SettingColumns,Bam.Net.Data.QueryFilter{Bam.Net.UserAccounts.Data.SettingColumns}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.SettingColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -3765,6 +4020,21 @@
             <param name="database">
             The database to load from or null
             </param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.User.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.User}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.User.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.User}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.User.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.User}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.User.Where(System.Func{Bam.Net.UserAccounts.Data.UserColumns,Bam.Net.Data.QueryFilter{Bam.Net.UserAccounts.Data.UserColumns}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserColumns},Bam.Net.Data.Database)">
             <summary>
@@ -4014,6 +4284,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserBehavior.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.UserBehavior}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserBehavior.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.UserBehavior}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserBehavior.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserBehaviorColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.UserBehavior}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserBehavior.Where(System.Func{Bam.Net.UserAccounts.Data.UserBehaviorColumns,Bam.Net.Data.QueryFilter{Bam.Net.UserAccounts.Data.UserBehaviorColumns}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserBehaviorColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -4230,6 +4515,21 @@
             <param name="database">
             The database to load from or null
             </param>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserRole.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.UserRole}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserRole.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.UserRole}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserRole.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserRoleColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.UserRole}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserRole.Where(System.Func{Bam.Net.UserAccounts.Data.UserRoleColumns,Bam.Net.Data.QueryFilter{Bam.Net.UserAccounts.Data.UserRoleColumns}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserRoleColumns},Bam.Net.Data.Database)">
             <summary>

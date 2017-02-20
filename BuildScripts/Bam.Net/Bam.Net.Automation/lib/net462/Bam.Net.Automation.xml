@@ -29,6 +29,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.Automation.Data.DeferredJobData.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Automation.Data.DeferredJobData}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.Data.DeferredJobData.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Automation.Data.DeferredJobData}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Automation.Data.DeferredJobData.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Automation.Data.DeferredJobDataColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Automation.Data.DeferredJobData}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.Automation.Data.DeferredJobData.Where(System.Func{Bam.Net.Automation.Data.DeferredJobDataColumns,Bam.Net.Data.QueryFilter{Bam.Net.Automation.Data.DeferredJobDataColumns}},Bam.Net.Data.OrderBy{Bam.Net.Automation.Data.DeferredJobDataColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -246,6 +261,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.Automation.Data.JobData.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Automation.Data.JobData}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.Data.JobData.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Automation.Data.JobData}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Automation.Data.JobData.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Automation.Data.JobDataColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Automation.Data.JobData}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.Automation.Data.JobData.Where(System.Func{Bam.Net.Automation.Data.JobDataColumns,Bam.Net.Data.QueryFilter{Bam.Net.Automation.Data.JobDataColumns}},Bam.Net.Data.OrderBy{Bam.Net.Automation.Data.JobDataColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -462,6 +492,21 @@
             <param name="database">
             The database to load from or null
             </param>
+        </member>
+        <member name="M:Bam.Net.Automation.Data.JobRunData.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Automation.Data.JobRunData}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.Data.JobRunData.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Automation.Data.JobRunData}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Automation.Data.JobRunData.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Automation.Data.JobRunDataColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Automation.Data.JobRunData}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
         </member>
         <member name="M:Bam.Net.Automation.Data.JobRunData.Where(System.Func{Bam.Net.Automation.Data.JobRunDataColumns,Bam.Net.Data.QueryFilter{Bam.Net.Automation.Data.JobRunDataColumns}},Bam.Net.Data.OrderBy{Bam.Net.Automation.Data.JobRunDataColumns},Bam.Net.Data.Database)">
             <summary>
@@ -926,6 +971,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildJob.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Automation.ContinuousIntegration.Data.BuildJob}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildJob.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Automation.ContinuousIntegration.Data.BuildJob}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildJob.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Automation.ContinuousIntegration.Data.BuildJobColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Automation.ContinuousIntegration.Data.BuildJob}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildJob.Where(System.Func{Bam.Net.Automation.ContinuousIntegration.Data.BuildJobColumns,Bam.Net.Data.QueryFilter{Bam.Net.Automation.ContinuousIntegration.Data.BuildJobColumns}},Bam.Net.Data.OrderBy{Bam.Net.Automation.ContinuousIntegration.Data.BuildJobColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -1142,6 +1202,21 @@
             <param name="database">
             The database to load from or null
             </param>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildResult.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Automation.ContinuousIntegration.Data.BuildResult}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildResult.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Automation.ContinuousIntegration.Data.BuildResult}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildResult.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Automation.ContinuousIntegration.Data.BuildResultColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Automation.ContinuousIntegration.Data.BuildResult}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
         </member>
         <member name="M:Bam.Net.Automation.ContinuousIntegration.Data.BuildResult.Where(System.Func{Bam.Net.Automation.ContinuousIntegration.Data.BuildResultColumns,Bam.Net.Data.QueryFilter{Bam.Net.Automation.ContinuousIntegration.Data.BuildResultColumns}},Bam.Net.Data.OrderBy{Bam.Net.Automation.ContinuousIntegration.Data.BuildResultColumns},Bam.Net.Data.Database)">
             <summary>

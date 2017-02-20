@@ -140,7 +140,6 @@
     <Compile Include="DocsController.cs" />
     <Compile Include="Fs.cs" />
     <Compile Include="FsEvent.cs" />
-    <Compile Include="HtmlCache.cs" />
     <Compile Include="HttpHeaderResponder.cs" />
     <Compile Include="HttpMethodResponder.cs" />
     <Compile Include="FileContentHash.cs" />
@@ -148,7 +147,6 @@
     <Compile Include="HostPrefix.cs" />
     <Compile Include="IContent.cs" />
     <Compile Include="IncludeOrder.cs" />
-    <Compile Include="JsCache.cs" />
     <Compile Include="ReflectionLoader.cs" />
     <Compile Include="Renderers\CompiledDustTemplate.cs" />
     <Compile Include="Renderers\ITemplateRenderer.cs" />

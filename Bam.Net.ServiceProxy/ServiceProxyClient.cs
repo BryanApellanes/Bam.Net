@@ -220,9 +220,20 @@ namespace Bam.Net.ServiceProxy
             string url = string.Format("{0}{1}", BaseAddress, pathAndQuery);
             return url;
         }
-
-        public event EventHandler<ServiceProxyEventArgs> InvokingMethod;
-        protected void OnInvokingMethod(ServiceProxyEventArgs args)
+        /// <summary>
+        /// The event that will occur if an exception occurs during
+        /// method invocation
+        /// </summary>
+        public event EventHandler<ServiceProxyInvokeEventArgs> InvocationException;
+        protected void OnInvocationException(ServiceProxyInvokeEventArgs args)
+        {
+            if (InvocationException != null)
+            {
+                InvocationException(this, args);
+            }
+        }
+        public event EventHandler<ServiceProxyInvokeEventArgs> InvokingMethod;
+        protected void OnInvokingMethod(ServiceProxyInvokeEventArgs args)
         {
             if (InvokingMethod != null)
             {
@@ -230,8 +241,8 @@ namespace Bam.Net.ServiceProxy
             }
         }
 
-        public event EventHandler<ServiceProxyEventArgs> InvokedMethod;
-        protected void OnInvokedMethod(ServiceProxyEventArgs args)
+        public event EventHandler<ServiceProxyInvokeEventArgs> InvokedMethod;
+        protected void OnInvokedMethod(ServiceProxyInvokeEventArgs args)
         {
             if (InvokedMethod != null)
             {
@@ -239,8 +250,8 @@ namespace Bam.Net.ServiceProxy
             }
         }
 
-        public event EventHandler<ServiceProxyEventArgs> InvokeCanceled;
-        protected void OnInvokeCanceled(ServiceProxyEventArgs args)
+        public event EventHandler<ServiceProxyInvokeEventArgs> InvokeCanceled;
+        protected void OnInvokeCanceled(ServiceProxyInvokeEventArgs args)
         {
             if (InvokeCanceled != null)
             {

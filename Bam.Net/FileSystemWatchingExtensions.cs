@@ -4,15 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Collections.Concurrent;
 
 namespace Bam.Net
 {
     public static class FileSystemWatchingExtensions
     {
-        static Dictionary<string, FileSystemWatcher> _watchers;
+        static ConcurrentDictionary<string, FileSystemWatcher> _watchers;
         static FileSystemWatchingExtensions()
         {
-            _watchers = new Dictionary<string, FileSystemWatcher>();
+            _watchers = new ConcurrentDictionary<string, FileSystemWatcher>();
         }
 
         public static FileSystemWatcher OnChange(this FileSystemInfo fs, FileSystemEventHandler changeHandler)
@@ -71,14 +72,18 @@ namespace Bam.Net
             watcher.Renamed += renamedHandler;
             return watcher;
         }
-        private static FileSystemWatcher Get(string path)
+        private static FileSystemWatcher Get(string directoryPath)
         {
-            path = path.ToLowerInvariant();
-            if (!_watchers.ContainsKey(path))
+            if (File.Exists(directoryPath))
             {
-                _watchers.Add(path, new FileSystemWatcher { Path = path, EnableRaisingEvents = true, IncludeSubdirectories = true });
+                directoryPath = new FileInfo(directoryPath).Directory.FullName;
             }
-            return _watchers[path];
+            directoryPath = directoryPath.ToLowerInvariant();
+            if (!_watchers.ContainsKey(directoryPath))
+            {
+                _watchers.TryAdd(directoryPath, new FileSystemWatcher { Path = directoryPath, EnableRaisingEvents = true, IncludeSubdirectories = true });
+            }
+            return _watchers[directoryPath];
         }
     }
 }

@@ -1,1 +1,4 @@
 
+ -   delete commented code (9b97845)
+ -   correct serviceproxyeventinvokeargs props (7315dc9)
+ -   refactor for eventhandling (389530b)

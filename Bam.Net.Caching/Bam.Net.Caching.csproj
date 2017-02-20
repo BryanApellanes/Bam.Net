@@ -70,10 +70,15 @@
     <Compile Include="CacheManagerEventArgs.cs" />
     <Compile Include="DeleteNotSupportedException.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="File\BinaryFileCache.cs" />
+    <Compile Include="File\CachedFile.cs" />
+    <Compile Include="File\IFileCache.cs" />
+    <Compile Include="File\JsFileCache.cs" />
+    <Compile Include="File\TextFileCache.cs" />
     <Compile Include="ICacheManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CachingRepository.cs" />
-    <Compile Include="TextFileCache.cs" />
+    <Compile Include="File\FileCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bam.Net.CommandLine\Bam.Net.CommandLine.csproj">
@@ -92,6 +97,10 @@
       <Project>{3b52b739-58fd-4b49-b815-6b317e701520}</Project>
       <Name>Bam.Net.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Javascript\Bam.Net.Javascript.csproj">
+      <Project>{34c5016d-5265-4394-a9ba-cb2f70d8e93b}</Project>
+      <Name>Bam.Net.Javascript</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Testing\Bam.Net.Testing.csproj">
       <Project>{85212881-c676-4b40-b311-37c2d1706042}</Project>
       <Name>Bam.Net.Testing</Name>
@@ -105,6 +114,7 @@
     <None Include="app.config" />
     <None Include="README.md" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

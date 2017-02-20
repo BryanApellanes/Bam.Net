@@ -12,6 +12,7 @@ using Bam.Net.CommandLine;
 using Bam.Net.Configuration;
 using Bam.Net;
 using Bam.Net.ExceptionHandling;
+using Bam.Net.Testing.Integration;
 
 namespace Bam.Net.Testing
 {
@@ -73,8 +74,19 @@ namespace Bam.Net.Testing
 			else if (Arguments.Contains("i"))
 			{
 				Interactive();
-			}
-			else
+                return;
+            }
+            else if (Arguments.Contains("t"))
+            {
+                RunAllUnitTests(Assembly.GetEntryAssembly());
+                return;
+            }
+            else if (Arguments.Contains("it"))
+            {
+                IntegrationTestRunner.RunIntegrationTests(Assembly.GetEntryAssembly());
+                return;
+            }
+            else
 			{
 				if (DefaultMethod != null)
 				{
@@ -87,11 +99,6 @@ namespace Bam.Net.Testing
 					{
 						DefaultMethod.Invoke(null, null);
 					}
-					return;
-				}
-				else if (Arguments.Contains("t"))
-				{
-					RunAllUnitTests(Assembly.GetEntryAssembly());
 					return;
 				}
 			}

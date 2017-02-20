@@ -13,90 +13,118 @@ using Bam.Net.Caching;
 using Bam.Net.Testing;
 using Bam.Net.CommandLine;
 using System.IO;
+using Bam.Net.Caching.File;
 
 namespace Bam.Net.Caching.Tests
 {
 	[Serializable]
 	public class UnitTests: CommandLineTestInterface
 	{
-		[UnitTest]
-		public void RegisterTextFileCacheManagerTest()
-		{
-			CacheManager.Default.Clear();
-			Cache fileCache = CacheManager.Default.CacheFor<FileInfo>();
-			Type typeBeforeRegistering = fileCache.GetType();
-			TextFileCache.RegisterWithCacheManager();
-			fileCache = CacheManager.Default.CacheFor<FileInfo>();
-			Type checkType = fileCache.GetType();
-			Expect.IsFalse(typeBeforeRegistering.Equals(checkType));
-			Expect.AreEqual(typeof(TextFileCache), checkType);
-		}
+        [UnitTest]
+        public void GetStringFromCacheIsFasterThanFromFile()
+        {
+            string testFilePath = ".\\TestFile1.txt";
+            FileInfo testFile = new FileInfo(testFilePath);
+            FileCache cache = new TextFileCache();
+            cache.Load(testFile);
 
-		public class CantCacheAsTextFile
-		{
-
-		}
-		[UnitTest]
-		public void TryingToCacheSomethingOtherThanStringOrFileShouldThrow()
-		{
-			TextFileCache.RegisterWithCacheManager();
-            TextFileCache textFileCache = CacheManager.Default.CacheFor<FileInfo>() as TextFileCache;
-            Expect.IsNotNull(textFileCache);
-            bool thrown = false;
-            try
+            Func<string, string> readFromFile = (filePath) =>
             {
-                CantCacheAsTextFile test = new CantCacheAsTextFile();
-                textFileCache.Add((object)test);
-            }
-            catch(Exception ex)
+                string txtFromFile;
+                using (StreamReader sr = new StreamReader(filePath))
+                {
+                    txtFromFile = sr.ReadToEnd();
+                }
+                return txtFromFile;
+            };
+            Func<dynamic, string> readFromCache = (context) =>
             {
-                OutLineFormat("{0}", ConsoleColor.DarkCyan, ex.Message);
-                thrown = true;
-            }
-			Expect.IsTrue(thrown, "Exception wasn't thrown as expected");
-		}
+                TextFileCache textCache = context.TextFileCache;
+                return textCache.GetText(testFile);
+            };
+            string stringFromFile;
+            TimeSpan fromFileTime = readFromFile.TimeExecution<string, string>(testFilePath, out stringFromFile);
+            string stringFromCache;
+            TimeSpan fromCacheTime = readFromCache.TimeExecution<dynamic, string>(new { TextFileCache = cache }, out stringFromCache);
 
-		[UnitTest]
-		public void FetchFromCacheShouldBeFasterThanFromFile()
-		{
-			TextFileCache.RegisterWithCacheManager();
-			string testFilePath = ".\\TestFile1.txt";
-			FileInfo testFile = new FileInfo(testFilePath);
-			Cache textFileCache = CacheManager.Default.CacheFor<FileInfo>();
-			textFileCache.MaxBytes = File.ReadAllBytes(testFilePath).Length * 2;
-			textFileCache.Subscribe(new ConsoleLogger());
-			CacheItem cacheItem = textFileCache.Add((object)testFile);			
+            Expect.IsGreaterThan(fromFileTime.Ticks, fromCacheTime.Ticks);
+            OutLine(stringFromFile.First(25), ConsoleColor.Cyan);
+            OutLine("****", ConsoleColor.DarkGreen);
+            OutLine(stringFromCache.First(25), ConsoleColor.DarkCyan);
 
-			Func<string, string> readFromFile = (filePath) =>
-			{
-				string txtFromFile;
-				using (StreamReader sr = new StreamReader(filePath))
-				{
-					txtFromFile = sr.ReadToEnd();
-				}
-				return txtFromFile;
-			};
-			Func<dynamic, string> readFromCache = (context) =>
-			{
-				TextFileCache cache = context.TextFileCache;
-				CacheItem item = context.CacheItem;
-				return cache.Retrieve(item.Id).ValueAs<string>();
-			};
-			string stringFromFile;
-			TimeSpan fromFileTime = readFromFile.TimeExecution<string, string>(testFilePath, out stringFromFile);
-			string stringFromCache;
-			TimeSpan fromCacheTime = readFromCache.TimeExecution<dynamic, string>(new { TextFileCache = textFileCache, CacheItem = cacheItem }, out stringFromCache);
+            Expect.AreEqual(stringFromFile, stringFromCache);
 
-			Expect.IsGreaterThan(fromFileTime.Ticks, fromCacheTime.Ticks);
-			OutLine(stringFromFile.First(25), ConsoleColor.Cyan);
-			OutLine("****", ConsoleColor.DarkGreen);
-			OutLine(stringFromCache.First(25), ConsoleColor.DarkCyan);
+            OutLineFormat("Time from file: {0}\r\n", fromFileTime.ToString());
+            OutLineFormat("Time from cache: {0}\r\n", fromCacheTime.ToString());
+        }
 
-			Expect.AreEqual(stringFromFile, stringFromCache);
+        [UnitTest]
+        public void GetBytesFromCacheIsFasterThanFromFile()
+        {
+            string testFilePath = ".\\TestFile1.txt";
+            FileInfo testFile = new FileInfo(testFilePath);
+            FileCache cache = new BinaryFileCache();
+            cache.Load(testFile);
 
-			OutLineFormat("Time from file: {0}", fromFileTime.ToString());
-			OutLineFormat("Time from cache: {0}", fromCacheTime.ToString());
-		}
+            Func<string, byte[]> readFromFile = (filePath) =>
+            {
+                return System.IO.File.ReadAllBytes(filePath);
+            };
+            Func<dynamic, byte[]> readFromCache = (context) =>
+            {
+                BinaryFileCache textCache = context.BinaryFileCache;
+                return textCache.GetBytes(testFile);
+            };
+            byte[] bytesFromFile;
+            TimeSpan fromFileTime = readFromFile.TimeExecution<string, byte[]>(testFilePath, out bytesFromFile);
+            byte[] bytesFromCache;
+            TimeSpan fromCacheTime = readFromCache.TimeExecution<dynamic, byte[]>(new { BinaryFileCache = cache }, out bytesFromCache);
 
-	}
+            Expect.IsTrue(fromFileTime.CompareTo(fromCacheTime) == 1);
+            
+            OutLine("****", ConsoleColor.DarkGreen);
+
+            string fromFile = Encoding.UTF8.GetString(bytesFromFile);
+            string fromCache = Encoding.UTF8.GetString(bytesFromCache);
+            Expect.AreEqual(fromFile, fromCache);
+
+            OutLineFormat("Time from file: {0}\r\n", fromFileTime.ToString());
+            OutLineFormat("Time from cache: {0}\r\n", fromCacheTime.ToString());
+        }
+
+        [UnitTest]
+        public void GetZippedBytesFromCacheIsFasterThanFromFile()
+        {
+            string testFilePath = ".\\TestFile1.txt";
+            FileInfo testFile = new FileInfo(testFilePath);
+            FileCache cache = new BinaryFileCache();
+            cache.Load(testFile);
+
+            Func<string, byte[]> readFromFile = (filePath) =>
+            {
+                return System.IO.File.ReadAllBytes(filePath).GZip();
+            };
+            Func<dynamic, byte[]> readFromCache = (context) =>
+            {
+                BinaryFileCache textCache = context.BinaryFileCache;
+                return textCache.GetZippedBytes(testFile);
+            };
+            byte[] bytesFromFile;
+            TimeSpan fromFileTime = readFromFile.TimeExecution<string, byte[]>(testFilePath, out bytesFromFile);
+            byte[] bytesFromCache;
+            TimeSpan fromCacheTime = readFromCache.TimeExecution<dynamic, byte[]>(new { BinaryFileCache = cache }, out bytesFromCache);
+
+            Expect.IsGreaterThan(fromFileTime.Ticks, fromCacheTime.Ticks);
+
+            OutLine("****", ConsoleColor.DarkGreen);
+
+            string fromFile = Encoding.UTF8.GetString(bytesFromFile);
+            string fromCache = Encoding.UTF8.GetString(bytesFromCache);
+            Expect.AreEqual(fromFile, fromCache);
+
+            OutLineFormat("Time from file: {0}\r\n", fromFileTime.ToString());
+            OutLineFormat("Time from cache: {0}\r\n", fromCacheTime.ToString());
+        }
+
+    }
 }

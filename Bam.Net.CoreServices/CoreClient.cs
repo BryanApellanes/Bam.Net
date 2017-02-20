@@ -39,14 +39,13 @@ namespace Bam.Net.CoreServices
             WorkingDirectory = workingDirectory ?? $".\\{nameof(CoreClient)}";
             HashAlgorithm = HashAlgorithms.SHA1;
 
-            ProxyFactory factory = new ProxyFactory(WorkingDirectory, logger);
-            ApplicationRegistryService = factory.GetProxy<CoreApplicationRegistryService>(HostName, Port);
-            ConfigurationService = factory.GetProxy<CoreConfigurationService>(HostName, Port);
-            DiagnosticService = factory.GetProxy<CoreDiagnosticService>(HostName, Port);
-            LoggerService = factory.GetProxy<CoreLoggerService>(HostName, Port);
-            TranslationService = factory.GetProxy<CoreTranslationService>(HostName, Port);
-            //EventHubService = factory.GetProxy<CoreEventSourceService>(HostName, Port);
-            UserRegistryService = factory.GetProxy<CoreUserRegistryService>(HostName, Port);
+            ProxyFactory = new ProxyFactory(WorkingDirectory, logger);
+            ApplicationRegistryService = ProxyFactory.GetProxy<CoreApplicationRegistryService>(HostName, Port);
+            ConfigurationService = ProxyFactory.GetProxy<CoreConfigurationService>(HostName, Port);
+            DiagnosticService = ProxyFactory.GetProxy<CoreDiagnosticService>(HostName, Port);
+            LoggerService = ProxyFactory.GetProxy<CoreLoggerService>(HostName, Port);
+            TranslationService = ProxyFactory.GetProxy<CoreTranslationService>(HostName, Port);
+            UserRegistryService = ProxyFactory.GetProxy<CoreUserRegistryService>(HostName, Port);
 
             SetApiKeyResolvers();
             SetClientApplicationNameProvider();
@@ -252,6 +251,11 @@ namespace Bam.Net.CoreServices
             return new ServiceResponse { Data = responses, Success = !responses.Where(r => !r.Success).Any() };
         }
 
+        public T GetProxy<T>()
+        {
+            return ProxyFactory.GetProxy<T>(HostName, Port);
+        }
+        protected ProxyFactory ProxyFactory { get; set; }
         protected bool IsInitialized { get; set; }
         protected string HostName { get; }
         protected int Port { get; }
@@ -268,7 +272,6 @@ namespace Bam.Net.CoreServices
                 yield return UserRegistryService;
                 yield return ApplicationRegistryService;                
                 yield return ConfigurationService;
-                //yield return EventHubService;
                 yield return LoggerService;
                 yield return TranslationService;                
                 yield return DiagnosticService;

@@ -101,7 +101,7 @@ namespace Bam.Net
             return new NamedThread(name, thread);
         }
 
-        public static void Kill(string name)
+        public static void Kill(string name, int joinBlock = 3000)
         {
             if (_threads.ContainsKey(name))
             {
@@ -111,12 +111,38 @@ namespace Bam.Net
                     try
                     {
                         victim.Abort();
-                        victim.Join(3000);
+                        victim.Join(joinBlock);
                     }
                     catch { }
                 }
                 _threads.Remove(name);
             }
+        }
+
+        /// <summary>
+        /// Returns true if the specified action takes longer than the
+        /// specified number of millisecondsToWait to finish executing
+        /// </summary>
+        /// <param name="action"></param>
+        /// <param name="millisecondsToWait"></param>
+        /// <returns></returns>
+        public static bool TakesTooLong(this Action action, int millisecondsToWait)
+        {
+            return TakesTooLong(() =>
+            {
+                action();
+                return false;
+            }, millisecondsToWait);
+        }
+
+        public static bool TakesTooLong<TResult>(this Func<TResult> function, int millisecondsToWait)
+        {
+            return TakesTooLong(function, new TimeSpan(0, 0, 0, 0, millisecondsToWait));
+        }
+
+        public static bool TakesTooLong<TResult>(this Func<TResult> function, TimeSpan timeToWait)
+        {
+            return TakesTooLong(function, null, timeToWait);
         }
 
         public static bool TakesTooLong<TResult>(this Func<TResult> function, Func<TResult, TResult> callBack, string threadName, int millisecondsToWait = 300)
@@ -136,11 +162,11 @@ namespace Bam.Net
         /// specified callBack.</typeparam>
         /// <param name="function">The function to execute and time</param>
         /// <param name="callBack">The callBack to execute when function completes</param>
-        /// <param name="secondsToWait">The number of seconds to allow the function to execute before returning true</param>
+        /// <param name="millisecondsToWait">The number of seconds to allow the function to execute before returning true</param>
         /// <returns>boolean</returns>
-        public static bool TakesTooLong<TResult>(this Func<TResult> function, Func<TResult, TResult> callBack, int secondsToWait)
+        public static bool TakesTooLong<TResult>(this Func<TResult> function, Func<TResult, TResult> callBack, int millisecondsToWait)
         {
-            return function.TakesTooLong(callBack, new TimeSpan(0, 0, secondsToWait));
+            return function.TakesTooLong(callBack, new TimeSpan(0, 0, 0, 0, millisecondsToWait));
         }
 
         public static bool TakesTooLong<TResult>(this Func<TResult> function, Func<TResult, TResult> callBack, TimeSpan timeToWait, string threadName = null)

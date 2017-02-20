@@ -28,6 +28,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.Messaging.Data.DirectMessage.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Messaging.Data.DirectMessage}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Messaging.Data.DirectMessage.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Messaging.Data.DirectMessage}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Messaging.Data.DirectMessage.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Messaging.Data.DirectMessageColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Messaging.Data.DirectMessage}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.Messaging.Data.DirectMessage.Where(System.Func{Bam.Net.Messaging.Data.DirectMessageColumns,Bam.Net.Data.QueryFilter{Bam.Net.Messaging.Data.DirectMessageColumns}},Bam.Net.Data.OrderBy{Bam.Net.Messaging.Data.DirectMessageColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -245,6 +260,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.Messaging.Data.EmailMessage.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Messaging.Data.EmailMessage}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Messaging.Data.EmailMessage.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Messaging.Data.EmailMessage}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Messaging.Data.EmailMessage.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Messaging.Data.EmailMessageColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Messaging.Data.EmailMessage}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.Messaging.Data.EmailMessage.Where(System.Func{Bam.Net.Messaging.Data.EmailMessageColumns,Bam.Net.Data.QueryFilter{Bam.Net.Messaging.Data.EmailMessageColumns}},Bam.Net.Data.OrderBy{Bam.Net.Messaging.Data.EmailMessageColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -461,6 +491,21 @@
             <param name="database">
             The database to load from or null
             </param>
+        </member>
+        <member name="M:Bam.Net.Messaging.Data.Message.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Messaging.Data.Message}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Messaging.Data.Message.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Messaging.Data.Message}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Messaging.Data.Message.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Messaging.Data.MessageColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Messaging.Data.Message}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
         </member>
         <member name="M:Bam.Net.Messaging.Data.Message.Where(System.Func{Bam.Net.Messaging.Data.MessageColumns,Bam.Net.Data.QueryFilter{Bam.Net.Messaging.Data.MessageColumns}},Bam.Net.Data.OrderBy{Bam.Net.Messaging.Data.MessageColumns},Bam.Net.Data.Database)">
             <summary>

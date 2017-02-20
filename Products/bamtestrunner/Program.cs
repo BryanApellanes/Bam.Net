@@ -126,7 +126,14 @@ namespace Bam.Net.Testing
             for (int i = 0; i < files.Length; i++)
             {
                 FileInfo fi = files[i];
-                RunUnitTestsInFile(fi.FullName, startDirectory);
+                try
+                {
+                    RunUnitTestsInFile(fi.FullName, startDirectory);
+                }
+                catch (Exception ex)
+                {
+                    OutLineFormat("Exception running unit tests in file {0}: {1}\r\n\r\n", ConsoleColor.Magenta, fi.FullName, ex.Message, ex.StackTrace); 
+                }
             }
 
             OutLineFormat("Passed: {0}", ConsoleColor.Green, _passedCount);
@@ -152,7 +159,7 @@ namespace Bam.Net.Testing
                 Assembly assembly = Assembly.LoadFrom(assemblyPath);
                 AttachBeforeAndAfterHandlers(assembly);
                 RunAllUnitTests(assembly);                
-                NullifyBeforeAndAfterHandlers();
+                NullifyBeforeAndAfterHandlers();                
                 Environment.CurrentDirectory = endDirectory;
             }
             catch (Exception ex)

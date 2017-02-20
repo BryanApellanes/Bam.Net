@@ -9,6 +9,10 @@ using Bam.Net.Data.Repositories;
 
 namespace Bam.Net.CoreServices
 {
+    /// <summary>
+    /// A RepositoryTypesProvider implementation that reads namespaces from a file named
+    /// StorableTypesNamspaces.txt from the current directory 
+    /// </summary>
     public class NamespaceRepositoryStorableTypesProvider : RepositoryTypesProvider
     {
         const string _file = ".\\StorableTypesNamespaces.txt";

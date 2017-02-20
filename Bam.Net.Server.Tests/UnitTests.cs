@@ -827,6 +827,7 @@ namespace Bam.Net.Server.Tests
             ConsoleLogger logger = new ConsoleLogger();
             logger.AddDetails = false;
             logger.UseColors = true;
+            logger.StartLoggingThread();
             server.MainLogger = logger;
             if (string.IsNullOrEmpty(rootDir))
             {

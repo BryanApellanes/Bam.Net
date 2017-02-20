@@ -61,7 +61,7 @@ namespace Bam.Net.ServiceProxy.Secure
 
         public override int GetHashCode()
         {
-            return SessionId.GetHashCode() + ClientIdentifier.GetHashCode() + PublicKey.GetHashCode();
+            return this.GetHashCode(SessionId, ClientIdentifier, PublicKey);
         }
 
         public override string ToString()

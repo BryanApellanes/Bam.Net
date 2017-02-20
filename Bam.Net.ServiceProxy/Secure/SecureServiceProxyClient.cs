@@ -242,24 +242,16 @@ namespace Bam.Net.ServiceProxy.Secure
             }
         }
 
-        /// <summary>
-        /// The event that will occur if an exception occurs during
-        /// method invocation
-        /// </summary>
-        public event Action<SecureServiceProxyClient<T>, Exception> InvocationException;
-        protected void OnInvocationException(Exception ex)
+        protected internal override string DoInvoke(ServiceProxyInvokeEventArgs args)// string baseAddress, string className, string methodName, object[] parameters)
         {
-            if (InvocationException != null)
-            {
-                InvocationException(this, ex);
-            }
-        }
-
-        protected internal override string DoInvoke(string baseAddress, string className, string methodName, object[] parameters)
-        {
+            string baseAddress = args.BaseAddress;
+            string className = args.ClassName;
+            string methodName = args.MethodName;
+            object[] parameters = args.PostParameters;
+            ServiceProxyInvokeEventArgs secureChannelArgs = new ServiceProxyInvokeEventArgs { Cuid = args.Cuid, BaseAddress = baseAddress, ClassName = typeof(SecureChannel).Name, MethodName = "Invoke", PostParameters = new object[] { className, methodName, ApiParameters.ParametersToJsonParamsObject(parameters) } };
             try
             {                   
-                SecureChannelMessage<string> result = Post(baseAddress, typeof(SecureChannel).Name, "Invoke", new object[] { className, methodName, ApiParameters.ParametersToJsonParamsObject(parameters) }).FromJson<SecureChannelMessage<string>>();
+                SecureChannelMessage<string> result = Post(secureChannelArgs).FromJson<SecureChannelMessage<string>>();
                 if (result.Success)
                 {
                     Decrypted decrypted = new Decrypted(result.Data, SessionKey, SessionIV);
@@ -267,20 +259,25 @@ namespace Bam.Net.ServiceProxy.Secure
                 }
                 else
                 {
-                    string properties = result.Data.PropertiesToString();                    
-                    throw new ServiceProxyInvocationFailedException("{0}:\r\n{1}"._Format(result.Message, properties));
+                    string properties = result.PropertiesToString();                    
+                    throw new ServiceProxyInvocationFailedException("{0}"._Format(result.Message, properties));
                 }
             }
             catch (Exception ex)
             {
-                OnInvocationException(ex);
+                args.Exception = ex;
+                OnInvocationException(args);
             }
 
             return string.Empty;
         }
 
-        protected override string Post(string baseAddress, string className, string methodName, object[] parameters, HttpWebRequest request)
+        protected override string Post(ServiceProxyInvokeEventArgs argsIn, HttpWebRequest request)//Post(string baseAddress, string className, string methodName, object[] parameters, HttpWebRequest request)
         {
+            string baseAddress = argsIn.BaseAddress;
+            string className = argsIn.ClassName;
+            string methodName = argsIn.MethodName;
+            object[] parameters = argsIn.PostParameters;
             if (className.ToLowerInvariant().Equals("securechannel") && methodName.ToLowerInvariant().Equals("invoke"))
             {
                 // the target is the SecureChannel.Invoke method but we
@@ -297,7 +294,7 @@ namespace Bam.Net.ServiceProxy.Secure
                     ApiKeyResolver.SetToken(request, ApiParameters.GetStringToHash(actualClassName, actualMethodName, args["jsonParams"]));
                 }
             }
-            return base.Post(baseAddress, className, methodName, parameters, request);
+            return base.Post(argsIn, request);// baseAddress, className, methodName, parameters, request);
         }
 
         protected internal override void WriteJsonParams(string jsonParamsString, HttpWebRequest request)

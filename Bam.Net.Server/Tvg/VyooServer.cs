@@ -13,7 +13,7 @@ namespace Bam.Net.Server.Tvg
         public VyooServer(BamConf conf, ILogger logger)
             : base(new ContentResponder(conf, logger), logger)
         {
-            this.Responder.Initialize();
+            Responder.Initialize();
         }
     }
 }

@@ -57,7 +57,19 @@ namespace Bam.Net.Incubation
         }
 
         /// <summary>
-        /// Copy the values from the specified incubator to the current
+        /// Copy the values from the specified incubator to the current; the same as CopyFrom
+        /// </summary>
+        /// <param name="incubator">The incubator to copy from</param>
+        /// <param name="overwrite">If true, values in the current incubator
+        /// will be over written by values of the same types from the specified
+        /// incubator otherwise the current value will be kept</param>
+        public void CombineWith(Incubator incubator, bool overwrite = true)
+        {
+            CopyFrom(incubator, overwrite);
+        }
+
+        /// <summary>
+        /// Copy the values from the specified incubator to the current; the same as CombineWith
         /// </summary>
         /// <param name="incubator">The incubator to copy from</param>
         /// <param name="overwrite">If true, values in the current incubator

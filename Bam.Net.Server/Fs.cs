@@ -13,6 +13,7 @@ using Bam.Net.Data;
 using Bam.Net.ServiceProxy;
 using System.Web.Mvc;
 using System.Web;
+using Bam.Net.Caching.File;
 
 namespace Bam.Net.Server
 {
@@ -20,32 +21,34 @@ namespace Bam.Net.Server
     [RoleRequired("Admin")]
     public class Fs
     {
+        FileCache _cache;
 		public Fs()
 		{
+            _cache = new BinaryFileCache();
 		}
-        public Fs(HttpServerUtilityBase server, string appName)
+        public Fs(HttpServerUtilityBase server, string appName) : this()
         {
             string root = server.MapPath("~/apps/{appName}/".NamedFormat(new { appName = appName }));
-            this.RootDir = new DirectoryInfo(root);
-            this.AppName = appName;
+            RootDir = new DirectoryInfo(root);
+            AppName = appName;
         }
 
-        public Fs(HttpServerUtility server, string appName)
+        public Fs(HttpServerUtility server, string appName) : this()
         {
             string root = server.MapPath("~/apps/{appName}/".NamedFormat(new { appName = appName }));
-            this.RootDir = new DirectoryInfo(root);
-            this.AppName = appName;
+            RootDir = new DirectoryInfo(root);
+            AppName = appName;
         }
 
-        public Fs(string appName)
+        public Fs(string appName): this()
         {
-			this.RootDir = new DirectoryInfo(appName);
-			this.AppName = appName;
+			RootDir = new DirectoryInfo(appName);
+			AppName = appName;
         }
 
-        public Fs(DirectoryInfo rootDir)
+        public Fs(DirectoryInfo rootDir):this()
         {
-            this.RootDir = rootDir;
+            RootDir = rootDir;
         }
 
         public Fs(Controller controller, string appName)
@@ -172,7 +175,7 @@ namespace Bam.Net.Server
         public byte[] ReadBytes(string relativeFilePath)
         {
             string path = GetAbsolutePath(EnsureRelative(relativeFilePath));
-            return File.ReadAllBytes(path);
+            return _cache.GetBytes(new FileInfo(path));
         }
 		public string ReadAllText(params string[] pathSegments)
 		{
@@ -181,7 +184,7 @@ namespace Bam.Net.Server
         public string ReadAllText(string relativeFilePath)
         {
             string path = GetAbsolutePath(EnsureRelative(relativeFilePath));
-            return File.ReadAllText(path);
+            return _cache.GetText(new FileInfo(path));
         }
 
         public void Append(string relativeFilePath, string text)
@@ -192,6 +195,10 @@ namespace Bam.Net.Server
             OnFileAppendedTo(path);
         }
 
+        public bool FileExists(out string absolutePath, params string[] pathSegmentsToCombine)
+        {
+            return FileExists(Path.Combine(pathSegmentsToCombine), out absolutePath);
+        }
 		public bool FileExists(params string[] pathSegmentsToCombine)
 		{
 			return FileExists(Path.Combine(pathSegmentsToCombine));

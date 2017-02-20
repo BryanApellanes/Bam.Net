@@ -1,1 +1,9 @@
 
+ -   delete commented code (2bb7206)
+ -   refactor thread handling (de075d9)
+ -   fix failing tessssts (ecc4867)
+ -   remove shop tests (e0115e6)
+ -   better GetHashCode implementation (39f8440)
+ -   fix solution (d6c8bcb)
+ -   minor bug fixes (4e43c31)
+ -   fix RuntimeSettings bug, regen coreservices data (c83bdd1)

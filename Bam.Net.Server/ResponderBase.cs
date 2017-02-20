@@ -315,7 +315,7 @@ namespace Bam.Net.Server
             set;
         }
 
-        protected virtual string ResponderSignificantName
+        protected internal virtual string ResponderSignificantName
         {
             get
             {

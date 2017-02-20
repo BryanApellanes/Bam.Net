@@ -25,6 +25,9 @@ namespace vyoo
     {
         static void Main(string[] args)
         {
+            IsolateMethodCalls = false;
+            BamResolver.Register();
+            AddSwitches(typeof(ConsoleActions));
             VyooService.SetInfo(VyooService.ServiceInfo);
             if (!VyooService.ProcessCommandLineArgs(args))
             {

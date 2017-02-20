@@ -216,7 +216,7 @@ namespace Bam.Net.ServiceProxy
                 baseAddress = string.Format("{0}", baseAddress);
             }
 
-            ServiceProxyEventArgs args = new ServiceProxyEventArgs { BaseAddress = baseAddress, ClassName = className, Client = this, MethodName = methodName, PostParameters = parameters };
+            ServiceProxyInvokeEventArgs args = new ServiceProxyInvokeEventArgs { BaseAddress = baseAddress, ClassName = className, Client = this, MethodName = methodName, PostParameters = parameters };
             OnInvokingMethod(args);
 
             string result = string.Empty;
@@ -226,7 +226,7 @@ namespace Bam.Net.ServiceProxy
             }
             else
             {
-                string tmp = DoInvoke(baseAddress, className, methodName, parameters);
+                string tmp = DoInvoke(args);
 
                 result = tmp;
                 LastResponse = result;
@@ -236,23 +236,36 @@ namespace Bam.Net.ServiceProxy
             return result;
         }
 
-        protected internal virtual string DoInvoke(string baseAddress, string className, string methodName, object[] parameters)
+        protected internal virtual string DoInvoke(ServiceProxyInvokeEventArgs args)
         {
-            string tmp = string.Empty;
-            string queryStringParameters;
-            ServiceProxyVerbs verb;
-            GetQueryStringAndVerb(methodName, parameters, out queryStringParameters, out verb);
-
-            if (verb == ServiceProxyVerbs.POST)
+            string baseAddress = args.BaseAddress;
+            string className = args.ClassName;
+            string methodName = args.MethodName;
+            object[] parameters = args.PostParameters;
+            try
             {
-                tmp = Post(baseAddress, className, methodName, parameters);
+                string tmp = string.Empty;
+                string queryStringParameters;
+                ServiceProxyVerbs verb;
+                GetQueryStringAndVerb(methodName, parameters, out queryStringParameters, out verb);
 
+                if (verb == ServiceProxyVerbs.POST)
+                {
+                    tmp = Post(args);
+                }
+                else
+                {
+                    args.QueryStringParameters = queryStringParameters;
+                    tmp = Get(args);
+                }
+                return tmp;
             }
-            else
+            catch (Exception ex)
             {
-                tmp = Get(baseAddress, className, methodName, queryStringParameters);
+                args.Exception = ex;
+                OnInvocationException(args);
             }
-            return tmp;
+            return string.Empty;
         }
 
         /// <summary>
@@ -383,14 +396,14 @@ namespace Bam.Net.ServiceProxy
             return GetServiceProxyResponseString(request).FromJson<RT>();
         }
 
-        public event EventHandler<ServiceProxyEventArgs<T>> Getting;
-        public event EventHandler<ServiceProxyEventArgs<T>> Got;
+        public event EventHandler<ServiceProxyInvokeEventArgs<T>> Getting;
+        public event EventHandler<ServiceProxyInvokeEventArgs<T>> Got;
 
         /// <summary>
         /// Fires the Getting event 
         /// </summary>
         /// <param name="args"></param>
-        protected void OnGetting(ServiceProxyEventArgs<T> args)
+        protected void OnGetting(ServiceProxyInvokeEventArgs<T> args)
         {
             if (Getting != null)
             {
@@ -398,8 +411,8 @@ namespace Bam.Net.ServiceProxy
             }
         }
 
-        public event EventHandler<ServiceProxyEventArgs> GetCanceled;
-        protected void OnGetCanceled(ServiceProxyEventArgs args)
+        public event EventHandler<ServiceProxyInvokeEventArgs> GetCanceled;
+        protected void OnGetCanceled(ServiceProxyInvokeEventArgs args)
         {
             if (GetCanceled != null)
             {
@@ -413,7 +426,7 @@ namespace Bam.Net.ServiceProxy
         /// Fires the Got event
         /// </summary>
         /// <param name="args"></param>
-        protected void OnGot(ServiceProxyEventArgs<T> args)
+        protected void OnGot(ServiceProxyInvokeEventArgs<T> args)
         {
             if (Got != null)
             {
@@ -421,14 +434,14 @@ namespace Bam.Net.ServiceProxy
             }
         }
 
-        public event EventHandler<ServiceProxyEventArgs<T>> Posting;
-        public event EventHandler<ServiceProxyEventArgs<T>> Posted;
+        public event EventHandler<ServiceProxyInvokeEventArgs<T>> Posting;
+        public event EventHandler<ServiceProxyInvokeEventArgs<T>> Posted;
 
         /// <summary>
         /// Fires the Getting event 
         /// </summary>
         /// <param name="args"></param>
-        protected void OnPosting(ServiceProxyEventArgs<T> args)
+        protected void OnPosting(ServiceProxyInvokeEventArgs<T> args)
         {
             if (Posting != null)
             {
@@ -437,8 +450,8 @@ namespace Bam.Net.ServiceProxy
         }
 
 
-        public event EventHandler<ServiceProxyEventArgs> PostCanceled;
-        protected void OnPostCanceled(ServiceProxyEventArgs args)
+        public event EventHandler<ServiceProxyInvokeEventArgs> PostCanceled;
+        protected void OnPostCanceled(ServiceProxyInvokeEventArgs args)
         {
             if (PostCanceled != null)
             {
@@ -451,7 +464,7 @@ namespace Bam.Net.ServiceProxy
         /// Fires the Got event
         /// </summary>
         /// <param name="args"></param>
-        protected void OnPosted(ServiceProxyEventArgs<T> args)
+        protected void OnPosted(ServiceProxyInvokeEventArgs<T> args)
         {
             if (Posted != null)
             {
@@ -471,13 +484,13 @@ namespace Bam.Net.ServiceProxy
 
         public R Get<R>(string baseAddress, string className, string methodName, string queryStringParameters)
         {
-            return Get(baseAddress, className, methodName, queryStringParameters).FromJson<R>();
+            return Get(new ServiceProxyInvokeEventArgs { BaseAddress = baseAddress, ClassName = className, MethodName = methodName, QueryStringParameters = queryStringParameters }).FromJson<R>();// baseAddress, className, methodName, queryStringParameters).FromJson<R>();
         }
 
         public string Get(string methodName, params object[] parameters)
         {
             this.Numbered = true;
-            return Get(BaseAddress, typeof(T).Name, methodName, new ServiceProxyParameters(parameters).NumberedQueryStringParameters);
+            return Get(new ServiceProxyInvokeEventArgs { BaseAddress = BaseAddress, ClassName = typeof(T).Name, MethodName = methodName, QueryStringParameters = new ServiceProxyParameters(parameters).NumberedQueryStringParameters });//BaseAddress, typeof(T).Name, methodName, new ServiceProxyParameters(parameters).NumberedQueryStringParameters);
         }
 
         public string Get(string className, string methodName, params object[] parameters)
@@ -488,14 +501,19 @@ namespace Bam.Net.ServiceProxy
         public string Get(string baseAddress, string className, string methodName, params object[] parameters)
         {
             ServiceProxyParameters proxyParameters = new ServiceProxyParameters(parameters);
-            string queryStringParameters = proxyParameters.NumberedQueryStringParameters;//Numbered ? proxyParameters.NumberedQueryStringParameters: proxyParameters.NamedQueryStringParameters;
+            string queryStringParameters = proxyParameters.NumberedQueryStringParameters;
 
-            return Get(baseAddress, className, methodName, queryStringParameters);
+            return Get(new ServiceProxyInvokeEventArgs<T> { BaseAddress = baseAddress, ClassName = className, MethodName = methodName, QueryStringParameters = queryStringParameters });// baseAddress, className, methodName, queryStringParameters);
         }
 
-        protected virtual string Get(string baseAddress, string className, string methodName, string queryStringParameters)
+        protected virtual string Get(ServiceProxyInvokeEventArgs argsIn)
         {
-            ServiceProxyEventArgs<T> args = new ServiceProxyEventArgs<T> { BaseAddress = baseAddress, ClassName = className, Client = this, GenericClient = this, MethodName = methodName, QueryStringParameters = queryStringParameters };
+            ServiceProxyInvokeEventArgs<T> args = argsIn.CopyAs<ServiceProxyInvokeEventArgs<T>>();
+            args.Client = this;
+            args.GenericClient = this;
+            string className = args.ClassName;
+            string methodName = args.MethodName;
+            string queryStringParameters = args.QueryStringParameters;
             OnGetting(args);
             string result = string.Empty;
             if (args.CancelInvoke)
@@ -513,22 +531,22 @@ namespace Bam.Net.ServiceProxy
 
         public R Post<R>(string methodName, params object[] parameters)
         {
-            return Post(BaseAddress, ClassName, methodName, parameters).FromJson<R>();
+            return Post(new ServiceProxyInvokeEventArgs { BaseAddress = BaseAddress, ClassName = ClassName, MethodName = methodName, PostParameters = parameters }).FromJson<R>();//Post(BaseAddress, ClassName, methodName, parameters).FromJson<R>();
         }
 
         public R Post<R>(string className, string methodName, params object[] parameters)
         {
-            return Post(BaseAddress, className, methodName, parameters).FromJson<R>();
+            return Post(new ServiceProxyInvokeEventArgs { BaseAddress = BaseAddress, ClassName = className, MethodName = methodName, PostParameters = parameters }).FromJson<R>();// BaseAddress, className, methodName, parameters).FromJson<R>();
         }
 
         public string Post(string methodName, params object[] parameters)
         {
-            return Post(BaseAddress, typeof(T).Name, methodName, parameters);
+            return Post(new ServiceProxyInvokeEventArgs { BaseAddress = BaseAddress, ClassName = typeof(T).Name, MethodName = methodName, PostParameters = parameters });// BaseAddress, typeof(T).Name, methodName, parameters);
         }
 
         public string Post(string className, string methodName, params object[] parameters)
         {
-            return Post(BaseAddress, className, methodName, parameters);
+            return Post(new ServiceProxyInvokeEventArgs<T> { BaseAddress = BaseAddress, ClassName = className, MethodName = methodName, PostParameters = parameters });// BaseAddress, className, methodName, parameters);
         }
 
         /// <summary>
@@ -537,30 +555,19 @@ namespace Bam.Net.ServiceProxy
         /// class by overriding WriteJsonParams or GetServiceProxyResponse, each of which
         /// is called after the ContentType is set on the request.
         /// </summary>
-        /// <param name="baseAddress"></param>
-        /// <param name="className"></param>
-        /// <param name="methodName"></param>
-        /// <param name="parameters"></param>
+        /// <param name="args"></param>
         /// <returns></returns>
-        public virtual string Post(string baseAddress, string className, string methodName, params object[] parameters)
+        public virtual string Post(ServiceProxyInvokeEventArgs args)
         {
-            HttpWebRequest request = GetServiceProxyRequest(ServiceProxyVerbs.POST, className, methodName, "nocache=".RandomLetters(4));
-
-            return Post(baseAddress, className, methodName, parameters, request);
+            HttpWebRequest request = GetServiceProxyRequest(ServiceProxyVerbs.POST, args.ClassName, args.MethodName, "nocache=".RandomLetters(4));
+            return Post(args, request);
         }
 
-        protected virtual string Post(string baseAddress, string className, string methodName, object[] parameters, HttpWebRequest request)
+        protected virtual string Post(ServiceProxyInvokeEventArgs argsIn, HttpWebRequest request)
         {
-            ServiceProxyEventArgs<T> args = new ServiceProxyEventArgs<T>
-            {
-                BaseAddress = baseAddress,
-                ClassName = className,
-                Client = this,
-                GenericClient = this,
-                MethodName = methodName,
-                PostParameters = parameters,
-                Request = request
-            };
+            ServiceProxyInvokeEventArgs<T> args = argsIn.CopyAs<ServiceProxyInvokeEventArgs<T>>();
+            args.Client = this;
+            args.GenericClient = this;
 
             OnPosting(args);
             string result = string.Empty;
@@ -570,7 +577,7 @@ namespace Bam.Net.ServiceProxy
             }
             else
             {
-                string jsonParamsString = ApiParameters.ParametersToJsonParamsObject(parameters);
+                string jsonParamsString = ApiParameters.ParametersToJsonParamsObject(args.PostParameters);
 
                 request.ContentType = "application/json; charset=utf-8";
 

@@ -68,7 +68,7 @@ md ..\..\..\BamDotExe\lib\%LIB%\
             string lib = $@"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\{Ver}";
             script.AppendLine($" /closed /targetplatform:v4 /lib:\"{lib}\" /out:..\\..\\..\\BamDotExe\\lib\\%LIB%\\bam.exe");
             script.Append("cd ..\\..\\..\\");
-            script.ToString().SafeWriteToFile("generate_bam_dot_exe.cmd");
+            script.ToString().SafeWriteToFile("generate_bam_dot_exe.cmd", true);
         }
 
         [ConsoleAction("generateNugetScripts", "Generate copy commands for build process")]

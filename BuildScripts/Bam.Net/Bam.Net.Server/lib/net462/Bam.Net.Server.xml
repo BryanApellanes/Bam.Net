@@ -301,7 +301,7 @@
             <param name="appName"></param>
             <param name="instanciator"></param>
         </member>
-        <member name="M:Bam.Net.Server.BamServer.AddResponder(Bam.Net.Server.IResponder)">
+        <member name="M:Bam.Net.Server.BamServer.AddResponder(Bam.Net.Server.ResponderBase)">
             <summary>
             Add an IResponder implementation to this
             request handler

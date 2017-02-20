@@ -34,16 +34,18 @@ namespace Bam.Net.Server
     public class BamServer : IInitialize<BamServer>
     {
         HashSet<IResponder> _responders;
+        Dictionary<string, IResponder> _respondersByName;
         HttpServer _server;
 
         public BamServer(BamConf conf)
         {
-            this._responders = new HashSet<IResponder>();
-            this.Initialized += HandleInitialization;
-            this.SetConf(conf);
-            this.BindEventListeners(conf);
-            this.EnableDao = true;
-            this.EnableServiceProxy = true;
+            _responders = new HashSet<IResponder>();
+            _respondersByName = new Dictionary<string, IResponder>();
+            Initialized += HandleInitialization;
+            SetConf(conf);
+            BindEventListeners(conf);
+            EnableDao = true;
+            EnableServiceProxy = true;
 
             SQLiteRegistrar.RegisterFallback();
 
@@ -925,6 +927,10 @@ namespace Bam.Net.Server
             ServiceProxyResponder.AddAppService(appName, type, instanciator);
         }
 
+        public void AddAppServies(string appName, Incubator incubator)
+        {
+            ServiceProxyResponder.AddAppServices(appName, incubator);
+        }
         /// <summary>
         /// Add or update the app service using the specified instanciator
         /// </summary>
@@ -960,20 +966,26 @@ namespace Bam.Net.Server
         /// request handler
         /// </summary>
         /// <param name="responder"></param>
-        public void AddResponder(IResponder responder)
+        public void AddResponder(ResponderBase responder)
         {
-            this._responders.Add(responder);
-            if (ResponderAdded != null)
-            {
-                ResponderAdded(this, responder);
-            }
+            _responders.Add(responder);
+            _respondersByName.AddMissing(responder.ResponderSignificantName, responder);
+            ResponderAdded?.Invoke(this, responder);
         }
 
-        public void RemoveResponder(IResponder responder)
+        public void RemoveResponder(ResponderBase responder)
         {
+            if(responder == null)
+            {
+                return;
+            }
             if (_responders.Contains(responder))
             {
                 _responders.Remove(responder);
+            }
+            if (_respondersByName.ContainsKey(responder.ResponderSignificantName))
+            {
+                _respondersByName.Remove(responder.ResponderSignificantName);
             }
         }
 
@@ -1036,6 +1048,14 @@ namespace Bam.Net.Server
             IRequest request = context.Request;
             IResponse response = context.Response;
             ResponderList responder = new ResponderList(_conf, _responders);
+            //IResponder responder = _respondersByName["content"];
+            //RouteParser urlRouteParser = new RouteParser("{protocol}://{domain}/{responder}/{path}");
+            //Dictionary<string, string> urlRouteData = urlRouteParser.ParseRouteInstance(request.Url.ToString());
+            //string responderName = urlRouteData["responder"];
+            //if (!string.IsNullOrEmpty(responderName) && _respondersByName.ContainsKey(responderName))
+            //{
+            //    responder = _respondersByName[responderName];
+            //}
             try
             {
                 if (!responder.Respond(context))
@@ -1048,9 +1068,9 @@ namespace Bam.Net.Server
                 }
                 else
                 {
-                    TriggerResponding(response, responder);
+                    TriggerResponding(response, responder.HandlingResponder);
                     Respond(response);
-                    TriggerResponded(request, responder);
+                    TriggerResponded(request, responder.HandlingResponder);
                 }
             }
             catch (Exception ex)
@@ -1080,19 +1100,19 @@ namespace Bam.Net.Server
             response.OutputStream.Close();
         }
 
-        private void TriggerResponded(IRequest request, ResponderList responder)
+        private void TriggerResponded(IRequest request, IResponder responder)
         {
             if (Responded != null)
             {
-                Responded(this, responder.HandlingResponder, request);
+                Responded(this, responder, request);
             }
         }
 
-        private void TriggerResponding(IResponse response, ResponderList responder)
+        private void TriggerResponding(IResponse response, IResponder responder)
         {
             if (Responding != null)
             {
-                Responding(this, responder.HandlingResponder, response);
+                Responding(this, responder, response);
             }
         }
 
@@ -1310,6 +1330,7 @@ namespace Bam.Net.Server
             {
                 using (StreamWriter sw = new StreamWriter(response.OutputStream))
                 {
+
                     string description = "({0})"._Format(ex.Message);
                     response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     response.StatusDescription = description;
@@ -1321,7 +1342,7 @@ namespace Bam.Net.Server
                     );
                     sw.WriteLine(html.ToHtmlString());
                     sw.Flush();
-                    sw.Close();
+
                 }
 
             }

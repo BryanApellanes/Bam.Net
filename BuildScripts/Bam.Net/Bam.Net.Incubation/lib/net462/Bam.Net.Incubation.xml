@@ -30,9 +30,18 @@
             A simple dependency injection container.
             </summary>
         </member>
+        <member name="M:Bam.Net.Incubation.Incubator.CombineWith(Bam.Net.Incubation.Incubator,System.Boolean)">
+            <summary>
+            Copy the values from the specified incubator to the current; the same as CopyFrom
+            </summary>
+            <param name="incubator">The incubator to copy from</param>
+            <param name="overwrite">If true, values in the current incubator
+            will be over written by values of the same types from the specified
+            incubator otherwise the current value will be kept</param>
+        </member>
         <member name="M:Bam.Net.Incubation.Incubator.CopyFrom(Bam.Net.Incubation.Incubator,System.Boolean)">
             <summary>
-            Copy the values from the specified incubator to the current
+            Copy the values from the specified incubator to the current; the same as CombineWith
             </summary>
             <param name="incubator">The incubator to copy from</param>
             <param name="overwrite">If true, values in the current incubator

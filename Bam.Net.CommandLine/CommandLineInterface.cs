@@ -418,7 +418,7 @@ namespace Bam.Net.CommandLine
         {
             OtherMenus.Add(menu);
         }
-
+        
         protected static void ShowMenu(Assembly assemblyToAnalyze, ConsoleMenu[] otherMenus, string headerText)
         {
             List<ConsoleInvokeableMethod> actions = GetConsoleInvokeableMethods<ConsoleAction>(assemblyToAnalyze);
@@ -628,20 +628,20 @@ namespace Bam.Net.CommandLine
         }
 
         static Action<string, ConsoleColor> _coloredMessageProvider;
+        static object _coloredMessageProviderLock = new object();
         static BackgroundThreadQueue<ConsoleMessage> _messageQueue;
         public static Action<string, ConsoleColor> ColoredMessageProvider
         {
             get
             {
-                if (_coloredMessageProvider == null)
+                return _coloredMessageProviderLock.DoubleCheckLock(ref _coloredMessageProvider, () =>
                 {
                     EnsureQueue();
-                    _coloredMessageProvider = (s, c) =>
+                    return _coloredMessageProvider = (s, c) =>
                     {
                         _messageQueue.Enqueue(new ConsoleMessage(s, c));
                     };
-                }
-                return _coloredMessageProvider;
+                });
             }
             set
             {
@@ -703,33 +703,19 @@ namespace Bam.Net.CommandLine
         {
             OutLine(message, ConsoleColor.Gray);
         }
-
-        static object _lineLock = new object();
+        
         public static void OutLine(string message, ConsoleColor color)
         {
-            lock (_lineLock)
-            {
-                Out(message, color);
-                Out();
-            }
+            Out($"{message}\r\n", color);
         }
 
         public static void OutLine(string message, ConsoleColor foreground, ConsoleColor background)
         {
-            lock (_lineLock)
-            {
-                Out(message, new ConsoleColorCombo(foreground, background));
-                Out();
-            }
+            Out($"{message}\r\n", new ConsoleColorCombo(foreground, background));
         }
-
         public static void OutLine(string message, ConsoleColorCombo colors)
         {
-            lock (_lineLock)
-            {
-                Out(message, colors);
-                Out();
-            }
+            Out($"{message}\r\n", colors);
         }
 
         public static void InvokeSelection(List<ConsoleInvokeableMethod> actions, string answer)
