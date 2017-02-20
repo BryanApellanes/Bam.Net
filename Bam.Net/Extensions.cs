@@ -857,11 +857,6 @@ namespace Bam.Net
             }
         }
 
-        //public static void AsyncEach<T>(this IEnumerable<T> values, dynamic context, Action<dynamic, T> action)
-        //{
-        // need async loop info { HowManyAtATime = 5}
-        //}
-
         public static void Each<T>(this IEnumerable<T> arr, dynamic context, Action<dynamic, T> action)
         {
             Each<T>(arr.ToArray(), context, action);
