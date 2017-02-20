@@ -33,6 +33,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.Logging.Data.CategoryName.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.CategoryName}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Logging.Data.CategoryName.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.CategoryName}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Logging.Data.CategoryName.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.CategoryNameColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.CategoryName}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.Logging.Data.CategoryName.Where(System.Func{Bam.Net.Logging.Data.CategoryNameColumns,Bam.Net.Data.QueryFilter{Bam.Net.Logging.Data.CategoryNameColumns}},Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.CategoryNameColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -249,6 +264,21 @@
             <param name="database">
             The database to load from or null
             </param>
+        </member>
+        <member name="M:Bam.Net.Logging.Data.ComputerName.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.ComputerName}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Logging.Data.ComputerName.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.ComputerName}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Logging.Data.ComputerName.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.ComputerNameColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.ComputerName}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
         </member>
         <member name="M:Bam.Net.Logging.Data.ComputerName.Where(System.Func{Bam.Net.Logging.Data.ComputerNameColumns,Bam.Net.Data.QueryFilter{Bam.Net.Logging.Data.ComputerNameColumns}},Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.ComputerNameColumns},Bam.Net.Data.Database)">
             <summary>
@@ -467,6 +497,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.Logging.Data.Event.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.Event}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Logging.Data.Event.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.Event}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Logging.Data.Event.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.EventColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.Event}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.Logging.Data.Event.Where(System.Func{Bam.Net.Logging.Data.EventColumns,Bam.Net.Data.QueryFilter{Bam.Net.Logging.Data.EventColumns}},Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.EventColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -683,6 +728,21 @@
             <param name="database">
             The database to load from or null
             </param>
+        </member>
+        <member name="M:Bam.Net.Logging.Data.EventParam.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.EventParam}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Logging.Data.EventParam.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.EventParam}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Logging.Data.EventParam.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.EventParamColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.EventParam}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
         </member>
         <member name="M:Bam.Net.Logging.Data.EventParam.Where(System.Func{Bam.Net.Logging.Data.EventParamColumns,Bam.Net.Data.QueryFilter{Bam.Net.Logging.Data.EventParamColumns}},Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.EventParamColumns},Bam.Net.Data.Database)">
             <summary>
@@ -901,6 +961,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.Logging.Data.Param.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.Param}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Logging.Data.Param.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.Param}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Logging.Data.Param.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.ParamColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.Param}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.Logging.Data.Param.Where(System.Func{Bam.Net.Logging.Data.ParamColumns,Bam.Net.Data.QueryFilter{Bam.Net.Logging.Data.ParamColumns}},Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.ParamColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -1117,6 +1192,21 @@
             <param name="database">
             The database to load from or null
             </param>
+        </member>
+        <member name="M:Bam.Net.Logging.Data.Signature.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.Signature}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Logging.Data.Signature.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.Signature}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Logging.Data.Signature.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.SignatureColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.Signature}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
         </member>
         <member name="M:Bam.Net.Logging.Data.Signature.Where(System.Func{Bam.Net.Logging.Data.SignatureColumns,Bam.Net.Data.QueryFilter{Bam.Net.Logging.Data.SignatureColumns}},Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.SignatureColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1335,6 +1425,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.Logging.Data.SourceName.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.SourceName}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Logging.Data.SourceName.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.SourceName}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Logging.Data.SourceName.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.SourceNameColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.SourceName}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.Logging.Data.SourceName.Where(System.Func{Bam.Net.Logging.Data.SourceNameColumns,Bam.Net.Data.QueryFilter{Bam.Net.Logging.Data.SourceNameColumns}},Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.SourceNameColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -1552,6 +1657,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.Logging.Data.UserName.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.UserName}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Logging.Data.UserName.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.UserName}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Logging.Data.UserName.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.UserNameColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.UserName}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.Logging.Data.UserName.Where(System.Func{Bam.Net.Logging.Data.UserNameColumns,Bam.Net.Data.QueryFilter{Bam.Net.Logging.Data.UserNameColumns}},Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.UserNameColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -1768,6 +1888,21 @@
             <param name="database">
             The database to load from or null
             </param>
+        </member>
+        <member name="M:Bam.Net.Logging.Data.LogEvent.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.LogEvent}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Logging.Data.LogEvent.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.LogEvent}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Logging.Data.LogEvent.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.LogEventColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.LogEvent}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
         </member>
         <member name="M:Bam.Net.Logging.Data.LogEvent.Where(System.Func{Bam.Net.Logging.Data.LogEventColumns,Bam.Net.Data.QueryFilter{Bam.Net.Logging.Data.LogEventColumns}},Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.LogEventColumns},Bam.Net.Data.Database)">
             <summary>

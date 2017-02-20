@@ -1,1 +1,9 @@
-Version 1.4.6
+Version 1.4.7
+ -  misc clean up and refactoring (33ca99d)
+ -  Merge branch 'three-headz' of github.com:BryanApellanes/Bam.Net into three-headz (359fce9)
+ -  wip (a87efa6)
+ -  remove shop (6a7cde3)
+ -  update tvg configs (53f8a54)
+ -  Merge pull request #57 from BryanApellanes/three-headz (b618c99)
+ -  Regenerate dao (0a6a1f3)
+ -  Merge pull request #56 from BryanApellanes/next (bb74c7d)

@@ -58,6 +58,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.Encryption.Vault.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Encryption.Vault}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Encryption.Vault.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Encryption.Vault}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Encryption.Vault.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Encryption.VaultColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Encryption.Vault}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.Encryption.Vault.Where(System.Func{Bam.Net.Encryption.VaultColumns,Bam.Net.Data.QueryFilter{Bam.Net.Encryption.VaultColumns}},Bam.Net.Data.OrderBy{Bam.Net.Encryption.VaultColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -295,6 +310,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.Encryption.VaultItem.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Encryption.VaultItem}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Encryption.VaultItem.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Encryption.VaultItem}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Encryption.VaultItem.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Encryption.VaultItemColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Encryption.VaultItem}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.Encryption.VaultItem.Where(System.Func{Bam.Net.Encryption.VaultItemColumns,Bam.Net.Data.QueryFilter{Bam.Net.Encryption.VaultItemColumns}},Bam.Net.Data.OrderBy{Bam.Net.Encryption.VaultItemColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -511,6 +541,21 @@
             <param name="database">
             The database to load from or null
             </param>
+        </member>
+        <member name="M:Bam.Net.Encryption.VaultKey.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Encryption.VaultKey}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Encryption.VaultKey.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Encryption.VaultKey}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Encryption.VaultKey.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Encryption.VaultKeyColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Encryption.VaultKey}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
         </member>
         <member name="M:Bam.Net.Encryption.VaultKey.Where(System.Func{Bam.Net.Encryption.VaultKeyColumns,Bam.Net.Data.QueryFilter{Bam.Net.Encryption.VaultKeyColumns}},Bam.Net.Data.OrderBy{Bam.Net.Encryption.VaultKeyColumns},Bam.Net.Data.Database)">
             <summary>

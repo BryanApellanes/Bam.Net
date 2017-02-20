@@ -19,6 +19,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.Analytics.Category.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Category}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Analytics.Category.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Category}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.Category.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.CategoryColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Category}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.Analytics.Category.Where(System.Func{Bam.Net.Analytics.CategoryColumns,Bam.Net.Data.QueryFilter{Bam.Net.Analytics.CategoryColumns}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.CategoryColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -235,6 +250,21 @@
             <param name="database">
             The database to load from or null
             </param>
+        </member>
+        <member name="M:Bam.Net.Analytics.ClickCounter.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.ClickCounter}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Analytics.ClickCounter.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.ClickCounter}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.ClickCounter.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.ClickCounterColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.ClickCounter}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
         </member>
         <member name="M:Bam.Net.Analytics.ClickCounter.Where(System.Func{Bam.Net.Analytics.ClickCounterColumns,Bam.Net.Data.QueryFilter{Bam.Net.Analytics.ClickCounterColumns}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.ClickCounterColumns},Bam.Net.Data.Database)">
             <summary>
@@ -453,6 +483,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.Analytics.Counter.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Counter}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Analytics.Counter.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Counter}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.Counter.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.CounterColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Counter}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.Analytics.Counter.Where(System.Func{Bam.Net.Analytics.CounterColumns,Bam.Net.Data.QueryFilter{Bam.Net.Analytics.CounterColumns}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.CounterColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -669,6 +714,21 @@
             <param name="database">
             The database to load from or null
             </param>
+        </member>
+        <member name="M:Bam.Net.Analytics.Crawler.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Crawler}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Analytics.Crawler.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Crawler}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.Crawler.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.CrawlerColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Crawler}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
         </member>
         <member name="M:Bam.Net.Analytics.Crawler.Where(System.Func{Bam.Net.Analytics.CrawlerColumns,Bam.Net.Data.QueryFilter{Bam.Net.Analytics.CrawlerColumns}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.CrawlerColumns},Bam.Net.Data.Database)">
             <summary>
@@ -887,6 +947,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.Analytics.CustomTimer.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.CustomTimer}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Analytics.CustomTimer.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.CustomTimer}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.CustomTimer.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.CustomTimerColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.CustomTimer}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.Analytics.CustomTimer.Where(System.Func{Bam.Net.Analytics.CustomTimerColumns,Bam.Net.Data.QueryFilter{Bam.Net.Analytics.CustomTimerColumns}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.CustomTimerColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -1103,6 +1178,21 @@
             <param name="database">
             The database to load from or null
             </param>
+        </member>
+        <member name="M:Bam.Net.Analytics.Domain.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Domain}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Analytics.Domain.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Domain}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.Domain.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.DomainColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Domain}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
         </member>
         <member name="M:Bam.Net.Analytics.Domain.Where(System.Func{Bam.Net.Analytics.DomainColumns,Bam.Net.Data.QueryFilter{Bam.Net.Analytics.DomainColumns}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.DomainColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1321,6 +1411,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.Analytics.Feature.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Feature}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Analytics.Feature.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Feature}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.Feature.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.FeatureColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Feature}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.Analytics.Feature.Where(System.Func{Bam.Net.Analytics.FeatureColumns,Bam.Net.Data.QueryFilter{Bam.Net.Analytics.FeatureColumns}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.FeatureColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -1537,6 +1642,21 @@
             <param name="database">
             The database to load from or null
             </param>
+        </member>
+        <member name="M:Bam.Net.Analytics.Fragment.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Fragment}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Analytics.Fragment.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Fragment}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.Fragment.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.FragmentColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Fragment}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
         </member>
         <member name="M:Bam.Net.Analytics.Fragment.Where(System.Func{Bam.Net.Analytics.FragmentColumns,Bam.Net.Data.QueryFilter{Bam.Net.Analytics.FragmentColumns}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.FragmentColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1755,6 +1875,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.Analytics.Image.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Image}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Analytics.Image.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Image}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.Image.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.ImageColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Image}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.Analytics.Image.Where(System.Func{Bam.Net.Analytics.ImageColumns,Bam.Net.Data.QueryFilter{Bam.Net.Analytics.ImageColumns}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.ImageColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -1971,6 +2106,21 @@
             <param name="database">
             The database to load from or null
             </param>
+        </member>
+        <member name="M:Bam.Net.Analytics.ImageTag.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.ImageTag}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Analytics.ImageTag.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.ImageTag}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.ImageTag.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.ImageTagColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.ImageTag}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
         </member>
         <member name="M:Bam.Net.Analytics.ImageTag.Where(System.Func{Bam.Net.Analytics.ImageTagColumns,Bam.Net.Data.QueryFilter{Bam.Net.Analytics.ImageTagColumns}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.ImageTagColumns},Bam.Net.Data.Database)">
             <summary>
@@ -2189,6 +2339,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.Analytics.LoadCounter.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.LoadCounter}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Analytics.LoadCounter.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.LoadCounter}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.LoadCounter.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.LoadCounterColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.LoadCounter}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.Analytics.LoadCounter.Where(System.Func{Bam.Net.Analytics.LoadCounterColumns,Bam.Net.Data.QueryFilter{Bam.Net.Analytics.LoadCounterColumns}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.LoadCounterColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -2405,6 +2570,21 @@
             <param name="database">
             The database to load from or null
             </param>
+        </member>
+        <member name="M:Bam.Net.Analytics.LoadTimer.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.LoadTimer}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Analytics.LoadTimer.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.LoadTimer}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.LoadTimer.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.LoadTimerColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.LoadTimer}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
         </member>
         <member name="M:Bam.Net.Analytics.LoadTimer.Where(System.Func{Bam.Net.Analytics.LoadTimerColumns,Bam.Net.Data.QueryFilter{Bam.Net.Analytics.LoadTimerColumns}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.LoadTimerColumns},Bam.Net.Data.Database)">
             <summary>
@@ -2623,6 +2803,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.Analytics.LoginCounter.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.LoginCounter}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Analytics.LoginCounter.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.LoginCounter}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.LoginCounter.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.LoginCounterColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.LoginCounter}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.Analytics.LoginCounter.Where(System.Func{Bam.Net.Analytics.LoginCounterColumns,Bam.Net.Data.QueryFilter{Bam.Net.Analytics.LoginCounterColumns}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.LoginCounterColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -2839,6 +3034,21 @@
             <param name="database">
             The database to load from or null
             </param>
+        </member>
+        <member name="M:Bam.Net.Analytics.MethodCounter.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.MethodCounter}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Analytics.MethodCounter.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.MethodCounter}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.MethodCounter.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.MethodCounterColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.MethodCounter}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
         </member>
         <member name="M:Bam.Net.Analytics.MethodCounter.Where(System.Func{Bam.Net.Analytics.MethodCounterColumns,Bam.Net.Data.QueryFilter{Bam.Net.Analytics.MethodCounterColumns}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.MethodCounterColumns},Bam.Net.Data.Database)">
             <summary>
@@ -3057,6 +3267,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.Analytics.MethodTimer.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.MethodTimer}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Analytics.MethodTimer.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.MethodTimer}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.MethodTimer.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.MethodTimerColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.MethodTimer}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.Analytics.MethodTimer.Where(System.Func{Bam.Net.Analytics.MethodTimerColumns,Bam.Net.Data.QueryFilter{Bam.Net.Analytics.MethodTimerColumns}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.MethodTimerColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -3273,6 +3498,21 @@
             <param name="database">
             The database to load from or null
             </param>
+        </member>
+        <member name="M:Bam.Net.Analytics.Path.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Path}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Analytics.Path.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Path}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.Path.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.PathColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Path}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
         </member>
         <member name="M:Bam.Net.Analytics.Path.Where(System.Func{Bam.Net.Analytics.PathColumns,Bam.Net.Data.QueryFilter{Bam.Net.Analytics.PathColumns}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.PathColumns},Bam.Net.Data.Database)">
             <summary>
@@ -3491,6 +3731,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.Analytics.Port.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Port}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Analytics.Port.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Port}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.Port.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.PortColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Port}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.Analytics.Port.Where(System.Func{Bam.Net.Analytics.PortColumns,Bam.Net.Data.QueryFilter{Bam.Net.Analytics.PortColumns}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.PortColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -3707,6 +3962,21 @@
             <param name="database">
             The database to load from or null
             </param>
+        </member>
+        <member name="M:Bam.Net.Analytics.Protocol.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Protocol}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Analytics.Protocol.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Protocol}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.Protocol.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.ProtocolColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Protocol}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
         </member>
         <member name="M:Bam.Net.Analytics.Protocol.Where(System.Func{Bam.Net.Analytics.ProtocolColumns,Bam.Net.Data.QueryFilter{Bam.Net.Analytics.ProtocolColumns}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.ProtocolColumns},Bam.Net.Data.Database)">
             <summary>
@@ -3925,6 +4195,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.Analytics.QueryString.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.QueryString}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Analytics.QueryString.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.QueryString}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.QueryString.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.QueryStringColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.QueryString}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.Analytics.QueryString.Where(System.Func{Bam.Net.Analytics.QueryStringColumns,Bam.Net.Data.QueryFilter{Bam.Net.Analytics.QueryStringColumns}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.QueryStringColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -4141,6 +4426,21 @@
             <param name="database">
             The database to load from or null
             </param>
+        </member>
+        <member name="M:Bam.Net.Analytics.Tag.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Tag}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Analytics.Tag.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Tag}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.Tag.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.TagColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Tag}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
         </member>
         <member name="M:Bam.Net.Analytics.Tag.Where(System.Func{Bam.Net.Analytics.TagColumns,Bam.Net.Data.QueryFilter{Bam.Net.Analytics.TagColumns}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.TagColumns},Bam.Net.Data.Database)">
             <summary>
@@ -4359,6 +4659,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.Analytics.Timer.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Timer}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Analytics.Timer.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Timer}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.Timer.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.TimerColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Timer}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.Analytics.Timer.Where(System.Func{Bam.Net.Analytics.TimerColumns,Bam.Net.Data.QueryFilter{Bam.Net.Analytics.TimerColumns}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.TimerColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -4575,6 +4890,21 @@
             <param name="database">
             The database to load from or null
             </param>
+        </member>
+        <member name="M:Bam.Net.Analytics.Url.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Url}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Analytics.Url.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Url}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.Url.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.UrlColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Url}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
         </member>
         <member name="M:Bam.Net.Analytics.Url.Where(System.Func{Bam.Net.Analytics.UrlColumns,Bam.Net.Data.QueryFilter{Bam.Net.Analytics.UrlColumns}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.UrlColumns},Bam.Net.Data.Database)">
             <summary>
@@ -4793,6 +5123,21 @@
             The database to load from or null
             </param>
         </member>
+        <member name="M:Bam.Net.Analytics.UrlTag.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.UrlTag}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Analytics.UrlTag.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.UrlTag}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.UrlTag.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.UrlTagColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.UrlTag}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.Analytics.UrlTag.Where(System.Func{Bam.Net.Analytics.UrlTagColumns,Bam.Net.Data.QueryFilter{Bam.Net.Analytics.UrlTagColumns}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.UrlTagColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -5009,6 +5354,21 @@
             <param name="database">
             The database to load from or null
             </param>
+        </member>
+        <member name="M:Bam.Net.Analytics.UserIdentifier.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.UserIdentifier}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Analytics.UserIdentifier.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.UserIdentifier}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.UserIdentifier.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.UserIdentifierColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.UserIdentifier}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
         </member>
         <member name="M:Bam.Net.Analytics.UserIdentifier.Where(System.Func{Bam.Net.Analytics.UserIdentifierColumns,Bam.Net.Data.QueryFilter{Bam.Net.Analytics.UserIdentifierColumns}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.UserIdentifierColumns},Bam.Net.Data.Database)">
             <summary>

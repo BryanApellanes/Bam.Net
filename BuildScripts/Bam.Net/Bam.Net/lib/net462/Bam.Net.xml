@@ -1328,7 +1328,7 @@
             <param name="handler"></param>
             <returns></returns>
         </member>
-        <member name="M:Bam.Net.ReflectionExtensions.Subscribe(System.Object,System.String,System.EventHandler)">
+        <member name="M:Bam.Net.ReflectionExtensions.Subscribe(System.Object,System.String,System.Delegate)">
             <summary>
             Subscribe the specified handler to the specified event
             </summary>
@@ -1337,7 +1337,7 @@
             <param name="handler"></param>
             <returns></returns>
         </member>
-        <member name="M:Bam.Net.ReflectionExtensions.Off``1(``0,System.String,System.EventHandler)">
+        <member name="M:Bam.Net.ReflectionExtensions.Off``1(``0,System.String,System.Delegate)">
             <summary>
             Unsubscribe the specified handler from the specified event 
             </summary>
@@ -1357,7 +1357,7 @@
             <param name="handler"></param>
             <returns></returns>
         </member>
-        <member name="M:Bam.Net.ReflectionExtensions.UnSubscribe``1(``0,System.String,System.EventHandler)">
+        <member name="M:Bam.Net.ReflectionExtensions.UnSubscribe``1(``0,System.String,System.Delegate)">
             <summary>
             Unsubscribe the specified handler from the specified event 
             </summary>
@@ -3014,6 +3014,15 @@
             <param name="action"></param>
             <returns></returns>
         </member>
+        <member name="M:Bam.Net.Exec.TakesTooLong(System.Action,System.Int32)">
+            <summary>
+            Returns true if the specified action takes longer than the
+            specified number of millisecondsToWait to finish executing
+            </summary>
+            <param name="action"></param>
+            <param name="millisecondsToWait"></param>
+            <returns></returns>
+        </member>
         <member name="M:Bam.Net.Exec.TakesTooLong``1(System.Func{``0},System.Func{``0,``0},System.Int32)">
             <summary>
             Returns true if the specified function takes longer to execute than the specified secondsToWait.
@@ -3022,7 +3031,7 @@
             specified callBack.</typeparam>
             <param name="function">The function to execute and time</param>
             <param name="callBack">The callBack to execute when function completes</param>
-            <param name="secondsToWait">The number of seconds to allow the function to execute before returning true</param>
+            <param name="millisecondsToWait">The number of seconds to allow the function to execute before returning true</param>
             <returns>boolean</returns>
         </member>
         <member name="M:Bam.Net.Exec.TakesTooLong``1(System.Func{System.Object,``0},System.Func{``0,``0},System.TimeSpan,System.Object,System.String)">

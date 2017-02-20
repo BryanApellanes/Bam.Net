@@ -4,7 +4,7 @@
         <name>Bam.Net.Javascript</name>
     </assembly>
     <members>
-        <member name="M:Bam.Net.Javascript.Extensions.Compress(System.String)">
+        <member name="M:Bam.Net.Javascript.Extensions.Minify(System.String)">
             <summary>
             Use YuiCompressor to compress the specified javascript
             </summary>
