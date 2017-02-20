@@ -88,7 +88,8 @@ SET VER={Ver}
 SET NEXT=END
 
 RMDIR /S /Q .\BuildOutput
-RMDIR /S /Q ..\..\Products\BUILD");
+RMDIR /S /Q ..\..\Products\BUILD
+DEL /F /Q .\BamDotExe\lib\%LIB%\*");
             string packData = "nuget pack Bam.Net.Data\\Bam.Net.Data.nuspec";
             string packDotExe = "nuget pack BamDotExe\\BamDotExe.nuspec";
             StringBuilder packScript = GetPackScriptStart();
@@ -101,6 +102,7 @@ RMDIR /S /Q ..\..\Products\BUILD");
             StringBuilder pushScript = new StringBuilder();
             pushScript.AppendLine("@echo on");
             pushScript.AppendLine($@"nuget push {NugetReleaseDirectory}BamToolkit.%1.nupkg");
+            pushScript.AppendLine($@"nuget push {NugetReleaseDirectory}BamDotExe.%1.nupkg");
 
             DirectoryInfo outputDir = new DirectoryInfo(GetOutputDirectory());
             using (StreamReader sr = new StreamReader(dllListPath))
