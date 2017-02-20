@@ -703,33 +703,19 @@ namespace Bam.Net.CommandLine
         {
             OutLine(message, ConsoleColor.Gray);
         }
-
-        static object _lineLock = new object();
+        
         public static void OutLine(string message, ConsoleColor color)
         {
-            lock (_lineLock)
-            {
-                Out(message, color);
-                Out();
-            }
+            Out($"{message}\r\n", color);
         }
 
         public static void OutLine(string message, ConsoleColor foreground, ConsoleColor background)
         {
-            lock (_lineLock)
-            {
-                Out(message, new ConsoleColorCombo(foreground, background));
-                Out();
-            }
+            Out($"{message}\r\n", new ConsoleColorCombo(foreground, background));
         }
-
         public static void OutLine(string message, ConsoleColorCombo colors)
         {
-            lock (_lineLock)
-            {
-                Out(message, colors);
-                Out();
-            }
+            Out($"{message}\r\n", colors);
         }
 
         public static void InvokeSelection(List<ConsoleInvokeableMethod> actions, string answer)
