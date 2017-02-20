@@ -628,20 +628,20 @@ namespace Bam.Net.CommandLine
         }
 
         static Action<string, ConsoleColor> _coloredMessageProvider;
+        static object _coloredMessageProviderLock = new object();
         static BackgroundThreadQueue<ConsoleMessage> _messageQueue;
         public static Action<string, ConsoleColor> ColoredMessageProvider
         {
             get
             {
-                if (_coloredMessageProvider == null)
+                return _coloredMessageProviderLock.DoubleCheckLock(ref _coloredMessageProvider, () =>
                 {
                     EnsureQueue();
-                    _coloredMessageProvider = (s, c) =>
+                    return _coloredMessageProvider = (s, c) =>
                     {
                         _messageQueue.Enqueue(new ConsoleMessage(s, c));
                     };
-                }
-                return _coloredMessageProvider;
+                });
             }
             set
             {
