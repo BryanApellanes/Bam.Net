@@ -91,48 +91,27 @@ namespace Bam.Net.Data.Repositories.Tests
         [UnitTest]
         public void WriteSchemaScriptTest()
         {
-            After.Setup((setup) =>
+            HashSet<Database> databases = DataTools.Setup(db =>
             {
-                setup.Set(DataTools.Setup(db =>
+                TryDrop(db, "Employee");
+                TryDrop(db, "Person");
+            }, "ExtendedDao");
+            TypeSchemaScriptWriter tssw = new TypeSchemaScriptWriter();
+            List<UnitTestResult> failures = new List<UnitTestResult>();
+            foreach(Database db in databases)
+            {
+                try
                 {
-                    TryDrop(db, "Employee");
-                    TryDrop(db, "Person");
-                }, "ExtendedDao"));
-            })
-            .WhenA<TypeSchemaScriptWriter>("writes a schema to each database", (typeSchemaScriptWriter, ctx) =>
-            {
-                List<UnitTestResult> results = new List<UnitTestResult>();
-                ctx.Get<HashSet<Database>>().Each(typeSchemaScriptWriter, (tssw, db) =>
+                    SqlStringBuilder sql = tssw.WriteSchemaScript(db, typeof(Employee));
+                    db.ExecuteSql(sql);
+                }
+                catch (Exception ex)
                 {
-                    try
-                    {
-                        string description = string.Format("Database Type: {0}", db.GetType().Name);
-                        SqlStringBuilder sql = tssw.WriteSchemaScript(db, typeof(Employee));
-                        db.ExecuteSql(sql);
-                        results.Add(new UnitTestResult(description, true));
-                    }
-                    catch (Exception ex)
-                    {
-                        results.Add(new UnitTestResult { Exception = ex.Message, StackTrace = ex.StackTrace, MethodName = nameof(WriteSchemaScriptTest) });
-                    }
-                });
-                ctx.Set(results);
-            })
-            .TheTest
-            .ShouldPass(because =>
-            {
-                var results = because.SetupContext.Get<List<UnitTestResult>>();
-                because.ItsTrue("no exceptions were thrown", results.Where(utr => utr.Passed == false).Count() == 0, $"exceptions were thrown: {string.Join("\r\n", results.Select(r => r.Exception).ToArray())}");
-            })
-            .SoBeHappy(ctx =>
-            {
-                ctx.Get<HashSet<Database>>().Each(db =>
-                {
-                    TryDrop(db, "Employee");
-                    TryDrop(db, "Person");
-                });
-            })
-            .UnlessItFailed();
+                    failures.Add(new UnitTestResult { Exception = ex.Message, Description = $"Database type: {db.GetType().Name}" });
+                }              
+            }
+
+            Expect.IsTrue(failures.Count == 0, string.Join("\r\n", failures.Select(r => $"{r.Description}\r\n{r.Exception}\r\n").ToArray()));
         }
 
         [UnitTest]
