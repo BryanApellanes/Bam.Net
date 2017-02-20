@@ -226,7 +226,7 @@ namespace Bam.Net.ServiceProxy
             }
             else
             {
-                string tmp = DoInvoke(args);// baseAddress, className, methodName, parameters);
+                string tmp = DoInvoke(args);
 
                 result = tmp;
                 LastResponse = result;
@@ -236,7 +236,7 @@ namespace Bam.Net.ServiceProxy
             return result;
         }
 
-        protected internal virtual string DoInvoke(ServiceProxyInvokeEventArgs args)// string baseAddress, string className, string methodName, object[] parameters)
+        protected internal virtual string DoInvoke(ServiceProxyInvokeEventArgs args)
         {
             string baseAddress = args.BaseAddress;
             string className = args.ClassName;
@@ -251,12 +251,12 @@ namespace Bam.Net.ServiceProxy
 
                 if (verb == ServiceProxyVerbs.POST)
                 {
-                    tmp = Post(args);// baseAddress, className, methodName, parameters);
+                    tmp = Post(args);
                 }
                 else
                 {
                     args.QueryStringParameters = queryStringParameters;
-                    tmp = Get(args);// baseAddress, className, methodName, queryStringParameters);
+                    tmp = Get(args);
                 }
                 return tmp;
             }
@@ -506,22 +506,14 @@ namespace Bam.Net.ServiceProxy
             return Get(new ServiceProxyInvokeEventArgs<T> { BaseAddress = baseAddress, ClassName = className, MethodName = methodName, QueryStringParameters = queryStringParameters });// baseAddress, className, methodName, queryStringParameters);
         }
 
-        protected virtual string Get(ServiceProxyInvokeEventArgs argsIn)// string baseAddress, string className, string methodName, string queryStringParameters)
+        protected virtual string Get(ServiceProxyInvokeEventArgs argsIn)
         {
-            ServiceProxyInvokeEventArgs<T> args = argsIn.CopyAs<ServiceProxyInvokeEventArgs<T>>();//new ServiceProxyInvokeEventArgs<T>
+            ServiceProxyInvokeEventArgs<T> args = argsIn.CopyAs<ServiceProxyInvokeEventArgs<T>>();
             args.Client = this;
             args.GenericClient = this;
             string className = args.ClassName;
             string methodName = args.MethodName;
             string queryStringParameters = args.QueryStringParameters;
-            //{
-            //    BaseAddress = baseAddress,
-            //    ClassName = className,
-            //    Client = this,
-            //    GenericClient = this,
-            //    MethodName = methodName,
-            //    QueryStringParameters = queryStringParameters
-            //};
             OnGetting(args);
             string result = string.Empty;
             if (args.CancelInvoke)
