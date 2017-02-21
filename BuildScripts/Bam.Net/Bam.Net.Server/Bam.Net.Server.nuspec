@@ -2,7 +2,7 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Server</id>
-    <version>1.4.7</version>
+    <version>1.4.8</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
@@ -12,26 +12,21 @@
 	Core Bam server allowing applications to self host outside of
 	IIS.  Simplifies distributed computing
 	</description>
-    <releaseNotes>Version 1.4.7
- -   clean up (2b98a64)
- -   always cache, refactor FileCache (6fe9803)
- -   refactor server for 6x performance improvement (1f09999)
- -   refactor (b8fa279)
- -   refactor file cache handling (a3d0049)
+    <releaseNotes>Version 1.4.8
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2017</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.4.7" />
-      <dependency id="Bam.Net.CommandLine" version="1.4.7" />
-      <dependency id="Bam.Net.Data" version="1.4.7" />
-      <dependency id="Bam.Net.Drawing" version="1.4.7" />
-      <dependency id="Bam.Net.Encryption" version="1.4.7" />
-      <dependency id="Bam.Net.Html" version="1.4.7" />
-      <dependency id="Bam.Net.Incubation" version="1.4.7" />
-      <dependency id="Bam.Net.Javascript" version="1.4.7" />
-      <dependency id="Bam.Net.ServiceProxy" version="1.4.7" />
-      <dependency id="Bam.Net.UserAccounts" version="1.4.7" />
-      <dependency id="Bam.Net.Yaml" version="1.4.7" />
+      <dependency id="Bam.Net" version="1.4.8" />
+      <dependency id="Bam.Net.CommandLine" version="1.4.8" />
+      <dependency id="Bam.Net.Data" version="1.4.8" />
+      <dependency id="Bam.Net.Drawing" version="1.4.8" />
+      <dependency id="Bam.Net.Encryption" version="1.4.8" />
+      <dependency id="Bam.Net.Html" version="1.4.8" />
+      <dependency id="Bam.Net.Incubation" version="1.4.8" />
+      <dependency id="Bam.Net.Javascript" version="1.4.8" />
+      <dependency id="Bam.Net.ServiceProxy" version="1.4.8" />
+      <dependency id="Bam.Net.UserAccounts" version="1.4.8" />
+      <dependency id="Bam.Net.Yaml" version="1.4.8" />
     </dependencies>
   </metadata>
 </package>
