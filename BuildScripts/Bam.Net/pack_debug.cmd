@@ -30,5 +30,4 @@ nuget pack Bam.Net.Testing\Bam.Net.Testing.nuspec
 nuget pack Bam.Net.UserAccounts\Bam.Net.UserAccounts.nuspec
 nuget pack Bam.Net.Yaml\Bam.Net.Yaml.nuspec
 nuget pack Bam.Net.ServiceProxy.Tests\Bam.Net.ServiceProxy.Tests.nuspec
-nuget pack Bam\Bam.nuspec
 call build_toolkit_debug.cmd

@@ -27,4 +27,3 @@ call copy_Bam.Net.Testing.cmd %1
 call copy_Bam.Net.UserAccounts.cmd %1
 call copy_Bam.Net.Yaml.cmd %1
 call copy_Bam.Net.ServiceProxy.Tests.cmd %1
-call copy_Bam.cmd %1

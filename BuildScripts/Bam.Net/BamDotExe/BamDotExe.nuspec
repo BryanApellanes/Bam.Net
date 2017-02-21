@@ -2,7 +2,7 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>BamDotExe</id>
-    <version>1.4.7</version>
+    <version>1.4.8</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
@@ -11,7 +11,8 @@
     <description>
 	All of the Bam framework merged into a single executable assembly
 	</description>
-    <releaseNotes>Version 1.4.7
+    <releaseNotes>Version 1.4.8
+ -   include bamdotexe in build, pack and push (00d92be)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2017</copyright>
     <dependencies />
