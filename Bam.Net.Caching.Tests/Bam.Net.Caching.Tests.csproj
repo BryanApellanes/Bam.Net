@@ -83,6 +83,14 @@
       <Project>{ca7f3115-848c-49ac-a0c3-f156afb6c844}</Project>
       <Name>Bam.Net.Data.Dynamic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.Repositories\Bam.Net.Data.Repositories.csproj">
+      <Project>{222EF625-A115-49C7-8BDB-5879725A7D17}</Project>
+      <Name>Bam.Net.Data.Repositories</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.Schema\Bam.Net.Data.Schema.csproj">
+      <Project>{d2c2b1c0-1047-4211-92fc-37f332861161}</Project>
+      <Name>Bam.Net.Data.Schema</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Data.SQLite\Bam.Net.Data.SQLite.csproj">
       <Project>{ae48f655-c3eb-49d6-98d3-42c428e39a1d}</Project>
       <Name>Bam.Net.Data.SQLite</Name>

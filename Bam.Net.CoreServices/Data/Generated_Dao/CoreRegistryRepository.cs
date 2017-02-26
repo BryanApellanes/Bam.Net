@@ -22,7 +22,7 @@ namespace Bam.Net.CoreServices.Data.Daos.Repository
 		public CoreRegistryRepository()
 		{
 			SchemaName = "CoreRegistry";
-			BaseNamespace = "Bam.Net.CoreServices.Data";			
+			DaoNamespace = "Bam.Net.CoreServices.Data";			
 ﻿			
 			AddType<Bam.Net.CoreServices.Data.Nic>();﻿			
 			AddType<Bam.Net.CoreServices.Data.Configuration>();﻿			

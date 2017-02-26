@@ -66,7 +66,7 @@ namespace troo
             string toNameSpace = genInfo.ToNameSpace;
 
             DaoRepository repo = new DaoRepository(new SQLiteDatabase(".", schemaName), new ConsoleLogger(), schemaName);
-            repo.BaseNamespace = toNameSpace;
+            repo.DaoNamespace = toNameSpace;
             repo.AddNamespace(typeAssembly, fromNameSpace);
             Assembly daoAssembly = repo.GenerateDaoAssembly(false);
             FileInfo fileInfo = daoAssembly.GetFileInfo();

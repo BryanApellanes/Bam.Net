@@ -265,6 +265,13 @@ namespace Bam.Net
             return principal.IsInRole(WindowsBuiltInRole.Administrator);
         }
 
+        public static IEnumerable<T> Cast<T>(this IEnumerable enumerable)
+        {
+            foreach (object o in enumerable)
+            {
+                yield return (T)o;
+            }
+        }
         public static IEnumerable<T> CopyAs<T>(this IEnumerable enumerable) where T : new()
         {
             foreach (object o in enumerable)
@@ -3387,10 +3394,10 @@ namespace Bam.Net
             return created;
         }
 
-        public static Dictionary<object, object> ToDictionary(this object instance)
+        public static Dictionary<string, object> ToDictionary(this object instance)
         {
             Type dyn = instance.GetType();
-            Dictionary<object, object> result = new Dictionary<object, object>();
+            Dictionary<string, object> result = new Dictionary<string, object>();
             foreach (PropertyInfo prop in dyn.GetProperties())
             {
                 result[prop.Name] = prop.GetValue(instance);

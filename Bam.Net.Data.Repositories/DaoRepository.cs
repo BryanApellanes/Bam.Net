@@ -19,7 +19,7 @@ namespace Bam.Net.Data.Repositories
     /// won't be populated).  To ensure full hydration of
     /// the values call Retrieve(id) or Retrieve(uuid).
     /// </summary>
-    public class DaoRepository : Repository, IGeneratesDaoAssembly, IHasTypeSchemaTempPathProvider
+    public class DaoRepository : Repository, IGeneratesDaoAssembly, IHasTypeSchemaTempPathProvider, IQueryFilterable
     {
         /// <summary>
         /// Create an instance of DaoRepository
@@ -40,9 +40,11 @@ namespace Bam.Net.Data.Repositories
                 FireEvent(GenerateDaoAssemblySucceeded, args);
             };
 
+            WrapByDefault = true;
             WarningsAsErrors = true;
             Logger = Log.Default;
         }
+
         public DaoRepository(Database database, ILogger logger = null, string schemaName = null)
             : this()
         {
@@ -65,7 +67,7 @@ namespace Bam.Net.Data.Repositories
         /// <summary>
         /// The namespace to place generated classes into
         /// </summary>
-        public string BaseNamespace
+        public string DaoNamespace
         {
             get
             {
@@ -113,6 +115,16 @@ namespace Bam.Net.Data.Repositories
             }
         }
 
+        /// <summary>
+        /// If true query results will be wrapped
+        /// to enable lazy loading of child collections;
+        /// the default is true.  Can cause a performance
+        /// hit for large result sets.
+        /// </summary>
+        public bool WrapByDefault
+        {
+            get;set;
+        }
 		public bool WarningsAsErrors
         {
             get { return TypeDaoGenerator.WarningsAsErrors; }
@@ -160,6 +172,7 @@ namespace Bam.Net.Data.Repositories
                 _daoAssembly = value;
             }
         }
+        
         protected EnsureSchemaStatus SchemaStatus { get; set; }
         /// <summary>
         /// Generates a Dao Assembly for the underlying 
@@ -364,7 +377,7 @@ namespace Bam.Net.Data.Repositories
         
 		public override IEnumerable<object> Query(string propertyName, object value)
 		{
-			return Query<object>(Bam.Net.Data.Query.Where(propertyName) == value);
+			return Query(DefaultType, Bam.Net.Data.Query.Where(propertyName) == value).CopyAs(DefaultType);
 		}
         
 		public override IEnumerable<T> Query<T>(Func<T, bool> predicate)
@@ -474,46 +487,40 @@ namespace Bam.Net.Data.Repositories
         
 		public override IEnumerable<T> Query<T>(QueryFilter query)
 		{
-			Type pocoType = typeof(T);            
+			Type pocoType = typeof(T);
             IEnumerable daoResults = Query(pocoType, query);
-            return Wrap<T>(daoResults);
-		}
+            return daoResults.Cast<T>();
+        }
 
         public override IEnumerable<object> Query(Type pocoType, QueryFilter query)
+        {
+            return Query(pocoType, query, WrapByDefault);
+        }
+
+        public IEnumerable<object> Query(Type pocoType, QueryFilter query, bool wrap)
         {
             Type daoType = GetDaoType(pocoType);
             MethodInfo whereMethod = daoType.GetMethod("Where", new Type[] { typeof(QueryFilter), typeof(Database) });
             IEnumerable daoResults = (IEnumerable)whereMethod.Invoke(null, new object[] { query, Database });
-            foreach (object daoResult in daoResults)
-            {
-                yield return ((Dao)daoResult).ToJsonSafe();
-            }
+            
+            return wrap ? Wrap(pocoType, daoResults): daoResults.CopyAs(pocoType);
         }
         #endregion
 
-        public IEnumerable<T> Wrap<T>(IEnumerable values) where T : new()
-        {
-            Type wrapperType = GetWrapperType<T>();
-            foreach (object value in values)
-            {
-                yield return (T)value.CopyAs(wrapperType, this);
-            }
-        }
-
         public IEnumerable<T> Top<T>(int count, QueryFilter query) where T : new()
         {
-            return Top(count, typeof(T), query).CopyAs<T>();
+            return Top(count, typeof(T), query).Cast<T>();
         }
-
         public IEnumerable Top(int count, Type pocoType, QueryFilter query)
+        {
+            return Top(count, pocoType, query, WrapByDefault);
+        }
+        public IEnumerable Top(int count, Type pocoType, QueryFilter query, bool wrap)
         {
             Type daoType = GetDaoType(pocoType);
             MethodInfo topMethod = daoType.GetMethod("Top", new Type[] { typeof(int), typeof(QueryFilter), typeof(Database) });
             IEnumerable daoResults = (IEnumerable)topMethod.Invoke(null, new object[] { count, query, Database });
-            foreach(object daoResult in daoResults)
-            {
-                yield return ((Dao)daoResult).ToJsonSafe();
-            }
+            return wrap ? Wrap(pocoType, daoResults) : daoResults.CopyAs(pocoType);
         }
 
 		public Type GetDaoType(Type pocoType)
@@ -569,11 +576,18 @@ namespace Bam.Net.Data.Repositories
 			return result;
 		}
 
-        public IEnumerable<T> Wrap<T>(IEnumerable<T> values)
+        public IEnumerable<object> Wrap(Type baseType, IEnumerable daoInstances)
         {
-            foreach(T value in values)
+            foreach (object value in daoInstances)
             {
-                yield return Wrap<T>(value);
+                yield return GetWrapperInstance(baseType, (Dao)value);
+            }
+        }
+        public IEnumerable<T> Wrap<T>(IEnumerable daoInstances) where T : new()
+        {
+            foreach (object value in daoInstances)
+            {
+                yield return (T)GetWrapperInstance(typeof(T), (Dao)value);
             }
         }
 
@@ -587,11 +601,6 @@ namespace Bam.Net.Data.Repositories
         public T Wrap<T>(T baseInstance)
         {
             return (T)Wrap(typeof(T), baseInstance);
-        }
-
-        public object Wrap(object instance)
-        {
-            return Wrap(instance.GetType(), instance);
         }
 
         /// <summary>
@@ -609,11 +618,6 @@ namespace Bam.Net.Data.Repositories
 
             return result;
         }
-
-        public T ConstructWrapper<T>()
-		{
-			return (T)ConstructWrapper(typeof(T));
-		}
 
 		public object ConstructWrapper(Type baseType)
 		{
@@ -716,8 +720,7 @@ namespace Bam.Net.Data.Repositories
 			}
 			return result;
 		}
-
-
+        
 		public IEnumerable<TChildType> ForeignKeyCollectionLoader<TChildType>(object poco) where TChildType : new() // this is used by generated code; JIT compiler can't tell
 		{
 			// get all the child types where the foreign key property value equals the parent id
@@ -843,15 +846,6 @@ namespace Bam.Net.Data.Repositories
             return GetDaoInstanceByMethod("GetById", baseOrWrapperType, (object)id);
         }
 
-        private object GetWrapperInstance(Type objectType, Dao daoInstance)
-		{
-			object result = ConstructWrapper(objectType);
-			result.CopyProperties(daoInstance);
-			SetParentProperties(result);
-
-            return result;
-		}
-
 		private Dao GetDaoInstanceById<T>(long id) where T : new()
 		{
 			return GetDaoInstanceById(typeof(T), id);
@@ -891,11 +885,6 @@ namespace Bam.Net.Data.Repositories
             {
                 LogAndThrow(ex, Logger);
             }
-		}
-
-		private Type GetDaoType<T>() where T : new()
-		{
-			return GetDaoType(typeof(T));
 		}
 
 		private void SetXrefDaoCollectionValues(object pocoOrPocoParent, Dao daoInstance, PropertyInfo daoXrefProperty, PropertyInfo pocoProperty)
@@ -943,6 +932,31 @@ namespace Bam.Net.Data.Repositories
 			return dto;
 		}
 		
+        private static QueryFilter CreateQueryFilter(Dictionary<string, object> queryParameters)
+        {
+            Args.ThrowIf<ArgumentException>(queryParameters.Count == 0, "No query parameters specified");
+
+            string first = queryParameters.Keys.First();
+            QueryFilter filter = new QueryFilter(first) == queryParameters[first];
+            if (queryParameters.Keys.Count > 1)
+            {
+                queryParameters.Keys.Rest(1, property =>
+                {
+                    filter.And(new QueryFilter(property) == queryParameters[property]);
+                });
+            }
+            return filter;
+        }
+
+        private object GetWrapperInstance(Type objectType, Dao daoInstance)
+        {
+            object result = ConstructWrapper(objectType);
+            result.CopyProperties(daoInstance);
+            SetParentProperties(result);
+
+            return result;
+        }
+
         private void WarnRetrieveAll<T>() where T : class, new()
         {
             Type type = typeof(T);
@@ -960,22 +974,6 @@ namespace Bam.Net.Data.Repositories
                 message = string.Format("{0}\r\n\r\nTo suppress this exception set WarningsAsErrors to false", message);
                 Args.Throw<InvalidOperationException>(message);
             }
-        }
-        
-        private static QueryFilter CreateQueryFilter(Dictionary<string, object> queryParameters)
-        {
-            Args.ThrowIf<ArgumentException>(queryParameters.Count == 0, "No query parameters specified");
-
-            string first = queryParameters.Keys.First();
-            QueryFilter filter = new QueryFilter(first) == queryParameters[first];
-            if (queryParameters.Keys.Count > 1)
-            {
-                queryParameters.Keys.Rest(1, property =>
-                {
-                    filter.And(new QueryFilter(property) == queryParameters[property]);
-                });
-            }
-            return filter;
         }
 
         private static void LogAndThrow(Exception ex, ILogger logger)
