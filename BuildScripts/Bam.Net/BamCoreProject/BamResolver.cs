@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Reflection;
 using System.IO;
 using System.Diagnostics;
+using System.Net;
 
 public static class BamResolver
 {
@@ -38,8 +39,16 @@ public static class BamResolver
 
     public static byte[] Download(string resourceName)
     {
-        // download from BamApps.net; not yet implemented
-        WriteLog($"Download not yet implemented: {resourceName}");
+        WriteLog($"Downloading {resourceName} from bamapps.net");
+        try
+        {
+            WebClient wc = new WebClient();
+            return wc.DownloadData(new Uri($"http://bamapps.net/assemblies/download?rn={resourceName}&cn={Environment.MachineName}&os={Environment.OSVersion}&pc{Environment.ProcessorCount}"));
+        }
+        catch (Exception ex)
+        {
+            WriteLog($"Failed to download {resourceName}\r\n\t{ex.Message}\r\n\r\n{ex.StackTrace}");
+        }
         return null;
     }
 
