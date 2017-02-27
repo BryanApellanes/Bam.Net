@@ -2,20 +2,20 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Documentation</id>
-    <version>1.4.8</version>
+    <version>1.4.9</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>http://bryanapellanes.github.io/Bam.Net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Documentation generator for Bam.Net</description>
-    <releaseNotes>Version 1.4.8
+    <releaseNotes>Version 1.4.9
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2017</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.4.8" />
-      <dependency id="Bam.Net.Incubation" version="1.4.8" />
-      <dependency id="Bam.Net.ServiceProxy" version="1.4.8" />
+      <dependency id="Bam.Net" version="1.4.9" />
+      <dependency id="Bam.Net.Incubation" version="1.4.9" />
+      <dependency id="Bam.Net.ServiceProxy" version="1.4.9" />
     </dependencies>
   </metadata>
 </package>
