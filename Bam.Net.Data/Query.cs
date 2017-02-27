@@ -180,6 +180,8 @@ namespace Bam.Net.Data
             IQueryFilter queryFilter = (IQueryFilter)FilterDelegate.DynamicInvoke(columns);
             // TODO: add FilterInspector operations here
             //  add FilterInspector to Database definition
+            //  this can be useful to advise where indexes
+            //  might be necessary or helpful
             return GetSqlStringBuilder(db).Where(queryFilter);
         }
 

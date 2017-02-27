@@ -328,20 +328,17 @@ namespace Bam.Net.Data
         {
             if (obj != null)
             {
-                QueryFilter o = obj as QueryFilter;
-                if (o != null)
+                try
                 {
+                    QueryFilter o = (QueryFilter)obj;
                     return o.Parse().Equals(this.Parse());
                 }
-                else
+                catch
                 {
-                    return base.Equals(obj);
+                    return false;
                 }
             }
-            else
-            {
-                return base.Equals(obj);
-            }
+            return false;
         }
 
         public override int GetHashCode()

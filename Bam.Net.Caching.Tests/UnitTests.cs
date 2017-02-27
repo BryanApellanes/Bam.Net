@@ -14,6 +14,8 @@ using Bam.Net.Testing;
 using Bam.Net.CommandLine;
 using System.IO;
 using Bam.Net.Caching.File;
+using System.Threading;
+using Bam.Net.Data.Repositories;
 
 namespace Bam.Net.Caching.Tests
 {
@@ -126,5 +128,207 @@ namespace Bam.Net.Caching.Tests
             OutLineFormat("Time from cache: {0}\r\n", fromCacheTime.ToString());
         }
 
+        [UnitTest]
+        public void NowIsDifferentEachTime()
+        {
+            DateTime then = DateTime.UtcNow;
+            Thread.Sleep(300);
+            DateTime now  = DateTime.UtcNow;
+            Expect.IsFalse(now.Equals(then));
+        }
+
+        [UnitTest]
+        public void QueryCacheTest()
+        {
+            SQLiteDatabase db = new SQLiteDatabase(nameof(QueryCacheTest));
+            DaoRepository repo = new DaoRepository(db);
+            repo.AddType<TestMonkey>();
+            string name = 8.RandomLetters();
+            TestMonkey data = new TestMonkey { Name = name };
+            repo.Save(data);
+            QueryCache cache = new QueryCache();
+            bool reloaded = false;
+            cache.Reloaded += (o, c) => reloaded = true;
+            IEnumerable<object> results = cache.Results(typeof(TestMonkey), repo, Filter.Where("Name") == name);
+            Expect.IsTrue(reloaded);
+            reloaded = false;
+            results = cache.Results(typeof(TestMonkey), repo, Filter.Where("Name") == name);
+            Expect.IsFalse(reloaded);
+            Expect.AreEqual(1, results.Count());
+        }
+
+        [UnitTest]
+        public void CachingRepoQueryDynamicParameterTest()
+        {
+            DaoRepository daoRepo;
+            CachingRepository cachingRepo;
+            GetRepos(nameof(CachingRepoQueryDynamicParameterTest), out daoRepo, out cachingRepo);
+            string name = 6.RandomLetters();
+            TestMonkey data = new TestMonkey { Name = name };
+            daoRepo.Save(data);
+            object result = cachingRepo.Query(new { Type = typeof(TestMonkey), Name = name }).First();
+            Expect.IsNotNull(result);
+            Expect.AreEqual(typeof(TestMonkey), result.GetType());
+            Expect.CanCast<TestMonkey>(result);
+        }
+
+        [UnitTest]
+        public void CachingRepoQueryStringParameterTest()
+        {
+            DaoRepository daoRepo;
+            CachingRepository cachingRepo;
+            GetRepos(nameof(CachingRepoQueryStringParameterTest), out daoRepo, out cachingRepo);
+            string name = 6.RandomLetters();
+            TestMonkey data = new TestMonkey { Name = name };
+            daoRepo.Save(data);
+            object result = cachingRepo.Query("Name", name).First();
+            Expect.IsNotNull(result);
+            Expect.AreEqual(typeof(TestMonkey), result.GetType());
+            Expect.CanCast<TestMonkey>(result);
+        }
+
+        [UnitTest]
+        public void CachingRepoQueryTypeDictionaryParameterTest()
+        {
+            DaoRepository daoRepo;
+            CachingRepository cachingRepo;
+            GetRepos(nameof(CachingRepoQueryStringParameterTest), out daoRepo, out cachingRepo);
+            string name = 6.RandomLetters();
+            TestMonkey data = new TestMonkey { Name = name };
+            daoRepo.Save(data);
+            object result = cachingRepo.Query(typeof(TestMonkey), new Dictionary<string, object>()
+            {
+                { "Name", name}
+            }).First();
+            Expect.IsNotNull(result);
+            Expect.AreEqual(typeof(TestMonkey), result.GetType());
+            Expect.CanCast<TestMonkey>(result);
+        }
+        [UnitTest]
+        public void CachingRepoQueryGenericTypeDictionaryParameterTest()
+        {
+            DaoRepository daoRepo;
+            CachingRepository cachingRepo;
+            GetRepos(nameof(CachingRepoQueryStringParameterTest), out daoRepo, out cachingRepo);
+            string name = 6.RandomLetters();
+            TestMonkey data = new TestMonkey { Name = name };
+            daoRepo.Save(data);
+            object result = cachingRepo.Query<TestMonkey>(new Dictionary<string, object>()
+            {
+                { "Name", name}
+            }).First();
+            Expect.IsNotNull(result);
+            Expect.AreEqual(typeof(TestMonkey), result.GetType());
+            Expect.CanCast<TestMonkey>(result);
+        }
+        [UnitTest]
+        public void CachingRepoQueryGenericTypeDynamicParameterTest()
+        {
+            DaoRepository daoRepo;
+            CachingRepository cachingRepo;
+            GetRepos(nameof(CachingRepoQueryStringParameterTest), out daoRepo, out cachingRepo);
+            string name = 6.RandomLetters();
+            TestMonkey data = new TestMonkey { Name = name };
+            daoRepo.Save(data);
+            object result = cachingRepo.Query<TestMonkey>(new { Name = name }).First();
+            Expect.IsNotNull(result);
+            Expect.AreEqual(typeof(TestMonkey), result.GetType());
+            Expect.CanCast<TestMonkey>(result);
+        }
+        [UnitTest]
+        public void CachingRepoQueryGenericTypeFuncParameterTest()
+        {
+            DaoRepository daoRepo;
+            CachingRepository cachingRepo;
+            GetRepos(nameof(CachingRepoQueryStringParameterTest), out daoRepo, out cachingRepo);
+            string name = 6.RandomLetters();
+            TestMonkey data = new TestMonkey { Name = name };
+            daoRepo.Save(data);
+            object result = cachingRepo.Query<TestMonkey>((o) => o.Name.Equals(name)).First();
+            Expect.IsNotNull(result);
+            Expect.AreEqual(typeof(TestMonkey), result.GetType());
+            Expect.CanCast<TestMonkey>(result);
+        }
+
+        [UnitTest]
+        public void CachingRepoQueryTypeDynamicParameterTest()
+        {
+            DaoRepository daoRepo;
+            CachingRepository cachingRepo;
+            GetRepos(nameof(CachingRepoQueryStringParameterTest), out daoRepo, out cachingRepo);
+            string name = 6.RandomLetters();
+            TestMonkey data = new TestMonkey { Name = name };
+            daoRepo.Save(data);
+            object result = cachingRepo.Query(typeof(TestMonkey), new { Name = name }).First();
+            Expect.IsNotNull(result);
+            Expect.AreEqual(typeof(TestMonkey), result.GetType());
+            Expect.CanCast<TestMonkey>(result);
+        }
+
+        [UnitTest]
+        public void CachingRepoQueryTypeFuncParameterTest()
+        {
+            DaoRepository daoRepo;
+            CachingRepository cachingRepo;
+            GetRepos(nameof(CachingRepoQueryStringParameterTest), out daoRepo, out cachingRepo);
+            string name = 6.RandomLetters();
+            TestMonkey data = new TestMonkey { Name = name };
+            daoRepo.Save(data);
+            object result = cachingRepo.Query(typeof(TestMonkey), (o)=> o.Property("Name").ToString() == name).First();
+            
+            Expect.IsNotNull(result);
+            Expect.AreEqual(typeof(TestMonkey), result.GetType());
+            Expect.CanCast<TestMonkey>(result);
+
+            object result2 = cachingRepo.Query(typeof(TestMonkey), (o) => o.Property("Name").ToString().Equals(name)).First();
+            Expect.IsNotNull(result2);
+            Expect.AreEqual(typeof(TestMonkey), result2.GetType());
+            Expect.CanCast<TestMonkey>(result2);
+        }
+
+        [UnitTest]
+        public void CachingRepoQueryTypeQueryFilterTest()
+        {
+            DaoRepository daoRepo;
+            CachingRepository cachingRepo;
+            GetRepos(nameof(CachingRepoQueryStringParameterTest), out daoRepo, out cachingRepo);
+            string name = 6.RandomLetters();
+            TestMonkey data = new TestMonkey { Name = name };
+            daoRepo.Save(data);
+            object result = cachingRepo.Query(typeof(TestMonkey), QueryFilter.Where("Name") == name).ToArray().First();
+            Expect.IsNotNull(result);
+            Expect.AreEqual(typeof(TestMonkey), result.GetType());
+            Expect.CanCast<TestMonkey>(result);
+        }
+
+        [UnitTest]
+        public void CachingRepoQueryGenericQueryFilterTest()
+        {
+            DaoRepository daoRepo;
+            CachingRepository cachingRepo;
+            GetRepos(nameof(CachingRepoQueryStringParameterTest), out daoRepo, out cachingRepo);
+            string name = 6.RandomLetters();
+            TestMonkey data = new TestMonkey { Name = name };
+            daoRepo.Save(data);
+            object result = cachingRepo.Query<TestMonkey>(QueryFilter.Where("Name") == name).ToArray().First();
+            Expect.IsNotNull(result);
+            Expect.AreEqual(typeof(TestMonkey), result.GetType());
+            Expect.CanCast<TestMonkey>(result);
+        }
+        private void GetRepos(string dbName, out DaoRepository daoRepo, out CachingRepository cachingRepo)
+        {
+            SQLiteDatabase db = new SQLiteDatabase(dbName);
+            daoRepo = new DaoRepository(db);
+            daoRepo.DaoNamespace = $"{typeof(TestMonkey).Namespace}.Dao";
+            daoRepo.WarningsAsErrors = false;
+            daoRepo.AddType<TestMonkey>();
+            cachingRepo = new CachingRepository(daoRepo);
+        }
+    }
+
+    [Serializable]
+    public class TestMonkey : RepoData
+    {
+        public string Name { get; set; }
     }
 }

@@ -68,6 +68,7 @@
     <Compile Include="CacheItem.cs" />
     <Compile Include="CacheManager.cs" />
     <Compile Include="CacheManagerEventArgs.cs" />
+    <Compile Include="CachingRepositoryEventArgs.cs" />
     <Compile Include="DeleteNotSupportedException.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="File\BinaryFileCache.cs" />
@@ -79,6 +80,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CachingRepository.cs" />
     <Compile Include="File\FileCache.cs" />
+    <Compile Include="QueryCache.cs" />
+    <Compile Include="QueryCacheEventArgs.cs" />
+    <Compile Include="QueryContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bam.Net.CommandLine\Bam.Net.CommandLine.csproj">

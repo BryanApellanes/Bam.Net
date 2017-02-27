@@ -122,6 +122,7 @@
     <Compile Include="DatabaseExtensions.cs" />
     <Compile Include="IBaseCrudProvider.cs" />
     <Compile Include="ICrudResponseProvider.cs" />
+    <Compile Include="IQueryFilterable.cs" />
     <Compile Include="IRepositoryPathProvider.cs" />
     <Compile Include="IStorableTypesProvider.cs" />
     <Compile Include="NamespaceStorableTypesProvider.cs" />

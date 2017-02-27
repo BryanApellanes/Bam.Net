@@ -62,6 +62,20 @@ namespace Bam.Net
             }
         }
 
+        public static T CanCast<T>(object instance, string message = null)
+        {
+            try
+            {
+                return (T)instance;
+            }
+            catch (Exception ex)
+            {
+                string o = instance == null ? "[null]" : instance.GetType().Name;
+                string exceptionMessage = message == null ? $"Couldn't cast object {o} to type {typeof(T).Name}: {ex.Message}" : $"{message}: {ex.Message}";
+                throw new ExpectFailedException(exceptionMessage);
+            }
+        }
+
         /// <summary>
         /// Executes the specified actionThatThrowsException action passing the exception to the specified 
         /// catchDelegate and throws an ExpectFailedException if the actionThatThrowsException doesn't

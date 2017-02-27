@@ -320,9 +320,17 @@
             <param name="tableNameProvider"></param>
             <param name="schemaTempPathProvider"></param>
         </member>
-        <member name="P:Bam.Net.Data.Repositories.DaoRepository.BaseNamespace">
+        <member name="P:Bam.Net.Data.Repositories.DaoRepository.DaoNamespace">
             <summary>
             The namespace to place generated classes into
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.DaoRepository.WrapByDefault">
+            <summary>
+            If true query results will be wrapped
+            to enable lazy loading of child collections;
+            the default is true.  Can cause a performance
+            hit for large result sets.
             </summary>
         </member>
         <member name="M:Bam.Net.Data.Repositories.DaoRepository.EnsureDaoAssemblyAndSchema(System.Boolean)">
@@ -741,6 +749,13 @@
             </summary>
             <param name="parentType"></param>
             <returns></returns>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.Repository.DefaultType">
+            <summary>
+            If a non typed query is executed the DefaultType
+            can be used by specific Repository implementations
+            to advise which Type to query and return
+            </summary>
         </member>
         <member name="M:Bam.Net.Data.Repositories.Repository.AddType``1">
             <summary>

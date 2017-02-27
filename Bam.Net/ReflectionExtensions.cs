@@ -118,6 +118,16 @@ namespace Bam.Net
             return (T)instance.GetType().GetMethod(methodName, args.Select(a => a.GetType()).ToArray()).Invoke(instance, args);
         }
 
+        /// <summary>
+        /// Invoke the specified generic method with generic argument type TArg
+        /// returning object of type T
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TArg"></typeparam>
+        /// <param name="instance"></param>
+        /// <param name="methodName"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public static T InvokeGeneric<T, TArg>(this object instance, string methodName, params object[] args)
         {
             Args.ThrowIfNull(instance, "instance");

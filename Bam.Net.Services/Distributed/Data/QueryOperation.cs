@@ -22,13 +22,13 @@ namespace Bam.Net.Services.Distributed.Data
             return For(type, ((object)queryProperties).ToDictionary());
         }
 
-        public static QueryOperation For(Type type, Dictionary<object, object> properties)
+        public static QueryOperation For(Type type, Dictionary<string, object> properties)
         {
             QueryOperation operation = For<QueryOperation>(type);
             operation.Properties = new List<DataProperty>();
             properties.Keys.Each(key =>
             {
-                operation.Properties.Add(new DataProperty { Name = key.ToString(), Value = properties[key] });
+                operation.Properties.Add(new DataProperty { Name = key, Value = properties[key] });
             });
             return operation;
         }

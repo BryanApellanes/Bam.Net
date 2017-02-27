@@ -1278,6 +1278,18 @@
             <param name="methodName"></param>
             <param name="args"></param>
         </member>
+        <member name="M:Bam.Net.ReflectionExtensions.InvokeGeneric``2(System.Object,System.String,System.Object[])">
+            <summary>
+            Invoke the specified generic method with generic argument type TArg
+            returning object of type T
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="TArg"></typeparam>
+            <param name="instance"></param>
+            <param name="methodName"></param>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
         <member name="M:Bam.Net.ReflectionExtensions.Invoke(System.Object,System.String,System.Object[])">
             <summary>
             Invoke the specified method on the specified instance 

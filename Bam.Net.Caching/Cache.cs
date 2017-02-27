@@ -178,10 +178,14 @@ namespace Bam.Net.Caching
         public IEnumerable<T> Query<T>(Func<T, bool> predicate, Func<IEnumerable<T>> sourceRetriever)
         {
             IEnumerable<T> results = Query<T>(predicate);
-            if(results.Count() == 0)
+            if (results.Count() == 0)
             {
                 results = sourceRetriever();
                 Add(results);
+            }
+            else
+            {
+                Task.Run(() => Add(sourceRetriever()));
             }
             return results;
         }
@@ -410,18 +414,18 @@ namespace Bam.Net.Caching
 			_groomerThread.Join(3000);
 		}
 
-		private void SetCollectionsAndLookup()
-		{
-			List<CacheItem> itemsByHits = new List<CacheItem>(Items);
+        private void SetCollectionsAndLookup()
+        {
+            List<CacheItem> itemsByHits = new List<CacheItem>(Items);
             itemsByHits.Sort((x, y) => y.Hits.CompareTo(x.Hits));
 
             List<CacheItem> itemsByMisses = new List<CacheItem>(Items);
-			itemsByMisses = new List<CacheItem>(Items);
-			itemsByMisses.Sort((x, y) => x.Misses.CompareTo(y.Misses));
+            itemsByMisses = new List<CacheItem>(Items);
+            itemsByMisses.Sort((x, y) => x.Misses.CompareTo(y.Misses));
 
             HashSet<CacheItem> itemsCopy = new HashSet<CacheItem>(Items);
-			Dictionary<long, CacheItem> itemsById = itemsCopy.ToDictionary(ci => ci.Id);
-			Dictionary<string, CacheItem> itemsByUuid = itemsCopy.ToDictionary(ci => ci.Uuid);
+            Dictionary<long, CacheItem> itemsById = itemsCopy.ToDictionary(ci => ci.Id);
+            Dictionary<string, CacheItem> itemsByUuid = itemsCopy.ToDictionary(ci => ci.Uuid);
 
             ItemsByHits = itemsByHits;
             ItemsByMisses = itemsByMisses;
