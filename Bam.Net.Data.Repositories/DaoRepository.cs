@@ -226,7 +226,7 @@ namespace Bam.Net.Data.Repositories
                             throw new InvalidOperationException("No types were specified.  Call AddType for each type to store.");
                         }
                         isInitialized = true;
-                        StorableTypes.Each(type => TypeDaoGenerator.AddType(type));
+                        TypeDaoGenerator.AddTypes(StorableTypes);
                     }
                 }
             }

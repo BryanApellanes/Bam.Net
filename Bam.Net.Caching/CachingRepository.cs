@@ -182,6 +182,12 @@ namespace Bam.Net.Caching
 
 		public string PropertyName { get; set; }
 		public string Value { get; set; }
+        /// <summary>
+        /// Event that fires when a non typed query is executed.  Used as a 
+        /// warning that the type cannot be determined and will have to be
+        /// resolved by the caller
+        /// </summary>
+        public event EventHandler<CachingRepositoryEventArgs> TypelessQuery;
 
         /// <summary>
         /// Query the cache and the SourceRepository and return the results
@@ -189,7 +195,7 @@ namespace Bam.Net.Caching
         /// <typeparam name="T"></typeparam>
         /// <param name="query"></param>
         /// <returns></returns>
-		public override IEnumerable<T> Query<T>(Func<T, bool> predicate)
+        public override IEnumerable<T> Query<T>(Func<T, bool> predicate)
         {
             Cache cache = _cacheManager.CacheFor<T>();
             Task<HashSet<T>> cacheResults = Task.Run(() => QueryCache<T>(predicate));
@@ -199,15 +205,7 @@ namespace Bam.Net.Caching
             HashSet<T> results = HandleResults(cache, resultsHashes.Result);
             return results;
         }
-        public Task<IEnumerable<T>> CacheAsync<T>(Type type, Func<T, bool> predicate)
-        {
-            return Task.Run(() => Cache<T>(type, predicate));
-        }
-        public IEnumerable<T> Cache<T>(Type type, Func<T, bool> predicate)
-        {
-            Cache cache = _cacheManager.CacheFor(type);
-            return HandleResults(cache, new HashSet<T>(DelegateGenericOrThrow<IEnumerable<T>, T>("Query", predicate)));
-        }
+
         public override IEnumerable<object> Query(Type type, Func<object, bool> predicate)
         {
             Cache cache = _cacheManager.CacheFor(type);
@@ -217,15 +215,7 @@ namespace Bam.Net.Caching
             resultsHashes.Wait();
             return HandleResults(cache, resultsHashes.Result);
         }
-        public Task<IEnumerable<object>> CacheAysync(Type type, Func<object, bool> predicate)
-        {
-            return Task.Run(() => Cache(type, predicate));
-        }
-        public IEnumerable<object> Cache(Type type, Func<object, bool> predicate)
-        {
-            Cache cache = _cacheManager.CacheFor(type);
-            return HandleResults(cache, new HashSet<object>(DelegateOrThrow<IEnumerable<object>>("Query", type, predicate)));
-        }
+
         public override IEnumerable<T> Query<T>(dynamic query)
         {
             Cache cache = _cacheManager.CacheFor<T>();
@@ -239,15 +229,7 @@ namespace Bam.Net.Caching
             resultsHashes.Wait();
             return HandleResults(cache, resultsHashes.Result);
 		}
-        public Task<IEnumerable<T>> CacheAsync<T>(dynamic query)
-        {
-            return Task.Run((Func<IEnumerable<T>>)(() => (Cache<T>(query))));
-        }
-        public IEnumerable<T> Cache<T>(dynamic query)
-        {
-            Cache cache = _cacheManager.CacheFor<T>();
-            return HandleResults(cache, new HashSet<T>(DelegateGenericOrThrow<IEnumerable<T>, T>("Query", query)));
-        }
+
         public override IEnumerable<T> Query<T>(Dictionary<string, object> queryParameters)
         {
             Cache cache = _cacheManager.CacheFor<T>();
@@ -257,15 +239,7 @@ namespace Bam.Net.Caching
             resultsHashes.Wait();
             return HandleResults(cache, resultsHashes.Result);
         }
-        public Task<IEnumerable<T>> CacheAsync<T>(Dictionary<string, object> queryParameters)
-        {
-            return Task.Run(() => Cache<T>(queryParameters));
-        }
-        public IEnumerable<T> Cache<T>(Dictionary<string, object> queryParameters)
-        {
-            Cache cache = _cacheManager.CacheFor<T>();
-            return HandleResults(cache, new HashSet<T>(DelegateGenericOrThrow<IEnumerable<T>, T>("Query", queryParameters)));
-        }
+
         public override IEnumerable<object> Query(Type type, Dictionary<string, object> queryParameters)
         {
             Cache cache = _cacheManager.CacheFor(type);
@@ -275,15 +249,7 @@ namespace Bam.Net.Caching
             resultsHashes.Wait();
             return HandleResults(cache, resultsHashes.Result);
         }
-        public Task<IEnumerable<object>> CacheAsync(Type type, Dictionary<string, object> queryParameters)
-        {
-            return Task.Run(() => Cache(type, queryParameters));
-        }
-        public IEnumerable<object> Cache(Type type, Dictionary<string, object> queryParameters)
-        {
-            Cache cache = _cacheManager.CacheFor(type);
-            return HandleResults(cache, new HashSet<object>(DelegateOrThrow<IEnumerable<object>>("Query", type, queryParameters)));
-        }
+
         public override IEnumerable<object> Query(Type type, dynamic query)
         {
             Cache cache = _cacheManager.CacheFor(type);
@@ -297,12 +263,6 @@ namespace Bam.Net.Caching
             resultsHashes.Wait();
             return HandleResults(cache, resultsHashes.Result);
         }
-        /// <summary>
-        /// Event that fires when a non typed query is executed.  Used as a 
-        /// warning that the type cannot be determined and will have to 
-        /// resolved by the caller
-        /// </summary>
-        public event EventHandler<CachingRepositoryEventArgs> TypelessQuery;
 
         /// <summary>
         /// Execute a non typed query against the underlying SourceRepository.
@@ -331,13 +291,68 @@ namespace Bam.Net.Caching
         public override IEnumerable<object> Query(dynamic query)
         {
             Type type = ReflectionExtensions.Property(query, "Type", false);
-            if(type == null)
+            if (type == null)
             {
                 throw new InvalidOperationException("Type not specified, use { Type = typeof(<typeToQuery>) }");
             }
             Dictionary<string, object> parameters = Bam.Net.Extensions.ToDictionary(query);
             parameters.Remove("Type");
             return Query(type, parameters);
+        }
+
+        public Task<IEnumerable<T>> CacheAsync<T>(Func<T, bool> predicate)
+        {
+            return Task.Run(() => Cache<T>(predicate));
+        }
+
+        public IEnumerable<T> Cache<T>(Func<T, bool> predicate)
+        {
+            Cache cache = _cacheManager.CacheFor(typeof(T));
+            return HandleResults(cache, new HashSet<T>(DelegateGenericOrThrow<IEnumerable<T>, T>("Query", predicate)));
+        }
+
+        public Task<IEnumerable<object>> CacheAysync(Type type, Func<object, bool> predicate)
+        {
+            return Task.Run(() => Cache(type, predicate));
+        }
+
+        public IEnumerable<object> Cache(Type type, Func<object, bool> predicate)
+        {
+            Cache cache = _cacheManager.CacheFor(type);
+            return HandleResults(cache, new HashSet<object>(DelegateOrThrow<IEnumerable<object>>("Query", type, predicate)));
+        }
+
+        public Task<IEnumerable<T>> CacheAsync<T>(dynamic query)
+        {
+            return Task.Run((Func<IEnumerable<T>>)(() => (Cache<T>(query))));
+        }
+
+        public IEnumerable<T> Cache<T>(dynamic query)
+        {
+            Cache cache = _cacheManager.CacheFor<T>();
+            return HandleResults(cache, new HashSet<T>(DelegateGenericOrThrow<IEnumerable<T>, T>("Query", query)));
+        }
+
+        public Task<IEnumerable<T>> CacheAsync<T>(Dictionary<string, object> queryParameters)
+        {
+            return Task.Run(() => Cache<T>(queryParameters));
+        }
+
+        public IEnumerable<T> Cache<T>(Dictionary<string, object> queryParameters)
+        {
+            Cache cache = _cacheManager.CacheFor<T>();
+            return HandleResults(cache, new HashSet<T>(DelegateGenericOrThrow<IEnumerable<T>, T>("Query", queryParameters)));
+        }
+
+        public Task<IEnumerable<object>> CacheAsync(Type type, Dictionary<string, object> queryParameters)
+        {
+            return Task.Run(() => Cache(type, queryParameters));
+        }
+
+        public IEnumerable<object> Cache(Type type, Dictionary<string, object> queryParameters)
+        {
+            Cache cache = _cacheManager.CacheFor(type);
+            return HandleResults(cache, new HashSet<object>(DelegateOrThrow<IEnumerable<object>>("Query", type, queryParameters)));
         }
 
         public HashSet<object> QueryCache(Type type, dynamic query)
@@ -378,6 +393,7 @@ namespace Bam.Net.Caching
                 return true;
             }));
         }
+
         public HashSet<T> QueryCache<T>(Func<T, bool> query) where T : class, new()
         {
             Cache cache = _cacheManager.CacheFor<T>();
@@ -389,6 +405,7 @@ namespace Bam.Net.Caching
             Cache cache = _cacheManager.CacheFor(type);
             return new HashSet<object>(cache.Query(predicate));
         }
+
         public HashSet<object> QueryCache(Type type, Dictionary<string, object> parameters)
         {
             Cache cache = _cacheManager.CacheFor(type);
@@ -404,6 +421,7 @@ namespace Bam.Net.Caching
                 return true;
             }).Select(ci => ci.Value));
         }
+
         public HashSet<T> QueryCache<T>(Dictionary<string, object> parameters)
         {
             Cache cache = _cacheManager.CacheFor<T>();
@@ -470,7 +488,7 @@ namespace Bam.Net.Caching
             throw new DeleteNotSupportedException(id);
 		}
 
-        protected IRepository SourceRepository { get; private set; }
+        public IRepository SourceRepository { get; private set; }
 
         private static HashSet<T> HandleResults<T>(Cache cache, params HashSet<T>[] arrayOfHashes)
         {
