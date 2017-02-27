@@ -24,7 +24,7 @@ using Bam.Net.Configuration;
 namespace Bam.Net.Data.Schema
 {
     [Proxy("dbm")]
-    public class SchemaManager: IHasSchemaTempPathProvider
+    public class SchemaManager : IHasSchemaTempPathProvider
     {
         public SchemaManager(bool autoSave = true)
         {
