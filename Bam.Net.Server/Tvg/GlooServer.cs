@@ -25,7 +25,7 @@ namespace Bam.Net.Server.Tvg
             RenamedHandler = (o, rea) =>
             {
                 DirectoryInfo dir = GetDirectory(rea.FullPath);
-                if(dir != null)
+                if (dir != null)
                 {
                     TryReloadServices(dir);
                 }
@@ -98,25 +98,24 @@ namespace Bam.Net.Server.Tvg
                 (ctx, searchPattern) =>
                 {
                     FileInfo[] files = ctx.Directory.GetFiles(searchPattern, SearchOption.AllDirectories);
-                    files.Each(file =>
+                    foreach(FileInfo file in files)
                     {
                         try
                         {
-                            Assembly.LoadFrom(file.FullName)
-                            .GetTypes()
-                            .Where(type => !ctx.ExcludeNamespaces.Contains(type.Namespace) &&
+                            Assembly toLoad = Assembly.LoadFrom(file.FullName);
+                            Type[] types = toLoad.GetTypes().Where(type => !ctx.ExcludeNamespaces.Contains(type.Namespace) &&
                                     !ctx.ExcludeClasses.Contains(type.Name) &&
-                                    type.HasCustomAttributeOfType<ProxyAttribute>())
-                            .Each(serviceType =>
+                                    type.HasCustomAttributeOfType<ProxyAttribute>()).ToArray();
+                            foreach(Type t in types)
                             {
-                                ServiceTypes.Add(serviceType);
-                            });
+                                ServiceTypes.Add(t);
+                            }
                         }
                         catch (Exception ex)
                         {
                             Logger.AddEntry("An exception occurred loading services from file {0}: {1}", LogEventType.Warning, ex, file.FullName, ex.Message);
                         }
-                    });
+                    }
                 });
                 RegisterProxiedClasses();
             }
@@ -136,7 +135,7 @@ namespace Bam.Net.Server.Tvg
                 ctx.Responder.AddCommonService(serviceType, GetServiceRetriever(serviceType));
                 ctx.Logger.AddEntry("Added service: {0}", serviceType.FullName);
             });
-            IApiKeyResolver apiKeyResolver = _glooRegistry.Get<IApiKeyResolver>();
+            IApiKeyResolver apiKeyResolver = (IApiKeyResolver)GetServiceRetriever(typeof(IApiKeyResolver))();
             responder.CommonSecureChannel.ApiKeyResolver = apiKeyResolver;
             responder.AppSecureChannels.Values.Each(sc => sc.ApiKeyResolver = apiKeyResolver);
             return responder;

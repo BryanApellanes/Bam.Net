@@ -242,13 +242,28 @@
     <Compile Include="StaticApplicationNameProvider.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Templates\Proxy.tmpl" />
+    <EmbeddedResource Include="Templates\ProxyMethod.tmpl" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Data\regen_core_dao.cmd" />
+    <None Include="Data\regen_protobuf.cmd" />
+    <None Include="packages.config" />
+    <None Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="protoc.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ProtoBuf\" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Bam.Net.Caching\Bam.Net.Caching.csproj">
       <Project>{06bae7ad-8657-4415-bbc0-dad16bb29361}</Project>
       <Name>Bam.Net.Caching</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Bam.Net.CommandLine\Bam.Net.CommandLine.csproj">
-      <Project>{EA9863A9-8E0B-4497-B7FD-ABF450A3E468}</Project>
-      <Name>Bam.Net.CommandLine</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Data.Repositories\Bam.Net.Data.Repositories.csproj">
       <Project>{222ef625-a115-49c7-8bdb-5879725a7d17}</Project>
@@ -266,14 +281,6 @@
       <Project>{3b52b739-58fd-4b49-b815-6b317e701520}</Project>
       <Name>Bam.Net.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Bam.Net.Documentation\Bam.Net.Documentation.csproj">
-      <Project>{8febe7ea-4f1f-44e2-a694-52b9a33c2414}</Project>
-      <Name>Bam.Net.Documentation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Bam.Net.Drawing\Bam.Net.Drawing.csproj">
-      <Project>{1db5bac4-f6fd-48d7-a89a-228f41036b78}</Project>
-      <Name>Bam.Net.Drawing</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Encryption\Bam.Net.Encryption.csproj">
       <Project>{f27dc9a6-e432-4d20-bcef-d10b0c2a657d}</Project>
       <Name>Bam.Net.Encryption</Name>
@@ -281,10 +288,6 @@
     <ProjectReference Include="..\Bam.Net.Incubation\Bam.Net.Incubation.csproj">
       <Project>{aa186331-a0d0-4f77-bea2-e7b7650d3ff5}</Project>
       <Name>Bam.Net.Incubation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Bam.Net.Logging\Bam.Net.Logging.csproj">
-      <Project>{15e91407-00d6-4edf-b75c-bc817a75c8ad}</Project>
-      <Name>Bam.Net.Logging</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Messaging\Bam.Net.Messaging.csproj">
       <Project>{e330d601-62ea-439e-acd7-7236744562ff}</Project>
@@ -311,29 +314,10 @@
       <Name>Bam.Net</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Templates\Proxy.tmpl" />
-    <EmbeddedResource Include="Templates\ProxyMethod.tmpl" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="Data\regen_core_dao.cmd" />
-    <None Include="Data\regen_protobuf.cmd" />
-    <None Include="packages.config" />
-    <None Include="README.md" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="protoc.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ProtoBuf\" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy $(TargetPath) c:\BamContent\apps\stickerize\services\
-copy $(TargetPath) c:\tvg\gloo\</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

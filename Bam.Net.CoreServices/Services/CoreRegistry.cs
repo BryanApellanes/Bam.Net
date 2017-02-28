@@ -23,7 +23,7 @@ using Bam.Net.ServiceProxy.Secure;
 
 namespace Bam.Net.CoreServices.Services
 {
-    [GlooContainer] 
+    [GlooContainer]
     public static class CoreRegistry
     {
         static object _coreIncubatorLock = new object();
@@ -32,65 +32,67 @@ namespace Bam.Net.CoreServices.Services
         [GlooRegistryProvider]
         public static GlooRegistry GetGlooRegistry()
         {
-            return _coreIncubatorLock.DoubleCheckLock(ref _coreIncubator, () =>
+            return _coreIncubatorLock.DoubleCheckLock(ref _coreIncubator, Create);
+        }
+
+        public static GlooRegistry Create()
+        {
+            string databasesPath = Path.Combine(DefaultConfiguration.GetAppSetting("ContentRoot"), "Databases");
+            string yandexVaultPath = Path.Combine(databasesPath, "YandexApiVault");
+            YandexApiKeyVaultInfo yandexVault = new YandexApiKeyVaultInfo(yandexVaultPath);
+            Database translationDatabase = new SQLiteDatabase(databasesPath, "Translations");
+            YandexTranslationProvider translationProvider = new YandexTranslationProvider(yandexVault.Load(), translationDatabase, translationDatabase);
+            translationProvider.EnsureLanguages();
+
+            AppConf conf = new AppConf(BamConf.Load(ServiceConfig.ContentRoot), ServiceConfig.ApplicationName.Or("GlooService"));
+            UserManager userMgr = conf.UserManagerConfig.Create();
+            DaoUserResolver userResolver = new DaoUserResolver();
+            DaoRoleResolver roleResolver = new DaoRoleResolver();
+            SQLiteDatabaseProvider dbProvider = new SQLiteDatabaseProvider(databasesPath, Log.Default);
+            DaoRepository coreRepo = new CoreRegistryRepository();
+            dbProvider.SetDatabases(coreRepo);
+            dbProvider.SetDatabases(userMgr);
+            userMgr.Database.TryEnsureSchema(typeof(UserAccounts.Data.User), Log.Default);
+            userResolver.Database = userMgr.Database;
+            roleResolver.Database = userMgr.Database;
+
+            CoreApplicationRegistryServiceConfig config = new CoreApplicationRegistryServiceConfig { DatabaseProvider = dbProvider, WorkspacePath = databasesPath, Logger = Log.Default };
+            CompositeRepository compositeRepo = new CompositeRepository(coreRepo, databasesPath);
+            GlooRegistry reg = (GlooRegistry)(new GlooRegistry())
+                .For<ILogger>().Use(Log.Default)
+                .For<IRepository>().Use(coreRepo)
+                .For<DaoRepository>().Use(coreRepo)
+                .For<CoreRegistryRepository>().Use(coreRepo)
+                .For<AppConf>().Use(conf)
+                .For<IDatabaseProvider>().Use(dbProvider)
+                .For<IUserManager>().Use(userMgr)
+                .For<IUserResolver>().Use(userResolver)
+                .For<DaoUserResolver>().Use(userResolver)
+                .For<IRoleResolver>().Use(roleResolver)
+                .For<DaoRoleResolver>().Use(roleResolver)
+                .For<EmailComposer>().Use(userMgr.EmailComposer)
+                .For<CoreApplicationRegistryServiceConfig>().Use(config)
+                .For<IApplicationNameProvider>().Use<CoreApplicationRegistryService>()
+                .For<CoreApplicationRegistryService>().Use<CoreApplicationRegistryService>()
+                .For<IApiKeyResolver>().Use<CoreApplicationRegistryService>()
+                .For<ISmtpSettingsProvider>().Use(userMgr)
+                .For<CoreUserRegistryService>().Use<CoreUserRegistryService>()
+                .For<CoreConfigurationService>().Use<CoreConfigurationService>()
+                .For<IDetectLanguage>().Use(translationProvider)
+                .For<ITranslationProvider>().Use(translationProvider)
+                .For<IStorableTypesProvider>().Use<NamespaceRepositoryStorableTypesProvider>()
+                .For<CoreTranslationService>().Use<CoreTranslationService>()
+                .For<CoreDiagnosticService>().Use<CoreDiagnosticService>();
+
+            reg.SetProperties(userMgr);
+
+            reg.For<CompositeRepository>().Use(() =>
             {
-                string databasesPath = Path.Combine(DefaultConfiguration.GetAppSetting("ContentRoot"), "Databases");
-                string yandexVaultPath = Path.Combine(databasesPath, "YandexApiVault");
-                YandexApiKeyVaultInfo yandexVault = new YandexApiKeyVaultInfo(yandexVaultPath);
-                Database translationDatabase = new SQLiteDatabase(databasesPath, "Translations");
-                YandexTranslationProvider translationProvider = new YandexTranslationProvider(yandexVault.Load(), translationDatabase, translationDatabase);
-                translationProvider.EnsureLanguages();
-
-                AppConf conf = new AppConf(BamConf.Load(ServiceConfig.ContentRoot), ServiceConfig.ApplicationName.Or("GlooService"));
-                UserManager userMgr = conf.UserManagerConfig.Create();
-                DaoUserResolver userResolver = new DaoUserResolver();
-                DaoRoleResolver roleResolver = new DaoRoleResolver();
-                SQLiteDatabaseProvider dbProvider = new SQLiteDatabaseProvider(databasesPath, Log.Default);
-                DaoRepository coreRepo = new CoreRegistryRepository();
-                dbProvider.SetDatabases(coreRepo);
-                dbProvider.SetDatabases(userMgr);
-                userMgr.Database.TryEnsureSchema(typeof(UserAccounts.Data.User), Log.Default);
-                userResolver.Database = userMgr.Database;
-                roleResolver.Database = userMgr.Database;
-
-                CoreApplicationRegistryServiceConfig config = new CoreApplicationRegistryServiceConfig { DatabaseProvider = dbProvider, WorkspacePath = databasesPath, Logger = Log.Default };
-                CompositeRepository compositeRepo = new CompositeRepository(coreRepo, databasesPath);
-                GlooRegistry reg = (GlooRegistry)(new GlooRegistry())
-                    .For<ILogger>().Use(Log.Default)
-                    .For<IRepository>().Use(coreRepo)
-                    .For<DaoRepository>().Use(coreRepo)
-                    .For<CoreRegistryRepository>().Use(coreRepo)
-                    .For<AppConf>().Use(conf)
-                    .For<IDatabaseProvider>().Use(dbProvider)
-                    .For<IUserManager>().Use(userMgr)
-                    .For<IUserResolver>().Use(userResolver)
-                    .For<DaoUserResolver>().Use(userResolver)
-                    .For<IRoleResolver>().Use(roleResolver)
-                    .For<DaoRoleResolver>().Use(roleResolver)
-                    .For<EmailComposer>().Use(userMgr.EmailComposer)
-                    .For<CoreApplicationRegistryServiceConfig>().Use(config)
-                    .For<IApplicationNameProvider>().Use<CoreApplicationRegistryService>()
-                    .For<CoreApplicationRegistryService>().Use<CoreApplicationRegistryService>()
-                    .For<IApiKeyResolver>().Use<CoreApplicationRegistryService>()
-                    .For<ISmtpSettingsProvider>().Use(userMgr)
-                    .For<CoreUserRegistryService>().Use<CoreUserRegistryService>()
-                    .For<CoreConfigurationService>().Use<CoreConfigurationService>()
-                    .For<IDetectLanguage>().Use(translationProvider)
-                    .For<ITranslationProvider>().Use(translationProvider)
-                    .For<IStorableTypesProvider>().Use<NamespaceRepositoryStorableTypesProvider>()
-                    .For<CoreTranslationService>().Use<CoreTranslationService>()
-                    .For<CoreDiagnosticService>().Use<CoreDiagnosticService>();                    
-                    
-                reg.SetProperties(userMgr);
-
-                reg.For<CompositeRepository>().Use(() =>
-                {
-                    compositeRepo.AddTypes(reg.Get<IStorableTypesProvider>().GetTypes());
-                    return compositeRepo;
-                });
-
-                return reg;
+                compositeRepo.AddTypes(reg.Get<IStorableTypesProvider>().GetTypes());
+                return compositeRepo;
             });
+
+            return reg;
         }
     }
 }
