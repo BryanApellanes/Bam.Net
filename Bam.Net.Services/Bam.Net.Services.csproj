@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Bam.Net.Services</RootNamespace>
     <AssemblyName>Bam.Net.Services</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -115,6 +115,7 @@
     <Compile Include="VersioningService\IVersioningService.cs" />
     <Compile Include="VersioningService\Data\Version.cs" />
     <Compile Include="VersioningService\VersioningExtensions.cs" />
+    <Compile Include="VersioningService\VersioningRepository.cs" />
     <Compile Include="VersioningService\VersioningService.cs" />
   </ItemGroup>
   <ItemGroup>
