@@ -98,8 +98,7 @@ namespace Bam.Net.Logging
         {
             lock (_threadLock)
             {
-                _loggingThread = new Thread(new ThreadStart(LoggingThread));
-                _loggingThread.IsBackground = true;
+                _loggingThread = new Thread(LoggingThread) {IsBackground = true};
                 _keepLogging = true;
                 _loggingThread.Start();
             }
