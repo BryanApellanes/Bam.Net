@@ -303,7 +303,7 @@ namespace Bam.Net.Data.Repositories
         protected internal IEnumerable<TypeXref> GetXrefTypesFor(Type type)
         {
             HashSet<TypeXref> xrefTypes = new HashSet<TypeXref>();
-            foreach (PropertyInfo property in type.GetProperties())
+            foreach (PropertyInfo property in type.GetProperties().Where(p=> p.CanWrite))
             {
                 if (!_daoPrimitives.Contains(property.PropertyType))
                 {
@@ -383,7 +383,7 @@ namespace Bam.Net.Data.Repositories
         protected internal IEnumerable<TypeFk> GetReferencingForeignKeyTypesFor(Type parentType)
         {
             HashSet<TypeFk> results = new HashSet<TypeFk>();
-            foreach (PropertyInfo property in parentType.GetProperties())
+            foreach (PropertyInfo property in parentType.GetProperties().Where(p=> p.CanWrite))
             {
                 Type propertyType = property.PropertyType;
                 if (propertyType != typeof(string) && property.IsEnumerable() && !AreXrefs(parentType, property.GetEnumerableType()))
@@ -503,7 +503,7 @@ namespace Bam.Net.Data.Repositories
         protected virtual void AddPropertyColumns(Type type, SchemaManager schemaManager, DefaultDataTypeBehaviors defaultDataTypeBehavior, ITypeTableNameProvider tableNameProvider = null)
         {
             string tableName = GetTableNameForType(type, tableNameProvider);
-            foreach (PropertyInfo property in type.GetProperties())
+            foreach (PropertyInfo property in type.GetProperties().Where(p=> p.CanWrite))
             {
                 AddPropertyColumn(schemaManager, defaultDataTypeBehavior, tableName, property);
             }
