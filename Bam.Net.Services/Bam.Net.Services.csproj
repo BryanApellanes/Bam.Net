@@ -110,7 +110,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValidationService\Data\ValidationRule.cs" />
     <Compile Include="ValidationService\ValidationResult.cs" />
-    <Compile Include="VersioningService\Data\Versionable.cs" />
+    <Compile Include="VersioningService\Data\ClientDescriptor.cs" />
+    <Compile Include="VersioningService\Data\SchemaDescriptor.cs" />
     <Compile Include="VersioningService\IHashProvider.cs" />
     <Compile Include="VersioningService\IVersioningService.cs" />
     <Compile Include="VersioningService\Data\Version.cs" />
