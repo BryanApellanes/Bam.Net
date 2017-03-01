@@ -197,7 +197,7 @@ namespace Bam.Net.Data.Repositories
             return _daoAssembly;
         }
 
-        public override void Subscribe(ILogger logger)
+        public sealed override void Subscribe(ILogger logger)
         {
             TypeDaoGenerator.Subscribe(logger);
             TypeSchemaGenerator.Subscribe(logger);
