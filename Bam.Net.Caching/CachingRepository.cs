@@ -31,12 +31,18 @@ namespace Bam.Net.Caching
 	{
 		CacheManager _cacheManager;
         
-		public CachingRepository(IRepository sourceRepository)
+		public CachingRepository(IRepository sourceRepository, ILogger logger = null)
 		{
 			SourceRepository = sourceRepository;
 			_cacheManager = new CacheManager();
+		    Logger = logger ?? Log.Default;
 		}
-        public void ValidateTypes()
+
+	    public CachingRepository(Database database, ILogger logger = null) : this(new DaoRepository(database, logger), logger)
+	    {
+	    }
+
+	    public void ValidateTypes()
         {
             foreach(Type type in SourceRepository.StorableTypes)
             {
@@ -46,7 +52,7 @@ namespace Bam.Net.Caching
         public override void AddType(Type type)
         {
             Args.ThrowIf(!type.HasCustomAttributeOfType<SerializableAttribute>(), "The specified type is not marked as serializable, add the [Serializable] attribute to the class definition to ensure proper caching behavior");
-            base.AddType(type);
+            SourceRepository.AddType(type);
         }
         /// <summary>
         /// Queries the source repository and adds the results to the internal cache
