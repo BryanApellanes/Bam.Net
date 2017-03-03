@@ -15,7 +15,20 @@ namespace Bam.Net.Data.Repositories
 	public abstract class RepoData
 	{
 		public long Id { get; set; }
-        public DateTime? Created { get; set; }
+        private DateTime? _created;
+
+        public DateTime? Created
+        {
+            get
+            {
+                if (_created == null)
+                {
+                    _created = DateTime.UtcNow;
+                }
+                return _created;
+            }
+            set { _created = value; }
+        }
         string _uuid;
         public string Uuid
         {
