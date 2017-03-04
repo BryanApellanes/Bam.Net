@@ -5,28 +5,30 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Bam.Net.Data;
-
+using Bam.Net.Configuration;
 
 namespace Bam.Net.CoreServices
 {
+    using System.IO;
+    using Net.Data.SQLite;
     using Server;
     using ServiceProxySecure = ServiceProxy.Secure;
 
     [Proxy("configSvc")]
     [ServiceProxySecure.ApiKeyRequired]
-    public class CoreConfigurationService: ProxyableService
+    public class CoreConfigurationService : ProxyableService, IConfigurationService
     {
         protected CoreConfigurationService() { }
-        public CoreConfigurationService(IDatabaseProvider dbProvider, AppConf conf)
+        public CoreConfigurationService(AppConf conf, string userDbPath)
         {
-            dbProvider.SetDatabases(this);
-            DatabaseProvider = dbProvider;
             AppConf = conf;
+            UserDatabasesPath = userDbPath;
         }
+        public string UserDatabasesPath { get; set; }
         [Exclude]
         public override object Clone()
         {
-            CoreConfigurationService clone = new CoreConfigurationService(DatabaseProvider, AppConf);
+            CoreConfigurationService clone = new CoreConfigurationService(AppConf, UserDatabasesPath);
             clone.CopyProperties(this);
             clone.CopyEventHandlers(this);
             return clone;
@@ -54,17 +56,17 @@ namespace Bam.Net.CoreServices
                 setting.Key = key;
                 setting.Value = configuration[key];
             });
-            config.Save(ConfigurationDatabase);
+            config.Save(GetConfigurationDatabase());
         }
         
         private ServiceProxySecure.Configuration GetConfigurationInstance(string applicationName, string configurationName)
         {
-            ServiceProxySecure.Application app = ServiceProxySecure.Application.OneWhere(a => a.Name == applicationName, ConfigurationDatabase);
+            ServiceProxySecure.Application app = ServiceProxySecure.Application.OneWhere(a => a.Name == applicationName, GetConfigurationDatabase());
             if (app == null)
             {
                 app = new ServiceProxySecure.Application();
                 app.Name = applicationName;
-                app.Save(ConfigurationDatabase);
+                app.Save(GetConfigurationDatabase());
             }
             
             ServiceProxySecure.Configuration config = app.ConfigurationsByApplicationId.Where(c => c.Name.Equals(configurationName)).FirstOrDefault();
@@ -72,11 +74,15 @@ namespace Bam.Net.CoreServices
             {
                 config = app.ConfigurationsByApplicationId.AddNew();
                 config.Name = configurationName;
-                app.Save(ConfigurationDatabase);
+                app.Save(GetConfigurationDatabase());
             }
             return config;
         }
 
-        public Database ConfigurationDatabase { get; set; }
+        public Database GetConfigurationDatabase()
+        {
+            string userDatabasePath = Path.Combine(UserDatabasesPath, UserName);
+            return new SQLiteDatabase(userDatabasePath, nameof(CoreConfigurationService));
+        }
     }
 }

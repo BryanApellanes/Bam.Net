@@ -191,9 +191,9 @@
     <Compile Include="Data\Generated_Protobuf\BamNetCoreServicesData.cs" />
     <Compile Include="Data\Nic.cs" />
     <Compile Include="Data\Configuration.cs" />
-    <Compile Include="GlooContainerAttribute.cs" />
-    <Compile Include="GlooRegistry.cs" />
-    <Compile Include="GlooRegistryProviderAttribute.cs" />
+    <Compile Include="CoreRegistryContainerAttribute.cs" />
+    <Compile Include="CoreRegistry.cs" />
+    <Compile Include="CoreRegistryProviderAttribute.cs" />
     <Compile Include="ProxySettingsInfo.cs" />
     <Compile Include="ServiceConfig.cs" />
     <Compile Include="ServiceRequest.cs" />
@@ -223,7 +223,7 @@
     <Compile Include="Services\TranslationInfo.cs" />
     <Compile Include="Services\YandexApiKeyVaultInfo.cs" />
     <Compile Include="SQLiteDatabaseProvider.cs" />
-    <Compile Include="Services\CoreRegistry.cs" />
+    <Compile Include="Services\CoreRegistryProvider.cs" />
     <Compile Include="Services\CoreApplicationRegistryService.cs" />
     <Compile Include="ProxyAssemblyGenerationEventSource.cs" />
     <Compile Include="CompositeRepository.cs" />

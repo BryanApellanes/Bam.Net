@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Incubation;
 
-namespace Bam.Net.Server.Tvg
+namespace Bam.Net.CoreServices
 {
-    public class GlooRegistry: Incubator
+    public class CoreRegistry: Incubator
     {
     }
 }

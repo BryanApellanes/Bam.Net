@@ -36,10 +36,10 @@ namespace Bam.Net.CoreServices
             OrganizationName = organizationName;
             HostName = hostName;
             Port = port;
-            WorkingDirectory = workingDirectory ?? $".\\{nameof(CoreClient)}";
+            WorkspaceDirectory = workingDirectory ?? $".\\{nameof(CoreClient)}";
             HashAlgorithm = HashAlgorithms.SHA1;
 
-            ProxyFactory = new ProxyFactory(WorkingDirectory, logger);
+            ProxyFactory = new ProxyFactory(WorkspaceDirectory, logger);
             ApplicationRegistryService = ProxyFactory.GetProxy<CoreApplicationRegistryService>(HostName, Port);
             ConfigurationService = ProxyFactory.GetProxy<CoreConfigurationService>(HostName, Port);
             DiagnosticService = ProxyFactory.GetProxy<CoreDiagnosticService>(HostName, Port);
@@ -51,8 +51,8 @@ namespace Bam.Net.CoreServices
             SetClientApplicationNameProvider();
 
             LocalCoreRegistryRepository = new CoreRegistryRepository();
-            LocalCoreRegistryRepository.Database = new SQLiteDatabase(WorkingDirectory, nameof(CoreClient));
-            CoreRegistry.GetGlooRegistry().Get<IStorableTypesProvider>().AddTypes(LocalCoreRegistryRepository);
+            LocalCoreRegistryRepository.Database = new SQLiteDatabase(WorkspaceDirectory, nameof(CoreClient));
+            CoreRegistryProvider.GetCoreRegistry().Get<IStorableTypesProvider>().AddTypes(LocalCoreRegistryRepository);
 
             ProcessDescriptor = ProcessDescriptor.ForApplicationRegistration(LocalCoreRegistryRepository, hostName, port, applicationName, organizationName);
         }
@@ -112,8 +112,8 @@ namespace Bam.Net.CoreServices
         public string Message { get; set; } // used by InitializationFailed event
         public string ApplicationName { get; set; }
         public string OrganizationName { get; set; }
-        public string WorkingDirectory { get; }
-        public string ApiKeyFilePath { get { return Path.Combine(WorkingDirectory, HostName, Port.ToString(), $"{GetApplicationName()}.apikey"); } }
+        public string WorkspaceDirectory { get; }
+        public string ApiKeyFilePath { get { return Path.Combine(WorkspaceDirectory, HostName, Port.ToString(), $"{GetApplicationName()}.apikey"); } }
         public ILogger Logger { get; set; }
         #region IApiKeyResolver
         public HashAlgorithms HashAlgorithm
@@ -257,7 +257,16 @@ namespace Bam.Net.CoreServices
         }
         protected ProxyFactory ProxyFactory { get; set; }
         protected bool IsInitialized { get; set; }
+
+        /// <summary>
+        /// The hostname of the server this client
+        /// is a client of
+        /// </summary>
         protected string HostName { get; }
+        
+        /// <summary>
+        /// The port that the server is listening on
+        /// </summary>
         protected int Port { get; }
         protected internal CoreUserRegistryService UserRegistryService { get; set; }
         protected internal CoreApplicationRegistryService ApplicationRegistryService { get; set; }
