@@ -171,6 +171,7 @@
     <Compile Include="SearchDirectory.cs" />
     <Compile Include="SearchRule.cs" />
     <Compile Include="AppSetting.cs" />
+    <Compile Include="SimpleServer.cs" />
     <Compile Include="TcpServer.cs" />
     <Compile Include="IInitialize.cs" />
     <Compile Include="Includes.cs" />
@@ -214,25 +215,6 @@
     <Compile Include="DaoResponder.cs" />
     <Compile Include="TcpContext.cs" />
     <Compile Include="TemplateInitializerBase.cs" />
-    <Compile Include="Tvg\GlooContainerAttribute.cs" />
-    <Compile Include="Tvg\GlooRegistry.cs" />
-    <Compile Include="Tvg\GlooRegistryProviderAttribute.cs" />
-    <Compile Include="Tvg\GlooResponder.cs" />
-    <Compile Include="Tvg\GlooService.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Tvg\ServiceConfig.cs" />
-    <Compile Include="Tvg\SimpleServer.cs" />
-    <Compile Include="Tvg\GlooServer.cs" />
-    <Compile Include="Tvg\TrooResponder.cs" />
-    <Compile Include="Tvg\TrooServer.cs" />
-    <Compile Include="Tvg\TrooService.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Tvg\VyooServer.cs" />
-    <Compile Include="Tvg\VyooService.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="WebBook.cs" />
     <Compile Include="WebBookEventArgs.cs" />
     <Compile Include="WebBookInitializer.cs" />

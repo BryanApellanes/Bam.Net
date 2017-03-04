@@ -191,7 +191,11 @@
     <Compile Include="Data\Generated_Protobuf\BamNetCoreServicesData.cs" />
     <Compile Include="Data\Nic.cs" />
     <Compile Include="Data\Configuration.cs" />
+    <Compile Include="GlooContainerAttribute.cs" />
+    <Compile Include="GlooRegistry.cs" />
+    <Compile Include="GlooRegistryProviderAttribute.cs" />
     <Compile Include="ProxySettingsInfo.cs" />
+    <Compile Include="ServiceConfig.cs" />
     <Compile Include="ServiceRequest.cs" />
     <Compile Include="Services\ClientApplicationFactory.cs" />
     <Compile Include="DatabaseProvider.cs" />
