@@ -21,22 +21,28 @@ namespace gloo.services
         static CoreRegistry _coreIncubator;
 
         [CoreRegistryProvider]
-        public static CoreRegistry GetCoreRegistry()
+        public static CoreRegistry GetRegistry()
         {
             return _coreIncubatorLock.DoubleCheckLock(ref _coreIncubator, Create);
         }
 
         private static CoreRegistry Create()
         {
+            string contentRoot = DefaultConfiguration.GetAppSetting("ContentRoot", "c:\\tvg\\gloo");
             string organization = DefaultConfiguration.GetAppSetting("Organization", "PUBLIC");
             string applicationName = DefaultConfiguration.GetAppSetting("ApplicationName", "UNKNOWN");
-            string databasesPath = Path.Combine(DefaultConfiguration.GetAppSetting("ContentRoot"), "Databases");
-            CoreClient coreClient = new CoreClient(organization, applicationName, "bamapps.net", 80, Log.Default);
+            string databasesPath = Path.Combine(contentRoot, "Databases");
+            string workspaceDirectory = Path.Combine(contentRoot, "Workspace");
+
+            CoreClient coreClient = new CoreClient(organization, applicationName, "bamapps.net", 80, workspaceDirectory, Log.Default);
+            ApplicationLogDatabase logDb = new ApplicationLogDatabase(workspaceDirectory);
 
             return (CoreRegistry)(new CoreRegistry())
                 .For<CoreClient>().Use(coreClient)
+                .For<ApplicationLogDatabase>().Use(logDb)
                 .For<ILogger>().Use<ApplicationLogger>()
-                .For<ILog>().Use(coreClient.LoggerService)
+                .For<ILog>().Use<ApplicationLogger>()
+                .For<IConfigurationService>().Use<ApplicationConfigurationService>()
                 .For<IUserManager>().Use(coreClient.UserRegistryService);
         }
     }
