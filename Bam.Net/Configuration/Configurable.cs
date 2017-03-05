@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Configuration
 {
-    public abstract class Configurable: IConfigurable
+    public abstract class Configurable: IConfigurable, IHasRequiredProperties
     {
         /// <summary>
         /// When implemented in a derived class should
