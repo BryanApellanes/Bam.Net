@@ -89,10 +89,14 @@ namespace Bam.Net.Logging
             }
             return this;
         }
-
         /// <summary>
-        /// Start the background logger commit thread; may cause previous logging 
-        /// threads to abort if they exist
+        /// The number of milliseconds to wait after a LogEvent
+        /// is queued to be committed before beginning the
+        /// commit loop
+        /// </summary>
+        public int CommitCycleDelay { get; set; }
+        /// <summary>
+        /// Start the background logger commit thread.
         /// </summary>
         public virtual ILogger StartLoggingThread()
         {
@@ -121,6 +125,7 @@ namespace Bam.Net.Logging
             while (_keepLogging)
             {
                 _waitForEnqueueLogEvent.WaitOne();
+                Thread.Sleep(CommitCycleDelay);
                 while (_logEventQueue.Count > 0)
                 {
                     LogEvent logEvent;
@@ -136,13 +141,9 @@ namespace Bam.Net.Logging
         }
 
         /// <summary>
-        /// Blocks the current thread until the event queue is empty.  Keep
-        /// in mind that other calls to AddEntry by other threads will 
-        /// increment the number of events in the queue.  This will
-        /// abort the logging thread if it's running and call a 3
-        /// second Join (Join(3000)) on the thread to allow it to die.
+        /// Blocks the current thread until the event queue is empty.
         /// </summary>
-        public void BlockUntilEventQueueIsEmpty(int sleep = 0)
+        public virtual void BlockUntilEventQueueIsEmpty(int sleep = 0)
         {
             if(_loggingThread != null && _loggingThread.ThreadState == System.Threading.ThreadState.Running)
             {
@@ -150,7 +151,7 @@ namespace Bam.Net.Logging
                 while (_logEventQueue.Count > 0)
                 {
                     _waitForEnqueueLogEvent.Set();
-                    Thread.Sleep(30);                    
+                    Thread.Sleep(3);                    
                 }                
             }
             Thread.Sleep(sleep);
