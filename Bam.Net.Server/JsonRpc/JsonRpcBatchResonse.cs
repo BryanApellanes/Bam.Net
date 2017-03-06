@@ -4,16 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Server.Rpc
+namespace Bam.Net.Server.JsonRpc
 {
-    public class RpcBatchResonse: RpcResponse
+    public class JsonRpcBatchResonse: JsonRpcResponse
     {
-        public RpcBatchResonse()
+        public JsonRpcBatchResonse()
         {
-            this._responses = new List<RpcResponse>();
+            this._responses = new List<JsonRpcResponse>();
         }
-        List<RpcResponse> _responses;
-        public RpcResponse[] Responses
+        List<JsonRpcResponse> _responses;
+        public JsonRpcResponse[] Responses
         {
             get
             {
@@ -21,7 +21,7 @@ namespace Bam.Net.Server.Rpc
             }
             set
             {
-                _responses = new List<RpcResponse>(value);
+                _responses = new List<JsonRpcResponse>(value);
             }
         }
         public override object GetOutput()
@@ -29,7 +29,7 @@ namespace Bam.Net.Server.Rpc
             return Responses;
         }
 
-        public void AddResponse(RpcResponse response)
+        public void AddResponse(JsonRpcResponse response)
         {
             _responses.Add(response);
         }

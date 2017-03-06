@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Server.Rpc
+namespace Bam.Net.Server.JsonRpc
 {
-    public enum RpcFaultCodes
+    public enum JsonRpcFaultCodes
     {
         Invalid = 0,
         ParseError = -32700,

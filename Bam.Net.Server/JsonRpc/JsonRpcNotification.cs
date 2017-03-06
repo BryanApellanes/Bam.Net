@@ -9,18 +9,18 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Server.Rpc
+namespace Bam.Net.Server.JsonRpc
 {
-    public class RpcNotification : RpcMessage, IRpcRequest
+    public class JsonRpcNotification : JsonRpcMessage, IJsonRpcRequest
     {
-        public RpcNotification()
+        public JsonRpcNotification()
         {
-            this.RpcParams = new RpcParameters();
+            this.RpcParams = new JsonRpcParameters();
         }
         [Exclude]
         public object Clone()
         {
-            RpcNotification clone = new RpcNotification();
+            JsonRpcNotification clone = new JsonRpcNotification();
             clone.CopyProperties(this);
             return clone;
         }
@@ -58,7 +58,7 @@ namespace Bam.Net.Server.Rpc
         {
             get
             {
-                return _methodsLock.DoubleCheckLock(ref _methods, () => Incubator.Types.SelectMany(type => type.GetMethodsWithAttributeOfType<RpcMethodAttribute>()).ToArray());
+                return _methodsLock.DoubleCheckLock(ref _methods, () => Incubator.Types.SelectMany(type => type.GetMethodsWithAttributeOfType<JsonRpcMethodAttribute>()).ToArray());
             }
         }
 
@@ -76,12 +76,12 @@ namespace Bam.Net.Server.Rpc
         /// of RpcParams
         /// </summary>
         public JToken Params { get; set; }
-        public RpcParameters RpcParams { get; set; }
+        public JsonRpcParameters RpcParams { get; set; }
 
 
-        public virtual RpcResponse Execute()
+        public virtual JsonRpcResponse Execute()
         {
-            RpcResponse response = new RpcResponse();
+            JsonRpcResponse response = new JsonRpcResponse();
             // get the method from RpcMethods
             MethodInfo mi = RpcMethods.FirstOrDefault(m => m.Name.Equals(Method, StringComparison.InvariantCultureIgnoreCase));
             // if its not there get it from all methods
@@ -92,7 +92,7 @@ namespace Bam.Net.Server.Rpc
             // if its not there set error in the response
             if (mi == null)
             {
-                response = GetErrorResponse(RpcFaultCodes.MethodNotFound);
+                response = GetErrorResponse(JsonRpcFaultCodes.MethodNotFound);
             }
             else
             {
@@ -106,23 +106,23 @@ namespace Bam.Net.Server.Rpc
                     }
                     else
                     {
-                        response = GetErrorResponse(RpcFaultCodes.InternalError);
+                        response = GetErrorResponse(JsonRpcFaultCodes.InternalError);
                     }                  
                 }
                 else
                 {
-                    response = GetErrorResponse(RpcFaultCodes.InvalidRequest);
+                    response = GetErrorResponse(JsonRpcFaultCodes.InvalidRequest);
                 }
             }
 
             return response;
         }
 
-        protected virtual RpcResponse GetErrorResponse(RpcFaultCodes faultCode)
+        protected virtual JsonRpcResponse GetErrorResponse(JsonRpcFaultCodes faultCode)
         {
-            RpcResponse response = new RpcResponse();
-            RpcFaultCode code = RpcFaults.ByCode[(long)faultCode];
-            RpcError error = new RpcError();
+            JsonRpcResponse response = new JsonRpcResponse();
+            JsonRpcFaultCode code = JsonRpcFaults.ByCode[(long)faultCode];
+            JsonRpcError error = new JsonRpcError();
             error.Code = code.Code;
             error.Message = code.Message;
             error.Data = code.Meaning;
@@ -159,26 +159,26 @@ namespace Bam.Net.Server.Rpc
             return results.ToArray();
         }
 
-        public static RpcNotification Create<T>(Incubator serviceProvider, string methodName, params object[] parameters)
+        public static JsonRpcNotification Create<T>(Incubator serviceProvider, string methodName, params object[] parameters)
         {
-            RpcNotification result = Create<T>(methodName, parameters);
+            JsonRpcNotification result = Create<T>(methodName, parameters);
             result.Incubator = serviceProvider;
             return result;
         }
 
-        public static RpcNotification Create(MethodInfo method, params object[] parameters)
+        public static JsonRpcNotification Create(MethodInfo method, params object[] parameters)
         {
             return Create(Incubator.Default, method, parameters);
         }
 
-        public static RpcNotification Create<T>(string methodName, params object[] parameters)
+        public static JsonRpcNotification Create<T>(string methodName, params object[] parameters)
         {
             return Create(typeof(T).GetMethod(methodName, parameters.Select(p => p.GetType()).ToArray()), parameters);
         }
 
-        public static RpcNotification Create(Incubator serviceProvider, MethodInfo method, params object[] parameters)
+        public static JsonRpcNotification Create(Incubator serviceProvider, MethodInfo method, params object[] parameters)
         {
-            RpcNotification result = new RpcNotification();
+            JsonRpcNotification result = new JsonRpcNotification();
             result.Incubator = serviceProvider;
             result.Method = method.Name;
             result.RpcParams.By.Position = parameters;

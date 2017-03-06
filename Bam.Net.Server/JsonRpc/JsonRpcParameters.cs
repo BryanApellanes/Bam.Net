@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Server.Rpc
+namespace Bam.Net.Server.JsonRpc
 {
-    public class RpcParameters
+    public class JsonRpcParameters
     {
         /// <summary>
         /// Describes the parameters as being 
@@ -19,7 +19,7 @@ namespace Bam.Net.Server.Rpc
             public object Name { get; set; }
         }
 
-        public RpcParameters()
+        public JsonRpcParameters()
         {
             this.By = new Structure();
         }

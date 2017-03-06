@@ -135,8 +135,7 @@ namespace Bam.Net.Data.Tests.Integration
             yield return new SQLiteSchemaExtractor(GetDatabase<SQLiteDatabase>());
             yield return new MySqlSchemaExtractor(GetDatabase<MySqlDatabase>());
             //yield return new NpgsqlSchemaExtractor(GetDatabase<NpgsqlDatabase>()); // not fully implemented
-        }
-        
+        }        
 
         private T GetDatabase<T>() where T : Database
         {

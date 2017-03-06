@@ -14,11 +14,11 @@ using System.IO;
 using Bam.Net.Incubation;
 using Bam.Net.Server.Renderers;
 
-namespace Bam.Net.Server.Rpc
+namespace Bam.Net.Server.JsonRpc
 {
-	public class RpcResponder: HttpHeaderResponder
+	public class JsonRpcResponder: HttpHeaderResponder
 	{
-		public RpcResponder(BamConf conf, ILogger logger = null)
+		public JsonRpcResponder(BamConf conf, ILogger logger = null)
 			: base(conf, logger)
 		{
             Executors = Incubator.Default;
@@ -32,11 +32,11 @@ namespace Bam.Net.Server.Rpc
         
 		protected override bool Post(IHttpContext context)
 		{
-            IRpcRequest request = RpcMessage.Parse(context);
+            IJsonRpcRequest request = JsonRpcMessage.Parse(context);
             bool result = false;
             if (request != null)
             {
-                RpcResponse response = request.Execute();
+                JsonRpcResponse response = request.Execute();
                 IRenderer renderer = RendererFactory.CreateRenderer(context.Request);
                 renderer.Render(response.GetOutput(), context.Response.OutputStream);
             }

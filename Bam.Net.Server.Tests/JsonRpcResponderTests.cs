@@ -10,7 +10,7 @@ using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json.Utilities;
 using Newtonsoft.Json.Linq;
 using System.IO;
-using Bam.Net.Server.Rpc;
+using Bam.Net.Server.JsonRpc;
 using FakeItEasy;
 using Bam.Net.ServiceProxy;
 using Bam.Net.Incubation;
@@ -18,7 +18,7 @@ using Bam.Net.Incubation;
 namespace Bam.Net.Server.Tests
 {
     [Serializable]
-    public class RpcResponderTests: CommandLineTestInterface
+    public class JsonRpcResponderTests: CommandLineTestInterface
     {
         [UnitTest]
         public void ParseJArrayTest()
@@ -50,8 +50,8 @@ namespace Bam.Net.Server.Tests
             IRequest request = A.Fake<IRequest>();
             A.CallTo<string>(() => request.HttpMethod).Returns("POST");
             A.CallTo<Stream>(() => request.InputStream).Returns(GetNotificationStream());
-            IRpcRequest msg = RpcMessage.Parse(request);
-            Expect.IsInstanceOfType<RpcNotification>(msg);
+            IJsonRpcRequest msg = JsonRpcMessage.Parse(request);
+            Expect.IsInstanceOfType<JsonRpcNotification>(msg);
         }
 
         [UnitTest("RpcResponder: ParseRequest with id should return RpcMessage")]
@@ -60,8 +60,8 @@ namespace Bam.Net.Server.Tests
             IRequest request = A.Fake<IRequest>();
             A.CallTo<string>(() => request.HttpMethod).Returns("POST");
             A.CallTo<Stream>(() => request.InputStream).Returns(GetRequestStream());
-            IRpcRequest msg = RpcMessage.Parse(request);
-            Expect.IsInstanceOfType<RpcRequest>(msg);
+            IJsonRpcRequest msg = JsonRpcMessage.Parse(request);
+            Expect.IsInstanceOfType<JsonRpcRequest>(msg);
         }
         [UnitTest("RpcResponder: ParseArray should return RpcBatch")]
         public void ParseRequestArrayShouldReturnRpcBatch()
@@ -69,8 +69,8 @@ namespace Bam.Net.Server.Tests
             IRequest request = A.Fake<IRequest>();
             A.CallTo<string>(() => request.HttpMethod).Returns("POST");
             A.CallTo<Stream>(() => request.InputStream).Returns(GetRequestBatch());
-            IRpcRequest msg = RpcMessage.Parse(request);
-            Expect.IsInstanceOfType<RpcBatch>(msg);
+            IJsonRpcRequest msg = JsonRpcMessage.Parse(request);
+            Expect.IsInstanceOfType<JsonRpcBatch>(msg);
         }
 
         [UnitTest("RpcResponder: ParseRequest with ordered params")]
@@ -79,9 +79,9 @@ namespace Bam.Net.Server.Tests
             IRequest request = A.Fake<IRequest>();
             A.CallTo<string>(() => request.HttpMethod).Returns("POST");
             A.CallTo<Stream>(() => request.InputStream).Returns(GetRequestWithOrderedParamsStream());
-            IRpcRequest msg = RpcMessage.Parse(request);
-            Expect.IsInstanceOfType<RpcRequest>(msg);
-            RpcRequest rpcRequest = (RpcRequest)msg;
+            IJsonRpcRequest msg = JsonRpcMessage.Parse(request);
+            Expect.IsInstanceOfType<JsonRpcRequest>(msg);
+            JsonRpcRequest rpcRequest = (JsonRpcRequest)msg;
             Expect.IsTrue(rpcRequest.RpcParams.Ordered);
             Expect.IsTrue(rpcRequest.RpcParams.By.Position != null);
             Expect.IsFalse(rpcRequest.RpcParams.Named);
@@ -96,9 +96,9 @@ namespace Bam.Net.Server.Tests
             IRequest request = A.Fake<IRequest>();
             A.CallTo<string>(() => request.HttpMethod).Returns("POST");
             A.CallTo<Stream>(() => request.InputStream).Returns(GetRequestWithNamedParamsStream());
-            IRpcRequest msg = RpcMessage.Parse(request);
-            Expect.IsInstanceOfType<RpcRequest>(msg);
-            RpcRequest rpcRequest = (RpcRequest)msg;
+            IJsonRpcRequest msg = JsonRpcMessage.Parse(request);
+            Expect.IsInstanceOfType<JsonRpcRequest>(msg);
+            JsonRpcRequest rpcRequest = (JsonRpcRequest)msg;
             Expect.IsFalse(rpcRequest.RpcParams.Ordered);
             Expect.IsTrue(rpcRequest.RpcParams.By.Position == null);
             Expect.IsTrue(rpcRequest.RpcParams.Named);
@@ -116,11 +116,11 @@ namespace Bam.Net.Server.Tests
             object id = "some value";
             string inputString = "{{'jsonrpc': '2.0', 'method': 'Send', 'id': '{0}', 'params': ['{1}']}}"._Format(id, value);
             IHttpContext context = GetPostContextWithInput(inputString);            
-            IRpcRequest parsed = RpcMessage.Parse(context);
-            RpcRequest request = (RpcRequest)parsed;
+            IJsonRpcRequest parsed = JsonRpcMessage.Parse(context);
+            JsonRpcRequest request = (JsonRpcRequest)parsed;
             request.Incubator = inc;
-            RpcResponse response = request.Execute();
-            Expect.IsTrue(response.GetType().Equals(typeof(RpcResponse)));
+            JsonRpcResponse response = request.Execute();
+            Expect.IsTrue(response.GetType().Equals(typeof(JsonRpcResponse)));
             Expect.AreEqual(value,response.Result);
             Expect.IsNull(response.Error);
             Expect.AreEqual(id, response.Id);
@@ -132,7 +132,7 @@ namespace Bam.Net.Server.Tests
             Incubator inc = new Incubator();
             inc.Set(new Echo());
             string id = "A Value";
-            RpcRequest request = new RpcRequest();
+            JsonRpcRequest request = new JsonRpcRequest();
             request.Incubator = inc;
             string value = "hello there ".RandomLetters(8);
             request.Params = JToken.Parse("{{'value': '{0}'}}"._Format(value));
@@ -141,11 +141,11 @@ namespace Bam.Net.Server.Tests
             request.Id = id;
 
             IHttpContext context = GetPostContextWithInput(request.ToJson());
-            request = (RpcRequest)RpcMessage.Parse(context);
+            request = (JsonRpcRequest)JsonRpcMessage.Parse(context);
             request.Incubator = inc;
 
-            RpcResponse response = request.Execute();
-            Expect.IsTrue(response.GetType().Equals(typeof(RpcResponse)));
+            JsonRpcResponse response = request.Execute();
+            Expect.IsTrue(response.GetType().Equals(typeof(JsonRpcResponse)));
             Expect.AreEqual(response.Result, value);
             Expect.IsNull(response.Error);
             Expect.AreEqual(request.Id, response.Id);
@@ -162,8 +162,8 @@ namespace Bam.Net.Server.Tests
             data.StringProperty = "dlhsddfflk";
             data.IntProperty = 888;
 
-            RpcRequest request = RpcRequest.Create<Echo>(inc, "TestObjectParameter", data, "some addditional stuff");
-            RpcResponse response = request.Execute();
+            JsonRpcRequest request = JsonRpcRequest.Create<Echo>(inc, "TestObjectParameter", data, "some addditional stuff");
+            JsonRpcResponse response = request.Execute();
             Expect.IsNotNull(response.Result);
             OutLine(response.Result.ToString(), ConsoleColor.Cyan);
         }
