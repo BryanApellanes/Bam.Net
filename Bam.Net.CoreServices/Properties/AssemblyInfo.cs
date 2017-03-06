@@ -37,6 +37,6 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 
 [assembly:InternalsVisibleTo("Bam.Net.CoreServices.Tests")]
-[assembly: InternalsVisibleTo("gloo.services")]
+[assembly: InternalsVisibleTo("Bam.Net.Tvg")]
 [assembly: AssemblyVersion("1.4.9")]
 [assembly: AssemblyFileVersion("1.4.9")]
