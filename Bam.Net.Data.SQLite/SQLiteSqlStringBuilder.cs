@@ -36,8 +36,9 @@ namespace Bam.Net.Data
             WriteCreateTable(tableName, columnDefinitions, GetForeignKeys(daoType));
         }
 
-        public override void WriteCreateTable(string tableName, string columnDefinitions, dynamic[] fks) // ForeignKeyAttribute[]
+        public override void WriteCreateTable(string tableName, string columnDefinitions, dynamic[] fks)
         {
+            fks = fks ?? new dynamic[] { };
             Builder.AppendFormat("CREATE TABLE [{0}] ({1}{2}{3})",
                             tableName,
                             columnDefinitions,
@@ -46,6 +47,7 @@ namespace Bam.Net.Data
                             {
                                 return string.Format("FOREIGN KEY({0}) REFERENCES [{1}]({2})", f.Name, f.ReferencedTable, f.ReferencedKey);
                             }));
+            Go();
         }
 
 
@@ -74,7 +76,7 @@ namespace Bam.Net.Data
 
         public override SchemaWriter WriteDropTable(string tableName)
         {
-            Builder.AppendFormat("DROP TABLE IF EXISTS {0}\r\n", tableName);
+            Builder.AppendFormat("DROP TABLE IF EXISTS {0}", tableName);
             Go();
             return this;
         }
