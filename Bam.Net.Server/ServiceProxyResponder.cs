@@ -337,8 +337,7 @@ namespace Bam.Net.Server
         {
             return true;
         }
-
-
+        
         public void RegisterProxiedClasses()
         {
             string serviceProxyRelativePath = ServiceProxyRelativePath;
