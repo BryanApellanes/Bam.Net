@@ -16,6 +16,8 @@ namespace Bam.Net.Caching.File
         public JsFileCache(): base()
         {
             _minCache = new Dictionary<string, MinifyResult>();
+            _minText = new Dictionary<string, string>();
+            _minTextBytes = new Dictionary<string, byte[]>();
             FileExtension = ".js";
         }
         public bool Minify { get; set; }
