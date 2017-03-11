@@ -914,19 +914,21 @@
             contexts.
             </summary>
         </member>
+        <member name="P:Bam.Net.Logging.Logger.CommitCycleDelay">
+            <summary>
+            The number of milliseconds to wait after a LogEvent
+            is queued to be committed before beginning the
+            commit loop
+            </summary>
+        </member>
         <member name="M:Bam.Net.Logging.Logger.StartLoggingThread">
             <summary>
-            Start the background logger commit thread; may cause previous logging 
-            threads to abort if they exist
+            Start the background logger commit thread.
             </summary>
         </member>
         <member name="M:Bam.Net.Logging.Logger.BlockUntilEventQueueIsEmpty(System.Int32)">
             <summary>
-            Blocks the current thread until the event queue is empty.  Keep
-            in mind that other calls to AddEntry by other threads will 
-            increment the number of events in the queue.  This will
-            abort the logging thread if it's running and call a 3
-            second Join (Join(3000)) on the thread to allow it to die.
+            Blocks the current thread until the event queue is empty.
             </summary>
         </member>
         <member name="P:Bam.Net.Logging.Logger.Verbosity">
@@ -1359,7 +1361,7 @@
             <param name="handler"></param>
             <returns></returns>
         </member>
-        <member name="M:Bam.Net.ReflectionExtensions.UnSubscribe(System.Object,System.String,System.EventHandler)">
+        <member name="M:Bam.Net.ReflectionExtensions.UnSubscribe(System.Object,System.String,System.Delegate)">
             <summary>
             Unsubscribe the specified handler from the specified event 
             </summary>

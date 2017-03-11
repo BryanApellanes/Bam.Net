@@ -1,1 +1,3 @@
 
+ -   rename Rpc... to JsonRpc... (d777076)
+ -   move tvg to separate project outside ob Bam.Net (0cae717)
