@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Server.Rpc
+namespace Bam.Net.Server.JsonRpc
 {
     [AttributeUsage(AttributeTargets.Method)]
-    public class RpcMethodAttribute: Attribute
+    public class JsonRpcMethodAttribute: Attribute
     {
     }
 }

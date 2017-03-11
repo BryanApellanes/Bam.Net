@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Server.Tvg
+namespace Bam.Net.CoreServices
 {
     [AttributeUsage(AttributeTargets.Class)]
-    public class GlooContainerAttribute: Attribute // must have a static Get method
+    public class CoreRegistryContainerAttribute: Attribute 
     {
     }
 }

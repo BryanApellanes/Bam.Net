@@ -667,7 +667,7 @@
             <param name="workingRoute">An 'in progress' route that may contain values that have already been replaced.</param>
             <returns>A <c>workingRoute</c></returns>
         </member>
-        <member name="M:Bam.Net.Server.Rpc.RpcMessage.Parse(System.String)">
+        <member name="M:Bam.Net.Server.JsonRpc.JsonRpcMessage.Parse(System.String)">
             <summary>
             Parse the Json as an RpcMessage the 
             specific type of the message will depend
@@ -675,33 +675,76 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="P:Bam.Net.Server.Rpc.RpcNotification.Params">
+        <member name="P:Bam.Net.Server.JsonRpc.JsonRpcNotification.Params">
             <summary>
             The parameters.  This object will be either
             a JObject or JArray as indicated by the state
             of RpcParams
             </summary>
         </member>
-        <member name="T:Bam.Net.Server.Rpc.RpcParameters.Structure">
+        <member name="T:Bam.Net.Server.JsonRpc.JsonRpcParameters.Structure">
             <summary>
             Describes the parameters as being 
             by Position or by name
             </summary>
         </member>
-        <member name="M:Bam.Net.Server.Rpc.RpcRequest.Execute">
+        <member name="M:Bam.Net.Server.JsonRpc.JsonRpcRequest.Execute">
             <summary>
             Execute the request and return the response
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Bam.Net.Server.Rpc.RpcResponse.GetOutput">
+        <member name="M:Bam.Net.Server.JsonRpc.JsonRpcResponse.GetOutput">
             <summary>
             Get the object/value intended to be rendered to the
             output stream as json.  This method exists to 
-            enable the RpcBatch to return an array and the RpcRequest
-            to return a single RpcResponse
+            enable the JsonRpcBatch to return an array and the JsonRpcRequest
+            to return a single JsonRpcResponse
             </summary>
             <returns></returns>
+        </member>
+        <member name="P:Bam.Net.Server.Tvg.SimpleServer`1.HostPrefixes">
+            <summary>
+            An array of hosts that this server will respond to
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Server.Tvg.SimpleServer`1.Responder">
+            <summary>
+            The responder
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Server.Tvg.SimpleServer`1.Logger">
+            <summary>
+            The logger
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Server.Tvg.SimpleServer`1.FileSystemWatchers">
+            <summary>
+            The FileSystemWatchers; one each for create, changed and renamed
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Server.Tvg.SimpleServer`1.MonitorDirectories">
+            <summary>
+            An array of directories to monitor for
+            created, changed or renamed files
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Server.Tvg.SimpleServer`1.CreatedOrChangedHandler">
+            <summary>
+            The delegate that will be subscribed to the Create
+            and Changed handler of the underlying FileSystemWatcher(s)
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Server.Tvg.SimpleServer`1.RenamedHandler">
+            <summary>
+            The delegate that will be subscribed to the renamed event of the underlying
+            FileSystemWatcher(s)
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Server.Tvg.SimpleServer`1.WireEventHandlers">
+            <summary>
+            Wire the event handlers
+            </summary>
         </member>
         <member name="M:Bam.Net.Server.Includes.GetScriptTags">
             <summary>
@@ -1006,55 +1049,6 @@
         <member name="P:Bam.Net.Server.DaoResponder.AppDaoProxyRegistrations">
             <summary>
             The DaoProxyRegistrations keyed by application name
-            </summary>
-        </member>
-        <member name="T:Bam.Net.Server.Tvg.GlooRegistryProviderAttribute">
-            <summary>
-            Attribute used to denote a method 
-            that will return a GlooRegistry
-            </summary>
-        </member>
-        <member name="P:Bam.Net.Server.Tvg.SimpleServer`1.HostPrefixes">
-            <summary>
-            An array of hosts that this server will respond to
-            </summary>
-        </member>
-        <member name="P:Bam.Net.Server.Tvg.SimpleServer`1.Responder">
-            <summary>
-            The responder
-            </summary>
-        </member>
-        <member name="P:Bam.Net.Server.Tvg.SimpleServer`1.Logger">
-            <summary>
-            The logger
-            </summary>
-        </member>
-        <member name="P:Bam.Net.Server.Tvg.SimpleServer`1.FileSystemWatchers">
-            <summary>
-            The FileSystemWatchers; one each for create, changed and renamed
-            </summary>
-        </member>
-        <member name="P:Bam.Net.Server.Tvg.SimpleServer`1.MonitorDirectories">
-            <summary>
-            An array of directories to monitor for
-            created, changed or renamed files
-            </summary>
-        </member>
-        <member name="P:Bam.Net.Server.Tvg.SimpleServer`1.CreatedOrChangedHandler">
-            <summary>
-            The delegate that will be subscribed to the Create
-            and Changed handler of the underlying FileSystemWatcher(s)
-            </summary>
-        </member>
-        <member name="P:Bam.Net.Server.Tvg.SimpleServer`1.RenamedHandler">
-            <summary>
-            The delegate that will be subscribed to the renamed event of the underlying
-            FileSystemWatcher(s)
-            </summary>
-        </member>
-        <member name="M:Bam.Net.Server.Tvg.SimpleServer`1.WireEventHandlers">
-            <summary>
-            Wire the event handlers
             </summary>
         </member>
     </members>

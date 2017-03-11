@@ -7,22 +7,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Server.Rpc
+namespace Bam.Net.Server.JsonRpc
 {
-    public abstract class RpcMessage
+    public abstract class JsonRpcMessage
     {
         public string JsonRpc { get { return "2.0"; } }
 
-        public static IRpcRequest Parse(IHttpContext context)
+        public static IJsonRpcRequest Parse(IHttpContext context)
         {
-            IRpcRequest request = Parse(context.Request);
+            IJsonRpcRequest request = Parse(context.Request);
             request.HttpContext = context;
             return request;
         }
 
-        protected internal static IRpcRequest Parse(IRequest request)
+        protected internal static IJsonRpcRequest Parse(IRequest request)
         {
-            IRpcRequest result = null;
+            IJsonRpcRequest result = null;
             using (StreamReader sr = new StreamReader(request.InputStream))
             {
                 string json = sr.ReadToEnd();
@@ -38,9 +38,9 @@ namespace Bam.Net.Server.Rpc
         /// on the json itself as described here http://www.jsonrpc.org/specification
         /// </summary>
         /// <returns></returns>
-        protected internal static IRpcRequest Parse(string json)
+        protected internal static IJsonRpcRequest Parse(string json)
         {
-            IRpcRequest result = null;
+            IJsonRpcRequest result = null;
             JToken parsed = JToken.Parse(json);
             JArray batch;
             if (parsed.Is<JObject>())
@@ -55,10 +55,10 @@ namespace Bam.Net.Server.Rpc
             return result;
         }
 
-        protected static internal IRpcRequest ParseBatch(JArray batch)
+        protected static internal IJsonRpcRequest ParseBatch(JArray batch)
         {
-            RpcBatch rpcBatch = new RpcBatch();
-            List<IRpcRequest> requests = new List<IRpcRequest>();
+            JsonRpcBatch rpcBatch = new JsonRpcBatch();
+            List<IJsonRpcRequest> requests = new List<IJsonRpcRequest>();
             batch.Each(jToken =>
             {
                 requests.Add(ParseRequest(jToken, jToken.ToString()));
@@ -67,26 +67,26 @@ namespace Bam.Net.Server.Rpc
             return rpcBatch;
         }
         
-        protected static internal IRpcRequest ParseRequest(JToken parsed, string json)
+        protected static internal IJsonRpcRequest ParseRequest(JToken parsed, string json)
         {
             bool isNotification = parsed["id"] == null && parsed["Id"] == null;
-            RpcNotification rpcMessage = isNotification ? json.FromJson<RpcNotification>() : json.FromJson<RpcRequest>();
+            JsonRpcNotification rpcMessage = isNotification ? json.FromJson<JsonRpcNotification>() : json.FromJson<JsonRpcRequest>();
             SetParams(parsed, rpcMessage);
             return rpcMessage;
         }
 
-        protected static void SetParams(JToken parsed, RpcNotification notification)
+        protected static void SetParams(JToken parsed, JsonRpcNotification notification)
         {
             JToken parms = parsed["params"];
             if (parms != null)
             {
                 if (parms.Is<JObject>())
                 {
-                    notification.RpcParams.By = new RpcParameters.Structure { Name = parms };
+                    notification.RpcParams.By = new JsonRpcParameters.Structure { Name = parms };
                 }
                 else if (parms.Is<JArray>())
                 {
-                    notification.RpcParams.By = new RpcParameters.Structure { Position = parms.ToString().FromJson<object[]>() };
+                    notification.RpcParams.By = new JsonRpcParameters.Structure { Position = parms.ToString().FromJson<object[]>() };
                 }
             }
         }

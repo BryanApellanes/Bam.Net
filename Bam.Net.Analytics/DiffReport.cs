@@ -46,13 +46,13 @@ namespace Bam.Net.Analytics
         }
 
         List<InsertedDiffReportToken> inserted;
-        public InsertedDiffReportToken[] InsertedLines
+        public InsertedDiffReportToken[] Inserted
         {
             get { return inserted.ToArray(); }
         }
 
         List<DeletedDiffReportToken> deleted;
-        public DeletedDiffReportToken[] DeletedLines
+        public DeletedDiffReportToken[] Deleted
         {
             get { return deleted.ToArray(); }
         }

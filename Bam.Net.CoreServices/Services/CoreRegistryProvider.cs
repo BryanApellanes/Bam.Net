@@ -19,32 +19,32 @@ using Bam.Net.Translation.Yandex;
 using Bam.Net.Translation;
 using Bam.Net.CoreServices.Data.Daos.Repository;
 using Bam.Net.ServiceProxy.Secure;
-//using Bam.Net.CoreServices.Distributed;
 
 namespace Bam.Net.CoreServices.Services
 {
-    [GlooContainer]
-    public static class CoreRegistry
+    [CoreRegistryContainer]
+    public static class CoreRegistryProvider
     {
         static object _coreIncubatorLock = new object();
-        static GlooRegistry _coreIncubator;
+        static CoreRegistry _coreIncubator;
         
-        [GlooRegistryProvider]
-        public static GlooRegistry GetGlooRegistry()
+        [CoreRegistryProvider]
+        public static CoreRegistry GetCoreRegistry()
         {
             return _coreIncubatorLock.DoubleCheckLock(ref _coreIncubator, Create);
         }
 
-        public static GlooRegistry Create()
+        public static CoreRegistry Create()
         {
             string databasesPath = Path.Combine(DefaultConfiguration.GetAppSetting("ContentRoot"), "Databases");
+            string userDatabasesPath = Path.Combine(databasesPath, "UserDbs");
             string yandexVaultPath = Path.Combine(databasesPath, "YandexApiVault");
             YandexApiKeyVaultInfo yandexVault = new YandexApiKeyVaultInfo(yandexVaultPath);
             Database translationDatabase = new SQLiteDatabase(databasesPath, "Translations");
             YandexTranslationProvider translationProvider = new YandexTranslationProvider(yandexVault.Load(), translationDatabase, translationDatabase);
             translationProvider.EnsureLanguages();
 
-            AppConf conf = new AppConf(BamConf.Load(ServiceConfig.ContentRoot), ServiceConfig.ApplicationName.Or("GlooService"));
+            AppConf conf = new AppConf(BamConf.Load(ServiceConfig.ContentRoot), ServiceConfig.ApplicationName.Or("CoreRegistryService"));
             UserManager userMgr = conf.UserManagerConfig.Create();
             DaoUserResolver userResolver = new DaoUserResolver();
             DaoRoleResolver roleResolver = new DaoRoleResolver();
@@ -56,9 +56,10 @@ namespace Bam.Net.CoreServices.Services
             userResolver.Database = userMgr.Database;
             roleResolver.Database = userMgr.Database;
 
+            CoreConfigurationService configSvc = new CoreConfigurationService(conf, userDatabasesPath);
             CoreApplicationRegistryServiceConfig config = new CoreApplicationRegistryServiceConfig { DatabaseProvider = dbProvider, WorkspacePath = databasesPath, Logger = Log.Default };
             CompositeRepository compositeRepo = new CompositeRepository(coreRepo, databasesPath);
-            GlooRegistry reg = (GlooRegistry)(new GlooRegistry())
+            CoreRegistry reg = (CoreRegistry)(new CoreRegistry())
                 .For<ILogger>().Use(Log.Default)
                 .For<IRepository>().Use(coreRepo)
                 .For<DaoRepository>().Use(coreRepo)

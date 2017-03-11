@@ -147,6 +147,8 @@
     <Compile Include="CompilationException.cs" />
     <Compile Include="Configuration\Configurable.cs" />
     <Compile Include="Configuration\DefaultConfigurationApplicationNameProvider.cs" />
+    <Compile Include="Configuration\DefaultConfigurationService.cs" />
+    <Compile Include="Configuration\IConfigurationService.cs" />
     <Compile Include="Configuration\IConfigurer.cs" />
     <Compile Include="Configuration\DefaultConfiguration.cs" />
     <Compile Include="Configuration\DefaultConfigurer.cs" />

@@ -24,7 +24,11 @@ namespace Bam.Net.Data.Schema
             this.Name = "Default";
             this.DbType = "UnSpecified";
         }
-
+        public SchemaDefinition(string name): this()
+        {
+            Name = name;
+            File = $".\\{name}";
+        }
         /// <summary>
         /// Gets or sets the type of the database that this SchemaDefinition was
         /// extracted from.  May be null.

@@ -102,7 +102,7 @@ namespace Bam.Net.Logging
                                 eventInfo.AddEventHandler(this, (EventHandler)((s, a) =>
                                 {
                                     string message = "";
-                                    if(verbosity != null)
+                                    if (verbosity != null)
                                     {
                                         if (!verbosity.TryGetMessage(s, out message))
                                         {
@@ -112,11 +112,11 @@ namespace Bam.Net.Logging
 
                                     if (!string.IsNullOrEmpty(message))
                                     {
-                                      logger.AddEntry(message, (int)logEventType);
+                                        logger.AddEntry(message, (int)logEventType);
                                     }
                                     else
                                     {
-                                      logger.AddEntry("Event {0} raised on type {1}::{2}", (int)logEventType, logEventType.ToString(), currentType.Name, eventInfo.Name);
+                                        logger.AddEntry("Event {0} raised on type {1}::{2}", (int)logEventType, logEventType.ToString(), currentType.Name, eventInfo.Name);
                                     }
                                 }));
                             }

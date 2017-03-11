@@ -67,6 +67,7 @@ namespace Bam.Net.CoreServices
 
         public CompositeRepository CompositeRepository { get; set; }
 
+        [ApiKeyRequired]
         public virtual ApiKeyInfo[] ListApiKeys()
         {
             return Application?.ApiKeys.Select(k => k.ToKeyInfo()).ToArray();

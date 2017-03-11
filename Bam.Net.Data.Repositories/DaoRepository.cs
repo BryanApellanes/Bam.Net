@@ -197,7 +197,7 @@ namespace Bam.Net.Data.Repositories
             return _daoAssembly;
         }
 
-        public override void Subscribe(ILogger logger)
+        public sealed override void Subscribe(ILogger logger)
         {
             TypeDaoGenerator.Subscribe(logger);
             TypeSchemaGenerator.Subscribe(logger);
@@ -226,7 +226,7 @@ namespace Bam.Net.Data.Repositories
                             throw new InvalidOperationException("No types were specified.  Call AddType for each type to store.");
                         }
                         isInitialized = true;
-                        StorableTypes.Each(type => TypeDaoGenerator.AddType(type));
+                        TypeDaoGenerator.AddTypes(StorableTypes);
                     }
                 }
             }

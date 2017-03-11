@@ -4,20 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Server.Rpc
+namespace Bam.Net.Server.JsonRpc
 {
-    public class RpcFaultCode
+    public class JsonRpcFaultCode
     {
-        public static implicit operator long(RpcFaultCode code)
+        public static implicit operator long(JsonRpcFaultCode code)
         {
             return code.Code;
         }
-        public static implicit operator string(RpcFaultCode faultCode)
+        public static implicit operator string(JsonRpcFaultCode faultCode)
         {
             return "{0}:: {1}"._Format(faultCode.Message, faultCode.Meaning);
         }
 
-        public RpcFaultCode(long code, string message, string meaning)
+        public JsonRpcFaultCode(long code, string message, string meaning)
         {
             this.Code = code;
             this.Message = message;

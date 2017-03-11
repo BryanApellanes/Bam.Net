@@ -295,7 +295,10 @@ namespace Bam.Net
         {
             return UnSubscribe<T>(instance, eventName, handler);
         }
-
+        public static object UnSubscribe(this object instance, string eventName, EventHandler handler)
+        {
+            return UnSubscribe(instance, eventName, (Delegate)handler);
+        }
         /// <summary>
         /// Unsubscribe the specified handler from the specified event 
         /// </summary>
@@ -304,7 +307,7 @@ namespace Bam.Net
         /// <param name="eventName"></param>
         /// <param name="handler"></param>
         /// <returns></returns>
-        public static object UnSubscribe(this object instance, string eventName, EventHandler handler)
+        public static object UnSubscribe(this object instance, string eventName, Delegate handler)
         {
             EventInfo eventInfo = instance.GetType().GetEvent(eventName);
             Args.ThrowIfNull(eventInfo, "eventName");

@@ -161,6 +161,11 @@ namespace Bam.Net.Data
 			return new Query<C, T>(where, this);
 		}
 
+        public SchemaWriter GetSchemaWriter()
+        {
+            return ServiceProvider.Get<SchemaWriter>();
+        }
+
         public SqlStringBuilder GetSqlStringBuilder()
         {
             return ServiceProvider.Get<SqlStringBuilder>();

@@ -154,23 +154,24 @@
     <Compile Include="Rest\RestResponder.cs" />
     <Compile Include="Rest\RestResponse.cs" />
     <Compile Include="RouteParser.cs" />
-    <Compile Include="Rpc\IRpcRequest.cs" />
-    <Compile Include="Rpc\RpcBatch.cs" />
-    <Compile Include="Rpc\RpcBatchResonse.cs" />
-    <Compile Include="Rpc\RpcError.cs" />
-    <Compile Include="Rpc\RpcFaultCode.cs" />
-    <Compile Include="Rpc\RpcFaultCodes.cs" />
-    <Compile Include="Rpc\RpcFaults.cs" />
-    <Compile Include="Rpc\RpcMessage.cs" />
-    <Compile Include="Rpc\RpcMethodAttribute.cs" />
-    <Compile Include="Rpc\RpcNotification.cs" />
-    <Compile Include="Rpc\RpcParameters.cs" />
-    <Compile Include="Rpc\RpcRequest.cs" />
-    <Compile Include="Rpc\RpcResponder.cs" />
-    <Compile Include="Rpc\RpcResponse.cs" />
+    <Compile Include="JsonRpc\IJsonRpcRequest.cs" />
+    <Compile Include="JsonRpc\JsonRpcBatch.cs" />
+    <Compile Include="JsonRpc\JsonRpcBatchResonse.cs" />
+    <Compile Include="JsonRpc\JsonRpcError.cs" />
+    <Compile Include="JsonRpc\JsonRpcFaultCode.cs" />
+    <Compile Include="JsonRpc\JsonRpcFaultCodes.cs" />
+    <Compile Include="JsonRpc\JsonRpcFaults.cs" />
+    <Compile Include="JsonRpc\JsonRpcMessage.cs" />
+    <Compile Include="JsonRpc\JsonRpcMethodAttribute.cs" />
+    <Compile Include="JsonRpc\JsonRpcNotification.cs" />
+    <Compile Include="JsonRpc\JsonRpcParameters.cs" />
+    <Compile Include="JsonRpc\JsonRpcRequest.cs" />
+    <Compile Include="JsonRpc\JsonRpcResponder.cs" />
+    <Compile Include="JsonRpc\JsonRpcResponse.cs" />
     <Compile Include="SearchDirectory.cs" />
     <Compile Include="SearchRule.cs" />
     <Compile Include="AppSetting.cs" />
+    <Compile Include="SimpleServer.cs" />
     <Compile Include="TcpServer.cs" />
     <Compile Include="IInitialize.cs" />
     <Compile Include="Includes.cs" />
@@ -214,25 +215,6 @@
     <Compile Include="DaoResponder.cs" />
     <Compile Include="TcpContext.cs" />
     <Compile Include="TemplateInitializerBase.cs" />
-    <Compile Include="Tvg\GlooContainerAttribute.cs" />
-    <Compile Include="Tvg\GlooRegistry.cs" />
-    <Compile Include="Tvg\GlooRegistryProviderAttribute.cs" />
-    <Compile Include="Tvg\GlooResponder.cs" />
-    <Compile Include="Tvg\GlooService.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Tvg\ServiceConfig.cs" />
-    <Compile Include="Tvg\SimpleServer.cs" />
-    <Compile Include="Tvg\GlooServer.cs" />
-    <Compile Include="Tvg\TrooResponder.cs" />
-    <Compile Include="Tvg\TrooServer.cs" />
-    <Compile Include="Tvg\TrooService.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Tvg\VyooServer.cs" />
-    <Compile Include="Tvg\VyooService.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="WebBook.cs" />
     <Compile Include="WebBookEventArgs.cs" />
     <Compile Include="WebBookInitializer.cs" />

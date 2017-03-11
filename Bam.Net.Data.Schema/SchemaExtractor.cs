@@ -120,8 +120,14 @@ namespace Bam.Net.Data.Schema
             SchemaManager schemaManager = new SchemaManager();
             schemaManager.AutoSave = false;
             schemaManager.SchemaTempPathProvider = SchemaTempPathProvider;
+            SchemaDefinition result = Extract(schemaManager);
+            return result;
+        }
+
+        public SchemaDefinition Extract(SchemaManager schemaManager)
+        {
             SchemaDefinition result = new SchemaDefinition { Name = GetSchemaName() };
-            schemaManager.ManageSchema(result);
+            schemaManager.CurrentSchema = result;
 
             // GetTableNames
             GetTableNames().Each(tableName =>
@@ -161,7 +167,7 @@ namespace Bam.Net.Data.Schema
                 FireEvent(ProcessingForeignComplete, new SchemaExtractorEventArgs { ForeignKeyColumn = fk });
             });
 
-            NameMap.Save(Path.Combine(this.GetAppDataFolder(), "{0}_NameMap.json"._Format(schemaManager.CurrentSchema.Name)));
+            NameMap.Save(Path.Combine(RuntimeSettings.AppDataFolder, "{0}_NameMap.json"._Format(schemaManager.CurrentSchema.Name)));
             SetClassNamesOnColumns(schemaManager);
             return result;
         }

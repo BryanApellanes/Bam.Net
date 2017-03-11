@@ -118,7 +118,7 @@ AND TABLE_NAME = @TableName";
                 case "decimal":
                     return DataTypes.Decimal;
                 case "float":
-                    return DataTypes.String;
+                    return DataTypes.Decimal;
                 case "image":
                     return DataTypes.ByteArray;
                 case "int":
@@ -138,7 +138,7 @@ AND TABLE_NAME = @TableName";
                 case "numeric":
                     return DataTypes.Long;
                 case "real":
-                    return DataTypes.String;
+                    return DataTypes.Decimal;
                 case "smalldatetime":
                     return DataTypes.DateTime;
                 case "smallint":

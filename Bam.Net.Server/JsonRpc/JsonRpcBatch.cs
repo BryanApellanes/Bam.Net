@@ -5,33 +5,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Server.Rpc
+namespace Bam.Net.Server.JsonRpc
 {
-    public class RpcBatch: RpcMessage, IRpcRequest
+    public class JsonRpcBatch: JsonRpcMessage, IJsonRpcRequest
     {
         [Exclude]
         public object Clone()
         {
-            RpcBatch clone = new RpcBatch();
+            JsonRpcBatch clone = new JsonRpcBatch();
             clone.CopyProperties(this);
             return clone;
         }
-        public static implicit operator IRpcRequest[](RpcBatch batch)
+        public static implicit operator IJsonRpcRequest[](JsonRpcBatch batch)
         {
             return batch.Requests;
         }
 
         public IHttpContext HttpContext { get; set; }
 
-        public IRpcRequest[] Requests { get; set; }
+        public IJsonRpcRequest[] Requests { get; set; }
 
-        public RpcResponse Execute()
+        public JsonRpcResponse Execute()
         {
-            RpcBatchResonse response = new RpcBatchResonse();
+            JsonRpcBatchResonse response = new JsonRpcBatchResonse();
             Parallel.ForEach(Requests, (request) =>
             {
-                RpcResponse rpcResponse = request.Execute();
-                if (request.Is<RpcRequest>()) // exclude Notifications from the response
+                JsonRpcResponse rpcResponse = request.Execute();
+                if (request.Is<JsonRpcRequest>()) // exclude Notifications from the response
                 {
                     response.AddResponse(rpcResponse);
                 }

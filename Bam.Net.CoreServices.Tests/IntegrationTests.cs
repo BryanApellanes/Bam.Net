@@ -94,7 +94,7 @@ namespace Bam.Net.CoreServices.Tests
             const string server  = "localhost";
             const int port = 9100;
             logger.StartLoggingThread();
-            CoreRegistryRepository repo = CoreRegistry.GetGlooRegistry().Get<CoreRegistryRepository>();
+            CoreRegistryRepository repo = CoreRegistryProvider.GetCoreRegistry().Get<CoreRegistryRepository>();
             CoreClient client = new CoreClient("TestOrg", "TestApp", server, port, logger);
             client.LocalCoreRegistryRepository = repo;
             ServiceResponse registrationResponse = client.Register();
@@ -125,7 +125,7 @@ namespace Bam.Net.CoreServices.Tests
         [IntegrationTest]
         public void CanSaveMachineInCoreRegistryRepo()
         {
-            CoreRegistryRepository repo = CoreRegistry.GetGlooRegistry().Get<CoreRegistryRepository>();
+            CoreRegistryRepository repo = CoreRegistryProvider.GetCoreRegistry().Get<CoreRegistryRepository>();
             Machine test = Machine.ClientOf(repo, "test", 80);
             test = repo.Save(test);
             Expect.IsTrue(test.Id > 0);
@@ -139,7 +139,7 @@ namespace Bam.Net.CoreServices.Tests
         public void CoreClientCanRegisterAndConnectClient()
         {
             OutLineFormat("This test requires a gloo server to be running on port 9100 of the localhost", ConsoleColor.Yellow);
-            CoreRegistryRepository repo = CoreRegistry.GetGlooRegistry().Get<CoreRegistryRepository>();
+            CoreRegistryRepository repo = CoreRegistryProvider.GetCoreRegistry().Get<CoreRegistryRepository>();
             ConsoleLogger logger = new ConsoleLogger() { AddDetails = false };
             logger.StartLoggingThread();
             CoreClient client = new CoreClient("ThreeHeadz", "CoreServicesTestApp", "localhost", 9100, logger);

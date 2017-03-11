@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Server.Rpc
+namespace Bam.Net.Server.JsonRpc
 {
-    public interface IRpcRequest: IRequiresHttpContext
+    public interface IJsonRpcRequest: IRequiresHttpContext
     {
-        RpcResponse Execute();
+        JsonRpcResponse Execute();
     }
 }

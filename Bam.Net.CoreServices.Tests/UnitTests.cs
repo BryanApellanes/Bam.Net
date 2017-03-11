@@ -25,7 +25,7 @@ using Bam.Net.UserAccounts.Data;
 using System.Threading;
 using Bam.Net.CoreServices.Data.Daos.Repository;
 using Bam.Net.CoreServices.Services;
-using Bam.Net.Server.Tvg;
+using Bam.Net.Server;
 using Bam.Net.CoreServices.Data;
 using System.Collections.Specialized;
 using Bam.Net.Data.Dynamic;
@@ -259,10 +259,10 @@ namespace Bam.Net.CoreServices.Tests
         [UnitTest]
         public void MustBeLoggedInToRegister()
         {
-            After.Setup(ctx =>
+            After.Setup((Action<SetupContext>)(ctx =>
             {
-                ctx.CopyFrom(CoreRegistry.GetGlooRegistry());
-            })
+                ctx.CopyFrom((Incubation.Incubator)Services.CoreRegistryProvider.GetCoreRegistry());
+            }))
             .WhenA<CoreApplicationRegistryService>("tries to register application when not logged in", cars =>
             {
                 ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration(cars.CoreRegistryRepository,"localhost", 8080, "testApp", "testOrg");
@@ -283,7 +283,7 @@ namespace Bam.Net.CoreServices.Tests
         [UnitTest]
         public void CanSaveUserToCompositeRepo()
         {
-            CompositeRepository repo = CoreRegistry.GetGlooRegistry().Get<CompositeRepository>();
+            CompositeRepository repo = CoreRegistryProvider.GetCoreRegistry().Get<CompositeRepository>();
             Data.User user = new Data.User();
             user.UserName = 9.RandomLetters();
             user = repo.Save(user);
@@ -296,7 +296,7 @@ namespace Bam.Net.CoreServices.Tests
         [UnitTest]
         public void CanListCoreServices()
         {
-            Assembly coreServicesAssembly = typeof(CoreRegistry).Assembly;
+            Assembly coreServicesAssembly = typeof(Services.CoreRegistryProvider).Assembly;
             bool foundOne = false;
             foreach(Type type in coreServicesAssembly.GetTypes())
             {
@@ -334,7 +334,7 @@ namespace Bam.Net.CoreServices.Tests
         [UnitTest]
         public void EnsureSingleDoesntDuplicate()
         {
-            GlooRegistry glooRegistry = CoreRegistry.GetGlooRegistry();
+            CoreRegistry glooRegistry = Services.CoreRegistryProvider.GetCoreRegistry();
             CoreRegistryRepository repo = glooRegistry.Get<CoreRegistryRepository>();
             CompositeRepository compositeRepo = glooRegistry.Get<CompositeRepository>();
             compositeRepo.UnwireBackup();
@@ -411,7 +411,7 @@ namespace Bam.Net.CoreServices.Tests
 
         private CoreApplicationRegistryService GetTestService()
         {
-            GlooRegistry registry = CoreRegistry.GetGlooRegistry();
+            CoreRegistry registry = Services.CoreRegistryProvider.GetCoreRegistry();
             CoreApplicationRegistryService svc = registry.Get<CoreApplicationRegistryService>();
             registry.SetProperties(svc);
             return svc;
