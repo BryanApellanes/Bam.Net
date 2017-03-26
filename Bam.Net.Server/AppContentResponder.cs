@@ -303,13 +303,13 @@ namespace Bam.Net.Server
             return path;
         }
 
-        private byte[] RenderLayout(IResponse response, string path, string extras = null)
+        private byte[] RenderLayout(IResponse response, string path, string queryString = null)
         {
             byte[] content;
             AppTemplateRenderer.SetContentType(response);
             MemoryStream ms = new MemoryStream();
             LayoutModel layoutModel = GetLayoutModelForPath(path);
-            layoutModel.Extras = extras;
+            layoutModel.QueryString = queryString ?? layoutModel.QueryString;
             AppTemplateRenderer.RenderLayout(layoutModel, ms);
             ms.Seek(0, SeekOrigin.Begin);
             content = ms.GetBuffer();
