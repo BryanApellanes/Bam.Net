@@ -1022,7 +1022,6 @@ namespace Bam.Net
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="arr"></param>
-        /// <param name="action"></param>
         public static void BackwardsEach<T>(this IEnumerable<T> arr, Func<T, int, bool> function)
         {
             arr.ToArray().BackwardsEach(function);
@@ -1035,7 +1034,6 @@ namespace Bam.Net
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="arr"></param>
-        /// <param name="action"></param>
         public static void BackwardsEach<T>(this T[] arr, Func<T, int, bool> function)
         {
             if (arr != null)

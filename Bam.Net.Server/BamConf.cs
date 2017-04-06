@@ -518,7 +518,7 @@ namespace Bam.Net.Server
 
         private static AppConf SetAppNameInYaml(DirectoryInfo appDir, FileInfo appsConf)
         {
-            AppConf conf = appsConf.FromYaml<AppConf>();
+            AppConf conf = appsConf.FromYamlFile<AppConf>();
             conf.Name = appDir.Name;
             conf.ToYamlFile(appsConf);
             return conf;

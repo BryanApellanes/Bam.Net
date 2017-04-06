@@ -71,8 +71,7 @@ namespace Bam.Net
                             _waitSignal.WaitOne();
                             while (_processQueue.Count > 0)
                             {
-                                T val;
-                                if (_processQueue.TryDequeue(out val))
+                                if (_processQueue.TryDequeue(out T val))
                                 {
                                     Process(val);
                                 }
