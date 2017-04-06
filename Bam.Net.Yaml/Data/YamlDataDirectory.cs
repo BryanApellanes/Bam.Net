@@ -104,9 +104,14 @@ namespace Bam.Net.Yaml.Data
 
         public string GetYamlFilePath(Type type, string name)
         {
-            string dirPath = Path.Combine(Root.FullName, type.Name);
+            string dirPath = GetTypeDirectory(type);
             string yamlFilePath = Path.Combine(dirPath, $"{name}.yaml");
             return yamlFilePath;
+        }
+
+        public string GetTypeDirectory(Type type)
+        {
+            return Path.Combine(Root.FullName, type.Name);
         }
 
         public FileInfo[] GetYamlFiles(Type type)

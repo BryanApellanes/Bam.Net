@@ -52,12 +52,40 @@ namespace Bam.Net.Yaml.Tests
             Expect.AreEqual(updatedDetails, fromFile.Details);
             Parent fromDb = repo.DaoRepository.Retrieve<Parent>(fromFile.Id);
             Expect.AreEqual(details, fromDb.Details);
-            repo.Sync();
+            repo.ResolveChanges();
             fromDb = repo.DaoRepository.Retrieve<Parent>(fromFile.Id);
             Expect.AreEqual(testName, fromDb.Name);
             Expect.AreEqual(updatedDetails, fromDb.Details);
         }
 
+        [UnitTest]
+        public void CanAddNameToLoad()
+        {
+            YamlRepository repo = GetYamlRepo(nameof(CanAddNameToLoad));
+            FileInfo loadNamesFile = repo.GetLoadNamesFile(typeof(Parent));
+            if (File.Exists(loadNamesFile.FullName))
+            {
+                File.Delete(loadNamesFile.FullName);
+            }
+            Expect.IsFalse(File.Exists(loadNamesFile.FullName));
+            HashSet<string> names = repo.AddNameToLoad<Parent>("monkey");
+            Expect.IsTrue(File.Exists(loadNamesFile.FullName));
+            names = repo.AddNameToLoad<Parent>("monkey");
+            names = repo.AddNameToLoad<Parent>("banana");
+            Expect.AreEqual(2, names.Count);
+            List<string> fromFile = File.ReadAllLines(loadNamesFile.FullName).ToList();
+            Expect.AreEqual(2, fromFile.Count);
+            Expect.IsTrue(fromFile.Contains("monkey"));
+            Expect.IsTrue(fromFile.Contains("banana"));
+        }
+
+        [UnitTest]
+        public void LoadYamlTest()
+        {
+            // save some stuff to daorepo
+            // write names to sync file
+            // 
+        }
         private YamlRepository GetYamlRepo(string name)
         {
             YamlRepository repo =  new YamlRepository($".\\{name}", new SQLiteDatabase($"{name}_Db", name));

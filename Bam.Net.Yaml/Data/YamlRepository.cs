@@ -27,17 +27,65 @@ namespace Bam.Net.Yaml.Data
 
         public DaoRepository DaoRepository { get; set; }
         public YamlDataDirectory YamlDataDirectory { get; set; }
+
+        public IEnumerable<object> LoadYaml()
+        {
+            // get names from YamlDataDirectory/load.names
+            // load each one at a time and yield
+            HashSet<string> names = new HashSet<string>();
+            foreach(Type type in StorableTypes)
+            {
+                FileInfo loadNamesFile = GetLoadNamesFile(type);
+                File.ReadAllLines(loadNamesFile.FullName).Each(n => names.Add(n));
+                foreach (string name in names)
+                {
+                    object value = DaoRepository.Query(type, QueryFilter.Where("Name") == name).FirstOrDefault();
+                    if (value != null)
+                    {
+                        WriteYaml(type, value);
+                        yield return value;
+                    }
+                }
+            }            
+        }
+
         public IEnumerable<T> LoadYaml<T>(params string[] names) where T : class, new()
         {
             IEnumerable<T> values = DaoRepository.Query<T>(QueryFilter.Where("Name").In(names));
             foreach (T value in values)
             {
-                FileInfo yamlFile = new FileInfo(YamlDataDirectory.GetYamlFilePath(typeof(T), value.Property<string>("Name")));
-                YamlDataDirectory.Save(yamlFile, typeof(T), value);
+                WriteYaml(typeof(T), value);
             }
             return values;
         }
-        public void Sync()
+        protected internal FileInfo GetLoadNamesFile(Type type)
+        {
+            return new FileInfo(Path.Combine(YamlDataDirectory.GetTypeDirectory(type), "load.names"));
+        }
+        /// <summary>
+        /// Add the specified name to the load.names file.
+        /// The names.sync file is used to 
+        /// </summary>
+        /// <param name="name"></param>
+        public HashSet<string> AddNameToLoad<T>(string name)
+        {
+            HashSet<string> result = new HashSet<string>();
+            FileInfo loadNamesFile = GetLoadNamesFile(typeof(T));
+            if (!loadNamesFile.Exists)
+            {
+                result.Add(name);
+                $"{name}\r\n".SafeWriteToFile(loadNamesFile.FullName, (o) => o.ClearWriteLocks());
+            }
+            else
+            {
+                File.ReadLines(loadNamesFile.FullName).Each(n => result.Add(n));
+                result.Add(name);
+                "".SafeWriteToFile(loadNamesFile.FullName, true);
+                result.Each(n => $"{n}\r\n".SafeAppendToFile(loadNamesFile.FullName));
+            }
+            return result;
+        }
+        public void ResolveChanges()
         {
             foreach(Type type in StorableTypes)
             {
@@ -63,7 +111,7 @@ namespace Bam.Net.Yaml.Data
                             YamlDataDirectory.Save(file, d.Type, d.Data);
                         };
                         data.Data = dao;
-                        data.Resolve(type, file);
+                        data.ResolveChanges(type, file);
                     }
                 }
             }
@@ -190,5 +238,10 @@ namespace Bam.Net.Yaml.Data
             return dao;
         }
 
+        private void WriteYaml(Type type, object value)
+        {
+            FileInfo yamlFile = new FileInfo(YamlDataDirectory.GetYamlFilePath(type, value.Property<string>("Name")));
+            YamlDataDirectory.Save(yamlFile, type, value);
+        }
     }
 }
