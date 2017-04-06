@@ -161,6 +161,7 @@
     <Compile Include="TestDtos\TestChild.cs" />
     <Compile Include="TestDtos\TestContainer.cs" />
     <Compile Include="TestDtos\TestParent.cs" />
+    <Compile Include="TestRepoData.cs" />
     <Compile Include="Test_Generated\MainObject.cs">
       <SubType>Code</SubType>
     </Compile>

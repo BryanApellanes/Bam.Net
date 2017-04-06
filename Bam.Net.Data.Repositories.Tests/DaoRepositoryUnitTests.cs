@@ -47,6 +47,22 @@ namespace Bam.Net.Data.Repositories.Tests
             Expect.AreEqual(schemaName, Dao.ConnectionName(type));
         }
 
+        
+
+        [UnitTest]
+        public void SetsModified()
+        {
+            string schemaName = "TheSchemaName_".RandomLetters(5);
+            DaoRepository repo = new DaoRepository(new SQLiteDatabase(".", MethodBase.GetCurrentMethod().Name), Log.Default, schemaName);
+            repo.WarningsAsErrors = false;
+            repo.AddType<TestRepoData>();
+            TestRepoData data = new TestRepoData();
+            Expect.IsNull(data.Modified);
+            data = repo.Save(data);
+            Expect.IsNotNull(data.Modified);
+            Expect.IsFalse(data.Modified == default(DateTime));
+        }
+
         [UnitTest]
         public void RetrieveShouldSetParentOnChildren()
         {
