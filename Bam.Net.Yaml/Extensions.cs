@@ -56,7 +56,7 @@ namespace Bam.Net.Yaml
 			return File.ReadAllText(file.FullName).FromYaml(expectedTypes);
 		}
 
-        public static T FromYaml<T>(this FileInfo file, params Type[] expectedTypes)
+        public static T FromYamlFile<T>(this FileInfo file, params Type[] expectedTypes)
         {
             return FromYaml<T>(File.ReadAllText(file.FullName));
         }
@@ -93,10 +93,7 @@ namespace Bam.Net.Yaml
             YamlSerializer ser = new YamlSerializer();
             YamlConfig c = new YamlConfig();
             object[] des = ser.Deserialize(yaml, typeof(T));
-            return des.Each<T>((o) =>
-            {
-                return (T)o;
-            });
+            return des.Each((o) => (T)o);
         }
     }
 }
