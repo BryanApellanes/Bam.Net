@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Logging;
@@ -28,6 +26,42 @@ namespace Bam.Net.Yaml.Data
         public DaoRepository DaoRepository { get; set; }
         public YamlDataDirectory YamlDataDirectory { get; set; }
 
+        public FileInfo GetYamlFile(Type type, object data)
+        {
+            return YamlDataDirectory.GetYamlFile(type, data);
+        }
+        public FileInfo GetYamlFile(Type type, string name)
+        {
+            return YamlDataDirectory.GetYamlFile(type, name);
+        }
+
+        /// <summary>
+        /// Read the yaml file for the specified name
+        /// disregarding the data in the database
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public T ReadYaml<T>(string name)
+        {
+            T result = default(T);
+            FileInfo file = GetYamlFile(typeof(T), name);
+            if(file != null)
+            {
+                result = YamlDataDirectory.Load(typeof(T), name).As<T>();
+            }
+            return result;
+        }
+
+        public void WriteYaml()
+        {
+            LoadYaml().ToList();
+        }
+        /// <summary>
+        /// Load from the DaoRepository database the records
+        /// specified in the load.names file for each storable type
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<object> LoadYaml()
         {
             // get names from YamlDataDirectory/load.names
@@ -36,19 +70,30 @@ namespace Bam.Net.Yaml.Data
             foreach(Type type in StorableTypes)
             {
                 FileInfo loadNamesFile = GetLoadNamesFile(type);
-                File.ReadAllLines(loadNamesFile.FullName).Each(n => names.Add(n));
-                foreach (string name in names)
+                if (loadNamesFile.Exists)
                 {
-                    object value = DaoRepository.Query(type, QueryFilter.Where("Name") == name).FirstOrDefault();
-                    if (value != null)
+                    File.ReadAllLines(loadNamesFile.FullName).Each(n => names.Add(n));
+                    foreach (string name in names)
                     {
-                        WriteYaml(type, value);
-                        yield return value;
+                        object value = DaoRepository.Query(type, QueryFilter.Where("Name") == name).FirstOrDefault();
+                        if (value != null)
+                        {
+                            WriteYaml(type, value);
+                            yield return value;
+                        }
                     }
                 }
             }            
         }
 
+        /// <summary>
+        /// Write the yaml files for the specified names by
+        /// retrieving them from the DaoRepository; they will not
+        /// be written if they are not found in the DaoRepository
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="names"></param>
+        /// <returns></returns>
         public IEnumerable<T> LoadYaml<T>(params string[] names) where T : class, new()
         {
             IEnumerable<T> values = DaoRepository.Query<T>(QueryFilter.Where("Name").In(names));
@@ -85,7 +130,11 @@ namespace Bam.Net.Yaml.Data
             }
             return result;
         }
-        public void ResolveChanges()
+
+        public event EventHandler DataWins;
+        public event EventHandler FileWins;
+        
+        public void Synchronize()
         {
             foreach(Type type in StorableTypes)
             {
@@ -104,14 +153,16 @@ namespace Bam.Net.Yaml.Data
                         {
                             YamlData.YamlDataEventArgs d = (YamlData.YamlDataEventArgs)a;
                             DaoRepository.Save(d.Type, d.Data);
+                            FireEvent(FileWins, d);
                         };
                         data.DataWins += (o, a) =>
                         {
                             YamlData.YamlDataEventArgs d = (YamlData.YamlDataEventArgs)a;
                             YamlDataDirectory.Save(file, d.Type, d.Data);
+                            FireEvent(DataWins, d);
                         };
                         data.Data = dao;
-                        data.ResolveChanges(type, file);
+                        data.Synchronize(type, file);
                     }
                 }
             }

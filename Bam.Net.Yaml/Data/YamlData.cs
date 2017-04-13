@@ -51,7 +51,7 @@ namespace Bam.Net.Yaml.Data
             }
             return new YamlData(data, logger);
         }
-        public object ResolveChanges(Type type, FileInfo file)
+        public object Synchronize(Type type, FileInfo file)
         {
             DateTime? modified = Data.Property<DateTime?>("Modified");
             DateTime fileModified = file.LastWriteTimeUtc;

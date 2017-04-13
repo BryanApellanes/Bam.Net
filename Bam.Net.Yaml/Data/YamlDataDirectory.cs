@@ -31,6 +31,11 @@ namespace Bam.Net.Yaml.Data
                 yield return new YamlDataFile(type, file, Logger) { ArrayBehavior = ArrayBehavior };
             }
         }
+        public YamlDataFile Load(Type type, string name)
+        {
+            FileInfo yamlFile = GetYamlFile(type, name);
+            return new YamlDataFile(type, yamlFile, Logger) { ArrayBehavior = ArrayBehavior };
+        }
         public YamlDataFile Save(object data)
         {
             return Save(data.GetType(), data);

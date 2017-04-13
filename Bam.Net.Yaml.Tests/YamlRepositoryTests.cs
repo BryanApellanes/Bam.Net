@@ -52,7 +52,7 @@ namespace Bam.Net.Yaml.Tests
             Expect.AreEqual(updatedDetails, fromFile.Details);
             Parent fromDb = repo.DaoRepository.Retrieve<Parent>(fromFile.Id);
             Expect.AreEqual(details, fromDb.Details);
-            repo.ResolveChanges();
+            repo.Synchronize();
             fromDb = repo.DaoRepository.Retrieve<Parent>(fromFile.Id);
             Expect.AreEqual(testName, fromDb.Name);
             Expect.AreEqual(updatedDetails, fromDb.Details);
@@ -82,9 +82,47 @@ namespace Bam.Net.Yaml.Tests
         [UnitTest]
         public void LoadYamlTest()
         {
+            YamlRepository repo = GetYamlRepo(nameof(LoadYamlTest));
             // save some stuff to daorepo
+            string details = 10.RandomLetters();
+            string testName = 8.RandomLetters();
+            Parent parent = new Parent { Details = details, Name = testName };
+            parent = repo.DaoRepository.Save(parent);
+            FileInfo yamlFile = repo.GetYamlFile(typeof(Parent), parent.Name);
+            string yamlFilePath = repo.YamlDataDirectory.GetYamlFilePath(typeof(Parent), parent.Name);
+            Expect.IsFalse(File.Exists(yamlFilePath), $"file existed but shouldn't have: {yamlFilePath}");
+            Expect.IsNull(yamlFile);
+            FileInfo loadNamesFile = repo.GetLoadNamesFile(typeof(Parent));
             // write names to sync file
-            // 
+            repo.AddNameToLoad<Parent>(parent.Name);
+            // Call LoadYaml
+            repo.WriteYaml();
+            // expect yaml files to exist
+            yamlFile = repo.GetYamlFile(typeof(Parent), parent.Name);
+            Expect.IsNotNull(yamlFile);
+            Parent fromYaml = repo.ReadYaml<Parent>(parent.Name);
+            Expect.AreEqual(fromYaml.Cuid, parent.Cuid);
+            Expect.AreEqual(fromYaml.Name, parent.Name);
+            Expect.AreEqual(fromYaml.Uuid, parent.Uuid);
+        }
+        [UnitTest]
+        public void YamlSyncFromDbTest()
+        {
+            YamlRepository repo = GetYamlRepo(nameof(LoadYamlTest));
+            string details = 10.RandomLetters();
+            string updatedDetails = 15.RandomLetters();
+            string testName = 8.RandomLetters();
+            Parent parent = new Parent { Details = details, Name = testName };
+            parent = repo.DaoRepository.Save(parent);
+            repo.AddNameToLoad<Parent>(parent.Name);
+            repo.WriteYaml();
+            Parent fromFile = repo.ReadYaml<Parent>(parent.Name);
+            Expect.AreEqual(fromFile.Details, parent.Details);
+            parent.Details = updatedDetails;
+            parent = repo.DaoRepository.Save(parent);
+            repo.Synchronize();
+            fromFile = repo.ReadYaml<Parent>(parent.Name);
+            Expect.AreEqual(fromFile.Details, updatedDetails);
         }
         private YamlRepository GetYamlRepo(string name)
         {
