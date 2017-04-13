@@ -53,3 +53,4 @@ Products/BamToolkit/BamToolkit-SetupFiles/BamToolkit.msi
 ProjectTemplates/BAMvvm/App_Data/DaoRef.sqlite
 node_modules/
 .idea
+.vs/
