@@ -25,6 +25,8 @@ namespace Bam.Net.Server
     {
         static void Main(string[] args)
         {
+            Initialize(args);
+
             EnsureAdminRights();
             // must match values in bams.exe
             ServiceExe.SetInfo(new ServiceInfo("BamDaemon", "Bam Daemon", "Bam http application server"));
@@ -35,8 +37,6 @@ namespace Bam.Net.Server
 			Type type = typeof(Program);
 			AddSwitches(type);
 			DefaultMethod = type.GetMethod("Interactive");
-
-			Initialize(args);
 
 			if (Arguments.Length > 0)
 			{
