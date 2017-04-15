@@ -15,71 +15,47 @@ using System.IO;
 using Bam.Net.Yaml;
 using Bam.Net.Testing;
 using System.Reflection;
-using Bam.Net.UserAccounts;
-using Bam.Net.Data;
 
 namespace Bam.Net.Server
 {
-    [Serializable]
-    class Program : CommandLineTestInterface
+    class Program : ServiceExe
     {
         static void Main(string[] args)
         {
-            Initialize(args);
+            CommandLineInterface.EnsureAdminRights();
 
-            EnsureAdminRights();
-            // must match values in bams.exe
-            ServiceExe.SetInfo(new ServiceInfo("BamDaemon", "Bam Daemon", "Bam http application server"));
-            ServiceExe.Kill(ServiceExe.Info.ServiceName);
-            //
-            IsolateMethodCalls = false;
+            SetInfo(new ServiceInfo("BamDaemon", "Bam Daemon", "Bam http application server"));
 
-			Type type = typeof(Program);
-			AddSwitches(type);
-			DefaultMethod = type.GetMethod("Interactive");
-
-			if (Arguments.Length > 0)
-			{
-				ExecuteSwitches(Arguments, type, null, null);
-			}
-			else
-			{
-				Interactive();
-			}
+            if (!ProcessCommandLineArgs(args))
+            {
+                RunService<Program>();
+            }
         }
-        
+
+        protected override void OnStart(string[] args)
+        {
+            Server.Start();
+        }
+
+        protected override void OnStop()
+        {
+            Server.Stop();
+            Thread.Sleep(1000);
+        }
+
         static BamServer _server;
         static object _serverLock = new object();
         public static BamServer Server
         {
             get
             {
-                return _serverLock.DoubleCheckLock(ref _server, () => new BamServer(BamConf.Load()));
+                return _serverLock.DoubleCheckLock(ref _server, () =>
+                {
+                    BamConf conf = BamConf.Load();
+                    return new BamServer(conf);
+                });
             }
         }
-                
-        [ConsoleAction("S", "Start default server")]
-        public static void StartDefaultServer()
-        {
-            Server.Start();
-			Pause("Default server started");
-        }
 
-        [ConsoleAction("K", "Stop (Kill) default server")]
-        public static void StopDefaultServer()
-        {
-            Server.Stop();
-			_server = null;
-			Pause("Default server stopped");
-        }
-
-        [ConsoleAction("R", "Restart default server")]
-        public static void RestartDefaultServer()
-        {
-            Server.Stop();
-            _server = null; // force reinitialization
-            Server.Start();
-			Pause("Default server re-started");
-        }
     }
 }
