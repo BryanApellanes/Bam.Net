@@ -127,9 +127,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bam.Net.UserAccounts", "Bam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bam.Net.UserAccounts.Tests", "Bam.Net.UserAccounts.Tests\Bam.Net.UserAccounts.Tests.csproj", "{34429357-C328-43E5-A25B-24C6BFFD55B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bams", "Products\bams\bams.csproj", "{7E5FC7D4-D7A2-45FC-AF63-4E7B6B2A626D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bamd", "Products\bams\bamd.csproj", "{7E5FC7D4-D7A2-45FC-AF63-4E7B6B2A626D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bamd", "Products\bamd\bamd.csproj", "{B21DB819-7671-47C8-8C18-03AFE13AE9DA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bami", "Products\bamd\bami.csproj", "{B21DB819-7671-47C8-8C18-03AFE13AE9DA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bam.Net.Data.Repositories", "Bam.Net.Data.Repositories\Bam.Net.Data.Repositories.csproj", "{222EF625-A115-49C7-8BDB-5879725A7D17}"
 EndProject
