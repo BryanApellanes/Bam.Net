@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B21DB819-7671-47C8-8C18-03AFE13AE9DA}</ProjectGuid>
+    <ProjectGuid>{7E5FC7D4-D7A2-45FC-AF63-4E7B6B2A626D}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Bam.Net.Server</RootNamespace>

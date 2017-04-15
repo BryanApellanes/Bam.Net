@@ -75,12 +75,12 @@ namespace Bam.Net
                                 {
                                     Process(val);
                                 }
-                            }                            
+                            }
                         }
-                    });
-
-                    _processThread.IsBackground = true;
-
+                    })
+                    {
+                        IsBackground = true
+                    };
                     return _processThread;
                 });
             }
