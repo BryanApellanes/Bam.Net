@@ -78,7 +78,7 @@ namespace Bam.Net.CoreServices.Services
                 .For<IApiKeyResolver>().Use<CoreApplicationRegistryService>()
                 .For<ISmtpSettingsProvider>().Use(userMgr)
                 .For<CoreUserRegistryService>().Use<CoreUserRegistryService>()
-                .For<CoreConfigurationService>().Use<CoreConfigurationService>()
+                .For<CoreConfigurationService>().Use(configSvc)
                 .For<IDetectLanguage>().Use(translationProvider)
                 .For<ITranslationProvider>().Use(translationProvider)
                 .For<IStorableTypesProvider>().Use<NamespaceRepositoryStorableTypesProvider>()
