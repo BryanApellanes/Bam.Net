@@ -2,18 +2,17 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net</id>
-    <version>1.4.10</version>
+    <version>1.4.11</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>http://bryanapellanes.github.io/Bam.Net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Productivity Tools</description>
-    <releaseNotes>Version 1.4.10
- -   update logging (a76e173)
- -   refactor configuration service (7d6df28)
- -   refactor, cleanup (b7bed18)
- -   refactor services (d58c1f6)
+    <releaseNotes>Version 1.4.11
+ -   suppress missing xml warnings (b5bb43f)
+ -   add dynamic type related extensions (ed7f9a6)
+ -   refactor, cleanup (fdd8e51)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2017</copyright>
     <dependencies />

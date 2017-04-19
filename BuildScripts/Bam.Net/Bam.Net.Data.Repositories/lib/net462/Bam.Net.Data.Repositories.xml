@@ -793,7 +793,7 @@
             </summary>
             <param name="type"></param>
         </member>
-        <member name="M:Bam.Net.Data.Repositories.Repository.Save(System.Object)">
+        <member name="M:Bam.Net.Data.Repositories.Repository.Save(System.Type,System.Object)">
             <summary>
             Calls update for the specified object toSave if
             it has Id greater than 0 otherwise calls Create

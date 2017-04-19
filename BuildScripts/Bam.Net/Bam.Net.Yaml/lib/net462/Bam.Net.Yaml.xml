@@ -4,6 +4,64 @@
         <name>Bam.Net.Yaml</name>
     </assembly>
     <members>
+        <member name="F:Bam.Net.Yaml.Data.ArrayBehavior.Throw">
+            <summary>
+            If a YamlDataFile is read and has more than one
+            top level value throw an exception
+            </summary>
+        </member>
+        <member name="F:Bam.Net.Yaml.Data.ArrayBehavior.Warn">
+            <summary>
+            If a YamlDataFile is read and has more than one
+            top level value log a warning
+            </summary>
+        </member>
+        <member name="F:Bam.Net.Yaml.Data.ArrayBehavior.Normalize">
+            <summary>
+            If a YamlDataFile is read and has more than one
+            top level value write each value out to separate
+            YamlDataFiles
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Yaml.Data.YamlRepository.ReadYaml``1(System.String)">
+            <summary>
+            Read the yaml file for the specified name
+            disregarding the data in the database
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Yaml.Data.YamlRepository.LoadYaml">
+            <summary>
+            Load from the DaoRepository database the records
+            specified in the load.names file for each storable type
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Yaml.Data.YamlRepository.LoadYaml``1(System.String[])">
+            <summary>
+            Write the yaml files for the specified names by
+            retrieving them from the DaoRepository; they will not
+            be written if they are not found in the DaoRepository
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="names"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Yaml.Data.YamlRepository.AddNameToLoad``1(System.String)">
+            <summary>
+            Add the specified name to the load.names file.
+            The names.sync file is used to 
+            </summary>
+            <param name="name"></param>
+        </member>
+        <member name="P:Bam.Net.Yaml.Data.YamlRepository.CreateAllFiles">
+            <summary>
+            If true, will write all "Create" operations to files on disk
+            as well as committing to the underlying DaoRepository
+            </summary>
+        </member>
         <member name="M:Bam.Net.Yaml.Extensions.ToYaml(System.Object,System.Yaml.YamlConfig)">
             <summary>
             Serialize the specified object to yaml

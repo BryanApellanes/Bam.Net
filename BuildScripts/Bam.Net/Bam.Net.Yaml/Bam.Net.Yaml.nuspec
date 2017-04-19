@@ -2,7 +2,7 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Yaml</id>
-    <version>1.4.10</version>
+    <version>1.4.11</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
@@ -11,12 +11,15 @@
     <description>
 	Yaml extensions for Bam
 	</description>
-    <releaseNotes>Version 1.4.10
+    <releaseNotes>Version 1.4.11
+ -   add YamlRepository (a58c76d)
+ -   YamlRepository.LoadYaml (44852bf)
+ -   YamlRepository implementation (1353fc5)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2017</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.4.10" />
-      <dependency id="Bam.Net.ServiceProxy" version="1.4.10" />
+      <dependency id="Bam.Net" version="1.4.11" />
+      <dependency id="Bam.Net.ServiceProxy" version="1.4.11" />
     </dependencies>
   </metadata>
 </package>

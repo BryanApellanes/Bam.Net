@@ -877,6 +877,7 @@
             </summary>
             <param name="messageSignature"></param>
             <param name="type"></param> 
+            <param name="variableValues"></param>
         </member>
         <member name="M:Bam.Net.Logging.Log.BlockUntilEventQueueIsEmpty(System.Int32)">
             <summary>
@@ -2120,7 +2121,6 @@
             </summary>
             <typeparam name="T"></typeparam>
             <param name="arr"></param>
-            <param name="action"></param>
         </member>
         <member name="M:Bam.Net.Extensions.BackwardsEach``1(``0[],System.Func{``0,System.Int32,System.Boolean})">
             <summary>
@@ -2130,7 +2130,6 @@
             </summary>
             <typeparam name="T"></typeparam>
             <param name="arr"></param>
-            <param name="action"></param>
         </member>
         <member name="M:Bam.Net.Extensions.BackwardsEach``1(System.Collections.Generic.IEnumerable{``0},System.Action{``0,System.Int32})">
             <summary>
@@ -2772,6 +2771,25 @@
             <param name="source"></param>
             <param name="propertyName"></param>
         </member>
+        <member name="M:Bam.Net.Extensions.ToDynamicData(System.Object)">
+            <summary>
+            Clone the specified instance to a dynamic object instance
+            copying only properties
+            that are represented in the Bam.Net.Data.Schema.DataTypes enum
+            </summary>
+            <param name="instance"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Extensions.ToDynamicData(System.Object,System.String)">
+            <summary>
+            Clone the specified instance to a dynamic object instance
+            copying only properties
+            that are represented in the Bam.Net.Data.Schema.DataTypes enum
+            </summary>
+            <param name="instance"></param>
+            <param name="typeName"></param>
+            <returns></returns>
+        </member>
         <member name="M:Bam.Net.Extensions.DataClone``1(``0)">
             <summary>
             Clone the specified instance copying only properties
@@ -2813,6 +2831,16 @@
             <param name="propertyPredicate"></param>
             <param name="assemblyBuilder"></param>
             <param name="useCache"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Extensions.FromDictionary``1(System.Collections.Generic.Dictionary{System.Object,System.Object},System.Object[])">
+            <summary>
+            Convert the specified dicationary to an instance
+            of type T
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="dictionary"></param>
+            <param name="ctorParams"></param>
             <returns></returns>
         </member>
         <member name="M:Bam.Net.Extensions.ToDynamicList(System.Data.DataTable)">

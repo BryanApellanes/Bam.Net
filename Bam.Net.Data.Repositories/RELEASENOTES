@@ -1,3 +1,3 @@
 
- -   set RepoData.Created if null (ea801da)
- -   refactor and cleanup (10c95ff)
+ -   FsRepository implementation and updated Lucene indexing (30c9dce)
+ -   set RepoData.Created if null (bdcdc62)
