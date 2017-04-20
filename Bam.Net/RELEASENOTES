@@ -1,5 +1,4 @@
 
- -   update logging (a76e173)
- -   refactor configuration service (7d6df28)
- -   refactor, cleanup (b7bed18)
- -   refactor services (d58c1f6)
+ -   suppress missing xml warnings (b5bb43f)
+ -   add dynamic type related extensions (ed7f9a6)
+ -   refactor, cleanup (fdd8e51)

@@ -60,7 +60,7 @@ namespace Bam.Net.Data.Repositories.Tests
 		[UnitTest]
 		public void ObjectRepositoryMetaPropertyVersionTest()
 		{
-			ObjectRepository repo = GetTestObjectRepository();
+			ObjectRepository repo = GetTestObjectRepository(nameof(ObjectRepositoryMetaPropertyVersionTest));
 			repo.AddType(typeof(Parent));
 
 			Parent p = new Parent { Name = "Test Parent" };
@@ -261,9 +261,14 @@ namespace Bam.Net.Data.Repositories.Tests
 
 		internal static ObjectRepository GetTestObjectRepository(string root = null)
 		{
-			ObjectRepository repo = string.IsNullOrEmpty(root) ? new ObjectRepository() : new ObjectRepository(root);
+            ConsoleLogger logger = new ConsoleLogger();
+            logger.UseColors = true;
+            logger.AddDetails = false;
+            logger.StartLoggingThread();
+
+            ObjectRepository repo = string.IsNullOrEmpty(root) ? new ObjectRepository() : new ObjectRepository(root);
 			repo.AddType(typeof(TestContainer));
-			repo.Subscribe(new ConsoleLogger());
+			repo.Subscribe(logger);
 			return repo;
 		}
 

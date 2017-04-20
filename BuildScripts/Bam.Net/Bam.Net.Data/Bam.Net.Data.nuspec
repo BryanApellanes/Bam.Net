@@ -2,20 +2,21 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Data</id>
-    <version>1.4.10</version>
+    <version>1.4.11</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>http://bryanapellanes.github.io/Bam.Net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Data access objects and tools for use with the Bam framework</description>
-    <releaseNotes>Version 1.4.10
- -   clean schema handling api (65e85b4)
+    <releaseNotes>Version 1.4.11
+ -   better null and string handling (0599c1d)
+ -   fix package path in project (b0bd1f7)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2017</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.4.10" />
-      <dependency id="Bam.Net.Incubation" version="1.4.10" />
+      <dependency id="Bam.Net" version="1.4.11" />
+      <dependency id="Bam.Net.Incubation" version="1.4.11" />
     </dependencies>
   </metadata>
 </package>

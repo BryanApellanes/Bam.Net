@@ -1,2 +1,3 @@
 
- -   clean schema handling api (65e85b4)
+ -   better null and string handling (0599c1d)
+ -   fix package path in project (b0bd1f7)

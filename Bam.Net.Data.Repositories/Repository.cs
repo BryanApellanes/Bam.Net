@@ -120,24 +120,30 @@ namespace Bam.Net.Data.Repositories
         {
             AddNamespace(type.Assembly, type.Namespace);
         }
+
+        public object Save(object toSave)
+        {
+            return Save(toSave.GetType(), toSave);
+        }
         /// <summary>
         /// Calls update for the specified object toSave if
         /// it has Id greater than 0 otherwise calls Create
         /// </summary>
         /// <param name="toSave"></param>
         /// <returns></returns>
-        public object Save(object toSave)
+        public object Save(Type type, object toSave)
 		{
             SetMeta(toSave);
 			long id = GetIdValue(toSave);
+            toSave.Property("Modified", DateTime.UtcNow, false);
 			object result = null;
 			if (id > 0)
 			{
-				result = Update(toSave);
+				result = Update(type, toSave);
 			}
 			else
 			{
-				result = Create(toSave);
+				result = Create(type, toSave);
 			}
 
 			return result;

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CsQuery;
 using Bam.Net.Server;
+using Newtonsoft.Json;
 
 namespace Bam.Net.Server
 {
@@ -29,7 +30,8 @@ namespace Bam.Net.Server
             get;
             set;
         }
-        
+        public string Extras { get; set; }
+        public string QueryString { get; set; }
         public string LayoutName { get; set; }
 
         public bool IncludeCommon { get; set; }
@@ -47,6 +49,8 @@ namespace Bam.Net.Server
         {
             LayoutModel model = new LayoutModel();
             model.ApplicationName = AppConf.Name;
+            model.QueryString = QueryString;
+            model.Extras = string.IsNullOrEmpty(Extras) ? null : JsonConvert.DeserializeObject(Extras);
             
             model.LayoutName = LayoutName;
             model.ApplicationDisplayName = AppConf.DisplayName;            

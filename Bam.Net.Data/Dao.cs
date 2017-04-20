@@ -1283,7 +1283,7 @@ namespace Bam.Net.Data
             object val = GetCurrentValue(columnName);
             if (val != null && val != DBNull.Value)
             {
-                return (string)val;
+                return Convert.ToString(val); //(string)val;
             }
 
             return string.Empty;

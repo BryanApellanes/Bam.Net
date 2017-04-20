@@ -173,6 +173,7 @@ namespace Bam.Net.Logging
         /// </summary>
         /// <param name="messageSignature"></param>
         /// <param name="type"></param> 
+        /// <param name="variableValues"></param>
         public static void AddEntry(string messageSignature, EventLogEntryType type, params string[] variableValues)
         {
             LogEventType logEventType = LogEventType.Information;

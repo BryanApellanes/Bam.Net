@@ -377,14 +377,21 @@ namespace Bam.Net.CommandLine
 
         public static void Usage(Assembly assembly)
         {
-            FileInfo info = new FileInfo(assembly.Location);
-            OutLineFormat("{0} [arguments]", info.Name);
+            string assemblyVersion = assembly.GetName().Version.ToString();
+            string fileVersion = FileVersionInfo.GetVersionInfo(assembly.Location).FileVersion;
+            string usageFormat = @"Assembly Version: {0}
+File Version: {1}
 
+{2} [arguments]";
+            FileInfo info = new FileInfo(assembly.Location);
+            OutLineFormat(usageFormat, assemblyVersion, fileVersion, info.Name);
+            Thread.Sleep(3);
             foreach (ArgumentInfo argInfo in ValidArgumentInfo)
             {
                 string valueExample = string.IsNullOrEmpty(argInfo.ValueExample) ? string.Empty : string.Format(":{0}\r\n", argInfo.ValueExample);
                 OutLineFormat("/{0}{1}\r\n    {2}", argInfo.Name, valueExample, argInfo.Description);
             }
+            Thread.Sleep(30);
         }
 
         protected static void AddMenu(Assembly assemblyToAnalyze, string name, char option, ConsoleMenuDelegate menuDelegate)

@@ -101,7 +101,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\System.Data.SQLite.Core.1.0.99.0\lib\net45\System.Data.SQLite.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -125,10 +124,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Bam.Net.Tvg\Bam.Net.Tvg.csproj">
-      <Project>{739C9539-E75C-4868-8E6E-9756C29419D7}</Project>
-      <Name>Bam.Net.Tvg</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.CommandLine\Bam.Net.CommandLine.csproj">
       <Project>{EA9863A9-8E0B-4497-B7FD-ABF450A3E468}</Project>
       <Name>Bam.Net.CommandLine</Name>

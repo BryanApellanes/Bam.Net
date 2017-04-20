@@ -21,6 +21,12 @@ using Bam.Net.Logging;
 
 namespace Bam.Net.Yaml.Tests
 {
+    public class YamlItem: FsRepoData
+    {
+        public YamlItem() : base() { }
+        public YamlItem(string name) : base(name) { }
+        
+    }
 	public class YamlTestObject
 	{
 		public string Name { get; set; }
@@ -34,15 +40,22 @@ namespace Bam.Net.Yaml.Tests
 	[Serializable]
 	public class UnitTests : CommandLineTestInterface
 	{
-		public FileInfo GetTestFile()
+		public FileInfo GetTestFile(bool delete = true)
 		{
 			FileInfo testFile = new FileInfo("Test.yaml");
-			if(testFile.Exists)
+			if(testFile.Exists && delete)
 			{
 				File.Delete(testFile.FullName);
 			}
 			return testFile;
 		}
+
+        [UnitTest]
+        public void WriteYamlFsData()
+        {
+            YamlItem item = new YamlItem();
+
+        }
 
 		[UnitTest]
 		public void WriteYamlTest()
@@ -57,8 +70,15 @@ namespace Bam.Net.Yaml.Tests
 			{
 				sw.Write(yaml);
 			}
-			//"notepad {0}"._Format(testFile.FullName).Run();
 		}
+
+        [UnitTest]
+        public void ReadTest()
+        {
+            WriteYamlTest();
+            object[] data = GetTestFile(false).FromYamlFile();
+            data.Each(d => OutLine(d.PropertiesToString()));
+        }
 
 		private YamlTestObject CreateTestObject(bool setChild = true, bool setObjArray = true)
 		{

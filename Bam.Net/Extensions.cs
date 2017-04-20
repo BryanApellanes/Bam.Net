@@ -1022,7 +1022,6 @@ namespace Bam.Net
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="arr"></param>
-        /// <param name="action"></param>
         public static void BackwardsEach<T>(this IEnumerable<T> arr, Func<T, int, bool> function)
         {
             arr.ToArray().BackwardsEach(function);
@@ -1035,7 +1034,6 @@ namespace Bam.Net
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="arr"></param>
-        /// <param name="action"></param>
         public static void BackwardsEach<T>(this T[] arr, Func<T, int, bool> function)
         {
             if (arr != null)
@@ -3168,6 +3166,38 @@ namespace Bam.Net
         }
 
         /// <summary>
+        /// Clone the specified instance to a dynamic object instance
+        /// copying only properties
+        /// that are represented in the Bam.Net.Data.Schema.DataTypes enum
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <returns></returns>
+        public static object ToDynamicData(this object instance)
+        {
+            return ToDynamicData(instance, instance.GetType().Name);
+        }
+
+        /// <summary>
+        /// Clone the specified instance to a dynamic object instance
+        /// copying only properties
+        /// that are represented in the Bam.Net.Data.Schema.DataTypes enum
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <param name="typeName"></param>
+        /// <returns></returns>
+        public static object ToDynamicData(this object instance, string typeName)
+        {
+            object result = instance.ToDynamicType(typeName, (pi) =>
+                                                    pi.PropertyType.IsValueType ||
+                                                    pi.PropertyType == typeof(string) ||
+                                                    pi.PropertyType == typeof(byte[]) ||
+                                                    pi.PropertyType == typeof(DateTime))
+                                                .Construct();
+            result.CopyProperties(instance);
+            return result;
+        }
+
+        /// <summary>
         /// Clone the specified instance copying only properties
         /// that are represented in the Bam.Net.Data.Schema.DataTypes enum
         /// </summary>
@@ -3392,6 +3422,34 @@ namespace Bam.Net
             Type created = CreateDynamicType(typeName, typeBuilder);
             createdTypes.Add(created);
             return created;
+        }
+        public static object FromDictionary(this Dictionary<object, object> dictionary, Type type, params object[] ctorParams)
+        {
+            object result = type.Construct(ctorParams);
+            SetProperties(dictionary, result);
+            return result;
+        }
+        /// <summary>
+        /// Convert the specified dicationary to an instance
+        /// of type T
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="dictionary"></param>
+        /// <param name="ctorParams"></param>
+        /// <returns></returns>
+        public static T FromDictionary<T>(this Dictionary<object, object> dictionary, params object[] ctorParams)
+        {
+            T result = Construct<T>(typeof(T), ctorParams);
+            SetProperties(dictionary, result);
+            return result;
+        }
+
+        private static void SetProperties(Dictionary<object, object> dictionary, object result)
+        {
+            foreach (object key in dictionary.Keys)
+            {
+                result.Property(key.ToString(), dictionary[key]);
+            }
         }
 
         public static Dictionary<string, object> ToDictionary(this object instance)

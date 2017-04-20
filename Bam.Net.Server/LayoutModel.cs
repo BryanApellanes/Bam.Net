@@ -24,7 +24,8 @@ namespace Bam.Net.Server
             this.StyleSheetLinkTags = string.Empty;
             this.ScriptTags = string.Empty;
         }
-		public string Extras { get; set; }
+        public object Extras { get; set; }
+		public string QueryString { get; set; }
         public string StartPage { get; set; }
 
         public string LayoutName { get; set; }
