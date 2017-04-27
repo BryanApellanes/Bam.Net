@@ -29,7 +29,7 @@ namespace Bam.Net.Services.Tests
         }
 
         [ConsoleAction]
-        [IntegrationTest("An integration test runnable from the console action menu")]
+        [IntegrationTest("ListService integration test (incomplete)")]
         public void ConsoleInvokableIntegrationTest()
         {
             ConsoleLogger logger = new ConsoleLogger();

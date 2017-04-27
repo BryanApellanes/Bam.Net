@@ -4,6 +4,15 @@ Bam.Net.Automation
 Bam.Net
 Bam.Net.CommandLine
 Bam.Net.CoreServices
+Bam.Net.Data
+Bam.Net.Data.Model
+Bam.Net.Data.MsSql
+Bam.Net.Data.Schema
+Bam.Net.Data.SQLite
+Bam.Net.Data.Npgsql
+Bam.Net.Data.Oracle
+Bam.Net.Data.MySql
+Bam.Net.Data.Protobuf
 Bam.Net.Data.Dynamic
 Bam.Net.Data.Repositories
 Bam.Net.Documentation
