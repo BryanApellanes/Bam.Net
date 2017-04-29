@@ -12,7 +12,7 @@ using Bam.Net;
 using Bam.Net.Data;
 using Bam.Net.Data.Qi;
 
-namespace Bam.Net.CoreServices.Data.Daos
+namespace Bam.Net.CoreServices.Data.Dao
 {
 	// schema = CoreRegistry
 	// connection Name = CoreRegistry
@@ -58,12 +58,10 @@ namespace Bam.Net.CoreServices.Data.Daos
 
             this.ChildCollections.Add("ApiKey_ApplicationId", new ApiKeyCollection(Database.GetQuery<ApiKeyColumns, ApiKey>((c) => c.ApplicationId == GetLongValue("Id")), this, "ApplicationId"));	
             this.ChildCollections.Add("ProcessDescriptor_ApplicationId", new ProcessDescriptorCollection(Database.GetQuery<ProcessDescriptorColumns, ProcessDescriptor>((c) => c.ApplicationId == GetLongValue("Id")), this, "ApplicationId"));	
-            this.ChildCollections.Add("ConfigurationApplication_ApplicationId", new ConfigurationApplicationCollection(Database.GetQuery<ConfigurationApplicationColumns, ConfigurationApplication>((c) => c.ApplicationId == GetLongValue("Id")), this, "ApplicationId"));	
-            this.ChildCollections.Add("MachineApplication_ApplicationId", new MachineApplicationCollection(Database.GetQuery<MachineApplicationColumns, MachineApplication>((c) => c.ApplicationId == GetLongValue("Id")), this, "ApplicationId"));							
-            this.ChildCollections.Add("Application_ConfigurationApplication_Configuration",  new XrefDaoCollection<ConfigurationApplication, Configuration>(this, false));
-				
-            this.ChildCollections.Add("Application_MachineApplication_Machine",  new XrefDaoCollection<MachineApplication, Machine>(this, false));
-				
+            this.ChildCollections.Add("Configuration_ApplicationId", new ConfigurationCollection(Database.GetQuery<ConfigurationColumns, Configuration>((c) => c.ApplicationId == GetLongValue("Id")), this, "ApplicationId"));	
+            this.ChildCollections.Add("ApplicationMachine_ApplicationId", new ApplicationMachineCollection(Database.GetQuery<ApplicationMachineColumns, ApplicationMachine>((c) => c.ApplicationId == GetLongValue("Id")), this, "ApplicationId"));				
+            this.ChildCollections.Add("Application_ApplicationMachine_Machine",  new XrefDaoCollection<ApplicationMachine, Machine>(this, false));
+							
 		}
 
 	// property:Id, columnName:Id	
@@ -224,7 +222,7 @@ namespace Bam.Net.CoreServices.Data.Daos
 		{
 			if(_organizationOfOrganizationId == null)
 			{
-				_organizationOfOrganizationId = Bam.Net.CoreServices.Data.Daos.Organization.OneWhere(c => c.KeyColumn == this.OrganizationId, this.Database);
+				_organizationOfOrganizationId = Bam.Net.CoreServices.Data.Dao.Organization.OneWhere(c => c.KeyColumn == this.OrganizationId, this.Database);
 			}
 			return _organizationOfOrganizationId;
 		}
@@ -281,7 +279,7 @@ namespace Bam.Net.CoreServices.Data.Daos
 	}
 	
 	[Bam.Net.Exclude]	
-	public ConfigurationApplicationCollection ConfigurationApplicationsByApplicationId
+	public ConfigurationCollection ConfigurationsByApplicationId
 	{
 		get
 		{
@@ -290,12 +288,12 @@ namespace Bam.Net.CoreServices.Data.Daos
 				throw new InvalidOperationException("The current instance of type({0}) hasn't been saved and will have no child collections, call Save() or Save(Database) first."._Format(this.GetType().Name));
 			}
 
-			if(!this.ChildCollections.ContainsKey("ConfigurationApplication_ApplicationId"))
+			if(!this.ChildCollections.ContainsKey("Configuration_ApplicationId"))
 			{
 				SetChildren();
 			}
 
-			var c = (ConfigurationApplicationCollection)this.ChildCollections["ConfigurationApplication_ApplicationId"];
+			var c = (ConfigurationCollection)this.ChildCollections["Configuration_ApplicationId"];
 			if(!c.Loaded)
 			{
 				c.Load(Database);
@@ -305,7 +303,7 @@ namespace Bam.Net.CoreServices.Data.Daos
 	}
 	
 	[Bam.Net.Exclude]	
-	public MachineApplicationCollection MachineApplicationsByApplicationId
+	public ApplicationMachineCollection ApplicationMachinesByApplicationId
 	{
 		get
 		{
@@ -314,12 +312,12 @@ namespace Bam.Net.CoreServices.Data.Daos
 				throw new InvalidOperationException("The current instance of type({0}) hasn't been saved and will have no child collections, call Save() or Save(Database) first."._Format(this.GetType().Name));
 			}
 
-			if(!this.ChildCollections.ContainsKey("MachineApplication_ApplicationId"))
+			if(!this.ChildCollections.ContainsKey("ApplicationMachine_ApplicationId"))
 			{
 				SetChildren();
 			}
 
-			var c = (MachineApplicationCollection)this.ChildCollections["MachineApplication_ApplicationId"];
+			var c = (ApplicationMachineCollection)this.ChildCollections["ApplicationMachine_ApplicationId"];
 			if(!c.Loaded)
 			{
 				c.Load(Database);
@@ -329,9 +327,8 @@ namespace Bam.Net.CoreServices.Data.Daos
 	}
 			
 
-
 		// Xref       
-        public XrefDaoCollection<ConfigurationApplication, Configuration> Configurations
+        public XrefDaoCollection<ApplicationMachine, Machine> Machines
         {
             get
             {			
@@ -340,12 +337,12 @@ namespace Bam.Net.CoreServices.Data.Daos
 					throw new InvalidOperationException("The current instance of type({0}) hasn't been saved and will have no child collections, call Save() or Save(Database) first."._Format(this.GetType().Name));
 				}
 
-				if(!this.ChildCollections.ContainsKey("Application_ConfigurationApplication_Configuration"))
+				if(!this.ChildCollections.ContainsKey("Application_ApplicationMachine_Machine"))
 				{
 					SetChildren();
 				}
 
-				var xref = (XrefDaoCollection<ConfigurationApplication, Configuration>)this.ChildCollections["Application_ConfigurationApplication_Configuration"];
+				var xref = (XrefDaoCollection<ApplicationMachine, Machine>)this.ChildCollections["Application_ApplicationMachine_Machine"];
 				if(!xref.Loaded)
 				{
 					xref.Load(Database);
@@ -354,30 +351,7 @@ namespace Bam.Net.CoreServices.Data.Daos
 				return xref;
             }
         }
-		// Xref       
-        public XrefDaoCollection<MachineApplication, Machine> Machines
-        {
-            get
-            {			
-				if (this.IsNew)
-				{
-					throw new InvalidOperationException("The current instance of type({0}) hasn't been saved and will have no child collections, call Save() or Save(Database) first."._Format(this.GetType().Name));
-				}
-
-				if(!this.ChildCollections.ContainsKey("Application_MachineApplication_Machine"))
-				{
-					SetChildren();
-				}
-
-				var xref = (XrefDaoCollection<MachineApplication, Machine>)this.ChildCollections["Application_MachineApplication_Machine"];
-				if(!xref.Loaded)
-				{
-					xref.Load(Database);
-				}
-
-				return xref;
-            }
-        }		/// <summary>
+		/// <summary>
 		/// Gets a query filter that should uniquely identify
 		/// the current instance.  The default implementation
 		/// compares the Id/key field to the current instance's.

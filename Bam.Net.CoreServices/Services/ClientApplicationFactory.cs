@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Bam.Net.CoreServices.Data;
-using Bam.Net.CoreServices.Data.Daos.Repository;
+using Bam.Net.CoreServices.Data.Dao.Repository;
 using Bam.Net.ServiceProxy;
 using Bam.Net.ServiceProxy.Secure;
 

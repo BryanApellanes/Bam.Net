@@ -8,17 +8,17 @@ using Bam.Net;
 using System.Web.Mvc;
 using Bam.Net.Data;
 using Bam.Net.Data.Qi;
-using Bam.Net.CoreServices.Data.Daos;
+using Bam.Net.CoreServices.Data.Dao;
 
-namespace Bam.Net.CoreServices.Data.Daos.Qi
+namespace Bam.Net.CoreServices.Data.Dao.Qi
 {
-    public class ConfigurationMachineController : DaoController
+    public class ApplicationMachineController : DaoController
     {	
-		public ActionResult Save(Bam.Net.CoreServices.Data.Daos.ConfigurationMachine[] values)
+		public ActionResult Save(Bam.Net.CoreServices.Data.Dao.ApplicationMachine[] values)
 		{
 			try
 			{
-				ConfigurationMachineCollection saver = new ConfigurationMachineCollection();
+				ApplicationMachineCollection saver = new ApplicationMachineCollection();
 				saver.AddRange(values);
 				saver.Save();
 				return Json(new { Success = true, Message = "", Dao = "" });
@@ -29,7 +29,7 @@ namespace Bam.Net.CoreServices.Data.Daos.Qi
 			}
 		}
 
-		public ActionResult Create(Bam.Net.CoreServices.Data.Daos.ConfigurationMachine dao)
+		public ActionResult Create(Bam.Net.CoreServices.Data.Dao.ApplicationMachine dao)
 		{
 			return Update(dao);
 		}
@@ -38,7 +38,7 @@ namespace Bam.Net.CoreServices.Data.Daos.Qi
         {
 			try
 			{
-				object value = Bam.Net.CoreServices.Data.Daos.ConfigurationMachine.OneWhere(c => c.KeyColumn == id).ToJsonSafe();
+				object value = Bam.Net.CoreServices.Data.Dao.ApplicationMachine.OneWhere(c => c.KeyColumn == id).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
 			catch(Exception ex)
@@ -47,7 +47,7 @@ namespace Bam.Net.CoreServices.Data.Daos.Qi
 			}
         }
 
-		public ActionResult Update(Bam.Net.CoreServices.Data.Daos.ConfigurationMachine dao)
+		public ActionResult Update(Bam.Net.CoreServices.Data.Dao.ApplicationMachine dao)
         {
 			try
 			{
@@ -65,14 +65,14 @@ namespace Bam.Net.CoreServices.Data.Daos.Qi
 			try
 			{
 				string msg = "";
-				Bam.Net.CoreServices.Data.Daos.ConfigurationMachine dao = Bam.Net.CoreServices.Data.Daos.ConfigurationMachine.OneWhere(c => c.KeyColumn == id);				
+				Bam.Net.CoreServices.Data.Dao.ApplicationMachine dao = Bam.Net.CoreServices.Data.Dao.ApplicationMachine.OneWhere(c => c.KeyColumn == id);				
 				if(dao != null)
 				{
 					dao.Delete();	
 				}
 				else
 				{
-					msg = string.Format("The specified id ({0}) was not found in the table (ConfigurationMachine)", id);
+					msg = string.Format("The specified id ({0}) was not found in the table (ApplicationMachine)", id);
 				}
 				return Json(new { Success = true, Message = msg, Dao = "" });
 			}
@@ -86,8 +86,8 @@ namespace Bam.Net.CoreServices.Data.Daos.Qi
 		{
 			try
 			{
-				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.CoreServices.Data.Daos.ConfigurationMachine));
-				object value = Bam.Net.CoreServices.Data.Daos.ConfigurationMachine.OneWhere(query).ToJsonSafe();
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.CoreServices.Data.Dao.ApplicationMachine));
+				object value = Bam.Net.CoreServices.Data.Dao.ApplicationMachine.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
 			catch(Exception ex)
@@ -100,8 +100,8 @@ namespace Bam.Net.CoreServices.Data.Daos.Qi
 		{
 			try
 			{
-				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.CoreServices.Data.Daos.ConfigurationMachine));
-				object[] value = Bam.Net.CoreServices.Data.Daos.ConfigurationMachine.Where(query).ToJsonSafe();
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.CoreServices.Data.Dao.ApplicationMachine));
+				object[] value = Bam.Net.CoreServices.Data.Dao.ApplicationMachine.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
 			catch(Exception ex)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Bam.Net.Data;
 
-namespace Bam.Net.CoreServices.Data.Daos
+namespace Bam.Net.CoreServices.Data.Dao
 {
     public class ProcessDescriptorColumns: QueryFilter<ProcessDescriptorColumns>, IFilterToken
     {
@@ -155,18 +155,18 @@ namespace Bam.Net.CoreServices.Data.Daos
             }
         }
 
-        public ProcessDescriptorColumns MachineId
-        {
-            get
-            {
-                return new ProcessDescriptorColumns("MachineId");
-            }
-        }
         public ProcessDescriptorColumns ApplicationId
         {
             get
             {
                 return new ProcessDescriptorColumns("ApplicationId");
+            }
+        }
+        public ProcessDescriptorColumns MachineId
+        {
+            get
+            {
+                return new ProcessDescriptorColumns("MachineId");
             }
         }
 

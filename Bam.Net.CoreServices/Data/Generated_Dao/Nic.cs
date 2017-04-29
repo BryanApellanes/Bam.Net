@@ -12,7 +12,7 @@ using Bam.Net;
 using Bam.Net.Data;
 using Bam.Net.Data.Qi;
 
-namespace Bam.Net.CoreServices.Data.Daos
+namespace Bam.Net.CoreServices.Data.Dao
 {
 	// schema = CoreRegistry
 	// connection Name = CoreRegistry
@@ -244,7 +244,7 @@ namespace Bam.Net.CoreServices.Data.Daos
 		{
 			if(_machineOfMachineId == null)
 			{
-				_machineOfMachineId = Bam.Net.CoreServices.Data.Daos.Machine.OneWhere(c => c.KeyColumn == this.MachineId, this.Database);
+				_machineOfMachineId = Bam.Net.CoreServices.Data.Dao.Machine.OneWhere(c => c.KeyColumn == this.MachineId, this.Database);
 			}
 			return _machineOfMachineId;
 		}

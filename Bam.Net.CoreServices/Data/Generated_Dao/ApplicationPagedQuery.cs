@@ -8,7 +8,7 @@ using System.Data;
 using System.Data.Common;
 using Bam.Net.Data;
 
-namespace Bam.Net.CoreServices.Data.Daos
+namespace Bam.Net.CoreServices.Data.Dao
 {
     public class ApplicationPagedQuery: PagedQuery<ApplicationColumns, Application>
     { 

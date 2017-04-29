@@ -8,13 +8,13 @@ using Bam.Net;
 using System.Web.Mvc;
 using Bam.Net.Data;
 using Bam.Net.Data.Qi;
-using Bam.Net.CoreServices.Data.Daos;
+using Bam.Net.CoreServices.Data.Dao;
 
-namespace Bam.Net.CoreServices.Data.Daos.Qi
+namespace Bam.Net.CoreServices.Data.Dao.Qi
 {
     public class ClientServerConnectionController : DaoController
     {	
-		public ActionResult Save(Bam.Net.CoreServices.Data.Daos.ClientServerConnection[] values)
+		public ActionResult Save(Bam.Net.CoreServices.Data.Dao.ClientServerConnection[] values)
 		{
 			try
 			{
@@ -29,7 +29,7 @@ namespace Bam.Net.CoreServices.Data.Daos.Qi
 			}
 		}
 
-		public ActionResult Create(Bam.Net.CoreServices.Data.Daos.ClientServerConnection dao)
+		public ActionResult Create(Bam.Net.CoreServices.Data.Dao.ClientServerConnection dao)
 		{
 			return Update(dao);
 		}
@@ -38,7 +38,7 @@ namespace Bam.Net.CoreServices.Data.Daos.Qi
         {
 			try
 			{
-				object value = Bam.Net.CoreServices.Data.Daos.ClientServerConnection.OneWhere(c => c.KeyColumn == id).ToJsonSafe();
+				object value = Bam.Net.CoreServices.Data.Dao.ClientServerConnection.OneWhere(c => c.KeyColumn == id).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
 			catch(Exception ex)
@@ -47,7 +47,7 @@ namespace Bam.Net.CoreServices.Data.Daos.Qi
 			}
         }
 
-		public ActionResult Update(Bam.Net.CoreServices.Data.Daos.ClientServerConnection dao)
+		public ActionResult Update(Bam.Net.CoreServices.Data.Dao.ClientServerConnection dao)
         {
 			try
 			{
@@ -65,7 +65,7 @@ namespace Bam.Net.CoreServices.Data.Daos.Qi
 			try
 			{
 				string msg = "";
-				Bam.Net.CoreServices.Data.Daos.ClientServerConnection dao = Bam.Net.CoreServices.Data.Daos.ClientServerConnection.OneWhere(c => c.KeyColumn == id);				
+				Bam.Net.CoreServices.Data.Dao.ClientServerConnection dao = Bam.Net.CoreServices.Data.Dao.ClientServerConnection.OneWhere(c => c.KeyColumn == id);				
 				if(dao != null)
 				{
 					dao.Delete();	
@@ -86,8 +86,8 @@ namespace Bam.Net.CoreServices.Data.Daos.Qi
 		{
 			try
 			{
-				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.CoreServices.Data.Daos.ClientServerConnection));
-				object value = Bam.Net.CoreServices.Data.Daos.ClientServerConnection.OneWhere(query).ToJsonSafe();
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.CoreServices.Data.Dao.ClientServerConnection));
+				object value = Bam.Net.CoreServices.Data.Dao.ClientServerConnection.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
 			catch(Exception ex)
@@ -100,8 +100,8 @@ namespace Bam.Net.CoreServices.Data.Daos.Qi
 		{
 			try
 			{
-				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.CoreServices.Data.Daos.ClientServerConnection));
-				object[] value = Bam.Net.CoreServices.Data.Daos.ClientServerConnection.Where(query).ToJsonSafe();
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.CoreServices.Data.Dao.ClientServerConnection));
+				object[] value = Bam.Net.CoreServices.Data.Dao.ClientServerConnection.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
 			catch(Exception ex)

@@ -106,8 +106,8 @@ namespace Bam.Net.CoreServices
         {
             get
             {
-                return HttpContext?.Request?.Headers[ServiceProxyClient.ApplicationNameHeader]
-                        .Or($"{ServiceProxyClient.ApplicationNameHeader}-UNKNOWN");
+                string fromHeader = HttpContext?.Request?.Headers[ServiceProxyClient.ApplicationNameHeader];
+                return fromHeader.Or($"{ServiceProxyClient.ApplicationNameHeader}-UNKNOWN");
             }
         }
 

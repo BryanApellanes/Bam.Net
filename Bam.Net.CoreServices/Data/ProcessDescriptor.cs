@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Data.Repositories;
 using System.Net.Sockets;
-using Bam.Net.CoreServices.Data.Daos.Repository;
+using Bam.Net.CoreServices.Data.Dao.Repository;
 
 namespace Bam.Net.CoreServices.Data
 {

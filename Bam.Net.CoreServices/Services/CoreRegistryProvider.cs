@@ -17,7 +17,7 @@ using Bam.Net.Data.SQLite;
 using Bam.Net.Data;
 using Bam.Net.Translation.Yandex;
 using Bam.Net.Translation;
-using Bam.Net.CoreServices.Data.Daos.Repository;
+using Bam.Net.CoreServices.Data.Dao.Repository;
 using Bam.Net.ServiceProxy.Secure;
 
 namespace Bam.Net.CoreServices.Services
@@ -49,14 +49,14 @@ namespace Bam.Net.CoreServices.Services
             DaoUserResolver userResolver = new DaoUserResolver();
             DaoRoleResolver roleResolver = new DaoRoleResolver();
             SQLiteDatabaseProvider dbProvider = new SQLiteDatabaseProvider(databasesPath, Log.Default);
-            DaoRepository coreRepo = new CoreRegistryRepository();
+            CoreRegistryRepository coreRepo = new CoreRegistryRepository();
             dbProvider.SetDatabases(coreRepo);
             dbProvider.SetDatabases(userMgr);
             userMgr.Database.TryEnsureSchema(typeof(UserAccounts.Data.User), Log.Default);
             userResolver.Database = userMgr.Database;
             roleResolver.Database = userMgr.Database;
 
-            CoreConfigurationService configSvc = new CoreConfigurationService(conf, userDatabasesPath);
+            CoreConfigurationService configSvc = new CoreConfigurationService(coreRepo, conf, userDatabasesPath);
             CoreApplicationRegistryServiceConfig config = new CoreApplicationRegistryServiceConfig { DatabaseProvider = dbProvider, WorkspacePath = databasesPath, Logger = Log.Default };
             CompositeRepository compositeRepo = new CompositeRepository(coreRepo, databasesPath);
             CoreRegistry reg = (CoreRegistry)(new CoreRegistry())

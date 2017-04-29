@@ -12,35 +12,35 @@ using Bam.Net;
 using Bam.Net.Data;
 using Bam.Net.Data.Qi;
 
-namespace Bam.Net.CoreServices.Data.Daos
+namespace Bam.Net.CoreServices.Data.Dao
 {
 	// schema = CoreRegistry
 	// connection Name = CoreRegistry
 	[Serializable]
-	[Bam.Net.Data.Table("MachineApplication", "CoreRegistry")]
-	public partial class MachineApplication: Bam.Net.Data.Dao
+	[Bam.Net.Data.Table("ConfigurationSetting", "CoreRegistry")]
+	public partial class ConfigurationSetting: Bam.Net.Data.Dao
 	{
-		public MachineApplication():base()
+		public ConfigurationSetting():base()
 		{
 			this.SetKeyColumnName();
 			this.SetChildren();
 		}
 
-		public MachineApplication(DataRow data)
+		public ConfigurationSetting(DataRow data)
 			: base(data)
 		{
 			this.SetKeyColumnName();
 			this.SetChildren();
 		}
 
-		public MachineApplication(Database db)
+		public ConfigurationSetting(Database db)
 			: base(db)
 		{
 			this.SetKeyColumnName();
 			this.SetChildren();
 		}
 
-		public MachineApplication(Database db, DataRow data)
+		public ConfigurationSetting(Database db, DataRow data)
 			: base(db, data)
 		{
 			this.SetKeyColumnName();
@@ -48,9 +48,9 @@ namespace Bam.Net.CoreServices.Data.Daos
 		}
 
 		[Bam.Net.Exclude]
-		public static implicit operator MachineApplication(DataRow data)
+		public static implicit operator ConfigurationSetting(DataRow data)
 		{
-			return new MachineApplication(data);
+			return new ConfigurationSetting(data);
 		}
 
 		private void SetChildren()
@@ -87,75 +87,152 @@ namespace Bam.Net.CoreServices.Data.Daos
 		}
 	}
 
+	// property:Cuid, columnName:Cuid	
+	[Bam.Net.Data.Column(Name="Cuid", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string Cuid
+	{
+		get
+		{
+			return GetStringValue("Cuid");
+		}
+		set
+		{
+			SetValue("Cuid", value);
+		}
+	}
+
+	// property:Key, columnName:Key	
+	[Bam.Net.Data.Column(Name="Key", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string Key
+	{
+		get
+		{
+			return GetStringValue("Key");
+		}
+		set
+		{
+			SetValue("Key", value);
+		}
+	}
+
+	// property:Value, columnName:Value	
+	[Bam.Net.Data.Column(Name="Value", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string Value
+	{
+		get
+		{
+			return GetStringValue("Value");
+		}
+		set
+		{
+			SetValue("Value", value);
+		}
+	}
+
+	// property:Created, columnName:Created	
+	[Bam.Net.Data.Column(Name="Created", DbDataType="DateTime", MaxLength="8", AllowNull=true)]
+	public DateTime? Created
+	{
+		get
+		{
+			return GetDateTimeValue("Created");
+		}
+		set
+		{
+			SetValue("Created", value);
+		}
+	}
+
+	// property:CreatedBy, columnName:CreatedBy	
+	[Bam.Net.Data.Column(Name="CreatedBy", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string CreatedBy
+	{
+		get
+		{
+			return GetStringValue("CreatedBy");
+		}
+		set
+		{
+			SetValue("CreatedBy", value);
+		}
+	}
+
+	// property:ModifiedBy, columnName:ModifiedBy	
+	[Bam.Net.Data.Column(Name="ModifiedBy", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string ModifiedBy
+	{
+		get
+		{
+			return GetStringValue("ModifiedBy");
+		}
+		set
+		{
+			SetValue("ModifiedBy", value);
+		}
+	}
+
+	// property:Modified, columnName:Modified	
+	[Bam.Net.Data.Column(Name="Modified", DbDataType="DateTime", MaxLength="8", AllowNull=true)]
+	public DateTime? Modified
+	{
+		get
+		{
+			return GetDateTimeValue("Modified");
+		}
+		set
+		{
+			SetValue("Modified", value);
+		}
+	}
+
+	// property:Deleted, columnName:Deleted	
+	[Bam.Net.Data.Column(Name="Deleted", DbDataType="DateTime", MaxLength="8", AllowNull=true)]
+	public DateTime? Deleted
+	{
+		get
+		{
+			return GetDateTimeValue("Deleted");
+		}
+		set
+		{
+			SetValue("Deleted", value);
+		}
+	}
 
 
-	// start MachineId -> MachineId
+
+	// start ConfigurationId -> ConfigurationId
 	[Bam.Net.Data.ForeignKey(
-        Table="MachineApplication",
-		Name="MachineId", 
+        Table="ConfigurationSetting",
+		Name="ConfigurationId", 
 		DbDataType="BigInt", 
 		MaxLength="",
-		AllowNull=false, 
+		AllowNull=true, 
 		ReferencedKey="Id",
-		ReferencedTable="Machine",
+		ReferencedTable="Configuration",
 		Suffix="1")]
-	public long? MachineId
+	public long? ConfigurationId
 	{
 		get
 		{
-			return GetLongValue("MachineId");
+			return GetLongValue("ConfigurationId");
 		}
 		set
 		{
-			SetValue("MachineId", value);
+			SetValue("ConfigurationId", value);
 		}
 	}
 
-	Machine _machineOfMachineId;
-	public Machine MachineOfMachineId
+	Configuration _configurationOfConfigurationId;
+	public Configuration ConfigurationOfConfigurationId
 	{
 		get
 		{
-			if(_machineOfMachineId == null)
+			if(_configurationOfConfigurationId == null)
 			{
-				_machineOfMachineId = Bam.Net.CoreServices.Data.Daos.Machine.OneWhere(c => c.KeyColumn == this.MachineId, this.Database);
+				_configurationOfConfigurationId = Bam.Net.CoreServices.Data.Dao.Configuration.OneWhere(c => c.KeyColumn == this.ConfigurationId, this.Database);
 			}
-			return _machineOfMachineId;
-		}
-	}
-	
-	// start ApplicationId -> ApplicationId
-	[Bam.Net.Data.ForeignKey(
-        Table="MachineApplication",
-		Name="ApplicationId", 
-		DbDataType="BigInt", 
-		MaxLength="",
-		AllowNull=false, 
-		ReferencedKey="Id",
-		ReferencedTable="Application",
-		Suffix="2")]
-	public long? ApplicationId
-	{
-		get
-		{
-			return GetLongValue("ApplicationId");
-		}
-		set
-		{
-			SetValue("ApplicationId", value);
-		}
-	}
-
-	Application _applicationOfApplicationId;
-	public Application ApplicationOfApplicationId
-	{
-		get
-		{
-			if(_applicationOfApplicationId == null)
-			{
-				_applicationOfApplicationId = Bam.Net.CoreServices.Data.Daos.Application.OneWhere(c => c.KeyColumn == this.ApplicationId, this.Database);
-			}
-			return _applicationOfApplicationId;
+			return _configurationOfConfigurationId;
 		}
 	}
 	
@@ -176,23 +253,23 @@ namespace Bam.Net.CoreServices.Data.Daos
 			}
 			else
 			{
-				var colFilter = new MachineApplicationColumns();
+				var colFilter = new ConfigurationSettingColumns();
 				return (colFilter.KeyColumn == IdValue);
 			}			
 		}
 
 		/// <summary>
-		/// Return every record in the MachineApplication table.
+		/// Return every record in the ConfigurationSetting table.
 		/// </summary>
 		/// <param name="database">
 		/// The database to load from or null
 		/// </param>
-		public static MachineApplicationCollection LoadAll(Database database = null)
+		public static ConfigurationSettingCollection LoadAll(Database database = null)
 		{
 			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<MachineApplication>();
-			Database db = database ?? Db.For<MachineApplication>();
-			var results = new MachineApplicationCollection(sql.GetDataTable(db));
+			sql.Select<ConfigurationSetting>();
+			Database db = database ?? Db.For<ConfigurationSetting>();
+			var results = new ConfigurationSettingCollection(sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
@@ -201,12 +278,12 @@ namespace Bam.Net.CoreServices.Data.Daos
 		/// Process all records in batches of the specified size
 		/// </summary>
 		[Bam.Net.Exclude]
-		public static async Task BatchAll(int batchSize, Action<IEnumerable<MachineApplication>> batchProcessor, Database database = null)
+		public static async Task BatchAll(int batchSize, Action<IEnumerable<ConfigurationSetting>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
-				MachineApplicationColumns columns = new MachineApplicationColumns();
-				var orderBy = Bam.Net.Data.Order.By<MachineApplicationColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
+				ConfigurationSettingColumns columns = new ConfigurationSettingColumns();
+				var orderBy = Bam.Net.Data.Order.By<ConfigurationSettingColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -224,7 +301,7 @@ namespace Bam.Net.CoreServices.Data.Daos
 		/// Process results of a query in batches of the specified size
 		/// </summary>			 
 		[Bam.Net.Exclude]
-		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<MachineApplication>> batchProcessor, Database database = null)
+		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<ConfigurationSetting>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
@@ -233,12 +310,12 @@ namespace Bam.Net.CoreServices.Data.Daos
 		/// Process results of a query in batches of the specified size
 		/// </summary>	
 		[Bam.Net.Exclude]
-		public static async Task BatchQuery(int batchSize, WhereDelegate<MachineApplicationColumns> where, Action<IEnumerable<MachineApplication>> batchProcessor, Database database = null)
+		public static async Task BatchQuery(int batchSize, WhereDelegate<ConfigurationSettingColumns> where, Action<IEnumerable<ConfigurationSetting>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
-				MachineApplicationColumns columns = new MachineApplicationColumns();
-				var orderBy = Bam.Net.Data.Order.By<MachineApplicationColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
+				ConfigurationSettingColumns columns = new ConfigurationSettingColumns();
+				var orderBy = Bam.Net.Data.Order.By<ConfigurationSettingColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -247,91 +324,91 @@ namespace Bam.Net.CoreServices.Data.Daos
 						batchProcessor(results);
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
-					results = Top(batchSize, (MachineApplicationColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+					results = Top(batchSize, (ConfigurationSettingColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
 				}
 			});			
 		}
 
-		public static MachineApplication GetById(int id, Database database = null)
+		public static ConfigurationSetting GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
-		public static MachineApplication GetById(long id, Database database = null)
+		public static ConfigurationSetting GetById(long id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}
 
-		public static MachineApplication GetByUuid(string uuid, Database database = null)
+		public static ConfigurationSetting GetByUuid(string uuid, Database database = null)
 		{
 			return OneWhere(c => Bam.Net.Data.Query.Where("Uuid") == uuid, database);
 		}
 
-		public static MachineApplication GetByCuid(string cuid, Database database = null)
+		public static ConfigurationSetting GetByCuid(string cuid, Database database = null)
 		{
 			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
 		[Bam.Net.Exclude]
-		public static MachineApplicationCollection Query(QueryFilter filter, Database database = null)
+		public static ConfigurationSettingCollection Query(QueryFilter filter, Database database = null)
 		{
 			return Where(filter, database);
 		}
 
 		[Bam.Net.Exclude]		
-		public static MachineApplicationCollection Where(QueryFilter filter, Database database = null)
+		public static ConfigurationSettingCollection Where(QueryFilter filter, Database database = null)
 		{
-			WhereDelegate<MachineApplicationColumns> whereDelegate = (c) => filter;
+			WhereDelegate<ConfigurationSettingColumns> whereDelegate = (c) => filter;
 			return Where(whereDelegate, database);
 		}
 
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A Func delegate that recieves a MachineApplicationColumns 
+		/// <param name="where">A Func delegate that recieves a ConfigurationSettingColumns 
 		/// and returns a QueryFilter which is the result of any comparisons
-		/// between MachineApplicationColumns and other values
+		/// between ConfigurationSettingColumns and other values
 		/// </param>
 		/// <param name="db"></param>
 		[Bam.Net.Exclude]
-		public static MachineApplicationCollection Where(Func<MachineApplicationColumns, QueryFilter<MachineApplicationColumns>> where, OrderBy<MachineApplicationColumns> orderBy = null, Database database = null)
+		public static ConfigurationSettingCollection Where(Func<ConfigurationSettingColumns, QueryFilter<ConfigurationSettingColumns>> where, OrderBy<ConfigurationSettingColumns> orderBy = null, Database database = null)
 		{
-			database = database ?? Db.For<MachineApplication>();
-			return new MachineApplicationCollection(database.GetQuery<MachineApplicationColumns, MachineApplication>(where, orderBy), true);
+			database = database ?? Db.For<ConfigurationSetting>();
+			return new ConfigurationSettingCollection(database.GetQuery<ConfigurationSettingColumns, ConfigurationSetting>(where, orderBy), true);
 		}
 		
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a MachineApplicationColumns 
+		/// <param name="where">A WhereDelegate that recieves a ConfigurationSettingColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between MachineApplicationColumns and other values
+		/// between ConfigurationSettingColumns and other values
 		/// </param>
 		/// <param name="db"></param>
 		[Bam.Net.Exclude]
-		public static MachineApplicationCollection Where(WhereDelegate<MachineApplicationColumns> where, Database database = null)
+		public static ConfigurationSettingCollection Where(WhereDelegate<ConfigurationSettingColumns> where, Database database = null)
 		{		
-			database = database ?? Db.For<MachineApplication>();
-			var results = new MachineApplicationCollection(database, database.GetQuery<MachineApplicationColumns, MachineApplication>(where), true);
+			database = database ?? Db.For<ConfigurationSetting>();
+			var results = new ConfigurationSettingCollection(database, database.GetQuery<ConfigurationSettingColumns, ConfigurationSetting>(where), true);
 			return results;
 		}
 		   
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a MachineApplicationColumns 
+		/// <param name="where">A WhereDelegate that recieves a ConfigurationSettingColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between MachineApplicationColumns and other values
+		/// between ConfigurationSettingColumns and other values
 		/// </param>
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static MachineApplicationCollection Where(WhereDelegate<MachineApplicationColumns> where, OrderBy<MachineApplicationColumns> orderBy = null, Database database = null)
+		public static ConfigurationSettingCollection Where(WhereDelegate<ConfigurationSettingColumns> where, OrderBy<ConfigurationSettingColumns> orderBy = null, Database database = null)
 		{		
-			database = database ?? Db.For<MachineApplication>();
-			var results = new MachineApplicationCollection(database, database.GetQuery<MachineApplicationColumns, MachineApplication>(where, orderBy), true);
+			database = database ?? Db.For<ConfigurationSetting>();
+			var results = new ConfigurationSettingCollection(database, database.GetQuery<ConfigurationSettingColumns, ConfigurationSetting>(where, orderBy), true);
 			return results;
 		}
 
@@ -339,13 +416,13 @@ namespace Bam.Net.CoreServices.Data.Daos
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate&lt;MachineApplicationColumns&gt;.
+		/// WhereDelegate&lt;ConfigurationSettingColumns&gt;.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
-		public static MachineApplicationCollection Where(QiQuery where, Database database = null)
+		public static ConfigurationSettingCollection Where(QiQuery where, Database database = null)
 		{
-			var results = new MachineApplicationCollection(database, Select<MachineApplicationColumns>.From<MachineApplication>().Where(where, database));
+			var results = new ConfigurationSettingCollection(database, Select<ConfigurationSettingColumns>.From<ConfigurationSetting>().Where(where, database));
 			return results;
 		}
 				
@@ -355,7 +432,7 @@ namespace Bam.Net.CoreServices.Data.Daos
 		/// of the specified columns.
 		/// </summary>
 		[Bam.Net.Exclude]
-		public static MachineApplication GetOneWhere(QueryFilter where, Database database = null)
+		public static ConfigurationSetting GetOneWhere(QueryFilter where, Database database = null)
 		{
 			var result = OneWhere(where, database);
 			if(result == null)
@@ -374,9 +451,9 @@ namespace Bam.Net.CoreServices.Data.Daos
 		/// <param name="where"></param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static MachineApplication OneWhere(QueryFilter where, Database database = null)
+		public static ConfigurationSetting OneWhere(QueryFilter where, Database database = null)
 		{
-			WhereDelegate<MachineApplicationColumns> whereDelegate = (c) => where;
+			WhereDelegate<ConfigurationSettingColumns> whereDelegate = (c) => where;
 			var result = Top(1, whereDelegate, database);
 			return OneOrThrow(result);
 		}
@@ -389,12 +466,12 @@ namespace Bam.Net.CoreServices.Data.Daos
 		/// <param name="where"></param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static MachineApplication GetOneWhere(WhereDelegate<MachineApplicationColumns> where, Database database = null)
+		public static ConfigurationSetting GetOneWhere(WhereDelegate<ConfigurationSettingColumns> where, Database database = null)
 		{
 			var result = OneWhere(where, database);
 			if(result == null)
 			{
-				MachineApplicationColumns c = new MachineApplicationColumns();
+				ConfigurationSettingColumns c = new ConfigurationSettingColumns();
 				IQueryFilter filter = where(c); 
 				result = CreateFromFilter(filter, database);
 			}
@@ -406,15 +483,15 @@ namespace Bam.Net.CoreServices.Data.Daos
 		/// Execute a query that should return only one result.  If more
 		/// than one result is returned a MultipleEntriesFoundException will 
 		/// be thrown.  This method is most commonly used to retrieve a
-		/// single MachineApplication instance by its Id/Key value
+		/// single ConfigurationSetting instance by its Id/Key value
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a MachineApplicationColumns 
+		/// <param name="where">A WhereDelegate that recieves a ConfigurationSettingColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between MachineApplicationColumns and other values
+		/// between ConfigurationSettingColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static MachineApplication OneWhere(WhereDelegate<MachineApplicationColumns> where, Database database = null)
+		public static ConfigurationSetting OneWhere(WhereDelegate<ConfigurationSettingColumns> where, Database database = null)
 		{
 			var result = Top(1, where, database);
 			return OneOrThrow(result);
@@ -424,11 +501,11 @@ namespace Bam.Net.CoreServices.Data.Daos
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate<MachineApplicationColumns>.
+		/// WhereDelegate<ConfigurationSettingColumns>.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
-		public static MachineApplication OneWhere(QiQuery where, Database database = null)
+		public static ConfigurationSetting OneWhere(QiQuery where, Database database = null)
 		{
 			var results = Top(1, where, database);
 			return OneOrThrow(results);
@@ -438,13 +515,13 @@ namespace Bam.Net.CoreServices.Data.Daos
 		/// Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
 		/// specified number of values will be returned.
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a MachineApplicationColumns 
+		/// <param name="where">A WhereDelegate that recieves a ConfigurationSettingColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between MachineApplicationColumns and other values
+		/// between ConfigurationSettingColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static MachineApplication FirstOneWhere(WhereDelegate<MachineApplicationColumns> where, Database database = null)
+		public static ConfigurationSetting FirstOneWhere(WhereDelegate<ConfigurationSettingColumns> where, Database database = null)
 		{
 			var results = Top(1, where, database);
 			if(results.Count > 0)
@@ -461,13 +538,13 @@ namespace Bam.Net.CoreServices.Data.Daos
 		/// Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
 		/// specified number of values will be returned.
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a MachineApplicationColumns 
+		/// <param name="where">A WhereDelegate that recieves a ConfigurationSettingColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between MachineApplicationColumns and other values
+		/// between ConfigurationSettingColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static MachineApplication FirstOneWhere(WhereDelegate<MachineApplicationColumns> where, OrderBy<MachineApplicationColumns> orderBy, Database database = null)
+		public static ConfigurationSetting FirstOneWhere(WhereDelegate<ConfigurationSettingColumns> where, OrderBy<ConfigurationSettingColumns> orderBy, Database database = null)
 		{
 			var results = Top(1, where, orderBy, database);
 			if(results.Count > 0)
@@ -483,15 +560,15 @@ namespace Bam.Net.CoreServices.Data.Daos
 		/// <summary>
 		/// Shortcut for Top(1, where, orderBy, database)
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a MachineApplicationColumns 
+		/// <param name="where">A WhereDelegate that recieves a ConfigurationSettingColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between MachineApplicationColumns and other values
+		/// between ConfigurationSettingColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static MachineApplication FirstOneWhere(QueryFilter where, OrderBy<MachineApplicationColumns> orderBy = null, Database database = null)
+		public static ConfigurationSetting FirstOneWhere(QueryFilter where, OrderBy<ConfigurationSettingColumns> orderBy = null, Database database = null)
 		{
-			WhereDelegate<MachineApplicationColumns> whereDelegate = (c) => where;
+			WhereDelegate<ConfigurationSettingColumns> whereDelegate = (c) => where;
 			var results = Top(1, whereDelegate, orderBy, database);
 			if(results.Count > 0)
 			{
@@ -512,13 +589,13 @@ namespace Bam.Net.CoreServices.Data.Daos
 		/// This value is used in the sql query so no more than this 
 		/// number of values will be returned by the database.
 		/// </param>
-		/// <param name="where">A WhereDelegate that recieves a MachineApplicationColumns 
+		/// <param name="where">A WhereDelegate that recieves a ConfigurationSettingColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between MachineApplicationColumns and other values
+		/// between ConfigurationSettingColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static MachineApplicationCollection Top(int count, WhereDelegate<MachineApplicationColumns> where, Database database = null)
+		public static ConfigurationSettingCollection Top(int count, WhereDelegate<ConfigurationSettingColumns> where, Database database = null)
 		{
 			return Top(count, where, null, database);
 		}
@@ -532,38 +609,38 @@ namespace Bam.Net.CoreServices.Data.Daos
 		/// This value is used in the sql query so no more than this 
 		/// number of values will be returned by the database.
 		/// </param>
-		/// <param name="where">A WhereDelegate that recieves a MachineApplicationColumns 
+		/// <param name="where">A WhereDelegate that recieves a ConfigurationSettingColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between MachineApplicationColumns and other values
+		/// between ConfigurationSettingColumns and other values
 		/// </param>
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static MachineApplicationCollection Top(int count, WhereDelegate<MachineApplicationColumns> where, OrderBy<MachineApplicationColumns> orderBy, Database database = null)
+		public static ConfigurationSettingCollection Top(int count, WhereDelegate<ConfigurationSettingColumns> where, OrderBy<ConfigurationSettingColumns> orderBy, Database database = null)
 		{
-			MachineApplicationColumns c = new MachineApplicationColumns();
+			ConfigurationSettingColumns c = new ConfigurationSettingColumns();
 			IQueryFilter filter = where(c);         
 			
-			Database db = database ?? Db.For<MachineApplication>();
+			Database db = database ?? Db.For<ConfigurationSetting>();
 			QuerySet query = GetQuerySet(db); 
-			query.Top<MachineApplication>(count);
+			query.Top<ConfigurationSetting>(count);
 			query.Where(filter);
 
 			if(orderBy != null)
 			{
-				query.OrderBy<MachineApplicationColumns>(orderBy);
+				query.OrderBy<ConfigurationSettingColumns>(orderBy);
 			}
 
 			query.Execute(db);
-			var results = query.Results.As<MachineApplicationCollection>(0);
+			var results = query.Results.As<ConfigurationSettingCollection>(0);
 			results.Database = db;
 			return results;
 		}
 
 		[Bam.Net.Exclude]
-		public static MachineApplicationCollection Top(int count, QueryFilter where, Database database)
+		public static ConfigurationSettingCollection Top(int count, QueryFilter where, Database database)
 		{
 			return Top(count, where, null, database);
 		}
@@ -585,20 +662,20 @@ namespace Bam.Net.CoreServices.Data.Daos
 		/// </param>
 		/// <param name="db"></param>
 		[Bam.Net.Exclude]
-		public static MachineApplicationCollection Top(int count, QueryFilter where, OrderBy<MachineApplicationColumns> orderBy = null, Database database = null)
+		public static ConfigurationSettingCollection Top(int count, QueryFilter where, OrderBy<ConfigurationSettingColumns> orderBy = null, Database database = null)
 		{
-			Database db = database ?? Db.For<MachineApplication>();
+			Database db = database ?? Db.For<ConfigurationSetting>();
 			QuerySet query = GetQuerySet(db);
-			query.Top<MachineApplication>(count);
+			query.Top<ConfigurationSetting>(count);
 			query.Where(where);
 
 			if(orderBy != null)
 			{
-				query.OrderBy<MachineApplicationColumns>(orderBy);
+				query.OrderBy<ConfigurationSettingColumns>(orderBy);
 			}
 
 			query.Execute(db);
-			var results = query.Results.As<MachineApplicationCollection>(0);
+			var results = query.Results.As<ConfigurationSettingCollection>(0);
 			results.Database = db;
 			return results;
 		}
@@ -620,26 +697,26 @@ namespace Bam.Net.CoreServices.Data.Daos
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="db"></param>
-		public static MachineApplicationCollection Top(int count, QiQuery where, Database database = null)
+		public static ConfigurationSettingCollection Top(int count, QiQuery where, Database database = null)
 		{
-			Database db = database ?? Db.For<MachineApplication>();
+			Database db = database ?? Db.For<ConfigurationSetting>();
 			QuerySet query = GetQuerySet(db);
-			query.Top<MachineApplication>(count);
+			query.Top<ConfigurationSetting>(count);
 			query.Where(where);
 			query.Execute(db);
-			var results = query.Results.As<MachineApplicationCollection>(0);
+			var results = query.Results.As<ConfigurationSettingCollection>(0);
 			results.Database = db;
 			return results;
 		}
 
 		/// <summary>
-		/// Return the count of MachineApplications
+		/// Return the count of ConfigurationSettings
 		/// </summary>
 		public static long Count(Database database = null)
         {
-			Database db = database ?? Db.For<MachineApplication>();
+			Database db = database ?? Db.For<ConfigurationSetting>();
             QuerySet query = GetQuerySet(db);
-            query.Count<MachineApplication>();
+            query.Count<ConfigurationSetting>();
             query.Execute(db);
             return (long)query.Results[0].DataRow[0];
         }
@@ -647,20 +724,20 @@ namespace Bam.Net.CoreServices.Data.Daos
 		/// <summary>
 		/// Execute a query and return the number of results
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a MachineApplicationColumns 
+		/// <param name="where">A WhereDelegate that recieves a ConfigurationSettingColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between MachineApplicationColumns and other values
+		/// between ConfigurationSettingColumns and other values
 		/// </param>
 		/// <param name="db"></param>
 		[Bam.Net.Exclude]
-		public static long Count(WhereDelegate<MachineApplicationColumns> where, Database database = null)
+		public static long Count(WhereDelegate<ConfigurationSettingColumns> where, Database database = null)
 		{
-			MachineApplicationColumns c = new MachineApplicationColumns();
+			ConfigurationSettingColumns c = new ConfigurationSettingColumns();
 			IQueryFilter filter = where(c) ;
 
-			Database db = database ?? Db.For<MachineApplication>();
+			Database db = database ?? Db.For<ConfigurationSetting>();
 			QuerySet query = GetQuerySet(db);	 
-			query.Count<MachineApplication>();
+			query.Count<ConfigurationSetting>();
 			query.Where(filter);	  
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
@@ -668,18 +745,18 @@ namespace Bam.Net.CoreServices.Data.Daos
 		 
 		public static long Count(QiQuery where, Database database = null)
 		{
-		    Database db = database ?? Db.For<MachineApplication>();
+		    Database db = database ?? Db.For<ConfigurationSetting>();
 			QuerySet query = GetQuerySet(db);	 
-			query.Count<MachineApplication>();
+			query.Count<ConfigurationSetting>();
 			query.Where(where);	  
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
 		} 		
 
-		private static MachineApplication CreateFromFilter(IQueryFilter filter, Database database = null)
+		private static ConfigurationSetting CreateFromFilter(IQueryFilter filter, Database database = null)
 		{
-			Database db = database ?? Db.For<MachineApplication>();			
-			var dao = new MachineApplication();
+			Database db = database ?? Db.For<ConfigurationSetting>();			
+			var dao = new ConfigurationSetting();
 			filter.Parameters.Each(p=>
 			{
 				dao.Property(p.ColumnName, p.Value);
@@ -688,7 +765,7 @@ namespace Bam.Net.CoreServices.Data.Daos
 			return dao;
 		}
 		
-		private static MachineApplication OneOrThrow(MachineApplicationCollection c)
+		private static ConfigurationSetting OneOrThrow(ConfigurationSettingCollection c)
 		{
 			if(c.Count == 1)
 			{

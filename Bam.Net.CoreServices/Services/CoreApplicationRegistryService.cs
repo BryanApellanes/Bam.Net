@@ -9,7 +9,7 @@ using Bam.Net.Logging;
 using Bam.Net.ServiceProxy;
 using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.CoreServices.Data;
-using Bam.Net.CoreServices.Data.Daos.Repository;
+using Bam.Net.CoreServices.Data.Dao.Repository;
 using Bam.Net.UserAccounts;
 using Bam.Net.Caching;
 using System.Collections.Specialized;
@@ -20,7 +20,7 @@ namespace Bam.Net.CoreServices
 {
     [Proxy("appRegistrySvc")]
     [Encrypt]
-    public class CoreApplicationRegistryService : ProxyableService, IApiKeyResolver, IApiKeyProvider, IApplicationNameProvider
+    public class CoreApplicationRegistryService : CoreProxyableService, IApiKeyResolver, IApiKeyProvider, IApplicationNameProvider
     {
         public const string AppNameNotSpecified = "X-APPNAME-HEADER-NOT-SPECIFIED";
         CacheManager _cacheManager;
@@ -62,9 +62,7 @@ namespace Bam.Net.CoreServices
                 _database = value;
             }
         }
-
-        public CoreRegistryRepository CoreRegistryRepository { get; set; }
-
+        
         public CompositeRepository CompositeRepository { get; set; }
 
         [ApiKeyRequired]
