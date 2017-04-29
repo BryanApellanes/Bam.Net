@@ -131,7 +131,7 @@
     <Compile Include="GeneratedServiceProxyInfo.cs" />
     <Compile Include="IRoleResolver.cs" />
     <Compile Include="MethodGenerationInfo.cs" />
-    <Compile Include="RequestResponse.cs" />
+    <Compile Include="ServiceResponse.cs" />
     <Compile Include="RoleResolvers.cs" />
     <Compile Include="Secure\ApiKeyRequiredAttribute.cs" />
     <Compile Include="Secure\ApiKeyInfo.cs" />

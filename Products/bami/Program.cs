@@ -28,7 +28,7 @@ namespace Bam.Net.Server
             Initialize(args);
 
             EnsureAdminRights();
-            // must match values in bams.exe
+            // must match values in bamd.exe
             ServiceExe.SetInfo(new ServiceInfo("BamDaemon", "Bam Daemon", "Bam http application server"));
             ServiceExe.Kill(ServiceExe.Info.ServiceName);
             //

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.ServiceProxy
 {
-    public abstract class RequestResponse
+    public abstract class ServiceResponse
     {
         public bool Success { get; set; }
         public string Message { get; set; }

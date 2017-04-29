@@ -66,11 +66,11 @@ namespace Bam.Net
                 int hash = (int)2166136261;
                 foreach (object property in propertiesToInclude)
                 {
-                    if(property != null)
+                    if (property != null)
                     {
                         hash = (hash * 16777619) ^ property.GetHashCode();
                     }
-                }                
+                }
                 return hash;
             }
         }
@@ -2444,7 +2444,7 @@ namespace Bam.Net
 
         public static long Smallest(this long[] longs)
         {
-            if(longs.Length == 0)
+            if (longs.Length == 0)
             {
                 return -1;
             }
@@ -2465,7 +2465,7 @@ namespace Bam.Net
 
         public static long Largest(this long[] longs)
         {
-            if(longs.Length == 0)
+            if (longs.Length == 0)
             {
                 return -1;
             }
@@ -2515,7 +2515,7 @@ namespace Bam.Net
                 return string.Empty;
             }
         }
-        
+
         /// <summary>
         /// Return an acronym for the specified string using the 
         /// captial letters in the string
@@ -2525,13 +2525,13 @@ namespace Bam.Net
         /// <returns></returns>
         public static string CaseAcronym(this string stringToAcronymize, bool alwaysUseFirst = true)
         {
-            if(stringToAcronymize.Length > 0)
+            if (stringToAcronymize.Length > 0)
             {
                 StringBuilder result = new StringBuilder();
-                for(int i = 0; i < stringToAcronymize.Length; i++)
+                for (int i = 0; i < stringToAcronymize.Length; i++)
                 {
                     char current = stringToAcronymize[i];
-                    if(i == 0 && alwaysUseFirst || char.IsUpper(current))
+                    if (i == 0 && alwaysUseFirst || char.IsUpper(current))
                     {
                         result.Append(current.ToString().ToUpperInvariant());
                     }
@@ -2617,8 +2617,8 @@ namespace Bam.Net
 
         public static bool IsAllCaps(this string value)
         {
-            bool result = true; 
-            for(int i = 0; i < value.Length; i++)
+            bool result = true;
+            for (int i = 0; i < value.Length; i++)
             {
                 char c = value[i];
                 result = char.IsUpper(c);
@@ -2662,7 +2662,7 @@ namespace Bam.Net
         {
             StringBuilder result = new StringBuilder();
             bool foundLetter = false;
-            for(int i = 0; i < targetString.Length; i++)
+            for (int i = 0; i < targetString.Length; i++)
             {
                 char c = targetString[i];
                 if (c.IsLetter())
@@ -2761,7 +2761,7 @@ namespace Bam.Net
 
         public static bool IsEnumerable(this Type type)
         {
-            if(type == typeof(string))
+            if (type == typeof(string))
             {
                 return false; // it is but that's not what we're looking for
             }
@@ -3054,11 +3054,11 @@ namespace Bam.Net
                 BindingFlags.GetField);
 
             IEnumerable<EventSubscription> results = from eventInfo in type.GetEvents()
-                   let eventFieldInfo = ei2fi(eventInfo)
-                   let eventFieldValue =
-                       (System.Delegate)eventFieldInfo.GetValue(instance)
-                   from subscribedDelegate in eventFieldValue == null ? new Delegate[] { } : eventFieldValue.GetInvocationList()
-                   select new EventSubscription { EventName = eventFieldInfo.Name, Delegate = subscribedDelegate, FieldInfo = eventFieldInfo, EventInfo = eventInfo };
+                                                     let eventFieldInfo = ei2fi(eventInfo)
+                                                     let eventFieldValue =
+                                                         (System.Delegate)eventFieldInfo.GetValue(instance)
+                                                     from subscribedDelegate in eventFieldValue == null ? new Delegate[] { } : eventFieldValue.GetInvocationList()
+                                                     select new EventSubscription { EventName = eventFieldInfo.Name, Delegate = subscribedDelegate, FieldInfo = eventFieldInfo, EventInfo = eventInfo };
             return results;
         }
 
@@ -3072,7 +3072,7 @@ namespace Bam.Net
         /// <returns></returns>
         public static object CopyProperties(this object destination, object source)
         {
-            if(destination == null || source == null)
+            if (destination == null || source == null)
             {
                 return destination;
             }
@@ -3160,7 +3160,7 @@ namespace Bam.Net
             return destination;
         }
 
-        public static IEnumerable<T> DataClone<T>(this IEnumerable<T> values) where T: new()
+        public static IEnumerable<T> DataClone<T>(this IEnumerable<T> values) where T : new()
         {
             return values.Select(t => t.DataClone());
         }
@@ -3207,7 +3207,7 @@ namespace Bam.Net
         public static T DataClone<T>(this T instance) where T : new()
         {
             T result = new T();
-            object temp = instance.ToDynamicType(nameof(T), (pi) => 
+            object temp = instance.ToDynamicType(nameof(T), (pi) =>
                                                     pi.PropertyType.IsValueType ||
                                                     pi.PropertyType == typeof(string) ||
                                                     pi.PropertyType == typeof(byte[]) ||
@@ -3587,6 +3587,33 @@ namespace Bam.Net
 
                 return CreateDynamicType(typeName, typeBuilder);
             }
+        }
+        public static Type CreateDynamicType(this string typeName, params string[] propertyNames)
+        {
+            return CreateDynamicType(typeName, string.Empty, propertyNames);
+        }
+        public static Type CreateDynamicType(this string typeName, string nameSpace, params string[] propertyNames)
+        {
+            AssemblyBuilder ignore;
+            return CreateDynamicType(typeName, nameSpace, out ignore, propertyNames);
+        }
+        public static Type CreateDynamicType(this string typeName, string nameSpace, out AssemblyBuilder assemblyBuilder, params string[] propertyNames)
+        {
+            string fullName = string.IsNullOrWhiteSpace(nameSpace) ? typeName : $"{nameSpace}.{typeName}";
+            if (DynamicTypeStore.Current.ContainsTypeInfo(fullName) && DynamicTypeStore.Current[fullName] != null)
+            {
+                return GetExistingDynamicType(fullName, out assemblyBuilder);
+            }
+            else
+            {
+                TypeBuilder typeBuilder;
+                GetAssemblyAndTypeBuilder(typeName, out assemblyBuilder, out typeBuilder);
+                foreach(string propertyName in propertyNames)
+                {
+                    AddPropertyToDynamicType(typeBuilder, new CustomPropertyInfo(propertyName, typeof(object)));
+                }
+                return CreateDynamicType(typeName, typeBuilder);
+            }             
         }
 
         private static void ThrowIfLimitReached(int recursionThusFar)

@@ -9,7 +9,7 @@ namespace Bam.Net.Configuration
 {
     public class DefaultConfigurationService : IConfigurationService
     {
-        public Dictionary<string, string> GetConfiguration(string applicationName, string configurationName = "")
+        public Dictionary<string, string> GetApplicationConfiguration(string applicationName, string configurationName = "")
         {
             LogWarnings(applicationName, configurationName);
             Dictionary<string, string> result = new Dictionary<string, string>();
@@ -22,7 +22,7 @@ namespace Bam.Net.Configuration
             return result;
         }
 
-        public void SetConfiguration(string applicationName, string configurationName, Dictionary<string, string> configuration)
+        public void SetApplicationConfiguration(string applicationName, Dictionary<string, string> configuration, string configurationName)
         {
             LogWarnings(applicationName, configurationName);
             DefaultConfiguration.SetAppSettings(configuration);

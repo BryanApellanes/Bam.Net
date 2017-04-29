@@ -98,7 +98,7 @@ namespace troo
             TypeDaoGenerator generator = new TypeDaoGenerator(typeAssembly, fromNameSpace, logger);
             generator.WarningsAsErrors = true;
             generator.ThrowWarningsIfWarningsAsErrors();
-            generator.Namespace = toNameSpace;
+            generator.BaseNamespace = toNameSpace;
             generator.GenerateSource(writeTo);
             logger.BlockUntilEventQueueIsEmpty(1000);
         }

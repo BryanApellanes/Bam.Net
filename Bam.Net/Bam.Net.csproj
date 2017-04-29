@@ -155,6 +155,7 @@
     <Compile Include="Configuration\DefaultConfigurer.cs" />
     <Compile Include="Configuration\IConfigurable.cs" />
     <Compile Include="Configuration\IHasRequiredProperties.cs" />
+    <Compile Include="Configuration\IMachineConfigurationService.cs" />
     <Compile Include="Configuration\InvalidIHasRequiredPropertiesImplementationException.cs" />
     <Compile Include="Configuration\RequiredPropertiesNotSetException.cs" />
     <Compile Include="Configuration\RequiredPropertyNotFoundException.cs" />
