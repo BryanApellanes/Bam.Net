@@ -10,7 +10,7 @@ using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.Testing.Repository
 {
-	public class DefineSuiteResponse: RequestResponse
+	public class DefineSuiteResponse: ServiceResponse
 	{
 	}
 }

@@ -95,7 +95,7 @@ namespace Bam.Net.UserAccounts.Tests
         {
             UserManagerConfig config = new UserManagerConfig();
             config.SmtpSettingsVaultPath = "C:\\TestData\\Vaults\\StickerizeSmtpSettings.vault.sqlite";
-            config.ApplicationNameResolverType = typeof(TestAppNameResolver).AssemblyQualifiedName;
+            config.ApplicationNameResolverType = typeof(TestAppNameProvider).AssemblyQualifiedName;
             config.EmailTemplateDirectoryPath = "C:\\TestData\\NamedFormatEmailTemplates";
 
             UserManager mgr = config.Create();
