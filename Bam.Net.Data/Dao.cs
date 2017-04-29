@@ -713,9 +713,7 @@ namespace Bam.Net.Data
 
         protected internal static QuerySet GetQuerySet(Database db)
         {
-            QuerySet sql = db.ServiceProvider.Get<QuerySet>();
-            sql.Database = db;
-            return sql;
+            return db.GetQuerySet();
         }
 
         public virtual void WriteDelete(SqlStringBuilder sql)

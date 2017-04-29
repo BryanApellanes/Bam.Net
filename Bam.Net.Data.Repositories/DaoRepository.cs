@@ -71,11 +71,26 @@ namespace Bam.Net.Data.Repositories
         {
             get
             {
-                return TypeDaoGenerator.Namespace;
+                return TypeDaoGenerator.DaoNamespace;
             }
             set
             {
-                TypeDaoGenerator.Namespace = value;
+                TypeDaoGenerator.DaoNamespace = value;
+            }
+        }
+
+        string _baseNamespace;
+        public string BaseNamespace
+        {
+            get
+            {
+                return _baseNamespace;
+            }
+            set
+            {
+                _baseNamespace = value;
+                TypeDaoGenerator.BaseNamespace = _baseNamespace;
+                //DaoNamespace = $"{_baseNamespace}.Dao";
             }
         }
 
@@ -399,7 +414,7 @@ namespace Bam.Net.Data.Repositories
 
 		public override IEnumerable<T> Query<T>(dynamic query) 
 		{
-            return Query<T>(QueryFilter.FromDynamic(query));
+            return Query<T>((QueryFilter)QueryFilter.FromDynamic(query));
 		}
 
         public override IEnumerable<T> Query<T>(Dictionary<string, object> queryParameters)
@@ -506,6 +521,11 @@ namespace Bam.Net.Data.Repositories
             return wrap ? Wrap(pocoType, daoResults): daoResults.CopyAs(pocoType);
         }
         #endregion
+
+        public T First<T>(QueryFilter query) where T: new()
+        {
+            return Top<T>(1, query).FirstOrDefault();
+        }
 
         public IEnumerable<T> Top<T>(int count, QueryFilter query) where T : new()
         {
@@ -720,46 +740,57 @@ namespace Bam.Net.Data.Repositories
 			}
 			return result;
 		}
-        
-		public IEnumerable<TChildType> ForeignKeyCollectionLoader<TChildType>(object poco) where TChildType : new() // this is used by generated code; JIT compiler can't tell
+
+        [Obsolete("Use ForeignKeyCollectionLoad<TParentType, TChildType> instead")]
+        public IEnumerable<TChildType> ForeignKeyCollectionLoader<TChildType>(object poco) where TChildType : new() // this is used by generated code; JIT compiler can't tell
+        {
+            TypeFk fkDescriptor = TypeSchema.ForeignKeys.FirstOrDefault(tfk => tfk.ForeignKeyType == typeof(TChildType));
+            return LoadForeignKeyCollection<TChildType>(poco, fkDescriptor);
+        }
+
+        public IEnumerable<TChildType> ForeignKeyCollectionLoader<TParentType, TChildType>(object poco) where TChildType : new() // this is used by generated code; JIT compiler can't tell
 		{
 			// get all the child types where the foreign key property value equals the parent id
-			Type pocoChildType = typeof(TChildType);
-			TypeFk fkDescriptor = TypeSchema.ForeignKeys.FirstOrDefault(tfk => tfk.ForeignKeyType == typeof(TChildType));
+			TypeFk fkDescriptor = TypeSchema.ForeignKeys.FirstOrDefault(tfk => tfk.PrimaryKeyType == typeof(TParentType) && tfk.ForeignKeyType == typeof(TChildType));
 
 			if (fkDescriptor != null)
-			{
-				List<TChildType> results = new List<TChildType>();
-				string foreignKeyName = fkDescriptor.ForeignKeyProperty.Name;
-				long parentId = GetIdValue(poco);
-				if (parentId <= 0)
-				{
-					Args.Throw<InvalidOperationException>("IdValue not found for specified parent instance: {0}",
-						poco.PropertiesToString());
-				}
-				QueryFilter filter = Bam.Net.Data.Query.Where(foreignKeyName) == parentId;
-				Type childDaoType = GetDaoType(typeof(TChildType));
-				MethodInfo whereMethod = childDaoType.GetMethod("Where", new Type[] { typeof(QueryFilter), typeof(Database) });
-				IEnumerable daoResults = (IEnumerable)whereMethod.Invoke(null, new object[] { filter, Database });
-
-				foreach (object dao in daoResults)
-				{
-					Type wrapperType = GetWrapperType<TChildType>();
-					TChildType value = wrapperType.Construct<TChildType>(this);
-					value.CopyProperties(dao);
-					results.Add(value);
-				}
-
-				return results;
-			}
-			return new List<TChildType>();
+            {
+                return LoadForeignKeyCollection<TChildType>(poco, fkDescriptor);
+            }
+            return new List<TChildType>();
 		}
 
-		/// <summary>
-		/// Sets the properties that represent PrimaryKeys if any
-		/// </summary>
-		/// <param name="dtoInstance"></param>
-		public void SetParentProperties(object dtoInstance)
+        private IEnumerable<TChildType> LoadForeignKeyCollection<TChildType>(object poco, TypeFk fkDescriptor) where TChildType : new()
+        {
+            List<TChildType> results = new List<TChildType>();
+            string foreignKeyName = fkDescriptor.ForeignKeyProperty.Name;
+            long parentId = GetIdValue(poco);
+            if (parentId <= 0)
+            {
+                Args.Throw<InvalidOperationException>("IdValue not found for specified parent instance: {0}",
+                    poco.PropertiesToString());
+            }
+            QueryFilter filter = Bam.Net.Data.Query.Where(foreignKeyName) == parentId;
+            Type childDaoType = GetDaoType(typeof(TChildType));
+            MethodInfo whereMethod = childDaoType.GetMethod("Where", new Type[] { typeof(QueryFilter), typeof(Database) });
+            IEnumerable daoResults = (IEnumerable)whereMethod.Invoke(null, new object[] { filter, Database });
+
+            foreach (object dao in daoResults)
+            {
+                Type wrapperType = GetWrapperType<TChildType>();
+                TChildType value = wrapperType.Construct<TChildType>(this);
+                value.CopyProperties(dao);
+                results.Add(value);
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Sets the properties that represent PrimaryKeys if any
+        /// </summary>
+        /// <param name="dtoInstance"></param>
+        public void SetParentProperties(object dtoInstance)
 		{
 			Type pocoType = GetBaseType(dtoInstance.GetType());
 			foreach (TypeFk typeFk in TypeSchema.ForeignKeys.Where(fk => fk.ForeignKeyType == pocoType))

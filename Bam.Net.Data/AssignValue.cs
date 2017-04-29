@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace Bam.Net.Data
@@ -64,6 +65,16 @@ namespace Bam.Net.Data
         public override string ToString()
         {
             return string.Format("{0} {1} {2} ", ColumnNameFormatter(ColumnName), this.Operator, string.Format("{0}{1}{2}", ParameterPrefix, ColumnName, Number));
+        }
+
+        public static IEnumerable<AssignValue> FromDynamic(dynamic obj)
+        {
+            Args.ThrowIfNull(obj, "obj");
+            Type type = obj.GetType();
+            foreach(PropertyInfo prop in type.GetProperties())
+            {
+                yield return new AssignValue(prop.Name, prop.GetValue(obj));
+            }
         }
     }
 }

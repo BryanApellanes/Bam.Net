@@ -105,12 +105,31 @@ namespace Bam.Net.Data
 
         public void Execute(Database db)
         {
-            if (!string.IsNullOrEmpty(this))
+            if (!string.IsNullOrWhiteSpace(this))
             {
                 db.ExecuteSql(this, CommandType.Text, db.ServiceProvider.Get<IParameterBuilder>().GetParameters(this));
                 OnExecuted(db);
             }
         }
+        
+        public IEnumerable<T> ExecuteReader<T>(Database db) where T : class, new()
+        {
+            if (!string.IsNullOrWhiteSpace(this))
+            {
+                return db.ExecuteReader<T>(this, ()=> OnExecuted(db));
+            }
+            return new List<T>();
+        }
+
+        public IEnumerable<dynamic> ExecuteDynamicReader(Database db)
+        {
+            if (!string.IsNullOrWhiteSpace(this))
+            {
+                return db.ExecuteDynamicReader(this, () => OnExecuted(db));
+            }
+            return new List<dynamic>();
+        }
+        
         public virtual DataSet GetDataSet(Database db, bool releaseConnection = true, DbConnection conn = null, DbTransaction tx = null)
         {
             return GetDataSet<object>(db, releaseConnection, conn, tx);
@@ -172,6 +191,11 @@ namespace Bam.Net.Data
             return Update(Dao.TableName(instance), instance.GetNewAssignValues());
         }
 
+        public virtual SqlStringBuilder Update(string tableName, dynamic valueAssignments)
+        {
+            return Update(tableName, (AssignValue[])AssignValue.FromDynamic(valueAssignments).ToArray());
+        }
+
         public virtual SqlStringBuilder Update(string tableName, params AssignValue[] values)
         {
             _stringBuilder.AppendFormat("UPDATE {0} ", TableNameFormatter(tableName));
@@ -198,6 +222,10 @@ namespace Bam.Net.Data
             return Insert(Dao.TableName(instance.GetType()), instance.GetNewAssignValues());
         }
 
+        public virtual SqlStringBuilder Insert(string tableName, dynamic valueAssignments)
+        {
+            return Insert(tableName, (AssignValue[])AssignValue.FromDynamic(valueAssignments).ToArray());
+        }
         public virtual SqlStringBuilder Insert(string tableName, params AssignValue[] values)
         {
             return FormatInsert<InsertFormat>(tableName, values);
