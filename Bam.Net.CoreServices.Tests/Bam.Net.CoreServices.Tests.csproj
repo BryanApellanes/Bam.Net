@@ -124,6 +124,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigurationTests.cs" />
     <Compile Include="ConsoleActions.cs" />
     <Compile Include="DiagnosticsTests.cs" />
     <Compile Include="DistributedUnitTests.cs" />
