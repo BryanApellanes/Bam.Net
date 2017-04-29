@@ -10,7 +10,6 @@ using System.Data.Common;
 using Bam.Net.Incubation;
 using Bam.Net;
 using Bam.Net.Data;
-using Bam.Net.Data;
 using Npgsql;
 
 namespace Bam.Net.Data
