@@ -5,12 +5,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using System.Web.Mvc;
+using Bam.Net;
+using Bam.Net.Web;
 using Bam.Net.ServiceProxy;
 
-namespace Bam.Net.UserAccounts
+namespace Bam.Net.UserAccounts.OAuth
 {
-    public class LoginResponse: ServiceResponse
+    public class OAuthResponse: ServiceResponse
     {
+        
     }
 }

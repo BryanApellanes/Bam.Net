@@ -10,7 +10,7 @@ using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.UserAccounts
 {
-    public class PasswordResetResponse: RequestResponse
+    public class PasswordResetResponse: ServiceResponse
     {
         public PasswordResetResponse() { }
     }

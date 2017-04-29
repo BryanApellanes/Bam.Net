@@ -20,6 +20,7 @@ using Bam.Net.Encryption;
 using System.IO;
 using System.Net;
 using System.Web;
+using Bam.Net.UserAccounts.OAuth;
 
 namespace Bam.Net.UserAccounts
 {
@@ -31,7 +32,6 @@ namespace Bam.Net.UserAccounts
     [Serializable]
     public class UserManager : Loggable, IRequiresHttpContext, ISmtpSettingsProvider, IUserManager
     {
-        public const string FacebookProvider = "facebook";
         static UserManager()
         {
             UserResolvers.Default.InsertResolver(0, new DaoUserResolver());
@@ -672,12 +672,18 @@ namespace Bam.Net.UserAccounts
             }
         }
 
+        public OAuthResponse OAuthCallback(string code)
+        {
+            // 
+            throw new NotImplementedException();
+        }
+
         protected internal bool UserExists(string userName)
         {
             return User.Exists(userName, Database);
         }
 
-        private T GetSuccess<T>(object data, string message = null) where T: RequestResponse, new()
+        private T GetSuccess<T>(object data, string message = null) where T: ServiceResponse, new()
         {
             T result = new T();
             result.Success = true;
@@ -686,7 +692,7 @@ namespace Bam.Net.UserAccounts
             return result;
         }
 
-        private T GetFailure<T>(Exception ex) where T: RequestResponse, new()
+        private T GetFailure<T>(Exception ex) where T: ServiceResponse, new()
         {
             T result = new T();
             result.Success = false;
