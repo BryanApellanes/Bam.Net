@@ -247,12 +247,12 @@ namespace Bam.Net.Data
 
         public virtual IEnumerable<T> ExecuteReader<T>(SqlStringBuilder sqlStatement, Action onExecuted = null) where T : class, new()
         {
-            return ExecuteReader<T>(sqlStatement.ToString(), GetParameters(sqlStatement), onExecuted);
+            return ExecuteReader<T>(sqlStatement.ToString(), GetParameters(sqlStatement), null, true, onExecuted);
         }
 
         public virtual IEnumerable<T> ExecuteReader<T>(string sqlStatement, object dbParameters, Action onExecuted = null) where T : class, new()
         {
-            return ExecuteReader<T>(sqlStatement, dbParameters.ToDbParameters(this).ToArray(), onExecuted);
+            return ExecuteReader<T>(sqlStatement, dbParameters.ToDbParameters(this).ToArray(), null, true, onExecuted);
         }
 
         public virtual IEnumerable<T> ExecuteReader<T>(string sqlStatement, DbParameter[] dbParameters, out DbConnection conn, Action onExecuted = null) where T : class, new()
@@ -292,16 +292,16 @@ namespace Bam.Net.Data
         }
         public virtual IEnumerable<dynamic> ExecuteDynamicReader(SqlStringBuilder sqlStatement, Action onExecuted = null)
         {
-            return ExecuteDynamicReader(sqlStatement.ToString(), GetParameters(sqlStatement));
+            return ExecuteDynamicReader(sqlStatement.ToString(), GetParameters(sqlStatement), null, true, onExecuted);
         }
         public virtual IEnumerable<dynamic> ExecuteDynamicReader(string sqlStatement, object dbParameters, Action onExecuted = null)
         {
-            return ExecuteDynamicReader(sqlStatement, dbParameters.ToDbParameters(this).ToArray());
+            return ExecuteDynamicReader(sqlStatement, dbParameters.ToDbParameters(this).ToArray(), null, true, onExecuted);
         }
         public virtual IEnumerable<dynamic> ExecuteDynamicReader(string sqlStatement, DbParameter[] dbParameters, out DbConnection conn, Action onExecuted = null)
         {
             conn = GetOpenDbConnection();
-            return ExecuteDynamicReader(sqlStatement, dbParameters, conn, false);
+            return ExecuteDynamicReader(sqlStatement, dbParameters, conn, false, onExecuted);
         }
         public virtual IEnumerable<dynamic> ExecuteDynamicReader(string sqlStatement, DbParameter[] dbParameters, DbConnection conn = null, bool closeConnection = true, Action onExecuted = null)
         {
