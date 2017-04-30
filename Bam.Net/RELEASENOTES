@@ -1,4 +1,2 @@
 
- -   suppress missing xml warnings (b5bb43f)
- -   add dynamic type related extensions (ed7f9a6)
- -   refactor, cleanup (fdd8e51)
+ -   configuration related refactor and updates (55451ae)
