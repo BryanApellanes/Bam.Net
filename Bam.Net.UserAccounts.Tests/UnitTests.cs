@@ -29,6 +29,17 @@ namespace Bam.Net.UserAccounts.Tests
 {
     public partial class Program
     {
+        [BeforeUnitTests]
+        public void Setup()
+        {
+            UserTestTools.ClearAllUserInfo();
+        }
+
+        [AfterUnitTests]
+        public void Teardown()
+        {
+            UserTestTools.ClearAllUserInfo();
+        }
 
         [UnitTest]
         public void UserNameIsAvailableShouldBeFalseIfUserAlreadyExists()
