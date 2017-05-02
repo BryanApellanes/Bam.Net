@@ -9,25 +9,11 @@ namespace Bam.Net.CoreServices.Data
 {
     public class Configuration: AuditRepoData
     {
-        public virtual List<Machine> Machines { get; set; }
-        public virtual List<Application> Applications { get; set; }
-        public string Key { get; set; }
-        public string Value { get; set; }
-
-        public override bool Equals(object obj)
-        {
-            Configuration conf = obj as Configuration;
-            if(conf == null)
-            {
-                return false;
-            }
-
-            return conf.Key.Equals(Key) && conf.Value.Equals(Value);
-        }
-
-        public override int GetHashCode()
-        {
-            return $"{Key}.{Value}".GetHashCode();
-        }
+        public string Name { get; set; }
+        public virtual long MachineId { get; set; }
+        public virtual Machine Machine { get; set; } 
+        public virtual long ApplicationId { get; set; }
+        public virtual Application Application { get; set; }
+        public virtual List<ConfigurationSetting> Settings { get; set; }
     }
 }

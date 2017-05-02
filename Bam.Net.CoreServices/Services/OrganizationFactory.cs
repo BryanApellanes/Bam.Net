@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.CoreServices.Data;
-using Bam.Net.CoreServices.Data.Daos.Repository;
+using Bam.Net.CoreServices.Data.Dao.Repository;
 
 namespace Bam.Net.CoreServices
 {

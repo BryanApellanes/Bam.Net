@@ -340,7 +340,7 @@ namespace Bam.Net.Data.Repositories.Tests
                 OutLineFormat("{0}", type.FullName);
             }
 
-            Type daoType = daoAssembly.GetType("TypeDaos.Daos.TestContainer");
+            Type daoType = daoAssembly.GetType("TypeDaos.Dao.TestContainer");
 
             Expect.IsNotNull(daoType);
         }

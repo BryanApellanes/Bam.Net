@@ -25,7 +25,7 @@
             particular method
             </summary>
         </member>
-        <member name="P:Bam.Net.ServiceProxy.RequestResponse.Data">
+        <member name="P:Bam.Net.ServiceProxy.ServiceResponse.Data">
             <summary>
             Relevant data returned in response
             to a request

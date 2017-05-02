@@ -10,7 +10,7 @@ using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 using Newtonsoft.Json;
 using Bam.Net.CoreServices.Data;
-using Bam.Net.CoreServices.Data.Daos;
+using Bam.Net.CoreServices.Data.Dao;
 
 namespace Bam.Net.CoreServices.Data.Wrappers
 {
@@ -18,10 +18,14 @@ namespace Bam.Net.CoreServices.Data.Wrappers
 	[Serializable]
 	public class UserWrapper: Bam.Net.CoreServices.Data.User, IHasUpdatedXrefCollectionProperties
 	{
-		public UserWrapper(DaoRepository repository)
+		public UserWrapper()
+		{
+			this.UpdatedXrefCollectionProperties = new Dictionary<string, PropertyInfo>();
+		}
+
+		public UserWrapper(DaoRepository repository) : this()
 		{
 			this.Repository = repository;
-			this.UpdatedXrefCollectionProperties = new Dictionary<string, PropertyInfo>();
 		}
 
 		[JsonIgnore]
@@ -32,11 +36,11 @@ namespace Bam.Net.CoreServices.Data.Wrappers
 
 		protected void SetUpdatedXrefCollectionProperty(string propertyName, PropertyInfo correspondingProperty)
 		{
-			if(!UpdatedXrefCollectionProperties.ContainsKey(propertyName))
+			if(UpdatedXrefCollectionProperties != null && !UpdatedXrefCollectionProperties.ContainsKey(propertyName))
 			{
-				UpdatedXrefCollectionProperties.Add(propertyName, correspondingProperty);				
+				UpdatedXrefCollectionProperties?.Add(propertyName, correspondingProperty);				
 			}
-			else
+			else if(UpdatedXrefCollectionProperties != null)
 			{
 				UpdatedXrefCollectionProperties[propertyName] = correspondingProperty;				
 			}
@@ -49,7 +53,7 @@ Bam.Net.CoreServices.Data.Subscription[] _subscriptions;
 			{
 				if (_subscriptions == null)
 				{
-					_subscriptions = Repository.ForeignKeyCollectionLoader<Bam.Net.CoreServices.Data.Subscription>(this).ToArray();
+					_subscriptions = Repository.ForeignKeyCollectionLoader<Bam.Net.CoreServices.Data.User, Bam.Net.CoreServices.Data.Subscription>(this).ToArray();
 				}
 				return _subscriptions;
 			}
@@ -69,7 +73,7 @@ Bam.Net.CoreServices.Data.Subscription[] _subscriptions;
 			{
 				if(_organizations == null)
 				{
-					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.Data.Daos.OrganizationUser, Bam.Net.CoreServices.Data.Daos.Organization>(Repository.GetDaoInstance(this), false);
+					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.Data.Dao.OrganizationUser, Bam.Net.CoreServices.Data.Dao.Organization>(Repository.GetDaoInstance(this), false);
 					 xref.Load(Repository.Database);
 					 _organizations = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.Data.Organization>().ToList();
 					 SetUpdatedXrefCollectionProperty("Organizations", this.GetType().GetProperty("Organizations"));

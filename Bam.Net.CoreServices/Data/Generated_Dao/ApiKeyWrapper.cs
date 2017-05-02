@@ -10,7 +10,7 @@ using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 using Newtonsoft.Json;
 using Bam.Net.CoreServices.Data;
-using Bam.Net.CoreServices.Data.Daos;
+using Bam.Net.CoreServices.Data.Dao;
 
 namespace Bam.Net.CoreServices.Data.Wrappers
 {
@@ -18,10 +18,14 @@ namespace Bam.Net.CoreServices.Data.Wrappers
 	[Serializable]
 	public class ApiKeyWrapper: Bam.Net.CoreServices.Data.ApiKey, IHasUpdatedXrefCollectionProperties
 	{
-		public ApiKeyWrapper(DaoRepository repository)
+		public ApiKeyWrapper()
+		{
+			this.UpdatedXrefCollectionProperties = new Dictionary<string, PropertyInfo>();
+		}
+
+		public ApiKeyWrapper(DaoRepository repository) : this()
 		{
 			this.Repository = repository;
-			this.UpdatedXrefCollectionProperties = new Dictionary<string, PropertyInfo>();
 		}
 
 		[JsonIgnore]
@@ -32,11 +36,11 @@ namespace Bam.Net.CoreServices.Data.Wrappers
 
 		protected void SetUpdatedXrefCollectionProperty(string propertyName, PropertyInfo correspondingProperty)
 		{
-			if(!UpdatedXrefCollectionProperties.ContainsKey(propertyName))
+			if(UpdatedXrefCollectionProperties != null && !UpdatedXrefCollectionProperties.ContainsKey(propertyName))
 			{
-				UpdatedXrefCollectionProperties.Add(propertyName, correspondingProperty);				
+				UpdatedXrefCollectionProperties?.Add(propertyName, correspondingProperty);				
 			}
-			else
+			else if(UpdatedXrefCollectionProperties != null)
 			{
 				UpdatedXrefCollectionProperties[propertyName] = correspondingProperty;				
 			}

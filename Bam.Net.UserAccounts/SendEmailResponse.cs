@@ -10,7 +10,7 @@ using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.UserAccounts
 {
-    public class SendEmailResponse: RequestResponse
+    public class SendEmailResponse: ServiceResponse
     {
         public SendEmailResponse() { }
     }

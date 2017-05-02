@@ -14,7 +14,7 @@ using Bam.Net.Data.Repositories;
 using Bam.Net.Data.SQLite;
 using Bam.Net.CoreServices.Services;
 using Bam.Net.CoreServices.Data;
-using Bam.Net.CoreServices.Data.Daos.Repository;
+using Bam.Net.CoreServices.Data.Dao.Repository;
 using Bam.Net.UserAccounts;
 
 namespace Bam.Net.CoreServices

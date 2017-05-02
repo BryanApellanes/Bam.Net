@@ -93,6 +93,7 @@
   <ItemGroup>
     <Compile Include="ClientRegistrationFailedException.cs" />
     <Compile Include="CoreExtensions.cs" />
+    <Compile Include="Data\Configuration.cs" />
     <Compile Include="Data\Generated_Dao\ApiKey.cs" />
     <Compile Include="Data\Generated_Dao\ApiKeyCollection.cs" />
     <Compile Include="Data\Generated_Dao\ApiKeyColumns.cs" />
@@ -102,6 +103,11 @@
     <Compile Include="Data\Generated_Dao\Application.cs" />
     <Compile Include="Data\Generated_Dao\ApplicationCollection.cs" />
     <Compile Include="Data\Generated_Dao\ApplicationColumns.cs" />
+    <Compile Include="Data\Generated_Dao\ApplicationMachine.cs" />
+    <Compile Include="Data\Generated_Dao\ApplicationMachineCollection.cs" />
+    <Compile Include="Data\Generated_Dao\ApplicationMachineColumns.cs" />
+    <Compile Include="Data\Generated_Dao\ApplicationMachinePagedQuery.cs" />
+    <Compile Include="Data\Generated_Dao\ApplicationMachineQuery.cs" />
     <Compile Include="Data\Generated_Dao\ApplicationPagedQuery.cs" />
     <Compile Include="Data\Generated_Dao\ApplicationQuery.cs" />
     <Compile Include="Data\Generated_Dao\ApplicationWrapper.cs" />
@@ -112,29 +118,20 @@
     <Compile Include="Data\Generated_Dao\ClientServerConnectionQuery.cs" />
     <Compile Include="Data\Generated_Dao\ClientServerConnectionWrapper.cs" />
     <Compile Include="Data\Generated_Dao\Configuration.cs" />
-    <Compile Include="Data\Generated_Dao\ConfigurationApplication.cs" />
-    <Compile Include="Data\Generated_Dao\ConfigurationApplicationCollection.cs" />
-    <Compile Include="Data\Generated_Dao\ConfigurationApplicationColumns.cs" />
-    <Compile Include="Data\Generated_Dao\ConfigurationApplicationPagedQuery.cs" />
-    <Compile Include="Data\Generated_Dao\ConfigurationApplicationQuery.cs" />
     <Compile Include="Data\Generated_Dao\ConfigurationCollection.cs" />
     <Compile Include="Data\Generated_Dao\ConfigurationColumns.cs" />
-    <Compile Include="Data\Generated_Dao\ConfigurationMachine.cs" />
-    <Compile Include="Data\Generated_Dao\ConfigurationMachineCollection.cs" />
-    <Compile Include="Data\Generated_Dao\ConfigurationMachineColumns.cs" />
-    <Compile Include="Data\Generated_Dao\ConfigurationMachinePagedQuery.cs" />
-    <Compile Include="Data\Generated_Dao\ConfigurationMachineQuery.cs" />
     <Compile Include="Data\Generated_Dao\ConfigurationPagedQuery.cs" />
     <Compile Include="Data\Generated_Dao\ConfigurationQuery.cs" />
+    <Compile Include="Data\Generated_Dao\ConfigurationSetting.cs" />
+    <Compile Include="Data\Generated_Dao\ConfigurationSettingCollection.cs" />
+    <Compile Include="Data\Generated_Dao\ConfigurationSettingColumns.cs" />
+    <Compile Include="Data\Generated_Dao\ConfigurationSettingPagedQuery.cs" />
+    <Compile Include="Data\Generated_Dao\ConfigurationSettingQuery.cs" />
+    <Compile Include="Data\Generated_Dao\ConfigurationSettingWrapper.cs" />
     <Compile Include="Data\Generated_Dao\ConfigurationWrapper.cs" />
     <Compile Include="Data\Generated_Dao\CoreRegistryContext.cs" />
     <Compile Include="Data\Generated_Dao\CoreRegistryRepository.cs" />
     <Compile Include="Data\Generated_Dao\Machine.cs" />
-    <Compile Include="Data\Generated_Dao\MachineApplication.cs" />
-    <Compile Include="Data\Generated_Dao\MachineApplicationCollection.cs" />
-    <Compile Include="Data\Generated_Dao\MachineApplicationColumns.cs" />
-    <Compile Include="Data\Generated_Dao\MachineApplicationPagedQuery.cs" />
-    <Compile Include="Data\Generated_Dao\MachineApplicationQuery.cs" />
     <Compile Include="Data\Generated_Dao\MachineCollection.cs" />
     <Compile Include="Data\Generated_Dao\MachineColumns.cs" />
     <Compile Include="Data\Generated_Dao\MachinePagedQuery.cs" />
@@ -165,12 +162,11 @@
     <Compile Include="Data\Generated_Dao\ProcessDescriptorWrapper.cs" />
     <Compile Include="Data\Generated_Dao\Qi\ApiKey.cs" />
     <Compile Include="Data\Generated_Dao\Qi\Application.cs" />
+    <Compile Include="Data\Generated_Dao\Qi\ApplicationMachine.cs" />
     <Compile Include="Data\Generated_Dao\Qi\ClientServerConnection.cs" />
     <Compile Include="Data\Generated_Dao\Qi\Configuration.cs" />
-    <Compile Include="Data\Generated_Dao\Qi\ConfigurationApplication.cs" />
-    <Compile Include="Data\Generated_Dao\Qi\ConfigurationMachine.cs" />
+    <Compile Include="Data\Generated_Dao\Qi\ConfigurationSetting.cs" />
     <Compile Include="Data\Generated_Dao\Qi\Machine.cs" />
-    <Compile Include="Data\Generated_Dao\Qi\MachineApplication.cs" />
     <Compile Include="Data\Generated_Dao\Qi\Nic.cs" />
     <Compile Include="Data\Generated_Dao\Qi\Organization.cs" />
     <Compile Include="Data\Generated_Dao\Qi\OrganizationUser.cs" />
@@ -191,13 +187,14 @@
     <Compile Include="Data\Generated_Dao\UserWrapper.cs" />
     <Compile Include="Data\Generated_Protobuf\BamNetCoreServicesData.cs" />
     <Compile Include="Data\Nic.cs" />
-    <Compile Include="Data\Configuration.cs" />
+    <Compile Include="Data\ConfigurationSetting.cs" />
     <Compile Include="CoreRegistryContainerAttribute.cs" />
     <Compile Include="CoreRegistry.cs" />
     <Compile Include="CoreRegistryProviderAttribute.cs" />
     <Compile Include="ProxySettingsInfo.cs" />
     <Compile Include="ServiceConfig.cs" />
     <Compile Include="ServiceRequest.cs" />
+    <Compile Include="Services\ApplicationConfiguration.cs" />
     <Compile Include="Services\ClientApplicationFactory.cs" />
     <Compile Include="DatabaseProvider.cs" />
     <Compile Include="IDatabaseProvider.cs" />
@@ -208,7 +205,9 @@
     <Compile Include="SchemasAttribute.cs" />
     <Compile Include="Services\ApplicationRegistrationResult.cs" />
     <Compile Include="Services\ApplicationRegistrationStatus.cs" />
+    <Compile Include="Services\SettingSource.cs" />
     <Compile Include="Services\CoreApplicationRegistryServiceConfig.cs" />
+    <Compile Include="Services\CoreProxyableService.cs" />
     <Compile Include="Services\CoreTranslationDatabase.cs" />
     <Compile Include="Services\CoreTranslationService.cs" />
     <Compile Include="Data\ApiKey.cs" />
@@ -220,6 +219,7 @@
     <Compile Include="Data\Subscription.cs" />
     <Compile Include="Data\User.cs" />
     <Compile Include="Services\OrganizationFactory.cs" />
+    <Compile Include="Services\SourcedConfigurationSetting.cs" />
     <Compile Include="Services\SubscriptionLevel.cs" />
     <Compile Include="Services\TranslationInfo.cs" />
     <Compile Include="Services\YandexApiKeyVaultInfo.cs" />
@@ -321,7 +321,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy $(TargetPath) c:\BamContent\apps\stickerize\services\</PostBuildEvent>
+    <PostBuildEvent>copy $(TargetPath) C:\BamContent\apps\stickerize\services\
+copy $(TargetPath) C:\tvg\gloo\</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -11,8 +11,8 @@ using Bam.Net.Testing.Repository.Data;
 
 namespace Bam.Net.Testing.Repository
 {
-	public class NotificationSubscriptionResponse: RequestResponse
-	{
+	public class NotificationSubscriptionResponse: ServiceResponse
+    {
 		public string Uuid { get; set; }
 		public SubscriptionStatus SubscriptionStatus { get; set; }
 	}

@@ -29,6 +29,17 @@ namespace Bam.Net.UserAccounts.Tests
 {
     public partial class Program
     {
+        [BeforeUnitTests]
+        public void Setup()
+        {
+            UserTestTools.ClearAllUserInfo();
+        }
+
+        [AfterUnitTests]
+        public void Teardown()
+        {
+            UserTestTools.ClearAllUserInfo();
+        }
 
         [UnitTest]
         public void UserNameIsAvailableShouldBeFalseIfUserAlreadyExists()
@@ -522,12 +533,12 @@ namespace Bam.Net.UserAccounts.Tests
         public void ShouldInitializeDaoUserManagerAppNameResolver()
         {
             UserManagerConfig config = new UserManagerConfig();
-            config.ApplicationNameResolverType = typeof(TestAppNameResolver).AssemblyQualifiedName;
+            config.ApplicationNameResolverType = typeof(TestAppNameProvider).AssemblyQualifiedName;
             UserManager mgr = config.Create();
 
             Expect.IsNotNull(mgr);
             Expect.IsNotNull(mgr.ApplicationNameProvider);
-            Expect.IsObjectOfType<TestAppNameResolver>(mgr.ApplicationNameProvider, "Resolver was a {0}"._Format(mgr.ApplicationNameProvider.GetType().Name));
+            Expect.IsObjectOfType<TestAppNameProvider>(mgr.ApplicationNameProvider, "Resolver was a {0}"._Format(mgr.ApplicationNameProvider.GetType().Name));
         }
 
         [UnitTest]

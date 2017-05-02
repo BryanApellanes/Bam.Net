@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Bam.Net.UserAccounts.Tests
 {
 
-    public class TestAppNameResolver : IApplicationNameProvider
+    public class TestAppNameProvider : IApplicationNameProvider
     {
         public string GetApplicationName()
         {

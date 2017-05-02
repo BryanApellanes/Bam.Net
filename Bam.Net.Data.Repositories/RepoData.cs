@@ -61,5 +61,20 @@ namespace Bam.Net.Data.Repositories
                 _cuid = value;
             }
         }
+
+        public override bool Equals(object obj)
+        {
+            RepoData o = obj as RepoData;
+            if(o != null)
+            {
+                return o.Id.Equals(Id) && o.Uuid.Equals(Uuid) && o.Cuid.Equals(Cuid);
+            }
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode() + Uuid.GetHashCode() + Cuid.GetHashCode();
+        }
     }
 }

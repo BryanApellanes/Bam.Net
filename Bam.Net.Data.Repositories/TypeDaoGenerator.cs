@@ -62,7 +62,7 @@ namespace Bam.Net.Data.Repositories
         public TypeDaoGenerator(Assembly typeAssembly, string nameSpace, ILogger logger = null)
             : this(logger)
         {
-            Namespace = nameSpace;
+            BaseNamespace = nameSpace;
             Args.ThrowIfNull(typeAssembly, "typeAssembly");
             AddTypes(typeAssembly.GetTypes().Where(t => t.Namespace != null && t.Namespace.Equals(nameSpace)));
         }
@@ -99,7 +99,7 @@ namespace Bam.Net.Data.Repositories
         /// <summary>
         /// The namespace to place generated classes into
         /// </summary>
-        public string Namespace
+        public string BaseNamespace
         {
             get
             {
@@ -114,14 +114,27 @@ namespace Bam.Net.Data.Repositories
             }
         }
 
+        string _daoNamespace;
         public string DaoNamespace
         {
-            get { return $"{_namespace}.Daos"; }
+            get { return _daoNamespace ?? $"{_namespace}.Dao"; }
+            set
+            {
+                _daoNamespace = value;
+                _daoGenerator.Namespace = _daoNamespace;
+                _wrapperGenerator.DaoNamespace = _daoNamespace;
+            }
         }
 
+        string _wrapperNamespace;
         public string WrapperNamespace
         {
-            get { return $"{_namespace}.Wrappers"; }
+            get { return _wrapperNamespace ?? $"{_namespace}.Wrappers"; }
+            set
+            {
+                _wrapperNamespace = value;
+                _wrapperGenerator.WrapperNamespace = _wrapperNamespace;                
+            }
         }
 
         string _schemaName;

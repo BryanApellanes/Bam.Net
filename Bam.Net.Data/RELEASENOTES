@@ -1,3 +1,6 @@
 
- -   better null and string handling (0599c1d)
- -   fix package path in project (b0bd1f7)
+ -   fix tests to account for changes (bc63e42)
+ -   fix StackOverflow in ExecuteDataReader methods (c55dbda)
+ -   fix wrapper template (83cad1b)
+ -   npgsql reference newer version (4d0ab54)
+ -   bug fix for foreignkey handling, dynamic queries (2fdbcf0)

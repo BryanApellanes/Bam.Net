@@ -10,7 +10,7 @@ using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.Testing.Repository
 {
-	public class SaveTestExecutionResponse : RequestResponse
-	{
+	public class SaveTestExecutionResponse : ServiceResponse
+    {
 	}
 }

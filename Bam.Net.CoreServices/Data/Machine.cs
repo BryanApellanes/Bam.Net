@@ -6,7 +6,7 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using Bam.Net.CoreServices.Data.Daos.Repository;
+using Bam.Net.CoreServices.Data.Dao.Repository;
 using Bam.Net.Data.Repositories;
 using Bam.Net.ServiceProxy;
 
@@ -20,6 +20,7 @@ namespace Bam.Net.CoreServices.Data
             Name = Environment.MachineName;
             Secret = ServiceProxySystem.GenerateId();
         }
+        public static object ConfigurationLock { get; set; } = new object();
         public virtual List<Application> Applications { get; set; }
         public virtual List<Configuration> Configurations { get; set; }
         public string Name { get; set; }
@@ -55,6 +56,16 @@ namespace Bam.Net.CoreServices.Data
             get
             {
                 return _currentLock.DoubleCheckLock(ref _current, () => new Machine());
+            }
+        }
+
+        static Machine _common;
+        static object _commonLock = new object();
+        public static Machine Common
+        {
+            get
+            {
+                return _commonLock.DoubleCheckLock(ref _common, () => new Machine { Name = $"Universal ({"Universal".Sha256()})", Port = 80, ServerHost = "127.0.0.1" });
             }
         }
 

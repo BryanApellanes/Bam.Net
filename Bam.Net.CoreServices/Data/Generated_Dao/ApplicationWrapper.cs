@@ -10,7 +10,7 @@ using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 using Newtonsoft.Json;
 using Bam.Net.CoreServices.Data;
-using Bam.Net.CoreServices.Data.Daos;
+using Bam.Net.CoreServices.Data.Dao;
 
 namespace Bam.Net.CoreServices.Data.Wrappers
 {
@@ -18,10 +18,14 @@ namespace Bam.Net.CoreServices.Data.Wrappers
 	[Serializable]
 	public class ApplicationWrapper: Bam.Net.CoreServices.Data.Application, IHasUpdatedXrefCollectionProperties
 	{
-		public ApplicationWrapper(DaoRepository repository)
+		public ApplicationWrapper()
+		{
+			this.UpdatedXrefCollectionProperties = new Dictionary<string, PropertyInfo>();
+		}
+
+		public ApplicationWrapper(DaoRepository repository) : this()
 		{
 			this.Repository = repository;
-			this.UpdatedXrefCollectionProperties = new Dictionary<string, PropertyInfo>();
 		}
 
 		[JsonIgnore]
@@ -32,11 +36,11 @@ namespace Bam.Net.CoreServices.Data.Wrappers
 
 		protected void SetUpdatedXrefCollectionProperty(string propertyName, PropertyInfo correspondingProperty)
 		{
-			if(!UpdatedXrefCollectionProperties.ContainsKey(propertyName))
+			if(UpdatedXrefCollectionProperties != null && !UpdatedXrefCollectionProperties.ContainsKey(propertyName))
 			{
-				UpdatedXrefCollectionProperties.Add(propertyName, correspondingProperty);				
+				UpdatedXrefCollectionProperties?.Add(propertyName, correspondingProperty);				
 			}
-			else
+			else if(UpdatedXrefCollectionProperties != null)
 			{
 				UpdatedXrefCollectionProperties[propertyName] = correspondingProperty;				
 			}
@@ -49,7 +53,7 @@ System.Collections.Generic.List<Bam.Net.CoreServices.Data.ApiKey> _apiKeys;
 			{
 				if (_apiKeys == null)
 				{
-					_apiKeys = Repository.ForeignKeyCollectionLoader<Bam.Net.CoreServices.Data.ApiKey>(this).ToList();
+					_apiKeys = Repository.ForeignKeyCollectionLoader<Bam.Net.CoreServices.Data.Application, Bam.Net.CoreServices.Data.ApiKey>(this).ToList();
 				}
 				return _apiKeys;
 			}
@@ -64,13 +68,28 @@ System.Collections.Generic.List<Bam.Net.CoreServices.Data.ApiKey> _apiKeys;
 			{
 				if (_instances == null)
 				{
-					_instances = Repository.ForeignKeyCollectionLoader<Bam.Net.CoreServices.Data.ProcessDescriptor>(this).ToList();
+					_instances = Repository.ForeignKeyCollectionLoader<Bam.Net.CoreServices.Data.Application, Bam.Net.CoreServices.Data.ProcessDescriptor>(this).ToList();
 				}
 				return _instances;
 			}
 			set
 			{
 				_instances = value;
+			}
+		}System.Collections.Generic.List<Bam.Net.CoreServices.Data.Configuration> _configurations;
+		public override System.Collections.Generic.List<Bam.Net.CoreServices.Data.Configuration> Configurations
+		{
+			get
+			{
+				if (_configurations == null)
+				{
+					_configurations = Repository.ForeignKeyCollectionLoader<Bam.Net.CoreServices.Data.Application, Bam.Net.CoreServices.Data.Configuration>(this).ToList();
+				}
+				return _configurations;
+			}
+			set
+			{
+				_configurations = value;
 			}
 		}
 Bam.Net.CoreServices.Data.Organization _organization;
@@ -89,30 +108,7 @@ Bam.Net.CoreServices.Data.Organization _organization;
 				_organization = value;
 			}
 		}
-
-// Xref property: Left -> Configuration ; Right -> Application
-
-		List<Bam.Net.CoreServices.Data.Configuration> _configurations;
-		public override List<Bam.Net.CoreServices.Data.Configuration> Configuration
-		{
-			get
-			{
-				if(_configurations == null)
-				{
-					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.Data.Daos.ConfigurationApplication, Bam.Net.CoreServices.Data.Daos.Configuration>(Repository.GetDaoInstance(this), false);
-					 xref.Load(Repository.Database);
-					 _configurations = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.Data.Configuration>().ToList();
-					 SetUpdatedXrefCollectionProperty("Configurations", this.GetType().GetProperty("Configuration"));
-				}
-
-				return _configurations;
-			}
-			set
-			{
-				_configurations = value;
-				SetUpdatedXrefCollectionProperty("Configurations", this.GetType().GetProperty("Configuration"));
-			}
-		}// Xref property: Left -> Machine ; Right -> Application
+// Xref property: Left -> Application ; Right -> Machine
 
 		List<Bam.Net.CoreServices.Data.Machine> _machines;
 		public override List<Bam.Net.CoreServices.Data.Machine> Machines
@@ -121,7 +117,7 @@ Bam.Net.CoreServices.Data.Organization _organization;
 			{
 				if(_machines == null)
 				{
-					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.Data.Daos.MachineApplication, Bam.Net.CoreServices.Data.Daos.Machine>(Repository.GetDaoInstance(this), false);
+					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.Data.Dao.ApplicationMachine,  Bam.Net.CoreServices.Data.Dao.Machine>(Repository.GetDaoInstance(this), false);
 					 xref.Load(Repository.Database);
 					 _machines = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.Data.Machine>().ToList();
 					 SetUpdatedXrefCollectionProperty("Machines", this.GetType().GetProperty("Machines"));
@@ -134,6 +130,7 @@ Bam.Net.CoreServices.Data.Organization _organization;
 				_machines = value;
 				SetUpdatedXrefCollectionProperty("Machines", this.GetType().GetProperty("Machines"));
 			}
-		}	}
+		}
+	}
 	// -- generated
 }																								

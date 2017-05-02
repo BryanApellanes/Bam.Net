@@ -2,21 +2,14 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>BamToolkit</id>
-    <version>1.4.11</version>
+    <version>1.5.0</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>http://bryanapellanes.github.io/Bam.Net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Tools for authoring distributed web based applications</description>
-    <releaseNotes>Version 1.4.11
- -   doc (d51eab9)
- -   bami doc (706c221)
- -   doc file (b368903)
- -   doc xml (172c991)
- -   rename bamd to bami and bams to bamd (c092cf5)
- -   rename bamd to bami and bams to bamd (18cbf5c)
- -   rename bamd to bami and bams to bamd (bdffe0f)
+    <releaseNotes>Version 1.5.0
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2017</copyright>
     <dependencies />

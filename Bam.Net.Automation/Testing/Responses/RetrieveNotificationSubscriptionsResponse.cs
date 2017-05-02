@@ -10,7 +10,7 @@ using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.Testing.Repository
 {
-	public class RetrieveNotificationSubscriptionsResponse: RequestResponse
-	{
+	public class RetrieveNotificationSubscriptionsResponse: ServiceResponse
+    {
 	}
 }

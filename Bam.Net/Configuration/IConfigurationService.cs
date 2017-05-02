@@ -4,7 +4,7 @@ namespace Bam.Net.Configuration
 {
     public interface IConfigurationService
     {
-        Dictionary<string, string> GetConfiguration(string applicationName, string configurationName = "");
-        void SetConfiguration(string applicationName, string configurationName, Dictionary<string, string> configuration);
+        Dictionary<string, string> GetApplicationConfiguration(string applicationName, string configurationName = "");
+        void SetApplicationConfiguration(string applicationName, Dictionary<string, string> configuration, string configurationName);
     }
 }

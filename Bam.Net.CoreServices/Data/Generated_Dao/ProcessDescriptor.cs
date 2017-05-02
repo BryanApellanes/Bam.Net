@@ -12,7 +12,7 @@ using Bam.Net;
 using Bam.Net.Data;
 using Bam.Net.Data.Qi;
 
-namespace Bam.Net.CoreServices.Data.Daos
+namespace Bam.Net.CoreServices.Data.Dao
 {
 	// schema = CoreRegistry
 	// connection Name = CoreRegistry
@@ -327,41 +327,6 @@ namespace Bam.Net.CoreServices.Data.Daos
 
 
 
-	// start MachineId -> MachineId
-	[Bam.Net.Data.ForeignKey(
-        Table="ProcessDescriptor",
-		Name="MachineId", 
-		DbDataType="BigInt", 
-		MaxLength="",
-		AllowNull=true, 
-		ReferencedKey="Id",
-		ReferencedTable="Machine",
-		Suffix="1")]
-	public long? MachineId
-	{
-		get
-		{
-			return GetLongValue("MachineId");
-		}
-		set
-		{
-			SetValue("MachineId", value);
-		}
-	}
-
-	Machine _machineOfMachineId;
-	public Machine MachineOfMachineId
-	{
-		get
-		{
-			if(_machineOfMachineId == null)
-			{
-				_machineOfMachineId = Bam.Net.CoreServices.Data.Daos.Machine.OneWhere(c => c.KeyColumn == this.MachineId, this.Database);
-			}
-			return _machineOfMachineId;
-		}
-	}
-	
 	// start ApplicationId -> ApplicationId
 	[Bam.Net.Data.ForeignKey(
         Table="ProcessDescriptor",
@@ -371,7 +336,7 @@ namespace Bam.Net.CoreServices.Data.Daos
 		AllowNull=true, 
 		ReferencedKey="Id",
 		ReferencedTable="Application",
-		Suffix="2")]
+		Suffix="1")]
 	public long? ApplicationId
 	{
 		get
@@ -391,9 +356,44 @@ namespace Bam.Net.CoreServices.Data.Daos
 		{
 			if(_applicationOfApplicationId == null)
 			{
-				_applicationOfApplicationId = Bam.Net.CoreServices.Data.Daos.Application.OneWhere(c => c.KeyColumn == this.ApplicationId, this.Database);
+				_applicationOfApplicationId = Bam.Net.CoreServices.Data.Dao.Application.OneWhere(c => c.KeyColumn == this.ApplicationId, this.Database);
 			}
 			return _applicationOfApplicationId;
+		}
+	}
+	
+	// start MachineId -> MachineId
+	[Bam.Net.Data.ForeignKey(
+        Table="ProcessDescriptor",
+		Name="MachineId", 
+		DbDataType="BigInt", 
+		MaxLength="",
+		AllowNull=true, 
+		ReferencedKey="Id",
+		ReferencedTable="Machine",
+		Suffix="2")]
+	public long? MachineId
+	{
+		get
+		{
+			return GetLongValue("MachineId");
+		}
+		set
+		{
+			SetValue("MachineId", value);
+		}
+	}
+
+	Machine _machineOfMachineId;
+	public Machine MachineOfMachineId
+	{
+		get
+		{
+			if(_machineOfMachineId == null)
+			{
+				_machineOfMachineId = Bam.Net.CoreServices.Data.Dao.Machine.OneWhere(c => c.KeyColumn == this.MachineId, this.Database);
+			}
+			return _machineOfMachineId;
 		}
 	}
 	

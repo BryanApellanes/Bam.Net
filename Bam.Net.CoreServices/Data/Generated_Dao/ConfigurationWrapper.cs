@@ -10,7 +10,7 @@ using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 using Newtonsoft.Json;
 using Bam.Net.CoreServices.Data;
-using Bam.Net.CoreServices.Data.Daos;
+using Bam.Net.CoreServices.Data.Dao;
 
 namespace Bam.Net.CoreServices.Data.Wrappers
 {
@@ -18,10 +18,14 @@ namespace Bam.Net.CoreServices.Data.Wrappers
 	[Serializable]
 	public class ConfigurationWrapper: Bam.Net.CoreServices.Data.Configuration, IHasUpdatedXrefCollectionProperties
 	{
-		public ConfigurationWrapper(DaoRepository repository)
+		public ConfigurationWrapper()
+		{
+			this.UpdatedXrefCollectionProperties = new Dictionary<string, PropertyInfo>();
+		}
+
+		public ConfigurationWrapper(DaoRepository repository) : this()
 		{
 			this.Repository = repository;
-			this.UpdatedXrefCollectionProperties = new Dictionary<string, PropertyInfo>();
 		}
 
 		[JsonIgnore]
@@ -32,63 +36,64 @@ namespace Bam.Net.CoreServices.Data.Wrappers
 
 		protected void SetUpdatedXrefCollectionProperty(string propertyName, PropertyInfo correspondingProperty)
 		{
-			if(!UpdatedXrefCollectionProperties.ContainsKey(propertyName))
+			if(UpdatedXrefCollectionProperties != null && !UpdatedXrefCollectionProperties.ContainsKey(propertyName))
 			{
-				UpdatedXrefCollectionProperties.Add(propertyName, correspondingProperty);				
+				UpdatedXrefCollectionProperties?.Add(propertyName, correspondingProperty);				
 			}
-			else
+			else if(UpdatedXrefCollectionProperties != null)
 			{
 				UpdatedXrefCollectionProperties[propertyName] = correspondingProperty;				
 			}
 		}
 
-
-
-// Xref property: Left -> Configuration ; Right -> Machine
-
-		List<Bam.Net.CoreServices.Data.Machine> _machines;
-		public override List<Bam.Net.CoreServices.Data.Machine> Machines
+System.Collections.Generic.List<Bam.Net.CoreServices.Data.ConfigurationSetting> _settings;
+		public override System.Collections.Generic.List<Bam.Net.CoreServices.Data.ConfigurationSetting> Settings
 		{
 			get
 			{
-				if(_machines == null)
+				if (_settings == null)
 				{
-					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.Data.Daos.ConfigurationMachine,  Bam.Net.CoreServices.Data.Daos.Machine>(Repository.GetDaoInstance(this), false);
-					 xref.Load(Repository.Database);
-					 _machines = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.Data.Machine>().ToList();
-					 SetUpdatedXrefCollectionProperty("Machines", this.GetType().GetProperty("Machines"));
+					_settings = Repository.ForeignKeyCollectionLoader<Bam.Net.CoreServices.Data.Configuration, Bam.Net.CoreServices.Data.ConfigurationSetting>(this).ToList();
 				}
-
-				return _machines;
+				return _settings;
 			}
 			set
 			{
-				_machines = value;
-				SetUpdatedXrefCollectionProperty("Machines", this.GetType().GetProperty("Machines"));
-			}
-		}// Xref property: Left -> Configuration ; Right -> Application
-
-		List<Bam.Net.CoreServices.Data.Application> _applications;
-		public override List<Bam.Net.CoreServices.Data.Application> Applications
-		{
-			get
-			{
-				if(_applications == null)
-				{
-					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.Data.Daos.ConfigurationApplication,  Bam.Net.CoreServices.Data.Daos.Application>(Repository.GetDaoInstance(this), false);
-					 xref.Load(Repository.Database);
-					 _applications = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.Data.Application>().ToList();
-					 SetUpdatedXrefCollectionProperty("Applications", this.GetType().GetProperty("Applications"));
-				}
-
-				return _applications;
-			}
-			set
-			{
-				_applications = value;
-				SetUpdatedXrefCollectionProperty("Applications", this.GetType().GetProperty("Applications"));
+				_settings = value;
 			}
 		}
+Bam.Net.CoreServices.Data.Application _application;
+		public override Bam.Net.CoreServices.Data.Application Application
+		{
+			get
+			{
+				if (_application == null)
+				{
+					_application = (Bam.Net.CoreServices.Data.Application)Repository.GetParentPropertyOfChild(this, typeof(Bam.Net.CoreServices.Data.Application));
+				}
+				return _application;
+			}
+			set
+			{
+				_application = value;
+			}
+		}Bam.Net.CoreServices.Data.Machine _machine;
+		public override Bam.Net.CoreServices.Data.Machine Machine
+		{
+			get
+			{
+				if (_machine == null)
+				{
+					_machine = (Bam.Net.CoreServices.Data.Machine)Repository.GetParentPropertyOfChild(this, typeof(Bam.Net.CoreServices.Data.Machine));
+				}
+				return _machine;
+			}
+			set
+			{
+				_machine = value;
+			}
+		}
+
 	}
 	// -- generated
 }																								

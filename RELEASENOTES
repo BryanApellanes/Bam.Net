@@ -1,9 +1,3 @@
-Version 1.4.11
- -  ignore .vs and update vs version (5d29d26)
- -  delete unused project (9ee89bb)
- -  remove vs sqlite file (3a43d0f)
- -  Fix target framework 4.6.2 (36853d5)
- -  Merge branch 'olo-v1.4.9' into three-headz (c6badb1)
- -  test and documentation updates (d094d18)
- -  reset build events to copy BamContent services (35e7c38)
- -  Merge pull request #61 from BryanApellanes/three-headz (089ea9c)
+Version 1.5.0
+ -  - cleanup project paths (d55257b)
+ -  Merge pull request #62 from BryanApellanes/three-headz (9795ce5)

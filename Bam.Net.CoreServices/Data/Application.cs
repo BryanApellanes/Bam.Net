@@ -15,6 +15,15 @@ namespace Bam.Net.CoreServices.Data
         public virtual List<Machine> Machines { get; set; }
         public virtual List<ApiKey> ApiKeys { get; set; }
         public virtual List<ProcessDescriptor> Instances { get; set; }
-        public virtual List<Configuration> Configuration { get; set; }
+        public virtual List<Configuration> Configurations { get; set; }
+
+        public static object ConfigurationLock { get; set; } = new object();
+
+        static object _defaultLock = new object();
+        static Application _defaultApplication;
+        public static Application Unknown
+        {
+            get { return _defaultLock.DoubleCheckLock(ref _defaultApplication, () => new Application { Name = "UNKOWN" }); }
+        }
     }
 }

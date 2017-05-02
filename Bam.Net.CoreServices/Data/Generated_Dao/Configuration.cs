@@ -12,7 +12,7 @@ using Bam.Net;
 using Bam.Net.Data;
 using Bam.Net.Data.Qi;
 
-namespace Bam.Net.CoreServices.Data.Daos
+namespace Bam.Net.CoreServices.Data.Dao
 {
 	// schema = CoreRegistry
 	// connection Name = CoreRegistry
@@ -56,12 +56,7 @@ namespace Bam.Net.CoreServices.Data.Daos
 		private void SetChildren()
 		{
 
-            this.ChildCollections.Add("ConfigurationMachine_ConfigurationId", new ConfigurationMachineCollection(Database.GetQuery<ConfigurationMachineColumns, ConfigurationMachine>((c) => c.ConfigurationId == GetLongValue("Id")), this, "ConfigurationId"));	
-            this.ChildCollections.Add("ConfigurationApplication_ConfigurationId", new ConfigurationApplicationCollection(Database.GetQuery<ConfigurationApplicationColumns, ConfigurationApplication>((c) => c.ConfigurationId == GetLongValue("Id")), this, "ConfigurationId"));				
-            this.ChildCollections.Add("Configuration_ConfigurationMachine_Machine",  new XrefDaoCollection<ConfigurationMachine, Machine>(this, false));
-				
-            this.ChildCollections.Add("Configuration_ConfigurationApplication_Application",  new XrefDaoCollection<ConfigurationApplication, Application>(this, false));
-							
+            this.ChildCollections.Add("ConfigurationSetting_ConfigurationId", new ConfigurationSettingCollection(Database.GetQuery<ConfigurationSettingColumns, ConfigurationSetting>((c) => c.ConfigurationId == GetLongValue("Id")), this, "ConfigurationId"));							
 		}
 
 	// property:Id, columnName:Id	
@@ -107,31 +102,17 @@ namespace Bam.Net.CoreServices.Data.Daos
 		}
 	}
 
-	// property:Key, columnName:Key	
-	[Bam.Net.Data.Column(Name="Key", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string Key
+	// property:Name, columnName:Name	
+	[Bam.Net.Data.Column(Name="Name", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string Name
 	{
 		get
 		{
-			return GetStringValue("Key");
+			return GetStringValue("Name");
 		}
 		set
 		{
-			SetValue("Key", value);
-		}
-	}
-
-	// property:Value, columnName:Value	
-	[Bam.Net.Data.Column(Name="Value", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string Value
-	{
-		get
-		{
-			return GetStringValue("Value");
-		}
-		set
-		{
-			SetValue("Value", value);
+			SetValue("Name", value);
 		}
 	}
 
@@ -207,34 +188,80 @@ namespace Bam.Net.CoreServices.Data.Daos
 
 
 
-				
-
-	[Bam.Net.Exclude]	
-	public ConfigurationMachineCollection ConfigurationMachinesByConfigurationId
+	// start ApplicationId -> ApplicationId
+	[Bam.Net.Data.ForeignKey(
+        Table="Configuration",
+		Name="ApplicationId", 
+		DbDataType="BigInt", 
+		MaxLength="",
+		AllowNull=true, 
+		ReferencedKey="Id",
+		ReferencedTable="Application",
+		Suffix="1")]
+	public long? ApplicationId
 	{
 		get
 		{
-			if (this.IsNew)
-			{
-				throw new InvalidOperationException("The current instance of type({0}) hasn't been saved and will have no child collections, call Save() or Save(Database) first."._Format(this.GetType().Name));
-			}
+			return GetLongValue("ApplicationId");
+		}
+		set
+		{
+			SetValue("ApplicationId", value);
+		}
+	}
 
-			if(!this.ChildCollections.ContainsKey("ConfigurationMachine_ConfigurationId"))
+	Application _applicationOfApplicationId;
+	public Application ApplicationOfApplicationId
+	{
+		get
+		{
+			if(_applicationOfApplicationId == null)
 			{
-				SetChildren();
+				_applicationOfApplicationId = Bam.Net.CoreServices.Data.Dao.Application.OneWhere(c => c.KeyColumn == this.ApplicationId, this.Database);
 			}
-
-			var c = (ConfigurationMachineCollection)this.ChildCollections["ConfigurationMachine_ConfigurationId"];
-			if(!c.Loaded)
-			{
-				c.Load(Database);
-			}
-			return c;
+			return _applicationOfApplicationId;
 		}
 	}
 	
+	// start MachineId -> MachineId
+	[Bam.Net.Data.ForeignKey(
+        Table="Configuration",
+		Name="MachineId", 
+		DbDataType="BigInt", 
+		MaxLength="",
+		AllowNull=true, 
+		ReferencedKey="Id",
+		ReferencedTable="Machine",
+		Suffix="2")]
+	public long? MachineId
+	{
+		get
+		{
+			return GetLongValue("MachineId");
+		}
+		set
+		{
+			SetValue("MachineId", value);
+		}
+	}
+
+	Machine _machineOfMachineId;
+	public Machine MachineOfMachineId
+	{
+		get
+		{
+			if(_machineOfMachineId == null)
+			{
+				_machineOfMachineId = Bam.Net.CoreServices.Data.Dao.Machine.OneWhere(c => c.KeyColumn == this.MachineId, this.Database);
+			}
+			return _machineOfMachineId;
+		}
+	}
+	
+				
+
 	[Bam.Net.Exclude]	
-	public ConfigurationApplicationCollection ConfigurationApplicationsByConfigurationId
+	public ConfigurationSettingCollection ConfigurationSettingsByConfigurationId
 	{
 		get
 		{
@@ -243,12 +270,12 @@ namespace Bam.Net.CoreServices.Data.Daos
 				throw new InvalidOperationException("The current instance of type({0}) hasn't been saved and will have no child collections, call Save() or Save(Database) first."._Format(this.GetType().Name));
 			}
 
-			if(!this.ChildCollections.ContainsKey("ConfigurationApplication_ConfigurationId"))
+			if(!this.ChildCollections.ContainsKey("ConfigurationSetting_ConfigurationId"))
 			{
 				SetChildren();
 			}
 
-			var c = (ConfigurationApplicationCollection)this.ChildCollections["ConfigurationApplication_ConfigurationId"];
+			var c = (ConfigurationSettingCollection)this.ChildCollections["ConfigurationSetting_ConfigurationId"];
 			if(!c.Loaded)
 			{
 				c.Load(Database);
@@ -258,54 +285,6 @@ namespace Bam.Net.CoreServices.Data.Daos
 	}
 			
 
-		// Xref       
-        public XrefDaoCollection<ConfigurationMachine, Machine> Machines
-        {
-            get
-            {			
-				if (this.IsNew)
-				{
-					throw new InvalidOperationException("The current instance of type({0}) hasn't been saved and will have no child collections, call Save() or Save(Database) first."._Format(this.GetType().Name));
-				}
-
-				if(!this.ChildCollections.ContainsKey("Configuration_ConfigurationMachine_Machine"))
-				{
-					SetChildren();
-				}
-
-				var xref = (XrefDaoCollection<ConfigurationMachine, Machine>)this.ChildCollections["Configuration_ConfigurationMachine_Machine"];
-				if(!xref.Loaded)
-				{
-					xref.Load(Database);
-				}
-
-				return xref;
-            }
-        }
-		// Xref       
-        public XrefDaoCollection<ConfigurationApplication, Application> Applications
-        {
-            get
-            {			
-				if (this.IsNew)
-				{
-					throw new InvalidOperationException("The current instance of type({0}) hasn't been saved and will have no child collections, call Save() or Save(Database) first."._Format(this.GetType().Name));
-				}
-
-				if(!this.ChildCollections.ContainsKey("Configuration_ConfigurationApplication_Application"))
-				{
-					SetChildren();
-				}
-
-				var xref = (XrefDaoCollection<ConfigurationApplication, Application>)this.ChildCollections["Configuration_ConfigurationApplication_Application"];
-				if(!xref.Loaded)
-				{
-					xref.Load(Database);
-				}
-
-				return xref;
-            }
-        }
 		/// <summary>
 		/// Gets a query filter that should uniquely identify
 		/// the current instance.  The default implementation

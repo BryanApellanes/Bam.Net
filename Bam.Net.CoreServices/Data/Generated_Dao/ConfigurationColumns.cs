@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Bam.Net.Data;
 
-namespace Bam.Net.CoreServices.Data.Daos
+namespace Bam.Net.CoreServices.Data.Dao
 {
     public class ConfigurationColumns: QueryFilter<ConfigurationColumns>, IFilterToken
     {
@@ -42,18 +42,11 @@ namespace Bam.Net.CoreServices.Data.Daos
                 return new ConfigurationColumns("Cuid");
             }
         }
-        public ConfigurationColumns Key
+        public ConfigurationColumns Name
         {
             get
             {
-                return new ConfigurationColumns("Key");
-            }
-        }
-        public ConfigurationColumns Value
-        {
-            get
-            {
-                return new ConfigurationColumns("Value");
+                return new ConfigurationColumns("Name");
             }
         }
         public ConfigurationColumns Created
@@ -92,6 +85,20 @@ namespace Bam.Net.CoreServices.Data.Daos
             }
         }
 
+        public ConfigurationColumns ApplicationId
+        {
+            get
+            {
+                return new ConfigurationColumns("ApplicationId");
+            }
+        }
+        public ConfigurationColumns MachineId
+        {
+            get
+            {
+                return new ConfigurationColumns("MachineId");
+            }
+        }
 
 		protected internal Type TableType
 		{

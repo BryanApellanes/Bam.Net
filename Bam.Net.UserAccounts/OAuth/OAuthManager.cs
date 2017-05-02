@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Bam.Net.ServiceProxy;
 using Bam.Net.UserAccounts.Data;
 
-namespace Bam.Net.UserAccounts
+namespace Bam.Net.UserAccounts.OAuth
 {
     [Proxy("oauth")]
     public class OAuthManager: IRequiresHttpContext

@@ -18,10 +18,14 @@ namespace @Model.WrapperNamespace
 	[Serializable]
 	public class @(Model.WrapperTypeName): @(Model.TypeNamespace).@(Model.BaseTypeName), IHasUpdatedXrefCollectionProperties
 	{
-		public @(Model.TypeName)Wrapper(DaoRepository repository)
+		public @(Model.TypeName)Wrapper()
+		{
+			this.UpdatedXrefCollectionProperties = new Dictionary<string, PropertyInfo>();
+		}
+
+		public @(Model.TypeName)Wrapper(DaoRepository repository) : this()
 		{
 			this.Repository = repository;
-			this.UpdatedXrefCollectionProperties = new Dictionary<string, PropertyInfo>();
 		}
 
 		[JsonIgnore]
@@ -32,11 +36,11 @@ namespace @Model.WrapperNamespace
 
 		protected void SetUpdatedXrefCollectionProperty(string propertyName, PropertyInfo correspondingProperty)
 		{
-			if(!UpdatedXrefCollectionProperties.ContainsKey(propertyName))
+			if(UpdatedXrefCollectionProperties != null && !UpdatedXrefCollectionProperties.ContainsKey(propertyName))
 			{
 				UpdatedXrefCollectionProperties.Add(propertyName, correspondingProperty);				
 			}
-			else
+			else if(UpdatedXrefCollectionProperties != null)
 			{
 				UpdatedXrefCollectionProperties[propertyName] = correspondingProperty;				
 			}

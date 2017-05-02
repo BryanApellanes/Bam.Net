@@ -10,7 +10,7 @@ using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.UserAccounts
 {
-    public class ForgotPasswordResponse:RequestResponse
+    public class ForgotPasswordResponse:ServiceResponse
     {
         public ForgotPasswordResponse() { }
     }
