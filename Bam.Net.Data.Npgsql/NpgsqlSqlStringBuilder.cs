@@ -98,6 +98,12 @@ namespace Bam.Net.Data
             this.parameters.AddRange(set.Parameters);
             return this;
         }
+
+        public override SqlStringBuilder Select(string tableName, params string[] columnNames)
+        {
+            return base.Select(tableName, columnNames);
+        }
+        
         protected override void WriteCreateTable(Type daoType)
         {
             ColumnAttribute[] columns = GetColumns(daoType);

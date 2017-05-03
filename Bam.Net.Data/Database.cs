@@ -166,6 +166,11 @@ namespace Bam.Net.Data
             return ServiceProvider.Get<SchemaWriter>();
         }
 
+        public SqlStringBuilder Sql()
+        {
+            return GetSqlStringBuilder();
+        }
+
         public SqlStringBuilder GetSqlStringBuilder()
         {
             return ServiceProvider.Get<SqlStringBuilder>();
@@ -278,7 +283,8 @@ namespace Bam.Net.Data
                     T next = new T();
                     columnNames.Each(new { Value = next, Reader = reader }, (ctx, cn) =>
                     {
-                        ReflectionExtensions.Property(ctx.Value, cn, ctx.Reader[cn]);
+                        //ReflectionExtensions.Property(ctx.Value, cn, ctx.Reader[cn]);
+                        ReaderPropertySetter(ctx.Value, cn, ctx.Reader[cn]);
                     });
                     yield return next;
                 }
@@ -289,6 +295,11 @@ namespace Bam.Net.Data
             }
             onExecuted();
             yield break;
+        }
+
+        protected virtual void ReaderPropertySetter(object instance, string propertyName, object propertyValue)
+        {
+            instance.Property(propertyName, propertyValue);
         }
         public virtual IEnumerable<dynamic> ExecuteDynamicReader(SqlStringBuilder sqlStatement, Action onExecuted = null)
         {

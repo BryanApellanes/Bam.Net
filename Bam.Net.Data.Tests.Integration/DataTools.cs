@@ -48,7 +48,7 @@ namespace Bam.Net.Data.Tests.Integration
             initializer(sqliteDatabase);
             testDatabases.Add(sqliteDatabase);
 
-            OleDbDatabase oleDatabase = new OleDbDatabase("Microsoft.ACE.OLEDB.12.0", 4.RandomLetters());
+            OleDbDatabase oleDatabase = new OleDbDatabase("Microsoft.ACE.OLEDB.12.0", databaseName.RandomLetters(4));
             initializer(oleDatabase);
             testDatabases.Add(oleDatabase);
 
