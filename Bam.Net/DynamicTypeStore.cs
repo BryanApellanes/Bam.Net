@@ -13,16 +13,21 @@ namespace Bam.Net
     public class DynamicTypeStore
     {
         Dictionary<string, DynamicTypeInfo> dynamicTypeStore;
+        object accessLock = new object();
+
         public DynamicTypeStore()
         {
-            this.dynamicTypeStore = new Dictionary<string, DynamicTypeInfo>();
+            dynamicTypeStore = new Dictionary<string, DynamicTypeInfo>();
         }
 
         public string[] Names
         {
             get
             {
-                return this.dynamicTypeStore.Keys.ToArray<string>();
+                lock (accessLock)
+                {
+                    return dynamicTypeStore.Keys.ToArray<string>();
+                }
             }
         }
 
@@ -34,18 +39,17 @@ namespace Bam.Net
             }
         }
 
-        object accessLock = new object();
         public void AddType(string name, DynamicTypeInfo info)
         {
             lock (accessLock)
 			{
-				if (this.dynamicTypeStore.ContainsKey(name))
+				if (dynamicTypeStore.ContainsKey(name))
 				{
-					this.dynamicTypeStore[name] = info;
+					dynamicTypeStore[name] = info;
 				}
 				else
 				{
-					this.dynamicTypeStore.Add(name, info);
+					dynamicTypeStore.Add(name, info);
 				}
             }
         }
@@ -54,21 +58,26 @@ namespace Bam.Net
         {
             lock (accessLock)
             {
-                this.dynamicTypeStore.Remove(name);
+                dynamicTypeStore.Remove(name);
             }
         }
 
         public bool ContainsTypeInfo(string typeName)
         {
-            return this.dynamicTypeStore.ContainsKey(typeName);
+            lock (accessLock)
+            {
+                return dynamicTypeStore.ContainsKey(typeName);
+            }
         }
 
         public DynamicTypeInfo[] Types
         {
             get
             {
-                return this.dynamicTypeStore.Values.ToArray<DynamicTypeInfo>();
-
+                lock (accessLock)
+                {
+                    return dynamicTypeStore.Values.ToArray();
+                }
             }
         }
 
@@ -78,7 +87,7 @@ namespace Bam.Net
             {
                 lock (accessLock)
                 {
-                    return this.dynamicTypeStore[name];
+                    return dynamicTypeStore[name];
                 }
             }
         }

@@ -42,6 +42,11 @@ namespace Bam.Net.Data.Dynamic
             return ReflectionExtensions.Property<T>(instance, propertyName, throwIfPropertyNotFound);
         }
 
+        public static object Property(this object instance, string propertyName, object value, bool throwIfPropertyNotFound = true)
+        {
+            return ReflectionExtensions.Property(instance, propertyName, value, throwIfPropertyNotFound);
+        }
+
         /// <summary>
         /// Returns true if the specified instance is of a type
         /// that has the specified propertyName

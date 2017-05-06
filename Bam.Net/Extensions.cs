@@ -3607,12 +3607,12 @@ namespace Bam.Net
             else
             {
                 TypeBuilder typeBuilder;
-                GetAssemblyAndTypeBuilder(typeName, out assemblyBuilder, out typeBuilder);
+                GetAssemblyAndTypeBuilder(fullName, out assemblyBuilder, out typeBuilder);
                 foreach(string propertyName in propertyNames)
                 {
                     AddPropertyToDynamicType(typeBuilder, new CustomPropertyInfo(propertyName, typeof(object)));
                 }
-                return CreateDynamicType(typeName, typeBuilder);
+                return CreateDynamicType(fullName, typeBuilder);
             }             
         }
 
