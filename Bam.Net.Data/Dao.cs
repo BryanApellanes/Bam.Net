@@ -228,7 +228,7 @@ namespace Bam.Net.Data
             return _hasUuid.Value;
         }
 
-        Database _database;
+        protected Database _database;
         object _databaseSync = new object();
         public Database Database
         {

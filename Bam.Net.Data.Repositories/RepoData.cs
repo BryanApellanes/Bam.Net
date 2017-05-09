@@ -17,6 +17,11 @@ namespace Bam.Net.Data.Repositories
 		public long Id { get; set; }
         private DateTime? _created;
 
+        /// <summary>
+        /// The time that the Created property
+        /// was first referenced prior to persisting
+        /// the object instance
+        /// </summary>
         public DateTime? Created
         {
             get

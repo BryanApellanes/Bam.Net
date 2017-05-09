@@ -129,6 +129,7 @@
     <Compile Include="IRepositoryPathProvider.cs" />
     <Compile Include="IStorableTypesProvider.cs" />
     <Compile Include="NamespaceStorableTypesProvider.cs" />
+    <Compile Include="ObjectIdentifier.cs" />
     <Compile Include="RepoData.cs" />
     <Compile Include="RepositoryStorableTypesProvider.cs" />
     <Compile Include="TypeSchemaPropertyManager.cs" />

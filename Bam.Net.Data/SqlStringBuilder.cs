@@ -193,7 +193,8 @@ namespace Bam.Net.Data
 
         public virtual SqlStringBuilder Update(string tableName, dynamic valueAssignments)
         {
-            return Update(tableName, (AssignValue[])AssignValue.FromDynamic(valueAssignments).ToArray());
+            IEnumerable<AssignValue> values = AssignValue.FromDynamic(valueAssignments, ColumnNameFormatter);
+            return Update(tableName, values.ToArray());
         }
 
         public virtual SqlStringBuilder Update(string tableName, params AssignValue[] values)
@@ -224,7 +225,8 @@ namespace Bam.Net.Data
 
         public virtual SqlStringBuilder Insert(string tableName, dynamic valueAssignments)
         {
-            return Insert(tableName, (AssignValue[])AssignValue.FromDynamic(valueAssignments).ToArray());
+            IEnumerable<AssignValue> values = AssignValue.FromDynamic(valueAssignments, ColumnNameFormatter);
+            return Insert(tableName, values.ToArray());
         }
         public virtual SqlStringBuilder Insert(string tableName, params AssignValue[] values)
         {
@@ -382,6 +384,16 @@ namespace Bam.Net.Data
         public virtual SqlStringBuilder Where(string columnName, object value)
         {
             return Where(new AssignValue(columnName, value, ColumnNameFormatter));
+        }
+
+        public virtual SqlStringBuilder Where(dynamic parameters)
+        {
+            IEnumerable<AssignValue> values = AssignValue.FromDynamic(parameters, ColumnNameFormatter);
+            foreach(AssignValue value in values)
+            {
+                this.Where(value);
+            }
+            return this;
         }
 
         public virtual SqlStringBuilder Where(AssignValue filter)

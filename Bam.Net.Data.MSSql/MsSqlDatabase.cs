@@ -38,6 +38,12 @@ namespace Bam.Net.Data.MsSql
             Register();
         }
 
+        public MsSqlDatabase(string connectionString, string connectionName = null) 
+            : base(connectionString, connectionName)
+        {
+            Register();
+        }
+
         private void Register()
         {
             ServiceProvider = new Incubator();

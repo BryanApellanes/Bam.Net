@@ -67,13 +67,13 @@ namespace Bam.Net.Data
             return string.Format("{0} {1} {2} ", ColumnNameFormatter(ColumnName), this.Operator, string.Format("{0}{1}{2}", ParameterPrefix, ColumnName, Number));
         }
 
-        public static IEnumerable<AssignValue> FromDynamic(dynamic obj)
+        public static IEnumerable<AssignValue> FromDynamic(dynamic obj, Func<string, string> columnNameFormatter = null)
         {
             Args.ThrowIfNull(obj, "obj");
             Type type = obj.GetType();
             foreach(PropertyInfo prop in type.GetProperties())
             {
-                yield return new AssignValue(prop.Name, prop.GetValue(obj));
+                yield return new AssignValue(prop.Name, prop.GetValue(obj), columnNameFormatter);
             }
         }
     }

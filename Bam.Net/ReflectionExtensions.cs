@@ -420,7 +420,7 @@ namespace Bam.Net
             Args.ThrowIfNull(instance, "instance");
             Type type = instance.GetType();
             PropertyInfo property = GetPropertyOrThrow(type, propertyName, throwIfPropertyNotFound);
-            SetProperty(property, instance, value);
+            SetProperty(instance, property, value);
             return instance;
         }
         /// <summary>      
@@ -438,7 +438,7 @@ namespace Bam.Net
             Args.ThrowIfNull(instance, "instance");
             Args.ThrowIfNull(instanceType, "instanceType");
             PropertyInfo property = GetPropertyOrThrow(instanceType, propertyName, throwIfPropertyNotFound);
-            SetProperty(property, instance, value);
+            SetProperty(instance, property, value);
             return instance;
         }
 
@@ -457,7 +457,7 @@ namespace Bam.Net
             Args.ThrowIfNull(instance, "instance");
             Type type = instance.GetType(); // get the actual instance type since it may be an extender of T
             PropertyInfo property = GetPropertyOrThrow(type, propertyName, throwIfPropertyNotFound);
-            SetProperty(property, instance, value);
+            SetProperty(instance, property, value);
             return instance;
         }
 
@@ -472,13 +472,19 @@ namespace Bam.Net
             return property;
         }
 
-        private static void SetProperty(PropertyInfo property, object instance, object value)
+        public static void SetProperty(this object instance, PropertyInfo property, object value)
         {
             if (property != null)
             {
                 if (value == DBNull.Value)
                 {
                     value = null;
+                }
+                if((value is int || value is decimal) && 
+                    (property.PropertyType == typeof(long) ||
+                    Nullable.GetUnderlyingType(property.PropertyType) == typeof(long)))
+                {
+                    value = Convert.ToInt64(value);
                 }
                 property.SetValue(instance, value, null);
             }

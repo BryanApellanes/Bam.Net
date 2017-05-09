@@ -13,6 +13,7 @@ using System.Data;
 using Oracle.ManagedDataAccess;
 using Oracle.ManagedDataAccess.Client;
 using System.Data.Common;
+using System.Reflection;
 
 namespace Bam.Net.Data.Oracle
 {
@@ -218,6 +219,12 @@ namespace Bam.Net.Data.Oracle
             AssignValue result = base.GetAssignment(keyColumn, value, columnNameformatter);
             result.ParameterPrefix = ":";
             return result;
+        }
+
+        protected override void ReaderPropertySetter(object instance, string propertyName, object propertyValue)
+        {
+            PropertyInfo prop = instance.GetType().GetProperties().Where(p => p.Name.Equals(propertyName, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+            ReflectionExtensions.SetProperty(instance, prop, propertyValue);
         }
 
         private void Register()
