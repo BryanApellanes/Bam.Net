@@ -1,6 +1,4 @@
 
- -   fix tests to account for changes (bc63e42)
- -   fix StackOverflow in ExecuteDataReader methods (c55dbda)
- -   fix wrapper template (83cad1b)
- -   npgsql reference newer version (4d0ab54)
- -   bug fix for foreignkey handling, dynamic queries (2fdbcf0)
+ -   SqlStringBuilder improved dynamic parameter handling (c859afd)
+ -   dynamic query extension to sqlstringbuilder (7f11458)
+ -   fix nuspec (4c95df6)

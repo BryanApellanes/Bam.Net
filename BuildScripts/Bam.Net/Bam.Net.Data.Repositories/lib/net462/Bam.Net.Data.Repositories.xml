@@ -46,6 +46,13 @@
             save in a Repository
             </summary>
         </member>
+        <member name="P:Bam.Net.Data.Repositories.RepoData.Created">
+            <summary>
+            The time that the Created property
+            was first referenced prior to persisting
+            the object instance
+            </summary>
+        </member>
         <member name="T:Bam.Net.Data.Repositories.RepositoryTypesProvider">
             <summary>
             When implemented by a derived class provides types
