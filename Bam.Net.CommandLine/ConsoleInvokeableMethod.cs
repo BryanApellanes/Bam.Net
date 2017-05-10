@@ -62,7 +62,6 @@ namespace Bam.Net.CommandLine
 		public object Invoke()
 		{
 			object result = null;
-			Exception thrown = null;
 			try
 			{
 				if(!Method.IsStatic && Provider == null)
