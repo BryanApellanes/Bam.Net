@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CatalogService\KindsOfCatalogs.cs" />
     <Compile Include="Distributed\Data\DataPoint.cs" />
     <Compile Include="Distributed\Data\DataPropertyCollection.cs" />
     <Compile Include="Distributed\Data\DataPropertyExtensions.cs" />
@@ -103,11 +104,11 @@
     <Compile Include="Distributed\UniversalIdentifier.cs" />
     <Compile Include="ExternalEventSubscriptionDescriptor.cs" />
     <Compile Include="GlobalEvents.cs" />
-    <Compile Include="ListService\IListService.cs" />
-    <Compile Include="ListService\Data\ItemDefinition.cs" />
-    <Compile Include="ListService\Data\ListDefinition.cs" />
+    <Compile Include="CatalogService\ICatalogService.cs" />
+    <Compile Include="CatalogService\Data\ItemDefinition.cs" />
+    <Compile Include="CatalogService\Data\CatalogDefinition.cs" />
     <Compile Include="ValidationService\IValidator.cs" />
-    <Compile Include="ListService\ListService.cs" />
+    <Compile Include="CatalogService\CatalogService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValidationService\Data\ValidationRule.cs" />
     <Compile Include="ValidationService\ValidationResult.cs" />

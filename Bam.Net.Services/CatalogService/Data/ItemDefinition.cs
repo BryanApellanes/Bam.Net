@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Services.Distributed.Data;
 
-namespace Bam.Net.Services.ListService.Data
+namespace Bam.Net.Services.CatalogService.Data
 {
     public class ItemDefinition: AuditRepoData
     {

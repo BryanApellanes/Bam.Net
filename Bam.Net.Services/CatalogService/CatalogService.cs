@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 using Bam.Net.CoreServices;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Server;
-using Bam.Net.Services.ListService.Data;
+using Bam.Net.Services.CatalogService.Data;
 
-namespace Bam.Net.Services.ListService
+namespace Bam.Net.Services.CatalogService
 {
     [Proxy("listSvc")]
-    public class ListService : ProxyableService, IListService
+    public class CatalogService : ProxyableService, ICatalogService
     {
-        protected ListService() { }
-        public ListService(DaoRepository repo, AppConf conf) : base(repo, conf)
+        protected CatalogService() { }
+        public CatalogService(DaoRepository repo, AppConf conf) : base(repo, conf)
         { }
 
-        public virtual ListDefinition AddItem(string listCuid, string itemCuid)
+        public virtual CatalogDefinition AddItem(string listCuid, string itemCuid)
         {
             throw new NotImplementedException();
         }
@@ -32,7 +32,7 @@ namespace Bam.Net.Services.ListService
             throw new NotImplementedException();
         }
 
-        public virtual ListDefinition CreateList(string name)
+        public virtual CatalogDefinition CreateCatalog(string name)
         {
             throw new NotImplementedException();
         }
@@ -42,17 +42,17 @@ namespace Bam.Net.Services.ListService
             throw new NotImplementedException();
         }
 
-        public virtual bool DeleteList(string listCuid)
+        public virtual bool DeleteCatalog(string listCuid)
         {
             throw new NotImplementedException();
         }
 
-        public virtual ListDefinition FindList(string name)
+        public virtual CatalogDefinition FindCatalog(string name)
         {
             throw new NotImplementedException();
         }
 
-        public virtual ListDefinition GetList(string listCuid)
+        public virtual CatalogDefinition GetCatalog(string listCuid)
         {
             throw new NotImplementedException();
         }
@@ -67,7 +67,7 @@ namespace Bam.Net.Services.ListService
             throw new NotImplementedException();
         }
 
-        public virtual ListDefinition RenameList(string listCuid, string name)
+        public virtual CatalogDefinition RenameCatalog(string listCuid, string name)
         {
             throw new NotImplementedException();
         }

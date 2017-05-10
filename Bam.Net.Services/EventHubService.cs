@@ -59,7 +59,7 @@ namespace Bam.Net.CoreServices
             return DaoRepository.Save(subscriptionInfo);
         }
 
-        public virtual ServiceResponse RecieveExternal(ExternalEventSubscriptionDescriptor info)
+        public virtual CoreServiceResponse RecieveExternal(ExternalEventSubscriptionDescriptor info)
         {
             throw new NotImplementedException();
         }
