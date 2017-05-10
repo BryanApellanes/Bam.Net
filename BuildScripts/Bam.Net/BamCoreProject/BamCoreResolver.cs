@@ -8,7 +8,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Net;
 
-public static class BamResolver
+public static class BamCoreResolver
 {
     public static void Register(bool downloadIfNotFound = true)
     {

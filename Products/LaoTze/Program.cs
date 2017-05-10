@@ -179,7 +179,7 @@ namespace laotze
 			else
 			{
 				FileInfo sqlFile = new FileInfo(Arguments["sql"]);
-				SqlDialect dialect = SqlDialect.Ms;
+				SqlDialect dialect = SqlDialect.MsSql;
 				if (Arguments.Contains("dialect"))
 				{
 					dialect = (SqlDialect)Enum.Parse(typeof(SqlDialect), Arguments["dialect"]);
@@ -207,11 +207,12 @@ namespace laotze
 				{
 					Dictionary<SqlDialect, Func<SchemaWriter>> result = new Dictionary<SqlDialect, Func<SchemaWriter>>();
 					result.Add(SqlDialect.Invalid, () => new MsSqlSqlStringBuilder());
-					result.Add(SqlDialect.Ms, () => new MsSqlSqlStringBuilder());
+                    result.Add(SqlDialect.Ms, () => new MsSqlSqlStringBuilder());
+                    result.Add(SqlDialect.MsSql, () => new MsSqlSqlStringBuilder());
+                    result.Add(SqlDialect.My, () => new MySqlSqlStringBuilder());
                     result.Add(SqlDialect.MySql, () => new MySqlSqlStringBuilder());
 					result.Add(SqlDialect.Oracle, () => new OracleSqlStringBuilder());
 					result.Add(SqlDialect.SQLite, () => new SQLiteSqlStringBuilder());
-
 					return result;
 				});
 			}
