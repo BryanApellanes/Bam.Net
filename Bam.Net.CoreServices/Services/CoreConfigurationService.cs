@@ -38,8 +38,10 @@ namespace Bam.Net.CoreServices
             return clone;
         }
         
-        public virtual ApplicationConfiguration GetConfiguration(string applicationName, string machineName = null, string configurationName = null)
+        public virtual ApplicationConfiguration GetConfiguration(string applicationName = null, string machineName = null, string configurationName = null)
         {
+            applicationName = applicationName ?? ApplicationName;
+            ValidAppOrDie(applicationName);
             configurationName = configurationName ?? CommonConfigName;
             Dictionary<string, string> commonConfig = GetCommonConfiguration();
             Dictionary<string, string> machineConfig = GetMachineConfiguration(machineName, configurationName);
@@ -100,8 +102,11 @@ namespace Bam.Net.CoreServices
             }
         }
         
-        public virtual void SetApplicationConfiguration(string applicationName, Dictionary<string, string> settings, string configurationName = null)
+        [RoleRequired("Admin")]
+        public virtual void SetApplicationConfiguration(Dictionary<string, string> settings, string applicationName = null, string configurationName = null)
         {
+            applicationName = applicationName ?? ApplicationName;
+            ValidAppOrDie(applicationName);
             configurationName = configurationName ?? CommonConfigName;
             Application application = CoreRegistryRepository.GetOneApplicationWhere(c => c.Name == applicationName);
             lock (Application.ConfigurationLock)
@@ -135,8 +140,11 @@ namespace Bam.Net.CoreServices
                 CoreRegistryRepository.Save(config);
             }
         }
-        public virtual Dictionary<string, string> GetApplicationConfiguration(string applicationName, string configurationName = null)
+
+        public virtual Dictionary<string, string> GetApplicationConfiguration(string applicationName = null, string configurationName = null)
         {
+            applicationName = applicationName ?? ApplicationName;
+            ValidAppOrDie(applicationName);
             configurationName = configurationName ?? CommonConfigName;
             Application application = CoreRegistryRepository.GetOneApplicationWhere(c => c.Name == applicationName);
             Configuration config = application.Configurations.FirstOrDefault(c => c.Name.Equals(configurationName));
@@ -175,6 +183,11 @@ namespace Bam.Net.CoreServices
             {
                 yield return new ConfigurationSetting { Key = key, Value = settings[key], Configuration = config };
             }
+        }
+
+        private void ValidAppOrDie(string applicationName)
+        {
+            Args.ThrowIf(!applicationName.Equals(ApplicationName), "Invalid application name specified: ({0})", applicationName);
         }
     }
 }

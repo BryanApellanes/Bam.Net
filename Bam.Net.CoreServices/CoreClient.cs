@@ -16,11 +16,23 @@ using Bam.Net.CoreServices.Services;
 using Bam.Net.CoreServices.Data;
 using Bam.Net.CoreServices.Data.Dao.Repository;
 using Bam.Net.UserAccounts;
+using Bam.Net.Configuration;
 
 namespace Bam.Net.CoreServices
 {
     public class CoreClient: Loggable, IApiKeyResolver, IApiKeyProvider, IApplicationNameProvider
     {
+        public CoreClient(string organizationName, string applicationName, string workingDirectory = null, ILogger logger = null)
+        {
+            string hostName = "localhost";
+            int port = 9100;
+            SetMainProperties(organizationName, applicationName, hostName, port, workingDirectory, logger);
+            SetLocalServiceProxies();
+            SetApiKeyResolvers();
+            SetClientApplicationNameProvider();
+            SetLocalProperties(organizationName, applicationName, hostName, port);
+        }
+
         /// <summary>
         /// Instanciate a new CoreClient
         /// </summary>
@@ -32,36 +44,23 @@ namespace Bam.Net.CoreServices
         /// <param name="logger">The logger to use to log activity</param>
         public CoreClient(string organizationName, string applicationName, string hostName, int port, string workingDirectory = null, ILogger logger = null)
         {
-            ApplicationName = applicationName;
-            OrganizationName = organizationName;
-            HostName = hostName;
-            Port = port;
-            WorkspaceDirectory = workingDirectory ?? $".\\{nameof(CoreClient)}";
-            HashAlgorithm = HashAlgorithms.SHA1;
-
-            ProxyFactory = new ProxyFactory(WorkspaceDirectory, logger);
-            ApplicationRegistryService = ProxyFactory.GetProxy<CoreApplicationRegistryService>(HostName, Port);
-            ConfigurationService = ProxyFactory.GetProxy<CoreConfigurationService>(HostName, Port);
-            DiagnosticService = ProxyFactory.GetProxy<CoreDiagnosticService>(HostName, Port);
-            LoggerService = ProxyFactory.GetProxy<CoreLoggerService>(HostName, Port);
-            TranslationService = ProxyFactory.GetProxy<CoreTranslationService>(HostName, Port);
-            UserRegistryService = ProxyFactory.GetProxy<CoreUserRegistryService>(HostName, Port);
-
+            SetMainProperties(organizationName, applicationName, hostName, port, workingDirectory, logger);
+            SetDownloadedServiceProxies();
             SetApiKeyResolvers();
             SetClientApplicationNameProvider();
+            SetLocalProperties(organizationName, applicationName, hostName, port);
+        }
 
-            LocalCoreRegistryRepository = new CoreRegistryRepository();
-            LocalCoreRegistryRepository.Database = new SQLiteDatabase(WorkspaceDirectory, nameof(CoreClient));
-            CoreRegistryProvider.GetCoreRegistry().Get<IStorableTypesProvider>().AddTypes(LocalCoreRegistryRepository);
-
-            ProcessDescriptor = ProcessDescriptor.ForApplicationRegistration(LocalCoreRegistryRepository, hostName, port, applicationName, organizationName);
+        public CoreClient(string applicationName, string hostName, int port, string workingDirectory = null, ILogger logger = null)
+            : this(Organization.Public.Name, applicationName, hostName, port, workingDirectory, logger)
+        {
         }
 
         public CoreClient(string organizationName, string applicationName, string hostName, int port, ILogger logger = null) 
             : this(organizationName, applicationName, hostName, port, null, logger)
         { }
 
-        public ProcessDescriptor ProcessDescriptor { get; }
+        public ProcessDescriptor ProcessDescriptor { get; private set; }
         public CoreRegistryRepository LocalCoreRegistryRepository { get; set; }
         
         [Verbosity(VerbosityLevel.Information, MessageFormat = "{OrganizationName}:{ApplicationName} initializING")]
@@ -84,7 +83,7 @@ namespace Bam.Net.CoreServices
                 if (!IsInitialized)
                 {
                     FireEvent(Initializing);
-                    ServiceResponse response = ApplicationRegistryService.RegisterApplication(ProcessDescriptor);
+                    CoreServiceResponse response = ApplicationRegistryService.RegisterApplication(ProcessDescriptor);
                     ApplicationRegistrationResult appRegistrationResult = response.Data.FromJObject<ApplicationRegistrationResult>();
                     if (response.Success)
                     {
@@ -112,7 +111,7 @@ namespace Bam.Net.CoreServices
         public string Message { get; set; } // used by InitializationFailed event
         public string ApplicationName { get; set; }
         public string OrganizationName { get; set; }
-        public string WorkspaceDirectory { get; }
+        public string WorkspaceDirectory { get; private set; }
         public string ApiKeyFilePath { get { return Path.Combine(WorkspaceDirectory, HostName, Port.ToString(), $"{GetApplicationName()}.apikey"); } }
         public ILogger Logger { get; set; }
         #region IApiKeyResolver
@@ -227,28 +226,51 @@ namespace Bam.Net.CoreServices
             return UserRegistryService.Login(userName, passHash);
         }
 
-        public ServiceResponse Register()
+        public CoreServiceResponse Register()
         {
             Machine current = Machine.ClientOf(LocalCoreRegistryRepository, HostName, Port);
             current.ServerHost = HostName;
             current.Port = Port;
-            ServiceResponse registrationResponse = ApplicationRegistryService.RegisterClient(current);
-            if (!registrationResponse.Success)
+            CoreServiceResponse registrationResponse = ApplicationRegistryService.RegisterClient(current);
+            if (registrationResponse == null || !registrationResponse.Success)
             {
                 throw new ClientRegistrationFailedException(registrationResponse);
             }
             return registrationResponse;
         }
 
-        public ServiceResponse Connect()
+        public CoreServiceResponse Connect()
         {
             Machine current = Machine.ClientOf(LocalCoreRegistryRepository, HostName, Port);
-            List<ServiceResponse> responses = new List<ServiceResponse>();
+            List<CoreServiceResponse> responses = new List<CoreServiceResponse>();
             foreach(ProxyableService svc in ServiceClients)
             {
-                responses.Add(svc.ConnectClient(current).CopyAs<ServiceResponse>());
+                responses.Add(svc.ConnectClient(current).CopyAs<CoreServiceResponse>());
             }
-            return new ServiceResponse { Data = responses, Success = !responses.Where(r => !r.Success).Any() };
+            return new CoreServiceResponse { Data = responses, Success = !responses.Where(r => !r.Success).Any() };
+        }
+
+        public ApplicationConfiguration GetConfiguration(string configurationName = "Default")
+        {
+            return ConfigurationService.GetConfiguration(ApplicationName, Machine.Current.Name, configurationName);
+        }
+
+        public void SaveConfiguration()
+        {
+            NameValueCollection settings = DefaultConfiguration.GetAppSettings();
+            Dictionary<string, string> appSettings = new Dictionary<string, string>();
+            foreach(string key in settings.AllKeys)
+            {
+                appSettings.Add(key, settings[key]);
+            }
+            ConfigurationService.SetApplicationConfiguration(appSettings);
+        }
+
+        public ApplicationConfiguration LoadConfiguration()
+        {
+            ApplicationConfiguration config = ConfigurationService.GetConfiguration(ApplicationName, Machine.Current.Name, "Default");
+            config.Inject();
+            return config;
         }
 
         public T GetProxy<T>()
@@ -262,12 +284,12 @@ namespace Bam.Net.CoreServices
         /// The hostname of the server this client
         /// is a client of
         /// </summary>
-        protected string HostName { get; }
+        protected string HostName { get; private set; }
         
         /// <summary>
         /// The port that the server is listening on
         /// </summary>
-        protected int Port { get; }
+        protected int Port { get; private set; }
         protected internal CoreUserRegistryService UserRegistryService { get; set; }
         protected internal CoreApplicationRegistryService ApplicationRegistryService { get; set; }
         protected internal CoreConfigurationService ConfigurationService { get; set; }
@@ -285,6 +307,45 @@ namespace Bam.Net.CoreServices
                 yield return TranslationService;                
                 yield return DiagnosticService;
             }
+        }
+
+        private void SetLocalProperties(string organizationName, string applicationName, string hostName, int port)
+        {
+            LocalCoreRegistryRepository = new CoreRegistryRepository();
+            LocalCoreRegistryRepository.Database = new SQLiteDatabase(WorkspaceDirectory, nameof(CoreClient));
+            CoreRegistryProvider.GetCoreRegistry().Get<IStorableTypesProvider>().AddTypes(LocalCoreRegistryRepository);
+            ProcessDescriptor = ProcessDescriptor.ForApplicationRegistration(LocalCoreRegistryRepository, hostName, port, applicationName, organizationName);
+        }
+
+        private void SetMainProperties(string organizationName, string applicationName, string hostName, int port, string workingDirectory, ILogger logger)
+        {
+            OrganizationName = organizationName;
+            ApplicationName = applicationName;
+            HostName = hostName;
+            Port = port;
+            WorkspaceDirectory = workingDirectory ?? $".\\{nameof(CoreClient)}";
+            HashAlgorithm = HashAlgorithms.SHA1;
+            ProxyFactory = new ProxyFactory(WorkspaceDirectory, logger);
+        }
+
+        private void SetDownloadedServiceProxies()
+        {
+            ApplicationRegistryService = ProxyFactory.GetProxy<CoreApplicationRegistryService>(HostName, Port);
+            ConfigurationService = ProxyFactory.GetProxy<CoreConfigurationService>(HostName, Port);
+            DiagnosticService = ProxyFactory.GetProxy<CoreDiagnosticService>(HostName, Port);
+            LoggerService = ProxyFactory.GetProxy<CoreLoggerService>(HostName, Port);
+            TranslationService = ProxyFactory.GetProxy<CoreTranslationService>(HostName, Port);
+            UserRegistryService = ProxyFactory.GetProxy<CoreUserRegistryService>(HostName, Port);
+        }
+
+        private void SetLocalServiceProxies()
+        {
+            ApplicationRegistryService = ProxyFactory.GetProxy<CoreApplicationRegistryService>();
+            ConfigurationService = ProxyFactory.GetProxy<CoreConfigurationService>();
+            DiagnosticService = ProxyFactory.GetProxy<CoreDiagnosticService>();
+            LoggerService = ProxyFactory.GetProxy<CoreLoggerService>();
+            TranslationService = ProxyFactory.GetProxy<CoreTranslationService>();
+            UserRegistryService = ProxyFactory.GetProxy<CoreUserRegistryService>();
         }
 
         private void EnsureApiKeyFileDirectory()

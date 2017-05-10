@@ -8,7 +8,7 @@ using Bam.Net.CoreServices.Data.Dao.Repository;
 
 namespace Bam.Net.CoreServices
 {
-    public class OrganizationFactory : MaximumLimitEnforcer<ServiceResponse<Organization>>
+    public class OrganizationFactory : MaximumLimitEnforcer<CoreServiceResponse<Organization>>
     {
         public OrganizationFactory(CoreRegistryRepository repo, User user, string organizationName)
         {
@@ -36,7 +36,7 @@ namespace Bam.Net.CoreServices
             return User.Organizations.Count;
         }
 
-        public override ServiceResponse<Organization> LimitNotReachedAction()
+        public override CoreServiceResponse<Organization> LimitNotReachedAction()
         {
             Organization org = User.Organizations.Where(c => c.Name == OrganizationName).FirstOrDefault();
             if (org == null)
@@ -46,12 +46,12 @@ namespace Bam.Net.CoreServices
                 User = ApplicationRegistryRepository.Save(User);
                 org = ApplicationRegistryRepository.OneOrganizationWhere(c => c.Name == OrganizationName);
             }
-            return new ServiceResponse<Organization>(org) { Success = true, Message = $"Organization {OrganizationName} created" };
+            return new CoreServiceResponse<Organization>(org) { Success = true, Message = $"Organization {OrganizationName} created" };
         }
 
-        public override ServiceResponse<Organization> LimitReachedAction()
+        public override CoreServiceResponse<Organization> LimitReachedAction()
         {
-            return new ServiceResponse<Organization>(null) { Success = false, Message = "Organization NOT created; limit reached" };
+            return new CoreServiceResponse<Organization>(null) { Success = false, Message = "Organization NOT created; limit reached" };
         }
     }
 }

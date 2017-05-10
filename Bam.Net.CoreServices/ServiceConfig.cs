@@ -7,6 +7,7 @@ using Bam.Net.Configuration;
 using Bam.Net.Logging;
 using System.IO;
 using Bam.Net.Data;
+using Bam.Net.Data.Repositories;
 
 namespace Bam.Net.Server.Tvg
 {
@@ -30,9 +31,19 @@ namespace Bam.Net.Server.Tvg
 
         public static Database GetConfiguredDatabase()
         {
-            // read dialect from config and instantiate as appropriate
-            throw new NotImplementedException();
+            string dialect = DefaultConfiguration.GetAppSetting("SqlDialect");
+            string connectionString = DefaultConfiguration.GetAppSetting("SqlConnectionString");
+
+            SqlDialect sqlDialect;
+            if(!Enum.TryParse<SqlDialect>(dialect, out sqlDialect))
+            {
+                sqlDialect = SqlDialect.SQLite;
+                connectionString = "Default";
+            }
+
+            return DatabaseFactory.Instance.GetDatabase(sqlDialect, connectionString);
         }
+
         public static HostPrefix GetConfiguredHostPrefix()
         {
             HostPrefix hostPrefix = new HostPrefix();

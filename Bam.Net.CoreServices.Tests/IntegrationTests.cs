@@ -86,6 +86,22 @@ namespace Bam.Net.CoreServices.Tests
         }
 
         [ConsoleAction]
+        public void RegisterCreatesMachineEntry()
+        {
+            OutLineFormat("This test requires a gloo server to be running on port 9100 of the localhost", ConsoleColor.Yellow);
+            ConsoleLogger logger = new ConsoleLogger();
+            logger.AddDetails = false;
+            logger.StartLoggingThread();
+            CoreRegistryRepository repo = CoreRegistryProvider.GetCoreRegistry().Get<CoreRegistryRepository>();
+            CoreClient client = new CoreClient("TestOrg", "TestApp", $".\\{nameof(RegisterCreatesMachineEntry)}", logger);
+            client.LocalCoreRegistryRepository = repo;
+            CoreServiceResponse registrationResponse = client.Register();
+            Machine machine = repo.OneMachineWhere(m => m.Name == Machine.Current.Name);
+            Expect.IsNotNull(machine);
+            Pass(nameof(RegisterCreatesMachineEntry));
+        }
+
+        [ConsoleAction]
         public void WhoAmITest()
         {
             OutLineFormat("This test requires a gloo server to be running on port 9100 of the localhost", ConsoleColor.Yellow);
@@ -97,10 +113,10 @@ namespace Bam.Net.CoreServices.Tests
             CoreRegistryRepository repo = CoreRegistryProvider.GetCoreRegistry().Get<CoreRegistryRepository>();
             CoreClient client = new CoreClient("TestOrg", "TestApp", server, port, logger);
             client.LocalCoreRegistryRepository = repo;
-            ServiceResponse registrationResponse = client.Register();
+            CoreServiceResponse registrationResponse = client.Register();
             Machine current = Machine.ClientOf(client.LocalCoreRegistryRepository, server, port);
 
-            ServiceResponse response = client.Connect();
+            CoreServiceResponse response = client.Connect();
 
             string whoAmI = client.UserRegistryService.WhoAmI();
             Expect.AreEqual(current.ToString(), whoAmI);
@@ -119,6 +135,8 @@ namespace Bam.Net.CoreServices.Tests
 
             whoAmI = client.DiagnosticService.WhoAmI();
             Expect.AreEqual(current.ToString(), whoAmI);
+
+            Pass($"You are {whoAmI}");
         }
 
         [ConsoleAction]
@@ -144,10 +162,10 @@ namespace Bam.Net.CoreServices.Tests
             logger.StartLoggingThread();
             CoreClient client = new CoreClient("ThreeHeadz", "CoreServicesTestApp", "localhost", 9100, logger);
             client.LocalCoreRegistryRepository = repo;
-            ServiceResponse registrationResponse = client.Register();
+            CoreServiceResponse registrationResponse = client.Register();
             Expect.IsTrue(registrationResponse.Success, registrationResponse.Message);
-            ServiceResponse response = client.Connect();
-            List<ServiceResponse> responses = response.Data.FromJObject<List<ServiceResponse>>();
+            CoreServiceResponse response = client.Connect();
+            List<CoreServiceResponse> responses = response.Data.FromJObject<List<CoreServiceResponse>>();
             Expect.IsTrue(response.Success, string.Join("\r\n", responses.Select(r => r.Message).ToArray()));
         }
 

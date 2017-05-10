@@ -193,7 +193,6 @@
     <Compile Include="CoreRegistryProviderAttribute.cs" />
     <Compile Include="ProxySettingsInfo.cs" />
     <Compile Include="ServiceConfig.cs" />
-    <Compile Include="ServiceRequest.cs" />
     <Compile Include="Services\ApplicationConfiguration.cs" />
     <Compile Include="Services\ClientApplicationFactory.cs" />
     <Compile Include="DatabaseProvider.cs" />
@@ -243,7 +242,7 @@
     <Compile Include="ProxySettings.cs" />
     <Compile Include="ProxyTemplate.cs" />
     <Compile Include="ProxyableService.cs" />
-    <Compile Include="ServiceResponse.cs" />
+    <Compile Include="CoreServiceResponse.cs" />
     <Compile Include="StaticApplicationNameProvider.cs" />
   </ItemGroup>
   <ItemGroup>

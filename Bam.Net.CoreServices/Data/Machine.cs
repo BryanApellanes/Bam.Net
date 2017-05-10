@@ -45,6 +45,7 @@ namespace Bam.Net.CoreServices.Data
                 _nics = value;
             }
         }
+
         public override string ToString()
         {
             return $"{Name}=>{ServerHost}:{Port}";
@@ -90,7 +91,7 @@ namespace Bam.Net.CoreServices.Data
             NetworkInterface.GetAllNetworkInterfaces().Each(context, (ctx, nic) =>
             {
                 IPInterfaceProperties nicProperties = nic.GetIPProperties();
-                foreach (IPAddressInformation unicast in nicProperties.UnicastAddresses)
+                foreach (IPAddressInformation unicast in nicProperties.UnicastAddresses.Where(a => !a.Address.Equals(IPAddress.Loopback) && !a.Address.Equals(IPAddress.IPv6Loopback)))
                 {
                     ctx.Nics.Add(
                         new Nic

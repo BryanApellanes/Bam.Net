@@ -72,7 +72,7 @@ namespace Bam.Net.CoreServices
         }
 
         [ApiKeyRequired]
-        public virtual string AddApiKey()
+        public virtual ApiKeyInfo AddApiKey()
         {
             if (ApplicationName.Equals(AppNameNotSpecified))
             {
@@ -85,7 +85,7 @@ namespace Bam.Net.CoreServices
             }
             Data.ApiKey key;
             AddApiKey(CoreRegistryRepository, app, out key);
-            return key.SharedSecret;
+            return new ApiKeyInfo { ApplicationClientId = key.ClientId, ApiKey = key.SharedSecret, ApplicationName = ApplicationName };
         }
 
         public virtual string GetApplicationName()
@@ -98,7 +98,7 @@ namespace Bam.Net.CoreServices
             return GetApiKeyInfo(this);
         }
 
-        public virtual ServiceResponse RegisterClient(Machine machine)
+        public virtual CoreServiceResponse RegisterClient(Machine machine)
         {
             try
             {
@@ -108,7 +108,7 @@ namespace Bam.Net.CoreServices
                 IUserManager mgr = (IUserManager)UserManager.Clone();
                 mgr.HttpContext = HttpContext;
                 string machineName = machine.ToString();
-                ServiceResponse response = new ServiceResponse();
+                CoreServiceResponse response = new CoreServiceResponse();
                 CheckUserNameResponse checkUserName = mgr.IsUserNameAvailable(machineName);
                 if (!(bool)checkUserName.Data) // already exists
                 {
@@ -123,7 +123,7 @@ namespace Bam.Net.CoreServices
                         throw new Exception(response.Message);
                     }
                     machine = CoreRegistryRepository.GetOneMachineWhere(m => m.Name == machine.Name && m.ServerHost == machine.ServerHost && m.Port == machine.Port);                    
-                    response = new ServiceResponse { Success = true, Data = machine.ToJson() };
+                    response = new CoreServiceResponse { Success = true, Data = machine.ToJson() };
                 }
                 return response;
             }
@@ -133,7 +133,7 @@ namespace Bam.Net.CoreServices
             }
         }
 
-        public virtual ServiceResponse RegisterApplication(ProcessDescriptor descriptor)
+        public virtual CoreServiceResponse RegisterApplication(ProcessDescriptor descriptor)
         {
             try
             {
@@ -143,7 +143,7 @@ namespace Bam.Net.CoreServices
                 string organizationName = descriptor.Application.Organization.Name;
                 if (CurrentUser.Equals(UserAccounts.Data.User.Anonymous))
                 {
-                    return new ServiceResponse<Data.Application> { Success = false, Message = "You must be logged in to do that", Data = new ApplicationRegistrationResult { Status = ApplicationRegistrationStatus.Unauthorized } };
+                    return new CoreServiceResponse<Data.Application> { Success = false, Message = "You must be logged in to do that", Data = new ApplicationRegistrationResult { Status = ApplicationRegistrationStatus.Unauthorized } };
                 }
                 User user = CoreRegistryRepository.OneUserWhere(c => c.UserName == CurrentUser.UserName);
                 if (user == null)
@@ -154,18 +154,18 @@ namespace Bam.Net.CoreServices
                     user = CoreRegistryRepository.Save(user);
                 }
                 OrganizationFactory orgEnforcer = new OrganizationFactory(CoreRegistryRepository, user, organizationName);
-                ServiceResponse<Organization> response = orgEnforcer.Execute();
+                CoreServiceResponse<Organization> response = orgEnforcer.Execute();
                 if (!response.Success)
                 {
                     return response;
                 }
                 Organization org = response.TypedData();
                 ClientApplicationFactory appEnforcer = new ClientApplicationFactory(this, user, organizationName, descriptor);
-                ServiceResponse<Data.Application> appResponse = appEnforcer.Execute();
+                CoreServiceResponse<Data.Application> appResponse = appEnforcer.Execute();
                 if (appResponse.Success)
                 {
                     Data.Application app = appResponse.TypedData();
-                    return new ServiceResponse<ApplicationRegistrationResult>(
+                    return new CoreServiceResponse<ApplicationRegistrationResult>(
                         new ApplicationRegistrationResult
                         {
                             Status = ApplicationRegistrationStatus.Success,
@@ -179,7 +179,7 @@ namespace Bam.Net.CoreServices
             catch (Exception ex)
             {
                 Logger.AddEntry("Exception occurred in {0}", ex, nameof(CoreApplicationRegistryService.RegisterApplication));
-                return new ServiceResponse { Success = false, Message = ex.Message };
+                return new CoreServiceResponse { Success = false, Message = ex.Message };
             }
         }
 
@@ -317,10 +317,10 @@ namespace Bam.Net.CoreServices
             return app;
         }
 
-        private ServiceResponse HandleException(Exception ex, string methodName)
+        private CoreServiceResponse HandleException(Exception ex, string methodName)
         {
             Logger.AddEntry("Exception occurred in {0}", ex, methodName);
-            return new ServiceResponse { Success = false, Message = ex.Message };
+            return new CoreServiceResponse { Success = false, Message = ex.Message };
         }
 
     }

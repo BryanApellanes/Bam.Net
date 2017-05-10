@@ -30,16 +30,16 @@ namespace Bam.Net.CoreServices.Tests
             string configurationName = $"{nameof(CanSetAndGetCommonAppConfig)}_TestConfigName";
             CoreConfigurationService configSvc = GetTestCoreConfigurationService(nameof(CanSetAndGetCommonAppConfig));
 
-            configSvc.SetApplicationConfiguration(appName, new Dictionary<string, string>
+            configSvc.SetApplicationConfiguration(new Dictionary<string, string>
             {
                 {"key1", "value1" }
-            });
+            }, appName);
 
-            configSvc.SetApplicationConfiguration(appName, new Dictionary<string, string>
+            configSvc.SetApplicationConfiguration(new Dictionary<string, string>
             {
                 {"key1", "value1" },
                 {"key2", "value2" }
-            });
+            }, appName);
 
             Dictionary<string, string> config = configSvc.GetApplicationConfiguration(appName);
             Expect.AreEqual(2, config.Keys.Count);
@@ -105,11 +105,11 @@ namespace Bam.Net.CoreServices.Tests
             {
                 {"key1", "MachineValue" }
             }, configurationName);
-            configSvc.SetApplicationConfiguration(appName, new Dictionary<string, string>
+            configSvc.SetApplicationConfiguration(new Dictionary<string, string>
             {
                 {"key1", expectedValue },
                 {"key2", "value2" }
-            }, configurationName);
+            }, appName, configurationName);
 
             Dictionary<string, string> config = configSvc.GetConfiguration(appName, machineName, configurationName).ToDictionary();
             Expect.AreEqual(expectedValue, config["key1"]);
@@ -136,14 +136,19 @@ namespace Bam.Net.CoreServices.Tests
                 {"MachineOverride", "BAD-Machine" },
                 {"CommonOverride2", "GOOD-Machine" }
             });
-            configSvc.SetApplicationConfiguration(appName, new Dictionary<string, string>
+            configSvc.SetApplicationConfiguration(new Dictionary<string, string>
             {
                 {"ApplicationKey1", "ApplicationValue1" },
                 {"ApplicationKey2", "ApplicationValue2" },
                 {"CommonOverride", "GOOD-AppOverrideCommon" },
                 {"MachineOverride", "GOOD-AppOverrideMachine" }
-            });
+            }, appName);
             ApplicationConfiguration appConfig = configSvc.GetConfiguration(appName, machineName);
+            AssertExpectations(appConfig);
+        }
+
+        private static void AssertExpectations(ApplicationConfiguration appConfig)
+        {
             Expect.AreEqual(SettingSource.ApplicationSetting, appConfig["CommonOverride"].SettingSource);
             Expect.AreEqual(SettingSource.MachineSetting, appConfig["CommonOverride2"].SettingSource);
             Expect.AreEqual(SettingSource.ApplicationSetting, appConfig["MachineOverride"].SettingSource);
@@ -188,6 +193,9 @@ namespace Bam.Net.CoreServices.Tests
 
             CoreConfigurationService configSvc = new CoreConfigurationService(coreRepo, new Server.AppConf(), userDbPath);
             configSvc.DaoRepository = coreRepo;
+            IApplicationNameProvider appNameProvider = Substitute.For<IApplicationNameProvider>();
+            appNameProvider.GetApplicationName().Returns(appName);
+            configSvc.ApplicationNameProvider = appNameProvider;
 
             IUserManager userMgr = Substitute.For<IUserManager>();            
             UserAccounts.Data.User testUser = new UserAccounts.Data.User();

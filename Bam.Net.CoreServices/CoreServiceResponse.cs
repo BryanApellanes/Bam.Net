@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.CoreServices
 {
-    public class ServiceResponse<T>: ServiceResponse where T : new()
+    public class CoreServiceResponse<T>: CoreServiceResponse where T : new()
     {
-        public static implicit operator T(ServiceResponse<T> response)
+        public static implicit operator T(CoreServiceResponse<T> response)
         {
             return response.TypedData();
         }
 
-        public ServiceResponse() { }
-        public ServiceResponse(T value)
+        public CoreServiceResponse() { }
+        public CoreServiceResponse(T value)
         {
             Data = value;
             TypedData(value);
@@ -41,9 +41,9 @@ namespace Bam.Net.CoreServices
         }
     }
 
-    public class ServiceResponse
+    public class CoreServiceResponse
     {
-        public ServiceResponse() { }
+        public CoreServiceResponse() { }
         public bool Success { get; set; }
         public string Message { get; set; }
         public object Data { get; set; }          

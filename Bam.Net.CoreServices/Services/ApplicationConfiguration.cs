@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Configuration;
+using System.Collections.Specialized;
 
 namespace Bam.Net.CoreServices
 {
@@ -49,7 +50,13 @@ namespace Bam.Net.CoreServices
 
         public void Inject()
         {
-            DefaultConfiguration.SetAppSettings(ToDictionary());
+            NameValueCollection appSettings = DefaultConfiguration.GetAppSettings();
+            Dictionary<string, string> settings = ToDictionary();
+            foreach(string key in appSettings.AllKeys)
+            {
+                settings.AddMissing(key, appSettings[key]);
+            }
+            DefaultConfiguration.SetAppSettings(settings);
         }
 
         public void UnInject()
