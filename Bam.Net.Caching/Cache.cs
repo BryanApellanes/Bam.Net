@@ -414,23 +414,26 @@ namespace Bam.Net.Caching
 			_groomerThread.Join(3000);
 		}
 
-        private void SetCollectionsAndLookup()
+        private async void SetCollectionsAndLookup()
         {
-            List<CacheItem> itemsByHits = new List<CacheItem>(Items);
-            itemsByHits.Sort((x, y) => y.Hits.CompareTo(x.Hits));
+            await Task.Run(() =>
+            {
+                List<CacheItem> itemsByHits = new List<CacheItem>(Items);
+                itemsByHits.Sort((x, y) => y.Hits.CompareTo(x.Hits));
 
-            List<CacheItem> itemsByMisses = new List<CacheItem>(Items);
-            itemsByMisses = new List<CacheItem>(Items);
-            itemsByMisses.Sort((x, y) => x.Misses.CompareTo(y.Misses));
+                List<CacheItem> itemsByMisses = new List<CacheItem>(Items);
+                itemsByMisses = new List<CacheItem>(Items);
+                itemsByMisses.Sort((x, y) => x.Misses.CompareTo(y.Misses));
 
-            HashSet<CacheItem> itemsCopy = new HashSet<CacheItem>(Items);
-            Dictionary<long, CacheItem> itemsById = itemsCopy.ToDictionary(ci => ci.Id);
-            Dictionary<string, CacheItem> itemsByUuid = itemsCopy.ToDictionary(ci => ci.Uuid);
+                HashSet<CacheItem> itemsCopy = new HashSet<CacheItem>(Items);
+                Dictionary<long, CacheItem> itemsById = itemsCopy.ToDictionary(ci => ci.Id);
+                Dictionary<string, CacheItem> itemsByUuid = itemsCopy.ToDictionary(ci => ci.Uuid);
 
-            ItemsByHits = itemsByHits;
-            ItemsByMisses = itemsByMisses;
-            ItemsById = itemsById;
-            ItemsByUuid = itemsByUuid;
+                ItemsByHits = itemsByHits;
+                ItemsByMisses = itemsByMisses;
+                ItemsById = itemsById;
+                ItemsByUuid = itemsByUuid;
+            });
         }
     }
 }

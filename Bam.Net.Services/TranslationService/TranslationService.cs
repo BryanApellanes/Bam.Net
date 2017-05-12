@@ -10,26 +10,29 @@ using Bam.Net.Translation;
 namespace Bam.Net.CoreServices
 {
     [Proxy("translationSvc")]
-    public class CoreTranslationService : ProxyableService, IDetectLanguage, ITranslationProvider
+    public class TranslationService : ProxyableService, ILanguageDetector, ITranslationProvider, IIsoLanguageTranslationProvider
     {
-        protected CoreTranslationService() { }
-        public CoreTranslationService(
+        protected TranslationService() { }
+        public TranslationService(
             IRepository genericRepo, 
             DaoRepository daoRepo, 
             AppConf appConf,
-            IDetectLanguage languageDetector,
-            ITranslationProvider translationProvider) : base(genericRepo, daoRepo, appConf)
+            ILanguageDetector languageDetector,
+            ITranslationProvider translationProvider, 
+            IIsoLanguageTranslationProvider isoLanguageTranslationProvider) : base(genericRepo, daoRepo, appConf)
         {
             LanguageDetector = languageDetector;
             TranslationProvider = translationProvider;
+            IsoLanguageTranslationProvider = isoLanguageTranslationProvider;
         }
 
-        public IDetectLanguage LanguageDetector { get; set; }
+        public ILanguageDetector LanguageDetector { get; set; }
         public ITranslationProvider TranslationProvider { get; set; }
+        public IIsoLanguageTranslationProvider IsoLanguageTranslationProvider { get; set; }
 
         public override object Clone()
         {
-            CoreTranslationService clone = new CoreTranslationService(Repository, DaoRepository, AppConf, LanguageDetector, TranslationProvider);
+            TranslationService clone = new TranslationService(Repository, DaoRepository, AppConf, LanguageDetector, TranslationProvider, IsoLanguageTranslationProvider);
             clone.CopyProperties(this);
             clone.CopyEventHandlers(this);
             return clone;
@@ -48,7 +51,7 @@ namespace Bam.Net.CoreServices
 
         public virtual string Translate(string input, string languageIdentifier)
         {
-            return LanguageDetector.Translate(input, languageIdentifier);
+            return IsoLanguageTranslationProvider.Translate(input, languageIdentifier);
         }
 
         public virtual string Translate(Language from, Language to, string input)
@@ -64,6 +67,11 @@ namespace Bam.Net.CoreServices
         public virtual string Translate(long languageIdFrom, long languageIdTo, string input)
         {
             return TranslationProvider.Translate(languageIdFrom, languageIdTo, input);
+        }
+
+        public string TranslateLanguages(string input, string inputLanguageIdentifier, string outputLanguageIdentifier)
+        {
+            return IsoLanguageTranslationProvider.TranslateLanguages(input, inputLanguageIdentifier, outputLanguageIdentifier);
         }
     }
 }

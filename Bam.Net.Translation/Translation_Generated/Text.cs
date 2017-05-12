@@ -18,7 +18,7 @@ namespace Bam.Net.Translation
 	// connection Name = Translation
 	[Serializable]
 	[Bam.Net.Data.Table("Text", "Translation")]
-	public partial class Text: Dao
+	public partial class Text: Bam.Net.Data.Dao
 	{
 		public Text():base()
 		{
@@ -55,9 +55,13 @@ namespace Bam.Net.Translation
 
 		private void SetChildren()
 		{
-
-            this.ChildCollections.Add("LanguageDetection_TextId", new LanguageDetectionCollection(Database.GetQuery<LanguageDetectionColumns, LanguageDetection>((c) => c.TextId == GetLongValue("Id")), this, "TextId"));	
-            this.ChildCollections.Add("Translation_TextId", new TranslationCollection(Database.GetQuery<TranslationColumns, Translation>((c) => c.TextId == GetLongValue("Id")), this, "TextId"));							
+			if(_database != null)
+			{
+				this.ChildCollections.Add("LanguageDetection_TextId", new LanguageDetectionCollection(Database.GetQuery<LanguageDetectionColumns, LanguageDetection>((c) => c.TextId == GetLongValue("Id")), this, "TextId"));				
+			}			if(_database != null)
+			{
+				this.ChildCollections.Add("Translation_TextId", new TranslationCollection(Database.GetQuery<TranslationColumns, Translation>((c) => c.TextId == GetLongValue("Id")), this, "TextId"));				
+			}						
 		}
 
 	// property:Id, columnName:Id	

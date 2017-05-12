@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Translation.Yandex
 {
-    public class TranslationResponse
+    public class YandexTranslationResponse
     {
-        public TranslationResponse()
+        public YandexTranslationResponse()
         {
             this.text = new string[] { string.Empty };
         }
-        public ResponseCode code { get; set; }
+        public YandexResponseCode code { get; set; }
         public string lang { get; set; }
         public string[] text { get; set; }
     }

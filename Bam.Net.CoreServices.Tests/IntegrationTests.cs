@@ -130,9 +130,6 @@ namespace Bam.Net.CoreServices.Tests
             whoAmI = client.LoggerService.WhoAmI();
             Expect.AreEqual(current.ToString(), whoAmI);
 
-            whoAmI = client.TranslationService.WhoAmI();
-            Expect.AreEqual(current.ToString(), whoAmI);
-
             whoAmI = client.DiagnosticService.WhoAmI();
             Expect.AreEqual(current.ToString(), whoAmI);
 

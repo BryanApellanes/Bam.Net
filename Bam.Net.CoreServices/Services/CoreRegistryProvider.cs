@@ -42,11 +42,11 @@ namespace Bam.Net.CoreServices.Services
         {
             string databasesPath = Path.Combine(DefaultConfiguration.GetAppSetting("ContentRoot"), "Databases");
             string userDatabasesPath = Path.Combine(databasesPath, "UserDbs");
-            string yandexVaultPath = Path.Combine(databasesPath, "YandexApiVault");
-            YandexApiKeyVaultInfo yandexVault = new YandexApiKeyVaultInfo(yandexVaultPath);
-            Database translationDatabase = new SQLiteDatabase(databasesPath, "Translations");
-            YandexTranslationProvider translationProvider = new YandexTranslationProvider(yandexVault.Load(), translationDatabase, translationDatabase);
-            translationProvider.EnsureLanguages();
+            //string yandexVaultPath = Path.Combine(databasesPath, "YandexApiVault");
+            //YandexApiKeyVaultInfo yandexVault = new YandexApiKeyVaultInfo(yandexVaultPath);
+            //Database translationDatabase = new SQLiteDatabase(databasesPath, "Translations");
+            //YandexTranslationProvider translationProvider = new YandexTranslationProvider(yandexVault.Load(), translationDatabase, translationDatabase);
+            //translationProvider.EnsureLanguages();
 
             AppConf conf = new AppConf(BamConf.Load(ServiceConfig.ContentRoot), ServiceConfig.ApplicationName.Or("CoreRegistryService"));
             UserManager userMgr = conf.UserManagerConfig.Create();
@@ -83,10 +83,10 @@ namespace Bam.Net.CoreServices.Services
                 .For<ISmtpSettingsProvider>().Use(userMgr)
                 .For<CoreUserRegistryService>().Use<CoreUserRegistryService>()
                 .For<CoreConfigurationService>().Use(configSvc)
-                .For<IDetectLanguage>().Use(translationProvider)
-                .For<ITranslationProvider>().Use(translationProvider)
+                //.For<IDetectLanguage>().Use(translationProvider)
+                //.For<ITranslationProvider>().Use(translationProvider)
                 .For<IStorableTypesProvider>().Use<NamespaceRepositoryStorableTypesProvider>()
-                .For<CoreTranslationService>().Use<CoreTranslationService>()
+                //.For<CoreTranslationService>().Use<CoreTranslationService>()
                 .For<CoreDiagnosticService>().Use<CoreDiagnosticService>();
 
             reg.SetProperties(userMgr);

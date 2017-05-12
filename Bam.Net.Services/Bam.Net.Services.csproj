@@ -106,6 +106,8 @@
     <Compile Include="CatalogService\ICatalogService.cs" />
     <Compile Include="CatalogService\Data\ItemDefinition.cs" />
     <Compile Include="CatalogService\Data\CatalogDefinition.cs" />
+    <Compile Include="TranslationService\TranslationService.cs" />
+    <Compile Include="ApiKeyVaultInfo.cs" />
     <Compile Include="ValidationService\IValidator.cs" />
     <Compile Include="CatalogService\CatalogService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -117,6 +119,7 @@
     <Compile Include="AssemblyManagementService\Data\AssemblyRegistration.cs" />
     <Compile Include="AssemblyManagementService\VersioningExtensions.cs" />
     <Compile Include="AssemblyManagementService\AssemblyManagementService.cs" />
+    <Compile Include="VaultService\IVaultService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -139,6 +142,10 @@
       <Project>{3b52b739-58fd-4b49-b815-6b317e701520}</Project>
       <Name>Bam.Net.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Encryption\Bam.Net.Encryption.csproj">
+      <Project>{f27dc9a6-e432-4d20-bcef-d10b0c2a657d}</Project>
+      <Name>Bam.Net.Encryption</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Messaging\Bam.Net.Messaging.csproj">
       <Project>{e330d601-62ea-439e-acd7-7236744562ff}</Project>
       <Name>Bam.Net.Messaging</Name>
@@ -150,6 +157,10 @@
     <ProjectReference Include="..\Bam.Net.ServiceProxy\Bam.Net.ServiceProxy.csproj">
       <Project>{8987d8c8-033b-4993-99f0-8dd5a4d6dd0d}</Project>
       <Name>Bam.Net.ServiceProxy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Translation\Bam.Net.Translation.csproj">
+      <Project>{1821effd-3722-4580-8464-401d472e89b5}</Project>
+      <Name>Bam.Net.Translation</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.UserAccounts\Bam.Net.UserAccounts.csproj">
       <Project>{74d5a262-b0b9-40e6-a3fd-b120dc8e9f54}</Project>

@@ -18,7 +18,7 @@ namespace Bam.Net.Translation
 	// connection Name = Translation
 	[Serializable]
 	[Bam.Net.Data.Table("Translation", "Translation")]
-	public partial class Translation: Dao
+	public partial class Translation: Bam.Net.Data.Dao
 	{
 		public Translation():base()
 		{
@@ -101,17 +101,17 @@ namespace Bam.Net.Translation
 		}
 	}
 
-	// property:TranslatorUuid, columnName:TranslatorUuid	
-	[Bam.Net.Data.Column(Name="TranslatorUuid", DbDataType="VarChar", MaxLength="4000", AllowNull=false)]
-	public string TranslatorUuid
+	// property:Translator, columnName:Translator	
+	[Bam.Net.Data.Column(Name="Translator", DbDataType="VarChar", MaxLength="4000", AllowNull=false)]
+	public string Translator
 	{
 		get
 		{
-			return GetStringValue("TranslatorUuid");
+			return GetStringValue("Translator");
 		}
 		set
 		{
-			SetValue("TranslatorUuid", value);
+			SetValue("Translator", value);
 		}
 	}
 

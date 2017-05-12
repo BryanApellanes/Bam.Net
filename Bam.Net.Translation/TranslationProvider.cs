@@ -2,18 +2,21 @@
 	Copyright © Bryan Apellanes 2015  
 */
 using System;
+using System.Linq;
 using Bam.Net.Configuration;
 using Bam.Net.Data;
+using Bam.Net.Encryption;
 using Bam.Net.Logging;
 using Bam.Net.Web;
 using CsQuery;
+using NCuid;
 
 namespace Bam.Net.Translation
 {
     /// <summary>
     /// A component that provides language translation
     /// </summary>
-    public abstract class TranslationProvider: Loggable, ITranslationProvider
+    public abstract class TranslationProvider: Loggable, ITranslationProvider, ILanguageDetector, IIsoLanguageTranslationProvider
     {
         public TranslationProvider()
         {
@@ -26,12 +29,37 @@ namespace Bam.Net.Translation
             DownloadLanguages = DefaultConfiguration.GetAppSetting("DownloadLanguages", "No").IsAffirmative();
         }
 
+        static TranslationProvider()
+        {
+            Action<Dao> setCuid = (dao) => dao.Property("Cuid", Cuid.Generate());
+            Dao.PostConstructActions.AddMissing(typeof(Language), setCuid);
+            Dao.PostConstructActions.AddMissing(typeof(LanguageDetection), setCuid);
+            Dao.PostConstructActions.AddMissing(typeof(Text), setCuid);
+            Dao.PostConstructActions.AddMissing(typeof(OtherName), setCuid);
+            Dao.PostConstructActions.AddMissing(typeof(Translation), setCuid);
+        }
+
         public Database LanguageDatabase { get; set; }
         /// <summary>
         /// The Database to store and retrieve translated
         /// text
         /// </summary>
         public Database TranslationDatabase { get; set; }
+        protected string ApiKeyKey { get; set; }
+        /// <summary>
+        /// The Vault that holds the Yandex api key
+        /// </summary>
+        protected Vault ApiKeyVault { get; set; }
+
+        object _apiKeyLock = new object();
+        string _apiKey;
+        protected string ApiKey
+        {
+            get
+            {
+                return _apiKeyLock.DoubleCheckLock(ref _apiKey, () => ApiKeyVault.Get(ApiKeyKey));
+            }
+        }
 
         public string Translate(long languageIdFrom, long lanugageIdTo, string input)
         {
@@ -42,9 +70,117 @@ namespace Bam.Net.Translation
         {
             return Translate(Language.GetByUuid(uuidFrom, LanguageDatabase), Language.GetByUuid(uuidTo, LanguageDatabase), input);
         }
+        
+        /// <summary>
+        /// Translate the specified input from the specified fromLanguage to the specified
+        /// toLanguage 
+        /// </summary>
+        /// <param name="fromLanguage"></param>
+        /// <param name="toLanguage"></param>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public virtual string Translate(Language fromLanguage, Language toLanguage, string input)
+        {
+            Text text = Text.OneWhere(c => c.Value == input, TranslationDatabase);
+            if (text == null)
+            {
+                text = new Text();
+                text.Value = input;
+                text.LanguageId = fromLanguage.Id;
+                text.Save(TranslationDatabase);
+            }
+            Translation translation = text.TranslationsByTextId.FirstOrDefault(t => t.LanguageId == toLanguage.Id);
+            if (translation == null)
+            {
+                string from = fromLanguage.ISO6391.Or(fromLanguage.ISO6392.First(2));
+                string to = toLanguage.ISO6391.Or(toLanguage.ISO6392.First(2));
+                translation = new Translation();
+                translation.Value = GetTranslationFromService(from, to, input);
+                translation.LanguageId = toLanguage.Id;
+                translation.TextId = text.Id;
+                translation.Translator = this.GetType().Name;
+                translation.Save(TranslationDatabase);
+            }
 
-        public abstract string Translate(Language from, Language to, string input);
+            return translation.Value;
+        }
 
+        protected abstract string GetTranslationFromService(string twoLetterIsoLanguageCodeFrom, string twoLetterIsoLanguageCodeTo, string input);
+
+        public abstract Language DetectLanguage(string text);
+
+        public virtual string Translate(string input, string languageIdentifier)
+        {
+            Language toLanguage = FindLanguage(languageIdentifier);
+
+            Args.ThrowIf<ArgumentException>(toLanguage == null, "Unable to identify specified language {0}, supported values are:\r\n{1}", languageIdentifier, string.Join("\r\n", Language.LoadAll(LanguageDatabase).Select(lang => lang.ISO6391).ToArray()));
+
+            return Translate(input, toLanguage);
+        }
+
+        public string Translate(string input, Language toLanguage)
+        {
+            Text text = Text.OneWhere(t => t.Value == input, TranslationDatabase);
+            Language fromLanguage = null;            
+            if (text != null && text.LanguageOfLanguageId != null)
+            {
+                fromLanguage = text.LanguageOfLanguageId;
+            }
+            else
+            {
+                fromLanguage = DetectLanguage(input);
+                LanguageDetection detection = new LanguageDetection();
+                detection.LanguageId = fromLanguage.Id;
+
+                text = new Text();
+                text.Value = input;
+                text.LanguageId = fromLanguage.Id;
+                text.Save(TranslationDatabase);
+                detection.TextId = text.Id;
+                detection.Detector = this.GetType().FullName;
+                detection.Save(TranslationDatabase);
+            }
+
+            return Translate(fromLanguage, toLanguage, input);
+        }
+
+        public virtual string TranslateLanguages(string input, string inputLanguageIdentifier, string outputLanguageIdentifier)
+        {
+            Language fromLanguage = FindLanguage(inputLanguageIdentifier);
+            Language toLanguage = FindLanguage(outputLanguageIdentifier);
+            return Translate(fromLanguage, toLanguage, input);
+        }
+        public virtual Language FindLanguage(string languageIdentifier)
+        {
+            return FindLanguage(languageIdentifier, LanguageDatabase);
+        }
+
+        public static Language FindLanguage(string languageIdentifier, Database db)
+        {
+            Language toLanguage;
+            if (languageIdentifier.Length == 2)
+            {
+                toLanguage = Language.OneWhere(c => c.ISO6391 == languageIdentifier, db);
+            }
+            else if (languageIdentifier.Length == 3)
+            {
+                toLanguage = Language.OneWhere(c => c.ISO6392 == languageIdentifier, db);
+            }
+            else
+            {
+                toLanguage = Language.OneWhere(c => c.EnglishName == languageIdentifier, db);
+                if (toLanguage == null)
+                {
+                    OtherName otherName = OtherName.FirstOneWhere(c => c.Value == languageIdentifier, db);
+                    if (otherName != null)
+                    {
+                        toLanguage = otherName.LanguageOfLanguageId;
+                    }
+                }
+            }
+
+            return toLanguage ?? Language.Default;
+        }
         public event EventHandler LanguageSaved;
         public event EventHandler LanguageOtherNameSaved;
         public ILogger Logger { get; set; }
@@ -178,5 +314,6 @@ namespace Bam.Net.Translation
                 }
             });
         }
+
     }
 }

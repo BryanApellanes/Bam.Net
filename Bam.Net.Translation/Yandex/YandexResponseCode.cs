@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Translation.Yandex
 {
-    public enum ResponseCode
+    public enum YandexResponseCode
     {
         Invalid = -1,
         Ok = 200,

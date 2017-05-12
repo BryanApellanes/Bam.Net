@@ -271,7 +271,6 @@ namespace Bam.Net.CoreServices
         protected internal CoreApplicationRegistryService ApplicationRegistryService { get; set; }
         protected internal CoreConfigurationService ConfigurationService { get; set; }
         protected internal CoreLoggerService LoggerService { get; set; }
-        protected internal CoreTranslationService TranslationService { get; set; }
         protected internal CoreDiagnosticService DiagnosticService { get; set; }
         protected IEnumerable<ProxyableService> ServiceClients
         {
@@ -280,8 +279,7 @@ namespace Bam.Net.CoreServices
                 yield return UserRegistryService;
                 yield return ApplicationRegistryService;                
                 yield return ConfigurationService;
-                yield return LoggerService;
-                yield return TranslationService;                
+                yield return LoggerService;              
                 yield return DiagnosticService;
             }
         }
@@ -311,7 +309,6 @@ namespace Bam.Net.CoreServices
             ConfigurationService = ProxyFactory.GetProxy<CoreConfigurationService>(HostName, Port);
             DiagnosticService = ProxyFactory.GetProxy<CoreDiagnosticService>(HostName, Port);
             LoggerService = ProxyFactory.GetProxy<CoreLoggerService>(HostName, Port);
-            TranslationService = ProxyFactory.GetProxy<CoreTranslationService>(HostName, Port);
             UserRegistryService = ProxyFactory.GetProxy<CoreUserRegistryService>(HostName, Port);
         }
 
@@ -321,7 +318,6 @@ namespace Bam.Net.CoreServices
             ConfigurationService = ProxyFactory.GetProxy<CoreConfigurationService>();
             DiagnosticService = ProxyFactory.GetProxy<CoreDiagnosticService>();
             LoggerService = ProxyFactory.GetProxy<CoreLoggerService>();
-            TranslationService = ProxyFactory.GetProxy<CoreTranslationService>();
             UserRegistryService = ProxyFactory.GetProxy<CoreUserRegistryService>();
         }
 
@@ -350,7 +346,6 @@ namespace Bam.Net.CoreServices
             ConfigurationService.Property(propertyName, this);
             DiagnosticService.Property(propertyName, this);
             LoggerService.Property(propertyName, this);
-            TranslationService.Property(propertyName, this);
             UserRegistryService.Property(propertyName, this);
         }
     }

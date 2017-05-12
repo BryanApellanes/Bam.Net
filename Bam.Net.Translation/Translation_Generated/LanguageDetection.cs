@@ -18,7 +18,7 @@ namespace Bam.Net.Translation
 	// connection Name = Translation
 	[Serializable]
 	[Bam.Net.Data.Table("LanguageDetection", "Translation")]
-	public partial class LanguageDetection: Dao
+	public partial class LanguageDetection: Bam.Net.Data.Dao
 	{
 		public LanguageDetection():base()
 		{
