@@ -11,7 +11,7 @@ using Bam.Net.Messaging;
 using Bam.Net.Server;
 using Bam.Net.ServiceProxy;
 
-namespace Bam.Net.CoreServices.Distributed
+namespace Bam.Net.Services.Distributed
 {
     public abstract class EventSourceService: ProxyableService
     {

@@ -5,10 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Data.Repositories;
 
-namespace Bam.Net.Services.VersioningService.Data
+namespace Bam.Net.Services.AssemblyManagementService.Data
 {
-    public class Version: RepoData
+    public class AssemblyRegistration: RepoData
     {
+        /// <summary>
+        /// A friendly name to identify the assembly
+        /// </summary>
+        public string Name { get; set; }
         /// <summary>
         /// A unique identifier, typically the result
         /// of a hashing function like SHA1 or SHA256
@@ -18,7 +22,7 @@ namespace Bam.Net.Services.VersioningService.Data
         public int Minor { get; set; }
         public int Patch { get; set; }
         public string Build { get; set; }
-
-        public string AssemblyPath { get; set; }
+        
+        public byte[] Assembly { get; set; }
     }
 }

@@ -11,7 +11,7 @@ using Bam.Net.Data;
 using System.Reflection;
 using Bam.Net.Configuration;
 
-namespace Bam.Net.CoreServices.Distributed
+namespace Bam.Net.Services.Distributed
 {
     /// <summary>
     /// Provides a mechanism by which one can expose

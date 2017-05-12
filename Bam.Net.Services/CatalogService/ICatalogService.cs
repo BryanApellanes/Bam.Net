@@ -13,7 +13,7 @@ namespace Bam.Net.Services.CatalogService
         ItemDefinition CreateItem(string name);
         CatalogDefinition AddItem(string catalogCuid, string itemCuid);
         bool RemoveItem(string listCuid, string itemCuid);
-        CatalogDefinition GetCatalog(string listCuid);
+        CatalogDefinition GetCatalog(string catalogCuid);
         CatalogDefinition FindCatalog(string name);
         CatalogDefinition RenameCatalog(string catalogCuid, string name);
         ItemDefinition RenameItem(string itemCuid, string name);

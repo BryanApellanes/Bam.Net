@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Data.Repositories;
 
-namespace Bam.Net.Services.VersioningService.Data
+namespace Bam.Net.Services.AssemblyManagementService.Data
 {
     [Serializable]
     public class ClientDescriptor: RepoData

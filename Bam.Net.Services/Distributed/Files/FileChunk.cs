@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace Bam.Net.CoreServices.Distributed.Files
+namespace Bam.Net.Services.Distributed.Files
 {
 	[Serializable]
 	public class FileChunk

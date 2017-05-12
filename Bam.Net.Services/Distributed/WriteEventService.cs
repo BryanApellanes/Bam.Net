@@ -5,27 +5,29 @@ using Bam.Net.Data.Repositories;
 using Bam.Net.Data;
 using Bam.Net.Server;
 using Bam.Net.ServiceProxy.Secure;
-using Bam.Net.CoreServices.Distributed;
+using Bam.Net.Services.Distributed;
+using Bam.Net.Services.Data;
+using Bam.Net.CoreServices;
 
-namespace Bam.Net.CoreServices
+namespace Bam.Net.Services.Distributed
 {
     [ApiKeyRequired]
-    [Proxy("eventHubSvc")]
-    public class EventHubService : ProxyableService
+    [Proxy("writeEventSvc")]
+    public class WriteEventService : ProxyableService
     {
-        MetricsEventSourceService _metricsEvents;
-        NotificationEventSourceService _notificationEvents;
-        
-        protected EventHubService()
+        MetricsService _metricsEvents;
+        SystemEventService _notificationEvents;
+
+        protected WriteEventService()
         {
         }
 
-        public EventHubService(
-            IRepository genericRepo, 
-            DaoRepository daoRepo, 
+        public WriteEventService(
+            IRepository genericRepo,
+            DaoRepository daoRepo,
             AppConf appConf,
-            MetricsEventSourceService metricsEvents,
-            NotificationEventSourceService notificationEvents) : base(genericRepo, daoRepo, appConf)
+            MetricsService metricsEvents,
+            SystemEventService notificationEvents) : base(genericRepo, daoRepo, appConf)
         {
             _metricsEvents = metricsEvents;
             _notificationEvents = notificationEvents;
@@ -37,7 +39,7 @@ namespace Bam.Net.CoreServices
 
         public virtual ExternalEventSubscriptionDescriptor SubscribeExternal(ExternalEventSubscriptionDescriptor subscriptionInfo)
         {
-            if(string.IsNullOrWhiteSpace(subscriptionInfo.CreatedBy))
+            if (string.IsNullOrWhiteSpace(subscriptionInfo.CreatedBy))
             {
                 subscriptionInfo.CreatedBy = CurrentUser.UserName;
             }
@@ -52,7 +54,7 @@ namespace Bam.Net.CoreServices
                 Query.Where(nameof(ExternalEventSubscriptionDescriptor.CreatedBy)) == subscriptionInfo.CreatedBy
             )
             .FirstOrDefault();
-            if(lookedUp != null)
+            if (lookedUp != null)
             {
                 return lookedUp;
             }
@@ -66,7 +68,7 @@ namespace Bam.Net.CoreServices
 
         public override object Clone()
         {
-            EventHubService clone = new EventHubService(Repository, DaoRepository, AppConf, _metricsEvents, _notificationEvents);
+            WriteEventService clone = new WriteEventService(Repository, DaoRepository, AppConf, _metricsEvents, _notificationEvents);
             clone.CopyProperties(this);
             clone.CopyEventHandlers(this);
             return clone;

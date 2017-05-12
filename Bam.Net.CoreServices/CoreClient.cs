@@ -250,29 +250,6 @@ namespace Bam.Net.CoreServices
             return new CoreServiceResponse { Data = responses, Success = !responses.Where(r => !r.Success).Any() };
         }
 
-        public ApplicationConfiguration GetConfiguration(string configurationName = "Default")
-        {
-            return ConfigurationService.GetConfiguration(ApplicationName, Machine.Current.Name, configurationName);
-        }
-
-        public void SaveConfiguration()
-        {
-            NameValueCollection settings = DefaultConfiguration.GetAppSettings();
-            Dictionary<string, string> appSettings = new Dictionary<string, string>();
-            foreach(string key in settings.AllKeys)
-            {
-                appSettings.Add(key, settings[key]);
-            }
-            ConfigurationService.SetApplicationConfiguration(appSettings);
-        }
-
-        public ApplicationConfiguration LoadConfiguration()
-        {
-            ApplicationConfiguration config = ConfigurationService.GetConfiguration(ApplicationName, Machine.Current.Name, "Default");
-            config.Inject();
-            return config;
-        }
-
         public T GetProxy<T>()
         {
             return ProxyFactory.GetProxy<T>(HostName, Port);

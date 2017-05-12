@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Services.Distributed;
 
-namespace Bam.Net.CoreServices.Distributed
+namespace Bam.Net.Services.Distributed
 {
     public abstract class Ring<TService> : Ring where TService: IDistributedRepository
     {

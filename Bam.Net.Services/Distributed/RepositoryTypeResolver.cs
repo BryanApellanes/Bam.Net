@@ -8,7 +8,7 @@ using Bam.Net.Data.Repositories;
 using Bam.Net.Services.Distributed;
 using Bam.Net.Services.Distributed.Data;
 
-namespace Bam.Net.CoreServices.Distributed
+namespace Bam.Net.Services.Distributed
 {
     public class RepositoryTypeResolver : ITypeResolver
     {

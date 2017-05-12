@@ -48,6 +48,10 @@ namespace Bam.Net.CoreServices
             }
         }
 
+        /// <summary>
+        /// Adds the settings from the current ApplicationConfiguration instance
+        /// to the DefaultConfiguration
+        /// </summary>
         public void Inject()
         {
             NameValueCollection appSettings = DefaultConfiguration.GetAppSettings();
@@ -59,6 +63,10 @@ namespace Bam.Net.CoreServices
             DefaultConfiguration.SetAppSettings(settings);
         }
 
+        /// <summary>
+        /// Undo the result of Inject and reset the inner appSettings to those 
+        /// provided by ConfigurationManager.AppSettings
+        /// </summary>
         public void UnInject()
         {
             DefaultConfiguration.SetAppSettings();

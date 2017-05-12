@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Services.VersioningService.Data
+namespace Bam.Net.Services.AssemblyManagementService.Data
 {
     [Serializable]
     public class SchemaDescriptor

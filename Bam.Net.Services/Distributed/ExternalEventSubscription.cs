@@ -7,7 +7,7 @@ using Bam.Net;
 using Bam.Net.Web;
 using Bam.Net.CoreServices.Data;
 
-namespace Bam.Net.CoreServices.Distributed
+namespace Bam.Net.Services.Distributed
 {
     /// <summary>
     /// A subscription made by a process outside of

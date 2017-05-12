@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net;
 
-namespace Bam.Net.CoreServices.Distributed
+namespace Bam.Net.Services.Distributed
 {
     public class Arc<T>: Arc 
     {

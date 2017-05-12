@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Services.VersioningService
+namespace Bam.Net.Services.AssemblyManagementService
 {
-    public interface IHashProvider
+    public interface IAssemblyManagementService
     {
-        string GetHash(params Type[] types);
+        
     }
 }

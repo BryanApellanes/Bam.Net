@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Data.Repositories;
-using Bam.Net.CoreServices.Distributed;
+using Bam.Net.Services.Distributed;
 
-namespace Bam.Net.CoreServices.Data
+namespace Bam.Net.Services.Data
 {
     public class ExternalEventSubscriptionDescriptor: AuditRepoData
     {

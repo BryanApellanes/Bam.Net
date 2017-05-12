@@ -22,6 +22,10 @@ using Bam.Net.ServiceProxy.Secure;
 
 namespace Bam.Net.CoreServices.Services
 {
+    /// <summary>
+    /// Registry for the Core or Hub service
+    /// provider of all applications
+    /// </summary>
     [CoreRegistryContainer]
     public static class CoreRegistryProvider
     {

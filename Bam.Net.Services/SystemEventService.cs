@@ -9,12 +9,12 @@ using Bam.Net.Messaging;
 using Bam.Net.Server;
 using Bam.Net.ServiceProxy;
 
-namespace Bam.Net.CoreServices.Distributed
+namespace Bam.Net.Services.Distributed
 { 
-    [Proxy("notificationEvents")]
-    public class NotificationEventSourceService : EventSourceService
+    [Proxy("systemEventSvc")]
+    public class SystemEventService : EventSourceService
     {
-        public NotificationEventSourceService(DaoRepository daoRepository, AppConf appConf, ILogger logger, ISmtpSettingsProvider smtpSettingsProvider) : base(daoRepository, appConf, logger)
+        public SystemEventService(DaoRepository daoRepository, AppConf appConf, ILogger logger, ISmtpSettingsProvider smtpSettingsProvider) : base(daoRepository, appConf, logger)
         {
             SupportedEvents.Add("Error");
             SupportedEvents.Add("Fatal");
@@ -24,7 +24,7 @@ namespace Bam.Net.CoreServices.Distributed
       
         public override object Clone()
         {
-            return new NotificationEventSourceService(DaoRepository, AppConf, Logger, SmtpSettingsProvider);
+            return new SystemEventService(DaoRepository, AppConf, Logger, SmtpSettingsProvider);
         }
 
         public override Task Trigger(string eventName, string json)

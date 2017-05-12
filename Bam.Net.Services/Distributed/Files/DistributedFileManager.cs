@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.CoreServices.Distributed.Files
+namespace Bam.Net.Services.Distributed.Files
 {
 	public class DistributedFileManager
 	{
