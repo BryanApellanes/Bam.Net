@@ -60,6 +60,7 @@ namespace Bam.Net.Translation.Tests
         }
 
         [IntegrationTest]
+        [ConsoleAction]
         public void TestTranslation()
         {
             SQLiteDatabase languageDb;
@@ -86,6 +87,7 @@ namespace Bam.Net.Translation.Tests
         }
 
         [IntegrationTest]
+        [ConsoleAction]
         public void ShouldDetectGerman()
         {
             SQLiteDatabase languageDb;
@@ -97,6 +99,7 @@ namespace Bam.Net.Translation.Tests
         }
 
         [IntegrationTest]
+        [ConsoleAction]
         public void ShouldDetectAndTranslate()
         {
             SQLiteDatabase languageDb;
@@ -107,6 +110,7 @@ namespace Bam.Net.Translation.Tests
         }
 
         [IntegrationTest]
+        [ConsoleAction]
         public void ShouldTranslateUsingIsoCode1()
         {
             SQLiteDatabase languageDb;
@@ -116,6 +120,7 @@ namespace Bam.Net.Translation.Tests
             Expect.AreEqual("I like monkeys", result);
         }
         [IntegrationTest]
+        [ConsoleAction]
         public void ShouldTranslateUsingIsoCode2()
         {
             SQLiteDatabase languageDb;
@@ -126,6 +131,7 @@ namespace Bam.Net.Translation.Tests
         }
 
         [IntegrationTest]
+        [ConsoleAction]
         public void ShouldTranslateUsingLanguageName()
         {
             SQLiteDatabase languageDb;
@@ -134,8 +140,9 @@ namespace Bam.Net.Translation.Tests
             string result = translator.Translate("Ich mag Affen", "English");
             Expect.AreEqual("I like monkeys", result);
         }
-        //J'aime les singes
+        
         [IntegrationTest]
+        [ConsoleAction]
         public void ShouldTranslateUsingLanguageName2()
         {
             SQLiteDatabase languageDb;

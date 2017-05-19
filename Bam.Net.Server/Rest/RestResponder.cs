@@ -22,7 +22,6 @@ namespace Bam.Net.Server.Rest
 {
     public class RestResponder : HttpHeaderResponder
     {
-        RouteCollection _routeCollection;
         public RestResponder(BamConf conf, IRepository repository, ILogger logger = null)
             : base(conf, logger)
         {

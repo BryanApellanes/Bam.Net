@@ -37,7 +37,7 @@ namespace Bam.Net.Dust
             try
             {
                 string path = Server.MapPath(CommonDustRoot);
-                dustTemplate.SafeWriteToFile(path, (o) => o.ClearWriteLocks());
+                dustTemplate.SafeWriteToFile(path, (o) => o.ClearFileAccessLocks());
                 return Json(new { Success = true, Message = "" });
             }
             catch (Exception ex)
@@ -51,7 +51,7 @@ namespace Bam.Net.Dust
             try
             {
                 string path = Server.MapPath(AppDustRoot.NamedFormat(new { appName = appName }));
-                dustTemplate.SafeWriteToFile(path, (o) => o.ClearWriteLocks());
+                dustTemplate.SafeWriteToFile(path, (o) => o.ClearFileAccessLocks());
                 return Json(new { Success = true, Message = "" });
             }
             catch (Exception ex)
