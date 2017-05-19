@@ -28,7 +28,7 @@ using Bam.Net.CoreServices.Services;
 using Bam.Net.CoreServices.Data;
 using System.Collections.Specialized;
 using Bam.Net.Data.Dynamic;
-using Bam.Net.Services.Distributed;
+using Bam.Net.Services.DistributedService;
 
 namespace Bam.Net.CoreServices.Tests
 {
