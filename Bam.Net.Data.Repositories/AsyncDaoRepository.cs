@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Bam.Net.Logging;
 
 namespace Bam.Net.Data.Repositories
 {
@@ -14,9 +15,19 @@ namespace Bam.Net.Data.Repositories
     {
         public AsyncDaoRepository(DaoRepository daoRepository)
         {
-            this.DaoRepository = daoRepository;
+            DaoRepository = daoRepository;
         }
 
+        public AsyncDaoRepository(Database database, ILogger logger = null) 
+            : this(new DaoRepository(database, logger))
+        {
+        }
+
+        public override void AddType(Type type)
+        {
+            DaoRepository.AddType(type);
+            base.AddType(type);
+        }
         public DaoRepository DaoRepository { get; set; }
 
         public override object Create(Type type, object toCreate)
