@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Bam.Net.Logging;
 using Bam.Net.ServiceProxy;
 using Bam.Net.CoreServices.Distributed;
-using Bam.Net.Services.Distributed;
+using Bam.Net.Services.DistributedService;
 
 namespace Bam.Net.CoreServices
 {

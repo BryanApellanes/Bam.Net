@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.CommandLine;
 using Bam.Net.CoreServices;
-using Bam.Net.Services.ListService;
-using Bam.Net.Services.ListService.Data;
+using Bam.Net.Services.CatalogService;
+using Bam.Net.Services.CatalogService.Data;
 using Bam.Net.Testing;
 using Bam.Net.Testing.Integration;
 
@@ -35,8 +35,8 @@ namespace Bam.Net.Services.Tests
             ConsoleLogger logger = new ConsoleLogger();
             logger.StartLoggingThread();
             CoreClient client = new CoreClient("TestOr", "TestApp", "localhost", 9100, logger);
-            ListService.ListService svc = client.GetProxy<ListService.ListService>();
-            ListDefinition list = svc.CreateList("test list");
+            CatalogService.CatalogService svc = client.GetProxy<CatalogService.CatalogService>();
+            CatalogDefinition list = svc.CreateCatalog("test list");
             //ListDefinition CreateList(string name);
             //ItemDefinition CreateItem(string name);
             //ListDefinition AddItem(string listCuid, string itemCuid);

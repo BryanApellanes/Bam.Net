@@ -81,13 +81,21 @@
     <Compile Include="UnitTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Bam.Net.CoreServices\Bam.Net.CoreServices.csproj">
+      <Project>{5480d2a0-145b-4435-8e1c-4555ead0424a}</Project>
+      <Name>Bam.Net.CoreServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Services\Bam.Net.Services.csproj">
+      <Project>{f67630bf-5e73-46bf-a7f1-6d7e9648135f}</Project>
+      <Name>Bam.Net.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net\Bam.Net.csproj">
+      <Project>{8794c09d-d72c-420c-812f-bfda251b64c9}</Project>
+      <Name>Bam.Net</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.CommandLine\Bam.Net.CommandLine.csproj">
       <Project>{ea9863a9-8e0b-4497-b7fd-abf450a3e468}</Project>
       <Name>Bam.Net.CommandLine</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Bam.Net.CoreServices\Bam.Net.CoreServices.csproj">
-      <Project>{5480D2A0-145B-4435-8E1C-4555EAD0424A}</Project>
-      <Name>Bam.Net.CoreServices</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Data.Schema\Bam.Net.Data.Schema.csproj">
       <Project>{d2c2b1c0-1047-4211-92fc-37f332861161}</Project>
@@ -109,10 +117,6 @@
       <Project>{15e91407-00d6-4edf-b75c-bc817a75c8ad}</Project>
       <Name>Bam.Net.Logging</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Bam.Net.Services\Bam.Net.Services.csproj">
-      <Project>{f67630bf-5e73-46bf-a7f1-6d7e9648135f}</Project>
-      <Name>Bam.Net.Services</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Testing\Bam.Net.Testing.csproj">
       <Project>{85212881-c676-4b40-b311-37c2d1706042}</Project>
       <Name>Bam.Net.Testing</Name>
@@ -120,10 +124,6 @@
     <ProjectReference Include="..\Bam.Net.UserAccounts\Bam.Net.UserAccounts.csproj">
       <Project>{74d5a262-b0b9-40e6-a3fd-b120dc8e9f54}</Project>
       <Name>Bam.Net.UserAccounts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Bam.Net\Bam.Net.csproj">
-      <Project>{8794c09d-d72c-420c-812f-bfda251b64c9}</Project>
-      <Name>Bam.Net</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Data.Repositories\Bam.Net.Data.Repositories.csproj">
       <Project>{222ef625-a115-49c7-8bdb-5879725a7d17}</Project>

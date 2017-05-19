@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Bam.Net.CommandLine;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Data.SQLite;
 using Bam.Net.Logging;
-using Bam.Net.Services.Distributed.Data;
+using Bam.Net.Services.DistributedService.Data;
+using Bam.Net.Services.DistributedService.Files;
 using Bam.Net.Testing;
 
 namespace Bam.Net.Services.Tests
@@ -182,6 +186,35 @@ namespace Bam.Net.Services.Tests
                 OutFormat(rel.PropertiesToString());
             }
             Expect.AreEqual(2, rels.Count);
+        }
+
+        [UnitTest]
+        public void CanCopyLoadedAssembly()
+        {
+            Assembly currentAssembly = Assembly.GetExecutingAssembly();
+            FileInfo currentFile = currentAssembly.GetFileInfo();
+            FileInfo copyTo = currentFile.CopyFile(nameof(CanCopyLoadedAssembly));
+            Expect.IsTrue(copyTo.Exists);            
+            OutLine(copyTo.FullName, ConsoleColor.Cyan);
+            copyTo.Delete();
+        }
+
+        
+        [UnitTest]
+        public void FileServiceTest()
+        {
+            SQLiteDatabase db = new SQLiteDatabase(".\\", nameof(FileServiceTest));            
+            FileService fmSvc = new FileService(new DaoRepository(db));
+            fmSvc.ChunkLength = 111299;
+            FileInfo testDataFile = new FileInfo("C:\\testData\\TestDataFile.dll");            
+            ChunkedFileDescriptor chunkedFile = fmSvc.StoreFileChunksInRepo(testDataFile);
+            FileInfo writeTo = new FileInfo($".\\{nameof(FileServiceTest)}_restored");
+            DateTime start = DateTime.UtcNow;
+            FileInfo written = fmSvc.RestoreFile(chunkedFile.FileHash, writeTo.FullName, true);
+            TimeSpan took = DateTime.UtcNow.Subtract(start);
+            OutLine(took.ToString(), ConsoleColor.Cyan);
+            Expect.IsTrue(written.Exists);
+            Expect.AreEqual(testDataFile.Md5(), written.Md5(), "file content didn't match");
         }
     }
 }
