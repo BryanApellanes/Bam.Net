@@ -41,6 +41,6 @@ namespace Bam.Net.Logging
 
         void CommitLogEvent(LogEvent logEvent);
 
-        EventIdProvider EventIdProvider { get; set; }
+        IEventIdProvider EventIdProvider { get; set; }
     }
 }

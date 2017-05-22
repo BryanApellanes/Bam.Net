@@ -109,5 +109,65 @@ namespace Bam.Net.Tests
 
             Expect.IsFalse(thrown, "Remove attribute threw exception");
         }
+
+        [UnitTest]
+        public void HashingToIntGetsSameInt()
+        {
+            string randomString = 16.RandomLetters();
+            int hashed = randomString.ToSha1Int();
+            int again = randomString.ToSha1Int();
+
+            OutLine(again.ToString(), ConsoleColor.Cyan);
+            Expect.AreEqual(hashed, again);
+        }
+
+        [UnitTest]
+        public void HashingToLongGetsSameLong()
+        {
+            string randomString = 16.RandomLetters();
+            long hashed = randomString.ToSha1Long();
+            long again = randomString.ToSha1Long();
+
+            OutLine(again.ToString(), ConsoleColor.Cyan);
+            Expect.AreEqual(hashed, again);
+        }
+
+        const string text = "alksjdflkajdsfl;ahsdg;kjbhn09723490874ortkja;sdf4^$%&%^&*%&I;k;ksdfg~~!@aaSEPIWE0";
+        [UnitTest]
+        public void HashingToSha1LongFromStaticStringGetsSameLong()
+        {
+            long expected = 8057846971013174933;
+
+            long hashed = text.ToSha1Long();
+            long again = text.ToSha1Long();
+            Expect.AreEqual(hashed, again);
+            Expect.AreEqual(expected, hashed);
+            Expect.AreEqual(expected, again);
+        }
+        
+        [UnitTest]
+        public void HashingToSha256LongFromStaticStringGetsSameLong()
+        {
+            long expected = 5527141036629794661;
+            long hashed = text.ToSha256Long();
+            long again = text.ToSha256Long();
+
+            OutLine(again.ToString(), ConsoleColor.Cyan);
+            Expect.AreEqual(hashed, again);
+            Expect.AreEqual(expected, hashed);
+            Expect.AreEqual(expected, again);
+        }
+
+        [UnitTest]
+        public void NLogLogLevelNames()
+        {
+            OutLine(NLog.LogLevel.Trace.Name);
+            OutLine(NLog.LogLevel.Debug.Name);
+            OutLine(NLog.LogLevel.Info.Name);
+            OutLine(NLog.LogLevel.Warn.Name);
+            OutLine(NLog.LogLevel.Error.Name);
+            OutLine(NLog.LogLevel.Fatal.Name);
+            OutLine(NLog.LogLevel.Off.Name);
+        }
     }
 }
