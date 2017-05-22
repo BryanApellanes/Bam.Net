@@ -28,7 +28,7 @@ using Bam.Net.CoreServices.Services;
 using Bam.Net.CoreServices.Data;
 using System.Collections.Specialized;
 using Bam.Net.Data.Dynamic;
-using Bam.Net.CoreServices.Distributed;
+using Bam.Net.Services.DistributedService;
 
 namespace Bam.Net.CoreServices.Tests
 {
@@ -104,15 +104,6 @@ namespace Bam.Net.CoreServices.Tests
             Expect.IsTrue(fired.Value);
             OutLineFormat("fire named event test ran to completion", ConsoleColor.Green);
             OutLineFormat("done", ConsoleColor.Green);
-        }
-
-        private static TestEventSourceLoggable GetTestEventSource()
-        {
-            Database db = new SQLiteDatabase(".\\EventSourceTests", "UserAccounts");
-            db.TryEnsureSchema(typeof(UserAccounts.Data.User));
-            Db.For<UserAccounts.Data.User>(db);
-            TestEventSourceLoggable src = new TestEventSourceLoggable(new DaoRepository(db), new ConsoleLogger());
-            return src;
         }
 
         [UnitTest]
@@ -227,7 +218,7 @@ namespace Bam.Net.CoreServices.Tests
             string orgName = 5.RandomLetters();
             string appName = 8.RandomLetters();
             ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration(svc.CoreRegistryRepository, "localhost", 8080, appName, orgName);
-            ServiceResponse response = svc.RegisterApplication(descriptor);
+            CoreServiceResponse response = svc.RegisterApplication(descriptor);
             Expect.IsFalse(response.Success);
             Expect.IsNotNull(response.Data);
             Expect.IsInstanceOfType<ApplicationRegistrationResult>(response.Data);
@@ -245,7 +236,7 @@ namespace Bam.Net.CoreServices.Tests
             string appName = 8.RandomLetters();
             CoreApplicationRegistryService svc = GetTestServiceWithUser(userName);
             ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration(svc.CoreRegistryRepository, "localhost", 8080, appName, orgName);
-            ServiceResponse response = svc.RegisterApplication(descriptor);
+            CoreServiceResponse response = svc.RegisterApplication(descriptor);
             Expect.IsTrue(response.Success);
             var user = svc.CoreRegistryRepository.OneUserWhere(c => c.UserName == userName);
             user = svc.CoreRegistryRepository.Retrieve<Data.User>(user.Id);
@@ -270,7 +261,7 @@ namespace Bam.Net.CoreServices.Tests
             .TheTest
             .ShouldPass(because =>
             {
-                ServiceResponse result = because.ResultAs<ServiceResponse>();
+                CoreServiceResponse result = because.ResultAs<CoreServiceResponse>();
                 because.ItsTrue("the response was not successful", !result.Success, "request should have failed");
                 because.ItsTrue("the message says 'You must be logged in to do that'", result.Message.Equals("You must be logged in to do that"));
                 because.IllLookAtIt(result.Message);
@@ -328,6 +319,19 @@ namespace Bam.Net.CoreServices.Tests
         {
             ProcessDescriptor process = ProcessDescriptor.Current;
             Expect.IsNotNull(process.LocalMachine, $"{nameof(process.LocalMachine)} was null");
+        }
+
+        [UnitTest]
+        public void MachineWillSerialize()
+        {
+            Out(Machine.Current.ToJson(), ConsoleColor.Cyan);
+            Out(Machine.Current.ToDynamicData().ToJson(), ConsoleColor.Blue);
+        }
+
+        [UnitTest]
+        public void NicsWillSerialize()
+        {
+            Out(Machine.Current.NetworkInterfaces.ToJson(true));
         }
 
         [UnitTest]
@@ -456,5 +460,15 @@ namespace Bam.Net.CoreServices.Tests
             logger.StartLoggingThread();
             return logger;
         }
+
+        private static TestEventSourceLoggable GetTestEventSource()
+        {
+            Database db = new SQLiteDatabase(".\\EventSourceTests", "UserAccounts");
+            db.TryEnsureSchema(typeof(UserAccounts.Data.User));
+            Db.For<UserAccounts.Data.User>(db);
+            TestEventSourceLoggable src = new TestEventSourceLoggable(new DaoRepository(db), new ConsoleLogger());
+            return src;
+        }
+
     }
 }

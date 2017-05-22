@@ -202,7 +202,7 @@ namespace Bam.Net.ServiceProxy
 
         /// <summary>
         /// Post the specified postData to the specified pathAndQuery expecting
-        /// json and deserializing it as the specified generic typ T
+        /// xml and deserializing it as the specified generic typ T
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="pathAndQuery"></param>

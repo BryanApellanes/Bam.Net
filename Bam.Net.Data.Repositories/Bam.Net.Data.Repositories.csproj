@@ -121,6 +121,7 @@
     <Compile Include="DaoBackup.cs" />
     <Compile Include="DaoInfo.cs" />
     <Compile Include="DatabaseExtensions.cs" />
+    <Compile Include="DatabaseFactory.cs" />
     <Compile Include="FsRepoData.cs" />
     <Compile Include="FsRepository.cs" />
     <Compile Include="IBaseCrudProvider.cs" />

@@ -119,7 +119,7 @@ namespace Bam.Net.Yaml.Data
             if (!loadNamesFile.Exists)
             {
                 result.Add(name);
-                $"{name}\r\n".SafeWriteToFile(loadNamesFile.FullName, (o) => o.ClearWriteLocks());
+                $"{name}\r\n".SafeWriteToFile(loadNamesFile.FullName, (o) => o.ClearFileAccessLocks());
             }
             else
             {

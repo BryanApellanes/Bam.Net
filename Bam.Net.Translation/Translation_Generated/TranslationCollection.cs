@@ -13,9 +13,9 @@ namespace Bam.Net.Translation
     public class TranslationCollection: DaoCollection<TranslationColumns, Translation>
     { 
 		public TranslationCollection(){}
-		public TranslationCollection(Database db, DataTable table, Dao dao = null, string rc = null) : base(db, table, dao, rc) { }
-		public TranslationCollection(DataTable table, Dao dao = null, string rc = null) : base(table, dao, rc) { }
-		public TranslationCollection(Query<TranslationColumns, Translation> q, Dao dao = null, string rc = null) : base(q, dao, rc) { }
+		public TranslationCollection(Database db, DataTable table, Bam.Net.Data.Dao dao = null, string rc = null) : base(db, table, dao, rc) { }
+		public TranslationCollection(DataTable table, Bam.Net.Data.Dao dao = null, string rc = null) : base(table, dao, rc) { }
+		public TranslationCollection(Query<TranslationColumns, Translation> q, Bam.Net.Data.Dao dao = null, string rc = null) : base(q, dao, rc) { }
 		public TranslationCollection(Database db, Query<TranslationColumns, Translation> q, bool load) : base(db, q, load) { }
 		public TranslationCollection(Query<TranslationColumns, Translation> q, bool load) : base(q, load) { }
     }

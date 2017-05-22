@@ -32,7 +32,7 @@ namespace Bam.Net.CoreServices
         public ProxyFactory(string workspaceDirectory, ILogger logger = null, Incubator serviceProvider = null)
         {
             WorkspaceDirectory = workspaceDirectory;
-            DefaultSettings = new ProxySettings { Protocol = Protocols.Http, Host = "localhost", Port = 8080 };
+            DefaultSettings = new ProxySettings { Protocol = Protocols.Http, Host = "localhost", Port = 9100 };
             Logger = logger ?? Log.Default;
             ServiceProvider = serviceProvider ?? Incubator.Default;
         }
@@ -52,12 +52,27 @@ namespace Bam.Net.CoreServices
         /// The directory to save temp and generated files in
         /// </summary>
         public string WorkspaceDirectory { get; private set; }
+
+        /// <summary>
+        /// Get a proxy instance using locally available
+        /// assemblies
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public T GetProxy<T>()
         {
             Assembly assembly = GetAssembly<T>();
             return ConstructProxy<T>(assembly);
         }
 
+        /// <summary>
+        /// Get a proxy instance downloading source from the
+        /// specified hostName and port
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="hostName"></param>
+        /// <param name="port"></param>
+        /// <returns></returns>
         public T GetProxy<T>(string hostName, int port = 8080)
         {
             Assembly assembly = GetAssembly<T>(hostName, port);

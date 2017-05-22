@@ -103,7 +103,7 @@ namespace Bam.Net.CoreServices
             }
             else
             {
-                Code = ServiceProxySystem.GenerateCSharpProxyCode(ServiceType.Namespace, ServiceType);                
+                Code = ServiceProxySystem.GenerateCSharpProxyCode(ServiceSettings.Protocol.ToString(), ServiceSettings.Host, ServiceSettings.Port, ServiceType.Namespace, ServiceType);                
             }
         }
 

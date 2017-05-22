@@ -50,8 +50,22 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -60,68 +74,77 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Distributed\Data\DataPoint.cs" />
-    <Compile Include="Distributed\Data\DataPropertyCollection.cs" />
-    <Compile Include="Distributed\Data\DataPropertyExtensions.cs" />
-    <Compile Include="Distributed\Data\DataRelationship.cs" />
-    <Compile Include="Distributed\Data\OperationIntent.cs" />
-    <Compile Include="Distributed\Data\OpertionEventArgs.cs" />
-    <Compile Include="Distributed\EventAnnouncerService.cs" />
-    <Compile Include="EventHubService.cs" />
-    <Compile Include="Distributed\Arc.cs" />
-    <Compile Include="Distributed\Data\CreateOperation.cs" />
-    <Compile Include="Distributed\Data\DataProperty.cs" />
-    <Compile Include="Distributed\Data\DeleteEvent.cs" />
-    <Compile Include="Distributed\Data\DeleteOperation.cs" />
-    <Compile Include="Distributed\Data\Operation.cs" />
-    <Compile Include="Distributed\Data\QueryOperation.cs" />
-    <Compile Include="Distributed\Data\ReplicateOperation.cs" />
-    <Compile Include="Distributed\Data\ReplicationResult.cs" />
-    <Compile Include="Distributed\Data\RetrieveOperation.cs" />
-    <Compile Include="Distributed\Data\UpdateOperation.cs" />
-    <Compile Include="Distributed\Data\WriteEvent.cs" />
-    <Compile Include="Distributed\Data\WriteOperation.cs" />
-    <Compile Include="Distributed\EventMessage.cs" />
-    <Compile Include="Distributed\EventSourceService.cs" />
-    <Compile Include="Distributed\EventSourceServiceArgs.cs" />
-    <Compile Include="Distributed\ExternalEventSubscription.cs" />
-    <Compile Include="Distributed\Files\DistributedFileInfo.cs" />
-    <Compile Include="Distributed\Files\DistributedFileManager.cs" />
-    <Compile Include="Distributed\Files\FileChunk.cs" />
-    <Compile Include="Distributed\IDistributedRepository.cs" />
-    <Compile Include="Distributed\IHasInfo.cs" />
-    <Compile Include="Distributed\InfoAttribute.cs" />
-    <Compile Include="Distributed\ITypeResolver.cs" />
-    <Compile Include="Distributed\Keyspace.cs" />
-    <Compile Include="Distributed\MetricsEventSourceService.cs" />
-    <Compile Include="Distributed\NotificationEventSourceService.cs" />
-    <Compile Include="Distributed\RepositoryKey.cs" />
-    <Compile Include="Distributed\RepositoryRing.cs" />
-    <Compile Include="Distributed\RepositoryService.cs" />
-    <Compile Include="Distributed\RepositoryTypeResolver.cs" />
-    <Compile Include="Distributed\Ring.cs" />
-    <Compile Include="Distributed\UniversalIdentifier.cs" />
+    <Compile Include="ApiResponder.cs" />
+    <Compile Include="CatalogService\KindsOfCatalogs.cs" />
+    <Compile Include="DistributedService\Data\Files\ChunkData.cs" />
+    <Compile Include="DistributedService\Data\Files\ChunkedFileDescriptor.cs" />
+    <Compile Include="DistributedService\Data\DataPoint.cs" />
+    <Compile Include="DistributedService\Data\DataPropertyCollection.cs" />
+    <Compile Include="DistributedService\Data\DataPropertyExtensions.cs" />
+    <Compile Include="DistributedService\Data\DataRelationship.cs" />
+    <Compile Include="DistributedService\Data\Files\ChunkDataDescriptor.cs" />
+    <Compile Include="DistributedService\Data\OperationIntent.cs" />
+    <Compile Include="DistributedService\Data\OpertionEventArgs.cs" />
+    <Compile Include="DistributedService\Files\ChunkedFile.cs" />
+    <Compile Include="DistributedService\Files\ChunkedFileDataDescriptor.cs" />
+    <Compile Include="DistributedService\Files\FileServiceSettings.cs" />
+    <Compile Include="DistributedService\RepositoryRing.cs" />
+    <Compile Include="DistributedService\RepositoryService.cs" />
+    <Compile Include="DistributedService\WriteEventService.cs" />
+    <Compile Include="DistributedService\Arc.cs" />
+    <Compile Include="DistributedService\Data\CreateOperation.cs" />
+    <Compile Include="DistributedService\Data\DataProperty.cs" />
+    <Compile Include="DistributedService\Data\DeleteEvent.cs" />
+    <Compile Include="DistributedService\Data\DeleteOperation.cs" />
+    <Compile Include="DistributedService\Data\Operation.cs" />
+    <Compile Include="DistributedService\Data\QueryOperation.cs" />
+    <Compile Include="DistributedService\Data\ReplicateOperation.cs" />
+    <Compile Include="DistributedService\Data\ReplicationResult.cs" />
+    <Compile Include="DistributedService\Data\RetrieveOperation.cs" />
+    <Compile Include="DistributedService\Data\UpdateOperation.cs" />
+    <Compile Include="DistributedService\Data\WriteEvent.cs" />
+    <Compile Include="DistributedService\Data\WriteOperation.cs" />
+    <Compile Include="SystemEventMessage.cs" />
+    <Compile Include="EventSourceService.cs" />
+    <Compile Include="DistributedService\EventSourceServiceArgs.cs" />
+    <Compile Include="DistributedService\ExternalEventSubscription.cs" />
+    <Compile Include="DistributedService\Files\FileService.cs" />
+    <Compile Include="DistributedService\Files\FileChunk.cs" />
+    <Compile Include="DistributedService\IDistributedRepository.cs" />
+    <Compile Include="DistributedService\IHasInfo.cs" />
+    <Compile Include="DistributedService\InfoAttribute.cs" />
+    <Compile Include="DistributedService\ITypeResolver.cs" />
+    <Compile Include="DistributedService\Keyspace.cs" />
+    <Compile Include="MetricsService.cs" />
+    <Compile Include="SystemEventService.cs" />
+    <Compile Include="DistributedService\RepositoryKey.cs" />
+    <Compile Include="DistributedService\RepositoryTypeResolver.cs" />
+    <Compile Include="DistributedService\Ring.cs" />
+    <Compile Include="DistributedService\UniversalIdentifier.cs" />
     <Compile Include="ExternalEventSubscriptionDescriptor.cs" />
     <Compile Include="GlobalEvents.cs" />
-    <Compile Include="ListService\IListService.cs" />
-    <Compile Include="ListService\Data\ItemDefinition.cs" />
-    <Compile Include="ListService\Data\ListDefinition.cs" />
+    <Compile Include="CatalogService\ICatalogService.cs" />
+    <Compile Include="CatalogService\Data\ItemDefinition.cs" />
+    <Compile Include="CatalogService\Data\CatalogDefinition.cs" />
+    <Compile Include="TranslationService\TranslationService.cs" />
+    <Compile Include="ApiKeyVaultInfo.cs" />
     <Compile Include="ValidationService\IValidator.cs" />
-    <Compile Include="ListService\ListService.cs" />
+    <Compile Include="CatalogService\CatalogService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValidationService\Data\ValidationRule.cs" />
     <Compile Include="ValidationService\ValidationResult.cs" />
-    <Compile Include="VersioningService\Data\ClientDescriptor.cs" />
-    <Compile Include="VersioningService\Data\SchemaDescriptor.cs" />
-    <Compile Include="VersioningService\IHashProvider.cs" />
-    <Compile Include="VersioningService\IVersioningService.cs" />
-    <Compile Include="VersioningService\Data\Version.cs" />
-    <Compile Include="VersioningService\VersioningExtensions.cs" />
-    <Compile Include="VersioningService\VersioningService.cs" />
+    <Compile Include="AssemblyManagementService\Data\ClientDescriptor.cs" />
+    <Compile Include="AssemblyManagementService\Data\SchemaDescriptor.cs" />
+    <Compile Include="AssemblyManagementService\IAssemblyManagementService.cs" />
+    <Compile Include="AssemblyManagementService\Data\AssemblyRegistration.cs" />
+    <Compile Include="AssemblyManagementService\VersioningExtensions.cs" />
+    <Compile Include="AssemblyManagementService\AssemblyManagementService.cs" />
+    <Compile Include="VaultService\IVaultService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Distributed\Data\regen_distributed_dao.cmd" />
+    <None Include="DistributedService\Data\regen_distributed_dao.cmd" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bam.Net.CoreServices\Bam.Net.CoreServices.csproj">
@@ -140,6 +163,10 @@
       <Project>{3b52b739-58fd-4b49-b815-6b317e701520}</Project>
       <Name>Bam.Net.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Encryption\Bam.Net.Encryption.csproj">
+      <Project>{f27dc9a6-e432-4d20-bcef-d10b0c2a657d}</Project>
+      <Name>Bam.Net.Encryption</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Messaging\Bam.Net.Messaging.csproj">
       <Project>{e330d601-62ea-439e-acd7-7236744562ff}</Project>
       <Name>Bam.Net.Messaging</Name>
@@ -152,6 +179,10 @@
       <Project>{8987d8c8-033b-4993-99f0-8dd5a4d6dd0d}</Project>
       <Name>Bam.Net.ServiceProxy</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Translation\Bam.Net.Translation.csproj">
+      <Project>{1821effd-3722-4580-8464-401d472e89b5}</Project>
+      <Name>Bam.Net.Translation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.UserAccounts\Bam.Net.UserAccounts.csproj">
       <Project>{74d5a262-b0b9-40e6-a3fd-b120dc8e9f54}</Project>
       <Name>Bam.Net.UserAccounts</Name>
@@ -161,6 +192,7 @@
       <Name>Bam.Net</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy $(TargetPath) c:\BamContent\apps\stickerize\services\

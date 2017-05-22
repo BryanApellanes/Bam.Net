@@ -8,7 +8,7 @@ using Bam.Net.ServiceProxy.Secure;
 
 namespace Bam.Net.CoreServices
 {
-    public class ClientApplicationFactory : MaximumLimitEnforcer<ServiceResponse<Data.Application>>
+    public class ClientApplicationFactory : MaximumLimitEnforcer<CoreServiceResponse<Data.Application>>
     {
         public ClientApplicationFactory(CoreApplicationRegistryService service, Data.User user, string organizationName, ProcessDescriptor processDescriptor)
         {
@@ -17,10 +17,10 @@ namespace Bam.Net.CoreServices
             CoreRegistryRepository = service.CoreRegistryRepository;
             OrganizationName = organizationName;
             ProcessDescriptor = processDescriptor;
-            ClientIp = service.ClientIp;
+            ClientIpAddress = service.ClientIpAddress;
             HostName = service.HostName;
         }
-        public string ClientIp { get; set; }
+        public string ClientIpAddress { get; set; }
         public string HostName { get; set; }
         public Data.User User { get; set; }
         public ProcessDescriptor ProcessDescriptor { get; set; }
@@ -49,7 +49,7 @@ namespace Bam.Net.CoreServices
             return 0;
         }
 
-        public override ServiceResponse<Data.Application> LimitNotReachedAction()
+        public override CoreServiceResponse<Data.Application> LimitNotReachedAction()
         {
             string ApplicationName = ProcessDescriptor.Application.Name;
             Organization org = User.Organizations.Where(o => o.Name.Equals(OrganizationName)).FirstOrDefault();
@@ -58,21 +58,21 @@ namespace Bam.Net.CoreServices
             {
                 app = new Data.Application { Name = ApplicationName, OrganizationId = org.Id };
                 app = CoreRegistryRepository.Save(app);
-                ProcessDescriptor instance = new ProcessDescriptor { InstanceIdentifier = $"{ClientIp}-{app.Name}-{app.Cuid}" };
+                ProcessDescriptor instance = new ProcessDescriptor { InstanceIdentifier = $"{ClientIpAddress}-{app.Name}-{app.Cuid}" };
                 app.Instances.Add(instance);
                 app.Machines.Add(new Machine { Name = HostName });
                 app = CoreApplicationRegistryService.AddApiKey(CoreRegistryRepository, app);
-                return new ServiceResponse<Data.Application>(app) { Success = true, Message = $"Application {ApplicationName} created" };
+                return new CoreServiceResponse<Data.Application>(app) { Success = true, Message = $"Application {ApplicationName} created" };
             }
             else
             {
-                return new ServiceResponse<Data.Application>(app) { Success = true, Message = $"Application {ApplicationName} already registered for the organization {OrganizationName}" };
+                return new CoreServiceResponse<Data.Application>(app) { Success = true, Message = $"Application {ApplicationName} already registered for the organization {OrganizationName}" };
             }
         }
 
-        public override ServiceResponse<Data.Application> LimitReachedAction()
+        public override CoreServiceResponse<Data.Application> LimitReachedAction()
         {
-            return new ServiceResponse<Data.Application>(null) { Success = false, Message = "Application NOT created; limit reached", Data = new ApplicationRegistrationResult { Status = ApplicationRegistrationStatus.LimitExceeded } };
+            return new CoreServiceResponse<Data.Application>(null) { Success = false, Message = "Application NOT created; limit reached", Data = new ApplicationRegistrationResult { Status = ApplicationRegistrationStatus.LimitExceeded } };
         }
 
     }

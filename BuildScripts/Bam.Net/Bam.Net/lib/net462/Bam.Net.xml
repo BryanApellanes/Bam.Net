@@ -1946,6 +1946,27 @@
             <param name="instance"></param>
             <returns></returns>
         </member>
+        <member name="M:Bam.Net.Extensions.CopyFile(System.IO.FileInfo,System.String)">
+            <summary>
+            Similar to File.CopyTo but keeps the file extension.
+            Example, "this.txt".CopyFile("that"); will return
+            a FileInfo representing "that.txt".
+            </summary>
+            <param name="file"></param>
+            <param name="newFileNameWithoutExtension"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Extensions.CopyFile(System.IO.FileInfo,System.String,System.String)">
+            <summary>
+            Similar to File.CopyTo but keeps the file extension.
+            Example, "this.txt".CopyFile("that"); will return
+            a FileInfo representing "that.txt".
+            </summary>
+            <param name="file"></param>
+            <param name="newFileNameWithoutExtension"></param>
+            <param name="directoryPath"></param>
+            <returns></returns>
+        </member>
         <member name="M:Bam.Net.Extensions.Times``1(System.Int32,System.Func{System.Int32,``0})">
             <summary>
             Execute the specified Func this 
@@ -2300,6 +2321,14 @@
             <param name="encoding"></param>
             <returns></returns>
         </member>
+        <member name="M:Bam.Net.Extensions.Sha256(System.IO.FileInfo,System.Text.Encoding)">
+            <summary>
+            Calculate the SHA256 for the contents of the specified file
+            </summary>
+            <param name="file"></param>
+            <param name="encoding"></param>
+            <returns></returns>
+        </member>
         <member name="M:Bam.Net.Extensions.IsText(System.IO.FileInfo)">
             <summary>
             Attempts to determine if the file is a text file
@@ -2516,17 +2545,11 @@
             <param name="filePath"></param>
             <param name="textToAppend"></param>
         </member>
-        <member name="M:Bam.Net.Extensions.ClearWriteLocks(System.Object)">
+        <member name="M:Bam.Net.Extensions.ClearFileAccessLocks(System.Object)">
             <summary>
             Clears the locks createed for writing and appending
             to files
             </summary>
-        </member>
-        <member name="M:Bam.Net.Extensions.ClearReadLocks(System.Object)">
-            <summary>
-            Clears the locks created for reading files.
-            </summary>
-            <param name="any"></param>
         </member>
         <member name="M:Bam.Net.Extensions.AddMissing``2(System.Collections.Generic.Dictionary{``0,``1},``0,``1)">
             <summary>

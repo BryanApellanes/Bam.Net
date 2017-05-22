@@ -9,7 +9,6 @@ nuget pack Bam.Net.Automation\Bam.Net.Automation.nuspec
 nuget pack Bam.Net\Bam.Net.nuspec
 nuget pack Bam.Net.CommandLine\Bam.Net.CommandLine.nuspec
 nuget pack Bam.Net.CoreServices\Bam.Net.CoreServices.nuspec
-nuget pack Bam.Net.Data\Bam.Net.Data.nuspec
 nuget pack Bam.Net.Data.Dynamic\Bam.Net.Data.Dynamic.nuspec
 nuget pack Bam.Net.Data.Repositories\Bam.Net.Data.Repositories.nuspec
 nuget pack Bam.Net.Documentation\Bam.Net.Documentation.nuspec

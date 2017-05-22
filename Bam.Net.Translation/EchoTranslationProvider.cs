@@ -15,5 +15,25 @@ namespace Bam.Net.Translation
         {
             return input;
         }
+
+        public override string Translate(string input, string languageIdentifier)
+        {
+            return input;
+        }
+
+        public override string TranslateLanguages(string input, string inputLanguageIdentifier, string outputLanguageIdentifier)
+        {
+            return input;
+        }
+
+        public override Language DetectLanguage(string text)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override string GetTranslationFromService(string twoLetterIsoLanguageCodeFrom, string twoLetterIsoLanguageCodeTo, string input)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

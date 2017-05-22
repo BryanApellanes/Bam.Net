@@ -265,13 +265,6 @@ namespace Bam.Net
             return principal.IsInRole(WindowsBuiltInRole.Administrator);
         }
 
-        public static IEnumerable<T> Cast<T>(this IEnumerable enumerable)
-        {
-            foreach (object o in enumerable)
-            {
-                yield return (T)o;
-            }
-        }
         public static IEnumerable<T> CopyAs<T>(this IEnumerable enumerable) where T : new()
         {
             foreach (object o in enumerable)
@@ -385,9 +378,54 @@ namespace Bam.Net
             return data;
         }
 
+        /// <summary>
+        /// Similar to File.CopyTo but keeps the file extension.
+        /// Example, "this.txt".CopyFile("that"); will return
+        /// a FileInfo representing "that.txt".
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="newFileNameWithoutExtension"></param>
+        /// <returns></returns>
+        public static FileInfo CopyFile(this FileInfo file, string newFileNameWithoutExtension)
+        {
+            return CopyFile(file, file.Directory.FullName, newFileNameWithoutExtension);
+        }
+
+        /// <summary>
+        /// Similar to File.CopyTo but keeps the file extension.
+        /// Example, "this.txt".CopyFile("that"); will return
+        /// a FileInfo representing "that.txt".
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="newFileNameWithoutExtension"></param>
+        /// <param name="directoryPath"></param>
+        /// <returns></returns>
+        public static FileInfo CopyFile(this FileInfo file, string directoryPath, string newFileNameWithoutExtension)
+        {
+            string newFileName = $"{newFileNameWithoutExtension}{file.Extension}";
+            string newFilePath = Path.Combine(directoryPath, newFileName);
+            file.CopyTo(newFilePath);
+            return new FileInfo(newFilePath);
+        }
+
         public static byte[] GUnzip(this byte[] data)
         {
-            throw new NotImplementedException();
+            using (MemoryStream readStream = new MemoryStream(data))
+            {
+                using(MemoryStream writeStream = new MemoryStream())
+                {
+                    using (GZipStream zipStream = new GZipStream(readStream, CompressionMode.Decompress))
+                    {
+                        byte[] readBuffer = new byte[1024];
+                        int countRead;
+                        while((countRead = zipStream.Read(readBuffer, 0, readBuffer.Length)) > 0)
+                        {
+                            writeStream.Write(readBuffer, 0, countRead);
+                        }
+                    }
+                    return writeStream.ToArray();
+                }
+            }
         }
 
         public static bool WriteResource(this Assembly assembly, Type siblingOfResource, string resourceName, FileInfo writeTo, ExistingFileAction existingFileAction = ExistingFileAction.DoNotOverwrite)
@@ -1490,11 +1528,6 @@ namespace Bam.Net
             return jObject.ToJson().FromJson(type);
         }
 
-        public static string ToHexString(this byte[] bytes)
-        {
-            return BitConverter.ToString(bytes).Replace("-", "").ToLower();
-        }
-
         public static string ContentHash(this string filePath, HashAlgorithms algorithm, Encoding encoding = null)
         {
             return ContentHash(new FileInfo(filePath), algorithm, encoding);
@@ -1535,11 +1568,17 @@ namespace Bam.Net
             return file.ContentHash(HashAlgorithms.SHA1, encoding);
         }
 
+        /// <summary>
+        /// Calculate the SHA256 for the contents of the specified file
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="encoding"></param>
+        /// <returns></returns>
         public static string Sha256(this FileInfo file, Encoding encoding = null)
         {
             return file.ContentHash(HashAlgorithms.SHA256, encoding);
         }
-
+        
         public static string Sha384(this FileInfo file, Encoding encoding = null)
         {
             return file.ContentHash(HashAlgorithms.SHA384, encoding);
@@ -1550,14 +1589,14 @@ namespace Bam.Net
             return file.ContentHash(HashAlgorithms.SHA512, encoding);
         }
 
-        public static string Hash(this string toBeHashed, HashAlgorithms algorithm, Encoding encoding = null)
+        public static string Sha1(this byte[] bytes)
         {
-            encoding = encoding ?? Encoding.UTF8;
-            HashAlgorithm alg = _hashAlgorithms[algorithm]();
-            byte[] bytes = encoding.GetBytes(toBeHashed);
-            byte[] hashBytes = alg.ComputeHash(bytes);
+            return Hash(bytes, HashAlgorithms.SHA1);
+        }
 
-            return hashBytes.ToHexString();
+        public static string Sha256(this byte[] bytes)
+        {
+            return Hash(bytes, HashAlgorithms.SHA256);
         }
 
         public static string Md5(this string toBeHashed, Encoding encoding = null)
@@ -1588,6 +1627,33 @@ namespace Bam.Net
         public static string Sha512(this string toBeHashed, Encoding encoding = null)
         {
             return toBeHashed.Hash(HashAlgorithms.SHA512, encoding);
+        }
+
+
+        public static string Hash(this string toBeHashed, HashAlgorithms algorithm, Encoding encoding = null)
+        {
+            encoding = encoding ?? Encoding.UTF8;
+            byte[] bytes = encoding.GetBytes(toBeHashed);
+
+            return Hash(bytes, algorithm);
+        }
+
+        public static string Hash(this byte[] bytes, HashAlgorithms algorithm)
+        {
+            HashAlgorithm alg = _hashAlgorithms[algorithm]();
+            byte[] hashBytes = alg.ComputeHash(bytes);
+
+            return hashBytes.ToHexString();
+        }
+
+        public static string ToHexString(this byte[] bytes)
+        {
+            return BitConverter.ToString(bytes).Replace("-", "").ToLower();
+        }
+
+        public static byte[] FromHexString(this string hexString)
+        {
+            return HexToBytes(hexString);
         }
 
         public static byte[] HexToBytes(this string hexString)
@@ -1884,7 +1950,7 @@ namespace Bam.Net
             return RandomHelper.Next(2) == 1;
         }
 
-        public static string RandomString(int length, bool mixCase, bool includeNumbers)
+        public static string RandomString(this int length, bool mixCase, bool includeNumbers)
         {
             if (length <= 0)
                 throw new InvalidOperationException("length must be greater than 0");
@@ -2267,7 +2333,21 @@ namespace Bam.Net
             }
         }
 
-        static Dictionary<string, object> safeReadLock = new Dictionary<string, object>();
+        static Dictionary<string, object> fileAccessLocks = new Dictionary<string, object>();
+        public static void SafeDeleteFile(this string filePath)
+        {
+            if (!File.Exists(filePath))
+            {
+                return;
+            }
+
+            EnsureLockObject(filePath);
+
+            lock (fileAccessLocks[filePath])
+            {
+                File.Delete(filePath);
+            }
+        }
         /// <summary>
         /// Returns the content of the file refferred to by the current
         /// string instance.
@@ -2276,25 +2356,37 @@ namespace Bam.Net
         /// <returns></returns>
         public static string SafeReadFile(this string filePath)
         {
-            if (!safeReadLock.ContainsKey(filePath))
-                safeReadLock.Add(filePath, new object());
-
             if (!File.Exists(filePath))
+            {
                 return string.Empty;
+            }
 
-            string retVal = string.Empty;
+            EnsureLockObject(filePath);
 
-            lock (safeReadLock[filePath])
+            lock (fileAccessLocks[filePath])
             {
                 using (StreamReader sr = new StreamReader(filePath))
                 {
-                    retVal = sr.ReadToEnd();
+                    return sr.ReadToEnd();
                 }
             }
-            return retVal;
         }
 
-        static Dictionary<string, object> safeWriteLock = new Dictionary<string, object>();
+        public static byte[] SafeReadFileBytes(this string filePath)
+        {            
+            if (!File.Exists(filePath))
+            {
+                return new byte[]{ };
+            }
+
+            EnsureLockObject(filePath);
+
+            lock (fileAccessLocks[filePath])
+            {
+                return File.ReadAllBytes(filePath);
+            }
+        }
+
         public static void SafeWriteFile(this string filePath, string textToWrite, Action<object> postWriteAction = null)
         {
             SafeWriteFile(filePath, textToWrite, false, postWriteAction);
@@ -2318,6 +2410,63 @@ namespace Bam.Net
         /// <param name="overwrite">True to overwrite.  If false and the file exists an InvalidOperationException will be thrown.</param>
         public static void SafeWriteFile(this string filePath, string textToWrite, bool overwrite, Action<object> postWriteAction = null)
         {
+            FileInfo fileInfo = HandleExisting(filePath, overwrite);
+
+            lock (fileAccessLocks)
+            {
+                EnsureLockObject(fileInfo.FullName);
+
+                lock (fileAccessLocks[fileInfo.FullName])
+                {
+                    using (StreamWriter sw = new StreamWriter(filePath))
+                    {
+                        sw.Write(textToWrite);
+                    }
+                }
+            }
+
+            postWriteAction?.Invoke(fileInfo);
+        }
+        public static void SafeWriteFileBytes(this string filePath, byte[] bytesToWrite, bool overwrite, Action<object> postWriteAction = null)
+        {
+            SafeWriteFileBytes(filePath, bytesToWrite, 0, overwrite, postWriteAction);
+        }
+
+        public static void SafeWriteFileBytes(this string filePath, byte[] bytesToWrite, long startIndex, bool overwrite, Action<object> postWriteAction = null)
+        {
+            FileInfo fileInfo = new FileInfo(filePath);
+            if(startIndex == 0)
+            {
+                fileInfo = HandleExisting(filePath, overwrite);
+            }
+
+            lock (fileAccessLocks)
+            {
+                EnsureLockObject(fileInfo.FullName);
+
+                lock (fileAccessLocks[fileInfo.FullName])
+                {
+                    using (FileStream sw = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+                    {
+                        sw.Seek(startIndex, SeekOrigin.Begin);
+                        sw.Write(bytesToWrite, 0, bytesToWrite.Length);
+                    }
+                }
+            }
+
+            postWriteAction?.Invoke(fileInfo);
+        }
+
+        private static void EnsureLockObject(string filePath)
+        {
+            if (!fileAccessLocks.ContainsKey(filePath))
+            {
+                fileAccessLocks.Add(filePath, new object());
+            }
+        }
+
+        private static FileInfo HandleExisting(string filePath, bool overwrite)
+        {
             FileInfo fileInfo = new FileInfo(filePath);
 
             if (!Directory.Exists(fileInfo.Directory.FullName))
@@ -2330,26 +2479,7 @@ namespace Bam.Net
                 throw new InvalidOperationException("File already exists and 'overwrite' parameter was false");
             }
 
-            lock (safeWriteLock)
-            {
-                if (!safeWriteLock.ContainsKey(fileInfo.FullName))
-                {
-                    safeWriteLock.Add(fileInfo.FullName, new object());
-                }
-
-                lock (safeWriteLock[fileInfo.FullName])
-                {
-                    using (StreamWriter sw = new StreamWriter(filePath))
-                    {
-                        sw.Write(textToWrite);
-                    }
-                }
-            }
-
-            if (postWriteAction != null)
-            {
-                postWriteAction(new { });
-            }
+            return fileInfo;
         }
 
         /// <summary>
@@ -2362,11 +2492,9 @@ namespace Bam.Net
         {
             FileInfo fileInfo = new FileInfo(filePath);
 
-            if (!safeWriteLock.ContainsKey(fileInfo.FullName))
-            {
-                safeWriteLock.Add(fileInfo.FullName, new object());
-            }
-            lock (safeWriteLock[fileInfo.FullName])
+            EnsureLockObject(fileInfo.FullName);
+
+            lock (fileAccessLocks[fileInfo.FullName])
             {
                 using (StreamWriter sw = new StreamWriter(filePath, true))
                 {
@@ -2380,23 +2508,11 @@ namespace Bam.Net
         /// Clears the locks createed for writing and appending
         /// to files
         /// </summary>
-        public static void ClearWriteLocks(this object any)
+        public static void ClearFileAccessLocks(this object any)
         {
-            lock (safeWriteLock)
+            lock (fileAccessLocks)
             {
-                safeWriteLock.Clear();
-            }
-        }
-
-        /// <summary>
-        /// Clears the locks created for reading files.
-        /// </summary>
-        /// <param name="any"></param>
-        public static void ClearReadLocks(this object any)
-        {
-            lock (safeReadLock)
-            {
-                safeReadLock.Clear();
+                fileAccessLocks.Clear();
             }
         }
 

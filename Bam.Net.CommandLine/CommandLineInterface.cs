@@ -914,7 +914,7 @@ File Version: {1}
             foreach (MethodInfo method in methods)
             {
                 object action = null;
-                if (method.HasCustomAttributeOfType(attributeAddorningMethod, false, out action)) //HasCustomAttributeOfType(method, out action))
+                if (method.HasCustomAttributeOfType(attributeAddorningMethod, false, out action)) 
                 {
                     actions.Add(new ConsoleInvokeableMethod(method, (Attribute)action));
                 }

@@ -32,7 +32,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\..\tvg\gloo\</OutputPath>
+    <OutputPath>bin\x64\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -193,8 +193,7 @@
     <Compile Include="CoreRegistryProviderAttribute.cs" />
     <Compile Include="ProxySettingsInfo.cs" />
     <Compile Include="ServiceConfig.cs" />
-    <Compile Include="ServiceRequest.cs" />
-    <Compile Include="Services\ApplicationConfiguration.cs" />
+    <Compile Include="ApplicationConfiguration.cs" />
     <Compile Include="Services\ClientApplicationFactory.cs" />
     <Compile Include="DatabaseProvider.cs" />
     <Compile Include="IDatabaseProvider.cs" />
@@ -208,8 +207,6 @@
     <Compile Include="Services\SettingSource.cs" />
     <Compile Include="Services\CoreApplicationRegistryServiceConfig.cs" />
     <Compile Include="Services\CoreProxyableService.cs" />
-    <Compile Include="Services\CoreTranslationDatabase.cs" />
-    <Compile Include="Services\CoreTranslationService.cs" />
     <Compile Include="Data\ApiKey.cs" />
     <Compile Include="Data\Application.cs" />
     <Compile Include="Data\ClientServerConnection.cs" />
@@ -218,11 +215,9 @@
     <Compile Include="Data\ProcessDescriptor.cs" />
     <Compile Include="Data\Subscription.cs" />
     <Compile Include="Data\User.cs" />
-    <Compile Include="Services\OrganizationFactory.cs" />
+    <Compile Include="OrganizationFactory.cs" />
     <Compile Include="Services\SourcedConfigurationSetting.cs" />
     <Compile Include="Services\SubscriptionLevel.cs" />
-    <Compile Include="Services\TranslationInfo.cs" />
-    <Compile Include="Services\YandexApiKeyVaultInfo.cs" />
     <Compile Include="SQLiteDatabaseProvider.cs" />
     <Compile Include="Services\CoreRegistryProvider.cs" />
     <Compile Include="Services\CoreApplicationRegistryService.cs" />
@@ -243,7 +238,7 @@
     <Compile Include="ProxySettings.cs" />
     <Compile Include="ProxyTemplate.cs" />
     <Compile Include="ProxyableService.cs" />
-    <Compile Include="ServiceResponse.cs" />
+    <Compile Include="CoreServiceResponse.cs" />
     <Compile Include="StaticApplicationNameProvider.cs" />
   </ItemGroup>
   <ItemGroup>

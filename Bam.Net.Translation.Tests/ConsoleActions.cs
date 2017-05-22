@@ -44,8 +44,6 @@ namespace Bam.Net.Translation.Tests
             TranslationProvider.EnsureLanguages(translationDb);
         }
 
-
-
         static string apiKeyKey = "YandexApiKey";
         [ConsoleAction("Set Yandex api key in vault file")]
         public void SetYandexApiKey()

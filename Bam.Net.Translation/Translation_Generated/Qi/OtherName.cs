@@ -86,7 +86,7 @@ namespace Bam.Net.Translation.Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Bam.Net.Translation.OtherName));
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.Translation.OtherName));
 				object value = Bam.Net.Translation.OtherName.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Bam.Net.Translation.Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Bam.Net.Translation.OtherName));
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.Translation.OtherName));
 				object[] value = Bam.Net.Translation.OtherName.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

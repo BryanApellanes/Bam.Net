@@ -67,7 +67,7 @@ namespace Bam.Net.CoreServices
         {
             return UserName;
         }
-
+        
         [Exclude]
         public abstract object Clone();
 
@@ -102,7 +102,7 @@ namespace Bam.Net.CoreServices
         }
 
         [Exclude]
-        public string ApplicationName
+        public virtual string ApplicationName
         {
             get
             {
@@ -111,14 +111,14 @@ namespace Bam.Net.CoreServices
             }
         }
 
-
         [Exclude]
-        public string ClientIp
+        public string ClientIpAddress
         {
             get
             {
                 return HttpContext?.Request?.Headers["HTTP_X_FORWARDED_FOR"]
-                        .Or(HttpContext?.Request?.Headers["REMOTE_ADDR"]);
+                        .Or(HttpContext?.Request?.Headers["REMOTE_ADDR"])
+                        .Or(HttpContext?.Request?.UserHostAddress);
             }
         }
 
@@ -167,7 +167,7 @@ namespace Bam.Net.CoreServices
                 _userManager = value;
             }
         }
-
+        
         [Exclude]
         public IUserResolver UserResolver { get; set; }
 

@@ -9,6 +9,16 @@ namespace Bam.Net.CoreServices.Data
 {
     public class Organization: AuditRepoData
     {
+        static Organization _public;
+        static object _publicLock = new object();
+        public static Organization Public
+        {
+            get
+            {
+                return _publicLock.DoubleCheckLock(ref _public, () => new Organization { Name = "PUBLIC" });
+            }
+        }
+
         public string Name { get; set; }
         public virtual Application[] Applications { get; set; }
         public virtual User[] Users { get; set; }

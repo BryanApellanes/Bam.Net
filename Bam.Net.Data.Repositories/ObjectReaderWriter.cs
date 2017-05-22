@@ -176,11 +176,11 @@ namespace Bam.Net.Data.Repositories
 			FileInfo idHash = new FileInfo(Path.Combine(hashDir.FullName, meta.IdHash));
 			if(!uuidHash.Exists)
 			{
-				meta.UuidHash.SafeWriteToFile(uuidHash.FullName, true, o => o.ClearWriteLocks());
+				meta.UuidHash.SafeWriteToFile(uuidHash.FullName, true, o => o.ClearFileAccessLocks());
 			}
 			if (!idHash.Exists)
 			{
-				meta.IdHash.SafeWriteToFile(idHash.FullName, true, o => o.ClearWriteLocks());
+				meta.IdHash.SafeWriteToFile(idHash.FullName, true, o => o.ClearFileAccessLocks());
 			}
 		}
 

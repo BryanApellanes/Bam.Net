@@ -90,7 +90,6 @@ namespace Bam.Net.Data.Repositories
             {
                 _baseNamespace = value;
                 TypeDaoGenerator.BaseNamespace = _baseNamespace;
-                //DaoNamespace = $"{_baseNamespace}.Dao";
             }
         }
 
@@ -504,7 +503,7 @@ namespace Bam.Net.Data.Repositories
 		{
 			Type pocoType = typeof(T);
             IEnumerable daoResults = Query(pocoType, query);
-            return daoResults.Cast<T>();
+            return daoResults.CopyAs<T>();
         }
 
         public override IEnumerable<object> Query(Type pocoType, QueryFilter query)
@@ -529,7 +528,7 @@ namespace Bam.Net.Data.Repositories
 
         public IEnumerable<T> Top<T>(int count, QueryFilter query) where T : new()
         {
-            return Top(count, typeof(T), query).Cast<T>();
+            return Top(count, typeof(T), query).CopyAs<T>();
         }
         public IEnumerable Top(int count, Type pocoType, QueryFilter query)
         {

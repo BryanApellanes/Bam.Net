@@ -9,10 +9,28 @@ using Bam.Net;
 using Bam.Net.Data;
 using Bam.Net.Data.Qi;
 
-namespace Bam.Net.Exegete
+namespace Bam.Net.Translation
 {
 	public partial class Language
 	{
-		  // Your code here
-	}
+        static Language _default;
+        static object _defaultLock = new object();
+        public static Language Default
+        {
+            get
+            {
+                return _defaultLock.DoubleCheckLock(ref _default, () => OneWhere(c => c.ISO6391 == "en", LanguageDatabase.Default));
+            }
+        }
+
+        public static implicit operator string(Language lang)
+        {
+            return lang.EnglishName;
+        }
+
+        public static implicit operator Language(string languageIdentifier)
+        {
+            return TranslationProvider.FindLanguage(languageIdentifier, LanguageDatabase.Default);
+        }
+    }
 }																								

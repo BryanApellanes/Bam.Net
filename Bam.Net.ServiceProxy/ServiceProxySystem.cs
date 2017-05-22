@@ -334,9 +334,10 @@ namespace Bam.Net.ServiceProxy
             return defaultBaseAddress;
         }
 
-        public static StringBuilder GenerateCSharpProxyCode(string nameSpace, params Type[] types)
+        public static StringBuilder GenerateCSharpProxyCode(string protocol, string hostName, int port, string nameSpace, params Type[] types)
         {
-            return GenerateCSharpProxyCode("http://localhost:8080", nameSpace, "{0}.Contracts"._Format(nameSpace), types);
+            string baseAddress = $"{protocol}://{hostName}:{port}";
+            return GenerateCSharpProxyCode(baseAddress, nameSpace, "{0}.Contracts"._Format(nameSpace), types);
         }
 
         public static StringBuilder GenerateCSharpProxyCode(string defaultBaseAddress, string[] classNames, string nameSpace, string contractNamespace)

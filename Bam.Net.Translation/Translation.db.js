@@ -31,7 +31,8 @@ var database = {
                 { TextId: "Text" }
             ],
             cols: [
-                { Detector: "String", Null: false }
+                { Detector: "String", Null: false },
+                { ResponseData: "String", Null: true }
             ]
         },
         {
@@ -41,7 +42,7 @@ var database = {
                 { LanguageId: "Language" }
             ],
             cols: [
-                { TranslatorUuid: "String", Null: false },
+                { Translator: "String", Null: false },
                 { Value: "String", Null: false }
             ]
         },

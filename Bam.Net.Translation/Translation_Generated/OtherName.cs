@@ -18,7 +18,7 @@ namespace Bam.Net.Translation
 	// connection Name = Translation
 	[Serializable]
 	[Bam.Net.Data.Table("OtherName", "Translation")]
-	public partial class OtherName: Dao
+	public partial class OtherName: Bam.Net.Data.Dao
 	{
 		public OtherName():base()
 		{
