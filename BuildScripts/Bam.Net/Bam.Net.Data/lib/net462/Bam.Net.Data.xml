@@ -884,6 +884,36 @@
             <param name="index"></param>
             <returns></returns>
         </member>
+        <member name="F:Bam.Net.Data.SqlDialect.Ms">
+            <summary>
+            Microsoft sql; same as MsSql
+            </summary>
+        </member>
+        <member name="F:Bam.Net.Data.SqlDialect.MsSql">
+            <summary>
+            Microsoft sql; same as Ms
+            </summary>
+        </member>
+        <member name="F:Bam.Net.Data.SqlDialect.My">
+            <summary>
+            My sql; same as MySql
+            </summary>
+        </member>
+        <member name="F:Bam.Net.Data.SqlDialect.MySql">
+            <summary>
+            My sql; same as My
+            </summary>
+        </member>
+        <member name="F:Bam.Net.Data.SqlDialect.Postgres">
+            <summary>
+            Postgres sql; same as Npgsql
+            </summary>
+        </member>
+        <member name="F:Bam.Net.Data.SqlDialect.Npgsql">
+            <summary>
+            Postgres sql; same as Postgres
+            </summary>
+        </member>
         <member name="M:Bam.Net.Data.SqlStringBuilder.TryExecute(Bam.Net.Data.Database,System.Exception@)">
             <summary>
             Tries to execute the script by wrapping a call to Execute

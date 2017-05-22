@@ -6,7 +6,6 @@ call copy_Bam.Net.Automation.cmd %1
 call copy_Bam.Net.cmd %1
 call copy_Bam.Net.CommandLine.cmd %1
 call copy_Bam.Net.CoreServices.cmd %1
-call copy_Bam.Net.Data.cmd %1
 call copy_Bam.Net.Data.Dynamic.cmd %1
 call copy_Bam.Net.Data.Repositories.cmd %1
 call copy_Bam.Net.Documentation.cmd %1

@@ -1,4 +1,1 @@
 
- -   SqlStringBuilder improved dynamic parameter handling (c859afd)
- -   dynamic query extension to sqlstringbuilder (7f11458)
- -   fix nuspec (4c95df6)
