@@ -169,7 +169,7 @@
     <Compile Include="LogEntry.cs" />
     <Compile Include="LogReader.cs" />
     <Compile Include="LogReaderFactory.cs" />
-    <Compile Include="NLog\NLogTarget.cs" />
+    <Compile Include="NLog\BamNLogTarget.cs" />
     <Compile Include="ObjectRepositoryLogger.cs" />
     <Compile Include="PersistingEventIdProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
