@@ -184,6 +184,7 @@
     <Compile Include="IWriteSource.cs" />
     <Compile Include="Logging\ClientLogger.cs" />
     <Compile Include="ApplicationDiagnosticInfo.cs" />
+    <Compile Include="Logging\IEventIdProvider.cs" />
     <Compile Include="Logging\ILog.cs" />
     <Compile Include="Logging\ILoggable.cs" />
     <Compile Include="Logging\Loggable.cs" />
@@ -229,7 +230,7 @@
     <Compile Include="RandomNumber.cs" />
     <Compile Include="JulianDate.cs" />
     <Compile Include="Logging\BlockingLogger.cs" />
-    <Compile Include="Logging\EventIdProvider.cs" />
+    <Compile Include="Logging\HashingEventIdProvider.cs" />
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Logging\LogEntryAddedListener.cs" />

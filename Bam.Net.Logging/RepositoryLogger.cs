@@ -14,7 +14,8 @@ namespace Bam.Net.Logging
 	{
 		public RepositoryLogger(IRepository repository)
 		{
-			this.Repository = repository;
+			Repository = repository;
+            Repository.AddType<LogEvent>();
 		}
 
 		public IRepository Repository { get; set; }

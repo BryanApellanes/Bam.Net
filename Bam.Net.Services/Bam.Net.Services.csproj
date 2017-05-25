@@ -85,6 +85,7 @@
     <Compile Include="DistributedService\Data\Files\ChunkDataDescriptor.cs" />
     <Compile Include="DistributedService\Data\OperationIntent.cs" />
     <Compile Include="DistributedService\Data\OpertionEventArgs.cs" />
+    <Compile Include="DistributedService\EventSourceService.cs" />
     <Compile Include="DistributedService\Files\ChunkedFile.cs" />
     <Compile Include="DistributedService\Files\ChunkedFileDataDescriptor.cs" />
     <Compile Include="DistributedService\Files\FileServiceSettings.cs" />
@@ -105,7 +106,6 @@
     <Compile Include="DistributedService\Data\WriteEvent.cs" />
     <Compile Include="DistributedService\Data\WriteOperation.cs" />
     <Compile Include="SystemEventMessage.cs" />
-    <Compile Include="EventSourceService.cs" />
     <Compile Include="DistributedService\EventSourceServiceArgs.cs" />
     <Compile Include="DistributedService\ExternalEventSubscription.cs" />
     <Compile Include="DistributedService\Files\FileService.cs" />

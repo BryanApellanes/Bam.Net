@@ -1651,6 +1651,49 @@ namespace Bam.Net
             return BitConverter.ToString(bytes).Replace("-", "").ToLower();
         }
 
+        public static int ToHashInt(this string toBeHashed, HashAlgorithms algorithm, Encoding encoding = null)
+        {
+            byte[] hashBytes = ToHashBytes(toBeHashed, algorithm, encoding);
+
+            return BitConverter.ToInt32(hashBytes, 0);
+        }
+
+        public static long ToHashLong(this string toBeHashed, HashAlgorithms algorithm, Encoding encoding= null)
+        {
+            byte[] hashBytes = ToHashBytes(toBeHashed, algorithm, encoding);
+
+            return BitConverter.ToInt64(hashBytes, 0);
+        }
+
+        public static byte[] ToHashBytes(string toBeHashed, HashAlgorithms algorithm, Encoding encoding = null)
+        {
+            HashAlgorithm alg = _hashAlgorithms[algorithm]();
+            encoding = encoding ?? Encoding.UTF8;
+            byte[] bytes = encoding.GetBytes(toBeHashed);
+            byte[] hashBytes = alg.ComputeHash(bytes);
+            return hashBytes;
+        }
+
+        public static int ToSha1Int(this string toBeHashed)
+        {
+            return ToHashInt(toBeHashed, HashAlgorithms.SHA1);
+        }
+
+        public static int ToSha256Int(this string toBeHashed)
+        {
+            return ToHashInt(toBeHashed, HashAlgorithms.SHA256);
+        }
+
+        public static long ToSha256Long(this string toBeHashed)
+        {
+            return ToHashLong(toBeHashed, HashAlgorithms.SHA256);
+        }
+
+        public static long ToSha1Long(this string toBeHashed)
+        {
+            return ToHashLong(toBeHashed, HashAlgorithms.SHA1);
+        }
+
         public static byte[] FromHexString(this string hexString)
         {
             return HexToBytes(hexString);

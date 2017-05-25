@@ -8,9 +8,12 @@ using System.Text;
 
 namespace Bam.Net.Logging
 {
-    public class WindowsEventIdProvider: EventIdProvider
+    /// <summary>
+    /// Event Id provider for use with windows log, always returns 0
+    /// </summary>
+    public class WindowsEventIdProvider: IEventIdProvider
     {
-        public override int GetEventId(string applicationName, string messageSignature)
+        public int GetEventId(string applicationName, string messageSignature)
         {
             return 0;
         }
