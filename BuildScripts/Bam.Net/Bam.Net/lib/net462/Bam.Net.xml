@@ -1035,6 +1035,11 @@
             then the full path to ~/AppData/ is returned. 
             </summary>
         </member>
+        <member name="T:Bam.Net.Logging.WindowsEventIdProvider">
+            <summary>
+            Event Id provider for use with windows log, always returns 0
+            </summary>
+        </member>
         <member name="T:Bam.Net.Logging.WindowsLogger">
             <summary>
             An LoggerBase implementation that commits logs to the 
