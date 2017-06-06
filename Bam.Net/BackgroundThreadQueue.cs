@@ -14,23 +14,25 @@ namespace Bam.Net
     /// enqueued items in a background thread
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class BackgroundThreadQueue<T>
+    public class BackgroundThreadQueue<T>: Loggable
     {
         bool _warned;
         public BackgroundThreadQueue()
         {
+            Continue = true;
             Process = (o) => 
             {
                 if (!_warned)
                 {
                     _warned = true;
-                    Log.Warn("No queue processor defined");
+                    FireEvent(Exception, new BackgroundThreadQueueEventArgs { Exception = new InvalidOperationException("No processor defined") });
                 }
             };
         }
 
         public BackgroundThreadQueue(Action<T> process)
         {
+            Continue = true;
             Process = process;
         }
 
@@ -55,6 +57,8 @@ namespace Bam.Net
             _waitSignal.Set();
         }
 
+        public event EventHandler Exception;
+        protected bool Continue { get; set; }
         Thread _processThread;
         AutoResetEvent _waitSignal = new AutoResetEvent(false);
         object _processThreadLock = new object();
@@ -66,15 +70,22 @@ namespace Bam.Net
                 {
                     _processThread = new Thread(() =>
                     {
-                        while (true)
+                        while (Continue)
                         {
-                            _waitSignal.WaitOne();
-                            while (_processQueue.Count > 0)
+                            try
                             {
-                                if (_processQueue.TryDequeue(out T val))
+                                _waitSignal.WaitOne();
+                                while (_processQueue.Count > 0)
                                 {
-                                    Process(val);
+                                    if (_processQueue.TryDequeue(out T val))
+                                    {
+                                        Process(val);
+                                    }
                                 }
+                            }
+                            catch (Exception ex)
+                            {
+                                FireEvent(Exception, new BackgroundThreadQueueEventArgs { Exception = ex });
                             }
                         }
                     })

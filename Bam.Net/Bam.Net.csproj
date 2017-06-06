@@ -146,6 +146,7 @@
     <Compile Include="Args.cs" />
     <Compile Include="AssemblyResolve.cs" />
     <Compile Include="BackgroundThreadQueue.cs" />
+    <Compile Include="BackgroundThreadQueueEventArgs.cs" />
     <Compile Include="CompilationException.cs" />
     <Compile Include="Configuration\Configurable.cs" />
     <Compile Include="Configuration\DefaultConfigurationApplicationNameProvider.cs" />
@@ -173,6 +174,7 @@
     <Compile Include="ExceptionHandling\ReflectionTypeLoadAggregateException.cs" />
     <Compile Include="ExcludeAttribute.cs" />
     <Compile Include="ExistingFileAction.cs" />
+    <Compile Include="FileLock.cs" />
     <Compile Include="FileSystemWatchingExtensions.cs" />
     <Compile Include="GeneratedAssemblies.cs" />
     <Compile Include="GeneratedAssemblyInfo.cs" />

@@ -91,8 +91,8 @@ namespace Bam.Net
 		{
 			get
 			{
-				return Path.Combine(Root, string.Format("{0}.genInfo.json", InfoFileName));
-			}
+                return new FileInfo(Path.Combine(Root, string.Format("{0}.genInfo.json", InfoFileName))).FullName;
+            }
 		}
 
 		public bool InfoFileExists

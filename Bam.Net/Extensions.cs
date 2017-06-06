@@ -294,10 +294,38 @@ namespace Bam.Net
                 yield return o.CopyAs(type, ctorParams);
             }
         }
-
+        
         public static object CopyAs<T>(this object source, params object[] ctorParams)
         {
             return CopyAs(source, typeof(T), ctorParams);
+        }
+        public static T ToInstance<T>(this Dictionary<string, string> dictionary) where T : class, new()
+        {
+            return CopyAs<T>(dictionary);
+        }
+        public static T CopyAs<T>(this Dictionary<string, string> dictionary) where T: class, new()
+        {
+            T result = new T();
+            foreach(string key in dictionary.Keys)
+            {
+                result.Property(key, dictionary[key]);
+            }
+            return result;
+        }
+
+        public static object ToInstance(this Dictionary<string, string> dictionary, Type type, params object[] ctorParams)
+        {
+            return CopyAs(dictionary, type, ctorParams);
+        }
+
+        public static object CopyAs(this Dictionary<string, string> dictionary, Type type, params object[] ctorParams)
+        {
+            object result = type.Construct(ctorParams);
+            foreach(string key in dictionary.Keys)
+            {
+                result.Property(key, dictionary[key]);
+            }
+            return result;
         }
 
         /// <summary>
@@ -2377,20 +2405,7 @@ namespace Bam.Net
         }
 
         static Dictionary<string, object> fileAccessLocks = new Dictionary<string, object>();
-        public static void SafeDeleteFile(this string filePath)
-        {
-            if (!File.Exists(filePath))
-            {
-                return;
-            }
 
-            EnsureLockObject(filePath);
-
-            lock (fileAccessLocks[filePath])
-            {
-                File.Delete(filePath);
-            }
-        }
         /// <summary>
         /// Returns the content of the file refferred to by the current
         /// string instance.
@@ -2403,10 +2418,8 @@ namespace Bam.Net
             {
                 return string.Empty;
             }
-
-            EnsureLockObject(filePath);
-
-            lock (fileAccessLocks[filePath])
+            
+            lock (FileLock.Named(filePath))
             {
                 using (StreamReader sr = new StreamReader(filePath))
                 {
@@ -2421,10 +2434,8 @@ namespace Bam.Net
             {
                 return new byte[]{ };
             }
-
-            EnsureLockObject(filePath);
-
-            lock (fileAccessLocks[filePath])
+            
+            lock (FileLock.Named(filePath))
             {
                 return File.ReadAllBytes(filePath);
             }
@@ -2455,16 +2466,11 @@ namespace Bam.Net
         {
             FileInfo fileInfo = HandleExisting(filePath, overwrite);
 
-            lock (fileAccessLocks)
+            lock (FileLock.Named(fileInfo.FullName))
             {
-                EnsureLockObject(fileInfo.FullName);
-
-                lock (fileAccessLocks[fileInfo.FullName])
+                using (StreamWriter sw = new StreamWriter(filePath))
                 {
-                    using (StreamWriter sw = new StreamWriter(filePath))
-                    {
-                        sw.Write(textToWrite);
-                    }
+                    sw.Write(textToWrite);
                 }
             }
 
@@ -2483,17 +2489,12 @@ namespace Bam.Net
                 fileInfo = HandleExisting(filePath, overwrite);
             }
 
-            lock (fileAccessLocks)
+            lock (FileLock.Named(fileInfo.FullName))
             {
-                EnsureLockObject(fileInfo.FullName);
-
-                lock (fileAccessLocks[fileInfo.FullName])
+                using (FileStream sw = new FileStream(filePath, FileMode.Create, FileAccess.Write))
                 {
-                    using (FileStream sw = new FileStream(filePath, FileMode.Create, FileAccess.Write))
-                    {
-                        sw.Seek(startIndex, SeekOrigin.Begin);
-                        sw.Write(bytesToWrite, 0, bytesToWrite.Length);
-                    }
+                    sw.Seek(startIndex, SeekOrigin.Begin);
+                    sw.Write(bytesToWrite, 0, bytesToWrite.Length);
                 }
             }
 
@@ -2534,10 +2535,8 @@ namespace Bam.Net
         public static void SafeAppendToFile(this string textToAppend, string filePath)
         {
             FileInfo fileInfo = new FileInfo(filePath);
-
-            EnsureLockObject(fileInfo.FullName);
-
-            lock (fileAccessLocks[fileInfo.FullName])
+            
+            lock (FileLock.Named(fileInfo.FullName))
             {
                 using (StreamWriter sw = new StreamWriter(filePath, true))
                 {
@@ -2553,10 +2552,7 @@ namespace Bam.Net
         /// </summary>
         public static void ClearFileAccessLocks(this object any)
         {
-            lock (fileAccessLocks)
-            {
-                fileAccessLocks.Clear();
-            }
+            FileLock.ClearLocks();
         }
 
         /// <summary>
@@ -3020,10 +3016,10 @@ namespace Bam.Net
         /// <typeparam name="PropertyAttributeFilter">The attribute to look for when copying properties</typeparam>
         /// <param name="objectToClone">The object to clone</param>
         /// <returns>An in memory type that is not persisted to disk.</returns>
-        public static Type CreateDynamicType<PropertyAttributeFilter>(this object objectToClone) where PropertyAttributeFilter : Attribute, new()
+        public static Type BuildDynamicType<PropertyAttributeFilter>(this object objectToClone) where PropertyAttributeFilter : Attribute, new()
         {
             AssemblyBuilder ignore;
-            return CreateDynamicType<PropertyAttributeFilter>(objectToClone, out ignore);
+            return BuildDynamicType<PropertyAttributeFilter>(objectToClone, out ignore);
         }
 
         /// <summary>
@@ -3034,10 +3030,10 @@ namespace Bam.Net
         /// <typeparam name="PropertyAttributeFilter">The attribute to look for when copying properties</typeparam>
         /// <param name="typeToClone"></param>
         /// <returns></returns>
-        public static Type CreateDynamicType<PropertyAttributeFilter>(this Type typeToClone) where PropertyAttributeFilter : Attribute, new()
+        public static Type BuildDynamicType<PropertyAttributeFilter>(this Type typeToClone) where PropertyAttributeFilter : Attribute, new()
         {
             AssemblyBuilder ignore;
-            return CreateDynamicType<PropertyAttributeFilter>(typeToClone, out ignore, false);
+            return BuildDynamicType<PropertyAttributeFilter>(typeToClone, out ignore, false);
         }
 
         /// <summary>
@@ -3049,10 +3045,10 @@ namespace Bam.Net
         /// <param name="objectToClone">The object to clone</param>
         /// <param name="concreteAttribute">If true the attributes must be of the specified type and not extenders of the type.</param>
         /// <returns>An in memory type that is not persisted to disk.</returns>
-        public static Type CreateDynamicType<PropertyAttributeFilter>(this object objectToClone, bool concreteAttribute) where PropertyAttributeFilter : Attribute, new()
+        public static Type BuildDynamicType<PropertyAttributeFilter>(this object objectToClone, bool concreteAttribute) where PropertyAttributeFilter : Attribute, new()
         {
             AssemblyBuilder ignore;
-            return CreateDynamicType<PropertyAttributeFilter>(objectToClone, out ignore, concreteAttribute);
+            return BuildDynamicType<PropertyAttributeFilter>(objectToClone, out ignore, concreteAttribute);
         }
 
         /// <summary>
@@ -3063,9 +3059,9 @@ namespace Bam.Net
         /// <typeparam name="PropertyAttributeFilter">The attribute to look for when copying properties</typeparam>
         /// <param name="objectToClone">The object to clone</param>
         /// <returns>An in memory type that is not persisted to disk.</returns>
-        public static Type CreateDynamicType<PropertyAttributeFilter>(this object objectToClone, out AssemblyBuilder assemblyBuilder) where PropertyAttributeFilter : Attribute, new()
+        public static Type BuildDynamicType<PropertyAttributeFilter>(this object objectToClone, out AssemblyBuilder assemblyBuilder) where PropertyAttributeFilter : Attribute, new()
         {
-            return CreateDynamicType<PropertyAttributeFilter>(objectToClone, out assemblyBuilder, false);
+            return BuildDynamicType<PropertyAttributeFilter>(objectToClone, out assemblyBuilder, false);
         }
 
         /// <summary>
@@ -3077,34 +3073,36 @@ namespace Bam.Net
         /// <param name="objectToClone">The object to clone</param>
         /// <param name="concreteAttribute">If true the attributes must be of the specified type and not extenders of the type.</param>
         /// <returns>An in memory type that is not persisted to disk.</returns>
-        public static Type CreateDynamicType<PropertyAttributeFilter>(this object objectToClone, out AssemblyBuilder assemblyBuilder, bool concreteAttribute) where PropertyAttributeFilter : Attribute, new()
+        public static Type BuildDynamicType<PropertyAttributeFilter>(this object objectToClone, out AssemblyBuilder assemblyBuilder, bool concreteAttribute) where PropertyAttributeFilter : Attribute, new()
         {
             Type objType = objectToClone.GetType();
-            return CreateDynamicType<PropertyAttributeFilter>(objType, out assemblyBuilder, concreteAttribute);
+            return BuildDynamicType<PropertyAttributeFilter>(objType, out assemblyBuilder, concreteAttribute);
         }
 
-        public static Type CreateDynamicType<PropertyAttributeFilter>(this Type objType, out AssemblyBuilder assemblyBuilder, bool concreteAttribute) where PropertyAttributeFilter : Attribute, new()
+        public static Type BuildDynamicType<PropertyAttributeFilter>(this Type objType, out AssemblyBuilder assemblyBuilder, bool concreteAttribute) where PropertyAttributeFilter : Attribute, new()
         {
-            string typeName = objType.Namespace + "." + objType.Name;
-            if (DynamicTypeStore.Current.ContainsTypeInfo(typeName) && DynamicTypeStore.Current[typeName].DynamicType != null)
+            lock (_buildDynamicTypeLock)
             {
-                assemblyBuilder = DynamicTypeStore.Current[typeName].AssemblyBuilder;
-                return DynamicTypeStore.Current[typeName].DynamicType;
-            }
-            else
-            {
-                TypeBuilder typeBuilder;
-                GetAssemblyAndTypeBuilder(typeName, out assemblyBuilder, out typeBuilder);
-
-                foreach (PropertyInfo property in objType.GetProperties())
+                string typeName = objType.Namespace + "." + objType.Name;
+                if (DynamicTypeStore.Current.ContainsTypeInfo(typeName) && DynamicTypeStore.Current[typeName].DynamicType != null)
                 {
-                    PropertyAttributeFilter attr;
-                    if (CustomAttributeExtension.HasCustomAttributeOfType<PropertyAttributeFilter>(property, true, out attr, concreteAttribute))
-                    {
-                        AddPropertyToDynamicType(typeBuilder, property);
-                    }
+                    return GetExistingDynamicType(typeName, out assemblyBuilder);
                 }
-                return CreateDynamicType(typeName, typeBuilder);
+                else
+                {
+                    TypeBuilder typeBuilder;
+                    GetAssemblyAndTypeBuilder(typeName, out assemblyBuilder, out typeBuilder);
+
+                    foreach (PropertyInfo property in objType.GetProperties())
+                    {
+                        PropertyAttributeFilter attr;
+                        if (CustomAttributeExtension.HasCustomAttributeOfType<PropertyAttributeFilter>(property, true, out attr, concreteAttribute))
+                        {
+                            AddPropertyToDynamicType(typeBuilder, property);
+                        }
+                    }
+                    return CreateDynamicType(typeName, typeBuilder);
+                }
             }
         }
 
@@ -3337,26 +3335,6 @@ namespace Bam.Net
         }
 
         /// <summary>
-        /// Clone the specified instance to a dynamic object instance
-        /// copying only properties
-        /// that are represented in the Bam.Net.Data.Schema.DataTypes enum
-        /// </summary>
-        /// <param name="instance"></param>
-        /// <param name="typeName"></param>
-        /// <returns></returns>
-        public static object ToDynamicData(this object instance, string typeName)
-        {
-            object result = instance.ToDynamicType(typeName, (pi) =>
-                                                    pi.PropertyType.IsValueType ||
-                                                    pi.PropertyType == typeof(string) ||
-                                                    pi.PropertyType == typeof(byte[]) ||
-                                                    pi.PropertyType == typeof(DateTime))
-                                                .Construct();
-            result.CopyProperties(instance);
-            return result;
-        }
-
-        /// <summary>
         /// Clone the specified instance copying only properties
         /// that are represented in the Bam.Net.Data.Schema.DataTypes enum
         /// </summary>
@@ -3366,15 +3344,42 @@ namespace Bam.Net
         public static T DataClone<T>(this T instance) where T : new()
         {
             T result = new T();
-            object temp = instance.ToDynamicType(nameof(T), (pi) =>
-                                                    pi.PropertyType.IsValueType ||
-                                                    pi.PropertyType == typeof(string) ||
-                                                    pi.PropertyType == typeof(byte[]) ||
-                                                    pi.PropertyType == typeof(DateTime))
-                                                .Construct();
+            object temp = ToDynamicData(instance, nameof(T));
             temp.CopyProperties(instance);
             result.CopyProperties(temp);
             return result;
+        }
+
+        public static object DataClone(this object instance, Type type)
+        {
+            object result = type.Construct();
+            object temp = ToDynamicData(instance, type.Name);
+            result.CopyProperties(temp);
+            return result;
+        }
+
+        public static object ToDynamicData(this object instance, string typeName)
+        {
+            Type type = instance.ToDynamicType(typeName, DataTypeFilter);
+            object temp = type.Construct();
+            temp.CopyProperties(instance);
+            return temp;
+        }
+
+        private static bool DataTypeFilter(PropertyInfo prop)
+        {
+            return prop.PropertyType == typeof(string) ||
+                        prop.PropertyType == typeof(bool) ||
+                        prop.PropertyType == typeof(long) ||
+                        prop.PropertyType == typeof(long?) ||
+                        prop.PropertyType == typeof(int) ||
+                        prop.PropertyType == typeof(int?) ||
+                        prop.PropertyType == typeof(bool?) ||
+                        prop.PropertyType == typeof(decimal) ||
+                        prop.PropertyType == typeof(decimal?) ||
+                        prop.PropertyType == typeof(byte[]) ||
+                        prop.PropertyType == typeof(DateTime) ||
+                        prop.PropertyType == typeof(DateTime?);
         }
 
         public static object ValuePropertiesToDynamicInstance(this Type type, out AssemblyBuilder assemblyBuilder)
@@ -3420,6 +3425,7 @@ namespace Bam.Net
             return newInstance;
         }
 
+        static object _buildDynamicTypeLock = new object();
         public static Type CombineToDynamicType(this object instance, params object[] toMerge)
         {
             return CombineToDynamicType(instance, "DynamicType_".RandomLetters(8), toMerge);
@@ -3427,19 +3433,22 @@ namespace Bam.Net
 
         public static Type CombineToDynamicType(this object instance, string typeName, params object[] toMerge)
         {
-            TypeBuilder typeBuilder;
-            AssemblyBuilder assemblyBuilder;
-            GetAssemblyAndTypeBuilder(typeName, out assemblyBuilder, out typeBuilder);
-            List<object> all = new List<object>();
-            all.Add(instance);
-            all.AddRange(toMerge);
-            all.Each(obj =>
+            lock (_buildDynamicTypeLock)
             {
-                Type type = obj.GetType();
-                AddPropertiesToDynamicType(typeBuilder, type);
-            });
+                TypeBuilder typeBuilder;
+                AssemblyBuilder assemblyBuilder;
+                GetAssemblyAndTypeBuilder(typeName, out assemblyBuilder, out typeBuilder);
+                List<object> all = new List<object>();
+                all.Add(instance);
+                all.AddRange(toMerge);
+                all.Each(obj =>
+                {
+                    Type type = obj.GetType();
+                    AddPropertiesToDynamicType(typeBuilder, type);
+                });
 
-            return CreateDynamicType(typeName, typeBuilder);
+                return CreateDynamicType(typeName, typeBuilder);
+            }
         }
 
         /// <summary>
@@ -3470,26 +3479,29 @@ namespace Bam.Net
         /// <returns></returns>
         public static Type ToDynamicType(this object instance, string typeName, Func<PropertyInfo, bool> propertyPredicate, out AssemblyBuilder assemblyBuilder, bool useCache = true)
         {
-            if (DynamicTypeStore.Current.ContainsTypeInfo(typeName) && DynamicTypeStore.Current[typeName] != null && useCache)
+            lock (_buildDynamicTypeLock)
             {
-                return GetExistingDynamicType(typeName, out assemblyBuilder);
-            }
-            else
-            {
-                TypeBuilder typeBuilder;
-                GetAssemblyAndTypeBuilder(typeName, out assemblyBuilder, out typeBuilder);
-
-                Type actualType = instance.GetType();
-                PropertyInfo[] properties = actualType.GetProperties();
-                properties.Each(p =>
+                if (DynamicTypeStore.Current.ContainsTypeInfo(typeName) && DynamicTypeStore.Current[typeName] != null && useCache)
                 {
-                    if (propertyPredicate(p))
-                    {
-                        AddPropertyToDynamicType(typeBuilder, p);
-                    }
-                });
+                    return GetExistingDynamicType(typeName, out assemblyBuilder);
+                }
+                else
+                {
+                    TypeBuilder typeBuilder;
+                    GetAssemblyAndTypeBuilder(typeName, out assemblyBuilder, out typeBuilder);
 
-                return CreateDynamicType(typeName, typeBuilder);
+                    Type actualType = instance.GetType();
+                    PropertyInfo[] properties = actualType.GetProperties();
+                    properties.Each(p =>
+                    {
+                        if (propertyPredicate(p))
+                        {
+                            AddPropertyToDynamicType(typeBuilder, p);
+                        }
+                    });
+
+                    return CreateDynamicType(typeName, typeBuilder);
+                }
             }
         }
 
@@ -3523,7 +3535,7 @@ namespace Bam.Net
             }
             else
             {
-                return CreateDynamicType(dictionary, typeName, recursionThusFar, createdTypes, out assemblyBuilder);
+                return BuildDynamicType(dictionary, typeName, recursionThusFar, createdTypes, out assemblyBuilder);
             }
         }
 
@@ -3539,48 +3551,51 @@ namespace Bam.Net
             return ctor;
         }
 
-        private static Type CreateDynamicType(Dictionary<object, object> dictionary, string typeName, int recursionThusFar, List<Type> createdTypes, out AssemblyBuilder assemblyBuilder)
+        private static Type BuildDynamicType(Dictionary<object, object> dictionary, string typeName, int recursionThusFar, List<Type> createdTypes, out AssemblyBuilder assemblyBuilder)
         {
-            TypeBuilder typeBuilder;
-            GetAssemblyAndTypeBuilder(typeName, out assemblyBuilder, out typeBuilder, false);
-
-            foreach (object key in dictionary.Keys)
+            lock (_buildDynamicTypeLock)
             {
-                string propertyName = key as string;
-                if (propertyName == null)
-                {
-                    Args.Throw<InvalidOperationException>("Key was ({0}), expected string", key.GetType().Name);
-                }
-                propertyName = propertyName.PascalCase();
-                object value = dictionary[key];
-                if (value == null)
-                {
-                    AddPropertyToDynamicType(typeBuilder, propertyName, typeof(string));
-                }
-                else
-                {
-                    Type valueType = value.GetType();
-                    if (valueType.IsArray)
-                    {
-                        AddPropertyToDynamicType(typeBuilder, propertyName, typeof(object[]));
-                    }
-                    else if (valueType == typeof(Dictionary<object, object>))
-                    {
-                        string childTypeName = "{0}{1}"._Format(typeName, propertyName);
-                        Type childType = ((Dictionary<object, object>)value).ToDynamicType(childTypeName, ++recursionThusFar, false);
-                        createdTypes.Add(childType);
-                        AddPropertyToDynamicType(typeBuilder, propertyName, childType);
-                    }
-                    else if (valueType.IsPrimitive || valueType == typeof(string) || valueType.IsValueType)
-                    {
-                        AddPropertyToDynamicType(typeBuilder, propertyName, valueType);
-                    }
-                }
-            }
+                TypeBuilder typeBuilder;
+                GetAssemblyAndTypeBuilder(typeName, out assemblyBuilder, out typeBuilder, false);
 
-            Type created = CreateDynamicType(typeName, typeBuilder);
-            createdTypes.Add(created);
-            return created;
+                foreach (object key in dictionary.Keys)
+                {
+                    string propertyName = key as string;
+                    if (propertyName == null)
+                    {
+                        Args.Throw<InvalidOperationException>("Key was ({0}), expected string", key.GetType().Name);
+                    }
+                    propertyName = propertyName.PascalCase();
+                    object value = dictionary[key];
+                    if (value == null)
+                    {
+                        AddPropertyToDynamicType(typeBuilder, propertyName, typeof(string));
+                    }
+                    else
+                    {
+                        Type valueType = value.GetType();
+                        if (valueType.IsArray)
+                        {
+                            AddPropertyToDynamicType(typeBuilder, propertyName, typeof(object[]));
+                        }
+                        else if (valueType == typeof(Dictionary<object, object>))
+                        {
+                            string childTypeName = "{0}{1}"._Format(typeName, propertyName);
+                            Type childType = ((Dictionary<object, object>)value).ToDynamicType(childTypeName, ++recursionThusFar, false);
+                            createdTypes.Add(childType);
+                            AddPropertyToDynamicType(typeBuilder, propertyName, childType);
+                        }
+                        else if (valueType.IsPrimitive || valueType == typeof(string) || valueType.IsValueType)
+                        {
+                            AddPropertyToDynamicType(typeBuilder, propertyName, valueType);
+                        }
+                    }
+                }
+
+                Type created = CreateDynamicType(typeName, typeBuilder);
+                createdTypes.Add(created);
+                return created;
+            }
         }
         public static object FromDictionary(this Dictionary<object, object> dictionary, Type type, params object[] ctorParams)
         {
@@ -3641,40 +3656,43 @@ namespace Bam.Net
 
         public static Type MergeToDynamicType(this List<object> objects, string typeName, int recursionThusFar, out AssemblyBuilder assemblyBuilder, bool useCache = true)
         {
-            ThrowIfLimitReached(recursionThusFar);
-
-            if (DynamicTypeStore.Current.ContainsTypeInfo(typeName) && DynamicTypeStore.Current[typeName] != null && useCache)
+            lock (_buildDynamicTypeLock)
             {
-                return GetExistingDynamicType(typeName, out assemblyBuilder);
-            }
-            else
-            {
-                TypeBuilder typeBuilder;
-                GetAssemblyAndTypeBuilder(typeName, out assemblyBuilder, out typeBuilder);
+                ThrowIfLimitReached(recursionThusFar);
 
-                // foreach object get the type
-                foreach (object obj in objects)
+                if (DynamicTypeStore.Current.ContainsTypeInfo(typeName) && DynamicTypeStore.Current[typeName] != null && useCache)
                 {
-                    Type currentType = obj.GetType();
-                    // if it's a Dictionary<object, object> use ToDynamicType to get a type representing it
-                    if (currentType == typeof(Dictionary<object, object>))
-                    {
-                        Type dynamicDictionaryType = ((Dictionary<object, object>)obj).ToDynamicType(typeName, ++recursionThusFar, false);
-                        AddPropertiesToDynamicType(typeBuilder, dynamicDictionaryType);
-                    }
-                    else if (currentType.IsArray)// if it's an array increment recursion and call self
-                    {
-                        Type mergedArrayType = ((object[])obj).ToList().MergeToDynamicType(typeName, ++recursionThusFar, false);
-                        AddPropertiesToDynamicType(typeBuilder, mergedArrayType);
-                    }
-                    else// otherwise add the valueproperties					
-                    {
-                        Type valueProps = obj.ValuePropertiesToDynamicType(typeName, false);
-                        AddPropertiesToDynamicType(typeBuilder, valueProps);
-                    }
+                    return GetExistingDynamicType(typeName, out assemblyBuilder);
                 }
+                else
+                {
+                    TypeBuilder typeBuilder;
+                    GetAssemblyAndTypeBuilder(typeName, out assemblyBuilder, out typeBuilder);
 
-                return CreateDynamicType(typeName, typeBuilder);
+                    // foreach object get the type
+                    foreach (object obj in objects)
+                    {
+                        Type currentType = obj.GetType();
+                        // if it's a Dictionary<object, object> use ToDynamicType to get a type representing it
+                        if (currentType == typeof(Dictionary<object, object>))
+                        {
+                            Type dynamicDictionaryType = ((Dictionary<object, object>)obj).ToDynamicType(typeName, ++recursionThusFar, false);
+                            AddPropertiesToDynamicType(typeBuilder, dynamicDictionaryType);
+                        }
+                        else if (currentType.IsArray)// if it's an array increment recursion and call self
+                        {
+                            Type mergedArrayType = ((object[])obj).ToList().MergeToDynamicType(typeName, ++recursionThusFar, false);
+                            AddPropertiesToDynamicType(typeBuilder, mergedArrayType);
+                        }
+                        else// otherwise add the valueproperties					
+                        {
+                            Type valueProps = obj.ValuePropertiesToDynamicType(typeName, false);
+                            AddPropertiesToDynamicType(typeBuilder, valueProps);
+                        }
+                    }
+
+                    return CreateDynamicType(typeName, typeBuilder);
+                }
             }
         }
 
@@ -3729,50 +3747,79 @@ namespace Bam.Net
 
         public static Type ToDynamicType(this DataRow row, string typeName, out AssemblyBuilder assemblyBuilder)
         {
-            if (DynamicTypeStore.Current.ContainsTypeInfo(typeName) && DynamicTypeStore.Current[typeName] != null)
+            lock (_buildDynamicTypeLock)
             {
-                return GetExistingDynamicType(typeName, out assemblyBuilder);
-            }
-            else
-            {
-                TypeBuilder typeBuilder;
-                GetAssemblyAndTypeBuilder(typeName, out assemblyBuilder, out typeBuilder);
 
-                foreach (DataColumn column in row.Table.Columns)
+                if (DynamicTypeStore.Current.ContainsTypeInfo(typeName) && DynamicTypeStore.Current[typeName] != null)
                 {
-                    CustomPropertyInfo propInfo = new CustomPropertyInfo(column.ColumnName, row[column].GetType());
-                    AddPropertyToDynamicType(typeBuilder, propInfo);
+                    return GetExistingDynamicType(typeName, out assemblyBuilder);
                 }
+                else
+                {
+                    TypeBuilder typeBuilder;
+                    GetAssemblyAndTypeBuilder(typeName, out assemblyBuilder, out typeBuilder);
 
-                return CreateDynamicType(typeName, typeBuilder);
+                    foreach (DataColumn column in row.Table.Columns)
+                    {
+                        CustomPropertyInfo propInfo = new CustomPropertyInfo(column.ColumnName, row[column].GetType());
+                        AddPropertyToDynamicType(typeBuilder, propInfo);
+                    }
+
+                    return CreateDynamicType(typeName, typeBuilder);
+                }
             }
         }
-        public static Type CreateDynamicType(this string typeName, params string[] propertyNames)
+        public static Type BuildDynamicType(this string typeName, params string[] propertyNames)
         {
-            return CreateDynamicType(typeName, string.Empty, propertyNames);
+            return BuildDynamicType(typeName, string.Empty, propertyNames);
         }
-        public static Type CreateDynamicType(this string typeName, string nameSpace, params string[] propertyNames)
+        public static Type BuildDynamicType(this string typeName, string nameSpace, params string[] propertyNames)
         {
             AssemblyBuilder ignore;
-            return CreateDynamicType(typeName, nameSpace, out ignore, propertyNames);
+            return BuildDynamicType(typeName, nameSpace, out ignore, propertyNames);
         }
-        public static Type CreateDynamicType(this string typeName, string nameSpace, out AssemblyBuilder assemblyBuilder, params string[] propertyNames)
+        public static Type BuildDynamicType(this string typeName, string nameSpace, out AssemblyBuilder assemblyBuilder, params string[] propertyNames)
         {
-            string fullName = string.IsNullOrWhiteSpace(nameSpace) ? typeName : $"{nameSpace}.{typeName}";
-            if (DynamicTypeStore.Current.ContainsTypeInfo(fullName) && DynamicTypeStore.Current[fullName] != null)
+            lock (_buildDynamicTypeLock)
             {
-                return GetExistingDynamicType(fullName, out assemblyBuilder);
+
+                string fullName = string.IsNullOrWhiteSpace(nameSpace) ? typeName : $"{nameSpace}.{typeName}";
+                if (DynamicTypeStore.Current.ContainsTypeInfo(fullName) && DynamicTypeStore.Current[fullName] != null)
+                {
+                    return GetExistingDynamicType(fullName, out assemblyBuilder);
+                }
+                else
+                {
+                    TypeBuilder typeBuilder;
+                    GetAssemblyAndTypeBuilder(fullName, out assemblyBuilder, out typeBuilder);
+                    foreach (string propertyName in propertyNames)
+                    {
+                        AddPropertyToDynamicType(typeBuilder, new CustomPropertyInfo(propertyName, typeof(object)));
+                    }
+                    return CreateDynamicType(fullName, typeBuilder);
+                }
+            }
+        }
+
+        public static void GetAssemblyAndTypeBuilder(string typeName, out AssemblyBuilder assemblyBuilder, out TypeBuilder typeBuilder, bool useCache = true)
+        {
+            if (DynamicTypeStore.Current.ContainsTypeInfo(typeName) && useCache)
+            {
+                DynamicTypeInfo info = DynamicTypeStore.Current[typeName];
+                assemblyBuilder = info.AssemblyBuilder;
+                typeBuilder = info.TypeBuilder;
             }
             else
             {
-                TypeBuilder typeBuilder;
-                GetAssemblyAndTypeBuilder(fullName, out assemblyBuilder, out typeBuilder);
-                foreach(string propertyName in propertyNames)
-                {
-                    AddPropertyToDynamicType(typeBuilder, new CustomPropertyInfo(propertyName, typeof(object)));
-                }
-                return CreateDynamicType(fullName, typeBuilder);
-            }             
+                string name = typeName;
+                AssemblyName assemblyName = new AssemblyName("Bam.Net.DynamicGenerator");
+                assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.RunAndSave);
+                ModuleBuilder moduleBuilder = assemblyBuilder.DefineDynamicModule(assemblyName.Name, assemblyName.Name + ".dll");
+
+                typeBuilder = moduleBuilder.DefineType(name, TypeAttributes.Public);
+
+                DynamicTypeStore.Current.AddType(typeName, new DynamicTypeInfo { AssemblyBuilder = assemblyBuilder, TypeBuilder = typeBuilder, TypeName = typeName });
+            }
         }
 
         private static void ThrowIfLimitReached(int recursionThusFar)
@@ -3802,7 +3849,7 @@ namespace Bam.Net
             CustomPropertyInfo propInfo = new CustomPropertyInfo(propertyName, propertyType);
             AddPropertyToDynamicType(typeBuilder, propInfo);
         }
-
+        
         private static Type CreateDynamicType(string typeName, TypeBuilder typeBuilder)
         {
             Type returnType = typeBuilder.CreateType();
@@ -3819,33 +3866,6 @@ namespace Bam.Net
             DynamicTypeInfo info = DynamicTypeStore.Current[typeName];
             assemblyBuilder = info.AssemblyBuilder;
             return info.DynamicType;
-        }
-
-        internal static void GetAssemblyAndTypeBuilder(object objectToClone, out AssemblyBuilder assemblyBuilder, out TypeBuilder typeBuilder)
-        {
-            Type type = objectToClone.GetType();
-            GetAssemblyAndTypeBuilder(type.Namespace + "." + type.Name, out assemblyBuilder, out typeBuilder);
-        }
-
-        public static void GetAssemblyAndTypeBuilder(string typeName, out AssemblyBuilder assemblyBuilder, out TypeBuilder typeBuilder, bool useCache = true)
-        {
-            if (DynamicTypeStore.Current.ContainsTypeInfo(typeName) && useCache)
-            {
-                DynamicTypeInfo info = DynamicTypeStore.Current[typeName];
-                assemblyBuilder = info.AssemblyBuilder;
-                typeBuilder = info.TypeBuilder;
-            }
-            else
-            {
-                string name = typeName;
-                AssemblyName assemblyName = new AssemblyName("Bam.Net.DynamicGenerator");
-                assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.RunAndSave);
-                ModuleBuilder moduleBuilder = assemblyBuilder.DefineDynamicModule(assemblyName.Name, assemblyName.Name + ".dll");
-
-                typeBuilder = moduleBuilder.DefineType(name, TypeAttributes.Public);
-
-                DynamicTypeStore.Current.AddType(typeName, new DynamicTypeInfo { AssemblyBuilder = assemblyBuilder, TypeBuilder = typeBuilder, TypeName = typeName });
-            }
         }
 
         internal static void AddPropertyToDynamicType(TypeBuilder typeBuilder, _PropertyInfo property)
