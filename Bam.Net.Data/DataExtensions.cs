@@ -28,7 +28,7 @@ namespace Bam.Net.Data
         /// <returns></returns>
         public static object ToJsonSafe(this object obj)
         {
-            Type jsonSafeType = obj.CreateDynamicType<ColumnAttribute>(false);
+            Type jsonSafeType = obj.BuildDynamicType<ColumnAttribute>(false);
             ConstructorInfo ctor = jsonSafeType.GetConstructor(new Type[] { });
             object jsonSafeInstance = ctor.Invoke(null);
             jsonSafeInstance.CopyProperties(obj);

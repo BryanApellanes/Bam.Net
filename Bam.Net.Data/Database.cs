@@ -325,7 +325,7 @@ namespace Bam.Net.Data
             if (reader.HasRows)
             {
                 List<string> columnNames = GetColumnNames(reader);
-                Type type = sqlStatement.Sha256().CreateDynamicType("Database.ExecuteDynamicReader", columnNames.ToArray());
+                Type type = sqlStatement.Sha256().BuildDynamicType("Database.ExecuteDynamicReader", columnNames.ToArray());
                 while (reader.Read())
                 {
                     object next = type.Construct();
