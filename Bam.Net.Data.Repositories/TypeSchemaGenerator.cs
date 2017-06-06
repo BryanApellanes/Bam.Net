@@ -386,7 +386,11 @@ namespace Bam.Net.Data.Repositories
             foreach (PropertyInfo property in parentType.GetProperties().Where(p=> p.CanWrite))
             {
                 Type propertyType = property.PropertyType;
-                if (propertyType != typeof(byte[]) && propertyType != typeof(string) && property.IsEnumerable() && !AreXrefs(parentType, property.GetEnumerableType()))
+                if (propertyType != typeof(byte[]) &&
+                    propertyType != typeof(string) && 
+                    property.IsEnumerable() && 
+                    property.GetEnumerableType() != typeof(string) &&
+                    !AreXrefs(parentType, property.GetEnumerableType()))
                 {
                     PropertyInfo keyProperty = GetKeyProperty(parentType);
                     Type foreignKeyType = property.GetEnumerableType();

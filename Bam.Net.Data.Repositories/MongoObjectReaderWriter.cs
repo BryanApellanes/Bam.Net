@@ -74,7 +74,7 @@ namespace Bam.Net.Data.Repositories
 			return collection.FindOneAs(type, query);
 		}
 
-		public override void Write(object data)
+		public override void Write(Type type, object data)
 		{
 			MongoCollection collection = GetCollection(data.GetType());
 			if (Meta.IsNew(data))
@@ -89,7 +89,7 @@ namespace Bam.Net.Data.Repositories
 			}
 		}
 
-		public override bool Delete(object data)
+		public override bool Delete(object data, Type type = null)
 		{
 			bool result = false;
 			try

@@ -21,6 +21,7 @@ namespace Bam.Net.Data.Repositories
     /// A class used to generate data access objects from
     /// CLR types.
     /// </summary>
+    [Serializable]
     public class TypeDaoGenerator : Loggable, IGeneratesDaoAssembly, IHasTypeSchemaTempPathProvider
     {
         DaoGenerator _daoGenerator;

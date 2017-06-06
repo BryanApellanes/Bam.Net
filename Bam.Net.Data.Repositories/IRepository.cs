@@ -58,6 +58,7 @@ namespace Bam.Net.Data.Repositories
         /// <returns></returns>
         T Retrieve<T>(long id) where T : class, new();
 
+        T Retrieve<T>(string uuid) where T : class, new();
         /// <summary>
         /// When implemented in a derived class retrieves
         /// all instances of type T

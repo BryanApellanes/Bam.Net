@@ -16,9 +16,11 @@ namespace Bam.Net.Data.Repositories
     /// A repository that will generate an underlying Dao
     /// for the types added.  Any values returned by a 
     /// call to Query will not be fully hydrated (child lists
-    /// won't be populated).  To ensure full hydration of
-    /// the values call Retrieve(id) or Retrieve(uuid).
+    /// won't be populated) as well as any child lists of child 
+    /// list elements.  To ensure full hydration of
+    /// the values call Retrieve(id) or Retrieve(uuid).    
     /// </summary>
+    [Serializable] // for memory size calculation
     public class DaoRepository : Repository, IGeneratesDaoAssembly, IHasTypeSchemaTempPathProvider, IQueryFilterable
     {
         /// <summary>
@@ -405,11 +407,6 @@ namespace Bam.Net.Data.Repositories
             WarnRetrieveAll(type);
             return RetrieveAll(type).CopyAs(type).Where(predicate);
 		}
-        
-        public override IEnumerable<object> Query(dynamic query)
-		{
-            return Query<object>(QueryFilter.FromDynamic(query));
-		}
 
 		public override IEnumerable<T> Query<T>(dynamic query) 
 		{
@@ -449,7 +446,7 @@ namespace Bam.Net.Data.Repositories
 			try
 			{
 				Initialize();
-				Dao daoInstance = GetDaoInstanceById(type, GetIdValue(toUpdate)); 
+				Dao daoInstance = GetDaoInstanceById(type, GetIdValue(toUpdate).Value); 
 				object poco = SetDaoInstancePropertiesAndSave(toUpdate, daoInstance);
 				return poco;
 			}
@@ -474,7 +471,7 @@ namespace Bam.Net.Data.Repositories
 			try
 			{
 				Initialize();
-				object daoInstance = GetDaoInstanceById(type, GetIdValue(toDelete));
+				object daoInstance = GetDaoInstanceById(type, GetIdValue(toDelete).Value);
 				if (daoInstance != null)
 				{
 					MethodInfo deleteMethod = daoInstance.GetType().GetMethod("Delete", new Type[] { typeof(Database) });
@@ -665,7 +662,7 @@ namespace Bam.Net.Data.Repositories
 
 		public Dao GetDaoInstance(object baseInstance) // required by generated code
 		{
-			long id = GetIdValue(baseInstance);
+			long id = GetIdValue(baseInstance).Value;
 			Dao dao = GetDaoInstanceById(baseInstance.GetType(), id);
 			return dao;
 		}
@@ -740,7 +737,7 @@ namespace Bam.Net.Data.Repositories
 			return result;
 		}
 
-        [Obsolete("Use ForeignKeyCollectionLoad<TParentType, TChildType> instead")]
+        [Obsolete("Use ForeignKeyCollectionLoader<TParentType, TChildType> instead")]
         public IEnumerable<TChildType> ForeignKeyCollectionLoader<TChildType>(object poco) where TChildType : new() // this is used by generated code; JIT compiler can't tell
         {
             TypeFk fkDescriptor = TypeSchema.ForeignKeys.FirstOrDefault(tfk => tfk.ForeignKeyType == typeof(TChildType));
@@ -763,7 +760,7 @@ namespace Bam.Net.Data.Repositories
         {
             List<TChildType> results = new List<TChildType>();
             string foreignKeyName = fkDescriptor.ForeignKeyProperty.Name;
-            long parentId = GetIdValue(poco);
+            long parentId = GetIdValue(poco).Value;
             if (parentId <= 0)
             {
                 Args.Throw<InvalidOperationException>("IdValue not found for specified parent instance: {0}",
@@ -956,10 +953,10 @@ namespace Bam.Net.Data.Repositories
                 daoInstance.ForceUpdate = true;
                 SaveDaoInstance(pocoType, daoInstance);
             }
-			object dto = ConstructWrapper(pocoType);
-			dto.CopyProperties(daoInstance);
-			poco.CopyProperties(dto);
-			return dto;
+			object wrapper = ConstructWrapper(pocoType);
+			wrapper.CopyProperties(daoInstance);
+			poco.CopyProperties(wrapper);
+			return wrapper;  
 		}
 		
         private static QueryFilter CreateQueryFilter(Dictionary<string, object> queryParameters)

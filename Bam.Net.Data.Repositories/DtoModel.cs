@@ -37,7 +37,7 @@ namespace Bam.Net.Data.Repositories
 		}
 
 		public DtoModel(Dao dao, string nameSpace)
-			: this(dao.CreateDynamicType<ColumnAttribute>(), nameSpace)
+			: this(dao.BuildDynamicType<ColumnAttribute>(), nameSpace)
 		{ }
 
 		public string TypeName { get; set; }

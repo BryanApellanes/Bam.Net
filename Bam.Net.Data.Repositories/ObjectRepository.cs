@@ -17,7 +17,10 @@ namespace Bam.Net.Data.Repositories
 	/// A class responsible for saving and retrieving
 	/// Poco objects.  Currently not designed for performance
 	/// and is primarily used for backups.  This "should"
-	/// be changed in the future to improve performance.
+	/// be changed in the future to improve performance.  Uses
+    /// a BinaryFormatter to serialize object instances to
+    /// disk so those objects should not be complex types
+    /// and must be marked Serializable.
 	/// </summary>
 	public class ObjectRepository : Repository
 	{
@@ -56,36 +59,40 @@ namespace Bam.Net.Data.Repositories
 
 		public override T Create<T>(T toCreate)
 		{
-			ObjectReaderWriter.Write(toCreate);
+			ObjectReaderWriter.Write(typeof(T), toCreate);
 			SaveCollections(toCreate);
 			return toCreate;
 		}
         public override object Create(Type type, object toCreate)
         {
-            return Create(toCreate);
+            ObjectReaderWriter.Write(type, toCreate);
+            SaveCollections(toCreate);
+            return toCreate;
         }
         public override object Create(object toCreate)
 		{
-			ObjectReaderWriter.Write(toCreate);
+			ObjectReaderWriter.Write(toCreate.GetType(), toCreate);
 			SaveCollections(toCreate);
 			return toCreate;
 		}
 
 		public override T Update<T>(T toUpdate)
 		{
-			ObjectReaderWriter.Write(toUpdate);
+			ObjectReaderWriter.Write(typeof(T), toUpdate);
 			SaveCollections(toUpdate);
 			return toUpdate;
 		}
 
         public override object Update(Type type, object toUpdate)
         {
-            return Update(toUpdate);
+            ObjectReaderWriter.Write(type, toUpdate);
+            SaveCollections(toUpdate);
+            return toUpdate;
         }
 
         public override object Update(object toUpdate)
 		{
-			ObjectReaderWriter.Write(toUpdate);
+			ObjectReaderWriter.Write(toUpdate.GetType(), toUpdate);
 			SaveCollections(toUpdate);
 			return toUpdate;
 		}
@@ -142,22 +149,12 @@ namespace Bam.Net.Data.Repositories
 
 		public override IEnumerable<object> Query(string propertyName, object value)
 		{
-			return Query<object>(o => o.Property(propertyName).Equals(value));
+			return Query(DefaultType, o => o.Property(propertyName).Equals(value));
 		}
 
 		public override IEnumerable<object> Query(Type type, Func<object, bool> predicate)
 		{
 			return ObjectReaderWriter.Query(type, predicate);
-		}
-		
-		public override IEnumerable<object> Query(dynamic query)
-		{
-			return Query<object>(query);
-		}
-
-		public override IEnumerable<T> Query<T>(dynamic query)
-		{
-			return Query<T>((Func<T, bool>)query);
 		}
 
 		public override IEnumerable<T> Query<T>(Func<T, bool> query) 
@@ -176,12 +173,26 @@ namespace Bam.Net.Data.Repositories
 
         public override IEnumerable<T> Query<T>(Dictionary<string, object> queryParameters)
         {
-            throw new NotImplementedException();
+            List<T> results = new List<T>();
+            T[] queryResults = ObjectReaderWriter.Query<T>(o =>
+            {
+                return WherePropertiesEqual(queryParameters, o);
+            });
+            results.AddRange(queryResults);
+            LoadXrefCollectionValues<T>(results);
+            return results;
         }
 
         public override IEnumerable<object> Query(Type type, Dictionary<string, object> queryParameters)
         {
-            throw new NotImplementedException();
+            List<object> results = new List<object>();
+            object[] queryResults = ObjectReaderWriter.Query(type, o =>
+            {
+                return WherePropertiesEqual(queryParameters, o);
+            });
+            results.AddRange(queryResults);
+            results.Each(o => LoadXrefCollectionValues(o));
+            return results;
         }
 
 		public IEnumerable<T> Query<T>(string propertyName, Func<object, bool> predicate)
@@ -193,12 +204,12 @@ namespace Bam.Net.Data.Repositories
 
         public override IEnumerable<T> Query<T>(QueryFilter query)
         {
-            throw new NotImplementedException();
+            return Query<T>(query.ToDictionary());
         }
 
         public override IEnumerable<object> Query(Type type, QueryFilter query)
         {
-            throw new NotImplementedException();
+            return Query(type, query.ToDictionary());
         }
 
         public override bool Delete<T>(T toDelete)
@@ -328,7 +339,7 @@ namespace Bam.Net.Data.Repositories
 			}
 		}
 
-		protected Action<object> ChildWriter { get; set; }
+		protected Action<Type, object> ChildWriter { get; set; }
         TypeSchemaPropertyManager _typeSchemaPropertyManager;
         object _typeSchemaPropertyManagerLock = new object();
         protected TypeSchemaPropertyManager TypeSchemaPropertyManager
@@ -376,9 +387,9 @@ namespace Bam.Net.Data.Repositories
                 {
                     foreach (object obj in collection)
                     {
-                        ChildWriter(new Meta(obj, ObjectReaderWriter));
+                        ChildWriter(leftXref.RightCollectionProperty.GetEnumerableType(), new Meta(obj, ObjectReaderWriter));
                         XrefInfo xrefInfo = new XrefInfo(parent, obj, MetaProvider.GetMeta(parent).Hash, MetaProvider.GetMeta(obj).Hash);
-                        ChildWriter(xrefInfo);
+                        ChildWriter(typeof(XrefInfo), xrefInfo);
                     }
                 }
             }
@@ -391,13 +402,28 @@ namespace Bam.Net.Data.Repositories
                 {
                     foreach (object obj in collection)
                     {
-                        ChildWriter(new Meta(obj, ObjectReaderWriter));
+                        ChildWriter(rightXref.LeftCollectionProperty.GetEnumerableType(), new Meta(obj, ObjectReaderWriter));
                         XrefInfo xrefInfo = new XrefInfo(obj, parent, MetaProvider.GetMeta(obj).Hash, MetaProvider.GetMeta(parent).Hash);
-                        ChildWriter(xrefInfo);
+                        ChildWriter(typeof(XrefInfo), xrefInfo);
                     }
                 }
             }
         }
-		
-	}
+
+        private static bool WherePropertiesEqual<T>(Dictionary<string, object> queryParameters, T o) where T : class, new()
+        {
+            bool result = true;
+            foreach (string key in queryParameters.Keys)
+            {
+                object val = o.Property(key);
+                if ((val != null && !val.Equals(queryParameters[key]) ||
+                    (val == null && queryParameters[key] != null)))
+                {
+                    result = false;
+                    break;
+                }
+            }
+            return result;
+        }
+    }
 }
