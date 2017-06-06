@@ -124,7 +124,7 @@ namespace Bam.Net.Data.Repositories
 
             foreach (Type daoType in DaoAssembly.GetTypes()
                 .Where(t => t.HasCustomAttributeOfType<TableAttribute>())
-                .Select(t => t.CreateDynamicType<ColumnAttribute>()).ToArray())
+                .Select(t => t.BuildDynamicType<ColumnAttribute>()).ToArray())
             {
                 Dto.WriteRenderedDto(nameSpace, writeSourceTo, daoType);
             }

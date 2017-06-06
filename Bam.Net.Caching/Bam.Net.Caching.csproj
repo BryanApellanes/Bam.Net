@@ -65,10 +65,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cache.cs" />
-    <Compile Include="CacheEventArgs.cs" />
+    <Compile Include="CacheEvictionEventArgs.cs" />
     <Compile Include="CacheItem.cs" />
     <Compile Include="CacheManager.cs" />
     <Compile Include="CacheManagerEventArgs.cs" />
+    <Compile Include="CacheQueryEventArgs.cs" />
+    <Compile Include="CacheRetrieveEventArgs.cs" />
     <Compile Include="CachingRepositoryEventArgs.cs" />
     <Compile Include="DeleteNotSupportedException.cs" />
     <Compile Include="Extensions.cs" />

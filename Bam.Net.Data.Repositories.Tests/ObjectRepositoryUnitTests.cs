@@ -123,9 +123,9 @@ namespace Bam.Net.Data.Repositories.Tests
 			Parent two = new Parent { Name = "{0}::Parent Two"._Format(random) };
 			Parent three = new Parent { Name = "not this one" };
 
-			rw.Write(one);
-			rw.Write(two);
-			rw.Write(three);
+			rw.Write(typeof(Parent), one);
+			rw.Write(typeof(Parent), two);
+			rw.Write(typeof(Parent), three);
 
 			Parent[] parents = rw.Query<Parent>(p => p.Name.StartsWith(random));
 			Expect.AreEqual(2, parents.Length);
@@ -146,8 +146,8 @@ namespace Bam.Net.Data.Repositories.Tests
 			Parent one = new Parent { Name = "{0}:: Parent Name one"._Format(random) };
 			Parent two = new Parent { Name = "{0}:: Parent Name two"._Format(random) };
 			Parent three = new Parent { Name = "not this one" };
-			rw.Write(one);
-			rw.Write(two);
+			rw.Write(typeof(Parent), one);
+			rw.Write(typeof(Parent), two);
 			Thread.Sleep(1500); // does a non blocking write of properties
 			Parent[] parents = rw.QueryProperty<Parent>("Name", val => 
 			{
@@ -171,7 +171,7 @@ namespace Bam.Net.Data.Repositories.Tests
 			ObjectReaderWriter rw = new ObjectReaderWriter(".\\{0}"._Format(MethodBase.GetCurrentMethod().Name));
 			string random = "RandomString_".RandomLetters(5);
 			Parent one = new Parent { Name = "{0}:: Parent Name one"._Format(random) };			
-			rw.Write(one);			
+			rw.Write(typeof(Parent), one);			
 
 			Thread.Sleep(1500); // does a non blocking write of properties
 			
@@ -188,7 +188,7 @@ namespace Bam.Net.Data.Repositories.Tests
 			
 			Expect.IsNotNull(parent);
 			parent.Name = "Updated";
-			rw.Write(parent);
+			rw.Write(typeof(Parent), parent);
 
 			check = rw.Query<Parent>(p => p.Uuid.Equals(uuid)).FirstOrDefault();
 			Expect.AreEqual("Updated", check.Name);

@@ -1,5 +1,3 @@
-Version 1.5.3
- -  fix hint path (d3b4c28)
- -  package path nlog (6b2a63f)
- -  fix packages.config (a676e05)
- -  Merge pull request #65 from BryanApellanes/svcs (6e7e94d)
+Version 1.5.4
+ -  misc cleanup, refactor and additions (a222793)
+ -  Merge pull request #66 from BryanApellanes/nlog-logger (db91372)

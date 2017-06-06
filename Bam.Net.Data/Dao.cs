@@ -835,7 +835,7 @@ namespace Bam.Net.Data
             _dynamicTypeLocks.AddMissing(thisType, new object());
             lock (_dynamicTypeLocks[thisType])
             {
-                Type jsonSafeType = this.CreateDynamicType<ColumnAttribute>(false);
+                Type jsonSafeType = this.BuildDynamicType<ColumnAttribute>(false);
                 ConstructorInfo ctor = jsonSafeType.GetConstructor(new Type[] { });
                 object jsonSafeInstance = ctor.Invoke(null);
                 jsonSafeInstance.CopyProperties(this);

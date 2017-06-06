@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.IO;
 using Bam.Net;
 using Bam.Net.Logging;
+using Bam.Net.Configuration;
 
 namespace Bam.Net
 {
@@ -26,14 +27,14 @@ namespace Bam.Net
         internal IpcMessage(string name, Type messageType)
         {
             this.Name = name;           
-            this.LockTimeout = 1500;
+            this.LockTimeout = 75;
             this.MessageType = messageType;
         }
 
         internal IpcMessage(string name, Type messageType, string rootDir)
             : this(name, messageType)
         {
-            this.RootDirectory = rootDir ?? this.GetAppDataFolder();
+            this.RootDirectory = rootDir ?? RuntimeSettings.AppDataFolder;
         }
         
         public static IpcMessage Get<T>(string name, string rootDirectory = null)
@@ -277,7 +278,7 @@ namespace Bam.Net
             }
         }
 
-        static object _lock = new object();
+        object _lock = new object();
         private bool AcquireLock(int timeoutInMilliseconds)
         {
             try

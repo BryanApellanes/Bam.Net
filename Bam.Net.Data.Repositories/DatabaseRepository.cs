@@ -205,7 +205,7 @@ namespace Bam.Net.Data.Repositories
 
         protected void SaveChildCollections(object parent)
         {
-            TypeSchemaPropertyManager.ForEachChildCollection(parent, (coll) =>
+            TypeSchemaPropertyManager.ForEachChildCollection(parent, (type, coll) =>
             {
                 List<SqlStringBuilder> sqls = new List<SqlStringBuilder>();
                 foreach(object child in coll)
@@ -242,7 +242,7 @@ namespace Bam.Net.Data.Repositories
 
         private void SaveXrefs(object instance, Type pocoType)
         {
-            Dao dao = GetDaoInstanceById(pocoType, GetIdValue(instance));
+            Dao dao = GetDaoInstanceById(pocoType, GetIdValue(instance).Value);
             if (SetXrefDaoCollectionValues(instance, dao))
             {
                 dao.ForceUpdate = true;

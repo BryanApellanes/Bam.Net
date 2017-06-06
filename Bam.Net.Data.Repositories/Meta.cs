@@ -17,8 +17,14 @@ namespace Bam.Net.Data.Repositories
 	[Serializable]
 	public class Meta<T>: Meta
 	{
-		public Meta() : base() { }
-		public Meta(T data, IObjectReaderWriter objectReaderWriter) : base(data, objectReaderWriter) { }
+        public Meta() : base()
+        {
+            Type = typeof(T);
+        }
+        public Meta(T data, IObjectReaderWriter objectReaderWriter) : base(data, objectReaderWriter)
+        {
+            Type = typeof(T);
+        }
 
 		public T TypedData
 		{
@@ -43,15 +49,15 @@ namespace Bam.Net.Data.Repositories
 	{
 		public Meta()
 		{
-			this.RequireIdProperty = true;
+			RequireIdProperty = true;
 		}
 		public Meta(object data, IObjectReaderWriter objectReaderWriter, bool setMeta = true)
 		{
-			this.RequireIdProperty = true;
-			this.ObjectReaderWriter = objectReaderWriter;
+			RequireIdProperty = true;
+			ObjectReaderWriter = objectReaderWriter;
 			if(setMeta)
 			{
-				this.SetMeta(data);
+				SetMeta(data);
 			}
 		}
 
@@ -69,12 +75,17 @@ namespace Bam.Net.Data.Repositories
 			}
 		}
 
+        Type _type;
 		public Type Type
 		{
 			get
 			{
-				return Data.GetType();
+				return _type ?? Data?.GetType();
 			}
+            set
+            {
+                _type = value;
+            }
 		}
 
 		public object Data { get; internal set; }
@@ -96,7 +107,7 @@ namespace Bam.Net.Data.Repositories
 		{
 			if (propInfo != null)
 			{
-				T result = this.ObjectReaderWriter.ReadProperty<T>(propInfo, Uuid);
+				T result = ObjectReaderWriter.ReadProperty<T>(propInfo, Uuid);
 				return result;
 			}
 
@@ -107,7 +118,7 @@ namespace Bam.Net.Data.Repositories
 		{
 			if (propInfo != null)
 			{
-				T result = this.ObjectReaderWriter.ReadPropertyVersion<T>(propInfo, Hash, version);
+				T result = ObjectReaderWriter.ReadPropertyVersion<T>(propInfo, Hash, version);
 				return result;
 			}
 
@@ -119,7 +130,7 @@ namespace Bam.Net.Data.Repositories
 			if (propInfo != null)
 			{
 				propInfo.SetValue(Data, propertyValue);
-				this.ObjectReaderWriter.Write(Data);
+				ObjectReaderWriter.Write(Type, Data);
 			}
 		}
 
@@ -146,7 +157,7 @@ namespace Bam.Net.Data.Repositories
 			{
 				if (Data != null)
 				{
-					return GetId(RequireIdProperty);
+					return GetId(RequireIdProperty).Value;
 				}
 				return 0;
 			}
@@ -284,14 +295,14 @@ namespace Bam.Net.Data.Repositories
 
 		protected string GetIdHash()
 		{
-			Type type = Data == null ? Type.Missing.GetType() : Data.GetType();
-			string hash = "{0}::{1}"._Format(Id, type.FullName).Md5();
+			Type type = Type ?? Type.Missing.GetType();
+            string hash = "{0}::{1}"._Format(Id, type.FullName).Md5();
 			return hash;
 		}
 		
 		protected string GetUuidHash()
 		{
-			Type type = Data == null ? Type.Missing.GetType() : Data.GetType();
+            Type type = Type ?? Type.Missing.GetType();
 			string hash = "{0}::{1}"._Format(Uuid, type.FullName).Md5();
 			return hash;
 		}
@@ -372,16 +383,16 @@ namespace Bam.Net.Data.Repositories
 			}
 			return keyProp;
 		}
-		protected virtual long GetId(bool throwIfNoIdProperty = true)
+		protected virtual long? GetId(bool throwIfNoIdProperty = true)
         {
             return GetId(Data, throwIfNoIdProperty);
         }
-		protected internal static long GetId(object value, bool throwIfNoIdProperty = true)
-		{
-			PropertyInfo pocoProp = GetKeyProperty(value.GetType(), throwIfNoIdProperty);
-			object idValue = pocoProp.GetValue(value);
-			return idValue == null ? 0 : (long)idValue;
-		}
+        protected internal static long? GetId(object value, bool throwIfNoIdProperty = true)
+        {
+            PropertyInfo pocoProp = GetKeyProperty(value.GetType(), throwIfNoIdProperty);
+            object idValue = pocoProp.GetValue(value);
+            return (long?)idValue;
+        }
 		
 		/// <summary>
 		/// Sets the Id property of the specified value to the 
@@ -398,29 +409,31 @@ namespace Bam.Net.Data.Repositories
 			if (idProp != null)
 			{
 				long id = (long)idProp.GetValue(value);
-				if (id == 0)
-				{
-					long retrievedId = GetNextId(type, objectReaderWriter);
+                if (id == 0)
+                {
+                    long retrievedId = GetNextId(type, objectReaderWriter);
 
-					idProp.SetValue(value, retrievedId);
-				}
+                    idProp.SetValue(value, retrievedId);
+                }
 			}
 		}
 
-		protected internal long GetNextId(Type type, IObjectReaderWriter objectReaderWriter = null)
-		{
-			objectReaderWriter = objectReaderWriter ?? this.ObjectReaderWriter;
-			DirectoryInfo dir = new DirectoryInfo(Path.Combine(objectReaderWriter.RootDirectory, type.Name));
-			IpcMessage msg = IpcMessage.Get("meta.id", typeof(MetaId), dir.FullName);
-			MetaId metaId = msg.Read<MetaId>();
-			if (metaId == null)
-			{
-				msg.Write(new MetaId { Value = 0 });
-			}
-			long retrievedId = ++msg.Read<MetaId>().Value;
-			msg.Write(new MetaId { Value = retrievedId });
-			return retrievedId;
-		}
+        protected internal long GetNextId(Type type, IObjectReaderWriter objectReaderWriter = null)
+        {
+            objectReaderWriter = objectReaderWriter ?? this.ObjectReaderWriter;
+            DirectoryInfo dir = new DirectoryInfo(Path.Combine(objectReaderWriter.RootDirectory, type.Name));
+            IpcMessage msg = IpcMessage.Get("meta.id", typeof(MetaId), dir.FullName);
+            MetaId metaId = msg.Read<MetaId>();
+            if (metaId == null)
+            {
+                metaId = new MetaId { Value = 0 };
+                msg.Write(metaId);                
+            }
+            
+            long retrievedId = ++metaId.Value;
+            msg.Write(new MetaId { Value = retrievedId });
+            return retrievedId;
+        }
 
 		/// <summary>
 		/// Sets the Uuid property of the specified data if

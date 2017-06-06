@@ -10,14 +10,17 @@ using Bam.Net.CommandLine;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Data.SQLite;
 using Bam.Net.Logging;
-using Bam.Net.Services.DistributedService.Data;
-using Bam.Net.Services.DistributedService.Files;
+using Bam.Net.Server;
+using Bam.Net.Services.Distributed.Data;
+using Bam.Net.Services.Distributed.Files.Data;
+using Bam.Net.Services.Distributed.Files;
 using Bam.Net.Testing;
+using Bam.Net.Caching;
 
 namespace Bam.Net.Services.Tests
 {
     [Serializable]
-    public class UnitTests : CommandLineTestInterface
+    public partial class UnitTests : CommandLineTestInterface
     {
         [UnitTest]
         public void CanSerializeAndDeserializeDataPropertyList()
@@ -108,6 +111,7 @@ namespace Bam.Net.Services.Tests
             public virtual List<Parent> Parents { get; set; }
             public virtual List<Toy> Toys { get; set; }
         }
+
         public class Toy
         {
             public Toy() { Cuid = NCuid.Cuid.Generate(); }
@@ -115,6 +119,7 @@ namespace Bam.Net.Services.Tests
             public virtual Child Child { get; set; }
             public long ChildId { get; set; }
         }
+
         public class House
         {
             public House() { Cuid = NCuid.Cuid.Generate(); }
@@ -122,6 +127,7 @@ namespace Bam.Net.Services.Tests
             public string HouseName { get; set; }
             public virtual List<Parent> Parents { get; set; }
         }
+
         public class Parent
         {
             public Parent() { Cuid = NCuid.Cuid.Generate(); }
@@ -129,7 +135,6 @@ namespace Bam.Net.Services.Tests
             public string ParentName { get; set; }
             public virtual List<Child> Children { get; set; }
             public virtual List<House> Houses { get; set; }
-
         }
 
         [UnitTest]
@@ -188,33 +193,111 @@ namespace Bam.Net.Services.Tests
             Expect.AreEqual(2, rels.Count);
         }
 
+
         [UnitTest]
-        public void CanCopyLoadedAssembly()
+        public void ApiRouteParserGetsProtocolAndHostTest()
         {
-            Assembly currentAssembly = Assembly.GetExecutingAssembly();
-            FileInfo currentFile = currentAssembly.GetFileInfo();
-            FileInfo copyTo = currentFile.CopyFile(nameof(CanCopyLoadedAssembly));
-            Expect.IsTrue(copyTo.Exists);            
-            OutLine(copyTo.FullName, ConsoleColor.Cyan);
-            copyTo.Delete();
+            RouteParser parser = new RouteParser("{Protocol}://{Domain}/api/{PathAndQuery}");
+            Dictionary<string, string> values = parser.ParseRouteInstance("bam://bamapps.net/api/v1/monkey/5");
+            Expect.AreEqual(3, values.Count, $"Expected 3 but got {values.Count}");
+            RequestRoute requestDescriptor = values.ToInstance<RequestRoute>();
+            Expect.AreEqual("bam", requestDescriptor.Protocol);
+            Expect.AreEqual("bamapps.net", requestDescriptor.Domain);
+            Expect.AreEqual("v1/monkey/5", requestDescriptor.PathAndQuery);
         }
 
-        
         [UnitTest]
-        public void FileServiceTest()
+        public void ApiRouteDescriptorParseTest()
         {
-            SQLiteDatabase db = new SQLiteDatabase(".\\", nameof(FileServiceTest));            
-            FileService fmSvc = new FileService(new DaoRepository(db));
-            fmSvc.ChunkLength = 111299;
-            FileInfo testDataFile = new FileInfo("C:\\testData\\TestDataFile.dll");            
-            ChunkedFileDescriptor chunkedFile = fmSvc.StoreFileChunksInRepo(testDataFile);
-            FileInfo writeTo = new FileInfo($".\\{nameof(FileServiceTest)}_restored");
-            DateTime start = DateTime.UtcNow;
-            FileInfo written = fmSvc.RestoreFile(chunkedFile.FileHash, writeTo.FullName, true);
-            TimeSpan took = DateTime.UtcNow.Subtract(start);
-            OutLine(took.ToString(), ConsoleColor.Cyan);
-            Expect.IsTrue(written.Exists);
-            Expect.AreEqual(testDataFile.Md5(), written.Md5(), "file content didn't match");
+            RouteParser parser = new RouteParser("{Protocol}://{Domain}/api/{PathAndQuery}");
+            Dictionary<string, string> values = parser.ParseRouteInstance("bam://bamapps.net/api/v1/monkey/5");
+            Expect.AreEqual(3, values.Count, $"Expected 3 but got {values.Count}");
+            RequestRoute route = values.ToInstance<RequestRoute>();
+            Expect.AreEqual("bam", route.Protocol);
+            Expect.AreEqual("bamapps.net", route.Domain);
+            Expect.AreEqual("v1/monkey/5", route.PathAndQuery);
+        }
+
+        [UnitTest]
+        public void RequestDescriptorTest()
+        {
+            RequestRouter router = new RequestRouter("api");
+            RequestRoute route = router.ParseUrl("bam://bamapps.net/api/v1/monkey/5?blah=one&blah2=two");
+            Expect.AreEqual("bam", route.Protocol);
+            Expect.AreEqual("bamapps.net", route.Domain);
+            Expect.AreEqual("v1/monkey/5?blah=one&blah2=two", route.PathAndQuery);
+        }
+       
+        [UnitTest]
+        public void SavingKeyHashRepoDataShouldntDuplicate()
+        {
+            ConsoleLogger logger = new ConsoleLogger { AddDetails = false, UseColors = true };
+            logger.StartLoggingThread();
+            string schemaName = "TheSchemaName_".RandomLetters(5);
+            DaoRepository repo = new DaoRepository(new SQLiteDatabase(".", nameof(SavingKeyHashRepoDataShouldntDuplicate)), logger, schemaName);
+            repo.WarningsAsErrors = false;
+            repo.AddType(typeof(KeyHashRepoTestData));
+            CachingRepository cachingRepo = new CachingRepository(repo, logger);
+
+            string nameOne = 32.RandomLetters();
+            string valueOne = 16.RandomLetters();
+            KeyHashRepoTestData one = new KeyHashRepoTestData { Name = nameOne, SomeOtherUniqueProperty = valueOne };
+            KeyHashRepoTestData two = new KeyHashRepoTestData { Name = nameOne, SomeOtherUniqueProperty = valueOne };
+            Expect.AreEqual(one, two);
+
+            one.Save<KeyHashRepoTestData>(cachingRepo);
+            var queryParams = new { Name = nameOne };
+            cachingRepo.Cache<KeyHashRepoTestData>(queryParams);
+            List<KeyHashRepoTestData> retrieved = cachingRepo.Query<KeyHashRepoTestData>(queryParams).ToList();
+            Expect.AreEqual(1, retrieved.Count);
+            two.Save<KeyHashRepoTestData>(cachingRepo);
+            retrieved = cachingRepo.Query<KeyHashRepoTestData>(queryParams).ToList();
+            Expect.AreEqual(1, retrieved.Count);
+        }
+
+        [UnitTest]
+        public void RepoQueryTest()
+        {
+            string nameOne = 32.RandomLetters();
+            foreach (Repository repo in GetTestRepositories())
+            {
+                KeyHashRepoTestData one = new KeyHashRepoTestData { Name = nameOne };
+                one.Save<KeyHashRepoTestData>(repo);
+
+                List<KeyHashRepoTestData> retrieved = repo.Query<KeyHashRepoTestData>(new { Name = nameOne }).ToList();
+                retrieved = repo.Query<KeyHashRepoTestData>(d => d.Name.Equals(nameOne)).ToList();
+                Expect.AreEqual(1, retrieved.Count);
+                retrieved = repo.Query(typeof(KeyHashRepoTestData), o => o.Property("Name").Equals(nameOne)).CopyAs<KeyHashRepoTestData>().ToList();
+                Expect.AreEqual(1, retrieved.Count);
+                retrieved = repo.Query<KeyHashRepoTestData>(new Dictionary<string, object> { { "Name", nameOne } }).ToList();
+                Expect.AreEqual(1, retrieved.Count);
+                retrieved = repo.Query(typeof(KeyHashRepoTestData), new Dictionary<string, object> { { "Name", nameOne } }).CopyAs<KeyHashRepoTestData>().ToList();
+                Expect.AreEqual(1, retrieved.Count);
+                retrieved = repo.Query(typeof(KeyHashRepoTestData), new { Name = nameOne }).CopyAs<KeyHashRepoTestData>().ToList();
+                Expect.AreEqual(1, retrieved.Count);
+                retrieved = repo.Query("Name", nameOne).CopyAs<KeyHashRepoTestData>().ToList();
+                Expect.AreEqual(1, retrieved.Count);
+                retrieved = repo.Query(new { Type = typeof(KeyHashRepoTestData), Name = nameOne }).CopyAs<KeyHashRepoTestData>().ToList();
+                Expect.AreEqual(1, retrieved.Count);
+
+                Pass(repo.GetType().Name);
+            }
+        }
+
+        private IEnumerable<Repository> GetTestRepositories()
+        {
+            ConsoleLogger logger = new ConsoleLogger { AddDetails = false, UseColors = true };
+            logger.StartLoggingThread();
+            string schemaName = "TheSchemaName_".RandomLetters(5);
+            DaoRepository daoRepo = new DaoRepository(new SQLiteDatabase(".", nameof(RepoQueryTest)), logger, schemaName);
+            daoRepo.WarningsAsErrors = false;
+            daoRepo.AddType(typeof(KeyHashRepoTestData));
+            yield return daoRepo;
+            CachingRepository cachingRepo = new CachingRepository(daoRepo, logger);
+            yield return cachingRepo;
+            //ObjectRepository objectRepo = new ObjectRepository(".\\TestObjectRepository");
+            //objectRepo.AddType(typeof(KeyHashRepoTestData));
+            //yield return objectRepo;
         }
     }
 }

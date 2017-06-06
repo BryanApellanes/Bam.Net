@@ -16,7 +16,7 @@ namespace Bam.Net
         static volatile Dictionary<string, Thread> _threads;
         static Exec()
         {
-            _threads = new Dictionary<string, Thread>();
+            _threads = new Dictionary<string, Thread>(500);
         }
 
         public static NamedThread GetThread(string name)

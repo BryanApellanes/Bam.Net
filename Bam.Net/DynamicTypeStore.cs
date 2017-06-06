@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Collections.Concurrent;
 
 namespace Bam.Net
 {
@@ -31,11 +32,13 @@ namespace Bam.Net
             }
         }
 
+        static DynamicTypeStore _current;
+        static object _currentLock = new object();
         public static DynamicTypeStore Current
         {
             get
             {
-                return Providers.GetApplicationSingleton<DynamicTypeStore>();
+                return _currentLock.DoubleCheckLock(ref _current, () => new DynamicTypeStore());                
             }
         }
 
@@ -43,14 +46,7 @@ namespace Bam.Net
         {
             lock (accessLock)
 			{
-				if (dynamicTypeStore.ContainsKey(name))
-				{
-					dynamicTypeStore[name] = info;
-				}
-				else
-				{
-					dynamicTypeStore.Add(name, info);
-				}
+                dynamicTypeStore.Set(name, info);
             }
         }
 

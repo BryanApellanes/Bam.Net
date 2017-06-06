@@ -218,11 +218,6 @@ namespace Bam.Net
             }
         }
 
-        public static void AreEqual(int expected, int actual)
-        {
-            AreEqual((long)expected, (long)actual);
-        }
-
         public static void AreEqual(long expected, long actual)
         {
             AreEqual(expected, actual, "");

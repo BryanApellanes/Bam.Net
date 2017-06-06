@@ -18,9 +18,12 @@ namespace Bam.Net.Caching
 	{
 		public CacheItem(object value, IMetaProvider metaProvider)
 		{
-			this.Value = value;			
-			this.Meta = metaProvider.GetMeta(this);			
-			this.Created = DateTime.UtcNow;
+			Value = value;			
+			Meta = metaProvider.GetMeta(this);			
+			Created = DateTime.UtcNow;
+            Id = value.Property<long>("Id", false);
+            Uuid = value.Property<string>("Uuid", false);
+            Cuid = value.Property<string>("Cuid", false);
 		}
 		protected Meta Meta { get; set; }
 		public long Id
@@ -34,6 +37,11 @@ namespace Bam.Net.Caching
 			get;
 			set;
 		}
+
+        public string Cuid
+        {
+            get;set;
+        }
 
 		Type _type;
 		public Type Type

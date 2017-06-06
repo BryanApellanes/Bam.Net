@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Bam.Net.Services.CatalogService.Data;
+using Bam.Net.Services.Catalog.Data;
 
-namespace Bam.Net.Services.CatalogService
+namespace Bam.Net.Services
 {
     public interface ICatalogService
     {

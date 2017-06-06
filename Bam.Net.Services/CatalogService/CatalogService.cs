@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using Bam.Net.CoreServices;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Server;
-using Bam.Net.Services.CatalogService.Data;
+using Bam.Net.Services.Catalog.Data;
 
-namespace Bam.Net.Services.CatalogService
+namespace Bam.Net.Services
 {
     [Proxy("listSvc")]
     public class CatalogService : ProxyableService, ICatalogService

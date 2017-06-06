@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Bam.Net.Data.Dynamic;
 
 namespace Bam.Net.Data.Repositories
 {
@@ -67,6 +68,27 @@ namespace Bam.Net.Data.Repositories
             }
         }
 
+        /// <summary>
+        /// Does a query for an instance of the specified
+        /// generic type T having properties who's values
+        /// match those of the current instance; may return null
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="repo"></param>
+        /// <param name="propertyNames"></param>
+        /// <returns></returns>
+        public virtual T QueryFirstOrDefault<T>(IRepository repo, params string[] propertyNames) where T : RepoData, new()
+        {
+            ValidatePropertyNamesOrDie(propertyNames);
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            propertyNames.Each(new { Parameters = parameters, Instance = this }, (ctx, pn) =>
+            {
+                ctx.Parameters.Add(pn, Reflect.Property(ctx.Instance, pn));
+            });
+            T instance = repo.Query<T>(parameters).FirstOrDefault();
+            return instance;
+        }
+
         public override bool Equals(object obj)
         {
             RepoData o = obj as RepoData;
@@ -80,6 +102,13 @@ namespace Bam.Net.Data.Repositories
         public override int GetHashCode()
         {
             return Id.GetHashCode() + Uuid.GetHashCode() + Cuid.GetHashCode();
+        }
+        protected void ValidatePropertyNamesOrDie(params string[] propertyNames)
+        {
+            propertyNames.Each(new { Instance = this }, (ctx, pn) =>
+            {
+                Args.ThrowIf(!Reflect.HasProperty(ctx.Instance, pn), "Specified property ({0}) was not found on instance of type ({1})", pn, ctx.Instance.GetType().Name);
+            });
         }
     }
 }

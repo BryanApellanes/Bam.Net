@@ -29,7 +29,7 @@ namespace Bam.Net.Caching
 			: this(name, 524288, groomInBackground) // 512 kilobytes
 		{ }
 
-		public Cache(string name, int maxBytes, bool groomInBackground)
+		public Cache(string name, int maxBytes, bool groomInBackground, EventHandler evictionListener = null)
 		{
 			Items = new HashSet<CacheItem>();
 			ItemsByHits = new List<CacheItem>();
@@ -45,6 +45,10 @@ namespace Bam.Net.Caching
 			_groomerSignal = new AutoResetEvent(false);
 			_evictionQueue = new ConcurrentQueue<CacheItem>();
 			
+            if(evictionListener != null)
+            {
+                this.SubscribeOnce(nameof(Evicted), evictionListener);
+            }
 			if (groomInBackground)
 			{
 				StartGroomer();
@@ -57,8 +61,9 @@ namespace Bam.Net.Caching
 		protected List<CacheItem> ItemsByMisses { get; private set; }
 		protected Dictionary<long, CacheItem> ItemsById { get; set; }
 		protected Dictionary<string, CacheItem> ItemsByUuid { get; set; }
+        protected Dictionary<string, CacheItem> ItemsByCuid { get; set; }
 
-		public int MaxBytes { get; set; }			
+        public int MaxBytes { get; set; }			
 
         public CacheItem Retrieve(object instance)
         {
@@ -87,13 +92,23 @@ namespace Bam.Net.Caching
             return result;
         }
 
+        public CacheItem RetrieveByCuid(string cuid)
+        {
+            CacheItem result = null;
+            if(ItemsByCuid.TryGetValue(cuid, out result))
+            {
+                result.IncrementHits();
+            }
+            return result;
+        }
+
         public virtual CacheItem Add(object value)
         {
             HashSet<CacheItem> itemsCopy = new HashSet<CacheItem>(Items);
             CacheItem item = new CacheItem(value, MetaProvider);
             itemsCopy.Add(item);
             Items = itemsCopy;
-            SetCollectionsAndLookup();
+            Organize();
             _groomerSignal.Set();
             return item;
         }
@@ -120,7 +135,7 @@ namespace Bam.Net.Caching
                 yield return item;
             }
             Items = itemsCopy;
-            SetCollectionsAndLookup();
+            Organize();
             _groomerSignal.Set();
         }
 
@@ -304,9 +319,9 @@ namespace Bam.Net.Caching
         {
             HashSet<CacheItem> itemsCopy = new HashSet<CacheItem>(Items.Where(ci => !ci.Equals(item)));
             Items = itemsCopy;
-            SetCollectionsAndLookup();
+            Organize();
             
-            FireEvent(Evicted, new CacheEventArgs { Cache = this, RemovedItems = new CacheItem[] { item } });
+            FireEvent(Evicted, new CacheEvictionEventArgs { Cache = this, EvictedItems = new CacheItem[] { item } });
         }
 
         /// <summary>
@@ -339,8 +354,8 @@ namespace Bam.Net.Caching
             }
 
             Items = itemsCopy;
-            SetCollectionsAndLookup();
-            FireEvent(Evicted, new CacheEventArgs { Cache = this, RemovedItems = removed.ToArray() });
+            Organize();
+            FireEvent(Evicted, new CacheEvictionEventArgs { Cache = this, EvictedItems = removed.ToArray() });
         }
 
 		public void Evict(Func<object, bool> predicate)
@@ -361,9 +376,9 @@ namespace Bam.Net.Caching
             });
             LastEvictionCount = removed.Count();
             Items = kept;
-            SetCollectionsAndLookup();
+            Organize();
 
-			FireEvent(Evicted, new CacheEventArgs { Cache = this, RemovedItems = removed.ToArray() });
+			FireEvent(Evicted, new CacheEvictionEventArgs { Cache = this, EvictedItems = removed.ToArray() });
 		}
 
         /// <summary>
@@ -414,25 +429,44 @@ namespace Bam.Net.Caching
 			_groomerThread.Join(3000);
 		}
 
-        private async void SetCollectionsAndLookup()
+        private async void Organize()
         {
             await Task.Run(() =>
             {
-                List<CacheItem> itemsByHits = new List<CacheItem>(Items);
-                itemsByHits.Sort((x, y) => y.Hits.CompareTo(x.Hits));
-
-                List<CacheItem> itemsByMisses = new List<CacheItem>(Items);
-                itemsByMisses = new List<CacheItem>(Items);
-                itemsByMisses.Sort((x, y) => x.Misses.CompareTo(y.Misses));
-
-                HashSet<CacheItem> itemsCopy = new HashSet<CacheItem>(Items);
-                Dictionary<long, CacheItem> itemsById = itemsCopy.ToDictionary(ci => ci.Id);
-                Dictionary<string, CacheItem> itemsByUuid = itemsCopy.ToDictionary(ci => ci.Uuid);
-
-                ItemsByHits = itemsByHits;
-                ItemsByMisses = itemsByMisses;
-                ItemsById = itemsById;
-                ItemsByUuid = itemsByUuid;
+                Parallel.ForEach(new Action[] 
+                {
+                    () =>
+                    {
+                        List<CacheItem> itemsByHits = new List<CacheItem>(Items);
+                        itemsByHits.Sort((x, y) => y.Hits.CompareTo(x.Hits));
+                        ItemsByHits = itemsByHits;
+                    },
+                    () =>
+                    {
+                        List<CacheItem> itemsByMisses = new List<CacheItem>(Items);
+                        itemsByMisses = new List<CacheItem>(Items);
+                        itemsByMisses.Sort((x, y) => x.Misses.CompareTo(y.Misses));
+                        ItemsByMisses = itemsByMisses;
+                    },
+                    () =>
+                    {
+                        HashSet<CacheItem> itemsCopy = new HashSet<CacheItem>(Items);
+                        Dictionary<long, CacheItem> itemsById = itemsCopy.ToDictionary(ci => ci.Id);
+                        ItemsById = itemsById;
+                    },
+                    () =>
+                    {
+                        HashSet<CacheItem> itemsCopy = new HashSet<CacheItem>(Items);
+                        Dictionary<string, CacheItem> itemsByUuid = itemsCopy.ToDictionary(ci => ci.Uuid);
+                        ItemsByUuid = itemsByUuid;
+                    },
+                    () =>
+                    {
+                        HashSet<CacheItem> itemsCopy = new HashSet<CacheItem>(Items);
+                        Dictionary<string, CacheItem> itemsByCuid = itemsCopy.ToDictionary(ci => ci.Cuid);
+                        ItemsByCuid = itemsByCuid;
+                    }
+                }, action => action());
             });
         }
     }

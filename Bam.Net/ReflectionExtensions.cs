@@ -132,9 +132,49 @@ namespace Bam.Net
         {
             Args.ThrowIfNull(instance, "instance");
             Args.ThrowIfNull(methodName, "methodName");
-            MethodInfo method = instance.GetType().GetMethod(methodName, args.Select(a => a.GetType()).ToArray());
-            MethodInfo genericMethod = method.MakeGenericMethod(typeof(TArg));
-            return (T)genericMethod.Invoke(instance, args);
+            try
+            {
+                MethodInfo method = instance.GetType().GetMethod(methodName, args.Select(a => a.GetType()).ToArray());
+                MethodInfo genericMethod = method.MakeGenericMethod(typeof(TArg));
+                return (T)genericMethod.Invoke(instance, args);
+            }
+            catch (AmbiguousMatchException ame)
+            {
+                IEnumerable<MethodInfo> methods = instance.GetType().GetMethods().Where(mi => mi.Name.Equals(methodName) && mi.ContainsGenericParameters && mi.GetParameters().Length == args.Length);
+                T response = default(T);
+                bool gotOne = false;
+                foreach (MethodInfo method in methods)
+                {
+                    ParameterInfo[] paramInfos = method.GetParameters();
+                    bool useThisOne = true;
+                    for (int i = 0; i < paramInfos.Length; i++)
+                    {
+                        Type argType = args[i].GetType();
+                        Type paramType = paramInfos[i].ParameterType;
+                        if(paramType == typeof(object))
+                        {
+                            continue;
+                        }
+                        if (!argType.Equals(paramType))
+                        {
+                            useThisOne = false;
+                            break;
+                        }
+                    }
+                    if (useThisOne)
+                    {
+                        MethodInfo genericMethod = method.MakeGenericMethod(typeof(TArg));
+                        response = (T)genericMethod.Invoke(instance, args);
+                        gotOne = true;
+                        break;
+                    }
+                }
+                if (!gotOne)
+                {
+                    throw ame;
+                }
+                return response;
+            }
         }
 
         /// <summary>

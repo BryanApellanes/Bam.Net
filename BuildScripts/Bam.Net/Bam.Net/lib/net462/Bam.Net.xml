@@ -2672,7 +2672,7 @@
             <param name="method"></param>
             <returns></returns>
         </member>
-        <member name="M:Bam.Net.Extensions.CreateDynamicType``1(System.Object)">
+        <member name="M:Bam.Net.Extensions.BuildDynamicType``1(System.Object)">
             <summary>
             Creates an in memory clone of the specified objectToClone.  The 
             clone will only have the properties of objectToClone that are
@@ -2682,7 +2682,7 @@
             <param name="objectToClone">The object to clone</param>
             <returns>An in memory type that is not persisted to disk.</returns>
         </member>
-        <member name="M:Bam.Net.Extensions.CreateDynamicType``1(System.Type)">
+        <member name="M:Bam.Net.Extensions.BuildDynamicType``1(System.Type)">
             <summary>
             Creates an in memory clone of the specified objectToClone.  The 
             clone will only have the properties of objectToClone that are
@@ -2692,7 +2692,7 @@
             <param name="typeToClone"></param>
             <returns></returns>
         </member>
-        <member name="M:Bam.Net.Extensions.CreateDynamicType``1(System.Object,System.Boolean)">
+        <member name="M:Bam.Net.Extensions.BuildDynamicType``1(System.Object,System.Boolean)">
             <summary>
             Creates an in memory clone of the specified objectToClone.  The 
             clone will only have the properties of objectToClone that are
@@ -2703,7 +2703,7 @@
             <param name="concreteAttribute">If true the attributes must be of the specified type and not extenders of the type.</param>
             <returns>An in memory type that is not persisted to disk.</returns>
         </member>
-        <member name="M:Bam.Net.Extensions.CreateDynamicType``1(System.Object,System.Reflection.Emit.AssemblyBuilder@)">
+        <member name="M:Bam.Net.Extensions.BuildDynamicType``1(System.Object,System.Reflection.Emit.AssemblyBuilder@)">
             <summary>
             Creates an in memory clone of the specified objectToClone.  The 
             clone will only have the properties of objectToClone that are
@@ -2713,7 +2713,7 @@
             <param name="objectToClone">The object to clone</param>
             <returns>An in memory type that is not persisted to disk.</returns>
         </member>
-        <member name="M:Bam.Net.Extensions.CreateDynamicType``1(System.Object,System.Reflection.Emit.AssemblyBuilder@,System.Boolean)">
+        <member name="M:Bam.Net.Extensions.BuildDynamicType``1(System.Object,System.Reflection.Emit.AssemblyBuilder@,System.Boolean)">
             <summary>
             Creates an in memory clone of the specified objectToClone.  The 
             clone will only have the properties of objectToClone that are
@@ -2806,16 +2806,6 @@
             that are represented in the Bam.Net.Data.Schema.DataTypes enum
             </summary>
             <param name="instance"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Bam.Net.Extensions.ToDynamicData(System.Object,System.String)">
-            <summary>
-            Clone the specified instance to a dynamic object instance
-            copying only properties
-            that are represented in the Bam.Net.Data.Schema.DataTypes enum
-            </summary>
-            <param name="instance"></param>
-            <param name="typeName"></param>
             <returns></returns>
         </member>
         <member name="M:Bam.Net.Extensions.DataClone``1(``0)">

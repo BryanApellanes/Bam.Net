@@ -114,6 +114,8 @@
     <Compile Include="AsyncDaoRepository.cs" />
     <Compile Include="AsyncRepository.cs" />
     <Compile Include="BackedupDatabase.cs" />
+    <Compile Include="CompositeKeyAttribute.cs" />
+    <Compile Include="CompositeKeyMap.cs" />
     <Compile Include="CrudMethods.cs" />
     <Compile Include="CrudResponse.cs" />
     <Compile Include="DaoCrudResponseProvider.cs" />
@@ -126,9 +128,13 @@
     <Compile Include="FsRepository.cs" />
     <Compile Include="IBaseCrudProvider.cs" />
     <Compile Include="ICrudResponseProvider.cs" />
+    <Compile Include="IHasKeyHash.cs" />
     <Compile Include="IQueryFilterable.cs" />
     <Compile Include="IRepositoryPathProvider.cs" />
     <Compile Include="IStorableTypesProvider.cs" />
+    <Compile Include="KeyHashAuditRepoData.cs" />
+    <Compile Include="KeyHashProvider.cs" />
+    <Compile Include="KeyHashRepoData.cs" />
     <Compile Include="NamespaceStorableTypesProvider.cs" />
     <Compile Include="ObjectIdentifier.cs" />
     <Compile Include="RepoData.cs" />

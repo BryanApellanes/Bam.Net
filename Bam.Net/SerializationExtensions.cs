@@ -156,14 +156,22 @@ namespace Bam.Net
         public static byte[] ToBinaryBytes(this object target)
         {
             return ToBinaryStream(target).GetBuffer();
-        }        
+        }
 
         public static MemoryStream ToBinaryStream(this object target)
         {
+            Args.ThrowIfNull(target, "target");
             BinaryFormatter serializer = new BinaryFormatter();
             MemoryStream outPut = new MemoryStream();
-            serializer.Serialize(outPut, target);
-            outPut.Seek(0, SeekOrigin.Begin);
+            try
+            {
+                serializer.Serialize(outPut, target);
+                outPut.Seek(0, SeekOrigin.Begin);
+            }
+            catch (Exception ex)
+            {
+                Log.Default.AddEntry("Failed to serialize target of type ({0}): {1}", ex, target.GetType().FullName, ex.Message);
+            }
             return outPut;
         }
 
@@ -214,31 +222,34 @@ namespace Bam.Net
             return FromBinaryFile(file.FullName, type);
         }
 
-        public static object FromBinaryFile(this string filePath, Type type)
+        public static object FromBinaryFile(this string filePath, Type type, ILogger logger = null)
         {
             try
             {
-                using (FileStream fs = new FileStream(filePath, FileMode.Open))
+                lock (FileLock.Named(filePath))
                 {
-                    MemoryStream outPut = new MemoryStream();
-                    byte[] buffer = new byte[32768]; // max int size
-                    while (true)
+                    using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
                     {
-                        int read = fs.Read(buffer, 0, buffer.Length);
-                        if (read <= 0)
+                        MemoryStream outPut = new MemoryStream();
+                        byte[] buffer = new byte[32768]; // max int size
+                        while (true)
                         {
-                            break;
+                            int read = fs.Read(buffer, 0, buffer.Length);
+                            if (read <= 0)
+                            {
+                                break;
+                            }
+                            outPut.Write(buffer, 0, read);
                         }
-                        outPut.Write(buffer, 0, read);
-                    }
 
-                    outPut.Seek(0, SeekOrigin.Begin);
-                    return outPut.GetBuffer().FromBinaryBytes();
+                        outPut.Seek(0, SeekOrigin.Begin);
+                        return outPut.GetBuffer().FromBinaryBytes();
+                    }
                 }
             }
             catch (Exception ex)
             {
-                Log.Default.AddEntry("Exception occurred loading binary file {0}: {1}", ex, filePath, ex.Message);
+                (logger ?? Log.Default).AddEntry("Exception occurred loading binary file {0}: {1}", ex, filePath, ex.Message);
                 return null;
             }
         }

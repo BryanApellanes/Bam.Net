@@ -143,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackupDatabaseTests.cs" />
+    <Compile Include="CachingRepositoryTests.cs" />
     <Compile Include="ConsoleActions.cs" />
     <Compile Include="DatabaseRepositoryUnitTests.cs" />
     <Compile Include="ObjectRepositoryUnitTests.cs" />
@@ -242,6 +243,10 @@
     <ProjectReference Include="..\Bam.Net.Analytics\Bam.Net.Analytics.csproj">
       <Project>{67cca5a4-9b97-444c-9f4b-f464b2e04d6b}</Project>
       <Name>Bam.Net.Analytics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Caching\Bam.Net.Caching.csproj">
+      <Project>{06bae7ad-8657-4415-bbc0-dad16bb29361}</Project>
+      <Name>Bam.Net.Caching</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.CommandLine\Bam.Net.CommandLine.csproj">
       <Project>{ea9863a9-8e0b-4497-b7fd-abf450a3e468}</Project>

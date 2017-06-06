@@ -12,6 +12,7 @@ using System.Collections;
 
 namespace Bam.Net.Data.Repositories
 {
+    [Serializable]
 	public abstract class Repository : Loggable, IRepository
 	{
 		public Repository()
@@ -88,6 +89,10 @@ namespace Bam.Net.Data.Repositories
 		public virtual void AddType(Type type)
 		{
 			_storableTypes.Add(type);
+            if(!_storableTypes.Contains(typeof(CompositeKeyMap)) && type.GetProperties().Where(pi=> pi.HasCustomAttributeOfType<CompositeKeyAttribute>()).Any())
+            {
+                _storableTypes.Add(typeof(CompositeKeyMap));
+            }
 		}
 
         /// <summary>
@@ -108,7 +113,7 @@ namespace Bam.Net.Data.Repositories
 
         public T Save<T>(T toSave) where T : class, new()
 		{
-			return (T)Save((object)toSave);
+			return (T)Save((object)toSave); // casting so that th implementation uses the actual type and not a base type
 		}
 
         /// <summary>
@@ -130,14 +135,15 @@ namespace Bam.Net.Data.Repositories
         /// it has Id greater than 0 otherwise calls Create
         /// </summary>
         /// <param name="toSave"></param>
+        /// <param name="type"></param>
         /// <returns></returns>
         public object Save(Type type, object toSave)
 		{
             SetMeta(toSave);
-			long id = GetIdValue(toSave);
+			long? id = GetIdValue(toSave);
             toSave.Property("Modified", DateTime.UtcNow, false);
 			object result = null;
-			if (id > 0)
+			if (id.HasValue && id.Value != 0)
 			{
 				result = Update(type, toSave);
 			}
@@ -175,12 +181,31 @@ namespace Bam.Net.Data.Repositories
 		public abstract object Retrieve(Type objectType, long id);
 		public abstract object Retrieve(Type objectType, string uuid);
         public abstract IEnumerable<object> Query(string propertyName, object propertyValue);
-		public abstract IEnumerable<object> Query(dynamic query);
+        /// <summary>
+        /// Execute query against the underlying SourceRepository.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public virtual IEnumerable<object> Query(dynamic query)
+        {
+            Type type = ReflectionExtensions.Property(query, "Type", false);
+            if (type == null)
+            {
+                throw new InvalidOperationException("Type not specified, use { Type = typeof(<typeToQuery>) }");
+            }
+            Dictionary<string, object> parameters = Bam.Net.Extensions.ToDictionary(query);
+            parameters.Remove("Type");
+            return Query(type, parameters);
+        }
         public abstract IEnumerable<T> Query<T>(Func<T, bool> query) where T : class, new();
         public abstract IEnumerable<T> Query<T>(Dictionary<string, object> queryParameters) where T : class, new();
         public abstract IEnumerable<object> Query(Type type, Dictionary<string, object> queryParameters);
 		public abstract IEnumerable<object> Query(Type type, Func<object, bool> predicate);
-		public abstract IEnumerable<T> Query<T>(dynamic query) where T : class, new();
+		public virtual IEnumerable<T> Query<T>(dynamic query) where T : class, new()
+        {
+            IEnumerable<object> results = Query(typeof(T), Bam.Net.Extensions.ToDictionary(query));
+            return results.CopyAs<T>();
+        }
         public virtual IEnumerable<object> Query(Type type, dynamic query)
         {
             return Query(type, Extensions.ToDictionary(query));
@@ -250,7 +275,7 @@ namespace Bam.Net.Data.Repositories
 			return GetKeyProperty(typeof(T));
 		}
 
-		protected internal static long GetIdValue(object value)
+		protected internal long? GetIdValue(object value)
 		{
 			return Meta.GetId(value);
 		}

@@ -16,9 +16,9 @@ namespace Bam.Net.Data.Repositories
 		T ReadByHash<T>(string hash);
 		object ReadByHash(Type type, string hash);
 		string RootDirectory { get; set; }
-		void Enqueue(object data);
-		void Write(object data);
-		bool Delete(object data);
+		void Enqueue(Type type, object data);
+		void Write(Type type, object data);
+		bool Delete(object data, Type type = null);
 		event EventHandler WriteObjectFailed;
 		event EventHandler WriteObjectPropertiesFailed;
 

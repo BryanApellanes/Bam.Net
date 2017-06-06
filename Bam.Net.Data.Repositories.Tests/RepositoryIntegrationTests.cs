@@ -151,14 +151,6 @@ namespace Bam.Net.Data.Repositories.Tests
             });
         }
 
-        //[ConsoleAction]
-        //public void Testing()
-        //{
-        //    SaveOfInheritingTypeTest();
-        //}
-
-
-
         private void AddTypes(IRepository repo)
         {
             repo.AddType<Parent>();

@@ -9,6 +9,11 @@
             An asynchronous wrapper for a DaoRepository
             </summary>
         </member>
+        <member name="P:Bam.Net.Data.Repositories.CompositeKeyMap.TypeName">
+            <summary>
+            The AssemblyQualifiedName of the type
+            </summary>
+        </member>
         <member name="T:Bam.Net.Data.Repositories.DaoBackup">
             <summary>
             Represents a backup of a Dao database schema and the data therein
@@ -39,6 +44,13 @@
             The database that the backup will be restored to
             </summary>
         </member>
+        <member name="T:Bam.Net.Data.Repositories.IHasKeyHash">
+            <summary>
+            When implemented describes the properties
+            of a type that comprise it's composite key
+            which uniquely identifies it
+            </summary>
+        </member>
         <member name="T:Bam.Net.Data.Repositories.RepoData">
             <summary>
             An abstract base class defining common
@@ -52,6 +64,17 @@
             was first referenced prior to persisting
             the object instance
             </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.RepoData.QueryFirstOrDefault``1(Bam.Net.Data.Repositories.IRepository,System.String[])">
+            <summary>
+            Does a query for an instance of the specified
+            generic type T having properties who's values
+            match those of the current instance; may return null
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="repo"></param>
+            <param name="propertyNames"></param>
+            <returns></returns>
         </member>
         <member name="T:Bam.Net.Data.Repositories.RepositoryTypesProvider">
             <summary>
@@ -316,8 +339,9 @@
             A repository that will generate an underlying Dao
             for the types added.  Any values returned by a 
             call to Query will not be fully hydrated (child lists
-            won't be populated).  To ensure full hydration of
-            the values call Retrieve(id) or Retrieve(uuid).
+            won't be populated) as well as any child lists of child 
+            list elements.  To ensure full hydration of
+            the values call Retrieve(id) or Retrieve(uuid).    
             </summary>
         </member>
         <member name="M:Bam.Net.Data.Repositories.DaoRepository.#ctor(Bam.Net.Data.Repositories.ITypeTableNameProvider,System.Func{Bam.Net.Data.Schema.SchemaDefinition,Bam.Net.Data.Repositories.TypeSchema,System.String})">
@@ -519,7 +543,10 @@
             A class responsible for saving and retrieving
             Poco objects.  Currently not designed for performance
             and is primarily used for backups.  This "should"
-            be changed in the future to improve performance.
+            be changed in the future to improve performance.  Uses
+            a BinaryFormatter to serialize object instances to
+            disk so those objects should not be complex types
+            and must be marked Serializable.
             </summary>
         </member>
         <member name="M:Bam.Net.Data.Repositories.ObjectRepository.SetParentProperties(System.Object,System.Object)">
@@ -535,7 +562,10 @@
             write two representations of the object, one
             as an IpcMessage <see cref="T:Bam.Net.IpcMessage"/>
             and another "searchable" version of all
-            the properties in crawlable files
+            the properties in crawlable files.  This should
+            not be used for any IO intensive applications
+            as it needs more testing and has so far diasplayed
+            horrendous IO characteristics
             </summary>
         </member>
         <member name="T:Bam.Net.Data.Repositories.AuditRepoData">
@@ -554,18 +584,6 @@
             </summary>
             <typeparam name="T"></typeparam>
             <param name="repo"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Bam.Net.Data.Repositories.AuditRepoData.EnsureSingle``1(Bam.Net.Data.Repositories.IRepository,System.String[])">
-            <summary>
-            Ensures that an instance of the current RepoData
-            has been saved to the specified repo where the 
-            specified properties equal the values of those
-            properties on this instance
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="repo"></param>
-            <param name="propertyName"></param>
             <returns></returns>
         </member>
         <member name="M:Bam.Net.Data.Repositories.AuditRepoData.EnsureSingle``1(Bam.Net.Data.Repositories.IRepository,System.String,System.String[])">
@@ -806,6 +824,14 @@
             it has Id greater than 0 otherwise calls Create
             </summary>
             <param name="toSave"></param>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.Repository.Query(System.Object)">
+            <summary>
+            Execute query against the underlying SourceRepository.
+            </summary>
+            <param name="query"></param>
             <returns></returns>
         </member>
         <member name="T:Bam.Net.Data.Repositories.TypeFk">

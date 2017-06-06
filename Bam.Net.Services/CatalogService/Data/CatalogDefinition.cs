@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Data.Repositories;
 
-namespace Bam.Net.Services.CatalogService.Data
+namespace Bam.Net.Services.Catalog.Data
 {
     public class CatalogDefinition: AuditRepoData
     {
