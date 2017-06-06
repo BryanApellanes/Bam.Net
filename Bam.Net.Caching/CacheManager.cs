@@ -47,6 +47,8 @@ namespace Bam.Net.Caching
 			CacheFor(typeof(T), cache);
 		}
 
+        public event EventHandler Evicted;
+
         [Verbosity(LogEventType.Warning, MessageFormat = "Failed to get Cache for type {TypeName}")]
         public event EventHandler GetCacheFailed;
 
@@ -54,7 +56,7 @@ namespace Bam.Net.Caching
         {
             if (!_cacheDictionary.ContainsKey(type))
             {
-                _cacheDictionary.TryAdd(type, new Cache(type.Name, MaxCacheSizeBytes, true));
+                _cacheDictionary.TryAdd(type, new Cache(type.Name, MaxCacheSizeBytes, true, OnEvicted));
             }
             Cache result;
             if(!_cacheDictionary.TryGetValue(type, out result))
@@ -62,6 +64,11 @@ namespace Bam.Net.Caching
                 FireEvent(GetCacheFailed, new CacheManagerEventArgs { Type = type });
             }
             return result;
+        }
+
+        private void OnEvicted(object sender, EventArgs args)
+        {
+            Evicted?.Invoke(sender, args);
         }
 
         [Verbosity(LogEventType.Information, MessageFormat = "Removed Cache for type {TypeName}")]
