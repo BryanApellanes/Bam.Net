@@ -8,7 +8,7 @@ using Bam.Net.Logging;
 using Bam.Net.Messaging;
 using Bam.Net.Server;
 
-namespace Bam.Net.Services.DistributedService
+namespace Bam.Net.Services.Distributed
 {
     [Proxy("metricsSvc")]
     public class MetricsService : EventSourceService

@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Bam.Net.CoreServices;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Server;
 using Bam.Net.Translation;
 
-namespace Bam.Net.CoreServices
+namespace Bam.Net.Services
 {
     [Proxy("translationSvc")]
     public class TranslationService : ProxyableService, ILanguageDetector, ITranslationProvider, IIsoLanguageTranslationProvider

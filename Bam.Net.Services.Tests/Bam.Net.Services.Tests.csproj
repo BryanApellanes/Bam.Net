@@ -54,15 +54,11 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
-      <HintPath>..\..\Business\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    <Reference Include="Lucene.Net">
+      <HintPath>..\packages\Lucene.Net.3.0.3\lib\NET40\Lucene.Net.dll</HintPath>
     </Reference>
-    <Reference Include="Lucene.Net, Version=3.0.3.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
-      <HintPath>..\..\Business\packages\Lucene.Net.3.0.3\lib\NET40\Lucene.Net.dll</HintPath>
-    </Reference>
-    <Reference Include="NCuid, Version=1.0.0.23490, Culture=neutral, PublicKeyToken=73c58d802958a09f, processorArchitecture=MSIL">
-      <HintPath>..\..\Business\packages\NCuid.1.0.0\lib\net40\NCuid.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="NCuid">
+      <HintPath>..\packages\NCuid.1.0.0\lib\net40\NCuid.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -74,16 +70,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyManagementServiceTests.cs" />
     <Compile Include="ConsoleActions.cs" />
+    <Compile Include="FileServiceTests.cs" />
     <Compile Include="IntegrationTests.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestClasses.cs" />
     <Compile Include="UnitTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Bam.Net.Caching\Bam.Net.Caching.csproj">
+      <Project>{06bae7ad-8657-4415-bbc0-dad16bb29361}</Project>
+      <Name>Bam.Net.Caching</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.CoreServices\Bam.Net.CoreServices.csproj">
       <Project>{5480d2a0-145b-4435-8e1c-4555ead0424a}</Project>
       <Name>Bam.Net.CoreServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Server\Bam.Net.Server.csproj">
+      <Project>{6cd8ffb4-35ca-44ac-803d-cb9d4cb524a0}</Project>
+      <Name>Bam.Net.Server</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Services\Bam.Net.Services.csproj">
       <Project>{f67630bf-5e73-46bf-a7f1-6d7e9648135f}</Project>
