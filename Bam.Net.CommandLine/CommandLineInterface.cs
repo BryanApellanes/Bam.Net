@@ -763,11 +763,13 @@ File Version: {1}
 
             InvokeMethod();
         }
-
+        [DebuggerStepThrough]
         protected internal static void InvokeInSeparateAppDomain(MethodInfo method, object instance, object[] ps = null)
         {
             InvokeInSeparateAppDomain(method, instance, null, ps);
         }
+
+        [DebuggerStepThrough]
         protected internal static void InvokeInSeparateAppDomain(MethodInfo method, object instance, object state, object[] ps = null)
         {
             AppDomain isolationDomain = AppDomain.CreateDomain("TestAppDomain");
@@ -787,7 +789,7 @@ File Version: {1}
         {
             return (T)AppDomain.CurrentDomain.GetData("State");
         }
-
+        [DebuggerStepThrough]
         protected internal static void InvokeSelection(List<ConsoleInvokeableMethod> actions, string answer, string header, string footer, out int selectedNumber)
         {
             selectedNumber = -1;
@@ -813,6 +815,7 @@ File Version: {1}
             set;
         }
 
+        [DebuggerStepThrough]
         protected internal static int InvokeSelection(List<ConsoleInvokeableMethod> actions, string header, string footer, int selectedNumber)
         {
             selectedNumber -= 1;

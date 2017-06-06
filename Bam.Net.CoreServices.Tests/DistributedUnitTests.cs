@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using Bam.Net.CoreServices.Distributed;
-using Bam.Net.Services.DistributedService;
+using Bam.Net.Services.Distributed;
 using Bam.Net.Testing;
 
 namespace Bam.Net.Distributed.Tests

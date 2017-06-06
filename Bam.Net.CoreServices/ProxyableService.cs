@@ -116,8 +116,8 @@ namespace Bam.Net.CoreServices
         {
             get
             {
-                return HttpContext?.Request?.Headers["HTTP_X_FORWARDED_FOR"]
-                        .Or(HttpContext?.Request?.Headers["REMOTE_ADDR"])
+                return HttpContext?.Request?.Headers["X-Forwarded-For"]
+                        .Or(HttpContext?.Request?.Headers["Remote-Addr"])
                         .Or(HttpContext?.Request?.UserHostAddress);
             }
         }

@@ -45,9 +45,7 @@ namespace Bam.Net.Data.Repositories.Tests
             Type type = daoAssembly.GetTypes().FirstOrDefault(t => t.HasCustomAttributeOfType<TableAttribute>());
             Expect.IsNotNull(type);
             Expect.AreEqual(schemaName, Dao.ConnectionName(type));
-        }
-
-        
+        }        
 
         [UnitTest]
         public void SetsModified()

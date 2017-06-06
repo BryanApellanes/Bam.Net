@@ -123,6 +123,7 @@ namespace Bam.Net.CoreServices
             }
         }
 
+        [RoleRequired("Admin")]
         public virtual void SetMachineConfiguration(string machineName, Dictionary<string, string> settings, string configurationName = null)
         {
             configurationName = configurationName ?? CommonConfigName;

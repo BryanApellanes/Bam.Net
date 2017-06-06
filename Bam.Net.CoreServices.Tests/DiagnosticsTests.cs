@@ -64,7 +64,7 @@ namespace Bam.Net.CoreServices.Tests
         public void DiagnosticInfoShouldHaveMySqlDatabase()
         {
             string name = 8.RandomLetters();
-            MySqlDatabase msDatabase = new MySqlDatabase("chumsql2", "DaoRef", name);
+            MySqlDatabase mySqlDatabase = new MySqlDatabase("chumsql2", "DaoRef", name);
             CoreDiagnosticService svc = new CoreDiagnosticService(null);
             DiagnosticInfo info = svc.GetDiagnosticInfo();
             DatabaseInfo dbInfo = info.Databases.FirstOrDefault(dbi => dbi.ConnectionName.Equals(name));
@@ -72,6 +72,26 @@ namespace Bam.Net.CoreServices.Tests
             Expect.AreEqual(name, dbInfo.ConnectionName);
             Expect.AreEqual(typeof(MySqlDatabase).FullName, dbInfo.DatabaseType);
             OutLineFormat("{0}", ConsoleColor.DarkBlue, info.ToYaml());
+        }
+
+        [UnitTest]
+        public void LoadAssembliesAndReferenced()
+        {
+            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            foreach(Assembly ass in assemblies)
+            {
+                OutLineFormat("{0}: {1}", ass.FullName, ass.GetFileInfo().Sha1(), ConsoleColor.Blue);
+                OutLineFormat("{0}: {1}", ConsoleColor.Blue, ass.GetFilePath(), ass.FullName);
+                AssemblyName[] referenced = ass.GetReferencedAssemblies();
+                OutLine("referenced", ConsoleColor.DarkBlue);
+                foreach(AssemblyName name in referenced)
+                {
+                    Assembly reference = Assembly.Load(name);
+                    OutLineFormat("\t{0}: {1}", ass.FullName, ass.GetFileInfo().Sha1(), ConsoleColor.Cyan);
+                    OutLineFormat("\t{0}: {1}", ConsoleColor.Cyan, ass.GetFilePath(), ass.FullName);
+                }
+                OutLine();
+            }
         }
     }
 }

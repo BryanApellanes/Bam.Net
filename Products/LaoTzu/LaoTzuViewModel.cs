@@ -214,7 +214,7 @@ namespace laotzu
             DialogResult result = Form.SaveFileDialog.ShowDialog();
             if (result == DialogResult.OK)
             {
-                object settings = this.CreateDynamicType<ModelSetting>().Construct();
+                object settings = this.BuildDynamicType<ModelSetting>().Construct();
                 settings.CopyProperties(this);
                 settings.ToJsonFile(Form.SaveFileDialog.FileName);
             }
