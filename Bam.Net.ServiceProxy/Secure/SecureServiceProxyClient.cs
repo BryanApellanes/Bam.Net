@@ -209,7 +209,7 @@ namespace Bam.Net.ServiceProxy.Secure
 
                             using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                             {
-                                SessionCookie = response.Cookies[ServiceProxySystem.SecureSessionName];
+                                SessionCookie = response.Cookies[SecureSession.CookieName];
                                 Cookies.Add(SessionCookie);
 
                                 using (StreamReader sr = new StreamReader(response.GetResponseStream()))
@@ -331,15 +331,15 @@ namespace Bam.Net.ServiceProxy.Secure
 
             if (SessionCookie == null)
             {
-                Logger.AddEntry("Session Cookie ({0}) was missing, call StartSession() first", LogEventType.Warning, ServiceProxySystem.SecureSessionName);
+                Logger.AddEntry("Session Cookie ({0}) was missing, call StartSession() first", LogEventType.Warning, SecureSession.CookieName);
             }
             else
             {
-                request.Headers.Add(ServiceProxySystem.SecureSessionName, SessionCookie.Value);
+                request.Headers.Add(BamHeaders.SecureSession, SessionCookie.Value);
             }
             if (ClientApplicationNameProvider != null)
             {
-                request.Headers[ApplicationNameHeader] = ClientApplicationNameProvider.GetApplicationName();
+                request.Headers[BamHeaders.ApplicationName] = ClientApplicationNameProvider.GetApplicationName();
             }
             return request;
         }
@@ -364,10 +364,10 @@ namespace Bam.Net.ServiceProxy.Secure
         {
             kvp = new AesKeyVectorPair();
             string keyCipher = kvp.Key.EncryptWithPublicKey(SessionInfo.PublicKey, Encoding.UTF8);
-            string keyHash = kvp.Key.Sha1();
+            string keyHash = kvp.Key.Sha256();
             string keyHashCipher = keyHash.EncryptWithPublicKey(SessionInfo.PublicKey, Encoding.UTF8);
             string ivCipher = kvp.IV.EncryptWithPublicKey(SessionInfo.PublicKey, Encoding.UTF8);
-            string ivHash = kvp.IV.Sha1();
+            string ivHash = kvp.IV.Sha256();
             string ivHashCipher = ivHash.EncryptWithPublicKey(SessionInfo.PublicKey, Encoding.UTF8);
 
             request = new SetSessionKeyRequest(keyCipher, keyHashCipher, ivCipher, ivHashCipher);

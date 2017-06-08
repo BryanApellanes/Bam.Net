@@ -13,6 +13,7 @@ using Bam.Net.Server.Renderers;
 using Bam.Net.ServiceProxy;
 using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.UserAccounts;
+using Bam.Net.Web;
 using U = Bam.Net.UserAccounts.Data;
 
 namespace Bam.Net.CoreServices
@@ -106,8 +107,8 @@ namespace Bam.Net.CoreServices
         {
             get
             {
-                string fromHeader = HttpContext?.Request?.Headers[ServiceProxyClient.ApplicationNameHeader];
-                return fromHeader.Or($"{ServiceProxyClient.ApplicationNameHeader}-UNKNOWN");
+                string fromHeader = HttpContext?.Request?.Headers[BamHeaders.ApplicationName];
+                return fromHeader.Or($"{BamHeaders.ApplicationName}-Not-Specified");
             }
         }
 

@@ -21,10 +21,6 @@ namespace Bam.Net.ServiceProxy.Secure
     /// </summary>
     internal class ApiValidation
     {
-        public const string ValidationTokenName = "ValidationToken";
-        public const string NonceName = "Timestamp";
-        public const string PaddingName = "Padding";
-
         public static void SetValidationToken(HttpWebRequest request, string postString, string publicKey)
         {
             SetValidationToken(request.Headers, postString, publicKey);
@@ -33,20 +29,20 @@ namespace Bam.Net.ServiceProxy.Secure
         public static void SetValidationToken(NameValueCollection headers, string postString, string publicKey)
         {
             ValidationToken token = CreateValidationToken(postString, publicKey);
-            headers[NonceName] = token.NonceCipher;
-            headers[ValidationTokenName] = token.HashCipher;
+            headers[BamHeaders.Nonce] = token.NonceCipher;
+            headers[BamHeaders.ValidationToken] = token.HashCipher;
         }
         
         public static ValidationToken GetValidationToken(NameValueCollection headers)
         {
             ValidationToken result = new ValidationToken();
-            result.NonceCipher = headers[NonceName];
-            result.HashCipher = headers[ValidationTokenName];
-            Args.ThrowIfNull(result.NonceCipher, NonceName);
+            result.NonceCipher = headers[BamHeaders.Nonce];
+            result.HashCipher = headers[BamHeaders.ValidationToken];
+            Args.ThrowIfNull(result.NonceCipher, BamHeaders.Nonce);
             Args.ThrowIf<ValidationTokenNotFoundException>(
                 result.HashCipher == null || string.IsNullOrEmpty(result.HashCipher),  
                 "ValidationToken header was not found: {0}",
-                ValidationTokenName);
+                BamHeaders.ValidationToken);
             return result;
         }
 
@@ -66,7 +62,7 @@ namespace Bam.Net.ServiceProxy.Secure
             string nonce = instant.ToString();
             string kvpFormat = "{0}:{1}";
             //{Month}/{Day}/{Year};{Hour}.{Minute}.{Second}.{Millisecond}:{PostString}
-            string hash = kvpFormat._Format(nonce, postString).Sha1();
+            string hash = kvpFormat._Format(nonce, postString).Sha256();
             string hashCipher = hash.EncryptWithPublicKey(publicKeyPem);
             string nonceCipher = nonce.EncryptWithPublicKey(publicKeyPem);
 
@@ -77,7 +73,7 @@ namespace Bam.Net.ServiceProxy.Secure
         {
             NameValueCollection headers = context.Request.Headers;
             
-            string paddingValue = headers[PaddingName] ?? string.Empty;
+            string paddingValue = headers[BamHeaders.Padding] ?? string.Empty;
             bool usePadding = paddingValue.ToLowerInvariant().Equals("true");
             
             return ValidateToken(headers, post, usePadding);
@@ -118,7 +114,7 @@ namespace Bam.Net.ServiceProxy.Secure
         public static TokenValidationStatus ValidateHash(string nonce, string hash, string plainPost)
         {
             string kvpFormat = "{0}:{1}";
-            string checkHash = kvpFormat._Format(nonce, plainPost).Sha1();
+            string checkHash = kvpFormat._Format(nonce, plainPost).Sha256();
             TokenValidationStatus result = TokenValidationStatus.HashFailed;
             if (checkHash.Equals(hash))
             {

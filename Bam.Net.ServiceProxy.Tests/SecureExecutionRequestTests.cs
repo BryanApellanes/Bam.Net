@@ -33,6 +33,7 @@ using Org.BouncyCastle.Security;
 using FakeItEasy;
 using FakeItEasy.Creation;
 using System.Reflection;
+using Bam.Net.Web;
 
 namespace Bam.Net.ServiceProxy.Tests
 {
@@ -117,7 +118,7 @@ namespace Bam.Net.ServiceProxy.Tests
             IHttpContext context = A.Fake<IHttpContext>();
             IResponse response = A.Fake<IResponse>();
             response.Headers = new WebHeaderCollection();
-            response.Headers[ServiceProxySystem.SecureSessionName] = sessionName;
+            response.Headers[BamHeaders.SecureSession] = sessionName;
             context.Request = A.Fake<IRequest>();
             context.Response = A.Fake<IResponse>();
             string fileName = MethodInfo.GetCurrentMethod().Name.RandomLetters(6);

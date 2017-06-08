@@ -37,6 +37,7 @@ using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Crypto.Engines;
 using FakeItEasy;
 using FakeItEasy.Creation;
+using Bam.Net.Web;
 
 namespace Bam.Net.ServiceProxy.Tests
 {
@@ -107,9 +108,9 @@ namespace Bam.Net.ServiceProxy.Tests
             SecureSession session = SecureSession.Get(request);
             ApiValidation.SetValidationToken(request.Headers, "Some random data", session.PublicKey);
 
-            Expect.IsNotNull(request.Headers[ApiValidation.ValidationTokenName]);
+            Expect.IsNotNull(request.Headers[BamHeaders.ValidationToken]);
 
-            OutLine(request.Headers[ApiValidation.ValidationTokenName]);
+            OutLine(request.Headers[BamHeaders.ValidationToken]);
         }
 
         private static IRequest CreateFakeRequest()

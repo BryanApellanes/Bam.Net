@@ -37,6 +37,7 @@ using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Crypto.Engines;
 using FakeItEasy;
 using FakeItEasy.Creation;
+using Bam.Net.Web;
 
 namespace Bam.Net.ServiceProxy.Tests
 {
@@ -91,11 +92,11 @@ namespace Bam.Net.ServiceProxy.Tests
 
             Cookie cookie = new Cookie(SecureSession.CookieName, session.Identifier, "", "blah.cxm");            
             request.CookieContainer.Add(cookie);
-            request.Headers[SecureSession.CookieName] = session.Identifier;
+            request.Headers[BamHeaders.SecureSession] = session.Identifier;
         
             Expect.IsNotNull(request.Headers);
-            Expect.IsNotNull(request.Headers[ApiValidation.NonceName]);
-            Expect.IsNotNull(request.Headers[ApiValidation.ValidationTokenName]);
+            Expect.IsNotNull(request.Headers[BamHeaders.Nonce]);
+            Expect.IsNotNull(request.Headers[BamHeaders.ValidationToken]);
 
             Expect.AreEqual(TokenValidationStatus.Success, ApiValidation.ValidateToken(request.Headers, postString));
         }

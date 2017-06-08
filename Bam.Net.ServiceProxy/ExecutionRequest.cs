@@ -525,6 +525,10 @@ namespace Bam.Net.ServiceProxy
 
 		string _callBack;
 		object _callBackLock = new object();
+
+        /// <summary>
+        /// The name of the javascript client side callback function if any or "callback"
+        /// </summary>
 		public string Callback
 		{
 			get

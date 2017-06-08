@@ -223,7 +223,6 @@ namespace Bam.Net.UserAccounts.Tests
             CreateServer(out baseAddress, out server);
             server.AddCommonService<T1>();
             server.AddCommonService<T2>();
-            //SecureChannel.ServiceProvider = server.CommonServiceProvider.Clone();
             Servers.Add(server);
             server.Start();
             // /end- Test server to catch calls
@@ -231,7 +230,6 @@ namespace Bam.Net.UserAccounts.Tests
         private static void CreateServer(out string baseAddress, out BamServer server)
         {
             BamConf conf = new BamConf();
-            //conf.Port = 8080;
             baseAddress = "http://localhost:8080";
             server = new BamServer(conf);
         }

@@ -30,6 +30,15 @@ namespace Bam.Net.Logging
 				_defaultLogger = value;				
 			}
         }
+
+        public static void WarnIf(bool condition, string messageSignature, params object[] args)
+        {
+            if (condition)
+            {
+                Warn(messageSignature, args);
+            }
+        }
+
         public static void Info(string messageSignature, params object[] args)
         {
             Default.AddEntry(messageSignature, LogEventType.Information, args.Select(a => a.ToString()).ToArray());
