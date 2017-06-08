@@ -288,7 +288,7 @@ namespace Bam.Net.Data
                 ForeignKeyAttribute fk;
                 if (property.HasCustomAttributeOfType<ForeignKeyAttribute>(out fk))
                 {
-                    if (fk.ReferencedTable.Equals(Dao.TableName(_parent)))
+                    if (fk.ReferencedTable.Equals(Dao.TableName(_parent))) // TODO: add && fk.Name.Equals(ReferencingColumn)
                     {
                         property.SetValue(instance, _parent.IdValue, null);
                     }
