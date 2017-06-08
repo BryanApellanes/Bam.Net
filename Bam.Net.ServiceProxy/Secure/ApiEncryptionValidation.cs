@@ -19,45 +19,45 @@ namespace Bam.Net.ServiceProxy.Secure
     /// Class used to set and validate encryption validation
     /// tokens
     /// </summary>
-    internal class ApiValidation
+    internal class ApiEncryptionValidation
     {
-        public static void SetValidationToken(HttpWebRequest request, string postString, string publicKey)
+        public static void SetEncryptedValidationToken(HttpWebRequest request, string postString, string publicKey)
         {
-            SetValidationToken(request.Headers, postString, publicKey);
+            SetEncryptedValidationToken(request.Headers, postString, publicKey);
         }
 
-        public static void SetValidationToken(NameValueCollection headers, string postString, string publicKey)
+        public static void SetEncryptedValidationToken(NameValueCollection headers, string postString, string publicKey)
         {
-            ValidationToken token = CreateValidationToken(postString, publicKey);
+            EncryptedValidationToken token = CreateEncryptedValidationToken(postString, publicKey);
             headers[BamHeaders.Nonce] = token.NonceCipher;
             headers[BamHeaders.ValidationToken] = token.HashCipher;
         }
         
-        public static ValidationToken GetValidationToken(NameValueCollection headers)
+        public static EncryptedValidationToken ReadEncryptedValidationToken(NameValueCollection headers)
         {
-            ValidationToken result = new ValidationToken();
+            EncryptedValidationToken result = new EncryptedValidationToken();
             result.NonceCipher = headers[BamHeaders.Nonce];
             result.HashCipher = headers[BamHeaders.ValidationToken];
             Args.ThrowIfNull(result.NonceCipher, BamHeaders.Nonce);
-            Args.ThrowIf<ValidationTokenNotFoundException>(
+            Args.ThrowIf<EncryptionValidationTokenNotFoundException>(
                 result.HashCipher == null || string.IsNullOrEmpty(result.HashCipher),  
-                "ValidationToken header was not found: {0}",
+                "Header was not found: {0}",
                 BamHeaders.ValidationToken);
             return result;
         }
 
-        public static ValidationToken CreateValidationToken(string postString, SecureSession session)
+        public static EncryptedValidationToken CreateEncryptedValidationToken(string postString, SecureSession session)
         {
-            return CreateValidationToken(postString, session.PublicKey);
+            return CreateEncryptedValidationToken(postString, session.PublicKey);
         }
 
-        public static ValidationToken CreateValidationToken(string postString, string publicKeyPem)
+        public static EncryptedValidationToken CreateEncryptedValidationToken(string postString, string publicKeyPem)
         {            
             Instant instant = new Instant();
-            return CreateValidationToken(instant, postString, publicKeyPem);
+            return CreateEncryptedValidationToken(instant, postString, publicKeyPem);
         }
 
-        public static ValidationToken CreateValidationToken(Instant instant, string postString, string publicKeyPem)
+        public static EncryptedValidationToken CreateEncryptedValidationToken(Instant instant, string postString, string publicKeyPem)
         {
             string nonce = instant.ToString();
             string kvpFormat = "{0}:{1}";
@@ -66,44 +66,44 @@ namespace Bam.Net.ServiceProxy.Secure
             string hashCipher = hash.EncryptWithPublicKey(publicKeyPem);
             string nonceCipher = nonce.EncryptWithPublicKey(publicKeyPem);
 
-            return new ValidationToken { HashCipher = hashCipher, NonceCipher = nonceCipher };
+            return new EncryptedValidationToken { HashCipher = hashCipher, NonceCipher = nonceCipher };
         }
 
-        public static TokenValidationStatus ValidateToken(IHttpContext context, string post)
+        public static EncryptedTokenValidationStatus ValidateEncryptedToken(IHttpContext context, string post)
         {
             NameValueCollection headers = context.Request.Headers;
             
             string paddingValue = headers[BamHeaders.Padding] ?? string.Empty;
             bool usePadding = paddingValue.ToLowerInvariant().Equals("true");
             
-            return ValidateToken(headers, post, usePadding);
+            return ValidateEncryptedToken(headers, post, usePadding);
         }
 
-        public static TokenValidationStatus ValidateToken(NameValueCollection headers, string plainPost, bool usePkcsPadding = false)
+        public static EncryptedTokenValidationStatus ValidateEncryptedToken(NameValueCollection headers, string plainPost, bool usePkcsPadding = false)
         {
             SecureSession session = SecureSession.Get(headers);
-            ValidationToken token = GetValidationToken(headers);
+            EncryptedValidationToken token = ReadEncryptedValidationToken(headers);
 
-            return ValidateToken(session, token, plainPost, usePkcsPadding);
+            return ValidateEncryptedToken(session, token, plainPost, usePkcsPadding);
         }
 
-        public static TokenValidationStatus ValidateToken(SecureSession session, ValidationToken token, string plainPost, bool usePkcsPadding = false)
+        public static EncryptedTokenValidationStatus ValidateEncryptedToken(SecureSession session, EncryptedValidationToken token, string plainPost, bool usePkcsPadding = false)
         {
             Args.ThrowIfNull(session, "session");
             Args.ThrowIfNull(token, "token");
 
-            return ValidateToken(session, token.HashCipher, token.NonceCipher, plainPost, usePkcsPadding);
+            return ValidateEncrtypedToken(session, token.HashCipher, token.NonceCipher, plainPost, usePkcsPadding);
         }
 
-        public static TokenValidationStatus ValidateToken(SecureSession session, string hashCipher, string nonceCipher, string plainPost, bool usePkcsPadding = false)
+        public static EncryptedTokenValidationStatus ValidateEncrtypedToken(SecureSession session, string hashCipher, string nonceCipher, string plainPost, bool usePkcsPadding = false)
         {
             string hash = session.DecryptWithPrivateKey(hashCipher, usePkcsPadding);
             string nonce = session.DecryptWithPrivateKey(nonceCipher, usePkcsPadding);
 
             int offset = session.TimeOffset.Value;
 
-            TokenValidationStatus result = ValidateNonce(nonce, offset);
-            if (result == TokenValidationStatus.Success)
+            EncryptedTokenValidationStatus result = ValidateNonce(nonce, offset);
+            if (result == EncryptedTokenValidationStatus.Success)
             {
                 result = ValidateHash(nonce, hash, plainPost);
             }
@@ -111,14 +111,14 @@ namespace Bam.Net.ServiceProxy.Secure
             return result;
         }
 
-        public static TokenValidationStatus ValidateHash(string nonce, string hash, string plainPost)
+        public static EncryptedTokenValidationStatus ValidateHash(string nonce, string hash, string plainPost)
         {
             string kvpFormat = "{0}:{1}";
             string checkHash = kvpFormat._Format(nonce, plainPost).Sha256();
-            TokenValidationStatus result = TokenValidationStatus.HashFailed;
+            EncryptedTokenValidationStatus result = EncryptedTokenValidationStatus.HashFailed;
             if (checkHash.Equals(hash))
             {
-                result = TokenValidationStatus.Success;
+                result = EncryptedTokenValidationStatus.Success;
             }
 
             return result;
@@ -131,9 +131,9 @@ namespace Bam.Net.ServiceProxy.Secure
         /// <param name="nonce"></param>
         /// <param name="offset"></param>
         /// <returns></returns>
-        public static TokenValidationStatus ValidateNonce(string nonce, int offset)
+        public static EncryptedTokenValidationStatus ValidateNonce(string nonce, int offset)
         {
-            TokenValidationStatus result = TokenValidationStatus.Success;
+            EncryptedTokenValidationStatus result = EncryptedTokenValidationStatus.Success;
             Instant requestInstant = Instant.FromString(nonce);
             Instant currentInstant = new Instant();
 
@@ -141,7 +141,7 @@ namespace Bam.Net.ServiceProxy.Secure
             difference = difference - offset;
             if (TimeSpan.FromMilliseconds(difference).TotalMinutes > 3)
             {
-                result = TokenValidationStatus.NonceFailed;
+                result = EncryptedTokenValidationStatus.NonceFailed;
             }
             return result;
         }

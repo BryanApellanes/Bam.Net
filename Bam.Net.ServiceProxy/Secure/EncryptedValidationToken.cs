@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.ServiceProxy.Secure
 {
-    public class ValidationToken
+    public class EncryptedValidationToken
     {
         public string NonceCipher
         {

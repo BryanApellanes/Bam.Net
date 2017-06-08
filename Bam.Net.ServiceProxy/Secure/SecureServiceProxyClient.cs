@@ -312,13 +312,13 @@ namespace Bam.Net.ServiceProxy.Secure
                     sw.Write(postData);
                 }
 
-                ApiValidation.SetValidationToken(request, jsonParamsString, SessionInfo.PublicKey);
+                ApiEncryptionValidation.SetEncryptedValidationToken(request, jsonParamsString, SessionInfo.PublicKey);
 
                 request.ContentType = "text/plain; charset=utf-8";
             }
         }
 
-        protected internal ValidationToken CreateValidationToken(string jsonParamsString)
+        protected internal EncryptedValidationToken CreateValidationToken(string jsonParamsString)
         {
             string publicKeyPem = SessionInfo.PublicKey;
 
@@ -373,9 +373,9 @@ namespace Bam.Net.ServiceProxy.Secure
             request = new SetSessionKeyRequest(keyCipher, keyHashCipher, ivCipher, ivHashCipher);
         }
 
-        private static ValidationToken CreateValidationToken(string jsonParamsString, string publicKeyPem)
+        private static EncryptedValidationToken CreateValidationToken(string jsonParamsString, string publicKeyPem)
         {
-            return ApiValidation.CreateValidationToken(jsonParamsString, publicKeyPem);
+            return ApiEncryptionValidation.CreateEncryptedValidationToken(jsonParamsString, publicKeyPem);
         }
 
         private void Initialize()

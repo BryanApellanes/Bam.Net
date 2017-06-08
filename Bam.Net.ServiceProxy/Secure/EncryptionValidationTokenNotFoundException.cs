@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.ServiceProxy.Secure
 {
-    public class ValidationTokenNotFoundException: Exception 
+    public class EncryptionValidationTokenNotFoundException: Exception 
     {
-        public ValidationTokenNotFoundException(string message)
+        public EncryptionValidationTokenNotFoundException(string message)
             : base(message)
         { }
     }

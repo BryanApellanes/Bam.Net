@@ -46,7 +46,7 @@ namespace Bam.Net.ServiceProxy
             List<ValidationFailures> failures = new List<ValidationFailures>();
             List<string> messages = new List<string>();
 
-            ValidateApiToken(context, input, failures, messages);
+            ValidateEncryptedToken(context, input, failures, messages);
             
             if (string.IsNullOrWhiteSpace(_toValidate.ClassName))
             {
@@ -134,28 +134,28 @@ namespace Bam.Net.ServiceProxy
             }
         }
 
-        private static void ValidateApiToken(IHttpContext context, Decrypted input, List<ValidationFailures> failures, List<string> messages)
+        private static void ValidateEncryptedToken(IHttpContext context, Decrypted input, List<ValidationFailures> failures, List<string> messages)
         {
             if (input != null)
             {
                 try
                 {
-                    TokenValidationStatus tokenStatus = ApiValidation.ValidateToken(context, input.Value);
+                    EncryptedTokenValidationStatus tokenStatus = ApiEncryptionValidation.ValidateEncryptedToken(context, input.Value);
                     switch (tokenStatus)
                     {
-                        case TokenValidationStatus.Unkown:
+                        case EncryptedTokenValidationStatus.Unkown:
                             failures.Add(ValidationFailures.UnknownTokenValidationResult);
-                            messages.Add("ApiValidation.ValidateToken failed");
+                            messages.Add("ApiEncryptionValidation.ValidateToken failed");
                             break;
-                        case TokenValidationStatus.HashFailed:
+                        case EncryptedTokenValidationStatus.HashFailed:
                             failures.Add(ValidationFailures.TokenHashFailed);
-                            messages.Add("ApiValidation.ValidateToken failed: TokenHashFailed");
+                            messages.Add("ApiEncryptionValidation.ValidateToken failed: TokenHashFailed");
                             break;
-                        case TokenValidationStatus.NonceFailed:
+                        case EncryptedTokenValidationStatus.NonceFailed:
                             failures.Add(ValidationFailures.TokenNonceFailed);
-                            messages.Add("ApiValidation.ValidateToken failed: TokenNonceFailed");
+                            messages.Add("ApiEncryptionValidation.ValidateToken failed: TokenNonceFailed");
                             break;
-                        case TokenValidationStatus.Success:
+                        case EncryptedTokenValidationStatus.Success:
                             break;
                     }
                 }

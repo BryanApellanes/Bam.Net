@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.ServiceProxy.Secure
 {
-    public enum TokenValidationStatus
+    public enum EncryptedTokenValidationStatus
     {
         Unkown,
         HashFailed,

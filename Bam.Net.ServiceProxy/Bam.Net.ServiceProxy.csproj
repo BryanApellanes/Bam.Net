@@ -204,11 +204,11 @@
     <Compile Include="Secure\SecureServiceProxy_Generated\SecureSessionQuery.cs" />
     <Compile Include="Secure\ServiceProxyInvocationFailedException.cs" />
     <Compile Include="Secure\SetSessionKeyRequest.cs" />
-    <Compile Include="Secure\ApiValidation.cs" />
+    <Compile Include="Secure\ApiEncryptionValidation.cs" />
     <Compile Include="Secure\StaticApiKeyProvider.cs" />
-    <Compile Include="Secure\TokenValidationStatus.cs" />
-    <Compile Include="Secure\ValidationToken.cs" />
-    <Compile Include="Secure\ValidationTokenNotFoundException.cs" />
+    <Compile Include="Secure\EncryptedTokenValidationStatus.cs" />
+    <Compile Include="Secure\EncryptedValidationToken.cs" />
+    <Compile Include="Secure\EncryptionValidationTokenNotFoundException.cs" />
     <Compile Include="ServiceGenerationInfo.cs" />
     <Compile Include="ServiceProxyClient.cs">
       <SubType>Component</SubType>
