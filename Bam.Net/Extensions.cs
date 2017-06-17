@@ -3210,12 +3210,14 @@ namespace Bam.Net
                 BindingFlags.Instance |
                 BindingFlags.GetField);
 
+            // ** yuck **
             IEnumerable<EventSubscription> results = from eventInfo in type.GetEvents()
                                                      let eventFieldInfo = ei2fi(eventInfo)
                                                      let eventFieldValue =
                                                          (System.Delegate)eventFieldInfo.GetValue(instance)
                                                      from subscribedDelegate in eventFieldValue == null ? new Delegate[] { } : eventFieldValue.GetInvocationList()
                                                      select new EventSubscription { EventName = eventFieldInfo.Name, Delegate = subscribedDelegate, FieldInfo = eventFieldInfo, EventInfo = eventInfo };
+            // ** /yuck **
             return results;
         }
 
@@ -3234,16 +3236,40 @@ namespace Bam.Net
                 return destination;
             }
 
+            ForEachProperty(destination, source, CopyProperty);
+
+            return destination;
+        }
+
+        /// <summary>
+        /// Same as CopyProperties but will clone properties
+        /// whos type implements ICloneable
+        /// </summary>
+        /// <param name="destination"></param>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static object CloneProperties(this object destination, object source)
+        {
+            if (destination == null || source == null)
+            {
+                return destination;
+            }
+
+            ForEachProperty(destination, source, CloneProperty);
+
+            return destination;
+        }
+
+        private static void ForEachProperty(object destination, object source, Action<object, object, PropertyInfo, PropertyInfo> action)
+        {
             Type destinationType = destination.GetType();
             Type sourceType = source.GetType();
 
             foreach (PropertyInfo destProp in destinationType.GetProperties())
             {
                 PropertyInfo sourceProp = sourceType.GetProperty(destProp.Name);
-                CopyProperty(destination, source, destProp, sourceProp);
+                action(destination, source, destProp, sourceProp);
             }
-
-            return destination;
         }
 
         /// <summary>
@@ -3264,15 +3290,41 @@ namespace Bam.Net
         {
             if (sourceProp != null)
             {
-                if ((sourceProp.PropertyType == destProp.PropertyType ||
-                    sourceProp.PropertyType == Nullable.GetUnderlyingType(destProp.PropertyType) ||
-                    Nullable.GetUnderlyingType(sourceProp.PropertyType) == destProp.PropertyType)
-                    && destProp.CanWrite)
+                if (destProp.IsCompatibleWith(sourceProp))
                 {
                     object value = sourceProp.GetValue(source, null);
                     destProp.SetValue(destination, value, null);
                 }
             }
+        }
+
+        internal static void CloneProperty(this object destination, object source, PropertyInfo destProp, PropertyInfo sourceProp)
+        {
+            if(sourceProp != null)
+            {
+                if (destProp.IsCompatibleWith(sourceProp))
+                {
+                    object value = sourceProp.GetValue(source, null);
+                    if (value is ICloneable cloneable)
+                    {
+                        value = cloneable.Clone();
+                    }
+                    destProp.SetValue(destination, value, null);
+                }
+            }
+        }
+
+        public static bool IsCompatibleWith(this PropertyInfo prop, PropertyInfo other)
+        {
+            return AreCompatibleProperties(prop, other);
+        }
+
+        public static bool AreCompatibleProperties(PropertyInfo destProp, PropertyInfo sourceProp)
+        {
+            return (sourceProp.PropertyType == destProp.PropertyType ||
+                                sourceProp.PropertyType == Nullable.GetUnderlyingType(destProp.PropertyType) ||
+                                Nullable.GetUnderlyingType(sourceProp.PropertyType) == destProp.PropertyType)
+                                && destProp.CanWrite;
         }
 
         public static DateTime WithoutMilliseconds(this DateTime dateTime)

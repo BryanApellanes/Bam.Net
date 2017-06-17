@@ -13,6 +13,11 @@ namespace Bam.Net
     {
         public static void Register()
         {
+            AssemblyResolver = AssemblyResolver ?? ((rea) =>
+            {
+                WriteLog($"Couldn't resolve assembly: {rea.Name}\r\nRequesting assembly: {rea.RequestingAssembly.FullName}\r\nRequesting assembly path: {rea.RequestingAssembly.GetFilePath()}");
+                return null;
+            });
             AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
             {
                 WriteLog($"Resolving assembly {args.Name}");
@@ -22,12 +27,11 @@ namespace Bam.Net
         
         public static byte[] ResolveAssembly(ResolveEventArgs rea)
         {
-            // download from BamApps.net; not yet implemented
-
-            WriteLog($"Download not yet implemented: \r\n\t{rea.RequestingAssembly.FullName} =>  \r\n\t\t{rea.Name}");
-            return null;
+            return AssemblyResolver(rea);
         }
         
+        public static Func<ResolveEventArgs, byte[]> AssemblyResolver { get; set; }
+
         private static void WriteTrace(string message, Exception ex, bool writeLog = true)
         {
             Trace.WriteLine(ex.Message);

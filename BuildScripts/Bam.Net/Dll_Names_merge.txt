@@ -29,6 +29,8 @@ Bam.Net.Profiguration
 Bam.Net.Schema.Org
 Bam.Net.Server
 Bam.Net.ServiceProxy
+Bam.Net.Services
+Bam.Net.Services.Clients
 Bam.Net.Syndication
 Bam.Net.Testing
 Bam.Net.UserAccounts

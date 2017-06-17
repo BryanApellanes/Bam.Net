@@ -60,6 +60,9 @@
     <Reference Include="NCuid">
       <HintPath>..\packages\NCuid.1.0.0\lib\net40\NCuid.dll</HintPath>
     </Reference>
+    <Reference Include="NSubstitute">
+      <HintPath>..\packages\NSubstitute.2.0.3\lib\net45\NSubstitute.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -71,11 +74,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyManagementServiceTests.cs" />
+    <Compile Include="AsyncProxyableEcho.cs" />
+    <Compile Include="AsyncProxyableServiceTests.cs" />
     <Compile Include="ConsoleActions.cs" />
     <Compile Include="FileServiceTests.cs" />
     <Compile Include="IntegrationTests.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceRegistryServiceTests.cs" />
     <Compile Include="TestClasses.cs" />
     <Compile Include="UnitTests.cs" />
   </ItemGroup>
@@ -91,6 +97,14 @@
     <ProjectReference Include="..\Bam.Net.Server\Bam.Net.Server.csproj">
       <Project>{6cd8ffb4-35ca-44ac-803d-cb9d4cb524a0}</Project>
       <Name>Bam.Net.Server</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.ServiceProxy.Tests\Bam.Net.ServiceProxy.Tests.csproj">
+      <Project>{ee80b970-3d4a-432e-b86e-eed43680628a}</Project>
+      <Name>Bam.Net.ServiceProxy.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.ServiceProxy\Bam.Net.ServiceProxy.csproj">
+      <Project>{8987d8c8-033b-4993-99f0-8dd5a4d6dd0d}</Project>
+      <Name>Bam.Net.ServiceProxy</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Services\Bam.Net.Services.csproj">
       <Project>{f67630bf-5e73-46bf-a7f1-6d7e9648135f}</Project>

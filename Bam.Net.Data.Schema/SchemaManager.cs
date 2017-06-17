@@ -89,21 +89,24 @@ namespace Bam.Net.Data.Schema
         public SchemaDefinition SetSchema(string schemaName, bool useExisting = true)
         {
             string filePath = SchemaNameToFilePath(schemaName);
-            if (!useExisting && File.Exists(filePath))
+            lock (FileLock.Named(filePath))
             {
-                if (BackupExisting)
+                if (!useExisting && File.Exists(filePath))
                 {
-                    string backUpPath = SchemaNameToFilePath("{0}_{1}_{2}"._Format(schemaName, DateTime.UtcNow.ToJulianDate(), 4.RandomLetters()));
-                    File.Move(filePath, backUpPath);
+                    if (BackupExisting)
+                    {
+                        string backUpPath = SchemaNameToFilePath("{0}_{1}_{2}"._Format(schemaName, DateTime.UtcNow.ToJulianDate(), 4.RandomLetters()));
+                        File.Move(filePath, backUpPath);
+                    }
+                    else
+                    {
+                        File.Delete(filePath);
+                    }
                 }
-                else
-                {
-                    File.Delete(filePath);
-                }
+                SchemaDefinition schema = LoadSchema(schemaName);
+                CurrentSchema = schema;
+                return schema;
             }
-            SchemaDefinition schema = LoadSchema(schemaName);
-            CurrentSchema = schema;
-            return schema;
         }
 
         /// <summary>

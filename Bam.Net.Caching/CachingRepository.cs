@@ -29,7 +29,9 @@ namespace Bam.Net.Caching
 
 	public class CachingRepository: Repository, IQueryFilterable
 	{
-		CacheManager _cacheManager;
+        const string ExceptionText = "The specified type is not marked as serializable, add the [Serializable] attribute to the class definition to ensure proper caching behavior";
+
+        CacheManager _cacheManager;
         public event EventHandler RetrievedFromSource;
         public event EventHandler RetrievedFromCache;
         public event EventHandler QueriedSource;
@@ -49,17 +51,18 @@ namespace Bam.Net.Caching
 	    public CachingRepository(Database database, ILogger logger = null) : this(new DaoRepository(database, logger), logger)
 	    {
 	    }
-
-	    public void ValidateTypes()
+        
+        public void ValidateTypes()
         {
             foreach(Type type in SourceRepository.StorableTypes)
             {
-                Args.ThrowIf(!type.HasCustomAttributeOfType<SerializableAttribute>(), "The specified type is not marked as serializable, add the [Serializable] attribute to the class definition to ensure proper caching behavior");
+                Args.ThrowIf(!type.HasCustomAttributeOfType<SerializableAttribute>(), ExceptionText);
             }
         }
+
         public override void AddType(Type type)
         {
-            Args.ThrowIf(!type.HasCustomAttributeOfType<SerializableAttribute>(), "The specified type is not marked as serializable, add the [Serializable] attribute to the class definition to ensure proper caching behavior");
+            Args.ThrowIf(!type.HasCustomAttributeOfType<SerializableAttribute>(), ExceptionText);
             SourceRepository.AddType(type);
         }
         /// <summary>
