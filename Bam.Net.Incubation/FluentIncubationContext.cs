@@ -61,6 +61,7 @@ namespace Bam.Net.Incubation
             inc.Set<T>(() => instanciator(inc));
             return inc;
         }
+
         /// <summary>
         /// Specify the return type T for the specified 
         /// type I ( same as Returns )

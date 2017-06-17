@@ -15,9 +15,11 @@ namespace Bam.Net.Incubation
     /// </summary>
     public class Incubator: ISetupContext
     {
-        Dictionary<Type, object> typeInstanceDictionary;
-        Dictionary<string, Type> classNameTypeDictionary;
-        Dictionary<Type, ConstructorInfo> implementations;
+        object _accessLock = new object();
+        Dictionary<Type, object> _typeInstanceDictionary;
+        Dictionary<string, Type> _classNameTypeDictionary;
+        Dictionary<Type, Dictionary<string, object>> _ctorParams;
+        //Dictionary<Type, ConstructorInfo> implementations;
 
         static Incubator()
         {
@@ -26,9 +28,10 @@ namespace Bam.Net.Incubation
 
         public Incubator()
         {
-            this.typeInstanceDictionary = new Dictionary<Type, object>();
-            this.classNameTypeDictionary = new Dictionary<string, Type>();
-            this.implementations = new Dictionary<Type, ConstructorInfo>();
+            _typeInstanceDictionary = new Dictionary<Type, object>();
+            _classNameTypeDictionary = new Dictionary<string, Type>();
+            _ctorParams = new Dictionary<Type, Dictionary<string, object>>();
+            //this.implementations = new Dictionary<Type, ConstructorInfo>();
         }
 
         public static Incubator Default
@@ -39,21 +42,24 @@ namespace Bam.Net.Incubation
 
         public Incubator Clone()
         {
-            Incubator val = new Incubator();
-            foreach (Type t in typeInstanceDictionary.Keys)
+            lock (_accessLock)
             {
-                val.typeInstanceDictionary.Add(t, typeInstanceDictionary[t]);
-            }
-            foreach (string s in classNameTypeDictionary.Keys)
-            {
-                val.classNameTypeDictionary.Add(s, classNameTypeDictionary[s]);
-            }
-            foreach (Type t in implementations.Keys)
-            {
-                val.implementations.Add(t, implementations[t]);
-            }
+                Incubator val = new Incubator();
+                foreach (Type t in _typeInstanceDictionary.Keys)
+                {
+                    val._typeInstanceDictionary.Add(t, _typeInstanceDictionary[t]);
+                }
+                foreach (string s in _classNameTypeDictionary.Keys)
+                {
+                    val._classNameTypeDictionary.Add(s, _classNameTypeDictionary[s]);
+                }
+                foreach (Type type in _ctorParams.Keys)
+                {
+                    val._ctorParams.Add(type, _ctorParams[type]);
+                }
 
-            return val;
+                return val;
+            }
         }
 
         /// <summary>
@@ -67,7 +73,7 @@ namespace Bam.Net.Incubation
         {
             CopyFrom(incubator, overwrite);
         }
-
+        
         /// <summary>
         /// Copy the values from the specified incubator to the current; the same as CombineWith
         /// </summary>
@@ -77,25 +83,21 @@ namespace Bam.Net.Incubation
         /// incubator otherwise the current value will be kept</param>
         public void CopyFrom(Incubator incubator, bool overwrite = true)
         {
-            foreach (Type t in incubator.typeInstanceDictionary.Keys)
+            lock (_accessLock)
             {
-                if (!this.typeInstanceDictionary.ContainsKey(t) || overwrite)
+                foreach (Type t in incubator._typeInstanceDictionary.Keys)
                 {
-                    this.typeInstanceDictionary[t] = incubator.typeInstanceDictionary[t];
+                    if (!this._typeInstanceDictionary.ContainsKey(t) || overwrite)
+                    {
+                        this._typeInstanceDictionary[t] = incubator._typeInstanceDictionary[t];
+                    }
                 }
-            }
-            foreach(string s in incubator.classNameTypeDictionary.Keys)
-            {
-                if (!this.classNameTypeDictionary.ContainsKey(s) || overwrite)
+                foreach (string s in incubator._classNameTypeDictionary.Keys)
                 {
-                    this.classNameTypeDictionary[s] = incubator.classNameTypeDictionary[s];
-                }
-            }
-            foreach (Type t in incubator.implementations.Keys)
-            {
-                if (!this.implementations.ContainsKey(t) || overwrite)
-                {
-                    this.implementations[t] = incubator.implementations[t];
+                    if (!this._classNameTypeDictionary.ContainsKey(s) || overwrite)
+                    {
+                        this._classNameTypeDictionary[s] = incubator._classNameTypeDictionary[s];
+                    }
                 }
             }
         }
@@ -486,6 +488,11 @@ namespace Bam.Net.Incubation
             this[type] = instanciator;
         }
 
+        public void Set(Type forType, Type useType, bool throwIfSet = false)
+        {
+            Set(forType, Construct(useType), throwIfSet);
+        }
+
         public void Set(Type type, object instance, bool throwIfSet = false)
         {
             Check(type, throwIfSet);
@@ -513,11 +520,15 @@ namespace Bam.Net.Incubation
         {
             get
             {
-                return classNameTypeDictionary.Keys.ToArray();
+                return _classNameTypeDictionary.Keys.ToArray();
             }
         }
 
-        public Type[] Types
+        /// <summary>
+        /// Types as they would be resolved when using 
+        /// the values in ClassNames
+        /// </summary>
+        public Type[] ClassNameTypes
         {
             get
             {
@@ -538,14 +549,26 @@ namespace Bam.Net.Incubation
         {
             get
             {
-                if (classNameTypeDictionary.ContainsKey(className))
+                if (_classNameTypeDictionary.ContainsKey(className))
                 {
-                    return classNameTypeDictionary[className];
+                    return _classNameTypeDictionary[className];
                 }
                 else
                 {
                     return null;
                 }
+            }
+        }
+
+        /// <summary>
+        /// All the Types that are mapped to instances
+        /// or instanciators
+        /// </summary>
+        public Type[] MappedTypes
+        {
+            get
+            {
+                return _typeInstanceDictionary.Keys.ToArray();
             }
         }
 
@@ -572,20 +595,23 @@ namespace Bam.Net.Incubation
         public void Remove(Type type)
         {            
             string fullyQualifiedTypeName = string.Format("{0}.{1}", type.Namespace, type.Name);
-            
-            if (typeInstanceDictionary.ContainsKey(type))
-            {
-                typeInstanceDictionary.Remove(type);
-            }
 
-            if (classNameTypeDictionary.ContainsKey(type.Name))
+            lock (_accessLock)
             {
-                classNameTypeDictionary.Remove(type.Name);
-            }
+                if (_typeInstanceDictionary.ContainsKey(type))
+                {
+                    _typeInstanceDictionary.Remove(type);
+                }
 
-            if (classNameTypeDictionary.ContainsKey(fullyQualifiedTypeName))
-            {
-                classNameTypeDictionary.Remove(fullyQualifiedTypeName);
+                if (_classNameTypeDictionary.ContainsKey(type.Name))
+                {
+                    _classNameTypeDictionary.Remove(type.Name);
+                }
+
+                if (_classNameTypeDictionary.ContainsKey(fullyQualifiedTypeName))
+                {
+                    _classNameTypeDictionary.Remove(fullyQualifiedTypeName);
+                }
             }
         }
 
@@ -615,9 +641,9 @@ namespace Bam.Net.Incubation
         {
             get
             {
-                if (typeInstanceDictionary.ContainsKey(type))
+                if (_typeInstanceDictionary.ContainsKey(type))
                 {
-                    return typeInstanceDictionary[type];
+                    return _typeInstanceDictionary[type];
                 }
                 else
                 {
@@ -626,28 +652,63 @@ namespace Bam.Net.Incubation
             }
             set
             {
-                if (typeInstanceDictionary.ContainsKey(type))
+                if (_typeInstanceDictionary.ContainsKey(type))
                 {
-                    typeInstanceDictionary[type] = value;
+                    _typeInstanceDictionary[type] = value;
                 }
                 else
                 {
-                    typeInstanceDictionary.Add(type, value);
-                    string fullyQualifiedTypeName = string.Format("{0}.{1}", type.Namespace, type.Name);
-                    if (!classNameTypeDictionary.ContainsKey(type.Name))
+                    lock (_accessLock)
                     {
-                        classNameTypeDictionary.Add(type.Name, type);
-                    }
-                    else if (!classNameTypeDictionary.ContainsKey(fullyQualifiedTypeName))
-                    {
-                        classNameTypeDictionary.Add(fullyQualifiedTypeName, type);
-                    }
-                    else
-                    {
-                        throw new InvalidOperationException(string.Format("The specified type {0} conflicts with an existing type registration.", type.Name));
+                        _typeInstanceDictionary.Add(type, value);
+                        string fullyQualifiedTypeName = string.Format("{0}.{1}", type.Namespace, type.Name);
+                        if (!_classNameTypeDictionary.ContainsKey(type.Name))
+                        {
+                            _classNameTypeDictionary.Add(type.Name, type);
+                        }
+                        else if (!_classNameTypeDictionary.ContainsKey(fullyQualifiedTypeName))
+                        {
+                            _classNameTypeDictionary.Add(fullyQualifiedTypeName, type);
+                        }
+                        else
+                        {
+                            throw new InvalidOperationException(string.Format("The specified type {0} conflicts with an existing type registration.", type.Name));
+                        }
                     }
                 }
             }
+        }
+        
+        /// <summary>
+        /// Set the value to pass into the constructor when 
+        /// constructing the specified type
+        /// </summary>
+        /// <param name="forType"></param>
+        /// <param name="parameterName"></param>
+        /// <param name="value"></param>
+        public void SetCtorParam(Type forType, string parameterName, object value)
+        {
+            lock (_accessLock)
+            {
+                if (!_ctorParams.ContainsKey(forType))
+                {
+                    _ctorParams.Add(forType, new Dictionary<string, object>());
+                }
+
+                if (!_ctorParams[forType].ContainsKey(parameterName))
+                {
+                    _ctorParams[forType].Add(parameterName, value);
+                }
+            }
+        }
+
+        public object GetCtorParameterValue(Type forType, string parameterName)
+        {
+            if(_ctorParams.ContainsKey(forType) && _ctorParams[forType].ContainsKey(parameterName))
+            {
+                return _ctorParams[forType][parameterName];
+            }
+            return null;
         }
 
         private void GetCtorAndParams(Type type, out ConstructorInfo ctor, out List<object> ctorParams)
@@ -676,15 +737,23 @@ namespace Bam.Net.Incubation
                 {
                     foreach (ParameterInfo paramInfo in parameters)
                     {
-                        object existing = this[paramInfo.ParameterType] ?? Get(paramInfo.ParameterType, GetCtorParams(paramInfo.ParameterType).ToArray());
-                        if (existing != null)
+                        object ctorParam = GetCtorParameterValue(type, paramInfo.Name);
+                        if(ctorParam != null)
                         {
-                            ctorParams.Add(existing);
+                            ctorParams.Add(ctorParam);
                         }
                         else
                         {
-                            ctorParams.Clear();
-                            break;
+                            object existing = this[paramInfo.ParameterType] ?? Get(paramInfo.ParameterType, GetCtorParams(paramInfo.ParameterType).ToArray());
+                            if (existing != null)
+                            {
+                                ctorParams.Add(existing);
+                            }
+                            else
+                            {
+                                ctorParams.Clear();
+                                break;
+                            }
                         }
                     }
                 }
@@ -697,6 +766,5 @@ namespace Bam.Net.Incubation
             }
             return ctorParams;
         }
-
     }
 }
