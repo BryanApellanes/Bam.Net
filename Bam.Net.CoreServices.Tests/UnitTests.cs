@@ -329,7 +329,10 @@ namespace Bam.Net.CoreServices.Tests
         public void SavingMachineSavesNicsAndHostAddresses()
         {
             Machine machine = new Machine();
-            CoreRegistryRepository repo = new CoreRegistryRepository() { Database = new SQLiteDatabase($".\\{nameof(SavingMachineSavesNicsAndHostAddresses)}", "CoreRegistryRepository") };
+            Database db = new SQLiteDatabase($".\\{nameof(SavingMachineSavesNicsAndHostAddresses)}", "CoreRegistryRepository");
+            db.TryEnsureSchema<Data.Dao.Nic>();
+            CoreRegistryRepository repo = new CoreRegistryRepository() { Database = db };
+
             Data.Dao.Nic.LoadAll(repo.Database).Delete(repo.Database);
             Data.Dao.HostAddress.LoadAll(repo.Database).Delete(repo.Database);
             Data.Dao.Machine.LoadAll(repo.Database).Delete(repo.Database);
