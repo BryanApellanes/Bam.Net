@@ -18,7 +18,7 @@ namespace Bam.Net.UserAccounts
 {
     [Proxy("roles")]
     [RoleRequired("Admin")]
-    public class DaoRoleProvider : RoleProvider
+    public class DaoRoleProvider : RoleProvider, IRoleProvider
     {
         public DaoRoleProvider() { }
         public DaoRoleProvider(Database source)
@@ -96,10 +96,10 @@ namespace Bam.Net.UserAccounts
 
         public override void AddUsersToRoles(string[] usernames, string[] roleNames)
         {
-            UserCollection users = User.Where(c => c.UserName.In(usernames));
-            RoleCollection roles = Role.Where(c => c.Name.In(roleNames));
+            UserCollection users = User.Where(c => c.UserName.In(usernames), Database);
+            RoleCollection roles = Role.Where(c => c.Name.In(roleNames), Database);
 
-            SqlStringBuilder sql = Db.For<User>().ServiceProvider.Get<SqlStringBuilder>();
+            SqlStringBuilder sql = Database.GetSqlStringBuilder();
             for (int i = 0; i < users.Count; i++)
             {
                 User currentUser = users[i];
@@ -108,10 +108,25 @@ namespace Bam.Net.UserAccounts
                     Role currentRole = roles[ii];
                     currentUser.Roles.Add(currentRole);
                 }
-                currentUser.Roles.WriteCommit(sql);
+                currentUser.Roles.WriteCommit(sql, Database);
             }
 
-            sql.Execute(Db.For<User>());
+            sql.Execute(Database);
+        }
+
+        IApplicationNameProvider _applicationNameProvider;
+        object _applicationNameProviderLock = new object();
+        public IApplicationNameProvider ApplicationNameProvider
+        {
+            get
+            {
+                return _applicationNameProviderLock.DoubleCheckLock(ref _applicationNameProvider, () => DefaultConfigurationApplicationNameProvider.Instance);
+            }
+            set
+            {
+                _applicationNameProvider = value;
+                _applicationName = _applicationNameProvider.GetApplicationName();
+            }
         }
 
         string _applicationName;
@@ -121,7 +136,7 @@ namespace Bam.Net.UserAccounts
             {
                 if (string.IsNullOrEmpty(_applicationName))
                 {
-                    _applicationName = DefaultConfiguration.GetAppSetting("ApplicationName", "UNKOWN");
+                    _applicationName = ApplicationNameProvider.GetApplicationName();
                 }
 
                 return _applicationName;
@@ -134,18 +149,18 @@ namespace Bam.Net.UserAccounts
 
         public override void CreateRole(string roleName)
         {
-            Role role = Role.OneWhere(c => c.Name == roleName);
+            Role role = Role.OneWhere(c => c.Name == roleName, Database);
             if (role == null)
             {
                 role = new Role();
                 role.Name = roleName;
-                role.Save();
+                role.Save(Database);
             }
         }
 
         public override bool DeleteRole(string roleName, bool throwOnPopulatedRole)
         {
-            Role role = Role.OneWhere(c => c.Name == roleName);
+            Role role = Role.OneWhere(c => c.Name == roleName, Database);
             bool result = false;
             if (role != null)
             {
@@ -156,16 +171,15 @@ namespace Bam.Net.UserAccounts
                 }
                 else
                 {
-                    Database db = Db.For<Role>();
-                    SqlStringBuilder sql = db.ServiceProvider.Get<SqlStringBuilder>();
+                    SqlStringBuilder sql = Database.GetSqlStringBuilder();
                    
                     // deleting the role directly will cause the framework to attempt
                     // to delete the users as well since the relationship is an Xref.
                     // Doing it this way will prevent the deletion of the users.
-                    UserRoleCollection xrefs = UserRole.Where(c => c.RoleId == role.Id);
+                    UserRoleCollection xrefs = UserRole.Where(c => c.RoleId == role.Id, Database);
                     xrefs.WriteDelete(sql);
                     role.WriteDelete(sql);
-                    sql.Execute(db);
+                    sql.Execute(Database);
                     result = true;
                 }
             }
@@ -174,7 +188,7 @@ namespace Bam.Net.UserAccounts
 
         public override string[] FindUsersInRole(string roleName, string usernameToMatch)
         {
-            Role role = Role.OneWhere(c => c.Name == roleName);
+            Role role = Role.OneWhere(c => c.Name == roleName, Database);
             string[] results = new string[] { };
             if (role != null)
             {
@@ -188,12 +202,12 @@ namespace Bam.Net.UserAccounts
 
         public override string[] GetAllRoles()
         {
-            return Role.Where(c => c.Id != null).Select(r => r.Name).ToArray();
+            return Role.Where(c => c.Id != null, Database).Select(r => r.Name).ToArray();
         }
 
         public override string[] GetRolesForUser(string username)
         {
-            User user = User.GetByUserName(username);
+            User user = User.GetByUserName(username, Database);
             string[] results = new string[] { };
             if (user != null)
             {
@@ -205,7 +219,7 @@ namespace Bam.Net.UserAccounts
 
         public override string[] GetUsersInRole(string roleName)
         {
-            Role role = Role.OneWhere(c => c.Name == roleName);
+            Role role = Role.OneWhere(c => c.Name == roleName, Database);
             string[] results = new string[] { };
             if (role != null)
             {
@@ -217,14 +231,14 @@ namespace Bam.Net.UserAccounts
 
         public override bool IsUserInRole(string username, string roleName)
         {
-            User user = User.GetByUserName(username);
+            User user = User.GetByUserName(username, Database);
             bool result = false;
             if (user != null)
             {
-                Role role = Role.OneWhere(c => c.Name == roleName);
+                Role role = Role.OneWhere(c => c.Name == roleName, Database);
                 if (role != null)
                 {
-                    UserRole xref = UserRole.OneWhere(c => c.UserId == user.Id && c.RoleId == role.Id);
+                    UserRole xref = UserRole.OneWhere(c => c.UserId == user.Id && c.RoleId == role.Id, Database);
                     result = xref != null;
                 }
             }
@@ -234,18 +248,18 @@ namespace Bam.Net.UserAccounts
 
         public override void RemoveUsersFromRoles(string[] usernames, string[] roleNames)
         {
-            RoleCollection roles = Role.Where(c => c.Name.In(roleNames));
-            UserCollection users = User.Where(c => c.UserName.In(usernames));
+            RoleCollection roles = Role.Where(c => c.Name.In(roleNames), Database);
+            UserCollection users = User.Where(c => c.UserName.In(usernames), Database);
 
             long[] roleIds = roles.Select(r => r.Id.Value).ToArray();
             long[] userIds = users.Select(u => u.Id.Value).ToArray();
-            UserRoleCollection xrefs = UserRole.Where(c => c.RoleId.In(roleIds) && c.UserId.In(userIds));
-            xrefs.Delete();            
+            UserRoleCollection xrefs = UserRole.Where(c => c.RoleId.In(roleIds) && c.UserId.In(userIds), Database);
+            xrefs.Delete(Database);            
         }
 
         public override bool RoleExists(string roleName)
         {
-            Role role = Role.OneWhere(c => c.Name == roleName);
+            Role role = Role.OneWhere(c => c.Name == roleName, Database);
             return role != null;
         }
     }

@@ -131,7 +131,7 @@ namespace Bam.Net.ServiceProxy.Tests
             string methodName = MethodBase.GetCurrentMethod().Name;
             ApiKeyResolver resolver = new ApiKeyResolver(new LocalApiKeyProvider(), new TestApplicationNameProvider(methodName));
             string data = "some random data";
-            string token = resolver.CreateToken(data);
+            string token = resolver.CreateKeyToken(data);
             Expect.IsNotNullOrEmpty(token, "Token was null or empty");
 			ClearApps();
         }
@@ -146,9 +146,9 @@ namespace Bam.Net.ServiceProxy.Tests
 
             IApiKeyProvider keyProvider = new LocalApiKeyProvider();
             ApiKeyResolver resolver = new ApiKeyResolver(keyProvider, new TestApplicationNameProvider(testName));
-            resolver.SetToken(nvc, data);
+            resolver.SetKeyToken(nvc, data);
 
-            Expect.IsNotNullOrEmpty(nvc[ApiParameters.KeyTokenName], "Key token was not set");
+            Expect.IsNotNullOrEmpty(nvc[Headers.KeyToken], "Key token was not set");
 			ClearApps();
         }
 
@@ -163,10 +163,10 @@ namespace Bam.Net.ServiceProxy.Tests
             TestApplicationNameProvider nameProvider = new TestApplicationNameProvider(testName);
             ApiKeyResolver resolver = new ApiKeyResolver(keyProvider, nameProvider);
 
-            resolver.SetToken(nvc, data);
+            resolver.SetKeyToken(nvc, data);
 
-            string token = nvc[ApiParameters.KeyTokenName];
-            bool isValid = resolver.IsValidToken(data, token);
+            string token = nvc[Headers.KeyToken];
+            bool isValid = resolver.IsValidKeyToken(data, token);
             Expect.IsTrue(isValid, "token was not valid");
 			ClearApps();
         }

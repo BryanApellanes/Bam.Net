@@ -31,18 +31,6 @@ namespace Bam.Net.ServiceProxy
             RoleResolvers = new RoleResolvers();
             RoleResolvers.AddResolver(new DefaultRoleResolver());
         }
-
-        /// <summary>
-        /// Used to identify a service proxy session.  This value is
-        /// used as the name of the cookie used to track ServiceProxy sessions.
-        /// </summary>
-        public static string SecureSessionName
-        {
-            get
-            {
-                return "SPSSESS";
-            }
-        }
         
         public static string GenerateId()
         {
@@ -368,6 +356,21 @@ This file was generated from {0}serviceproxy/csharpproxies.  This file should no
         }}";
             }
         }
+
+        //protected static string AsyncMethodFormat
+        //{
+        //    get
+        //    {
+        //        return @"{0}
+        //public {1} {2}Async({3}, Action<AsyncExecutionResponse> handler)
+        //{{
+        //    object[] parameters = new object[] {{ {4} }};
+        //    {5}(""{2}"", parameters);
+        //}}";
+
+        //    }
+        //}
+
         protected static string UsingFormat { get { return "using {0};\r\n"; } }
 
         protected static string NameSpaceFormat

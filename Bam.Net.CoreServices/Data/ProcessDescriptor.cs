@@ -12,6 +12,7 @@ using Bam.Net.CoreServices.Data.Dao.Repository;
 
 namespace Bam.Net.CoreServices.Data
 {
+    [Serializable]
     public class ProcessDescriptor : AuditRepoData
     {
         public ProcessDescriptor()
@@ -25,7 +26,7 @@ namespace Bam.Net.CoreServices.Data
         #endregion
         public long MachineId { get; set; }
         public virtual Machine LocalMachine { get; set; }
-        public virtual Machine ServerMachine { get; set; }
+        public virtual Client LocalClient { get; set; }
         public string HashAlgorithm { get; set; }
         public string Hash { get; set; }
         public string MachineName { get; set; }
@@ -83,7 +84,7 @@ namespace Bam.Net.CoreServices.Data
 
             ProcessDescriptor result = new ProcessDescriptor();
             result.CopyProperties(Current);
-            result.LocalMachine = repo.GetOneMachineWhere(m => m.ServerHost == serverHost && m.Port == port);
+            result.LocalClient = repo.GetOneClientWhere(m => m.MachineName == Machine.Current.Name && m.ApplicationName == Machine.Current.DnsName && m.ServerHost == serverHost && m.Port == port);
             result.Application = new Application { Name = applicationName, Organization = new Organization { Name = organizationName.Or(applicationName) } };
             return result;
         }

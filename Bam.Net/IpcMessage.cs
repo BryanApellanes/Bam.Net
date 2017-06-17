@@ -301,7 +301,7 @@ namespace Bam.Net
                                 OnWaitingForLock();
                             }
 
-                            Thread.Sleep(2);
+                            Thread.Sleep(100);
                         }
                         return LockFile;
                     }, (lockFile) =>

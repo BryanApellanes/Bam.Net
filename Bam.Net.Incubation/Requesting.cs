@@ -31,6 +31,11 @@ namespace Bam.Net.Incubation
         {
             return new FluentIncubationContext<I>(incubator);
         }
+        
+        public static FluentCtorContext<I> ForCtor<I>(this Incubator incubator, string parameterName)
+        {
+            return new FluentCtorContext<I>(incubator, parameterName);
+        }
 
         /// <summary>
         /// Bind the specified type I ( same as AskingFor )

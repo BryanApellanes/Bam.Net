@@ -438,7 +438,7 @@
         </member>
         <member name="M:Bam.Net.Server.HttpHeaderResponder.MayRespond(Bam.Net.ServiceProxy.IHttpContext)">
             <summary>
-            Returns true if the request Header named "X-Responder" exists 
+            Returns true if the request Header named "X-Bam-Responder" exists 
             and the value is equal to the value of RespondToHeaderValue
             </summary>
             <param name="context"></param>
@@ -703,45 +703,45 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="P:Bam.Net.Server.Tvg.SimpleServer`1.HostPrefixes">
+        <member name="P:Bam.Net.Server.SimpleServer`1.HostPrefixes">
             <summary>
             An array of hosts that this server will respond to
             </summary>
         </member>
-        <member name="P:Bam.Net.Server.Tvg.SimpleServer`1.Responder">
+        <member name="P:Bam.Net.Server.SimpleServer`1.Responder">
             <summary>
             The responder
             </summary>
         </member>
-        <member name="P:Bam.Net.Server.Tvg.SimpleServer`1.Logger">
+        <member name="P:Bam.Net.Server.SimpleServer`1.Logger">
             <summary>
             The logger
             </summary>
         </member>
-        <member name="P:Bam.Net.Server.Tvg.SimpleServer`1.FileSystemWatchers">
+        <member name="P:Bam.Net.Server.SimpleServer`1.FileSystemWatchers">
             <summary>
             The FileSystemWatchers; one each for create, changed and renamed
             </summary>
         </member>
-        <member name="P:Bam.Net.Server.Tvg.SimpleServer`1.MonitorDirectories">
+        <member name="P:Bam.Net.Server.SimpleServer`1.MonitorDirectories">
             <summary>
             An array of directories to monitor for
             created, changed or renamed files
             </summary>
         </member>
-        <member name="P:Bam.Net.Server.Tvg.SimpleServer`1.CreatedOrChangedHandler">
+        <member name="P:Bam.Net.Server.SimpleServer`1.CreatedOrChangedHandler">
             <summary>
             The delegate that will be subscribed to the Create
             and Changed handler of the underlying FileSystemWatcher(s)
             </summary>
         </member>
-        <member name="P:Bam.Net.Server.Tvg.SimpleServer`1.RenamedHandler">
+        <member name="P:Bam.Net.Server.SimpleServer`1.RenamedHandler">
             <summary>
             The delegate that will be subscribed to the renamed event of the underlying
             FileSystemWatcher(s)
             </summary>
         </member>
-        <member name="M:Bam.Net.Server.Tvg.SimpleServer`1.WireEventHandlers">
+        <member name="M:Bam.Net.Server.SimpleServer`1.WireEventHandlers">
             <summary>
             Wire the event handlers
             </summary>

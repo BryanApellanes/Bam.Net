@@ -103,6 +103,23 @@ namespace Bam.Net.Data.Repositories
         {
             return Id.GetHashCode() + Uuid.GetHashCode() + Cuid.GetHashCode();
         }
+
+        public virtual RepoData Save(IRepository repo)
+        {
+            return (RepoData)repo.Save((object)this);
+        }
+
+        public bool GetIsPersisted()
+        {
+            return IsPersisted;
+        }
+
+        public bool GetIsPersisted(out IRepository repo)
+        {
+            repo = Repository;
+            return IsPersisted;
+        }
+
         protected void ValidatePropertyNamesOrDie(params string[] propertyNames)
         {
             propertyNames.Each(new { Instance = this }, (ctx, pn) =>
@@ -110,5 +127,8 @@ namespace Bam.Net.Data.Repositories
                 Args.ThrowIf(!Reflect.HasProperty(ctx.Instance, pn), "Specified property ({0}) was not found on instance of type ({1})", pn, ctx.Instance.GetType().Name);
             });
         }
+        
+        protected internal bool IsPersisted { get; set; }
+        protected internal IRepository Repository { get; set; } // gets set by Repository.Save
     }
 }

@@ -25,6 +25,8 @@ nuget pack Bam.Net.Profiguration\Bam.Net.Profiguration.nuspec
 nuget pack Bam.Net.Schema.Org\Bam.Net.Schema.Org.nuspec
 nuget pack Bam.Net.Server\Bam.Net.Server.nuspec
 nuget pack Bam.Net.ServiceProxy\Bam.Net.ServiceProxy.nuspec
+nuget pack Bam.Net.Services\Bam.Net.Services.nuspec
+nuget pack Bam.Net.Services.Clients\Bam.Net.Services.Clients.nuspec
 nuget pack Bam.Net.Syndication\Bam.Net.Syndication.nuspec
 nuget pack Bam.Net.Testing\Bam.Net.Testing.nuspec
 nuget pack Bam.Net.UserAccounts\Bam.Net.UserAccounts.nuspec

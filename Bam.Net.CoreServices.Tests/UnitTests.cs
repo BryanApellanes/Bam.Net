@@ -29,6 +29,7 @@ using Bam.Net.CoreServices.Data;
 using System.Collections.Specialized;
 using Bam.Net.Data.Dynamic;
 using Bam.Net.Services.Distributed;
+using Bam.Net.Incubation;
 
 namespace Bam.Net.CoreServices.Tests
 {
@@ -168,7 +169,7 @@ namespace Bam.Net.CoreServices.Tests
                     responder = resp;
                     responseCount++;
                 };
-                EncryptedEcho echo = serviceFactory.GetProxy<EncryptedEcho>("localhost");
+                EncryptedEcho echo = serviceFactory.GetProxy<EncryptedEcho>("localhost", 8080);
                 string value = "A random string: ".RandomLetters(8);
                 string response = echo.Send(value);
                 Expect.IsNotNull(response, "response was null");
@@ -251,7 +252,7 @@ namespace Bam.Net.CoreServices.Tests
         {
             After.Setup((Action<SetupContext>)(ctx =>
             {
-                ctx.CopyFrom((Incubation.Incubator)Services.CoreRegistryProvider.GetCoreRegistry());
+                ctx.CopyFrom((Incubation.Incubator)CoreServiceRegistryContainer.GetServiceRegistry());
             }))
             .WhenA<CoreApplicationRegistryService>("tries to register application when not logged in", cars =>
             {
@@ -273,7 +274,7 @@ namespace Bam.Net.CoreServices.Tests
         [UnitTest]
         public void CanSaveUserToCompositeRepo()
         {
-            CompositeRepository repo = CoreRegistryProvider.GetCoreRegistry().Get<CompositeRepository>();
+            CompositeRepository repo = CoreServiceRegistryContainer.GetServiceRegistry().Get<CompositeRepository>();
             Data.User user = new Data.User();
             user.UserName = 9.RandomLetters();
             user = repo.Save(user);
@@ -286,7 +287,7 @@ namespace Bam.Net.CoreServices.Tests
         [UnitTest]
         public void CanListCoreServices()
         {
-            Assembly coreServicesAssembly = typeof(Services.CoreRegistryProvider).Assembly;
+            Assembly coreServicesAssembly = typeof(CoreServiceRegistryContainer).Assembly;
             bool foundOne = false;
             foreach(Type type in coreServicesAssembly.GetTypes())
             {
@@ -307,11 +308,49 @@ namespace Bam.Net.CoreServices.Tests
         }
 
         [UnitTest]
-        public void MachineHasIpAddresses()
+        public void MachineHasNics()
         {
             Machine machine = new Machine();
             Expect.IsNotNull(machine.NetworkInterfaces, $"{nameof(machine.NetworkInterfaces)} was null");
             Expect.IsGreaterThan(machine.NetworkInterfaces.Count, 0, "No IpAddress entries were found");
+            machine.NetworkInterfaces.Each(n => OutLine(n.PropertiesToString(), ConsoleColor.Cyan));
+        }
+
+        [UnitTest]
+        public void MachineHasHostAddresses()
+        {
+            Machine machine = new Machine();
+            Expect.IsNotNull(machine.HostAddresses, $"{nameof(machine.HostAddresses)} was null");
+            Expect.IsGreaterThan(machine.HostAddresses.Count, 0, "No IpAddress entries were found");
+            machine.HostAddresses.Each(h => OutLine(h.PropertiesToString(), ConsoleColor.Blue));
+        }
+
+        [UnitTest]
+        public void SavingMachineSavesNicsAndHostAddresses()
+        {
+            Machine machine = new Machine();
+            CoreRegistryRepository repo = new CoreRegistryRepository() { Database = new SQLiteDatabase($".\\{nameof(SavingMachineSavesNicsAndHostAddresses)}", "CoreRegistryRepository") };
+            Data.Dao.Nic.LoadAll(repo.Database).Delete(repo.Database);
+            Data.Dao.HostAddress.LoadAll(repo.Database).Delete(repo.Database);
+            Data.Dao.Machine.LoadAll(repo.Database).Delete(repo.Database);
+
+            machine = machine.Save(repo) as Machine;
+            machine.NetworkInterfaces.Each(n => OutLine(n.PropertiesToString(), ConsoleColor.Cyan));
+            machine.HostAddresses.Each(h => OutLine(h.PropertiesToString(), ConsoleColor.Blue));
+
+            Data.Dao.NicCollection nics = Data.Dao.Nic.LoadAll(repo.Database);
+            Data.Dao.HostAddressCollection hosts = Data.Dao.HostAddress.LoadAll(repo.Database);
+
+            Machine machineAgain = machine.Save(repo) as Machine;
+            Expect.AreEqual(machine.Id, machineAgain.Id, "Id didn't match");
+            Expect.AreEqual(machine.Uuid, machineAgain.Uuid, "Uuid didn't match");
+            Expect.AreEqual(machine.Cuid, machineAgain.Cuid, "Cuid didn't match");
+
+            Data.Dao.NicCollection nicsAgain = Data.Dao.Nic.LoadAll(repo.Database);
+            Data.Dao.HostAddressCollection hostsAgain = Data.Dao.HostAddress.LoadAll(repo.Database);
+
+            Expect.AreEqual(nics.Count, nicsAgain.Count, "Nic count didn't match");
+            Expect.AreEqual(hosts.Count, hostsAgain.Count, "Host address count didn't match");
         }
 
         [UnitTest]
@@ -337,7 +376,7 @@ namespace Bam.Net.CoreServices.Tests
         [UnitTest]
         public void EnsureSingleDoesntDuplicate()
         {
-            CoreRegistry glooRegistry = Services.CoreRegistryProvider.GetCoreRegistry();
+            ServiceRegistry glooRegistry = CoreServiceRegistryContainer.GetServiceRegistry();
             CoreRegistryRepository repo = glooRegistry.Get<CoreRegistryRepository>();
             CompositeRepository compositeRepo = glooRegistry.Get<CompositeRepository>();
             compositeRepo.UnwireBackup();
@@ -405,6 +444,24 @@ namespace Bam.Net.CoreServices.Tests
             Expect.AreEqual(sessionUser, svc.CurrentUser, "Users didn't match");
         }
  
+        [UnitTest]
+        public void CoreServiceRegistryTest()
+        {
+            ServiceRegistry reg = CoreServiceRegistryContainer.Create();
+            IUserResolver userResolver = reg.Get<IUserResolver>();
+            Expect.IsNotNull(userResolver);
+        }
+
+        [UnitTest]
+        public void CoreServiceRegistryCopyTest()
+        {
+            ServiceRegistry reg = CoreServiceRegistryContainer.Create();
+            Incubator copy = new Incubator();
+            copy.CopyFrom(reg);
+            IUserResolver userResolver = copy.Get<IUserResolver>();
+            Expect.IsNotNull(userResolver);
+        }
+
         private CoreApplicationRegistryService GetTestServiceWithUser(string userName)
         {
             CoreApplicationRegistryService svc = GetTestService();
@@ -414,7 +471,7 @@ namespace Bam.Net.CoreServices.Tests
 
         private CoreApplicationRegistryService GetTestService()
         {
-            CoreRegistry registry = Services.CoreRegistryProvider.GetCoreRegistry();
+            ServiceRegistry registry = CoreServiceRegistryContainer.GetServiceRegistry();
             CoreApplicationRegistryService svc = registry.Get<CoreApplicationRegistryService>();
             registry.SetProperties(svc);
             return svc;

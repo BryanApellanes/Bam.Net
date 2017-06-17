@@ -209,7 +209,7 @@ namespace Bam.Net.ServiceProxy.Secure
 
                             using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                             {
-                                SessionCookie = response.Cookies[ServiceProxySystem.SecureSessionName];
+                                SessionCookie = response.Cookies[SecureSession.CookieName];
                                 Cookies.Add(SessionCookie);
 
                                 using (StreamReader sr = new StreamReader(response.GetResponseStream()))
@@ -242,13 +242,13 @@ namespace Bam.Net.ServiceProxy.Secure
             }
         }
 
-        protected internal override string DoInvoke(ServiceProxyInvokeEventArgs args)// string baseAddress, string className, string methodName, object[] parameters)
+        protected internal override string DoInvoke(ServiceProxyInvokeEventArgs args)
         {
             string baseAddress = args.BaseAddress;
             string className = args.ClassName;
             string methodName = args.MethodName;
             object[] parameters = args.PostParameters;
-            ServiceProxyInvokeEventArgs secureChannelArgs = new ServiceProxyInvokeEventArgs { Cuid = args.Cuid, BaseAddress = baseAddress, ClassName = typeof(SecureChannel).Name, MethodName = "Invoke", PostParameters = new object[] { className, methodName, ApiParameters.ParametersToJsonParamsObject(parameters) } };
+            ServiceProxyInvokeEventArgs secureChannelArgs = new ServiceProxyInvokeEventArgs { Cuid = args.Cuid, BaseAddress = baseAddress, ClassName = typeof(SecureChannel).Name, MethodName = "Invoke", PostParameters = new object[] { className, methodName, ApiParameters.ParametersToJsonParamsObjectString(parameters) } };
             try
             {                   
                 SecureChannelMessage<string> result = Post(secureChannelArgs).FromJson<SecureChannelMessage<string>>();
@@ -272,13 +272,13 @@ namespace Bam.Net.ServiceProxy.Secure
             return string.Empty;
         }
 
-        protected override string Post(ServiceProxyInvokeEventArgs argsIn, HttpWebRequest request)//Post(string baseAddress, string className, string methodName, object[] parameters, HttpWebRequest request)
+        protected override string Post(ServiceProxyInvokeEventArgs invokeArgs, HttpWebRequest request)
         {
-            string baseAddress = argsIn.BaseAddress;
-            string className = argsIn.ClassName;
-            string methodName = argsIn.MethodName;
-            object[] parameters = argsIn.PostParameters;
-            if (className.ToLowerInvariant().Equals("securechannel") && methodName.ToLowerInvariant().Equals("invoke"))
+            string baseAddress = invokeArgs.BaseAddress;
+            string className = invokeArgs.ClassName;
+            string methodName = invokeArgs.MethodName;
+            object[] parameters = invokeArgs.PostParameters;
+            if (className.Equals("securechannel", StringComparison.InvariantCultureIgnoreCase) && methodName.Equals("invoke", StringComparison.InvariantCultureIgnoreCase))
             {
                 // the target is the SecureChannel.Invoke method but we
                 // need the actual className and method that is in the parameters 
@@ -291,10 +291,10 @@ namespace Bam.Net.ServiceProxy.Secure
 
                 if (TypeRequiresApiKey || MethodRequiresApiKey(actualMethodName))
                 {
-                    ApiKeyResolver.SetToken(request, ApiParameters.GetStringToHash(actualClassName, actualMethodName, args["jsonParams"]));
+                    ApiKeyResolver.SetKeyToken(request, ApiParameters.GetStringToHash(actualClassName, actualMethodName, args["jsonParams"]));
                 }
             }
-            return base.Post(argsIn, request);// baseAddress, className, methodName, parameters, request);
+            return base.Post(invokeArgs, request);
         }
 
         protected internal override void WriteJsonParams(string jsonParamsString, HttpWebRequest request)
@@ -312,17 +312,17 @@ namespace Bam.Net.ServiceProxy.Secure
                     sw.Write(postData);
                 }
 
-                ApiValidation.SetValidationToken(request, jsonParamsString, SessionInfo.PublicKey);
+                ApiEncryptionValidation.SetEncryptedValidationToken(request, jsonParamsString, SessionInfo.PublicKey);
 
                 request.ContentType = "text/plain; charset=utf-8";
             }
         }
 
-        protected internal ValidationToken CreateValidationToken(string jsonParamsString)
+        protected internal EncryptedValidationToken CreateValidationToken(string jsonParamsString)
         {
             string publicKeyPem = SessionInfo.PublicKey;
 
-            return CreateValidationToken(jsonParamsString, publicKeyPem);
+            return CreateEncryptedValidationToken(jsonParamsString, publicKeyPem);
         }
 
         protected internal override HttpWebRequest GetServiceProxyRequest(ServiceProxyVerbs verb, string className, string methodName, string queryStringParameters = "")
@@ -331,15 +331,15 @@ namespace Bam.Net.ServiceProxy.Secure
 
             if (SessionCookie == null)
             {
-                Logger.AddEntry("Session Cookie ({0}) was missing, call StartSession() first", LogEventType.Warning, ServiceProxySystem.SecureSessionName);
+                Logger.AddEntry("Session Cookie ({0}) was missing, call StartSession() first", LogEventType.Warning, SecureSession.CookieName);
             }
             else
             {
-                request.Headers.Add(ServiceProxySystem.SecureSessionName, SessionCookie.Value);
+                request.Headers.Add(Web.Headers.SecureSession, SessionCookie.Value);
             }
             if (ClientApplicationNameProvider != null)
             {
-                request.Headers[ApplicationNameHeader] = ClientApplicationNameProvider.GetApplicationName();
+                request.Headers[Web.Headers.ApplicationName] = ClientApplicationNameProvider.GetApplicationName();
             }
             return request;
         }
@@ -364,18 +364,18 @@ namespace Bam.Net.ServiceProxy.Secure
         {
             kvp = new AesKeyVectorPair();
             string keyCipher = kvp.Key.EncryptWithPublicKey(SessionInfo.PublicKey, Encoding.UTF8);
-            string keyHash = kvp.Key.Sha1();
+            string keyHash = kvp.Key.Sha256();
             string keyHashCipher = keyHash.EncryptWithPublicKey(SessionInfo.PublicKey, Encoding.UTF8);
             string ivCipher = kvp.IV.EncryptWithPublicKey(SessionInfo.PublicKey, Encoding.UTF8);
-            string ivHash = kvp.IV.Sha1();
+            string ivHash = kvp.IV.Sha256();
             string ivHashCipher = ivHash.EncryptWithPublicKey(SessionInfo.PublicKey, Encoding.UTF8);
 
             request = new SetSessionKeyRequest(keyCipher, keyHashCipher, ivCipher, ivHashCipher);
         }
 
-        private static ValidationToken CreateValidationToken(string jsonParamsString, string publicKeyPem)
+        private static EncryptedValidationToken CreateEncryptedValidationToken(string jsonParamsString, string publicKeyPem)
         {
-            return ApiValidation.CreateValidationToken(jsonParamsString, publicKeyPem);
+            return ApiEncryptionValidation.CreateEncryptedValidationToken(jsonParamsString, publicKeyPem);
         }
 
         private void Initialize()

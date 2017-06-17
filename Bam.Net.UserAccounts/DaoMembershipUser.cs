@@ -11,6 +11,7 @@ using Bam.Net.UserAccounts.Data;
 
 namespace Bam.Net.UserAccounts
 {
+    [Obsolete("This class will be removed in the future to remove dependency on its dependents; use Bam.Net.UserAccounts.Data.User instead")]
     public class DaoMembershipUser: MembershipUser
     {
         public DaoMembershipUser(

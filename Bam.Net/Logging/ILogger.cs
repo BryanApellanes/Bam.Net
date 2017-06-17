@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Bam.Net.Logging
 {
-    public interface ILogger: ILog
+    public interface ILogger: ILog, ILogEventCommitter
     {
         bool IsNull { get; }
 
@@ -38,9 +38,7 @@ namespace Bam.Net.Logging
         ILogger StartLoggingThread();
         ILogger StopLoggingThread();
         ILogger RestartLoggingThread();
-
-        void CommitLogEvent(LogEvent logEvent);
-
+        
         IEventIdProvider EventIdProvider { get; set; }
     }
 }

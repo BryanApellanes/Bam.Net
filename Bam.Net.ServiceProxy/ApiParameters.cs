@@ -20,6 +20,7 @@ using Org.BouncyCastle.Security;
 using System.IO;
 using System.Reflection;
 using System.Collections;
+using Bam.Net;
 
 namespace Bam.Net.ServiceProxy
 {
@@ -28,7 +29,6 @@ namespace Bam.Net.ServiceProxy
     /// </summary>
     public class ApiParameters
     {
-        public const string KeyTokenName = "KeyToken";
         public static string GetStringToHash(ExecutionRequest request)
         {
             return GetStringToHash(request.ClassName, request.MethodName, request.JsonParams);
@@ -43,7 +43,7 @@ namespace Bam.Net.ServiceProxy
         /// </summary>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public static string ParametersToJsonParamsObject(params object[] parameters)
+        public static string ParametersToJsonParamsObjectString(params object[] parameters)
         {
             string[] jsonParams = ParametersToJsonParamsArray(parameters);
 

@@ -353,15 +353,19 @@ namespace Bam.Net.Data.Repositories
 		protected internal IObjectReaderWriter ObjectReaderWriter { get; set; }
 		protected internal IMetaProvider MetaProvider { get; set; }
 		protected TypeSchemaGenerator TypeSchemaGenerator { get; private set; }
+        object _typeSchemaLock = new object();
 		protected internal TypeSchema TypeSchema
 		{
 			get
 			{
-				if (SchemaDefinitionCreateResult == null)
-				{
-					Initialize();
-				}
-				return SchemaDefinitionCreateResult.TypeSchema;
+                lock (_typeSchemaLock)
+                {
+                    if (SchemaDefinitionCreateResult == null)
+                    {
+                        Initialize();
+                    }
+                    return SchemaDefinitionCreateResult.TypeSchema;
+                }
 			}
 		}
 

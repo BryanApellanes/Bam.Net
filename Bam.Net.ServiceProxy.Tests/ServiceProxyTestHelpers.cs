@@ -201,6 +201,13 @@ namespace Bam.Net.ServiceProxy.Tests
             sspc = new SecureServiceProxyClient<EncryptedEcho>(baseAddress);
         }
 
+        public static void StartSecureChannelTestServerGetClient<T>(out BamServer server, out SecureServiceProxyClient<T> sspc)
+        {
+            string baseAddress;
+            StartTestServer<SecureChannel, T>(out baseAddress, out server);
+            sspc = new SecureServiceProxyClient<T>(baseAddress);
+        }
+
         public static void StartTestServer(out string baseAddress, out BamServer server)
         {
             StartTestServer<Echo>(out baseAddress, out server);

@@ -34,7 +34,8 @@
         <member name="T:Bam.Net.ServiceProxy.Secure.ApiKeyRequiredAttribute">
             <summary>
             Attribute used to addorn classes or methods that require
-            authentication or authorization.
+            authentication or authorization.  Implicity requires
+            application level encryption
             </summary>
         </member>
         <member name="T:Bam.Net.ServiceProxy.Secure.ApiKeyProvider">
@@ -48,7 +49,7 @@
             information from the web.config or app.config file.
             </summary>
         </member>
-        <member name="M:Bam.Net.ServiceProxy.Secure.IApiKeyResolver.CreateToken(System.String)">
+        <member name="M:Bam.Net.ServiceProxy.Secure.IApiKeyResolver.CreateKeyToken(System.String)">
             <summary>
             When implemented by a derived class hashes the specified
             stringToHash using the key/shared secret
@@ -1309,6 +1310,12 @@
             SecureServiceProxy schema
             </summary>
         </member>
+        <member name="T:Bam.Net.ServiceProxy.Secure.SecureExecutionRequest">
+            <summary>
+            An ExecutionRequest that will encrypt the result
+            when executed
+            </summary>
+        </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.SecureExecutionRequest.GetResultAs``1">
             <summary>
             Decrypts the result and returns it as the specified type T
@@ -1390,13 +1397,13 @@
             The server Rsa public key of the current session as a Pem string
             </summary>
         </member>
-        <member name="T:Bam.Net.ServiceProxy.Secure.ApiValidation">
+        <member name="T:Bam.Net.ServiceProxy.Secure.ApiEncryptionValidation">
             <summary>
             Class used to set and validate encryption validation
             tokens
             </summary>
         </member>
-        <member name="M:Bam.Net.ServiceProxy.Secure.ApiValidation.ValidateNonce(System.String,System.Int32)">
+        <member name="M:Bam.Net.ServiceProxy.Secure.ApiEncryptionValidation.ValidateNonce(System.String,System.Int32)">
             <summary>
             Checks that the specified nonce is no more than
             3 minutes in the past or future
@@ -1410,7 +1417,7 @@
             A class used to properly format parameters for service proxy calls
             </summary>
         </member>
-        <member name="M:Bam.Net.ServiceProxy.ApiParameters.ParametersToJsonParamsObject(System.Object[])">
+        <member name="M:Bam.Net.ServiceProxy.ApiParameters.ParametersToJsonParamsObjectString(System.Object[])">
             <summary>
             Turn the specified parameter array into a JSON object in the form {jsonParams: &lt;json string array&gt;}.
             Where &lt;json string array&gt; can be obtained by callig ParametersToJsonParamsArray(parameters)
@@ -1586,12 +1593,6 @@
             Used to render all registered javascript proxies to the client.
             </summary>
         </member>
-        <member name="P:Bam.Net.ServiceProxy.ServiceProxySystem.SecureSessionName">
-            <summary>
-            Used to identify a service proxy session.  This value is
-            used as the name of the cookie used to track ServiceProxy sessions.
-            </summary>
-        </member>
         <member name="M:Bam.Net.ServiceProxy.ServiceProxySystem.Initialize">
             <summary>
             Initialize the underlying ServiceProxySystem, including registering the 
@@ -1710,6 +1711,11 @@
             <summary>
             Should be set to an array of strings stringified twice.  Parsing as Json will return an array of strings,
             each string can be individually parsed into separate objects
+            </summary>
+        </member>
+        <member name="P:Bam.Net.ServiceProxy.ExecutionRequest.Callback">
+            <summary>
+            The name of the javascript client side callback function if any or "callback"
             </summary>
         </member>
         <member name="P:Bam.Net.ServiceProxy.ExecutionRequest.Result">

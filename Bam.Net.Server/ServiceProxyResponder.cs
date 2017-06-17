@@ -40,13 +40,13 @@ namespace Bam.Net.Server
         public ServiceProxyResponder(BamConf conf, ILogger logger)
             : base(conf, logger)
         {
-            this._commonServiceProvider = new Incubator();
-            this._appServiceProviders = new Dictionary<string, Incubator>();
-            this._appSecureChannels = new Dictionary<string, SecureChannel>();
-            this._commonSecureChannel = new SecureChannel();
-            this.RendererFactory = new RendererFactory(logger);
+            _commonServiceProvider = new Incubator();
+            _appServiceProviders = new Dictionary<string, Incubator>();
+            _appSecureChannels = new Dictionary<string, SecureChannel>();
+            _commonSecureChannel = new SecureChannel();
+            RendererFactory = new RendererFactory(logger);
 
-            AddCommonService(this._commonSecureChannel);
+            AddCommonService(_commonSecureChannel);
 
             CommonServiceAdded += (type, obj) =>
             {
@@ -186,7 +186,7 @@ namespace Bam.Net.Server
             if (_appServiceProviders.ContainsKey(appName))
             {
                 _appServiceProviders[appName].CombineWith(incubator);
-                Parallel.ForEach(incubator.Types, type =>
+                Parallel.ForEach(incubator.ClassNameTypes, type =>
                 {
                     Task.Run(() => OnAppServiceAdded(appName, type, incubator[type]));
                 });
@@ -728,10 +728,13 @@ namespace Bam.Net.Server
             if (string.IsNullOrEmpty(ext))
             {
                 AppConf appConf = this.BamConf[appName];
-                LayoutConf pageConf = new LayoutConf(appConf);
-                string fileName = Path.GetFileName(path);
-                string json = pageConf.ToJson(true);
-                appConf.AppRoot.WriteFile("~/pages/{0}.layout"._Format(fileName), json);
+                if(appConf != null)
+                {
+                    LayoutConf pageConf = new LayoutConf(appConf);
+                    string fileName = Path.GetFileName(path);
+                    string json = pageConf.ToJson(true);
+                    appConf.AppRoot.WriteFile("~/pages/{0}.layout"._Format(fileName), json);
+                }
             }
 
             RendererFactory.Respond(execRequest, ContentResponder);

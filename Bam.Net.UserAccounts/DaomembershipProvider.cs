@@ -22,6 +22,7 @@ namespace Bam.Net.UserAccounts
     /// <summary>
     /// This class should be moved to a different assembly for custom "Membership" providers
     /// </summary>
+    [Obsolete("This class will be removed in the future to remove dependency on its dependents; use Bam.Net.UserAccounts.UserManager instead")]
     public class DaoMembershipProvider: ExtendedMembershipProvider
     {
         public override void Initialize(string name, System.Collections.Specialized.NameValueCollection config)

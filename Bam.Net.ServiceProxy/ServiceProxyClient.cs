@@ -19,7 +19,6 @@ namespace Bam.Net.ServiceProxy
 {
     public abstract class ServiceProxyClient : CookieEnabledWebClient
     {
-        public const string ApplicationNameHeader = "X-APPNAME";
         public ServiceProxyClient()
             : base() //Ensure that the cookiecontainer is initialized
         {

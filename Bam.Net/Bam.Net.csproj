@@ -184,10 +184,12 @@
     <Compile Include="Instant.cs" />
     <Compile Include="IpcMessageLockInfo.cs" />
     <Compile Include="IWriteSource.cs" />
+    <Compile Include="LocalAttribute.cs" />
     <Compile Include="Logging\ClientLogger.cs" />
     <Compile Include="ApplicationDiagnosticInfo.cs" />
     <Compile Include="Logging\IEventIdProvider.cs" />
     <Compile Include="Logging\ILog.cs" />
+    <Compile Include="Logging\ILogEventCommitter.cs" />
     <Compile Include="Logging\ILoggable.cs" />
     <Compile Include="Logging\Loggable.cs" />
     <Compile Include="Logging\VerbosityAttribute.cs" />
@@ -198,6 +200,7 @@
     <Compile Include="Month.cs" />
     <Compile Include="NamedThread.cs" />
     <Compile Include="NetworkExtensions.cs" />
+    <Compile Include="ProxySubdomainAttribute.cs" />
     <Compile Include="Razor\RazorBaseTemplate.cs" />
     <Compile Include="Razor\RazorParser.cs" />
     <Compile Include="Razor\RazorRenderer.cs" />
@@ -210,6 +213,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Web\FormParameterExtensions.cs" />
+    <Compile Include="Web\Headers.cs" />
     <Compile Include="Web\Http.cs" />
     <Compile Include="Logging\CsvLogger.cs" />
     <Compile Include="ReflectionExtensions.cs" />

@@ -725,11 +725,13 @@ File Version: {1}
             Out($"{message}\r\n", colors);
         }
 
+        [DebuggerStepThrough]
         public static void InvokeSelection(List<ConsoleInvokeableMethod> actions, string answer)
         {
             InvokeSelection(actions, answer, "", "");
         }
 
+        [DebuggerStepThrough]
         protected static void InvokeSelection(List<ConsoleInvokeableMethod> actions, string answer, string header, string footer)
         {
             int ignore;
@@ -739,6 +741,8 @@ File Version: {1}
         static MethodInfo _methodToInvoke;
         static object invokeOn;
         static object[] parameters;
+
+        [DebuggerStepThrough]
         private static void InvokeMethod()
         {
             if (_methodToInvoke == null)

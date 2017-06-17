@@ -166,6 +166,18 @@
             <typeparam name="T"></typeparam>
             <param name="instance"></param>
         </member>
+        <member name="P:Bam.Net.Incubation.Incubator.ClassNameTypes">
+            <summary>
+            Types as they would be resolved when using 
+            the values in ClassNames
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Incubation.Incubator.MappedTypes">
+            <summary>
+            All the Types that are mapped to instances
+            or instanciators
+            </summary>
+        </member>
         <member name="P:Bam.Net.Incubation.Incubator.Item(System.Type)">
             <summary>
             Gets the inner instance of the type specified or
@@ -174,6 +186,15 @@
             </summary>
             <param name="type"></param>
             <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Incubation.Incubator.SetCtorParam(System.Type,System.String,System.Object)">
+            <summary>
+            Set the value to pass into the constructor when 
+            constructing the specified type
+            </summary>
+            <param name="forType"></param>
+            <param name="parameterName"></param>
+            <param name="value"></param>
         </member>
         <member name="T:Bam.Net.Incubation.Requesting">
             <summary>

@@ -76,6 +76,8 @@
   <ItemGroup>
     <Compile Include="Asking.cs" />
     <Compile Include="ConstructFailedException.cs" />
+    <Compile Include="CtorParam.cs" />
+    <Compile Include="FluentCtorContext.cs" />
     <Compile Include="FluentIncubationContext.cs" />
     <Compile Include="For.cs" />
     <Compile Include="Incubator.cs" />

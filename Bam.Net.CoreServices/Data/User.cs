@@ -7,6 +7,7 @@ using Bam.Net.Data.Repositories;
 
 namespace Bam.Net.CoreServices.Data
 {
+    [Serializable]
     public class User: AuditRepoData
     {
         public virtual List<Organization> Organizations { get; set; }

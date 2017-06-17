@@ -17,6 +17,7 @@ using Bam.Net.Services.AssemblyManagement.Data.Dao.Repository;
 using Bam.Net.Testing;
 using Bam.Net.Services.AssemblyManagement;
 using Bam.Net.Services.Distributed.Files;
+using Bam.Net.Configuration;
 
 namespace Bam.Net.Services.Tests
 {
@@ -94,7 +95,7 @@ namespace Bam.Net.Services.Tests
         [UnitTest]
         public void SaveDescriptorDoesntDuplicate()
         {
-            AssemblyManagementRepository repo = GetAssemblyManagementRepository(GetConsoleLogger(), nameof(SaveDescriptorDoesntDuplicate));
+            AssemblyServiceRepository repo = GetAssemblyManagementRepository(GetConsoleLogger(), nameof(SaveDescriptorDoesntDuplicate));
             repo.Database.TryEnsureSchema<Dao.AssemblyDescriptor>();
             Dao.AssemblyDescriptor.LoadAll(repo.Database).Delete(repo.Database);
             AssemblyDescriptor descriptor = new AssemblyDescriptor(Assembly.GetExecutingAssembly());
@@ -127,7 +128,7 @@ namespace Bam.Net.Services.Tests
         [UnitTest]
         public void SaveDescriptorSavesReferences()
         {
-            AssemblyManagementRepository repo = GetAssemblyManagementRepository(GetConsoleLogger(), nameof(SaveDescriptorDoesntDuplicate));
+            AssemblyServiceRepository repo = GetAssemblyManagementRepository(GetConsoleLogger(), nameof(SaveDescriptorDoesntDuplicate));
             repo.Database.TryEnsureSchema<Dao.AssemblyDescriptor>();
             AssemblyDescriptor[] descriptors = AssemblyDescriptor.GetCurrentAppDomainDescriptors().ToArray();
             for(int i = 0; i < 3; i++)
@@ -153,7 +154,7 @@ namespace Bam.Net.Services.Tests
         [UnitTest]
         public void ProcessRuntimeDescriptorSaveTest()
         {
-            AssemblyManagementRepository repo = GetAssemblyManagementRepository(GetConsoleLogger(), nameof(ProcessRuntimeDescriptorSaveTest));
+            AssemblyServiceRepository repo = GetAssemblyManagementRepository(GetConsoleLogger(), nameof(ProcessRuntimeDescriptorSaveTest));
             repo.Database.TryEnsureSchema<Dao.AssemblyDescriptor>();
             List<AssemblyDescriptor> descriptors = AssemblyDescriptor.GetCurrentAppDomainDescriptors().ToList();
             ProcessRuntimeDescriptor current = ProcessRuntimeDescriptor.PersistCurrentToRepo(repo);
@@ -178,13 +179,29 @@ namespace Bam.Net.Services.Tests
             }
         }
 
-        //[UnitTest]
-        //public void RestoreCurrentRuntimeTest()
-        //{
-        //    SQLiteDatabase db = new SQLiteDatabase(".\\", nameof(RestoreCurrentRuntimeTest));
-        //    FileService fmSvc = new FileService(new DaoRepository(db));
-        //    AssemblyManagementService svc = new AssemblyManagementService(fmSvc);
-        //}
+        [UnitTest]
+        public void LoadAndRestoreCurrentRuntimeTest()
+        {
+            SQLiteDatabase db = new SQLiteDatabase(".\\", nameof(LoadAndRestoreCurrentRuntimeTest));
+            db.TryEnsureSchema<Dao.AssemblyDescriptor>();
+            FileService fmSvc = new FileService(new DaoRepository(db));
+            AssemblyServiceRepository assManRepo = new AssemblyServiceRepository() { Database = db };
+            AssemblyService svc = new AssemblyService(fmSvc, assManRepo, DefaultConfigurationApplicationNameProvider.Instance);
+            ProcessRuntimeDescriptor prd1 = svc.LoadCurrentRuntimeDescriptor();
+            ProcessRuntimeDescriptor prd2 = svc.LoadCurrentRuntimeDescriptor();
+            ProcessRuntimeDescriptor byName = assManRepo.OneProcessRuntimeDescriptorWhere(c => c.ApplicationName == prd1.ApplicationName);
+            OutLineFormat("AppName: {0}", ConsoleColor.Cyan, prd1.ApplicationName);
+            Expect.AreEqual(prd1.Cuid, prd2.Cuid);
+            Expect.AreEqual(prd1.Cuid, byName.Cuid);
+            bool? fired = false;
+            svc.RuntimeRestored += (o, a) =>
+            {
+                fired = true;
+                OutLine(((ProcessRuntimeDescriptorEventArgs)a).DirectoryPath);
+            };
+            svc.RestoreApplicationRuntime(byName.ApplicationName, $".\\{nameof(LoadAndRestoreCurrentRuntimeTest)}");
+            Expect.IsTrue(fired.Value);
+        }
 
         private static void OutputInfo(AssemblyDescriptor descriptor)
         {
@@ -220,10 +237,10 @@ namespace Bam.Net.Services.Tests
             return daoRepo;            
         }
 
-        private static AssemblyManagementRepository GetAssemblyManagementRepository(ConsoleLogger logger = null, string databaseName = null)
+        private static AssemblyServiceRepository GetAssemblyManagementRepository(ConsoleLogger logger = null, string databaseName = null)
         {
             DaoRepository daoRepo = GetDaoRepository(logger, databaseName);
-            return new AssemblyManagementRepository() { Database = daoRepo.Database };
+            return new AssemblyServiceRepository() { Database = daoRepo.Database };
         }
     }
 }

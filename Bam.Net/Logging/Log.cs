@@ -30,6 +30,15 @@ namespace Bam.Net.Logging
 				_defaultLogger = value;				
 			}
         }
+
+        public static void WarnIf(bool condition, string messageSignature, params object[] args)
+        {
+            if (condition)
+            {
+                Warn(messageSignature, args);
+            }
+        }
+
         public static void Info(string messageSignature, params object[] args)
         {
             Default.AddEntry(messageSignature, LogEventType.Information, args.Select(a => a.ToString()).ToArray());
@@ -118,12 +127,12 @@ namespace Bam.Net.Logging
             return (ILogger)ctor.Invoke(null);
         }
 
-        public static void AddLogger(Type loggerType)
+        public static MultiTargetLogger AddLogger(Type loggerType)
         {
-            AddLogger(CreateLogger(loggerType));
+            return AddLogger(CreateLogger(loggerType));
         }
 
-        public static void AddLogger(ILogger loggerInstance)
+        public static MultiTargetLogger AddLogger(this ILogger loggerInstance)
         {
             MultiTargetLogger main = null;
 
@@ -160,6 +169,7 @@ namespace Bam.Net.Logging
             }
 
             main.AddLogger(loggerInstance);
+            return main;
         }
 
         public static void AddEntry(string messageSignature, EventLogEntryType type)

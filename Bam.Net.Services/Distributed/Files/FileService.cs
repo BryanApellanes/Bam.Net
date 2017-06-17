@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Bam.Net.CoreServices;
 using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
+using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.Services.Distributed.Data;
 using Bam.Net.Services.Distributed.Files.Data;
 
@@ -17,6 +18,7 @@ namespace Bam.Net.Services.Distributed.Files
 {
     [RoleRequired("/", "Admin")]
     [Proxy("fileSvc")]
+    [ApiKeyRequired]
     public class FileService: ProxyableService
     {
         public FileService(IRepository repository, FileServiceSettings settings) : this(repository)
@@ -234,25 +236,68 @@ namespace Bam.Net.Services.Distributed.Files
         public FileInfo RestoreFile(string fileHash, string localPath, bool overwrite = true)
         {
             HandleExistingFile(localPath, overwrite);
-                        
+            FileInfo file = new FileInfo(localPath);
+            if (!file.Directory.Exists)
+            {
+                file.Directory.Create();
+            }
             using (FileStream fs = new FileStream(localPath, FileMode.Create))
             {
-                List<FileChunk> chunks = GetFileChunks(fileHash, -1);
-                while (chunks.Count > 0)
-                {
-                    foreach (FileChunk chunk in chunks)
-                    {
-                        fs.Write(chunk.ByteData, 0, chunk.ByteData.Length);
-                    }
-                    chunks = GetFileChunks(fileHash, (int)(chunks[chunks.Count - 1].ChunkIndex));
-                }
+                WriteFileHashToStream(fileHash, fs);
             }
-
-            return new FileInfo(localPath);
+            file.Refresh();
+            return file;
         }
 
+        [Exclude]
+        public FileInfo WriteFileToDirectory(string fileNameOrHash, string directoryPath)
+        {
+            ChunkedFileDescriptor fileDescriptor = GetFileDescriptor(fileNameOrHash);
+            Args.ThrowIfNull(fileDescriptor, "fileDescriptor");
+            string localPath = Path.Combine(directoryPath, fileDescriptor.FileName);
+            FileInfo file = new FileInfo(localPath);
+            if (File.Exists(localPath) && !fileDescriptor.FileHash.Equals(file.Sha256()))
+            {
+                File.Delete(localPath);
+            }
+            if (!file.Directory.Exists)
+            {
+                file.Directory.Create();
+            }
+            if (!File.Exists(localPath))
+            {
+                using(FileStream fs = new FileStream(localPath, FileMode.Create))
+                {
+                    WriteFileHashToStream(fileDescriptor.FileHash, fs);
+                }
+            }
+            file.Refresh();
+            return file;
+        }
 
-        private List<FileChunk> GetFileChunks(string fileHash, int fromIndex)
+        [Exclude]
+        public void WriteFileToStream(string fileNameOrHash, Stream stream)
+        {
+            ChunkedFileDescriptor fileDescriptor = GetFileDescriptor(fileNameOrHash);
+            Args.ThrowIfNull(fileDescriptor, "fileDescriptor");
+            WriteFileHashToStream(fileDescriptor.FileHash, stream);
+        }
+
+        [Exclude]
+        public void WriteFileHashToStream(string fileHash, Stream fs)
+        {
+            List<FileChunk> chunks = GetFileChunks(fileHash, -1);
+            while (chunks.Count > 0)
+            {
+                foreach (FileChunk chunk in chunks)
+                {
+                    fs.Write(chunk.ByteData, 0, chunk.ByteData.Length);
+                }
+                chunks = GetFileChunks(fileHash, (int)(chunks[chunks.Count - 1].ChunkIndex));
+            }
+        }
+
+        public virtual List<FileChunk> GetFileChunks(string fileHash, int fromIndex)
         {
             return GetFileChunks(fileHash, fromIndex, ChunkDataBatchSize);
         }

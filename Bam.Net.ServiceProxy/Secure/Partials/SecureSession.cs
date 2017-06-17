@@ -26,7 +26,8 @@ using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Crypto.Generators;
 using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Crypto.Engines;
-
+using Bam.Net.Web;
+using Bam.Net.Logging;
 
 namespace Bam.Net.ServiceProxy.Secure
 {
@@ -50,7 +51,7 @@ namespace Bam.Net.ServiceProxy.Secure
         {
             get
             {
-                return ServiceProxySystem.SecureSessionName;
+                return "SPSSESS";
             }
         }
 
@@ -112,12 +113,12 @@ namespace Bam.Net.ServiceProxy.Secure
             Cookie cookie = request.Cookies[CookieName];
             if (cookie == null)
             {
-                string sid = request.Headers[CookieName];
-                if (string.IsNullOrEmpty(sid))
+                string secureSessionId = request.Headers[Headers.SecureSession];
+                if (string.IsNullOrEmpty(secureSessionId))
                 {
-                    sid = GenerateId();
+                    secureSessionId = GenerateId();
                 }
-                cookie = new Cookie(CookieName, sid);
+                cookie = new Cookie(CookieName, secureSessionId);
                 response.Cookies.Add(cookie);
             }
 
@@ -130,14 +131,14 @@ namespace Bam.Net.ServiceProxy.Secure
             return Get(request.Cookies[SecureSession.CookieName], instant);
         }
 
-        public static SecureSession Get(Cookie cookie, Instant instant = null)
+        public static SecureSession Get(Cookie secureSessionCookie, Instant instant = null)
         {
-            Args.ThrowIfNull(cookie, "cookie");
+            Args.ThrowIfNull(secureSessionCookie, "cookie");
 
             SecureSession result = null;
-            if (cookie != null && cookie.Name.Equals(CookieName))
+            if (secureSessionCookie != null && secureSessionCookie.Name.Equals(CookieName))
             {
-                result = Get(cookie.Value, instant);
+                result = Get(secureSessionCookie.Value, instant);
             }
 
             return result;
@@ -145,7 +146,9 @@ namespace Bam.Net.ServiceProxy.Secure
 
         public static SecureSession Get(NameValueCollection headers, Instant instant = null)
         {
-            string sessionIdentifier = headers[CookieName];            
+            string sessionIdentifier = headers[Headers.SecureSession];
+            Log.WarnIf(string.IsNullOrEmpty(sessionIdentifier), "{0} header was not present, checking cookie {1}", Headers.SecureSession, CookieName);
+            sessionIdentifier = sessionIdentifier ?? headers[CookieName];
             Args.ThrowIfNull(sessionIdentifier, CookieName);
             return Get(sessionIdentifier, instant);
         }
@@ -170,9 +173,9 @@ namespace Bam.Net.ServiceProxy.Secure
         public void SetSymmetricKey(string key, string iv)
         {
             string keyCipher = EncryptWithPublicKey(key);
-            string keyHash = key.Sha1();
+            string keyHash = key.Sha256();
             string keyHashCipher = keyHash.EncryptWithPublicKey(PublicKey, Encoding.UTF8);
-            string ivHash = iv.Sha1();
+            string ivHash = iv.Sha256();
             string ivCipher = EncryptWithPublicKey(iv);
             string ivHashCipher = EncryptWithPublicKey(ivHash);
             SetSymmetricKey(keyCipher, keyHashCipher, ivCipher, ivHashCipher);
@@ -187,10 +190,10 @@ namespace Bam.Net.ServiceProxy.Secure
         {
             PlainSymmetricKey = DecryptWithPrivateKey(request.KeyCipher, request.GetEngine());
             string passwordHash = DecryptWithPrivateKey(request.KeyHashCipher, request.GetEngine());
-            Expect.AreEqual(PlainSymmetricKey.Sha1(), passwordHash, "Key hash check failed");
+            Expect.AreEqual(PlainSymmetricKey.Sha256(), passwordHash, "Key hash check failed");
             PlainSymmetricIV = DecryptWithPrivateKey(request.IVCipher, request.GetEngine());
             string ivHash = DecryptWithPrivateKey(request.IVHashCipher, request.GetEngine());
-            Expect.AreEqual(PlainSymmetricIV.Sha1(), ivHash, "IV hash check failed");
+            Expect.AreEqual(PlainSymmetricIV.Sha256(), ivHash, "IV hash check failed");
             this.Save();
         }
 

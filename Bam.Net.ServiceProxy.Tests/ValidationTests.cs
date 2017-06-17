@@ -37,6 +37,7 @@ using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Crypto.Engines;
 using FakeItEasy;
 using FakeItEasy.Creation;
+using Bam.Net.Web;
 
 namespace Bam.Net.ServiceProxy.Tests
 {
@@ -49,9 +50,9 @@ namespace Bam.Net.ServiceProxy.Tests
             
             IHttpContext context = CreateFakeContext(MethodBase.GetCurrentMethod().Name);
             SecureSession session = SecureSession.Get(context);
-            string postString = ApiParameters.ParametersToJsonParamsObject("random information");
+            string postString = ApiParameters.ParametersToJsonParamsObjectString("random information");
 
-            ValidationToken token = ApiValidation.CreateValidationToken(postString, session);
+            EncryptedValidationToken token = ApiEncryptionValidation.CreateEncryptedValidationToken(postString, session);
         }
 
         public static void Prepare()
@@ -69,11 +70,11 @@ namespace Bam.Net.ServiceProxy.Tests
 
             IHttpContext context = CreateFakeContext(MethodBase.GetCurrentMethod().Name);
             SecureSession session = SecureSession.Get(context);
-            string postString = ApiParameters.ParametersToJsonParamsObject("random information");
+            string postString = ApiParameters.ParametersToJsonParamsObjectString("random information");
 
-            ValidationToken token = ApiValidation.CreateValidationToken(postString, session);
+            EncryptedValidationToken token = ApiEncryptionValidation.CreateEncryptedValidationToken(postString, session);
 
-            Expect.AreEqual(TokenValidationStatus.Success, ApiValidation.ValidateToken(session, token, postString));
+            Expect.AreEqual(EncryptedTokenValidationStatus.Success, ApiEncryptionValidation.ValidateEncryptedToken(session, token, postString));
         }
 
         [UnitTest]
@@ -83,21 +84,21 @@ namespace Bam.Net.ServiceProxy.Tests
 
             SecureSession session = SecureSession.Get(SecureSession.GenerateId());
 
-            string postString = ApiParameters.ParametersToJsonParamsObject("random info");
+            string postString = ApiParameters.ParametersToJsonParamsObjectString("random info");
             SecureServiceProxyClient<Echo> client = new SecureServiceProxyClient<Echo>("http://blah.com");
 
             HttpWebRequest request = client.GetServiceProxyRequest("Send");
-            ApiValidation.SetValidationToken(request.Headers, postString, session.PublicKey);
+            ApiEncryptionValidation.SetEncryptedValidationToken(request.Headers, postString, session.PublicKey);
 
             Cookie cookie = new Cookie(SecureSession.CookieName, session.Identifier, "", "blah.cxm");            
             request.CookieContainer.Add(cookie);
-            request.Headers[SecureSession.CookieName] = session.Identifier;
+            request.Headers[Headers.SecureSession] = session.Identifier;
         
             Expect.IsNotNull(request.Headers);
-            Expect.IsNotNull(request.Headers[ApiValidation.NonceName]);
-            Expect.IsNotNull(request.Headers[ApiValidation.ValidationTokenName]);
+            Expect.IsNotNull(request.Headers[Headers.Nonce]);
+            Expect.IsNotNull(request.Headers[Headers.ValidationToken]);
 
-            Expect.AreEqual(TokenValidationStatus.Success, ApiValidation.ValidateToken(request.Headers, postString));
+            Expect.AreEqual(EncryptedTokenValidationStatus.Success, ApiEncryptionValidation.ValidateEncryptedToken(request.Headers, postString));
         }
 
         [UnitTest]
@@ -107,9 +108,9 @@ namespace Bam.Net.ServiceProxy.Tests
 
             DateTime tenMinutesAgo = DateTime.UtcNow.Subtract(TimeSpan.FromMinutes(10));
             Instant nonce = new Instant(tenMinutesAgo);
-            TokenValidationStatus status = ApiValidation.ValidateNonce(nonce.ToString(), 5);
-            Expect.IsFalse(status == TokenValidationStatus.Success);
-            Expect.AreEqual(TokenValidationStatus.NonceFailed, status);
+            EncryptedTokenValidationStatus status = ApiEncryptionValidation.ValidateNonce(nonce.ToString(), 5);
+            Expect.IsFalse(status == EncryptedTokenValidationStatus.Success);
+            Expect.AreEqual(EncryptedTokenValidationStatus.NonceFailed, status);
         }
     }
 }

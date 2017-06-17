@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Bam.Net.CoreServices.Data;
+using Bam.Net.Data.Repositories;
+
+namespace Bam.Net.Services.AsyncCallback.Data
+{
+    public class AsyncExecutionResponseData: RepoData
+    {
+        public long RequestId { get; set; }
+        /// <summary>
+        /// The request that this AysncExecutionResponse
+        /// is in response to
+        /// </summary>
+        public virtual AsyncExecutionRequestData Request { get; set; }
+        public string ResultJson { get; set; }
+    }
+}

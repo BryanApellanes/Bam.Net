@@ -34,6 +34,7 @@ using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Crypto.Engines;
 using Bam.Net.UserAccounts;
 using Bam.Net.UserAccounts.Data;
+using Bam.Net.Web;
 
 namespace Bam.Net.ServiceProxy.Tests
 {
@@ -605,7 +606,7 @@ namespace Bam.Net.ServiceProxy.Tests
             er.ApiKeyResolver = new ApiKeyResolver(keyProvider, nameProvider);
 
             er.Request = new ServiceProxyTestHelpers.TestRequest();
-            string data = ApiParameters.ParametersToJsonParamsObject("some random data");
+            string data = ApiParameters.ParametersToJsonParamsObjectString("some random data");
             er.InputString = data;
 
             ValidationResult result = er.Validate();
@@ -632,7 +633,7 @@ namespace Bam.Net.ServiceProxy.Tests
             er.ApiKeyResolver = new ApiKeyResolver(keyProvider, nameProvider);
             er.Request = new ServiceProxyTestHelpers.TestRequest();   
             
-            er.ApiKeyResolver.SetToken(er.Request.Headers, ApiParameters.GetStringToHash(className, method, data));
+            er.ApiKeyResolver.SetKeyToken(er.Request.Headers, ApiParameters.GetStringToHash(className, method, data));
 
             ValidationResult result = er.Validate();
             Expect.IsTrue(result.Success);
@@ -652,12 +653,12 @@ namespace Bam.Net.ServiceProxy.Tests
             er.ApiKeyResolver = new ApiKeyResolver(keyProvider, nameProvider);
 
             er.Request = new ServiceProxyTestHelpers.TestRequest();
-            string data = ApiParameters.ParametersToJsonParamsObject("some random data");
+            string data = ApiParameters.ParametersToJsonParamsObjectString("some random data");
             er.InputString = data;
             ApiKeyResolver resolver = new ApiKeyResolver(keyProvider, nameProvider);
-            resolver.SetToken(er.Request.Headers, data);
+            resolver.SetKeyToken(er.Request.Headers, data);
 
-            er.Request.Headers[ApiParameters.KeyTokenName] = "bad token value";
+            er.Request.Headers[Headers.KeyToken] = "bad token value";
 
             ValidationResult result = er.Validate();
             

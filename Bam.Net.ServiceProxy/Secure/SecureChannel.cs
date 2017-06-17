@@ -97,8 +97,7 @@ namespace Bam.Net.ServiceProxy.Secure
                 _config.Save();
             }
         }
-
-      
+              
         public string TestDecrypt(string cipher, string b64Key, string b64IV)
         {
             string result = "";
@@ -146,10 +145,10 @@ namespace Bam.Net.ServiceProxy.Secure
 
         private void SetSessionCookie(SecureSession session)
         {
-            Cookie sessionCookie = HttpContext.Response.Cookies[ServiceProxySystem.SecureSessionName];
+            Cookie sessionCookie = HttpContext.Response.Cookies[SecureSession.CookieName];
             if (sessionCookie == null)
             {
-                HttpContext.Response.Cookies.Add(new Cookie(ServiceProxySystem.SecureSessionName, session.Identifier));
+                HttpContext.Response.Cookies.Add(new Cookie(SecureSession.CookieName, session.Identifier));
             }
         }
 

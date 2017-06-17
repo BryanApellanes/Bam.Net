@@ -13,6 +13,7 @@ using Bam.Net.Server.Renderers;
 using Bam.Net.ServiceProxy;
 using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.UserAccounts;
+using Bam.Net.Web;
 using U = Bam.Net.UserAccounts.Data;
 
 namespace Bam.Net.CoreServices
@@ -44,9 +45,9 @@ namespace Bam.Net.CoreServices
             }
         }
 
-        public virtual LoginResponse ConnectClient(Machine machine)
+        public virtual LoginResponse ConnectClient(Client client)
         {
-            return Login(machine.ToString(), machine.Secret.Sha1());
+            return Login(client.ToString(), client.Secret.Sha1());
         }
 
         public virtual LoginResponse Login(string userName, string passHash)
@@ -106,8 +107,23 @@ namespace Bam.Net.CoreServices
         {
             get
             {
-                string fromHeader = HttpContext?.Request?.Headers[ServiceProxyClient.ApplicationNameHeader];
-                return fromHeader.Or($"{ServiceProxyClient.ApplicationNameHeader}-UNKNOWN");
+                string fromHeader = HttpContext?.Request?.Headers[Headers.ApplicationName];
+                return fromHeader.Or($"{Headers.ApplicationName}-Not-Specified");
+            }
+        }
+
+        IApplicationNameProvider _clientApplicationNameProvider;
+        object _clientApplicationNameProviderLock = new object();
+        [Local]
+        public virtual IApplicationNameProvider ClientApplicationNameProvider
+        {
+            get
+            {
+                return _clientApplicationNameProviderLock.DoubleCheckLock(ref _clientApplicationNameProvider, () => ApplicationNameProvider.Default);
+            }
+            set
+            {
+                _clientApplicationNameProvider = value;
             }
         }
 
@@ -222,11 +238,30 @@ namespace Bam.Net.CoreServices
             }
         }
 
+        [Local]
+        public Type GetProxiedType()
+        {
+            IProxy proxy = this as IProxy;
+            if(proxy != null)
+            {
+                return proxy.ProxiedType;
+            }
+            return GetType();
+        }
+
         protected internal void SetHttpContext()
         {
             GetType().GetProperties().Where(pi => pi.PropertyType.ImplementsInterface<IRequiresHttpContext>()).Each(pi =>
             {
-                pi.GetValue(this)?.Property("HttpContext", HttpContext);
+                object propertyValue = pi.GetValue(this);
+                if(propertyValue != null)
+                {
+                    object propertyContext = propertyValue.Property("HttpContext");
+                    if (propertyContext != HttpContext)
+                    {
+                        propertyValue.Property("HttpContext", HttpContext);
+                    }
+                }
             });
         }
 

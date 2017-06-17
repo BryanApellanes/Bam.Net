@@ -295,9 +295,6 @@ namespace Bam.Net.Services.Tests
             yield return daoRepo;
             CachingRepository cachingRepo = new CachingRepository(daoRepo, logger);
             yield return cachingRepo;
-            //ObjectRepository objectRepo = new ObjectRepository(".\\TestObjectRepository");
-            //objectRepo.AddType(typeof(KeyHashRepoTestData));
-            //yield return objectRepo;
         }
     }
 }

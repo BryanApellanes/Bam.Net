@@ -16,7 +16,7 @@ namespace Bam.Net.Web
     {
         public CookieEnabledWebClient()
         {
-            this.Cookies = new CookieContainer();
+            Cookies = new CookieContainer();
         }
 
         protected CookieContainer Cookies
@@ -33,7 +33,7 @@ namespace Bam.Net.Web
             {
                 if (httpRequest.CookieContainer == null)
                 {
-                    httpRequest.CookieContainer = Cookies;//new CookieContainer();
+                    httpRequest.CookieContainer = Cookies;
                 }
 
                 if (!string.IsNullOrEmpty(Referer))

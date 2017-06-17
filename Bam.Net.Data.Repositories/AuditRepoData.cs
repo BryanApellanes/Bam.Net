@@ -67,7 +67,7 @@ namespace Bam.Net.Data.Repositories
             T instance = QueryFirstOrDefault<T>(repo, propertyNames);
             if (instance == null) // wasn't saved/found, should reset Id so the repo will Create
             {
-                Id = -1;
+                Id = 0;
                 ModifiedBy = modifiedBy;
                 Modified = DateTime.UtcNow;
                 instance = repo.Save((T)this);

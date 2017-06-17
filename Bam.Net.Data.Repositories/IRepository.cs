@@ -94,5 +94,7 @@ namespace Bam.Net.Data.Repositories
 		bool Delete<T>(T toDelete) where T : new();
 		bool Delete(object toDelete);
         bool Delete(Type type, object toDelete);
+        bool DeleteWhere<T>(dynamic filter);
+        bool DeleteWhere(Type type, dynamic filter);
     }
 }

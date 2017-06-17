@@ -32,6 +32,8 @@ namespace Bam.Net.ServiceProxy
         {
             UserResolvers clone = new UserResolvers();
             clone.CopyProperties(clone);
+            clone._resolvers = new List<IUserResolver>();
+            _resolvers.Each(r => clone._resolvers.Add((IUserResolver)r.Clone()));
             return clone;
         }
 

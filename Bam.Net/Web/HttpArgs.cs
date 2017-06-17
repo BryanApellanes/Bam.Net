@@ -22,14 +22,14 @@ namespace Bam.Net.Web
         Dictionary<string, string> _pairs;
         public HttpArgs()
         {
-            this._pairs = new Dictionary<string, string>();
-            this._ordered = new List<string>();
+            _pairs = new Dictionary<string, string>();
+            _ordered = new List<string>();
         }
 
         public HttpArgs(string inputString, string contentType = null)
             : this()
         {
-            this.ContentType = contentType;
+            ContentType = contentType;
             ParseInput(inputString);
         }
         

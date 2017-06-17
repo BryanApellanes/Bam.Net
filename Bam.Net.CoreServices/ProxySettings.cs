@@ -91,7 +91,7 @@ namespace Bam.Net.CoreServices
                 ctx.NonOverridableMethods.Add(mi);
             });
             
-            string nonVirtualMethodsMessage = $"Non virtual proxied methods were found; proxies cannot be automatically generated for the specified type {ServiceType.Namespace}.{ServiceType.Name} because proxyable methods were not declared virtual and will subsequently not properly delegate to the remote {Host}";
+            string nonVirtualMethodsMessage = $"Non virtual proxied methods were found; proxies cannot be automatically generated for the specified type {ServiceType.Namespace}.{ServiceType.Name} because proxyable methods were not declared virtual and will subsequently not properly delegate to the remote \"{Host}\"";
             nonVirtualMethodsMessage += $"\r\n\t{string.Join("\r\n\t", nonOverridableMethods.Select(m=> m.Name))}\r\n";            
             result.Success = nonOverridableMethods.Count == 0;
             result.Message = result.Success ? string.Empty : nonVirtualMethodsMessage;

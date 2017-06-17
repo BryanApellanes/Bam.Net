@@ -12,15 +12,15 @@ namespace Bam.Net.ServiceProxy.Secure
         /// </summary>
         /// <param name="stringToHash"></param>
         /// <returns></returns>
-        string CreateToken(string stringToHash);
+        string CreateKeyToken(string stringToHash);
         ApiKeyInfo GetApiKeyInfo(IApplicationNameProvider nameProvider);
         string GetApplicationApiKey(string applicationClientId, int index);
         string GetApplicationClientId(IApplicationNameProvider nameProvider);
         string GetApplicationName();
         string GetCurrentApiKey();
         bool IsValidRequest(ExecutionRequest request);
-        bool IsValidToken(string stringToHash, string token);
-        void SetToken(NameValueCollection headers, string stringToHash);
-        void SetToken(HttpWebRequest request, string stringToHash);
+        bool IsValidKeyToken(string stringToHash, string token);
+        void SetKeyToken(NameValueCollection headers, string stringToHash);
+        void SetKeyToken(HttpWebRequest request, string stringToHash);
     }
 }

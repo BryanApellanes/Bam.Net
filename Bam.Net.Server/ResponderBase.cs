@@ -233,11 +233,11 @@ namespace Bam.Net.Server
                 return this._contentTypes;
             }
         }
-        protected internal virtual string Name
+        public virtual string Name
         {
             get
             {
-                return this.GetType().Name.ToLowerInvariant();
+                return this.GetType().Name;
             }
         }
         protected void OnResponded(IHttpContext context)
@@ -320,7 +320,7 @@ namespace Bam.Net.Server
             get
             {
                 string responderSignificantName = this.Name;
-                if (responderSignificantName.EndsWith("responder"))
+                if (responderSignificantName.EndsWith("Responder", StringComparison.InvariantCultureIgnoreCase))
                 {
                     responderSignificantName = responderSignificantName.Truncate(9);
                 }
