@@ -756,6 +756,13 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:Bam.Net.LocalAttribute">
+            <summary>
+            Used to denote a method that will not be 
+            proxied and will execute locally.  The same 
+            as Exclude, symantically different
+            </summary>
+        </member>
         <member name="M:Bam.Net.Logging.ILoggable.Subscribe(Bam.Net.Logging.ILogger)">
             <summary>
             When implemented in a derived class, subscribes 
@@ -1125,6 +1132,13 @@
             </summary>
             <param name="thread"></param>
             <returns></returns>
+        </member>
+        <member name="T:Bam.Net.ProxySubdomainAttribute">
+            <summary>
+            Used to specify the subdomain 
+            a class should be served from when resolving
+            hostname for a service
+            </summary>
         </member>
         <member name="P:Bam.Net.Razor.RazorBaseTemplate.DefaultInspector">
             <summary>
@@ -2785,6 +2799,15 @@
             Copies all properties from source to destination where the name and
             type match.  Accounts for nullability and treats non nullable and
             nullable primitives as compatible
+            </summary>
+            <param name="destination"></param>
+            <param name="source"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Extensions.CloneProperties(System.Object,System.Object)">
+            <summary>
+            Same as CopyProperties but will clone properties
+            whos type implements ICloneable
             </summary>
             <param name="destination"></param>
             <param name="source"></param>

@@ -22,6 +22,8 @@ call copy_Bam.Net.Profiguration.cmd %1
 call copy_Bam.Net.Schema.Org.cmd %1
 call copy_Bam.Net.Server.cmd %1
 call copy_Bam.Net.ServiceProxy.cmd %1
+call copy_Bam.Net.Services.cmd %1
+call copy_Bam.Net.Services.Clients.cmd %1
 call copy_Bam.Net.Syndication.cmd %1
 call copy_Bam.Net.Testing.cmd %1
 call copy_Bam.Net.UserAccounts.cmd %1
