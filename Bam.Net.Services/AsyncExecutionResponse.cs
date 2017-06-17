@@ -9,6 +9,9 @@ namespace Bam.Net.Services
 {
     public class AsyncExecutionResponse: AsyncExecutionResponseData
     {
+        public bool Success { get; set; }
+        public ValidationFailure ValidationFailure { get; set; }
         public object Result { get; set; }
+
     }
 }

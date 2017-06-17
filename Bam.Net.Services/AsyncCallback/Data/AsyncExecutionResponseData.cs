@@ -16,6 +16,8 @@ namespace Bam.Net.Services.AsyncCallback.Data
         /// is in response to
         /// </summary>
         public virtual AsyncExecutionRequestData Request { get; set; }
+        public string ResponseHash { get; set; }
+        public string RequestHash { get; set; }
         public string ResultJson { get; set; }
     }
 }

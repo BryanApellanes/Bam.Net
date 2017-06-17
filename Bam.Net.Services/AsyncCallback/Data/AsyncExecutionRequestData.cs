@@ -11,7 +11,7 @@ namespace Bam.Net.Services.AsyncCallback.Data
     public class AsyncExecutionRequestData: RepoData
     {
         string _hash;
-        public string Hash
+        public string RequestHash
         {
             get
             {

@@ -254,6 +254,7 @@
     <Compile Include="Catalog\Data\CatalogDefinition.cs" />
     <Compile Include="Translation\TranslationService.cs" />
     <Compile Include="ApiKeyVaultInfo.cs" />
+    <Compile Include="ValidationFailure.cs" />
     <Compile Include="Validation\IValidator.cs" />
     <Compile Include="Catalog\CatalogService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -49,6 +49,20 @@ namespace Bam.Net.Services.AsyncCallback.Data.Dao
                 return new AsyncExecutionResponseDataColumns("RequestId");
             }
         }
+        public AsyncExecutionResponseDataColumns ResponseHash
+        {
+            get
+            {
+                return new AsyncExecutionResponseDataColumns("ResponseHash");
+            }
+        }
+        public AsyncExecutionResponseDataColumns RequestHash
+        {
+            get
+            {
+                return new AsyncExecutionResponseDataColumns("RequestHash");
+            }
+        }
         public AsyncExecutionResponseDataColumns ResultJson
         {
             get

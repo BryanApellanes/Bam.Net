@@ -42,11 +42,11 @@ namespace Bam.Net.Services.AsyncCallback.Data.Dao
                 return new AsyncExecutionRequestDataColumns("Cuid");
             }
         }
-        public AsyncExecutionRequestDataColumns Hash
+        public AsyncExecutionRequestDataColumns RequestHash
         {
             get
             {
-                return new AsyncExecutionRequestDataColumns("Hash");
+                return new AsyncExecutionRequestDataColumns("RequestHash");
             }
         }
         public AsyncExecutionRequestDataColumns ClassName
