@@ -3,7 +3,9 @@
 */
 using System;
 using System.Linq;
+using Bam.Net.Data;
 using Bam.Net.Logging;
+using Bam.Net.Logging.Data;
 using Bam.Net.Server;
 using Bam.Net.ServiceProxy.Secure;
 
@@ -11,14 +13,33 @@ namespace Bam.Net.CoreServices
 {
     [Proxy("loggerSvc")]
     [ApiKeyRequired]
-    public class CoreLoggerService: ProxyableService, ILog
+    public class CoreLoggerService: ProxyableService, ILog, ILogEventCommitter
     {
+        DaoLogger2 _logger;
         protected CoreLoggerService() { }
+
         public CoreLoggerService(AppConf conf)
         {
             AppConf = conf;
         }
         
+        [Exclude]
+        public void SetLogger(Database db)
+        {
+            db.TryEnsureSchema<Event>();
+            _logger = new DaoLogger2(db);
+            if(Logger != null)
+            {
+                Logger = Log.AddLogger(Logger);
+            }
+            Logger = Log.AddLogger(_logger);
+        }
+
+        public virtual void CommitLogEvent(Logging.LogEvent logEvent)
+        {
+            Logger.CommitLogEvent(logEvent);
+        }
+
         public virtual void Info(string messageSignature, params object[] formatArguments)
         {
             Logger.AddEntry(messageSignature, formatArguments.Select(a => a.ToString()).ToArray());

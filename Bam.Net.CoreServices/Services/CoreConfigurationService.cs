@@ -64,7 +64,7 @@ namespace Bam.Net.CoreServices
 
         static object _commonLock = new object();
 
-        [RoleRequired("Admin")]
+        [RoleRequired("/", "Admin")]
         public virtual void SetCommonConfiguration(Dictionary<string, string> settings)
         {
             lock (_commonLock)
@@ -76,7 +76,7 @@ namespace Bam.Net.CoreServices
             }
         }
         
-        [RoleRequired("Admin")]
+        [RoleRequired("/", "Admin")]
         public virtual Dictionary<string, string> GetCommonConfiguration()
         {
             lock (_commonLock)
@@ -101,8 +101,8 @@ namespace Bam.Net.CoreServices
                 return new Dictionary<string, string>();
             }
         }
-        
-        [RoleRequired("Admin")]
+
+        [RoleRequired("/", "Admin")]
         public virtual void SetApplicationConfiguration(Dictionary<string, string> settings, string applicationName = null, string configurationName = null)
         {
             applicationName = applicationName ?? ApplicationName;
@@ -123,7 +123,7 @@ namespace Bam.Net.CoreServices
             }
         }
 
-        [RoleRequired("Admin")]
+        [RoleRequired("/", "Admin")]
         public virtual void SetMachineConfiguration(string machineName, Dictionary<string, string> settings, string configurationName = null)
         {
             configurationName = configurationName ?? CommonConfigName;

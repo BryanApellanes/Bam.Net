@@ -15,7 +15,7 @@ namespace Bam.Net.CoreServices
         {
             get
             {
-                if(ApplicationNameProvider != this)
+                if(ApplicationNameProvider != null && ApplicationNameProvider != this)
                 {
                     return ApplicationNameProvider.GetApplicationName();
                 }

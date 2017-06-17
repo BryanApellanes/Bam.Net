@@ -63,7 +63,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
       <Private>True</Private>
@@ -93,6 +95,7 @@
   <ItemGroup>
     <Compile Include="ClientRegistrationFailedException.cs" />
     <Compile Include="CoreExtensions.cs" />
+    <Compile Include="Data\Client.cs" />
     <Compile Include="Data\Configuration.cs" />
     <Compile Include="Data\Generated_Dao\ApiKey.cs" />
     <Compile Include="Data\Generated_Dao\ApiKeyCollection.cs" />
@@ -111,12 +114,18 @@
     <Compile Include="Data\Generated_Dao\ApplicationPagedQuery.cs" />
     <Compile Include="Data\Generated_Dao\ApplicationQuery.cs" />
     <Compile Include="Data\Generated_Dao\ApplicationWrapper.cs" />
+    <Compile Include="Data\Generated_Dao\Client.cs" />
+    <Compile Include="Data\Generated_Dao\ClientCollection.cs" />
+    <Compile Include="Data\Generated_Dao\ClientColumns.cs" />
+    <Compile Include="Data\Generated_Dao\ClientPagedQuery.cs" />
+    <Compile Include="Data\Generated_Dao\ClientQuery.cs" />
     <Compile Include="Data\Generated_Dao\ClientServerConnection.cs" />
     <Compile Include="Data\Generated_Dao\ClientServerConnectionCollection.cs" />
     <Compile Include="Data\Generated_Dao\ClientServerConnectionColumns.cs" />
     <Compile Include="Data\Generated_Dao\ClientServerConnectionPagedQuery.cs" />
     <Compile Include="Data\Generated_Dao\ClientServerConnectionQuery.cs" />
     <Compile Include="Data\Generated_Dao\ClientServerConnectionWrapper.cs" />
+    <Compile Include="Data\Generated_Dao\ClientWrapper.cs" />
     <Compile Include="Data\Generated_Dao\Configuration.cs" />
     <Compile Include="Data\Generated_Dao\ConfigurationCollection.cs" />
     <Compile Include="Data\Generated_Dao\ConfigurationColumns.cs" />
@@ -131,6 +140,12 @@
     <Compile Include="Data\Generated_Dao\ConfigurationWrapper.cs" />
     <Compile Include="Data\Generated_Dao\CoreRegistryContext.cs" />
     <Compile Include="Data\Generated_Dao\CoreRegistryRepository.cs" />
+    <Compile Include="Data\Generated_Dao\HostAddress.cs" />
+    <Compile Include="Data\Generated_Dao\HostAddressCollection.cs" />
+    <Compile Include="Data\Generated_Dao\HostAddressColumns.cs" />
+    <Compile Include="Data\Generated_Dao\HostAddressPagedQuery.cs" />
+    <Compile Include="Data\Generated_Dao\HostAddressQuery.cs" />
+    <Compile Include="Data\Generated_Dao\HostAddressWrapper.cs" />
     <Compile Include="Data\Generated_Dao\Machine.cs" />
     <Compile Include="Data\Generated_Dao\MachineCollection.cs" />
     <Compile Include="Data\Generated_Dao\MachineColumns.cs" />
@@ -163,9 +178,11 @@
     <Compile Include="Data\Generated_Dao\Qi\ApiKey.cs" />
     <Compile Include="Data\Generated_Dao\Qi\Application.cs" />
     <Compile Include="Data\Generated_Dao\Qi\ApplicationMachine.cs" />
+    <Compile Include="Data\Generated_Dao\Qi\Client.cs" />
     <Compile Include="Data\Generated_Dao\Qi\ClientServerConnection.cs" />
     <Compile Include="Data\Generated_Dao\Qi\Configuration.cs" />
     <Compile Include="Data\Generated_Dao\Qi\ConfigurationSetting.cs" />
+    <Compile Include="Data\Generated_Dao\Qi\HostAddress.cs" />
     <Compile Include="Data\Generated_Dao\Qi\Machine.cs" />
     <Compile Include="Data\Generated_Dao\Qi\Nic.cs" />
     <Compile Include="Data\Generated_Dao\Qi\Organization.cs" />
@@ -186,11 +203,12 @@
     <Compile Include="Data\Generated_Dao\UserQuery.cs" />
     <Compile Include="Data\Generated_Dao\UserWrapper.cs" />
     <Compile Include="Data\Generated_Protobuf\BamNetCoreServicesData.cs" />
+    <Compile Include="Data\HostAddress.cs" />
     <Compile Include="Data\Nic.cs" />
     <Compile Include="Data\ConfigurationSetting.cs" />
-    <Compile Include="CoreRegistryContainerAttribute.cs" />
-    <Compile Include="CoreRegistry.cs" />
-    <Compile Include="CoreRegistryProviderAttribute.cs" />
+    <Compile Include="ServiceRegistryContainerAttribute.cs" />
+    <Compile Include="ServiceRegistry.cs" />
+    <Compile Include="ServiceRegistryLoaderAttribute.cs" />
     <Compile Include="ProxySettingsInfo.cs" />
     <Compile Include="ServiceConfig.cs" />
     <Compile Include="ApplicationConfiguration.cs" />
@@ -204,6 +222,7 @@
     <Compile Include="SchemasAttribute.cs" />
     <Compile Include="Services\ApplicationRegistrationResult.cs" />
     <Compile Include="Services\ApplicationRegistrationStatus.cs" />
+    <Compile Include="Services\CoreRoleService.cs" />
     <Compile Include="Services\SettingSource.cs" />
     <Compile Include="Services\CoreApplicationRegistryServiceConfig.cs" />
     <Compile Include="Services\CoreProxyableService.cs" />
@@ -219,7 +238,7 @@
     <Compile Include="Services\SourcedConfigurationSetting.cs" />
     <Compile Include="Services\SubscriptionLevel.cs" />
     <Compile Include="SQLiteDatabaseProvider.cs" />
-    <Compile Include="Services\CoreRegistryProvider.cs" />
+    <Compile Include="CoreServiceRegistryContainer.cs" />
     <Compile Include="Services\CoreApplicationRegistryService.cs" />
     <Compile Include="ProxyAssemblyGenerationEventSource.cs" />
     <Compile Include="CompositeRepository.cs" />
@@ -288,6 +307,10 @@
     <ProjectReference Include="..\Bam.Net.Incubation\Bam.Net.Incubation.csproj">
       <Project>{aa186331-a0d0-4f77-bea2-e7b7650d3ff5}</Project>
       <Name>Bam.Net.Incubation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Logging\Bam.Net.Logging.csproj">
+      <Project>{15e91407-00d6-4edf-b75c-bc817a75c8ad}</Project>
+      <Name>Bam.Net.Logging</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Messaging\Bam.Net.Messaging.csproj">
       <Project>{e330d601-62ea-439e-acd7-7236744562ff}</Project>

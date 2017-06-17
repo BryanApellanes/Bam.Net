@@ -7,6 +7,7 @@ using Bam.Net.Data.Repositories;
 
 namespace Bam.Net.CoreServices.Data
 {
+    [Serializable]
     public class Application: AuditRepoData
     {
         public long OrganizationId { get; set; }
@@ -16,6 +17,7 @@ namespace Bam.Net.CoreServices.Data
         public virtual List<ApiKey> ApiKeys { get; set; }
         public virtual List<ProcessDescriptor> Instances { get; set; }
         public virtual List<Configuration> Configurations { get; set; }
+        public virtual List<Client> Clients { get; set; }
 
         public static object ConfigurationLock { get; set; } = new object();
 

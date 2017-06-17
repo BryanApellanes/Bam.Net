@@ -9,7 +9,7 @@ using System.IO;
 using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 
-namespace Bam.Net.Server.Tvg
+namespace Bam.Net.Server
 {
     public static class ServiceConfig
     {

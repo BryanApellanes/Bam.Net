@@ -12,14 +12,16 @@ namespace Bam.Net.CoreServices
 {
     [Proxy("coreUsers")]
     [Encrypt]
-    public class CoreUserRegistryService: ProxyableService, IUserManager
+    public class CoreUserRegistryService: ProxyableService, IUserManager, IUserResolver, IRoleResolver
     {
         protected CoreUserRegistryService() { } // to enable auto proxy gen
-        public CoreUserRegistryService(IDatabaseProvider dbProvider, IUserManager wrapped, IApplicationNameProvider appNameProvider)
+        public CoreUserRegistryService(IDatabaseProvider dbProvider, IUserManager wrapped, IApplicationNameProvider appNameProvider, IUserResolver userResolver, IRoleResolver roleResolver)
         {
             DatabaseProvider = dbProvider;
             UserManager = wrapped;
             ApplicationNameProvider = appNameProvider;
+            UserResolver = userResolver;
+            RoleResolver = roleResolver;
             dbProvider.SetDatabases(this);
             dbProvider.SetDatabases(UserManager);
             dbProvider.SetDatabases(ApplicationNameProvider);
@@ -30,8 +32,8 @@ namespace Bam.Net.CoreServices
         [Exclude]
         public override object Clone()
         {
-            CoreUserRegistryService clone = new CoreUserRegistryService(DatabaseProvider, UserManager, ApplicationNameProvider);
-            clone.CopyProperties(this);
+            CoreUserRegistryService clone = new CoreUserRegistryService(DatabaseProvider, UserManager, ApplicationNameProvider, UserResolver, RoleResolver);
+            clone.CloneProperties(this);
             clone.CopyEventHandlers(this);
             return clone;
         }
@@ -171,6 +173,38 @@ namespace Bam.Net.CoreServices
         public virtual SignUpResponse SignUp(string emailAddress, string userName, string passHash, bool sendConfirmationEmail)
         {
             return UserManager.SignUp(emailAddress, userName, passHash, sendConfirmationEmail);
+        }
+
+        public virtual string GetCurrentUser()
+        {
+            return UserResolver.GetCurrentUser();
+        }
+
+        string IUserResolver.GetUser(IHttpContext context)
+        {
+            return UserResolver.GetUser(context);
+        }
+        
+        public virtual bool IsInRole(string roleName)
+        {
+            return RoleResolver.IsInRole(UserResolver, roleName);
+        }
+
+        public virtual string[] GetRoles()
+        {
+            return GetRoles(UserResolver);
+        }
+
+        [Local]
+        public bool IsInRole(IUserResolver userResolver, string roleName)
+        {
+            return RoleResolver.IsInRole(userResolver, roleName);
+        }
+
+        [Local]
+        public string[] GetRoles(IUserResolver userResolver)
+        {
+            return RoleResolver.GetRoles(userResolver);
         }
     }
 }

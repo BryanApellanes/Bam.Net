@@ -35,6 +35,15 @@ namespace Bam.Net.CoreServices
             DefaultSettings = new ProxySettings { Protocol = Protocols.Http, Host = "localhost", Port = 9100 };
             Logger = logger ?? Log.Default;
             ServiceProvider = serviceProvider ?? Incubator.Default;
+            HostNameMunger = (type, hostName) =>
+            {
+                ProxySubdomainAttribute attr;
+                if(type.HasCustomAttributeOfType(out attr))
+                {
+                    return $"{attr.Subdomain}.{hostName}";
+                }
+                return hostName;
+            };
         }
 
         public Incubator ServiceProvider { get; set; }
@@ -53,6 +62,12 @@ namespace Bam.Net.CoreServices
         /// </summary>
         public string WorkspaceDirectory { get; private set; }
 
+        public object GetProxy(Type type)
+        {
+            Assembly assembly = GetAssembly(type);
+            return ConstructProxy(type, assembly, ServiceProvider);
+        }
+
         /// <summary>
         /// Get a proxy instance using locally available
         /// assemblies
@@ -62,7 +77,7 @@ namespace Bam.Net.CoreServices
         public T GetProxy<T>()
         {
             Assembly assembly = GetAssembly<T>();
-            return ConstructProxy<T>(assembly);
+            return ConstructProxy<T>(assembly, ServiceProvider);
         }
 
         /// <summary>
@@ -73,11 +88,29 @@ namespace Bam.Net.CoreServices
         /// <param name="hostName"></param>
         /// <param name="port"></param>
         /// <returns></returns>
-        public T GetProxy<T>(string hostName, int port = 8080)
+        public T GetProxy<T>(string hostName, int port = 9100)
         {
-            Assembly assembly = GetAssembly<T>(hostName, port);
+            Assembly assembly = GetAssembly<T>(MungeHostName(typeof(T), hostName), port);
             return ConstructProxy<T>(assembly, ServiceProvider);
         }
+
+        public object GetProxy(Type type, string hostName, int port = 9100)
+        {
+            Assembly assembly = GetAssembly(type, MungeHostName(type, hostName), port);
+            return ConstructProxy(type, assembly, ServiceProvider);
+        }
+
+        protected string MungeHostName(Type type, string hostName)
+        {
+            return HostNameMunger?.Invoke(type, hostName) ?? hostName;
+        }
+
+        /// <summary>
+        /// A function that takes the service type and hostname and optionally
+        /// returns a modified hostname.  Useful if services will be
+        /// hosted on subdomains, for example: bamapps.net -> appregistry.bammapps.net.
+        /// </summary>
+        public Func<Type, string, string> HostNameMunger { get; set; }
 
         /// <summary>
         /// Gets a generated proxy Assembly using local code.  No code will be network
@@ -87,8 +120,13 @@ namespace Bam.Net.CoreServices
         /// <returns></returns>
         protected internal Assembly GetAssembly<T>()
         {
+            return GetAssembly(typeof(T));
+        }
+
+        protected internal Assembly GetAssembly(Type type)
+        {
             ProxySettings settings = DefaultSettings.Clone();
-            settings.ServiceType = typeof(T);
+            settings.ServiceType = type;
             settings.DownloadClient = false;
             return GetAssembly(settings);
         }
@@ -101,10 +139,15 @@ namespace Bam.Net.CoreServices
         /// <param name="hostName"></param>
         /// <param name="port"></param>
         /// <returns></returns>
-        protected internal Assembly GetAssembly<T>(string hostName, int port = 8080)
+        protected internal Assembly GetAssembly<T>(string hostName, int port = 9100)
+        {
+            return GetAssembly(typeof(T), hostName, port);
+        }
+
+        protected internal Assembly GetAssembly(Type type, string hostName, int port= 9100)
         {
             ProxySettings settings = DefaultSettings.Clone();
-            settings.ServiceType = typeof(T);
+            settings.ServiceType = type;
             settings.DownloadClient = true;
             settings.Host = hostName;
             settings.Port = port;
@@ -150,6 +193,22 @@ namespace Bam.Net.CoreServices
             }
             T result = proxyType.Construct<T>();
             if(serviceProvider != null)
+            {
+                serviceProvider.SetProperties(result);
+            }
+            return result;
+        }
+
+        private static object ConstructProxy(Type type, Assembly assembly, Incubator serviceProvider = null)
+        {
+            string proxyTypeName = "{0}Proxy"._Format(type.Name);
+            Type proxyType = assembly.GetTypes().FirstOrDefault(t => t.Name.Equals(proxyTypeName));
+            if (proxyType == null)
+            {
+                Args.Throw<ArgumentException>("The proxy {0} for type {1} was not found in the specified assembly: {2}", proxyTypeName, type.Name, assembly.FullName);
+            }            
+            object result = proxyType.Construct(type);
+            if (serviceProvider != null)
             {
                 serviceProvider.SetProperties(result);
             }

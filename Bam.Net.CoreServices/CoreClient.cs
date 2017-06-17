@@ -17,6 +17,7 @@ using Bam.Net.CoreServices.Data;
 using Bam.Net.CoreServices.Data.Dao.Repository;
 using Bam.Net.UserAccounts;
 using Bam.Net.Configuration;
+using Bam.Net.Web;
 
 namespace Bam.Net.CoreServices
 {
@@ -120,7 +121,7 @@ namespace Bam.Net.CoreServices
             get; set;
         }
 
-        public string CreateToken(string stringToHash)
+        public string CreateKeyToken(string stringToHash)
         {
             ApiKeyInfo keyInfo = GetApiKeyInfo(this);
             return $"{keyInfo.ApiKey}:{stringToHash}".Hash(HashAlgorithm);
@@ -130,29 +131,29 @@ namespace Bam.Net.CoreServices
         {
             Args.ThrowIfNull(request, "request");
             string stringToHash = ApiParameters.GetStringToHash(request);
-            string token = request.Context.Request.Headers[ApiParameters.KeyTokenName];
+            string token = request.Context.Request.Headers[Headers.KeyToken];
             bool result = false;
             if (!string.IsNullOrEmpty(token))
             {
-                result = IsValidToken(stringToHash, token);
+                result = IsValidKeyToken(stringToHash, token);
             }
             return result;
         }
 
-        public bool IsValidToken(string stringToHash, string token)
+        public bool IsValidKeyToken(string stringToHash, string token)
         {
-            string checkToken = CreateToken(stringToHash);
+            string checkToken = CreateKeyToken(stringToHash);
             return token.Equals(checkToken);
         }
 
-        public void SetToken(HttpWebRequest request, string stringToHash)
+        public void SetKeyToken(HttpWebRequest request, string stringToHash)
         {
-            SetToken(request.Headers, stringToHash);
+            SetKeyToken(request.Headers, stringToHash);
         }
 
-        public void SetToken(NameValueCollection headers, string stringToHash)
+        public void SetKeyToken(NameValueCollection headers, string stringToHash)
         {
-            headers[ApiParameters.KeyTokenName] = CreateToken(stringToHash);
+            headers[Headers.KeyToken] = CreateKeyToken(stringToHash);
         }
         #endregion
         [Verbosity(VerbosityLevel.Warning, MessageFormat = "ApiKeyFile {ApiKeyFilePath} was not found")]
@@ -228,10 +229,8 @@ namespace Bam.Net.CoreServices
 
         public CoreServiceResponse Register()
         {
-            Machine current = Machine.ClientOf(LocalCoreRegistryRepository, HostName, Port);
-            current.ServerHost = HostName;
-            current.Port = Port;
-            CoreServiceResponse registrationResponse = ApplicationRegistryService.RegisterClient(current);
+            Client client = Client.Of(LocalCoreRegistryRepository, ApplicationName, HostName, Port);            
+            CoreServiceResponse registrationResponse = ApplicationRegistryService.RegisterClient(client);
             if (registrationResponse == null || !registrationResponse.Success)
             {
                 throw new ClientRegistrationFailedException(registrationResponse);
@@ -241,7 +240,7 @@ namespace Bam.Net.CoreServices
 
         public CoreServiceResponse Connect()
         {
-            Machine current = Machine.ClientOf(LocalCoreRegistryRepository, HostName, Port);
+            Client current = Client.Of(LocalCoreRegistryRepository, ApplicationName, HostName, Port);
             List<CoreServiceResponse> responses = new List<CoreServiceResponse>();
             foreach(ProxyableService svc in ServiceClients)
             {
@@ -261,13 +260,14 @@ namespace Bam.Net.CoreServices
         /// The hostname of the server this client
         /// is a client of
         /// </summary>
-        protected string HostName { get; private set; }
+        public string HostName { get; private set; }
         
         /// <summary>
         /// The port that the server is listening on
         /// </summary>
-        protected int Port { get; private set; }
+        public int Port { get; private set; }
         protected internal CoreUserRegistryService UserRegistryService { get; set; }
+        protected internal CoreRoleService RoleService { get; set; }
         protected internal CoreApplicationRegistryService ApplicationRegistryService { get; set; }
         protected internal CoreConfigurationService ConfigurationService { get; set; }
         protected internal CoreLoggerService LoggerService { get; set; }
@@ -281,6 +281,7 @@ namespace Bam.Net.CoreServices
                 yield return ConfigurationService;
                 yield return LoggerService;              
                 yield return DiagnosticService;
+                yield return RoleService;
             }
         }
 
@@ -288,7 +289,7 @@ namespace Bam.Net.CoreServices
         {
             LocalCoreRegistryRepository = new CoreRegistryRepository();
             LocalCoreRegistryRepository.Database = new SQLiteDatabase(WorkspaceDirectory, nameof(CoreClient));
-            CoreRegistryProvider.GetCoreRegistry().Get<IStorableTypesProvider>().AddTypes(LocalCoreRegistryRepository);
+            CoreServiceRegistryContainer.GetServiceRegistry().Get<IStorableTypesProvider>().AddTypes(LocalCoreRegistryRepository);
             ProcessDescriptor = ProcessDescriptor.ForApplicationRegistration(LocalCoreRegistryRepository, hostName, port, applicationName, organizationName);
         }
 
@@ -299,7 +300,7 @@ namespace Bam.Net.CoreServices
             HostName = hostName;
             Port = port;
             WorkspaceDirectory = workingDirectory ?? $".\\{nameof(CoreClient)}";
-            HashAlgorithm = HashAlgorithms.SHA1;
+            HashAlgorithm = HashAlgorithms.SHA256;
             ProxyFactory = new ProxyFactory(WorkspaceDirectory, logger);
         }
 
@@ -310,6 +311,7 @@ namespace Bam.Net.CoreServices
             DiagnosticService = ProxyFactory.GetProxy<CoreDiagnosticService>(HostName, Port);
             LoggerService = ProxyFactory.GetProxy<CoreLoggerService>(HostName, Port);
             UserRegistryService = ProxyFactory.GetProxy<CoreUserRegistryService>(HostName, Port);
+            RoleService = ProxyFactory.GetProxy<CoreRoleService>(HostName, Port);
         }
 
         private void SetLocalServiceProxies()
@@ -319,6 +321,7 @@ namespace Bam.Net.CoreServices
             DiagnosticService = ProxyFactory.GetProxy<CoreDiagnosticService>();
             LoggerService = ProxyFactory.GetProxy<CoreLoggerService>();
             UserRegistryService = ProxyFactory.GetProxy<CoreUserRegistryService>();
+            RoleService = ProxyFactory.GetProxy<CoreRoleService>();
         }
 
         private void EnsureApiKeyFileDirectory()
@@ -347,6 +350,7 @@ namespace Bam.Net.CoreServices
             DiagnosticService.Property(propertyName, this);
             LoggerService.Property(propertyName, this);
             UserRegistryService.Property(propertyName, this);
+            RoleService.Property(propertyName, this);
         }
     }
 }

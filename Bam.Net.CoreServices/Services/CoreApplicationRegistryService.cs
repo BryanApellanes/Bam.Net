@@ -15,6 +15,7 @@ using Bam.Net.Caching;
 using System.Collections.Specialized;
 using System.Net;
 using Bam.Net.Server;
+using Bam.Net.Web;
 
 namespace Bam.Net.CoreServices
 {
@@ -39,7 +40,7 @@ namespace Bam.Net.CoreServices
             AppConf = conf;
             Config = config;
             Logger = logger;
-            HashAlgorithm = HashAlgorithms.SHA1;         
+            HashAlgorithm = HashAlgorithms.SHA256;         
         }
 
         Database _database;
@@ -98,18 +99,19 @@ namespace Bam.Net.CoreServices
             return GetApiKeyInfo(this);
         }
 
-        public virtual CoreServiceResponse RegisterClient(Machine machine)
+        public virtual CoreServiceResponse RegisterClient(Client client)
         {
             try
             {
-                Args.ThrowIfNullOrEmpty(machine?.Secret, nameof(machine.Secret));
-                Args.ThrowIfNullOrEmpty(machine?.ServerHost, nameof(machine.ServerHost));
-                Args.ThrowIf(machine.Port <= 0, "Server Port not specified");                
+                Args.ThrowIfNullOrEmpty(client?.Secret, nameof(client.Secret));
+                Args.ThrowIfNullOrEmpty(client?.ServerHost, nameof(client.ServerHost));
+                Args.ThrowIfNull(client?.Machine, nameof(client.Machine));
+                Args.ThrowIf(client.Port <= 0, "Server Port not specified");
                 IUserManager mgr = (IUserManager)UserManager.Clone();
                 mgr.HttpContext = HttpContext;
-                string machineName = machine.ToString();
+                string clientName = client.ToString();
                 CoreServiceResponse response = new CoreServiceResponse();
-                CheckUserNameResponse checkUserName = mgr.IsUserNameAvailable(machineName);
+                CheckUserNameResponse checkUserName = mgr.IsUserNameAvailable(clientName);
                 if (!(bool)checkUserName.Data) // already exists
                 {
                     response.Success = true;
@@ -117,13 +119,14 @@ namespace Bam.Net.CoreServices
                 }
                 else
                 {
-                    SignUpResponse signupResponse = mgr.SignUp($"{machine.Name}@{machine.Name}", machineName, machine.Secret.Sha1(), false);
+                    SignUpResponse signupResponse = mgr.SignUp(client.GetPseudoEmail(), clientName, client.Secret.Sha1(), false);
                     if (!signupResponse.Success)
                     {
                         throw new Exception(response.Message);
                     }
-                    machine = CoreRegistryRepository.GetOneMachineWhere(m => m.Name == machine.Name && m.ServerHost == machine.ServerHost && m.Port == machine.Port);                    
-                    response = new CoreServiceResponse { Success = true, Data = machine.ToJson() };
+                    Machine machine = CoreRegistryRepository.GetOneMachineWhere(m => m.Name == client.MachineName);
+                    client = CoreRegistryRepository.GetOneClientWhere(c => c.MachineId == machine.Id && c.MachineName == client.MachineName && c.ApplicationName == client.ApplicationName && c.ServerHost == client.ServerHost && c.Port == client.Port);                    
+                    response = new CoreServiceResponse { Success = true, Data = client.ToDynamicData().ToJson() };
                 }
                 return response;
             }
@@ -207,7 +210,7 @@ namespace Bam.Net.CoreServices
         }
 
         [Exclude]
-        public string CreateToken(string stringToHash)
+        public string CreateKeyToken(string stringToHash)
         {
             ApiKeyInfo apiKey = GetApiKeyInfo(this);
             return $"{apiKey.ApiKey}:{stringToHash}".Hash(HashAlgorithm);
@@ -256,31 +259,31 @@ namespace Bam.Net.CoreServices
             string methodName = request.MethodName;
             string stringToHash = ApiParameters.GetStringToHash(className, methodName, request.JsonParams);
 
-            string token = request.Context.Request.Headers[ApiParameters.KeyTokenName];
+            string token = request.Context.Request.Headers[Headers.KeyToken];
             bool result = false;
             if (!string.IsNullOrEmpty(token))
             {
-                result = IsValidToken(stringToHash, token);
+                result = IsValidKeyToken(stringToHash, token);
             }
 
             return result;
         }
 
         [Exclude]
-        public bool IsValidToken(string stringToHash, string token)
+        public bool IsValidKeyToken(string stringToHash, string token)
         {
-            string checkToken = CreateToken(stringToHash);
+            string checkToken = CreateKeyToken(stringToHash);
             return token.Equals(checkToken);
         }
 
         [Exclude]
-        public void SetToken(NameValueCollection headers, string stringToHash)
+        public void SetKeyToken(NameValueCollection headers, string stringToHash)
         {
             throw new NotImplementedException();// it isn't appropriate for this service to be used for this purpose
         }
 
         [Exclude]
-        public void SetToken(HttpWebRequest request, string stringToHash)
+        public void SetKeyToken(HttpWebRequest request, string stringToHash)
         {
             throw new NotImplementedException();// it isn't appropriate for this service to be used for this purpose
         }

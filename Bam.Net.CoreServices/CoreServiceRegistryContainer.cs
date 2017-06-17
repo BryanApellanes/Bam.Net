@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Bam.Net.Configuration;
 using Bam.Net.Incubation;
 using Bam.Net.Messaging;
-using Bam.Net.Server.Tvg;
 using Bam.Net.ServiceProxy;
 using Bam.Net.UserAccounts;
 using System.IO;
@@ -20,35 +19,31 @@ using Bam.Net.Translation;
 using Bam.Net.CoreServices.Data.Dao.Repository;
 using Bam.Net.ServiceProxy.Secure;
 
-namespace Bam.Net.CoreServices.Services
+namespace Bam.Net.CoreServices
 {
     /// <summary>
-    /// Registry for the Core or Hub service
+    /// Registry for the Core service
     /// provider of all applications
     /// </summary>
-    [CoreRegistryContainer]
-    public static class CoreRegistryProvider
+    [ServiceRegistryContainer]
+    public static class CoreServiceRegistryContainer
     {
+        public const string RegistryName = "CoreServiceRegistry";
         static object _coreIncubatorLock = new object();
-        static CoreRegistry _coreIncubator;
+        static ServiceRegistry _coreIncubator;
         
-        [CoreRegistryProvider]
-        public static CoreRegistry GetCoreRegistry()
+        [ServiceRegistryLoader(RegistryName)]
+        public static ServiceRegistry GetServiceRegistry()
         {
             return _coreIncubatorLock.DoubleCheckLock(ref _coreIncubator, Create);
         }
 
-        public static CoreRegistry Create()
+        public static ServiceRegistry Create()
         {
             string databasesPath = Path.Combine(DefaultConfiguration.GetAppSetting("ContentRoot"), "Databases");
             string userDatabasesPath = Path.Combine(databasesPath, "UserDbs");
-            //string yandexVaultPath = Path.Combine(databasesPath, "YandexApiVault");
-            //YandexApiKeyVaultInfo yandexVault = new YandexApiKeyVaultInfo(yandexVaultPath);
-            //Database translationDatabase = new SQLiteDatabase(databasesPath, "Translations");
-            //YandexTranslationProvider translationProvider = new YandexTranslationProvider(yandexVault.Load(), translationDatabase, translationDatabase);
-            //translationProvider.EnsureLanguages();
 
-            AppConf conf = new AppConf(BamConf.Load(ServiceConfig.ContentRoot), ServiceConfig.ApplicationName.Or("CoreRegistryService"));
+            AppConf conf = new AppConf(BamConf.Load(ServiceConfig.ContentRoot), ServiceConfig.ApplicationName.Or(RegistryName));
             UserManager userMgr = conf.UserManagerConfig.Create();
             DaoUserResolver userResolver = new DaoUserResolver();
             DaoRoleResolver roleResolver = new DaoRoleResolver();
@@ -60,10 +55,16 @@ namespace Bam.Net.CoreServices.Services
             userResolver.Database = userMgr.Database;
             roleResolver.Database = userMgr.Database;
 
+            DaoRoleProvider daoRoleProvider = new DaoRoleProvider(userMgr.Database);
+            CoreRoleService coreRoleService = new CoreRoleService(daoRoleProvider, conf);
+
             CoreConfigurationService configSvc = new CoreConfigurationService(coreRepo, conf, userDatabasesPath);
             CoreApplicationRegistryServiceConfig config = new CoreApplicationRegistryServiceConfig { DatabaseProvider = dbProvider, WorkspacePath = databasesPath, Logger = Log.Default };
             CompositeRepository compositeRepo = new CompositeRepository(coreRepo, databasesPath);
-            CoreRegistry reg = (CoreRegistry)(new CoreRegistry())
+            ServiceRegistry reg = (ServiceRegistry)(new ServiceRegistry())
+                .ForCtor<CoreConfigurationService>("databaseRoot").Use(userDatabasesPath)
+                .ForCtor<CoreConfigurationService>("conf").Use(conf)
+                .ForCtor<CoreConfigurationService>("coreRepo").Use(coreRepo)
                 .For<ILogger>().Use(Log.Default)
                 .For<IRepository>().Use(coreRepo)
                 .For<DaoRepository>().Use(coreRepo)
@@ -75,6 +76,7 @@ namespace Bam.Net.CoreServices.Services
                 .For<DaoUserResolver>().Use(userResolver)
                 .For<IRoleResolver>().Use(roleResolver)
                 .For<DaoRoleResolver>().Use(roleResolver)
+                .For<IRoleProvider>().Use(coreRoleService)
                 .For<EmailComposer>().Use(userMgr.EmailComposer)
                 .For<CoreApplicationRegistryServiceConfig>().Use(config)
                 .For<IApplicationNameProvider>().Use<CoreApplicationRegistryService>()
@@ -82,14 +84,12 @@ namespace Bam.Net.CoreServices.Services
                 .For<IApiKeyResolver>().Use<CoreApplicationRegistryService>()
                 .For<ISmtpSettingsProvider>().Use(userMgr)
                 .For<CoreUserRegistryService>().Use<CoreUserRegistryService>()
-                .For<CoreConfigurationService>().Use(configSvc)
-                //.For<IDetectLanguage>().Use(translationProvider)
-                //.For<ITranslationProvider>().Use(translationProvider)
-                .For<IStorableTypesProvider>().Use<NamespaceRepositoryStorableTypesProvider>()
-                //.For<CoreTranslationService>().Use<CoreTranslationService>()
+                .For<CoreConfigurationService>().Use(configSvc)                
+                .For<IStorableTypesProvider>().Use<NamespaceRepositoryStorableTypesProvider>()                
                 .For<CoreDiagnosticService>().Use<CoreDiagnosticService>();
 
             reg.SetProperties(userMgr);
+            userMgr.ServiceProvider = reg;
 
             reg.For<CompositeRepository>().Use(() =>
             {
@@ -97,6 +97,10 @@ namespace Bam.Net.CoreServices.Services
                 return compositeRepo;
             });
 
+            ServiceProxySystem.UserResolvers.Clear();
+            ServiceProxySystem.RoleResolvers.Clear();
+            ServiceProxySystem.UserResolvers.AddResolver(userResolver);
+            ServiceProxySystem.RoleResolvers.AddResolver(roleResolver);
             return reg;
         }
     }

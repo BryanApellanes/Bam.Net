@@ -12,25 +12,47 @@ using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.CoreServices.Data
 {
+    [Serializable]
     public class Machine: AuditRepoData
     {
         public Machine()
         {
-            SetNics();
             Name = Environment.MachineName;
-            Secret = ServiceProxySystem.GenerateId();
+            DnsName = Dns.GetHostName();
+            SetNics();
+        }
+        Machine(string dnsName)
+        {
+            Name = Environment.MachineName;
+            DnsName = dnsName;
+            SetNics();
         }
         public static object ConfigurationLock { get; set; } = new object();
         public virtual List<Application> Applications { get; set; }
         public virtual List<Configuration> Configurations { get; set; }
+
+        List<HostAddress> _hostAddresses;
+        public virtual List<HostAddress> HostAddresses
+        {
+            get
+            {
+                if(_hostAddresses == null || _hostAddresses.Count == 0)
+                {
+                    SetHostAddresses();
+                }
+                return _hostAddresses;
+            }
+            set
+            {
+                _hostAddresses = value;
+            }
+        }
         public string Name { get; set; }
-        public string ServerHost { get; set; }
-        public int Port { get; set; }
-        public string Secret { get; set; }
+        public string DnsName { get; set; }
         public virtual List<ProcessDescriptor> Processes { get; set; }
 
         List<Nic> _nics;
-        public List<Nic> NetworkInterfaces
+        public virtual List<Nic> NetworkInterfaces
         {
             get
             {
@@ -46,9 +68,11 @@ namespace Bam.Net.CoreServices.Data
             }
         }
 
+        public virtual List<Client> Clients { get; set; }
+
         public override string ToString()
         {
-            return $"{Name}=>{ServerHost}:{Port}";
+            return $"{Name}@{DnsName}";
         }
         static Machine _current;
         static object _currentLock = new object();
@@ -60,28 +84,14 @@ namespace Bam.Net.CoreServices.Data
             }
         }
 
-        static Machine _common;
-        static object _commonLock = new object();
-        public static Machine Common
+        public override RepoData Save(IRepository repo)
         {
-            get
+            Machine existing = repo.Query<Machine>(new { Name = Name }).FirstOrDefault();
+            if(existing == null)
             {
-                return _commonLock.DoubleCheckLock(ref _common, () => new Machine { Name = $"Universal ({"Universal".Sha256()})", Port = 80, ServerHost = "127.0.0.1" });
-            }
-        }
-
-        public static Machine ClientOf(CoreRegistryRepository repo, string serverHost, int serverPort)
-        {
-            Machine result = repo.OneMachineWhere(c => c.Name == Current.Name && c.ServerHost == serverHost && c.Port == serverPort);
-            if (result == null)
-            {
-                result = new Machine();
-                result.Name = Current.Name;
-                result.ServerHost = serverHost;
-                result.Port = serverPort;
-                result = repo.Save(result);
-            }
-            return result;
+                existing = repo.Save(this);
+            }                        
+            return existing;
         }
 
         private void SetNics()
@@ -103,6 +113,18 @@ namespace Bam.Net.CoreServices.Data
                 }
             });
             _nics = context.Nics;
+        }
+
+        IPAddress[] _hostIps;
+        private void SetHostAddresses()
+        {
+            if(_hostIps == null)
+            {
+                _hostIps = Dns.GetHostAddresses(DnsName);
+            }
+            List<HostAddress> hostAddresses = new List<HostAddress>();
+            _hostIps.Each(ip => hostAddresses.Add(new HostAddress { HostName = DnsName, AddressFamily = ip.AddressFamily.ToString(), IpAddress = ip.ToString(), Machine = this, MachineId = Id }));
+            _hostAddresses = hostAddresses;
         }
     }
 }

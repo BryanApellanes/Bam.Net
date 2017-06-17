@@ -7,7 +7,8 @@ using Bam.Net.Data.Repositories;
 
 namespace Bam.Net.CoreServices.Data
 {
-    public class Nic: AuditRepoData
+    [Serializable]
+    public class Nic: RepoData
     {
         public long MachineId { get; set; }
         public virtual Machine Machine { get; set; }
