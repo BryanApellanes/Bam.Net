@@ -8,19 +8,19 @@ using Bam.Net.Logging;
 using Bam.Net.ServiceProxy;
 using System.IO;
 
-namespace Bam.Net.Server.Tvg
+namespace Bam.Net.Server
 {
     public abstract class SimpleServer<R> where R: IResponder
     {
         HttpServer _server;
         public SimpleServer(R responder, ILogger logger)
         {
-            this.Responder = responder;
-            this.Logger = logger;
-            this.CreatedOrChangedHandler = (o, a) => { };
-            this.RenamedHandler = (o, a) => { };
-            this.HostPrefixes = new HostPrefix[] { new HostPrefix { Port = 8080, HostName = "localhost", Ssl = false } };
-            this.MonitorDirectories = new string[] { Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) };
+            Responder = responder;
+            Logger = logger;
+            CreatedOrChangedHandler = (o, a) => { };
+            RenamedHandler = (o, a) => { };
+            HostPrefixes = new HostPrefix[] { new HostPrefix { Port = 8080, HostName = "localhost", Ssl = false } };
+            MonitorDirectories = new string[] { Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) };
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace Bam.Net.Server.Tvg
         /// <summary>
         /// The responder
         /// </summary>
-        public IResponder Responder { get; set; }
+        public R Responder { get; set; }
         
         /// <summary>
         /// The logger

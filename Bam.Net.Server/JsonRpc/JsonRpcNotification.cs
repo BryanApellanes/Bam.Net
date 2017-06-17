@@ -58,7 +58,7 @@ namespace Bam.Net.Server.JsonRpc
         {
             get
             {
-                return _methodsLock.DoubleCheckLock(ref _methods, () => Incubator.Types.SelectMany(type => type.GetMethodsWithAttributeOfType<JsonRpcMethodAttribute>()).ToArray());
+                return _methodsLock.DoubleCheckLock(ref _methods, () => Incubator.ClassNameTypes.SelectMany(type => type.GetMethodsWithAttributeOfType<JsonRpcMethodAttribute>()).ToArray());
             }
         }
 
@@ -66,7 +66,7 @@ namespace Bam.Net.Server.JsonRpc
         {
             get
             {
-                return Incubator.Types.SelectMany(type => type.GetMethods()).ToArray();
+                return Incubator.ClassNameTypes.SelectMany(type => type.GetMethods()).ToArray();
             }
         }
 

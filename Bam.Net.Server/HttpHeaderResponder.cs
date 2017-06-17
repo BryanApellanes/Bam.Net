@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Web.Caching;
 using Bam.Net.Logging;
 using Bam.Net.ServiceProxy;
+using Bam.Net.Web;
 
 namespace Bam.Net.Server
 {
@@ -26,26 +27,31 @@ namespace Bam.Net.Server
         public HttpHeaderResponder(BamConf conf, ILogger logger) : base(conf, logger) { }
 
         /// <summary>
-        /// Returns true if the request Header named "X-Responder" exists 
+        /// Returns true if the request Header named "X-Bam-Responder" exists 
         /// and the value is equal to the value of RespondToHeaderValue
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
         public override bool MayRespond(IHttpContext context)
         {
-            return context.Request.Headers[RespondToHeaderName].Equals(RespondToHeaderValue);
+            return GetRequestedResponderName(context).Equals(RespondToHeaderValue);
         }
 
         /// <summary>
         /// The name of the HttpHeader to check the value for, to determine
         /// if the request is intended for the current responder
         /// </summary>
-        public static string RespondToHeaderName { get { return "X-Responder"; } }
+        public static string RespondToHeaderName { get { return Headers.Responder; } }
 
         /// <summary>
         /// The value of the HttpHeader if the request is intended for the
         /// currenct responder
         /// </summary>
         public string RespondToHeaderValue { get; protected set; }
+
+        public virtual string GetRequestedResponderName(IHttpContext context)
+        {
+            return context.Request.Headers[RespondToHeaderName];
+        }
     }
 }

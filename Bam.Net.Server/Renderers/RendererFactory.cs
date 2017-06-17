@@ -67,8 +67,6 @@ namespace Bam.Net.Server.Renderers
 
             if (string.IsNullOrEmpty(ext))
             {
-                renderer = _renderers[".json"]();
-
                 // check for a format querystring param
                 string format = webRequest.QueryString["format"];
                 if (!string.IsNullOrEmpty(format))
@@ -77,6 +75,10 @@ namespace Bam.Net.Server.Renderers
                     {
                         renderer = _renderers[format]();
                     }
+                }
+                else
+                {
+                    renderer = _renderers[".json"]();
                 }
 
                 renderer.ContentType = GetContentType(renderer, webRequest);
