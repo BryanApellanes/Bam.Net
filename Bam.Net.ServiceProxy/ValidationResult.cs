@@ -169,9 +169,10 @@ namespace Bam.Net.ServiceProxy
 
         private static void CheckRoles(List<ValidationFailures> failures, List<string> messages, RoleRequiredAttribute requiredRoles, IHttpContext context)
         {
-            IUserResolver userResolver = ServiceProxySystem.UserResolvers;
-            IRoleResolver roleResolver = ServiceProxySystem.RoleResolvers;
-
+            IUserResolver userResolver = (IUserResolver)ServiceProxySystem.UserResolvers.Clone();
+            IRoleResolver roleResolver = (IRoleResolver)ServiceProxySystem.RoleResolvers.Clone();
+            userResolver.HttpContext = context;
+            roleResolver.HttpContext = context;
             List<string> userRoles = new List<string>(roleResolver.GetRoles(userResolver));
             bool passed = false;
             for (int i = 0; i < requiredRoles.Roles.Length; i++)

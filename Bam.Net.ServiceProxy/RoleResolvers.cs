@@ -32,6 +32,8 @@ namespace Bam.Net.ServiceProxy
         {
             RoleResolvers clone = new RoleResolvers();
             clone.CopyProperties(this);
+            clone._resolvers = new List<IRoleResolver>();
+            _resolvers.Each(r => clone._resolvers.Add((IRoleResolver)r.Clone()));
             return clone;
         }
 

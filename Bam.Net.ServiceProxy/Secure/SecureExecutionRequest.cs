@@ -10,6 +10,10 @@ using Bam.Net.Incubation;
 
 namespace Bam.Net.ServiceProxy.Secure
 {
+    /// <summary>
+    /// An ExecutionRequest that will encrypt the result
+    /// when executed
+    /// </summary>
     public class SecureExecutionRequest: ExecutionRequest
     {
         public SecureExecutionRequest(IHttpContext context, string className, string methodName, string jsonParams)

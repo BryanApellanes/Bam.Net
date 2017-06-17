@@ -32,48 +32,54 @@ namespace Bam.Net.ServiceProxy
 
         public ExecutionRequest()
         {
-            this.ViewName = "Default";
-            this.IsInitialized = true;
+            ViewName = "Default";
+            IsInitialized = true;
+            OnAnyInstanciated(this);
         }
 
         public ExecutionRequest(string className, string methodName, string ext)
         {
-            this.Context = new HttpContextWrapper();
-            this.ViewName = "Default";
-            this.ClassName = className;
-            this.MethodName = methodName;
-            this.Ext = ext;
+            Context = new HttpContextWrapper();
+            ViewName = "Default";
+            ClassName = className;
+            MethodName = methodName;
+            Ext = ext;
 
-            this.IsInitialized = true;
+            IsInitialized = true;
+            OnAnyInstanciated(this);
         }
 
         public ExecutionRequest(RequestWrapper request, ResponseWrapper response)
         {
-            this.Context = new HttpContextWrapper();
-            this.Request = request;
-            this.Response = response;
+            Context = new HttpContextWrapper();
+            Request = request;
+            Response = response;
+            OnAnyInstanciated(this);
         }
 
         public ExecutionRequest(RequestWrapper request, ResponseWrapper response, ProxyAlias[] aliases)
         {
-            this.Context = new HttpContextWrapper();
-            this.Request = request;
-            this.Response = response;
-            this.ProxyAliases = aliases;
+            Context = new HttpContextWrapper();
+            Request = request;
+            Response = response;
+            ProxyAliases = aliases;
+            OnAnyInstanciated(this);
         }
 
         public ExecutionRequest(RequestWrapper request, ResponseWrapper response, ProxyAlias[] aliases, Incubator serviceProvider)
             : this(request, response, aliases)
         {
-            this.Context = new HttpContextWrapper();
-            this.ServiceProvider = serviceProvider;
+            Context = new HttpContextWrapper();
+            ServiceProvider = serviceProvider;
+            OnAnyInstanciated(this);
         }
 
         public ExecutionRequest(IHttpContext context, ProxyAlias[] aliases, Incubator serviceProvider)
         {
-            this.Context = context;
-            this.ProxyAliases = aliases;
-            this.ServiceProvider = serviceProvider;
+            Context = context;
+            ProxyAliases = aliases;
+            ServiceProvider = serviceProvider;
+            OnAnyInstanciated(this);
         }
 
         protected internal ProxyAlias[] ProxyAliases
@@ -447,8 +453,11 @@ namespace Bam.Net.ServiceProxy
             set;
         }
 
-        protected object[] GetParameters()
+        protected object[] GetParameters() 
         {
+            // TODO: consider breaking this class up into specific ExecutionRequest implementations that encapsulate the style of parameters
+            //  JsonParamsExecutionRequest, OrderedHttpArgsExecutionRequest, FormEncodedPostExecutionRequest, QueryStringParametersExecutionRequest
+
             // This method is becoming a little bloated
             // due to accomodating too many input paths.
             // This will need to be refactored IF
@@ -807,62 +816,53 @@ namespace Bam.Net.ServiceProxy
         public event EventHandler<ExecutionRequest> Initializing;
         protected void OnInitializing()
         {
-            if (Initializing != null)
-            {
-                Initializing(this, this);
-            }
+            Initializing?.Invoke(this, this);
         }
         public event EventHandler<ExecutionRequest> Initialized;
         protected void OnInitialized()
         {
-            if (Initialized != null)
-            {
-                Initialized(this, this);
-            }
+            Initialized?.Invoke(this, this);
+        }
+
+        public static event Action<ExecutionRequest> AnyInstanciated;     
+        protected static void OnAnyInstanciated(ExecutionRequest request)
+        {
+            AnyInstanciated?.Invoke(request);
         }
 
         public static event Action<ExecutionRequest, object> AnyExecuting;
         protected void OnAnyExecuting(object target)
         {
-            if (AnyExecuting != null)
-            {
-                Executing(this, target);
-            }
+            AnyExecuting?.Invoke(this, target);
         }
         public static event Action<ExecutionRequest, object> AnyExecuted;
         protected void OnAnyExecuted(object target)
         {
-            if (AnyExecuted != null)
-            {
-                Executing(this, target);
-            }
+            AnyExecuted?.Invoke(this, target);
         }
 
         public event Action<ExecutionRequest, object> Executing;
         protected void OnExecuting(object target)
         {
-            if (Executing != null)
-            {
-                Executing(this, target);
-            }
+            Executing?.Invoke(this, target);
         }
 
         public event Action<ExecutionRequest, object> Executed;
         protected void OnExecuted(object target)
         {
-            if (Executed != null)
-            {
-                Executed(this, target);
-            }
+            Executed?.Invoke(this, target);
         }
 
         public event Action<ExecutionRequest, object> ContextSet;
         protected void OnContextSet(object target)
         {
-            if (ContextSet != null)
-            {
-                ContextSet(this, target);
-            }
+            ContextSet?.Invoke(this, target);
+        }
+
+        public event Action<ExecutionRequest, object> ServiceProviderSet;
+        protected void OnServiceProviderSet(object target)
+        {
+            ServiceProviderSet?.Invoke(this, target);
         }
 
         public virtual ValidationResult Validate()
@@ -901,6 +901,7 @@ namespace Bam.Net.ServiceProxy
                 {
                     Initialize();
                     target = SetContext(target);
+                    target = SetServiceProvider(target);
                     OnAnyExecuting(target);
                     OnExecuting(target);
                     Result = MethodInfo.Invoke(target, Parameters);
@@ -910,7 +911,7 @@ namespace Bam.Net.ServiceProxy
                 }
                 catch (Exception ex)
                 {
-                    Result = ex.Message;
+                    Result = ex.GetInnerException().Message;
                     result = false;
                 }
             }
@@ -930,6 +931,19 @@ namespace Bam.Net.ServiceProxy
                 takesContext.HttpContext = Context;
                 OnContextSet(takesContext);
                 result = takesContext;
+            }
+            return result;
+        }
+
+        protected internal object SetServiceProvider(object target)
+        {
+            object result = target;
+            IHasServiceProvider hasIncubator = target as IHasServiceProvider;
+            if(hasIncubator != null)
+            {
+                hasIncubator.ServiceProvider = ServiceProvider;
+                OnServiceProviderSet(target);
+                result = hasIncubator;
             }
             return result;
         }

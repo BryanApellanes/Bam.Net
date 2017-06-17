@@ -129,6 +129,8 @@
     <Compile Include="DefaultUserResolver.cs" />
     <Compile Include="DefaultWebUserResolver.cs" />
     <Compile Include="GeneratedServiceProxyInfo.cs" />
+    <Compile Include="IHasServiceProvider.cs" />
+    <Compile Include="IProxy.cs" />
     <Compile Include="IRoleResolver.cs" />
     <Compile Include="MethodGenerationInfo.cs" />
     <Compile Include="ServiceResponse.cs" />

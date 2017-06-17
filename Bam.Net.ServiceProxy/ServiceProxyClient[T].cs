@@ -524,6 +524,7 @@ namespace Bam.Net.ServiceProxy
             {
                 HttpWebRequest request = GetServiceProxyRequest(ServiceProxyVerbs.GET, className, methodName, queryStringParameters);
                 result = GetServiceProxyResponseString(request);
+                args.Request = request;
                 OnGot(args);
             }
             return result; ;
@@ -563,9 +564,9 @@ namespace Bam.Net.ServiceProxy
             return Post(args, request);
         }
 
-        protected virtual string Post(ServiceProxyInvokeEventArgs argsIn, HttpWebRequest request)
+        protected virtual string Post(ServiceProxyInvokeEventArgs invokeArgs, HttpWebRequest request)
         {
-            ServiceProxyInvokeEventArgs<T> args = argsIn.CopyAs<ServiceProxyInvokeEventArgs<T>>();
+            ServiceProxyInvokeEventArgs<T> args = invokeArgs.CopyAs<ServiceProxyInvokeEventArgs<T>>();
             args.Client = this;
             args.GenericClient = this;
 
@@ -577,13 +578,14 @@ namespace Bam.Net.ServiceProxy
             }
             else
             {
-                string jsonParamsString = ApiParameters.ParametersToJsonParamsObject(args.PostParameters);
+                string jsonParamsString = ApiParameters.ParametersToJsonParamsObjectString(args.PostParameters);
 
                 request.ContentType = "application/json; charset=utf-8";
 
                 WriteJsonParams(jsonParamsString, request);
 
                 result = GetServiceProxyResponseString(request);
+                args.Request = request;
                 OnPosted(args);
             }
 

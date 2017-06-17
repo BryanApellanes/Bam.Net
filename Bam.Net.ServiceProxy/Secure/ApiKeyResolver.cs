@@ -24,7 +24,7 @@ namespace Bam.Net.ServiceProxy.Secure
         {
             ApiKeyProvider = DefaultConfigurationApiKeyProvider.Instance;
             ApplicationNameProvider = DefaultConfigurationApplicationNameProvider.Instance;
-            HashAlgorithm = HashAlgorithms.SHA1;
+            HashAlgorithm = HashAlgorithms.SHA256;
         }
 
         public ApiKeyResolver(IApiKeyProvider apiKeyProvider)
@@ -92,17 +92,17 @@ namespace Bam.Net.ServiceProxy.Secure
 
         #endregion
         
-        public void SetToken(HttpWebRequest request, string stringToHash)
+        public void SetKeyToken(HttpWebRequest request, string stringToHash)
         {
-            SetToken(request.Headers, stringToHash);
+            SetKeyToken(request.Headers, stringToHash);
         }
        
-        public void SetToken(NameValueCollection headers, string stringToHash)
+        public void SetKeyToken(NameValueCollection headers, string stringToHash)
         {
-            headers[ApiParameters.KeyTokenName] = CreateToken(stringToHash);
+            headers[Headers.KeyToken] = CreateKeyToken(stringToHash);
         }
 
-        public string CreateToken(string stringToHash)
+        public string CreateKeyToken(string stringToHash)
         {
             ApiKeyInfo apiKey = this.GetApiKeyInfo(this);
             return "{0}:{1}"._Format(apiKey.ApiKey, stringToHash).Hash(HashAlgorithm);
@@ -116,19 +116,19 @@ namespace Bam.Net.ServiceProxy.Secure
             string methodName = request.MethodName;
             string stringToHash = ApiParameters.GetStringToHash(className, methodName, request.JsonParams);
 
-            string token = request.Context.Request.Headers[ApiParameters.KeyTokenName];
+            string token = request.Context.Request.Headers[Headers.KeyToken];
             bool result = false;
             if (!string.IsNullOrEmpty(token))
             {
-                result = IsValidToken(stringToHash, token);
+                result = IsValidKeyToken(stringToHash, token);
             }
 
             return result;
         }
         
-        public bool IsValidToken(string stringToHash, string token)
+        public bool IsValidKeyToken(string stringToHash, string token)
         {
-            string checkToken = CreateToken(stringToHash);
+            string checkToken = CreateKeyToken(stringToHash);
             return token.Equals(checkToken);
         }
     }

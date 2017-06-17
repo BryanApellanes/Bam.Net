@@ -113,7 +113,7 @@ namespace Bam.Net.ServiceProxy.Secure
             Cookie cookie = request.Cookies[CookieName];
             if (cookie == null)
             {
-                string secureSessionId = request.Headers[BamHeaders.SecureSession];
+                string secureSessionId = request.Headers[Headers.SecureSession];
                 if (string.IsNullOrEmpty(secureSessionId))
                 {
                     secureSessionId = GenerateId();
@@ -146,8 +146,8 @@ namespace Bam.Net.ServiceProxy.Secure
 
         public static SecureSession Get(NameValueCollection headers, Instant instant = null)
         {
-            string sessionIdentifier = headers[BamHeaders.SecureSession];
-            Log.WarnIf(string.IsNullOrEmpty(sessionIdentifier), "{0} header was not present, checking cookie {1}", BamHeaders.SecureSession, CookieName);
+            string sessionIdentifier = headers[Headers.SecureSession];
+            Log.WarnIf(string.IsNullOrEmpty(sessionIdentifier), "{0} header was not present, checking cookie {1}", Headers.SecureSession, CookieName);
             sessionIdentifier = sessionIdentifier ?? headers[CookieName];
             Args.ThrowIfNull(sessionIdentifier, CookieName);
             return Get(sessionIdentifier, instant);

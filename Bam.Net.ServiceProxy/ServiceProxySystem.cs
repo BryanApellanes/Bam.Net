@@ -356,6 +356,21 @@ This file was generated from {0}serviceproxy/csharpproxies.  This file should no
         }}";
             }
         }
+
+        //protected static string AsyncMethodFormat
+        //{
+        //    get
+        //    {
+        //        return @"{0}
+        //public {1} {2}Async({3}, Action<AsyncExecutionResponse> handler)
+        //{{
+        //    object[] parameters = new object[] {{ {4} }};
+        //    {5}(""{2}"", parameters);
+        //}}";
+
+        //    }
+        //}
+
         protected static string UsingFormat { get { return "using {0};\r\n"; } }
 
         protected static string NameSpaceFormat

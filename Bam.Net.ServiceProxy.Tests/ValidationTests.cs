@@ -50,7 +50,7 @@ namespace Bam.Net.ServiceProxy.Tests
             
             IHttpContext context = CreateFakeContext(MethodBase.GetCurrentMethod().Name);
             SecureSession session = SecureSession.Get(context);
-            string postString = ApiParameters.ParametersToJsonParamsObject("random information");
+            string postString = ApiParameters.ParametersToJsonParamsObjectString("random information");
 
             EncryptedValidationToken token = ApiEncryptionValidation.CreateEncryptedValidationToken(postString, session);
         }
@@ -70,7 +70,7 @@ namespace Bam.Net.ServiceProxy.Tests
 
             IHttpContext context = CreateFakeContext(MethodBase.GetCurrentMethod().Name);
             SecureSession session = SecureSession.Get(context);
-            string postString = ApiParameters.ParametersToJsonParamsObject("random information");
+            string postString = ApiParameters.ParametersToJsonParamsObjectString("random information");
 
             EncryptedValidationToken token = ApiEncryptionValidation.CreateEncryptedValidationToken(postString, session);
 
@@ -84,7 +84,7 @@ namespace Bam.Net.ServiceProxy.Tests
 
             SecureSession session = SecureSession.Get(SecureSession.GenerateId());
 
-            string postString = ApiParameters.ParametersToJsonParamsObject("random info");
+            string postString = ApiParameters.ParametersToJsonParamsObjectString("random info");
             SecureServiceProxyClient<Echo> client = new SecureServiceProxyClient<Echo>("http://blah.com");
 
             HttpWebRequest request = client.GetServiceProxyRequest("Send");
@@ -92,11 +92,11 @@ namespace Bam.Net.ServiceProxy.Tests
 
             Cookie cookie = new Cookie(SecureSession.CookieName, session.Identifier, "", "blah.cxm");            
             request.CookieContainer.Add(cookie);
-            request.Headers[BamHeaders.SecureSession] = session.Identifier;
+            request.Headers[Headers.SecureSession] = session.Identifier;
         
             Expect.IsNotNull(request.Headers);
-            Expect.IsNotNull(request.Headers[BamHeaders.Nonce]);
-            Expect.IsNotNull(request.Headers[BamHeaders.ValidationToken]);
+            Expect.IsNotNull(request.Headers[Headers.Nonce]);
+            Expect.IsNotNull(request.Headers[Headers.ValidationToken]);
 
             Expect.AreEqual(EncryptedTokenValidationStatus.Success, ApiEncryptionValidation.ValidateEncryptedToken(request.Headers, postString));
         }
