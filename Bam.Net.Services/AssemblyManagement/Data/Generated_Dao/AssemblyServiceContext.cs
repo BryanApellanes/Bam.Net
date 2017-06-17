@@ -11,14 +11,14 @@ using Bam.Net.Data.Qi;
 
 namespace Bam.Net.Services.AssemblyManagement.Data.Dao
 {
-	// schema = AssemblyManagement 
-    public static class AssemblyManagementContext
+	// schema = AssemblyService 
+    public static class AssemblyServiceContext
     {
 		public static string ConnectionName
 		{
 			get
 			{
-				return "AssemblyManagement";
+				return "AssemblyService";
 			}
 		}
 

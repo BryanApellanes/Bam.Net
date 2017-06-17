@@ -17,17 +17,17 @@ using Bam.Net.Services.AssemblyManagement.Data;
 namespace Bam.Net.Services.AssemblyManagement.Data.Dao.Repository
 {
 	[Serializable]
-	public class AssemblyManagementRepository: DaoRepository
+	public class AssemblyServiceRepository: DaoRepository
 	{
-		public AssemblyManagementRepository()
+		public AssemblyServiceRepository()
 		{
-			SchemaName = "AssemblyManagement";
+			SchemaName = "AssemblyService";
 			BaseNamespace = "Bam.Net.Services.AssemblyManagement.Data";			
 ﻿			
 			AddType<Bam.Net.Services.AssemblyManagement.Data.AssemblyReferenceDescriptor>();﻿			
 			AddType<Bam.Net.Services.AssemblyManagement.Data.ProcessRuntimeDescriptor>();﻿			
 			AddType<Bam.Net.Services.AssemblyManagement.Data.AssemblyDescriptor>();
-			DaoAssembly = typeof(AssemblyManagementRepository).Assembly;
+			DaoAssembly = typeof(AssemblyServiceRepository).Assembly;
 		}
 
 		object _addLock = new object();
@@ -36,7 +36,7 @@ namespace Bam.Net.Services.AssemblyManagement.Data.Dao.Repository
             lock (_addLock)
             {
                 base.AddType(type);
-                DaoAssembly = typeof(AssemblyManagementRepository).Assembly;
+                DaoAssembly = typeof(AssemblyServiceRepository).Assembly;
             }
         }
 

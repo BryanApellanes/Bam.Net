@@ -1,0 +1,1 @@
+﻿troo.exe /gsr /ta:.\Bam.Net.Services.dll /sn:AsyncCallback /fns:Bam.Net.Services.AsyncCallback.Data /cfi:yes /uis:no /ws:C:\src\Business\Submodule\Bam.Net\Bam.Net.Services\AsyncCallback\Data\Generated_Dao

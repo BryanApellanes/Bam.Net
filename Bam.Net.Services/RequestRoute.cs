@@ -13,7 +13,12 @@ namespace Bam.Net.Services
         public string Protocol { get; set; }
         public string Domain { get; set; }
         public string PathAndQuery { get; set; }
+        public RpcRoute GetRpcPathRoute()
+        {
+            return new RpcRoute(PathAndQuery);
+        }
         protected internal Uri OriginalUrl { get; set; }
         protected internal Dictionary<string, string> ParsedValues { get; set; }
+
     }
 }

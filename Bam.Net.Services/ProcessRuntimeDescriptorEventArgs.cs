@@ -10,5 +10,6 @@ namespace Bam.Net.Services
     public class ProcessRuntimeDescriptorEventArgs: EventArgs
     {
         public ProcessRuntimeDescriptor ProcessRuntimeDescriptor { get; set; }
+        public string DirectoryPath { get; set; }
     }
 }

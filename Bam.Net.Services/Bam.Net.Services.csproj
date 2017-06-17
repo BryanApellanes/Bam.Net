@@ -50,6 +50,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NCuid, Version=1.0.0.23490, Culture=neutral, PublicKeyToken=73c58d802958a09f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NCuid.1.0.0\lib\net40\NCuid.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -86,8 +90,6 @@
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorProcessRuntimeDescriptorQuery.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorQuery.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorWrapper.cs" />
-    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyManagementContext.cs" />
-    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyManagementRepository.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyReferenceDescriptor.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyReferenceDescriptorAssemblyDescriptor.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyReferenceDescriptorAssemblyDescriptorCollection.cs" />
@@ -99,6 +101,8 @@
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyReferenceDescriptorPagedQuery.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyReferenceDescriptorQuery.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyReferenceDescriptorWrapper.cs" />
+    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyServiceContext.cs" />
+    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyServiceRepository.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\ProcessRuntimeDescriptor.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\ProcessRuntimeDescriptorCollection.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\ProcessRuntimeDescriptorColumns.cs" />
@@ -110,11 +114,46 @@
     <Compile Include="AssemblyManagement\Data\Generated_Dao\Qi\AssemblyReferenceDescriptor.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\Qi\AssemblyReferenceDescriptorAssemblyDescriptor.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\Qi\ProcessRuntimeDescriptor.cs" />
-    <Compile Include="AssemblyManagement\IAssemblyManagementService.cs" />
-    <Compile Include="CatalogService\Data\ItemCustomizationDefinition.cs" />
+    <Compile Include="AssemblyManagement\IAssemblyService.cs" />
+    <Compile Include="AsyncCallback\AsyncCallbackService.cs" />
+    <Compile Include="AsyncCallback\Data\AsyncExecutionData.cs" />
+    <Compile Include="AsyncCallback\Data\Generated_Dao\AsyncCallbackContext.cs" />
+    <Compile Include="AsyncCallback\Data\Generated_Dao\AsyncCallbackRepository.cs" />
+    <Compile Include="AsyncCallback\Data\AsyncExecutionRequestData.cs" />
+    <Compile Include="AsyncCallback\Data\AsyncExecutionResponseData.cs" />
+    <Compile Include="AsyncCallback\Data\Generated_Dao\AsyncExecutionData.cs" />
+    <Compile Include="AsyncCallback\Data\Generated_Dao\AsyncExecutionDataCollection.cs" />
+    <Compile Include="AsyncCallback\Data\Generated_Dao\AsyncExecutionDataColumns.cs" />
+    <Compile Include="AsyncCallback\Data\Generated_Dao\AsyncExecutionDataPagedQuery.cs" />
+    <Compile Include="AsyncCallback\Data\Generated_Dao\AsyncExecutionDataQuery.cs" />
+    <Compile Include="AsyncCallback\Data\Generated_Dao\AsyncExecutionDataWrapper.cs" />
+    <Compile Include="AsyncCallback\Data\Generated_Dao\AsyncExecutionRequestData.cs" />
+    <Compile Include="AsyncCallback\Data\Generated_Dao\AsyncExecutionRequestDataCollection.cs" />
+    <Compile Include="AsyncCallback\Data\Generated_Dao\AsyncExecutionRequestDataColumns.cs" />
+    <Compile Include="AsyncCallback\Data\Generated_Dao\AsyncExecutionRequestDataPagedQuery.cs" />
+    <Compile Include="AsyncCallback\Data\Generated_Dao\AsyncExecutionRequestDataQuery.cs" />
+    <Compile Include="AsyncCallback\Data\Generated_Dao\AsyncExecutionRequestDataWrapper.cs" />
+    <Compile Include="AsyncCallback\Data\Generated_Dao\AsyncExecutionResponseData.cs" />
+    <Compile Include="AsyncCallback\Data\Generated_Dao\AsyncExecutionResponseDataCollection.cs" />
+    <Compile Include="AsyncCallback\Data\Generated_Dao\AsyncExecutionResponseDataColumns.cs" />
+    <Compile Include="AsyncCallback\Data\Generated_Dao\AsyncExecutionResponseDataPagedQuery.cs" />
+    <Compile Include="AsyncCallback\Data\Generated_Dao\AsyncExecutionResponseDataQuery.cs" />
+    <Compile Include="AsyncCallback\Data\Generated_Dao\AsyncExecutionResponseDataWrapper.cs" />
+    <Compile Include="AsyncCallback\Data\Generated_Dao\Qi\AsyncExecutionData.cs" />
+    <Compile Include="AsyncCallback\Data\Generated_Dao\Qi\AsyncExecutionRequestData.cs" />
+    <Compile Include="AsyncCallback\Data\Generated_Dao\Qi\AsyncExecutionResponseData.cs" />
+    <Compile Include="AsyncExecutionResponse.cs" />
+    <Compile Include="AsyncProxyableService.cs" />
+    <Compile Include="Catalog\Data\ItemCustomizationDefinition.cs" />
+    <Compile Include="AsyncExecutionRequest.cs" />
+    <Compile Include="CoreServiceResponse.cs" />
+    <Compile Include="ExecutionOperationRequest.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="RegisterServiceRegistryContainerResult.cs" />
+    <Compile Include="RpcRoute.cs" />
     <Compile Include="ProcessRuntimeDescriptorEventArgs.cs" />
     <Compile Include="AssemblyManagement\Data\AssemblyReferenceDescriptor.cs" />
-    <Compile Include="CatalogService\KindsOfCatalogs.cs" />
+    <Compile Include="Catalog\KindsOfCatalogs.cs" />
     <Compile Include="Distributed\Files\ChunkedFileWriter.cs" />
     <Compile Include="Distributed\Files\Data\ChunkData.cs" />
     <Compile Include="Distributed\Files\Data\ChunkedFileDescriptor.cs" />
@@ -146,10 +185,52 @@
     <Compile Include="Distributed\Data\UpdateOperation.cs" />
     <Compile Include="Distributed\Data\WriteEvent.cs" />
     <Compile Include="Distributed\Data\WriteOperation.cs" />
-    <Compile Include="PathRoute.cs" />
-    <Compile Include="PathRouter.cs" />
     <Compile Include="RequestRoute.cs" />
     <Compile Include="RequestRouter.cs" />
+    <Compile Include="ServiceProxyServer.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\Qi\ServiceDescriptor.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\Qi\ServiceDescriptorServiceRegistryDescriptor.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\Qi\ServiceRegistryDescriptor.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\Qi\ServiceRegistryLoaderDescriptor.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\Qi\ServiceRegistryLock.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\ServiceDescriptor.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\ServiceDescriptorCollection.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\ServiceDescriptorColumns.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\ServiceDescriptorPagedQuery.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\ServiceDescriptorQuery.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\ServiceDescriptorServiceRegistryDescriptor.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\ServiceDescriptorServiceRegistryDescriptorCollection.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\ServiceDescriptorServiceRegistryDescriptorColumns.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\ServiceDescriptorServiceRegistryDescriptorPagedQuery.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\ServiceDescriptorServiceRegistryDescriptorQuery.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\ServiceDescriptorWrapper.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\ServiceRegistryContext.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\ServiceRegistryDescriptor.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\ServiceRegistryDescriptorCollection.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\ServiceRegistryDescriptorColumns.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\ServiceRegistryDescriptorPagedQuery.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\ServiceRegistryDescriptorQuery.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\ServiceRegistryDescriptorWrapper.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\ServiceRegistryLoaderDescriptor.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\ServiceRegistryLoaderDescriptorCollection.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\ServiceRegistryLoaderDescriptorColumns.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\ServiceRegistryLoaderDescriptorPagedQuery.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\ServiceRegistryLoaderDescriptorQuery.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\ServiceRegistryLoaderDescriptorWrapper.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\ServiceRegistryLock.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\ServiceRegistryLockCollection.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\ServiceRegistryLockColumns.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\ServiceRegistryLockPagedQuery.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\ServiceRegistryLockQuery.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\ServiceRegistryLockWrapper.cs" />
+    <Compile Include="ServiceRegistry\Data\Generated_Dao\ServiceRegistryRepository.cs" />
+    <Compile Include="ServiceRegistry\Data\ServiceRegistryLoaderDescriptor.cs" />
+    <Compile Include="ServiceRegistry\Data\ServiceRegistryLock.cs" />
+    <Compile Include="ServiceRegistry\ServiceDefinition.cs" />
+    <Compile Include="ServiceRegistry\ServiceRegistryBuilder.cs" />
+    <Compile Include="ServiceRegistry\ServiceRegistryService.cs" />
+    <Compile Include="ServiceRegistry\Data\ServiceDescriptor.cs" />
+    <Compile Include="ServiceRegistry\Data\ServiceRegistryDescriptor.cs" />
     <Compile Include="SystemEventMessage.cs" />
     <Compile Include="Distributed\EventSourceServiceArgs.cs" />
     <Compile Include="Distributed\ExternalEventSubscription.cs" />
@@ -168,29 +249,30 @@
     <Compile Include="Distributed\UniversalIdentifier.cs" />
     <Compile Include="ExternalEventSubscriptionDescriptor.cs" />
     <Compile Include="GlobalEvents.cs" />
-    <Compile Include="CatalogService\ICatalogService.cs" />
-    <Compile Include="CatalogService\Data\ItemDefinition.cs" />
-    <Compile Include="CatalogService\Data\CatalogDefinition.cs" />
-    <Compile Include="TranslationService\TranslationService.cs" />
+    <Compile Include="Catalog\ICatalogService.cs" />
+    <Compile Include="Catalog\Data\ItemDefinition.cs" />
+    <Compile Include="Catalog\Data\CatalogDefinition.cs" />
+    <Compile Include="Translation\TranslationService.cs" />
     <Compile Include="ApiKeyVaultInfo.cs" />
     <Compile Include="Validation\IValidator.cs" />
-    <Compile Include="CatalogService\CatalogService.cs" />
+    <Compile Include="Catalog\CatalogService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validation\Data\ValidationRule.cs" />
     <Compile Include="Validation\ValidationResult.cs" />
     <Compile Include="AssemblyManagement\Data\ProcessRuntimeDescriptor.cs" />
     <Compile Include="AssemblyManagement\Data\AssemblyDescriptor.cs" />
-    <Compile Include="AssemblyManagement\AssemblyManagementExtensions.cs" />
-    <Compile Include="AssemblyManagement\AssemblyManagementService.cs" />
+    <Compile Include="AssemblyManagement\AssemblyService.cs" />
     <Compile Include="Vault\IVaultService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="regen_assemblymanagement_dao.cmd">
+    <None Include="AssemblyManagement\regen_assemblymanagement_dao.cmd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="AsyncCallback\regen_asyncecallback_dao.cmd" />
     <None Include="Distributed\Data\regen_distributed_dao.cmd" />
     <None Include="packages.config" />
+    <None Include="ServiceRegistry\regen_applicationserviceregistry_dao.cmd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bam.Net.CoreServices\Bam.Net.CoreServices.csproj">
@@ -212,6 +294,10 @@
     <ProjectReference Include="..\Bam.Net.Encryption\Bam.Net.Encryption.csproj">
       <Project>{f27dc9a6-e432-4d20-bcef-d10b0c2a657d}</Project>
       <Name>Bam.Net.Encryption</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Incubation\Bam.Net.Incubation.csproj">
+      <Project>{AA186331-A0D0-4F77-BEA2-E7B7650D3FF5}</Project>
+      <Name>Bam.Net.Incubation</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Messaging\Bam.Net.Messaging.csproj">
       <Project>{e330d601-62ea-439e-acd7-7236744562ff}</Project>

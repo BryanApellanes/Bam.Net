@@ -9,12 +9,14 @@ using Bam.Net.Logging;
 using Repo = Bam.Net.Services.AssemblyManagement.Data.Dao.Repository;
 using Bam.Net.Services.Distributed.Files;
 using Bam.Net.Services.AssemblyManagement.Data;
+using Bam.Net.ServiceProxy.Secure;
+using Bam.Net.Services.Distributed.Files.Data;
 
 namespace Bam.Net.Services
 {
-    public class AssemblyManagementService : Loggable, IAssemblyManagementService
+    public class AssemblyService : Loggable, IAssemblyService // doesn't need to be remote accessible, can use FileService which can be
     {
-        public AssemblyManagementService(FileService fileService, Repo.AssemblyManagementRepository repo, IApplicationNameProvider appNameProvider, 
+        public AssemblyService(FileService fileService, Repo.AssemblyServiceRepository repo, IApplicationNameProvider appNameProvider, 
             EventHandler currentRuntimePersisted = null,
             EventHandler applicationRestoredHandler = null)
         {
@@ -27,13 +29,23 @@ namespace Bam.Net.Services
 
         public event EventHandler CurrentRuntimePersisted;
         public event EventHandler RuntimeRestored;
-
+        public string AssemblyDirectory { get; set; }
         public FileService FileService { get; set; }
-        public Repo.AssemblyManagementRepository AssemblyManagementRepository { get; set; }
+        public Repo.AssemblyServiceRepository AssemblyManagementRepository { get; set; }
         public IApplicationNameProvider ApplicationNameProvider { get; set; }
 
         public Task<ProcessRuntimeDescriptor> PersistCurrentProcessRuntimeDescriptorTask { get; set; }
 
+        public Assembly ResolveAssembly(string assemblyName, string assemblyDirectory = null)
+        {
+            Assembly assembly = Assembly.Load(assemblyName);
+            if(assembly == null)
+            {
+                FileInfo file = FileService.WriteFileToDirectory(assemblyName, assemblyDirectory ?? AssemblyDirectory);
+                assembly = Assembly.LoadFrom(file.FullName);
+            }
+            return assembly;
+        }
 
         public void RestoreApplicationRuntime(string applicationName, string directoryPath)
         {
@@ -49,7 +61,12 @@ namespace Bam.Net.Services
         {
             RestoreProcessRuntime(LoadCurrentRuntimeDescriptor(), directoryPath);
         }        
-
+        
+        /// <summary>
+        /// Loads the current ProcessRuntimeDescriptor persisting it 
+        /// if it isn't found
+        /// </summary>
+        /// <returns></returns>
         public ProcessRuntimeDescriptor LoadCurrentRuntimeDescriptor()
         {
             ProcessRuntimeDescriptor current = ProcessRuntimeDescriptor.GetCurrent();
@@ -57,16 +74,23 @@ namespace Bam.Net.Services
 
             if (retrieved == null)
             {
-                retrieved = ProcessRuntimeDescriptor.PersistToRepo(AssemblyManagementRepository, current);
-                foreach (AssemblyDescriptor descriptor in retrieved.AssemblyDescriptors)
-                {
-                    StoreAssemblyFileChunks(descriptor);
-                }
+                retrieved = PersistRuntimeDescriptor(current);
+            }
+
+            return retrieved;
+        }
+
+        public ProcessRuntimeDescriptor PersistRuntimeDescriptor(ProcessRuntimeDescriptor runtimeDescriptor)
+        {
+            ProcessRuntimeDescriptor retrieved = ProcessRuntimeDescriptor.PersistToRepo(AssemblyManagementRepository, runtimeDescriptor);
+            foreach (AssemblyDescriptor descriptor in retrieved.AssemblyDescriptors)
+            {
+                StoreAssemblyFileChunks(descriptor);
             }
             FireEvent(CurrentRuntimePersisted, new ProcessRuntimeDescriptorEventArgs { ProcessRuntimeDescriptor = retrieved });
             return retrieved;
         }
-        
+
         public ProcessRuntimeDescriptor LoadRuntimeDescriptor(ProcessRuntimeDescriptor likeThis)
         {
             return LoadRuntimeDescriptor(
@@ -93,7 +117,8 @@ namespace Bam.Net.Services
                 string filePath = Path.Combine(directoryPath, ad.Name);
                 FileService.RestoreFile(ad.FileHash, filePath);
             }
-            FireEvent(RuntimeRestored, new ProcessRuntimeDescriptorEventArgs { ProcessRuntimeDescriptor = prd });
+            DirectoryInfo dir = new DirectoryInfo(directoryPath);
+            FireEvent(RuntimeRestored, new ProcessRuntimeDescriptorEventArgs { ProcessRuntimeDescriptor = prd, DirectoryPath = dir.FullName});
         }
 
         protected void StoreAssemblyFileChunks(AssemblyDescriptor assemblyDescriptor)

@@ -14,10 +14,10 @@ using Bam.Net.Data.Qi;
 
 namespace Bam.Net.Services.AssemblyManagement.Data.Dao
 {
-	// schema = AssemblyManagement
-	// connection Name = AssemblyManagement
+	// schema = AssemblyService
+	// connection Name = AssemblyService
 	[Serializable]
-	[Bam.Net.Data.Table("AssemblyDescriptorProcessRuntimeDescriptor", "AssemblyManagement")]
+	[Bam.Net.Data.Table("AssemblyDescriptorProcessRuntimeDescriptor", "AssemblyService")]
 	public partial class AssemblyDescriptorProcessRuntimeDescriptor: Bam.Net.Data.Dao
 	{
 		public AssemblyDescriptorProcessRuntimeDescriptor():base()

@@ -25,7 +25,10 @@ namespace Bam.Net.Services.Distributed
         protected internal ITypeResolver TypeResolver { get; set; }
         public override object Clone()
         {
-            return this.CopyAs<RepositoryService>(Repository);
+            RepositoryService clone = new RepositoryService(Repository, TypeResolver);
+            clone.CopyProperties(this);
+            clone.CopyEventHandlers(this);
+            return clone;
         }
 
         public object Create(CreateOperation value)
