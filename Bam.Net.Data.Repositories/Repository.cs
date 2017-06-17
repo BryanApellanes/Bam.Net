@@ -152,6 +152,12 @@ namespace Bam.Net.Data.Repositories
 				result = Create(type, toSave);
 			}
 
+            if(result is RepoData data)
+            {
+                data.IsPersisted = true;
+                data.Repository = this;
+            }
+
 			return result;
 		}
         public virtual IEnumerable SaveCollection(IEnumerable values)
@@ -217,7 +223,24 @@ namespace Bam.Net.Data.Repositories
 		public abstract bool Delete(object toDelete);
         public abstract bool Delete(Type type, object toDelete);
 		#endregion
-
+        public virtual bool DeleteWhere<T>(dynamic filter)
+        {
+            return DeleteWhere(typeof(T), filter);
+        }
+        public virtual bool DeleteWhere(Type type, dynamic filter)
+        {
+            try
+            {
+                IEnumerable<object> toDelete = Query(type, filter);
+                toDelete.Each(o => Delete(o));
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.AddEntry("Error deleting values of type {0}: \r\nfilter={1}:: {2}", ex, type.Name, filter?.PropertiesToString(), ex.Message);
+                return false;
+            }
+        }
         public ILogger Logger { get; set; }
 
 		public Exception LastException { get; protected set; }

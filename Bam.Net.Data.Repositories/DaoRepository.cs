@@ -8,6 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Bam.Net.Data.Schema;
+using Bam.Net.Data.SQLite;
 using Bam.Net.Logging;
 
 namespace Bam.Net.Data.Repositories
@@ -45,6 +46,7 @@ namespace Bam.Net.Data.Repositories
             WrapByDefault = true;
             WarningsAsErrors = true;
             Logger = Log.Default;
+            Database = new SQLiteDatabase(GetType().Name);
         }
 
         public DaoRepository(Database database, ILogger logger = null, string schemaName = null)
@@ -207,7 +209,7 @@ namespace Bam.Net.Data.Repositories
             {
                 MultiTargetLogger logger = new MultiTargetLogger();
                 Subscribers.Each(l => logger.AddLogger(l));
-                SchemaStatus = Database.TryEnsureSchema(_daoAssembly.GetTypes().First(type => type.HasCustomAttributeOfType<TableAttribute>()), logger);
+                SchemaStatus = Database.TryEnsureSchema(_daoAssembly.GetTypes().First(type => type.HasCustomAttributeOfType<TableAttribute>(out TableAttribute attr) && attr.ConnectionName.Equals(SchemaName)), logger);
             }
 
             return _daoAssembly;
