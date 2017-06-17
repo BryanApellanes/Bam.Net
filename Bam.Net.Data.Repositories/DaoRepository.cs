@@ -209,7 +209,7 @@ namespace Bam.Net.Data.Repositories
             {
                 MultiTargetLogger logger = new MultiTargetLogger();
                 Subscribers.Each(l => logger.AddLogger(l));
-                SchemaStatus = Database.TryEnsureSchema(_daoAssembly.GetTypes().First(type => type.HasCustomAttributeOfType<TableAttribute>(out TableAttribute attr) && attr.ConnectionName.Equals(SchemaName)), logger);
+                SchemaStatus = Database.TryEnsureSchema(_daoAssembly.GetTypes().First(type => type.HasCustomAttributeOfType(out TableAttribute attr) && attr.ConnectionName.Equals(SchemaName)), logger);
             }
 
             return _daoAssembly;

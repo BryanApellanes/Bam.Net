@@ -27,7 +27,9 @@ namespace Bam.Net.Services.Tests
             ProxyFactory serviceFactory = new ProxyFactory(".\\workspace_".RandomLetters(4), logger);
             string value = "this is a value: ".RandomString(8);
             bool? ran = false;
+            AsyncCallbackService callbackService = new AsyncCallbackService(new AsyncCallback.Data.Dao.Repository.AsyncCallbackRepository(), new AppConf());
             AsyncProxyableEcho testObj = serviceFactory.GetProxy<AsyncProxyableEcho>("localhost", 8080);
+            testObj.CallbackService = callbackService;
             AutoResetEvent blocker = new AutoResetEvent(false);
             testObj.InvokeAsync(r =>
             {

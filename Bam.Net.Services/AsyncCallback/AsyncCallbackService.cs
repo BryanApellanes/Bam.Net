@@ -19,22 +19,34 @@ namespace Bam.Net.Services
     [Encrypt]
     public class AsyncCallbackService: ProxyableService
     {
-        static Dictionary<string, Action<AsyncExecutionResponse>> _pendingRequests;
-        static ServiceProxyServer _server;
-        static object _serverLock = new object();
-        static AsyncCallbackService()
-        {
-            _pendingRequests = new Dictionary<string, Action<AsyncExecutionResponse>>();
-        }
+        Dictionary<string, Action<AsyncExecutionResponse>> _pendingRequests;
+        ServiceProxyServer _server;
+        object _serverLock = new object();
+        //static AsyncCallbackService()
+        //{
+        //    _pendingRequests = new Dictionary<string, Action<AsyncExecutionResponse>>();
+        //}
 
         protected AsyncCallbackService() { }
 
         public AsyncCallbackService(AsyncCallbackRepository repo, AppConf conf) : base(repo, conf)
         {
-            HostPrefix = new HostPrefix { HostName = Machine.Current.DnsName, Port = RandomNumber.Between(49152, 65535) };            
+            HostPrefix = new HostPrefix { HostName = Machine.Current.DnsName, Port = RandomNumber.Between(49152, 65535) };                 
             AsyncCallbackRepository = repo;
+            _pendingRequests = new Dictionary<string, Action<AsyncExecutionResponse>>();
         }
-        
+
+        public override object Clone()
+        {
+            AsyncCallbackService clone = new AsyncCallbackService(AsyncCallbackRepository, AppConf);
+            clone.CopyProperties(this);
+            clone.CopyEventHandlers(this);
+            clone._pendingRequests = _pendingRequests;
+            clone._server = _server;
+            clone._serverLock = _serverLock;
+            return clone;
+        }
+
         public AsyncCallbackRepository AsyncCallbackRepository { get; set; }
 
         [Local]
@@ -46,7 +58,7 @@ namespace Bam.Net.Services
             {
                 if (_server == null)
                 {
-                    _server = Current.Serve(Current.HostPrefix, Current.Logger);
+                    _server = this.Serve(HostPrefix, Logger);
                 }
             }
             SaveExecutionData(request);
@@ -110,14 +122,6 @@ namespace Bam.Net.Services
                 MethodName = methodName,
                 JsonParams = ApiParameters.ParametersToJsonParamsArray(arguments).ToJson()
             };
-        }
-
-        public override object Clone()
-        {
-            AsyncCallbackService clone = new AsyncCallbackService(AsyncCallbackRepository, AppConf);
-            clone.CopyProperties(this);
-            clone.CopyEventHandlers(this);
-            return clone;
         }
 
         private void SaveResponseData(AsyncExecutionResponse response)

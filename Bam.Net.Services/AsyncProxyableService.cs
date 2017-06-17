@@ -35,25 +35,39 @@ namespace Bam.Net.Services
         {
             CallbackService = callbackService;
             _proxyFactory = new ProxyFactory();
-            DefaultResponseHandler = ((r) => { Logger.Info("AsyncResponseRecieved: {0}", r.PropertiesToString()); });            
+            DefaultResponseHandler = ((r) => { Logger.Info("AsyncResponseRecieved: {0}", r.PropertiesToString()); });
+            AsyncWaitTimeout = 1000 * 60 * 5; // 5 minutes
         }
 
-        AsyncCallbackService _callbackService;
-        object _callbackServiceLock = new object();
-        public AsyncCallbackService CallbackService
-        {
-            get
-            {
-                return _callbackServiceLock.DoubleCheckLock(ref _callbackService, () => AsyncCallbackService.Current);
-            }
-            set
-            {
-                _callbackService = value;
-            }
-        }
+        public AsyncCallbackService CallbackService { get; set; }
 
         public Action<AsyncExecutionResponse> DefaultResponseHandler { get; set; }
         public Incubator ServiceProvider { get; set; }
+
+        /// <summary>
+        /// The number of milliseconds to wait for async tasks to complete
+        /// </summary>
+        public int AsyncWaitTimeout { get; set; }
+
+        /// <summary>
+        /// Invoke the specified method asynchronously.  
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="methodName"></param>
+        /// <param name="arguments"></param>
+        /// <returns></returns>
+        [Local]
+        public Task<T> InvokeAsync<T>(string methodName, params object[] arguments)
+        {
+            return Task.Run(() =>
+            {
+                AutoResetEvent blocker = new AutoResetEvent(false);
+                Task<AsyncExecutionResponse> task = InvokeAsync(methodName, arguments);
+                task.Wait(AsyncWaitTimeout);
+
+                return (T)task.Result?.Result;
+            });
+        }
 
         [Local]
         public Task<AsyncExecutionResponse> InvokeAsync(string methodName,  params object[] arguments)
