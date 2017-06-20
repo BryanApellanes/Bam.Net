@@ -57,7 +57,7 @@ namespace Bam.Net.Services
                     _server = this.Serve(HostPrefix, Logger);
                 }
             }
-            SaveExecutionData(request);
+            SaveExecutionRequestData(request);
             _pendingRequests.Set(request.Cuid, handler);
         }
 
@@ -173,7 +173,7 @@ namespace Bam.Net.Services
             }
         }
 
-        private void SaveExecutionData(AsyncExecutionRequest request)
+        private void SaveExecutionRequestData(AsyncExecutionRequest request)
         {
             string requestHash = request.GetRequestHash();
             AsyncExecutionData executionData = AsyncCallbackRepository.OneAsyncExecutionDataWhere(c => c.RequestHash == requestHash);
