@@ -128,6 +128,7 @@ namespace Bam.Net.Data.Repositories
 
         public object Save(object toSave)
         {
+            Args.ThrowIfNull(toSave, "toSave");
             return Save(toSave.GetType(), toSave);
         }
         /// <summary>

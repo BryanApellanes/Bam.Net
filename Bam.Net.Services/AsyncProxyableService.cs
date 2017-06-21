@@ -59,12 +59,16 @@ namespace Bam.Net.Services
         [Local]
         public Task<T> InvokeAsync<T>(string methodName, params object[] arguments)
         {
-            return Task.Run(() =>
+            return Task.Run<T>(() =>
             {
                 Task<AsyncExecutionResponse> task = InvokeAsync(methodName, arguments);
                 task.Wait(AsyncWaitTimeout);
-                task.Result.Result = task.Result.ResultJson.FromJson<T>();
-                return (T)task.Result.Result;
+                if(task.Result?.ResultJson != null)
+                {
+                    task.Result.Result = task.Result.ResultJson.FromJson<T>();
+                }   
+                
+                return (T)(task.Result?.Result);
             });
         }
 
