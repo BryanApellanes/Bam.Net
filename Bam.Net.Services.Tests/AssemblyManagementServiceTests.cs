@@ -98,6 +98,11 @@ namespace Bam.Net.Services.Tests
             AssemblyServiceRepository repo = GetAssemblyManagementRepository(GetConsoleLogger(), nameof(SaveDescriptorDoesntDuplicate));            
             Dao.AssemblyDescriptor.LoadAll(repo.Database).Delete(repo.Database);
             AssemblyDescriptor descriptor = new AssemblyDescriptor(Assembly.GetExecutingAssembly());
+            //repo.Creating += (o, a) => { Output("Creating", o, (RepositoryEventArgs)a); };
+            //repo.Created += (o, a) => { Output("Created", o, (RepositoryEventArgs)a); };
+            //repo.Updating += (o, a) => { Output("Updating", o, (RepositoryEventArgs)a); };
+            //repo.Updated += (o, a) => { Output("Updated", o, (RepositoryEventArgs)a); };
+
             AssemblyDescriptor one = repo.Save(descriptor);
             AssemblyDescriptor two = repo.Save(descriptor);
             Expect.IsNotNull(one, "first save returned null");
@@ -112,6 +117,11 @@ namespace Bam.Net.Services.Tests
                     q.Name == descriptor.Name, repo.Database);
 
             Expect.AreEqual(1, descriptors.Count);
+        }
+
+        private static void Output(string name, object sender, RepositoryEventArgs args)
+        {
+            OutLineFormat("Event Fired: {0}, Schema {1}, Sender: {2}, Type: {3}, Data: {4}, Message: {5}", ConsoleColor.DarkYellow, name, sender?.Property("SchemaName", false), sender, args.Type?.FullName, args.Data, args.Message);
         }
 
         [UnitTest]
@@ -235,12 +245,20 @@ namespace Bam.Net.Services.Tests
             daoRepo.WarningsAsErrors = false;
             daoRepo.AddType(typeof(ProcessRuntimeDescriptor));
             daoRepo.EnsureDaoAssemblyAndSchema();
+            daoRepo.Creating += (o, a) => { Output("DaoRepository.Creating", o, (RepositoryEventArgs)a); };
+            daoRepo.Created += (o, a) => { Output("DaoRepository.Created", o, (RepositoryEventArgs)a); };
+            daoRepo.Updating += (o, a) => { Output("DaoRepository.Updating", o, (RepositoryEventArgs)a); };
+            daoRepo.Updated += (o, a) => { Output("DaoRepository.Updated", o, (RepositoryEventArgs)a); };
             return daoRepo;            
         }
 
         private static AssemblyServiceRepository GetAssemblyManagementRepository(ConsoleLogger logger = null, string databaseName = null)
         {
             DaoRepository daoRepo = GetDaoRepository(logger, databaseName);
+            daoRepo.Creating += (o, a) => { Output("DaoRepository.Creating", o, (RepositoryEventArgs)a); };
+            daoRepo.Created += (o, a) => { Output("DaoRepository.Created", o, (RepositoryEventArgs)a); };
+            daoRepo.Updating += (o, a) => { Output("DaoRepository.Updating", o, (RepositoryEventArgs)a); };
+            daoRepo.Updated += (o, a) => { Output("DaoRepository.Updated", o, (RepositoryEventArgs)a); };
             return new AssemblyServiceRepository() { Database = daoRepo.Database };
         }
     }
