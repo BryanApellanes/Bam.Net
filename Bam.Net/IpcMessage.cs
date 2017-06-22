@@ -283,9 +283,9 @@ namespace Bam.Net
         {
             try
             {
-                EnsureRoot();
                 lock (_lock)
                 {
+                    EnsureRoot();
                     IpcMessageLockInfo lockInfo = new IpcMessageLockInfo();
                     bool timeoutExpired = Exec.TakesTooLong(() =>
                     {
