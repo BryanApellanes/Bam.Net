@@ -95,8 +95,7 @@ namespace Bam.Net.Services.Tests
         [UnitTest]
         public void SaveDescriptorDoesntDuplicate()
         {
-            AssemblyServiceRepository repo = GetAssemblyManagementRepository(GetConsoleLogger(), nameof(SaveDescriptorDoesntDuplicate));
-            repo.Database.TryEnsureSchema<Dao.AssemblyDescriptor>();
+            AssemblyServiceRepository repo = GetAssemblyManagementRepository(GetConsoleLogger(), nameof(SaveDescriptorDoesntDuplicate));            
             Dao.AssemblyDescriptor.LoadAll(repo.Database).Delete(repo.Database);
             AssemblyDescriptor descriptor = new AssemblyDescriptor(Assembly.GetExecutingAssembly());
             AssemblyDescriptor one = repo.Save(descriptor);
@@ -235,6 +234,7 @@ namespace Bam.Net.Services.Tests
             DaoRepository daoRepo = new DaoRepository(new SQLiteDatabase(".", databaseName ?? "TestDaoRepoData"), logger, schemaName);
             daoRepo.WarningsAsErrors = false;
             daoRepo.AddType(typeof(ProcessRuntimeDescriptor));
+            daoRepo.EnsureDaoAssemblyAndSchema();
             return daoRepo;            
         }
 
