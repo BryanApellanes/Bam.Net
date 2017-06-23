@@ -165,6 +165,7 @@ namespace Bam.Net.Services.Tests
         public void ProcessRuntimeDescriptorSaveTest()
         {
             AssemblyServiceRepository repo = GetAssemblyManagementRepository(GetConsoleLogger(), nameof(ProcessRuntimeDescriptorSaveTest));
+            repo.SetDaoNamespace<ProcessRuntimeDescriptor>();
             repo.Database.TryEnsureSchema<Dao.AssemblyDescriptor>();
             List<AssemblyDescriptor> descriptors = AssemblyDescriptor.GetCurrentAppDomainDescriptors().ToList();
             ProcessRuntimeDescriptor current = ProcessRuntimeDescriptor.PersistCurrentToRepo(repo);
@@ -194,7 +195,9 @@ namespace Bam.Net.Services.Tests
         {
             SQLiteDatabase db = new SQLiteDatabase(".\\", nameof(LoadAndRestoreCurrentRuntimeTest));
             db.TryEnsureSchema<Dao.AssemblyDescriptor>();
-            FileService fmSvc = new FileService(new DaoRepository(db));
+            DaoRepository repo = new DaoRepository(db);
+            repo.SetDaoNamespace<ProcessRuntimeDescriptor>();
+            FileService fmSvc = new FileService(repo);
             AssemblyServiceRepository assManRepo = new AssemblyServiceRepository() { Database = db };
             AssemblyService svc = new AssemblyService(fmSvc, assManRepo, DefaultConfigurationApplicationNameProvider.Instance);
             ProcessRuntimeDescriptor prd1 = svc.LoadCurrentRuntimeDescriptor();
@@ -244,6 +247,7 @@ namespace Bam.Net.Services.Tests
             DaoRepository daoRepo = new DaoRepository(new SQLiteDatabase(".", databaseName ?? "TestDaoRepoData"), logger, schemaName);
             daoRepo.WarningsAsErrors = false;
             daoRepo.AddType(typeof(ProcessRuntimeDescriptor));
+            daoRepo.SetDaoNamespace<ProcessRuntimeDescriptor>();
             daoRepo.EnsureDaoAssemblyAndSchema();
             daoRepo.Creating += (o, a) => { Output("DaoRepository.Creating", o, (RepositoryEventArgs)a); };
             daoRepo.Created += (o, a) => { Output("DaoRepository.Created", o, (RepositoryEventArgs)a); };
