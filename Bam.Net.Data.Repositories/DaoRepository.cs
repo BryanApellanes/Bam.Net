@@ -222,10 +222,34 @@ namespace Bam.Net.Data.Repositories
             base.Subscribe(logger);
         }
 
+        /// <summary>
+        /// Sets the DaoNamespace to equal the namespace
+        /// of the specified type with the suffix .Dao
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public string SetDaoNamespace<T>()
+        {
+            return SetDaoNamespace(typeof(T));
+        }
+
+        /// <summary>
+        /// Sets the DaoNamespace to equal the namespace of the specified
+        /// type with the suffix .Dao
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public string SetDaoNamespace(Type type)
+        {
+            DaoNamespace = $"{type.Namespace}.Dao";
+            return DaoNamespace;
+        }
+
         public Assembly GenerateDaoAssembly(bool useExisting = true)
         {
             Initialize();
             _daoAssembly = TypeDaoGenerator.GetDaoAssembly(useExisting);
+            Log.WarnIf(_daoAssembly == null, "Unable to generate dao assembly");
             return _daoAssembly;
         }
 
@@ -280,6 +304,20 @@ namespace Bam.Net.Data.Repositories
 			{
 				throw new NoIdPropertyException(type);
 			}
+            int typesCount = StorableTypes.Count();
+            if(typesCount == 0)
+            {
+                SetDaoNamespace(type);
+            }
+            if(typesCount > 0)
+            {
+                string current = DaoNamespace;
+                string newNs = SetDaoNamespace(type);
+                if (!current.Equals(newNs))
+                {
+                    throw new InvalidOperationException($"StorableTypes must be in the same namespace because of underlying conventions used to locate dao types: \r\nCurrent {current}\r\nNew {newNs}");
+                }
+            }
 			base.AddType(type);
 			_daoAssembly = null;
 		}
@@ -546,6 +584,11 @@ namespace Bam.Net.Data.Repositories
 			Assembly daoAssembly = EnsureDaoAssemblyAndSchema();
             Type baseType = GetBaseType(pocoType);
 			Type daoType = daoAssembly.GetType("{0}.{1}"._Format(TypeDaoGenerator.DaoNamespace, baseType.Name));
+            if(daoType == null)
+            {
+                SetDaoNamespace(baseType);
+            }
+            Log.WarnIf(daoType == null, "Unable to get dao type for pocoType ({0}): \r\n\tDao Assembly={1}, \r\n\tBase Type={2}, \r\n\tDaoNamespace={3}", pocoType.GetType().Name, daoAssembly.GetFilePath(), baseType.Name, TypeDaoGenerator.DaoNamespace);
 			return daoType;
 		}
 
