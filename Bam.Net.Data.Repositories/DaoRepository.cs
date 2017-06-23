@@ -304,19 +304,9 @@ namespace Bam.Net.Data.Repositories
 			{
 				throw new NoIdPropertyException(type);
 			}
-            int typesCount = StorableTypes.Count();
-            if(typesCount == 0)
+            if(StorableTypes.Count() == 0)
             {
                 SetDaoNamespace(type);
-            }
-            if(typesCount > 0)
-            {
-                string current = DaoNamespace;
-                string newNs = SetDaoNamespace(type);
-                if (!current.Equals(newNs))
-                {
-                    throw new InvalidOperationException($"StorableTypes must be in the same namespace because of underlying conventions used to locate dao types: \r\nCurrent {current}\r\nNew {newNs}");
-                }
             }
 			base.AddType(type);
 			_daoAssembly = null;
@@ -579,17 +569,37 @@ namespace Bam.Net.Data.Repositories
             return wrap ? Wrap(pocoType, daoResults) : daoResults.CopyAs(pocoType);
         }
 
+        Dictionary<Type, Type> _daoTypeLookup = new Dictionary<Type, Type>();
+        object _daoTypeResolverLock = new object();
 		public Type GetDaoType(Type pocoType)
 		{
-			Assembly daoAssembly = EnsureDaoAssemblyAndSchema();
-            Type baseType = GetBaseType(pocoType);
-			Type daoType = daoAssembly.GetType("{0}.{1}"._Format(TypeDaoGenerator.DaoNamespace, baseType.Name));
-            if(daoType == null)
+            if (_daoTypeLookup.ContainsKey(pocoType))
             {
-                SetDaoNamespace(baseType);
+                return _daoTypeLookup[pocoType];
             }
-            Log.WarnIf(daoType == null, "Unable to get dao type for pocoType ({0}): \r\n\tDao Assembly={1}, \r\n\tBase Type={2}, \r\n\tDaoNamespace={3}", pocoType.GetType().Name, daoAssembly.GetFilePath(), baseType.Name, TypeDaoGenerator.DaoNamespace);
-			return daoType;
+            else
+            {
+                lock (_daoTypeResolverLock)
+                {
+                    Assembly daoAssembly = EnsureDaoAssemblyAndSchema();
+                    Type baseType = GetBaseType(pocoType);
+                    Type daoType = daoAssembly.GetType("{0}.{1}"._Format(TypeDaoGenerator.DaoNamespace, baseType.Name));
+                    if (daoType == null)
+                    {
+                        daoType = daoAssembly.GetTypes().Where(t => t.Name.Equals(baseType.Name) && t.IsSubclassOf(typeof(Dao))).FirstOrDefault();
+                    }
+                    if (daoType == null)
+                    {
+                        Logger.Warning("Unable to get dao type for pocoType ({0}): \r\n\tDao Assembly={1}, \r\n\tBase Type={2}, \r\n\tDaoNamespace={3}", pocoType.GetType().Name, daoAssembly.GetFilePath(), baseType.Name, TypeDaoGenerator.DaoNamespace);
+                    }
+                    else
+                    {
+                        _daoTypeLookup.Set(pocoType, daoType);
+                    }
+
+                    return daoType;
+                }
+            }
 		}
 
         /// <summary>
