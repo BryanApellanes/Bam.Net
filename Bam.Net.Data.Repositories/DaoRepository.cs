@@ -43,6 +43,7 @@ namespace Bam.Net.Data.Repositories
                 FireEvent(GenerateDaoAssemblySucceeded, args);
             };
 
+            NullifyDaoAssemblyOnTypeAdd = true;
             WrapByDefault = true;
             WarningsAsErrors = true;
             Logger = Log.Default;
@@ -179,7 +180,12 @@ namespace Bam.Net.Data.Repositories
         public event EventHandler SchemaWarning;
 
         Assembly _daoAssembly;
-        protected Assembly DaoAssembly
+        /// <summary>
+        /// The assembly to look for Dao definitions in.
+        /// This may or may not be generated and can be
+        /// user/developer specified
+        /// </summary>
+        public Assembly DaoAssembly
         {
             get
             {
@@ -188,9 +194,19 @@ namespace Bam.Net.Data.Repositories
             set
             {
                 _daoAssembly = value;
+                NullifyDaoAssemblyOnTypeAdd = false;
             }
         }
         
+        /// <summary>
+        /// If true (the default) adding a type will set the DaoAssembly to null
+        /// effectively requiring that it be regenerated.  Directly
+        /// setting the DaoAssembly will set this to
+        /// false.  This can be set to false if the DaoAssembly
+        /// has already been set and you wish for it not to be reset.
+        /// </summary>
+        protected bool NullifyDaoAssemblyOnTypeAdd { get; set; }
+
         protected EnsureSchemaStatus SchemaStatus { get; set; }
         /// <summary>
         /// Generates a Dao Assembly for the underlying 
@@ -309,7 +325,10 @@ namespace Bam.Net.Data.Repositories
                 SetDaoNamespace(type);
             }
 			base.AddType(type);
-			_daoAssembly = null;
+            if (NullifyDaoAssemblyOnTypeAdd)
+            {
+                _daoAssembly = null;
+            }
 		}
 
 		/// <summary>
