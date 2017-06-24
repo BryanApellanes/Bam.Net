@@ -586,8 +586,15 @@ namespace Bam.Net.Data.Repositories
                     Type daoType = daoAssembly.GetType("{0}.{1}"._Format(TypeDaoGenerator.DaoNamespace, baseType.Name));
                     if (daoType == null)
                     {
-                        daoType = daoAssembly.GetTypes().Where(t => t.Name.Equals(baseType.Name) && t.IsSubclassOf(typeof(Dao))).FirstOrDefault();
+                        Type[] daoTypes = daoAssembly.GetTypes().Where(t => t.Name.Equals(baseType.Name) && t.IsSubclassOf(typeof(Dao))).ToArray();
+                        Type first = daoTypes.FirstOrDefault();
+                        if(daoTypes.Length > 1)
+                        {
+                            Logger.Warning("Multiple dao types found for poco type ({0}), using ({1}): {3}", pocoType.FullName, first.FullName, string.Join(",", daoTypes.Select(t => t.FullName).ToArray()));
+                        }
+                        daoType = first;
                     }
+
                     if (daoType == null)
                     {
                         Logger.Warning("Unable to get dao type for pocoType ({0}): \r\n\tDao Assembly={1}, \r\n\tBase Type={2}, \r\n\tDaoNamespace={3}", pocoType.GetType().Name, daoAssembly.GetFilePath(), baseType.Name, TypeDaoGenerator.DaoNamespace);
