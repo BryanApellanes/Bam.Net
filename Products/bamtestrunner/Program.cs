@@ -132,7 +132,8 @@ namespace Bam.Net.Testing
                 }
                 catch (Exception ex)
                 {
-                    OutLineFormat("Exception running unit tests in file {0}: {1}\r\n\r\n", ConsoleColor.Magenta, fi.FullName, ex.Message, ex.StackTrace); 
+                    exceptionOccurred = true;
+                    OutLineFormat("Exception running unit tests in file {0}: {1}\r\n\r\n", ConsoleColor.Magenta, fi.FullName, ex.Message, ex.StackTrace);                    
                 }
             }
 

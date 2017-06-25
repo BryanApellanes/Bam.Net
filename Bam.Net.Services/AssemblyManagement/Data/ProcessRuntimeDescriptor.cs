@@ -133,7 +133,7 @@ namespace Bam.Net.Services.AssemblyManagement.Data
                 descriptors.Add(saved);
             }
             descriptor.AssemblyDescriptors = descriptors.ToArray();
-            return repo.Save(descriptor);
+            return repo.Save(descriptor); 
         }
 
         static ProcessRuntimeDescriptor _current;
@@ -150,7 +150,7 @@ namespace Bam.Net.Services.AssemblyManagement.Data
             {
                 ProcessRuntimeDescriptor descriptor = new ProcessRuntimeDescriptor()
                 {
-                    AssemblyDescriptors = AssemblyDescriptor.GetCurrentAppDomainDescriptors().ToArray()
+                    AssemblyDescriptors = AssemblyDescriptor.AllCurrent
                 };
                 return descriptor;
             });

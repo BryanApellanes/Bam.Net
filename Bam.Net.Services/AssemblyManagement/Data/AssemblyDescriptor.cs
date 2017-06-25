@@ -44,6 +44,16 @@ namespace Bam.Net.Services.AssemblyManagement.Data
             AssemblyReferenceDescriptors = referenceDescriptors.ToArray();
         }
 
+        static AssemblyDescriptor[] _allCurrent;
+        static object _allCurrentLock = new object();
+        protected internal static AssemblyDescriptor[] AllCurrent
+        {
+            get
+            {
+                return _allCurrentLock.DoubleCheckLock(ref _allCurrent, () => GetCurrentAppDomainDescriptors().ToArray());
+            }
+        }
+
         public virtual List<ProcessRuntimeDescriptor> ProcessRuntimeDescriptor { get; set; }
         /// <summary>
         /// The name of the assembly file

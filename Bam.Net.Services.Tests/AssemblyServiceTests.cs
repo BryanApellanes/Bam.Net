@@ -22,7 +22,7 @@ using Bam.Net.Configuration;
 namespace Bam.Net.Services.Tests
 {
     [Serializable]
-    public class AssemblyManagementServiceTests: CommandLineTestInterface
+    public class AssemblyServiceTests: CommandLineTestInterface
     {
         [UnitTest]
         public void ProcessRuntimeDescriptorTest()
@@ -40,7 +40,6 @@ namespace Bam.Net.Services.Tests
             OutLine();
         }
 
-        
         [UnitTest]
         public void AssemblyDescriptorHasReferenceDescriptorsTest()
         {
@@ -95,13 +94,9 @@ namespace Bam.Net.Services.Tests
         [UnitTest]
         public void SaveDescriptorDoesntDuplicate()
         {
-            AssemblyServiceRepository repo = GetAssemblyManagementRepository(GetConsoleLogger(), nameof(SaveDescriptorDoesntDuplicate));            
-            Dao.AssemblyDescriptor.LoadAll(repo.Database).Delete(repo.Database);
+            AssemblyServiceRepository repo = GetTestRepo(nameof(SaveDescriptorDoesntDuplicate));
+
             AssemblyDescriptor descriptor = new AssemblyDescriptor(Assembly.GetExecutingAssembly());
-            //repo.Creating += (o, a) => { Output("Creating", o, (RepositoryEventArgs)a); };
-            //repo.Created += (o, a) => { Output("Created", o, (RepositoryEventArgs)a); };
-            //repo.Updating += (o, a) => { Output("Updating", o, (RepositoryEventArgs)a); };
-            //repo.Updated += (o, a) => { Output("Updated", o, (RepositoryEventArgs)a); };
 
             AssemblyDescriptor one = repo.Save(descriptor);
             AssemblyDescriptor two = repo.Save(descriptor);
@@ -111,17 +106,35 @@ namespace Bam.Net.Services.Tests
             Expect.AreEqual(one.Uuid, two.Uuid, "Uuids didn't match");
 
             Dao.AssemblyDescriptorCollection descriptors = Dao.AssemblyDescriptor
-                .Where(q => 
-                    q.AssemblyFullName == descriptor.AssemblyFullName && 
-                    q.FileHash == descriptor.FileHash && 
+                .Where(q =>
+                    q.AssemblyFullName == descriptor.AssemblyFullName &&
+                    q.FileHash == descriptor.FileHash &&
                     q.Name == descriptor.Name, repo.Database);
 
             Expect.AreEqual(1, descriptors.Count);
         }
 
-        private static void Output(string name, object sender, RepositoryEventArgs args)
+        [UnitTest]
+        public void ProcessRuntimeDescriptorPersistRoundTrip()
         {
-            OutLineFormat("Event Fired: {0}, Schema {1}, Sender: {2}, Type: {3}, Data: {4}, Message: {5}", ConsoleColor.DarkYellow, name, sender?.Property("SchemaName", false), sender, args.Type?.FullName, args.Data, args.Message);
+            AssemblyServiceRepository repo = GetAssemblyManagementRepository(GetConsoleLogger(), nameof(SaveDescriptorDoesntDuplicate));
+            repo.SetDaoNamespace<ProcessRuntimeDescriptor>();
+            repo.Database.TryEnsureSchema<Dao.AssemblyDescriptor>();
+            Dao.AssemblyDescriptor.LoadAll(repo.Database).Delete(repo.Database);
+            Dao.ProcessRuntimeDescriptor.LoadAll(repo.Database).Delete(repo.Database);
+
+            ProcessRuntimeDescriptor instance = ProcessRuntimeDescriptor.GetCurrent();
+            Expect.IsTrue(instance != null);
+            Expect.IsTrue(instance.AssemblyDescriptors.Length > 0);
+            foreach (AssemblyDescriptor assDecriptor in instance.AssemblyDescriptors)
+            {
+                Expect.IsNotNullOrEmpty(assDecriptor.Name);
+                Expect.IsNotNullOrEmpty(assDecriptor.FileHash);
+                Expect.IsNotNullOrEmpty(assDecriptor.AssemblyFullName);
+
+            }
+            ProcessRuntimeDescriptor saved = ProcessRuntimeDescriptor.PersistToRepo(repo, instance);
+            throw new NotImplementedException();
         }
 
         [UnitTest]
@@ -193,12 +206,9 @@ namespace Bam.Net.Services.Tests
         [UnitTest]
         public void LoadAndRestoreCurrentRuntimeTestAsync()
         {
-            SQLiteDatabase db = new SQLiteDatabase(".\\", nameof(LoadAndRestoreCurrentRuntimeTestAsync));
-            db.TryEnsureSchema<Dao.AssemblyDescriptor>();
-            DaoRepository repo = new DaoRepository(db);
-            repo.SetDaoNamespace<ProcessRuntimeDescriptor>();
-            FileService fmSvc = new FileService(repo);
-            AssemblyServiceRepository assManRepo = new AssemblyServiceRepository() { Database = db };
+            AssemblyServiceRepository assManRepo = GetTestRepo(nameof(LoadAndRestoreCurrentRuntimeTestAsync));
+            FileService fmSvc = new FileService(assManRepo);
+
             AssemblyService svc = new AssemblyService(fmSvc, assManRepo, DefaultConfigurationApplicationNameProvider.Instance);
             ProcessRuntimeDescriptor prd1 = svc.CurrentProcessRuntimeDescriptor;
             ProcessRuntimeDescriptor prd2 = svc.CurrentProcessRuntimeDescriptor;
@@ -214,6 +224,11 @@ namespace Bam.Net.Services.Tests
             };
             svc.RestoreApplicationRuntime(byName.ApplicationName, $".\\{nameof(LoadAndRestoreCurrentRuntimeTestAsync)}");
             Expect.IsTrue(fired.Value);
+        }
+
+        private static void Output(string name, object sender, RepositoryEventArgs args)
+        {
+            OutLineFormat("Event Fired: {0}, Schema {1}, Sender: {2}, Type: {3}, Data: {4}, Message: {5}", ConsoleColor.DarkYellow, name, sender?.Property("SchemaName", false), sender, args.Type?.FullName, args.Data, args.Message);
         }
 
         private static void OutputInfo(AssemblyDescriptor descriptor)
@@ -236,5 +251,19 @@ namespace Bam.Net.Services.Tests
         {
             return new AssemblyServiceRepository() { Logger = logger,  Database = new SQLiteDatabase(".", databaseName ?? "AssemblyManagementServiceTest_DaoRepoData") };
         }
+
+        private AssemblyServiceRepository GetTestRepo(string databaseName)
+        {
+            AssemblyServiceRepository repo = GetAssemblyManagementRepository(GetConsoleLogger(), databaseName);
+            repo.SetDaoNamespace<ProcessRuntimeDescriptor>();
+            repo.Database.TryEnsureSchema<Dao.AssemblyDescriptor>();
+            Dao.AssemblyDescriptor.LoadAll(repo.Database).Delete(repo.Database);
+            repo.Creating += (o, a) => { Output("Creating", o, (RepositoryEventArgs)a); };
+            repo.Created += (o, a) => { Output("Created", o, (RepositoryEventArgs)a); };
+            repo.Updating += (o, a) => { Output("Updating", o, (RepositoryEventArgs)a); };
+            repo.Updated += (o, a) => { Output("Updated", o, (RepositoryEventArgs)a); };
+            return repo;
+        }
+
     }
 }
