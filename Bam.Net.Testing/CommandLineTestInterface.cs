@@ -350,7 +350,7 @@ namespace Bam.Net.Testing
         /// <summary>
         /// Event that fires when a test fails.
         /// </summary>
-        public static event EventHandler<TestExceptionEventArgs> TestFailed;
+        public static event EventHandler<TestExceptionEventArgs> TestFailed; //TODO: create a UnitTestEventArgs class and encapsulate unit test related data to be saved; add a test run id to UnitTestResult
 
 		/// <summary>
 		/// Event that fires when a test passes.
