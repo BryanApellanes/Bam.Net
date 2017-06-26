@@ -77,10 +77,10 @@ namespace Bam.Net.Caching.Tests
                 BinaryFileCache textCache = context.BinaryFileCache;
                 return textCache.GetBytes(testFile);
             };
-            byte[] bytesFromFile;
-            TimeSpan fromFileTime = readFromFile.TimeExecution<string, byte[]>(testFilePath, out bytesFromFile);
-            byte[] bytesFromCache;
-            TimeSpan fromCacheTime = readFromCache.TimeExecution<dynamic, byte[]>(new { BinaryFileCache = cache }, out bytesFromCache);
+            readFromFile(testFilePath); // prime
+            readFromCache(new { BinaryFileCache = cache }); //prime
+            TimeSpan fromFileTime = readFromFile.TimeExecution(testFilePath, out byte[] bytesFromFile);
+            TimeSpan fromCacheTime = readFromCache.TimeExecution(new { BinaryFileCache = cache }, out byte[] bytesFromCache);
 
             Expect.IsTrue(fromFileTime.CompareTo(fromCacheTime) == 1);
             

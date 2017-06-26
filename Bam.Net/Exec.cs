@@ -301,7 +301,17 @@ namespace Bam.Net
             return end.Subtract(start);
         }
 
-		public static TimeSpan TimeExecution<TInput, TResult>(this Func<TInput, TResult> func, TInput input, out TResult result)
+        /// <summary>
+        /// Execute the specified Func and return a TimeSpan
+        /// representing how much time it took to execute
+        /// </summary>
+        /// <typeparam name="TInput"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="func"></param>
+        /// <param name="input"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public static TimeSpan TimeExecution<TInput, TResult>(this Func<TInput, TResult> func, TInput input, out TResult result)
 		{
 			DateTime start = DateTime.Now;
 			result = func(input);
