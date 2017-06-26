@@ -68,6 +68,11 @@ namespace Bam.Net.Data.Repositories
 			this.AddType(typeof(T));
 		}
 
+        public void AddTypes(params Type[] types)
+        {
+            types.Each(type => AddType(type));
+        }
+
         /// <summary>
         /// Add the specified types as types that
         /// can be persisted by this repository
@@ -75,11 +80,8 @@ namespace Bam.Net.Data.Repositories
         /// <param name="types"></param>
 		public void AddTypes(IEnumerable<Type> types)
 		{
-			types.Each(type =>
-			{
-				AddType(type);
-			});
-		}
+            types.Each(type => AddType(type));
+        }
 
         /// <summary>
         /// Add the specified type as a type that

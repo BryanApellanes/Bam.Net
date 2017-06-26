@@ -409,7 +409,7 @@ namespace Bam.Net.UserAccounts.Tests
             Expect.AreEqual(userName, check);
         }
 
-        [UnitTest]
+        [IntegrationTest]
         public void SessionInitShouldSetHttpContextUser()
         {
             string userName = MethodBase.GetCurrentMethod().Name;

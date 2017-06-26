@@ -18,13 +18,16 @@ using Bam.Net.Testing;
 using Bam.Net.Services.AssemblyManagement;
 using Bam.Net.Services.Distributed.Files;
 using Bam.Net.Configuration;
+using Bam.Net.Services.Distributed.Files.Data;
+using Bam.Net.Testing.Integration;
 
 namespace Bam.Net.Services.Tests
 {
     [Serializable]
     public class AssemblyServiceTests: CommandLineTestInterface
     {
-        [UnitTest]
+        [IntegrationTest]
+        [ConsoleAction]
         public void ProcessRuntimeDescriptorTest()
         {
             ProcessRuntimeDescriptor instance = ProcessRuntimeDescriptor.GetCurrent();
@@ -115,29 +118,6 @@ namespace Bam.Net.Services.Tests
         }
 
         [UnitTest]
-        public void ProcessRuntimeDescriptorPersistRoundTrip()
-        {
-            AssemblyServiceRepository repo = GetAssemblyManagementRepository(GetConsoleLogger(), nameof(SaveDescriptorDoesntDuplicate));
-            repo.SetDaoNamespace<ProcessRuntimeDescriptor>();
-            repo.Database.TryEnsureSchema<Dao.AssemblyDescriptor>();
-            Dao.AssemblyDescriptor.LoadAll(repo.Database).Delete(repo.Database);
-            Dao.ProcessRuntimeDescriptor.LoadAll(repo.Database).Delete(repo.Database);
-
-            ProcessRuntimeDescriptor instance = ProcessRuntimeDescriptor.GetCurrent();
-            Expect.IsTrue(instance != null);
-            Expect.IsTrue(instance.AssemblyDescriptors.Length > 0);
-            foreach (AssemblyDescriptor assDecriptor in instance.AssemblyDescriptors)
-            {
-                Expect.IsNotNullOrEmpty(assDecriptor.Name);
-                Expect.IsNotNullOrEmpty(assDecriptor.FileHash);
-                Expect.IsNotNullOrEmpty(assDecriptor.AssemblyFullName);
-
-            }
-            ProcessRuntimeDescriptor saved = ProcessRuntimeDescriptor.PersistToRepo(repo, instance);
-            throw new NotImplementedException();
-        }
-
-        [UnitTest]
         public void CastNullToNullableLong()
         {
             long? one = (long?)1;
@@ -174,7 +154,8 @@ namespace Bam.Net.Services.Tests
             }
         }
 
-        [UnitTest]
+        [IntegrationTest]
+        [ConsoleAction]
         public void ProcessRuntimeDescriptorSaveTest()
         {
             AssemblyServiceRepository repo = GetAssemblyManagementRepository(GetConsoleLogger(), nameof(ProcessRuntimeDescriptorSaveTest));
@@ -203,11 +184,19 @@ namespace Bam.Net.Services.Tests
             }
         }
 
-        [UnitTest]
+        [IntegrationTest]
         public void LoadAndRestoreCurrentRuntimeTestAsync()
         {
             AssemblyServiceRepository assManRepo = GetTestRepo(nameof(LoadAndRestoreCurrentRuntimeTestAsync));
-            FileService fmSvc = new FileService(assManRepo);
+            DaoRepository fileRepo = new DaoRepository()
+            {
+                Database = assManRepo.Database
+            };
+            fileRepo.AddTypes(typeof(ChunkedFileDescriptor),
+                typeof(ChunkDataDescriptor),
+                typeof(ChunkData));
+            fileRepo.EnsureDaoAssemblyAndSchema();
+            FileService fmSvc = new FileService(fileRepo);
 
             AssemblyService svc = new AssemblyService(fmSvc, assManRepo, DefaultConfigurationApplicationNameProvider.Instance);
             ProcessRuntimeDescriptor prd1 = svc.CurrentProcessRuntimeDescriptor;

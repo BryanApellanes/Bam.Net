@@ -19,6 +19,7 @@ using Bam.Net.Data;
 using Bam.Net.Data.SQLite;
 using Bam.Net.Logging;
 using Bam.Net.Data.Repositories.Tests.TestDtos;
+using Bam.Net.Testing.Integration;
 
 namespace Bam.Net.Data.Repositories.Tests
 {
@@ -327,7 +328,7 @@ namespace Bam.Net.Data.Repositories.Tests
             Expect.AreEqual(1, result.Warnings.MissingKeyColumns.Length);
         }
 
-        [UnitTest]
+        [IntegrationTest]
         public void ShouldBeAbleToReflectOverGeneratedDaoAssembly()
         {
             DaoRepository daoRepo = GetTestDaoRepository();

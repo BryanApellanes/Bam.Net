@@ -10,6 +10,6 @@ namespace Bam.Net.Data.Repositories
     public interface IStorableTypesProvider
     {
         void AddTypes(IRepository repository);
-        IEnumerable<Type> GetTypes();
+        HashSet<Type> GetTypes();
     }
 }

@@ -18,6 +18,6 @@ namespace Bam.Net.Data.Repositories
             repository.AddTypes(GetTypes());
         }
 
-        public abstract IEnumerable<Type> GetTypes();
+        public abstract HashSet<Type> GetTypes();
     }
 }
