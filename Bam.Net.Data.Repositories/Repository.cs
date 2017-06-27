@@ -68,6 +68,11 @@ namespace Bam.Net.Data.Repositories
 			this.AddType(typeof(T));
 		}
 
+        public void AddTypes(params Type[] types)
+        {
+            types.Each(type => AddType(type));
+        }
+
         /// <summary>
         /// Add the specified types as types that
         /// can be persisted by this repository
@@ -75,11 +80,8 @@ namespace Bam.Net.Data.Repositories
         /// <param name="types"></param>
 		public void AddTypes(IEnumerable<Type> types)
 		{
-			types.Each(type =>
-			{
-				AddType(type);
-			});
-		}
+            types.Each(type => AddType(type));
+        }
 
         /// <summary>
         /// Add the specified type as a type that
@@ -128,8 +130,36 @@ namespace Bam.Net.Data.Repositories
 
         public object Save(object toSave)
         {
+            Args.ThrowIfNull(toSave, "toSave");
             return Save(toSave.GetType(), toSave);
         }
+
+        /// <summary>
+        /// The event that fires before an update is 
+        /// made by calling Save.  Will not fire on
+        /// calls direct to Update
+        /// </summary>
+        public event EventHandler Updating;
+        /// <summary>
+        /// The event that fires after an update is
+        /// made by calling Save.  Will not fire on
+        /// calls direct to Update
+        /// </summary>
+        public event EventHandler Updated;
+        /// <summary>
+        /// The event that fires before create is called by
+        /// Save.  Will not fire on
+        /// calls direct to Update
+        /// </summary>
+        public event EventHandler Creating;
+
+        /// <summary>
+        /// The event that fires after create is called by
+        /// Save.  Will not fire on
+        /// calls direct to Update
+        /// </summary>
+        public event EventHandler Created;
+
         /// <summary>
         /// Calls update for the specified object toSave if
         /// it has Id greater than 0 otherwise calls Create
@@ -145,17 +175,22 @@ namespace Bam.Net.Data.Repositories
 			object result = null;
 			if (id.HasValue && id.Value != 0)
 			{
+                FireEvent(Updating, new RepositoryEventArgs(toSave, type));                
 				result = Update(type, toSave);
-			}
+                FireEvent(Updated, new RepositoryEventArgs(result, type));
+            }
 			else
 			{
+                FireEvent(Creating, new RepositoryEventArgs(toSave, type));
 				result = Create(type, toSave);
+                FireEvent(Created, new RepositoryEventArgs(result, type));
 			}
 
             if(result is RepoData data)
             {
                 data.IsPersisted = true;
                 data.Repository = this;
+                return data;
             }
 
 			return result;

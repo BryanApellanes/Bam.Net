@@ -24,7 +24,6 @@ namespace Bam.Net.CoreServices.Tests
         static void Main(string[] args)
         {
             PreInit();
-            
             DefaultMethod = typeof(CommandLineTestInterface).GetMethod("Interactive");
 
             Initialize(args);

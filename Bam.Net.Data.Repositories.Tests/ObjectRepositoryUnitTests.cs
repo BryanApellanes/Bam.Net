@@ -268,6 +268,7 @@ namespace Bam.Net.Data.Repositories.Tests
 
             ObjectRepository repo = string.IsNullOrEmpty(root) ? new ObjectRepository() : new ObjectRepository(root);
 			repo.AddType(typeof(TestContainer));
+            repo.BlockOnChildWrites = true;
 			repo.Subscribe(logger);
 			return repo;
 		}

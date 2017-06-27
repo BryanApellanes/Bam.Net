@@ -99,6 +99,10 @@
       <Project>{3b52b739-58fd-4b49-b815-6b317e701520}</Project>
       <Name>Bam.Net.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Bam.Net.Services.Tests\Bam.Net.Services.Tests.csproj">
+      <Project>{a83bd6fe-9233-44e4-881a-6776f20ed31a}</Project>
+      <Name>Bam.Net.Services.Tests</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Bam.Net.Testing\Bam.Net.Testing.csproj">
       <Project>{85212881-c676-4b40-b311-37c2d1706042}</Project>
       <Name>Bam.Net.Testing</Name>

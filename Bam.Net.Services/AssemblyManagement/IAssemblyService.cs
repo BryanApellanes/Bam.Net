@@ -7,9 +7,7 @@ namespace Bam.Net.Services
 {
     public interface IAssemblyService
     {
-        Task<ProcessRuntimeDescriptor> PersistCurrentProcessRuntimeDescriptorTask { get; set; }
-
-        ProcessRuntimeDescriptor LoadCurrentRuntimeDescriptor();
+        ProcessRuntimeDescriptor CurrentProcessRuntimeDescriptor { get; set; }
         ProcessRuntimeDescriptor LoadRuntimeDescriptor(ProcessRuntimeDescriptor likeThis);
         ProcessRuntimeDescriptor LoadRuntimeDescriptor(string filePath, string commandLine, string machineName, string applicationName);
         void RestoreApplicationRuntime(string applicationName, string directoryPath);

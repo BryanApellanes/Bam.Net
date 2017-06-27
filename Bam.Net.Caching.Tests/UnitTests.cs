@@ -77,10 +77,10 @@ namespace Bam.Net.Caching.Tests
                 BinaryFileCache textCache = context.BinaryFileCache;
                 return textCache.GetBytes(testFile);
             };
-            byte[] bytesFromFile;
-            TimeSpan fromFileTime = readFromFile.TimeExecution<string, byte[]>(testFilePath, out bytesFromFile);
-            byte[] bytesFromCache;
-            TimeSpan fromCacheTime = readFromCache.TimeExecution<dynamic, byte[]>(new { BinaryFileCache = cache }, out bytesFromCache);
+            readFromFile(testFilePath); // prime
+            readFromCache(new { BinaryFileCache = cache }); //prime
+            TimeSpan fromFileTime = readFromFile.TimeExecution(testFilePath, out byte[] bytesFromFile);
+            TimeSpan fromCacheTime = readFromCache.TimeExecution(new { BinaryFileCache = cache }, out byte[] bytesFromCache);
 
             Expect.IsTrue(fromFileTime.CompareTo(fromCacheTime) == 1);
             
@@ -140,19 +140,20 @@ namespace Bam.Net.Caching.Tests
         [UnitTest]
         public void QueryCacheTest()
         {
-            SQLiteDatabase db = new SQLiteDatabase(nameof(QueryCacheTest));
-            DaoRepository repo = new DaoRepository(db);
-            repo.AddType<TestMonkey>();
+            DaoRepository daoRepo;
+            CachingRepository cachingRepo;
+            GetRepos(nameof(QueryCacheTest), out daoRepo, out cachingRepo);
+
             string name = 8.RandomLetters();
             TestMonkey data = new TestMonkey { Name = name };
-            repo.Save(data);
+            daoRepo.Save(data);
             QueryCache cache = new QueryCache();
             bool reloaded = false;
             cache.Reloaded += (o, c) => reloaded = true;
-            IEnumerable<object> results = cache.Results(typeof(TestMonkey), repo, Filter.Where("Name") == name);
+            IEnumerable<object> results = cache.Results(typeof(TestMonkey), daoRepo, Filter.Where("Name") == name);
             Expect.IsTrue(reloaded);
             reloaded = false;
-            results = cache.Results(typeof(TestMonkey), repo, Filter.Where("Name") == name);
+            results = cache.Results(typeof(TestMonkey), daoRepo, Filter.Where("Name") == name);
             Expect.IsFalse(reloaded);
             Expect.AreEqual(1, results.Count());
         }

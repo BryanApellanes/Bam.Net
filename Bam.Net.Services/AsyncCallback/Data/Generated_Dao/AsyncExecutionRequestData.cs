@@ -101,17 +101,17 @@ namespace Bam.Net.Services.AsyncCallback.Data.Dao
 		}
 	}
 
-	// property:Hash, columnName:Hash	
-	[Bam.Net.Data.Column(Name="Hash", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string Hash
+	// property:RequestHash, columnName:RequestHash	
+	[Bam.Net.Data.Column(Name="RequestHash", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string RequestHash
 	{
 		get
 		{
-			return GetStringValue("Hash");
+			return GetStringValue("RequestHash");
 		}
 		set
 		{
-			SetValue("Hash", value);
+			SetValue("RequestHash", value);
 		}
 	}
 

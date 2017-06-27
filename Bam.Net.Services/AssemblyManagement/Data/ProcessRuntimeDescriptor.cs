@@ -123,13 +123,17 @@ namespace Bam.Net.Services.AssemblyManagement.Data
         /// <returns></returns>
         public static ProcessRuntimeDescriptor PersistToRepo(IRepository repo, ProcessRuntimeDescriptor descriptor)
         {
+            Args.ThrowIfNull(repo, "repo");
+            Args.ThrowIfNull(descriptor, "descriptor");
+
             List<AssemblyDescriptor> descriptors = new List<AssemblyDescriptor>();
             foreach (AssemblyDescriptor assDescriptor in descriptor.AssemblyDescriptors)
             {
-                descriptors.Add(repo.Save(assDescriptor));
+                AssemblyDescriptor saved = repo.Save(assDescriptor);
+                descriptors.Add(saved);
             }
             descriptor.AssemblyDescriptors = descriptors.ToArray();
-            return repo.Save(descriptor);
+            return repo.Save(descriptor); 
         }
 
         static ProcessRuntimeDescriptor _current;
@@ -146,7 +150,7 @@ namespace Bam.Net.Services.AssemblyManagement.Data
             {
                 ProcessRuntimeDescriptor descriptor = new ProcessRuntimeDescriptor()
                 {
-                    AssemblyDescriptors = AssemblyDescriptor.GetCurrentAppDomainDescriptors().ToArray()
+                    AssemblyDescriptors = AssemblyDescriptor.AllCurrent
                 };
                 return descriptor;
             });

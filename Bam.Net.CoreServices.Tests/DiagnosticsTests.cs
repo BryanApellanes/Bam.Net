@@ -78,20 +78,34 @@ namespace Bam.Net.CoreServices.Tests
         public void LoadAssembliesAndReferenced()
         {
             Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            bool got = false;
+            bool gotReference = false;
             foreach(Assembly ass in assemblies)
             {
-                OutLineFormat("{0}: {1}", ass.FullName, ass.GetFileInfo().Sha1(), ConsoleColor.Blue);
-                OutLineFormat("{0}: {1}", ConsoleColor.Blue, ass.GetFilePath(), ass.FullName);
-                AssemblyName[] referenced = ass.GetReferencedAssemblies();
-                OutLine("referenced", ConsoleColor.DarkBlue);
-                foreach(AssemblyName name in referenced)
+                got = true;
+                try
                 {
-                    Assembly reference = Assembly.Load(name);
-                    OutLineFormat("\t{0}: {1}", ass.FullName, ass.GetFileInfo().Sha1(), ConsoleColor.Cyan);
-                    OutLineFormat("\t{0}: {1}", ConsoleColor.Cyan, ass.GetFilePath(), ass.FullName);
+                    OutLineFormat("{0}: {1}", ass.FullName, ass.GetFileInfo().Sha1(), ConsoleColor.Blue);
+                    OutLineFormat("{0}: {1}", ConsoleColor.Blue, ass.GetFilePath(), ass.FullName);
+                    AssemblyName[] referenced = ass.GetReferencedAssemblies();
+                    OutLine("referenced", ConsoleColor.DarkBlue);
+                    foreach (AssemblyName name in referenced)
+                    {
+                        gotReference = true;
+                        Assembly reference = Assembly.Load(name);
+                        OutLineFormat("\t{0}: {1}", ass.FullName, ass.GetFileInfo().Sha1(), ConsoleColor.Cyan);
+                        OutLineFormat("\t{0}: {1}", ConsoleColor.Cyan, ass.GetFilePath(), ass.FullName);
+                    }
+                    OutLine();
                 }
-                OutLine();
+                catch (Exception ex)
+                {
+                    OutLineFormat("Error outputting {0}:\r\n{1}", ConsoleColor.Yellow, ass.FullName, ex.Message);
+                }
             }
+
+            Expect.IsTrue(got, "didn't get any assemblies");
+            Expect.IsTrue(gotReference, "didn't get any references");
         }
     }
 }

@@ -50,7 +50,7 @@ namespace Bam.Net.Services
         public int AsyncWaitTimeout { get; set; }
 
         /// <summary>
-        /// Invoke the specified method asynchronously.  
+        /// Invoke the specified method asynchronously and unwrap the response.  
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="methodName"></param>
@@ -59,16 +59,30 @@ namespace Bam.Net.Services
         [Local]
         public Task<T> InvokeAsync<T>(string methodName, params object[] arguments)
         {
-            return Task.Run(() =>
+            return Task.Run<T>(() =>
             {
-                AutoResetEvent blocker = new AutoResetEvent(false);
                 Task<AsyncExecutionResponse> task = InvokeAsync(methodName, arguments);
                 task.Wait(AsyncWaitTimeout);
-
-                return (T)task.Result?.Result;
+                if(task.Result?.ResultJson != null)
+                {
+                    task.Result.Result = task.Result.ResultJson.FromJson<T>();
+                }   
+                
+                return (T)(task.Result?.Result);
             });
         }
 
+        /// <summary>
+        /// Invoke the specified method asynchronously and return the wrapped response.
+        /// If the call succeeded without errors on the server the Task.Result.Result 
+        /// will be the result of the method call.  If validation failed the 
+        /// Task.Result.Result will be the ValidationResult containing additional information
+        /// about the validation failure(s).  If an exception occurred the Task.Result.Result
+        /// will be the message of the exception that occurred.
+        /// </summary>
+        /// <param name="methodName"></param>
+        /// <param name="arguments"></param>
+        /// <returns></returns>
         [Local]
         public Task<AsyncExecutionResponse> InvokeAsync(string methodName,  params object[] arguments)
         {
@@ -82,7 +96,7 @@ namespace Bam.Net.Services
                     blocker.Set();
                 }, methodName, arguments);
 
-                blocker.WaitOne();
+                blocker.WaitOne(AsyncWaitTimeout);
 
                 return result;
             });
@@ -97,9 +111,31 @@ namespace Bam.Net.Services
         [Local]
         public void InvokeAsync(AsyncExecutionRequest request, Action<AsyncExecutionResponse> responseHandler = null)
         {
-            // TODO: check if the specified request has been made already by checking the hash
-            // add a parameter to specify how old a response needs to be to require re-invoking the request
             responseHandler = responseHandler ?? DefaultResponseHandler;
+            if (!request.UseCachedResponse)
+            {
+                CallExecuteRemoteAsync(request, responseHandler);
+            }
+            else
+            {
+                AsyncExecutionResponseData response = CallbackService.GetCachedResponse(request.GetRequestHash());
+                if (response != null && new Instant(DateTime.UtcNow).DiffInMinutes(response.Created.Value) <= request.ResponseMaxAgeInMinutes)
+                {
+                    AsyncExecutionResponse result = response.CopyAs<AsyncExecutionResponse>();
+                    result.Success = true;
+                    result.Request = request;
+                    result.ResultJson = response.ResultJson;
+                    responseHandler(result);
+                }
+                else
+                {
+                    CallExecuteRemoteAsync(request, responseHandler);
+                }
+            }
+        }
+
+        private void CallExecuteRemoteAsync(AsyncExecutionRequest request, Action<AsyncExecutionResponse> responseHandler)
+        {
             CallbackService.RegisterPendingAsyncExecutionRequest(request, responseHandler);
             ExecuteRemoteAsync(request);
         }
@@ -119,8 +155,22 @@ namespace Bam.Net.Services
                     Context = HttpContext,
                     JsonParams = request.JsonParams
                 };
-                execRequest.Execute();
-                asyncCallback.RecieveAsyncExecutionResponse(new AsyncExecutionResponse { Request = request, Result = execRequest.Result });
+                bool success = execRequest.Execute();
+                AsyncExecutionResponse response = new AsyncExecutionResponse
+                {
+                    Success = success,
+                    Request = request,
+                    Result = execRequest.Result
+                };
+                if (!success)
+                {
+                    if (execRequest?.Result is ValidationResult validation && validation.Success == false)
+                    {
+                        response.ValidationFailure = new ValidationFailure { Message = validation.Message, Failures = validation.ValidationFailures };
+                        response.Result = null;
+                    }
+                }
+                asyncCallback.RecieveAsyncExecutionResponse(response);
             });
         }
     }

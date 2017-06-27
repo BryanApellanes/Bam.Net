@@ -3168,6 +3168,18 @@
             <param name="result"></param>
             <returns></returns>
         </member>
+        <member name="M:Bam.Net.Exec.TimeExecution``2(System.Func{``0,``1},``0,``1@)">
+            <summary>
+            Execute the specified Func and return a TimeSpan
+            representing how much time it took to execute
+            </summary>
+            <typeparam name="TInput"></typeparam>
+            <typeparam name="TResult"></typeparam>
+            <param name="func"></param>
+            <param name="input"></param>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
         <member name="M:Bam.Net.UserUtil.StripDomain(System.String)">
             <summary>
             Returns the value at index 1 after splitting the specified name

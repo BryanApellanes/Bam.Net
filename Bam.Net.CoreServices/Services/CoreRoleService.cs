@@ -14,7 +14,7 @@ namespace Bam.Net.CoreServices
     /// </summary>
     [Proxy("coreRoles")]
     [Encrypt]
-    public class CoreRoleService : ProxyableService, IRoleProvider
+    public class CoreRoleService : CoreProxyableService, IRoleProvider
     {
         protected CoreRoleService() { } // required for proxy gen
         public CoreRoleService(IRoleProvider wrapped, AppConf conf)

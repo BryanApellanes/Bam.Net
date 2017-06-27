@@ -278,14 +278,14 @@ namespace Bam.Net
             }
         }
 
-        object _lock = new object();
+        static object _lock = new object();
         private bool AcquireLock(int timeoutInMilliseconds)
         {
             try
             {
-                EnsureRoot();
                 lock (_lock)
                 {
+                    EnsureRoot();
                     IpcMessageLockInfo lockInfo = new IpcMessageLockInfo();
                     bool timeoutExpired = Exec.TakesTooLong(() =>
                     {

@@ -25,11 +25,14 @@ namespace Bam.Net.Data.Repositories
 	public class RepositoryEventArgs: EventArgs
 	{
 		public RepositoryEventArgs() { }
-		public RepositoryEventArgs(object data)
-		{
-			this.Data = data;
-		}
-
+        public RepositoryEventArgs(object data)
+        {
+            Data = data;
+        }
+        public RepositoryEventArgs(object data, Type type) : this(data)
+        {
+            Type = type;
+        }
 		public RepositoryEventArgs(Exception ex)
 		{
 			this.Message = ex.Message;
@@ -38,7 +41,7 @@ namespace Bam.Net.Data.Repositories
 				this.Message = string.Format("{0}:\r\nStackTrace: \t{1}", Message, ex.StackTrace);
 			}
 		}
-
+        public Type Type { get; set; }
 		public object Data { get; private set; }
 
 		public string Message { get; set; }

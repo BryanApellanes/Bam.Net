@@ -43,6 +43,7 @@ namespace Bam.Net.Data.Repositories
                 FireEvent(GenerateDaoAssemblySucceeded, args);
             };
 
+            NullifyDaoAssemblyOnTypeAdd = true;
             WrapByDefault = true;
             WarningsAsErrors = true;
             Logger = Log.Default;
@@ -179,7 +180,12 @@ namespace Bam.Net.Data.Repositories
         public event EventHandler SchemaWarning;
 
         Assembly _daoAssembly;
-        protected Assembly DaoAssembly
+        /// <summary>
+        /// The assembly to look for Dao definitions in.
+        /// This may or may not be generated and can be
+        /// user/developer specified
+        /// </summary>
+        public Assembly DaoAssembly
         {
             get
             {
@@ -188,9 +194,19 @@ namespace Bam.Net.Data.Repositories
             set
             {
                 _daoAssembly = value;
+                NullifyDaoAssemblyOnTypeAdd = false;
             }
         }
         
+        /// <summary>
+        /// If true (the default) adding a type will set the DaoAssembly to null
+        /// effectively requiring that it be regenerated.  Directly
+        /// setting the DaoAssembly will set this to
+        /// false.  This can be set to false if the DaoAssembly
+        /// has already been set and you wish for it not to be reset.
+        /// </summary>
+        protected bool NullifyDaoAssemblyOnTypeAdd { get; set; }
+
         protected EnsureSchemaStatus SchemaStatus { get; set; }
         /// <summary>
         /// Generates a Dao Assembly for the underlying 
@@ -222,10 +238,34 @@ namespace Bam.Net.Data.Repositories
             base.Subscribe(logger);
         }
 
+        /// <summary>
+        /// Sets the DaoNamespace to equal the namespace
+        /// of the specified type with the suffix .Dao
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public string SetDaoNamespace<T>()
+        {
+            return SetDaoNamespace(typeof(T));
+        }
+
+        /// <summary>
+        /// Sets the DaoNamespace to equal the namespace of the specified
+        /// type with the suffix .Dao
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public string SetDaoNamespace(Type type)
+        {
+            DaoNamespace = $"{type.Namespace}.Dao";
+            return DaoNamespace;
+        }
+
         public Assembly GenerateDaoAssembly(bool useExisting = true)
         {
             Initialize();
             _daoAssembly = TypeDaoGenerator.GetDaoAssembly(useExisting);
+            Log.WarnIf(_daoAssembly == null, "Unable to generate dao assembly");
             return _daoAssembly;
         }
 
@@ -280,8 +320,15 @@ namespace Bam.Net.Data.Repositories
 			{
 				throw new NoIdPropertyException(type);
 			}
+            if(StorableTypes.Count() == 0)
+            {
+                SetDaoNamespace(type);
+            }
 			base.AddType(type);
-			_daoAssembly = null;
+            if (NullifyDaoAssemblyOnTypeAdd)
+            {
+                _daoAssembly = null;
+            }
 		}
 
 		/// <summary>
@@ -541,12 +588,44 @@ namespace Bam.Net.Data.Repositories
             return wrap ? Wrap(pocoType, daoResults) : daoResults.CopyAs(pocoType);
         }
 
+        Dictionary<Type, Type> _daoTypeLookup = new Dictionary<Type, Type>();
+        object _daoTypeResolverLock = new object();
 		public Type GetDaoType(Type pocoType)
 		{
-			Assembly daoAssembly = EnsureDaoAssemblyAndSchema();
-            Type baseType = GetBaseType(pocoType);
-			Type daoType = daoAssembly.GetType("{0}.{1}"._Format(TypeDaoGenerator.DaoNamespace, baseType.Name));
-			return daoType;
+            if (_daoTypeLookup.ContainsKey(pocoType))
+            {
+                return _daoTypeLookup[pocoType];
+            }
+            else
+            {
+                lock (_daoTypeResolverLock)
+                {
+                    Assembly daoAssembly = EnsureDaoAssemblyAndSchema();
+                    Type baseType = GetBaseType(pocoType);
+                    Type daoType = daoAssembly.GetType("{0}.{1}"._Format(TypeDaoGenerator.DaoNamespace, baseType.Name));
+                    if (daoType == null)
+                    {
+                        Type[] daoTypes = daoAssembly.GetTypes().Where(t => t.Name.Equals(baseType.Name) && t.IsSubclassOf(typeof(Dao))).ToArray();
+                        Type first = daoTypes.FirstOrDefault();
+                        if(daoTypes.Length > 1)
+                        {
+                            Logger.Warning("Multiple dao types found for poco type ({0}), using ({1}): {3}", pocoType.FullName, first.FullName, string.Join(",", daoTypes.Select(t => t.FullName).ToArray()));
+                        }
+                        daoType = first;
+                    }
+
+                    if (daoType == null)
+                    {
+                        Logger.Warning("Unable to get dao type for pocoType ({0}): \r\n\tDao Assembly={1}, \r\n\tBase Type={2}, \r\n\tDaoNamespace={3}", pocoType.GetType().Name, daoAssembly.GetFilePath(), baseType.Name, TypeDaoGenerator.DaoNamespace);
+                    }
+                    else
+                    {
+                        _daoTypeLookup.Set(pocoType, daoType);
+                    }
+
+                    return daoType;
+                }
+            }
 		}
 
         /// <summary>

@@ -12,7 +12,7 @@ namespace Bam.Net.CoreServices
 {
     [Proxy("coreUsers")]
     [Encrypt]
-    public class CoreUserRegistryService: ProxyableService, IUserManager, IUserResolver, IRoleResolver
+    public class CoreUserRegistryService: CoreProxyableService, IUserManager, IUserResolver, IRoleResolver
     {
         protected CoreUserRegistryService() { } // to enable auto proxy gen
         public CoreUserRegistryService(IDatabaseProvider dbProvider, IUserManager wrapped, IApplicationNameProvider appNameProvider, IUserResolver userResolver, IRoleResolver roleResolver)
@@ -27,7 +27,6 @@ namespace Bam.Net.CoreServices
             dbProvider.SetDatabases(ApplicationNameProvider);
             WireUserManagementEvents();
         }   
-        public IApplicationNameProvider ApplicationNameProvider { get; set; }
 
         [Exclude]
         public override object Clone()

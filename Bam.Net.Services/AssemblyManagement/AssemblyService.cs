@@ -24,7 +24,7 @@ namespace Bam.Net.Services
             AssemblyManagementRepository = repo;
             ApplicationNameProvider = appNameProvider;
             RuntimeRestored += applicationRestoredHandler ?? ((o, a) => { });
-            PersistCurrentProcessRuntimeDescriptorTask = Task.Run(() => LoadCurrentRuntimeDescriptor());
+            LoadCurrentRuntimeDescriptorTask = LoadCurrentRuntimeDescriptor();
         }
 
         public event EventHandler CurrentRuntimePersisted;
@@ -33,8 +33,7 @@ namespace Bam.Net.Services
         public FileService FileService { get; set; }
         public Repo.AssemblyServiceRepository AssemblyManagementRepository { get; set; }
         public IApplicationNameProvider ApplicationNameProvider { get; set; }
-
-        public Task<ProcessRuntimeDescriptor> PersistCurrentProcessRuntimeDescriptorTask { get; set; }
+        
 
         public Assembly ResolveAssembly(string assemblyName, string assemblyDirectory = null)
         {
@@ -56,28 +55,49 @@ namespace Bam.Net.Services
             }
             RestoreProcessRuntime(prd, directoryPath);           
         }
-
-        protected internal void CloneCurrentRuntime(string directoryPath)
-        {
-            RestoreProcessRuntime(LoadCurrentRuntimeDescriptor(), directoryPath);
-        }        
         
+        public void SetCurrentRuntimeDescriptor()
+        {
+            CurrentProcessRuntimeDescriptor = LoadCurrentRuntimeDescriptorTask.Result;
+        }
+
+        ProcessRuntimeDescriptor _current;
+        public ProcessRuntimeDescriptor CurrentProcessRuntimeDescriptor
+        {
+            get
+            {
+                if(_current == null)
+                {
+                    SetCurrentRuntimeDescriptor();
+                }
+                return _current;
+            }
+            set
+            {
+                _current = value;
+            }
+        }
+
+        protected internal Task<ProcessRuntimeDescriptor> LoadCurrentRuntimeDescriptorTask { get;  }
         /// <summary>
         /// Loads the current ProcessRuntimeDescriptor persisting it 
         /// if it isn't found
         /// </summary>
         /// <returns></returns>
-        public ProcessRuntimeDescriptor LoadCurrentRuntimeDescriptor()
+        protected internal Task<ProcessRuntimeDescriptor> LoadCurrentRuntimeDescriptor()
         {
-            ProcessRuntimeDescriptor current = ProcessRuntimeDescriptor.GetCurrent();
-            ProcessRuntimeDescriptor retrieved = LoadRuntimeDescriptor(current);
-
-            if (retrieved == null)
+            return Task.Run(() =>
             {
-                retrieved = PersistRuntimeDescriptor(current);
-            }
+                ProcessRuntimeDescriptor current = ProcessRuntimeDescriptor.GetCurrent();
+                ProcessRuntimeDescriptor retrieved = LoadRuntimeDescriptor(current);
 
-            return retrieved;
+                if (retrieved == null)
+                {
+                    retrieved = PersistRuntimeDescriptor(current);
+                }
+
+                return retrieved;
+            });
         }
 
         public ProcessRuntimeDescriptor PersistRuntimeDescriptor(ProcessRuntimeDescriptor runtimeDescriptor)

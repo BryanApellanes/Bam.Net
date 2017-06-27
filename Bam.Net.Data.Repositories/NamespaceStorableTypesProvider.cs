@@ -25,19 +25,21 @@ namespace Bam.Net.CoreServices
             }
         }
         public string[] Namespaces { get; set; }
-        public override IEnumerable<Type> GetTypes()
+        public override HashSet<Type> GetTypes()
         {
             List<string> namespaces = new List<string>(Namespaces);
+            HashSet<Type> result = new HashSet<Type>();
             foreach(Assembly ass in AppDomain.CurrentDomain.GetAssemblies())
             {
                 foreach(Type type in ass.GetTypes().Where(TypeDaoGenerator.ClrDaoTypeFilter))
                 {
                     if (namespaces.Contains(type.Namespace))
                     {
-                        yield return type;
+                        result.Add(type);
                     }
                 }
             }
+            return result;
         }
     }
 }

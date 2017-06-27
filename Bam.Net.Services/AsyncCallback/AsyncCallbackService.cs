@@ -22,10 +22,6 @@ namespace Bam.Net.Services
         Dictionary<string, Action<AsyncExecutionResponse>> _pendingRequests;
         ServiceProxyServer _server;
         object _serverLock = new object();
-        //static AsyncCallbackService()
-        //{
-        //    _pendingRequests = new Dictionary<string, Action<AsyncExecutionResponse>>();
-        //}
 
         protected AsyncCallbackService() { }
 
@@ -61,12 +57,12 @@ namespace Bam.Net.Services
                     _server = this.Serve(HostPrefix, Logger);
                 }
             }
-            SaveExecutionData(request);
+            SaveExecutionRequestData(request);
             _pendingRequests.Set(request.Cuid, handler);
         }
 
         object _popLock = new object();
-        public virtual void RecieveAsyncExecutionResponse(AsyncExecutionResponse result)
+        public virtual void RecieveAsyncExecutionResponse(AsyncExecutionResponse result) // called by the server side to send responses
         {
             Args.ThrowIfNull(result, "result");
             Args.ThrowIfNull(result.Request, "result.Request");
@@ -86,7 +82,7 @@ namespace Bam.Net.Services
             }
             Task.Run(() => 
             {
-                //SaveResponseData(result); //TODO: address the problems here
+                SaveResponseData(result); 
                 action(result);
             });
         }
@@ -111,6 +107,12 @@ namespace Bam.Net.Services
         }
 
         [Local]
+        public AsyncExecutionResponseData GetCachedResponse(string requestHash)
+        {
+            return AsyncCallbackRepository.OneAsyncExecutionResponseDataWhere(c => c.RequestHash == requestHash);
+        }
+
+        [Local]
         public AsyncExecutionRequest CreateRequest(Type type, string methodName, params object[] arguments)
         {
             return new AsyncExecutionRequest
@@ -128,6 +130,8 @@ namespace Bam.Net.Services
         {
             Args.ThrowIfNull(response, "response");
             Args.ThrowIfNull(response.Request, "response.Request");
+            response.ResultJson = response.Result?.ToJson() ?? "";
+            string responseHash = response.ResultJson.Sha256();
 
             AsyncExecutionData executionData = AsyncCallbackRepository.OneAsyncExecutionDataWhere(c => c.RequestCuid == response.Request.Cuid);
             if(executionData == null)
@@ -136,9 +140,6 @@ namespace Bam.Net.Services
             }
             else
             {
-                response.ResultJson = response.Result?.ToJson() ?? "";
-                string responseHash = response.ResultJson.Sha256();
-
                 executionData.ResponseCuid = response.Cuid;
                 executionData.Responded = new Instant(DateTime.UtcNow);
                 executionData.ResponseHash = responseHash;
@@ -163,17 +164,19 @@ namespace Bam.Net.Services
                 responseData = new AsyncExecutionResponseData
                 {
                     RequestId = requestData.Id,
-                    ResultJson = response.ResultJson
+                    ResultJson = response.ResultJson,
+                    ResponseHash = responseHash,
+                    RequestHash = requestData.RequestHash
                 };
 
                 AsyncCallbackRepository.Save(responseData);
             }
         }
 
-        private void SaveExecutionData(AsyncExecutionRequest request)
+        private void SaveExecutionRequestData(AsyncExecutionRequest request)
         {
             string requestHash = request.GetRequestHash();
-            AsyncExecutionData executionData = AsyncCallbackRepository.OneAsyncExecutionDataWhere(c => c.RequestCuid == request.Cuid);
+            AsyncExecutionData executionData = AsyncCallbackRepository.OneAsyncExecutionDataWhere(c => c.RequestHash == requestHash);
             if (executionData == null)
             {                
                 executionData = new AsyncExecutionData
@@ -186,24 +189,30 @@ namespace Bam.Net.Services
             }
             else
             {
-                Logger.Warning("AsyncExecutionRequest was already persisted: {0}", request.Cuid);
+                Logger.Warning("AsyncExecutionData was already persisted: Request.Cuid={0}, RequestHash={1}", executionData.RequestCuid, requestHash);
             }
             SaveRequestData(request, requestHash);
         }
 
         private void SaveRequestData(AsyncExecutionRequest request, string requestHash)
         {
-            AsyncExecutionRequestData requestData = AsyncCallbackRepository.OneAsyncExecutionRequestDataWhere(c => c.Hash == requestHash);
+            AsyncExecutionRequestData requestData = AsyncCallbackRepository.OneAsyncExecutionRequestDataWhere(c => c.RequestHash == requestHash);
             if (requestData == null)
             {
                 requestData = new AsyncExecutionRequestData
                 {
-                    Hash = requestHash,
+                    Cuid = request.Cuid,
+                    RequestHash = requestHash,
                     ClassName = request.ClassName,
                     MethodName = request.MethodName,
                     JsonParams = request.JsonParams
                 };
+                Expect.AreEqual(requestHash, requestData.GetRequestHash());
                 AsyncCallbackRepository.Save(requestData);
+            }
+            else
+            {
+                Logger.Warning("AsyncExecutionRequestData was already persisted: RequestHash={0}", requestHash);
             }
         }
     }

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Bam.Net.CoreServices.Data.Dao.Repository;
 using Bam.Net.Data.Repositories;
 using Bam.Net.ServiceProxy;
+using Newtonsoft.Json;
 
 namespace Bam.Net.CoreServices.Data
 {
@@ -92,6 +93,14 @@ namespace Bam.Net.CoreServices.Data
                 existing = repo.Save(this);
             }                        
             return existing;
+        }
+
+        public string ToJson()
+        {
+            return Extensions.ToJson(this, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
         }
 
         private void SetNics()

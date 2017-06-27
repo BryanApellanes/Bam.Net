@@ -73,7 +73,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyManagementServiceTests.cs" />
+    <Compile Include="AssemblyServiceTests.cs" />
     <Compile Include="AsyncProxyableEcho.cs" />
     <Compile Include="AsyncProxyableServiceTests.cs" />
     <Compile Include="ConsoleActions.cs" />

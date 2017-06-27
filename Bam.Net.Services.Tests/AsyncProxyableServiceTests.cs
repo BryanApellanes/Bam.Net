@@ -20,26 +20,50 @@ namespace Bam.Net.Services.Tests
         [UnitTest]
         public void ShouldBeAbleToUseInvokeAsync()
         {
-            BamServer server;
-            SecureServiceProxyClient<AsyncProxyableEcho> sspc;
-            ServiceProxyTestHelpers.StartSecureChannelTestServerGetClient(out server, out sspc);
-            ConsoleLogger logger = GetTestConsoleLogger();
-            ProxyFactory serviceFactory = new ProxyFactory(".\\workspace_".RandomLetters(4), logger);
+            AsyncProxyableEcho testObj = GetTestAsyncProxyable();
+
+            AutoResetEvent blocker = new AutoResetEvent(false);
             string value = "this is a value: ".RandomString(8);
             bool? ran = false;
-            AsyncCallbackService callbackService = new AsyncCallbackService(new AsyncCallback.Data.Dao.Repository.AsyncCallbackRepository(), new AppConf());
-            AsyncProxyableEcho testObj = serviceFactory.GetProxy<AsyncProxyableEcho>("localhost", 8080);
-            testObj.CallbackService = callbackService;
-            AutoResetEvent blocker = new AutoResetEvent(false);
             testObj.InvokeAsync(r =>
             {
                 ran = true;
                 Expect.AreEqual(value, r.Result);
                 blocker.Set();
             }, "Send", value);
-            blocker.WaitOne();
+            blocker.WaitOne(1000*60*3);
 
+            StopServers();
             Expect.IsTrue(ran.Value);
+        }
+
+        [UnitTest]
+        public void ShouldBeAbleToUseGenericInvokeAsync()
+        {
+            AsyncProxyableEcho testObj = GetTestAsyncProxyable();
+
+            AutoResetEvent blocker = new AutoResetEvent(false);
+            string value = "this is a value: ".RandomString(8);
+            Task<string> task = testObj.InvokeAsync<string>("Send", value);
+            task.Wait(1000 * 60 * 30);
+
+            StopServers();
+            Expect.AreEqual(value, task.Result);
+        }
+
+        [UnitTest]
+        public void ShouldUseCacheInvokeAsync()
+        {
+            AsyncProxyableEcho testObj = GetTestAsyncProxyable();
+
+            AutoResetEvent blocker = new AutoResetEvent(false);
+            string value = "this is a value";
+            Task<string> task = testObj.InvokeAsync<string>("Send", value);
+            task.Wait(1000 * 60 * 30);
+
+            StopServers();
+            Expect.AreEqual(value, task.Result);
+            // TODO: add better assertions that validate that the remote call wasn't made and the result was retrieved from the local repo
         }
 
         [UnitTest]
@@ -59,6 +83,22 @@ namespace Bam.Net.Services.Tests
             logger.AddDetails = false;
             logger.StartLoggingThread();
             return logger;
+        }
+
+        private static AsyncProxyableEcho GetTestAsyncProxyable()
+        {
+            ServiceProxyTestHelpers.StartSecureChannelTestServerGetClient(out BamServer server, out SecureServiceProxyClient<AsyncProxyableEcho> sspc);
+            ConsoleLogger logger = GetTestConsoleLogger();
+            ProxyFactory serviceFactory = new ProxyFactory(".\\workspace_".RandomLetters(4), logger);
+            AsyncCallbackService callbackService = new AsyncCallbackService(new AsyncCallback.Data.Dao.Repository.AsyncCallbackRepository(), new AppConf());
+            AsyncProxyableEcho testObj = serviceFactory.GetProxy<AsyncProxyableEcho>("localhost", 8080); // the "server"
+            testObj.CallbackService = callbackService;
+            return testObj;
+        }
+
+        private static void StopServers()
+        {
+            ServiceProxyTestHelpers.Servers.Each(s => s.Stop());
         }
     }
 }

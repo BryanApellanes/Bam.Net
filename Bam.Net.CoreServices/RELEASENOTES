@@ -1,1 +1,4 @@
 
+ -   fix NSubstitute version (f85d8d3)
+ -   correct serialization (271733a)
+ -   service registry and support for async proxy calls (cdb8b0b)

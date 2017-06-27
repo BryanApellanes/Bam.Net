@@ -30,6 +30,7 @@ using System.Collections.Specialized;
 using Bam.Net.Data.Dynamic;
 using Bam.Net.Services.Distributed;
 using Bam.Net.Incubation;
+using Bam.Net.Testing.Integration;
 
 namespace Bam.Net.CoreServices.Tests
 {
@@ -227,7 +228,7 @@ namespace Bam.Net.CoreServices.Tests
         }
 
         //      - if organization doesn't exist gets created
-        [UnitTest]
+        [IntegrationTest]
         public void OrganizationGetsCreated()
         {
             Log.Default = new ConsoleLogger();
@@ -329,7 +330,10 @@ namespace Bam.Net.CoreServices.Tests
         public void SavingMachineSavesNicsAndHostAddresses()
         {
             Machine machine = new Machine();
-            CoreRegistryRepository repo = new CoreRegistryRepository() { Database = new SQLiteDatabase($".\\{nameof(SavingMachineSavesNicsAndHostAddresses)}", "CoreRegistryRepository") };
+            Database db = new SQLiteDatabase($".\\{nameof(SavingMachineSavesNicsAndHostAddresses)}", "CoreRegistryRepository");
+            db.TryEnsureSchema<Data.Dao.Nic>();
+            CoreRegistryRepository repo = new CoreRegistryRepository() { Database = db };
+
             Data.Dao.Nic.LoadAll(repo.Database).Delete(repo.Database);
             Data.Dao.HostAddress.LoadAll(repo.Database).Delete(repo.Database);
             Data.Dao.Machine.LoadAll(repo.Database).Delete(repo.Database);
@@ -431,7 +435,7 @@ namespace Bam.Net.CoreServices.Tests
 
         // CoreApiKeyResolverClient
         //      - uses CoreApplicationRegistryService client
-        [UnitTest]
+        [IntegrationTest]
         public void TestTheSetup()
         {
             CoreApplicationRegistryService svc = GetTestService();

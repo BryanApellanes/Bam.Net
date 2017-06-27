@@ -115,6 +115,34 @@ namespace Bam.Net.Services.AsyncCallback.Data.Dao
 		}
 	}
 
+	// property:ResponseHash, columnName:ResponseHash	
+	[Bam.Net.Data.Column(Name="ResponseHash", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string ResponseHash
+	{
+		get
+		{
+			return GetStringValue("ResponseHash");
+		}
+		set
+		{
+			SetValue("ResponseHash", value);
+		}
+	}
+
+	// property:RequestHash, columnName:RequestHash	
+	[Bam.Net.Data.Column(Name="RequestHash", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string RequestHash
+	{
+		get
+		{
+			return GetStringValue("RequestHash");
+		}
+		set
+		{
+			SetValue("RequestHash", value);
+		}
+	}
+
 	// property:ResultJson, columnName:ResultJson	
 	[Bam.Net.Data.Column(Name="ResultJson", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
 	public string ResultJson

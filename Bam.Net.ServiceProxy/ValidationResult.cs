@@ -50,27 +50,27 @@ namespace Bam.Net.ServiceProxy
             
             if (string.IsNullOrWhiteSpace(_toValidate.ClassName))
             {
-                failures.Add(ValidationFailures.ClassNameNotSpecified);
+                failures.Add(ServiceProxy.ValidationFailures.ClassNameNotSpecified);
                 messages.Add("ClassName not specified");
             }
 
             if (_toValidate.TargetType == null)
             {
-                failures.Add(ValidationFailures.ClassNotRegistered);
+                failures.Add(ServiceProxy.ValidationFailures.ClassNotRegistered);
                 messages.Add("Class {0} was not registered as a proxied service.  Register the class with the ServiceProxySystem first."._Format(_toValidate.ClassName));
             }
 
             if (string.IsNullOrWhiteSpace(_toValidate.MethodName))
             {
-                failures.Add(ValidationFailures.MethodNameNotSpecified);
+                failures.Add(ServiceProxy.ValidationFailures.MethodNameNotSpecified);
                 messages.Add("MethodName not specified");
             }
 
             if (_toValidate.TargetType != null && _toValidate.MethodInfo == null)
             {
-                failures.Add(ValidationFailures.MethodNotFound);
+                failures.Add(ServiceProxy.ValidationFailures.MethodNotFound);
                 string message = "Method ({0}) was not found"._Format(_toValidate.MethodName);
-                if (!failures.Contains(ValidationFailures.ClassNameNotSpecified))
+                if (!failures.Contains(ServiceProxy.ValidationFailures.ClassNameNotSpecified))
                 {
                     message = "{0} on class ({1})"._Format(message, _toValidate.ClassName);
                 }
@@ -81,20 +81,19 @@ namespace Bam.Net.ServiceProxy
                 _toValidate.MethodInfo != null &&
                 _toValidate.MethodInfo.HasCustomAttributeOfType<ExcludeAttribute>())
             {
-                failures.Add(ValidationFailures.MethodNotProxied);
+                failures.Add(ServiceProxy.ValidationFailures.MethodNotProxied);
                 messages.Add("The specified method has been explicitly excluded from being proxied: {0}"._Format(_toValidate.MethodName));
             }
 
             if (_toValidate.ParameterInfos != null && _toValidate.ParameterInfos.Length != _toValidate.Parameters.Length)
             {
-                failures.Add(ValidationFailures.ParameterCountMismatch);
+                failures.Add(ServiceProxy.ValidationFailures.ParameterCountMismatch);
                 messages.Add("Wrong number of parameters specified: expected ({0}), recieved ({1})"._Format(_toValidate.ParameterInfos.Length, _toValidate.Parameters.Length));
             }
 
-            RoleRequiredAttribute requiredMethodRoles;
-            if (_toValidate.TargetType != null && 
+            if (_toValidate.TargetType != null &&
                 _toValidate.MethodInfo != null &&
-                _toValidate.MethodInfo.HasCustomAttributeOfType<RoleRequiredAttribute>(true, out requiredMethodRoles))
+                _toValidate.MethodInfo.HasCustomAttributeOfType(true, out RoleRequiredAttribute requiredMethodRoles))
             {
                 if (requiredMethodRoles.Roles.Length > 0)
                 {
@@ -102,9 +101,8 @@ namespace Bam.Net.ServiceProxy
                 }
             }
 
-            RoleRequiredAttribute requiredClassRoles;
             if (_toValidate.TargetType != null &&
-                _toValidate.TargetType.HasCustomAttributeOfType<RoleRequiredAttribute>(true, out requiredClassRoles))
+                _toValidate.TargetType.HasCustomAttributeOfType(true, out RoleRequiredAttribute requiredClassRoles))
             {
                 if (requiredClassRoles.Roles.Length > 0)
                 {
@@ -112,14 +110,13 @@ namespace Bam.Net.ServiceProxy
                 }
             }
 
-            ApiKeyRequiredAttribute keyRequired;
-            if(_toValidate.TargetType != null &&
-                _toValidate.TargetType.HasCustomAttributeOfType<ApiKeyRequiredAttribute>(true, out keyRequired))
+            if (_toValidate.TargetType != null &&
+                _toValidate.TargetType.HasCustomAttributeOfType(true, out ApiKeyRequiredAttribute keyRequired))
             {
                 ValidateApiKeyToken(failures, messages);
             }
 
-            ValidationFailure = failures.ToArray();
+            ValidationFailures = failures.ToArray();
             Message = messages.ToArray().ToDelimited(s => s, Delimiter);
             this.Success = failures.Count == 0;
         }
@@ -129,7 +126,7 @@ namespace Bam.Net.ServiceProxy
             IApiKeyResolver resolver = _toValidate.ApiKeyResolver;
             if (!resolver.IsValidRequest(_toValidate))
             {
-                failures.Add(ValidationFailures.InvalidApiKeyToken);
+                failures.Add(ServiceProxy.ValidationFailures.InvalidApiKeyToken);
                 messages.Add("ApiKeyValidation failed");
             }
         }
@@ -144,15 +141,15 @@ namespace Bam.Net.ServiceProxy
                     switch (tokenStatus)
                     {
                         case EncryptedTokenValidationStatus.Unkown:
-                            failures.Add(ValidationFailures.UnknownTokenValidationResult);
+                            failures.Add(ServiceProxy.ValidationFailures.UnknownTokenValidationResult);
                             messages.Add("ApiEncryptionValidation.ValidateToken failed");
                             break;
                         case EncryptedTokenValidationStatus.HashFailed:
-                            failures.Add(ValidationFailures.TokenHashFailed);
+                            failures.Add(ServiceProxy.ValidationFailures.TokenHashFailed);
                             messages.Add("ApiEncryptionValidation.ValidateToken failed: TokenHashFailed");
                             break;
                         case EncryptedTokenValidationStatus.NonceFailed:
-                            failures.Add(ValidationFailures.TokenNonceFailed);
+                            failures.Add(ServiceProxy.ValidationFailures.TokenNonceFailed);
                             messages.Add("ApiEncryptionValidation.ValidateToken failed: TokenNonceFailed");
                             break;
                         case EncryptedTokenValidationStatus.Success:
@@ -161,7 +158,7 @@ namespace Bam.Net.ServiceProxy
                 }
                 catch (Exception ex)
                 {
-                    failures.Add(ValidationFailures.TokenValidationError);
+                    failures.Add(ServiceProxy.ValidationFailures.TokenValidationError);
                     messages.Add(ex.Message);
                 }
             }
@@ -187,7 +184,7 @@ namespace Bam.Net.ServiceProxy
 
             if (!passed)
             {
-                failures.Add(ValidationFailures.PermissionDenied);
+                failures.Add(ServiceProxy.ValidationFailures.PermissionDenied);
                 messages.Add("Permission Denied");
             }
         }
@@ -195,6 +192,6 @@ namespace Bam.Net.ServiceProxy
         internal string Delimiter { get; set; }
         public bool Success { get; set; }
         public string Message { get; private set; }
-        public ValidationFailures[] ValidationFailure { get; set; }
+        public ValidationFailures[] ValidationFailures { get; set; }
     }
 }

@@ -13,6 +13,13 @@ namespace Bam.Net.Services
     /// </summary>
     public class AsyncExecutionRequest: AsyncExecutionRequestData
     {
+        public AsyncExecutionRequest()
+        {
+            ResponseMaxAgeInMinutes = 3;
+            UseCachedResponse = true;
+        }
+        public int ResponseMaxAgeInMinutes { get; set; }
+        public bool UseCachedResponse { get; set; }
         public string RespondToHostName { get; set; }
         public int RespondToPort { get; set; }
         public bool Ssl { get; set; }
