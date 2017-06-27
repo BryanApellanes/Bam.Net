@@ -118,6 +118,7 @@
     <Compile Include="Book.cs" />
     <Compile Include="CloseParen.cs" />
     <Compile Include="ColumnAttribute.cs" />
+    <Compile Include="ColumnNameListProvider.cs" />
     <Compile Include="CommitDelegate.cs" />
     <Compile Include="Comparison.cs" />
     <Compile Include="ConfiguredDatabaseFactory.cs" />
