@@ -1,1 +1,5 @@
 
+ -   warn if multiple dao types (edb6e61)
+ -   more robust dao type resolution (4e2cce6)
+ -   better namespace handling (af32de4)
+ -   refactor, add DeleteWhere methods (e0253e2)

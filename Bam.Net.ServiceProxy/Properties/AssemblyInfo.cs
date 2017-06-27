@@ -45,6 +45,6 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("Bam.Net.ServiceProxy.Tests")]
 [assembly: InternalsVisibleTo("Bam.Net.Services")]
 
-[assembly: AssemblyVersion("1.6.0")]
-[assembly: AssemblyFileVersion("1.6.0")]
+[assembly: AssemblyVersion("1.6.1")]
+[assembly: AssemblyFileVersion("1.6.1")]
 

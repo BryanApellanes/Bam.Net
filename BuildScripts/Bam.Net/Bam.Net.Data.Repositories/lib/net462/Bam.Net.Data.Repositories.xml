@@ -364,11 +364,43 @@
             hit for large result sets.
             </summary>
         </member>
+        <member name="P:Bam.Net.Data.Repositories.DaoRepository.DaoAssembly">
+            <summary>
+            The assembly to look for Dao definitions in.
+            This may or may not be generated and can be
+            user/developer specified
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.Repositories.DaoRepository.NullifyDaoAssemblyOnTypeAdd">
+            <summary>
+            If true (the default) adding a type will set the DaoAssembly to null
+            effectively requiring that it be regenerated.  Directly
+            setting the DaoAssembly will set this to
+            false.  This can be set to false if the DaoAssembly
+            has already been set and you wish for it not to be reset.
+            </summary>
+        </member>
         <member name="M:Bam.Net.Data.Repositories.DaoRepository.EnsureDaoAssemblyAndSchema(System.Boolean)">
             <summary>
             Generates a Dao Assembly for the underlying 
             storable types if it has not yet been generated
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.DaoRepository.SetDaoNamespace``1">
+            <summary>
+            Sets the DaoNamespace to equal the namespace
+            of the specified type with the suffix .Dao
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.DaoRepository.SetDaoNamespace(System.Type)">
+            <summary>
+            Sets the DaoNamespace to equal the namespace of the specified
+            type with the suffix .Dao
+            </summary>
+            <param name="type"></param>
             <returns></returns>
         </member>
         <member name="M:Bam.Net.Data.Repositories.DaoRepository.ToDto(System.Object)">
@@ -817,6 +849,34 @@
             as the specified type
             </summary>
             <param name="type"></param>
+        </member>
+        <member name="E:Bam.Net.Data.Repositories.Repository.Updating">
+            <summary>
+            The event that fires before an update is 
+            made by calling Save.  Will not fire on
+            calls direct to Update
+            </summary>
+        </member>
+        <member name="E:Bam.Net.Data.Repositories.Repository.Updated">
+            <summary>
+            The event that fires after an update is
+            made by calling Save.  Will not fire on
+            calls direct to Update
+            </summary>
+        </member>
+        <member name="E:Bam.Net.Data.Repositories.Repository.Creating">
+            <summary>
+            The event that fires before create is called by
+            Save.  Will not fire on
+            calls direct to Update
+            </summary>
+        </member>
+        <member name="E:Bam.Net.Data.Repositories.Repository.Created">
+            <summary>
+            The event that fires after create is called by
+            Save.  Will not fire on
+            calls direct to Update
+            </summary>
         </member>
         <member name="M:Bam.Net.Data.Repositories.Repository.Save(System.Type,System.Object)">
             <summary>
