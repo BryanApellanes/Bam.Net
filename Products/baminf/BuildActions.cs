@@ -104,6 +104,7 @@ DEL /F /Q .\BamDotExe\lib\%LIB%\*");
             pushScript.AppendLine("@echo on");
             pushScript.AppendLine($@"nuget push {NugetReleaseDirectory}BamToolkit.%1.nupkg");
             pushScript.AppendLine($@"nuget push {NugetReleaseDirectory}BamDotExe.%1.nupkg");
+            pushScript.AppendLine($@"nuget push {NugetReleaseDirectory}Bam.Net.Data.%1.nupkg");
 
             DirectoryInfo outputDir = new DirectoryInfo(GetOutputDirectory());
             using (StreamReader sr = new StreamReader(dllListPath))
