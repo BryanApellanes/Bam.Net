@@ -1,4 +1,1 @@
 
- -   refactor, add support for async proxy calls (7af7370)
- -   rename internal class for clarity (931e04c)
- -   use sha256 instead of sha1 (7a4eb58)

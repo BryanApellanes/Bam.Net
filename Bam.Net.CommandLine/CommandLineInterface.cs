@@ -320,9 +320,8 @@ namespace Bam.Net.CommandLine
                     _promptProvider = (message, promptTxt, colors, allowQuit) =>
                     {
                         Out(message, colors);
-                        Console.Write(promptTxt);
+                        Out(promptTxt);
                         string answer = Console.ReadLine();
-                        //answer = answer.TruncateFront(message.Length + promptTxt.Length);
 
                         if (allowQuit && answer.ToLowerInvariant().Equals("q"))
                         {

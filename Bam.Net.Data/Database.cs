@@ -55,6 +55,36 @@ namespace Bam.Net.Data
                 return _infosLock.DoubleCheckLock(ref _infos, () => new HashSet<DatabaseInfo>());
             }
         }
+        public static ColumnNameListProvider Star
+        {
+            get
+            {
+                return (type, db) => "*";
+            }
+        }
+
+        public static ColumnNameListProvider ColumnNames
+        {
+            get
+            {
+                return (type, db) => ColumnAttribute.GetColumns(type).ToDelimited(c => db.ColumnNameProvider(c));
+            }
+        }
+
+        public ColumnNameListProvider ColumnNameListProvider
+        {
+            get
+            {
+                return SelectStar ? Star : ColumnNames;
+            }
+        }
+        /// <summary>
+        /// When true will use Star instead of ColumnNames when executing Query instances
+        /// </summary>
+        public bool SelectStar
+        {
+            get; set;
+        }
 
         public DaoTransaction BeginTransaction()
         {

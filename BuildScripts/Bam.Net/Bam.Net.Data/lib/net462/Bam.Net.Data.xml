@@ -648,6 +648,11 @@
             <param name="pageNum"></param>
             <returns></returns>
         </member>
+        <member name="P:Bam.Net.Data.Database.SelectStar">
+            <summary>
+            When true will use Star instead of ColumnNames when executing Query instances
+            </summary>
+        </member>
         <member name="P:Bam.Net.Data.Database.ConnectionName">
             <summary>
             Used to locate the connection string in the 
