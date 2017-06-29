@@ -310,6 +310,33 @@ namespace Bam.Net.CommandLine
             return PromptProvider(message, promptTxt, colors, allowQuit);
         }
 
+        public static T SelectFrom<T>(IEnumerable<T> options, string prompt = "Select an option from the list", ConsoleColor color = ConsoleColor.DarkCyan)
+        {
+            return SelectFrom<T>(options, (t) => t.ToString(), prompt, color);
+        }
+
+        public static T SelectFrom<T>(IEnumerable<T> options, Func<T, string> optionTextSelector, string prompt = "Select an option from the list", ConsoleColor color = ConsoleColor.DarkCyan)
+        {
+            T[] optionsArray = options.ToArray();
+            string[] optionStrings = options.Select(optionTextSelector).ToArray();
+            return optionsArray[SelectFrom(optionStrings, prompt, color)];
+        }
+
+        public static int SelectFrom(string[] options, string prompt = "Select an option from the list", ConsoleColor color = ConsoleColor.Cyan)
+        {
+            StringBuilder list = new StringBuilder();
+            for (int i = 0; i < options.Length; i++)
+            {
+                list.AppendFormat("{0}. {1}\r\n", (i + 1).ToString(), options[i]);
+            }
+            list.AppendLine();
+            list.Append(prompt);
+            int value = NumberPrompt(list.ToString(), color) - 1;
+            Args.ThrowIf(value < 0, "Invalid selection");
+            Args.ThrowIf(value > options.Length - 1, "Invalid selection");
+            return value;
+        }
+
         static Func<string, string, ConsoleColorCombo, bool, string> _promptProvider;
         public static Func<string, string, ConsoleColorCombo, bool, string> PromptProvider
         {
