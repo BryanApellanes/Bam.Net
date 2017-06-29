@@ -261,7 +261,7 @@ namespace Bam.Net.Data
             List<string> goodColumns = ColumnAttribute.GetColumns(typeof(T)).Select(c => c.Name).ToList();
             foreach (string column in columns)
             {
-                if (!goodColumns.Contains(column))
+                if (!SelectStar && !goodColumns.Contains(column))
                 {
 					throw new InvalidOperationException(string.Format("Invalid column specified {0}", ColumnNameFormatter(column)));
                 }
