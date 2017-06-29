@@ -2,20 +2,20 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Data</id>
-    <version>1.6.2</version>
+    <version>1.6.3</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>http://bryanapellanes.github.io/Bam.Net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Data access objects and tools for use with the Bam framework</description>
-    <releaseNotes>Version 1.6.2
- -   allow/enable select * (159d187)
+    <releaseNotes>Version 1.6.3
+ -   select star (5a71deb)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2017</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.6.2" />
-      <dependency id="Bam.Net.Incubation" version="1.6.2" />
+      <dependency id="Bam.Net" version="1.6.3" />
+      <dependency id="Bam.Net.Incubation" version="1.6.3" />
     </dependencies>
   </metadata>
 </package>
