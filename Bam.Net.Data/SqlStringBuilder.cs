@@ -249,11 +249,11 @@ namespace Bam.Net.Data
             parameters.AddRange(insert.Parameters);
             return this;
         }
+        public bool SelectStar { get; set; }
 
         public virtual SqlStringBuilder Select<T>() where T: Dao, new()
         {
-            return Select(Dao.TableName(typeof(T)), 
-                ColumnAttribute.GetColumns(typeof(T)).ToDelimited(c => ColumnNameFormatter(c.Name)));
+            return Select(Dao.TableName(typeof(T)), SelectStar ? "*": ColumnAttribute.GetColumns(typeof(T)).ToDelimited(c => ColumnNameFormatter(c.Name)));
         }
 
         public virtual SqlStringBuilder Select<T>(params string[] columns)
@@ -261,7 +261,7 @@ namespace Bam.Net.Data
             List<string> goodColumns = ColumnAttribute.GetColumns(typeof(T)).Select(c => c.Name).ToList();
             foreach (string column in columns)
             {
-                if (!goodColumns.Contains(column))
+                if (!SelectStar && !goodColumns.Contains(column))
                 {
 					throw new InvalidOperationException(string.Format("Invalid column specified {0}", ColumnNameFormatter(column)));
                 }
@@ -290,8 +290,7 @@ namespace Bam.Net.Data
         /// <returns></returns>
         public virtual SqlStringBuilder SelectTop<T>(int topCount) where T : Dao, new()
         {
-            return SelectTop(topCount, Dao.TableName(typeof(T)),
-				ColumnAttribute.GetColumns(typeof(T)).ToDelimited(c => ColumnNameFormatter(c.Name)));
+            return SelectTop(topCount, Dao.TableName(typeof(T)), SelectStar ? "*" : ColumnAttribute.GetColumns(typeof(T)).ToDelimited(c => ColumnNameFormatter(c.Name)));
         }
 
         public virtual SqlStringBuilder Select(string tableName, params string[] columnNames)

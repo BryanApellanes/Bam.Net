@@ -48,6 +48,18 @@ namespace Bam.Net.Services.Distributed.Data
             return default(T);
         }
 
+        public object this[string name]
+        {
+            get
+            {
+                return DataProperty(name).Value;
+            }
+            set
+            {
+                DataProperty(name, value);
+            }
+        }
+
         protected DataProperty DataProperty(string name, object value = null)
         {
             DataProperty result = this.Where(dp => dp.Name.Equals(name)).FirstOrDefault();
@@ -72,6 +84,16 @@ namespace Bam.Net.Services.Distributed.Data
         {
             DataPropertyCollection result = new DataPropertyCollection();
             instance.EachDataProperty((pi, obj) => new DataProperty { Name = pi.Name, Value = obj }).Each(dp => result.Add(dp));
+            return result;
+        }
+
+        public T ToInstanceOf<T>() where T: class, new()
+        {
+            T result = new T();
+            foreach(DataProperty prop in this)
+            {
+                result.Property(prop.Name, prop.Value);
+            }
             return result;
         }
 

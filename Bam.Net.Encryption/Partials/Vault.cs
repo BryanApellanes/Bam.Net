@@ -22,6 +22,7 @@ using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Crypto.Generators;
 using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Crypto.Engines;
+using System.Linq;
 
 namespace Bam.Net.Encryption
 {
@@ -32,6 +33,28 @@ namespace Bam.Net.Encryption
     /// </summary>
 	public partial class Vault
 	{
+        public VaultKeyInfo ExportKey(Database db = null)
+        {
+            db = db ?? Database;
+            VaultKey key = VaultKeysByVaultId.FirstOrDefault();
+            _items = null;
+            VaultKeysByVaultId.Delete(db);
+            ChildCollections.Clear();
+            VaultKeyInfo result = key.CopyAs<VaultKeyInfo>();
+            return result;
+        }
+
+        public void ImportKey(VaultKeyInfo keyInfo, Database db = null)
+        {
+            VaultKey key = VaultKeysByVaultId.AddNew();
+            key.RsaKey = keyInfo.RsaKey;
+            key.Password = keyInfo.Password;
+            key.Save(db);
+            _items = null;
+            ChildCollections.Clear();
+        }
+
+
         static Database _defaultVaultDatabase;
         static object _defaultVaultDatabaseSync = new object();
         protected static Database DefaultVaultDatabase
@@ -117,7 +140,7 @@ namespace Bam.Net.Encryption
 
         public static Vault Retrieve(string name)
         {
-            return Retrieve(DefaultVaultDatabase, name, string.Empty, false);
+            return Retrieve(DefaultVaultDatabase, name, string.Empty);
         }
 
         /// <summary>
@@ -132,10 +155,21 @@ namespace Bam.Net.Encryption
             return Retrieve(DefaultVaultDatabase, name, password);
         }
 
-        public static Vault Retrieve(Database database, string name, string password, bool create = true)
+        /// <summary>
+        /// Get a Vault from the specified database with the
+        /// specified name using the specified password to
+        /// create it if it doesn't exist.  Will return null
+        /// if password is not specified and the vault 
+        /// doesn't exist in the specified database
+        /// </summary>
+        /// <param name="database"></param>
+        /// <param name="name"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public static Vault Retrieve(Database database, string name, string password = null)
         {
             Vault result = Vault.OneWhere(c => c.Name == name, database);
-            if (result == null && create)
+            if (result == null && !string.IsNullOrEmpty(password))
             {
                 result = Create(database, name, password);
             }
@@ -186,7 +220,17 @@ namespace Bam.Net.Encryption
             return Create(db, name, password);
         }
 
-        public static Vault Create(Database database, string name, string password)
+        /// <summary>
+        /// Create a Vault in the specified database by the specified
+        /// name using the specified password to create it if it
+        /// doesn't exist
+        /// </summary>
+        /// <param name="database"></param>
+        /// <param name="name"></param>
+        /// <param name="password"></param>
+        /// <param name="rsaKeyLength"></param>
+        /// <returns></returns>
+        public static Vault Create(Database database, string name, string password, RsaKeyLength rsaKeyLength = RsaKeyLength._1024)
         {
             Vault result = Vault.OneWhere(c => c.Name == name, database);
             if (result == null)
@@ -195,7 +239,7 @@ namespace Bam.Net.Encryption
                 result.Name = name;
                 result.Save(database);
                 VaultKey key = result.VaultKeysByVaultId.JustOne(database, false);
-                AsymmetricCipherKeyPair keys = RsaKeyGen.GenerateKeyPair(RsaKeyLength._1024);
+                AsymmetricCipherKeyPair keys = RsaKeyGen.GenerateKeyPair(rsaKeyLength);
                 key.RsaKey = keys.ToPem();
                 key.Password = password.EncryptWithPublicKey(keys);
                 key.Save(database);
@@ -222,23 +266,28 @@ namespace Bam.Net.Encryption
             }
         }
 
-        private void Decrypt()
+        private bool Decrypt()
         {
             _items = null; // will cause it to reinitiailize above
-            string password = Key.PrivateKeyDecrypt(Key.Password);
-            VaultItemsByVaultId.Each(item =>
+            if(Key != null)
             {
-                string key = item.Key.AesPasswordDecrypt(password);
-                DecryptedVaultItem value = new DecryptedVaultItem(item, Key);
-                Items.Add(key, value);//.Value.AesDecrypt(password));
-            });
+                string password = Key.PrivateKeyDecrypt(Key.Password);
+                VaultItemsByVaultId.Each(item =>
+                {
+                    string key = item.Key.AesPasswordDecrypt(password);
+                    DecryptedVaultItem value = new DecryptedVaultItem(item, Key);
+                    Items.Add(key, value);
+                });
+                return true;
+            }
+            return false;
         }
         
         protected VaultKey Key
         {
             get
             {
-                return VaultKeysByVaultId.JustOne(Database);
+                return VaultKeysByVaultId.FirstOrDefault();
             }
         }
 
@@ -265,6 +314,11 @@ namespace Bam.Net.Encryption
             return !string.IsNullOrEmpty(value);
         }
 
+        /// <summary>
+        /// Set a key value pair.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
         public void Set(string key, string value)
         {
             this[key] = value;
@@ -299,19 +353,21 @@ namespace Bam.Net.Encryption
             {
                 lock (writeLock)
                 {
-                    Decrypt();
-                    if (Items.ContainsKey(key))
+                    if (Decrypt())
                     {
-                        Items[key].Value = value;
-                    }
-                    else
-                    {
-                        VaultItem item = VaultItemsByVaultId.AddNew();
-                        string password = Key.PrivateKeyDecrypt(Key.Password);
-                        item.Key = key.AesPasswordEncrypt(password);
-                        item.Value = value.AesPasswordEncrypt(password);
-                        item.Save();
-                        Items[key] = new DecryptedVaultItem(item, Key);
+                        if (Items.ContainsKey(key))
+                        {
+                            Items[key].Value = value;
+                        }
+                        else
+                        {
+                            VaultItem item = VaultItemsByVaultId.AddNew();
+                            string password = Key.PrivateKeyDecrypt(Key.Password);
+                            item.Key = key.AesPasswordEncrypt(password);
+                            item.Value = value.AesPasswordEncrypt(password);
+                            item.Save();
+                            Items[key] = new DecryptedVaultItem(item, Key);
+                        }
                     }
                 }
             }

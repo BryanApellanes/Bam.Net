@@ -203,13 +203,16 @@ namespace Bam.Net.Data
 
         public SqlStringBuilder GetSqlStringBuilder()
         {
-            return ServiceProvider.Get<SqlStringBuilder>();
+            SqlStringBuilder sql = ServiceProvider.Get<SqlStringBuilder>();
+            sql.SelectStar = SelectStar;
+            return sql;
         }
 
         public QuerySet GetQuerySet()
         {
             QuerySet sql = ServiceProvider.Get<QuerySet>();
             sql.Database = this;
+            sql.SelectStar = SelectStar;
             return sql;
         }
 

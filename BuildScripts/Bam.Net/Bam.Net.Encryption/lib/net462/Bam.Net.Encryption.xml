@@ -284,6 +284,19 @@
             <param name="password"></param>
             <returns></returns>
         </member>
+        <member name="M:Bam.Net.Encryption.Vault.Retrieve(Bam.Net.Data.Database,System.String,System.String)">
+            <summary>
+            Get a Vault from the specified database with the
+            specified name using the specified password to
+            create it if it doesn't exist.  Will return null
+            if password is not specified and the vault 
+            doesn't exist in the specified database
+            </summary>
+            <param name="database"></param>
+            <param name="name"></param>
+            <param name="password"></param>
+            <returns></returns>
+        </member>
         <member name="M:Bam.Net.Encryption.Vault.Create(System.IO.FileInfo,System.String)">
             <summary>
             Create a vault in the specified file by the 
@@ -294,6 +307,25 @@
             <param name="file"></param>
             <param name="name"></param>
             <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Encryption.Vault.Create(Bam.Net.Data.Database,System.String,System.String,Bam.Net.Encryption.RsaKeyLength)">
+            <summary>
+            Create a Vault in the specified database by the specified
+            name using the specified password to create it if it
+            doesn't exist
+            </summary>
+            <param name="database"></param>
+            <param name="name"></param>
+            <param name="password"></param>
+            <param name="rsaKeyLength"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Encryption.Vault.Set(System.String,System.String)">
+            <summary>
+            Set a key value pair.
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
         </member>
         <member name="M:Bam.Net.Encryption.VaultItem.GetUniqueFilter">
             <summary>
