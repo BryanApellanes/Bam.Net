@@ -1,2 +1,2 @@
 
- -   select star (5a71deb)
+ -   fix null reference exceptions in new DaoCollection instance (dbcfa07)
