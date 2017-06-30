@@ -119,6 +119,25 @@ namespace Bam.Net.Data
 			return result;
 		}
 		
+        public static DataRow ToDataRow(this Type type, string tableName = null)
+        {
+            tableName = tableName ?? type.Name;
+            PropertyInfo[] properties = type.GetProperties();
+
+            DataTable table = new DataTable(tableName);
+            foreach(PropertyInfo prop in properties)
+            {
+                string columnName = prop.Name;
+                if(prop.HasCustomAttributeOfType<ColumnAttribute>(true, out ColumnAttribute column))
+                {
+                    columnName = column.Name;
+                }
+                table.Columns.Add(columnName);
+            }
+            return table.Rows.Add();
+        }
+            
+
 		public static DataRow ToDataRow(this object instance, string tableName = null)
 		{
 			Type instanceType = instance.GetType();
