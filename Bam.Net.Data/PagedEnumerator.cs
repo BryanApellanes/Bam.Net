@@ -73,11 +73,11 @@ namespace Bam.Net.Data
 
         /// <summary>
         /// Returns the item of the current page at 
-        /// the current index.
+        /// the current item index.
         /// </summary>
         public T Current
         {
-            get { return CurrentPage[CurrentItemIndex]; }
+            get { return CurrentPage != null ? CurrentPage[CurrentItemIndex] : default(T); }
         }
 
         #endregion

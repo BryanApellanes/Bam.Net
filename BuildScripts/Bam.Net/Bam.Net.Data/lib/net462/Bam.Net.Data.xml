@@ -829,7 +829,7 @@
         <member name="P:Bam.Net.Data.PagedEnumerator`1.Current">
             <summary>
             Returns the item of the current page at 
-            the current index.
+            the current item index.
             </summary>
         </member>
         <member name="M:Bam.Net.Data.PagedEnumerator`1.Reset">

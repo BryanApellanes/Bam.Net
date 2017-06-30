@@ -103,7 +103,7 @@ namespace Bam.Net.Data
         {
             get
             {
-                return DataTable.Rows[0];
+                return DataTable?.Rows?[0] ?? typeof(T).ToDataRow(Dao.TableName(typeof(T)));
             }
             set { }
         }
