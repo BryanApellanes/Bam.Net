@@ -99,7 +99,7 @@ namespace Bam.Net.UserAccounts.Tests
             UserManagerConfig config = new UserManagerConfig();
             config.SmtpSettingsVaultPath = DataSettings.Default.GetDatabasePathFor(typeof(Vault), "System");
             config.ApplicationName = appName;
-            config.EmailTemplateDirectoryPath = "C:\\BamData\\NamedFormatEmailTemplates";
+            config.EmailTemplateDirectoryPath = DataSettings.Default.GetEmailTemplatesDirectory().FullName;
 
             UserManager mgr = config.Create();
             return mgr;
