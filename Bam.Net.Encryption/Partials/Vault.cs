@@ -33,6 +33,24 @@ namespace Bam.Net.Encryption
     /// </summary>
 	public partial class Vault
 	{
+        public Dictionary<string, string> ExportValues()
+        {
+            Dictionary<string, string> result = new Dictionary<string, string>();
+            foreach(string key in Keys)
+            {
+                result.Add(key, this[key]);
+            }
+            return result;
+        }
+
+        public void ImportValues(Dictionary<string, string> values)
+        {
+            foreach(string key in values.Keys)
+            {
+                this[key] = values[key];
+            }
+        }
+
         public VaultKeyInfo ExportKey(Database db = null)
         {
             db = db ?? Database;
@@ -207,10 +225,10 @@ namespace Bam.Net.Encryption
             return Create(name, password);
         }
 
-        private static string GeneratePassword()
+        public static string GeneratePassword()
         {
             SecureRandom random = new SecureRandom();
-            string password = random.GenerateSeed(64).ToBase64().First(16);
+            string password = random.GenerateSeed(64).ToBase64();
             return password;
         }
 
