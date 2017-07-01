@@ -36,9 +36,10 @@ namespace Bam.Net.Automation
             Args.ThrowIfNullOrEmpty(CommandLine, "CommandLine");
 
             ProcessOutput output = CommandLine.Run();
-            WorkState<ProcessOutput> result = new WorkState<ProcessOutput>(this, output);
-            result.Message = "{0} exited with code {1}"._Format(CommandLine, output.ExitCode);
-
+            WorkState<ProcessOutput> result = new WorkState<ProcessOutput>(this, output)
+            {
+                Message = "{0} exited with code {1}"._Format(CommandLine, output.ExitCode)
+            };
             return result;
         }
 

@@ -29,24 +29,24 @@ namespace Bam.Net.Automation.Tests
         [UnitTest("Orchestrator:: Verify Jobs Folder in AppDataFolder for new Orchestrator")]
         public void JobsDirectoryShouldBeInAppDataFolder()
         {
-            Orchestrator orchestrator = new Orchestrator();
-            Expect.AreEqual(Path.Combine(new object().GetAppDataFolder(), "Jobs"), orchestrator.JobsDirectory);
+            Overseer orchestrator = new Overseer();
+            Expect.AreEqual(Path.Combine(RuntimeSettings.AppDataFolder, "Jobs"), orchestrator.JobsDirectory);
         }
 
         public void DeleteJobsDirectory()
         {
-            string dir = Orchestrator.Default.JobsDirectory;
+            string dir = Overseer.Default.JobsDirectory;
             if (Directory.Exists(dir))
             {
-                Directory.Delete(Orchestrator.Default.JobsDirectory, true);
+                Directory.Delete(Overseer.Default.JobsDirectory, true);
             }
         }
 
         [UnitTest("Orchestrator:: Should Create JobConf")]
         public void OrchestratorShouldCreaetJobConf()
         {
-            Orchestrator.Default.JobsDirectory = new DirectoryInfo(MethodBase.GetCurrentMethod().Name).FullName;
-            Orchestrator fm = Orchestrator.Default;
+            Overseer.Default.JobsDirectory = new DirectoryInfo(MethodBase.GetCurrentMethod().Name).FullName;
+            Overseer fm = Overseer.Default;
             string name = "JobConfTest_".RandomLetters(4);
             JobConf conf = fm.CreateJob(name);
             string path = Path.Combine(fm.JobsDirectory, conf.Name, conf.Name + ".job");
@@ -57,20 +57,20 @@ namespace Bam.Net.Automation.Tests
         public void ExistsShouldBeTrueAfterCreate()
         {
             string name = MethodBase.GetCurrentMethod().Name;
-            Orchestrator fm = GetTestOrchestrator(name);
+            Overseer fm = GetTestOrchestrator(name);
             string testJobName = name + "_JobName_".RandomLetters(4);
             fm.CreateJob(testJobName);
             Expect.IsTrue(fm.JobExists(testJobName));
         }
 
-        private static Orchestrator GetTestOrchestrator(string foremanName)
+        private static Overseer GetTestOrchestrator(string foremanName)
         {
             DirectoryInfo dir = new DirectoryInfo("Orchestrator_" + foremanName);
             if (dir.Exists)
             {
                 dir.Delete(true);
             }
-            Orchestrator fm = new Orchestrator();
+            Overseer fm = new Overseer();
             fm.JobsDirectory = dir.FullName;
             return fm;
         }
@@ -79,7 +79,7 @@ namespace Bam.Net.Automation.Tests
         public void CreateJobShouldThrowExceptionIfItExists()
         {
             string name = MethodBase.GetCurrentMethod().Name;
-            Orchestrator fm = GetTestOrchestrator(name);
+            Overseer fm = GetTestOrchestrator(name);
             string testJobName = name + "_JobName_".RandomLetters(4);
             fm.CreateJob(testJobName);
             Expect.IsTrue(fm.JobExists(testJobName));
@@ -94,7 +94,7 @@ namespace Bam.Net.Automation.Tests
         public void OrchestratorShouldCreateJobConfWithJobDirectorySet()
         {
             string name = MethodBase.GetCurrentMethod().Name;
-            Orchestrator foreman = GetTestOrchestrator(name);
+            Overseer foreman = GetTestOrchestrator(name);
             JobConf conf = foreman.CreateJobConf(name);
             Expect.AreEqual(name, conf.Name);
             Expect.IsTrue(conf.JobDirectory.StartsWith(foreman.JobsDirectory), "conf directory wasn't set correctly");
@@ -119,7 +119,7 @@ namespace Bam.Net.Automation.Tests
         public void GetJobShouldCreateNewJob()
         {
             string name = MethodBase.GetCurrentMethod().Name;
-            Orchestrator fm = GetTestOrchestrator(name);
+            Overseer fm = GetTestOrchestrator(name);
             Expect.IsFalse(fm.JobExists(name));
             JobConf validate = fm.GetJob(name);
 
@@ -133,7 +133,7 @@ namespace Bam.Net.Automation.Tests
         public void GetJobShouldReturnExistingJob()
         {
             string name = MethodBase.GetCurrentMethod().Name;
-            Orchestrator orch = GetTestOrchestrator(name);
+            Overseer orch = GetTestOrchestrator(name);
             Expect.IsFalse(orch.JobExists(name));
             JobConf conf = orch.CreateJob(name);
             Expect.IsTrue(orch.JobExists(name));
@@ -147,7 +147,7 @@ namespace Bam.Net.Automation.Tests
         public void JobShouldRunIfRunnerThreadIsRunning()
         {
             string name = MethodBase.GetCurrentMethod().Name;
-            Orchestrator fm = GetTestOrchestrator(name);
+            Overseer fm = GetTestOrchestrator(name);
             fm.StopJobRunnerThread();
             fm.JobQueue.Clear();
             fm.StartJobRunnerThread();
@@ -176,7 +176,7 @@ namespace Bam.Net.Automation.Tests
         public void AddWorkerShouldCreateJob()
         {
             string name = MethodBase.GetCurrentMethod().Name;
-            Orchestrator fm = GetTestOrchestrator(name);
+            Overseer fm = GetTestOrchestrator(name);
             string jobName = "Job_".RandomLetters(4);
             Expect.IsFalse(fm.JobExists(jobName));
 
@@ -189,7 +189,7 @@ namespace Bam.Net.Automation.Tests
         public void AddWorkerShouldThrowArgumentNullException()
         {
             string name = MethodBase.GetCurrentMethod().Name;
-            Orchestrator fm = GetTestOrchestrator(name);
+            Overseer fm = GetTestOrchestrator(name);
             Expect.Throws(() =>
             {
                 fm.AddWorker("noTypeByThisNameShouldBeFound".RandomLetters(4), "work_" + name, "JobName");
@@ -203,7 +203,7 @@ namespace Bam.Net.Automation.Tests
         public void AddWorkerShouldSetWorkerName()
         {
             string name = MethodBase.GetCurrentMethod().Name;
-            Orchestrator fm = GetTestOrchestrator(name);
+            Overseer fm = GetTestOrchestrator(name);
             string workerName = "worker_" + name;
             string jobName = "Job_" + name;
             fm.AddWorker(typeof(TestWorker).AssemblyQualifiedName, workerName, jobName);
@@ -214,7 +214,7 @@ namespace Bam.Net.Automation.Tests
         public void ShouldBeAbleToAddWorker()
         {
             string name = MethodBase.GetCurrentMethod().Name;
-            Orchestrator fm = GetTestOrchestrator(name);
+            Overseer fm = GetTestOrchestrator(name);
             string jobName = "Job_" + name;
             string workerName = "worker_1";
             fm.AddWorker(typeof(TestWorker).AssemblyQualifiedName, workerName, jobName);
@@ -228,7 +228,7 @@ namespace Bam.Net.Automation.Tests
         public void AfterAddWorkerCreateJobShouldHaveCorrectWorkers()
         {
             string name = MethodBase.GetCurrentMethod().Name;
-            Orchestrator fm = GetTestOrchestrator(name);
+            Overseer fm = GetTestOrchestrator(name);
             string jobName = "Job_" + name;
             fm.AddWorker(typeof(TestWorker).AssemblyQualifiedName, "one", jobName);
             fm.AddWorker(typeof(TestWorker).AssemblyQualifiedName, "two", jobName);
@@ -269,7 +269,7 @@ namespace Bam.Net.Automation.Tests
             string name = MethodBase.GetCurrentMethod().Name;
             TestWorker.ValueToCheck = false;
             StepTestWorker.ValueToCheck = false;
-            Orchestrator fm = GetTestOrchestrator(name);
+            Overseer fm = GetTestOrchestrator(name);
             string jobName = "Job_" + name;
 
             fm.AddWorker(typeof(TestWorker).AssemblyQualifiedName, "TestWorker", jobName);

@@ -108,6 +108,10 @@
       <Project>{ea9863a9-8e0b-4497-b7fd-abf450a3e468}</Project>
       <Name>Bam.Net.CommandLine</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.CoreServices\Bam.Net.CoreServices.csproj">
+      <Project>{5480d2a0-145b-4435-8e1c-4555ead0424a}</Project>
+      <Name>Bam.Net.CoreServices</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Data.Schema\Bam.Net.Data.Schema.csproj">
       <Project>{d2c2b1c0-1047-4211-92fc-37f332861161}</Project>
       <Name>Bam.Net.Data.Schema</Name>
@@ -147,6 +151,10 @@
     <ProjectReference Include="..\Bam.Net.ServiceProxy\Bam.Net.ServiceProxy.csproj">
       <Project>{8987d8c8-033b-4993-99f0-8dd5a4d6dd0d}</Project>
       <Name>Bam.Net.ServiceProxy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Services\Bam.Net.Services.csproj">
+      <Project>{f67630bf-5e73-46bf-a7f1-6d7e9648135f}</Project>
+      <Name>Bam.Net.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Testing\Bam.Net.Testing.csproj">
       <Project>{85212881-c676-4b40-b311-37c2d1706042}</Project>

@@ -9,20 +9,21 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Logging;
 using System.Reflection;
+using Quartz;
 
 namespace Bam.Net.Automation
 {
     /// <summary>
     /// A set of workers that are run in sequence
     /// </summary>
-    public class Job: Loggable
+    public class Job: Loggable, IJob
     {
         Dictionary<string, IWorker> _workers;
         public Job(string name)
         {
-            this.Name = name;
-            this.WorkQueue = new Queue<IWorker>();
-            this._workers = new Dictionary<string, IWorker>();
+            Name = name;
+            WorkQueue = new Queue<IWorker>();
+            _workers = new Dictionary<string, IWorker>();
         }
 
         public Job(JobConf conf)
@@ -40,6 +41,17 @@ namespace Bam.Net.Automation
         {
             get;
             private set;
+        }
+        public IJobExecutionContext JobExecutionContext { get; set; }
+
+        object _executeLock = new object();
+        public void Execute(IJobExecutionContext context)
+        {
+            lock (_executeLock)
+            {
+                JobExecutionContext = context;
+                Run();
+            }
         }
 
         public event EventHandler WorkStateSet;

@@ -15,6 +15,9 @@ using Bam.Net.Analytics;
 using Bam.Net.Logging;
 using Bam.Net.Configuration;
 using System.Threading;
+using Quartz;
+using Quartz.Impl;
+using Bam.Net.Services;
 
 namespace Bam.Net.Automation
 {
@@ -22,28 +25,46 @@ namespace Bam.Net.Automation
     /// The master orchestrator for 
     /// all jobs.
     /// </summary>
-    [Proxy]
-    public class Orchestrator: Loggable
+    [Proxy("overseer")]
+    public class Overseer: AsyncProxyableService
     {
         const string ProfigurationSetKey = "OrchestratorSettings";
 
         AutoResetEvent _enqueueSignal;
         AutoResetEvent _runCompleteSignal;
         Thread _runnerThread;
-        public Orchestrator()
+        public Overseer()
         {
-            this.MaxConcurrentJobs = 3;
-            this._enqueueSignal = new AutoResetEvent(false);
-            this._runCompleteSignal = new AutoResetEvent(false);
+            MaxConcurrentJobs = 3;
+            _enqueueSignal = new AutoResetEvent(false);
+            _runCompleteSignal = new AutoResetEvent(false);
         }
 
-        static Orchestrator _default;
+        public override object Clone()
+        {
+            Overseer orch = new Overseer();
+            orch.CopyProperties(this);
+            orch.CopyEventHandlers(this);
+            return orch;
+        }
+
+        static Overseer _default;
         static object _defaultLock = new object();
-        public static Orchestrator Default
+        public static Overseer Default
         {
             get
             {
-                return _defaultLock.DoubleCheckLock(ref _default, () => new Orchestrator());
+                return _defaultLock.DoubleCheckLock(ref _default, () => new Overseer());
+            }
+        }
+
+        static IScheduler _scheduler;
+        static object _schedulerLock = new object();
+        public static IScheduler Scheduler
+        {
+            get
+            {
+                return _schedulerLock.DoubleCheckLock(ref _scheduler, () => StdSchedulerFactory.GetDefaultScheduler());
             }
         }
 
@@ -60,7 +81,7 @@ namespace Bam.Net.Automation
             {
                 if (_jobsDirectory == null)
                 {
-                    _jobsDirectory = new DirectoryInfo("{0}\\Jobs"._Format(this.GetAppDataFolder()));
+                    _jobsDirectory = new DirectoryInfo("{0}\\Jobs"._Format(RuntimeSettings.AppDataFolder));
                 }
 
                 return _jobsDirectory.FullName;
@@ -84,7 +105,7 @@ namespace Bam.Net.Automation
 
         IpcMessageRoot _messageRoot;
         object _messageRootLock = new object();
-        protected internal IpcMessageRoot IpcMessageRoot
+        protected internal IpcMessageRoot SuspendedJobIpcMessageRoot
         {
             get
             {
@@ -103,15 +124,14 @@ namespace Bam.Net.Automation
         }
 
         /// <summary>
-        /// Add a worker of the specified type assigning the
-        /// specified workerName to the job with the specified
-        /// jobName.
+        /// Add a worker of the specified type to the job with the specified
+        /// jobName assigning the specified workerName .
         /// </summary>
         /// <param name="workerTypeName"></param>
         /// <param name="workerName"></param>
         /// <param name="jobName"></param>
         /// <returns></returns>
-        public void AddWorker(string workerTypeName, string workerName, string jobName)
+        public virtual void AddWorker(string workerTypeName, string workerName, string jobName)
         {
             Type type = Type.GetType(workerTypeName);
             if (type == null)
@@ -130,19 +150,22 @@ namespace Bam.Net.Automation
         /// <typeparam name="T"></typeparam>
         /// <param name="conf"></param>
         /// <returns></returns>
+        [Local]
         public void AddWorker<T>(string name, JobConf conf)
         {
             AddWorker(typeof(T), name, conf);
         }
 
+        [Local]
         public void AddWorker(Type type, string name, JobConf conf)
         {
             conf.AddWorker(type, name);
         }
         
+        [Local]
         public SuspendedJob SuspendJob(Job job)
         {
-            SuspendedJob suspended = new SuspendedJob(IpcMessageRoot, job);
+            SuspendedJob suspended = new SuspendedJob(SuspendedJobIpcMessageRoot, job);
             return suspended;
         }
 
@@ -163,7 +186,7 @@ namespace Bam.Net.Automation
             return value;
         }
 
-        public JobConf CreateJob(string name)
+        public virtual JobConf CreateJob(string name)
         {
             return CreateJobConf(name);
         }
@@ -212,7 +235,14 @@ namespace Bam.Net.Automation
             }
         }
 
-        public JobConf GetJob(string name)
+        public virtual string[] ListJobNames()
+        {
+            DirectoryInfo jobsDirectory = new DirectoryInfo(JobsDirectory);
+            DirectoryInfo[] jobDirectories = jobsDirectory.GetDirectories();
+            return jobDirectories.Select(jd => jd.Name).ToArray();
+        }
+
+        public virtual JobConf GetJob(string name)
         {
             return GetJobConf(name);
         }
@@ -246,7 +276,7 @@ namespace Bam.Net.Automation
             return conf;
         }
 
-        public bool WorkerExists(string jobName, string workerName)
+        public virtual bool WorkerExists(string jobName, string workerName)
         {
             bool result = false;
             if (JobExists(jobName))
@@ -259,13 +289,13 @@ namespace Bam.Net.Automation
         }
 
         /// <summary>
-        /// Returns true is a job with the specified name
-        /// exists under the current Foreman.  Determined
-        /// by looking in the current Foreman's JobsDirectory.
+        /// Returns true if a job with the specified name
+        /// exists under the current Orchestrator.  Determined
+        /// by looking in the current Orchestrator's JobsDirectory.
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public bool JobExists(string name)
+        public virtual bool JobExists(string name)
         {
             string ignore;
             return JobExists(name, out ignore);
@@ -275,14 +305,41 @@ namespace Bam.Net.Automation
 			jobDirectoryPath = System.IO.Path.Combine(JobsDirectory, name);
             return Directory.Exists(jobDirectoryPath);
         }
+        
+        public virtual DateTimeOffset ScheduleJob(string name, int hour, int minute, DayOfWeek[] daysOfWeek)
+        {
+            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.AtHourAndMinuteOnGivenDaysOfWeek(hour, minute, daysOfWeek);
+            JobDataMap dataMap = new JobDataMap
+            {
+                { "JobName", name }
+            };
+            IJobDetail jobDetail = JobBuilder
+                .Create<EnqueingJob>()
+                .WithIdentity(name)
+                .SetJobData(dataMap)
+                .Build();
+            ITrigger trigger = TriggerBuilder
+                .Create()
+                .WithIdentity($"Orchestrator-{name}")
+                .WithSchedule(scheduleBuilder)
+                .Build();
 
-        public void EnqueueJob(string name, int stepNumber = 0)
+            return Scheduler.ScheduleJob(jobDetail, trigger);
+        }
+
+        /// <summary>
+        /// Enqueue a job to be run next (typically instant if no other
+        /// jobs are running)
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="stepNumber"></param>
+        public virtual void EnqueueJob(string name, int stepNumber = 0)
         {
             JobConf conf = GetJobConf(name);
 
             EnqueueJob(conf, stepNumber);
         }
-
+        
         protected internal void EnqueueJob(JobConf conf, int stepNumber = 0)
         {
             Args.ThrowIfNull(conf, "JobConf");
