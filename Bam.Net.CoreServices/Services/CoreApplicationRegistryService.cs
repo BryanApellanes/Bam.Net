@@ -221,7 +221,7 @@ namespace Bam.Net.CoreServices
         {
             string clientId = GetApplicationClientId(nameProvider);
             ApiKeyInfo info = new ApiKeyInfo();
-            info.ApiKey = GetApplicationApiKey(clientId, 0);
+            info.ApiKey = GetApplicationApiKey(clientId, 0); // TODO: enable specifying an active ApiKey index
             info.ApplicationClientId = clientId;
             return info;
         }
