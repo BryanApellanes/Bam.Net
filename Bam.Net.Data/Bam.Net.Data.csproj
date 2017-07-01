@@ -133,6 +133,7 @@
     <Compile Include="DaoTransaction.cs" />
     <Compile Include="DatabaseInfo.cs" />
     <Compile Include="DatabaseInitializationFailedException.cs" />
+    <Compile Include="DatabaseProvider.cs" />
     <Compile Include="Db.cs" />
     <Compile Include="Delete.cs" />
     <Compile Include="DoesntContainComparison.cs" />
@@ -150,6 +151,7 @@
     <Compile Include="IAddable.cs" />
     <Compile Include="ICommittableDelegate.cs" />
     <Compile Include="IDatabase.cs" />
+    <Compile Include="IDatabaseProvider.cs" />
     <Compile Include="IHasConnectionStringResolver.cs" />
     <Compile Include="ILoadable.cs" />
     <Compile Include="IRegistrarCaller.cs" />
@@ -173,6 +175,7 @@
     <Compile Include="Registrar.cs" />
     <Compile Include="RegistrarCallerFactory.cs" />
     <Compile Include="SchemaInitializer.cs" />
+    <Compile Include="SchemasAttribute.cs" />
     <Compile Include="Select.cs" />
     <Compile Include="SelectColumn.cs" />
     <Compile Include="SerializableQuery.cs" />

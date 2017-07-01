@@ -123,9 +123,10 @@
     <Compile Include="DaoInfo.cs" />
     <Compile Include="DatabaseExtensions.cs" />
     <Compile Include="DatabaseFactory.cs" />
+    <Compile Include="DataSettings.cs" />
     <Compile Include="FsRepoData.cs" />
     <Compile Include="FsRepository.cs" />
-    <Compile Include="IBaseCrudProvider.cs" />
+    <Compile Include="ICrudProvider.cs" />
     <Compile Include="ICrudResponseProvider.cs" />
     <Compile Include="IHasKeyHash.cs" />
     <Compile Include="IQueryFilterable.cs" />
@@ -144,7 +145,7 @@
     <Compile Include="EchoTypeTableNameProvider.cs" />
     <Compile Include="GeneratedDaoAssemblyInfo.cs" />
     <Compile Include="IHasTypeSchemaTempPathProvider.cs" />
-    <Compile Include="ICrudProvider.cs" />
+    <Compile Include="IExtendedCrudProvider.cs" />
     <Compile Include="PropertyColumn.cs" />
     <Compile Include="TypeInheritanceSchemaGenerator.cs" />
     <Compile Include="SchemaDifferenceEventArgs.cs" />

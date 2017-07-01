@@ -72,6 +72,7 @@
     <Compile Include="SQLiteConnectionStringResolver.cs" />
     <Compile Include="SQLiteDatabase.cs" />
     <Compile Include="SQLiteDatabaseInitializer.cs" />
+    <Compile Include="SQLiteDatabaseProvider.cs" />
     <Compile Include="SQLiteParameterBuilder.cs" />
     <Compile Include="SQLiteQuerySet.cs" />
     <Compile Include="SQLiteRegistrar.cs" />

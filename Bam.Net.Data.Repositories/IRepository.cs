@@ -12,7 +12,7 @@ using System.Collections;
 
 namespace Bam.Net.Data.Repositories
 {
-	public interface IRepository : ILoggable, ICrudProvider
+	public interface IRepository : ILoggable, IExtendedCrudProvider
     {
 		IEnumerable<Type> StorableTypes { get; }
 		void AddType(Type type);
