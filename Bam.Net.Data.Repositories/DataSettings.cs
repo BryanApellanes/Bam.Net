@@ -17,6 +17,7 @@ namespace Bam.Net.Data.Repositories
             DatabaseDirectory = "Databases";
             RepositoryDirectory = "Repository";
             FilesDirectory = "Files";
+            EmailTemplatesDirectory = "EmailTemplates";
             Logger = Log.Default;
         }
 
@@ -34,7 +35,7 @@ namespace Bam.Net.Data.Repositories
         public string DatabaseDirectory { get; set; }
         public string RepositoryDirectory { get; set; }
         public string FilesDirectory { get; set; }
-
+        public string EmailTemplatesDirectory { get; set; }
         public DirectoryInfo GetDataDirectory()
         {
             return new DirectoryInfo(DataDirectory);
@@ -58,6 +59,11 @@ namespace Bam.Net.Data.Repositories
         public DirectoryInfo GetFilesDirectory()
         {
             return new DirectoryInfo(Path.Combine(GetDataDirectory().FullName, FilesDirectory));
+        }
+
+        public DirectoryInfo GetEmailTemplatesDirectory()
+        {
+            return new DirectoryInfo(Path.Combine(GetDataDirectory().FullName, EmailTemplatesDirectory));
         }
 
         public void SetDatabaseFor(object instance)
