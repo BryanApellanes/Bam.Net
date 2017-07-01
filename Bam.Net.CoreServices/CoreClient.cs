@@ -61,6 +61,9 @@ namespace Bam.Net.CoreServices
             : this(organizationName, applicationName, hostName, port, null, logger)
         { }
 
+        public CoreClient(string hostName, int port, ILogger logger = null) : this(Organization.Public.Name, Data.Application.Unknown.Name, hostName, port, logger)
+        { }
+
         public ProcessDescriptor ProcessDescriptor { get; private set; }
         public CoreRegistryRepository LocalCoreRegistryRepository { get; set; }
         
