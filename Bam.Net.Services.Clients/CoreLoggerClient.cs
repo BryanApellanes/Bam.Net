@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Bam.Net.CoreServices;
 using Bam.Net.Logging;
 
-namespace Bam.Net.Clients
+namespace Bam.Net.Services.Clients
 {
     /// <summary>
     /// A Logger that commits LogEvents to 
@@ -21,6 +21,7 @@ namespace Bam.Net.Clients
             _proxyFactory = new ProxyFactory();
             _loggerService = _proxyFactory.GetProxy<CoreLoggerService>(hostName, port);
         }
+
         public override void CommitLogEvent(LogEvent logEvent)
         {
             _loggerService.CommitLogEvent(logEvent);
