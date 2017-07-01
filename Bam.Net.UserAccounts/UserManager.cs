@@ -120,20 +120,19 @@ namespace Bam.Net.UserAccounts
             get;
             set;
         }
+        public Vault GetSmtpSettingsVault(string applicationName = null)
+        {
+            return SmtpSettingsProvider.GetSmtpSettingsVault(applicationName);
+        }
         
-        protected internal Vault SmtpSettingsVault
+        public Vault SmtpSettingsVault
         {
             get
             {
-                return SmtpSettingsProvider.SmtpSettingsVault;
-            }
-            set
-            {
-                SmtpSettingsProvider.SmtpSettingsVault = value;
+                return GetSmtpSettingsVault(ApplicationName);
             }
         }
-
-        string _smtpSettingsVaultPath;
+        
         [Exclude]
         public string SmtpSettingsVaultPath
         {

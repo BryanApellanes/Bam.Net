@@ -18,7 +18,18 @@ namespace Bam.Net.Data.Repositories
             RepositoryDirectory = "Repository";
             FilesDirectory = "Files";
             Logger = Log.Default;
-        }        
+        }
+
+        static DataSettings _default;
+        static object _defaultLock = new object();
+        public static DataSettings Default
+        {
+            get
+            {
+                return _defaultLock.DoubleCheckLock(ref _default, () => new DataSettings());
+            }
+        }
+
         public string DataDirectory { get; set; }
         public string DatabaseDirectory { get; set; }
         public string RepositoryDirectory { get; set; }
@@ -63,6 +74,18 @@ namespace Bam.Net.Data.Repositories
                 databaseName = $"{databaseName}_{schemaName}";
             }
             return new SQLiteDatabase(GetDatabaseDirectory().FullName, databaseName);
-        }        
+        }
+        public override string GetDatabasePathFor(Type type, string info = null)
+        {
+            return GetDatabaseFor(type, info).DatabaseFile.FullName;
+        }
+        public override SQLiteDatabase GetDatabaseFor(Type objectType, string info = null)
+        {
+            string name = string.IsNullOrEmpty(info) ? objectType.FullName : $"{objectType.FullName}_{info}";
+            string fullPath = GetDatabaseDirectory().FullName;
+            SQLiteDatabase db = new SQLiteDatabase(fullPath, name);
+            Logger.Info("Returned SQLiteDatabase with path {0} for type {1}\r\nFullPath: {2}\r\nName: {3}", db.DatabaseFile.FullName, objectType.Name, fullPath, name);
+            return db;
+        }
     }
 }

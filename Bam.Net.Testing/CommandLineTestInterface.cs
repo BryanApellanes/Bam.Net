@@ -221,6 +221,10 @@ namespace Bam.Net.Testing
 			}
 		}
 
+        public static void RunIntegrationTests()
+        {
+            IntegrationTestRunner.RunIntegrationTests(Assembly.GetEntryAssembly());
+        }
 
 		protected static bool IsInteractive { get; set; }
 

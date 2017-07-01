@@ -20,8 +20,8 @@ namespace Bam.Net.Data
         }
 
         /// <summary>
-        /// Sets all properties on the specified instances, where the property type 
-        /// is Database, to an instance of T 
+        /// Sets all properties on the specified instances, where the property 
+        /// is writeable and is of type Database, to an instance of T 
         /// </summary>
         /// <param name="instances"></param>
         public virtual void SetDatabases(params object[] instances)
@@ -29,7 +29,7 @@ namespace Bam.Net.Data
             instances.Each(instance =>
             {
                 Type type = instance.GetType();
-                type.GetProperties().Where(pi => pi.PropertyType.Equals(typeof(Database))).Each(new { Instance = instance }, (ctx, pi) =>
+                type.GetProperties().Where(pi => pi.CanWrite && pi.PropertyType.Equals(typeof(Database))).Each(new { Instance = instance }, (ctx, pi) =>
                 {
                     T db = GetDatabaseFor(instance);
                     if (pi.HasCustomAttributeOfType(out SchemasAttribute schemas))
@@ -42,7 +42,8 @@ namespace Bam.Net.Data
         }
 
         public abstract T GetDatabaseFor(object instance);
-
+        public abstract T GetDatabaseFor(Type objectType, string info = null);
+        public abstract string GetDatabasePathFor(Type type, string info = null);
         private void TryEnsureSchemas(Database db, params Type[] daoTypes)
         {
             daoTypes.Each(new { Database = db, Logger = Logger }, (daoContext, dao) =>

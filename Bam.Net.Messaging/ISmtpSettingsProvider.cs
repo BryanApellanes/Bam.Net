@@ -10,6 +10,7 @@ namespace Bam.Net.Messaging
     public interface ISmtpSettingsProvider
     {
         string SmtpSettingsVaultPath { get; set; }
+        Vault GetSmtpSettingsVault(string applicationName = null);
         /// <summary>
         /// When implemented should return
         /// an email whose smtp settings are already 

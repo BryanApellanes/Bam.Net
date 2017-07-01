@@ -18,10 +18,11 @@ namespace Bam.Net.UserAccounts
     {
         public UserManagerConfig()
         {
-            this.EmailTemplateDirectoryPath = ".\\EmailTemplates";
-            this.EmailComposerType = typeof(NamedFormatEmailComposer).AssemblyQualifiedName;
-            this.ApplicationNameResolverType = typeof(DefaultConfigurationApplicationNameProvider).AssemblyQualifiedName;
-            this.SmtpSettingsVaultPath = ".\\SmtpSettings.vault.sqlite";
+            EmailTemplateDirectoryPath = ".\\EmailTemplates";
+            EmailComposerType = typeof(NamedFormatEmailComposer).AssemblyQualifiedName;
+            ApplicationNameResolverType = typeof(DefaultConfigurationApplicationNameProvider).AssemblyQualifiedName;
+            SmtpSettingsVaultPath = ".\\SmtpSettings.vault.sqlite";
+            ApplicationName = "UNKOWN-APPLICATION";
         }
 
         public UserManager Create(ILogger logger = null)
@@ -43,7 +44,7 @@ namespace Bam.Net.UserAccounts
             mgr.Subscribe(logger);
             return mgr;
         }
-        
+        public string ApplicationName { get; set; }
         public string ApplicationNameResolverType
         {
             get;
@@ -101,18 +102,24 @@ namespace Bam.Net.UserAccounts
 
         private void SetAppNameProvider(UserManager mgr, ILogger logger)
         {
-            Type appNameResolverType = Type.GetType(ApplicationNameResolverType);
-            Type defaultAppNameProvider = typeof(DefaultConfigurationApplicationNameProvider);
-            if (appNameResolverType == null)
+            if (string.IsNullOrEmpty(ApplicationName))
             {
-                appNameResolverType = defaultAppNameProvider;
-                if (!SuppressMessages)
+                Type appNameResolverType = Type.GetType(ApplicationNameResolverType);
+                Type defaultAppNameProvider = typeof(DefaultConfigurationApplicationNameProvider);
+                if (appNameResolverType == null)
                 {
-                    logger.AddEntry("Specified ApplicationNameResolverType\r\n\r\n\t{0}\r\n\r\nwas not found, will use {1} instead", LogEventType.Warning, ApplicationNameResolverType, defaultAppNameProvider.FullName);
+                    appNameResolverType = defaultAppNameProvider;
+                    if (!SuppressMessages)
+                    {
+                        logger.AddEntry("Specified ApplicationNameResolverType\r\n\r\n\t{0}\r\n\r\nwas not found, will use {1} instead", LogEventType.Warning, ApplicationNameResolverType, defaultAppNameProvider.FullName);
+                    }
                 }
+                mgr.ApplicationNameProvider = appNameResolverType.Construct<IApplicationNameProvider>();
             }
-
-            mgr.ApplicationNameProvider = appNameResolverType.Construct<IApplicationNameProvider>();            
+            else
+            {
+                mgr.ApplicationNameProvider = new StaticApplicationNameProvider(ApplicationName);
+            }
         }
     }
 }

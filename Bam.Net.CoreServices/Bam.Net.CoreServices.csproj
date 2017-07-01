@@ -254,7 +254,6 @@
     <Compile Include="ProxyTemplate.cs" />
     <Compile Include="ProxyableService.cs" />
     <Compile Include="CoreServiceResponse.cs" />
-    <Compile Include="StaticApplicationNameProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Templates\Proxy.tmpl" />

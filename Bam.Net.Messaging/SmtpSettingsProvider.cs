@@ -9,6 +9,7 @@ namespace Bam.Net.Messaging
 {
     public class SmtpSettingsProvider : ISmtpSettingsProvider
     {
+        public const string DefaultVaultName = "DefaultSmtpSettings";
         public const string SmtpHost = "SmtpHost";
         public const string UserName = "UserName";
         public const string Password = "Password";
@@ -25,6 +26,12 @@ namespace Bam.Net.Messaging
             }
         }
 
+        public Vault GetSmtpSettingsVault(string applicationName = null)
+        {
+            string vaultName = applicationName == null ? DefaultVaultName: $"{applicationName}-SmtpSettings";
+            return Vault.Load(SmtpSettingsVaultPath, vaultName);
+        }
+
         Vault _smtpSettingsVault;
         public Vault SmtpSettingsVault
         {
@@ -32,7 +39,7 @@ namespace Bam.Net.Messaging
             {
                 if (_smtpSettingsVault == null)
                 {
-                    _smtpSettingsVault = Vault.Load(SmtpSettingsVaultPath, "SmtpSettings");
+                    _smtpSettingsVault = Vault.Load(SmtpSettingsVaultPath, DefaultVaultName);
                 }
                 return _smtpSettingsVault;
             }

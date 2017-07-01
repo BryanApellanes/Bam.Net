@@ -16,6 +16,7 @@ using System.Collections.Specialized;
 using System.Net;
 using Bam.Net.Server;
 using Bam.Net.Web;
+using Bam.Net.Configuration;
 
 namespace Bam.Net.CoreServices
 {

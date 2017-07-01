@@ -75,15 +75,19 @@ namespace Bam.Net.Encryption
 
         static Database _defaultVaultDatabase;
         static object _defaultVaultDatabaseSync = new object();
-        protected static Database DefaultVaultDatabase
+        public static Database DefaultDatabase
         {
             get
             {
                 return _defaultVaultDatabaseSync.DoubleCheckLock(ref _defaultVaultDatabase, () => InitializeDatabase());
             }
+            set
+            {
+                _defaultVaultDatabase = value;
+            }
         }
 
-        public static Database InitializeDatabase()
+        internal static Database InitializeDatabase()
         {
             return InitializeDatabase(".\\System.vault.sqlite", Log.Default);
         }
@@ -120,27 +124,27 @@ namespace Bam.Net.Encryption
             {
                 return _vaultSync.DoubleCheckLock(ref _vault, () =>
                 {
-                    return Retrieve(DefaultVaultDatabase, "System", Password);
+                    return Retrieve(DefaultDatabase, "System", Password);
                 });
 
             }
         }
         
-        public static Vault Load(string filePath, string name)
+        public static Vault Load(string filePath, string vaultName)
         {
-            return Load(new FileInfo(filePath), name);            
+            return Load(new FileInfo(filePath), vaultName);            
         }
 
-        public static Vault Load(FileInfo file, string name)
+        public static Vault Load(FileInfo file, string vaultName)
         {
-            return Load(file, name, "".RandomLetters(16)); // password will only be used if the file doesn't exist
+            return Load(file, vaultName, "".RandomLetters(16)); // password will only be used if the file doesn't exist
         }
 
         static Dictionary<string, Vault> _loadedVaults = new Dictionary<string, Vault>();
         static object _loadedVaultsLock = new object();
-        public static Vault Load(FileInfo file, string name, string password, ILogger logger = null)
+        public static Vault Load(FileInfo file, string vaultName, string password, ILogger logger = null)
         {
-            string key = $"{file.FullName}.{name}";
+            string key = $"{file.FullName}.{vaultName}";
             lock (_loadedVaultsLock)
             {
                 if (!_loadedVaults.ContainsKey(key))
@@ -150,15 +154,20 @@ namespace Bam.Net.Encryption
                         logger = Log.Default;
                     }
                     Database db = InitializeDatabase(file.FullName, logger);
-                    _loadedVaults.Add(key, Retrieve(db, name, password));
+                    _loadedVaults.Add(key, Retrieve(db, vaultName, password));
                 }
             }
             return _loadedVaults[key];
         }
 
+        /// <summary>
+        /// Get the vault with the specified name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public static Vault Retrieve(string name)
         {
-            return Retrieve(DefaultVaultDatabase, name, string.Empty);
+            return Retrieve(DefaultDatabase, name, Secure.RandomString());
         }
 
         /// <summary>
@@ -170,7 +179,7 @@ namespace Bam.Net.Encryption
         /// <returns></returns>
         public static Vault Retrieve(string name, string password)
         {
-            return Retrieve(DefaultVaultDatabase, name, password);
+            return Retrieve(DefaultDatabase, name, password);
         }
 
         /// <summary>
@@ -181,15 +190,15 @@ namespace Bam.Net.Encryption
         /// doesn't exist in the specified database
         /// </summary>
         /// <param name="database"></param>
-        /// <param name="name"></param>
+        /// <param name="vaultName"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public static Vault Retrieve(Database database, string name, string password = null)
+        public static Vault Retrieve(Database database, string vaultName, string password = null)
         {
-            Vault result = Vault.OneWhere(c => c.Name == name, database);
+            Vault result = Vault.OneWhere(c => c.Name == vaultName, database);
             if (result == null && !string.IsNullOrEmpty(password))
             {
-                result = Create(database, name, password);
+                result = Create(database, vaultName, password);
             }
             if (result != null)
             {
