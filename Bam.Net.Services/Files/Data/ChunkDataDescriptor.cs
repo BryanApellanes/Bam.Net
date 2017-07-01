@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Data.Repositories;
 
-namespace Bam.Net.Services.Distributed.Files.Data
+namespace Bam.Net.Services.Files.Data
 {
     /// <summary>
     /// A descriptor for the relationship between

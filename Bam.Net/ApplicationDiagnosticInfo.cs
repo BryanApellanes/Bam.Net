@@ -21,7 +21,9 @@ namespace Bam.Net
     public class ApplicationDiagnosticInfo
     {
         public const string DefaultMessageFormat = "Thread=#{ThreadHashCode}({ThreadId})~~App={ApplicationName}~~PID={ProcessId}~~Utc={UtcShortDate}::{UtcShortTime}~~{Message}";
-        public const string Unknown = "UNKNOWN";
+        public const string UnknownApplication = "UNKNOWN_APPLICATION";
+        public const string UnkownOrganization = "UNKOWN_ORGANIZATION";
+
         public ApplicationDiagnosticInfo()
         {
             this.NamedMessageFormat = DefaultMessageFormat;
@@ -92,9 +94,9 @@ namespace Bam.Net
         {
             get
             {
-                if (string.IsNullOrEmpty(appName) || appName.Equals(Unknown))
+                if (string.IsNullOrEmpty(appName) || appName.Equals(UnknownApplication))
                 {
-                    appName = ApplicationNameProvider.Default.GetApplicationName().Or(Unknown);
+                    appName = ApplicationNameProvider.Default.GetApplicationName().Or(UnknownApplication);
                 }
                 return appName;
             }

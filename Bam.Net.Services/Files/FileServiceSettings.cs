@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Services.Distributed.Files
+namespace Bam.Net.Services.Files
 {
-    public class FileServiceSettings
+    public class FileServiceSettings // Used by Copy from within FileService
     {
         public string ChunkDirectory { get; set; }
         public int ChunkDataBatchSize { get; set; }

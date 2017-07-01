@@ -147,6 +147,7 @@
     <Compile Include="HostPrefix.cs" />
     <Compile Include="IContent.cs" />
     <Compile Include="IncludeOrder.cs" />
+    <Compile Include="PageResult.cs" />
     <Compile Include="ReflectionLoader.cs" />
     <Compile Include="Renderers\CompiledDustTemplate.cs" />
     <Compile Include="Renderers\ITemplateRenderer.cs" />

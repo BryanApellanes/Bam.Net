@@ -11,13 +11,13 @@ namespace Bam.Net.Services.Distributed
 {
     public class Keyspace
     {
-        public Keyspace(int start, int end)
+        public Keyspace(long start, long end)
         {
-            this.Start = start;
-            this.End = end;
+            Start = start;
+            End = end;
         }
 
-        public int Start { get; set; }
-        public int End { get; set; }
+        public long Start { get; set; }
+        public long End { get; set; }
     }
 }

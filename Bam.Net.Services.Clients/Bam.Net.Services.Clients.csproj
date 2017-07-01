@@ -41,6 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationDataDescriptor.cs" />
+    <Compile Include="ApplicationManager.cs" />
+    <Compile Include="ApplicationDataManager.cs" />
     <Compile Include="CoreLoggerClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

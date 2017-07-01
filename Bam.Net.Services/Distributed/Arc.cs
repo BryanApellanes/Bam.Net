@@ -32,6 +32,9 @@ namespace Bam.Net.Services.Distributed
 			this.Index = -1;
 		}
 
+        /// <summary>
+        /// The local ProxyableService proxy instance
+        /// </summary>
         public object ServiceProvider { get; set; }
 
         public object GetServiceProvider()

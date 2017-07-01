@@ -11,10 +11,10 @@ using Bam.Net.Services.Catalog.Data;
 namespace Bam.Net.Services
 {
     [Proxy("listSvc")]
-    public class CatalogService : ProxyableService, ICatalogService
+    public class CatalogService : AsyncProxyableService, ICatalogService
     {
         protected CatalogService() { }
-        public CatalogService(DaoRepository repo, AppConf conf) : base(repo, conf)
+        public CatalogService(AsyncCallbackService callbackService, DaoRepository repo, AppConf conf) : base(callbackService, repo, conf)
         { }
 
         public virtual CatalogDefinition AddItem(string listCuid, string itemCuid)

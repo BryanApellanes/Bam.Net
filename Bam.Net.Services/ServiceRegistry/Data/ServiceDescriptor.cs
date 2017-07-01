@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Data.Repositories;
-using Bam.Net.Services.Distributed.Files;
+using Bam.Net.Services.Files;
 
 namespace Bam.Net.Services.ServiceRegistry.Data
 {

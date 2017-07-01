@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Bam.Net.Services.Distributed.Data;
-using Bam.Net.Services.Distributed.Files.Data;
+using Bam.Net.Services.Data;
+using Bam.Net.Services.Files.Data;
 
-namespace Bam.Net.Services.Distributed.Files
+namespace Bam.Net.Services.Files
 {
     /// <summary>
     /// An intermediate class used to describe the relationships

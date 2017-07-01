@@ -34,6 +34,7 @@ namespace Bam.Net.Services
             reg.For<T>().Use(service);
             return reg.Serve(hostPrefixes, logger, conf);
         }
+
         public static ServiceProxyServer Serve(this CoreServices.ServiceRegistry registry, HostPrefix[] hostPrefixes, ILogger logger = null, BamConf conf = null)
         {
             conf = conf ?? BamConf.Load(ServiceConfig.ContentRoot);

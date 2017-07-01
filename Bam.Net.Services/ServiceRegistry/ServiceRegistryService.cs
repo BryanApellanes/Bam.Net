@@ -19,7 +19,7 @@ namespace Bam.Net.Services
     [Proxy("serviceRegistryService")]
     public class ServiceRegistryService : ProxyableService
     {
-        public ServiceRegistryService(AssemblyService assemblyService, ServiceRegistryRepository repo, DaoRepository daoRepo, AppConf appConf) : base(daoRepo, appConf)
+        public ServiceRegistryService(IAssemblyService assemblyService, ServiceRegistryRepository repo, DaoRepository daoRepo, AppConf appConf) : base(daoRepo, appConf)
         {
             ServiceRegistryRepository = repo;
             AssemblyService = assemblyService;
@@ -28,7 +28,7 @@ namespace Bam.Net.Services
         public string RuntimeDirectory { get; set; }
         public ServiceRegistryRepository ServiceRegistryRepository { get; set; }
 
-        public AssemblyService AssemblyService { get; set; }
+        public IAssemblyService AssemblyService { get; set; }
 
         /// <summary>
         /// Get the service registry using the underlying ServcieRegistryLoaderDescriptor
@@ -268,7 +268,7 @@ namespace Bam.Net.Services
         [Local]
         public bool IsLocked(string name, out ServiceRegistryLock theLock)
         {
-            theLock = ServiceRegistryRepository.OneServiceRegistryLockWhere(c => c.Name == name && c.Deleted != null);
+            theLock = ServiceRegistryRepository.OneServiceRegistryLockWhere(c => c.Name == name && c.Deleted == null);
             return theLock != null;
         }
 

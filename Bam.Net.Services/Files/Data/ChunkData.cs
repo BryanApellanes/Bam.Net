@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Data.Repositories;
 
-namespace Bam.Net.Services.Distributed.Files.Data
+namespace Bam.Net.Services.Files.Data
 {
     /// <summary>
     /// Represent an arbitrary chunk of data (base 64 encoded)

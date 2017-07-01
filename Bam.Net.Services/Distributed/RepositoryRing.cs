@@ -18,7 +18,7 @@ using Bam.Net.Services.Distributed.Data;
 
 namespace Bam.Net.Services.Distributed
 {
-    public class RepositoryRing: Ring<RepositoryService>, IBaseCrudProvider
+    public class RepositoryRing: Ring<RepositoryService>, ICrudProvider
     {
         public RepositoryRing()
             : base()
@@ -54,10 +54,6 @@ namespace Bam.Net.Services.Distributed
             return result;
         }        
         public UniversalIdentifier UniversalIdentifier { get; set; }
-        public void AddArc(RepositoryService service)
-        {
-            AddArc(new Arc<RepositoryService>(service));
-        }
 
         public override string GetHashString(object value)
         {

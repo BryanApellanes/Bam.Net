@@ -15,6 +15,9 @@ using Bam.Net.Services.AsyncCallback.Data.Dao.Repository;
 
 namespace Bam.Net.Services
 {
+    /// <summary>
+    /// A service that will catch async responses
+    /// </summary>
     [Proxy("asyncCallbackSvc")]
     [Encrypt]
     public class AsyncCallbackService: ProxyableService

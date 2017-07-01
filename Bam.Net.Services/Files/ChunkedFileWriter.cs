@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Bam.Net.Logging;
-using Bam.Net.Services.Distributed.Files.Data;
+using Bam.Net.Services.Files.Data;
 
-namespace Bam.Net.Services.Distributed.Files
+namespace Bam.Net.Services.Files
 {
     public class ChunkedFileWriter: IChunkedFileDescriptor
     {

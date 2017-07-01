@@ -11,22 +11,17 @@ using Bam.Net.CoreServices;
 using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 using Bam.Net.ServiceProxy.Secure;
-using Bam.Net.Services.Distributed.Data;
-using Bam.Net.Services.Distributed.Files.Data;
+using Bam.Net.Services.Data;
+using Bam.Net.Services.Files.Data;
 
-namespace Bam.Net.Services.Distributed.Files
+namespace Bam.Net.Services.Files
 {
     [RoleRequired("/", "Admin")]
     [Proxy("fileSvc")]
     [ApiKeyRequired]
-    public class FileService: ProxyableService
+    public class FileService : ProxyableService, IFileService
     {
-        public FileService(IRepository repository, FileServiceSettings settings) : this(repository)
-        {
-            this.CopyProperties(settings);
-            ChunkDirectory = new FileInfo(ChunkDirectory).FullName;
-        }
-
+        protected FileService() { }
         public FileService(IRepository repository)
         {
             Repository = repository;

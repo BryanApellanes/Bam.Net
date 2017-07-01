@@ -21,6 +21,9 @@ namespace Bam.Net.Services
     public abstract class AsyncProxyableService : ProxyableService, IHasServiceProvider
     {
         ProxyFactory _proxyFactory;
+        private DaoRepository repo;
+        private AppConf conf;
+
         public AsyncProxyableService(AsyncCallbackService callbackService, DaoRepository repository, AppConf appConf) : base(repository, appConf)
         {
             Init(callbackService);
@@ -63,6 +66,7 @@ namespace Bam.Net.Services
             {
                 Task<AsyncExecutionResponse> task = InvokeAsync(methodName, arguments);
                 task.Wait(AsyncWaitTimeout);
+
                 if(task.Result?.ResultJson != null)
                 {
                     task.Result.Result = task.Result.ResultJson.FromJson<T>();

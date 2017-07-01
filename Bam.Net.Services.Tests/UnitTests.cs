@@ -12,8 +12,8 @@ using Bam.Net.Data.SQLite;
 using Bam.Net.Logging;
 using Bam.Net.Server;
 using Bam.Net.Services.Distributed.Data;
-using Bam.Net.Services.Distributed.Files.Data;
-using Bam.Net.Services.Distributed.Files;
+using Bam.Net.Services.Files.Data;
+using Bam.Net.Services.Files;
 using Bam.Net.Testing;
 using Bam.Net.Caching;
 

@@ -1,4 +1,4 @@
-﻿namespace Bam.Net.Services.Distributed.Files
+﻿namespace Bam.Net.Services.Files
 {
     public interface IChunkedFileDescriptor
     {

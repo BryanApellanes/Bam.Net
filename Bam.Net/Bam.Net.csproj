@@ -149,6 +149,7 @@
     <Compile Include="CompilationException.cs" />
     <Compile Include="Configuration\Configurable.cs" />
     <Compile Include="Configuration\DefaultConfigurationApplicationNameProvider.cs" />
+    <Compile Include="Configuration\DefaultConfigurationOrganizationNameProvider.cs" />
     <Compile Include="Configuration\DefaultConfigurationService.cs" />
     <Compile Include="Configuration\IConfigurationService.cs" />
     <Compile Include="Configuration\IConfigurer.cs" />
@@ -181,6 +182,7 @@
     <Compile Include="IAssemblyGenerator.cs" />
     <Compile Include="IJsonable.cs" />
     <Compile Include="Instant.cs" />
+    <Compile Include="IOrganizationNameProvider.cs" />
     <Compile Include="IpcMessageLockInfo.cs" />
     <Compile Include="IWriteSource.cs" />
     <Compile Include="LocalAttribute.cs" />

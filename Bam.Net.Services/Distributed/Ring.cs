@@ -12,12 +12,12 @@ namespace Bam.Net.Services.Distributed
 {
     public abstract class Ring<TService> : Ring where TService: IDistributedRepository
     {
-        public void AddArc(TService arcValue)
+        public virtual void AddArc(TService arcValue)
         {
             AddArc(new Arc<TService>(arcValue));
         }
 
-        public void AddArc(Arc<TService> arc)
+        public virtual void AddArc(Arc<TService> arc)
         {
             base.AddArc(arc);
         }
@@ -63,7 +63,7 @@ namespace Bam.Net.Services.Distributed
             }
         }
 
-        public int ArcSize
+        public long ArcSize
         {
             get;
             private set;
@@ -81,7 +81,7 @@ namespace Bam.Net.Services.Distributed
             }
         }
 
-        public void AddArc(Arc arc)
+        public virtual void AddArc(Arc arc)
         {
             _arcs.Add(arc);
             ConfigureArcs(_arcs);
@@ -129,9 +129,9 @@ namespace Bam.Net.Services.Distributed
         protected virtual void ConfigureArcs(IEnumerable<Arc> arcs)
         {
             int arcCount = arcs.Count();
-            int keysPerArc = int.MaxValue / arcCount;
-            int startKey = 0;
-            int endKey = startKey + keysPerArc;
+            long keysPerArc = long.MaxValue / arcCount;
+            long startKey = 0;
+            long endKey = startKey + keysPerArc;
 
             double arcDegrees = 360 / arcCount;
             double startAngle = 0;
