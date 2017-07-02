@@ -22,7 +22,7 @@ namespace Bam.Net
     {
         public const string DefaultMessageFormat = "Thread=#{ThreadHashCode}({ThreadId})~~App={ApplicationName}~~PID={ProcessId}~~Utc={UtcShortDate}::{UtcShortTime}~~{Message}";
         public const string UnknownApplication = "UNKNOWN_APPLICATION";
-        public const string UnkownOrganization = "UNKOWN_ORGANIZATION";
+        public const string PublicOrganization = "PUBLIC_ORGANIZATION";
 
         public ApplicationDiagnosticInfo()
         {

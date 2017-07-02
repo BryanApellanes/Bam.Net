@@ -19,7 +19,7 @@ namespace Bam.Net.Configuration
         }
         public string GetOrganizationName()
         {
-            return DefaultConfiguration.GetAppSetting("OrganizationnName", ApplicationDiagnosticInfo.UnkownOrganization);
+            return DefaultConfiguration.GetAppSetting("OrganizationnName", ApplicationDiagnosticInfo.PublicOrganization);
         }
     }
 }

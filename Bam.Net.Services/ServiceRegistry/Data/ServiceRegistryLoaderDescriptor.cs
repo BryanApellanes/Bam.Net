@@ -32,11 +32,15 @@ namespace Bam.Net.Services.ServiceRegistry.Data
         private void Initialize(Type type, string name = null, string description = null)
         {
             LoaderType = type.FullName;
-            LoaderAssembly = type.Assembly.FullName;            
-            MethodInfo loaderMethodInfo = type.GetMethodsWithAttributeOfType<ServiceRegistryLoaderAttribute>().FirstOrDefault();
+            LoaderAssembly = type.Assembly.FullName;
+            MethodInfo loaderMethodInfo = type.GetMethods().Where(mi => mi.HasCustomAttributeOfType(out ServiceRegistryLoaderAttribute a) && a.RegistryName.Equals(name)).FirstOrDefault();
             if (loaderMethodInfo == null)
             {
-                throw new InvalidOperationException($"The specified type doesn't have a method addorned with an attribute of {nameof(ServiceRegistryLoaderAttribute)}");
+                loaderMethodInfo = type.GetFirstMethodWithAttributeOfType<ServiceRegistryLoaderAttribute>();
+                if(loaderMethodInfo == null)
+                {
+                    throw new InvalidOperationException($"The specified type doesn't have a method addorned with an attribute of {nameof(ServiceRegistryLoaderAttribute)}");
+                }
             }
             ServiceRegistryLoaderAttribute attr = loaderMethodInfo.GetCustomAttributeOfType<ServiceRegistryLoaderAttribute>();
             Name = string.IsNullOrEmpty(name) ? (string.IsNullOrEmpty(attr.RegistryName) ?  $"{type.Assembly.GetFileInfo().Name}_{type.Name}" : attr.RegistryName): name;

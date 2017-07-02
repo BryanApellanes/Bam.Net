@@ -16,7 +16,7 @@ namespace Bam.Net.CoreServices.Data
         {
             get
             {
-                return _publicLock.DoubleCheckLock(ref _public, () => new Organization { Name = "PUBLIC" });
+                return _publicLock.DoubleCheckLock(ref _public, () => new Organization { Name = ApplicationDiagnosticInfo.PublicOrganization });
             }
         }
 

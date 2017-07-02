@@ -13,10 +13,11 @@ namespace Bam.Net.Data.Repositories
     {
         public DataSettings()
         {
-            DataDirectory = "C:\\BamData";
+            DataRootDirectory = "C:\\BamData";
             DatabaseDirectory = "Databases";
-            RepositoryDirectory = "Repository";
+            RepositoryDirectory = "Repositories";
             FilesDirectory = "Files";
+            WorkspacesDirectory = "Workspaces";
             EmailTemplatesDirectory = "EmailTemplates";
             Logger = Log.Default;
         }
@@ -31,39 +32,51 @@ namespace Bam.Net.Data.Repositories
             }
         }
 
-        public string DataDirectory { get; set; }
+        public string DataRootDirectory { get; set; }
         public string DatabaseDirectory { get; set; }
         public string RepositoryDirectory { get; set; }
         public string FilesDirectory { get; set; }
+        public string WorkspacesDirectory { get; set; }
         public string EmailTemplatesDirectory { get; set; }
-        public DirectoryInfo GetDataDirectory()
+
+        public DirectoryInfo GetRooDataDirectory()
         {
-            return new DirectoryInfo(DataDirectory);
+            return new DirectoryInfo(DataRootDirectory);
         }
 
         public DirectoryInfo GetDatabaseDirectory()
         {
-            return new DirectoryInfo(Path.Combine(GetDataDirectory().FullName, DatabaseDirectory));
+            return new DirectoryInfo(Path.Combine(GetRooDataDirectory().FullName, DatabaseDirectory));
         }
 
         public DirectoryInfo GetRepositoryDirectory()
         {
-            return new DirectoryInfo(Path.Combine(GetDataDirectory().FullName, RepositoryDirectory));
+            return new DirectoryInfo(Path.Combine(GetRooDataDirectory().FullName, RepositoryDirectory));
         }
 
         public DirectoryInfo GetRepositoryWorkspaceDirectory()
         {
-            return new DirectoryInfo(Path.Combine(GetRepositoryDirectory().FullName, "Workspaces"));
+            return new DirectoryInfo(Path.Combine(GetRepositoryDirectory().FullName, "RepoWorkspaces"));
         }
 
         public DirectoryInfo GetFilesDirectory()
         {
-            return new DirectoryInfo(Path.Combine(GetDataDirectory().FullName, FilesDirectory));
+            return new DirectoryInfo(Path.Combine(GetRooDataDirectory().FullName, FilesDirectory));
+        }
+
+        public DirectoryInfo GetWorkspaceDirectory(Type type)
+        {
+            return new DirectoryInfo(Path.Combine(GetRooDataDirectory().FullName, WorkspacesDirectory, type.Name));
+        }
+
+        public DaoRepository GetGenericDaoRepository(ILogger logger = null, string schemaName = null)
+        {
+            return new DaoRepository(GetDatabaseFor(typeof(DaoRepository)), logger, schemaName);
         }
 
         public DirectoryInfo GetEmailTemplatesDirectory()
         {
-            return new DirectoryInfo(Path.Combine(GetDataDirectory().FullName, EmailTemplatesDirectory));
+            return new DirectoryInfo(Path.Combine(GetRooDataDirectory().FullName, EmailTemplatesDirectory));
         }
 
         public void SetDatabaseFor(object instance)

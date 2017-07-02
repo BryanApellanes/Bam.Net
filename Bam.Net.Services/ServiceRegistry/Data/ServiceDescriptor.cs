@@ -8,6 +8,9 @@ using Bam.Net.Services.Files;
 
 namespace Bam.Net.Services.ServiceRegistry.Data
 {
+    /// <summary>
+    /// A persistable descriptor for a .Net Type
+    /// </summary>
     [Serializable]
     public class ServiceDescriptor: AuditRepoData
     {

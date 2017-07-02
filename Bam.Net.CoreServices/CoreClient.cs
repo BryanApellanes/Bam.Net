@@ -316,7 +316,7 @@ namespace Bam.Net.CoreServices
             ApplicationName = applicationName;
             HostName = hostName;
             Port = port;
-            WorkspaceDirectory = workingDirectory ?? $".\\{nameof(CoreClient)}";
+            WorkspaceDirectory = workingDirectory ?? DataSettings.Default.GetWorkspaceDirectory(typeof(CoreClient)).FullName;
             HashAlgorithm = HashAlgorithms.SHA256;
             ProxyFactory = new ProxyFactory(WorkspaceDirectory, logger);
         }
