@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -17,19 +18,31 @@ namespace Bam.Net.UserAccounts.Tests.Integration
         static Vault _vault;
 
         [ConsoleAction]
-        public Vault SetVault()
+        public void SetVault()
         {
             SetVaultDatabase();
             VaultCollection vaults = Vault.LoadAll(Vault.DefaultDatabase);
             _vault = SelectFrom(vaults, v => v.Name);
-            return _vault;
         }
 
+        [ConsoleAction]
+        public void DeleteVault()
+        {
+            SetVault();
+            ShowSettings();
+            if(Confirm("Are you sure you want to delete this vault?"))
+            {
+                _vault.Delete();
+            }
+        }
         [ConsoleAction]
         public void ShowSettings()
         {
             SetVaultDatabase();
-            Vault vault = _vault ?? SetVault();
+            if(_vault == null)
+            {
+                SetVault();
+            }
             foreach (string key in _vault.Keys)
             {
                 OutLineFormat("{0}: {1}", key, _vault[key]);
@@ -40,10 +53,21 @@ namespace Bam.Net.UserAccounts.Tests.Integration
         public void SetVaultValue()
         {
             SetVaultDatabase();
-            Vault vault = _vault ?? SetVault();
-            int index = SelectFrom(vault.Keys);
-            string keyToSet = vault.Keys[index];
-            vault[keyToSet] = Prompt($"Enter the vault to set {keyToSet}");
+            if (_vault == null)
+            {
+                SetVault();
+            }
+            int index = SelectFrom(_vault.Keys);
+            string keyToSet = _vault.Keys[index];
+            _vault[keyToSet] = Prompt($"Enter the vault to set {keyToSet}");
+        }
+
+        [ConsoleAction]
+        public void CreateVault()
+        {
+            SetVaultDatabase();
+            string vaultName = Prompt("Enter the name of the vault to create");
+            Vault.Retrieve(vaultName);
         }
 
         private static void SetVaultDatabase()
@@ -52,8 +76,6 @@ namespace Bam.Net.UserAccounts.Tests.Integration
             Vault.DefaultDatabase = dataSettings.GetDatabaseFor(typeof(Vault), "System");
             Vault.DefaultDatabase.TryEnsureSchema<Vault>();
         }
-
-
 
         [ConsoleAction]
         public void IntegrationTests()

@@ -154,6 +154,7 @@ namespace Bam.Net.Encryption
                         logger = Log.Default;
                     }
                     Database db = InitializeDatabase(file.FullName, logger);
+                    db.SelectStar = true;
                     _loadedVaults.Add(key, Retrieve(db, vaultName, password));
                 }
             }
