@@ -114,7 +114,7 @@ namespace Bam.Net.Automation
                 EnsureJobDirectory();
 
                 string path = ValidateWorkerName(worker.Name, overwrite);
-                worker.StepNumber = CurrentIndex.ToString();
+                worker.StepNumber = CurrentIndex;
                 ++CurrentIndex;
 
                 worker.SaveConf(path);

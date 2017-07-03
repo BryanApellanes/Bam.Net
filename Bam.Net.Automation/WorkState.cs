@@ -52,7 +52,7 @@ namespace Bam.Net.Automation
             this.Message = !string.IsNullOrEmpty(ex.StackTrace) ? string.Format("{0}:\r\n\r\n{1}", ex.Message, ex.StackTrace) : ex.Message;
         }
 
-        public string StepNumber { get; set; }
+        public int StepNumber { get; set; }
 
         public string JobName { get; set; }
         public string WorkName { get; set; }

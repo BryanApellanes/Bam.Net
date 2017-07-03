@@ -8,7 +8,7 @@ namespace Bam.Net.Automation
     {
         Job Job { get; set; }
         string Name { get; set; }
-        string StepNumber { get; set; }
+        int StepNumber { get; set; }
         bool Busy { get; set; }
         WorkState<T> State<T>(WorkState<T> state);
         WorkState Do(Job job);
