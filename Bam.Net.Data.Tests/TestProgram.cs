@@ -184,6 +184,23 @@ namespace Bam.Net.Data.Tests
             OutLineFormat("Operation took: {0}", elapsed.ToString());
         }
 
+        [UnitTest]
+        public void DaoDataGetSetTest()
+        {
+            TestTable instance = new TestTable();
+            string propValue = "ByProperty";
+            instance.Name = propValue;
+            string value = 16.RandomLetters();
+            string setValue = instance.Value<string>("MonkeyBoy", value);
+            string checkValue = instance.Value<string>("MonkeyBoy");
+            Expect.AreEqual(value, checkValue);
+            dynamic obj = instance.ToDynamic();
+            Expect.AreEqual(value, obj.MonkeyBoy);
+            dynamic jsonSafe = instance.ToJsonSafe(true);
+            Expect.AreEqual(propValue, jsonSafe.Name);
+            Expect.AreEqual(value, jsonSafe.MonkeyBoy);
+        }
+
         private static ConsoleLogger PrepareDatabaseAndGetLogger(Database database)
         {
             ConsoleLogger logger = new ConsoleLogger();

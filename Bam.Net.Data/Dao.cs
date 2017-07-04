@@ -11,6 +11,7 @@ using Bam.Net;
 using Bam.Net.Incubation;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Bam.Net.Data
 {
@@ -27,8 +28,35 @@ namespace Bam.Net.Data
             PostConstructActions = new Dictionary<Type, Action<Dao>>();
         }
 
+        public Dao()
+        {
+            Initialize();
+        }
+
+        public Dao(Database database)
+        {
+            Database = database;
+            Initialize();
+        }
+
+        public Dao(DataRow row)
+            : this()
+        {
+            DataRow = row;
+            IsNew = false;
+        }
+
+        public Dao(Database database, DataRow row)
+        {
+            Database = database;
+            DataRow = row;
+            Initialize();
+        }
+
         static volatile Incubator _proxyTypeProvider;
         static object _proxyTypeProviderLock = new object();
+
+        [Obsolete("There is no known logical use for this and it should be removed unless one can be identified.")]
         public static Incubator ProxyTypeProvider
         {
             get
@@ -54,32 +82,9 @@ namespace Bam.Net.Data
         }
 
         Dictionary<string, ILoadable> _childCollections;
-
-        public Dao()
-        {
-            Initialize();
-        }
-
-        public Dao(Database database)
-        {
-            this.Database = database;
-            Initialize();
-        }
-
-        public Dao(DataRow row)
-            : this()
-        {
-            this.DataRow = row;
-            this.IsNew = false;
-        }
-
-        public Dao(Database database, DataRow row)
-        {
-            this.Database = database;
-            this.DataRow = row;
-            this.Initialize();
-        }
-
+        /// <summary>
+        /// Actions keyed by type to take after contruction
+        /// </summary>
         public static Dictionary<Type, Action<Dao>> PostConstructActions { get; set; }
 
         /// <summary>
@@ -240,6 +245,40 @@ namespace Bam.Net.Data
             {
                 _database = value;
             }
+        }
+
+        List<string> _columns;
+        object _columnsLock = new object();
+        public string[] Columns
+        {
+            get
+            {
+                _columns = _columnsLock.DoubleCheckLock(ref _columns, () =>
+                {
+                    List<string> keys = new List<string>();
+                    for (int i = 0; i < DataRow?.Table?.Columns.Count; i++)
+                    {
+                        DataColumn current = DataRow.Table.Columns[i];
+                        keys.Add(current.ColumnName);
+                    }
+                    return keys;
+                });
+                return _columns.ToArray();
+            }
+        }
+        
+        public T Value<T>(string columnName, object value = null)
+        {
+            DataTable table = DataRow.Table;
+            if (!table.Columns.Contains(columnName))
+            {
+                table.Columns.Add(columnName);
+            }
+            if(value != null)
+            {
+                DataRow[columnName] = value;
+            }
+            return (T)GetCurrentValue(columnName);
         }
 
         /// <summary>
@@ -783,11 +822,11 @@ namespace Bam.Net.Data
             Type thisType = this.GetType();
             if (db == null)
             {
-                db = Database;// Db.For(thisType);
+                db = Database;
             }
 
             SqlStringBuilder sql = GetSqlStringBuilder(db);
-            ColumnAttribute[] columns = Db.GetColumns(thisType);//_.GetColumns(thisType);
+            ColumnAttribute[] columns = Db.GetColumns(thisType);
             foreach (ColumnAttribute col in columns)
             {
                 this.SetValue(col.Name, this.GetOriginalValue(col.Name));
@@ -841,6 +880,38 @@ namespace Bam.Net.Data
                 jsonSafeInstance.CopyProperties(this);
                 return jsonSafeInstance;
             }
+        }
+
+        /// <summary>
+        /// Creates an in memory dynamic type representing
+        /// the current Dao's Columns only.
+        /// </summary>
+        /// <param name="includeExtras">Include anything added through the Value method</param>
+        /// <returns></returns>
+        public object ToJsonSafe(bool includeExtras = false)
+        {
+            object jsonSafe = ToJsonSafe();
+            object result = jsonSafe;
+            if (includeExtras)
+            {
+                object extras = ToDynamic();
+                Type mergedType = new List<object>() { jsonSafe, extras }.MergeToDynamicType(Dao.TableName(this), 0);
+                result = mergedType.Construct();
+                result.CopyProperties(extras);
+                result.CopyProperties(jsonSafe);                
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Create an in memory dynamic type representing 
+        /// all the values in DataRow including anything 
+        /// added through the Value method
+        /// </summary>
+        /// <returns></returns>
+        public object ToDynamic()
+        {
+            return DataRow.ToDynamic();
         }
 
         /// <summary>
@@ -1281,7 +1352,7 @@ namespace Bam.Net.Data
             object val = GetCurrentValue(columnName);
             if (val != null && val != DBNull.Value)
             {
-                return Convert.ToString(val); //(string)val;
+                return Convert.ToString(val); 
             }
 
             return string.Empty;

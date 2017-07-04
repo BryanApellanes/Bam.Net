@@ -3801,7 +3801,6 @@ namespace Bam.Net
         {
             lock (_buildDynamicTypeLock)
             {
-
                 if (DynamicTypeStore.Current.ContainsTypeInfo(typeName) && DynamicTypeStore.Current[typeName] != null)
                 {
                     return GetExistingDynamicType(typeName, out assemblyBuilder);
