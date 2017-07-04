@@ -87,6 +87,8 @@ namespace Bam.Net.Automation
             }
         }
 
+        public int StepNumber { get; set; }
+
         public string Name { get; set; }
 
         public Worker CreateWorker(Job job = null)
@@ -98,6 +100,7 @@ namespace Bam.Net.Automation
 
             Worker result = WorkerType.Construct<Worker>();
             result.Name = this.Name;
+            result.StepNumber = this.StepNumber;
             result.Configure(this);
             if (job != null)
             {

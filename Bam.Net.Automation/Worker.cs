@@ -31,7 +31,7 @@ namespace Bam.Net.Automation
         /// Used by the job to sort this worker into its proper
         /// place in order relative to other workers
         /// </summary>
-        public string StepNumber
+        public int StepNumber
         {
             get;
             set;
@@ -131,6 +131,7 @@ namespace Bam.Net.Automation
             Type workerType = this.GetType();
             PropertyInfo[] properties = workerType.GetProperties().Where(pi => pi.PropertyType == typeof(string) && !pi.Name.Equals("Name")).ToArray();
             WorkerConf conf = new WorkerConf(this);
+            conf.StepNumber = StepNumber;
             properties.Each(prop =>
             {
                 conf.AddProperty(prop.Name, (string)prop.GetValue(this));

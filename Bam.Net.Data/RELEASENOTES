@@ -1,2 +1,2 @@
 
- -   fix null reference exceptions in new DaoCollection instance (dbcfa07)
+ -   fix DaoCollection associate to parent (46f940d)
