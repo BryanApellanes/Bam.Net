@@ -321,6 +321,11 @@
             Data Access Object
             </summary>
         </member>
+        <member name="P:Bam.Net.Data.Dao.PostConstructActions">
+            <summary>
+            Actions keyed by type to take after contruction
+            </summary>
+        </member>
         <member name="M:Bam.Net.Data.Dao.RegisterDaoTypes(System.Type)">
             <summary>
             Instantiate all dao types found in the assembly that contains the
@@ -469,6 +474,22 @@
             the current Dao's Columns only.
             </summary>
             <param name="daoObject"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Dao.ToJsonSafe(System.Boolean)">
+            <summary>
+            Creates an in memory dynamic type representing
+            the current Dao's Columns only.
+            </summary>
+            <param name="includeExtras">Include anything added through the Value method</param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.Dao.ToDynamic">
+            <summary>
+            Create an in memory dynamic type representing 
+            all the values in DataRow including anything 
+            added through the Value method
+            </summary>
             <returns></returns>
         </member>
         <member name="M:Bam.Net.Data.Dao.GetNewAssignValues">
