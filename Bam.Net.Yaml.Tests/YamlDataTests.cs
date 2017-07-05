@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Bam.Net.CommandLine;
 using Bam.Net.Data.Repositories;
@@ -98,6 +99,7 @@ namespace Bam.Net.Yaml.Tests
             8.RandomLetters().SafeWriteToFile(txt.FullName, true);
             txt.Refresh();
             DateTime twoWrite = txt.LastWriteTimeUtc;
+            Thread.Sleep(1);
             Expect.IsTrue(twoWrite > oneWrite);
             OutLine(twoWrite.Millisecond.ToString());
         }
