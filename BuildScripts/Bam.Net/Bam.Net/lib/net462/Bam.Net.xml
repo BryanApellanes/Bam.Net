@@ -1605,7 +1605,7 @@
             <param name="xmlString"></param>
             <returns></returns>
         </member>
-        <member name="M:Bam.Net.CustomAttributeExtension.GetFirstMethodWithAttributeOfType``1(System.Type)">
+        <member name="M:Bam.Net.CustomAttributeExtension.GetFirstMethodWithAttributeOfType``1(System.Type,``0@)">
             <summary>
             Gets the MethodInfo for the first method found in the specified typeToAnalyze
             that has a custom attribute of the specified type T.  Returns null if none
@@ -1613,6 +1613,7 @@
             </summary>
             <typeparam name="T">the type of the custom attribute to look for</typeparam>
             <param name="typeToAnalyze">the type to analyze</param>
+            <param name="attr"></param>
             <returns>MethodInfo or null</returns>
         </member>
         <member name="M:Bam.Net.CustomAttributeExtension.GetFirstProperyWithAttributeOfType``1(System.Type)">

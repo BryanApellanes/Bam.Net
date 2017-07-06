@@ -93,6 +93,19 @@
             calls.  This route should be registered after the default route
             </summary>
         </member>
+        <member name="T:Bam.Net.Data.DatabaseProvider`1">
+            <summary>
+            Sets database properties for a given set of object instances.
+            </summary>
+            <typeparam name="T">The type of database to use</typeparam>
+        </member>
+        <member name="M:Bam.Net.Data.DatabaseProvider`1.SetDatabases(System.Object[])">
+            <summary>
+            Sets all properties on the specified instances, where the property 
+            is writeable and is of type Database, to an instance of T 
+            </summary>
+            <param name="instances"></param>
+        </member>
         <member name="T:Bam.Net.Data.Db">
             <summary>
             Utitlity for setting default databases
@@ -288,6 +301,18 @@
             <summary>
             If specified, should be the path to the assembly containing the 
             SchemaContext to be initialized.
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Data.SchemasAttribute">
+            <summary>
+            Attribute used to mark a database property
+            with Dao types used to initialize the
+            schema in the database
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Data.SchemasAttribute.DaoSchemaTypes">
+            <summary>
+            Dao types to use to initialize schemas
             </summary>
         </member>
         <member name="M:Bam.Net.Data.SchemaWriter.WriteSchemaScript``1">

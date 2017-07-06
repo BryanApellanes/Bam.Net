@@ -1504,24 +1504,23 @@
             the implementation)
             </summary>
         </member>
-        <member name="T:Bam.Net.Automation.Orchestrator">
+        <member name="T:Bam.Net.Automation.Overseer">
             <summary>
             The master orchestrator for 
             all jobs.
             </summary>
         </member>
-        <member name="M:Bam.Net.Automation.Orchestrator.AddWorker(System.String,System.String,System.String)">
+        <member name="M:Bam.Net.Automation.Overseer.AddWorker(System.String,System.String,System.String)">
             <summary>
-            Add a worker of the specified type assigning the
-            specified workerName to the job with the specified
-            jobName.
+            Add a worker of the specified type to the job with the specified
+            jobName assigning the specified workerName .
             </summary>
             <param name="workerTypeName"></param>
             <param name="workerName"></param>
             <param name="jobName"></param>
             <returns></returns>
         </member>
-        <member name="M:Bam.Net.Automation.Orchestrator.AddWorker``1(System.String,Bam.Net.Automation.JobConf)">
+        <member name="M:Bam.Net.Automation.Overseer.AddWorker``1(System.String,Bam.Net.Automation.JobConf)">
             <summary>
             Adds a worker of generic type T to the
             specified JobConf.
@@ -1530,16 +1529,24 @@
             <param name="conf"></param>
             <returns></returns>
         </member>
-        <member name="M:Bam.Net.Automation.Orchestrator.JobExists(System.String)">
+        <member name="M:Bam.Net.Automation.Overseer.JobExists(System.String)">
             <summary>
-            Returns true is a job with the specified name
-            exists under the current Foreman.  Determined
-            by looking in the current Foreman's JobsDirectory.
+            Returns true if a job with the specified name
+            exists under the current Orchestrator.  Determined
+            by looking in the current Orchestrator's JobsDirectory.
             </summary>
             <param name="name"></param>
             <returns></returns>
         </member>
-        <member name="M:Bam.Net.Automation.Orchestrator.StartJobRunnerThread">
+        <member name="M:Bam.Net.Automation.Overseer.EnqueueJob(System.String,System.Int32)">
+            <summary>
+            Enqueue a job to be run next (typically instant if no other
+            jobs are running)
+            </summary>
+            <param name="name"></param>
+            <param name="stepNumber"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.Overseer.StartJobRunnerThread">
             <summary>
             Starts the JobRunner thread.  This method
             must be called prior to queueing up jobs

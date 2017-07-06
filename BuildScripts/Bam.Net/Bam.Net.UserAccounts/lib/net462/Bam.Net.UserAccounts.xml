@@ -9,39 +9,6 @@
             Not actually an exception
             </summary>
         </member>
-        <member name="P:Bam.Net.UserAccounts.OAuth.OAuthSettings.ClientId">
-            <summary>
-            The identifier used by the provider's system
-            </summary>
-        </member>
-        <member name="P:Bam.Net.UserAccounts.OAuth.OAuthSettings.ClientSecret">
-            <summary>
-            The secret assigned by the provider's system
-            </summary>
-        </member>
-        <member name="P:Bam.Net.UserAccounts.OAuth.OAuthSettings.AuthCallbackUrl">
-            <summary>
-            The url of our app that will receive the
-            authenticated redirect
-            </summary>
-        </member>
-        <member name="P:Bam.Net.UserAccounts.OAuth.OAuthSettings.TokenCallbackUrl">
-            <summary>
-            The url of our app that will receive the
-            token redirect
-            </summary>
-        </member>
-        <member name="P:Bam.Net.UserAccounts.OAuth.OAuthSettings.AuthorizationEndpoint">
-            <summary>
-            The providers user login endpoint 
-            </summary>
-        </member>
-        <member name="P:Bam.Net.UserAccounts.OAuth.OAuthSettings.TokenEndpoint">
-            <summary>
-            The providers endpoint used to acquire
-            an access token for the current user
-            </summary>
-        </member>
         <member name="M:Bam.Net.UserAccounts.Data.Group.GetUniqueFilter">
             <summary>
             Gets a query filter that should uniquely identify

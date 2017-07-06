@@ -1,1 +1,3 @@
 
+ -   add email tempaltes directory to DataSettings (34d09ec)
+ -   refactor, prep for distributed support (158d9ea)
