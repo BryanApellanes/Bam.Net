@@ -7,16 +7,16 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Logging;
 using Repo = Bam.Net.Services.AssemblyManagement.Data.Dao.Repository;
-using Bam.Net.Services.Distributed.Files;
+using Bam.Net.Services.Files;
 using Bam.Net.Services.AssemblyManagement.Data;
 using Bam.Net.ServiceProxy.Secure;
-using Bam.Net.Services.Distributed.Files.Data;
+using Bam.Net.Services.Files.Data;
 
 namespace Bam.Net.Services
 {
     public class AssemblyService : Loggable, IAssemblyService // doesn't need to be remote accessible, can use FileService which can be
     {
-        public AssemblyService(FileService fileService, Repo.AssemblyServiceRepository repo, IApplicationNameProvider appNameProvider, 
+        public AssemblyService(IFileService fileService, Repo.AssemblyServiceRepository repo, IApplicationNameProvider appNameProvider, 
             EventHandler currentRuntimePersisted = null,
             EventHandler applicationRestoredHandler = null)
         {
@@ -30,7 +30,7 @@ namespace Bam.Net.Services
         public event EventHandler CurrentRuntimePersisted;
         public event EventHandler RuntimeRestored;
         public string AssemblyDirectory { get; set; }
-        public FileService FileService { get; set; }
+        public IFileService FileService { get; set; }
         public Repo.AssemblyServiceRepository AssemblyManagementRepository { get; set; }
         public IApplicationNameProvider ApplicationNameProvider { get; set; }
         
@@ -55,11 +55,6 @@ namespace Bam.Net.Services
             }
             RestoreProcessRuntime(prd, directoryPath);           
         }
-        
-        public void SetCurrentRuntimeDescriptor()
-        {
-            CurrentProcessRuntimeDescriptor = LoadCurrentRuntimeDescriptorTask.Result;
-        }
 
         ProcessRuntimeDescriptor _current;
         public ProcessRuntimeDescriptor CurrentProcessRuntimeDescriptor
@@ -68,7 +63,7 @@ namespace Bam.Net.Services
             {
                 if(_current == null)
                 {
-                    SetCurrentRuntimeDescriptor();
+                    _current = LoadCurrentRuntimeDescriptorTask.Result; 
                 }
                 return _current;
             }

@@ -22,5 +22,27 @@ namespace Bam.Net.CoreServices
                 return base.ApplicationName;
             }
         }
+
+        public string ClientSpecifiedApplicationName
+        {
+            get
+            {
+                return base.ApplicationName;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the ApplicationNameProvider returns the same 
+        /// ApplicationName as is specified by the request headers
+        /// </summary>
+        /// <returns></returns>
+        public bool IsRequestForCurrentApplication()
+        {
+            if(ApplicationNameProvider == null)
+            {
+                Logger.Warning("{0} was null, '{1}' will always return true in this case", nameof(ApplicationNameProvider), nameof(IsRequestForCurrentApplication));
+            }
+            return ClientSpecifiedApplicationName.Equals(ApplicationName);
+        }
     }
 }

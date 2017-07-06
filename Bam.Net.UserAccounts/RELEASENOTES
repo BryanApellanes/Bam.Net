@@ -1,1 +1,3 @@
 
+ -   better smtp settings handling (835105d)
+ -   move OAuth components out (55aa95e)

@@ -58,8 +58,8 @@
       <HintPath>..\..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -212,8 +212,6 @@
     <Compile Include="ServiceConfig.cs" />
     <Compile Include="ApplicationConfiguration.cs" />
     <Compile Include="Services\ClientApplicationFactory.cs" />
-    <Compile Include="DatabaseProvider.cs" />
-    <Compile Include="IDatabaseProvider.cs" />
     <Compile Include="MaximumLimitEnforcer.cs" />
     <Compile Include="ProxySettingsValidation.cs" />
     <Compile Include="ProxySettingsValidationException.cs" />
@@ -236,7 +234,6 @@
     <Compile Include="OrganizationFactory.cs" />
     <Compile Include="Services\SourcedConfigurationSetting.cs" />
     <Compile Include="Services\SubscriptionLevel.cs" />
-    <Compile Include="SQLiteDatabaseProvider.cs" />
     <Compile Include="CoreServiceRegistryContainer.cs" />
     <Compile Include="Services\CoreApplicationRegistryService.cs" />
     <Compile Include="ProxyAssemblyGenerationEventSource.cs" />
@@ -257,7 +254,6 @@
     <Compile Include="ProxyTemplate.cs" />
     <Compile Include="ProxyableService.cs" />
     <Compile Include="CoreServiceResponse.cs" />
-    <Compile Include="StaticApplicationNameProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Templates\Proxy.tmpl" />

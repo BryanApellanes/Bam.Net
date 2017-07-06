@@ -93,8 +93,9 @@
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -149,6 +150,7 @@
     <Compile Include="CompilationException.cs" />
     <Compile Include="Configuration\Configurable.cs" />
     <Compile Include="Configuration\DefaultConfigurationApplicationNameProvider.cs" />
+    <Compile Include="Configuration\DefaultConfigurationOrganizationNameProvider.cs" />
     <Compile Include="Configuration\DefaultConfigurationService.cs" />
     <Compile Include="Configuration\IConfigurationService.cs" />
     <Compile Include="Configuration\IConfigurer.cs" />
@@ -160,6 +162,7 @@
     <Compile Include="Configuration\RequiredPropertiesNotSetException.cs" />
     <Compile Include="Configuration\RequiredPropertyNotFoundException.cs" />
     <Compile Include="Configuration\RuntimeSettings.cs" />
+    <Compile Include="Configuration\StaticApplicationNameProvider.cs" />
     <Compile Include="CsvPropertyAttribute.cs" />
     <Compile Include="Date.cs" />
     <Compile Include="Documentation\doc.cs" />
@@ -181,6 +184,7 @@
     <Compile Include="IAssemblyGenerator.cs" />
     <Compile Include="IJsonable.cs" />
     <Compile Include="Instant.cs" />
+    <Compile Include="IOrganizationNameProvider.cs" />
     <Compile Include="IpcMessageLockInfo.cs" />
     <Compile Include="IWriteSource.cs" />
     <Compile Include="LocalAttribute.cs" />

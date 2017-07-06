@@ -12,7 +12,7 @@ using Bam.Net.Data.SQLite;
 using Bam.Net.ServiceProxy;
 using Bam.Net.Services.AssemblyManagement.Data.Dao;
 using Bam.Net.Services.AssemblyManagement.Data.Dao.Repository;
-using Bam.Net.Services.Distributed.Files;
+using Bam.Net.Services.Files;
 using Bam.Net.Services.ServiceRegistry.Data;
 using Bam.Net.Services.ServiceRegistry.Data.Dao.Repository;
 using Bam.Net.Testing;

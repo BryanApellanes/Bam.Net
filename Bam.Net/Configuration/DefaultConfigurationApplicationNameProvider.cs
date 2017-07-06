@@ -28,7 +28,7 @@ namespace Bam.Net.Configuration
         }
         public string GetApplicationName()
         {
-            return DefaultConfiguration.GetAppSetting("ApplicationName", ApplicationDiagnosticInfo.Unknown);
+            return DefaultConfiguration.GetAppSetting("ApplicationName", ApplicationDiagnosticInfo.UnknownApplication);
         }
     }
 }

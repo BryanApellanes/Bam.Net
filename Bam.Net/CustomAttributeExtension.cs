@@ -11,6 +11,10 @@ namespace Bam.Net
 {
     public static class CustomAttributeExtension
     {
+        public static MethodInfo GetFirstMethodWithAttributeOfType<T>(this Type typeToAnalyze) where T : Attribute
+        {
+            return GetFirstMethodWithAttributeOfType<T>(typeToAnalyze, out T attr);
+        }
         /// <summary>
         /// Gets the MethodInfo for the first method found in the specified typeToAnalyze
         /// that has a custom attribute of the specified type T.  Returns null if none
@@ -18,13 +22,15 @@ namespace Bam.Net
         /// </summary>
         /// <typeparam name="T">the type of the custom attribute to look for</typeparam>
         /// <param name="typeToAnalyze">the type to analyze</param>
+        /// <param name="attr"></param>
         /// <returns>MethodInfo or null</returns>
-        public static MethodInfo GetFirstMethodWithAttributeOfType<T>(this Type typeToAnalyze) where T : Attribute
+        public static MethodInfo GetFirstMethodWithAttributeOfType<T>(this Type typeToAnalyze, out T attr) where T : Attribute
         {
+            attr = null;
             MethodInfo[] methods = typeToAnalyze.GetMethods();
             foreach (MethodInfo method in methods)
             {
-                if (HasCustomAttributeOfType<T>(method))
+                if (HasCustomAttributeOfType<T>(method, out attr))
                     return method;
             }
 

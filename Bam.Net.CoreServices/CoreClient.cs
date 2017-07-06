@@ -61,6 +61,9 @@ namespace Bam.Net.CoreServices
             : this(organizationName, applicationName, hostName, port, null, logger)
         { }
 
+        public CoreClient(string hostName, int port, ILogger logger = null) : this(Organization.Public.Name, Data.Application.Unknown.Name, hostName, port, logger)
+        { }
+
         public ProcessDescriptor ProcessDescriptor { get; private set; }
         public CoreRegistryRepository LocalCoreRegistryRepository { get; set; }
         
@@ -182,7 +185,7 @@ namespace Bam.Net.CoreServices
             return _apiKeyInfo;
         }
 
-        public string GetApplicationApiKey(string applicationClientId, int index) // index ignored in this implementation
+        public string GetApplicationApiKey(string applicationClientId, int index) // index ignored in this implementation //TODO: take into account the index
         {
             ApiKeyInfo key = GetApiKeyInfo(this);
             if (key.ApplicationClientId.Equals(applicationClientId))
@@ -190,6 +193,11 @@ namespace Bam.Net.CoreServices
                 return key.ApiKey;
             }
             throw new NotSupportedException("Specified applicationClientId not supported");
+        }
+
+        public string GetApplicationClientId()
+        {
+            return GetApplicationClientId(this);
         }
 
         public string GetApplicationClientId(IApplicationNameProvider nameProvider)
@@ -216,7 +224,7 @@ namespace Bam.Net.CoreServices
             string appName = ApplicationName;
             if (string.IsNullOrEmpty(appName))
             {
-                Logger.AddEntry("ApplicatoinName not specified: {0}", LogEventType.Warning, Assembly.GetExecutingAssembly().GetFilePath());
+                Logger.AddEntry("ApplicatoinName not specified: {0}", LogEventType.Warning, Assembly.GetEntryAssembly().GetFilePath());
             }
             return appName.Or($"{nameof(CoreClient)}.ApplicationName.Unspecified");
         }
@@ -238,6 +246,10 @@ namespace Bam.Net.CoreServices
             return registrationResponse;
         }
 
+        /// <summary>
+        /// Connect to the host specified by this client
+        /// </summary>
+        /// <returns></returns>
         public CoreServiceResponse Connect()
         {
             Client current = Client.Of(LocalCoreRegistryRepository, ApplicationName, HostName, Port);
@@ -266,13 +278,18 @@ namespace Bam.Net.CoreServices
         /// The port that the server is listening on
         /// </summary>
         public int Port { get; private set; }
+
         protected internal CoreUserRegistryService UserRegistryService { get; set; }
         protected internal CoreRoleService RoleService { get; set; }
         protected internal CoreApplicationRegistryService ApplicationRegistryService { get; set; }
         protected internal CoreConfigurationService ConfigurationService { get; set; }
         protected internal CoreLoggerService LoggerService { get; set; }
         protected internal CoreDiagnosticService DiagnosticService { get; set; }
-        protected IEnumerable<ProxyableService> ServiceClients
+
+        /// <summary>
+        /// Each of the Core service proxies
+        /// </summary>
+        protected internal IEnumerable<ProxyableService> ServiceClients
         {
             get
             {
@@ -299,7 +316,7 @@ namespace Bam.Net.CoreServices
             ApplicationName = applicationName;
             HostName = hostName;
             Port = port;
-            WorkspaceDirectory = workingDirectory ?? $".\\{nameof(CoreClient)}";
+            WorkspaceDirectory = workingDirectory ?? DataSettings.Default.GetWorkspaceDirectory(typeof(CoreClient)).FullName;
             HashAlgorithm = HashAlgorithms.SHA256;
             ProxyFactory = new ProxyFactory(WorkspaceDirectory, logger);
         }

@@ -16,10 +16,11 @@ using Dao = Bam.Net.Services.AssemblyManagement.Data.Dao;
 using Bam.Net.Services.AssemblyManagement.Data.Dao.Repository;
 using Bam.Net.Testing;
 using Bam.Net.Services.AssemblyManagement;
-using Bam.Net.Services.Distributed.Files;
+using Bam.Net.Services.Files;
 using Bam.Net.Configuration;
-using Bam.Net.Services.Distributed.Files.Data;
+using Bam.Net.Services.Distributed.Data;
 using Bam.Net.Testing.Integration;
+using Bam.Net.Services.Files.Data;
 
 namespace Bam.Net.Services.Tests
 {

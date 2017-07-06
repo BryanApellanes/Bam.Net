@@ -20,7 +20,6 @@ using Bam.Net.Encryption;
 using System.IO;
 using System.Net;
 using System.Web;
-using Bam.Net.UserAccounts.OAuth;
 
 namespace Bam.Net.UserAccounts
 {
@@ -121,20 +120,19 @@ namespace Bam.Net.UserAccounts
             get;
             set;
         }
+        public Vault GetSmtpSettingsVault(string applicationName = null)
+        {
+            return SmtpSettingsProvider.GetSmtpSettingsVault(applicationName);
+        }
         
-        protected internal Vault SmtpSettingsVault
+        public Vault SmtpSettingsVault
         {
             get
             {
-                return SmtpSettingsProvider.SmtpSettingsVault;
-            }
-            set
-            {
-                SmtpSettingsProvider.SmtpSettingsVault = value;
+                return GetSmtpSettingsVault(ApplicationName);
             }
         }
-
-        string _smtpSettingsVaultPath;
+        
         [Exclude]
         public string SmtpSettingsVaultPath
         {
@@ -422,14 +420,6 @@ namespace Bam.Net.UserAccounts
             }
         }
 
-        public dynamic LoginFbUser(string fbId, string userName)
-        {
-            //User user = User.Ensure(userName);
-
-
-            //return new { userName = userName, isAuthenticated = true };
-            throw new NotImplementedException();
-        }
         /// <summary>
         /// The vent that is fired when someone logs in
         /// </summary>
@@ -670,17 +660,6 @@ namespace Bam.Net.UserAccounts
             {
                 return GetFailure<CheckEmailResponse>(ex);
             }
-        }
-
-        public OAuthResponse OAuthCallback(string code)
-        {
-            // 
-            throw new NotImplementedException();
-        }
-
-        protected internal bool UserExists(string userName)
-        {
-            return User.Exists(userName, Database);
         }
 
         private T GetSuccess<T>(object data, string message = null) where T: ServiceResponse, new()

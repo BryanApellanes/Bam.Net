@@ -40,31 +40,9 @@ namespace Bam.Net
             public string Password { get; set; }
         }
 
-        MailMessage _message;
-        SmtpClient _client;
-
         public Email()
         {
-            this.Config = new Configuration();
-            this._message = new MailMessage();
-            this._client = new SmtpClient();
-            this.Config.Port = this._client.Port;
-        }
-
-        public SmtpClient SmtpClient
-        {
-            get
-            {
-                return this._client;
-            }
-        }
-
-        public MailMessage MailMessage
-        {
-            get
-            {
-                return this._message;
-            }
+            Config = new Configuration();
         }
 
         public Configuration Config
@@ -257,7 +235,7 @@ namespace Bam.Net
 
         public Email Send()
         {
-            _message = new MailMessage();
+            MailMessage _message = new MailMessage();
             _message.From = Config.From;
             _message.Subject = Config.Subject;
             _message.IsBodyHtml = Config.IsBodyHtml;
@@ -279,43 +257,13 @@ namespace Bam.Net
             }
             _message.IsBodyHtml = Config.IsBodyHtml;
 
-            Smtp smtp = new Smtp();
-            string host = Config.SmtpHost;
-            if (string.IsNullOrEmpty(host))
+            SmtpClient _client = new SmtpClient(Config.SmtpHost, Config.Port)
             {
-                host = smtp.Host;
-            }
-
-            if (string.IsNullOrEmpty(host))
-            {
-                throw new InvalidOperationException("SmtpHost not set");
-            }
-
-            _client = new SmtpClient(host);
-            _client.EnableSsl = Config.EnablSsl;
-            _client.Port = Config.Port;
-
-            if (!string.IsNullOrEmpty(Config.Password))
-            {
-                string userName = string.IsNullOrEmpty(Config.UserName) ? Config.From.Address : Config.UserName;
-                NetworkCredential creds = new NetworkCredential(userName, Config.Password);
-                _client.Credentials = creds;
-            }
-            else
-            {                
-                if (smtp.Success)
-                {
-                    _client.Host = smtp.Host;
-                    NetworkCredential creds = new NetworkCredential(smtp.UserName, smtp.Password);
-                    _client.Credentials = creds;
-                }
-                else
-                {
-                    _client.UseDefaultCredentials = true;
-                }
-            }
-
-
+                EnableSsl = Config.EnablSsl,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(Config.UserName, Config.Password),
+                DeliveryMethod = SmtpDeliveryMethod.Network
+            };
             _client.Send(_message);
             return this;
         }

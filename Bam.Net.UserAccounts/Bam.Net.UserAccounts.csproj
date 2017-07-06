@@ -161,11 +161,6 @@
     <Compile Include="IsAuthenticatedResponse.cs" />
     <Compile Include="IUserManager.cs" />
     <Compile Include="NullException.cs" />
-    <Compile Include="OAuth\FacebookOAuthSettings.cs" />
-    <Compile Include="OAuth\OAuthSettings.cs" />
-    <Compile Include="OAuth\OAuthManager.cs" />
-    <Compile Include="OAuth\OAuthProviders.cs" />
-    <Compile Include="PageResult.cs" />
     <Compile Include="Partials\Group.cs" />
     <Compile Include="Partials\GroupPermission.cs" />
     <Compile Include="Partials\Permission.cs" />
@@ -301,9 +296,6 @@
     <Compile Include="UserManagerConfig.cs" />
     <Compile Include="DaoUserResolver.cs" />
     <Compile Include="LoginResponse.cs" />
-    <Compile Include="OAuth\OAuthResponse.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Partials\PasswordQuestion.cs" />
     <Compile Include="Partials\Role.cs" />
     <Compile Include="Partials\SessionState.cs" />

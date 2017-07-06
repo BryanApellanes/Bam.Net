@@ -82,8 +82,9 @@
       <HintPath>..\packages\NCuid.1.0.0\lib\net40\NCuid.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -123,9 +124,10 @@
     <Compile Include="DaoInfo.cs" />
     <Compile Include="DatabaseExtensions.cs" />
     <Compile Include="DatabaseFactory.cs" />
+    <Compile Include="DataSettings.cs" />
     <Compile Include="FsRepoData.cs" />
     <Compile Include="FsRepository.cs" />
-    <Compile Include="IBaseCrudProvider.cs" />
+    <Compile Include="ICrudProvider.cs" />
     <Compile Include="ICrudResponseProvider.cs" />
     <Compile Include="IHasKeyHash.cs" />
     <Compile Include="IQueryFilterable.cs" />
@@ -144,7 +146,7 @@
     <Compile Include="EchoTypeTableNameProvider.cs" />
     <Compile Include="GeneratedDaoAssemblyInfo.cs" />
     <Compile Include="IHasTypeSchemaTempPathProvider.cs" />
-    <Compile Include="ICrudProvider.cs" />
+    <Compile Include="IExtendedCrudProvider.cs" />
     <Compile Include="PropertyColumn.cs" />
     <Compile Include="TypeInheritanceSchemaGenerator.cs" />
     <Compile Include="SchemaDifferenceEventArgs.cs" />

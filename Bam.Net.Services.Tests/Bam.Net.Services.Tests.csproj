@@ -84,6 +84,7 @@
     <Compile Include="ServiceRegistryServiceTests.cs" />
     <Compile Include="TestClasses.cs" />
     <Compile Include="UnitTests.cs" />
+    <Compile Include="ValidationServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bam.Net.Caching\Bam.Net.Caching.csproj">

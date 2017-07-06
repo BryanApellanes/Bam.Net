@@ -73,8 +73,9 @@
     <Reference Include="NCuid">
       <HintPath>..\packages\NCuid.1.0.0\lib\net40\NCuid.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -147,6 +148,7 @@
     <Compile Include="HostPrefix.cs" />
     <Compile Include="IContent.cs" />
     <Compile Include="IncludeOrder.cs" />
+    <Compile Include="PageResult.cs" />
     <Compile Include="ReflectionLoader.cs" />
     <Compile Include="Renderers\CompiledDustTemplate.cs" />
     <Compile Include="Renderers\ITemplateRenderer.cs" />

@@ -54,8 +54,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NCuid.1.0.0\lib\net40\NCuid.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -77,7 +77,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApiResponder.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptor.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorCollection.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorColumns.cs" />
@@ -146,28 +145,49 @@
     <Compile Include="Catalog\Data\ItemCustomizationDefinition.cs" />
     <Compile Include="AsyncExecutionRequest.cs" />
     <Compile Include="CoreServiceResponse.cs" />
+    <Compile Include="Data\BinaryDataNode.cs" />
+    <Compile Include="Data\DataNode.cs" />
+    <Compile Include="Data\Repo\DataNodeDescriptor.cs" />
     <Compile Include="ExecutionOperationRequest.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Files\IFileService.cs" />
+    <Compile Include="OAuth\Data\Generated_Dao\OAuthSettingsContext.cs" />
+    <Compile Include="OAuth\Data\Generated_Dao\OAuthSettingsData.cs" />
+    <Compile Include="OAuth\Data\Generated_Dao\OAuthSettingsDataCollection.cs" />
+    <Compile Include="OAuth\Data\Generated_Dao\OAuthSettingsDataColumns.cs" />
+    <Compile Include="OAuth\Data\Generated_Dao\OAuthSettingsDataPagedQuery.cs" />
+    <Compile Include="OAuth\Data\Generated_Dao\OAuthSettingsDataQuery.cs" />
+    <Compile Include="OAuth\Data\Generated_Dao\OAuthSettingsDataWrapper.cs" />
+    <Compile Include="OAuth\Data\Generated_Dao\OAuthSettingsRepository.cs" />
+    <Compile Include="OAuth\Data\Generated_Dao\Qi\OAuthSettingsData.cs" />
+    <Compile Include="OAuth\Data\OAuthSettingsData.cs" />
+    <Compile Include="OAuth\FacebookOAuthSettings.cs" />
+    <Compile Include="OAuth\KnownOAuthProviders.cs" />
+    <Compile Include="OAuth\OAuthManager.cs" />
+    <Compile Include="OAuth\OAuthProviders.cs" />
+    <Compile Include="OAuth\OAuthResponse.cs" />
+    <Compile Include="OAuth\OAuthSettings.cs" />
+    <Compile Include="OAuth\OAuthSettingsManager.cs" />
     <Compile Include="RegisterServiceRegistryContainerResult.cs" />
     <Compile Include="RpcRoute.cs" />
     <Compile Include="ProcessRuntimeDescriptorEventArgs.cs" />
     <Compile Include="AssemblyManagement\Data\AssemblyReferenceDescriptor.cs" />
     <Compile Include="Catalog\KindsOfCatalogs.cs" />
-    <Compile Include="Distributed\Files\ChunkedFileWriter.cs" />
-    <Compile Include="Distributed\Files\Data\ChunkData.cs" />
-    <Compile Include="Distributed\Files\Data\ChunkedFileDescriptor.cs" />
+    <Compile Include="Files\ChunkedFileWriter.cs" />
+    <Compile Include="Files\Data\ChunkData.cs" />
+    <Compile Include="Files\Data\ChunkedFileDescriptor.cs" />
     <Compile Include="Distributed\Data\DataPoint.cs" />
     <Compile Include="Distributed\Data\DataPropertyCollection.cs" />
     <Compile Include="Distributed\Data\DataPropertyExtensions.cs" />
     <Compile Include="Distributed\Data\DataRelationship.cs" />
-    <Compile Include="Distributed\Files\Data\ChunkDataDescriptor.cs" />
+    <Compile Include="Files\Data\ChunkDataDescriptor.cs" />
     <Compile Include="Distributed\Data\OperationIntent.cs" />
     <Compile Include="Distributed\Data\OpertionEventArgs.cs" />
     <Compile Include="Distributed\EventSourceService.cs" />
-    <Compile Include="Distributed\Files\ChunkedFileReader.cs" />
-    <Compile Include="Distributed\Files\ChunkedFileDataDescriptor.cs" />
-    <Compile Include="Distributed\Files\FileServiceSettings.cs" />
-    <Compile Include="Distributed\Files\IChunkedFileDescriptor.cs" />
+    <Compile Include="Files\ChunkedFileReader.cs" />
+    <Compile Include="Files\ChunkedFileDataDescriptor.cs" />
+    <Compile Include="Files\FileServiceSettings.cs" />
+    <Compile Include="Files\IChunkedFileDescriptor.cs" />
     <Compile Include="Distributed\RepositoryRing.cs" />
     <Compile Include="Distributed\RepositoryService.cs" />
     <Compile Include="Distributed\WriteEventService.cs" />
@@ -233,8 +253,8 @@
     <Compile Include="SystemEventMessage.cs" />
     <Compile Include="Distributed\EventSourceServiceArgs.cs" />
     <Compile Include="Distributed\ExternalEventSubscription.cs" />
-    <Compile Include="Distributed\Files\FileService.cs" />
-    <Compile Include="Distributed\Files\FileChunk.cs" />
+    <Compile Include="Files\FileService.cs" />
+    <Compile Include="Files\FileChunk.cs" />
     <Compile Include="Distributed\IDistributedRepository.cs" />
     <Compile Include="Distributed\IHasInfo.cs" />
     <Compile Include="Distributed\InfoAttribute.cs" />
@@ -254,15 +274,20 @@
     <Compile Include="Translation\TranslationService.cs" />
     <Compile Include="ApiKeyVaultInfo.cs" />
     <Compile Include="ValidationFailure.cs" />
+    <Compile Include="Validation\Data\EvaluatorProperty.cs" />
+    <Compile Include="Validation\IValidationRuleEvaluator.cs" />
     <Compile Include="Validation\IValidator.cs" />
     <Compile Include="Catalog\CatalogService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Validation\Data\ValidationRule.cs" />
-    <Compile Include="Validation\ValidationResult.cs" />
+    <Compile Include="Validation\Data\ValidationServiceRule.cs" />
+    <Compile Include="Validation\ValidationServiceResult.cs" />
     <Compile Include="AssemblyManagement\Data\ProcessRuntimeDescriptor.cs" />
     <Compile Include="AssemblyManagement\Data\AssemblyDescriptor.cs" />
     <Compile Include="AssemblyManagement\AssemblyService.cs" />
+    <Compile Include="Valuespace.cs" />
     <Compile Include="Vault\IVaultService.cs" />
+    <Compile Include="Vault\VaultDatabase.cs" />
+    <Compile Include="Vault\VaultService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -271,8 +296,10 @@
     </None>
     <None Include="AsyncCallback\regen_asyncecallback_dao.cmd" />
     <None Include="Distributed\Data\regen_distributed_dao.cmd" />
+    <None Include="OAuth\regen_oauth_dao.cmd" />
     <None Include="packages.config" />
     <None Include="ServiceRegistry\regen_applicationserviceregistry_dao.cmd" />
+    <Compile Include="Validation\ValidationRuleSetProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bam.Net.CoreServices\Bam.Net.CoreServices.csproj">

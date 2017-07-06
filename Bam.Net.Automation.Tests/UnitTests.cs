@@ -43,9 +43,9 @@ namespace Bam.Net.Automation.Tests
             string key = "Key_".RandomLetters(4);
             string value = "Value_".RandomLetters(4);
 
-            Orchestrator.Default.SecureSet(key, value);
+            Overseer.Default.SecureSet(key, value);
 
-            string validate = Orchestrator.Default.SecureGet(key);
+            string validate = Overseer.Default.SecureGet(key);
 
             Expect.AreEqual(value, validate);
         }

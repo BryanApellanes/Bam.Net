@@ -45,14 +45,7 @@ namespace Bam.Net.UserAccounts.Tests.Integration
 
         public static void Start()
         {
-            if (Arguments.Contains("t"))
-            {
-                IntegrationTestRunner.RunIntegrationTests(typeof(Program).Assembly);
-            }
-            else
-            {
-                Interactive();
-            }
+            Interactive();
         }
     }
 }

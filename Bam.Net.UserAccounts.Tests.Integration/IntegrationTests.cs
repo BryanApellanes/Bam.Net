@@ -10,13 +10,16 @@ using Bam.Net.ServiceProxy;
 using Bam.Net.UserAccounts.Tests;
 using Bam.Net.UserAccounts.Data;
 using FakeItEasy;
+using Bam.Net.CommandLine;
 
 namespace Bam.Net.UserAccounts.Tests.Integration
 {
+    [Serializable]
     [IntegrationTestContainer]
     public class IntegrationTests
     {
         [IntegrationTest]
+        [ConsoleAction]
         public void ResetPasswordShouldBeLoginnable()
         {
             string userName = MethodBase.GetCurrentMethod().Name;
@@ -25,7 +28,7 @@ namespace Bam.Net.UserAccounts.Tests.Integration
             User user = User.GetByEmail(email);
             Expect.AreEqual(0, user.PasswordResetsByUserId.Count);
 
-            UserManager userMgr = UserTestTools.CreateTestUserManager();
+            UserManager userMgr = UserTestTools.CreateTestUserManager("Stickerize");
             userMgr.HttpContext = A.Fake<IHttpContext>();
             userMgr.HttpContext.Request = new TestRequest();
 
@@ -34,25 +37,6 @@ namespace Bam.Net.UserAccounts.Tests.Integration
             PasswordResetResponse reset = userMgr.ResetPassword(password.Sha1(), (string)forgot.Data);
             LoginResponse login = userMgr.Login(user.UserName, password.Sha1());
             Expect.IsTrue(login.Success, "Login failed");
-        }
-
-        [IntegrationTest]
-        public void ResetPasswordShouldSucceed()
-        {
-            string userName = MethodBase.GetCurrentMethod().Name;
-            string email = "bryan.apellanes@gmail.com";
-            UserTestTools.SignUp(userName, email);
-            User user = User.GetByEmail(email);
-            Expect.AreEqual(0, user.PasswordResetsByUserId.Count);
-
-            UserManager userMgr = UserTestTools.CreateTestUserManager();
-            userMgr.HttpContext = A.Fake<IHttpContext>();
-            userMgr.HttpContext.Request = new TestRequest();
-
-            string password = ServiceProxySystem.GenerateId();
-            ForgotPasswordResponse forgot = userMgr.ForgotPassword(email);
-            PasswordResetResponse reset = userMgr.ResetPassword(password.Sha1(), (string)forgot.Data);
-            Expect.IsTrue(reset.Success, "Reset failed");
         }
 
         [IntegrationTest]
@@ -65,7 +49,7 @@ namespace Bam.Net.UserAccounts.Tests.Integration
             User user = User.GetByEmail(email);
             Expect.AreEqual(0, user.PasswordResetsByUserId.Count);
 
-            UserManager userMgr = UserTestTools.CreateTestUserManager();
+            UserManager userMgr = UserTestTools.CreateTestUserManager("Stickerize");
             userMgr.HttpContext = A.Fake<IHttpContext>();
             userMgr.HttpContext.Request = new TestRequest();
 
@@ -77,7 +61,7 @@ namespace Bam.Net.UserAccounts.Tests.Integration
         [IntegrationTest]
         public void ShouldBeAbleToRequestConfirmationEmail()
         {
-            UserManager mgr = UserTestTools.CreateTestUserManager();
+            UserManager mgr = UserTestTools.CreateTestUserManager("Stickerize");
             mgr.HttpContext = A.Fake<IHttpContext>();
             mgr.HttpContext.Request = new TestRequest();
             UserTestTools.SignUp("monkey", "bryan.apellanes@gmail.com");
@@ -95,7 +79,7 @@ namespace Bam.Net.UserAccounts.Tests.Integration
             User user = User.GetByEmail(email);
             Expect.AreEqual(0, user.PasswordResetsByUserId.Count);
 
-            UserManager userMgr = UserTestTools.CreateTestUserManager();
+            UserManager userMgr = UserTestTools.CreateTestUserManager("Stickerize");
             userMgr.HttpContext = A.Fake<IHttpContext>();
             userMgr.HttpContext.Request = new TestRequest();
 

@@ -9,6 +9,9 @@ using Bam.Net.ServiceProxy;
 using Bam.Net.Data.SQLite;
 using Bam.Net.Data;
 using FakeItEasy;
+using Bam.Net.Encryption;
+using Bam.Net.Data.Repositories;
+using Bam.Net.CoreServices;
 
 namespace Bam.Net.UserAccounts.Tests
 {
@@ -91,12 +94,12 @@ namespace Bam.Net.UserAccounts.Tests
             UserTestTools.SignUp(userName, email, out mgr, out context, out passHash);
         }
 
-        public static UserManager CreateTestUserManager()
+        public static UserManager CreateTestUserManager(string appName = "test")
         {
             UserManagerConfig config = new UserManagerConfig();
-            config.SmtpSettingsVaultPath = "C:\\TestData\\Vaults\\StickerizeSmtpSettings.vault.sqlite";
-            config.ApplicationNameResolverType = typeof(TestAppNameProvider).AssemblyQualifiedName;
-            config.EmailTemplateDirectoryPath = "C:\\TestData\\NamedFormatEmailTemplates";
+            config.SmtpSettingsVaultPath = DataSettings.Default.GetDatabasePathFor(typeof(Vault), "System");
+            config.ApplicationName = appName;
+            config.EmailTemplateDirectoryPath = DataSettings.Default.GetEmailTemplatesDirectory().FullName;
 
             UserManager mgr = config.Create();
             return mgr;

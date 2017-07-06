@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 using Bam.Net.CommandLine;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Data.SQLite;
-using Bam.Net.Services.Distributed.Files;
-using Bam.Net.Services.Distributed.Files.Data;
+using Bam.Net.Services.Files;
+using Bam.Net.Services.Files.Data;
 using Bam.Net.Testing;
 
 namespace Bam.Net.Services.Tests

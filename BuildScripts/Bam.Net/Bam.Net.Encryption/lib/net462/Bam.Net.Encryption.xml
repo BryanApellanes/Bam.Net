@@ -275,6 +275,13 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.Encryption.Vault.Retrieve(System.String)">
+            <summary>
+            Get the vault with the specified name
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
         <member name="M:Bam.Net.Encryption.Vault.Retrieve(System.String,System.String)">
             <summary>
             Get the Vault with the specified name using the
@@ -293,7 +300,7 @@
             doesn't exist in the specified database
             </summary>
             <param name="database"></param>
-            <param name="name"></param>
+            <param name="vaultName"></param>
             <param name="password"></param>
             <returns></returns>
         </member>

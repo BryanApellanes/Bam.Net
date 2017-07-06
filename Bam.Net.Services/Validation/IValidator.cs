@@ -9,6 +9,6 @@ namespace Bam.Net.Services.Validation
 {
     public interface IValidator
     {
-        ValidationResult Validate(string objectCuid);
+        ValidationServiceResult Validate(string objectCuid);
     }
 }

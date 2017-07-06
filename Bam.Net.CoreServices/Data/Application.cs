@@ -25,7 +25,7 @@ namespace Bam.Net.CoreServices.Data
         static Application _defaultApplication;
         public static Application Unknown
         {
-            get { return _defaultLock.DoubleCheckLock(ref _defaultApplication, () => new Application { Name = "UNKOWN" }); }
+            get { return _defaultLock.DoubleCheckLock(ref _defaultApplication, () => new Application { Name = ApplicationDiagnosticInfo.UnknownApplication }); }
         }
     }
 }

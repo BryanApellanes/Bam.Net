@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using Bam.Net.CoreServices;
 
 namespace Bam.Net.Automation
 {
@@ -14,22 +15,22 @@ namespace Bam.Net.Automation
     {
         public JobConf()
         {
-            this._workerExtensions = new List<string>();
-            this._workerExtensions.AddRange(new string[] { ".xml", ".yaml", ".json" });
+            _workerExtensions = new List<string>();
+            _workerExtensions.AddRange(new string[] { ".xml", ".yaml", ".json" });
 
             string name = System.Guid.NewGuid().ToString();
-            this.JobDirectory = new DirectoryInfo(name).FullName;
-            this.Name = name;
-            this.CurrentIndex = 0;
+            JobDirectory = new DirectoryInfo(name).FullName;
+            Name = name;
+            CurrentIndex = 0;
         }
 
         public JobConf(string name)
             : this()
         {
-            this.Name = name;
-            this.JobDirectory = new DirectoryInfo(name).FullName;
+            Name = name;
+            JobDirectory = new DirectoryInfo(name).FullName;
         }
-
+        
         public string Name { get; set; }
 
         /// <summary>
@@ -171,7 +172,7 @@ namespace Bam.Net.Automation
 
         protected string ValidateWorkerName(string workerName, bool overwrite)
         {
-            string path = GetWorkerPath(workerName);//Path.Combine(_workerDirectory.FullName, "{0}.json"._Format(workerName));
+            string path = GetWorkerPath(workerName);
             if (File.Exists(path) && !overwrite)
             {
                 throw new InvalidOperationException("Worker with the specified name ({0}) already exists in this job configuration"._Format(workerName));
@@ -194,20 +195,6 @@ namespace Bam.Net.Automation
         protected internal T GetWorker<T>(string workerName) where T : Worker, new()
         {
             return (T)GetWorker(typeof(T), workerName);
-            //string path;
-            //T worker = new T();
-            //if (!WorkerExists(workerName, out path))
-            //{
-            //    worker.Name = workerName;
-            //    AddWorker(worker);
-            //}
-            //else
-            //{
-            //    WorkerConf conf = WorkerConf.Load(path);
-            //    worker = (T)conf.CreateWorker();
-            //}
-
-            //return worker;
         }
         protected internal object GetWorker(Type workerType, string workerName)
         {
