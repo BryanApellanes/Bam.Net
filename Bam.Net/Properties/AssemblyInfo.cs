@@ -40,5 +40,5 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("Bam.Net.Logging")]
 [assembly: InternalsVisibleTo("Bam.Net.Data.Schema")]
 
-[assembly: AssemblyVersion("1.6.6")]
-[assembly: AssemblyFileVersion("1.6.6")]
+[assembly: AssemblyVersion("1.6.7")]
+[assembly: AssemblyFileVersion("1.6.7")]
