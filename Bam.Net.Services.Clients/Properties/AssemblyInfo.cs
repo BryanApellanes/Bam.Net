@@ -23,6 +23,7 @@ using System.Runtime.InteropServices;
 [assembly: Guid("9193fb41-32e6-4cef-a44a-211fb3bfea8b")]
 
 [assembly: InternalsVisibleTo("Bam.Net.CoreServices.Tests")]
+[assembly: InternalsVisibleTo("ThreeHeadz.Tvg")]
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version
