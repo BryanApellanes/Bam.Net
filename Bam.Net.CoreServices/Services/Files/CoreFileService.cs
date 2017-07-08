@@ -19,7 +19,7 @@ namespace Bam.Net.CoreServices.Files
     [RoleRequired("/", "Admin")]
     [Proxy("fileSvc")]
     [ApiKeyRequired]
-    public class CoreFileService : ProxyableService, IFileService
+    public class CoreFileService : CoreProxyableService, IFileService
     {
         protected CoreFileService() { }
         public CoreFileService(IRepository repository)

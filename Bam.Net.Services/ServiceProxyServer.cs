@@ -22,7 +22,7 @@ namespace Bam.Net.Services
             ServiceRegistry = serviceRegistry;
             Responder.ClearCommonServices();
             Responder.ClearAppServices();
-            ServiceRegistry.MappedTypes.Each(t => AddService(t));
+            ServiceRegistry.MappedTypes.Where(t=>t.HasCustomAttributeOfType<ProxyAttribute>()).Each(t => AddService(t));
         }
 
         public void AddService(Type serviceType)

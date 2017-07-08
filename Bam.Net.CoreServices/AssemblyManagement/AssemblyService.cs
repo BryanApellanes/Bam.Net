@@ -12,14 +12,11 @@ namespace Bam.Net.CoreServices
 {
     public class AssemblyService : Loggable, IAssemblyService // doesn't need to be remote accessible, can use FileService which can be
     {
-        public AssemblyService(IFileService fileService, Repo.AssemblyServiceRepository repo, IApplicationNameProvider appNameProvider, 
-            EventHandler currentRuntimePersisted = null,
-            EventHandler applicationRestoredHandler = null)
+        public AssemblyService(IFileService fileService, Repo.AssemblyServiceRepository repo, IApplicationNameProvider appNameProvider)
         {
             FileService = fileService;
             AssemblyManagementRepository = repo;
             ApplicationNameProvider = appNameProvider;
-            RuntimeRestored += applicationRestoredHandler ?? ((o, a) => { });
             LoadCurrentRuntimeDescriptorTask = LoadCurrentRuntimeDescriptor();
         }
 
