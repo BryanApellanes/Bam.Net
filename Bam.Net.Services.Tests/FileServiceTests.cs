@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Bam.Net.CommandLine;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Data.SQLite;
-using Bam.Net.Services.Files;
-using Bam.Net.Services.Files.Data;
 using Bam.Net.Testing;
+using Bam.Net.CoreServices.Files;
+using Bam.Net.CoreServices.Files.Data;
 
 namespace Bam.Net.Services.Tests
 {
@@ -32,7 +28,7 @@ namespace Bam.Net.Services.Tests
         public void FileServiceRestoreTest()
         {
             SQLiteDatabase db = new SQLiteDatabase(".\\", nameof(FileServiceRestoreTest));
-            FileService fmSvc = new FileService(new DaoRepository(db));
+            CoreFileService fmSvc = new CoreFileService(new DaoRepository(db));
             fmSvc.ChunkLength = 111299;
             FileInfo testDataFile = new FileInfo("C:\\testData\\TestDataFile.dll");
             ChunkedFileDescriptor chunkedFile = fmSvc.StoreFileChunksInRepo(testDataFile);
@@ -49,7 +45,7 @@ namespace Bam.Net.Services.Tests
         public void FileServiceRestoreAsyncTest()
         {
             SQLiteDatabase db = new SQLiteDatabase(".\\", nameof(FileServiceRestoreAsyncTest));
-            FileService fmSvc = new FileService(new DaoRepository(db));
+            CoreFileService fmSvc = new CoreFileService(new DaoRepository(db));
             fmSvc.ChunkLength = 111299;
             ConsoleLogger logger = new ConsoleLogger();
             logger.AddDetails = false;

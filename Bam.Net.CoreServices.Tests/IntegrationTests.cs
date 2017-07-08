@@ -18,6 +18,7 @@ using System.Reflection;
 using Google.Protobuf;
 using Bam.Net.CoreServices.Data.Dao.Repository;
 using Bam.Net.UserAccounts.Data;
+using Bam.Net.Services.Clients;
 
 namespace Bam.Net.CoreServices.Tests
 {

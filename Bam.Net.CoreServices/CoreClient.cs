@@ -281,7 +281,7 @@ namespace Bam.Net.CoreServices
 
         protected internal CoreUserRegistryService UserRegistryService { get; set; }
         protected internal CoreRoleService RoleService { get; set; }
-        protected internal CoreApplicationRegistryService ApplicationRegistryService { get; set; }
+        protected internal CoreApplicationRegistrationService ApplicationRegistryService { get; set; }
         protected internal CoreConfigurationService ConfigurationService { get; set; }
         protected internal CoreLoggerService LoggerService { get; set; }
         protected internal CoreDiagnosticService DiagnosticService { get; set; }
@@ -323,7 +323,7 @@ namespace Bam.Net.CoreServices
 
         private void SetDownloadedServiceProxies()
         {
-            ApplicationRegistryService = ProxyFactory.GetProxy<CoreApplicationRegistryService>(HostName, Port);
+            ApplicationRegistryService = ProxyFactory.GetProxy<CoreApplicationRegistrationService>(HostName, Port);
             ConfigurationService = ProxyFactory.GetProxy<CoreConfigurationService>(HostName, Port);
             DiagnosticService = ProxyFactory.GetProxy<CoreDiagnosticService>(HostName, Port);
             LoggerService = ProxyFactory.GetProxy<CoreLoggerService>(HostName, Port);
@@ -333,7 +333,7 @@ namespace Bam.Net.CoreServices
 
         private void SetLocalServiceProxies()
         {
-            ApplicationRegistryService = ProxyFactory.GetProxy<CoreApplicationRegistryService>();
+            ApplicationRegistryService = ProxyFactory.GetProxy<CoreApplicationRegistrationService>();
             ConfigurationService = ProxyFactory.GetProxy<CoreConfigurationService>();
             DiagnosticService = ProxyFactory.GetProxy<CoreDiagnosticService>();
             LoggerService = ProxyFactory.GetProxy<CoreLoggerService>();

@@ -209,14 +209,14 @@ namespace Bam.Net.CoreServices.Tests
         [UnitTest]
         public void CoreApplicationRegistryServiceNotLoggedInIsAnonymous()
         {
-            CoreApplicationRegistryService svc = GetTestService();
+            CoreApplicationRegistrationService svc = GetTestService();
             Expect.AreSame(UserAccounts.Data.User.Anonymous, svc.CurrentUser);
         }
 
         [UnitTest]
         public void CoreApplicationRegistryServiceMustBeLoggedInToRegister()
         {
-            CoreApplicationRegistryService svc = GetTestService();
+            CoreApplicationRegistrationService svc = GetTestService();
             string orgName = 5.RandomLetters();
             string appName = 8.RandomLetters();
             ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration(svc.CoreRegistryRepository, "localhost", 8080, appName, orgName);
@@ -236,7 +236,7 @@ namespace Bam.Net.CoreServices.Tests
             string userName = 4.RandomLetters();
             string orgName = 5.RandomLetters();
             string appName = 8.RandomLetters();
-            CoreApplicationRegistryService svc = GetTestServiceWithUser(userName);
+            CoreApplicationRegistrationService svc = GetTestServiceWithUser(userName);
             ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration(svc.CoreRegistryRepository, "localhost", 8080, appName, orgName);
             CoreServiceResponse response = svc.RegisterApplication(descriptor);
             Expect.IsTrue(response.Success);
@@ -255,7 +255,7 @@ namespace Bam.Net.CoreServices.Tests
             {
                 ctx.CopyFrom((Incubation.Incubator)CoreServiceRegistryContainer.GetServiceRegistry());
             }))
-            .WhenA<CoreApplicationRegistryService>("tries to register application when not logged in", cars =>
+            .WhenA<CoreApplicationRegistrationService>("tries to register application when not logged in", cars =>
             {
                 ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration(cars.CoreRegistryRepository,"localhost", 8080, "testApp", "testOrg");
                 return cars.RegisterApplication(descriptor);
@@ -438,7 +438,7 @@ namespace Bam.Net.CoreServices.Tests
         [IntegrationTest]
         public void TestTheSetup()
         {
-            CoreApplicationRegistryService svc = GetTestService();
+            CoreApplicationRegistrationService svc = GetTestService();
             string userName = 8.RandomLetters();
             UserAccounts.Data.User user = SetCurrentUser(userName, svc);
             Expect.AreEqual(userName, user.UserName);
@@ -466,22 +466,22 @@ namespace Bam.Net.CoreServices.Tests
             Expect.IsNotNull(userResolver);
         }
 
-        private CoreApplicationRegistryService GetTestServiceWithUser(string userName)
+        private CoreApplicationRegistrationService GetTestServiceWithUser(string userName)
         {
-            CoreApplicationRegistryService svc = GetTestService();
+            CoreApplicationRegistrationService svc = GetTestService();
             SetCurrentUser(userName, svc);
             return svc;
         }
 
-        private CoreApplicationRegistryService GetTestService()
+        private CoreApplicationRegistrationService GetTestService()
         {
             ServiceRegistry registry = CoreServiceRegistryContainer.GetServiceRegistry();
-            CoreApplicationRegistryService svc = registry.Get<CoreApplicationRegistryService>();
+            CoreApplicationRegistrationService svc = registry.Get<CoreApplicationRegistrationService>();
             registry.SetProperties(svc);
             return svc;
         }
 
-        private static UserAccounts.Data.User SetCurrentUser(string userName, CoreApplicationRegistryService svc)
+        private static UserAccounts.Data.User SetCurrentUser(string userName, CoreApplicationRegistrationService svc)
         {
             IHttpContext ctx = Substitute.For<IHttpContext>();
             ctx.Request = Substitute.For<IRequest>();

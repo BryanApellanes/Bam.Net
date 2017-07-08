@@ -12,6 +12,7 @@ using Bam.Net.Services.Catalog;
 using Bam.Net.Services.Catalog.Data;
 using Bam.Net.Testing;
 using Bam.Net.Testing.Integration;
+using Bam.Net.Services.Clients;
 
 namespace Bam.Net.Services.Tests
 {

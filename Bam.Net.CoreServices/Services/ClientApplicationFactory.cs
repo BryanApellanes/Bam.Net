@@ -10,7 +10,7 @@ namespace Bam.Net.CoreServices
 {
     public class ClientApplicationFactory : MaximumLimitEnforcer<CoreServiceResponse<Data.Application>>
     {
-        public ClientApplicationFactory(CoreApplicationRegistryService service, Data.User user, string organizationName, ProcessDescriptor processDescriptor)
+        public ClientApplicationFactory(CoreApplicationRegistrationService service, Data.User user, string organizationName, ProcessDescriptor processDescriptor)
         {
             CoreApplicationRegistryService = service;
             User = user;
@@ -26,7 +26,7 @@ namespace Bam.Net.CoreServices
         public ProcessDescriptor ProcessDescriptor { get; set; }
         public string OrganizationName { get; set; }
         public CoreRegistryRepository CoreRegistryRepository { get; set; }
-        public CoreApplicationRegistryService CoreApplicationRegistryService { get; set; }
+        public CoreApplicationRegistrationService CoreApplicationRegistryService { get; set; }
         public override int GetMaximumLimit()
         {
             int max = 1;

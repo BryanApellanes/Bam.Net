@@ -11,7 +11,7 @@ using Bam.Net.ServiceProxy.Secure;
 
 namespace Bam.Net.CoreServices
 {
-    [Proxy("loggerSvc")]
+    [Proxy("coreLoggerSvc")]
     [ApiKeyRequired]
     public class CoreLoggerService: CoreProxyableService, ILog, ILogEventCommitter
     {

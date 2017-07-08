@@ -11,16 +11,17 @@ using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Data.SQLite;
 using Bam.Net.Logging;
-using Bam.Net.Services.AssemblyManagement.Data;
-using Dao = Bam.Net.Services.AssemblyManagement.Data.Dao;
-using Bam.Net.Services.AssemblyManagement.Data.Dao.Repository;
+using Bam.Net.CoreServices.AssemblyManagement.Data;
+using Dao = Bam.Net.CoreServices.AssemblyManagement.Data.Dao;
+using Bam.Net.CoreServices.AssemblyManagement.Data.Dao.Repository;
 using Bam.Net.Testing;
-using Bam.Net.Services.AssemblyManagement;
-using Bam.Net.Services.Files;
+using Bam.Net.CoreServices.AssemblyManagement;
+using Bam.Net.CoreServices.Files;
 using Bam.Net.Configuration;
 using Bam.Net.Services.Distributed.Data;
 using Bam.Net.Testing.Integration;
-using Bam.Net.Services.Files.Data;
+using Bam.Net.CoreServices.Files.Data;
+using Bam.Net.CoreServices;
 
 namespace Bam.Net.Services.Tests
 {
@@ -197,7 +198,7 @@ namespace Bam.Net.Services.Tests
                 typeof(ChunkDataDescriptor),
                 typeof(ChunkData));
             fileRepo.EnsureDaoAssemblyAndSchema();
-            FileService fmSvc = new FileService(fileRepo);
+            CoreFileService fmSvc = new CoreFileService(fileRepo);
 
             AssemblyService svc = new AssemblyService(fmSvc, assManRepo, DefaultConfigurationApplicationNameProvider.Instance);
             ProcessRuntimeDescriptor prd1 = svc.CurrentProcessRuntimeDescriptor;
