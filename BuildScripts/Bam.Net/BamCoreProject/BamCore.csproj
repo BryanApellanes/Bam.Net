@@ -70,7 +70,6 @@
     <EmbeddedResource Include="Bam.Net.Logging.dll" />
     <EmbeddedResource Include="Bam.Net.Messaging.dll" />
     <EmbeddedResource Include="Bam.Net.Net.dll" />
-    <EmbeddedResource Include="Bam.Net.OAuth.dll" />
     <EmbeddedResource Include="Bam.Net.Profiguration.dll" />
     <EmbeddedResource Include="Bam.Net.Schema.Org.dll" />
     <EmbeddedResource Include="Bam.Net.Server.dll" />
