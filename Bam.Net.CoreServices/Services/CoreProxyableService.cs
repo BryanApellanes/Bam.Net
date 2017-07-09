@@ -47,6 +47,7 @@ namespace Bam.Net.CoreServices
         /// ApplicationName as is specified by the request headers
         /// </summary>
         /// <returns></returns>
+        [Local]
         public bool IsRequestForCurrentApplication()
         {
             if(ApplicationNameProvider == null)

@@ -14,7 +14,11 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data
     [Serializable]
     public class AssemblyDescriptor: KeyHashRepoData
     {
-        public AssemblyDescriptor() { }
+        public AssemblyDescriptor()
+        {
+            AssemblyReferenceDescriptors = new AssemblyReferenceDescriptor[] { };
+
+        }
         public AssemblyDescriptor(Assembly assembly)
         {
             FileInfo assemblyFile = assembly.GetFileInfo();
