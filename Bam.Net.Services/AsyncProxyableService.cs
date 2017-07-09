@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Bam.Net.CoreServices;
-using Bam.Net.CoreServices.Data;
+using Bam.Net.CoreServices.ApplicationRegistration;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Incubation;
 using Bam.Net.Logging;
@@ -18,7 +18,7 @@ using Bam.Net.Web;
 
 namespace Bam.Net.Services
 {
-    public abstract class AsyncProxyableService : ProxyableService, IHasServiceProvider
+    public abstract class AsyncProxyableService : CoreProxyableService, IHasServiceProvider
     {
         ProxyFactory _proxyFactory;
         private DaoRepository repo;

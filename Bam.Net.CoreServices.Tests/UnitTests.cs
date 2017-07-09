@@ -23,12 +23,12 @@ using Bam.Net.Data;
 using Bam.Net.Data.SQLite;
 using Bam.Net.UserAccounts.Data;
 using System.Threading;
-using Bam.Net.CoreServices.Data.Dao.Repository;
+using Bam.Net.CoreServices.ApplicationRegistration.Dao.Repository;
 using Bam.Net.CoreServices.Services;
-using Bam.Net.CoreServices.Data;
+using Bam.Net.CoreServices.ApplicationRegistration;
 using System.Collections.Specialized;
 using Bam.Net.Data.Dynamic;
-using Bam.Net.Services.Distributed;
+using Bam.Net.CoreServices.DistributedHashTable;
 using Bam.Net.Incubation;
 using Bam.Net.Testing.Integration;
 
@@ -189,7 +189,7 @@ namespace Bam.Net.CoreServices.Tests
         {
             TimeSpan elapsed = Timed.Execution(() =>
             {
-                CoreRegistryRepository repo = new CoreRegistryRepository();
+                ApplicationRegistrationRepository repo = new ApplicationRegistrationRepository();
                 repo.Database = new SQLiteDatabase($"{nameof(ApplicationRegistryRepositoryGetOneUserShouldHaveNoOrganization)}", nameof(ApplicationRegistryRepositoryGetOneUserShouldHaveNoOrganization));
                 var user = repo.GetOneUserWhere(c => c.UserName == "bryan");
                 Expect.IsNotNull(user);
@@ -197,7 +197,7 @@ namespace Bam.Net.CoreServices.Tests
                 Expect.IsGreaterThan(user.Id, 0);
                 OutLine(user.PropertiesToString(), ConsoleColor.Cyan);
                 repo.Delete(user);
-                user = repo.Retrieve<Data.User>(user.Id);
+                user = repo.Retrieve<ApplicationRegistration.User>(user.Id);
                 Expect.IsNull(user);
             });
             OutLine(elapsed.ToString(), ConsoleColor.Cyan);
@@ -241,7 +241,7 @@ namespace Bam.Net.CoreServices.Tests
             CoreServiceResponse response = svc.RegisterApplication(descriptor);
             Expect.IsTrue(response.Success);
             var user = svc.CoreRegistryRepository.OneUserWhere(c => c.UserName == userName);
-            user = svc.CoreRegistryRepository.Retrieve<Data.User>(user.Id);
+            user = svc.CoreRegistryRepository.Retrieve<ApplicationRegistration.User>(user.Id);
             Expect.IsNotNull(user);
             Expect.AreEqual(1, user.Organizations.Count);
             Thread.Sleep(1000);
@@ -276,10 +276,10 @@ namespace Bam.Net.CoreServices.Tests
         public void CanSaveUserToCompositeRepo()
         {
             CompositeRepository repo = CoreServiceRegistryContainer.GetServiceRegistry().Get<CompositeRepository>();
-            Data.User user = new Data.User();
+            ApplicationRegistration.User user = new ApplicationRegistration.User();
             user.UserName = 9.RandomLetters();
             user = repo.Save(user);
-            Data.User retrieved = repo.Retrieve<Data.User>(user.Uuid);
+            ApplicationRegistration.User retrieved = repo.Retrieve<ApplicationRegistration.User>(user.Uuid);
             Expect.AreEqual(user.UserName, retrieved.UserName);
             Expect.AreEqual(user.Id, retrieved.Id);
             Expect.AreEqual(user.Uuid, retrieved.Uuid);
@@ -331,27 +331,27 @@ namespace Bam.Net.CoreServices.Tests
         {
             Machine machine = new Machine();
             Database db = new SQLiteDatabase($".\\{nameof(SavingMachineSavesNicsAndHostAddresses)}", "CoreRegistryRepository");
-            db.TryEnsureSchema<Data.Dao.Nic>();
-            CoreRegistryRepository repo = new CoreRegistryRepository() { Database = db };
+            db.TryEnsureSchema<ApplicationRegistration.Dao.Nic>();
+            ApplicationRegistrationRepository repo = new ApplicationRegistrationRepository() { Database = db };
 
-            Data.Dao.Nic.LoadAll(repo.Database).Delete(repo.Database);
-            Data.Dao.HostAddress.LoadAll(repo.Database).Delete(repo.Database);
-            Data.Dao.Machine.LoadAll(repo.Database).Delete(repo.Database);
+            ApplicationRegistration.Dao.Nic.LoadAll(repo.Database).Delete(repo.Database);
+            ApplicationRegistration.Dao.HostAddress.LoadAll(repo.Database).Delete(repo.Database);
+            ApplicationRegistration.Dao.Machine.LoadAll(repo.Database).Delete(repo.Database);
 
             machine = machine.Save(repo) as Machine;
             machine.NetworkInterfaces.Each(n => OutLine(n.PropertiesToString(), ConsoleColor.Cyan));
             machine.HostAddresses.Each(h => OutLine(h.PropertiesToString(), ConsoleColor.Blue));
 
-            Data.Dao.NicCollection nics = Data.Dao.Nic.LoadAll(repo.Database);
-            Data.Dao.HostAddressCollection hosts = Data.Dao.HostAddress.LoadAll(repo.Database);
+            ApplicationRegistration.Dao.NicCollection nics = ApplicationRegistration.Dao.Nic.LoadAll(repo.Database);
+            ApplicationRegistration.Dao.HostAddressCollection hosts = ApplicationRegistration.Dao.HostAddress.LoadAll(repo.Database);
 
             Machine machineAgain = machine.Save(repo) as Machine;
             Expect.AreEqual(machine.Id, machineAgain.Id, "Id didn't match");
             Expect.AreEqual(machine.Uuid, machineAgain.Uuid, "Uuid didn't match");
             Expect.AreEqual(machine.Cuid, machineAgain.Cuid, "Cuid didn't match");
 
-            Data.Dao.NicCollection nicsAgain = Data.Dao.Nic.LoadAll(repo.Database);
-            Data.Dao.HostAddressCollection hostsAgain = Data.Dao.HostAddress.LoadAll(repo.Database);
+            ApplicationRegistration.Dao.NicCollection nicsAgain = ApplicationRegistration.Dao.Nic.LoadAll(repo.Database);
+            ApplicationRegistration.Dao.HostAddressCollection hostsAgain = ApplicationRegistration.Dao.HostAddress.LoadAll(repo.Database);
 
             Expect.AreEqual(nics.Count, nicsAgain.Count, "Nic count didn't match");
             Expect.AreEqual(hosts.Count, hostsAgain.Count, "Host address count didn't match");
@@ -381,7 +381,7 @@ namespace Bam.Net.CoreServices.Tests
         public void EnsureSingleDoesntDuplicate()
         {
             ServiceRegistry glooRegistry = CoreServiceRegistryContainer.GetServiceRegistry();
-            CoreRegistryRepository repo = glooRegistry.Get<CoreRegistryRepository>();
+            ApplicationRegistrationRepository repo = glooRegistry.Get<ApplicationRegistrationRepository>();
             CompositeRepository compositeRepo = glooRegistry.Get<CompositeRepository>();
             compositeRepo.UnwireBackup();
             Machine machine = Machine.Current;
@@ -507,10 +507,10 @@ namespace Bam.Net.CoreServices.Tests
             IEnumerable<Organization> organizations = svc.CoreRegistryRepository.RetrieveAll<Organization>();
             organizations.Each(o => svc.CoreRegistryRepository.Delete(o));
             Expect.AreEqual(0, svc.CoreRegistryRepository.RetrieveAll<Organization>().Count());
-            IEnumerable<Data.Application> apps = svc.CoreRegistryRepository.RetrieveAll<Data.Application>();
+            IEnumerable<ApplicationRegistration.Application> apps = svc.CoreRegistryRepository.RetrieveAll<ApplicationRegistration.Application>();
             apps.Each(a => svc.CoreRegistryRepository.Delete(a));
-            Expect.AreEqual(0, svc.CoreRegistryRepository.RetrieveAll<Data.Application>().Count());
-            svc.CoreRegistryRepository.RetrieveAll<Data.Machine>().Each(h => svc.CoreRegistryRepository.Delete(h));
+            Expect.AreEqual(0, svc.CoreRegistryRepository.RetrieveAll<ApplicationRegistration.Application>().Count());
+            svc.CoreRegistryRepository.RetrieveAll<ApplicationRegistration.Machine>().Each(h => svc.CoreRegistryRepository.Delete(h));
             return result;
         }
 

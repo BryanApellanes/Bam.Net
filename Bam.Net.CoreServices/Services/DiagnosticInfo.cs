@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Bam.Net.Data;
 using Bam.Net.ServiceProxy;
-using Bam.Net.CoreServices.Data;
+using Bam.Net.CoreServices.ApplicationRegistration;
 
 namespace Bam.Net.CoreServices
 {

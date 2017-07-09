@@ -10,8 +10,8 @@ using Bam.Net.Configuration;
 namespace Bam.Net.CoreServices
 {
     using System.IO;
-    using Bam.Net.CoreServices.Data;
-    using Bam.Net.CoreServices.Data.Dao.Repository;
+    using Bam.Net.CoreServices.ApplicationRegistration;
+    using Bam.Net.CoreServices.ApplicationRegistration.Dao.Repository;
     using Net.Data.SQLite;
     using Server;
     using ServiceProxySecure = ServiceProxy.Secure;
@@ -22,7 +22,7 @@ namespace Bam.Net.CoreServices
     {
         public const string CommonConfigName = "Common";
         protected CoreConfigurationService() { }
-        public CoreConfigurationService(CoreRegistryRepository coreRepo, AppConf conf, string databaseRoot)
+        public CoreConfigurationService(ApplicationRegistrationRepository coreRepo, AppConf conf, string databaseRoot)
         {
             AppConf = conf;
             DatabaseRoot = databaseRoot;

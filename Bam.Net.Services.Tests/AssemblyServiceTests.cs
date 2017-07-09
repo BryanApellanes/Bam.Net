@@ -18,7 +18,7 @@ using Bam.Net.Testing;
 using Bam.Net.CoreServices.AssemblyManagement;
 using Bam.Net.CoreServices.Files;
 using Bam.Net.Configuration;
-using Bam.Net.Services.Distributed.Data;
+using Bam.Net.CoreServices.DistributedHashTable.Data;
 using Bam.Net.Testing.Integration;
 using Bam.Net.CoreServices.Files.Data;
 using Bam.Net.CoreServices;

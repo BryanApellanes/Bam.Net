@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Bam.Net.CoreServices.Data;
-using Bam.Net.CoreServices.Data.Dao.Repository;
+using Bam.Net.CoreServices.ApplicationRegistration;
+using Bam.Net.CoreServices.ApplicationRegistration.Dao.Repository;
 
 namespace Bam.Net.CoreServices
 {
     public class OrganizationFactory : MaximumLimitEnforcer<CoreServiceResponse<Organization>>
     {
-        public OrganizationFactory(CoreRegistryRepository repo, User user, string organizationName)
+        public OrganizationFactory(ApplicationRegistrationRepository repo, User user, string organizationName)
         {
             User = user;
             OrganizationName = organizationName;
@@ -18,7 +18,7 @@ namespace Bam.Net.CoreServices
         }
         public User User { get; set; }
         public string OrganizationName { get; set; }
-        public CoreRegistryRepository ApplicationRegistryRepository { get; set; }
+        public ApplicationRegistrationRepository ApplicationRegistryRepository { get; set; }
         public override int GetMaximumLimit()
         {
             int max = 1;

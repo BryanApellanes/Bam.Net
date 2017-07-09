@@ -3,13 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Bam.Net.CoreServices.Data.Dao.Repository;
+using Bam.Net.CoreServices.ApplicationRegistration.Dao.Repository;
+using Bam.Net.Server;
+using Bam.Net.Data.Repositories;
 
 namespace Bam.Net.CoreServices
 {
     public abstract class CoreProxyableService: ProxyableService
     {
-        public CoreRegistryRepository CoreRegistryRepository { get; set; }
+        public CoreProxyableService() { }
+        public CoreProxyableService(DaoRepository repository, AppConf appConf) 
+            : base(repository, appConf)
+        { }
+
+        public CoreProxyableService(IRepository genericRepo, DaoRepository daoRepo, AppConf appConf) 
+            : base(genericRepo, daoRepo, appConf)
+        { }
+
+        public ApplicationRegistrationRepository CoreRegistryRepository { get; set; }
         public IApplicationNameProvider ApplicationNameProvider { get; set; }
         public override string ApplicationName
         {

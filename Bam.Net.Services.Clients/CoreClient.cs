@@ -13,8 +13,8 @@ using System.Reflection;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Data.SQLite;
 using Bam.Net.CoreServices.Services;
-using Bam.Net.CoreServices.Data;
-using Bam.Net.CoreServices.Data.Dao.Repository;
+using Bam.Net.CoreServices.ApplicationRegistration;
+using Bam.Net.CoreServices.ApplicationRegistration.Dao.Repository;
 using Bam.Net.UserAccounts;
 using Bam.Net.Configuration;
 using Bam.Net.Web;
@@ -62,11 +62,11 @@ namespace Bam.Net.Services.Clients
             : this(organizationName, applicationName, hostName, port, null, logger)
         { }
 
-        public CoreClient(string hostName, int port, ILogger logger = null) : this(Organization.Public.Name, CoreServices.Data.Application.Unknown.Name, hostName, port, logger)
+        public CoreClient(string hostName, int port, ILogger logger = null) : this(Organization.Public.Name, CoreServices.ApplicationRegistration.Application.Unknown.Name, hostName, port, logger)
         { }
 
         public ProcessDescriptor ProcessDescriptor { get; private set; }
-        public CoreRegistryRepository LocalCoreRegistryRepository { get; set; }
+        public ApplicationRegistrationRepository LocalCoreRegistryRepository { get; set; }
         
         [Verbosity(VerbosityLevel.Information, MessageFormat = "{OrganizationName}:{ApplicationName} initializING")]
         public event EventHandler Initializing;
@@ -305,7 +305,7 @@ namespace Bam.Net.Services.Clients
 
         private void SetLocalProperties(string organizationName, string applicationName, string hostName, int port)
         {
-            LocalCoreRegistryRepository = new CoreRegistryRepository();
+            LocalCoreRegistryRepository = new ApplicationRegistrationRepository();
             LocalCoreRegistryRepository.Database = new SQLiteDatabase(WorkspaceDirectory, nameof(CoreClient));
             CoreServiceRegistryContainer.GetServiceRegistry().Get<IStorableTypesProvider>().AddTypes(LocalCoreRegistryRepository);
             ProcessDescriptor = ProcessDescriptor.ForApplicationRegistration(LocalCoreRegistryRepository, hostName, port, applicationName, organizationName);

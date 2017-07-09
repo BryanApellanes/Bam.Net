@@ -13,8 +13,8 @@ using NSubstitute;
 namespace Bam.Net.CoreServices.Tests
 {
     using System.IO;
-    using Bam.Net.CoreServices.Data;
-    using Bam.Net.CoreServices.Data.Dao.Repository;
+    using Bam.Net.CoreServices.ApplicationRegistration;
+    using Bam.Net.CoreServices.ApplicationRegistration.Dao.Repository;
     using Bam.Net.CoreServices.Services;
     using Net.Data.SQLite;
     using Server;

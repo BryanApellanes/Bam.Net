@@ -1,1 +1,0 @@
-﻿troo.exe /gpbc /ta:C:\tvg\gloo\Bam.Net.CoreServices.dll /fns:Bam.Net.CoreServices.Data /ws:C:\src\Bam.Net\Bam.Net.CoreServices\Data\Generated_Protobuf

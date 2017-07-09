@@ -16,7 +16,7 @@ using Bam.Net.Data.SQLite;
 using Bam.Net.Data;
 using Bam.Net.Translation.Yandex;
 using Bam.Net.Translation;
-using Bam.Net.CoreServices.Data.Dao.Repository;
+using Bam.Net.CoreServices.ApplicationRegistration.Dao.Repository;
 using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.CoreServices.Files;
 using Bam.Net.CoreServices.AssemblyManagement.Data.Dao.Repository;
@@ -53,7 +53,7 @@ namespace Bam.Net.CoreServices
             DaoUserResolver userResolver = new DaoUserResolver();
             DaoRoleResolver roleResolver = new DaoRoleResolver();
             SQLiteDatabaseProvider dbProvider = new SQLiteDatabaseProvider(databasesPath, Log.Default);
-            CoreRegistryRepository coreRepo = new CoreRegistryRepository();
+            ApplicationRegistrationRepository coreRepo = new ApplicationRegistrationRepository();
             dbProvider.SetDatabases(coreRepo);
             dbProvider.SetDatabases(userMgr);
             userMgr.Database.TryEnsureSchema(typeof(UserAccounts.Data.User), Log.Default);
@@ -75,7 +75,7 @@ namespace Bam.Net.CoreServices
                 .For<ILogger>().Use(Log.Default)
                 .For<IRepository>().Use(coreRepo)
                 .For<DaoRepository>().Use(coreRepo)
-                .For<CoreRegistryRepository>().Use(coreRepo)
+                .For<ApplicationRegistrationRepository>().Use(coreRepo)
                 .For<AppConf>().Use(conf)
                 .For<IDatabaseProvider>().Use(dbProvider)
                 .For<IUserManager>().Use(userMgr)

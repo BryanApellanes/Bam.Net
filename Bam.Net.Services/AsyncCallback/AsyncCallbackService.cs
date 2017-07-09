@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.CoreServices;
-using Bam.Net.CoreServices.Data;
+using Bam.Net.CoreServices.ApplicationRegistration;
 using Bam.Net.Server;
 using Bam.Net.ServiceProxy;
 using Data = Bam.Net.Services.AsyncCallback.Data;
