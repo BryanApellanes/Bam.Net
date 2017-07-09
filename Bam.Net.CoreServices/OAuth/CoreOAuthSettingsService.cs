@@ -8,7 +8,7 @@ using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.CoreServices.OAuth.Data;
 using Bam.Net.CoreServices.OAuth.Data.Dao.Repository;
 
-namespace Bam.Net.CoreServices.OAuth
+namespace Bam.Net.CoreServices
 {
     [Proxy("oauthSettings")]
     [ApiKeyRequired]
@@ -16,10 +16,8 @@ namespace Bam.Net.CoreServices.OAuth
     {
         public CoreOAuthSettingsService(OAuthSettingsRepository oauthRepo)
         {
-            //CoreClient = client;
             OAuthSettingsRepository = oauthRepo;
         }
-        //public CoreClient CoreClient { get; set; }
         public OAuthSettingsRepository OAuthSettingsRepository { get; set; }
 
         [RoleRequired("/", "Admin")]

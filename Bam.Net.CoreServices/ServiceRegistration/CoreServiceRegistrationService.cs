@@ -13,7 +13,7 @@ using Bam.Net.CoreServices.ServiceRegistration;
 using Bam.Net.CoreServices.ServiceRegistration.Data;
 using Bam.Net.CoreServices.ServiceRegistration.Data.Dao.Repository;
 
-namespace Bam.Net.CoreServices.ServiceRegistration
+namespace Bam.Net.CoreServices
 {
     [ApiKeyRequired]
     [Proxy("coreServiceRegistrationSvc")]

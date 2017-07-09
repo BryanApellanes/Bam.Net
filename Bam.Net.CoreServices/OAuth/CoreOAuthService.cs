@@ -10,18 +10,11 @@ using Bam.Net.CoreServices;
 using Bam.Net.ServiceProxy;
 using Bam.Net.UserAccounts.Data;
 
-namespace Bam.Net.CoreServices.OAuth
+namespace Bam.Net.CoreServices
 {
     [Proxy("oauth")]
     public class CoreOAuthService: CoreProxyableService
     {
-        public Session Session
-        {
-            get
-            {
-                return Session.Get(HttpContext);
-            }
-        }
         [Exclude]
         public override object Clone()
         {

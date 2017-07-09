@@ -5,6 +5,7 @@ using Bam.Net.CommandLine;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Data.SQLite;
 using Bam.Net.Testing;
+using Bam.Net.CoreServices;
 using Bam.Net.CoreServices.Files;
 using Bam.Net.CoreServices.Files.Data;
 

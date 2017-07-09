@@ -11,10 +11,10 @@ using Bam.Net.CoreServices;
 using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 using Bam.Net.ServiceProxy.Secure;
-//using Bam.Net.Services.Data;
 using Bam.Net.CoreServices.Files.Data;
+using Bam.Net.CoreServices.Files;
 
-namespace Bam.Net.CoreServices.Files
+namespace Bam.Net.CoreServices
 {
     [RoleRequired("/", "Admin")]
     [Proxy("fileSvc")]
