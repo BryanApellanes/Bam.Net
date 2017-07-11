@@ -12,7 +12,7 @@ namespace Bam.Net.CoreServices
     /// A service wrapper for any IRoleProvider implementation.
     /// Exposes the specified IRoleProvider as a service
     /// </summary>
-    [Proxy("coreRoleSvc")]
+    [Proxy("roleSvc")]
     [Encrypt]
     public class CoreRoleService : CoreProxyableService, IRoleProvider
     {

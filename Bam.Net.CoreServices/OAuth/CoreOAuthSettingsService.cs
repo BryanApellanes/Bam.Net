@@ -10,7 +10,7 @@ using Bam.Net.CoreServices.OAuth.Data.Dao.Repository;
 
 namespace Bam.Net.CoreServices
 {
-    [Proxy("oauthSettings")]
+    [Proxy("oauthSettingsSvc")]
     [ApiKeyRequired]
     public class CoreOAuthSettingsService : CoreProxyableService
     {

@@ -203,7 +203,7 @@
     <Compile Include="Month.cs" />
     <Compile Include="NamedThread.cs" />
     <Compile Include="NetworkExtensions.cs" />
-    <Compile Include="ProxySubdomainAttribute.cs" />
+    <Compile Include="ServiceSubdomainAttribute.cs" />
     <Compile Include="Razor\RazorBaseTemplate.cs" />
     <Compile Include="Razor\RazorParser.cs" />
     <Compile Include="Razor\RazorRenderer.cs" />

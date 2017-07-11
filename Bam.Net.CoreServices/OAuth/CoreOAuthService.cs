@@ -12,7 +12,7 @@ using Bam.Net.UserAccounts.Data;
 
 namespace Bam.Net.CoreServices
 {
-    [Proxy("oauth")]
+    [Proxy("oauthSvc")]
     public class CoreOAuthService: CoreProxyableService
     {
         [Exclude]

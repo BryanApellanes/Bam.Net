@@ -12,10 +12,10 @@ namespace Bam.Net
     /// hostname for a service
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class ProxySubdomainAttribute: Attribute
+    public class ServiceSubdomainAttribute: Attribute
     {
-        public ProxySubdomainAttribute() { }
-        public ProxySubdomainAttribute(string subdomain)
+        public ServiceSubdomainAttribute() { }
+        public ServiceSubdomainAttribute(string subdomain)
         {
             Subdomain = subdomain;
         }

@@ -45,7 +45,6 @@ namespace Bam.Net.Server
             this.Logger = logger;
         }
 
-
         ILogger _logger;
         object _loggerLock = new object();
         public ILogger Logger
