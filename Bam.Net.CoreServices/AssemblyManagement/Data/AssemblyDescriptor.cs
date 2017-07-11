@@ -16,9 +16,8 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data
     {
         public AssemblyDescriptor()
         {
-            AssemblyReferenceDescriptors = new AssemblyReferenceDescriptor[] { };
-
         }
+
         public AssemblyDescriptor(Assembly assembly)
         {
             FileInfo assemblyFile = assembly.GetFileInfo();
@@ -46,7 +45,7 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data
                     ReferencedHash = referenced.GetFileInfo().Sha256()
                 });
             };
-            AssemblyReferenceDescriptors = referenceDescriptors.ToArray();
+            AssemblyReferenceDescriptors = referenceDescriptors.ToList();
         }
 
         static AssemblyDescriptor[] _allCurrent;
@@ -80,7 +79,7 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data
         /// Descriptors of the assemblies referenced by the assembly
         /// described by the current descriptor
         /// </summary>
-        public virtual AssemblyReferenceDescriptor[] AssemblyReferenceDescriptors
+        public virtual List<AssemblyReferenceDescriptor> AssemblyReferenceDescriptors
         {
             get;
             set;

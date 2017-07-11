@@ -70,19 +70,18 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Wrappers
 				_processRuntimeDescriptors = value;
 				SetUpdatedXrefCollectionProperty("ProcessRuntimeDescriptors", this.GetType().GetProperty("ProcessRuntimeDescriptor"));
 			}
-		}
-// Xref property: Left -> AssemblyReferenceDescriptor ; Right -> AssemblyDescriptor
+		}// Xref property: Left -> AssemblyDescriptor ; Right -> AssemblyReferenceDescriptor
 
-		Bam.Net.CoreServices.AssemblyManagement.Data.AssemblyReferenceDescriptor[] _assemblyReferenceDescriptors;
-		public override Bam.Net.CoreServices.AssemblyManagement.Data.AssemblyReferenceDescriptor[] AssemblyReferenceDescriptors
+		List<Bam.Net.CoreServices.AssemblyManagement.Data.AssemblyReferenceDescriptor> _assemblyReferenceDescriptors;
+		public override List<Bam.Net.CoreServices.AssemblyManagement.Data.AssemblyReferenceDescriptor> AssemblyReferenceDescriptors
 		{
 			get
 			{
 				if(_assemblyReferenceDescriptors == null)
 				{
-					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptorAssemblyDescriptor, Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptor>(Repository.GetDaoInstance(this), false);
+					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyDescriptorAssemblyReferenceDescriptor,  Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptor>(Repository.GetDaoInstance(this), false);
 					 xref.Load(Repository.Database);
-					 _assemblyReferenceDescriptors = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.AssemblyManagement.Data.AssemblyReferenceDescriptor>().ToArray();
+					 _assemblyReferenceDescriptors = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.AssemblyManagement.Data.AssemblyReferenceDescriptor>().ToList();
 					 SetUpdatedXrefCollectionProperty("AssemblyReferenceDescriptors", this.GetType().GetProperty("AssemblyReferenceDescriptors"));
 				}
 
@@ -93,6 +92,7 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Wrappers
 				_assemblyReferenceDescriptors = value;
 				SetUpdatedXrefCollectionProperty("AssemblyReferenceDescriptors", this.GetType().GetProperty("AssemblyReferenceDescriptors"));
 			}
-		}	}
+		}
+	}
 	// -- generated
 }																								

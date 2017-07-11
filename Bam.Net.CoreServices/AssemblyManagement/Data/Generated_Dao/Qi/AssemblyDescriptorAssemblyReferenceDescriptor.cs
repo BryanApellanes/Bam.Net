@@ -12,13 +12,13 @@ using Bam.Net.CoreServices.AssemblyManagement.Data.Dao;
 
 namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao.Qi
 {
-    public class AssemblyReferenceDescriptorAssemblyDescriptorController : DaoController
+    public class AssemblyDescriptorAssemblyReferenceDescriptorController : DaoController
     {	
-		public ActionResult Save(Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptorAssemblyDescriptor[] values)
+		public ActionResult Save(Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyDescriptorAssemblyReferenceDescriptor[] values)
 		{
 			try
 			{
-				AssemblyReferenceDescriptorAssemblyDescriptorCollection saver = new AssemblyReferenceDescriptorAssemblyDescriptorCollection();
+				AssemblyDescriptorAssemblyReferenceDescriptorCollection saver = new AssemblyDescriptorAssemblyReferenceDescriptorCollection();
 				saver.AddRange(values);
 				saver.Save();
 				return Json(new { Success = true, Message = "", Dao = "" });
@@ -29,7 +29,7 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao.Qi
 			}
 		}
 
-		public ActionResult Create(Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptorAssemblyDescriptor dao)
+		public ActionResult Create(Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyDescriptorAssemblyReferenceDescriptor dao)
 		{
 			return Update(dao);
 		}
@@ -38,7 +38,7 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao.Qi
         {
 			try
 			{
-				object value = Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptorAssemblyDescriptor.OneWhere(c => c.KeyColumn == id).ToJsonSafe();
+				object value = Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyDescriptorAssemblyReferenceDescriptor.OneWhere(c => c.KeyColumn == id).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
 			catch(Exception ex)
@@ -47,7 +47,7 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao.Qi
 			}
         }
 
-		public ActionResult Update(Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptorAssemblyDescriptor dao)
+		public ActionResult Update(Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyDescriptorAssemblyReferenceDescriptor dao)
         {
 			try
 			{
@@ -65,14 +65,14 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao.Qi
 			try
 			{
 				string msg = "";
-				Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptorAssemblyDescriptor dao = Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptorAssemblyDescriptor.OneWhere(c => c.KeyColumn == id);				
+				Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyDescriptorAssemblyReferenceDescriptor dao = Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyDescriptorAssemblyReferenceDescriptor.OneWhere(c => c.KeyColumn == id);				
 				if(dao != null)
 				{
 					dao.Delete();	
 				}
 				else
 				{
-					msg = string.Format("The specified id ({0}) was not found in the table (AssemblyReferenceDescriptorAssemblyDescriptor)", id);
+					msg = string.Format("The specified id ({0}) was not found in the table (AssemblyDescriptorAssemblyReferenceDescriptor)", id);
 				}
 				return Json(new { Success = true, Message = msg, Dao = "" });
 			}
@@ -86,8 +86,8 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao.Qi
 		{
 			try
 			{
-				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptorAssemblyDescriptor));
-				object value = Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptorAssemblyDescriptor.OneWhere(query).ToJsonSafe();
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyDescriptorAssemblyReferenceDescriptor));
+				object value = Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyDescriptorAssemblyReferenceDescriptor.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
 			catch(Exception ex)
@@ -100,8 +100,8 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao.Qi
 		{
 			try
 			{
-				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptorAssemblyDescriptor));
-				object[] value = Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptorAssemblyDescriptor.Where(query).ToJsonSafe();
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyDescriptorAssemblyReferenceDescriptor));
+				object[] value = Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyDescriptorAssemblyReferenceDescriptor.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
 			catch(Exception ex)

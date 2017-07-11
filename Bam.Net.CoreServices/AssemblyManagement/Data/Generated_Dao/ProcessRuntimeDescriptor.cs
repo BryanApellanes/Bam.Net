@@ -259,7 +259,7 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<ProcessRuntimeDescriptor>();
 			Database db = database ?? Db.For<ProcessRuntimeDescriptor>();
-			var results = new ProcessRuntimeDescriptorCollection(sql.GetDataTable(db));
+			var results = new ProcessRuntimeDescriptorCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}

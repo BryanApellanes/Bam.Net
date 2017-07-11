@@ -31,58 +31,6 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		}
 
 
-	public class AssemblyReferenceDescriptorQueryContext
-	{
-			public AssemblyReferenceDescriptorCollection Where(WhereDelegate<AssemblyReferenceDescriptorColumns> where, Database db = null)
-			{
-				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptor.Where(where, db);
-			}
-		   
-			public AssemblyReferenceDescriptorCollection Where(WhereDelegate<AssemblyReferenceDescriptorColumns> where, OrderBy<AssemblyReferenceDescriptorColumns> orderBy = null, Database db = null)
-			{
-				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptor.Where(where, orderBy, db);
-			}
-
-			public AssemblyReferenceDescriptor OneWhere(WhereDelegate<AssemblyReferenceDescriptorColumns> where, Database db = null)
-			{
-				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptor.OneWhere(where, db);
-			}
-
-			public static AssemblyReferenceDescriptor GetOneWhere(WhereDelegate<AssemblyReferenceDescriptorColumns> where, Database db = null)
-			{
-				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptor.GetOneWhere(where, db);
-			}
-		
-			public AssemblyReferenceDescriptor FirstOneWhere(WhereDelegate<AssemblyReferenceDescriptorColumns> where, Database db = null)
-			{
-				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptor.FirstOneWhere(where, db);
-			}
-
-			public AssemblyReferenceDescriptorCollection Top(int count, WhereDelegate<AssemblyReferenceDescriptorColumns> where, Database db = null)
-			{
-				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptor.Top(count, where, db);
-			}
-
-			public AssemblyReferenceDescriptorCollection Top(int count, WhereDelegate<AssemblyReferenceDescriptorColumns> where, OrderBy<AssemblyReferenceDescriptorColumns> orderBy, Database db = null)
-			{
-				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptor.Top(count, where, orderBy, db);
-			}
-
-			public long Count(WhereDelegate<AssemblyReferenceDescriptorColumns> where, Database db = null)
-			{
-				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptor.Count(where, db);
-			}
-	}
-
-	static AssemblyReferenceDescriptorQueryContext _assemblyReferenceDescriptors;
-	static object _assemblyReferenceDescriptorsLock = new object();
-	public static AssemblyReferenceDescriptorQueryContext AssemblyReferenceDescriptors
-	{
-		get
-		{
-			return _assemblyReferenceDescriptorsLock.DoubleCheckLock<AssemblyReferenceDescriptorQueryContext>(ref _assemblyReferenceDescriptors, () => new AssemblyReferenceDescriptorQueryContext());
-		}
-	}
 	public class AssemblyDescriptorQueryContext
 	{
 			public AssemblyDescriptorCollection Where(WhereDelegate<AssemblyDescriptorColumns> where, Database db = null)
@@ -187,56 +135,56 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 			return _processRuntimeDescriptorsLock.DoubleCheckLock<ProcessRuntimeDescriptorQueryContext>(ref _processRuntimeDescriptors, () => new ProcessRuntimeDescriptorQueryContext());
 		}
 	}
-	public class AssemblyReferenceDescriptorAssemblyDescriptorQueryContext
+	public class AssemblyReferenceDescriptorQueryContext
 	{
-			public AssemblyReferenceDescriptorAssemblyDescriptorCollection Where(WhereDelegate<AssemblyReferenceDescriptorAssemblyDescriptorColumns> where, Database db = null)
+			public AssemblyReferenceDescriptorCollection Where(WhereDelegate<AssemblyReferenceDescriptorColumns> where, Database db = null)
 			{
-				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptorAssemblyDescriptor.Where(where, db);
+				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptor.Where(where, db);
 			}
 		   
-			public AssemblyReferenceDescriptorAssemblyDescriptorCollection Where(WhereDelegate<AssemblyReferenceDescriptorAssemblyDescriptorColumns> where, OrderBy<AssemblyReferenceDescriptorAssemblyDescriptorColumns> orderBy = null, Database db = null)
+			public AssemblyReferenceDescriptorCollection Where(WhereDelegate<AssemblyReferenceDescriptorColumns> where, OrderBy<AssemblyReferenceDescriptorColumns> orderBy = null, Database db = null)
 			{
-				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptorAssemblyDescriptor.Where(where, orderBy, db);
+				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptor.Where(where, orderBy, db);
 			}
 
-			public AssemblyReferenceDescriptorAssemblyDescriptor OneWhere(WhereDelegate<AssemblyReferenceDescriptorAssemblyDescriptorColumns> where, Database db = null)
+			public AssemblyReferenceDescriptor OneWhere(WhereDelegate<AssemblyReferenceDescriptorColumns> where, Database db = null)
 			{
-				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptorAssemblyDescriptor.OneWhere(where, db);
+				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptor.OneWhere(where, db);
 			}
 
-			public static AssemblyReferenceDescriptorAssemblyDescriptor GetOneWhere(WhereDelegate<AssemblyReferenceDescriptorAssemblyDescriptorColumns> where, Database db = null)
+			public static AssemblyReferenceDescriptor GetOneWhere(WhereDelegate<AssemblyReferenceDescriptorColumns> where, Database db = null)
 			{
-				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptorAssemblyDescriptor.GetOneWhere(where, db);
+				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptor.GetOneWhere(where, db);
 			}
 		
-			public AssemblyReferenceDescriptorAssemblyDescriptor FirstOneWhere(WhereDelegate<AssemblyReferenceDescriptorAssemblyDescriptorColumns> where, Database db = null)
+			public AssemblyReferenceDescriptor FirstOneWhere(WhereDelegate<AssemblyReferenceDescriptorColumns> where, Database db = null)
 			{
-				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptorAssemblyDescriptor.FirstOneWhere(where, db);
+				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptor.FirstOneWhere(where, db);
 			}
 
-			public AssemblyReferenceDescriptorAssemblyDescriptorCollection Top(int count, WhereDelegate<AssemblyReferenceDescriptorAssemblyDescriptorColumns> where, Database db = null)
+			public AssemblyReferenceDescriptorCollection Top(int count, WhereDelegate<AssemblyReferenceDescriptorColumns> where, Database db = null)
 			{
-				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptorAssemblyDescriptor.Top(count, where, db);
+				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptor.Top(count, where, db);
 			}
 
-			public AssemblyReferenceDescriptorAssemblyDescriptorCollection Top(int count, WhereDelegate<AssemblyReferenceDescriptorAssemblyDescriptorColumns> where, OrderBy<AssemblyReferenceDescriptorAssemblyDescriptorColumns> orderBy, Database db = null)
+			public AssemblyReferenceDescriptorCollection Top(int count, WhereDelegate<AssemblyReferenceDescriptorColumns> where, OrderBy<AssemblyReferenceDescriptorColumns> orderBy, Database db = null)
 			{
-				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptorAssemblyDescriptor.Top(count, where, orderBy, db);
+				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptor.Top(count, where, orderBy, db);
 			}
 
-			public long Count(WhereDelegate<AssemblyReferenceDescriptorAssemblyDescriptorColumns> where, Database db = null)
+			public long Count(WhereDelegate<AssemblyReferenceDescriptorColumns> where, Database db = null)
 			{
-				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptorAssemblyDescriptor.Count(where, db);
+				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptor.Count(where, db);
 			}
 	}
 
-	static AssemblyReferenceDescriptorAssemblyDescriptorQueryContext _assemblyReferenceDescriptorAssemblyDescriptors;
-	static object _assemblyReferenceDescriptorAssemblyDescriptorsLock = new object();
-	public static AssemblyReferenceDescriptorAssemblyDescriptorQueryContext AssemblyReferenceDescriptorAssemblyDescriptors
+	static AssemblyReferenceDescriptorQueryContext _assemblyReferenceDescriptors;
+	static object _assemblyReferenceDescriptorsLock = new object();
+	public static AssemblyReferenceDescriptorQueryContext AssemblyReferenceDescriptors
 	{
 		get
 		{
-			return _assemblyReferenceDescriptorAssemblyDescriptorsLock.DoubleCheckLock<AssemblyReferenceDescriptorAssemblyDescriptorQueryContext>(ref _assemblyReferenceDescriptorAssemblyDescriptors, () => new AssemblyReferenceDescriptorAssemblyDescriptorQueryContext());
+			return _assemblyReferenceDescriptorsLock.DoubleCheckLock<AssemblyReferenceDescriptorQueryContext>(ref _assemblyReferenceDescriptors, () => new AssemblyReferenceDescriptorQueryContext());
 		}
 	}
 	public class AssemblyDescriptorProcessRuntimeDescriptorQueryContext
@@ -289,6 +237,58 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		get
 		{
 			return _assemblyDescriptorProcessRuntimeDescriptorsLock.DoubleCheckLock<AssemblyDescriptorProcessRuntimeDescriptorQueryContext>(ref _assemblyDescriptorProcessRuntimeDescriptors, () => new AssemblyDescriptorProcessRuntimeDescriptorQueryContext());
+		}
+	}
+	public class AssemblyDescriptorAssemblyReferenceDescriptorQueryContext
+	{
+			public AssemblyDescriptorAssemblyReferenceDescriptorCollection Where(WhereDelegate<AssemblyDescriptorAssemblyReferenceDescriptorColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyDescriptorAssemblyReferenceDescriptor.Where(where, db);
+			}
+		   
+			public AssemblyDescriptorAssemblyReferenceDescriptorCollection Where(WhereDelegate<AssemblyDescriptorAssemblyReferenceDescriptorColumns> where, OrderBy<AssemblyDescriptorAssemblyReferenceDescriptorColumns> orderBy = null, Database db = null)
+			{
+				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyDescriptorAssemblyReferenceDescriptor.Where(where, orderBy, db);
+			}
+
+			public AssemblyDescriptorAssemblyReferenceDescriptor OneWhere(WhereDelegate<AssemblyDescriptorAssemblyReferenceDescriptorColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyDescriptorAssemblyReferenceDescriptor.OneWhere(where, db);
+			}
+
+			public static AssemblyDescriptorAssemblyReferenceDescriptor GetOneWhere(WhereDelegate<AssemblyDescriptorAssemblyReferenceDescriptorColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyDescriptorAssemblyReferenceDescriptor.GetOneWhere(where, db);
+			}
+		
+			public AssemblyDescriptorAssemblyReferenceDescriptor FirstOneWhere(WhereDelegate<AssemblyDescriptorAssemblyReferenceDescriptorColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyDescriptorAssemblyReferenceDescriptor.FirstOneWhere(where, db);
+			}
+
+			public AssemblyDescriptorAssemblyReferenceDescriptorCollection Top(int count, WhereDelegate<AssemblyDescriptorAssemblyReferenceDescriptorColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyDescriptorAssemblyReferenceDescriptor.Top(count, where, db);
+			}
+
+			public AssemblyDescriptorAssemblyReferenceDescriptorCollection Top(int count, WhereDelegate<AssemblyDescriptorAssemblyReferenceDescriptorColumns> where, OrderBy<AssemblyDescriptorAssemblyReferenceDescriptorColumns> orderBy, Database db = null)
+			{
+				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyDescriptorAssemblyReferenceDescriptor.Top(count, where, orderBy, db);
+			}
+
+			public long Count(WhereDelegate<AssemblyDescriptorAssemblyReferenceDescriptorColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyDescriptorAssemblyReferenceDescriptor.Count(where, db);
+			}
+	}
+
+	static AssemblyDescriptorAssemblyReferenceDescriptorQueryContext _assemblyDescriptorAssemblyReferenceDescriptors;
+	static object _assemblyDescriptorAssemblyReferenceDescriptorsLock = new object();
+	public static AssemblyDescriptorAssemblyReferenceDescriptorQueryContext AssemblyDescriptorAssemblyReferenceDescriptors
+	{
+		get
+		{
+			return _assemblyDescriptorAssemblyReferenceDescriptorsLock.DoubleCheckLock<AssemblyDescriptorAssemblyReferenceDescriptorQueryContext>(ref _assemblyDescriptorAssemblyReferenceDescriptors, () => new AssemblyDescriptorAssemblyReferenceDescriptorQueryContext());
 		}
 	}    }
 }																								

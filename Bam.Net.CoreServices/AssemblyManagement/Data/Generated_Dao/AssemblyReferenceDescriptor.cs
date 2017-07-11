@@ -57,10 +57,10 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		{
 			if(_database != null)
 			{
-				this.ChildCollections.Add("AssemblyReferenceDescriptorAssemblyDescriptor_AssemblyReferenceDescriptorId", new AssemblyReferenceDescriptorAssemblyDescriptorCollection(Database.GetQuery<AssemblyReferenceDescriptorAssemblyDescriptorColumns, AssemblyReferenceDescriptorAssemblyDescriptor>((c) => c.AssemblyReferenceDescriptorId == GetLongValue("Id")), this, "AssemblyReferenceDescriptorId"));				
-			}			
-            this.ChildCollections.Add("AssemblyReferenceDescriptor_AssemblyReferenceDescriptorAssemblyDescriptor_AssemblyDescriptor",  new XrefDaoCollection<AssemblyReferenceDescriptorAssemblyDescriptor, AssemblyDescriptor>(this, false));
-							
+				this.ChildCollections.Add("AssemblyDescriptorAssemblyReferenceDescriptor_AssemblyReferenceDescriptorId", new AssemblyDescriptorAssemblyReferenceDescriptorCollection(Database.GetQuery<AssemblyDescriptorAssemblyReferenceDescriptorColumns, AssemblyDescriptorAssemblyReferenceDescriptor>((c) => c.AssemblyReferenceDescriptorId == GetLongValue("Id")), this, "AssemblyReferenceDescriptorId"));				
+			}						
+            this.ChildCollections.Add("AssemblyReferenceDescriptor_AssemblyDescriptorAssemblyReferenceDescriptor_AssemblyDescriptor",  new XrefDaoCollection<AssemblyDescriptorAssemblyReferenceDescriptor, AssemblyDescriptor>(this, false));
+				
 		}
 
 	// property:Id, columnName:Id	
@@ -153,7 +153,7 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 				
 
 	[Bam.Net.Exclude]	
-	public AssemblyReferenceDescriptorAssemblyDescriptorCollection AssemblyReferenceDescriptorAssemblyDescriptorsByAssemblyReferenceDescriptorId
+	public AssemblyDescriptorAssemblyReferenceDescriptorCollection AssemblyDescriptorAssemblyReferenceDescriptorsByAssemblyReferenceDescriptorId
 	{
 		get
 		{
@@ -162,12 +162,12 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 				throw new InvalidOperationException("The current instance of type({0}) hasn't been saved and will have no child collections, call Save() or Save(Database) first."._Format(this.GetType().Name));
 			}
 
-			if(!this.ChildCollections.ContainsKey("AssemblyReferenceDescriptorAssemblyDescriptor_AssemblyReferenceDescriptorId"))
+			if(!this.ChildCollections.ContainsKey("AssemblyDescriptorAssemblyReferenceDescriptor_AssemblyReferenceDescriptorId"))
 			{
 				SetChildren();
 			}
 
-			var c = (AssemblyReferenceDescriptorAssemblyDescriptorCollection)this.ChildCollections["AssemblyReferenceDescriptorAssemblyDescriptor_AssemblyReferenceDescriptorId"];
+			var c = (AssemblyDescriptorAssemblyReferenceDescriptorCollection)this.ChildCollections["AssemblyDescriptorAssemblyReferenceDescriptor_AssemblyReferenceDescriptorId"];
 			if(!c.Loaded)
 			{
 				c.Load(Database);
@@ -177,8 +177,9 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 	}
 			
 
+
 		// Xref       
-        public XrefDaoCollection<AssemblyReferenceDescriptorAssemblyDescriptor, AssemblyDescriptor> AssemblyDescriptors
+        public XrefDaoCollection<AssemblyDescriptorAssemblyReferenceDescriptor, AssemblyDescriptor> AssemblyDescriptors
         {
             get
             {			
@@ -187,12 +188,12 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 					throw new InvalidOperationException("The current instance of type({0}) hasn't been saved and will have no child collections, call Save() or Save(Database) first."._Format(this.GetType().Name));
 				}
 
-				if(!this.ChildCollections.ContainsKey("AssemblyReferenceDescriptor_AssemblyReferenceDescriptorAssemblyDescriptor_AssemblyDescriptor"))
+				if(!this.ChildCollections.ContainsKey("AssemblyReferenceDescriptor_AssemblyDescriptorAssemblyReferenceDescriptor_AssemblyDescriptor"))
 				{
 					SetChildren();
 				}
 
-				var xref = (XrefDaoCollection<AssemblyReferenceDescriptorAssemblyDescriptor, AssemblyDescriptor>)this.ChildCollections["AssemblyReferenceDescriptor_AssemblyReferenceDescriptorAssemblyDescriptor_AssemblyDescriptor"];
+				var xref = (XrefDaoCollection<AssemblyDescriptorAssemblyReferenceDescriptor, AssemblyDescriptor>)this.ChildCollections["AssemblyReferenceDescriptor_AssemblyDescriptorAssemblyReferenceDescriptor_AssemblyDescriptor"];
 				if(!xref.Loaded)
 				{
 					xref.Load(Database);
@@ -200,8 +201,7 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 
 				return xref;
             }
-        }
-		/// <summary>
+        }		/// <summary>
 		/// Gets a query filter that should uniquely identify
 		/// the current instance.  The default implementation
 		/// compares the Id/key field to the current instance's.
@@ -231,7 +231,7 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<AssemblyReferenceDescriptor>();
 			Database db = database ?? Db.For<AssemblyReferenceDescriptor>();
-			var results = new AssemblyReferenceDescriptorCollection(sql.GetDataTable(db));
+			var results = new AssemblyReferenceDescriptorCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}

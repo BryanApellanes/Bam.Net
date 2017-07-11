@@ -17,30 +17,30 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 	// schema = AssemblyService
 	// connection Name = AssemblyService
 	[Serializable]
-	[Bam.Net.Data.Table("AssemblyDescriptorProcessRuntimeDescriptor", "AssemblyService")]
-	public partial class AssemblyDescriptorProcessRuntimeDescriptor: Bam.Net.Data.Dao
+	[Bam.Net.Data.Table("AssemblyDescriptorAssemblyReferenceDescriptor", "AssemblyService")]
+	public partial class AssemblyDescriptorAssemblyReferenceDescriptor: Bam.Net.Data.Dao
 	{
-		public AssemblyDescriptorProcessRuntimeDescriptor():base()
+		public AssemblyDescriptorAssemblyReferenceDescriptor():base()
 		{
 			this.SetKeyColumnName();
 			this.SetChildren();
 		}
 
-		public AssemblyDescriptorProcessRuntimeDescriptor(DataRow data)
+		public AssemblyDescriptorAssemblyReferenceDescriptor(DataRow data)
 			: base(data)
 		{
 			this.SetKeyColumnName();
 			this.SetChildren();
 		}
 
-		public AssemblyDescriptorProcessRuntimeDescriptor(Database db)
+		public AssemblyDescriptorAssemblyReferenceDescriptor(Database db)
 			: base(db)
 		{
 			this.SetKeyColumnName();
 			this.SetChildren();
 		}
 
-		public AssemblyDescriptorProcessRuntimeDescriptor(Database db, DataRow data)
+		public AssemblyDescriptorAssemblyReferenceDescriptor(Database db, DataRow data)
 			: base(db, data)
 		{
 			this.SetKeyColumnName();
@@ -48,9 +48,9 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		}
 
 		[Bam.Net.Exclude]
-		public static implicit operator AssemblyDescriptorProcessRuntimeDescriptor(DataRow data)
+		public static implicit operator AssemblyDescriptorAssemblyReferenceDescriptor(DataRow data)
 		{
-			return new AssemblyDescriptorProcessRuntimeDescriptor(data);
+			return new AssemblyDescriptorAssemblyReferenceDescriptor(data);
 		}
 
 		private void SetChildren()
@@ -91,7 +91,7 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 
 	// start AssemblyDescriptorId -> AssemblyDescriptorId
 	[Bam.Net.Data.ForeignKey(
-        Table="AssemblyDescriptorProcessRuntimeDescriptor",
+        Table="AssemblyDescriptorAssemblyReferenceDescriptor",
 		Name="AssemblyDescriptorId", 
 		DbDataType="BigInt", 
 		MaxLength="",
@@ -124,38 +124,38 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		}
 	}
 	
-	// start ProcessRuntimeDescriptorId -> ProcessRuntimeDescriptorId
+	// start AssemblyReferenceDescriptorId -> AssemblyReferenceDescriptorId
 	[Bam.Net.Data.ForeignKey(
-        Table="AssemblyDescriptorProcessRuntimeDescriptor",
-		Name="ProcessRuntimeDescriptorId", 
+        Table="AssemblyDescriptorAssemblyReferenceDescriptor",
+		Name="AssemblyReferenceDescriptorId", 
 		DbDataType="BigInt", 
 		MaxLength="",
 		AllowNull=false, 
 		ReferencedKey="Id",
-		ReferencedTable="ProcessRuntimeDescriptor",
+		ReferencedTable="AssemblyReferenceDescriptor",
 		Suffix="2")]
-	public long? ProcessRuntimeDescriptorId
+	public long? AssemblyReferenceDescriptorId
 	{
 		get
 		{
-			return GetLongValue("ProcessRuntimeDescriptorId");
+			return GetLongValue("AssemblyReferenceDescriptorId");
 		}
 		set
 		{
-			SetValue("ProcessRuntimeDescriptorId", value);
+			SetValue("AssemblyReferenceDescriptorId", value);
 		}
 	}
 
-	ProcessRuntimeDescriptor _processRuntimeDescriptorOfProcessRuntimeDescriptorId;
-	public ProcessRuntimeDescriptor ProcessRuntimeDescriptorOfProcessRuntimeDescriptorId
+	AssemblyReferenceDescriptor _assemblyReferenceDescriptorOfAssemblyReferenceDescriptorId;
+	public AssemblyReferenceDescriptor AssemblyReferenceDescriptorOfAssemblyReferenceDescriptorId
 	{
 		get
 		{
-			if(_processRuntimeDescriptorOfProcessRuntimeDescriptorId == null)
+			if(_assemblyReferenceDescriptorOfAssemblyReferenceDescriptorId == null)
 			{
-				_processRuntimeDescriptorOfProcessRuntimeDescriptorId = Bam.Net.CoreServices.AssemblyManagement.Data.Dao.ProcessRuntimeDescriptor.OneWhere(c => c.KeyColumn == this.ProcessRuntimeDescriptorId, this.Database);
+				_assemblyReferenceDescriptorOfAssemblyReferenceDescriptorId = Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptor.OneWhere(c => c.KeyColumn == this.AssemblyReferenceDescriptorId, this.Database);
 			}
-			return _processRuntimeDescriptorOfProcessRuntimeDescriptorId;
+			return _assemblyReferenceDescriptorOfAssemblyReferenceDescriptorId;
 		}
 	}
 	
@@ -176,23 +176,23 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 			}
 			else
 			{
-				var colFilter = new AssemblyDescriptorProcessRuntimeDescriptorColumns();
+				var colFilter = new AssemblyDescriptorAssemblyReferenceDescriptorColumns();
 				return (colFilter.KeyColumn == IdValue);
 			}			
 		}
 
 		/// <summary>
-		/// Return every record in the AssemblyDescriptorProcessRuntimeDescriptor table.
+		/// Return every record in the AssemblyDescriptorAssemblyReferenceDescriptor table.
 		/// </summary>
 		/// <param name="database">
 		/// The database to load from or null
 		/// </param>
-		public static AssemblyDescriptorProcessRuntimeDescriptorCollection LoadAll(Database database = null)
+		public static AssemblyDescriptorAssemblyReferenceDescriptorCollection LoadAll(Database database = null)
 		{
 			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<AssemblyDescriptorProcessRuntimeDescriptor>();
-			Database db = database ?? Db.For<AssemblyDescriptorProcessRuntimeDescriptor>();
-			var results = new AssemblyDescriptorProcessRuntimeDescriptorCollection(db, sql.GetDataTable(db));
+			sql.Select<AssemblyDescriptorAssemblyReferenceDescriptor>();
+			Database db = database ?? Db.For<AssemblyDescriptorAssemblyReferenceDescriptor>();
+			var results = new AssemblyDescriptorAssemblyReferenceDescriptorCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
@@ -201,12 +201,12 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		/// Process all records in batches of the specified size
 		/// </summary>
 		[Bam.Net.Exclude]
-		public static async Task BatchAll(int batchSize, Action<IEnumerable<AssemblyDescriptorProcessRuntimeDescriptor>> batchProcessor, Database database = null)
+		public static async Task BatchAll(int batchSize, Action<IEnumerable<AssemblyDescriptorAssemblyReferenceDescriptor>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
-				AssemblyDescriptorProcessRuntimeDescriptorColumns columns = new AssemblyDescriptorProcessRuntimeDescriptorColumns();
-				var orderBy = Bam.Net.Data.Order.By<AssemblyDescriptorProcessRuntimeDescriptorColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
+				AssemblyDescriptorAssemblyReferenceDescriptorColumns columns = new AssemblyDescriptorAssemblyReferenceDescriptorColumns();
+				var orderBy = Bam.Net.Data.Order.By<AssemblyDescriptorAssemblyReferenceDescriptorColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -224,7 +224,7 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		/// Process results of a query in batches of the specified size
 		/// </summary>			 
 		[Bam.Net.Exclude]
-		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<AssemblyDescriptorProcessRuntimeDescriptor>> batchProcessor, Database database = null)
+		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<AssemblyDescriptorAssemblyReferenceDescriptor>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
@@ -233,12 +233,12 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		/// Process results of a query in batches of the specified size
 		/// </summary>	
 		[Bam.Net.Exclude]
-		public static async Task BatchQuery(int batchSize, WhereDelegate<AssemblyDescriptorProcessRuntimeDescriptorColumns> where, Action<IEnumerable<AssemblyDescriptorProcessRuntimeDescriptor>> batchProcessor, Database database = null)
+		public static async Task BatchQuery(int batchSize, WhereDelegate<AssemblyDescriptorAssemblyReferenceDescriptorColumns> where, Action<IEnumerable<AssemblyDescriptorAssemblyReferenceDescriptor>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
-				AssemblyDescriptorProcessRuntimeDescriptorColumns columns = new AssemblyDescriptorProcessRuntimeDescriptorColumns();
-				var orderBy = Bam.Net.Data.Order.By<AssemblyDescriptorProcessRuntimeDescriptorColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
+				AssemblyDescriptorAssemblyReferenceDescriptorColumns columns = new AssemblyDescriptorAssemblyReferenceDescriptorColumns();
+				var orderBy = Bam.Net.Data.Order.By<AssemblyDescriptorAssemblyReferenceDescriptorColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -247,91 +247,91 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 						batchProcessor(results);
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
-					results = Top(batchSize, (AssemblyDescriptorProcessRuntimeDescriptorColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+					results = Top(batchSize, (AssemblyDescriptorAssemblyReferenceDescriptorColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
 				}
 			});			
 		}
 
-		public static AssemblyDescriptorProcessRuntimeDescriptor GetById(int id, Database database = null)
+		public static AssemblyDescriptorAssemblyReferenceDescriptor GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
-		public static AssemblyDescriptorProcessRuntimeDescriptor GetById(long id, Database database = null)
+		public static AssemblyDescriptorAssemblyReferenceDescriptor GetById(long id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}
 
-		public static AssemblyDescriptorProcessRuntimeDescriptor GetByUuid(string uuid, Database database = null)
+		public static AssemblyDescriptorAssemblyReferenceDescriptor GetByUuid(string uuid, Database database = null)
 		{
 			return OneWhere(c => Bam.Net.Data.Query.Where("Uuid") == uuid, database);
 		}
 
-		public static AssemblyDescriptorProcessRuntimeDescriptor GetByCuid(string cuid, Database database = null)
+		public static AssemblyDescriptorAssemblyReferenceDescriptor GetByCuid(string cuid, Database database = null)
 		{
 			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
 		[Bam.Net.Exclude]
-		public static AssemblyDescriptorProcessRuntimeDescriptorCollection Query(QueryFilter filter, Database database = null)
+		public static AssemblyDescriptorAssemblyReferenceDescriptorCollection Query(QueryFilter filter, Database database = null)
 		{
 			return Where(filter, database);
 		}
 
 		[Bam.Net.Exclude]		
-		public static AssemblyDescriptorProcessRuntimeDescriptorCollection Where(QueryFilter filter, Database database = null)
+		public static AssemblyDescriptorAssemblyReferenceDescriptorCollection Where(QueryFilter filter, Database database = null)
 		{
-			WhereDelegate<AssemblyDescriptorProcessRuntimeDescriptorColumns> whereDelegate = (c) => filter;
+			WhereDelegate<AssemblyDescriptorAssemblyReferenceDescriptorColumns> whereDelegate = (c) => filter;
 			return Where(whereDelegate, database);
 		}
 
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A Func delegate that recieves a AssemblyDescriptorProcessRuntimeDescriptorColumns 
+		/// <param name="where">A Func delegate that recieves a AssemblyDescriptorAssemblyReferenceDescriptorColumns 
 		/// and returns a QueryFilter which is the result of any comparisons
-		/// between AssemblyDescriptorProcessRuntimeDescriptorColumns and other values
+		/// between AssemblyDescriptorAssemblyReferenceDescriptorColumns and other values
 		/// </param>
 		/// <param name="db"></param>
 		[Bam.Net.Exclude]
-		public static AssemblyDescriptorProcessRuntimeDescriptorCollection Where(Func<AssemblyDescriptorProcessRuntimeDescriptorColumns, QueryFilter<AssemblyDescriptorProcessRuntimeDescriptorColumns>> where, OrderBy<AssemblyDescriptorProcessRuntimeDescriptorColumns> orderBy = null, Database database = null)
+		public static AssemblyDescriptorAssemblyReferenceDescriptorCollection Where(Func<AssemblyDescriptorAssemblyReferenceDescriptorColumns, QueryFilter<AssemblyDescriptorAssemblyReferenceDescriptorColumns>> where, OrderBy<AssemblyDescriptorAssemblyReferenceDescriptorColumns> orderBy = null, Database database = null)
 		{
-			database = database ?? Db.For<AssemblyDescriptorProcessRuntimeDescriptor>();
-			return new AssemblyDescriptorProcessRuntimeDescriptorCollection(database.GetQuery<AssemblyDescriptorProcessRuntimeDescriptorColumns, AssemblyDescriptorProcessRuntimeDescriptor>(where, orderBy), true);
+			database = database ?? Db.For<AssemblyDescriptorAssemblyReferenceDescriptor>();
+			return new AssemblyDescriptorAssemblyReferenceDescriptorCollection(database.GetQuery<AssemblyDescriptorAssemblyReferenceDescriptorColumns, AssemblyDescriptorAssemblyReferenceDescriptor>(where, orderBy), true);
 		}
 		
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a AssemblyDescriptorProcessRuntimeDescriptorColumns 
+		/// <param name="where">A WhereDelegate that recieves a AssemblyDescriptorAssemblyReferenceDescriptorColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between AssemblyDescriptorProcessRuntimeDescriptorColumns and other values
+		/// between AssemblyDescriptorAssemblyReferenceDescriptorColumns and other values
 		/// </param>
 		/// <param name="db"></param>
 		[Bam.Net.Exclude]
-		public static AssemblyDescriptorProcessRuntimeDescriptorCollection Where(WhereDelegate<AssemblyDescriptorProcessRuntimeDescriptorColumns> where, Database database = null)
+		public static AssemblyDescriptorAssemblyReferenceDescriptorCollection Where(WhereDelegate<AssemblyDescriptorAssemblyReferenceDescriptorColumns> where, Database database = null)
 		{		
-			database = database ?? Db.For<AssemblyDescriptorProcessRuntimeDescriptor>();
-			var results = new AssemblyDescriptorProcessRuntimeDescriptorCollection(database, database.GetQuery<AssemblyDescriptorProcessRuntimeDescriptorColumns, AssemblyDescriptorProcessRuntimeDescriptor>(where), true);
+			database = database ?? Db.For<AssemblyDescriptorAssemblyReferenceDescriptor>();
+			var results = new AssemblyDescriptorAssemblyReferenceDescriptorCollection(database, database.GetQuery<AssemblyDescriptorAssemblyReferenceDescriptorColumns, AssemblyDescriptorAssemblyReferenceDescriptor>(where), true);
 			return results;
 		}
 		   
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a AssemblyDescriptorProcessRuntimeDescriptorColumns 
+		/// <param name="where">A WhereDelegate that recieves a AssemblyDescriptorAssemblyReferenceDescriptorColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between AssemblyDescriptorProcessRuntimeDescriptorColumns and other values
+		/// between AssemblyDescriptorAssemblyReferenceDescriptorColumns and other values
 		/// </param>
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static AssemblyDescriptorProcessRuntimeDescriptorCollection Where(WhereDelegate<AssemblyDescriptorProcessRuntimeDescriptorColumns> where, OrderBy<AssemblyDescriptorProcessRuntimeDescriptorColumns> orderBy = null, Database database = null)
+		public static AssemblyDescriptorAssemblyReferenceDescriptorCollection Where(WhereDelegate<AssemblyDescriptorAssemblyReferenceDescriptorColumns> where, OrderBy<AssemblyDescriptorAssemblyReferenceDescriptorColumns> orderBy = null, Database database = null)
 		{		
-			database = database ?? Db.For<AssemblyDescriptorProcessRuntimeDescriptor>();
-			var results = new AssemblyDescriptorProcessRuntimeDescriptorCollection(database, database.GetQuery<AssemblyDescriptorProcessRuntimeDescriptorColumns, AssemblyDescriptorProcessRuntimeDescriptor>(where, orderBy), true);
+			database = database ?? Db.For<AssemblyDescriptorAssemblyReferenceDescriptor>();
+			var results = new AssemblyDescriptorAssemblyReferenceDescriptorCollection(database, database.GetQuery<AssemblyDescriptorAssemblyReferenceDescriptorColumns, AssemblyDescriptorAssemblyReferenceDescriptor>(where, orderBy), true);
 			return results;
 		}
 
@@ -339,13 +339,13 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate&lt;AssemblyDescriptorProcessRuntimeDescriptorColumns&gt;.
+		/// WhereDelegate&lt;AssemblyDescriptorAssemblyReferenceDescriptorColumns&gt;.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
-		public static AssemblyDescriptorProcessRuntimeDescriptorCollection Where(QiQuery where, Database database = null)
+		public static AssemblyDescriptorAssemblyReferenceDescriptorCollection Where(QiQuery where, Database database = null)
 		{
-			var results = new AssemblyDescriptorProcessRuntimeDescriptorCollection(database, Select<AssemblyDescriptorProcessRuntimeDescriptorColumns>.From<AssemblyDescriptorProcessRuntimeDescriptor>().Where(where, database));
+			var results = new AssemblyDescriptorAssemblyReferenceDescriptorCollection(database, Select<AssemblyDescriptorAssemblyReferenceDescriptorColumns>.From<AssemblyDescriptorAssemblyReferenceDescriptor>().Where(where, database));
 			return results;
 		}
 				
@@ -355,7 +355,7 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		/// of the specified columns.
 		/// </summary>
 		[Bam.Net.Exclude]
-		public static AssemblyDescriptorProcessRuntimeDescriptor GetOneWhere(QueryFilter where, Database database = null)
+		public static AssemblyDescriptorAssemblyReferenceDescriptor GetOneWhere(QueryFilter where, Database database = null)
 		{
 			var result = OneWhere(where, database);
 			if(result == null)
@@ -374,9 +374,9 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		/// <param name="where"></param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static AssemblyDescriptorProcessRuntimeDescriptor OneWhere(QueryFilter where, Database database = null)
+		public static AssemblyDescriptorAssemblyReferenceDescriptor OneWhere(QueryFilter where, Database database = null)
 		{
-			WhereDelegate<AssemblyDescriptorProcessRuntimeDescriptorColumns> whereDelegate = (c) => where;
+			WhereDelegate<AssemblyDescriptorAssemblyReferenceDescriptorColumns> whereDelegate = (c) => where;
 			var result = Top(1, whereDelegate, database);
 			return OneOrThrow(result);
 		}
@@ -389,12 +389,12 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		/// <param name="where"></param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static AssemblyDescriptorProcessRuntimeDescriptor GetOneWhere(WhereDelegate<AssemblyDescriptorProcessRuntimeDescriptorColumns> where, Database database = null)
+		public static AssemblyDescriptorAssemblyReferenceDescriptor GetOneWhere(WhereDelegate<AssemblyDescriptorAssemblyReferenceDescriptorColumns> where, Database database = null)
 		{
 			var result = OneWhere(where, database);
 			if(result == null)
 			{
-				AssemblyDescriptorProcessRuntimeDescriptorColumns c = new AssemblyDescriptorProcessRuntimeDescriptorColumns();
+				AssemblyDescriptorAssemblyReferenceDescriptorColumns c = new AssemblyDescriptorAssemblyReferenceDescriptorColumns();
 				IQueryFilter filter = where(c); 
 				result = CreateFromFilter(filter, database);
 			}
@@ -406,15 +406,15 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		/// Execute a query that should return only one result.  If more
 		/// than one result is returned a MultipleEntriesFoundException will 
 		/// be thrown.  This method is most commonly used to retrieve a
-		/// single AssemblyDescriptorProcessRuntimeDescriptor instance by its Id/Key value
+		/// single AssemblyDescriptorAssemblyReferenceDescriptor instance by its Id/Key value
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a AssemblyDescriptorProcessRuntimeDescriptorColumns 
+		/// <param name="where">A WhereDelegate that recieves a AssemblyDescriptorAssemblyReferenceDescriptorColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between AssemblyDescriptorProcessRuntimeDescriptorColumns and other values
+		/// between AssemblyDescriptorAssemblyReferenceDescriptorColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static AssemblyDescriptorProcessRuntimeDescriptor OneWhere(WhereDelegate<AssemblyDescriptorProcessRuntimeDescriptorColumns> where, Database database = null)
+		public static AssemblyDescriptorAssemblyReferenceDescriptor OneWhere(WhereDelegate<AssemblyDescriptorAssemblyReferenceDescriptorColumns> where, Database database = null)
 		{
 			var result = Top(1, where, database);
 			return OneOrThrow(result);
@@ -424,11 +424,11 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate<AssemblyDescriptorProcessRuntimeDescriptorColumns>.
+		/// WhereDelegate<AssemblyDescriptorAssemblyReferenceDescriptorColumns>.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
-		public static AssemblyDescriptorProcessRuntimeDescriptor OneWhere(QiQuery where, Database database = null)
+		public static AssemblyDescriptorAssemblyReferenceDescriptor OneWhere(QiQuery where, Database database = null)
 		{
 			var results = Top(1, where, database);
 			return OneOrThrow(results);
@@ -438,13 +438,13 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		/// Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
 		/// specified number of values will be returned.
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a AssemblyDescriptorProcessRuntimeDescriptorColumns 
+		/// <param name="where">A WhereDelegate that recieves a AssemblyDescriptorAssemblyReferenceDescriptorColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between AssemblyDescriptorProcessRuntimeDescriptorColumns and other values
+		/// between AssemblyDescriptorAssemblyReferenceDescriptorColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static AssemblyDescriptorProcessRuntimeDescriptor FirstOneWhere(WhereDelegate<AssemblyDescriptorProcessRuntimeDescriptorColumns> where, Database database = null)
+		public static AssemblyDescriptorAssemblyReferenceDescriptor FirstOneWhere(WhereDelegate<AssemblyDescriptorAssemblyReferenceDescriptorColumns> where, Database database = null)
 		{
 			var results = Top(1, where, database);
 			if(results.Count > 0)
@@ -461,13 +461,13 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		/// Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
 		/// specified number of values will be returned.
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a AssemblyDescriptorProcessRuntimeDescriptorColumns 
+		/// <param name="where">A WhereDelegate that recieves a AssemblyDescriptorAssemblyReferenceDescriptorColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between AssemblyDescriptorProcessRuntimeDescriptorColumns and other values
+		/// between AssemblyDescriptorAssemblyReferenceDescriptorColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static AssemblyDescriptorProcessRuntimeDescriptor FirstOneWhere(WhereDelegate<AssemblyDescriptorProcessRuntimeDescriptorColumns> where, OrderBy<AssemblyDescriptorProcessRuntimeDescriptorColumns> orderBy, Database database = null)
+		public static AssemblyDescriptorAssemblyReferenceDescriptor FirstOneWhere(WhereDelegate<AssemblyDescriptorAssemblyReferenceDescriptorColumns> where, OrderBy<AssemblyDescriptorAssemblyReferenceDescriptorColumns> orderBy, Database database = null)
 		{
 			var results = Top(1, where, orderBy, database);
 			if(results.Count > 0)
@@ -483,15 +483,15 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		/// <summary>
 		/// Shortcut for Top(1, where, orderBy, database)
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a AssemblyDescriptorProcessRuntimeDescriptorColumns 
+		/// <param name="where">A WhereDelegate that recieves a AssemblyDescriptorAssemblyReferenceDescriptorColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between AssemblyDescriptorProcessRuntimeDescriptorColumns and other values
+		/// between AssemblyDescriptorAssemblyReferenceDescriptorColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static AssemblyDescriptorProcessRuntimeDescriptor FirstOneWhere(QueryFilter where, OrderBy<AssemblyDescriptorProcessRuntimeDescriptorColumns> orderBy = null, Database database = null)
+		public static AssemblyDescriptorAssemblyReferenceDescriptor FirstOneWhere(QueryFilter where, OrderBy<AssemblyDescriptorAssemblyReferenceDescriptorColumns> orderBy = null, Database database = null)
 		{
-			WhereDelegate<AssemblyDescriptorProcessRuntimeDescriptorColumns> whereDelegate = (c) => where;
+			WhereDelegate<AssemblyDescriptorAssemblyReferenceDescriptorColumns> whereDelegate = (c) => where;
 			var results = Top(1, whereDelegate, orderBy, database);
 			if(results.Count > 0)
 			{
@@ -512,13 +512,13 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		/// This value is used in the sql query so no more than this 
 		/// number of values will be returned by the database.
 		/// </param>
-		/// <param name="where">A WhereDelegate that recieves a AssemblyDescriptorProcessRuntimeDescriptorColumns 
+		/// <param name="where">A WhereDelegate that recieves a AssemblyDescriptorAssemblyReferenceDescriptorColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between AssemblyDescriptorProcessRuntimeDescriptorColumns and other values
+		/// between AssemblyDescriptorAssemblyReferenceDescriptorColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static AssemblyDescriptorProcessRuntimeDescriptorCollection Top(int count, WhereDelegate<AssemblyDescriptorProcessRuntimeDescriptorColumns> where, Database database = null)
+		public static AssemblyDescriptorAssemblyReferenceDescriptorCollection Top(int count, WhereDelegate<AssemblyDescriptorAssemblyReferenceDescriptorColumns> where, Database database = null)
 		{
 			return Top(count, where, null, database);
 		}
@@ -532,9 +532,9 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		/// This value is used in the sql query so no more than this 
 		/// number of values will be returned by the database.
 		/// </param>
-		/// <param name="where">A WhereDelegate that recieves a AssemblyDescriptorProcessRuntimeDescriptorColumns 
+		/// <param name="where">A WhereDelegate that recieves a AssemblyDescriptorAssemblyReferenceDescriptorColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between AssemblyDescriptorProcessRuntimeDescriptorColumns and other values
+		/// between AssemblyDescriptorAssemblyReferenceDescriptorColumns and other values
 		/// </param>
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
@@ -543,29 +543,29 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		/// Which database to query or null to use the default
 		/// </param>
 		[Bam.Net.Exclude]
-		public static AssemblyDescriptorProcessRuntimeDescriptorCollection Top(int count, WhereDelegate<AssemblyDescriptorProcessRuntimeDescriptorColumns> where, OrderBy<AssemblyDescriptorProcessRuntimeDescriptorColumns> orderBy, Database database = null)
+		public static AssemblyDescriptorAssemblyReferenceDescriptorCollection Top(int count, WhereDelegate<AssemblyDescriptorAssemblyReferenceDescriptorColumns> where, OrderBy<AssemblyDescriptorAssemblyReferenceDescriptorColumns> orderBy, Database database = null)
 		{
-			AssemblyDescriptorProcessRuntimeDescriptorColumns c = new AssemblyDescriptorProcessRuntimeDescriptorColumns();
+			AssemblyDescriptorAssemblyReferenceDescriptorColumns c = new AssemblyDescriptorAssemblyReferenceDescriptorColumns();
 			IQueryFilter filter = where(c);         
 			
-			Database db = database ?? Db.For<AssemblyDescriptorProcessRuntimeDescriptor>();
+			Database db = database ?? Db.For<AssemblyDescriptorAssemblyReferenceDescriptor>();
 			QuerySet query = GetQuerySet(db); 
-			query.Top<AssemblyDescriptorProcessRuntimeDescriptor>(count);
+			query.Top<AssemblyDescriptorAssemblyReferenceDescriptor>(count);
 			query.Where(filter);
 
 			if(orderBy != null)
 			{
-				query.OrderBy<AssemblyDescriptorProcessRuntimeDescriptorColumns>(orderBy);
+				query.OrderBy<AssemblyDescriptorAssemblyReferenceDescriptorColumns>(orderBy);
 			}
 
 			query.Execute(db);
-			var results = query.Results.As<AssemblyDescriptorProcessRuntimeDescriptorCollection>(0);
+			var results = query.Results.As<AssemblyDescriptorAssemblyReferenceDescriptorCollection>(0);
 			results.Database = db;
 			return results;
 		}
 
 		[Bam.Net.Exclude]
-		public static AssemblyDescriptorProcessRuntimeDescriptorCollection Top(int count, QueryFilter where, Database database)
+		public static AssemblyDescriptorAssemblyReferenceDescriptorCollection Top(int count, QueryFilter where, Database database)
 		{
 			return Top(count, where, null, database);
 		}
@@ -589,20 +589,20 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		/// Which database to query or null to use the default
 		/// </param>
 		[Bam.Net.Exclude]
-		public static AssemblyDescriptorProcessRuntimeDescriptorCollection Top(int count, QueryFilter where, OrderBy<AssemblyDescriptorProcessRuntimeDescriptorColumns> orderBy = null, Database database = null)
+		public static AssemblyDescriptorAssemblyReferenceDescriptorCollection Top(int count, QueryFilter where, OrderBy<AssemblyDescriptorAssemblyReferenceDescriptorColumns> orderBy = null, Database database = null)
 		{
-			Database db = database ?? Db.For<AssemblyDescriptorProcessRuntimeDescriptor>();
+			Database db = database ?? Db.For<AssemblyDescriptorAssemblyReferenceDescriptor>();
 			QuerySet query = GetQuerySet(db);
-			query.Top<AssemblyDescriptorProcessRuntimeDescriptor>(count);
+			query.Top<AssemblyDescriptorAssemblyReferenceDescriptor>(count);
 			query.Where(where);
 
 			if(orderBy != null)
 			{
-				query.OrderBy<AssemblyDescriptorProcessRuntimeDescriptorColumns>(orderBy);
+				query.OrderBy<AssemblyDescriptorAssemblyReferenceDescriptorColumns>(orderBy);
 			}
 
 			query.Execute(db);
-			var results = query.Results.As<AssemblyDescriptorProcessRuntimeDescriptorCollection>(0);
+			var results = query.Results.As<AssemblyDescriptorAssemblyReferenceDescriptorCollection>(0);
 			results.Database = db;
 			return results;
 		}
@@ -623,29 +623,29 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		/// <param name="database">
 		/// Which database to query or null to use the default
 		/// </param>
-		public static AssemblyDescriptorProcessRuntimeDescriptorCollection Top(int count, QiQuery where, Database database = null)
+		public static AssemblyDescriptorAssemblyReferenceDescriptorCollection Top(int count, QiQuery where, Database database = null)
 		{
-			Database db = database ?? Db.For<AssemblyDescriptorProcessRuntimeDescriptor>();
+			Database db = database ?? Db.For<AssemblyDescriptorAssemblyReferenceDescriptor>();
 			QuerySet query = GetQuerySet(db);
-			query.Top<AssemblyDescriptorProcessRuntimeDescriptor>(count);
+			query.Top<AssemblyDescriptorAssemblyReferenceDescriptor>(count);
 			query.Where(where);
 			query.Execute(db);
-			var results = query.Results.As<AssemblyDescriptorProcessRuntimeDescriptorCollection>(0);
+			var results = query.Results.As<AssemblyDescriptorAssemblyReferenceDescriptorCollection>(0);
 			results.Database = db;
 			return results;
 		}
 
 		/// <summary>
-		/// Return the count of AssemblyDescriptorProcessRuntimeDescriptors
+		/// Return the count of AssemblyDescriptorAssemblyReferenceDescriptors
 		/// </summary>
 		/// <param name="database">
 		/// Which database to query or null to use the default
 		/// </param>
 		public static long Count(Database database = null)
         {
-			Database db = database ?? Db.For<AssemblyDescriptorProcessRuntimeDescriptor>();
+			Database db = database ?? Db.For<AssemblyDescriptorAssemblyReferenceDescriptor>();
             QuerySet query = GetQuerySet(db);
-            query.Count<AssemblyDescriptorProcessRuntimeDescriptor>();
+            query.Count<AssemblyDescriptorAssemblyReferenceDescriptor>();
             query.Execute(db);
             return (long)query.Results[0].DataRow[0];
         }
@@ -653,22 +653,22 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		/// <summary>
 		/// Execute a query and return the number of results
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a AssemblyDescriptorProcessRuntimeDescriptorColumns 
+		/// <param name="where">A WhereDelegate that recieves a AssemblyDescriptorAssemblyReferenceDescriptorColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between AssemblyDescriptorProcessRuntimeDescriptorColumns and other values
+		/// between AssemblyDescriptorAssemblyReferenceDescriptorColumns and other values
 		/// </param>
 		/// <param name="database">
 		/// Which database to query or null to use the default
 		/// </param>
 		[Bam.Net.Exclude]
-		public static long Count(WhereDelegate<AssemblyDescriptorProcessRuntimeDescriptorColumns> where, Database database = null)
+		public static long Count(WhereDelegate<AssemblyDescriptorAssemblyReferenceDescriptorColumns> where, Database database = null)
 		{
-			AssemblyDescriptorProcessRuntimeDescriptorColumns c = new AssemblyDescriptorProcessRuntimeDescriptorColumns();
+			AssemblyDescriptorAssemblyReferenceDescriptorColumns c = new AssemblyDescriptorAssemblyReferenceDescriptorColumns();
 			IQueryFilter filter = where(c) ;
 
-			Database db = database ?? Db.For<AssemblyDescriptorProcessRuntimeDescriptor>();
+			Database db = database ?? Db.For<AssemblyDescriptorAssemblyReferenceDescriptor>();
 			QuerySet query = GetQuerySet(db);	 
-			query.Count<AssemblyDescriptorProcessRuntimeDescriptor>();
+			query.Count<AssemblyDescriptorAssemblyReferenceDescriptor>();
 			query.Where(filter);	  
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
@@ -676,18 +676,18 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		 
 		public static long Count(QiQuery where, Database database = null)
 		{
-		    Database db = database ?? Db.For<AssemblyDescriptorProcessRuntimeDescriptor>();
+		    Database db = database ?? Db.For<AssemblyDescriptorAssemblyReferenceDescriptor>();
 			QuerySet query = GetQuerySet(db);	 
-			query.Count<AssemblyDescriptorProcessRuntimeDescriptor>();
+			query.Count<AssemblyDescriptorAssemblyReferenceDescriptor>();
 			query.Where(where);	  
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
 		} 		
 
-		private static AssemblyDescriptorProcessRuntimeDescriptor CreateFromFilter(IQueryFilter filter, Database database = null)
+		private static AssemblyDescriptorAssemblyReferenceDescriptor CreateFromFilter(IQueryFilter filter, Database database = null)
 		{
-			Database db = database ?? Db.For<AssemblyDescriptorProcessRuntimeDescriptor>();			
-			var dao = new AssemblyDescriptorProcessRuntimeDescriptor();
+			Database db = database ?? Db.For<AssemblyDescriptorAssemblyReferenceDescriptor>();			
+			var dao = new AssemblyDescriptorAssemblyReferenceDescriptor();
 			filter.Parameters.Each(p=>
 			{
 				dao.Property(p.ColumnName, p.Value);
@@ -696,7 +696,7 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 			return dao;
 		}
 		
-		private static AssemblyDescriptorProcessRuntimeDescriptor OneOrThrow(AssemblyDescriptorProcessRuntimeDescriptorCollection c)
+		private static AssemblyDescriptorAssemblyReferenceDescriptor OneOrThrow(AssemblyDescriptorAssemblyReferenceDescriptorCollection c)
 		{
 			if(c.Count == 1)
 			{

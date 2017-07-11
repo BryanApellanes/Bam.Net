@@ -91,6 +91,12 @@
   <ItemGroup>
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\ApplicationRegistrationContext.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\ApplicationRegistrationRepository.cs" />
+    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorAssemblyReferenceDescriptor.cs" />
+    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorAssemblyReferenceDescriptorCollection.cs" />
+    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorAssemblyReferenceDescriptorColumns.cs" />
+    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorAssemblyReferenceDescriptorPagedQuery.cs" />
+    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorAssemblyReferenceDescriptorQuery.cs" />
+    <Compile Include="AssemblyManagement\Data\Generated_Dao\Qi\AssemblyDescriptorAssemblyReferenceDescriptor.cs" />
     <Compile Include="ClientRegistrationFailedException.cs" />
     <Compile Include="CoreExtensions.cs" />
     <Compile Include="ApplicationRegistration\Data\Client.cs" />
@@ -222,11 +228,6 @@
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorQuery.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorWrapper.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyReferenceDescriptor.cs" />
-    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyReferenceDescriptorAssemblyDescriptor.cs" />
-    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyReferenceDescriptorAssemblyDescriptorCollection.cs" />
-    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyReferenceDescriptorAssemblyDescriptorColumns.cs" />
-    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyReferenceDescriptorAssemblyDescriptorPagedQuery.cs" />
-    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyReferenceDescriptorAssemblyDescriptorQuery.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyReferenceDescriptorCollection.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyReferenceDescriptorColumns.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyReferenceDescriptorPagedQuery.cs" />
@@ -243,7 +244,6 @@
     <Compile Include="AssemblyManagement\Data\Generated_Dao\Qi\AssemblyDescriptor.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\Qi\AssemblyDescriptorProcessRuntimeDescriptor.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\Qi\AssemblyReferenceDescriptor.cs" />
-    <Compile Include="AssemblyManagement\Data\Generated_Dao\Qi\AssemblyReferenceDescriptorAssemblyDescriptor.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\Qi\ProcessRuntimeDescriptor.cs" />
     <Compile Include="AssemblyManagement\Data\ProcessRuntimeDescriptor.cs" />
     <Compile Include="AssemblyManagement\IAssemblyService.cs" />

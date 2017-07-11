@@ -48,7 +48,8 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Wrappers
 
 
 
-// Xref property: Left -> AssemblyReferenceDescriptor ; Right -> AssemblyDescriptor
+
+// Xref property: Left -> AssemblyDescriptor ; Right -> AssemblyReferenceDescriptor
 
 		List<Bam.Net.CoreServices.AssemblyManagement.Data.AssemblyDescriptor> _assemblyDescriptors;
 		public override List<Bam.Net.CoreServices.AssemblyManagement.Data.AssemblyDescriptor> AssemblyDescriptors
@@ -57,7 +58,7 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Wrappers
 			{
 				if(_assemblyDescriptors == null)
 				{
-					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyReferenceDescriptorAssemblyDescriptor,  Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyDescriptor>(Repository.GetDaoInstance(this), false);
+					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyDescriptorAssemblyReferenceDescriptor, Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyDescriptor>(Repository.GetDaoInstance(this), false);
 					 xref.Load(Repository.Database);
 					 _assemblyDescriptors = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.AssemblyManagement.Data.AssemblyDescriptor>().ToList();
 					 SetUpdatedXrefCollectionProperty("AssemblyDescriptors", this.GetType().GetProperty("AssemblyDescriptors"));
@@ -70,7 +71,6 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Wrappers
 				_assemblyDescriptors = value;
 				SetUpdatedXrefCollectionProperty("AssemblyDescriptors", this.GetType().GetProperty("AssemblyDescriptors"));
 			}
-		}
-	}
+		}	}
 	// -- generated
 }																								
