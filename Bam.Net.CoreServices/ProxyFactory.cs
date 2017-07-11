@@ -37,7 +37,7 @@ namespace Bam.Net.CoreServices
             ServiceProvider = serviceProvider ?? Incubator.Default;
             HostNameMunger = (type, hostName) =>
             {
-                ProxySubdomainAttribute attr;
+                ServiceSubdomainAttribute attr;
                 if(type.HasCustomAttributeOfType(out attr))
                 {
                     return $"{attr.Subdomain}.{hostName}";
