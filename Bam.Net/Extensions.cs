@@ -106,6 +106,20 @@ namespace Bam.Net
         }
 
         /// <summary>
+        /// Returns true if the string equals "q", "quit", "exit" or "bye" using a 
+        /// case insensitvie comparison
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool IsExitRequest(this string value)
+        {
+            return value.Equals("q", StringComparison.InvariantCultureIgnoreCase) ||
+                value.Equals("quit", StringComparison.InvariantCultureIgnoreCase) ||
+                value.Equals("exit", StringComparison.InvariantCultureIgnoreCase) ||
+                value.Equals("bye", StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        /// <summary>
         /// If the specified file exists, a new path with 
         /// an underscore and a number appended will be 
         /// returned where the new path does not exist

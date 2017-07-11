@@ -1,19 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Bam.Net.CommandLine;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Data.SQLite;
 using Bam.Net.Logging;
 using Bam.Net.Server;
-using Bam.Net.Services.Distributed.Data;
-using Bam.Net.Services.Files.Data;
-using Bam.Net.Services.Files;
+using Bam.Net.CoreServices.DistributedHashTable.Data;
 using Bam.Net.Testing;
 using Bam.Net.Caching;
 

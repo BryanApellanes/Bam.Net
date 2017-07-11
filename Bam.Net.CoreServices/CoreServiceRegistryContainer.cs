@@ -16,8 +16,13 @@ using Bam.Net.Data.SQLite;
 using Bam.Net.Data;
 using Bam.Net.Translation.Yandex;
 using Bam.Net.Translation;
-using Bam.Net.CoreServices.Data.Dao.Repository;
+using Bam.Net.CoreServices.ApplicationRegistration.Dao.Repository;
 using Bam.Net.ServiceProxy.Secure;
+using Bam.Net.CoreServices.Files;
+using Bam.Net.CoreServices.AssemblyManagement.Data.Dao.Repository;
+using Bam.Net.CoreServices.ServiceRegistration.Data.Dao.Repository;
+using Bam.Net.CoreServices.ServiceRegistration;
+using Bam.Net.CoreServices.OAuth;
 
 namespace Bam.Net.CoreServices
 {
@@ -48,7 +53,7 @@ namespace Bam.Net.CoreServices
             DaoUserResolver userResolver = new DaoUserResolver();
             DaoRoleResolver roleResolver = new DaoRoleResolver();
             SQLiteDatabaseProvider dbProvider = new SQLiteDatabaseProvider(databasesPath, Log.Default);
-            CoreRegistryRepository coreRepo = new CoreRegistryRepository();
+            ApplicationRegistrationRepository coreRepo = new ApplicationRegistrationRepository();
             dbProvider.SetDatabases(coreRepo);
             dbProvider.SetDatabases(userMgr);
             userMgr.Database.TryEnsureSchema(typeof(UserAccounts.Data.User), Log.Default);
@@ -57,6 +62,8 @@ namespace Bam.Net.CoreServices
 
             DaoRoleProvider daoRoleProvider = new DaoRoleProvider(userMgr.Database);
             CoreRoleService coreRoleService = new CoreRoleService(daoRoleProvider, conf);
+            AssemblyServiceRepository assSvcRepo = new AssemblyServiceRepository();
+            assSvcRepo.EnsureDaoAssemblyAndSchema();
 
             CoreConfigurationService configSvc = new CoreConfigurationService(coreRepo, conf, userDatabasesPath);
             CoreApplicationRegistryServiceConfig config = new CoreApplicationRegistryServiceConfig { DatabaseProvider = dbProvider, WorkspacePath = databasesPath, Logger = Log.Default };
@@ -68,7 +75,7 @@ namespace Bam.Net.CoreServices
                 .For<ILogger>().Use(Log.Default)
                 .For<IRepository>().Use(coreRepo)
                 .For<DaoRepository>().Use(coreRepo)
-                .For<CoreRegistryRepository>().Use(coreRepo)
+                .For<ApplicationRegistrationRepository>().Use(coreRepo)
                 .For<AppConf>().Use(conf)
                 .For<IDatabaseProvider>().Use(dbProvider)
                 .For<IUserManager>().Use(userMgr)
@@ -79,14 +86,21 @@ namespace Bam.Net.CoreServices
                 .For<IRoleProvider>().Use(coreRoleService)
                 .For<EmailComposer>().Use(userMgr.EmailComposer)
                 .For<CoreApplicationRegistryServiceConfig>().Use(config)
-                .For<IApplicationNameProvider>().Use<CoreApplicationRegistryService>()
-                .For<CoreApplicationRegistryService>().Use<CoreApplicationRegistryService>()
-                .For<IApiKeyResolver>().Use<CoreApplicationRegistryService>()
+                .For<IApplicationNameProvider>().Use<CoreApplicationRegistrationService>()
+                .For<CoreApplicationRegistrationService>().Use<CoreApplicationRegistrationService>()
+                .For<IApiKeyResolver>().Use<CoreApplicationRegistrationService>()
                 .For<ISmtpSettingsProvider>().Use(userMgr)
                 .For<CoreUserRegistryService>().Use<CoreUserRegistryService>()
-                .For<CoreConfigurationService>().Use(configSvc)                
-                .For<IStorableTypesProvider>().Use<NamespaceRepositoryStorableTypesProvider>()                
-                .For<CoreDiagnosticService>().Use<CoreDiagnosticService>();
+                .For<CoreConfigurationService>().Use(configSvc)
+                .For<IStorableTypesProvider>().Use<NamespaceRepositoryStorableTypesProvider>()
+                .For<CoreDiagnosticService>().Use<CoreDiagnosticService>()
+                .For<CoreFileService>().Use<CoreFileService>()
+                .For<IFileService>().Use<CoreFileService>()
+                .For<AssemblyServiceRepository>().Use(assSvcRepo)
+                .For<IAssemblyService>().Use<AssemblyService>()
+                .For<ServiceRegistryRepository>().Use<ServiceRegistryRepository>()
+                .For<CoreServiceRegistrationService>().Use<CoreServiceRegistrationService>()
+                .For<CoreOAuthService>().Use<CoreOAuthService>();
 
             reg.SetProperties(userMgr);
             userMgr.ServiceProvider = reg;
@@ -101,6 +115,7 @@ namespace Bam.Net.CoreServices
             ServiceProxySystem.RoleResolvers.Clear();
             ServiceProxySystem.UserResolvers.AddResolver(userResolver);
             ServiceProxySystem.RoleResolvers.AddResolver(roleResolver);
+            reg.Name = RegistryName;
             return reg;
         }
     }

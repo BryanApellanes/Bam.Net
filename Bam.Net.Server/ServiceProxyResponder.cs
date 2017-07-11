@@ -230,7 +230,7 @@ namespace Bam.Net.Server
         public void AddCommoneService(Type type, Func<object> instanciator)
         {
             _commonServiceProvider.Set(type, instanciator);
-            OnCommonServiceAdded(type, instanciator());
+            OnCommonServiceAdded(type, instanciator);
         }
         /// <summary>
         /// Add the specified instance as an executor

@@ -10,14 +10,15 @@ using Bam.Net.UserAccounts;
 using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.CoreServices.Services;
 using System.IO;
-using Bam.Net.CoreServices.Data;
+using Bam.Net.CoreServices.ApplicationRegistration;
 using Bam.Net.DaoRef;
 using Bam.Net.CoreServices.ProtoBuf;
 using Bam.Net.Data.Repositories;
 using System.Reflection;
 using Google.Protobuf;
-using Bam.Net.CoreServices.Data.Dao.Repository;
+using Bam.Net.CoreServices.ApplicationRegistration.Dao.Repository;
 using Bam.Net.UserAccounts.Data;
+using Bam.Net.Services.Clients;
 
 namespace Bam.Net.CoreServices.Tests
 {
@@ -92,7 +93,7 @@ namespace Bam.Net.CoreServices.Tests
             ConsoleLogger logger = new ConsoleLogger();
             logger.AddDetails = false;
             logger.StartLoggingThread();
-            CoreRegistryRepository repo = CoreServiceRegistryContainer.GetServiceRegistry().Get<CoreRegistryRepository>();
+            ApplicationRegistrationRepository repo = CoreServiceRegistryContainer.GetServiceRegistry().Get<ApplicationRegistrationRepository>();
             CoreClient client = new CoreClient("TestOrg", "TestApp", $".\\{nameof(RegisterCreatesMachineEntry)}", logger);
             client.LocalCoreRegistryRepository = repo;
             CoreServiceResponse registrationResponse = client.Register();
@@ -110,7 +111,7 @@ namespace Bam.Net.CoreServices.Tests
             const string server  = "localhost";
             const int port = 9100;
             logger.StartLoggingThread();
-            CoreRegistryRepository repo = CoreServiceRegistryContainer.GetServiceRegistry().Get<CoreRegistryRepository>();
+            ApplicationRegistrationRepository repo = CoreServiceRegistryContainer.GetServiceRegistry().Get<ApplicationRegistrationRepository>();
             CoreClient client = new CoreClient("TestOrg", "TestApp", server, port, logger);
             client.LocalCoreRegistryRepository = repo;
             CoreServiceResponse registrationResponse = client.Register();
@@ -140,7 +141,7 @@ namespace Bam.Net.CoreServices.Tests
         [IntegrationTest]
         public void CanSaveMachineInCoreRegistryRepo()
         {
-            CoreRegistryRepository repo = CoreServiceRegistryContainer.GetServiceRegistry().Get<CoreRegistryRepository>();
+            ApplicationRegistrationRepository repo = CoreServiceRegistryContainer.GetServiceRegistry().Get<ApplicationRegistrationRepository>();
             Client test = Client.Of(repo, "test", "test", 80);//Machine.ClientOf(repo, "test", 80);
             test = repo.Save(test);
             Expect.IsTrue(test.Id > 0);
@@ -154,7 +155,7 @@ namespace Bam.Net.CoreServices.Tests
         public void CoreClientCanRegisterAndConnectClient()
         {
             OutLineFormat("This test requires a gloo server to be running on port 9100 of the localhost", ConsoleColor.Yellow);
-            CoreRegistryRepository repo = CoreServiceRegistryContainer.GetServiceRegistry().Get<CoreRegistryRepository>();
+            ApplicationRegistrationRepository repo = CoreServiceRegistryContainer.GetServiceRegistry().Get<ApplicationRegistrationRepository>();
             ConsoleLogger logger = new ConsoleLogger() { AddDetails = false };
             logger.StartLoggingThread();
             CoreClient client = new CoreClient("ThreeHeadz", "CoreServicesTestApp", "localhost", 9100, logger);

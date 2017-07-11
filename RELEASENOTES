@@ -1,6 +1,2 @@
-Version 1.7.0
- -  update Newtonsoft.json (8ee5bfe)
- -  fix target bitness (2ab9892)
- -  fix integration tests (699b653)
- -  fix integration tests (bee1a6e)
- -  Merge pull request #75 from BryanApellanes/dao-gen-fix (72f8a07)
+Version 1.7.1
+ -  Merge pull request #76 from BryanApellanes/next (abd6dc5)

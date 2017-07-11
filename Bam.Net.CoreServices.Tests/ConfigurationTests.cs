@@ -13,8 +13,8 @@ using NSubstitute;
 namespace Bam.Net.CoreServices.Tests
 {
     using System.IO;
-    using Bam.Net.CoreServices.Data;
-    using Bam.Net.CoreServices.Data.Dao.Repository;
+    using Bam.Net.CoreServices.ApplicationRegistration;
+    using Bam.Net.CoreServices.ApplicationRegistration.Dao.Repository;
     using Bam.Net.CoreServices.Services;
     using Net.Data.SQLite;
     using Server;
@@ -186,7 +186,7 @@ namespace Bam.Net.CoreServices.Tests
             string configurationName = $"{testName}_TestConfigName";
             string testUserName = $"{testName}_TestUserName";
             Database userDb = new SQLiteDatabase(testName);
-            CoreRegistryRepository coreRepo = new CoreRegistryRepository();
+            ApplicationRegistrationRepository coreRepo = new ApplicationRegistrationRepository();
             coreRepo.Database = new SQLiteDatabase($"{testName}_coredb");
             userDb.TryEnsureSchema<UserAccounts.Data.User>();
             Db.For<UserAccounts.Data.User>(userDb);

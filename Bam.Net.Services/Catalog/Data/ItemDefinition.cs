@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Bam.Net.Data.Repositories;
-using Bam.Net.Services.Distributed.Data;
+using Bam.Net.CoreServices.DistributedHashTable.Data;
 
 namespace Bam.Net.Services.Catalog.Data
 {

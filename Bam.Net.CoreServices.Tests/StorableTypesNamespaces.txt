@@ -1,1 +1,1 @@
-﻿Bam.Net.CoreServices.Data
+﻿Bam.Net.CoreServices.ApplicationRegistration

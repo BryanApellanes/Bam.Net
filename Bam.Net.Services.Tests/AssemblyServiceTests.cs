@@ -11,16 +11,17 @@ using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Data.SQLite;
 using Bam.Net.Logging;
-using Bam.Net.Services.AssemblyManagement.Data;
-using Dao = Bam.Net.Services.AssemblyManagement.Data.Dao;
-using Bam.Net.Services.AssemblyManagement.Data.Dao.Repository;
+using Bam.Net.CoreServices.AssemblyManagement.Data;
+using Dao = Bam.Net.CoreServices.AssemblyManagement.Data.Dao;
+using Bam.Net.CoreServices.AssemblyManagement.Data.Dao.Repository;
 using Bam.Net.Testing;
-using Bam.Net.Services.AssemblyManagement;
-using Bam.Net.Services.Files;
+using Bam.Net.CoreServices.AssemblyManagement;
+using Bam.Net.CoreServices.Files;
 using Bam.Net.Configuration;
-using Bam.Net.Services.Distributed.Data;
+using Bam.Net.CoreServices.DistributedHashTable.Data;
 using Bam.Net.Testing.Integration;
-using Bam.Net.Services.Files.Data;
+using Bam.Net.CoreServices.Files.Data;
+using Bam.Net.CoreServices;
 
 namespace Bam.Net.Services.Tests
 {
@@ -51,7 +52,7 @@ namespace Bam.Net.Services.Tests
             AssemblyName[] assNames = current.GetReferencedAssemblies().Where(AssemblyDescriptor.AssemblyNameFilter).ToArray();
             AssemblyDescriptor descriptor = new AssemblyDescriptor(current);
             Expect.IsTrue(assNames.Length > 0);
-            Expect.AreEqual(assNames.Length, descriptor.AssemblyReferenceDescriptors.Length);
+            Expect.AreEqual(assNames.Length, descriptor.AssemblyReferenceDescriptors.Count);
         }
 
         [UnitTest]
@@ -59,11 +60,11 @@ namespace Bam.Net.Services.Tests
         {
             DaoRepository daoRepo = GetAssemblyManagementRepository(GetConsoleLogger());
             AssemblyDescriptor descriptor = new AssemblyDescriptor(Assembly.GetExecutingAssembly());
-            Expect.IsTrue(descriptor.AssemblyReferenceDescriptors.Length > 0, "No references found");
+            Expect.IsTrue(descriptor.AssemblyReferenceDescriptors.Count > 0, "No references found");
             AssemblyDescriptor saved = daoRepo.Save(descriptor);
-            Expect.AreEqual(descriptor.AssemblyReferenceDescriptors.Length, saved.AssemblyReferenceDescriptors.Length, "Saved references didn't match");
+            Expect.AreEqual(descriptor.AssemblyReferenceDescriptors?.Count, saved.AssemblyReferenceDescriptors?.Count, "Saved references didn't match");
             AssemblyDescriptor retrieved = daoRepo.Retrieve<AssemblyDescriptor>(descriptor.Uuid);
-            Expect.AreEqual(descriptor.AssemblyReferenceDescriptors.Length, saved.AssemblyReferenceDescriptors.Length, "Retrieved references didn't match");
+            Expect.AreEqual(descriptor.AssemblyReferenceDescriptors?.Count, saved.AssemblyReferenceDescriptors?.Count, "Retrieved references didn't match");
         }
 
         [UnitTest]
@@ -84,14 +85,14 @@ namespace Bam.Net.Services.Tests
                 OutputInfo(saved);
 
                 Expect.AreEqual(descriptor.AssemblyFullName, saved.AssemblyFullName, "AssemlbyFullName didn't match");
-                Expect.AreEqual(descriptor.AssemblyReferenceDescriptors.Length, saved.AssemblyReferenceDescriptors.Length, "AssemblyReferenceDescriptors count didn't match");
+                Expect.AreEqual(descriptor.AssemblyReferenceDescriptors?.Count, saved.AssemblyReferenceDescriptors?.Count, "AssemblyReferenceDescriptors count didn't match");
 
                 AssemblyDescriptor retrieved = daoRepo.Retrieve<AssemblyDescriptor>(saved.Uuid);
                 OutLine("Retrieved after save", ConsoleColor.DarkGreen);
                 OutputInfo(saved);
 
                 Expect.AreEqual(descriptor.AssemblyFullName, retrieved.AssemblyFullName, "AssemlbyFullName didn't match");
-                Expect.AreEqual(descriptor.AssemblyReferenceDescriptors.Length, retrieved.AssemblyReferenceDescriptors.Length, "AssemblyReferenceDescriptors count didn't match");
+                Expect.AreEqual(descriptor.AssemblyReferenceDescriptors?.Count, retrieved.AssemblyReferenceDescriptors?.Count, "AssemblyReferenceDescriptors count didn't match");
             }
         }
 
@@ -139,12 +140,12 @@ namespace Bam.Net.Services.Tests
             {
                 foreach (AssemblyDescriptor descriptor in descriptors)
                 {
-                    int referenceCount = descriptor.AssemblyReferenceDescriptors.Length;
+                    int? referenceCount = descriptor.AssemblyReferenceDescriptors?.Count;
                     if (referenceCount > 0)
                     {
                         AssemblyDescriptor wrapped = repo.Save(descriptor);
                         AssemblyDescriptor retrieved = repo.Retrieve<AssemblyDescriptor>(wrapped.Id);
-                        Expect.AreEqual(referenceCount, retrieved.AssemblyReferenceDescriptors.Length);
+                        Expect.AreEqual(referenceCount, retrieved.AssemblyReferenceDescriptors?.Count);
                         Pass(descriptor.AssemblyFullName);
                     }
                     else
@@ -180,7 +181,7 @@ namespace Bam.Net.Services.Tests
                     d.AssemblyFullName.Equals(retrievedDescriptor.AssemblyFullName)
                 );
                 
-                Expect.AreEqual(actual.AssemblyReferenceDescriptors.Length, retrievedDescriptor.AssemblyReferenceDescriptors.Length);
+                Expect.AreEqual(actual.AssemblyReferenceDescriptors?.Count, retrievedDescriptor.AssemblyReferenceDescriptors?.Count);
                 OutLineFormat("ProcessRuntimeDescriptors count {0}", retrievedDescriptor.ProcessRuntimeDescriptor.Count);
             }
         }
@@ -197,7 +198,7 @@ namespace Bam.Net.Services.Tests
                 typeof(ChunkDataDescriptor),
                 typeof(ChunkData));
             fileRepo.EnsureDaoAssemblyAndSchema();
-            FileService fmSvc = new FileService(fileRepo);
+            CoreFileService fmSvc = new CoreFileService(fileRepo);
 
             AssemblyService svc = new AssemblyService(fmSvc, assManRepo, DefaultConfigurationApplicationNameProvider.Instance);
             ProcessRuntimeDescriptor prd1 = svc.CurrentProcessRuntimeDescriptor;
@@ -225,7 +226,7 @@ namespace Bam.Net.Services.Tests
         {
             OutLineFormat("Name: {0}", ConsoleColor.Cyan, descriptor.AssemblyFullName);
             OutLineFormat("Hash: {0}", ConsoleColor.DarkCyan, descriptor.FileHash);
-            OutLineFormat("\tReference count: {0}", ConsoleColor.Blue, descriptor.AssemblyReferenceDescriptors.Length);
+            OutLineFormat("\tReference count: {0}", ConsoleColor.Blue, descriptor.AssemblyReferenceDescriptors?.Count);
             OutLine();
         }
 

@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Bam.Net.CoreServices.Data;
+using Bam.Net.CoreServices.ApplicationRegistration;
 using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Logging;

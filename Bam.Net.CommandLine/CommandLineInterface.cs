@@ -197,25 +197,25 @@ namespace Bam.Net.CommandLine
             Out(message, color);
             if (allowQuit)
             {
-                Console.WriteLine(" [q]");
+                OutLine(" [q] ");
             }
             else
             {
-                Console.WriteLine();
+                OutLine();
             }
 
             string answer = Console.ReadLine().Trim().ToLower();
-            if (answer.Equals("y"))
+            if (answer.IsAffirmative())
             {
                 return true;
             }
 
-            if (answer.Equals("n"))
+            if (answer.IsNegative())
             {
                 return false;
             }
 
-            if (allowQuit && answer.Equals("q"))
+            if (allowQuit && answer.IsExitRequest())
             {
                 Environment.Exit(0);
             }
@@ -564,6 +564,9 @@ File Version: {1}
             }
         }
 
+        /// <summary>
+        /// Writes a newline character to the console using Console.WriteLine()
+        /// </summary>
         public static void OutLine()
         {
             Out();

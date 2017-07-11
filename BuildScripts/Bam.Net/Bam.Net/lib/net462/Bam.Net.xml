@@ -1883,6 +1883,14 @@
             <param name="value"></param>
             <returns></returns>
         </member>
+        <member name="M:Bam.Net.Extensions.IsExitRequest(System.String)">
+            <summary>
+            Returns true if the string equals "q", "quit", "exit" or "bye" using a 
+            case insensitvie comparison
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
         <member name="M:Bam.Net.Extensions.GetNextFileName(System.String)">
             <summary>
             If the specified file exists, a new path with 

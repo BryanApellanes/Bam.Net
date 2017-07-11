@@ -1,25 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Bam.Net.Configuration;
 using Bam.Net.CoreServices;
 using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Data.SQLite;
 using Bam.Net.ServiceProxy;
-using Bam.Net.Services.AssemblyManagement.Data.Dao;
-using Bam.Net.Services.AssemblyManagement.Data.Dao.Repository;
-using Bam.Net.Services.Files;
-using Bam.Net.Services.ServiceRegistry.Data;
-using Bam.Net.Services.ServiceRegistry.Data.Dao.Repository;
 using Bam.Net.Testing;
 using Bam.Net.Incubation;
 using Bam.Net.Logging;
 using Bam.Net.CommandLine;
-using NSubstitute;
+using Bam.Net.CoreServices.ServiceRegistration;
+using Bam.Net.CoreServices.Files;
+using Bam.Net.CoreServices.AssemblyManagement.Data.Dao.Repository;
+using Bam.Net.CoreServices.AssemblyManagement.Data.Dao;
+using Bam.Net.CoreServices.ServiceRegistration.Data.Dao;
+using Bam.Net.CoreServices.ServiceRegistration.Data.Dao.Repository;
 
 namespace Bam.Net.Services.Tests
 {
@@ -70,7 +67,7 @@ namespace Bam.Net.Services.Tests
         [UnitTest]
         public void CanRegisterContainer()
         {
-            ServiceRegistryService svc = GetServiceRegistryService(nameof(ServiceRegistryLoaderTest));
+            CoreServiceRegistrationService svc = GetServiceRegistrationService(nameof(ServiceRegistryLoaderTest));
             List<RegisterServiceRegistryContainerResult> results = svc.RegisterServiceRegistryContainers(Assembly.GetExecutingAssembly());
             Expect.AreEqual(1, results.Count);
             CoreServices.ServiceRegistry registry = svc.GetServiceRegistry(results[0].Name);
@@ -82,7 +79,7 @@ namespace Bam.Net.Services.Tests
         [UnitTest]
         public void ServiceRegistryLoaderTest()
         {
-            ServiceRegistryService svc = GetServiceRegistryService(nameof(ServiceRegistryLoaderTest));
+            CoreServiceRegistrationService svc = GetServiceRegistrationService(nameof(ServiceRegistryLoaderTest));
             string name = nameof(ServiceRegistryLoaderTest);
             svc.RegisterServiceRegistryLoader(name, typeof(TestServiceRegistryContainer).GetMethod("Create"), true);
 
@@ -94,15 +91,15 @@ namespace Bam.Net.Services.Tests
             Expect.IsObjectOfType<ConsoleLogger>(value.Logger);
         }
 
-        private ServiceRegistryService GetServiceRegistryService(string databaseName)
+        private CoreServiceRegistrationService GetServiceRegistrationService(string databaseName)
         {
             Database db = GetDatabase(databaseName);
-            return new ServiceRegistryService(GetAssemblyService(db), GetServiceRegistryRepository(db), GetDaoRepository(db), new Server.AppConf());
+            return new CoreServiceRegistrationService(GetAssemblyService(db), GetServiceRegistryRepository(db), GetDaoRepository(db), new Server.AppConf());
         }
 
         private AssemblyService GetAssemblyService(Database db)
         {
-            FileService fmSvc = new FileService(GetDaoRepository(db));
+            CoreFileService fmSvc = new CoreFileService(GetDaoRepository(db));
             AssemblyServiceRepository assManRepo = new AssemblyServiceRepository() { Database = db };
             return new AssemblyService(fmSvc, assManRepo, DefaultConfigurationApplicationNameProvider.Instance);
         }
@@ -111,7 +108,7 @@ namespace Bam.Net.Services.Tests
         {
             SQLiteDatabase db = new SQLiteDatabase(".\\", databaseName);
             db.TryEnsureSchema<AssemblyDescriptor>();
-            db.TryEnsureSchema<ServiceRegistry.Data.Dao.ServiceDescriptor>();
+            db.TryEnsureSchema<ServiceDescriptor>();
             return db;
         }
 
@@ -120,9 +117,9 @@ namespace Bam.Net.Services.Tests
             return new ServiceRegistryRepository() { Database = db };
         }
 
-        private FileService GetFileService(Database db)
+        private CoreFileService GetFileService(Database db)
         {
-            return new FileService(GetDaoRepository(db));
+            return new CoreFileService(GetDaoRepository(db));
         }
 
         private DaoRepository GetDaoRepository(Database db)

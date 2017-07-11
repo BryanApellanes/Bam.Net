@@ -95,6 +95,11 @@
             specified on the command line.
             </summary>
         </member>
+        <member name="M:Bam.Net.CommandLine.CommandLineInterface.OutLine">
+            <summary>
+            Writes a newline character to the console using Console.WriteLine()
+            </summary>
+        </member>
         <member name="M:Bam.Net.CommandLine.CommandLineInterface.Out">
             <summary>
             Writes a newline character to the console using Console.WriteLine()
