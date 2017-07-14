@@ -11,13 +11,13 @@ namespace Bam.Net.Services
 {
     public class ServiceProxyServer : SimpleServer<ServiceProxyResponder>
     {
-        public ServiceProxyServer(CoreServices.ServiceRegistry serviceRegistry, ServiceProxyResponder responder, ILogger logger) : base(responder, logger)
+        public ServiceProxyServer(ServiceRegistry serviceRegistry, ServiceProxyResponder responder, ILogger logger) : base(responder, logger)
         {
+            ServiceSubdomains = new HashSet<ServiceSubdomainAttribute>();
             RegisterServices(serviceRegistry);
         }
 
-        protected CoreServices.ServiceRegistry ServiceRegistry { get; set; }
-        public void RegisterServices(CoreServices.ServiceRegistry serviceRegistry)
+        public void RegisterServices(ServiceRegistry serviceRegistry)
         {
             ServiceRegistry = serviceRegistry;
             Responder.ClearCommonServices();
@@ -25,9 +25,30 @@ namespace Bam.Net.Services
             ServiceRegistry.MappedTypes.Where(t => t.HasCustomAttributeOfType<ProxyAttribute>()).Each(t => AddService(t));
         }
 
+        public override void Start()
+        {
+            HostPrefix[] copy = new HostPrefix[HostPrefixes.Count];
+            HostPrefixes.CopyTo(copy);
+            ServiceSubdomains.Each(sub =>
+            {
+                copy.Each(hp =>
+                {
+                    HostPrefixes.Add(sub.ToHostPrefix(hp));
+                });
+            });
+            base.Start();
+        }
+
         public void AddService(Type serviceType)
         {
             Responder.AddCommoneService(serviceType, () => ServiceRegistry.Get(serviceType));
+            if(serviceType.HasCustomAttributeOfType(out ServiceSubdomainAttribute attr))
+            {
+                ServiceSubdomains.Add(attr);
+            }
         }
+
+        public HashSet<ServiceSubdomainAttribute> ServiceSubdomains { get; set; }
+        protected ServiceRegistry ServiceRegistry { get; set; }
     }
 }

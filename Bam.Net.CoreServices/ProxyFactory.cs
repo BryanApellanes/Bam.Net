@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using Bam.Net.Logging;
 using Bam.Net.Incubation;
+using Bam.Net.Server;
 
 namespace Bam.Net.CoreServices
 {
@@ -37,8 +38,7 @@ namespace Bam.Net.CoreServices
             ServiceProvider = serviceProvider ?? Incubator.Default;
             HostNameMunger = (type, hostName) =>
             {
-                ServiceSubdomainAttribute attr;
-                if(type.HasCustomAttributeOfType(out attr))
+                if (type.HasCustomAttributeOfType(out ServiceSubdomainAttribute attr))
                 {
                     return $"{attr.Subdomain}.{hostName}";
                 }
