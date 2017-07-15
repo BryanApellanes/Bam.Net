@@ -17,6 +17,11 @@ namespace Bam.Net.Services.Tests
     [Serializable]
     public class AsyncProxyableServiceTests : CommandLineTestInterface
     {
+        static AsyncProxyableServiceTests()
+        {
+            AppDomain.CurrentDomain.DomainUnload += (o, a) => StopServers();
+        }
+
         [UnitTest]
         public void ShouldBeAbleToUseInvokeAsync()
         {
@@ -45,7 +50,7 @@ namespace Bam.Net.Services.Tests
             AutoResetEvent blocker = new AutoResetEvent(false);
             string value = "this is a value: ".RandomString(8);
             Task<string> task = testObj.InvokeAsync<string>("Send", value);
-            task.Wait(1000 * 60 * 30);
+            task.Wait(1000 * 60 * 3);
 
             StopServers();
             Expect.AreEqual(value, task.Result);
@@ -59,7 +64,7 @@ namespace Bam.Net.Services.Tests
             AutoResetEvent blocker = new AutoResetEvent(false);
             string value = "this is a value";
             Task<string> task = testObj.InvokeAsync<string>("Send", value);
-            task.Wait(1000 * 60 * 30);
+            task.Wait(1000 * 60 * 3);
 
             StopServers();
             Expect.AreEqual(value, task.Result);

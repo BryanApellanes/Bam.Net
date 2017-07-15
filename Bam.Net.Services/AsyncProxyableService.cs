@@ -133,6 +133,10 @@ namespace Bam.Net.Services
                 }
                 else
                 {
+                    if (response != null)
+                    {
+                        CallbackService.AsyncCallbackRepository.Delete(response);
+                    }
                     CallExecuteRemoteAsync(request, responseHandler);
                 }
             }
