@@ -703,6 +703,13 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:Bam.Net.Server.ServiceSubdomainAttribute">
+            <summary>
+            Used to specify the subdomain 
+            a class should be served from when resolving
+            hostname for a service
+            </summary>
+        </member>
         <member name="P:Bam.Net.Server.SimpleServer`1.HostPrefixes">
             <summary>
             An array of hosts that this server will respond to
@@ -1001,6 +1008,15 @@
             this responder is last in line.
             </summary>
             <param name="context"></param>
+        </member>
+        <member name="P:Bam.Net.Server.HttpServer.Usurped">
+            <summary>
+            If true will attempt to stop
+            other HttpServers that are listening on 
+            the same port and hostname as what
+            the current HttpServer is configured for
+            when it is started
+            </summary>
         </member>
         <member name="E:Bam.Net.Server.ResponderBase.Responded">
             <summary>

@@ -638,7 +638,7 @@
             Instantiates a new instance of T and calls SetDataTable passing
             in the DataTable from the current instance
             </summary>
-            <typeparam name="T"></typeparam>
+            <typeparam name="To"></typeparam>
             <returns></returns>
         </member>
         <member name="M:Bam.Net.Data.DaoCollection`2.Reload">

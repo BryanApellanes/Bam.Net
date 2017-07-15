@@ -1133,13 +1133,6 @@
             <param name="thread"></param>
             <returns></returns>
         </member>
-        <member name="T:Bam.Net.ProxySubdomainAttribute">
-            <summary>
-            Used to specify the subdomain 
-            a class should be served from when resolving
-            hostname for a service
-            </summary>
-        </member>
         <member name="P:Bam.Net.Razor.RazorBaseTemplate.DefaultInspector">
             <summary>
             The default Action that will be given razor parse results; primarily for

@@ -1,9 +1,2 @@
 
- -   correct AssemblyDescriptor reference handling (58fed76)
- -   update project file to remove duplicate SchemasAttribute (7e538ec)
- -   delete duplicate SchemasAttribute (f894b01)
- -   refactor/reorganize (027240f)
- -   fix NullReference and make method local (623020b)
- -   refactor services->coreservices (6c6c51c)
- -   add services to CoreServicesRegistryContainer (0782660)
- -   move services from services to coreservices (f354fab)
+ -   rename proxy vars (a10685e)
