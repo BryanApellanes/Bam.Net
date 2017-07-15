@@ -433,10 +433,10 @@ namespace Bam.Net.Data
 
         public virtual void CommentFormat(string format, params object[] args)
         {
-            CommentFormat(string.Format(format, args));
+            Comment(string.Format(format, args));
         }
 
-        public virtual void CommentFormat(string comment)
+        public virtual void Comment(string comment)
         {
             StringBuilder.AppendLine($"\r\n-- {comment.Replace("\r", "").Replace("\n", "").Trim()}");
         }
