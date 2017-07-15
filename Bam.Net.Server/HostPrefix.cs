@@ -43,5 +43,10 @@ namespace Bam.Net.Server
             }
             return base.Equals(obj);
         }
+
+        public override int GetHashCode()
+        {
+            return ToString().ToSha1Int();
+        }
     }
 }

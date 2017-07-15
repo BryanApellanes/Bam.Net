@@ -19,14 +19,17 @@ namespace Bam.Net.Server
             Logger = logger;
             CreatedOrChangedHandler = (o, a) => { };
             RenamedHandler = (o, a) => { };
-            HostPrefixes = new HostPrefix[] { new HostPrefix { Port = 8080, HostName = "localhost", Ssl = false } };
+            HostPrefixes = new HashSet<HostPrefix>
+            {
+                new HostPrefix { Port = 8080, HostName = "localhost", Ssl = false }
+            };
             MonitorDirectories = new string[] { Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) };
         }
 
         /// <summary>
         /// An array of hosts that this server will respond to
         /// </summary>
-        public HostPrefix[] HostPrefixes { get; set; }
+        public HashSet<HostPrefix> HostPrefixes { get; set; }
         
         /// <summary>
         /// The responder
@@ -60,7 +63,7 @@ namespace Bam.Net.Server
             Logger.RestartLoggingThread();
             this.FileSystemWatchers = new List<FileSystemWatcher>();
             this.WireEventHandlers();
-            _server.Start(HostPrefixes);
+            _server.Start(HostPrefixes.ToArray());
         }
         public virtual void Stop()
         {

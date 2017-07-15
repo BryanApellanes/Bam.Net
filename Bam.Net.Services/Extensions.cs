@@ -40,10 +40,8 @@ namespace Bam.Net.Services
             conf = conf ?? BamConf.Load(ServiceConfig.ContentRoot);
             logger = logger ?? Log.Default;
 
-            ServiceProxyServer server = new ServiceProxyServer(registry, new ServiceProxyResponder(conf, logger), logger)
-            {
-                HostPrefixes = hostPrefixes
-            };
+            ServiceProxyServer server = new ServiceProxyServer(registry, new ServiceProxyResponder(conf, logger), logger);
+            hostPrefixes.Each(hp => server.HostPrefixes.Add(hp));
             server.Start();
             return server;
         }

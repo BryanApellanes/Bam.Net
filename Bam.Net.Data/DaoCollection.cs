@@ -138,15 +138,15 @@ namespace Bam.Net.Data
         /// Instantiates a new instance of T and calls SetDataTable passing
         /// in the DataTable from the current instance
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="To"></typeparam>
         /// <returns></returns>
-        public T As<T>() where T : IHasDataTable, new()
+        public To As<To>() where To : IHasDataTable, new()
         {
-            T val = new T();
+            To val = new To();
             val.SetDataTable(this.DataTable);
             return val;
         }
-		
+
         public bool Loaded
         {
             get;

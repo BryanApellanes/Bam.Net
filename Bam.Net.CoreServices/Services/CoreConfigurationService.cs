@@ -16,7 +16,7 @@ namespace Bam.Net.CoreServices
     using Server;
     using ServiceProxySecure = ServiceProxy.Secure;
 
-    [Proxy("coreConfigSvc")]
+    [Proxy("configSvc")]
     [ServiceProxySecure.ApiKeyRequired]
     public class CoreConfigurationService : CoreProxyableService
     {

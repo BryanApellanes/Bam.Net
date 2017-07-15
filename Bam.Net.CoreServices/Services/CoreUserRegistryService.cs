@@ -11,7 +11,7 @@ using Bam.Net.UserAccounts.Data;
 
 namespace Bam.Net.CoreServices
 {
-    [Proxy("coreUsers")]
+    [Proxy("userRegistrySvc")]
     [Encrypt]
     public class CoreUserRegistryService: CoreProxyableService, IUserManager, IUserResolver, IRoleResolver
     {

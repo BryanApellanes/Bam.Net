@@ -2,37 +2,30 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.CoreServices</id>
-    <version>1.7.1</version>
+    <version>1.7.2</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>http://bryanapellanes.github.io/Bam.Net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Tools for distributed application services</description>
-    <releaseNotes>Version 1.7.1
- -   correct AssemblyDescriptor reference handling (58fed76)
- -   update project file to remove duplicate SchemasAttribute (7e538ec)
- -   delete duplicate SchemasAttribute (f894b01)
- -   refactor/reorganize (027240f)
- -   fix NullReference and make method local (623020b)
- -   refactor services-&gt;coreservices (6c6c51c)
- -   add services to CoreServicesRegistryContainer (0782660)
- -   move services from services to coreservices (f354fab)
+    <releaseNotes>Version 1.7.2
+ -   rename proxy vars (a10685e)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2017</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.7.1" />
-      <dependency id="Bam.Net.Data" version="1.7.1" />
-      <dependency id="Bam.Net.Data.Repositories" version="1.7.1" />
-      <dependency id="Bam.Net.Distributed" version="1.7.1" />
-      <dependency id="Bam.Net.Documentation" version="1.7.1" />
-      <dependency id="Bam.Net.Encryption" version="1.7.1" />
-      <dependency id="Bam.Net.Incubation" version="1.7.1" />
-      <dependency id="Bam.Net.Logging" version="1.7.1" />
-      <dependency id="Bam.Net.Messaging" version="1.7.1" />
-      <dependency id="Bam.Net.Server" version="1.7.1" />
-      <dependency id="Bam.Net.ServiceProxy" version="1.7.1" />
-      <dependency id="Bam.Net.UserAccounts" version="1.7.1" />
+      <dependency id="Bam.Net" version="1.7.2" />
+      <dependency id="Bam.Net.Data" version="1.7.2" />
+      <dependency id="Bam.Net.Data.Repositories" version="1.7.2" />
+      <dependency id="Bam.Net.Distributed" version="1.7.2" />
+      <dependency id="Bam.Net.Documentation" version="1.7.2" />
+      <dependency id="Bam.Net.Encryption" version="1.7.2" />
+      <dependency id="Bam.Net.Incubation" version="1.7.2" />
+      <dependency id="Bam.Net.Logging" version="1.7.2" />
+      <dependency id="Bam.Net.Messaging" version="1.7.2" />
+      <dependency id="Bam.Net.Server" version="1.7.2" />
+      <dependency id="Bam.Net.ServiceProxy" version="1.7.2" />
+      <dependency id="Bam.Net.UserAccounts" version="1.7.2" />
     </dependencies>
   </metadata>
 </package>
