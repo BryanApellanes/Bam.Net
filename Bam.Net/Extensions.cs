@@ -2587,7 +2587,7 @@ namespace Bam.Net
 
         /// <summary>
         /// Set the value for the specified key in the dictionary in a way that won't 
-        /// throw an exception if the value key isn't already there
+        /// throw an exception if the key isn't already there
         /// </summary>
         /// <typeparam name="TKey"></typeparam>
         /// <typeparam name="TValue"></typeparam>

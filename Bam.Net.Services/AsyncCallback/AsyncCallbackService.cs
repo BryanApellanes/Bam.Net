@@ -22,7 +22,7 @@ namespace Bam.Net.Services
     [Encrypt]
     public class AsyncCallbackService: ProxyableService
     {
-        Dictionary<string, Action<AsyncExecutionResponse>> _pendingRequests;
+        ConcurrentDictionary<string, Action<AsyncExecutionResponse>> _pendingRequests;
         ServiceProxyServer _server;
         object _serverLock = new object();
 
@@ -32,7 +32,7 @@ namespace Bam.Net.Services
         {
             HostPrefix = new HostPrefix { HostName = Machine.Current.DnsName, Port = RandomNumber.Between(49152, 65535) };                 
             AsyncCallbackRepository = repo;
-            _pendingRequests = new Dictionary<string, Action<AsyncExecutionResponse>>();
+            _pendingRequests = new ConcurrentDictionary<string, Action<AsyncExecutionResponse>>();
         }
 
         public override object Clone()
@@ -48,6 +48,7 @@ namespace Bam.Net.Services
 
         public AsyncCallbackRepository AsyncCallbackRepository { get; set; }
 
+        public event EventHandler AddPendingFailed;
         [Local]
         public void RegisterPendingAsyncExecutionRequest(AsyncExecutionRequest request, Action<AsyncExecutionResponse> handler)
         {
@@ -61,32 +62,42 @@ namespace Bam.Net.Services
                 }
             }
             SaveExecutionRequestData(request);
-            _pendingRequests.Set(request.Cuid, handler);
+            if(!_pendingRequests.TryAdd(request.Cuid, handler))
+            {
+                Logger.Warning("Failed to register pending request: {0}", request.PropertiesToString());
+                FireEvent(AddPendingFailed, new AsyncExecutionRequestEventArgs { Request = request });
+            }
         }
 
-        object _popLock = new object();
-        public virtual void RecieveAsyncExecutionResponse(AsyncExecutionResponse result) // called by the server side to send responses
+        /// <summary>
+        /// The event that occurs when a pending request
+        /// handler action fails to be removed from the pending
+        /// dictionary or request handlers
+        /// </summary>
+        public event EventHandler RemovePendingFailed;
+        public virtual void RecieveAsyncExecutionResponse(AsyncExecutionResponse response) // called by the server side to send responses
         {
-            Args.ThrowIfNull(result, "result");
-            Args.ThrowIfNull(result.Request, "result.Request");
-            string cuid = result.Request.Cuid;
+            Args.ThrowIfNull(response, "result");
+            Args.ThrowIfNull(response.Request, "result.Request");
+            string cuid = response.Request.Cuid;
             Action<AsyncExecutionResponse> action = ((r) => { });
-            lock (_popLock)
+
+            if (_pendingRequests.ContainsKey(cuid))
             {
-                if (_pendingRequests.ContainsKey(cuid))
+                if(!_pendingRequests.TryRemove(cuid, out action))
                 {
-                    action = _pendingRequests[cuid];
-                    _pendingRequests.Remove(cuid);
-                }
-                else
-                {
-                    Logger.Warning("Received AsyncExecutionResponse with no corresponding request: {0}", result.PropertiesToString());
+                    FireEvent(RemovePendingFailed, new AsyncExecutionResponseEventArgs { Response = response });
                 }
             }
+            else
+            {
+                Logger.Warning("Received AsyncExecutionResponse with no corresponding request: {0}", response.PropertiesToString());
+            }
+
             Task.Run(() => 
             {
-                SaveResponseData(result); 
-                action(result);
+                SaveResponseData(response); 
+                action(response);
             });
         }
 

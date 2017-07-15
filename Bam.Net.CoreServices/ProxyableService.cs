@@ -18,6 +18,11 @@ using U = Bam.Net.UserAccounts.Data;
 
 namespace Bam.Net.CoreServices
 {
+    /// <summary>
+    /// The base abstract class for any service that might be proxied.
+    /// Provides common features for User, Roles, Session, Application
+    /// and Data tracking
+    /// </summary>
     [Encrypt]
     public abstract class ProxyableService: Loggable, IRequiresHttpContext
     {
