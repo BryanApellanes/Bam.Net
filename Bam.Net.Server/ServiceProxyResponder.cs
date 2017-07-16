@@ -27,7 +27,7 @@ namespace Bam.Net.Server
     /// Responder responsible for generating service proxies
     /// and responding to service proxy requests
     /// </summary>
-    public class ServiceProxyResponder : ResponderBase, IInitialize<ServiceProxyResponder>
+    public class ServiceProxyResponder : ResponderBase, IInitialize<ServiceProxyResponder>, IExecutionRequestResolver
     {
         public const string ServiceProxyRelativePath = "~/services";
         const string MethodFormPrefixFormat = "/{0}/MethodForm";
@@ -76,6 +76,9 @@ namespace Bam.Net.Server
         }
 
         Incubator _commonServiceProvider;
+        /// <summary>
+        /// Services available to all applications
+        /// </summary>
         public Incubator CommonServiceProvider
         {
             get
@@ -94,6 +97,9 @@ namespace Bam.Net.Server
         }
 
         Dictionary<string, Incubator> _appServiceProviders;
+        /// <summary>
+        /// Incubators keyed by application name
+        /// </summary>
         public Dictionary<string, Incubator> AppServiceProviders
         {
             get
@@ -460,25 +466,6 @@ namespace Bam.Net.Server
             }
         }
 
-        private ProxyAlias[] GetProxyAliases(Incubator incubator)
-        {
-            List<ProxyAlias> results = new List<ProxyAlias>();
-            results.AddRange(BamConf.ProxyAliases);
-            incubator.ClassNames.Each(cn =>
-            {
-                Type currentType = incubator[cn];
-                ProxyAttribute attr;
-                if (currentType.HasCustomAttributeOfType<ProxyAttribute>(out attr))
-                {
-                    if (!string.IsNullOrEmpty(attr.VarName) && !attr.VarName.Equals(currentType.Name))
-                    {
-                        results.Add(new ProxyAlias(attr.VarName, currentType));
-                    }
-                }
-            });
-
-            return results.ToArray();
-        }
 
         protected virtual string[] ProxyFileNames
         {
@@ -739,29 +726,16 @@ namespace Bam.Net.Server
 
             RendererFactory.Respond(execRequest, ContentResponder);
         }
-
-        protected virtual ExecutionRequest CreateExecutionRequest(IHttpContext httpContext, string appName)
+        
+        public virtual ExecutionRequest CreateExecutionRequest(IHttpContext httpContext, string appName)
         {
             Incubator proxiedClasses;
             List<ProxyAlias> aliases;
             GetServiceProxies(appName, out proxiedClasses, out aliases);
 
-            ExecutionRequest execRequest = new ExecutionRequest(httpContext, aliases.ToArray(), proxiedClasses);
-            DecryptIfSecureChannelInvoke(execRequest);
+            ExecutionRequest execRequest = new ExecutionRequest(httpContext, proxiedClasses, aliases.ToArray());
+            ExecutionRequest.DecryptSecureChannelInvoke(execRequest);
             return execRequest;
-        }
-
-        private static void DecryptIfSecureChannelInvoke(ExecutionRequest execRequest)
-        {
-            if (execRequest.Instance != null &&
-                execRequest.Instance.GetType() == typeof(SecureChannel) &&
-                execRequest.MethodName.Equals("Invoke"))
-            {
-                execRequest.InputString = SecureSession.Get(execRequest.Context).Decrypt(execRequest.InputString);
-                HttpArgs args = new HttpArgs();
-                args.ParseJson(execRequest.InputString);
-                execRequest.JsonParams = args["jsonParams"];
-            }
         }
 
         private void GetServiceProxies(string appName, out Incubator proxiedClasses, out List<ProxyAlias> aliases)
@@ -780,6 +754,26 @@ namespace Bam.Net.Server
                 aliases.AddRange(GetProxyAliases(appIncubator));
                 proxiedClasses.CopyFrom(appIncubator, true);
             }
+        }
+
+        private ProxyAlias[] GetProxyAliases(Incubator incubator)
+        {
+            List<ProxyAlias> results = new List<ProxyAlias>();
+            results.AddRange(BamConf.ProxyAliases);
+            incubator.ClassNames.Each(cn =>
+            {
+                Type currentType = incubator[cn];
+                ProxyAttribute attr;
+                if (currentType.HasCustomAttributeOfType<ProxyAttribute>(out attr))
+                {
+                    if (!string.IsNullOrEmpty(attr.VarName) && !attr.VarName.Equals(currentType.Name))
+                    {
+                        results.Add(new ProxyAlias(attr.VarName, currentType));
+                    }
+                }
+            });
+
+            return results.ToArray();
         }
 
         private bool SendProxyCode(RequestWrapper request, ResponseWrapper response, string path)

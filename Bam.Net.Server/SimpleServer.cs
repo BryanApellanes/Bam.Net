@@ -21,7 +21,7 @@ namespace Bam.Net.Server
             RenamedHandler = (o, a) => { };
             HostPrefixes = new HashSet<HostPrefix>
             {
-                new HostPrefix { Port = 8080, HostName = "localhost", Ssl = false }
+                new HostPrefix { Port = 80, HostName = "localhost", Ssl = false }
             };
             MonitorDirectories = new string[] { Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) };
         }

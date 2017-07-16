@@ -14,7 +14,6 @@ namespace Bam.Net.Server
     [AttributeUsage(AttributeTargets.Class)]
     public class ServiceSubdomainAttribute: Attribute
     {
-        public ServiceSubdomainAttribute() { }
         public ServiceSubdomainAttribute(string subdomain)
         {
             Subdomain = subdomain;
