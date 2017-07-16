@@ -11,6 +11,7 @@ namespace Bam.Net.CoreServices.Files.Data
     /// Represent an arbitrary chunk of data (base 64 encoded)
     /// identified by its hash (Sha256)
     /// </summary>
+    [Serializable]
     public class ChunkData: RepoData
     {
         /// <summary>

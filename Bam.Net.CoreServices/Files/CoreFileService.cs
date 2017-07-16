@@ -13,12 +13,14 @@ using Bam.Net.Data.Repositories;
 using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.CoreServices.Files.Data;
 using Bam.Net.CoreServices.Files;
+using Bam.Net.Server;
 
 namespace Bam.Net.CoreServices
 {
     [RoleRequired("/", "Admin")]
     [Proxy("fileSvc")]
     [ApiKeyRequired]
+    [ServiceSubdomain("files")]
     public class CoreFileService : CoreProxyableService, IFileService
     {
         protected CoreFileService() { }

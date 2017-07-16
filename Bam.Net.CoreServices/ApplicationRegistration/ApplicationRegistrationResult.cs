@@ -10,6 +10,9 @@ namespace Bam.Net.CoreServices
     {
         public ApplicationRegistrationStatus Status { get; set; }
         public string ClientId { get; set; }
+        /// <summary>
+        /// The shared secret.  Keep this value private
+        /// </summary>
         public string ApiKey { get; set; }
     }
 }

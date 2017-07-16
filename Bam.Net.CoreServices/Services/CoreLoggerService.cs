@@ -13,6 +13,7 @@ namespace Bam.Net.CoreServices
 {
     [Proxy("loggerSvc")]
     [ApiKeyRequired]
+    [ServiceSubdomain("logger")]
     public class CoreLoggerService: CoreProxyableService, ILog, ILogEventCommitter
     {
         DaoLogger2 _logger;
@@ -23,6 +24,13 @@ namespace Bam.Net.CoreServices
             AppConf = conf;
         }
         
+        [Local]
+        public void SetLogger()
+        {
+            Args.ThrowIfNull(Database);
+            SetLogger(Database);
+        }
+
         [Exclude]
         public void SetLogger(Database db)
         {
