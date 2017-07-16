@@ -21,6 +21,7 @@ using System.IO;
 using System.Reflection;
 using System.Collections;
 using Bam.Net;
+using Newtonsoft.Json;
 
 namespace Bam.Net.ServiceProxy
 {
@@ -62,10 +63,11 @@ namespace Bam.Net.ServiceProxy
             // create a string array
             string[] jsonParams = new string[parameters.Length];
 
+            JsonSerializerSettings settings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
             // for each parameter stringify it and shove it into the array
             parameters.Each((o, i) =>
             {
-                jsonParams[i] = parameters[i].ToJson();
+                jsonParams[i] = parameters[i].ToJson(settings);
             });
             return jsonParams;
         }
