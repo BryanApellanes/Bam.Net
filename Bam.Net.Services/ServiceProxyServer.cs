@@ -15,6 +15,7 @@ namespace Bam.Net.Services
         {
             ServiceSubdomains = new HashSet<ServiceSubdomainAttribute>();
             RegisterServices(serviceRegistry);
+            
         }
 
         public void RegisterServices(ServiceRegistry serviceRegistry)

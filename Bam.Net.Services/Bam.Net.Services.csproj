@@ -110,9 +110,9 @@
     <Compile Include="AsyncProxyableService.cs" />
     <Compile Include="Catalog\Data\ItemCustomizationDefinition.cs" />
     <Compile Include="AsyncExecutionRequest.cs" />
+    <Compile Include="ExecutionResponder.cs" />
     <Compile Include="ServiceResponse.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="RpcRoute.cs" />
     <Compile Include="Catalog\KindsOfCatalogs.cs" />
     <Compile Include="RequestRoute.cs" />
     <Compile Include="RequestRouter.cs" />
