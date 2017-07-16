@@ -96,7 +96,7 @@ namespace Bam.Net.CoreServices.Tests
             ApplicationRegistrationRepository repo = CoreServiceRegistryContainer.GetServiceRegistry().Get<ApplicationRegistrationRepository>();
             CoreClient client = new CoreClient("TestOrg", "TestApp", $".\\{nameof(RegisterCreatesMachineEntry)}", logger);
             client.LocalCoreRegistryRepository = repo;
-            CoreServiceResponse registrationResponse = client.Register();
+            CoreServiceResponse registrationResponse = client.RegisterClient();
             Machine machine = repo.OneMachineWhere(m => m.Name == Machine.Current.Name);
             Expect.IsNotNull(machine);
             Pass(nameof(RegisterCreatesMachineEntry));
@@ -114,7 +114,7 @@ namespace Bam.Net.CoreServices.Tests
             ApplicationRegistrationRepository repo = CoreServiceRegistryContainer.GetServiceRegistry().Get<ApplicationRegistrationRepository>();
             CoreClient client = new CoreClient("TestOrg", "TestApp", server, port, logger);
             client.LocalCoreRegistryRepository = repo;
-            CoreServiceResponse registrationResponse = client.Register();
+            CoreServiceResponse registrationResponse = client.RegisterClient();
             Client current = Client.Of(client.LocalCoreRegistryRepository, client.ApplicationName, server, port);
 
             CoreServiceResponse response = client.Connect();
@@ -160,7 +160,7 @@ namespace Bam.Net.CoreServices.Tests
             logger.StartLoggingThread();
             CoreClient client = new CoreClient("ThreeHeadz", "CoreServicesTestApp", "localhost", 9100, logger);
             client.LocalCoreRegistryRepository = repo;
-            CoreServiceResponse registrationResponse = client.Register();
+            CoreServiceResponse registrationResponse = client.RegisterClient();
             Expect.IsTrue(registrationResponse.Success, registrationResponse.Message);
             CoreServiceResponse response = client.Connect();
             List<CoreServiceResponse> responses = response.Data.FromJObject<List<CoreServiceResponse>>();
@@ -171,12 +171,12 @@ namespace Bam.Net.CoreServices.Tests
         [IntegrationTest]
         public void CoreUsermanagerClientProxyTest()
         {
-            OutLineFormat("This test requires a gloo server to be running on port 9100 of the localhost", ConsoleColor.Yellow);
+            OutLineFormat("This test requires a heart server to be running on port 80 of the localhost", ConsoleColor.Yellow);
             ConsoleLogger logger = new ConsoleLogger() { AddDetails = false };
             logger.StartLoggingThread();
             // get proxies
             ProxyFactory factory = new ProxyFactory();
-            CoreClient coreClient = new CoreClient("ThreeHeadz", "CoreServicesTestApp", "localhost", 9100, logger);
+            CoreClient coreClient = new CoreClient("ThreeHeadz", "CoreServicesTestApp", "localhost", 80, logger);
 
             CoreUserRegistryService userService = coreClient.UserRegistryService;
             Expect.IsNotNull(userService);
@@ -192,7 +192,7 @@ namespace Bam.Net.CoreServices.Tests
             {
                 initFailed = false;
             };
-            coreClient.Initialize();
+            coreClient.RegisterApplicationProcess();
             Expect.IsTrue(initFailed.Value);
             Expect.AreEqual("You must be logged in to do that", coreClient.Message);
 
@@ -218,7 +218,7 @@ namespace Bam.Net.CoreServices.Tests
 
             loginResponse = coreClient.ApplicationRegistryService.Login(userName, passHash);
             Expect.IsTrue(loginResponse.Success, "Unable to login to application registry service");
-            Expect.IsTrue(coreClient.Initialize(), coreClient.Message);
+            Expect.IsTrue(coreClient.RegisterApplicationProcess(), coreClient.Message);
             Expect.IsFalse(initFailed.Value);
             Expect.IsTrue(File.Exists(coreClient.ApiKeyFilePath));
             Pass("No exceptions were thrown and all assertions passed");
