@@ -14,6 +14,15 @@ namespace bam
             AddManagementArguments();
             AddVaultArguments();
             AddGlooArguments();
+            AddHeartArguments();
+        }
+
+        private static void AddHeartArguments()
+        {
+            AddValidArgument("org", false, description: "heart: The name of your organization");
+            AddValidArgument("email", false, description: "heart: Your email address");
+            AddValidArgument("password", false, description: "heart: Your password to automate operations that require authentication");
+            AddValidArgument("app", false, description: "heart: The name of the application you are acting on");
         }
 
         private static void AddGlooArguments()
