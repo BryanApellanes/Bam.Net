@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 namespace Bam.Net.Web
 {
     /// <summary>
-    /// An alias for a proxied service class
+    /// An alias for a proxied service class, typically
+    /// the name of the client side javascript variable
     /// </summary>
     public class ProxyAlias
     {
