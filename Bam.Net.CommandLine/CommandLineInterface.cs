@@ -29,6 +29,78 @@ namespace Bam.Net.CommandLine
             ValidArgumentInfo = new List<ArgumentInfo>();
         }
 
+        public static string PasswordPrompt(string promptMessage = null, ConsoleColor color = ConsoleColor.Cyan)
+        {
+            return PasswordPrompt(new ConsoleColorCombo(color), promptMessage);
+        }
+
+        public static string PasswordPrompt(ConsoleColorCombo colors, string promptMessage = null)
+        {
+            promptMessage = promptMessage ?? "Please enter your password ";
+            string pass = string.Empty;
+            Out($"{promptMessage} >>", colors);
+            ConsoleKeyInfo keyInfo;
+            do
+            {
+                keyInfo = Console.ReadKey(true);
+                if(keyInfo.Key != ConsoleKey.Backspace && keyInfo.Key != ConsoleKey.Enter)
+                {
+                    pass += keyInfo.KeyChar;
+                    Out("*", colors);
+                }
+                else
+                {
+                    if(keyInfo.Key == ConsoleKey.Backspace && pass.Length > 0)
+                    {
+                        pass = pass.Substring(0, (pass.Length - 1));
+                        Out("\b \b");
+                    }
+                }
+            }
+            while (keyInfo.Key != ConsoleKey.Enter);
+            return pass;
+        }
+
+        static Dictionary<string, string> _cachedArguments;
+        public static string GetArgument(string name, bool useCache, string promptMessage = null)
+        {
+            if (useCache)
+            {
+                if (!_cachedArguments.ContainsKey(name))
+                {
+                    _cachedArguments.Add(name, GetArgument(name, promptMessage));
+                }
+                return _cachedArguments[name];
+            }
+            else
+            {
+                return GetArgument(name, promptMessage);
+            }
+        }
+        public static string GetPasswordArgument(string name, bool useCache, string promptMessage = null)
+        {
+            if (useCache)
+            {
+                if (!_cachedArguments.ContainsKey(name))
+                {
+                    _cachedArguments.Add(name, GetPasswordArgument(name, promptMessage));
+                }
+                return _cachedArguments[name];
+            }
+            else
+            {
+                return GetArgument(name, promptMessage);
+            }
+        }
+        public static string GetPasswordArgument(string name, string promptMessage = null)
+        {
+            return GetArgument(name, promptMessage, (p) => PasswordPrompt(p));
+        }
+
+        public static string GetArgument(string name, string promptMessage = null)
+        {
+            return GetArgument(name, promptMessage, null);
+        }
         /// <summary>
         /// Get the value specified for the argument with the 
         /// specified name either from the command line or
@@ -38,14 +110,15 @@ namespace Bam.Net.CommandLine
         /// <param name="name"></param>
         /// <param name="promptMessage"></param>
         /// <returns></returns>
-        public static string GetArgument(string name, string promptMessage = null)
+        public static string GetArgument(string name, string promptMessage = null, Func<string, string> prompter = null)
         {
+            prompter = prompter ?? ((p) => Prompt(p ?? $"Please enter a value for {name}"));
             string acronym = name.CaseAcronym().ToLowerInvariant();
             string fromConfig = DefaultConfiguration.GetAppSetting(name, "").Or(DefaultConfiguration.GetAppSetting(acronym, ""));
             return Arguments.Contains(name) ? Arguments[name] :
                 Arguments.Contains(acronym) ? Arguments[acronym] :
                 !string.IsNullOrEmpty(fromConfig) ? fromConfig :
-                Prompt(promptMessage ?? $"Please enter a value for {name}");
+                prompter(promptMessage);//Prompt(promptMessage ?? $"Please enter a value for {name}");
         }
 
         /// <summary>
