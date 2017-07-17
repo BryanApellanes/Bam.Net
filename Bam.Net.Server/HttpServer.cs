@@ -32,10 +32,10 @@ namespace Bam.Net.Server
             _listener = new HttpListener();
             _handlerThread = new Thread(HandleRequests);
             _logger = logger;
-            _hostPrefixes = new List<HostPrefix>();
+            _hostPrefixes = new HashSet<HostPrefix>();
         }
 
-        List<HostPrefix> _hostPrefixes;
+        HashSet<HostPrefix> _hostPrefixes;
         public HostPrefix[] HostPrefixes
         {
             get
@@ -44,7 +44,7 @@ namespace Bam.Net.Server
             }
             set
             {
-                _hostPrefixes = new List<HostPrefix>(value);
+                _hostPrefixes = new HashSet<HostPrefix>(value);
             }
         }
         
@@ -73,6 +73,10 @@ namespace Bam.Net.Server
         static object _startLock = new object();
         public void Start(bool usurped, params HostPrefix[] hostPrefixes)
         {
+            if(hostPrefixes.Length == 0)
+            {
+                hostPrefixes = HostPrefixes;
+            }
             lock (_startLock)
             {
                 hostPrefixes.Each(hp =>
@@ -141,7 +145,7 @@ namespace Bam.Net.Server
         
         private void HandleRequests()
         {
-            while (_listener.IsListening)
+            while (_listener != null && _listener.IsListening)
             {
                 try
                 {

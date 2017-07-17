@@ -791,22 +791,25 @@ namespace Bam.Net.Server
             });
         }
         
-        public void Start()
+        public void Start(bool usurpedKnownListeners = false)
         {
-            SetWorkspace();
-            ListenForDaoGenServices();
+            if (!IsRunning)
+            {
+                SetWorkspace();
+                ListenForDaoGenServices();
 
-            Initialize();
+                Initialize();
 
-            OnStarting();
-            _server.Start();
-            IsRunning = true;
-            OnStarted();
+                OnStarting();
+                _server.Start(usurpedKnownListeners);
+                IsRunning = true;
+                OnStarted();
+            }
         }
 
         public void Stop()
         {
-            if (IsInitialized)
+            if (IsInitialized && IsRunning)
             {
                 SaveConf();
 
@@ -1378,8 +1381,10 @@ namespace Bam.Net.Server
                 maxThreads = 50;
             }
 
-            _server = new HttpServer(maxThreads, MainLogger);
-            _server.HostPrefixes = GetHostPrefixes();
+            _server = new HttpServer(maxThreads, MainLogger)
+            {
+                HostPrefixes = GetHostPrefixes()
+            };
             _server.ProcessRequest += ProcessRequest;
         }
 
