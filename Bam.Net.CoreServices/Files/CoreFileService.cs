@@ -14,6 +14,7 @@ using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.CoreServices.Files.Data;
 using Bam.Net.CoreServices.Files;
 using Bam.Net.Server;
+using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.CoreServices
 {

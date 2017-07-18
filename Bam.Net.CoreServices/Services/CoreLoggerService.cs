@@ -8,6 +8,7 @@ using Bam.Net.Logging;
 using Bam.Net.Logging.Data;
 using Bam.Net.Server;
 using Bam.Net.ServiceProxy.Secure;
+using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.CoreServices
 {

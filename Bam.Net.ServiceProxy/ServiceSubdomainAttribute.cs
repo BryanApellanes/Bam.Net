@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Server
+namespace Bam.Net.ServiceProxy
 {
     /// <summary>
     /// Used to specify the subdomain 
@@ -30,21 +30,6 @@ namespace Bam.Net.Server
         public override int GetHashCode()
         {
             return Subdomain.ToSha1Int();
-        }
-
-        public HostPrefix ToHostPrefix(HostPrefix hostPrefix)
-        {
-            string[] segments = hostPrefix.HostName.DelimitSplit(".");            
-            if(segments.Length >= 2)
-            {
-                int end = segments.Length - 1;
-                int secondFromEnd = end - 1;
-                segments = new string[] { segments[secondFromEnd], segments[end] };
-            }
-
-            HostPrefix result = hostPrefix.CopyAs<HostPrefix>();
-            result.HostName = $"{Subdomain}.{string.Join(".", segments)}";
-            return result;
         }
     }
 }

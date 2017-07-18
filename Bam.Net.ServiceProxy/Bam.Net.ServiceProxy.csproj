@@ -233,6 +233,7 @@
     <Compile Include="ServiceProxySystem.cs" />
     <Compile Include="ExecutionRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceSubdomainAttribute.cs" />
     <Compile Include="TestObject.cs" />
     <Compile Include="UnableToResolveUserException.cs" />
     <Compile Include="UrlHelperExtensions.cs" />
