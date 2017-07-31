@@ -199,9 +199,7 @@ namespace Bam.Net.Testing
             DirectoryInfo testDir = GetTestDirectory();
             Environment.CurrentDirectory = testDir.FullName;
 
-            files = GetTestFiles(testDir);
-            TestFailed += TestFailedHandler;
-            TestPassed += TestPassedHandler;            
+            files = GetTestFiles(testDir);          
         }
 
         private static void PrepareResultRepository(string filePrefix)
@@ -230,7 +228,7 @@ namespace Bam.Net.Testing
         static int _passedCount = 0;
         static int _failedCount = 0;
 
-        private static void TestFailedHandler(object sender, UnitTestExceptionEventArgs e)
+        private static void TestFailedHandler(object sender, TestExceptionEventArgs e)
         {
             _failedCount++;
             _repo.Save(new TestResult(e));

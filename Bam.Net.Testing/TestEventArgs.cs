@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Testing.Unit
+namespace Bam.Net.Testing
 {
-    public class UnitTestEventArgs: EventArgs
+    public class TestEventArgs<TTestMethod>: EventArgs where TTestMethod : TestMethod
     {
-        public UnitTestRunner UnitTestRunner { get; set; }
+        public ITestRunner<TTestMethod> TestRunner { get; set; }
         public ConsoleMethod CurrentTest { get; set; }
     }
 }

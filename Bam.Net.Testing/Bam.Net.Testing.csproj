@@ -119,6 +119,7 @@
     <Compile Include="Integration\IntegrationTestAttribute.cs" />
     <Compile Include="Integration\IntegrationTestCleanupAttribute.cs" />
     <Compile Include="Integration\IntegrationTestSetupAttribute.cs" />
+    <Compile Include="ITestRunner.cs" />
     <Compile Include="Specification\Feature.cs" />
     <Compile Include="Specification\FeatureContext.cs" />
     <Compile Include="Specification\SpecificationContainer.cs" />
@@ -137,15 +138,20 @@
     <Compile Include="TestContext.cs" />
     <Compile Include="AssertionWrapper.cs" />
     <Compile Include="Integration\IntegrationTestRunner.cs" />
-    <Compile Include="Unit\UnitTestExceptionEventArgs.cs" />
+    <Compile Include="TestMethodProvider.cs" />
+    <Compile Include="TestMethod.cs" />
+    <Compile Include="TestExceptionEventArgs.cs" />
     <Compile Include="TestSummary.cs" />
     <Compile Include="TestType.cs" />
     <Compile Include="Unit\UnitTest.cs" />
     <Compile Include="Integration\IntegrationTestContainerAttribute.cs" />
     <Compile Include="Data\TestResult.cs" />
-    <Compile Include="Unit\UnitTestEventArgs.cs" />
+    <Compile Include="TestEventArgs.cs" />
+    <Compile Include="Unit\UnitTestMethodProvider.cs" />
+    <Compile Include="Unit\UnitTestMethod.cs" />
+    <Compile Include="TestRunner.cs" />
+    <Compile Include="TestsDiscoveredEventArgs.cs" />
     <Compile Include="Unit\UnitTestRunner.cs" />
-    <Compile Include="Unit\UnitTestsDiscoveredEventArgs.cs" />
     <Compile Include="When.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -27,10 +27,10 @@ namespace Bam.Net.Testing.Unit
         {
         }
 
-        public static List<ConsoleMethod> FromAssembly(Assembly assembly)
+        public static List<UnitTestMethod> FromAssembly(Assembly assembly)
         {
-            List<ConsoleMethod> tests = new List<ConsoleMethod>();
-            tests.AddRange(ConsoleMethod.FromAssembly(assembly, typeof(UnitTest)));
+            List<UnitTestMethod> tests = new List<UnitTestMethod>();
+            tests.AddRange(ConsoleMethod.FromAssembly<UnitTestMethod>(assembly, typeof(UnitTest)));
             tests.Sort((l, r) => l.Information.CompareTo(r.Information));
             return tests;
         }

@@ -13,6 +13,9 @@ namespace Bam.Net.CommandLine
     [Serializable]
     public class ConsoleMethod
     {
+        public ConsoleMethod()
+        {
+        }
         public ConsoleMethod(MethodInfo method)
             : this(method, null)
         {
@@ -67,7 +70,7 @@ namespace Bam.Net.CommandLine
             catch (Exception ex)
             {
                 Action<Exception> handler = exceptionHandler ?? ((e) => { });
-                handler(ex);
+                handler(ex.GetInnerException());
             }
         }
 
@@ -92,29 +95,41 @@ namespace Bam.Net.CommandLine
 
         public static List<ConsoleMethod> FromType(Type typeToAnalyze, Type attributeAddorningMethod)
         {
-            List<ConsoleMethod> actions = new List<ConsoleMethod>();
+            return FromType<ConsoleMethod>(typeToAnalyze, attributeAddorningMethod);
+        }
+
+        public static List<TConsoleMethod> FromType<TConsoleMethod>(Type typeToAnalyze, Type attributeAddorningMethod) where TConsoleMethod: ConsoleMethod, new()
+        {
+            List<TConsoleMethod> actions = new List<TConsoleMethod>();
             MethodInfo[] methods = typeToAnalyze.GetMethods();
             foreach (MethodInfo method in methods)
             {
                 if (method.HasCustomAttributeOfType(attributeAddorningMethod, false, out object action))
                 {
-                    actions.Add(new ConsoleMethod(method, (Attribute)action));
+                    actions.Add(new TConsoleMethod { Method = method, Attribute = (Attribute)action });
                 }
             }
 
             return actions;
         }
+
         public static List<ConsoleMethod> FromAssembly<TAttribute>(Assembly assembly)
         {
             return FromAssembly(assembly, typeof(TAttribute));
         }
+
         public static List<ConsoleMethod> FromAssembly(Assembly assembly, Type attrType)
         {
-            List<ConsoleMethod> actions = new List<ConsoleMethod>();
+            return FromAssembly<ConsoleMethod>(assembly, attrType);
+        }
+
+        public static List<TConsoleMethod> FromAssembly<TConsoleMethod>(Assembly assembly, Type attrType) where TConsoleMethod : ConsoleMethod, new()
+        {
+            List<TConsoleMethod> actions = new List<TConsoleMethod>();
             Type[] types = assembly.GetTypes();
             foreach (Type type in types)
             {
-                actions.AddRange(FromType(type, attrType));
+                actions.AddRange(FromType<TConsoleMethod>(type, attrType));
             }
             return actions;
         }

@@ -452,7 +452,7 @@ namespace Bam.Net.CommandLine
 
         public static void Exit(int code)
         {
-            ConsoleExtensions.SetTextColor();
+            Console.ResetColor();
             OnExiting(code);
             Environment.Exit(code);
             OnExited(code);
@@ -961,8 +961,11 @@ File Version: {1}
 
             return selectedNumber;
         }
-
         protected static void ShowActions(List<ConsoleMethod> actions)
+        {
+            ShowActions<ConsoleMethod>(actions);
+        }
+        protected static void ShowActions<TConsoleMethod>(List<TConsoleMethod> actions) where TConsoleMethod: ConsoleMethod
         {
             for (int i = 1; i <= actions.Count; i++)
             {
@@ -1195,13 +1198,11 @@ File Version: {1}
             Arguments = new ParsedArguments(args, ValidArgumentInfo.ToArray());
             if (Arguments.Status == ArgumentParseStatus.Error || Arguments.Status == ArgumentParseStatus.Invalid)
             {
-                if (ArgsParsedError != null)
-                    ArgsParsedError(Arguments);
+                ArgsParsedError?.Invoke(Arguments);
             }
             else if (Arguments.Status == ArgumentParseStatus.Success)
             {
-                if (ArgsParsed != null)
-                    ArgsParsed(Arguments);
+                ArgsParsed?.Invoke(Arguments);
             }
         }
 
