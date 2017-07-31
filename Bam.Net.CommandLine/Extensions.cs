@@ -12,12 +12,12 @@ namespace Bam.Net.CommandLine
 {
     public static class Extensions
     {
-        public static void InvokeInCurrentAppDomain(this ConsoleInvokeableMethod consoleInvokeableMethod)
+        public static void InvokeInCurrentAppDomain(this ConsoleMethod consoleInvokeableMethod)
         {
             CommandLineInterface.InvokeInCurrentAppDomain(consoleInvokeableMethod.Method, consoleInvokeableMethod.Provider, consoleInvokeableMethod.Parameters);
         }
 
-        public static void InvokeInSeparateAppDomain(this ConsoleInvokeableMethod consoleInvokeableMethod)
+        public static void InvokeInSeparateAppDomain(this ConsoleMethod consoleInvokeableMethod)
         {
             CommandLineInterface.InvokeInSeparateAppDomain(consoleInvokeableMethod.Method, consoleInvokeableMethod.Provider, consoleInvokeableMethod.Parameters);
         }
@@ -64,9 +64,7 @@ namespace Bam.Net.CommandLine
             // fixed this to handle output correctly based on http://stackoverflow.com/questions/139593/processstartinfo-hanging-on-waitforexit-why
             ValidateCommand(command);
 
-            string exe;
-            string arguments;
-            GetExeAndArguments(command, out exe, out arguments);
+            GetExeAndArguments(command, out string exe, out string arguments);
 
             return Run(string.IsNullOrEmpty(exe) ? command : exe, arguments, promptForAdmin, output, error, timeout);
         }
@@ -100,6 +98,11 @@ namespace Bam.Net.CommandLine
             return Run(startInfo, receiver, timeout);
         }
         
+        public static ProcessOutput Run(this string command, Action<string> onStandardOutput, int timeout = 600000)
+        {
+            return Run(command, null, onStandardOutput, (s) => { }, false, timeout);
+        }
+
         public static ProcessOutput Run(this string command, Action<string> onStandardOut, Action<string> onErrorOut, bool promptForAdmin = false)
         {
             return Run(command, null, onStandardOut, onErrorOut, promptForAdmin);
@@ -129,9 +132,7 @@ namespace Bam.Net.CommandLine
         /// <returns></returns>
         public static ProcessOutput Run(this string command, EventHandler onExit, Action<string> onStandardOut = null, Action<string> onErrorOut = null, bool promptForAdmin = false, int? timeout = null)
         {
-            string exe;
-            string arguments;
-            GetExeAndArguments(command, out exe, out arguments);
+            GetExeAndArguments(command, out string exe, out string arguments);
 
             ProcessStartInfo startInfo = CreateStartInfo(promptForAdmin);
             startInfo.FileName = exe;

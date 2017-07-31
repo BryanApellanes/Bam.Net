@@ -15,28 +15,28 @@ namespace Bam.Net.CommandLine
     /// </summary>
     [Serializable]
     [AttributeUsage(AttributeTargets.Method, AllowMultiple=false, Inherited=true)]
-    public class ConsoleAction: Attribute, IInfoAttribute
+    public class ConsoleActionAttribute: Attribute, IInfoAttribute
     {
         /// <summary>
         /// Instantiate a ConsoleAction attribute
         /// </summary>
-        public ConsoleAction()
+        public ConsoleActionAttribute()
         {
 
         }
 
-        public ConsoleAction(string information)
+        public ConsoleActionAttribute(string information)
         {
             Information = information;
         }
 
-        public ConsoleAction(string commandLineSwitch, string information)
+        public ConsoleActionAttribute(string commandLineSwitch, string information)
             : this(information)
         {
             this.CommandLineSwitch = commandLineSwitch;
         }
 
-        public ConsoleAction(string commandLineSwitch, string valueExample, string information)
+        public ConsoleActionAttribute(string commandLineSwitch, string valueExample, string information)
             : this(commandLineSwitch, information)
         {
             this.ValueExample = valueExample;

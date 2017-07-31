@@ -171,6 +171,7 @@
     <Compile Include="Partials\JobData.cs" />
     <Compile Include="Partials\JobRunData.cs" />
     <Compile Include="Partials\RunningJob.cs" />
+    <Compile Include="SourceControl\Extensions.cs" />
     <Compile Include="SourceControl\Git.cs" />
     <Compile Include="SourceControl\GitConfigStack.cs" />
     <Compile Include="SourceControl\GitLog.cs" />

@@ -80,12 +80,12 @@
     <Compile Include="ArgumentInfoHash.cs" />
     <Compile Include="CommandLineArgumentConfigurer.cs" />
     <Compile Include="CommandLineInterface.cs" />
-    <Compile Include="ConsoleAction.cs" />
+    <Compile Include="ConsoleActionAttribute.cs" />
     <Compile Include="ConsoleArgsParsed.cs" />
     <Compile Include="ConsoleColorCombo.cs" />
     <Compile Include="ConsoleDiffReportFormatter.cs" />
     <Compile Include="ConsoleExtensions.cs" />
-    <Compile Include="ConsoleInvokeableMethod.cs" />
+    <Compile Include="ConsoleMethod.cs" />
     <Compile Include="ConsoleLogger.cs" />
     <Compile Include="ConsoleMenu.cs" />
     <Compile Include="ConsoleMenuDelegate.cs" />
@@ -98,7 +98,6 @@
     <Compile Include="ProcessOutput.cs" />
     <Compile Include="ProcessOutputCollector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestExceptionEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -166,9 +166,9 @@ namespace Bam.Net.Testing.Repository
 		{
 			try
 			{
-				TestSummary toCreate = new TestSummary();
+                Data.TestSummary toCreate = new Data.TestSummary();
 				Meta.SetAuditFields(toCreate);
-				TestSummary sum = Repository.Create<TestSummary>(toCreate);
+                Data.TestSummary sum = Repository.Create<Data.TestSummary>(toCreate);
 				return new CreateTestSummaryResponse { Success = true, Data = sum };
 			}
 			catch (Exception ex)

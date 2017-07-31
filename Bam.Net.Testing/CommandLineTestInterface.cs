@@ -175,10 +175,10 @@ namespace Bam.Net.Testing
         /// <param name="assembly"></param>
 		public static void AttachBeforeAndAfterHandlers(Assembly assembly)
 		{
-			List<ConsoleInvokeableMethod> beforeAll = GetConsoleInvokeableMethods<BeforeUnitTests>(assembly);
-			List<ConsoleInvokeableMethod> beforeEach = GetConsoleInvokeableMethods<BeforeEachUnitTest>(assembly);
-			List<ConsoleInvokeableMethod> afterAll = GetConsoleInvokeableMethods<AfterUnitTests>(assembly);
-			List<ConsoleInvokeableMethod> afterEach = GetConsoleInvokeableMethods<AfterEachUnitTest>(assembly);
+            List<ConsoleMethod> beforeAll = ConsoleMethod.FromAssembly<BeforeUnitTests>(assembly);
+			List<ConsoleMethod> beforeEach = ConsoleMethod.FromAssembly<BeforeEachUnitTest>(assembly);
+			List<ConsoleMethod> afterAll = ConsoleMethod.FromAssembly<AfterUnitTests>(assembly);
+			List<ConsoleMethod> afterEach = ConsoleMethod.FromAssembly<AfterEachUnitTest>(assembly);
 
 			TestsStarting += (o, e) =>
 			{
@@ -210,7 +210,7 @@ namespace Bam.Net.Testing
 			};
 		}
 
-		private static void TryInvoke<T>(ConsoleInvokeableMethod cim)
+		private static void TryInvoke<T>(ConsoleMethod cim)
 		{
 			try
 			{
@@ -276,10 +276,10 @@ namespace Bam.Net.Testing
             OutLineFormat("{0}:Passed", ConsoleColor.Green, text);
         }
 
-        public static void UnitTestMenu(Assembly assemblyToAnalyze, ConsoleMenu[] otherMenus, string header)
+        public static void UnitTestMenu(Assembly assembly, ConsoleMenu[] otherMenus, string header)
         {
             Console.WriteLine(header);
-            List<ConsoleInvokeableMethod> tests = GetUnitTests(assemblyToAnalyze);
+            List<ConsoleMethod> tests = UnitTest.FromAssembly(assembly);
             ShowActions(tests);
             Console.WriteLine();
             Console.WriteLine("Q to quit\ttype all to run all tests.");
@@ -289,7 +289,7 @@ namespace Bam.Net.Testing
             try
             {
                 answer = answer.Trim().ToLowerInvariant();
-				RunSpecifiedTests(assemblyToAnalyze, tests, answer);
+				RunSpecifiedTests(assembly, tests, answer);
             }
             catch (Exception ex)
             {                
@@ -298,7 +298,7 @@ namespace Bam.Net.Testing
 
             if (Confirm("Return to the Test menu? [y][N]"))
             {
-                UnitTestMenu(assemblyToAnalyze, otherMenus, header);
+                UnitTestMenu(assembly, otherMenus, header);
             }
             else
             {
@@ -306,13 +306,13 @@ namespace Bam.Net.Testing
             }
         }
 
-        protected static void RunTest(List<ConsoleInvokeableMethod> tests, string answer)
+        protected static void RunTest(List<ConsoleMethod> tests, string answer)
         {
 			OnTestStarting();
             int selectedNumber = -1;
             try
             {
-                ConsoleInvokeableMethod test;
+                ConsoleMethod test;
                 string testName = answer;
                 if (int.TryParse(answer.ToString(), out selectedNumber) && (selectedNumber - 1) > -1 && (selectedNumber - 1) < tests.Count)
                 {
@@ -342,61 +342,59 @@ namespace Bam.Net.Testing
 			OnTestFinished();
         }
 
-        public static void RunAllUnitTests(Assembly assemblyToAnalyze)
+        public static void RunAllUnitTests(Assembly assembly, ILogger logger = null)
         {
-            RunAllUnitTests(assemblyToAnalyze, true);
-        }
-
-        protected static void RunAllTestsInteractively(Assembly assemblyToAnalyze)
-        {
-            RunAllUnitTests(assemblyToAnalyze, false);
+            UnitTestRunner runner = new UnitTestRunner(assembly, logger);
+            runner.NoTestsDiscovered += (o, e) => OutLineFormat("No tests were found in {0}", ConsoleColor.Yellow, assembly.FullName);
+            runner.TestsDiscovered += (o, e) =>
+            {
+                UnitTestsDiscoveredEventArgs args = (UnitTestsDiscoveredEventArgs)e;
+                OutLineFormat("Running all tests in {0}", ConsoleColor.Green, args.Assembly.FullName);
+                OutLineFormat("\tFound {0} tests", ConsoleColor.Cyan, args.Tests.Count);
+            };
+            runner.TestPassed += (o, e) =>
+            {
+                UnitTestEventArgs args = (UnitTestEventArgs)e;
+                Pass(args.CurrentTest.Information);
+            };
+            runner.TestsFinished += (o, e) =>
+            {
+                UnitTestEventArgs args = (UnitTestEventArgs)e;
+                TestSummary summary = args.UnitTestRunner.TestSummary;
+                Out();
+                OutLine("********");
+                if (summary.FailedTests.Count > 0)
+                {
+                    OutLineFormat("({0}) tests passed", ConsoleColor.Green, summary.PassedTests.Count);
+                    OutLineFormat("({0}) tests failed", ConsoleColor.Red, summary.FailedTests.Count);
+                    summary.FailedTests.ForEach(cim =>
+                    {
+                        Out("\t");
+                        OutLineFormat("{0}", new ConsoleColorCombo(ConsoleColor.Yellow, ConsoleColor.Red), cim.Test.Information);
+                    });
+                }
+                else
+                {
+                    OutLineFormat("All ({0}) tests passed", ConsoleColor.Green, summary.PassedTests.Count);
+                }
+                OutLine("********");
+            };
         }
 
         /// <summary>
         /// Event that fires when a test fails.
         /// </summary>
-        public static event EventHandler<TestExceptionEventArgs> TestFailed; //TODO: create a UnitTestEventArgs class and encapsulate unit test related data to be saved; add a test run id to UnitTestResult
+        public static event EventHandler<UnitTestExceptionEventArgs> TestFailed; //TODO: create a UnitTestEventArgs class and encapsulate unit test related data to be saved; add a test run id to UnitTestResult
 
 		/// <summary>
 		/// Event that fires when a test passes.
 		/// </summary>
-	    public static event EventHandler<ConsoleInvokeableMethod> TestPassed;
+	    public static event EventHandler<ConsoleMethod> TestPassed;
 
 		public static event EventHandler TestsStarting;
 		public static event EventHandler TestsFinished;
 		public static event EventHandler TestStarting;
 		public static event EventHandler TestFinished;
-
-		protected internal static void RunAllUnitTests(Assembly assemblyToAnalyze, bool generateParameters, bool finalOut = true)
-		{
-			List<ConsoleInvokeableMethod> tests = GetUnitTests(assemblyToAnalyze);
-			string assemblyName = assemblyToAnalyze.FullName;
-			if (tests.Count == 0)
-			{
-				OutLineFormat("No tests were found in {0}", ConsoleColor.Yellow, assemblyName);
-				return;
-			}
-
-			OutLineFormat("Running all tests in {0}", ConsoleColor.Green, assemblyName);
-			OutLineFormat("\tFound {0} tests", ConsoleColor.Cyan, tests.Count);
-			RunAllUnitTests(generateParameters, finalOut, tests);
-		}
-
-        public static List<ConsoleInvokeableMethod> GetUnitTests(Assembly assemblyToAnalyze )
-        {
-            List<ConsoleInvokeableMethod> tests =  new List<ConsoleInvokeableMethod>();
-			tests.AddRange(GetConsoleInvokeableMethods(assemblyToAnalyze, typeof(UnitTest)));
-            tests.Sort((l, r) => l.Information.CompareTo(r.Information));
-            return tests;
-        }
-		
-		public static List<ConsoleInvokeableMethod> GetUnitTests(Type unitTestContainingClass)
-		{
-			List<ConsoleInvokeableMethod> tests = new List<ConsoleInvokeableMethod>();
-			tests.AddRange(GetConsoleInvokeableMethods(unitTestContainingClass, typeof(UnitTest)));
-			tests.Sort((l, r) => l.Information.CompareTo(r.Information));
-			return tests;
-		}
 
         public static void Info(string message)
         {
@@ -470,13 +468,13 @@ namespace Bam.Net.Testing
 			return variableValues.ToArray();
 		}
 
-		private static void RunSpecifiedTests(Assembly assemblyToAnalyze, List<ConsoleInvokeableMethod> tests, string answer)
+		private static void RunSpecifiedTests(Assembly assemblyToAnalyze, List<ConsoleMethod> tests, string answer)
 		{
 			string[] individuals = answer.DelimitSplit(",", true);
 			string[] range = answer.DelimitSplit("-", true);
 			if (answer.Equals("all"))
 			{
-				PromptAndRunAllTests(assemblyToAnalyze);
+                RunAllUnitTests(assemblyToAnalyze);
 			}
 			else if (range.Length == 2)
 			{
@@ -492,7 +490,7 @@ namespace Bam.Net.Testing
 			}
 		}
 
-		private static void RunTestSet(List<ConsoleInvokeableMethod> tests, string[] individuals)
+		private static void RunTestSet(List<ConsoleMethod> tests, string[] individuals)
 		{
 			OnTestsStarting();
 			individuals.Each(num =>
@@ -502,7 +500,7 @@ namespace Bam.Net.Testing
 			OnTestsFinished();
 		}
 
-		private static void RunTestRange(List<ConsoleInvokeableMethod> tests, string[] range)
+		private static void RunTestRange(List<ConsoleMethod> tests, string[] range)
 		{
 			OnTestsStarting();
 			int first = Convert.ToInt32(range[0]);
@@ -519,90 +517,14 @@ namespace Bam.Net.Testing
 			OnTestsFinished();
 		}
 
-		private static void PromptAndRunAllTests(Assembly assemblyToAnalyze)
-		{
-			bool enterManually = true;
-			if (interactive)
-			{
-				enterManually = Confirm("Would you like to enter parameters manually? [y][N]");
-			}
-			if (enterManually)
-			{
-				RunAllTestsInteractively(assemblyToAnalyze);
-			}
-			else
-			{
-				RunAllUnitTests(assemblyToAnalyze);
-			}
-		}
-
-		private static void RunAllUnitTests(bool generateParameters, bool finalOut, List<ConsoleInvokeableMethod> tests)
-		{
-			int passedCount = 0;
-            TestFailureSummary summary = new TestFailureSummary();
-			OnTestsStarting();
-			foreach (ConsoleInvokeableMethod consoleMethod in tests)
-			{
-				OnTestStarting();
-				try
-				{
-					InvokeTest(consoleMethod, generateParameters);
-					Pass(consoleMethod.Information);
-					passedCount++;
-					OnTestPassed(consoleMethod);
-				}
-                catch(ReflectionTypeLoadException rtle)
-                {
-                    ReportException(summary, consoleMethod, new ReflectionTypeLoadAggregateException(rtle));
-                }
-				catch (Exception ex)
-                {
-                    ReportException(summary, consoleMethod, ex);
-                }
-                OnTestFinished();
-			}
-			if (finalOut)
-			{
-				Out();
-				OutLine("********");
-				if (summary.FailedTests.Count > 0)
-				{
-					OutLineFormat("({0}) tests passed", ConsoleColor.Green, passedCount);
-					OutLineFormat("({0}) tests failed", ConsoleColor.Red, summary.FailedTests.Count);
-                    summary.FailedTests.ForEach(cim =>
-                    {
-                        Out("\t");
-                        OutLineFormat("{0}", new ConsoleColorCombo(ConsoleColor.Yellow, ConsoleColor.Red), cim.Information);
-                    });
-				}
-				else
-				{
-					OutLineFormat("All ({0}) tests passed", ConsoleColor.Green, passedCount);
-				}
-				OutLine("********");
-			}
-			OnTestsFinished();
-		}
-
-        private static void ReportException(TestFailureSummary summary, ConsoleInvokeableMethod consoleMethod, Exception ex)
-        {
-            if (ex.InnerException != null)
-            {
-                ex = ex.InnerException;
-            }
-
-            OnTestFailed(consoleMethod, ex);
-            summary.FailedTests.Add(consoleMethod);
-        }
-
-        private static void OnTestPassed(ConsoleInvokeableMethod consoleMethod)
+        private static void OnTestPassed(ConsoleMethod consoleMethod)
 		{
             TestPassed?.Invoke(null, consoleMethod);
         }
 
-		private static void OnTestFailed(ConsoleInvokeableMethod consoleMethod, Exception ex)
+		private static void OnTestFailed(ConsoleMethod consoleMethod, Exception ex)
 		{
-            TestFailed?.Invoke(null, new TestExceptionEventArgs(consoleMethod, ex));
+            TestFailed?.Invoke(null, new UnitTestExceptionEventArgs(consoleMethod, ex, null));
         }
 
 		private static void OnTestsStarting()
@@ -623,48 +545,6 @@ namespace Bam.Net.Testing
 		{
             TestFinished?.Invoke(null, EventArgs.Empty);
         }
-
-		private static void InvokeTest(ConsoleInvokeableMethod consoleMethod)
-		{
-			InvokeTest(consoleMethod, true);
-		}
-
-		private static void InvokeTest(ConsoleInvokeableMethod consoleMethod, bool generateParameters)
-		{
-			object[] parameters = GetParameterInput(consoleMethod.Method, generateParameters);
-			MethodInfo invoke = typeof(ConsoleInvokeableMethod).GetMethod("Invoke");
-			if (consoleMethod.Method.IsStatic)
-			{
-				if (IsolateMethodCalls)
-				{
-					InvokeInSeparateAppDomain(invoke, consoleMethod);
-				}
-				else
-				{
-					InvokeInCurrentAppDomain(invoke, consoleMethod);
-				}
-			}
-			else
-			{
-				string typeName = consoleMethod.Method.DeclaringType.Name;
-				ConstructorInfo ctor = consoleMethod.Method.DeclaringType.GetConstructor(Type.EmptyTypes);
-				if (ctor == null)
-					ExceptionHelper.ThrowInvalidOperation("The declaring type {0} of method {1} does not have a parameterless constructor, test cannot be run.", typeName, consoleMethod.Method.Name);
-
-				object instance = ctor.Invoke(null);
-				Expect.IsNotNull(instance, string.Format("Unable to instantiate declaring type {0} of method {1}", typeName, consoleMethod.Method.Name));
-
-				consoleMethod.Provider = instance;
-				if (IsolateMethodCalls)
-				{
-					InvokeInSeparateAppDomain(invoke, consoleMethod);
-				}
-				else
-				{
-					InvokeInCurrentAppDomain(invoke, consoleMethod);
-				}
-			}
-		}
 
 		private static void logger_EntryAdded(string applicationName, LogEvent logEvent)
 		{

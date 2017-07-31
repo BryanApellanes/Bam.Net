@@ -156,9 +156,9 @@ namespace Bam.Net.Testing
             try
             {
                 Assembly assembly = Assembly.LoadFrom(assemblyPath);
-                AttachBeforeAndAfterHandlers(assembly);
+                //AttachBeforeAndAfterHandlers(assembly);
                 RunAllUnitTests(assembly);                
-                NullifyBeforeAndAfterHandlers();                
+                //NullifyBeforeAndAfterHandlers();                
                 Environment.CurrentDirectory = endDirectory;
             }
             catch (Exception ex)
@@ -230,7 +230,7 @@ namespace Bam.Net.Testing
         static int _passedCount = 0;
         static int _failedCount = 0;
 
-        private static void TestFailedHandler(object sender, TestExceptionEventArgs e)
+        private static void TestFailedHandler(object sender, UnitTestExceptionEventArgs e)
         {
             _failedCount++;
             _repo.Save(new TestResult(e));
@@ -240,7 +240,7 @@ namespace Bam.Net.Testing
             }
         }
 
-        private static void TestPassedHandler(object sender, ConsoleInvokeableMethod cim)
+        private static void TestPassedHandler(object sender, ConsoleMethod cim)
         {
             _passedCount++;
             _repo.Save(new TestResult(cim));
