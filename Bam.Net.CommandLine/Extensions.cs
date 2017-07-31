@@ -168,16 +168,14 @@ namespace Bam.Net.CommandLine
             bool timedOut = false;
             output = output ?? new ProcessOutputCollector();
 
-            Process process = new Process();
-            process.EnableRaisingEvents = true;
+            Process process = new Process()
+            {
+                EnableRaisingEvents = true
+            };
             if (onExit != null)
             {
                 process.Exited += onExit;
             }
-            process.Exited += (o, a) =>
-            {
-                ((Process)o).Dispose();             
-            };
             process.StartInfo = startInfo;
             AutoResetEvent outputWaitHandle = new AutoResetEvent(false);
             AutoResetEvent errorWaitHandle = new AutoResetEvent(false);
@@ -213,6 +211,15 @@ namespace Bam.Net.CommandLine
                 WaitForExit(output, timeout, ref exitCode, ref timedOut, process, outputWaitHandle, errorWaitHandle);
                 return new ProcessOutput(output.StandardOutput.ToString(), output.StandardError.ToString(), exitCode, timedOut);
             }
+            else
+            {
+                process.Exited += (o, a) =>
+                {
+                    Process p = (Process)o;
+                    output.ExitCode = p.ExitCode;
+                    p.Dispose();
+                };
+            }
             
             return new ProcessOutput(process, output.StandardOutput, output.StandardError);
         }
@@ -225,6 +232,7 @@ namespace Bam.Net.CommandLine
             {
                 exitCode = process.ExitCode;
                 output.ExitCode = exitCode;
+                process.Dispose();
             }
             else
             {
