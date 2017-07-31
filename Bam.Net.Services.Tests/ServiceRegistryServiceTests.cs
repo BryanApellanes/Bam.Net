@@ -17,6 +17,7 @@ using Bam.Net.CoreServices.AssemblyManagement.Data.Dao.Repository;
 using Bam.Net.CoreServices.AssemblyManagement.Data.Dao;
 using Bam.Net.CoreServices.ServiceRegistration.Data.Dao;
 using Bam.Net.CoreServices.ServiceRegistration.Data.Dao.Repository;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Services.Tests
 {

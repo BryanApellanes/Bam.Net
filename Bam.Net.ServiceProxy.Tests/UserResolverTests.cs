@@ -37,6 +37,7 @@ using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Crypto.Engines;
 using FakeItEasy;
 using FakeItEasy.Creation;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.ServiceProxy.Tests
 {

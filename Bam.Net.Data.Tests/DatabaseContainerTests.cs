@@ -19,6 +19,7 @@ using MySql.Data.MySqlClient;
 using Bam.Net.Incubation;
 using Bam.Net.CommandLine;
 using System.Data.OleDb;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Data.Tests
 {

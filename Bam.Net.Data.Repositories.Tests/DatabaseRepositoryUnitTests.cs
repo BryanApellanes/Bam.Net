@@ -13,6 +13,7 @@ using Bam.Net.Schema.Org;
 using Bam.Net.Data.SQLite;
 using Bam.Net.Data.Tests.Integration;
 using System.Data.Common;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Data.Repositories.Tests
 {

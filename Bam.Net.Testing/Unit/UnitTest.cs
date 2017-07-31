@@ -8,7 +8,7 @@ using System.Text;
 using Bam.Net.CommandLine;
 using System.Reflection;
 
-namespace Bam.Net.Testing
+namespace Bam.Net.Testing.Unit
 {
     /// <summary>
     /// Attribute used to mark a method as a Unit Test

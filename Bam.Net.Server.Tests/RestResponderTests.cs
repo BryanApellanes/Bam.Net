@@ -22,6 +22,7 @@ using Bam.Net.DaoRef;
 using FakeItEasy;
 using System.Security.Principal;
 using Bam.Net.Server.Rest;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Server.Tests
 {

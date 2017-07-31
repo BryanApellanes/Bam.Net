@@ -16,6 +16,7 @@ using Bam.Net;
 using Bam.Net.Testing;
 using Bam.Net.Html;
 using System.Web.Mvc;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Html.Tests
 {

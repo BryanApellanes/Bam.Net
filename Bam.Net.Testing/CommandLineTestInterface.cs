@@ -13,6 +13,7 @@ using Bam.Net.Configuration;
 using Bam.Net;
 using Bam.Net.ExceptionHandling;
 using Bam.Net.Testing.Integration;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Testing
 {
@@ -596,50 +597,32 @@ namespace Bam.Net.Testing
 
         private static void OnTestPassed(ConsoleInvokeableMethod consoleMethod)
 		{
-			if (TestPassed != null)
-			{
-				TestPassed(null, consoleMethod);
-			}
-		}
+            TestPassed?.Invoke(null, consoleMethod);
+        }
 
 		private static void OnTestFailed(ConsoleInvokeableMethod consoleMethod, Exception ex)
 		{
-			if (TestFailed != null)
-			{
-				TestFailed(null, new TestExceptionEventArgs(consoleMethod, ex));
-			}
-		}
+            TestFailed?.Invoke(null, new TestExceptionEventArgs(consoleMethod, ex));
+        }
 
 		private static void OnTestsStarting()
 		{
-			if (TestsStarting != null)
-			{
-				TestsStarting(null, EventArgs.Empty);
-			}
-		}
+            TestsStarting?.Invoke(null, EventArgs.Empty);
+        }
 
 		private static void OnTestStarting()
 		{
-			if (TestStarting != null)
-			{
-				TestStarting(null, EventArgs.Empty);
-			}
-		}
+            TestStarting?.Invoke(null, EventArgs.Empty);
+        }
 
 		private static void OnTestsFinished()
 		{
-			if (TestsFinished != null)
-			{
-				TestsFinished(null, EventArgs.Empty);
-			}
-		}
+            TestsFinished?.Invoke(null, EventArgs.Empty);
+        }
 		private static void OnTestFinished()
 		{
-			if (TestFinished != null)
-			{
-				TestFinished(null, EventArgs.Empty);
-			}
-		}
+            TestFinished?.Invoke(null, EventArgs.Empty);
+        }
 
 		private static void InvokeTest(ConsoleInvokeableMethod consoleMethod)
 		{

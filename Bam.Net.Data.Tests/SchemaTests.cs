@@ -8,6 +8,7 @@ using System.Reflection;
 using Bam.Net.Data.Schema;
 using Bam.Net.Javascript;
 using Bam.Net.Testing;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Data.Tests
 {

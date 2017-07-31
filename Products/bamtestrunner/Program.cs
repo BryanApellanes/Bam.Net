@@ -21,6 +21,7 @@ using Bam.Net.Encryption;
 using Bam.Net.Logging;
 using System.Threading.Tasks;
 using Bam.Net.Testing.Integration;
+using Bam.Net.Testing.Data;
 
 namespace Bam.Net.Testing
 {
@@ -80,12 +81,9 @@ namespace Bam.Net.Testing
                 Pause("Attach the debugger now");
             }
 
-            TestType testType;
-            Enum.TryParse<TestType>(Arguments["type"].Or("Unit"), out testType);
+            Enum.TryParse<TestType>(Arguments["type"].Or("Unit"), out TestType testType);
 
-            string startDirectory;
-            FileInfo[] files;
-            Setup(out startDirectory, out files);
+            Setup(out string startDirectory, out FileInfo[] files);
 
             switch (testType)
             {
@@ -211,7 +209,7 @@ namespace Bam.Net.Testing
             string directory = Arguments.Contains("data") ? Arguments["data"] : ".";
             string fileName = "{0}_{1}"._Format(filePrefix, DateTime.Now.Date.ToString("MM_dd_yyyy"));
             _repo = new DaoRepository(new SQLiteDatabase(directory, fileName));
-            _repo.AddType(typeof(UnitTestResult));
+            _repo.AddType(typeof(TestResult));
             _repo.EnsureDaoAssemblyAndSchema();
         }
 
@@ -235,7 +233,7 @@ namespace Bam.Net.Testing
         private static void TestFailedHandler(object sender, TestExceptionEventArgs e)
         {
             _failedCount++;
-            _repo.Save(new UnitTestResult(e));
+            _repo.Save(new TestResult(e));
             if (Arguments.Contains(_exitOnFailure))
             {
                 Exit(1);
@@ -245,7 +243,7 @@ namespace Bam.Net.Testing
         private static void TestPassedHandler(object sender, ConsoleInvokeableMethod cim)
         {
             _passedCount++;
-            _repo.Save(new UnitTestResult(cim));
+            _repo.Save(new TestResult(cim));
         }
 
         private static DirectoryInfo GetTestDirectory()

@@ -27,6 +27,7 @@ using System.IO;
 using System.Reflection;
 using System.Security.Cryptography;
 using Bam.Net.Data.SQLite;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Encryption.Tests
 {

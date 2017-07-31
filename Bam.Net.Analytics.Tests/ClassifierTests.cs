@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Bam.Net.Analytics.Classification;
 using Bam.Net.Data;
 using Bam.Net.Testing;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Analytics.Tests
 {

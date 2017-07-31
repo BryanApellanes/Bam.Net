@@ -17,6 +17,7 @@ using Bam.Net;
 using Bam.Net.Data;
 using Bam.Net.Incubation;
 using Bam.Net.Configuration;
+using Bam.Net.Testing.Unit;
 
 namespace CommandLineTests
 {

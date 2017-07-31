@@ -18,6 +18,7 @@ using Bam.Net.Testing;
 using System.Linq.Expressions;
 using Bam.Net.Data.SQLite;
 using Bam.Net.DaoRef;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Data.Tests
 {

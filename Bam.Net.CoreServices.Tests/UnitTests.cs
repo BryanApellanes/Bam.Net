@@ -31,6 +31,7 @@ using Bam.Net.Data.Dynamic;
 using Bam.Net.CoreServices.DistributedHashTable;
 using Bam.Net.Incubation;
 using Bam.Net.Testing.Integration;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.CoreServices.Tests
 {

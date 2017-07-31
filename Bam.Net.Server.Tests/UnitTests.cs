@@ -28,6 +28,7 @@ using Bam.Net.Logging;
 using Bam.Net.Configuration;
 using Moq;
 using FakeItEasy;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Server.Tests
 {

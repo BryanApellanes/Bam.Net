@@ -31,6 +31,7 @@ using Microsoft.Build.Execution;
 using Microsoft.Build.Logging;
 using Bam.Net.Automation.ContinuousIntegration.Loggers;
 using Bam.Net.Documentation;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Automation.Tests
 {

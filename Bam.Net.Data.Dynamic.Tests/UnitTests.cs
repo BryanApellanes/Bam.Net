@@ -16,6 +16,7 @@ using Bam.Net.Data.MsSql;
 using Bam.Net.Data.Schema;
 using System.IO;
 using System.Reflection;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Data.Dynamic.Tests
 {

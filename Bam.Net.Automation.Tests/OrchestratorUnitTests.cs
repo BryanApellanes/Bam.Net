@@ -20,6 +20,7 @@ using Bam.Net.Automation.ContinuousIntegration.Loggers;
 using Microsoft.Build.Framework;
 using M = Microsoft.Build.Logging;
 using Microsoft.Build.Execution;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Automation.Tests
 {

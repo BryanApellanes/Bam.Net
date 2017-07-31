@@ -35,6 +35,7 @@ using Org.BouncyCastle.Crypto.Engines;
 using Bam.Net.UserAccounts;
 using Bam.Net.UserAccounts.Data;
 using Bam.Net.Web;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.ServiceProxy.Tests
 {

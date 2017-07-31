@@ -19,6 +19,7 @@ namespace Bam.Net.CoreServices.Tests
     using Net.Data.SQLite;
     using Server;
     using ServiceProxySecure = ServiceProxy.Secure;
+    using Bam.Net.Testing.Unit;
 
     [Serializable]
     public class ConfigurationTests : CommandLineTestInterface

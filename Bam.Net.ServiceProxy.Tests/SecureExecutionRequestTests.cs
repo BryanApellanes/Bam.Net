@@ -34,6 +34,7 @@ using FakeItEasy;
 using FakeItEasy.Creation;
 using System.Reflection;
 using Bam.Net.Web;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.ServiceProxy.Tests
 {

@@ -8,6 +8,7 @@ using Bam.Net.Testing;
 using Bam.Net.CoreServices;
 using Bam.Net.CoreServices.Files;
 using Bam.Net.CoreServices.Files.Data;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Services.Tests
 {

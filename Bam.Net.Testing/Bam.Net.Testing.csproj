@@ -114,7 +114,7 @@
     <Compile Include="BeforeUnitTests.cs" />
     <Compile Include="CommandLineTestInterface.cs" />
     <Compile Include="ConsoleBecauseWriter.cs" />
-    <Compile Include="Integration\IntegrationTestResult.cs" />
+    <Compile Include="Data\TestRun.cs" />
     <Compile Include="Integration\IntegrationTestAttribute.cs" />
     <Compile Include="Integration\IntegrationTestCleanupAttribute.cs" />
     <Compile Include="Integration\IntegrationTestSetupAttribute.cs" />
@@ -138,9 +138,9 @@
     <Compile Include="Integration\IntegrationTestRunner.cs" />
     <Compile Include="TestFailureSummary.cs" />
     <Compile Include="TestType.cs" />
-    <Compile Include="UnitTest.cs" />
+    <Compile Include="Unit\UnitTest.cs" />
     <Compile Include="Integration\IntegrationTestContainerAttribute.cs" />
-    <Compile Include="UnitTestResult.cs" />
+    <Compile Include="Data\TestResult.cs" />
     <Compile Include="When.cs" />
   </ItemGroup>
   <ItemGroup>

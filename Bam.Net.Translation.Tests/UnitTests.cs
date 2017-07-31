@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Data;
 using Bam.Net.Testing;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Translation.Tests
 {

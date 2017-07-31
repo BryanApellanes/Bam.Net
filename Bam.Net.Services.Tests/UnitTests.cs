@@ -9,6 +9,7 @@ using Bam.Net.Server;
 using Bam.Net.CoreServices.DistributedHashTable.Data;
 using Bam.Net.Testing;
 using Bam.Net.Caching;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Services.Tests
 {
