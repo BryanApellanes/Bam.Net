@@ -117,7 +117,7 @@ namespace Bam.Net.Testing
                 Exit(0);
             }
         }
-
+        static int? _failedCount;
         static int? _passedCount;
         protected static void RunUnitTests(string startDirectory, FileInfo[] files)
         {
@@ -157,7 +157,7 @@ namespace Bam.Net.Testing
             try
             {
                 Assembly assembly = Assembly.LoadFrom(assemblyPath);
-                RunAllUnitTests(assembly, Log.Default, (o, a) => _passedCount++);
+                RunAllUnitTests(assembly, Log.Default, (o, a) => _passedCount++, (o, a) => _failedCount++);
                 Environment.CurrentDirectory = endDirectory;
             }
             catch (Exception ex)
@@ -223,9 +223,7 @@ namespace Bam.Net.Testing
             }
             return files;
         }
-        
-        static int _failedCount = 0;
-        
+       
         private static DirectoryInfo GetTestDirectory()
         {
             DirectoryInfo testDir = new DirectoryInfo(".");

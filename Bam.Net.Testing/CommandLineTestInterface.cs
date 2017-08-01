@@ -143,8 +143,8 @@ namespace Bam.Net.Testing
                 {
                     ex = new ReflectionTypeLoadAggregateException(typeLoadEx);
                 }
-                Console.WriteLine(ex.Message);
-                Console.WriteLine(ex.StackTrace);
+                OutLine(ex.Message);
+                OutLine(ex.StackTrace);
                 throw;
             }
         }
@@ -164,7 +164,7 @@ namespace Bam.Net.Testing
         public static void UnitTestMenu(Assembly assembly, ConsoleMenu[] otherMenus, string header)
         {
             Console.WriteLine(header);
-            ITestRunner<UnitTestMethod> runner = TestRunner<UnitTestMethod>.Create(assembly, Log.Default);
+            ITestRunner<UnitTestMethod> runner = GetUnitTestRunner(assembly, Log.Default);
             ShowActions(runner.GetTests());
             Console.WriteLine();
             Console.WriteLine("Q to quit\ttype all to run all tests.");
@@ -191,12 +191,16 @@ namespace Bam.Net.Testing
             }
         }
 
-        public static void RunAllUnitTests(Assembly assembly, ILogger logger = null, EventHandler passedHandler = null)
+        public static void RunAllUnitTests(Assembly assembly, ILogger logger = null, EventHandler passedHandler = null, EventHandler failedHandler = null)
         {
             ITestRunner<UnitTestMethod> runner = GetUnitTestRunner(assembly, logger);
             if(passedHandler != null)
             {
                 runner.TestPassed += passedHandler;
+            }
+            if(failedHandler != null)
+            {
+                runner.TestFailed += failedHandler;
             }
             runner.RunAllTests();
         }

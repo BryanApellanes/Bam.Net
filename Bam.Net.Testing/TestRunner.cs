@@ -88,8 +88,8 @@ namespace Bam.Net.Testing
                 return;
             }
 
-            FireEvent(TestsDiscovered, new TestsDiscoveredEventArgs<TTestMethod> { Assembly = Assembly, TestRunner = this, Tests = tests.Select(t=> (TestMethod)t).ToList() });
-            FireEvent(TestsStarting);
+            FireEvent(TestsDiscovered, new TestsDiscoveredEventArgs<TTestMethod> { Assembly = Assembly, TestRunner = this, Tests = tests.Select(t => (TestMethod)t).ToList() });
+            FireEvent(TestsStarting, new TestEventArgs<TTestMethod> { TestRunner = this });
             foreach (TestMethod test in tests)
             {
                 RunTest(test);
@@ -120,7 +120,9 @@ namespace Bam.Net.Testing
             }
             else
             {
+                FireEvent(TestsStarting, new TestEventArgs<TTestMethod> { TestRunner = this });
                 RunTest(testIdentifier.Trim());
+                FireEvent(TestsFinished, new TestEventArgs<TTestMethod> { TestRunner = this });
             }
         }
 
@@ -128,19 +130,23 @@ namespace Bam.Net.Testing
         {
             if(IsInRange(fromNumber, out int fromInt) && IsInRange(toNumber, out int toInt))
             {
-                for(int i = fromInt; i <= toInt; i++)
+                FireEvent(TestsStarting, new TestEventArgs<TTestMethod> { TestRunner = this });
+                for (int i = fromInt; i <= toInt; i++)
                 {
                     RunTest(Tests[i]);
                 }
+                FireEvent(TestsFinished, new TestEventArgs<TTestMethod> { TestRunner = this });
             }
         }
 
         public void RunTestSet(string[] testNumbers)
         {
-            foreach(string testNumber in testNumbers)
+            FireEvent(TestsStarting, new TestEventArgs<TTestMethod> { TestRunner = this });
+            foreach (string testNumber in testNumbers)
             {
                 RunTest(testNumber);
             }
+            FireEvent(TestsFinished, new TestEventArgs<TTestMethod> { TestRunner = this });
         }
 
         public void RunTest(string testNumber)
@@ -173,6 +179,7 @@ namespace Bam.Net.Testing
             }
             catch (Exception ex)
             {
+                ex = ex.GetInnerException();
                 TestSummary.FailedTests.Add(new FailedTest { Test = test, Exception = ex });
                 FireEvent(TestFailed, new TestExceptionEventArgs(test, ex));
             }

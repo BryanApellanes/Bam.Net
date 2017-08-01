@@ -823,8 +823,7 @@ File Version: {1}
         [DebuggerStepThrough]
         protected static void InvokeSelection(List<ConsoleMethod> actions, string answer, string header, string footer)
         {
-            int ignore;
-            InvokeSelection(actions, answer, header, footer, out ignore);
+            InvokeSelection(actions, answer, header, footer, out int ignore);
         }
 
         static MethodInfo _methodToInvoke;
@@ -961,10 +960,12 @@ File Version: {1}
 
             return selectedNumber;
         }
+
         protected static void ShowActions(List<ConsoleMethod> actions)
         {
             ShowActions<ConsoleMethod>(actions);
         }
+
         protected static void ShowActions<TConsoleMethod>(List<TConsoleMethod> actions) where TConsoleMethod: ConsoleMethod
         {
             for (int i = 1; i <= actions.Count; i++)

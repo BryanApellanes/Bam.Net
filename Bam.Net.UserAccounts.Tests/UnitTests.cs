@@ -414,9 +414,7 @@ namespace Bam.Net.UserAccounts.Tests
         public void SessionInitShouldSetHttpContextUser()
         {
             string userName = MethodBase.GetCurrentMethod().Name;
-            IHttpContext context;
-            LoginResponse result;
-            UserTestTools.SignUpAndLogin(userName, out context, out result);
+            UserTestTools.SignUpAndLogin(userName, out IHttpContext context, out LoginResponse result);
 
             IHttpContext context2 = A.Fake<IHttpContext>();
             context2.Request = new TestRequest();
@@ -435,9 +433,7 @@ namespace Bam.Net.UserAccounts.Tests
             Login.LoadAll().Delete();
             Expect.AreEqual(0, Login.LoadAll().Count);
 
-            IHttpContext context;
-            LoginResponse result;
-            UserTestTools.SignUpAndLogin(userName, out context, out result);
+            UserTestTools.SignUpAndLogin(userName, out IHttpContext context, out LoginResponse result);
 
             User user = User.OneWhere(c=>c.UserName == userName);
             Login login = Login.OneWhere(c => c.UserId == user.Id);
@@ -448,9 +444,7 @@ namespace Bam.Net.UserAccounts.Tests
         public void UserShouldBeAuthenticatedAfterLogin()
         {
             string userName = MethodBase.GetCurrentMethod().Name;
-            IHttpContext context;
-            LoginResponse result;
-            UserTestTools.SignUpAndLogin(userName, out context, out result);
+            UserTestTools.SignUpAndLogin(userName, out IHttpContext context, out LoginResponse result);
 
             IHttpContext context2 = A.Fake<IHttpContext>();
             context2.Request = new TestRequest();
