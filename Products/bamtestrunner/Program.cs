@@ -118,6 +118,7 @@ namespace Bam.Net.Testing
             }
         }
 
+        static int? _passedCount;
         protected static void RunUnitTests(string startDirectory, FileInfo[] files)
         {
             bool exceptionOccurred = false;
@@ -156,9 +157,7 @@ namespace Bam.Net.Testing
             try
             {
                 Assembly assembly = Assembly.LoadFrom(assemblyPath);
-                //AttachBeforeAndAfterHandlers(assembly);
-                RunAllUnitTests(assembly);                
-                //NullifyBeforeAndAfterHandlers();                
+                RunAllUnitTests(assembly, Log.Default, (o, a) => _passedCount++);
                 Environment.CurrentDirectory = endDirectory;
             }
             catch (Exception ex)
@@ -224,26 +223,9 @@ namespace Bam.Net.Testing
             }
             return files;
         }
-
-        static int _passedCount = 0;
+        
         static int _failedCount = 0;
-
-        private static void TestFailedHandler(object sender, TestExceptionEventArgs e)
-        {
-            _failedCount++;
-            _repo.Save(new TestResult(e));
-            if (Arguments.Contains(_exitOnFailure))
-            {
-                Exit(1);
-            }
-        }
-
-        private static void TestPassedHandler(object sender, ConsoleMethod cim)
-        {
-            _passedCount++;
-            _repo.Save(new TestResult(cim));
-        }
-
+        
         private static DirectoryInfo GetTestDirectory()
         {
             DirectoryInfo testDir = new DirectoryInfo(".");

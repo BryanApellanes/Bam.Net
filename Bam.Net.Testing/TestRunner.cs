@@ -13,6 +13,7 @@ namespace Bam.Net.Testing
 {
     public abstract class TestRunner<TTestMethod> : Loggable, ITestRunner<TTestMethod> where TTestMethod : TestMethod
     {
+        static Dictionary<Type, Func<Assembly, ILogger, ITestRunner<TTestMethod>>> _factory;
         static TestRunner()
         {
             _factory = new Dictionary<Type, Func<Assembly, ILogger, ITestRunner<TTestMethod>>>
@@ -28,14 +29,17 @@ namespace Bam.Net.Testing
             Assembly = assembly;
             ParameterProvider = CommandLineInterface.GetParameters;
             TestMethodProvider = testMethodProvider;
+            TestSummary = new TestSummary();
             IsolateMethodCalls = true;
             logger = logger ?? Log.Default;
 
             _tests = new Lazy<List<TTestMethod>>(() => TestMethodProvider.GetTests());
             
             Subscribe(logger);
+            AttachBeforeHandlers();
+            AttachAfterHandlers();
         }
-        static Dictionary<Type, Func<Assembly, ILogger, ITestRunner<TTestMethod>>> _factory;
+
         public static ITestRunner<TTestMethod> Create(Assembly assembly, ILogger logger = null)
         {
             if (!_factory.ContainsKey(typeof(TTestMethod)))
@@ -70,11 +74,13 @@ namespace Bam.Net.Testing
 
         public TestMethodProvider<TTestMethod> TestMethodProvider { get; set; }
 
+        public ISetupMethodProvider SetupMethodProvider { get; set; }
+
+        public ITeardownMethodProvider TeardownMethodProvider { get; set; }
+
         public bool IsolateMethodCalls { get; set; }
         public void RunAllTests()
         {
-            AttachBeforeHandlers();
-            AttachAfterHandlers();
             List<TTestMethod> tests = TestMethodProvider.GetTests();
             if (tests.Count == 0)
             {
@@ -141,7 +147,7 @@ namespace Bam.Net.Testing
         {
             if (IsInRange(testNumber, out int selectedNumber))
             {
-                RunTest(Tests[selectedNumber]);
+                RunTest(Tests[selectedNumber - 1]);
             }
             else
             {
@@ -225,44 +231,94 @@ namespace Bam.Net.Testing
             }
         }
 
+        object _attachBeforeHandlersLock = new object();
+        bool _beforeHandlersAreAttached;
         protected void AttachBeforeHandlers()
         {
-            List<ConsoleMethod> beforeAll = ConsoleMethod.FromAssembly<BeforeUnitTests>(Assembly);
-            List<ConsoleMethod> beforeEach = ConsoleMethod.FromAssembly<BeforeEachUnitTest>(Assembly);
-            TestsStarting += (o, e) =>
+            lock (_attachBeforeHandlersLock)
             {
-                beforeAll.Each(cim =>
+                if (!_beforeHandlersAreAttached)
                 {
-                    cim.TryInvoke(BeforeAllExceptionHandler);
-                });
-            };
-            TestStarting += (o, e) =>
-            {
-                beforeEach.Each(cim =>
-                {
-                    cim.TryInvoke(BeforeEachExceptionHandler);
-                });
-            };
+                    TestsStarting += (o, e) =>
+                    {
+                        GetBeforeAllMethods().Each(cim =>
+                        {
+                            cim.TryInvoke(BeforeAllExceptionHandler);
+                        });
+                    };
+                    TestStarting += (o, e) =>
+                    {
+                        GetBeforeEachMethods().Each(cim =>
+                        {
+                            cim.TryInvoke(BeforeEachExceptionHandler);
+                        });
+                    };
+                    _beforeHandlersAreAttached = true;
+                }
+            }
         }
 
+        protected List<ConsoleMethod> GetBeforeAllMethods()
+        {
+            if(SetupMethodProvider != null)
+            {
+                return SetupMethodProvider.GetBeforeAllMethods(Assembly) ?? new List<ConsoleMethod>();
+            }
+            return new List<ConsoleMethod>();
+        }
+
+        protected List<ConsoleMethod> GetBeforeEachMethods()
+        {
+            if(SetupMethodProvider != null)
+            {
+                return SetupMethodProvider.GetBeforeEachMethods(Assembly) ?? new List<ConsoleMethod>();
+            }
+            return new List<ConsoleMethod>();
+        }
+
+        object _attachAfterHandlersLock = new object();
+        bool _afterHandlersAreAttached;
         protected void AttachAfterHandlers()
         {
-            List<ConsoleMethod> afterAll = ConsoleMethod.FromAssembly<AfterUnitTests>(Assembly);
-            List<ConsoleMethod> afterEach = ConsoleMethod.FromAssembly<AfterEachUnitTest>(Assembly);
-            TestsFinished += (o, e) =>
+            lock (_attachAfterHandlersLock)
             {
-                afterAll.Each(cim =>
+                if (!_afterHandlersAreAttached)
                 {
-                    cim.TryInvoke(AfterAllExceptionHandler);
-                });
-            };
-            TestFinished += (o, e) =>
+                    TestsFinished += (o, e) =>
+                    {
+                        GetAfterAllMethods().Each(cim =>
+                        {
+                            cim.TryInvoke(AfterAllExceptionHandler);
+                        });
+                    };
+                    TestFinished += (o, e) =>
+                    {
+                        GetAfterEachMethods().Each(cim =>
+                        {
+                            cim.TryInvoke(AfterEachExceptionHandler);
+                        });
+                    };
+                    _afterHandlersAreAttached = true;
+                }
+            }
+        }
+
+        protected List<ConsoleMethod> GetAfterAllMethods()
+        {
+            if(TeardownMethodProvider != null)
             {
-                afterEach.Each(cim =>
-                {
-                    cim.TryInvoke(AfterEachExceptionHandler);
-                });
-            };
+                return TeardownMethodProvider.GetAfterAllMethods(Assembly) ?? new List<ConsoleMethod>();
+            }
+            return new List<ConsoleMethod>();
+        }
+
+        protected List<ConsoleMethod> GetAfterEachMethods()
+        {
+            if(TeardownMethodProvider != null)
+            {
+                return TeardownMethodProvider.GetAfterEachMethods(Assembly) ?? new List<ConsoleMethod>();
+            }
+            return new List<ConsoleMethod>();
         }
 
         public List<TTestMethod> GetTests()

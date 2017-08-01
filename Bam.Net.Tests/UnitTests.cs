@@ -146,6 +146,30 @@ namespace Bam.Net.Tests
             Expect.AreEqual(expected, again);
         }
         
+        [BeforeUnitTests]
+        public void BeforeTests()
+        {
+            OutLine("BeforeUnitTests", ConsoleColor.Green);
+        }
+
+        [BeforeEachUnitTest]
+        public void BeforeEach()
+        {
+            OutLine("BeforeEach", ConsoleColor.DarkGreen);
+        }
+
+        [AfterUnitTests]
+        public void AfterTests()
+        {
+            OutLine("AfterTests", ConsoleColor.DarkCyan);
+        }
+
+        [AfterEachUnitTest]
+        public void AfterEach()
+        {
+            OutLine("AfterEach", ConsoleColor.DarkBlue);
+        }
+
         [UnitTest]
         public void HashingToSha256LongFromStaticStringGetsSameLong()
         {

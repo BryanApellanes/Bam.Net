@@ -12,6 +12,8 @@ namespace Bam.Net.Testing.Unit
     {
         public UnitTestRunner(Assembly assembly, ILogger logger = null) : base(assembly, new UnitTestMethodProvider { Assembly = assembly }, logger)
         {
+            SetupMethodProvider = new UnitTestSetupMethodProvider();
+            TeardownMethodProvider = new UnitTestTeardownMethodProvider();
         }
     }
 }

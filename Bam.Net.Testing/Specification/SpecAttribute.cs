@@ -12,7 +12,7 @@ namespace Bam.Net.Testing.Specification
 {
 
 	[AttributeUsage(AttributeTargets.Method)]
-	public class SpecAttribute: UnitTest
+	public class SpecAttribute: UnitTestAttribute
 	{
 	}
 }

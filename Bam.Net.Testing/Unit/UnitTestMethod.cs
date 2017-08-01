@@ -8,6 +8,7 @@ using System.Reflection;
 
 namespace Bam.Net.Testing.Unit
 {
+    [Serializable]
     public class UnitTestMethod : TestMethod
     {
         public UnitTestMethod() :base()

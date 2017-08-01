@@ -120,6 +120,7 @@
     <Compile Include="Integration\IntegrationTestCleanupAttribute.cs" />
     <Compile Include="Integration\IntegrationTestSetupAttribute.cs" />
     <Compile Include="ITestRunner.cs" />
+    <Compile Include="ISetupMethodProvider.cs" />
     <Compile Include="Specification\Feature.cs" />
     <Compile Include="Specification\FeatureContext.cs" />
     <Compile Include="Specification\SpecificationContainer.cs" />
@@ -141,9 +142,10 @@
     <Compile Include="TestMethodProvider.cs" />
     <Compile Include="TestMethod.cs" />
     <Compile Include="TestExceptionEventArgs.cs" />
+    <Compile Include="ITeardownMethodProvider.cs" />
     <Compile Include="TestSummary.cs" />
     <Compile Include="TestType.cs" />
-    <Compile Include="Unit\UnitTest.cs" />
+    <Compile Include="Unit\UnitTestAttribute.cs" />
     <Compile Include="Integration\IntegrationTestContainerAttribute.cs" />
     <Compile Include="Data\TestResult.cs" />
     <Compile Include="TestEventArgs.cs" />
@@ -152,6 +154,8 @@
     <Compile Include="TestRunner.cs" />
     <Compile Include="TestsDiscoveredEventArgs.cs" />
     <Compile Include="Unit\UnitTestRunner.cs" />
+    <Compile Include="Unit\UnitTestSetupMethodProvider.cs" />
+    <Compile Include="Unit\UnitTestTeardownMethodProvider.cs" />
     <Compile Include="When.cs" />
   </ItemGroup>
   <ItemGroup>

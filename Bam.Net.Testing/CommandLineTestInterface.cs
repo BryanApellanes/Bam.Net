@@ -98,22 +98,6 @@ namespace Bam.Net.Testing
 			}
 		}
 
-		//private static int? AttachFailedHandler()
-		//{
-		//	int? exitCode = 0;
-		//	TestFailed += (o, t) =>
-		//	{
-		//		Out("Test Failed: " + t.ConsoleInvokeableMethod.Information + "\r\n", ConsoleColor.Red);
-		//		Out(t.Exception.Message, ConsoleColor.Magenta);
-		//		Out();
-		//		Out(t.Exception.StackTrace, ConsoleColor.Red);
-		//		Out("---", ConsoleColor.Red);
-		//		Out();
-		//		exitCode = 1;
-		//	};
-		//	return exitCode;
-		//}
-
         protected static void InitLogger()
         {
             ConsoleLogger logger = (ConsoleLogger)Log.CreateLogger(typeof(ConsoleLogger));
@@ -155,8 +139,7 @@ namespace Bam.Net.Testing
             }
             catch (Exception ex)
             {
-                ReflectionTypeLoadException typeLoadEx = ex as ReflectionTypeLoadException;
-                if(typeLoadEx != null)
+                if (ex is ReflectionTypeLoadException typeLoadEx)
                 {
                     ex = new ReflectionTypeLoadAggregateException(typeLoadEx);
                 }
@@ -182,7 +165,6 @@ namespace Bam.Net.Testing
         {
             Console.WriteLine(header);
             ITestRunner<UnitTestMethod> runner = TestRunner<UnitTestMethod>.Create(assembly, Log.Default);
-            //List<UnitTestMethod> tests = UnitTest.FromAssembly(assembly);
             ShowActions(runner.GetTests());
             Console.WriteLine();
             Console.WriteLine("Q to quit\ttype all to run all tests.");
@@ -193,7 +175,6 @@ namespace Bam.Net.Testing
             {
                 answer = answer.Trim().ToLowerInvariant();
                 runner.RunSpecifiedTests(answer);
-				//RunSpecifiedTests(assembly, tests.Select(t=> (ConsoleMethod)t).ToList(), answer);
             }
             catch (Exception ex)
             {                
@@ -210,9 +191,13 @@ namespace Bam.Net.Testing
             }
         }
 
-        public static void RunAllUnitTests(Assembly assembly, ILogger logger = null)
+        public static void RunAllUnitTests(Assembly assembly, ILogger logger = null, EventHandler passedHandler = null)
         {
             ITestRunner<UnitTestMethod> runner = GetUnitTestRunner(assembly, logger);
+            if(passedHandler != null)
+            {
+                runner.TestPassed += passedHandler;
+            }
             runner.RunAllTests();
         }
 
@@ -235,6 +220,16 @@ namespace Bam.Net.Testing
             {
                 TestEventArgs<TTestMethod> args = (TestEventArgs<TTestMethod>)e;
                 Pass(args.CurrentTest.Information);
+            };
+            runner.TestFailed += (o, t) =>
+            {
+                TestExceptionEventArgs args = (TestExceptionEventArgs)t;
+                Out("Test Failed: " + args.TestMethod.Information + "\r\n", ConsoleColor.Red);
+                Out(args.Exception.Message, ConsoleColor.Magenta);
+                Out();
+                Out(args.Exception.StackTrace, ConsoleColor.Red);
+                Out("---", ConsoleColor.Red);
+                Out();
             };
             runner.TestsFinished += (o, e) =>
             {

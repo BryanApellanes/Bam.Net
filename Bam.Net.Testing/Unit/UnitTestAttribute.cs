@@ -15,14 +15,14 @@ namespace Bam.Net.Testing.Unit
     /// </summary>
     [Serializable]
     [AttributeUsage(AttributeTargets.Method, AllowMultiple=false, Inherited=false)]
-    public class UnitTest: ConsoleActionAttribute
+    public class UnitTestAttribute: ConsoleActionAttribute
     {
-        public UnitTest()
+        public UnitTestAttribute()
             : base()
         {
         }
 
-        public UnitTest(string description)
+        public UnitTestAttribute(string description)
             : base(description)
         {
         }
@@ -30,7 +30,7 @@ namespace Bam.Net.Testing.Unit
         public static List<UnitTestMethod> FromAssembly(Assembly assembly)
         {
             List<UnitTestMethod> tests = new List<UnitTestMethod>();
-            tests.AddRange(ConsoleMethod.FromAssembly<UnitTestMethod>(assembly, typeof(UnitTest)));
+            tests.AddRange(ConsoleMethod.FromAssembly<UnitTestMethod>(assembly, typeof(UnitTestAttribute)));
             tests.Sort((l, r) => l.Information.CompareTo(r.Information));
             return tests;
         }

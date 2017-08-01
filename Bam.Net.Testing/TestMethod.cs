@@ -8,6 +8,7 @@ using System.Reflection;
 
 namespace Bam.Net.Testing
 {
+    [Serializable]
     public abstract class TestMethod : ConsoleMethod
     {
         public TestMethod() :base()

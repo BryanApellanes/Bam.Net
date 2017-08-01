@@ -304,16 +304,10 @@ an empty string")]
             TestCsvLogger test = new TestCsvLogger();
             test.Run();
         }
-
-        public void Test()
-        {
-            OutLine("It worked!", ConsoleColor.Green);
-        }
-
+        
         [UnitTest]
         public void BuildConfShouldSave()
         {
-			Test();
             WorkerConf conf = CreateTestConf();
 
             conf.Save();
