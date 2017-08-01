@@ -1152,7 +1152,7 @@ File Version: {1}
             bool executed = false;
             foreach (string key in arguments.Keys)
             {
-                ConsoleMethod methodToInvoke = GetConsoleInvokeableMethod(arguments, type, key, instance);
+                ConsoleMethod methodToInvoke = GetConsoleMethod(arguments, type, key, instance);
 
                 if (methodToInvoke != null)
                 {
@@ -1207,7 +1207,7 @@ File Version: {1}
             }
         }
 
-        private static ConsoleMethod GetConsoleInvokeableMethod(ParsedArguments arguments, Type type, string key, object instance = null)
+        private static ConsoleMethod GetConsoleMethod(ParsedArguments arguments, Type type, string key, object instance = null)
         {
             string commandLineSwitch = key;
             string switchValue = arguments[key];

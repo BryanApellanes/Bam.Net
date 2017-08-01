@@ -254,8 +254,7 @@ namespace Bam.Net.CoreServices
         [Local]
         public Type GetProxiedType()
         {
-            IProxy proxy = this as IProxy;
-            if(proxy != null)
+            if (this is IProxy proxy)
             {
                 return proxy.ProxiedType;
             }

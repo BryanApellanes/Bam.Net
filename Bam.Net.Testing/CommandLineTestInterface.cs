@@ -104,7 +104,7 @@ namespace Bam.Net.Testing
             logger.UseColors = true;
             logger.ShowTime = true;
 			logger.StartLoggingThread();
-            logger.EntryAdded += new LogEntryAddedListener(logger_EntryAdded);
+            logger.EntryAdded += new LogEntryAddedListener(LoggerEntryAdded);
             Logger = logger;
         }
 
@@ -305,12 +305,11 @@ namespace Bam.Net.Testing
 			return variableValues.ToArray();
 		}
 
-		private static void logger_EntryAdded(string applicationName, LogEvent logEvent)
+		private static void LoggerEntryAdded(string applicationName, LogEvent logEvent)
 		{
-			if (MessageToConsole != null)
-				MessageToConsole(applicationName, logEvent);
+            MessageToConsole?.Invoke(applicationName, logEvent);
 
-			if (logEvent.Severity == LogEventType.Fatal)
+            if (logEvent.Severity == LogEventType.Fatal)
 			{
 				Environment.Exit(1);
 			}
