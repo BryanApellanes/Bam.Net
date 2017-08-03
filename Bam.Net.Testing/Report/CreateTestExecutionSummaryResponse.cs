@@ -7,11 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.ServiceProxy;
-using Bam.Net.Testing.Tracking;
 
-namespace Bam.Net.Testing.Tracking
+namespace Bam.Net.Testing.Report
 {
-	public class RetrieveTestSummaryResponse: TestTrackerResponse
+	public class CreateTestExecutionSummaryResponse: TestTrackerResponse
     {
 	}
 }

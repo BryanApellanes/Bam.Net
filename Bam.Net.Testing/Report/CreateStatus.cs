@@ -6,11 +6,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Bam.Net.ServiceProxy;
 
-namespace Bam.Net.Testing.Tracking
+namespace Bam.Net.Testing.Report
 {
-	public class SaveTestExecutionResponse : TestTrackerResponse
-    {
+	public enum CreateStatus
+	{
+		Invalid, 
+		Created,
+		Existing
 	}
 }

@@ -1,11 +1,11 @@
 ﻿using System;
 using Bam.Net.Testing.Data;
-using Bam.Net.Testing.Tracking;
-using Bam.Net.Testing.Tracking.Data;
+using Bam.Net.Testing.Report;
+using Bam.Net.Testing.Report.Data;
 
-namespace Bam.Net.Testing.Tracking
+namespace Bam.Net.Testing.Report
 {
-    public interface ITestExecutionTrackerService
+    public interface ITestReportService
     {
         CreateTestExecutionSummaryResponse CreateTestExecutionSummary();
         DefineSuiteResponse DefineSuite(SuiteDefinition suite);

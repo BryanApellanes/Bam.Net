@@ -205,6 +205,11 @@ namespace Bam.Net.Testing
             runner.RunAllTests();
         }
 
+        protected internal static ITestResultCollector GetTestResultCollector()
+        {
+            throw new NotImplementedException();
+        }
+
         protected internal static ITestRunner<UnitTestMethod> GetUnitTestRunner(Assembly assembly, ILogger logger)
         {
             return GetTestRunner<UnitTestMethod>(assembly, logger);

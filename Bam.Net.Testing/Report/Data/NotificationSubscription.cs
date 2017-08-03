@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Data.Repositories;
 
-namespace Bam.Net.Testing.Tracking.Data
+namespace Bam.Net.Testing.Report.Data
 {
 	public class NotificationSubscription: RepoData
 	{

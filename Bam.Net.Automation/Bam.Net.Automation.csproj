@@ -181,7 +181,6 @@
     <Compile Include="SourceControl\UnableToConfigureGitException.cs" />
     <Compile Include="SourceControl\UnableToInitializeGitToolsException.cs" />
     <Compile Include="SuspendedJob.cs" />
-    <Compile Include="Testing\TestExecutionTrackerService.cs" />
     <Compile Include="WorkStateEventArgs.cs" />
     <Compile Include="ContinuousIntegration\BamTestRunProcessWorker.cs" />
     <Compile Include="ContinuousIntegration\BuildEventInfo.cs" />
@@ -345,7 +344,9 @@
     <Content Include="Automation.db.js" />
     <Content Include="ContinuousIntegration\ContinuousIntegration.db.js" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Testing\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

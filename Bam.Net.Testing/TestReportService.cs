@@ -15,16 +15,16 @@ using Bam.Net.Data.SQLite;
 using Bam.Net.Logging;
 using Bam.Net.CommandLine;
 using Bam.Net.Testing.Data;
-using Bam.Net.Testing.Tracking;
-using Bam.Net.Testing.Tracking.Data;
+using Bam.Net.Testing.Report;
+using Bam.Net.Testing.Report.Data;
 
 namespace Bam.Net.Testing
 {
-	[Proxy("testExecutionTrackerSvc", MethodCase = MethodCase.CamelCase)]
-	public class TestExecutionTrackerService : Loggable, IRequiresHttpContext, ITestExecutionTrackerService
+	[Proxy("testReportSvc", MethodCase = MethodCase.CamelCase)]
+	public class TestReportService : Loggable, IRequiresHttpContext, ITestReportService
     {
 		DaoRepository _repository;
-		public TestExecutionTrackerService()
+		public TestReportService()
 		{
             //TODO: remove this and use DatabaseProvider or similar
 			string dataDirectory = DefaultConfiguration.GetAppSetting("TestResultsDataDirectory", "C:\\BamContent\\apps\\hugh\\data\\");
@@ -312,7 +312,7 @@ namespace Bam.Net.Testing
 
         public object Clone()
         {
-            TestExecutionTrackerService clone = new TestExecutionTrackerService();
+            TestReportService clone = new TestReportService();
             clone.CopyProperties(this);
             return clone;
         }

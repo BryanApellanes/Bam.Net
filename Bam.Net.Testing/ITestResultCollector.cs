@@ -9,6 +9,7 @@ namespace Bam.Net.Testing
 {
     public interface ITestResultCollector
     {
-        FileInfo[] Setup(string testDirectory);
+        void TestPassed(object sender, EventArgs e);
+        void TestFailed(object sender, EventArgs e);
     }
 }

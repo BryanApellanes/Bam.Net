@@ -8,15 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Data.Repositories;
 
-namespace Bam.Net.Testing.Tracking.Data
+namespace Bam.Net.Testing.Report.Data
 {
 	[Serializable]
-	public class TestDefinition: RepoData
+	public class TestExecutionSummary : RepoData
 	{
-		public long SuiteDefinitionId { get; set; }
-		public virtual SuiteDefinition SuiteDefinition { get; set; }
-
-		public string Title { get; set; }
+        public long SuiteDefinitionId { get; set; }
+        public virtual SuiteDefinition SuiteDefinition { get; set; }
 		public virtual TestExecution[] TestExecutions { get; set; }
 	}
 }

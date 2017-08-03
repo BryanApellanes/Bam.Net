@@ -7,12 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.ServiceProxy;
-using Bam.Net.Testing.Data;
+using Bam.Net.Testing.Report;
 
-namespace Bam.Net.Testing.Tracking
+namespace Bam.Net.Testing.Report
 {
-	public class NotificationSubscriptionResponse: TestTrackerResponse
+	public class RetrieveTestSummaryResponse: TestTrackerResponse
     {
-		public SubscriptionStatus SubscriptionStatus { get; set; }
 	}
 }
