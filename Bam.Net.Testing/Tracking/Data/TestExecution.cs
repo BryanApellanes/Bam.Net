@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Data.Repositories;
 
-namespace Bam.Net.Testing.Repository.Data
+namespace Bam.Net.Testing.Tracking.Data
 {
 	[Serializable]
 	public class TestExecution: RepoData
@@ -20,6 +20,6 @@ namespace Bam.Net.Testing.Repository.Data
 		public string Error { get; set; }
 
 		public long TestSummaryId { get; set; }
-		public virtual TestSummary TestSummary { get; set; }
+		public virtual TestExecutionSummary TestSummary { get; set; }
 	}
 }

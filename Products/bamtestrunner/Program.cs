@@ -157,7 +157,15 @@ namespace Bam.Net.Testing
             try
             {
                 Assembly assembly = Assembly.LoadFrom(assemblyPath);
-                RunAllUnitTests(assembly, Log.Default, (o, a) => _passedCount++, (o, a) => _failedCount++);
+                RunAllUnitTests(assembly, Log.Default, (o, a) => 
+                {
+
+                    _passedCount++;
+                }, 
+                (o, a) => 
+                {
+                    _failedCount++;
+                });
                 Environment.CurrentDirectory = endDirectory;
             }
             catch (Exception ex)

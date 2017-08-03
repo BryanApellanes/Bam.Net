@@ -8,10 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.ServiceProxy;
 
-namespace Bam.Net.Testing.Repository
+namespace Bam.Net.Testing.Tracking
 {
-	public class CreateTestSummaryResponse: ServiceResponse
-	{
-
+	public class SaveTestExecutionResponse : TestTrackerResponse
+    {
 	}
 }

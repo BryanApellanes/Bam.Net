@@ -238,7 +238,7 @@ namespace Bam.Net.Testing
             runner.TestsFinished += (o, e) =>
             {
                 TestEventArgs<TTestMethod> args = (TestEventArgs<TTestMethod>)e;
-                TestSummary summary = args.TestRunner.TestSummary;
+                TestRunnerSummary summary = args.TestRunner.TestSummary;
                 Out();
                 OutLine("********");
                 if (summary.FailedTests.Count > 0)

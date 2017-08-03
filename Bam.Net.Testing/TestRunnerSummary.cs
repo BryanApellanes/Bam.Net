@@ -7,9 +7,9 @@ using Bam.Net.CommandLine;
 
 namespace Bam.Net.Testing
 {
-    public class TestSummary
+    public class TestRunnerSummary
     {
-        public TestSummary()
+        public TestRunnerSummary()
         {
             FailedTests = new List<FailedTest>();
             PassedTests = new List<ConsoleMethod>();

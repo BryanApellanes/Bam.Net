@@ -8,9 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.ServiceProxy;
 
-namespace Bam.Net.Testing.Repository
+namespace Bam.Net.Testing.Tracking
 {
-	public class DefineSuiteResponse: ServiceResponse
-	{
+	public class DefineTestResponse: TestTrackerResponse
+    {
 	}
 }

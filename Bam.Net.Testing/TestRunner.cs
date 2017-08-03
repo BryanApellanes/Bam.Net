@@ -29,7 +29,7 @@ namespace Bam.Net.Testing
             Assembly = assembly;
             ParameterProvider = CommandLineInterface.GetParameters;
             TestMethodProvider = testMethodProvider;
-            TestSummary = new TestSummary();
+            TestSummary = new TestRunnerSummary();
             IsolateMethodCalls = true;
             logger = logger ?? Log.Default;
 
@@ -68,7 +68,7 @@ namespace Bam.Net.Testing
         public Action<Exception> AfterAllExceptionHandler { get; set; }
         public Action<Exception> AfterEachExceptionHandler { get; set; }
 
-        public TestSummary TestSummary { get; set; }
+        public TestRunnerSummary TestSummary { get; set; }
 
         public Func<MethodInfo, object[]> ParameterProvider { get; set; }
 

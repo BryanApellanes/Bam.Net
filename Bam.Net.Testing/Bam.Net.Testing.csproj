@@ -119,6 +119,7 @@
     <Compile Include="Integration\IntegrationTestAttribute.cs" />
     <Compile Include="Integration\IntegrationTestCleanupAttribute.cs" />
     <Compile Include="Integration\IntegrationTestSetupAttribute.cs" />
+    <Compile Include="ITestResultCollector.cs" />
     <Compile Include="ITestRunner.cs" />
     <Compile Include="ISetupMethodProvider.cs" />
     <Compile Include="Specification\Feature.cs" />
@@ -143,8 +144,26 @@
     <Compile Include="TestMethod.cs" />
     <Compile Include="TestExceptionEventArgs.cs" />
     <Compile Include="ITeardownMethodProvider.cs" />
-    <Compile Include="TestSummary.cs" />
+    <Compile Include="TestRunnerSummary.cs" />
     <Compile Include="TestType.cs" />
+    <Compile Include="Tracking\CreateStatus.cs" />
+    <Compile Include="Tracking\CreateTestExecutionSummaryResponse.cs" />
+    <Compile Include="Tracking\Data\NotificationSubscription.cs" />
+    <Compile Include="Tracking\Data\SuiteDefinition.cs" />
+    <Compile Include="Tracking\Data\TestDefinition.cs" />
+    <Compile Include="Tracking\Data\TestExecution.cs" />
+    <Compile Include="Tracking\Data\TestExecutionSummary.cs" />
+    <Compile Include="Tracking\DefineSuiteResponse.cs" />
+    <Compile Include="Tracking\DefineTestResponse.cs" />
+    <Compile Include="Tracking\ITestExecutionTrackerService.cs" />
+    <Compile Include="Tracking\NotificationSubscriptionResponse.cs" />
+    <Compile Include="Tracking\RetrieveNotificationSubscriptionsResponse.cs" />
+    <Compile Include="Tracking\RetrieveTestExecutionResponse.cs" />
+    <Compile Include="Tracking\RetrieveTestSummaryResponse.cs" />
+    <Compile Include="Tracking\SaveTestExecutionResponse.cs" />
+    <Compile Include="Tracking\SearchTestExecutionResponse.cs" />
+    <Compile Include="Tracking\SubscriptionStatus.cs" />
+    <Compile Include="Tracking\TestTrackerResponse.cs" />
     <Compile Include="Unit\UnitTestAttribute.cs" />
     <Compile Include="Integration\IntegrationTestContainerAttribute.cs" />
     <Compile Include="Data\TestResult.cs" />
@@ -178,6 +197,10 @@
     <ProjectReference Include="..\Bam.Net.Javascript\Bam.Net.Javascript.csproj">
       <Project>{34c5016d-5265-4394-a9ba-cb2f70d8e93b}</Project>
       <Name>Bam.Net.Javascript</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.ServiceProxy\Bam.Net.ServiceProxy.csproj">
+      <Project>{8987d8c8-033b-4993-99f0-8dd5a4d6dd0d}</Project>
+      <Name>Bam.Net.ServiceProxy</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net\Bam.Net.csproj">
       <Project>{8794c09d-d72c-420c-812f-bfda251b64c9}</Project>
