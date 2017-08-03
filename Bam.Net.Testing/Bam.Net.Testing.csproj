@@ -114,12 +114,12 @@
     <Compile Include="BeforeUnitTests.cs" />
     <Compile Include="CommandLineTestInterface.cs" />
     <Compile Include="ConsoleBecauseWriter.cs" />
-    <Compile Include="Report\Data\TestRun.cs" />
+    <Compile Include="Data\TestRun.cs" />
     <Compile Include="FailedTest.cs" />
     <Compile Include="Integration\IntegrationTestAttribute.cs" />
     <Compile Include="Integration\IntegrationTestCleanupAttribute.cs" />
     <Compile Include="Integration\IntegrationTestSetupAttribute.cs" />
-    <Compile Include="ITestResultCollector.cs" />
+    <Compile Include="ITestRunListener.cs" />
     <Compile Include="ITestRunner.cs" />
     <Compile Include="ISetupMethodProvider.cs" />
     <Compile Include="Specification\Feature.cs" />
@@ -140,39 +140,22 @@
     <Compile Include="TestContext.cs" />
     <Compile Include="AssertionWrapper.cs" />
     <Compile Include="Integration\IntegrationTestRunner.cs" />
-    <Compile Include="TestReportService.cs" />
     <Compile Include="TestMethodProvider.cs" />
     <Compile Include="TestMethod.cs" />
     <Compile Include="TestExceptionEventArgs.cs" />
     <Compile Include="ITeardownMethodProvider.cs" />
+    <Compile Include="TestRunListener.cs" />
     <Compile Include="TestRunnerSummary.cs" />
     <Compile Include="TestType.cs" />
-    <Compile Include="Report\CreateStatus.cs" />
-    <Compile Include="Report\CreateTestExecutionSummaryResponse.cs" />
-    <Compile Include="Report\Data\NotificationSubscription.cs" />
-    <Compile Include="Report\Data\SuiteDefinition.cs" />
-    <Compile Include="Report\Data\TestDefinition.cs" />
-    <Compile Include="Report\Data\TestExecution.cs" />
-    <Compile Include="Report\Data\TestExecutionSummary.cs" />
-    <Compile Include="Report\DefineSuiteResponse.cs" />
-    <Compile Include="Report\DefineTestResponse.cs" />
-    <Compile Include="Report\ITestReportService.cs" />
-    <Compile Include="Report\NotificationSubscriptionResponse.cs" />
-    <Compile Include="Report\RetrieveNotificationSubscriptionsResponse.cs" />
-    <Compile Include="Report\RetrieveTestExecutionResponse.cs" />
-    <Compile Include="Report\RetrieveTestSummaryResponse.cs" />
-    <Compile Include="Report\SaveTestExecutionResponse.cs" />
-    <Compile Include="Report\SearchTestExecutionResponse.cs" />
-    <Compile Include="Report\SubscriptionStatus.cs" />
-    <Compile Include="Report\TestTrackerResponse.cs" />
     <Compile Include="Unit\UnitTestAttribute.cs" />
     <Compile Include="Integration\IntegrationTestContainerAttribute.cs" />
-    <Compile Include="Report\Data\TestResult.cs" />
+    <Compile Include="Data\TestResult.cs" />
     <Compile Include="TestEventArgs.cs" />
     <Compile Include="Unit\UnitTestMethodProvider.cs" />
     <Compile Include="Unit\UnitTestMethod.cs" />
     <Compile Include="TestRunner.cs" />
     <Compile Include="TestsDiscoveredEventArgs.cs" />
+    <Compile Include="Unit\UnitTestRunListener.cs" />
     <Compile Include="Unit\UnitTestRunner.cs" />
     <Compile Include="Unit\UnitTestSetupMethodProvider.cs" />
     <Compile Include="Unit\UnitTestTeardownMethodProvider.cs" />
@@ -220,9 +203,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

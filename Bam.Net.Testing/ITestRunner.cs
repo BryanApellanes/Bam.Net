@@ -20,7 +20,7 @@ namespace Bam.Net.Testing
         TestMethodProvider<TTestMethod> TestMethodProvider { get; set; }
         List<TTestMethod> GetTests();
         void RunAllTests();
-        void RunSpecifiedTests(string testIdentifier);
+        void RunSpecifiedTests(string testIdentifiers);
         void RunTest(string testNumber);
         void RunTest(TestMethod test);
         void RunTestRange(string fromNumber, string toNumber);

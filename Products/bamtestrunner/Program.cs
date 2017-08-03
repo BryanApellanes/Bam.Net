@@ -22,6 +22,7 @@ using Bam.Net.Logging;
 using System.Threading.Tasks;
 using Bam.Net.Testing.Integration;
 using Bam.Net.Testing.Data;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Testing
 {
@@ -31,7 +32,6 @@ namespace Bam.Net.Testing
         private const string _exitOnFailure = "exitOnFailure";
         private const string _programName = "bamtestrunner";
         
-        static DaoRepository _repo;
         static void Main(string[] args)
         {
             PreInit();
@@ -201,21 +201,15 @@ namespace Bam.Net.Testing
         
         private static void Setup(out string startDirectory, out FileInfo[] files)
         {
-            PrepareResultRepository(Arguments["dataPrefix"].Or("BamTests"));
+            string resultDirectory = Arguments.Contains("data") ? Arguments["data"] : ".";
+            string filePrefix = Arguments["dataPrefix"].Or("BamTests");
+            GetUnitTestRunListener = () => new UnitTestRunListener(resultDirectory, $"{filePrefix}_{DateTime.Now.Date.ToString("MM_dd_yyyy")}");
+
             startDirectory = Environment.CurrentDirectory;
             DirectoryInfo testDir = GetTestDirectory();
             Environment.CurrentDirectory = testDir.FullName;
 
             files = GetTestFiles(testDir);          
-        }
-
-        private static void PrepareResultRepository(string filePrefix)
-        {
-            string directory = Arguments.Contains("data") ? Arguments["data"] : ".";
-            string fileName = "{0}_{1}"._Format(filePrefix, DateTime.Now.Date.ToString("MM_dd_yyyy"));
-            _repo = new DaoRepository(new SQLiteDatabase(directory, fileName));
-            _repo.AddType(typeof(TestResult));
-            _repo.EnsureDaoAssemblyAndSchema();
         }
 
         private static FileInfo[] GetTestFiles(DirectoryInfo testDir)

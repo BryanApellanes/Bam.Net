@@ -22,6 +22,7 @@ namespace Bam.Net.Testing
     {
         static CommandLineTestInterface()
         {
+            GetUnitTestRunListener = () => new UnitTestRunListener();
             InitLogger();
         }
         
@@ -202,12 +203,14 @@ namespace Bam.Net.Testing
             {
                 runner.TestFailed += failedHandler;
             }
+            ITestRunListener<UnitTestMethod> listener = GetUnitTestRunListener();
+            listener.Listen(runner);
             runner.RunAllTests();
         }
 
-        protected internal static ITestResultCollector GetTestResultCollector()
+        protected internal static Func<ITestRunListener<UnitTestMethod>> GetUnitTestRunListener
         {
-            throw new NotImplementedException();
+            get;set;
         }
 
         protected internal static ITestRunner<UnitTestMethod> GetUnitTestRunner(Assembly assembly, ILogger logger)

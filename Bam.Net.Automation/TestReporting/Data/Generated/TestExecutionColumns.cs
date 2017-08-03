@@ -1,0 +1,139 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Bam.Net.Data;
+
+namespace Bam.Net.Automation.TestReporting.Data.Dao
+{
+    public class TestExecutionColumns: QueryFilter<TestExecutionColumns>, IFilterToken
+    {
+        public TestExecutionColumns() { }
+        public TestExecutionColumns(string columnName)
+            : base(columnName)
+        { }
+		
+		public TestExecutionColumns KeyColumn
+		{
+			get
+			{
+				return new TestExecutionColumns("Id");
+			}
+		}	
+
+				
+        public TestExecutionColumns Id
+        {
+            get
+            {
+                return new TestExecutionColumns("Id");
+            }
+        }
+        public TestExecutionColumns Uuid
+        {
+            get
+            {
+                return new TestExecutionColumns("Uuid");
+            }
+        }
+        public TestExecutionColumns Cuid
+        {
+            get
+            {
+                return new TestExecutionColumns("Cuid");
+            }
+        }
+        public TestExecutionColumns Passed
+        {
+            get
+            {
+                return new TestExecutionColumns("Passed");
+            }
+        }
+        public TestExecutionColumns Exception
+        {
+            get
+            {
+                return new TestExecutionColumns("Exception");
+            }
+        }
+        public TestExecutionColumns TestSummaryId
+        {
+            get
+            {
+                return new TestExecutionColumns("TestSummaryId");
+            }
+        }
+        public TestExecutionColumns TestType
+        {
+            get
+            {
+                return new TestExecutionColumns("TestType");
+            }
+        }
+        public TestExecutionColumns MethodName
+        {
+            get
+            {
+                return new TestExecutionColumns("MethodName");
+            }
+        }
+        public TestExecutionColumns Description
+        {
+            get
+            {
+                return new TestExecutionColumns("Description");
+            }
+        }
+        public TestExecutionColumns AssemblyFullName
+        {
+            get
+            {
+                return new TestExecutionColumns("AssemblyFullName");
+            }
+        }
+        public TestExecutionColumns StackTrace
+        {
+            get
+            {
+                return new TestExecutionColumns("StackTrace");
+            }
+        }
+        public TestExecutionColumns Created
+        {
+            get
+            {
+                return new TestExecutionColumns("Created");
+            }
+        }
+
+        public TestExecutionColumns TestExecutionSummaryId
+        {
+            get
+            {
+                return new TestExecutionColumns("TestExecutionSummaryId");
+            }
+        }
+        public TestExecutionColumns TestDefinitionId
+        {
+            get
+            {
+                return new TestExecutionColumns("TestDefinitionId");
+            }
+        }
+
+		protected internal Type TableType
+		{
+			get
+			{
+				return typeof(TestExecution);
+			}
+		}
+
+		public string Operator { get; set; }
+
+        public override string ToString()
+        {
+            return base.ColumnName;
+        }
+	}
+}

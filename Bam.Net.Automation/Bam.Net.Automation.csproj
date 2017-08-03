@@ -171,6 +171,62 @@
     <Compile Include="Partials\JobData.cs" />
     <Compile Include="Partials\JobRunData.cs" />
     <Compile Include="Partials\RunningJob.cs" />
+    <Compile Include="TestReporting\CreateStatus.cs" />
+    <Compile Include="TestReporting\CreateTestExecutionSummaryResponse.cs" />
+    <Compile Include="TestReporting\Data\Generated\NotificationSubscription.cs" />
+    <Compile Include="TestReporting\Data\Generated\NotificationSubscriptionCollection.cs" />
+    <Compile Include="TestReporting\Data\Generated\NotificationSubscriptionColumns.cs" />
+    <Compile Include="TestReporting\Data\Generated\NotificationSubscriptionPagedQuery.cs" />
+    <Compile Include="TestReporting\Data\Generated\NotificationSubscriptionQuery.cs" />
+    <Compile Include="TestReporting\Data\Generated\NotificationSubscriptionWrapper.cs" />
+    <Compile Include="TestReporting\Data\Generated\Qi\NotificationSubscription.cs" />
+    <Compile Include="TestReporting\Data\Generated\Qi\SuiteDefinition.cs" />
+    <Compile Include="TestReporting\Data\Generated\Qi\TestDefinition.cs" />
+    <Compile Include="TestReporting\Data\Generated\Qi\TestExecution.cs" />
+    <Compile Include="TestReporting\Data\Generated\Qi\TestExecutionSummary.cs" />
+    <Compile Include="TestReporting\Data\Generated\SuiteDefinition.cs" />
+    <Compile Include="TestReporting\Data\Generated\SuiteDefinitionCollection.cs" />
+    <Compile Include="TestReporting\Data\Generated\SuiteDefinitionColumns.cs" />
+    <Compile Include="TestReporting\Data\Generated\SuiteDefinitionPagedQuery.cs" />
+    <Compile Include="TestReporting\Data\Generated\SuiteDefinitionQuery.cs" />
+    <Compile Include="TestReporting\Data\Generated\SuiteDefinitionWrapper.cs" />
+    <Compile Include="TestReporting\Data\Generated\TestDefinition.cs" />
+    <Compile Include="TestReporting\Data\Generated\TestDefinitionCollection.cs" />
+    <Compile Include="TestReporting\Data\Generated\TestDefinitionColumns.cs" />
+    <Compile Include="TestReporting\Data\Generated\TestDefinitionPagedQuery.cs" />
+    <Compile Include="TestReporting\Data\Generated\TestDefinitionQuery.cs" />
+    <Compile Include="TestReporting\Data\Generated\TestDefinitionWrapper.cs" />
+    <Compile Include="TestReporting\Data\Generated\TestExecution.cs" />
+    <Compile Include="TestReporting\Data\Generated\TestExecutionCollection.cs" />
+    <Compile Include="TestReporting\Data\Generated\TestExecutionColumns.cs" />
+    <Compile Include="TestReporting\Data\Generated\TestExecutionPagedQuery.cs" />
+    <Compile Include="TestReporting\Data\Generated\TestExecutionQuery.cs" />
+    <Compile Include="TestReporting\Data\Generated\TestExecutionSummary.cs" />
+    <Compile Include="TestReporting\Data\Generated\TestExecutionSummaryCollection.cs" />
+    <Compile Include="TestReporting\Data\Generated\TestExecutionSummaryColumns.cs" />
+    <Compile Include="TestReporting\Data\Generated\TestExecutionSummaryPagedQuery.cs" />
+    <Compile Include="TestReporting\Data\Generated\TestExecutionSummaryQuery.cs" />
+    <Compile Include="TestReporting\Data\Generated\TestExecutionSummaryWrapper.cs" />
+    <Compile Include="TestReporting\Data\Generated\TestExecutionWrapper.cs" />
+    <Compile Include="TestReporting\Data\Generated\TestReportingContext.cs" />
+    <Compile Include="TestReporting\Data\Generated\TestReportingRepository.cs" />
+    <Compile Include="TestReporting\Data\NotificationSubscription.cs" />
+    <Compile Include="TestReporting\Data\SuiteDefinition.cs" />
+    <Compile Include="TestReporting\Data\TestDefinition.cs" />
+    <Compile Include="TestReporting\Data\TestExecution.cs" />
+    <Compile Include="TestReporting\Data\TestExecutionSummary.cs" />
+    <Compile Include="TestReporting\DefineSuiteResponse.cs" />
+    <Compile Include="TestReporting\DefineTestResponse.cs" />
+    <Compile Include="TestReporting\ITestReportService.cs" />
+    <Compile Include="TestReporting\NotificationSubscriptionResponse.cs" />
+    <Compile Include="TestReporting\RetrieveNotificationSubscriptionsResponse.cs" />
+    <Compile Include="TestReporting\RetrieveTestExecutionResponse.cs" />
+    <Compile Include="TestReporting\RetrieveTestSummaryResponse.cs" />
+    <Compile Include="TestReporting\SaveTestExecutionResponse.cs" />
+    <Compile Include="TestReporting\SearchTestExecutionResponse.cs" />
+    <Compile Include="TestReporting\SubscriptionStatus.cs" />
+    <Compile Include="TestReporting\TestReportResponse.cs" />
+    <Compile Include="TestReporting\TestReportService.cs" />
     <Compile Include="SourceControl\Extensions.cs" />
     <Compile Include="SourceControl\Git.cs" />
     <Compile Include="SourceControl\GitConfigStack.cs" />
@@ -344,9 +400,7 @@
     <Content Include="Automation.db.js" />
     <Content Include="ContinuousIntegration\ContinuousIntegration.db.js" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Testing\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
