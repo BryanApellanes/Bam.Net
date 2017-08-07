@@ -115,7 +115,7 @@ namespace Bam.Net.Data.Repositories
 
         public T Save<T>(T toSave) where T : class, new()
 		{
-			return (T)Save((object)toSave); // casting so that th implementation uses the actual type and not a base type
+			return (T)Save((object)toSave); // casting so that the implementation uses the actual type and not a base type
 		}
 
         /// <summary>

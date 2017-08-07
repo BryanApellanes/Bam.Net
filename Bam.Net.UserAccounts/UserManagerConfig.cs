@@ -22,7 +22,7 @@ namespace Bam.Net.UserAccounts
             EmailComposerType = typeof(NamedFormatEmailComposer).AssemblyQualifiedName;
             ApplicationNameResolverType = typeof(DefaultConfigurationApplicationNameProvider).AssemblyQualifiedName;
             SmtpSettingsVaultPath = ".\\SmtpSettings.vault.sqlite";
-            ApplicationName = "UNKOWN-APPLICATION";
+            ApplicationName = DefaultConfiguration.DefaultApplicationName;
         }
 
         public UserManager Create(ILogger logger = null)
@@ -102,7 +102,7 @@ namespace Bam.Net.UserAccounts
 
         private void SetAppNameProvider(UserManager mgr, ILogger logger)
         {
-            if (string.IsNullOrEmpty(ApplicationName))
+            if (string.IsNullOrEmpty(ApplicationName) || ApplicationName.Equals(DefaultConfiguration.DefaultApplicationName))
             {
                 Type appNameResolverType = Type.GetType(ApplicationNameResolverType);
                 Type defaultAppNameProvider = typeof(DefaultConfigurationApplicationNameProvider);

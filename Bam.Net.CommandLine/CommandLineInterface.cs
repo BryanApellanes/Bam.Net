@@ -118,7 +118,7 @@ namespace Bam.Net.CommandLine
             return Arguments.Contains(name) ? Arguments[name] :
                 Arguments.Contains(acronym) ? Arguments[acronym] :
                 !string.IsNullOrEmpty(fromConfig) ? fromConfig :
-                prompter(promptMessage);//Prompt(promptMessage ?? $"Please enter a value for {name}");
+                prompter(promptMessage);
         }
 
         /// <summary>

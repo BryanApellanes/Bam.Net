@@ -174,7 +174,7 @@ namespace Bam.Net.Logging
         {
             get
             {
-                if (string.IsNullOrEmpty(appName) || appName.Equals("UNKOWN"))
+                if (string.IsNullOrEmpty(appName) || appName.Equals(DefaultConfiguration.DefaultApplicationName))
                 {
                     appName = DefaultConfiguration.GetAppSetting("ApplicationName", "UNKNOWN");
                 }

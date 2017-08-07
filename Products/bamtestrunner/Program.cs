@@ -23,6 +23,9 @@ using System.Threading.Tasks;
 using Bam.Net.Testing.Integration;
 using Bam.Net.Testing.Data;
 using Bam.Net.Testing.Unit;
+using Bam.Net.Configuration;
+using Bam.Net.CoreServices;
+using Bam.Net.Automation.TestReporting;
 
 namespace Bam.Net.Testing
 {
@@ -65,7 +68,8 @@ namespace Bam.Net.Testing
             AddValidArgument("data", false, description: "The path to save the results to, default is the current directory if not specified");
             AddValidArgument("dataPrefix", true, description: "The file prefix for the sqlite data file or 'BamTests' if not specified");
             AddValidArgument("type", false, description: "The type of tests to run [Unit | Integration], default is unit.");
-            
+            AddValidArgument("testReportHost", false, description: "The hostname of the test report service");
+
             AddValidArgument(_exitOnFailure, true);
             AddSwitches(typeof(Program));
 
@@ -125,15 +129,7 @@ namespace Bam.Net.Testing
             for (int i = 0; i < files.Length; i++)
             {
                 FileInfo fi = files[i];
-                try
-                {
-                    RunUnitTestsInFile(fi.FullName, startDirectory);
-                }
-                catch (Exception ex)
-                {
-                    exceptionOccurred = true;
-                    OutLineFormat("Exception running unit tests in file {0}: {1}\r\n\r\n", ConsoleColor.Magenta, fi.FullName, ex.Message, ex.StackTrace);                    
-                }
+                RunUnitTestsInFile(fi.FullName, startDirectory);                
             }
 
             OutLineFormat("Passed: {0}", ConsoleColor.Green, _passedCount);
@@ -195,15 +191,26 @@ namespace Bam.Net.Testing
         {
             string resultDirectory = Arguments.Contains("data") ? Arguments["data"] : ".";
             string filePrefix = Arguments["dataPrefix"].Or("BamTests");
-            GetUnitTestRunListener = () => new UnitTestRunListener(resultDirectory, $"{filePrefix}_{DateTime.Now.Date.ToString("MM_dd_yyyy")}");
+            List<ITestRunListener<UnitTestMethod>> testRunListeners = new List<ITestRunListener<UnitTestMethod>> { new UnitTestRunListener(resultDirectory, $"{filePrefix}_{DateTime.Now.Date.ToString("MM_dd_yyyy")}") };
 
+            string reportHost = Arguments["testReportHost"];
+            if (string.IsNullOrEmpty(reportHost))
+            {
+                reportHost = DefaultConfiguration.GetAppSetting("TestReportHost", string.Empty);
+            }
+            if (!string.IsNullOrEmpty(reportHost))
+            {
+                testRunListeners.Add(new UnitTestRunReportingListener(reportHost));
+            }
+
+            GetUnitTestRunListeners = () => testRunListeners;
             startDirectory = Environment.CurrentDirectory;
             DirectoryInfo testDir = GetTestDirectory();
             Environment.CurrentDirectory = testDir.FullName;
 
             files = GetTestFiles(testDir);          
         }
-
+        
         private static FileInfo[] GetTestFiles(DirectoryInfo testDir)
         {
             FileInfo[] files = null;

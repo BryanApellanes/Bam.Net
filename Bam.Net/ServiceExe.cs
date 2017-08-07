@@ -61,7 +61,7 @@ namespace Bam.Net
         {
             lock (lastDitchLock)
             {
-                string logPath = Path.Combine(Extensions.GetAppDataFolder(null), "{0}.fatal.log"._Format(serviceName));
+                string logPath = Path.Combine(RuntimeSettings.AppDataFolder, "{0}.fatal.log"._Format(serviceName));
                 using (StreamWriter lastDitch = new StreamWriter(logPath, true))
                 {
                     lastDitch.WriteLine(DateTime.Now.ToLongDateString() + ":\tFATAL ERROR STARTING SERVICE:\r\n\t" + fatalEx.Message);

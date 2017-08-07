@@ -2233,18 +2233,6 @@ namespace Bam.Net
             }
         }
 
-        /// <summary>
-        /// Gets the full path to the App_Data folder if HttpContext.Current is not null.
-        /// Otherwise returns the full path to Environment.SpecialFolder.ApplicationData
-        /// </summary>
-        /// <param name="any"></param>
-        /// <returns></returns>
-        [Obsolete("This extension method is deprecated and will be removed in a future release, use RuntimeSettings.AppDataFolder instead.")]
-        public static string GetAppDataFolder(this object any) //TODO: move this into RuntimeSettings
-        {
-            return RuntimeSettings.AppDataFolder;
-        }
-
         public static Dictionary<string, object> PropertiesToDictionary(this object value)
         {
             Dictionary<string, object> result = new Dictionary<string, object>();

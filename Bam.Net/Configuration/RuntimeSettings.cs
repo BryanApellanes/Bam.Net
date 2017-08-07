@@ -14,6 +14,7 @@ namespace Bam.Net.Configuration
     {
         static string _appDataFolder;
         static object _appDataFolderLock = new object();
+        
         public static string AppDataFolder
         {
             get
@@ -45,7 +46,7 @@ namespace Bam.Net.Configuration
                 });
             }
         }
-
+        
         public static Func<Type, bool> ClrTypeFilter
         {
             get

@@ -39,14 +39,30 @@ namespace Bam.Net.Automation.Tests
     public class UnitTests: CommandLineTestInterface
     {
         [UnitTest]
-        public void ShouldBeAbleToSaveAndGetSecurelyWithDefaultForeman()
+        public void TestRunListenerEventsShouldFire()
+        {
+            TestUnitTestRunListener listener = new TestUnitTestRunListener();
+            TestTestRunner runner = new TestTestRunner();
+            listener.Listen(runner);
+            runner.FireAllEventsForTestingPurposes();
+            
+            Expect.IsTrue(listener.TestFailedRan, "TestFailed didn't run");
+            Expect.IsTrue(listener.TestPassedRan, "TestPassed didn't run");
+            Expect.IsTrue(listener.TestsStartingRan, "TestsStarting didn't run");
+            Expect.IsTrue(listener.TestStartingRan, "TestStarting didn't run");
+            Expect.IsTrue(listener.TestsFinishedRan, "TestsFinished didn't run");
+            Expect.IsTrue(listener.TestFinishedRan, "TestFinished didn't run");
+        }
+
+        [UnitTest]
+        public void ShouldBeAbleToSaveAndGetSecurelyWithDefaultOverseer()
         {
             string key = "Key_".RandomLetters(4);
             string value = "Value_".RandomLetters(4);
 
-            Overseer.Default.SecureSet(key, value);
+            JobConductorService.Default.SecureSet(key, value);
 
-            string validate = Overseer.Default.SecureGet(key);
+            string validate = JobConductorService.Default.SecureGet(key);
 
             Expect.AreEqual(value, validate);
         }

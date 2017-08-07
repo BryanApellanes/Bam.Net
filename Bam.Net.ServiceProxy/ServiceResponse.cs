@@ -26,5 +26,10 @@ namespace Bam.Net.ServiceProxy
         {
             return Data.FromJObject<T>();
         }
+
+        public T DataTo<T>()
+        {
+            return Data.ToJson().FromJson<T>();
+        }
     }
 }

@@ -309,7 +309,7 @@ namespace Bam.Net.UserAccounts
         {
             get
             {
-                return DefaultConfiguration.GetAppSetting("ApplicationName", "UNKOWN");
+                return DefaultConfiguration.GetAppSetting("ApplicationName", DefaultConfiguration.DefaultApplicationName);
             }
             set
             {

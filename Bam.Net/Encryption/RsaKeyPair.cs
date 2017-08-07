@@ -28,7 +28,7 @@ namespace Bam.Net.Encryption
             {
                 return _defaultLock.DoubleCheckLock(ref _rsaKeyPair, () =>
                 {
-                    string applicationName = DefaultConfiguration.GetAppSetting("ApplicationName", "UNKOWN");
+                    string applicationName = DefaultConfiguration.GetAppSetting("ApplicationName", DefaultConfiguration.DefaultApplicationName);
                     RsaKeyPair result = new RsaKeyPair();
                     string pubKeyPath;
                     string privKeyPath;
@@ -60,7 +60,7 @@ namespace Bam.Net.Encryption
 
         private bool Exists(string fileName, string ext, out string filePath)
         {
-            filePath = Path.Combine(new object().GetAppDataFolder(), string.Format("{0}.{1}", fileName, ext));
+            filePath = Path.Combine(RuntimeSettings.AppDataFolder, string.Format("{0}.{1}", fileName, ext));
             return File.Exists(filePath);
         }
 
@@ -69,7 +69,7 @@ namespace Bam.Net.Encryption
         
         public void Save(string fileName)
         {
-            Save(new object().GetAppDataFolder(), fileName);
+            Save(RuntimeSettings.AppDataFolder, fileName);
         }
 
         public void Save(string directory, string fileName)

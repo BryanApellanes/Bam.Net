@@ -37,8 +37,8 @@ namespace Bam.Net.CommandLine
         /// <summary>
         /// Used to help build usage examples for /? 
         /// </summary>
-        public string SwitchValue { get; internal set; }
-        public MethodInfo Method { get; internal set; }
+        public string SwitchValue { get; set; }
+        public MethodInfo Method { get; set; }
         public object[] Parameters { get; set; }
         public object Provider { get; set; }
 
