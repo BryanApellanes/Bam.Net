@@ -43,8 +43,7 @@ namespace Bam.Net.Testing.Data
 			Exception = args.Exception.Message;
 			StackTrace = args.Exception.StackTrace;
 		}
-        public long TestRunId { get; set; }
-        public virtual TestRun TestRun { get; set; }
+
         public string TestType { get; set; }        
         /// <summary>
         /// Boolean indicating whether the test passed

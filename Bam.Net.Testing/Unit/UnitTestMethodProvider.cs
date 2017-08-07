@@ -13,7 +13,7 @@ namespace Bam.Net.Testing.Unit
 
         public override List<UnitTestMethod> GetTests()
         {
-            return UnitTestAttribute.FromAssembly(Assembly);
+            return UnitTestMethod.FromAssembly(Assembly);
         }
     }
 }

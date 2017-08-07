@@ -9,6 +9,10 @@ namespace Bam.Net.Testing
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class TestSuiteAttribute: Attribute
     {
+        public TestSuiteAttribute(string title)
+        {
+            Title = title;
+        }
         public string Title { get; set; }
     }
 }

@@ -31,7 +31,7 @@ namespace Bam.Net.Testing.Unit
 
         public override void TestPassed(object sender, TestEventArgs<UnitTestMethod> args)
         {
-            TestResult result = new TestResult(args.CurrentTest);
+            TestResult result = new TestResult(args.Test);
             DaoRepository.Save(result);
         }
     }

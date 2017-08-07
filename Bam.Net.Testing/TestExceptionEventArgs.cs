@@ -12,6 +12,7 @@ namespace Bam.Net.Testing
 {
     public class TestExceptionEventArgs: EventArgs
     {
+        public TestExceptionEventArgs() { }
         public TestExceptionEventArgs(TestMethod testMethod, Exception ex)
         {
             TestMethod = testMethod;

@@ -163,7 +163,7 @@ namespace Bam.Net.Testing
 
         public void RunTest(TestMethod test)
         {
-            TestEventArgs<TTestMethod> args = new TestEventArgs<TTestMethod> { CurrentTest = test, TestRunner = this };
+            TestEventArgs<TTestMethod> args = new TestEventArgs<TTestMethod> { Test = test, TestRunner = this };
             FireEvent(TestStarting, args);
             try
             {

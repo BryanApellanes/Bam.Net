@@ -10,35 +10,35 @@ namespace Bam.Net.Testing
     {
         public void TestFailed(object sender, EventArgs e)
         {
-            TestFailed(sender, (TestExceptionEventArgs)e);
+            TestFailed(sender, e.CopyAs<TestExceptionEventArgs>());
         }
 
         public void TestPassed(object sender, EventArgs e)
         {
-            TestPassed(sender, (TestEventArgs<TTestMethod>)e);
+            TestPassed(sender, e.CopyAs<TestEventArgs<TTestMethod>>());
         }
 
         public void TestsStarting(object sender, EventArgs e)
         {
-            TestsStarting(sender, (TestEventArgs<TTestMethod>)e);
+            TestsStarting(sender, e.CopyAs<TestEventArgs<TTestMethod>>());
         }
 
         public void TestsFinished(object sender, EventArgs e)
         {
-            TestsFinished(sender, (TestEventArgs<TTestMethod>)e);
+            TestsFinished(sender, e.CopyAs<TestEventArgs<TTestMethod>>());
         }
 
         public void TestStarting(object sender, EventArgs e)
         {
-            TestStarting(sender, (TestEventArgs<TTestMethod>)e);
+            TestStarting(sender, e.CopyAs<TestEventArgs<TTestMethod>>());
         }
 
         public void TestFinished(object sender, EventArgs e)
         {
-            TestFinished(sender, (TestEventArgs<TTestMethod>)e);
+            TestFinished(sender, e.CopyAs<TestEventArgs<TTestMethod>>());
         }
 
-        public void Listen(ITestRunner<TTestMethod> runner)
+        public virtual void Listen(ITestRunner<TTestMethod> runner)
         {
             runner.TestFailed += TestFailed;
             runner.TestPassed += TestPassed;

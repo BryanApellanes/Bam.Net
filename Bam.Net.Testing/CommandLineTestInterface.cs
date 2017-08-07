@@ -22,7 +22,7 @@ namespace Bam.Net.Testing
     {
         static CommandLineTestInterface()
         {
-            GetUnitTestRunListener = () => new UnitTestRunListener();
+            GetUnitTestRunListeners = () => new List<ITestRunListener<UnitTestMethod>>();
             InitLogger();
         }
         
@@ -203,12 +203,14 @@ namespace Bam.Net.Testing
             {
                 runner.TestFailed += failedHandler;
             }
-            ITestRunListener<UnitTestMethod> listener = GetUnitTestRunListener();
-            listener.Listen(runner);
+            foreach(ITestRunListener<UnitTestMethod> listener in GetUnitTestRunListeners())
+            {
+                listener.Listen(runner);
+            }
             runner.RunAllTests();
         }
 
-        protected internal static Func<ITestRunListener<UnitTestMethod>> GetUnitTestRunListener
+        protected internal static Func<IEnumerable<ITestRunListener<UnitTestMethod>>> GetUnitTestRunListeners
         {
             get;set;
         }
@@ -231,7 +233,7 @@ namespace Bam.Net.Testing
             runner.TestPassed += (o, e) =>
             {
                 TestEventArgs<TTestMethod> args = (TestEventArgs<TTestMethod>)e;
-                Pass(args.CurrentTest.Information);
+                Pass(args.Test.Information);
             };
             runner.TestFailed += (o, t) =>
             {
