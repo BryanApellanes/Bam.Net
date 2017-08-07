@@ -12,13 +12,13 @@ using Bam.Net.Automation.TestReporting.Data.Dao;
 
 namespace Bam.Net.Automation.TestReporting.Data.Dao.Qi
 {
-    public class TestExecutionSummaryController : DaoController
+    public class TestSuiteDefinitionController : DaoController
     {	
-		public ActionResult Save(Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionSummary[] values)
+		public ActionResult Save(Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition[] values)
 		{
 			try
 			{
-				TestExecutionSummaryCollection saver = new TestExecutionSummaryCollection();
+				TestSuiteDefinitionCollection saver = new TestSuiteDefinitionCollection();
 				saver.AddRange(values);
 				saver.Save();
 				return Json(new { Success = true, Message = "", Dao = "" });
@@ -29,7 +29,7 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao.Qi
 			}
 		}
 
-		public ActionResult Create(Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionSummary dao)
+		public ActionResult Create(Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition dao)
 		{
 			return Update(dao);
 		}
@@ -38,7 +38,7 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao.Qi
         {
 			try
 			{
-				object value = Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionSummary.OneWhere(c => c.KeyColumn == id).ToJsonSafe();
+				object value = Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.OneWhere(c => c.KeyColumn == id).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
 			catch(Exception ex)
@@ -47,7 +47,7 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao.Qi
 			}
         }
 
-		public ActionResult Update(Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionSummary dao)
+		public ActionResult Update(Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition dao)
         {
 			try
 			{
@@ -65,14 +65,14 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao.Qi
 			try
 			{
 				string msg = "";
-				Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionSummary dao = Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionSummary.OneWhere(c => c.KeyColumn == id);				
+				Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition dao = Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.OneWhere(c => c.KeyColumn == id);				
 				if(dao != null)
 				{
 					dao.Delete();	
 				}
 				else
 				{
-					msg = string.Format("The specified id ({0}) was not found in the table (TestExecutionSummary)", id);
+					msg = string.Format("The specified id ({0}) was not found in the table (TestSuiteDefinition)", id);
 				}
 				return Json(new { Success = true, Message = msg, Dao = "" });
 			}
@@ -86,8 +86,8 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao.Qi
 		{
 			try
 			{
-				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionSummary));
-				object value = Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionSummary.OneWhere(query).ToJsonSafe();
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition));
+				object value = Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
 			catch(Exception ex)
@@ -100,8 +100,8 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao.Qi
 		{
 			try
 			{
-				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionSummary));
-				object[] value = Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionSummary.Where(query).ToJsonSafe();
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition));
+				object[] value = Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
 			catch(Exception ex)

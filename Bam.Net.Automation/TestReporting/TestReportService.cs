@@ -17,89 +17,76 @@ using Bam.Net.CommandLine;
 using Bam.Net.Testing.Data;
 using Bam.Net.Automation.TestReporting;
 using Bam.Net.Automation.TestReporting.Data;
+using Bam.Net.Automation.TestReporting.Data.Dao.Repository;
 
-namespace Bam.Net.Testing
+namespace Bam.Net.Automation.TestReporting
 {
 	[Proxy("testReportSvc", MethodCase = MethodCase.CamelCase)]
 	public class TestReportService : Loggable, IRequiresHttpContext, ITestReportService
     {
-		DaoRepository _repository;
-		public TestReportService()
+		public TestReportService(IDatabaseProvider dbProvider, ILogger logger = null)
 		{
-            //TODO: remove this and use DatabaseProvider or similar
-			string dataDirectory = DefaultConfiguration.GetAppSetting("TestResultsDataDirectory", "C:\\BamContent\\apps\\hugh\\data\\");
-			Database db = new SQLiteDatabase(dataDirectory, "TestResults");
-			_repository = new DaoRepository(db);
-			_repository.SchemaWarning += (s, e) =>
+            DatabaseProvider = dbProvider;
+            logger = logger ?? Log.Default;			
+            TestReportingRepository repo = new TestReportingRepository();
+            DatabaseProvider.SetDatabases(repo);
+            
+			repo.SchemaWarning += (s, e) =>
 			{
-				Log.AddEntry("SchemaWarning: {0}", LogEventType.Warning, e.TryPropertiesToString());
+                logger.AddEntry("SchemaWarning: {0}", LogEventType.Warning, e.TryPropertiesToString());
 			};
-			_repository.CreateFailed += (s, e) =>
+            repo.CreateFailed += (s, e) =>
 			{
-				Log.AddEntry("CreateFailed: {0}", LogEventType.Error, e.TryPropertiesToString());
+                logger.AddEntry("CreateFailed: {0}", LogEventType.Error, e.TryPropertiesToString());
 			};
-			_repository.RetrieveFailed += (s, e) =>
+            repo.RetrieveFailed += (s, e) =>
 			{
-				Log.AddEntry("RetrieveFailed: {0}", LogEventType.Error, e.TryPropertiesToString());
+                logger.AddEntry("RetrieveFailed: {0}", LogEventType.Error, e.TryPropertiesToString());
 			};
-			_repository.UpdateFailed += (s, e) =>
+            repo.UpdateFailed += (s, e) =>
 			{
-				Log.AddEntry("UpdateFailed: {0}", LogEventType.Error, e.TryPropertiesToString());
+                logger.AddEntry("UpdateFailed: {0}", LogEventType.Error, e.TryPropertiesToString());
 			};
 
-			AddStorableTypes(_repository);
-			_repository.EnsureDaoAssemblyAndSchema();
-			this.Repository = _repository;
+            Logger = logger;
+			Repository = repo;
 		}
-		
-		public string DataFile
-		{
-			get
-			{
-                if (Repository is DaoRepository repo)
-                {
-                    if (repo.Database is SQLiteDatabase db)
-                    {
-                        return db.DatabaseFile.FullName;
-                    }
-                }
-
-                return string.Empty;
-			}
-		}
+		protected IDatabaseProvider DatabaseProvider { get; set; }
+        protected ILogger Logger { get; set; }
+		public Database Database { get; set; }
 
 		public override void Subscribe(ILogger logger)
 		{
-			_repository.Subscribe(logger);
+			Repository.Subscribe(logger);
 		}
 
 		public override void Subscribe(Loggable loggable)
 		{
-			_repository.Subscribe(loggable);
+			Repository.Subscribe(loggable);
 		}
 
 		#region handlers for client side reporter calls
-		public CreateTestExecutionSummaryResponse Start()
+		public SaveTestSuiteExecutionSummaryResponse Start()
 		{
-			return CreateTestExecutionSummary();
+			return SaveTestSuiteExecutionSummary();
 		}
 
-		public DefineSuiteResponse Suite(SuiteDefinition suite)
+		public GetSuiteDefinitionResponse Suite(TestSuiteDefinition suite)
 		{
-			return DefineSuite(suite);
+			return GetSuiteDefinition(suite.Title);
 		}
 
 		public SaveTestExecutionResponse Pass(int summaryId, string suiteTitle, string testTitle)
 		{
-			TestDefinition testDefinition = GetTestDefinition(suiteTitle, testTitle);
-			TestExecution execution = new TestExecution { TestSummaryId = summaryId, TestDefinitionId = testDefinition.Id, Passed = true };
+			TestDefinition testDefinition = GetOrCreateTestDefinition(suiteTitle, testTitle);
+			TestExecution execution = new TestExecution { TestSuiteExecutionSummaryId = summaryId, TestDefinitionId = testDefinition.Id, Passed = true };
 			return SaveTestExecution(execution);
 		}
 
 		public SaveTestExecutionResponse Fail(int summaryId, string suiteTitle, string testTitle, string error)
 		{
-			TestDefinition testDefinition = GetTestDefinition(suiteTitle, testTitle);
-			TestExecution execution = new TestExecution { TestSummaryId = summaryId, TestDefinitionId = testDefinition.Id, Passed = false, Exception = error };
+			TestDefinition testDefinition = GetOrCreateTestDefinition(suiteTitle, testTitle);
+			TestExecution execution = new TestExecution { TestSuiteExecutionSummaryId = summaryId, TestDefinitionId = testDefinition.Id, Passed = false, Exception = error };
 			return SaveTestExecution(execution);
 		}
 
@@ -163,36 +150,73 @@ namespace Bam.Net.Testing
 			}
 		}
 
-		public CreateTestExecutionSummaryResponse CreateTestExecutionSummary()
+        /// <summary>
+        /// Get an exisintg SuiteDefinition with the specified suiteTitle or
+        /// create it if none exists
+        /// </summary>
+        /// <param name="suiteTitle"></param>
+        /// <returns></returns>
+		public GetSuiteDefinitionResponse GetSuiteDefinition(string suiteTitle)
 		{
 			try
 			{
-                TestExecutionSummary toCreate = new TestExecutionSummary();
-				Meta.SetAuditFields(toCreate);
-                TestExecutionSummary sum = Repository.Create(toCreate);
-				return new CreateTestExecutionSummaryResponse { Success = true, Data = sum };
+				TestSuiteDefinition result = GetOrCreateSuiteDefinition(new TestSuiteDefinition { Title = suiteTitle }, out CreateStatus createStatus);
+                return new GetSuiteDefinitionResponse { Success = true, Data = result, CreateStatus = createStatus };
 			}
 			catch (Exception ex)
 			{
-				return new CreateTestExecutionSummaryResponse { Success = false, Message = ex.Message };
+				return new GetSuiteDefinitionResponse { Success = false, Message = ex.Message };
 			}
 		}
 
-		public DefineSuiteResponse DefineSuite(SuiteDefinition suite)
-		{
-			try
-			{
-				SuiteDefinition result = GetOrCreateSuiteDefinition(suite);
-				return new DefineSuiteResponse { Success = true, Data = result };
-			}
-			catch (Exception ex)
-			{
-				return new DefineSuiteResponse { Success = false, Message = ex.Message };
-			}
-		}
+        /// <summary>
+        /// Get an existing TestDefinition for the specified suiteTitle and testTitle
+        /// or create it if none exists
+        /// </summary>
+        /// <param name="suiteTitle"></param>
+        /// <param name="testTitle"></param>
+        /// <returns></returns>
+        public GetTestDefinitionResponse GetTestDefinition(string suiteTitle, string testTitle)
+        {
+            try
+            {
+                TestDefinition result = GetOrCreateTestDefinition(suiteTitle, testTitle, out CreateStatus createStatus);
+                return new GetTestDefinitionResponse { Success = true, Data = result, CreateStatus = createStatus };
+            }
+            catch (Exception ex)
+            {
+                return new GetTestDefinitionResponse { Success = false, Message = ex.Message };
+            }
+        }
 
+        public SaveTestSuiteExecutionSummaryResponse SaveTestSuiteExecutionSummary(TestSuiteExecutionSummary toCreate = null)
+        {
+            try
+            {
+                toCreate = toCreate ?? new TestSuiteExecutionSummary();
+                Meta.SetAuditFields(toCreate);
+                TestSuiteExecutionSummary sum = Repository.Save(toCreate);
+                return new SaveTestSuiteExecutionSummaryResponse { Success = true, Data = sum, CreateStatus = toCreate.Id > 0 ? CreateStatus.Existing: CreateStatus.Created };
+            }
+            catch (Exception ex)
+            {
+                return new SaveTestSuiteExecutionSummaryResponse { Success = false, Message = ex.Message };
+            }
+        }
 
-		public SaveTestExecutionResponse SaveTestExecution(TestExecution execution)
+        public SaveTestExecutionResponse StartTest(long executionSummaryId, long testDefinitionId)
+        {
+            return SaveTestExecution(new TestExecution { StartedTime = DateTime.UtcNow, TestDefinitionId = testDefinitionId, TestSuiteExecutionSummaryId = executionSummaryId });
+        }
+
+        public SaveTestExecutionResponse FinishTest(long executionId)
+        {
+            TestExecution execution = Repository.OneTestExecutionWhere(c => c.Id == executionId);
+            execution.FinishedTime = DateTime.UtcNow;
+            return SaveTestExecution(execution);
+        }
+
+        public SaveTestExecutionResponse SaveTestExecution(TestExecution execution)
 		{
 			try
 			{
@@ -221,7 +245,7 @@ namespace Bam.Net.Testing
 			try
 			{
 				TestExecution retrieved = Repository.Retrieve<TestExecution>(id);
-				return new RetrieveTestExecutionResponse { Success = true, Data = retrieved };
+				return new RetrieveTestExecutionResponse { Success = true, Data = retrieved, CreateStatus = CreateStatus.Existing };
 			}
 			catch (Exception ex)
 			{
@@ -247,60 +271,77 @@ namespace Bam.Net.Testing
 			}
 		}
 
-		protected internal DaoRepository Repository { get; set; }
+		protected internal TestReportingRepository Repository { get; set; }
 
-		private static void AddStorableTypes(IRepository repository)
-		{
-			repository.AddNamespace(typeof(SuiteDefinition).Assembly, "Bam.Net.Testing.Repository.Data");	
-			
-		}
-		private TestDefinition GetTestDefinition(string suiteTitle, string testTitle)
-		{
-			SuiteDefinition suite = Repository.Query<SuiteDefinition>(Query.Where("Title") == suiteTitle).FirstOrDefault();
-			if (suite == null)
-			{
-				suite = GetOrCreateSuiteDefinition(new SuiteDefinition { Title = suiteTitle });
-			}
+        private TestDefinition GetOrCreateTestDefinition(string suiteTitle, string testTitle)
+        {
+            return GetOrCreateTestDefinition(suiteTitle, testTitle, out CreateStatus createStatus);
+        }
 
-			TestDefinition result = Repository.Query<TestDefinition>(Query.Where("Title") == testTitle && Query.Where("SuiteDefinitionId") == suite.Id).FirstOrDefault();
-			if (result == null)
-			{
-                result = new TestDefinition()
+        static object _testLock = new object();
+        private TestDefinition GetOrCreateTestDefinition(string suiteTitle, string testTitle, out CreateStatus createStatus)
+		{
+            lock (_testLock)
+            {
+                createStatus = CreateStatus.Existing;
+                TestSuiteDefinition suite = Repository.Query<TestSuiteDefinition>(Query.Where("Title") == suiteTitle).FirstOrDefault();
+                if (suite == null)
                 {
-                    Title = testTitle,
-                    SuiteDefinitionId = suite.Id
-                };
-                Meta.SetAuditFields(result);
-				result = Repository.Create(result);
-			}
-			return result;
+                    suite = GetOrCreateSuiteDefinition(new TestSuiteDefinition { Title = suiteTitle });
+                }
+
+                TestDefinition result = Repository.Query<TestDefinition>(Query.Where("Title") == testTitle && Query.Where("SuiteDefinitionId") == suite.Id).FirstOrDefault();
+                if (result == null)
+                {
+                    result = new TestDefinition()
+                    {
+                        Title = testTitle,
+                        SuiteDefinitionId = suite.Id
+                    };
+                    Meta.SetAuditFields(result);
+                    result = Repository.Create(result);
+                    createStatus = CreateStatus.Created;
+                }
+                return result;
+            }
 		}
-		
-		private SuiteDefinition GetOrCreateSuiteDefinition(SuiteDefinition suite)
+
+        private TestSuiteDefinition GetOrCreateSuiteDefinition(TestSuiteDefinition suite)
+        {
+            return GetOrCreateSuiteDefinition(suite, out CreateStatus createStatus);
+        }
+
+        static object _suiteLock = new object();
+        private TestSuiteDefinition GetOrCreateSuiteDefinition(TestSuiteDefinition suite, out CreateStatus createStatus)
 		{
-			SuiteDefinition result = null;
-			if (!string.IsNullOrEmpty(suite.Uuid))
-			{
-				result = (SuiteDefinition)Repository.Retrieve(typeof(SuiteDefinition), suite.Uuid);
-			}
-			if (result == null && suite.Id > 0)
-			{
-				result = Repository.Retrieve<SuiteDefinition>(suite.Id);
-			}
-			if (result == null)
-			{
-				result = Repository.Query<SuiteDefinition>(Query.Where("Title") == suite.Title).FirstOrDefault();
-				if (result != null)
-				{
-					result = (SuiteDefinition)Repository.Retrieve(typeof(SuiteDefinition), result.Uuid);
-				}
-			}
-			if (result == null)
-			{
-				Meta.SetAuditFields(suite);
-				result = Repository.Create(suite);
-			}
-			return result;
+            lock (_suiteLock)
+            {
+                TestSuiteDefinition result = null;
+                createStatus = CreateStatus.Existing;
+                if (!string.IsNullOrEmpty(suite.Uuid))
+                {
+                    result = (TestSuiteDefinition)Repository.Retrieve(typeof(TestSuiteDefinition), suite.Uuid);
+                }
+                if (result == null && suite.Id > 0)
+                {
+                    result = Repository.Retrieve<TestSuiteDefinition>(suite.Id);
+                }
+                if (result == null)
+                {
+                    result = Repository.Query<TestSuiteDefinition>(Query.Where("Title") == suite.Title).FirstOrDefault();
+                    if (result != null)
+                    {
+                        result = (TestSuiteDefinition)Repository.Retrieve(typeof(TestSuiteDefinition), result.Uuid);
+                    }
+                }
+                if (result == null)
+                {
+                    Meta.SetAuditFields(suite);
+                    result = Repository.Create(suite);
+                    createStatus = CreateStatus.Created;
+                }
+                return result;
+            }
 		}
 		#region IRequiresHttpContext Members
 
@@ -312,7 +353,7 @@ namespace Bam.Net.Testing
 
         public object Clone()
         {
-            TestReportService clone = new TestReportService();
+            TestReportService clone = new TestReportService(DatabaseProvider, Logger);
             clone.CopyProperties(this);
             return clone;
         }

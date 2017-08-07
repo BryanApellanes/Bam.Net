@@ -16,14 +16,14 @@ namespace Bam.Net.Automation.TestReporting.Data.Wrappers
 {
 	// generated
 	[Serializable]
-	public class TestDefinitionWrapper: Bam.Net.Automation.TestReporting.Data.TestDefinition, IHasUpdatedXrefCollectionProperties
+	public class TestSuiteExecutionSummaryWrapper: Bam.Net.Automation.TestReporting.Data.TestSuiteExecutionSummary, IHasUpdatedXrefCollectionProperties
 	{
-		public TestDefinitionWrapper()
+		public TestSuiteExecutionSummaryWrapper()
 		{
 			this.UpdatedXrefCollectionProperties = new Dictionary<string, PropertyInfo>();
 		}
 
-		public TestDefinitionWrapper(DaoRepository repository) : this()
+		public TestSuiteExecutionSummaryWrapper(DaoRepository repository) : this()
 		{
 			this.Repository = repository;
 		}
@@ -53,7 +53,7 @@ Bam.Net.Automation.TestReporting.Data.TestExecution[] _testExecutions;
 			{
 				if (_testExecutions == null)
 				{
-					_testExecutions = Repository.ForeignKeyCollectionLoader<Bam.Net.Automation.TestReporting.Data.TestDefinition, Bam.Net.Automation.TestReporting.Data.TestExecution>(this).ToArray();
+					_testExecutions = Repository.ForeignKeyCollectionLoader<Bam.Net.Automation.TestReporting.Data.TestSuiteExecutionSummary, Bam.Net.Automation.TestReporting.Data.TestExecution>(this).ToArray();
 				}
 				return _testExecutions;
 			}
@@ -62,22 +62,7 @@ Bam.Net.Automation.TestReporting.Data.TestExecution[] _testExecutions;
 				_testExecutions = value;
 			}
 		}
-Bam.Net.Automation.TestReporting.Data.SuiteDefinition _suiteDefinition;
-		public override Bam.Net.Automation.TestReporting.Data.SuiteDefinition SuiteDefinition
-		{
-			get
-			{
-				if (_suiteDefinition == null)
-				{
-					_suiteDefinition = (Bam.Net.Automation.TestReporting.Data.SuiteDefinition)Repository.GetParentPropertyOfChild(this, typeof(Bam.Net.Automation.TestReporting.Data.SuiteDefinition));
-				}
-				return _suiteDefinition;
-			}
-			set
-			{
-				_suiteDefinition = value;
-			}
-		}
+
 
 	}
 	// -- generated

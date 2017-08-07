@@ -83,56 +83,56 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 			return _notificationSubscriptionsLock.DoubleCheckLock<NotificationSubscriptionQueryContext>(ref _notificationSubscriptions, () => new NotificationSubscriptionQueryContext());
 		}
 	}
-	public class SuiteDefinitionQueryContext
+	public class TestSuiteDefinitionQueryContext
 	{
-			public SuiteDefinitionCollection Where(WhereDelegate<SuiteDefinitionColumns> where, Database db = null)
+			public TestSuiteDefinitionCollection Where(WhereDelegate<TestSuiteDefinitionColumns> where, Database db = null)
 			{
-				return Bam.Net.Automation.TestReporting.Data.Dao.SuiteDefinition.Where(where, db);
+				return Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.Where(where, db);
 			}
 		   
-			public SuiteDefinitionCollection Where(WhereDelegate<SuiteDefinitionColumns> where, OrderBy<SuiteDefinitionColumns> orderBy = null, Database db = null)
+			public TestSuiteDefinitionCollection Where(WhereDelegate<TestSuiteDefinitionColumns> where, OrderBy<TestSuiteDefinitionColumns> orderBy = null, Database db = null)
 			{
-				return Bam.Net.Automation.TestReporting.Data.Dao.SuiteDefinition.Where(where, orderBy, db);
+				return Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.Where(where, orderBy, db);
 			}
 
-			public SuiteDefinition OneWhere(WhereDelegate<SuiteDefinitionColumns> where, Database db = null)
+			public TestSuiteDefinition OneWhere(WhereDelegate<TestSuiteDefinitionColumns> where, Database db = null)
 			{
-				return Bam.Net.Automation.TestReporting.Data.Dao.SuiteDefinition.OneWhere(where, db);
+				return Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.OneWhere(where, db);
 			}
 
-			public static SuiteDefinition GetOneWhere(WhereDelegate<SuiteDefinitionColumns> where, Database db = null)
+			public static TestSuiteDefinition GetOneWhere(WhereDelegate<TestSuiteDefinitionColumns> where, Database db = null)
 			{
-				return Bam.Net.Automation.TestReporting.Data.Dao.SuiteDefinition.GetOneWhere(where, db);
+				return Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.GetOneWhere(where, db);
 			}
 		
-			public SuiteDefinition FirstOneWhere(WhereDelegate<SuiteDefinitionColumns> where, Database db = null)
+			public TestSuiteDefinition FirstOneWhere(WhereDelegate<TestSuiteDefinitionColumns> where, Database db = null)
 			{
-				return Bam.Net.Automation.TestReporting.Data.Dao.SuiteDefinition.FirstOneWhere(where, db);
+				return Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.FirstOneWhere(where, db);
 			}
 
-			public SuiteDefinitionCollection Top(int count, WhereDelegate<SuiteDefinitionColumns> where, Database db = null)
+			public TestSuiteDefinitionCollection Top(int count, WhereDelegate<TestSuiteDefinitionColumns> where, Database db = null)
 			{
-				return Bam.Net.Automation.TestReporting.Data.Dao.SuiteDefinition.Top(count, where, db);
+				return Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.Top(count, where, db);
 			}
 
-			public SuiteDefinitionCollection Top(int count, WhereDelegate<SuiteDefinitionColumns> where, OrderBy<SuiteDefinitionColumns> orderBy, Database db = null)
+			public TestSuiteDefinitionCollection Top(int count, WhereDelegate<TestSuiteDefinitionColumns> where, OrderBy<TestSuiteDefinitionColumns> orderBy, Database db = null)
 			{
-				return Bam.Net.Automation.TestReporting.Data.Dao.SuiteDefinition.Top(count, where, orderBy, db);
+				return Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.Top(count, where, orderBy, db);
 			}
 
-			public long Count(WhereDelegate<SuiteDefinitionColumns> where, Database db = null)
+			public long Count(WhereDelegate<TestSuiteDefinitionColumns> where, Database db = null)
 			{
-				return Bam.Net.Automation.TestReporting.Data.Dao.SuiteDefinition.Count(where, db);
+				return Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.Count(where, db);
 			}
 	}
 
-	static SuiteDefinitionQueryContext _suiteDefinitions;
-	static object _suiteDefinitionsLock = new object();
-	public static SuiteDefinitionQueryContext SuiteDefinitions
+	static TestSuiteDefinitionQueryContext _testSuiteDefinitions;
+	static object _testSuiteDefinitionsLock = new object();
+	public static TestSuiteDefinitionQueryContext TestSuiteDefinitions
 	{
 		get
 		{
-			return _suiteDefinitionsLock.DoubleCheckLock<SuiteDefinitionQueryContext>(ref _suiteDefinitions, () => new SuiteDefinitionQueryContext());
+			return _testSuiteDefinitionsLock.DoubleCheckLock<TestSuiteDefinitionQueryContext>(ref _testSuiteDefinitions, () => new TestSuiteDefinitionQueryContext());
 		}
 	}
 	public class TestDefinitionQueryContext
@@ -239,56 +239,56 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 			return _testExecutionsLock.DoubleCheckLock<TestExecutionQueryContext>(ref _testExecutions, () => new TestExecutionQueryContext());
 		}
 	}
-	public class TestExecutionSummaryQueryContext
+	public class TestSuiteExecutionSummaryQueryContext
 	{
-			public TestExecutionSummaryCollection Where(WhereDelegate<TestExecutionSummaryColumns> where, Database db = null)
+			public TestSuiteExecutionSummaryCollection Where(WhereDelegate<TestSuiteExecutionSummaryColumns> where, Database db = null)
 			{
-				return Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionSummary.Where(where, db);
+				return Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary.Where(where, db);
 			}
 		   
-			public TestExecutionSummaryCollection Where(WhereDelegate<TestExecutionSummaryColumns> where, OrderBy<TestExecutionSummaryColumns> orderBy = null, Database db = null)
+			public TestSuiteExecutionSummaryCollection Where(WhereDelegate<TestSuiteExecutionSummaryColumns> where, OrderBy<TestSuiteExecutionSummaryColumns> orderBy = null, Database db = null)
 			{
-				return Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionSummary.Where(where, orderBy, db);
+				return Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary.Where(where, orderBy, db);
 			}
 
-			public TestExecutionSummary OneWhere(WhereDelegate<TestExecutionSummaryColumns> where, Database db = null)
+			public TestSuiteExecutionSummary OneWhere(WhereDelegate<TestSuiteExecutionSummaryColumns> where, Database db = null)
 			{
-				return Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionSummary.OneWhere(where, db);
+				return Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary.OneWhere(where, db);
 			}
 
-			public static TestExecutionSummary GetOneWhere(WhereDelegate<TestExecutionSummaryColumns> where, Database db = null)
+			public static TestSuiteExecutionSummary GetOneWhere(WhereDelegate<TestSuiteExecutionSummaryColumns> where, Database db = null)
 			{
-				return Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionSummary.GetOneWhere(where, db);
+				return Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary.GetOneWhere(where, db);
 			}
 		
-			public TestExecutionSummary FirstOneWhere(WhereDelegate<TestExecutionSummaryColumns> where, Database db = null)
+			public TestSuiteExecutionSummary FirstOneWhere(WhereDelegate<TestSuiteExecutionSummaryColumns> where, Database db = null)
 			{
-				return Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionSummary.FirstOneWhere(where, db);
+				return Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary.FirstOneWhere(where, db);
 			}
 
-			public TestExecutionSummaryCollection Top(int count, WhereDelegate<TestExecutionSummaryColumns> where, Database db = null)
+			public TestSuiteExecutionSummaryCollection Top(int count, WhereDelegate<TestSuiteExecutionSummaryColumns> where, Database db = null)
 			{
-				return Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionSummary.Top(count, where, db);
+				return Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary.Top(count, where, db);
 			}
 
-			public TestExecutionSummaryCollection Top(int count, WhereDelegate<TestExecutionSummaryColumns> where, OrderBy<TestExecutionSummaryColumns> orderBy, Database db = null)
+			public TestSuiteExecutionSummaryCollection Top(int count, WhereDelegate<TestSuiteExecutionSummaryColumns> where, OrderBy<TestSuiteExecutionSummaryColumns> orderBy, Database db = null)
 			{
-				return Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionSummary.Top(count, where, orderBy, db);
+				return Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary.Top(count, where, orderBy, db);
 			}
 
-			public long Count(WhereDelegate<TestExecutionSummaryColumns> where, Database db = null)
+			public long Count(WhereDelegate<TestSuiteExecutionSummaryColumns> where, Database db = null)
 			{
-				return Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionSummary.Count(where, db);
+				return Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary.Count(where, db);
 			}
 	}
 
-	static TestExecutionSummaryQueryContext _testExecutionSummaries;
-	static object _testExecutionSummariesLock = new object();
-	public static TestExecutionSummaryQueryContext TestExecutionSummaries
+	static TestSuiteExecutionSummaryQueryContext _testSuiteExecutionSummaries;
+	static object _testSuiteExecutionSummariesLock = new object();
+	public static TestSuiteExecutionSummaryQueryContext TestSuiteExecutionSummaries
 	{
 		get
 		{
-			return _testExecutionSummariesLock.DoubleCheckLock<TestExecutionSummaryQueryContext>(ref _testExecutionSummaries, () => new TestExecutionSummaryQueryContext());
+			return _testSuiteExecutionSummariesLock.DoubleCheckLock<TestSuiteExecutionSummaryQueryContext>(ref _testSuiteExecutionSummaries, () => new TestSuiteExecutionSummaryQueryContext());
 		}
 	}    }
 }																								

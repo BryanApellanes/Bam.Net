@@ -42,6 +42,20 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
                 return new TestExecutionColumns("Cuid");
             }
         }
+        public TestExecutionColumns StartedTime
+        {
+            get
+            {
+                return new TestExecutionColumns("StartedTime");
+            }
+        }
+        public TestExecutionColumns FinishedTime
+        {
+            get
+            {
+                return new TestExecutionColumns("FinishedTime");
+            }
+        }
         public TestExecutionColumns Passed
         {
             get
@@ -54,41 +68,6 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
             get
             {
                 return new TestExecutionColumns("Exception");
-            }
-        }
-        public TestExecutionColumns TestSummaryId
-        {
-            get
-            {
-                return new TestExecutionColumns("TestSummaryId");
-            }
-        }
-        public TestExecutionColumns TestType
-        {
-            get
-            {
-                return new TestExecutionColumns("TestType");
-            }
-        }
-        public TestExecutionColumns MethodName
-        {
-            get
-            {
-                return new TestExecutionColumns("MethodName");
-            }
-        }
-        public TestExecutionColumns Description
-        {
-            get
-            {
-                return new TestExecutionColumns("Description");
-            }
-        }
-        public TestExecutionColumns AssemblyFullName
-        {
-            get
-            {
-                return new TestExecutionColumns("AssemblyFullName");
             }
         }
         public TestExecutionColumns StackTrace
@@ -106,18 +85,18 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
             }
         }
 
-        public TestExecutionColumns TestExecutionSummaryId
-        {
-            get
-            {
-                return new TestExecutionColumns("TestExecutionSummaryId");
-            }
-        }
         public TestExecutionColumns TestDefinitionId
         {
             get
             {
                 return new TestExecutionColumns("TestDefinitionId");
+            }
+        }
+        public TestExecutionColumns TestSuiteExecutionSummaryId
+        {
+            get
+            {
+                return new TestExecutionColumns("TestSuiteExecutionSummaryId");
             }
         }
 

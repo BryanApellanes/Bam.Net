@@ -42,6 +42,5 @@ namespace Bam.Net.Automation
             };
             return result;
         }
-
     }
 }

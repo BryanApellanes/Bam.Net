@@ -16,14 +16,14 @@ namespace Bam.Net.Automation.TestReporting.Data.Wrappers
 {
 	// generated
 	[Serializable]
-	public class TestExecutionSummaryWrapper: Bam.Net.Automation.TestReporting.Data.TestExecutionSummary, IHasUpdatedXrefCollectionProperties
+	public class TestSuiteDefinitionWrapper: Bam.Net.Automation.TestReporting.Data.TestSuiteDefinition, IHasUpdatedXrefCollectionProperties
 	{
-		public TestExecutionSummaryWrapper()
+		public TestSuiteDefinitionWrapper()
 		{
 			this.UpdatedXrefCollectionProperties = new Dictionary<string, PropertyInfo>();
 		}
 
-		public TestExecutionSummaryWrapper(DaoRepository repository) : this()
+		public TestSuiteDefinitionWrapper(DaoRepository repository) : this()
 		{
 			this.Repository = repository;
 		}
@@ -46,20 +46,20 @@ namespace Bam.Net.Automation.TestReporting.Data.Wrappers
 			}
 		}
 
-Bam.Net.Automation.TestReporting.Data.TestExecution[] _testExecutions;
-		public override Bam.Net.Automation.TestReporting.Data.TestExecution[] TestExecutions
+Bam.Net.Automation.TestReporting.Data.TestDefinition[] _testDefinitions;
+		public override Bam.Net.Automation.TestReporting.Data.TestDefinition[] TestDefinitions
 		{
 			get
 			{
-				if (_testExecutions == null)
+				if (_testDefinitions == null)
 				{
-					_testExecutions = Repository.ForeignKeyCollectionLoader<Bam.Net.Automation.TestReporting.Data.TestExecutionSummary, Bam.Net.Automation.TestReporting.Data.TestExecution>(this).ToArray();
+					_testDefinitions = Repository.ForeignKeyCollectionLoader<Bam.Net.Automation.TestReporting.Data.TestSuiteDefinition, Bam.Net.Automation.TestReporting.Data.TestDefinition>(this).ToArray();
 				}
-				return _testExecutions;
+				return _testDefinitions;
 			}
 			set
 			{
-				_testExecutions = value;
+				_testDefinitions = value;
 			}
 		}
 

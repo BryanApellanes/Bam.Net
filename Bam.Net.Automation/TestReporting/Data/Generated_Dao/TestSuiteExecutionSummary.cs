@@ -17,30 +17,30 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 	// schema = TestReporting
 	// connection Name = TestReporting
 	[Serializable]
-	[Bam.Net.Data.Table("TestExecution", "TestReporting")]
-	public partial class TestExecution: Bam.Net.Data.Dao
+	[Bam.Net.Data.Table("TestSuiteExecutionSummary", "TestReporting")]
+	public partial class TestSuiteExecutionSummary: Bam.Net.Data.Dao
 	{
-		public TestExecution():base()
+		public TestSuiteExecutionSummary():base()
 		{
 			this.SetKeyColumnName();
 			this.SetChildren();
 		}
 
-		public TestExecution(DataRow data)
+		public TestSuiteExecutionSummary(DataRow data)
 			: base(data)
 		{
 			this.SetKeyColumnName();
 			this.SetChildren();
 		}
 
-		public TestExecution(Database db)
+		public TestSuiteExecutionSummary(Database db)
 			: base(db)
 		{
 			this.SetKeyColumnName();
 			this.SetChildren();
 		}
 
-		public TestExecution(Database db, DataRow data)
+		public TestSuiteExecutionSummary(Database db, DataRow data)
 			: base(db, data)
 		{
 			this.SetKeyColumnName();
@@ -48,14 +48,17 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		}
 
 		[Bam.Net.Exclude]
-		public static implicit operator TestExecution(DataRow data)
+		public static implicit operator TestSuiteExecutionSummary(DataRow data)
 		{
-			return new TestExecution(data);
+			return new TestSuiteExecutionSummary(data);
 		}
 
 		private void SetChildren()
 		{
-						
+			if(_database != null)
+			{
+				this.ChildCollections.Add("TestExecution_TestSuiteExecutionSummaryId", new TestExecutionCollection(Database.GetQuery<TestExecutionColumns, TestExecution>((c) => c.TestSuiteExecutionSummaryId == GetLongValue("Id")), this, "TestSuiteExecutionSummaryId"));				
+			}						
 		}
 
 	// property:Id, columnName:Id	
@@ -101,115 +104,73 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		}
 	}
 
-	// property:Passed, columnName:Passed	
-	[Bam.Net.Data.Column(Name="Passed", DbDataType="Bit", MaxLength="1", AllowNull=true)]
-	public bool? Passed
+	// property:Branch, columnName:Branch	
+	[Bam.Net.Data.Column(Name="Branch", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string Branch
 	{
 		get
 		{
-			return GetBooleanValue("Passed");
+			return GetStringValue("Branch");
 		}
 		set
 		{
-			SetValue("Passed", value);
+			SetValue("Branch", value);
 		}
 	}
 
-	// property:Exception, columnName:Exception	
-	[Bam.Net.Data.Column(Name="Exception", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string Exception
+	// property:ComputerName, columnName:ComputerName	
+	[Bam.Net.Data.Column(Name="ComputerName", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string ComputerName
 	{
 		get
 		{
-			return GetStringValue("Exception");
+			return GetStringValue("ComputerName");
 		}
 		set
 		{
-			SetValue("Exception", value);
+			SetValue("ComputerName", value);
 		}
 	}
 
-	// property:TestSummaryId, columnName:TestSummaryId	
-	[Bam.Net.Data.Column(Name="TestSummaryId", DbDataType="BigInt", MaxLength="19", AllowNull=true)]
-	public long? TestSummaryId
+	// property:StartedTime, columnName:StartedTime	
+	[Bam.Net.Data.Column(Name="StartedTime", DbDataType="DateTime", MaxLength="8", AllowNull=true)]
+	public DateTime? StartedTime
 	{
 		get
 		{
-			return GetLongValue("TestSummaryId");
+			return GetDateTimeValue("StartedTime");
 		}
 		set
 		{
-			SetValue("TestSummaryId", value);
+			SetValue("StartedTime", value);
 		}
 	}
 
-	// property:TestType, columnName:TestType	
-	[Bam.Net.Data.Column(Name="TestType", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string TestType
+	// property:FinishedTime, columnName:FinishedTime	
+	[Bam.Net.Data.Column(Name="FinishedTime", DbDataType="DateTime", MaxLength="8", AllowNull=true)]
+	public DateTime? FinishedTime
 	{
 		get
 		{
-			return GetStringValue("TestType");
+			return GetDateTimeValue("FinishedTime");
 		}
 		set
 		{
-			SetValue("TestType", value);
+			SetValue("FinishedTime", value);
 		}
 	}
 
-	// property:MethodName, columnName:MethodName	
-	[Bam.Net.Data.Column(Name="MethodName", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string MethodName
+	// property:SuiteDefinitionId, columnName:SuiteDefinitionId	
+	[Bam.Net.Data.Column(Name="SuiteDefinitionId", DbDataType="BigInt", MaxLength="19", AllowNull=true)]
+	public long? SuiteDefinitionId
 	{
 		get
 		{
-			return GetStringValue("MethodName");
+			return GetLongValue("SuiteDefinitionId");
 		}
 		set
 		{
-			SetValue("MethodName", value);
-		}
-	}
-
-	// property:Description, columnName:Description	
-	[Bam.Net.Data.Column(Name="Description", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string Description
-	{
-		get
-		{
-			return GetStringValue("Description");
-		}
-		set
-		{
-			SetValue("Description", value);
-		}
-	}
-
-	// property:AssemblyFullName, columnName:AssemblyFullName	
-	[Bam.Net.Data.Column(Name="AssemblyFullName", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string AssemblyFullName
-	{
-		get
-		{
-			return GetStringValue("AssemblyFullName");
-		}
-		set
-		{
-			SetValue("AssemblyFullName", value);
-		}
-	}
-
-	// property:StackTrace, columnName:StackTrace	
-	[Bam.Net.Data.Column(Name="StackTrace", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string StackTrace
-	{
-		get
-		{
-			return GetStringValue("StackTrace");
-		}
-		set
-		{
-			SetValue("StackTrace", value);
+			SetValue("SuiteDefinitionId", value);
 		}
 	}
 
@@ -229,78 +190,32 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 
 
 
-	// start TestExecutionSummaryId -> TestExecutionSummaryId
-	[Bam.Net.Data.ForeignKey(
-        Table="TestExecution",
-		Name="TestExecutionSummaryId", 
-		DbDataType="BigInt", 
-		MaxLength="",
-		AllowNull=true, 
-		ReferencedKey="Id",
-		ReferencedTable="TestExecutionSummary",
-		Suffix="1")]
-	public long? TestExecutionSummaryId
-	{
-		get
-		{
-			return GetLongValue("TestExecutionSummaryId");
-		}
-		set
-		{
-			SetValue("TestExecutionSummaryId", value);
-		}
-	}
-
-	TestExecutionSummary _testExecutionSummaryOfTestExecutionSummaryId;
-	public TestExecutionSummary TestExecutionSummaryOfTestExecutionSummaryId
-	{
-		get
-		{
-			if(_testExecutionSummaryOfTestExecutionSummaryId == null)
-			{
-				_testExecutionSummaryOfTestExecutionSummaryId = Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionSummary.OneWhere(c => c.KeyColumn == this.TestExecutionSummaryId, this.Database);
-			}
-			return _testExecutionSummaryOfTestExecutionSummaryId;
-		}
-	}
-	
-	// start TestDefinitionId -> TestDefinitionId
-	[Bam.Net.Data.ForeignKey(
-        Table="TestExecution",
-		Name="TestDefinitionId", 
-		DbDataType="BigInt", 
-		MaxLength="",
-		AllowNull=true, 
-		ReferencedKey="Id",
-		ReferencedTable="TestDefinition",
-		Suffix="2")]
-	public long? TestDefinitionId
-	{
-		get
-		{
-			return GetLongValue("TestDefinitionId");
-		}
-		set
-		{
-			SetValue("TestDefinitionId", value);
-		}
-	}
-
-	TestDefinition _testDefinitionOfTestDefinitionId;
-	public TestDefinition TestDefinitionOfTestDefinitionId
-	{
-		get
-		{
-			if(_testDefinitionOfTestDefinitionId == null)
-			{
-				_testDefinitionOfTestDefinitionId = Bam.Net.Automation.TestReporting.Data.Dao.TestDefinition.OneWhere(c => c.KeyColumn == this.TestDefinitionId, this.Database);
-			}
-			return _testDefinitionOfTestDefinitionId;
-		}
-	}
-	
 				
-		
+
+	[Bam.Net.Exclude]	
+	public TestExecutionCollection TestExecutionsByTestSuiteExecutionSummaryId
+	{
+		get
+		{
+			if (this.IsNew)
+			{
+				throw new InvalidOperationException("The current instance of type({0}) hasn't been saved and will have no child collections, call Save() or Save(Database) first."._Format(this.GetType().Name));
+			}
+
+			if(!this.ChildCollections.ContainsKey("TestExecution_TestSuiteExecutionSummaryId"))
+			{
+				SetChildren();
+			}
+
+			var c = (TestExecutionCollection)this.ChildCollections["TestExecution_TestSuiteExecutionSummaryId"];
+			if(!c.Loaded)
+			{
+				c.Load(Database);
+			}
+			return c;
+		}
+	}
+			
 
 		/// <summary>
 		/// Gets a query filter that should uniquely identify
@@ -316,23 +231,23 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 			}
 			else
 			{
-				var colFilter = new TestExecutionColumns();
+				var colFilter = new TestSuiteExecutionSummaryColumns();
 				return (colFilter.KeyColumn == IdValue);
 			}			
 		}
 
 		/// <summary>
-		/// Return every record in the TestExecution table.
+		/// Return every record in the TestSuiteExecutionSummary table.
 		/// </summary>
 		/// <param name="database">
 		/// The database to load from or null
 		/// </param>
-		public static TestExecutionCollection LoadAll(Database database = null)
+		public static TestSuiteExecutionSummaryCollection LoadAll(Database database = null)
 		{
 			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<TestExecution>();
-			Database db = database ?? Db.For<TestExecution>();
-			var results = new TestExecutionCollection(db, sql.GetDataTable(db));
+			sql.Select<TestSuiteExecutionSummary>();
+			Database db = database ?? Db.For<TestSuiteExecutionSummary>();
+			var results = new TestSuiteExecutionSummaryCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
@@ -341,12 +256,12 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// Process all records in batches of the specified size
 		/// </summary>
 		[Bam.Net.Exclude]
-		public static async Task BatchAll(int batchSize, Action<IEnumerable<TestExecution>> batchProcessor, Database database = null)
+		public static async Task BatchAll(int batchSize, Action<IEnumerable<TestSuiteExecutionSummary>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
-				TestExecutionColumns columns = new TestExecutionColumns();
-				var orderBy = Bam.Net.Data.Order.By<TestExecutionColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
+				TestSuiteExecutionSummaryColumns columns = new TestSuiteExecutionSummaryColumns();
+				var orderBy = Bam.Net.Data.Order.By<TestSuiteExecutionSummaryColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -364,7 +279,7 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// Process results of a query in batches of the specified size
 		/// </summary>			 
 		[Bam.Net.Exclude]
-		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<TestExecution>> batchProcessor, Database database = null)
+		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<TestSuiteExecutionSummary>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
@@ -373,12 +288,12 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// Process results of a query in batches of the specified size
 		/// </summary>	
 		[Bam.Net.Exclude]
-		public static async Task BatchQuery(int batchSize, WhereDelegate<TestExecutionColumns> where, Action<IEnumerable<TestExecution>> batchProcessor, Database database = null)
+		public static async Task BatchQuery(int batchSize, WhereDelegate<TestSuiteExecutionSummaryColumns> where, Action<IEnumerable<TestSuiteExecutionSummary>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
-				TestExecutionColumns columns = new TestExecutionColumns();
-				var orderBy = Bam.Net.Data.Order.By<TestExecutionColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
+				TestSuiteExecutionSummaryColumns columns = new TestSuiteExecutionSummaryColumns();
+				var orderBy = Bam.Net.Data.Order.By<TestSuiteExecutionSummaryColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -387,91 +302,91 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 						batchProcessor(results);
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
-					results = Top(batchSize, (TestExecutionColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+					results = Top(batchSize, (TestSuiteExecutionSummaryColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
 				}
 			});			
 		}
 
-		public static TestExecution GetById(int id, Database database = null)
+		public static TestSuiteExecutionSummary GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
-		public static TestExecution GetById(long id, Database database = null)
+		public static TestSuiteExecutionSummary GetById(long id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}
 
-		public static TestExecution GetByUuid(string uuid, Database database = null)
+		public static TestSuiteExecutionSummary GetByUuid(string uuid, Database database = null)
 		{
 			return OneWhere(c => Bam.Net.Data.Query.Where("Uuid") == uuid, database);
 		}
 
-		public static TestExecution GetByCuid(string cuid, Database database = null)
+		public static TestSuiteExecutionSummary GetByCuid(string cuid, Database database = null)
 		{
 			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
 		[Bam.Net.Exclude]
-		public static TestExecutionCollection Query(QueryFilter filter, Database database = null)
+		public static TestSuiteExecutionSummaryCollection Query(QueryFilter filter, Database database = null)
 		{
 			return Where(filter, database);
 		}
 
 		[Bam.Net.Exclude]		
-		public static TestExecutionCollection Where(QueryFilter filter, Database database = null)
+		public static TestSuiteExecutionSummaryCollection Where(QueryFilter filter, Database database = null)
 		{
-			WhereDelegate<TestExecutionColumns> whereDelegate = (c) => filter;
+			WhereDelegate<TestSuiteExecutionSummaryColumns> whereDelegate = (c) => filter;
 			return Where(whereDelegate, database);
 		}
 
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A Func delegate that recieves a TestExecutionColumns 
+		/// <param name="where">A Func delegate that recieves a TestSuiteExecutionSummaryColumns 
 		/// and returns a QueryFilter which is the result of any comparisons
-		/// between TestExecutionColumns and other values
+		/// between TestSuiteExecutionSummaryColumns and other values
 		/// </param>
 		/// <param name="db"></param>
 		[Bam.Net.Exclude]
-		public static TestExecutionCollection Where(Func<TestExecutionColumns, QueryFilter<TestExecutionColumns>> where, OrderBy<TestExecutionColumns> orderBy = null, Database database = null)
+		public static TestSuiteExecutionSummaryCollection Where(Func<TestSuiteExecutionSummaryColumns, QueryFilter<TestSuiteExecutionSummaryColumns>> where, OrderBy<TestSuiteExecutionSummaryColumns> orderBy = null, Database database = null)
 		{
-			database = database ?? Db.For<TestExecution>();
-			return new TestExecutionCollection(database.GetQuery<TestExecutionColumns, TestExecution>(where, orderBy), true);
+			database = database ?? Db.For<TestSuiteExecutionSummary>();
+			return new TestSuiteExecutionSummaryCollection(database.GetQuery<TestSuiteExecutionSummaryColumns, TestSuiteExecutionSummary>(where, orderBy), true);
 		}
 		
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a TestExecutionColumns 
+		/// <param name="where">A WhereDelegate that recieves a TestSuiteExecutionSummaryColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between TestExecutionColumns and other values
+		/// between TestSuiteExecutionSummaryColumns and other values
 		/// </param>
 		/// <param name="db"></param>
 		[Bam.Net.Exclude]
-		public static TestExecutionCollection Where(WhereDelegate<TestExecutionColumns> where, Database database = null)
+		public static TestSuiteExecutionSummaryCollection Where(WhereDelegate<TestSuiteExecutionSummaryColumns> where, Database database = null)
 		{		
-			database = database ?? Db.For<TestExecution>();
-			var results = new TestExecutionCollection(database, database.GetQuery<TestExecutionColumns, TestExecution>(where), true);
+			database = database ?? Db.For<TestSuiteExecutionSummary>();
+			var results = new TestSuiteExecutionSummaryCollection(database, database.GetQuery<TestSuiteExecutionSummaryColumns, TestSuiteExecutionSummary>(where), true);
 			return results;
 		}
 		   
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a TestExecutionColumns 
+		/// <param name="where">A WhereDelegate that recieves a TestSuiteExecutionSummaryColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between TestExecutionColumns and other values
+		/// between TestSuiteExecutionSummaryColumns and other values
 		/// </param>
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static TestExecutionCollection Where(WhereDelegate<TestExecutionColumns> where, OrderBy<TestExecutionColumns> orderBy = null, Database database = null)
+		public static TestSuiteExecutionSummaryCollection Where(WhereDelegate<TestSuiteExecutionSummaryColumns> where, OrderBy<TestSuiteExecutionSummaryColumns> orderBy = null, Database database = null)
 		{		
-			database = database ?? Db.For<TestExecution>();
-			var results = new TestExecutionCollection(database, database.GetQuery<TestExecutionColumns, TestExecution>(where, orderBy), true);
+			database = database ?? Db.For<TestSuiteExecutionSummary>();
+			var results = new TestSuiteExecutionSummaryCollection(database, database.GetQuery<TestSuiteExecutionSummaryColumns, TestSuiteExecutionSummary>(where, orderBy), true);
 			return results;
 		}
 
@@ -479,13 +394,13 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate&lt;TestExecutionColumns&gt;.
+		/// WhereDelegate&lt;TestSuiteExecutionSummaryColumns&gt;.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
-		public static TestExecutionCollection Where(QiQuery where, Database database = null)
+		public static TestSuiteExecutionSummaryCollection Where(QiQuery where, Database database = null)
 		{
-			var results = new TestExecutionCollection(database, Select<TestExecutionColumns>.From<TestExecution>().Where(where, database));
+			var results = new TestSuiteExecutionSummaryCollection(database, Select<TestSuiteExecutionSummaryColumns>.From<TestSuiteExecutionSummary>().Where(where, database));
 			return results;
 		}
 				
@@ -495,7 +410,7 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// of the specified columns.
 		/// </summary>
 		[Bam.Net.Exclude]
-		public static TestExecution GetOneWhere(QueryFilter where, Database database = null)
+		public static TestSuiteExecutionSummary GetOneWhere(QueryFilter where, Database database = null)
 		{
 			var result = OneWhere(where, database);
 			if(result == null)
@@ -514,9 +429,9 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// <param name="where"></param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static TestExecution OneWhere(QueryFilter where, Database database = null)
+		public static TestSuiteExecutionSummary OneWhere(QueryFilter where, Database database = null)
 		{
-			WhereDelegate<TestExecutionColumns> whereDelegate = (c) => where;
+			WhereDelegate<TestSuiteExecutionSummaryColumns> whereDelegate = (c) => where;
 			var result = Top(1, whereDelegate, database);
 			return OneOrThrow(result);
 		}
@@ -529,12 +444,12 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// <param name="where"></param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static TestExecution GetOneWhere(WhereDelegate<TestExecutionColumns> where, Database database = null)
+		public static TestSuiteExecutionSummary GetOneWhere(WhereDelegate<TestSuiteExecutionSummaryColumns> where, Database database = null)
 		{
 			var result = OneWhere(where, database);
 			if(result == null)
 			{
-				TestExecutionColumns c = new TestExecutionColumns();
+				TestSuiteExecutionSummaryColumns c = new TestSuiteExecutionSummaryColumns();
 				IQueryFilter filter = where(c); 
 				result = CreateFromFilter(filter, database);
 			}
@@ -546,15 +461,15 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// Execute a query that should return only one result.  If more
 		/// than one result is returned a MultipleEntriesFoundException will 
 		/// be thrown.  This method is most commonly used to retrieve a
-		/// single TestExecution instance by its Id/Key value
+		/// single TestSuiteExecutionSummary instance by its Id/Key value
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a TestExecutionColumns 
+		/// <param name="where">A WhereDelegate that recieves a TestSuiteExecutionSummaryColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between TestExecutionColumns and other values
+		/// between TestSuiteExecutionSummaryColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static TestExecution OneWhere(WhereDelegate<TestExecutionColumns> where, Database database = null)
+		public static TestSuiteExecutionSummary OneWhere(WhereDelegate<TestSuiteExecutionSummaryColumns> where, Database database = null)
 		{
 			var result = Top(1, where, database);
 			return OneOrThrow(result);
@@ -564,11 +479,11 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate<TestExecutionColumns>.
+		/// WhereDelegate<TestSuiteExecutionSummaryColumns>.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
-		public static TestExecution OneWhere(QiQuery where, Database database = null)
+		public static TestSuiteExecutionSummary OneWhere(QiQuery where, Database database = null)
 		{
 			var results = Top(1, where, database);
 			return OneOrThrow(results);
@@ -578,13 +493,13 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
 		/// specified number of values will be returned.
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a TestExecutionColumns 
+		/// <param name="where">A WhereDelegate that recieves a TestSuiteExecutionSummaryColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between TestExecutionColumns and other values
+		/// between TestSuiteExecutionSummaryColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static TestExecution FirstOneWhere(WhereDelegate<TestExecutionColumns> where, Database database = null)
+		public static TestSuiteExecutionSummary FirstOneWhere(WhereDelegate<TestSuiteExecutionSummaryColumns> where, Database database = null)
 		{
 			var results = Top(1, where, database);
 			if(results.Count > 0)
@@ -601,13 +516,13 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
 		/// specified number of values will be returned.
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a TestExecutionColumns 
+		/// <param name="where">A WhereDelegate that recieves a TestSuiteExecutionSummaryColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between TestExecutionColumns and other values
+		/// between TestSuiteExecutionSummaryColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static TestExecution FirstOneWhere(WhereDelegate<TestExecutionColumns> where, OrderBy<TestExecutionColumns> orderBy, Database database = null)
+		public static TestSuiteExecutionSummary FirstOneWhere(WhereDelegate<TestSuiteExecutionSummaryColumns> where, OrderBy<TestSuiteExecutionSummaryColumns> orderBy, Database database = null)
 		{
 			var results = Top(1, where, orderBy, database);
 			if(results.Count > 0)
@@ -623,15 +538,15 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// <summary>
 		/// Shortcut for Top(1, where, orderBy, database)
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a TestExecutionColumns 
+		/// <param name="where">A WhereDelegate that recieves a TestSuiteExecutionSummaryColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between TestExecutionColumns and other values
+		/// between TestSuiteExecutionSummaryColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static TestExecution FirstOneWhere(QueryFilter where, OrderBy<TestExecutionColumns> orderBy = null, Database database = null)
+		public static TestSuiteExecutionSummary FirstOneWhere(QueryFilter where, OrderBy<TestSuiteExecutionSummaryColumns> orderBy = null, Database database = null)
 		{
-			WhereDelegate<TestExecutionColumns> whereDelegate = (c) => where;
+			WhereDelegate<TestSuiteExecutionSummaryColumns> whereDelegate = (c) => where;
 			var results = Top(1, whereDelegate, orderBy, database);
 			if(results.Count > 0)
 			{
@@ -652,13 +567,13 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// This value is used in the sql query so no more than this 
 		/// number of values will be returned by the database.
 		/// </param>
-		/// <param name="where">A WhereDelegate that recieves a TestExecutionColumns 
+		/// <param name="where">A WhereDelegate that recieves a TestSuiteExecutionSummaryColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between TestExecutionColumns and other values
+		/// between TestSuiteExecutionSummaryColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static TestExecutionCollection Top(int count, WhereDelegate<TestExecutionColumns> where, Database database = null)
+		public static TestSuiteExecutionSummaryCollection Top(int count, WhereDelegate<TestSuiteExecutionSummaryColumns> where, Database database = null)
 		{
 			return Top(count, where, null, database);
 		}
@@ -672,9 +587,9 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// This value is used in the sql query so no more than this 
 		/// number of values will be returned by the database.
 		/// </param>
-		/// <param name="where">A WhereDelegate that recieves a TestExecutionColumns 
+		/// <param name="where">A WhereDelegate that recieves a TestSuiteExecutionSummaryColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between TestExecutionColumns and other values
+		/// between TestSuiteExecutionSummaryColumns and other values
 		/// </param>
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
@@ -683,29 +598,29 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// Which database to query or null to use the default
 		/// </param>
 		[Bam.Net.Exclude]
-		public static TestExecutionCollection Top(int count, WhereDelegate<TestExecutionColumns> where, OrderBy<TestExecutionColumns> orderBy, Database database = null)
+		public static TestSuiteExecutionSummaryCollection Top(int count, WhereDelegate<TestSuiteExecutionSummaryColumns> where, OrderBy<TestSuiteExecutionSummaryColumns> orderBy, Database database = null)
 		{
-			TestExecutionColumns c = new TestExecutionColumns();
+			TestSuiteExecutionSummaryColumns c = new TestSuiteExecutionSummaryColumns();
 			IQueryFilter filter = where(c);         
 			
-			Database db = database ?? Db.For<TestExecution>();
+			Database db = database ?? Db.For<TestSuiteExecutionSummary>();
 			QuerySet query = GetQuerySet(db); 
-			query.Top<TestExecution>(count);
+			query.Top<TestSuiteExecutionSummary>(count);
 			query.Where(filter);
 
 			if(orderBy != null)
 			{
-				query.OrderBy<TestExecutionColumns>(orderBy);
+				query.OrderBy<TestSuiteExecutionSummaryColumns>(orderBy);
 			}
 
 			query.Execute(db);
-			var results = query.Results.As<TestExecutionCollection>(0);
+			var results = query.Results.As<TestSuiteExecutionSummaryCollection>(0);
 			results.Database = db;
 			return results;
 		}
 
 		[Bam.Net.Exclude]
-		public static TestExecutionCollection Top(int count, QueryFilter where, Database database)
+		public static TestSuiteExecutionSummaryCollection Top(int count, QueryFilter where, Database database)
 		{
 			return Top(count, where, null, database);
 		}
@@ -729,20 +644,20 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// Which database to query or null to use the default
 		/// </param>
 		[Bam.Net.Exclude]
-		public static TestExecutionCollection Top(int count, QueryFilter where, OrderBy<TestExecutionColumns> orderBy = null, Database database = null)
+		public static TestSuiteExecutionSummaryCollection Top(int count, QueryFilter where, OrderBy<TestSuiteExecutionSummaryColumns> orderBy = null, Database database = null)
 		{
-			Database db = database ?? Db.For<TestExecution>();
+			Database db = database ?? Db.For<TestSuiteExecutionSummary>();
 			QuerySet query = GetQuerySet(db);
-			query.Top<TestExecution>(count);
+			query.Top<TestSuiteExecutionSummary>(count);
 			query.Where(where);
 
 			if(orderBy != null)
 			{
-				query.OrderBy<TestExecutionColumns>(orderBy);
+				query.OrderBy<TestSuiteExecutionSummaryColumns>(orderBy);
 			}
 
 			query.Execute(db);
-			var results = query.Results.As<TestExecutionCollection>(0);
+			var results = query.Results.As<TestSuiteExecutionSummaryCollection>(0);
 			results.Database = db;
 			return results;
 		}
@@ -763,29 +678,29 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// <param name="database">
 		/// Which database to query or null to use the default
 		/// </param>
-		public static TestExecutionCollection Top(int count, QiQuery where, Database database = null)
+		public static TestSuiteExecutionSummaryCollection Top(int count, QiQuery where, Database database = null)
 		{
-			Database db = database ?? Db.For<TestExecution>();
+			Database db = database ?? Db.For<TestSuiteExecutionSummary>();
 			QuerySet query = GetQuerySet(db);
-			query.Top<TestExecution>(count);
+			query.Top<TestSuiteExecutionSummary>(count);
 			query.Where(where);
 			query.Execute(db);
-			var results = query.Results.As<TestExecutionCollection>(0);
+			var results = query.Results.As<TestSuiteExecutionSummaryCollection>(0);
 			results.Database = db;
 			return results;
 		}
 
 		/// <summary>
-		/// Return the count of TestExecutions
+		/// Return the count of TestSuiteExecutionSummaries
 		/// </summary>
 		/// <param name="database">
 		/// Which database to query or null to use the default
 		/// </param>
 		public static long Count(Database database = null)
         {
-			Database db = database ?? Db.For<TestExecution>();
+			Database db = database ?? Db.For<TestSuiteExecutionSummary>();
             QuerySet query = GetQuerySet(db);
-            query.Count<TestExecution>();
+            query.Count<TestSuiteExecutionSummary>();
             query.Execute(db);
             return (long)query.Results[0].DataRow[0];
         }
@@ -793,22 +708,22 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// <summary>
 		/// Execute a query and return the number of results
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a TestExecutionColumns 
+		/// <param name="where">A WhereDelegate that recieves a TestSuiteExecutionSummaryColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between TestExecutionColumns and other values
+		/// between TestSuiteExecutionSummaryColumns and other values
 		/// </param>
 		/// <param name="database">
 		/// Which database to query or null to use the default
 		/// </param>
 		[Bam.Net.Exclude]
-		public static long Count(WhereDelegate<TestExecutionColumns> where, Database database = null)
+		public static long Count(WhereDelegate<TestSuiteExecutionSummaryColumns> where, Database database = null)
 		{
-			TestExecutionColumns c = new TestExecutionColumns();
+			TestSuiteExecutionSummaryColumns c = new TestSuiteExecutionSummaryColumns();
 			IQueryFilter filter = where(c) ;
 
-			Database db = database ?? Db.For<TestExecution>();
+			Database db = database ?? Db.For<TestSuiteExecutionSummary>();
 			QuerySet query = GetQuerySet(db);	 
-			query.Count<TestExecution>();
+			query.Count<TestSuiteExecutionSummary>();
 			query.Where(filter);	  
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
@@ -816,18 +731,18 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		 
 		public static long Count(QiQuery where, Database database = null)
 		{
-		    Database db = database ?? Db.For<TestExecution>();
+		    Database db = database ?? Db.For<TestSuiteExecutionSummary>();
 			QuerySet query = GetQuerySet(db);	 
-			query.Count<TestExecution>();
+			query.Count<TestSuiteExecutionSummary>();
 			query.Where(where);	  
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
 		} 		
 
-		private static TestExecution CreateFromFilter(IQueryFilter filter, Database database = null)
+		private static TestSuiteExecutionSummary CreateFromFilter(IQueryFilter filter, Database database = null)
 		{
-			Database db = database ?? Db.For<TestExecution>();			
-			var dao = new TestExecution();
+			Database db = database ?? Db.For<TestSuiteExecutionSummary>();			
+			var dao = new TestSuiteExecutionSummary();
 			filter.Parameters.Each(p=>
 			{
 				dao.Property(p.ColumnName, p.Value);
@@ -836,7 +751,7 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 			return dao;
 		}
 		
-		private static TestExecution OneOrThrow(TestExecutionCollection c)
+		private static TestSuiteExecutionSummary OneOrThrow(TestSuiteExecutionSummaryCollection c)
 		{
 			if(c.Count == 1)
 			{

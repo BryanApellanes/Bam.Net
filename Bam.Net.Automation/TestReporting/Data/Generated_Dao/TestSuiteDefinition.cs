@@ -17,30 +17,30 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 	// schema = TestReporting
 	// connection Name = TestReporting
 	[Serializable]
-	[Bam.Net.Data.Table("SuiteDefinition", "TestReporting")]
-	public partial class SuiteDefinition: Bam.Net.Data.Dao
+	[Bam.Net.Data.Table("TestSuiteDefinition", "TestReporting")]
+	public partial class TestSuiteDefinition: Bam.Net.Data.Dao
 	{
-		public SuiteDefinition():base()
+		public TestSuiteDefinition():base()
 		{
 			this.SetKeyColumnName();
 			this.SetChildren();
 		}
 
-		public SuiteDefinition(DataRow data)
+		public TestSuiteDefinition(DataRow data)
 			: base(data)
 		{
 			this.SetKeyColumnName();
 			this.SetChildren();
 		}
 
-		public SuiteDefinition(Database db)
+		public TestSuiteDefinition(Database db)
 			: base(db)
 		{
 			this.SetKeyColumnName();
 			this.SetChildren();
 		}
 
-		public SuiteDefinition(Database db, DataRow data)
+		public TestSuiteDefinition(Database db, DataRow data)
 			: base(db, data)
 		{
 			this.SetKeyColumnName();
@@ -48,16 +48,16 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		}
 
 		[Bam.Net.Exclude]
-		public static implicit operator SuiteDefinition(DataRow data)
+		public static implicit operator TestSuiteDefinition(DataRow data)
 		{
-			return new SuiteDefinition(data);
+			return new TestSuiteDefinition(data);
 		}
 
 		private void SetChildren()
 		{
 			if(_database != null)
 			{
-				this.ChildCollections.Add("TestDefinition_SuiteDefinitionId", new TestDefinitionCollection(Database.GetQuery<TestDefinitionColumns, TestDefinition>((c) => c.SuiteDefinitionId == GetLongValue("Id")), this, "SuiteDefinitionId"));				
+				this.ChildCollections.Add("TestDefinition_TestSuiteDefinitionId", new TestDefinitionCollection(Database.GetQuery<TestDefinitionColumns, TestDefinition>((c) => c.TestSuiteDefinitionId == GetLongValue("Id")), this, "TestSuiteDefinitionId"));				
 			}						
 		}
 
@@ -137,7 +137,7 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 				
 
 	[Bam.Net.Exclude]	
-	public TestDefinitionCollection TestDefinitionsBySuiteDefinitionId
+	public TestDefinitionCollection TestDefinitionsByTestSuiteDefinitionId
 	{
 		get
 		{
@@ -146,12 +146,12 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 				throw new InvalidOperationException("The current instance of type({0}) hasn't been saved and will have no child collections, call Save() or Save(Database) first."._Format(this.GetType().Name));
 			}
 
-			if(!this.ChildCollections.ContainsKey("TestDefinition_SuiteDefinitionId"))
+			if(!this.ChildCollections.ContainsKey("TestDefinition_TestSuiteDefinitionId"))
 			{
 				SetChildren();
 			}
 
-			var c = (TestDefinitionCollection)this.ChildCollections["TestDefinition_SuiteDefinitionId"];
+			var c = (TestDefinitionCollection)this.ChildCollections["TestDefinition_TestSuiteDefinitionId"];
 			if(!c.Loaded)
 			{
 				c.Load(Database);
@@ -175,23 +175,23 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 			}
 			else
 			{
-				var colFilter = new SuiteDefinitionColumns();
+				var colFilter = new TestSuiteDefinitionColumns();
 				return (colFilter.KeyColumn == IdValue);
 			}			
 		}
 
 		/// <summary>
-		/// Return every record in the SuiteDefinition table.
+		/// Return every record in the TestSuiteDefinition table.
 		/// </summary>
 		/// <param name="database">
 		/// The database to load from or null
 		/// </param>
-		public static SuiteDefinitionCollection LoadAll(Database database = null)
+		public static TestSuiteDefinitionCollection LoadAll(Database database = null)
 		{
 			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<SuiteDefinition>();
-			Database db = database ?? Db.For<SuiteDefinition>();
-			var results = new SuiteDefinitionCollection(db, sql.GetDataTable(db));
+			sql.Select<TestSuiteDefinition>();
+			Database db = database ?? Db.For<TestSuiteDefinition>();
+			var results = new TestSuiteDefinitionCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
@@ -200,12 +200,12 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// Process all records in batches of the specified size
 		/// </summary>
 		[Bam.Net.Exclude]
-		public static async Task BatchAll(int batchSize, Action<IEnumerable<SuiteDefinition>> batchProcessor, Database database = null)
+		public static async Task BatchAll(int batchSize, Action<IEnumerable<TestSuiteDefinition>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
-				SuiteDefinitionColumns columns = new SuiteDefinitionColumns();
-				var orderBy = Bam.Net.Data.Order.By<SuiteDefinitionColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
+				TestSuiteDefinitionColumns columns = new TestSuiteDefinitionColumns();
+				var orderBy = Bam.Net.Data.Order.By<TestSuiteDefinitionColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -223,7 +223,7 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// Process results of a query in batches of the specified size
 		/// </summary>			 
 		[Bam.Net.Exclude]
-		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<SuiteDefinition>> batchProcessor, Database database = null)
+		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<TestSuiteDefinition>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
@@ -232,12 +232,12 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// Process results of a query in batches of the specified size
 		/// </summary>	
 		[Bam.Net.Exclude]
-		public static async Task BatchQuery(int batchSize, WhereDelegate<SuiteDefinitionColumns> where, Action<IEnumerable<SuiteDefinition>> batchProcessor, Database database = null)
+		public static async Task BatchQuery(int batchSize, WhereDelegate<TestSuiteDefinitionColumns> where, Action<IEnumerable<TestSuiteDefinition>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
-				SuiteDefinitionColumns columns = new SuiteDefinitionColumns();
-				var orderBy = Bam.Net.Data.Order.By<SuiteDefinitionColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
+				TestSuiteDefinitionColumns columns = new TestSuiteDefinitionColumns();
+				var orderBy = Bam.Net.Data.Order.By<TestSuiteDefinitionColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -246,91 +246,91 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 						batchProcessor(results);
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
-					results = Top(batchSize, (SuiteDefinitionColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+					results = Top(batchSize, (TestSuiteDefinitionColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
 				}
 			});			
 		}
 
-		public static SuiteDefinition GetById(int id, Database database = null)
+		public static TestSuiteDefinition GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
-		public static SuiteDefinition GetById(long id, Database database = null)
+		public static TestSuiteDefinition GetById(long id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}
 
-		public static SuiteDefinition GetByUuid(string uuid, Database database = null)
+		public static TestSuiteDefinition GetByUuid(string uuid, Database database = null)
 		{
 			return OneWhere(c => Bam.Net.Data.Query.Where("Uuid") == uuid, database);
 		}
 
-		public static SuiteDefinition GetByCuid(string cuid, Database database = null)
+		public static TestSuiteDefinition GetByCuid(string cuid, Database database = null)
 		{
 			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
 		[Bam.Net.Exclude]
-		public static SuiteDefinitionCollection Query(QueryFilter filter, Database database = null)
+		public static TestSuiteDefinitionCollection Query(QueryFilter filter, Database database = null)
 		{
 			return Where(filter, database);
 		}
 
 		[Bam.Net.Exclude]		
-		public static SuiteDefinitionCollection Where(QueryFilter filter, Database database = null)
+		public static TestSuiteDefinitionCollection Where(QueryFilter filter, Database database = null)
 		{
-			WhereDelegate<SuiteDefinitionColumns> whereDelegate = (c) => filter;
+			WhereDelegate<TestSuiteDefinitionColumns> whereDelegate = (c) => filter;
 			return Where(whereDelegate, database);
 		}
 
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A Func delegate that recieves a SuiteDefinitionColumns 
+		/// <param name="where">A Func delegate that recieves a TestSuiteDefinitionColumns 
 		/// and returns a QueryFilter which is the result of any comparisons
-		/// between SuiteDefinitionColumns and other values
+		/// between TestSuiteDefinitionColumns and other values
 		/// </param>
 		/// <param name="db"></param>
 		[Bam.Net.Exclude]
-		public static SuiteDefinitionCollection Where(Func<SuiteDefinitionColumns, QueryFilter<SuiteDefinitionColumns>> where, OrderBy<SuiteDefinitionColumns> orderBy = null, Database database = null)
+		public static TestSuiteDefinitionCollection Where(Func<TestSuiteDefinitionColumns, QueryFilter<TestSuiteDefinitionColumns>> where, OrderBy<TestSuiteDefinitionColumns> orderBy = null, Database database = null)
 		{
-			database = database ?? Db.For<SuiteDefinition>();
-			return new SuiteDefinitionCollection(database.GetQuery<SuiteDefinitionColumns, SuiteDefinition>(where, orderBy), true);
+			database = database ?? Db.For<TestSuiteDefinition>();
+			return new TestSuiteDefinitionCollection(database.GetQuery<TestSuiteDefinitionColumns, TestSuiteDefinition>(where, orderBy), true);
 		}
 		
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a SuiteDefinitionColumns 
+		/// <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between SuiteDefinitionColumns and other values
+		/// between TestSuiteDefinitionColumns and other values
 		/// </param>
 		/// <param name="db"></param>
 		[Bam.Net.Exclude]
-		public static SuiteDefinitionCollection Where(WhereDelegate<SuiteDefinitionColumns> where, Database database = null)
+		public static TestSuiteDefinitionCollection Where(WhereDelegate<TestSuiteDefinitionColumns> where, Database database = null)
 		{		
-			database = database ?? Db.For<SuiteDefinition>();
-			var results = new SuiteDefinitionCollection(database, database.GetQuery<SuiteDefinitionColumns, SuiteDefinition>(where), true);
+			database = database ?? Db.For<TestSuiteDefinition>();
+			var results = new TestSuiteDefinitionCollection(database, database.GetQuery<TestSuiteDefinitionColumns, TestSuiteDefinition>(where), true);
 			return results;
 		}
 		   
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a SuiteDefinitionColumns 
+		/// <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between SuiteDefinitionColumns and other values
+		/// between TestSuiteDefinitionColumns and other values
 		/// </param>
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static SuiteDefinitionCollection Where(WhereDelegate<SuiteDefinitionColumns> where, OrderBy<SuiteDefinitionColumns> orderBy = null, Database database = null)
+		public static TestSuiteDefinitionCollection Where(WhereDelegate<TestSuiteDefinitionColumns> where, OrderBy<TestSuiteDefinitionColumns> orderBy = null, Database database = null)
 		{		
-			database = database ?? Db.For<SuiteDefinition>();
-			var results = new SuiteDefinitionCollection(database, database.GetQuery<SuiteDefinitionColumns, SuiteDefinition>(where, orderBy), true);
+			database = database ?? Db.For<TestSuiteDefinition>();
+			var results = new TestSuiteDefinitionCollection(database, database.GetQuery<TestSuiteDefinitionColumns, TestSuiteDefinition>(where, orderBy), true);
 			return results;
 		}
 
@@ -338,13 +338,13 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate&lt;SuiteDefinitionColumns&gt;.
+		/// WhereDelegate&lt;TestSuiteDefinitionColumns&gt;.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
-		public static SuiteDefinitionCollection Where(QiQuery where, Database database = null)
+		public static TestSuiteDefinitionCollection Where(QiQuery where, Database database = null)
 		{
-			var results = new SuiteDefinitionCollection(database, Select<SuiteDefinitionColumns>.From<SuiteDefinition>().Where(where, database));
+			var results = new TestSuiteDefinitionCollection(database, Select<TestSuiteDefinitionColumns>.From<TestSuiteDefinition>().Where(where, database));
 			return results;
 		}
 				
@@ -354,7 +354,7 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// of the specified columns.
 		/// </summary>
 		[Bam.Net.Exclude]
-		public static SuiteDefinition GetOneWhere(QueryFilter where, Database database = null)
+		public static TestSuiteDefinition GetOneWhere(QueryFilter where, Database database = null)
 		{
 			var result = OneWhere(where, database);
 			if(result == null)
@@ -373,9 +373,9 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// <param name="where"></param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static SuiteDefinition OneWhere(QueryFilter where, Database database = null)
+		public static TestSuiteDefinition OneWhere(QueryFilter where, Database database = null)
 		{
-			WhereDelegate<SuiteDefinitionColumns> whereDelegate = (c) => where;
+			WhereDelegate<TestSuiteDefinitionColumns> whereDelegate = (c) => where;
 			var result = Top(1, whereDelegate, database);
 			return OneOrThrow(result);
 		}
@@ -388,12 +388,12 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// <param name="where"></param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static SuiteDefinition GetOneWhere(WhereDelegate<SuiteDefinitionColumns> where, Database database = null)
+		public static TestSuiteDefinition GetOneWhere(WhereDelegate<TestSuiteDefinitionColumns> where, Database database = null)
 		{
 			var result = OneWhere(where, database);
 			if(result == null)
 			{
-				SuiteDefinitionColumns c = new SuiteDefinitionColumns();
+				TestSuiteDefinitionColumns c = new TestSuiteDefinitionColumns();
 				IQueryFilter filter = where(c); 
 				result = CreateFromFilter(filter, database);
 			}
@@ -405,15 +405,15 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// Execute a query that should return only one result.  If more
 		/// than one result is returned a MultipleEntriesFoundException will 
 		/// be thrown.  This method is most commonly used to retrieve a
-		/// single SuiteDefinition instance by its Id/Key value
+		/// single TestSuiteDefinition instance by its Id/Key value
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a SuiteDefinitionColumns 
+		/// <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between SuiteDefinitionColumns and other values
+		/// between TestSuiteDefinitionColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static SuiteDefinition OneWhere(WhereDelegate<SuiteDefinitionColumns> where, Database database = null)
+		public static TestSuiteDefinition OneWhere(WhereDelegate<TestSuiteDefinitionColumns> where, Database database = null)
 		{
 			var result = Top(1, where, database);
 			return OneOrThrow(result);
@@ -423,11 +423,11 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate<SuiteDefinitionColumns>.
+		/// WhereDelegate<TestSuiteDefinitionColumns>.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
-		public static SuiteDefinition OneWhere(QiQuery where, Database database = null)
+		public static TestSuiteDefinition OneWhere(QiQuery where, Database database = null)
 		{
 			var results = Top(1, where, database);
 			return OneOrThrow(results);
@@ -437,13 +437,13 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
 		/// specified number of values will be returned.
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a SuiteDefinitionColumns 
+		/// <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between SuiteDefinitionColumns and other values
+		/// between TestSuiteDefinitionColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static SuiteDefinition FirstOneWhere(WhereDelegate<SuiteDefinitionColumns> where, Database database = null)
+		public static TestSuiteDefinition FirstOneWhere(WhereDelegate<TestSuiteDefinitionColumns> where, Database database = null)
 		{
 			var results = Top(1, where, database);
 			if(results.Count > 0)
@@ -460,13 +460,13 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
 		/// specified number of values will be returned.
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a SuiteDefinitionColumns 
+		/// <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between SuiteDefinitionColumns and other values
+		/// between TestSuiteDefinitionColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static SuiteDefinition FirstOneWhere(WhereDelegate<SuiteDefinitionColumns> where, OrderBy<SuiteDefinitionColumns> orderBy, Database database = null)
+		public static TestSuiteDefinition FirstOneWhere(WhereDelegate<TestSuiteDefinitionColumns> where, OrderBy<TestSuiteDefinitionColumns> orderBy, Database database = null)
 		{
 			var results = Top(1, where, orderBy, database);
 			if(results.Count > 0)
@@ -482,15 +482,15 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// <summary>
 		/// Shortcut for Top(1, where, orderBy, database)
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a SuiteDefinitionColumns 
+		/// <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between SuiteDefinitionColumns and other values
+		/// between TestSuiteDefinitionColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static SuiteDefinition FirstOneWhere(QueryFilter where, OrderBy<SuiteDefinitionColumns> orderBy = null, Database database = null)
+		public static TestSuiteDefinition FirstOneWhere(QueryFilter where, OrderBy<TestSuiteDefinitionColumns> orderBy = null, Database database = null)
 		{
-			WhereDelegate<SuiteDefinitionColumns> whereDelegate = (c) => where;
+			WhereDelegate<TestSuiteDefinitionColumns> whereDelegate = (c) => where;
 			var results = Top(1, whereDelegate, orderBy, database);
 			if(results.Count > 0)
 			{
@@ -511,13 +511,13 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// This value is used in the sql query so no more than this 
 		/// number of values will be returned by the database.
 		/// </param>
-		/// <param name="where">A WhereDelegate that recieves a SuiteDefinitionColumns 
+		/// <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between SuiteDefinitionColumns and other values
+		/// between TestSuiteDefinitionColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static SuiteDefinitionCollection Top(int count, WhereDelegate<SuiteDefinitionColumns> where, Database database = null)
+		public static TestSuiteDefinitionCollection Top(int count, WhereDelegate<TestSuiteDefinitionColumns> where, Database database = null)
 		{
 			return Top(count, where, null, database);
 		}
@@ -531,9 +531,9 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// This value is used in the sql query so no more than this 
 		/// number of values will be returned by the database.
 		/// </param>
-		/// <param name="where">A WhereDelegate that recieves a SuiteDefinitionColumns 
+		/// <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between SuiteDefinitionColumns and other values
+		/// between TestSuiteDefinitionColumns and other values
 		/// </param>
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
@@ -542,29 +542,29 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// Which database to query or null to use the default
 		/// </param>
 		[Bam.Net.Exclude]
-		public static SuiteDefinitionCollection Top(int count, WhereDelegate<SuiteDefinitionColumns> where, OrderBy<SuiteDefinitionColumns> orderBy, Database database = null)
+		public static TestSuiteDefinitionCollection Top(int count, WhereDelegate<TestSuiteDefinitionColumns> where, OrderBy<TestSuiteDefinitionColumns> orderBy, Database database = null)
 		{
-			SuiteDefinitionColumns c = new SuiteDefinitionColumns();
+			TestSuiteDefinitionColumns c = new TestSuiteDefinitionColumns();
 			IQueryFilter filter = where(c);         
 			
-			Database db = database ?? Db.For<SuiteDefinition>();
+			Database db = database ?? Db.For<TestSuiteDefinition>();
 			QuerySet query = GetQuerySet(db); 
-			query.Top<SuiteDefinition>(count);
+			query.Top<TestSuiteDefinition>(count);
 			query.Where(filter);
 
 			if(orderBy != null)
 			{
-				query.OrderBy<SuiteDefinitionColumns>(orderBy);
+				query.OrderBy<TestSuiteDefinitionColumns>(orderBy);
 			}
 
 			query.Execute(db);
-			var results = query.Results.As<SuiteDefinitionCollection>(0);
+			var results = query.Results.As<TestSuiteDefinitionCollection>(0);
 			results.Database = db;
 			return results;
 		}
 
 		[Bam.Net.Exclude]
-		public static SuiteDefinitionCollection Top(int count, QueryFilter where, Database database)
+		public static TestSuiteDefinitionCollection Top(int count, QueryFilter where, Database database)
 		{
 			return Top(count, where, null, database);
 		}
@@ -588,20 +588,20 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// Which database to query or null to use the default
 		/// </param>
 		[Bam.Net.Exclude]
-		public static SuiteDefinitionCollection Top(int count, QueryFilter where, OrderBy<SuiteDefinitionColumns> orderBy = null, Database database = null)
+		public static TestSuiteDefinitionCollection Top(int count, QueryFilter where, OrderBy<TestSuiteDefinitionColumns> orderBy = null, Database database = null)
 		{
-			Database db = database ?? Db.For<SuiteDefinition>();
+			Database db = database ?? Db.For<TestSuiteDefinition>();
 			QuerySet query = GetQuerySet(db);
-			query.Top<SuiteDefinition>(count);
+			query.Top<TestSuiteDefinition>(count);
 			query.Where(where);
 
 			if(orderBy != null)
 			{
-				query.OrderBy<SuiteDefinitionColumns>(orderBy);
+				query.OrderBy<TestSuiteDefinitionColumns>(orderBy);
 			}
 
 			query.Execute(db);
-			var results = query.Results.As<SuiteDefinitionCollection>(0);
+			var results = query.Results.As<TestSuiteDefinitionCollection>(0);
 			results.Database = db;
 			return results;
 		}
@@ -622,29 +622,29 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// <param name="database">
 		/// Which database to query or null to use the default
 		/// </param>
-		public static SuiteDefinitionCollection Top(int count, QiQuery where, Database database = null)
+		public static TestSuiteDefinitionCollection Top(int count, QiQuery where, Database database = null)
 		{
-			Database db = database ?? Db.For<SuiteDefinition>();
+			Database db = database ?? Db.For<TestSuiteDefinition>();
 			QuerySet query = GetQuerySet(db);
-			query.Top<SuiteDefinition>(count);
+			query.Top<TestSuiteDefinition>(count);
 			query.Where(where);
 			query.Execute(db);
-			var results = query.Results.As<SuiteDefinitionCollection>(0);
+			var results = query.Results.As<TestSuiteDefinitionCollection>(0);
 			results.Database = db;
 			return results;
 		}
 
 		/// <summary>
-		/// Return the count of SuiteDefinitions
+		/// Return the count of TestSuiteDefinitions
 		/// </summary>
 		/// <param name="database">
 		/// Which database to query or null to use the default
 		/// </param>
 		public static long Count(Database database = null)
         {
-			Database db = database ?? Db.For<SuiteDefinition>();
+			Database db = database ?? Db.For<TestSuiteDefinition>();
             QuerySet query = GetQuerySet(db);
-            query.Count<SuiteDefinition>();
+            query.Count<TestSuiteDefinition>();
             query.Execute(db);
             return (long)query.Results[0].DataRow[0];
         }
@@ -652,22 +652,22 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		/// <summary>
 		/// Execute a query and return the number of results
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a SuiteDefinitionColumns 
+		/// <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between SuiteDefinitionColumns and other values
+		/// between TestSuiteDefinitionColumns and other values
 		/// </param>
 		/// <param name="database">
 		/// Which database to query or null to use the default
 		/// </param>
 		[Bam.Net.Exclude]
-		public static long Count(WhereDelegate<SuiteDefinitionColumns> where, Database database = null)
+		public static long Count(WhereDelegate<TestSuiteDefinitionColumns> where, Database database = null)
 		{
-			SuiteDefinitionColumns c = new SuiteDefinitionColumns();
+			TestSuiteDefinitionColumns c = new TestSuiteDefinitionColumns();
 			IQueryFilter filter = where(c) ;
 
-			Database db = database ?? Db.For<SuiteDefinition>();
+			Database db = database ?? Db.For<TestSuiteDefinition>();
 			QuerySet query = GetQuerySet(db);	 
-			query.Count<SuiteDefinition>();
+			query.Count<TestSuiteDefinition>();
 			query.Where(filter);	  
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
@@ -675,18 +675,18 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 		 
 		public static long Count(QiQuery where, Database database = null)
 		{
-		    Database db = database ?? Db.For<SuiteDefinition>();
+		    Database db = database ?? Db.For<TestSuiteDefinition>();
 			QuerySet query = GetQuerySet(db);	 
-			query.Count<SuiteDefinition>();
+			query.Count<TestSuiteDefinition>();
 			query.Where(where);	  
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
 		} 		
 
-		private static SuiteDefinition CreateFromFilter(IQueryFilter filter, Database database = null)
+		private static TestSuiteDefinition CreateFromFilter(IQueryFilter filter, Database database = null)
 		{
-			Database db = database ?? Db.For<SuiteDefinition>();			
-			var dao = new SuiteDefinition();
+			Database db = database ?? Db.For<TestSuiteDefinition>();			
+			var dao = new TestSuiteDefinition();
 			filter.Parameters.Each(p=>
 			{
 				dao.Property(p.ColumnName, p.Value);
@@ -695,7 +695,7 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
 			return dao;
 		}
 		
-		private static SuiteDefinition OneOrThrow(SuiteDefinitionCollection c)
+		private static TestSuiteDefinition OneOrThrow(TestSuiteDefinitionCollection c)
 		{
 			if(c.Count == 1)
 			{

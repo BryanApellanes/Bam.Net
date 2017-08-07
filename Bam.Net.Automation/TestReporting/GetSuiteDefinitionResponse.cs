@@ -11,14 +11,14 @@ using Bam.Net.Automation.TestReporting.Data;
 
 namespace Bam.Net.Automation.TestReporting
 {
-	public class SaveTestExecutionResponse : TestReportResponse
+	public class GetSuiteDefinitionResponse: TestReportResponse
     {
-        public TestExecution TestExecution
+        public TestSuiteDefinition SuiteDefinition
         {
             get
             {
-                return DataTo<TestExecution>();
+                return DataTo<TestSuiteDefinition>();
             }
         }
-    }
+	}
 }

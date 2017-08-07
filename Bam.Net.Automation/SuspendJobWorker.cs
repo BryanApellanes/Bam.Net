@@ -17,7 +17,7 @@ namespace Bam.Net.Automation
 
         protected override WorkState Do()
         {
-            SuspendedJob suspended = Overseer.Default.SuspendJob(Job); ;
+            SuspendedJob suspended = JobConductorService.Default.SuspendJob(Job); ;
             WorkState<SuspendedJob> result = new WorkState<SuspendedJob>(this, suspended);
             result.Status = Status.Suspended;
             return result;

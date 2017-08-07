@@ -42,11 +42,46 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
                 return new TestDefinitionColumns("Cuid");
             }
         }
+        public TestDefinitionColumns SuiteDefinitionId
+        {
+            get
+            {
+                return new TestDefinitionColumns("SuiteDefinitionId");
+            }
+        }
         public TestDefinitionColumns Title
         {
             get
             {
                 return new TestDefinitionColumns("Title");
+            }
+        }
+        public TestDefinitionColumns TestType
+        {
+            get
+            {
+                return new TestDefinitionColumns("TestType");
+            }
+        }
+        public TestDefinitionColumns MethodName
+        {
+            get
+            {
+                return new TestDefinitionColumns("MethodName");
+            }
+        }
+        public TestDefinitionColumns Description
+        {
+            get
+            {
+                return new TestDefinitionColumns("Description");
+            }
+        }
+        public TestDefinitionColumns AssemblyFullName
+        {
+            get
+            {
+                return new TestDefinitionColumns("AssemblyFullName");
             }
         }
         public TestDefinitionColumns Created
@@ -57,11 +92,11 @@ namespace Bam.Net.Automation.TestReporting.Data.Dao
             }
         }
 
-        public TestDefinitionColumns SuiteDefinitionId
+        public TestDefinitionColumns TestSuiteDefinitionId
         {
             get
             {
-                return new TestDefinitionColumns("SuiteDefinitionId");
+                return new TestDefinitionColumns("TestSuiteDefinitionId");
             }
         }
 

@@ -19,6 +19,8 @@ namespace Bam.Net.Automation.TestReporting.Data
 	{
 		public long TestDefinitionId { get; set; }
 		public virtual TestDefinition TestDefinition { get; set; }
+        public DateTime? StartedTime { get; set; }
+        public DateTime? FinishedTime { get; set; }
         /// <summary>
         /// Boolean indicating whether the test passed
         /// </summary>
@@ -28,25 +30,12 @@ namespace Bam.Net.Automation.TestReporting.Data
         /// </summary>
         public string Exception { get; set; }
 
-		public long TestSummaryId { get; set; }
-		public virtual TestExecutionSummary TestSummary { get; set; }
-
-        public string TestType { get; set; }
-        /// <summary>
-        /// The name of the test method 
-        /// </summary>
-		public string MethodName { get; set; }
-        /// <summary>
-        /// The information value of the test method if any
-        /// </summary>
-		public string Description { get; set; }
-        /// <summary>
-        /// The full name of the assembly the test was in
-        /// </summary>
-		public string AssemblyFullName { get; set; }
         /// <summary>
         /// The stack trace if any
         /// </summary>
-		public string StackTrace { get; set; }
+        public string StackTrace { get; set; }
+
+        public long TestSuiteExecutionSummaryId { get; set; }
+		public virtual TestSuiteExecutionSummary TestSuiteExecutionSummary { get; set; }
     }
 }

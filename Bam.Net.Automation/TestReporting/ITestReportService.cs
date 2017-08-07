@@ -1,20 +1,21 @@
-﻿using System;
-using Bam.Net.Testing.Data;
-using Bam.Net.Automation.TestReporting;
-using Bam.Net.Automation.TestReporting.Data;
+﻿using Bam.Net.Automation.TestReporting.Data;
+using System;
 
 namespace Bam.Net.Automation.TestReporting
 {
     public interface ITestReportService
     {
-        CreateTestExecutionSummaryResponse CreateTestExecutionSummary();
-        DefineSuiteResponse DefineSuite(SuiteDefinition suite);
+        GetSuiteDefinitionResponse GetSuiteDefinition(string suiteTitle);
+        GetTestDefinitionResponse GetTestDefinition(string suiteTitle, string testTitle);
+        SaveTestSuiteExecutionSummaryResponse SaveTestSuiteExecutionSummary(TestSuiteExecutionSummary suiteExecutionSummary);
+        SaveTestExecutionResponse StartTest(long executionSummaryId, long testDefinitionId);
+        SaveTestExecutionResponse SaveTestExecution(TestExecution execution);
         SaveTestExecutionResponse Fail(int summaryId, string suiteTitle, string testTitle, string error);
         SaveTestExecutionResponse Pass(int summaryId, string suiteTitle, string testTitle);
+        SaveTestExecutionResponse FinishTest(long executionId);
         RetrieveNotificationSubscriptionsResponse RetrieveNotificationSubscribers();
         RetrieveTestExecutionResponse RetrieveTestExecutionById(long id);
-        RetrieveTestExecutionResponse RetrieveTestExecutionByUuid(string uuid);
-        SaveTestExecutionResponse SaveTestExecution(TestExecution execution);
+        RetrieveTestExecutionResponse RetrieveTestExecutionByUuid(string uuid);        
         SearchTestExecutionResponse SearchTestExecutionsByDate(DateTime from, DateTime to);
         SearchTestExecutionResponse SearchTestExecutionsByTestDefinitionId(long testId);
         NotificationSubscriptionResponse SubscribeToNotifications(string emailAddress);
