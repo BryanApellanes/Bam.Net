@@ -38,6 +38,17 @@
             application level encryption
             </summary>
         </member>
+        <member name="T:Bam.Net.ServiceProxy.Secure.ApiKeyInfo">
+            <summary>
+            A Serializable representation of an applications
+            credentials.
+            </summary>
+        </member>
+        <member name="P:Bam.Net.ServiceProxy.Secure.ApiKeyInfo.ApiKey">
+            <summary>
+            The shared secret; keep this value private
+            </summary>
+        </member>
         <member name="T:Bam.Net.ServiceProxy.Secure.ApiKeyProvider">
             <summary>
             A class used to retrieve an applications Api Key and 
@@ -1701,6 +1712,13 @@
             Gets or sets the default Incubator instance used by the ServiceProxy system.
             </summary>
         </member>
+        <member name="M:Bam.Net.ServiceProxy.ExecutionRequest.DecryptSecureChannelInvoke(Bam.Net.ServiceProxy.ExecutionRequest)">
+            <summary>
+            Decrypt the input string of the specified ExecutionRequest
+            if it is intended for the SecureChannel
+            </summary>
+            <param name="execRequest"></param>
+        </member>
         <member name="P:Bam.Net.ServiceProxy.ExecutionRequest.InputString">
             <summary>
             The input stream of the request read in as 
@@ -1721,6 +1739,13 @@
         <member name="P:Bam.Net.ServiceProxy.ExecutionRequest.Result">
             <summary>
             The result of executing the request
+            </summary>
+        </member>
+        <member name="T:Bam.Net.ServiceProxy.ServiceSubdomainAttribute">
+            <summary>
+            Used to specify the subdomain 
+            a class should be served from when resolving
+            hostname for a service
             </summary>
         </member>
         <member name="M:Bam.Net.ServiceProxy.UrlHelperExtensions.Script(System.Web.Mvc.UrlHelper,System.String,System.Boolean)">

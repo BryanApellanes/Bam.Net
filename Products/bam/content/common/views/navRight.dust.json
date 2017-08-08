@@ -1,6 +1,0 @@
-{
-  "SourceFilePath": "C:\\BamContent\\common\\views\\navRight.dust",
-  "TemplateName": "navRight",
-  "SourceHash": "5057cded003e51112f7bb34e232769c3ddffcbb4",
-  "CompiledTemplate": "(function(){dust.register(\"navRight\",body_0);function body_0(chk,ctx){return chk.write(\"<ul class=\\\\\"nav nav-pills pull-right\\\\\">  \").section(ctx.get(\"pages\"),ctx,{\"block\":body_1},null).write(\"</ul>\");}function body_1(chk,ctx){return chk.write(\"  <li id=\\\\\"nav_\").reference(ctx.get(\"name\"),ctx,\"h\").write(\"\\\\\">    <a href=\\\\\"#\\\\\" onclick=\\\\\"bam.navigateTo('\").reference(ctx.get(\"name\"),ctx,\"h\").write(\"')\\\\\">\").reference(ctx.get(\"title\"),ctx,\"h\").write(\"</a>  </li>\");}return body_0;})();"
-}

@@ -1478,6 +1478,1571 @@
             Fluent wrapper around System.Net.FtpClient
             </summary>
         </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscription.GetUniqueFilter">
+            <summary>
+            Gets a query filter that should uniquely identify
+            the current instance.  The default implementation
+            compares the Id/key field to the current instance's.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscription.LoadAll(Bam.Net.Data.Database)">
+            <summary>
+            Return every record in the NotificationSubscription table.
+            </summary>
+            <param name="database">
+            The database to load from or null
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscription.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscription}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscription.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscription}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscription.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscriptionColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscription}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscription.Where(System.Func{Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscriptionColumns,Bam.Net.Data.QueryFilter{Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscriptionColumns}},Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscriptionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A Func delegate that recieves a NotificationSubscriptionColumns 
+            and returns a QueryFilter which is the result of any comparisons
+            between NotificationSubscriptionColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscription.Where(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscriptionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a NotificationSubscriptionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between NotificationSubscriptionColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscription.Where(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscriptionColumns},Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscriptionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a NotificationSubscriptionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between NotificationSubscriptionColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscription.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;NotificationSubscriptionColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscription.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscription.OneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscription.GetOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscriptionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscription.OneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscriptionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  This method is most commonly used to retrieve a
+            single NotificationSubscription instance by its Id/Key value
+            </summary>
+            <param name="where">A WhereDelegate that recieves a NotificationSubscriptionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between NotificationSubscriptionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscription.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscription.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscriptionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a NotificationSubscriptionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between NotificationSubscriptionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscription.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscriptionColumns},Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscriptionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a NotificationSubscriptionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between NotificationSubscriptionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscription.FirstOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscriptionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Shortcut for Top(1, where, orderBy, database)
+            </summary>
+            <param name="where">A WhereDelegate that recieves a NotificationSubscriptionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between NotificationSubscriptionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscription.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscriptionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number
+            of values. This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a NotificationSubscriptionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between NotificationSubscriptionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscription.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscriptionColumns},Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscriptionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a NotificationSubscriptionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between NotificationSubscriptionColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscription.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscriptionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscription.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscription.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of NotificationSubscriptions
+            </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscription.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscriptionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the number of results
+            </summary>
+            <param name="where">A WhereDelegate that recieves a NotificationSubscriptionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between NotificationSubscriptionColumns and other values
+            </param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestDefinition.GetUniqueFilter">
+            <summary>
+            Gets a query filter that should uniquely identify
+            the current instance.  The default implementation
+            compares the Id/key field to the current instance's.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestDefinition.LoadAll(Bam.Net.Data.Database)">
+            <summary>
+            Return every record in the TestDefinition table.
+            </summary>
+            <param name="database">
+            The database to load from or null
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestDefinition.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Automation.TestReporting.Data.Dao.TestDefinition}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestDefinition.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Automation.TestReporting.Data.Dao.TestDefinition}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestDefinition.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestDefinitionColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Automation.TestReporting.Data.Dao.TestDefinition}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestDefinition.Where(System.Func{Bam.Net.Automation.TestReporting.Data.Dao.TestDefinitionColumns,Bam.Net.Data.QueryFilter{Bam.Net.Automation.TestReporting.Data.Dao.TestDefinitionColumns}},Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.TestDefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A Func delegate that recieves a TestDefinitionColumns 
+            and returns a QueryFilter which is the result of any comparisons
+            between TestDefinitionColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestDefinition.Where(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestDefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestDefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestDefinitionColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestDefinition.Where(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestDefinitionColumns},Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.TestDefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestDefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestDefinitionColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestDefinition.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;TestDefinitionColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestDefinition.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestDefinition.OneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestDefinition.GetOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestDefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestDefinition.OneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestDefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  This method is most commonly used to retrieve a
+            single TestDefinition instance by its Id/Key value
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestDefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestDefinitionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Automation.TestReporting.Data.Dao.TestDefinition.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestDefinition.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestDefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestDefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestDefinitionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestDefinition.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestDefinitionColumns},Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.TestDefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestDefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestDefinitionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestDefinition.FirstOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.TestDefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Shortcut for Top(1, where, orderBy, database)
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestDefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestDefinitionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestDefinition.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestDefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number
+            of values. This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a TestDefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestDefinitionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestDefinition.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestDefinitionColumns},Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.TestDefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a TestDefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestDefinitionColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestDefinition.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.TestDefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestDefinition.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestDefinition.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of TestDefinitions
+            </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestDefinition.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestDefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the number of results
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestDefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestDefinitionColumns and other values
+            </param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestExecution.GetUniqueFilter">
+            <summary>
+            Gets a query filter that should uniquely identify
+            the current instance.  The default implementation
+            compares the Id/key field to the current instance's.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestExecution.LoadAll(Bam.Net.Data.Database)">
+            <summary>
+            Return every record in the TestExecution table.
+            </summary>
+            <param name="database">
+            The database to load from or null
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestExecution.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Automation.TestReporting.Data.Dao.TestExecution}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestExecution.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Automation.TestReporting.Data.Dao.TestExecution}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestExecution.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Automation.TestReporting.Data.Dao.TestExecution}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestExecution.Where(System.Func{Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionColumns,Bam.Net.Data.QueryFilter{Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionColumns}},Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A Func delegate that recieves a TestExecutionColumns 
+            and returns a QueryFilter which is the result of any comparisons
+            between TestExecutionColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestExecution.Where(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestExecutionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestExecutionColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestExecution.Where(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionColumns},Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestExecutionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestExecutionColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestExecution.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;TestExecutionColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestExecution.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestExecution.OneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestExecution.GetOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestExecution.OneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  This method is most commonly used to retrieve a
+            single TestExecution instance by its Id/Key value
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestExecutionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestExecutionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Automation.TestReporting.Data.Dao.TestExecution.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestExecution.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestExecutionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestExecutionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestExecution.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionColumns},Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestExecutionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestExecutionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestExecution.FirstOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Shortcut for Top(1, where, orderBy, database)
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestExecutionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestExecutionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestExecution.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number
+            of values. This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a TestExecutionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestExecutionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestExecution.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionColumns},Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a TestExecutionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestExecutionColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestExecution.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestExecution.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestExecution.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of TestExecutions
+            </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestExecution.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the number of results
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestExecutionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestExecutionColumns and other values
+            </param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.Repository.TestReportingRepository.GetOneNotificationSubscriptionWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscriptionColumns})">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+            <param name="where"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.Repository.TestReportingRepository.OneNotificationSubscriptionWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscriptionColumns})">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  This method is most commonly used to retrieve a
+            single NotificationSubscription instance by its Id/Key value
+            </summary>
+            <param name="where">A WhereDelegate that recieves a NotificationSubscriptionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between NotificationSubscriptionColumns and other values
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.Repository.TestReportingRepository.NotificationSubscriptionsWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscriptionColumns},Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscriptionColumns})">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a Bam.Net.Automation.TestReporting.Data.NotificationSubscriptionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between Bam.Net.Automation.TestReporting.Data.NotificationSubscriptionColumns and other values
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.Repository.TestReportingRepository.TopNotificationSubscriptionsWhere(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscriptionColumns})">
+            <summary>
+            Execute a query and return the specified number
+            of values. This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a NotificationSubscriptionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between NotificationSubscriptionColumns and other values
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.Repository.TestReportingRepository.CountNotificationSubscriptions">
+            <summary>
+            Return the count of NotificationSubscriptions
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.Repository.TestReportingRepository.CountNotificationSubscriptionsWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.NotificationSubscriptionColumns})">
+            <summary>
+            Execute a query and return the number of results
+            </summary>
+            <param name="where">A WhereDelegate that recieves a NotificationSubscriptionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between NotificationSubscriptionColumns and other values
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.Repository.TestReportingRepository.GetOneTestSuiteDefinitionWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinitionColumns})">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+            <param name="where"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.Repository.TestReportingRepository.OneTestSuiteDefinitionWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinitionColumns})">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  This method is most commonly used to retrieve a
+            single TestSuiteDefinition instance by its Id/Key value
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestSuiteDefinitionColumns and other values
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.Repository.TestReportingRepository.TestSuiteDefinitionsWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinitionColumns},Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinitionColumns})">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a Bam.Net.Automation.TestReporting.Data.TestSuiteDefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between Bam.Net.Automation.TestReporting.Data.TestSuiteDefinitionColumns and other values
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.Repository.TestReportingRepository.TopTestSuiteDefinitionsWhere(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinitionColumns})">
+            <summary>
+            Execute a query and return the specified number
+            of values. This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestSuiteDefinitionColumns and other values
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.Repository.TestReportingRepository.CountTestSuiteDefinitions">
+            <summary>
+            Return the count of TestSuiteDefinitions
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.Repository.TestReportingRepository.CountTestSuiteDefinitionsWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinitionColumns})">
+            <summary>
+            Execute a query and return the number of results
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestSuiteDefinitionColumns and other values
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.Repository.TestReportingRepository.GetOneTestDefinitionWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestDefinitionColumns})">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+            <param name="where"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.Repository.TestReportingRepository.OneTestDefinitionWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestDefinitionColumns})">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  This method is most commonly used to retrieve a
+            single TestDefinition instance by its Id/Key value
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestDefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestDefinitionColumns and other values
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.Repository.TestReportingRepository.TestDefinitionsWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestDefinitionColumns},Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.TestDefinitionColumns})">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a Bam.Net.Automation.TestReporting.Data.TestDefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between Bam.Net.Automation.TestReporting.Data.TestDefinitionColumns and other values
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.Repository.TestReportingRepository.TopTestDefinitionsWhere(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestDefinitionColumns})">
+            <summary>
+            Execute a query and return the specified number
+            of values. This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a TestDefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestDefinitionColumns and other values
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.Repository.TestReportingRepository.CountTestDefinitions">
+            <summary>
+            Return the count of TestDefinitions
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.Repository.TestReportingRepository.CountTestDefinitionsWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestDefinitionColumns})">
+            <summary>
+            Execute a query and return the number of results
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestDefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestDefinitionColumns and other values
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.Repository.TestReportingRepository.GetOneTestExecutionWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionColumns})">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+            <param name="where"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.Repository.TestReportingRepository.OneTestExecutionWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionColumns})">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  This method is most commonly used to retrieve a
+            single TestExecution instance by its Id/Key value
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestExecutionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestExecutionColumns and other values
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.Repository.TestReportingRepository.TestExecutionsWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionColumns},Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionColumns})">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a Bam.Net.Automation.TestReporting.Data.TestExecutionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between Bam.Net.Automation.TestReporting.Data.TestExecutionColumns and other values
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.Repository.TestReportingRepository.TopTestExecutionsWhere(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionColumns})">
+            <summary>
+            Execute a query and return the specified number
+            of values. This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a TestExecutionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestExecutionColumns and other values
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.Repository.TestReportingRepository.CountTestExecutions">
+            <summary>
+            Return the count of TestExecutions
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.Repository.TestReportingRepository.CountTestExecutionsWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestExecutionColumns})">
+            <summary>
+            Execute a query and return the number of results
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestExecutionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestExecutionColumns and other values
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.Repository.TestReportingRepository.GetOneTestSuiteExecutionSummaryWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummaryColumns})">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+            <param name="where"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.Repository.TestReportingRepository.OneTestSuiteExecutionSummaryWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummaryColumns})">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  This method is most commonly used to retrieve a
+            single TestSuiteExecutionSummary instance by its Id/Key value
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestSuiteExecutionSummaryColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestSuiteExecutionSummaryColumns and other values
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.Repository.TestReportingRepository.TestSuiteExecutionSummariesWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummaryColumns},Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummaryColumns})">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a Bam.Net.Automation.TestReporting.Data.TestSuiteExecutionSummaryColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between Bam.Net.Automation.TestReporting.Data.TestSuiteExecutionSummaryColumns and other values
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.Repository.TestReportingRepository.TopTestSuiteExecutionSummariesWhere(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummaryColumns})">
+            <summary>
+            Execute a query and return the specified number
+            of values. This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a TestSuiteExecutionSummaryColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestSuiteExecutionSummaryColumns and other values
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.Repository.TestReportingRepository.CountTestSuiteExecutionSummaries">
+            <summary>
+            Return the count of TestSuiteExecutionSummaries
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.Repository.TestReportingRepository.CountTestSuiteExecutionSummariesWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummaryColumns})">
+            <summary>
+            Execute a query and return the number of results
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestSuiteExecutionSummaryColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestSuiteExecutionSummaryColumns and other values
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.GetUniqueFilter">
+            <summary>
+            Gets a query filter that should uniquely identify
+            the current instance.  The default implementation
+            compares the Id/key field to the current instance's.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.LoadAll(Bam.Net.Data.Database)">
+            <summary>
+            Return every record in the TestSuiteDefinition table.
+            </summary>
+            <param name="database">
+            The database to load from or null
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinitionColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.Where(System.Func{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinitionColumns,Bam.Net.Data.QueryFilter{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinitionColumns}},Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A Func delegate that recieves a TestSuiteDefinitionColumns 
+            and returns a QueryFilter which is the result of any comparisons
+            between TestSuiteDefinitionColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.Where(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestSuiteDefinitionColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.Where(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinitionColumns},Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestSuiteDefinitionColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;TestSuiteDefinitionColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.OneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.GetOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.OneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  This method is most commonly used to retrieve a
+            single TestSuiteDefinition instance by its Id/Key value
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestSuiteDefinitionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestSuiteDefinitionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinitionColumns},Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestSuiteDefinitionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.FirstOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Shortcut for Top(1, where, orderBy, database)
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestSuiteDefinitionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number
+            of values. This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestSuiteDefinitionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinitionColumns},Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestSuiteDefinitionColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of TestSuiteDefinitions
+            </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinition.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteDefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the number of results
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestSuiteDefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestSuiteDefinitionColumns and other values
+            </param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary.GetUniqueFilter">
+            <summary>
+            Gets a query filter that should uniquely identify
+            the current instance.  The default implementation
+            compares the Id/key field to the current instance's.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary.LoadAll(Bam.Net.Data.Database)">
+            <summary>
+            Return every record in the TestSuiteExecutionSummary table.
+            </summary>
+            <param name="database">
+            The database to load from or null
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummaryColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary.Where(System.Func{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummaryColumns,Bam.Net.Data.QueryFilter{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummaryColumns}},Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummaryColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A Func delegate that recieves a TestSuiteExecutionSummaryColumns 
+            and returns a QueryFilter which is the result of any comparisons
+            between TestSuiteExecutionSummaryColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary.Where(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummaryColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestSuiteExecutionSummaryColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestSuiteExecutionSummaryColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary.Where(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummaryColumns},Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummaryColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestSuiteExecutionSummaryColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestSuiteExecutionSummaryColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;TestSuiteExecutionSummaryColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary.OneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary.GetOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummaryColumns},Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary.OneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummaryColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  This method is most commonly used to retrieve a
+            single TestSuiteExecutionSummary instance by its Id/Key value
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestSuiteExecutionSummaryColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestSuiteExecutionSummaryColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummaryColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestSuiteExecutionSummaryColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestSuiteExecutionSummaryColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummaryColumns},Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummaryColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestSuiteExecutionSummaryColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestSuiteExecutionSummaryColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary.FirstOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummaryColumns},Bam.Net.Data.Database)">
+            <summary>
+            Shortcut for Top(1, where, orderBy, database)
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestSuiteExecutionSummaryColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestSuiteExecutionSummaryColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummaryColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number
+            of values. This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a TestSuiteExecutionSummaryColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestSuiteExecutionSummaryColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummaryColumns},Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummaryColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a TestSuiteExecutionSummaryColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestSuiteExecutionSummaryColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummaryColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of TestSuiteExecutionSummaries
+            </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummary.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.TestReporting.Data.Dao.TestSuiteExecutionSummaryColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the number of results
+            </summary>
+            <param name="where">A WhereDelegate that recieves a TestSuiteExecutionSummaryColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between TestSuiteExecutionSummaryColumns and other values
+            </param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="T:Bam.Net.Automation.TestReporting.Data.TestSuiteDefinition">
+            <summary>
+            Represents a logical set of TestDefinitions
+            belonging to a common suite of tests
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Automation.TestReporting.Data.TestDefinition.MethodName">
+            <summary>
+            The name of the test method 
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Automation.TestReporting.Data.TestDefinition.Description">
+            <summary>
+            The information value of the test method if any
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Automation.TestReporting.Data.TestDefinition.AssemblyFullName">
+            <summary>
+            The full name of the assembly the test was in
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Automation.TestReporting.Data.TestExecution">
+            <summary>
+            Represents the result of executing
+            a single test
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Automation.TestReporting.Data.TestExecution.Passed">
+            <summary>
+            Boolean indicating whether the test passed
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Automation.TestReporting.Data.TestExecution.Exception">
+            <summary>
+            The exception message if any
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Automation.TestReporting.Data.TestExecution.StackTrace">
+            <summary>
+            The stack trace if any
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.TestReportService.GetSuiteDefinition(System.String)">
+            <summary>
+            Get an exisintg SuiteDefinition with the specified suiteTitle or
+            create it if none exists
+            </summary>
+            <param name="suiteTitle"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.TestReportService.GetTestDefinition(System.String,System.String)">
+            <summary>
+            Get an existing TestDefinition for the specified suiteTitle and testTitle
+            or create it if none exists
+            </summary>
+            <param name="suiteTitle"></param>
+            <param name="testTitle"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.UnitTestRunReportingListener.GetTestSuiteDefinition(Bam.Net.CommandLine.ConsoleMethod)">
+            <summary>
+            Get a TestSuiteDefinition for the specified test creating it if necessary
+            and populating the internal cache
+            </summary>
+            <param name="test"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Automation.TestReporting.UnitTestRunReportingListener.SetTestSuiteExecutionSummary(Bam.Net.Automation.TestReporting.Data.TestSuiteDefinition)">
+            <summary>
+            Set a TestSuiteExecutionSummary for the specified test creating it if necessary
+            and populating the internal cache
+            </summary>
+            <param name="suite"></param>
+            <returns></returns>
+        </member>
         <member name="M:Bam.Net.Automation.SuspendedJob.#ctor(Bam.Net.IpcMessageRoot,Bam.Net.Automation.Job)">
             <summary>
             Instantiate a new SuspendedJob instance saving
@@ -1504,13 +3069,12 @@
             the implementation)
             </summary>
         </member>
-        <member name="T:Bam.Net.Automation.Overseer">
+        <member name="T:Bam.Net.Automation.JobConductorService">
             <summary>
-            The master orchestrator for 
-            all jobs.
+            The master for all jobs.
             </summary>
         </member>
-        <member name="M:Bam.Net.Automation.Overseer.AddWorker(System.String,System.String,System.String)">
+        <member name="M:Bam.Net.Automation.JobConductorService.AddWorker(System.String,System.String,System.String)">
             <summary>
             Add a worker of the specified type to the job with the specified
             jobName assigning the specified workerName .
@@ -1520,7 +3084,7 @@
             <param name="jobName"></param>
             <returns></returns>
         </member>
-        <member name="M:Bam.Net.Automation.Overseer.AddWorker``1(System.String,Bam.Net.Automation.JobConf)">
+        <member name="M:Bam.Net.Automation.JobConductorService.AddWorker``1(System.String,Bam.Net.Automation.JobConf)">
             <summary>
             Adds a worker of generic type T to the
             specified JobConf.
@@ -1529,7 +3093,7 @@
             <param name="conf"></param>
             <returns></returns>
         </member>
-        <member name="M:Bam.Net.Automation.Overseer.JobExists(System.String)">
+        <member name="M:Bam.Net.Automation.JobConductorService.JobExists(System.String)">
             <summary>
             Returns true if a job with the specified name
             exists under the current Orchestrator.  Determined
@@ -1538,7 +3102,7 @@
             <param name="name"></param>
             <returns></returns>
         </member>
-        <member name="M:Bam.Net.Automation.Overseer.EnqueueJob(System.String,System.Int32)">
+        <member name="M:Bam.Net.Automation.JobConductorService.EnqueueJob(System.String,System.Int32)">
             <summary>
             Enqueue a job to be run next (typically instant if no other
             jobs are running)
@@ -1546,7 +3110,7 @@
             <param name="name"></param>
             <param name="stepNumber"></param>
         </member>
-        <member name="M:Bam.Net.Automation.Overseer.StartJobRunnerThread">
+        <member name="M:Bam.Net.Automation.JobConductorService.StartJobRunnerThread">
             <summary>
             Starts the JobRunner thread.  This method
             must be called prior to queueing up jobs

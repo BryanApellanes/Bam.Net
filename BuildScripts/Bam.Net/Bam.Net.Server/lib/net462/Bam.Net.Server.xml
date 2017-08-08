@@ -703,13 +703,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="T:Bam.Net.Server.ServiceSubdomainAttribute">
-            <summary>
-            Used to specify the subdomain 
-            a class should be served from when resolving
-            hostname for a service
-            </summary>
-        </member>
         <member name="P:Bam.Net.Server.SimpleServer`1.HostPrefixes">
             <summary>
             An array of hosts that this server will respond to
@@ -934,6 +927,16 @@
             <summary>
             Responder responsible for generating service proxies
             and responding to service proxy requests
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Server.ServiceProxyResponder.CommonServiceProvider">
+            <summary>
+            Services available to all applications
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Server.ServiceProxyResponder.AppServiceProviders">
+            <summary>
+            Incubators keyed by application name
             </summary>
         </member>
         <member name="M:Bam.Net.Server.ServiceProxyResponder.AddAppService``1(System.String,``0)">

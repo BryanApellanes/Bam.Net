@@ -1,6 +1,0 @@
-{
-  "SourceFilePath": "C:\\BamContent\\common\\views\\modal.dust",
-  "TemplateName": "modal",
-  "SourceHash": "c407d7e52b1023ca9c688cd8c45d99eefce3c958",
-  "CompiledTemplate": "(function(){dust.register(\"modal\",body_0);function body_0(chk,ctx){return chk.write(\"<!-- Modal --><div class=\\\\\"modal fade\\\\\" id=\\\\\"myModal\\\\\" tabindex=\\\\\"-1\\\\\" role=\\\\\"dialog\\\\\" aria-labelledby=\\\\\"myModalLabel\\\\\" aria-hidden=\\\\\"true\\\\\">  <div class=\\\\\"modal-dialog\\\\\">    <div class=\\\\\"modal-content\\\\\">      <div class=\\\\\"modal-header\\\\\">        <button type=\\\\\"button\\\\\" class=\\\\\"close\\\\\" data-dismiss=\\\\\"modal\\\\\" aria-hidden=\\\\\"true\\\\\">&times;</button>        <h4 class=\\\\\"modal-title\\\\\" id=\\\\\"myModalLabel\\\\\">\").reference(ctx.get(\"title\"),ctx,\"h\").write(\"</h4>      </div>      <div class=\\\\\"modal-body\\\\\">              </div>      <div class=\\\\\"modal-footer\\\\\">        <button type=\\\\\"button\\\\\" class=\\\\\"btn btn-default\\\\\" data-dismiss=\\\\\"modal\\\\\">Close</button>        <button type=\\\\\"button\\\\\" class=\\\\\"btn btn-primary\\\\\">Save changes</button>      </div>    </div><!-- /.modal-content -->  </div><!-- /.modal-dialog --></div><!-- /.modal -->\");}return body_0;})();"
-}

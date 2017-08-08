@@ -1,6 +1,0 @@
-{
-  "SourceFilePath": "C:\\BamContent\\common\\views\\navLeft.dust",
-  "TemplateName": "navLeft",
-  "SourceHash": "9417c3f4b6def86968700dd0e07a0a684380009e",
-  "CompiledTemplate": "(function(){dust.register(\"navLeft\",body_0);function body_0(chk,ctx){return chk.write(\"<ul class=\\\\\"nav navbar-nav\\\\\">\").section(ctx.get(\"pages\"),ctx,{\"block\":body_1},null).write(\"</ul>\");}function body_1(chk,ctx){return chk.write(\"  <li id=\\\\\"\").reference(ctx.get(\"id\"),ctx,\"h\").write(\"\\\\\">    <a href=\\\\\"#\\\\\">\").reference(ctx.get(\"title\"),ctx,\"h\").write(\"</a>  </li>\");}return body_0;})();"
-}

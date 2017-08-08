@@ -149,70 +149,23 @@
             Throws an exception if the test failed.  Same as ThrowExceptionIfTheTestFailed.
             </summary>
         </member>
-        <member name="M:Bam.Net.Testing.CommandLineTestInterface.AttachBeforeAndAfterHandlers">
-            <summary>
-            Attach the before and after handling methods by subscribing the 
-            methods addorned with BeforeUnitTests, BeforeEachUnitTest, AfterUnitTests
-            and AfterEachUnitTest attributes to appropriate test events
-            </summary>
-        </member>
-        <member name="M:Bam.Net.Testing.CommandLineTestInterface.NullifyBeforeAndAfterHandlers">
-            <summary>
-            Set TestsStarting, TestsFinished, TestStarting and TestFinished
-            to null effectively detaching any handlers that may have
-            been attached
-            </summary>
-        </member>
-        <member name="M:Bam.Net.Testing.CommandLineTestInterface.AttachBeforeAndAfterHandlers(System.Reflection.Assembly)">
-            <summary>
-            Attach the before and after handling methods by subscribing the 
-            methods addorned with BeforeUnitTests, BeforeEachUnitTest, AfterUnitTests
-            and AfterEachUnitTest attributes to appropriate test events
-            </summary>
-            <param name="assembly"></param>
-        </member>
-        <member name="E:Bam.Net.Testing.CommandLineTestInterface.TestFailed">
-            <summary>
-            Event that fires when a test fails.
-            </summary>
-        </member>
-        <member name="E:Bam.Net.Testing.CommandLineTestInterface.TestPassed">
-            <summary>
-            Event that fires when a test passes.
-            </summary>
-        </member>
-        <member name="M:Bam.Net.Testing.CommandLineTestInterface.Info(System.String,System.Object[])">
-            <summary>
-            Outputs an information message to the console.
-            </summary>
-            <param name="message">The message text to output.</param>
-        </member>
         <member name="M:Bam.Net.Testing.CommandLineTestInterface.Warn(System.String,System.Object[])">
             <summary>
             Outputs a warning to the console.
             </summary>
-            <param name="message">The message text to output</param>
+            <param name="messageSignature">The message text to output</param>
+            <param name="ex">The Exception that occurred.</param>
+            <param name="signatureVariableValues"></param>
         </member>
         <member name="M:Bam.Net.Testing.CommandLineTestInterface.Error(System.String,System.Exception,System.Object[])">
             <summary>
             Outputs an error to the console.
             </summary>
-            <param name="message">The message text to output</param>
+            <param name="messageSignature">The message text to output</param>
             <param name="ex">The Exception that occurred.</param>
+            <param name="signatureVariableValues"></param>
         </member>
-        <member name="M:Bam.Net.Testing.CommandLineTestInterface.Fatal(System.String,System.Exception,System.Object[])">
-            <summary>
-            Outputs an error to the console and exits.
-            </summary>
-            <param name="message">The message to output.</param>
-            <param name="ex">The Exception that occurred.</param>
-        </member>
-        <member name="E:Bam.Net.Testing.Integration.IntegrationTestRunner.IntegrationTestFailed">
-            <summary>
-            Event that fires when a test fails.
-            </summary>
-        </member>
-        <member name="E:Bam.Net.Testing.Integration.IntegrationTestRunner.IntegrationTestPassed">
+        <member name="M:Bam.Net.Testing.Integration.IntegrationTestRunner.RunIntegrationTests(System.IO.FileInfo,System.EventHandler{System.Exception})">
             <summary>
             Event that fires when a test passes.
             </summary>
@@ -365,40 +318,47 @@
             <param name="cleanup"></param>
             <returns></returns>
         </member>
-        <member name="T:Bam.Net.Testing.UnitTest">
+        <member name="T:Bam.Net.Testing.Unit.UnitTestAttribute">
             <summary>
             Attribute used to mark a method as a Unit Test
             </summary>
         </member>
-        <member name="P:Bam.Net.Testing.UnitTestResult.Passed">
+        <member name="P:Bam.Net.Testing.Data.TestResult.Passed">
             <summary>
             Boolean indicating whether the test passed
             </summary>
         </member>
-        <member name="P:Bam.Net.Testing.UnitTestResult.MethodName">
+        <member name="P:Bam.Net.Testing.Data.TestResult.MethodName">
             <summary>
             The name of the test method 
             </summary>
         </member>
-        <member name="P:Bam.Net.Testing.UnitTestResult.Description">
+        <member name="P:Bam.Net.Testing.Data.TestResult.Description">
             <summary>
             The information value of the test method if any
             </summary>
         </member>
-        <member name="P:Bam.Net.Testing.UnitTestResult.AssemblyFullName">
+        <member name="P:Bam.Net.Testing.Data.TestResult.AssemblyFullName">
             <summary>
             The full name of the assembly the test was in
             </summary>
         </member>
-        <member name="P:Bam.Net.Testing.UnitTestResult.Exception">
+        <member name="P:Bam.Net.Testing.Data.TestResult.Exception">
             <summary>
             The exception message if any
             </summary>
         </member>
-        <member name="P:Bam.Net.Testing.UnitTestResult.StackTrace">
+        <member name="P:Bam.Net.Testing.Data.TestResult.StackTrace">
             <summary>
             The stack trace if any
             </summary>
+        </member>
+        <member name="M:Bam.Net.Testing.TestRunner`1.RunSpecifiedTests(System.String)">
+            <summary>
+            Run the tests specified by testIdentifier which should be in the 
+            following forms: N1,N2,N3... or N1-Nn or N or "all"
+            </summary>
+            <param name="testIdentifier"></param>
         </member>
         <member name="T:Bam.Net.Testing.When">
             <summary>
