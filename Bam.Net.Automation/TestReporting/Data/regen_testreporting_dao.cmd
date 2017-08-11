@@ -1,0 +1,1 @@
+﻿	  troo.exe /gsr /ta:.\Bam.Net.Automation.dll /sn:TestReporting /fns:Bam.Net.Automation.TestReporting.Data /cfi:yes /uis:no /ws:C:\src\Business\Submodule\Bam.Net\Bam.Net.Automation\TestReporting\Data\Generated_Dao

@@ -11,7 +11,7 @@ namespace Bam.Net.Automation
     {
         public void Execute(IJobExecutionContext context)
         {
-            Overseer.Default.EnqueueJob((string)context.Get("JobName"));
+            JobConductorService.Default.EnqueueJob((string)context.Get("JobName"));
         }
     }
 }

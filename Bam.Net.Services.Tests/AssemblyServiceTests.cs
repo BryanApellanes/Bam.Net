@@ -22,6 +22,7 @@ using Bam.Net.CoreServices.DistributedHashTable.Data;
 using Bam.Net.Testing.Integration;
 using Bam.Net.CoreServices.Files.Data;
 using Bam.Net.CoreServices;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Services.Tests
 {

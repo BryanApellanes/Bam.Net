@@ -24,6 +24,7 @@ using System.CodeDom.Compiler;
 using Bam.Net.CommandLine;
 using Bam.Net.Testing;
 using Bam.Net.Razor;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Data.Tests
 {

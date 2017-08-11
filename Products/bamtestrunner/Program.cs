@@ -21,6 +21,11 @@ using Bam.Net.Encryption;
 using Bam.Net.Logging;
 using System.Threading.Tasks;
 using Bam.Net.Testing.Integration;
+using Bam.Net.Testing.Data;
+using Bam.Net.Testing.Unit;
+using Bam.Net.Configuration;
+using Bam.Net.CoreServices;
+using Bam.Net.Automation.TestReporting;
 
 namespace Bam.Net.Testing
 {
@@ -30,7 +35,6 @@ namespace Bam.Net.Testing
         private const string _exitOnFailure = "exitOnFailure";
         private const string _programName = "bamtestrunner";
         
-        static DaoRepository _repo;
         static void Main(string[] args)
         {
             PreInit();
@@ -64,7 +68,8 @@ namespace Bam.Net.Testing
             AddValidArgument("data", false, description: "The path to save the results to, default is the current directory if not specified");
             AddValidArgument("dataPrefix", true, description: "The file prefix for the sqlite data file or 'BamTests' if not specified");
             AddValidArgument("type", false, description: "The type of tests to run [Unit | Integration], default is unit.");
-            
+            AddValidArgument("testReportHost", false, description: "The hostname of the test report service");
+
             AddValidArgument(_exitOnFailure, true);
             AddSwitches(typeof(Program));
 
@@ -80,12 +85,9 @@ namespace Bam.Net.Testing
                 Pause("Attach the debugger now");
             }
 
-            TestType testType;
-            Enum.TryParse<TestType>(Arguments["type"].Or("Unit"), out testType);
+            Enum.TryParse<TestType>(Arguments["type"].Or("Unit"), out TestType testType);
 
-            string startDirectory;
-            FileInfo[] files;
-            Setup(out startDirectory, out files);
+            Setup(out string startDirectory, out FileInfo[] files);
 
             switch (testType)
             {
@@ -119,22 +121,15 @@ namespace Bam.Net.Testing
                 Exit(0);
             }
         }
-
+        static int? _failedCount;
+        static int? _passedCount;
         protected static void RunUnitTests(string startDirectory, FileInfo[] files)
         {
             bool exceptionOccurred = false;
             for (int i = 0; i < files.Length; i++)
             {
                 FileInfo fi = files[i];
-                try
-                {
-                    RunUnitTestsInFile(fi.FullName, startDirectory);
-                }
-                catch (Exception ex)
-                {
-                    exceptionOccurred = true;
-                    OutLineFormat("Exception running unit tests in file {0}: {1}\r\n\r\n", ConsoleColor.Magenta, fi.FullName, ex.Message, ex.StackTrace);                    
-                }
+                RunUnitTestsInFile(fi.FullName, startDirectory);                
             }
 
             OutLineFormat("Passed: {0}", ConsoleColor.Green, _passedCount);
@@ -158,9 +153,7 @@ namespace Bam.Net.Testing
             try
             {
                 Assembly assembly = Assembly.LoadFrom(assemblyPath);
-                AttachBeforeAndAfterHandlers(assembly);
-                RunAllUnitTests(assembly);                
-                NullifyBeforeAndAfterHandlers();                
+                RunAllUnitTests(assembly, Log.Default, (o, a) => _passedCount++, (o, a) => _failedCount++);
                 Environment.CurrentDirectory = endDirectory;
             }
             catch (Exception ex)
@@ -196,25 +189,28 @@ namespace Bam.Net.Testing
         
         private static void Setup(out string startDirectory, out FileInfo[] files)
         {
-            PrepareResultRepository(Arguments["dataPrefix"].Or("BamTests"));
+            string resultDirectory = Arguments.Contains("data") ? Arguments["data"] : ".";
+            string filePrefix = Arguments["dataPrefix"].Or("BamTests");
+            List<ITestRunListener<UnitTestMethod>> testRunListeners = new List<ITestRunListener<UnitTestMethod>> { new UnitTestRunListener(resultDirectory, $"{filePrefix}_{DateTime.Now.Date.ToString("MM_dd_yyyy")}") };
+
+            string reportHost = Arguments["testReportHost"];
+            if (string.IsNullOrEmpty(reportHost))
+            {
+                reportHost = DefaultConfiguration.GetAppSetting("TestReportHost", string.Empty);
+            }
+            if (!string.IsNullOrEmpty(reportHost))
+            {
+                testRunListeners.Add(new UnitTestRunReportingListener(reportHost));
+            }
+
+            GetUnitTestRunListeners = () => testRunListeners;
             startDirectory = Environment.CurrentDirectory;
             DirectoryInfo testDir = GetTestDirectory();
             Environment.CurrentDirectory = testDir.FullName;
 
-            files = GetTestFiles(testDir);
-            TestFailed += TestFailedHandler;
-            TestPassed += TestPassedHandler;            
+            files = GetTestFiles(testDir);          
         }
-
-        private static void PrepareResultRepository(string filePrefix)
-        {
-            string directory = Arguments.Contains("data") ? Arguments["data"] : ".";
-            string fileName = "{0}_{1}"._Format(filePrefix, DateTime.Now.Date.ToString("MM_dd_yyyy"));
-            _repo = new DaoRepository(new SQLiteDatabase(directory, fileName));
-            _repo.AddType(typeof(UnitTestResult));
-            _repo.EnsureDaoAssemblyAndSchema();
-        }
-
+        
         private static FileInfo[] GetTestFiles(DirectoryInfo testDir)
         {
             FileInfo[] files = null;
@@ -228,26 +224,7 @@ namespace Bam.Net.Testing
             }
             return files;
         }
-
-        static int _passedCount = 0;
-        static int _failedCount = 0;
-
-        private static void TestFailedHandler(object sender, TestExceptionEventArgs e)
-        {
-            _failedCount++;
-            _repo.Save(new UnitTestResult(e));
-            if (Arguments.Contains(_exitOnFailure))
-            {
-                Exit(1);
-            }
-        }
-
-        private static void TestPassedHandler(object sender, ConsoleInvokeableMethod cim)
-        {
-            _passedCount++;
-            _repo.Save(new UnitTestResult(cim));
-        }
-
+       
         private static DirectoryInfo GetTestDirectory()
         {
             DirectoryInfo testDir = new DirectoryInfo(".");

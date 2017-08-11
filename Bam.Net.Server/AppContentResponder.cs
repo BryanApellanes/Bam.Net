@@ -173,6 +173,7 @@ namespace Bam.Net.Server
             }
             else if (AppContentLocator.Locate(path, out locatedPath, out checkedPaths))
             {
+                result = true;
                 string foundExt = Path.GetExtension(locatedPath);
                 if (FileCachesByExtension.ContainsKey(foundExt))
                 {
@@ -186,7 +187,10 @@ namespace Bam.Net.Server
                     {
                         content = cache.GetContent(locatedPath);
                     }
-                    result = true;
+                }
+                else
+                {
+                    content = File.ReadAllBytes(locatedPath);
                 }
             }
 

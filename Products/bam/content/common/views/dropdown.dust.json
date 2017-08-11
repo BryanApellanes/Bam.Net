@@ -1,6 +1,0 @@
-{
-  "SourceFilePath": "C:\\BamContent\\common\\views\\dropdown.dust",
-  "TemplateName": "dropdown",
-  "SourceHash": "d638b8abf71ca0fdfc019e47e45ba211f8303926",
-  "CompiledTemplate": "(function(){dust.register(\"dropdown\",body_0);function body_0(chk,ctx){return chk.write(\"<!--  {    name: \\\\\"string\\\\\",    options: [      {id: \\\\\"int\\\\\", text: \\\\\"string\\\\\"}    ]  }--><div class=\\\\\"dropdown\\\\\">    <a href=\\\\\"#\\\\\" class=\\\\\"dropdown-toggle\\\\\" data-toggle=\\\\\"dropdown\\\\\">\").reference(ctx.get(\"name\"),ctx,\"h\").write(\" <b class=\\\\\"caret\\\\\"></b></a>    <ul class=\\\\\"dropdown-menu\\\\\">      \").section(ctx.get(\"items\"),ctx,{\"block\":body_1},null).write(\"    </ul></div>\");}function body_1(chk,ctx){return chk.write(\"      <li>        <a id=\\\\\"\").reference(ctx.get(\"id\"),ctx,\"h\").write(\"\\\\\">\").reference(ctx.get(\"text\"),ctx,\"h\").write(\"</a>      </li>      \");}return body_0;})();"
-}

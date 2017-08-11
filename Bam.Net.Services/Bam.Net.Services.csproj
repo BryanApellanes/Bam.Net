@@ -104,13 +104,15 @@
     <Compile Include="AsyncCallback\Data\Generated_Dao\Qi\AsyncExecutionData.cs" />
     <Compile Include="AsyncCallback\Data\Generated_Dao\Qi\AsyncExecutionRequestData.cs" />
     <Compile Include="AsyncCallback\Data\Generated_Dao\Qi\AsyncExecutionResponseData.cs" />
+    <Compile Include="AsyncExecutionRequestEventArgs.cs" />
     <Compile Include="AsyncExecutionResponse.cs" />
+    <Compile Include="AsyncExecutionResponseEventArgs.cs" />
     <Compile Include="AsyncProxyableService.cs" />
     <Compile Include="Catalog\Data\ItemCustomizationDefinition.cs" />
     <Compile Include="AsyncExecutionRequest.cs" />
+    <Compile Include="ExecutionResponder.cs" />
     <Compile Include="ServiceResponse.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="RpcRoute.cs" />
     <Compile Include="Catalog\KindsOfCatalogs.cs" />
     <Compile Include="RequestRoute.cs" />
     <Compile Include="RequestRouter.cs" />

@@ -156,7 +156,7 @@ namespace Bam.Net.Logging
         /// </summary>
         protected static string GetAppDataFolder()
         {
-            return Extensions.GetAppDataFolder(new object());
+            return RuntimeSettings.AppDataFolder;
         }
     }
 }

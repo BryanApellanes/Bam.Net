@@ -1,6 +1,7 @@
 /*
 	Copyright © Bryan Apellanes 2015  
 */
+using Bam.Net.Testing.Unit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace Bam.Net.Testing.Specification
 {
 
 	[AttributeUsage(AttributeTargets.Method)]
-	public class SpecAttribute: UnitTest
+	public class SpecAttribute: UnitTestAttribute
 	{
 	}
 }

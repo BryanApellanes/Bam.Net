@@ -538,7 +538,7 @@ namespace Bam.Net.Server
 
         public static BamConf Load()
         {
-            return Load(DefaultConfiguration.GetAppSetting(ContentRootConfigKey, new object().GetAppDataFolder()));
+            return Load(DefaultConfiguration.GetAppSetting(ContentRootConfigKey, RuntimeSettings.AppDataFolder));
         }
 
         /// <summary>

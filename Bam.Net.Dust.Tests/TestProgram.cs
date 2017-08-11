@@ -20,6 +20,7 @@ using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using System.ComponentModel;
 using Bam.Net;
+using Bam.Net.Testing.Unit;
 
 namespace CommandLineTests
 {

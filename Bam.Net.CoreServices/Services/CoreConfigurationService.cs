@@ -15,9 +15,11 @@ namespace Bam.Net.CoreServices
     using Net.Data.SQLite;
     using Server;
     using ServiceProxySecure = ServiceProxy.Secure;
+    using Bam.Net.ServiceProxy;
 
     [Proxy("configSvc")]
     [ServiceProxySecure.ApiKeyRequired]
+    [ServiceSubdomain("config")]
     public class CoreConfigurationService : CoreProxyableService
     {
         public const string CommonConfigName = "Common";

@@ -1237,7 +1237,8 @@
         </member>
         <member name="T:Bam.Net.Web.ProxyAlias">
             <summary>
-            An alias for a proxied service class
+            An alias for a proxied service class, typically
+            the name of the client side javascript variable
             </summary>
         </member>
         <member name="M:Bam.Net.ReflectionExtensions.ToInfoHash(System.Collections.Generic.IEnumerable{System.Type},Bam.Net.HashAlgorithms,System.Text.Encoding)">
@@ -2500,14 +2501,6 @@
             <param name="stringToPluralize"></param>
             <returns></returns>
         </member>
-        <member name="M:Bam.Net.Extensions.GetAppDataFolder(System.Object)">
-            <summary>
-            Gets the full path to the App_Data folder if HttpContext.Current is not null.
-            Otherwise returns the full path to Environment.SpecialFolder.ApplicationData
-            </summary>
-            <param name="any"></param>
-            <returns></returns>
-        </member>
         <member name="M:Bam.Net.Extensions.Truncate(System.String,System.Int32)">
             <summary>
             Drops the specified number of characters from the end of the 
@@ -2585,7 +2578,7 @@
         <member name="M:Bam.Net.Extensions.Set``2(System.Collections.Generic.Dictionary{``0,``1},``0,``1)">
             <summary>
             Set the value for the specified key in the dictionary in a way that won't 
-            throw an exception if the value key isn't already there
+            throw an exception if the key isn't already there
             </summary>
             <typeparam name="TKey"></typeparam>
             <typeparam name="TValue"></typeparam>

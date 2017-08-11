@@ -135,40 +135,11 @@ namespace Bam.Net.Server
             get;
             set;
         }
-
-        List<ILogger> _subscribers = new List<ILogger>();
-        object _subscriberLock = new object();
-        public ILogger[] Subscribers
-        {
-            get
-            {
-                if (_subscribers == null)
-                {
-                    _subscribers = new List<ILogger>();
-                }
-                lock (_subscriberLock)
-                {
-                    return _subscribers.ToArray();
-                }
-            }
-        }
-
-        public bool IsSubscribed(ILogger logger)
-        {
-            lock (_subscriberLock)
-            {
-                return _subscribers.Contains(logger);
-            }
-        }
-        public virtual void Subscribe(ILogger logger)
-        {
+        public override void Subscribe(ILogger logger)
+        {            
             if (!IsSubscribed(logger))
             {
-                lock (_subscriberLock)
-                {
-                    _subscribers.Add(logger);
-                }
-
+                base.Subscribe(logger);
                 string className = typeof(ContentResponder).Name;
                 this.AppContentRespondersInitializing += (c) =>
                 {

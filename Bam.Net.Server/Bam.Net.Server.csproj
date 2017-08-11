@@ -173,7 +173,6 @@
     <Compile Include="SearchDirectory.cs" />
     <Compile Include="SearchRule.cs" />
     <Compile Include="AppSetting.cs" />
-    <Compile Include="ServiceSubdomainAttribute.cs" />
     <Compile Include="SimpleServer.cs" />
     <Compile Include="TcpServer.cs" />
     <Compile Include="IInitialize.cs" />

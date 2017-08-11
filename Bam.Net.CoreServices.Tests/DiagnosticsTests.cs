@@ -13,6 +13,7 @@ using Bam.Net.Data.MySql;
 using Bam.Net.Data.Oracle;
 using Bam.Net.Yaml;
 using Bam.Net.CoreServices.Services;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.CoreServices.Tests
 {

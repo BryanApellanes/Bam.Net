@@ -82,10 +82,12 @@
   <ItemGroup>
     <Compile Include="ConsoleActions.cs" />
     <Compile Include="FtpUnitTests.cs" />
-    <Compile Include="OrchestratorUnitTests.cs" />
+    <Compile Include="JobConductorUnitTests.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestMessageBody.cs" />
+    <Compile Include="TestTestRunner.cs" />
+    <Compile Include="TestUnitTestRunListener.cs" />
     <Compile Include="UnitTests.cs" />
   </ItemGroup>
   <ItemGroup>

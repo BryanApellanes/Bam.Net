@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Bam.Net.Logging;
 using Bam.Net.Server;
 using Bam.Net.CoreServices;
+using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.Services
 {
@@ -15,6 +16,7 @@ namespace Bam.Net.Services
         {
             ServiceSubdomains = new HashSet<ServiceSubdomainAttribute>();
             RegisterServices(serviceRegistry);
+            
         }
 
         public void RegisterServices(ServiceRegistry serviceRegistry)
@@ -33,7 +35,7 @@ namespace Bam.Net.Services
             {
                 copy.Each(hp =>
                 {
-                    HostPrefixes.Add(sub.ToHostPrefix(hp));
+                    HostPrefixes.Add(hp.FromServiceSubdomain(sub));
                 });
             });
             base.Start();

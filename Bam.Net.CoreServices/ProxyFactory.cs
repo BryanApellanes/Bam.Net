@@ -7,6 +7,7 @@ using System.Reflection;
 using Bam.Net.Logging;
 using Bam.Net.Incubation;
 using Bam.Net.Server;
+using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.CoreServices
 {

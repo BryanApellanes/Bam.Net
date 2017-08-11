@@ -9,6 +9,7 @@ using Bam.Net.CommandLine;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Testing;
 using Bam.Net.Yaml.Data;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Yaml.Tests
 {

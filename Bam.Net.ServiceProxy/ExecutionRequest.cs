@@ -74,12 +74,45 @@ namespace Bam.Net.ServiceProxy
             OnAnyInstanciated(this);
         }
 
-        public ExecutionRequest(IHttpContext context, ProxyAlias[] aliases, Incubator serviceProvider)
+        public ExecutionRequest(IHttpContext context, Incubator serviceProvider, params ProxyAlias[] aliases)
         {
             Context = context;
             ProxyAliases = aliases;
             ServiceProvider = serviceProvider;
             OnAnyInstanciated(this);
+        }
+
+        public static ExecutionRequest Create(Incubator incubator, MethodInfo method, params object[] parameters)
+        {
+            ExecutionRequest request = new ExecutionRequest()
+            {
+                ServiceProvider = incubator,
+                MethodName = method.Name,
+                MethodInfo = method,
+                IsInitialized = true,
+                Parameters = parameters,
+                ClassName = method.DeclaringType.Name,
+                TargetType = method.DeclaringType
+            };
+            return request;
+        }
+
+        /// <summary>
+        /// Decrypt the input string of the specified ExecutionRequest
+        /// if it is intended for the SecureChannel
+        /// </summary>
+        /// <param name="execRequest"></param>
+        public static void DecryptSecureChannelInvoke(ExecutionRequest execRequest)
+        {
+            if (execRequest.Instance != null &&
+                execRequest.Instance.GetType() == typeof(SecureChannel) &&
+                execRequest.MethodName.Equals(nameof(SecureChannel.Invoke)))
+            {
+                execRequest.InputString = SecureSession.Get(execRequest.Context).Decrypt(execRequest.InputString);
+                HttpArgs args = new HttpArgs();
+                args.ParseJson(execRequest.InputString);
+                execRequest.JsonParams = args["jsonParams"];
+            }
         }
 
         protected internal ProxyAlias[] ProxyAliases
@@ -946,19 +979,6 @@ namespace Bam.Net.ServiceProxy
                 result = hasIncubator;
             }
             return result;
-        }
-
-        public static ExecutionRequest Create(Incubator incubator, MethodInfo method, params object[] parameters)
-        {
-            ExecutionRequest request = new ExecutionRequest();
-            request.ServiceProvider = incubator;
-            request.MethodName = method.Name;
-            request.MethodInfo = method;
-            request.IsInitialized = true;
-            request.Parameters = parameters;
-            request.ClassName = method.DeclaringType.Name;
-            request.TargetType = method.DeclaringType;
-            return request;
         }
     }
 }

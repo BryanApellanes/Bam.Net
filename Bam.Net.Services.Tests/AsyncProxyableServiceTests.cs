@@ -11,6 +11,7 @@ using Bam.Net.Server;
 using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.ServiceProxy.Tests;
 using Bam.Net.Testing;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Services.Tests
 {

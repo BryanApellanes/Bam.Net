@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Bam.Net.Services.Validation;
 using Bam.Net.Services.Validation.Data;
 using Bam.Net.Testing;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Services.Tests
 {

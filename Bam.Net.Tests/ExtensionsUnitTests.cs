@@ -1,6 +1,7 @@
 ﻿using System;
 using Bam.Net.Testing;
 using System.Collections.Generic;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Tests
 {

@@ -4,13 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.ServiceProxy;
+using Bam.Net.Configuration;
 
 namespace Bam.Net.Server
 {
     public class FileUploadEventArgs: EventArgs
     {
-        public FileUploadEventArgs(IHttpContext context, HttpPostedFile file, string applicationName = "UNKOWN")
+        public FileUploadEventArgs(IHttpContext context, HttpPostedFile file, string applicationName = null)
         {
+            applicationName = string.IsNullOrEmpty(applicationName) ? DefaultConfiguration.DefaultApplicationName : applicationName;
             HttpContext = context;
             PostedFile = file;
             Continue = true;

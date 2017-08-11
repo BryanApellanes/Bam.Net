@@ -16,6 +16,7 @@ using Bam.Net.Net.Dns;
 using System.Reflection;
 using Bam.Net.Encryption;
 using System.IO;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Messaging.Tests
 {

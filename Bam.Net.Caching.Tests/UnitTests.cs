@@ -16,6 +16,7 @@ using System.IO;
 using Bam.Net.Caching.File;
 using System.Threading;
 using Bam.Net.Data.Repositories;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Caching.Tests
 {

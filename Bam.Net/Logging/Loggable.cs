@@ -86,10 +86,9 @@ namespace Bam.Net.Logging
                     EventInfo[] eventInfos = currentType.GetEvents();
                     eventInfos.Each(eventInfo =>
                     {
-                        VerbosityAttribute verbosity;
                         bool shouldSubscribe = true;
-						VerbosityLevel logEventType = VerbosityLevel.Information;
-                        if (eventInfo.HasCustomAttributeOfType(out verbosity))
+                        VerbosityLevel logEventType = VerbosityLevel.Information;
+                        if (eventInfo.HasCustomAttributeOfType(out VerbosityAttribute verbosity))
                         {
                             shouldSubscribe = (int)verbosity.Value <= (int)LogVerbosity;
                             logEventType = verbosity.Value;

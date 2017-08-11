@@ -7,6 +7,7 @@ using Bam.Net.Analytics.Classification;
 using Bam.Net.Configuration;
 using Bam.Net.Data;
 using Bam.Net.Testing;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Analytics.Tests
 {

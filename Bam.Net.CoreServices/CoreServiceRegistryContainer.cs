@@ -68,6 +68,10 @@ namespace Bam.Net.CoreServices
             CoreConfigurationService configSvc = new CoreConfigurationService(coreRepo, conf, userDatabasesPath);
             CoreApplicationRegistryServiceConfig config = new CoreApplicationRegistryServiceConfig { DatabaseProvider = dbProvider, WorkspacePath = databasesPath, Logger = Log.Default };
             CompositeRepository compositeRepo = new CompositeRepository(coreRepo, databasesPath);
+            CoreLoggerService loggerSvc = new CoreLoggerService(conf);
+            dbProvider.SetDatabases(loggerSvc);
+            loggerSvc.SetLogger();
+
             ServiceRegistry reg = (ServiceRegistry)(new ServiceRegistry())
                 .ForCtor<CoreConfigurationService>("databaseRoot").Use(userDatabasesPath)
                 .ForCtor<CoreConfigurationService>("conf").Use(conf)
@@ -84,6 +88,7 @@ namespace Bam.Net.CoreServices
                 .For<IRoleResolver>().Use(roleResolver)
                 .For<DaoRoleResolver>().Use(roleResolver)
                 .For<IRoleProvider>().Use(coreRoleService)
+                .For<CoreRoleService>().Use(coreRoleService)
                 .For<EmailComposer>().Use(userMgr.EmailComposer)
                 .For<CoreApplicationRegistryServiceConfig>().Use(config)
                 .For<IApplicationNameProvider>().Use<CoreApplicationRegistrationService>()
@@ -100,7 +105,9 @@ namespace Bam.Net.CoreServices
                 .For<IAssemblyService>().Use<AssemblyService>()
                 .For<ServiceRegistryRepository>().Use<ServiceRegistryRepository>()
                 .For<CoreServiceRegistrationService>().Use<CoreServiceRegistrationService>()
-                .For<CoreOAuthService>().Use<CoreOAuthService>();
+                .For<CoreOAuthService>().Use<CoreOAuthService>()
+                .For<ILog>().Use(loggerSvc)
+                .For<CoreLoggerService>().Use(loggerSvc);
 
             reg.SetProperties(userMgr);
             userMgr.ServiceProvider = reg;

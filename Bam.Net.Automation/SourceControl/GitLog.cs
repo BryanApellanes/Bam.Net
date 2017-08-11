@@ -63,8 +63,7 @@ namespace Bam.Net.Automation.SourceControl
 
         public override bool Equals(object obj)
         {
-            GitLog log = obj as GitLog;
-            if(log != null)
+            if (obj is GitLog log)
             {
                 return log.CommitHash.Equals(CommitHash);
             }

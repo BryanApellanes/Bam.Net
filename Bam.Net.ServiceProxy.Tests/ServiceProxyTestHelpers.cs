@@ -219,7 +219,7 @@ namespace Bam.Net.ServiceProxy.Tests
             CreateServer(out baseAddress, out server);
             server.AddCommonService<T>();
             Servers.Add(server);
-            server.Start();
+            server.Start(true);
             // /end- Test server to catch calls
         }
         public static void StartTestServer<T1, T2>(out string baseAddress, out BamServer server)
@@ -229,9 +229,9 @@ namespace Bam.Net.ServiceProxy.Tests
             CreateServer(out baseAddress, out server);
             server.AddCommonService<T1>();
             server.AddCommonService<T2>();
-            //SecureChannel.ServiceProvider = server.CommonServiceProvider.Clone();
             Servers.Add(server);
-            server.Start();
+            
+            server.Start(true);
             // /end- Test server to catch calls
         }
         public static void CreateServer(out string baseAddress, out BamServer server)

@@ -171,6 +171,63 @@
     <Compile Include="Partials\JobData.cs" />
     <Compile Include="Partials\JobRunData.cs" />
     <Compile Include="Partials\RunningJob.cs" />
+    <Compile Include="TestReporting\CreateStatus.cs" />
+    <Compile Include="TestReporting\SaveTestSuiteExecutionSummaryResponse.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\NotificationSubscription.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\NotificationSubscriptionCollection.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\NotificationSubscriptionColumns.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\NotificationSubscriptionPagedQuery.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\NotificationSubscriptionQuery.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\NotificationSubscriptionWrapper.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\Qi\NotificationSubscription.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\Qi\TestDefinition.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\Qi\TestExecution.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\Qi\TestSuiteDefinition.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\Qi\TestSuiteExecutionSummary.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\TestDefinition.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\TestDefinitionCollection.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\TestDefinitionColumns.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\TestDefinitionPagedQuery.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\TestDefinitionQuery.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\TestDefinitionWrapper.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\TestExecution.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\TestExecutionCollection.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\TestExecutionColumns.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\TestExecutionPagedQuery.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\TestExecutionQuery.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\TestExecutionWrapper.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\TestReportingContext.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\TestReportingRepository.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\TestSuiteDefinition.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\TestSuiteDefinitionCollection.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\TestSuiteDefinitionColumns.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\TestSuiteDefinitionPagedQuery.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\TestSuiteDefinitionQuery.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\TestSuiteDefinitionWrapper.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\TestSuiteExecutionSummary.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\TestSuiteExecutionSummaryCollection.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\TestSuiteExecutionSummaryColumns.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\TestSuiteExecutionSummaryPagedQuery.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\TestSuiteExecutionSummaryQuery.cs" />
+    <Compile Include="TestReporting\Data\Generated_Dao\TestSuiteExecutionSummaryWrapper.cs" />
+    <Compile Include="TestReporting\Data\NotificationSubscription.cs" />
+    <Compile Include="TestReporting\Data\TestSuiteDefinition.cs" />
+    <Compile Include="TestReporting\Data\TestDefinition.cs" />
+    <Compile Include="TestReporting\Data\TestExecution.cs" />
+    <Compile Include="TestReporting\Data\TestSuiteExecutionSummary.cs" />
+    <Compile Include="TestReporting\GetSuiteDefinitionResponse.cs" />
+    <Compile Include="TestReporting\GetTestDefinitionResponse.cs" />
+    <Compile Include="TestReporting\ITestReportService.cs" />
+    <Compile Include="TestReporting\NotificationSubscriptionResponse.cs" />
+    <Compile Include="TestReporting\RetrieveNotificationSubscriptionsResponse.cs" />
+    <Compile Include="TestReporting\RetrieveTestExecutionResponse.cs" />
+    <Compile Include="TestReporting\RetrieveTestSummaryResponse.cs" />
+    <Compile Include="TestReporting\SaveTestExecutionResponse.cs" />
+    <Compile Include="TestReporting\SearchTestExecutionResponse.cs" />
+    <Compile Include="TestReporting\SubscriptionStatus.cs" />
+    <Compile Include="TestReporting\TestReportResponse.cs" />
+    <Compile Include="TestReporting\TestReportService.cs" />
+    <Compile Include="SourceControl\Extensions.cs" />
     <Compile Include="SourceControl\Git.cs" />
     <Compile Include="SourceControl\GitConfigStack.cs" />
     <Compile Include="SourceControl\GitLog.cs" />
@@ -180,23 +237,7 @@
     <Compile Include="SourceControl\UnableToConfigureGitException.cs" />
     <Compile Include="SourceControl\UnableToInitializeGitToolsException.cs" />
     <Compile Include="SuspendedJob.cs" />
-    <Compile Include="Testing\Data\NotificationSubscription.cs" />
-    <Compile Include="Testing\Data\SuiteDefinition.cs" />
-    <Compile Include="Testing\Data\TestDefinition.cs" />
-    <Compile Include="Testing\Data\TestExecution.cs" />
-    <Compile Include="Testing\Data\TestSummary.cs" />
-    <Compile Include="Testing\Responses\CreateStatus.cs" />
-    <Compile Include="Testing\Responses\CreateTestSummaryResponse.cs" />
-    <Compile Include="Testing\Responses\DefineSuiteResponse.cs" />
-    <Compile Include="Testing\Responses\DefineTestResponse.cs" />
-    <Compile Include="Testing\Responses\NotificationSubscriptionResponse.cs" />
-    <Compile Include="Testing\Responses\RetrieveNotificationSubscriptionsResponse.cs" />
-    <Compile Include="Testing\Responses\RetrieveTestExecutionResponse.cs" />
-    <Compile Include="Testing\Responses\RetrieveTestSummaryResponse.cs" />
-    <Compile Include="Testing\Responses\SaveTestExecutionResponse.cs" />
-    <Compile Include="Testing\Responses\SearchTestExecutionResponse.cs" />
-    <Compile Include="Testing\SubscriptionStatus.cs" />
-    <Compile Include="Testing\TestRepositoryServer.cs" />
+    <Compile Include="TestReporting\UnitTestRunReportingListener.cs" />
     <Compile Include="WorkStateEventArgs.cs" />
     <Compile Include="ContinuousIntegration\BamTestRunProcessWorker.cs" />
     <Compile Include="ContinuousIntegration\BuildEventInfo.cs" />
@@ -236,7 +277,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="FileCopyWorker.cs" />
     <Compile Include="FileSystemFileCopyWorker.cs" />
-    <Compile Include="Overseer.cs" />
+    <Compile Include="JobConductorService.cs" />
     <Compile Include="FtpUploadWorker.cs" />
     <Compile Include="IWorker.cs" />
     <Compile Include="Job.cs" />
@@ -342,6 +383,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="ContinuousIntegration\README.md" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -355,6 +397,7 @@
     <None Include="OpenCover.zip" />
     <None Include="packages.config" />
     <None Include="ReportGenerator.zip" />
+    <None Include="TestReporting\Data\regen_testreporting_dao.cmd" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Automation.db.js" />

@@ -79,40 +79,7 @@ namespace Bam.Net.Services.Clients
 
         [Verbosity(VerbosityLevel.Information, MessageFormat = "{OrganizationName}:{ApplicationName}: {ApiKeyFilePath} saved")]
         public event EventHandler ApiKeyFileSaved;
-
-        object _initLock = new object();
-        protected internal bool Initialize()
-        {
-            lock (_initLock)
-            {
-                if (!IsInitialized)
-                {
-                    FireEvent(Initializing);
-                    CoreServiceResponse response = ApplicationRegistryService.RegisterApplication(ProcessDescriptor);
-                    ApplicationRegistrationResult appRegistrationResult = response.Data.FromJObject<ApplicationRegistrationResult>();
-                    if (response.Success)
-                    {
-                        IsInitialized = true;
-                        FireEvent(Initialized);
-                        ApiKeyInfo keyInfo = new ApiKeyInfo
-                        {
-                            ApiKey = appRegistrationResult.ApiKey,
-                            ApplicationClientId = appRegistrationResult.ClientId,
-                            ApplicationName = GetApplicationName()
-                        };
-                        EnsureApiKeyFileDirectory();
-                        keyInfo.ToJsonFile(ApiKeyFilePath);
-                        FireEvent(ApiKeyFileSaved);
-                    }
-                    else
-                    {
-                        Message = response.Message;
-                        FireEvent(InitializationFailed);
-                    }                 
-                }
-                return IsInitialized;
-            }
-        }
+        
         public string Message { get; set; } // used by InitializationFailed event
         public string ApplicationName { get; set; }
         public string OrganizationName { get; set; }
@@ -231,12 +198,65 @@ namespace Bam.Net.Services.Clients
         }
         #endregion
         
+        public SignUpResponse SignUp(string emailAddress, string password, string userName = null)
+        {
+            userName = userName ?? emailAddress;
+            return UserRegistryService.SignUp(emailAddress, userName, password.Sha1(), true);
+        }
+
+        public ApiKeyInfo RegisterApplication()
+        {
+            RegisterApplicationProcess();
+            return ApiKeyFilePath.FromJsonFile<ApiKeyInfo>();
+        }
+
         public LoginResponse Login(string userName, string passHash)
         {
             return UserRegistryService.Login(userName, passHash);
         }
-
-        public CoreServiceResponse Register()
+        object _registerLock = new object();
+        /// <summary>
+        /// Register the current application and ensure that the local ApiKeyInfo is set and 
+        /// written to ApiKeyFilePath
+        /// </summary>
+        /// <returns></returns>
+        protected internal bool RegisterApplicationProcess()
+        {
+            lock (_registerLock)
+            {
+                if (!IsInitialized)
+                {
+                    FireEvent(Initializing);
+                    CoreServiceResponse response = ApplicationRegistryService.RegisterApplication(ProcessDescriptor);
+                    ApplicationRegistrationResult appRegistrationResult = response.Data.FromJObject<ApplicationRegistrationResult>();
+                    if (response.Success)
+                    {
+                        IsInitialized = true;
+                        FireEvent(Initialized);
+                        ApiKeyInfo keyInfo = new ApiKeyInfo
+                        {
+                            ApiKey = appRegistrationResult.ApiKey,
+                            ApplicationClientId = appRegistrationResult.ClientId,
+                            ApplicationName = GetApplicationName()
+                        };
+                        EnsureApiKeyFileDirectory();
+                        keyInfo.ToJsonFile(ApiKeyFilePath);
+                        FireEvent(ApiKeyFileSaved);
+                    }
+                    else
+                    {
+                        Message = response.Message;
+                        FireEvent(InitializationFailed);
+                    }
+                }
+                return IsInitialized;
+            }
+        }
+        /// <summary>
+        /// Register this client machine/process with the remote host
+        /// </summary>
+        /// <returns></returns>
+        public CoreServiceResponse RegisterClient()
         {
             Client client = Client.Of(LocalCoreRegistryRepository, ApplicationName, HostName, Port);            
             CoreServiceResponse registrationResponse = ApplicationRegistryService.RegisterClient(client);
@@ -248,7 +268,9 @@ namespace Bam.Net.Services.Clients
         }
 
         /// <summary>
-        /// Connect to the host specified by this client
+        /// Connect to the host specified by this client.  This entails
+        /// "logging in" the current machine to the core services on the
+        /// remote host
         /// </summary>
         /// <returns></returns>
         public CoreServiceResponse Connect()
@@ -282,6 +304,7 @@ namespace Bam.Net.Services.Clients
 
         protected internal CoreUserRegistryService UserRegistryService { get; set; }
         protected internal CoreRoleService RoleService { get; set; }
+        protected internal CoreOAuthService OAuthService { get; set; }
         protected internal CoreApplicationRegistrationService ApplicationRegistryService { get; set; }
         protected internal CoreConfigurationService ConfigurationService { get; set; }
         protected internal CoreLoggerService LoggerService { get; set; }
@@ -330,6 +353,7 @@ namespace Bam.Net.Services.Clients
             LoggerService = ProxyFactory.GetProxy<CoreLoggerService>(HostName, Port);
             UserRegistryService = ProxyFactory.GetProxy<CoreUserRegistryService>(HostName, Port);
             RoleService = ProxyFactory.GetProxy<CoreRoleService>(HostName, Port);
+            OAuthService = ProxyFactory.GetProxy<CoreOAuthService>(HostName, Port);
         }
 
         private void SetLocalServiceProxies()
@@ -340,6 +364,7 @@ namespace Bam.Net.Services.Clients
             LoggerService = ProxyFactory.GetProxy<CoreLoggerService>();
             UserRegistryService = ProxyFactory.GetProxy<CoreUserRegistryService>();
             RoleService = ProxyFactory.GetProxy<CoreRoleService>();
+            OAuthService = ProxyFactory.GetProxy<CoreOAuthService>();
         }
 
         private void EnsureApiKeyFileDirectory()

@@ -9,6 +9,7 @@ using Bam.Net.Data.Repositories.Tests.TestDtos;
 using Bam.Net.Data.SQLite;
 using Bam.Net.Logging;
 using Bam.Net.Testing;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Data.Repositories.Tests
 {

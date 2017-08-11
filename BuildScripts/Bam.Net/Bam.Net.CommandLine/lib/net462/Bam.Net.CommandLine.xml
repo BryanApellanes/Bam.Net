@@ -4,7 +4,7 @@
         <name>Bam.Net.CommandLine</name>
     </assembly>
     <members>
-        <member name="M:Bam.Net.CommandLine.CommandLineInterface.GetArgument(System.String,System.String)">
+        <member name="M:Bam.Net.CommandLine.CommandLineInterface.GetArgument(System.String,System.String,System.Func{System.String,System.String})">
             <summary>
             Get the value specified for the argument with the 
             specified name either from the command line or
@@ -218,18 +218,18 @@
             <param name="allowNull">If true no value for the specified name is necessary.</param>
             <param name="addAcronym">Add another valid argument of the acronym of the specified name</param>
         </member>
-        <member name="T:Bam.Net.CommandLine.ConsoleAction">
+        <member name="T:Bam.Net.CommandLine.ConsoleActionAttribute">
             <summary>
             An attribute used to designate a method as runnable from a command line
             menu interface
             </summary>
         </member>
-        <member name="M:Bam.Net.CommandLine.ConsoleAction.#ctor">
+        <member name="M:Bam.Net.CommandLine.ConsoleActionAttribute.#ctor">
             <summary>
             Instantiate a ConsoleAction attribute
             </summary>
         </member>
-        <member name="P:Bam.Net.CommandLine.ConsoleAction.ValueExample">
+        <member name="P:Bam.Net.CommandLine.ConsoleActionAttribute.ValueExample">
             <summary>
             A string representing an example of a valid value, for example [filename]
             </summary>
@@ -260,7 +260,7 @@
             </summary>
             <param name="textColor"></param>
         </member>
-        <member name="P:Bam.Net.CommandLine.ConsoleInvokeableMethod.SwitchValue">
+        <member name="P:Bam.Net.CommandLine.ConsoleMethod.SwitchValue">
             <summary>
             Used to help build usage examples for /? 
             </summary>

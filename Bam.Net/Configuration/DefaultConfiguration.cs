@@ -21,8 +21,10 @@ namespace Bam.Net.Configuration
     /// </summary>
     public static class DefaultConfiguration
     {
+        public const string DefaultApplicationName = "UNKOWN-APPLICATION";
+
         static NameValueCollection _appSettings = ConfigurationManager.AppSettings;
-        static ConnectionStringSettingsCollection _connectionStrings = ConfigurationManager.ConnectionStrings;
+        static ConnectionStringSettingsCollection _connectionStrings = ConfigurationManager.ConnectionStrings;        
 
         public static NameValueCollection GetAppSettings()
         {

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.CommandLine;
 using Bam.Net.Testing;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Data.Repositories.Tests
 {

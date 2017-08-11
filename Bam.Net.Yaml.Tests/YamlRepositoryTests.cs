@@ -8,6 +8,7 @@ using Bam.Net.Data.SQLite;
 using Bam.Net.Testing;
 using Bam.Net.Yaml.Data;
 using Bam.Net.Yaml.Tests.TestClasses;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Yaml.Tests
 {

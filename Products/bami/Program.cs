@@ -17,6 +17,7 @@ using Bam.Net.Testing;
 using System.Reflection;
 using Bam.Net.UserAccounts;
 using Bam.Net.Data;
+using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.Server
 {
@@ -80,6 +81,12 @@ namespace Bam.Net.Server
             _server = null; // force reinitialization
             Server.Start();
 			Pause("Default server re-started");
+        }
+
+        [ConsoleAction]
+        public static void LogResponses()
+        {
+            Server.Responded += (s, res, req) => Logger.Info("Responded: ClientIp={0}, Path={1}", req?.GetClientIp() ?? "[null]", req?.Url?.ToString() ?? "[null]");
         }
     }
 }

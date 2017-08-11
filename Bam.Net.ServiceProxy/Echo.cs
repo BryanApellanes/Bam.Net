@@ -28,6 +28,12 @@ namespace Bam.Net.ServiceProxy
 
     }
 
+    [ServiceSubdomain("echo")]
+    public class ServiceSubdomainEcho: Echo
+    {
+
+    }
+
     /// <summary>
     /// Echo class that requires encryption when used as a service
     /// </summary>
@@ -36,6 +42,8 @@ namespace Bam.Net.ServiceProxy
     public class EncryptedEcho: Echo
     {
     }
+
+
 
     /// <summary>
     /// Used specifically for testing ServiceProxy calls

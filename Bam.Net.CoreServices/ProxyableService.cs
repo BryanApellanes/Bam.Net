@@ -18,6 +18,11 @@ using U = Bam.Net.UserAccounts.Data;
 
 namespace Bam.Net.CoreServices
 {
+    /// <summary>
+    /// The base abstract class for any service that might be proxied.
+    /// Provides common features for User, Roles, Session, Application
+    /// and Data tracking
+    /// </summary>
     [Encrypt]
     public abstract class ProxyableService: Loggable, IRequiresHttpContext
     {
@@ -45,6 +50,11 @@ namespace Bam.Net.CoreServices
             }
         }
 
+        /// <summary>
+        /// Connect the specified client
+        /// </summary>
+        /// <param name="client"></param>
+        /// <returns></returns>
         public virtual LoginResponse ConnectClient(Client client)
         {
             return Login(client.ToString(), client.Secret.Sha1());
@@ -200,6 +210,9 @@ namespace Bam.Net.CoreServices
         public AppConf AppConf { get; set; }
 
         [Exclude]
+        public Database Database { get; set; }
+
+        [Exclude]
         public void RenderAppTemplate(string templateName, object toRender, Stream output)
         {
             RenderCommonTemplate($"{AppConf.Name}.{templateName}", toRender, output);
@@ -241,8 +254,7 @@ namespace Bam.Net.CoreServices
         [Local]
         public Type GetProxiedType()
         {
-            IProxy proxy = this as IProxy;
-            if(proxy != null)
+            if (this is IProxy proxy)
             {
                 return proxy.ProxiedType;
             }

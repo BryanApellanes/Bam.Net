@@ -12,7 +12,7 @@ namespace Bam.Net.Testing
 {
 	[Serializable]
 	[AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-	public class BeforeEachUnitTest : ConsoleAction
-	{
+	public class BeforeEachUnitTest : ConsoleActionAttribute
+    {
 	}
 }

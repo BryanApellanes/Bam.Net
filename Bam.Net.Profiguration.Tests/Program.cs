@@ -18,6 +18,7 @@ using Bam.Net;
 using Bam.Net.Testing;
 using Bam.Net.Encryption;
 using Bam.Net.Profiguration;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Profiguration.Tests
 {

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Server;
 using Bam.Net.UserAccounts;
+using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.CoreServices
 {
@@ -14,6 +15,7 @@ namespace Bam.Net.CoreServices
     /// </summary>
     [Proxy("roleSvc")]
     [Encrypt]
+    [ServiceSubdomain("roles")]
     public class CoreRoleService : CoreProxyableService, IRoleProvider
     {
         protected CoreRoleService() { } // required for proxy gen

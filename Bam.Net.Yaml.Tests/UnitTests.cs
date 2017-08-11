@@ -18,6 +18,7 @@ using Bam.Net.Data.Repositories;
 using System.Reflection;
 using Bam.Net.Data.SQLite;
 using Bam.Net.Logging;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Yaml.Tests
 {

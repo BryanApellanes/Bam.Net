@@ -15,6 +15,7 @@ using Bam.Net.CommandLine;
 using Bam.Net;
 using Bam.Net.Testing;
 using Bam.Net.Encryption;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Breve.Tests
 {

@@ -6,20 +6,46 @@ using Bam.Net;
 using Bam.Net.CommandLine;
 using Bam.Net.Server;
 using Bam.Net.Testing;
+using Bam.Net.Services.Clients;
+using Bam.Net.Logging;
+using Bam.Net.UserAccounts;
 
 namespace bam
 {
     [Serializable]
 	public class ManagementActions : CommandLineTestInterface
 	{
+        public const string HeartServer = "http://bamapps.net";
+        
         [ConsoleAction("signUp", "Sign Up")]
 		public void SignUp()
 		{
-			throw new NotImplementedException();
+            UserInfo info = GetUserInfo();
+            CoreClient client = new CoreClient(info.Org, info.App, HeartServer, 80, GetLogger());
+            SignUpResponse response = client.SignUp(info.Email, info.Password);
+            if (!response.Success)
+            {
+                OutLine(response.Message, ConsoleColor.Magenta);
+            }
+            else
+            {
+                OutLineFormat("{0} signed up successfully", info.Email);
+            }
 		}
 
-		[ConsoleAction("registerApplication", "Register Application")]
-		public void PackApp()
+        private UserInfo GetUserInfo()
+        {
+            return new UserInfo
+            {
+                Org = GetArgument("org", true, "Please enter the name of your organization"),
+                Email = GetArgument("email", true, "Please enter your email address"),
+                Password = GetPasswordArgument("password", true, "Please enter your existing or new password"),
+                App = GetArgument("app", true, "Please enter the name of your application; used as a human readable unique identifier")
+            };
+        }
+
+        [ConsoleAction("registerApplication", "Register Application")]
+		public void RegisterApplication()
 		{
 			throw new NotImplementedException();
 		}
@@ -65,5 +91,20 @@ namespace bam
 				saveTo += ".zip";
 			}
 		}
+
+        static ILogger _logger;
+        private static ILogger GetLogger()
+        {
+            if(_logger == null)
+            {
+                _logger = new ConsoleLogger()
+                {
+                    UseColors = true,
+                    AddDetails = false
+                };
+                _logger.StartLoggingThread();                
+            }
+            return _logger;
+        }
 	}
 }

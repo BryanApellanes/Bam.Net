@@ -791,22 +791,25 @@ namespace Bam.Net.Server
             });
         }
         
-        public void Start()
+        public void Start(bool usurpedKnownListeners = false)
         {
-            SetWorkspace();
-            ListenForDaoGenServices();
+            if (!IsRunning)
+            {
+                SetWorkspace();
+                ListenForDaoGenServices();
 
-            Initialize();
+                Initialize();
 
-            OnStarting();
-            _server.Start();
-            IsRunning = true;
-            OnStarted();
+                OnStarting();
+                _server.Start(usurpedKnownListeners);
+                IsRunning = true;
+                OnStarted();
+            }
         }
 
         public void Stop()
         {
-            if (IsInitialized)
+            if (IsInitialized && IsRunning)
             {
                 SaveConf();
 
@@ -1048,22 +1051,11 @@ namespace Bam.Net.Server
             IRequest request = context.Request;
             IResponse response = context.Response;
             ResponderList responder = new ResponderList(_conf, _responders);
-            //IResponder responder = _respondersByName["content"];
-            //RouteParser urlRouteParser = new RouteParser("{protocol}://{domain}/{responder}/{path}");
-            //Dictionary<string, string> urlRouteData = urlRouteParser.ParseRouteInstance(request.Url.ToString());
-            //string responderName = urlRouteData["responder"];
-            //if (!string.IsNullOrEmpty(responderName) && _respondersByName.ContainsKey(responderName))
-            //{
-            //    responder = _respondersByName[responderName];
-            //}
             try
             {
                 if (!responder.Respond(context))
                 {
-                    if (NotResponded != null)
-                    {
-                        NotResponded(this, request);
-                    }
+                    NotResponded?.Invoke(this, request);
                     ResponderNotFoundHandler(context);
                 }
                 else
@@ -1102,18 +1094,12 @@ namespace Bam.Net.Server
 
         private void TriggerResponded(IRequest request, IResponder responder)
         {
-            if (Responded != null)
-            {
-                Responded(this, responder, request);
-            }
+            Responded?.Invoke(this, responder, request);
         }
 
         private void TriggerResponding(IResponse response, IResponder responder)
         {
-            if (Responding != null)
-            {
-                Responding(this, responder, response);
-            }
+            Responding?.Invoke(this, responder, response);
         }
 
         BamConf _conf;
@@ -1318,8 +1304,8 @@ namespace Bam.Net.Server
                 sw.Flush();
                 sw.Close();
             }
-
-            MainLogger.AddEntry(messageFormat, LogEventType.Warning, path);
+            string logMessageFormat = "[ClientIp: {0}] No responder found for the path: {1}";
+            MainLogger.AddEntry(logMessageFormat, LogEventType.Warning, request.GetClientIp(), path);
         }
 
         private void HandleException(IHttpContext context, Exception ex)
@@ -1346,8 +1332,9 @@ namespace Bam.Net.Server
                 }
 
             }
-            MainLogger.AddEntry("An error occurred handling the request: ({0})\r\n*** Request Details ***\r\n{1}\r\n\r\n{2}",
+            MainLogger.AddEntry("An error occurred handling the request: ({0})\r\n*** Request Details {1}***\r\n{2}\r\n\r\n{3}",
                     ex,
+                    request.GetClientIp(),
                     ex.Message,
                     request.TryPropertiesToString(),
                     Args.GetMessageAndStackTrace(ex));
@@ -1378,8 +1365,10 @@ namespace Bam.Net.Server
                 maxThreads = 50;
             }
 
-            _server = new HttpServer(maxThreads, MainLogger);
-            _server.HostPrefixes = GetHostPrefixes();
+            _server = new HttpServer(maxThreads, MainLogger)
+            {
+                HostPrefixes = GetHostPrefixes()
+            };
             _server.ProcessRequest += ProcessRequest;
         }
 

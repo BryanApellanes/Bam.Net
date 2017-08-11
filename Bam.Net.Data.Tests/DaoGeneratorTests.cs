@@ -24,6 +24,7 @@ using Microsoft.CSharp;
 using System.CodeDom.Compiler;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Data.Tests
 {

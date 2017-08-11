@@ -42,6 +42,24 @@ namespace Bam.Net.Automation.Tests
         }
         string messageName = "test";
 
+        [ConsoleAction]
+        public void GetGitBranch()
+        {
+            string dir = Environment.CurrentDirectory;
+            Environment.CurrentDirectory = "C:\\src\\Business\\Submodule\\Bam.Net";
+            string currentBranch = string.Empty;
+            ProcessOutput po = "git branch".Run(line =>
+            {
+                string trimmed = line.Trim();
+                if (trimmed.StartsWith("*"))
+                {
+                    currentBranch = trimmed.TruncateFront(1).Trim();
+                }
+            }, 60000);
+            OutLineFormat("Current branch is: {0}", currentBranch);
+            Environment.CurrentDirectory = dir;
+        }
+
         [ConsoleAction("Start messaging")]
         public void StartMessaging()
         {

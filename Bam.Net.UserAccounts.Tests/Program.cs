@@ -16,6 +16,7 @@ using Bam.Net.Data;
 using Bam.Net.Configuration;
 using Bam.Net.Messaging;
 using System.Reflection;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.UserAccounts.Tests
 {

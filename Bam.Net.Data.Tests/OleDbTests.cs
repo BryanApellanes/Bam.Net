@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Bam.Net.Testing;
 using Bam.Net.Data.OleDb;
 using System.IO;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Data.Tests
 {

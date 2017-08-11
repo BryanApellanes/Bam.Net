@@ -9,6 +9,7 @@ using Bam.Net.Server;
 using Bam.Net.CoreServices.DistributedHashTable.Data;
 using Bam.Net.Testing;
 using Bam.Net.Caching;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Services.Tests
 {
@@ -212,15 +213,26 @@ namespace Bam.Net.Services.Tests
         }
 
         [UnitTest]
-        public void RequestDescriptorTest()
+        public void RequestRouterTest()
         {
             RequestRouter router = new RequestRouter("api");
-            RequestRoute route = router.ParseUrl("bam://bamapps.net/api/v1/monkey/5?blah=one&blah2=two");
+            RequestRoute route = router.ToRequestRoute("bam://bamapps.net/api/v1/monkey/5?blah=one&blah2=two");
             Expect.AreEqual("bam", route.Protocol);
             Expect.AreEqual("bamapps.net", route.Domain);
             Expect.AreEqual("v1/monkey/5?blah=one&blah2=two", route.PathAndQuery);
         }
-       
+
+
+        [UnitTest]
+        public void ServiceRequestRouterTest()
+        {
+            RequestRouter router = new RequestRouter("api");
+            RequestRoute route = router.ToRequestRoute("http://service.bamapps.net/api/echo/send");
+            Expect.AreEqual("http", route.Protocol);
+            Expect.AreEqual("service.bamapps.net", route.Domain);
+            Expect.AreEqual("echo/send", route.PathAndQuery);
+        }
+
         [UnitTest]
         public void SavingKeyHashRepoDataShouldntDuplicate()
         {

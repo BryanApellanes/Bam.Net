@@ -14,6 +14,7 @@ using Bam.Net.Server.JsonRpc;
 using FakeItEasy;
 using Bam.Net.ServiceProxy;
 using Bam.Net.Incubation;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Server.Tests
 {

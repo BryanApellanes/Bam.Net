@@ -22,6 +22,8 @@ using Bam.Net.DaoRef;
 using FakeItEasy;
 using System.Security.Principal;
 using Bam.Net.Server.Rest;
+using Bam.Net.Testing.Unit;
+using Bam.Net.Configuration;
 
 namespace Bam.Net.Server.Tests
 {
@@ -313,7 +315,7 @@ namespace Bam.Net.Server.Tests
         }
         private void GetTestRepoAndResponder(string methodName, out DaoRepository repo, out TestRestResponder responder, out Database database)
         {
-            string testDirPath = Path.Combine(this.GetAppDataFolder(), methodName);
+            string testDirPath = Path.Combine(RuntimeSettings.AppDataFolder, methodName);
             ILogger logger = GetLogger();
             database = new SQLiteDatabase(".", methodName);
             repo = new DaoRepository(database, logger);

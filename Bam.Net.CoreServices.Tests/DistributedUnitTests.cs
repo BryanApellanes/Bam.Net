@@ -4,6 +4,7 @@
 using System;
 using Bam.Net.CoreServices.DistributedHashTable;
 using Bam.Net.Testing;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Distributed.Tests
 {

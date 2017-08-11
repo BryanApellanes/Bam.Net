@@ -20,6 +20,7 @@ using Bam.Net.Data.SQLite;
 using Bam.Net.Logging;
 using Bam.Net.Data.Repositories.Tests.TestDtos;
 using Bam.Net.Testing.Integration;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Data.Repositories.Tests
 {

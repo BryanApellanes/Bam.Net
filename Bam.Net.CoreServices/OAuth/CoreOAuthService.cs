@@ -9,10 +9,12 @@ using System.Threading.Tasks;
 using Bam.Net.CoreServices;
 using Bam.Net.ServiceProxy;
 using Bam.Net.UserAccounts.Data;
+using Bam.Net.Server;
 
 namespace Bam.Net.CoreServices
 {
     [Proxy("oauthSvc")]
+    [ServiceSubdomain("oauth")]
     public class CoreOAuthService: CoreProxyableService
     {
         [Exclude]
@@ -30,7 +32,7 @@ namespace Bam.Net.CoreServices
             set;
         }
 
-        public void SetToken(string accessToken)
+        public virtual void SetToken(string accessToken)
         {
             Session["accessToken"] = accessToken;            
         }        

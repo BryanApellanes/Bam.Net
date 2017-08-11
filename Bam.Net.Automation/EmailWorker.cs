@@ -147,11 +147,11 @@ namespace Bam.Net.Automation
         {
             get
             {
-                return Overseer.Default.SecureGet("{0}_{1}"._Format(typeof(EmailWorker).Name, Name));
+                return JobConductorService.Default.SecureGet("{0}_{1}"._Format(typeof(EmailWorker).Name, Name));
             }
             set
             {
-                Overseer.Default.SecureSet("{0}_{1}"._Format(typeof(EmailWorker).Name, Name), value);
+                JobConductorService.Default.SecureSet("{0}_{1}"._Format(typeof(EmailWorker).Name, Name), value);
             }
         }
 

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Bam.Net.Testing;
 using Bam.Net.Data.Repositories.Tests.ClrTypes.Daos;
 using Bam.Net.Data.SQLite;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Data.Repositories.Tests
 {

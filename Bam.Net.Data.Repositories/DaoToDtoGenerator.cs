@@ -11,6 +11,7 @@ using System.Reflection;
 using System.IO;
 using System.CodeDom.Compiler;
 using Bam.Net.Logging;
+using Bam.Net.Configuration;
 
 namespace Bam.Net.Data.Repositories
 {
@@ -83,7 +84,7 @@ namespace Bam.Net.Data.Repositories
         public GeneratedAssemblyInfo GenerateDtoAssembly(string nameSpace, string fileName)
         {
             Type oneDao = DaoAssembly.GetTypes().FirstOrDefault(t => t.HasCustomAttributeOfType<TableAttribute>());
-            string writeSourceTo = Path.Combine("".GetAppDataFolder(), "DtoTemp_{0}"._Format(Dao.ConnectionName(oneDao)));
+            string writeSourceTo = Path.Combine(RuntimeSettings.AppDataFolder, "DtoTemp_{0}"._Format(Dao.ConnectionName(oneDao)));
             DirectoryInfo sourceDir = SetSourceDir(writeSourceTo);
 
             WriteDtoSource(nameSpace, writeSourceTo);

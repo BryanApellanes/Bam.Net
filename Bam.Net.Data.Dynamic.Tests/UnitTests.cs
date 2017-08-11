@@ -16,13 +16,16 @@ using Bam.Net.Data.MsSql;
 using Bam.Net.Data.Schema;
 using System.IO;
 using System.Reflection;
+using Bam.Net.Testing.Unit;
+using Bam.Net.Testing.Integration;
 
 namespace Bam.Net.Data.Dynamic.Tests
 {
     [Serializable]
     public class UnitTests : CommandLineTestInterface
     {
-        [UnitTest]
+        [ConsoleAction]
+        [IntegrationTest]
         public void ExtensionExecuteSqlShouldInsert()
         {
             FileInfo inputFile = new FileInfo("c:\\testData\\Db_SillydatabaseNameMap_NormalizEDOnTypes.json");
@@ -73,8 +76,9 @@ namespace Bam.Net.Data.Dynamic.Tests
             results = ddb.Retrieve(queryFilter);
             Expect.AreEqual(0, results.Count());
         }
-        
-        [UnitTest]
+
+        [ConsoleAction]
+        [IntegrationTest]
         public void DynamicCrudTest()
         {
             FileInfo inputFile = new FileInfo("c:\\testData\\Db_SillydatabaseNameMap_NormalizEDOnTypes.json");

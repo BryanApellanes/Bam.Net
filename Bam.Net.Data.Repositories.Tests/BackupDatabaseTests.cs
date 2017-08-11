@@ -21,6 +21,7 @@ using Bam.Net.Data.SQLite;
 using System.Data;
 using System.Collections;
 using Bam.Net.Logging;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Data.Repositories.Tests
 {

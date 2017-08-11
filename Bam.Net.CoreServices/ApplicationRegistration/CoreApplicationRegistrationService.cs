@@ -22,6 +22,8 @@ namespace Bam.Net.CoreServices
 {
     [Proxy("appRegistrationSvc")]
     [Encrypt]
+    [ServiceSubdomain("appreg")]
+    [RoleRequired("/appreg/accessdenied", "Admin")]
     public class CoreApplicationRegistrationService : CoreProxyableService, IApiKeyResolver, IApiKeyProvider, IApplicationNameProvider
     {
         public const string AppNameNotSpecified = "X-APPNAME-HEADER-NOT-SPECIFIED";
@@ -76,23 +78,22 @@ namespace Bam.Net.CoreServices
         [ApiKeyRequired]
         public virtual ApiKeyInfo AddApiKey()
         {
-            if (ApplicationName.Equals(AppNameNotSpecified))
+            if (ApplicationName.Equals(ApplicationDiagnosticInfo.UnknownApplication))
             {
-                throw new InvalidOperationException(AppNameNotSpecified);
+                throw new ApplicationNameNotSpecifiedException();
             }
             ApplicationRegistration.Application app = CompositeRepository.Query<ApplicationRegistration.Application>(a => a.Name.Equals(ApplicationName)).FirstOrDefault();
             if(app == null)
             {
                 throw new InvalidOperationException("Application not registered");
             }
-            ApplicationRegistration.ApiKey key;
-            AddApiKey(CoreRegistryRepository, app, out key);
+            AddApiKey(CoreRegistryRepository, app, out ApplicationRegistration.ApiKey key);
             return new ApiKeyInfo { ApplicationClientId = key.ClientId, ApiKey = key.SharedSecret, ApplicationName = ApplicationName };
         }
 
         public virtual string GetApplicationName()
         {
-            return ApplicationName.Or(AppNameNotSpecified);
+            return ApplicationName.Or(ApplicationDiagnosticInfo.UnknownApplication);
         }
         
         public virtual ApiKeyInfo GetClientApiKeyInfo()
@@ -152,9 +153,11 @@ namespace Bam.Net.CoreServices
                 User user = CoreRegistryRepository.OneUserWhere(c => c.UserName == CurrentUser.UserName);
                 if (user == null)
                 {
-                    user = new User();
-                    user.UserName = CurrentUser.UserName;
-                    user.Email = CurrentUser.Email;
+                    user = new User()
+                    {
+                        UserName = CurrentUser.UserName,
+                        Email = CurrentUser.Email
+                    };
                     user = CoreRegistryRepository.Save(user);
                 }
                 OrganizationFactory orgEnforcer = new OrganizationFactory(CoreRegistryRepository, user, organizationName);

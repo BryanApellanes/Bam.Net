@@ -10,6 +10,10 @@ using Bam.Net.Configuration;
 
 namespace Bam.Net.ServiceProxy.Secure
 {
+    /// <summary>
+    /// A Serializable representation of an applications
+    /// credentials.
+    /// </summary>
     public class ApiKeyInfo
     {
         public ApiKeyInfo()
@@ -48,6 +52,9 @@ namespace Bam.Net.ServiceProxy.Secure
             set;
         }
 
+        /// <summary>
+        /// The shared secret; keep this value private
+        /// </summary>
         public string ApiKey
         {
             get;

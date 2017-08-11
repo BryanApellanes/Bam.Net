@@ -12,11 +12,13 @@ using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.CoreServices.ServiceRegistration;
 using Bam.Net.CoreServices.ServiceRegistration.Data;
 using Bam.Net.CoreServices.ServiceRegistration.Data.Dao.Repository;
+using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.CoreServices
 {
     [ApiKeyRequired]
     [Proxy("coreServiceRegistrationSvc")]
+    [ServiceSubdomain("svcreg")]
     public class CoreServiceRegistrationService : ProxyableService
     {
         public CoreServiceRegistrationService(IAssemblyService assemblyService, ServiceRegistryRepository repo, DaoRepository daoRepo, AppConf appConf) : base(daoRepo, appConf)

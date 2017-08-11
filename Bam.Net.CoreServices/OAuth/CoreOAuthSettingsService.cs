@@ -7,6 +7,7 @@ using Bam.Net.CoreServices;
 using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.CoreServices.OAuth.Data;
 using Bam.Net.CoreServices.OAuth.Data.Dao.Repository;
+using Bam.Net.CoreServices.OAuth;
 
 namespace Bam.Net.CoreServices
 {
@@ -21,13 +22,13 @@ namespace Bam.Net.CoreServices
         public OAuthSettingsRepository OAuthSettingsRepository { get; set; }
 
         [RoleRequired("/", "Admin")]
-        public string[] GetProviders()
+        public OAuthClientSettings[] GetClientSettings()
         {
             throw new NotImplementedException();
         }
 
         [RoleRequired("/", "Admin")]
-        public bool SetProviders(string[] providers)
+        public bool SetProviders(OAuthClientSettings[] providers)
         {
             throw new NotImplementedException();
         }

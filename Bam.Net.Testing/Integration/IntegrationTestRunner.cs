@@ -20,12 +20,12 @@ namespace Bam.Net.Testing.Integration
         /// <summary>
         /// Event that fires when a test fails.
         /// </summary>
-        public static event EventHandler<TestExceptionEventArgs> IntegrationTestFailed;
+        //public static event EventHandler<TestExceptionEventArgs> IntegrationTestFailed;
 
         /// <summary>
         /// Event that fires when a test passes.
         /// </summary>
-        public static event EventHandler<ConsoleInvokeableMethod> IntegrationTestPassed;
+        //public static event EventHandler<ConsoleMethod> IntegrationTestPassed;
 
         public static void RunIntegrationTests(FileInfo file, EventHandler<Exception> onFailed = null)
 		{

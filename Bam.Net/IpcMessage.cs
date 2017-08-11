@@ -188,7 +188,7 @@ namespace Bam.Net
             {
                 return _rootDirectoryLock.DoubleCheckLock(ref _rootDirectory, () =>
                 {
-					return Path.Combine(new object().GetAppDataFolder(), MessageType.Name);
+					return Path.Combine(RuntimeSettings.AppDataFolder, MessageType.Name);
                 });
             }
             set

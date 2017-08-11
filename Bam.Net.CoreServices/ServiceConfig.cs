@@ -25,7 +25,7 @@ namespace Bam.Net.Server
         {
             get
             {
-                return DefaultConfiguration.GetAppSetting("ApplicationName").Or("UNKOWN");
+                return DefaultConfiguration.GetAppSetting("ApplicationName").Or(DefaultConfiguration.DefaultApplicationName);
             }
         }
 

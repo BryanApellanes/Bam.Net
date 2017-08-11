@@ -5,6 +5,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.ServiceProxy.Secure;
+using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.CoreServices
 {

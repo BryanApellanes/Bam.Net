@@ -19,6 +19,7 @@ using Bam.Net.Testing;
 using System.Threading;
 using System.Web.Mvc;
 using CsQuery;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Html.Tests
 {

@@ -29,6 +29,78 @@ namespace Bam.Net.CommandLine
             ValidArgumentInfo = new List<ArgumentInfo>();
         }
 
+        public static string PasswordPrompt(string promptMessage = null, ConsoleColor color = ConsoleColor.Cyan)
+        {
+            return PasswordPrompt(new ConsoleColorCombo(color), promptMessage);
+        }
+
+        public static string PasswordPrompt(ConsoleColorCombo colors, string promptMessage = null)
+        {
+            promptMessage = promptMessage ?? "Please enter your password ";
+            string pass = string.Empty;
+            Out($"{promptMessage} >>", colors);
+            ConsoleKeyInfo keyInfo;
+            do
+            {
+                keyInfo = Console.ReadKey(true);
+                if(keyInfo.Key != ConsoleKey.Backspace && keyInfo.Key != ConsoleKey.Enter)
+                {
+                    pass += keyInfo.KeyChar;
+                    Out("*", colors);
+                }
+                else
+                {
+                    if(keyInfo.Key == ConsoleKey.Backspace && pass.Length > 0)
+                    {
+                        pass = pass.Substring(0, (pass.Length - 1));
+                        Out("\b \b");
+                    }
+                }
+            }
+            while (keyInfo.Key != ConsoleKey.Enter);
+            return pass;
+        }
+
+        static Dictionary<string, string> _cachedArguments;
+        public static string GetArgument(string name, bool useCache, string promptMessage = null)
+        {
+            if (useCache)
+            {
+                if (!_cachedArguments.ContainsKey(name))
+                {
+                    _cachedArguments.Add(name, GetArgument(name, promptMessage));
+                }
+                return _cachedArguments[name];
+            }
+            else
+            {
+                return GetArgument(name, promptMessage);
+            }
+        }
+        public static string GetPasswordArgument(string name, bool useCache, string promptMessage = null)
+        {
+            if (useCache)
+            {
+                if (!_cachedArguments.ContainsKey(name))
+                {
+                    _cachedArguments.Add(name, GetPasswordArgument(name, promptMessage));
+                }
+                return _cachedArguments[name];
+            }
+            else
+            {
+                return GetArgument(name, promptMessage);
+            }
+        }
+        public static string GetPasswordArgument(string name, string promptMessage = null)
+        {
+            return GetArgument(name, promptMessage, (p) => PasswordPrompt(p));
+        }
+
+        public static string GetArgument(string name, string promptMessage = null)
+        {
+            return GetArgument(name, promptMessage, null);
+        }
         /// <summary>
         /// Get the value specified for the argument with the 
         /// specified name either from the command line or
@@ -38,14 +110,15 @@ namespace Bam.Net.CommandLine
         /// <param name="name"></param>
         /// <param name="promptMessage"></param>
         /// <returns></returns>
-        public static string GetArgument(string name, string promptMessage = null)
+        public static string GetArgument(string name, string promptMessage = null, Func<string, string> prompter = null)
         {
+            prompter = prompter ?? ((p) => Prompt(p ?? $"Please enter a value for {name}"));
             string acronym = name.CaseAcronym().ToLowerInvariant();
             string fromConfig = DefaultConfiguration.GetAppSetting(name, "").Or(DefaultConfiguration.GetAppSetting(acronym, ""));
             return Arguments.Contains(name) ? Arguments[name] :
                 Arguments.Contains(acronym) ? Arguments[acronym] :
                 !string.IsNullOrEmpty(fromConfig) ? fromConfig :
-                Prompt(promptMessage ?? $"Please enter a value for {name}");
+                prompter(promptMessage);
         }
 
         /// <summary>
@@ -379,7 +452,7 @@ namespace Bam.Net.CommandLine
 
         public static void Exit(int code)
         {
-            ConsoleExtensions.SetTextColor();
+            Console.ResetColor();
             OnExiting(code);
             Environment.Exit(code);
             OnExited(code);
@@ -454,20 +527,7 @@ File Version: {1}
         
         protected static void ShowMenu(Assembly assemblyToAnalyze, ConsoleMenu[] otherMenus, string headerText)
         {
-            List<ConsoleInvokeableMethod> actions = GetConsoleInvokeableMethods<ConsoleAction>(assemblyToAnalyze);
-            ShowMenu(otherMenus, headerText, actions);
-        }
-
-        protected static void ShowMenu<TAttribute, TType>(string headerText) where TAttribute : Attribute, new()
-        {
-            List<ConsoleInvokeableMethod> actions = GetConsoleInvokeableMethods<TAttribute, TType>();
-            ShowMenu(OtherMenus.ToArray(), headerText, actions);
-        }
-
-        protected static void ShowMenu<TAttribute, TType>(ConsoleMenu[] otherMenus, string headerText)
-            where TAttribute : Attribute, new()
-        {
-            List<ConsoleInvokeableMethod> actions = GetConsoleInvokeableMethods<TAttribute, TType>();
+            List<ConsoleMethod> actions = ConsoleMethod.FromAssembly<ConsoleActionAttribute>(assemblyToAnalyze);// GetConsoleInvokeableMethods<ConsoleAction>(assemblyToAnalyze);
             ShowMenu(otherMenus, headerText, actions);
         }
 
@@ -484,7 +544,7 @@ File Version: {1}
             });
         }
 
-        private static void ShowMenu(ConsoleMenu[] otherMenus, string headerText, List<ConsoleInvokeableMethod> actions)
+        private static void ShowMenu(ConsoleMenu[] otherMenus, string headerText, List<ConsoleMethod> actions)
         {
             Console.WriteLine(headerText);
             Console.WriteLine();
@@ -755,16 +815,15 @@ File Version: {1}
         }
 
         [DebuggerStepThrough]
-        public static void InvokeSelection(List<ConsoleInvokeableMethod> actions, string answer)
+        public static void InvokeSelection(List<ConsoleMethod> actions, string answer)
         {
             InvokeSelection(actions, answer, "", "");
         }
 
         [DebuggerStepThrough]
-        protected static void InvokeSelection(List<ConsoleInvokeableMethod> actions, string answer, string header, string footer)
+        protected static void InvokeSelection(List<ConsoleMethod> actions, string answer, string header, string footer)
         {
-            int ignore;
-            InvokeSelection(actions, answer, header, footer, out ignore);
+            InvokeSelection(actions, answer, header, footer, out int ignore);
         }
 
         static MethodInfo _methodToInvoke;
@@ -823,7 +882,7 @@ File Version: {1}
             return (T)AppDomain.CurrentDomain.GetData("State");
         }
         [DebuggerStepThrough]
-        protected internal static void InvokeSelection(List<ConsoleInvokeableMethod> actions, string answer, string header, string footer, out int selectedNumber)
+        protected internal static void InvokeSelection(List<ConsoleMethod> actions, string answer, string header, string footer, out int selectedNumber)
         {
             selectedNumber = -1;
             if (int.TryParse(answer.ToString(), out selectedNumber) && (selectedNumber - 1) > -1 && (selectedNumber - 1) < actions.Count)
@@ -849,13 +908,13 @@ File Version: {1}
         }
 
         [DebuggerStepThrough]
-        protected internal static int InvokeSelection(List<ConsoleInvokeableMethod> actions, string header, string footer, int selectedNumber)
+        protected internal static int InvokeSelection(List<ConsoleMethod> actions, string header, string footer, int selectedNumber)
         {
             selectedNumber -= 1;
-            ConsoleInvokeableMethod action = actions[selectedNumber];
+            ConsoleMethod action = actions[selectedNumber];
             MethodInfo method = action.Method;
-            MethodInfo invoke = typeof(ConsoleInvokeableMethod).GetMethod("Invoke");
-            object[] parameters = GetParameterInput(method);
+            MethodInfo invoke = typeof(ConsoleMethod).GetMethod("Invoke");
+            object[] parameters = GetParameters(method);
             action.Parameters = parameters;
 
             if (!string.IsNullOrEmpty(header))
@@ -902,61 +961,19 @@ File Version: {1}
             return selectedNumber;
         }
 
-        protected static void ShowActions(List<ConsoleInvokeableMethod> actions)
+        protected static void ShowActions(List<ConsoleMethod> actions)
+        {
+            ShowActions<ConsoleMethod>(actions);
+        }
+
+        protected static void ShowActions<TConsoleMethod>(List<TConsoleMethod> actions) where TConsoleMethod: ConsoleMethod
         {
             for (int i = 1; i <= actions.Count; i++)
             {
-                ConsoleInvokeableMethod consoleMethod = actions[i - 1];
+                ConsoleMethod consoleMethod = actions[i - 1];
                 string menuOption = consoleMethod.Information;
                 Console.WriteLine("{0}. {1}", i, menuOption);
             }
-        }
-
-        protected static List<ConsoleInvokeableMethod> GetConsoleInvokeableMethods(Assembly assemblyToAnalyze)
-        {
-            return GetConsoleInvokeableMethods<ConsoleAction>(assemblyToAnalyze);
-        }
-
-        protected static List<ConsoleInvokeableMethod> GetConsoleInvokeableMethods<TAttribute, TType>() where TAttribute : Attribute, new()
-        {
-            return GetConsoleInvokeableMethods(typeof(TType), typeof(TAttribute));
-        }
-
-        protected static List<ConsoleInvokeableMethod> GetConsoleInvokeableMethods<TAttribute>(Type typeWhoseAssemblyWillBeAnalyzed) where TAttribute : Attribute, new()
-        {
-            return GetConsoleInvokeableMethods<TAttribute>(typeWhoseAssemblyWillBeAnalyzed.Assembly);
-        }
-
-        protected static List<ConsoleInvokeableMethod> GetConsoleInvokeableMethods<TAttribute>(Assembly assemblyToAnalyze) where TAttribute : Attribute, new()
-        {
-            return GetConsoleInvokeableMethods(assemblyToAnalyze, typeof(TAttribute));
-        }
-
-        protected static List<ConsoleInvokeableMethod> GetConsoleInvokeableMethods(Assembly assemblyToAnalyze, Type attrType)
-        {
-            List<ConsoleInvokeableMethod> actions = new List<ConsoleInvokeableMethod>();
-            Type[] types = assemblyToAnalyze.GetTypes();
-            foreach (Type type in types)
-            {
-                actions.AddRange(GetConsoleInvokeableMethods(type, attrType));
-            }
-            return actions;
-        }
-
-        protected static List<ConsoleInvokeableMethod> GetConsoleInvokeableMethods(Type typeToAnalyze, Type attributeAddorningMethod)
-        {
-            List<ConsoleInvokeableMethod> actions = new List<ConsoleInvokeableMethod>();
-            MethodInfo[] methods = typeToAnalyze.GetMethods();
-            foreach (MethodInfo method in methods)
-            {
-                object action = null;
-                if (method.HasCustomAttributeOfType(attributeAddorningMethod, false, out action)) 
-                {
-                    actions.Add(new ConsoleInvokeableMethod(method, (Attribute)action));
-                }
-            }
-
-            return actions;
         }
 
         protected static char Pause()
@@ -976,12 +993,12 @@ File Version: {1}
             return keyInfo.KeyChar;
         }
 
-        protected static object[] GetParameterInput(MethodInfo method)
+        protected internal static object[] GetParameters(MethodInfo method)
         {
-            return GetParameterInput(method, false);
+            return GetParameters(method, false);
         }
 
-        protected static object[] GetParameterInput(MethodInfo method, bool generate)
+        protected static object[] GetParameters(MethodInfo method, bool generate)
         {
             ParameterInfo[] parameterInfos = method.GetParameters();
             List<object> parameterValues = new List<object>(parameterInfos.Length);
@@ -994,22 +1011,15 @@ File Version: {1}
                 }
 
                 if (generate)
+                {
                     parameterValues.Add("".RandomString(5));
+                }
                 else
-                    parameterValues.Add(GetInput(parameterInfo));
+                {
+                    parameterValues.Add(GetArgument(parameterInfo.Name, string.Format("{0}: ", parameterInfo.Name)));
+                }
             }
             return parameterValues.ToArray();
-        }
-
-        private static string GetInput(ParameterInfo parameter)
-        {
-            Console.WriteLine("{0}: ", parameter.Name);
-            return Console.ReadLine();
-        }
-
-        protected static bool HasCustomAttributeOfType<T>(MethodInfo method, out T attribute) where T : Attribute, new()
-        {
-            return CustomAttributeExtension.HasCustomAttributeOfType<T>(method, out attribute);
         }
 
         /// <summary>
@@ -1032,8 +1042,8 @@ File Version: {1}
             MethodInfo[] methods = type.GetMethods();
             foreach (MethodInfo method in methods)
             {
-                ConsoleAction action = null;
-                if (method.HasCustomAttributeOfType<ConsoleAction>(out action))
+                ConsoleActionAttribute action = null;
+                if (method.HasCustomAttributeOfType<ConsoleActionAttribute>(out action))
                 {
                     if (!string.IsNullOrEmpty(action.CommandLineSwitch))
                     {
@@ -1054,8 +1064,8 @@ File Version: {1}
             bool receivedSwitches = false;
             foreach (MethodInfo method in methods)
             {
-                ConsoleAction action = null;
-                if (method.HasCustomAttributeOfType<ConsoleAction>(out action))
+                ConsoleActionAttribute action = null;
+                if (method.HasCustomAttributeOfType<ConsoleActionAttribute>(out action))
                 {
                     if (!string.IsNullOrEmpty(action.CommandLineSwitch) && !receivedSwitches)
                     {
@@ -1142,7 +1152,7 @@ File Version: {1}
             bool executed = false;
             foreach (string key in arguments.Keys)
             {
-                ConsoleInvokeableMethod methodToInvoke = GetConsoleInvokeableMethod(arguments, type, key, instance);
+                ConsoleMethod methodToInvoke = GetConsoleMethod(arguments, type, key, instance);
 
                 if (methodToInvoke != null)
                 {
@@ -1189,31 +1199,28 @@ File Version: {1}
             Arguments = new ParsedArguments(args, ValidArgumentInfo.ToArray());
             if (Arguments.Status == ArgumentParseStatus.Error || Arguments.Status == ArgumentParseStatus.Invalid)
             {
-                if (ArgsParsedError != null)
-                    ArgsParsedError(Arguments);
+                ArgsParsedError?.Invoke(Arguments);
             }
             else if (Arguments.Status == ArgumentParseStatus.Success)
             {
-                if (ArgsParsed != null)
-                    ArgsParsed(Arguments);
+                ArgsParsed?.Invoke(Arguments);
             }
         }
 
-        private static ConsoleInvokeableMethod GetConsoleInvokeableMethod(ParsedArguments arguments, Type type, string key, object instance = null)
+        private static ConsoleMethod GetConsoleMethod(ParsedArguments arguments, Type type, string key, object instance = null)
         {
             string commandLineSwitch = key;
             string switchValue = arguments[key];
             MethodInfo[] methods = type.GetMethods();
-            List<ConsoleInvokeableMethod> toExecute = new List<ConsoleInvokeableMethod>();
+            List<ConsoleMethod> toExecute = new List<ConsoleMethod>();
             foreach (MethodInfo method in methods)
             {
-                ConsoleAction consoleAction;
-                if (method.HasCustomAttributeOfType<ConsoleAction>(out consoleAction))
+                if (method.HasCustomAttributeOfType(out ConsoleActionAttribute consoleAction))
                 {
                     if (consoleAction.CommandLineSwitch.Or("").Equals(commandLineSwitch) ||
                         consoleAction.CommandLineSwitch.CaseAcronym().ToLowerInvariant().Or("").Equals(commandLineSwitch))
                     {
-                        toExecute.Add(new ConsoleInvokeableMethod(method, consoleAction, instance, switchValue));
+                        toExecute.Add(new ConsoleMethod(method, consoleAction, instance, switchValue));
                     }
                 }
             }
