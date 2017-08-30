@@ -39,19 +39,19 @@ namespace Bam.Net.Data.Repositories
         public string WorkspacesDirectory { get; set; }
         public string EmailTemplatesDirectory { get; set; }
 
-        public DirectoryInfo GetRooDataDirectory()
+        public DirectoryInfo GetRootDataDirectory()
         {
             return new DirectoryInfo(DataRootDirectory);
         }
 
         public DirectoryInfo GetDatabaseDirectory()
         {
-            return new DirectoryInfo(Path.Combine(GetRooDataDirectory().FullName, DatabaseDirectory));
+            return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, DatabaseDirectory));
         }
 
         public DirectoryInfo GetRepositoryDirectory()
         {
-            return new DirectoryInfo(Path.Combine(GetRooDataDirectory().FullName, RepositoryDirectory));
+            return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, RepositoryDirectory));
         }
 
         public DirectoryInfo GetRepositoryWorkspaceDirectory()
@@ -61,12 +61,12 @@ namespace Bam.Net.Data.Repositories
 
         public DirectoryInfo GetFilesDirectory()
         {
-            return new DirectoryInfo(Path.Combine(GetRooDataDirectory().FullName, FilesDirectory));
+            return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, FilesDirectory));
         }
 
         public DirectoryInfo GetWorkspaceDirectory(Type type)
         {
-            return new DirectoryInfo(Path.Combine(GetRooDataDirectory().FullName, WorkspacesDirectory, type.Name));
+            return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, WorkspacesDirectory, type.Name));
         }
 
         public DaoRepository GetGenericDaoRepository(ILogger logger = null, string schemaName = null)
@@ -76,7 +76,7 @@ namespace Bam.Net.Data.Repositories
 
         public DirectoryInfo GetEmailTemplatesDirectory()
         {
-            return new DirectoryInfo(Path.Combine(GetRooDataDirectory().FullName, EmailTemplatesDirectory));
+            return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, EmailTemplatesDirectory));
         }
 
         public void SetDatabaseFor(object instance)

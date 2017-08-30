@@ -128,8 +128,7 @@ namespace Bam.Net
         /// <returns></returns>
         public static string GetNextFileName(this string path)
         {
-            int num;
-            return GetNextFileName(path, out num);
+            return GetNextFileName(path, out int num);
         }
 
         /// <summary>
@@ -2443,11 +2442,23 @@ namespace Bam.Net
             }
         }
 
+        /// <summary>
+        /// Write the specified textToWrite to the current filePath
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="textToWrite"></param>
+        /// <param name="postWriteAction"></param>
         public static void SafeWriteFile(this string filePath, string textToWrite, Action<object> postWriteAction = null)
         {
             SafeWriteFile(filePath, textToWrite, false, postWriteAction);
         }
 
+        /// <summary>
+        /// Write the current textToWrite to the specified filePath
+        /// </summary>
+        /// <param name="textToWrite"></param>
+        /// <param name="filePath"></param>
+        /// <param name="postWriteAction"></param>
         public static void SafeWriteToFile(this string textToWrite, string filePath, Action<object> postWriteAction = null)
         {
             filePath.SafeWriteFile(textToWrite, postWriteAction);

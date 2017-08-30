@@ -107,7 +107,9 @@ namespace Bam.Net.CoreServices
                 .For<CoreServiceRegistrationService>().Use<CoreServiceRegistrationService>()
                 .For<CoreOAuthService>().Use<CoreOAuthService>()
                 .For<ILog>().Use(loggerSvc)
-                .For<CoreLoggerService>().Use(loggerSvc);
+                .For<CoreLoggerService>().Use(loggerSvc)
+                .For<DataSettings>().Use(DataSettings.Default)
+                .For<CoreNotificationService>().Use<CoreNotificationService>();
 
             reg.SetProperties(userMgr);
             userMgr.ServiceProvider = reg;

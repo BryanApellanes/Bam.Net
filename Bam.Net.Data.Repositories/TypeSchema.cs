@@ -16,7 +16,7 @@ namespace Bam.Net.Data.Repositories
 	/// </summary>
 	public class TypeSchema
 	{
-        internal TypeSchema() { }
+        public TypeSchema() { }
 		public HashSet<Type> Tables { get; set; }
 		public HashSet<TypeFk> ForeignKeys { get; set; }
 		public HashSet<TypeXref> Xrefs { get; set; }

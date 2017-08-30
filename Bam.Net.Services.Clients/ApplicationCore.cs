@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Bam.Net.Configuration;
 using Bam.Net.CoreServices;
 using Bam.Net.CoreServices.ApplicationRegistration;
+using Bam.Net.UserAccounts;
+using Bam.Net.Messaging;
 
 namespace Bam.Net.Services.Clients
 {
@@ -28,5 +30,18 @@ namespace Bam.Net.Services.Clients
         }
 
         public CoreClient CoreClient { get; set; }
+
+        public IUserManager UserManager
+        {
+            get { return CoreClient.UserRegistryService; }
+        }
+        public ISmtpSettingsProvider SmtpSettingsProvider
+        {
+            get
+            {
+                return CoreClient.UserRegistryService;
+            }
+        }
+        //public Email CreateEmail(string subject)
     }
 }

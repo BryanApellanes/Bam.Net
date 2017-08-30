@@ -31,13 +31,13 @@ namespace Bam.Net.Data.Repositories
         /// <param name="schemaTempPathProvider"></param>
         public DaoRepository(ITypeTableNameProvider tableNameProvider = null, Func<SchemaDefinition, TypeSchema, string> schemaTempPathProvider = null)
         {
-            Init(tableNameProvider, schemaTempPathProvider);
+            CtorInit(tableNameProvider, schemaTempPathProvider);
             Database = new SQLiteDatabase(GetType().Name);
         }
 
         public DaoRepository(Database database, ILogger logger = null, string schemaName = null)
         {
-            Init();
+            CtorInit();
             Database = database;
             Logger = logger ?? Log.Default;
             Subscribe(logger);
@@ -1084,7 +1084,7 @@ namespace Bam.Net.Data.Repositories
             logger.AddEntry(signature, e, message, innerMessage);
         }
 
-        private void Init(ITypeTableNameProvider tableNameProvider = null, Func<SchemaDefinition, TypeSchema, string> schemaTempPathProvider = null)
+        private void CtorInit(ITypeTableNameProvider tableNameProvider = null, Func<SchemaDefinition, TypeSchema, string> schemaTempPathProvider = null)
         {
             TypeSchemaGenerator = new TypeInheritanceSchemaGenerator(tableNameProvider, schemaTempPathProvider);
             TypeDaoGenerator = new TypeDaoGenerator(TypeSchemaGenerator);
@@ -1103,6 +1103,5 @@ namespace Bam.Net.Data.Repositories
             WarningsAsErrors = true;
             Logger = Log.Default;
         }
-
     }
 }
