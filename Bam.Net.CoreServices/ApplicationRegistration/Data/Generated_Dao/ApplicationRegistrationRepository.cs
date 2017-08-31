@@ -24,6 +24,7 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao.Repository
 			SchemaName = "ApplicationRegistration";
 			BaseNamespace = "Bam.Net.CoreServices.ApplicationRegistration";			
 ﻿			
+			AddType<Bam.Net.CoreServices.ApplicationRegistration.UserSetting>();﻿			
 			AddType<Bam.Net.CoreServices.ApplicationRegistration.Client>();﻿			
 			AddType<Bam.Net.CoreServices.ApplicationRegistration.Configuration>();﻿			
 			AddType<Bam.Net.CoreServices.ApplicationRegistration.HostAddress>();﻿			
@@ -51,6 +52,99 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao.Repository
         }
 
 ﻿		
+		/// <summary>
+		/// Get one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		/// <param name="where"></param>
+		public Bam.Net.CoreServices.ApplicationRegistration.UserSetting GetOneUserSettingWhere(WhereDelegate<UserSettingColumns> where)
+		{
+			Type wrapperType = GetWrapperType<Bam.Net.CoreServices.ApplicationRegistration.UserSetting>();
+			return (Bam.Net.CoreServices.ApplicationRegistration.UserSetting)Bam.Net.CoreServices.ApplicationRegistration.Dao.UserSetting.GetOneWhere(where, Database).CopyAs(wrapperType, this);
+		}
+
+		/// <summary>
+		/// Execute a query that should return only one result.  If more
+		/// than one result is returned a MultipleEntriesFoundException will 
+		/// be thrown.  This method is most commonly used to retrieve a
+		/// single UserSetting instance by its Id/Key value
+		/// </summary>
+		/// <param name="where">A WhereDelegate that recieves a UserSettingColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between UserSettingColumns and other values
+		/// </param>
+		public Bam.Net.CoreServices.ApplicationRegistration.UserSetting OneUserSettingWhere(WhereDelegate<UserSettingColumns> where)
+        {
+            Type wrapperType = GetWrapperType<Bam.Net.CoreServices.ApplicationRegistration.UserSetting>();
+            return (Bam.Net.CoreServices.ApplicationRegistration.UserSetting)Bam.Net.CoreServices.ApplicationRegistration.Dao.UserSetting.OneWhere(where, Database).CopyAs(wrapperType, this);
+        }
+
+		/// <summary>
+		/// Execute a query and return the results. 
+		/// </summary>
+		/// <param name="where">A WhereDelegate that recieves a Bam.Net.CoreServices.ApplicationRegistration.UserSettingColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between Bam.Net.CoreServices.ApplicationRegistration.UserSettingColumns and other values
+		/// </param>
+		public IEnumerable<Bam.Net.CoreServices.ApplicationRegistration.UserSetting> UserSettingsWhere(WhereDelegate<UserSettingColumns> where, OrderBy<UserSettingColumns> orderBy = null)
+        {
+            return Wrap<Bam.Net.CoreServices.ApplicationRegistration.UserSetting>(Bam.Net.CoreServices.ApplicationRegistration.Dao.UserSetting.Where(where, orderBy, Database));
+        }
+		
+		/// <summary>
+		/// Execute a query and return the specified number
+		/// of values. This method will issue a sql TOP clause so only the 
+		/// specified number of values will be returned.
+		/// </summary>
+		/// <param name="count">The number of values to return.
+		/// This value is used in the sql query so no more than this 
+		/// number of values will be returned by the database.
+		/// </param>
+		/// <param name="where">A WhereDelegate that recieves a UserSettingColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between UserSettingColumns and other values
+		/// </param>
+		public IEnumerable<Bam.Net.CoreServices.ApplicationRegistration.UserSetting> TopUserSettingsWhere(int count, WhereDelegate<UserSettingColumns> where)
+        {
+            return Wrap<Bam.Net.CoreServices.ApplicationRegistration.UserSetting>(Bam.Net.CoreServices.ApplicationRegistration.Dao.UserSetting.Top(count, where, Database));
+        }
+
+		/// <summary>
+		/// Return the count of UserSettings
+		/// </summary>
+		public long CountUserSettings()
+        {
+            return Bam.Net.CoreServices.ApplicationRegistration.Dao.UserSetting.Count(Database);
+        }
+
+		/// <summary>
+		/// Execute a query and return the number of results
+		/// </summary>
+		/// <param name="where">A WhereDelegate that recieves a UserSettingColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between UserSettingColumns and other values
+		/// </param>
+        public long CountUserSettingsWhere(WhereDelegate<UserSettingColumns> where)
+        {
+            return Bam.Net.CoreServices.ApplicationRegistration.Dao.UserSetting.Count(where, Database);
+        }
+        
+        public async Task BatchQueryUserSettings(int batchSize, WhereDelegate<UserSettingColumns> where, Action<IEnumerable<Bam.Net.CoreServices.ApplicationRegistration.UserSetting>> batchProcessor)
+        {
+            await Bam.Net.CoreServices.ApplicationRegistration.Dao.UserSetting.BatchQuery(batchSize, where, (batch) =>
+            {
+				batchProcessor(Wrap<Bam.Net.CoreServices.ApplicationRegistration.UserSetting>(batch));
+            }, Database);
+        }
+		
+        public async Task BatchAllUserSettings(int batchSize, Action<IEnumerable<Bam.Net.CoreServices.ApplicationRegistration.UserSetting>> batchProcessor)
+        {
+            await Bam.Net.CoreServices.ApplicationRegistration.Dao.UserSetting.BatchAll(batchSize, (batch) =>
+            {
+				batchProcessor(Wrap<Bam.Net.CoreServices.ApplicationRegistration.UserSetting>(batch));
+            }, Database);
+        }﻿		
 		/// <summary>
 		/// Get one entry matching the specified filter.  If none exists 
 		/// one will be created; success will depend on the nullability

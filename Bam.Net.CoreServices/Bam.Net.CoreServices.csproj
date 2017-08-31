@@ -92,6 +92,13 @@
     <Compile Include="ApplicationNameNotSpecifiedException.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\ApplicationRegistrationContext.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\ApplicationRegistrationRepository.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\Qi\UserSetting.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserSetting.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserSettingCollection.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserSettingColumns.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserSettingPagedQuery.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserSettingQuery.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserSettingWrapper.cs" />
     <Compile Include="ApplicationRegistration\Data\UserSetting.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorAssemblyReferenceDescriptor.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorAssemblyReferenceDescriptorCollection.cs" />

@@ -31,6 +31,58 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
 		}
 
 
+	public class UserSettingQueryContext
+	{
+			public UserSettingCollection Where(WhereDelegate<UserSettingColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.ApplicationRegistration.Dao.UserSetting.Where(where, db);
+			}
+		   
+			public UserSettingCollection Where(WhereDelegate<UserSettingColumns> where, OrderBy<UserSettingColumns> orderBy = null, Database db = null)
+			{
+				return Bam.Net.CoreServices.ApplicationRegistration.Dao.UserSetting.Where(where, orderBy, db);
+			}
+
+			public UserSetting OneWhere(WhereDelegate<UserSettingColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.ApplicationRegistration.Dao.UserSetting.OneWhere(where, db);
+			}
+
+			public static UserSetting GetOneWhere(WhereDelegate<UserSettingColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.ApplicationRegistration.Dao.UserSetting.GetOneWhere(where, db);
+			}
+		
+			public UserSetting FirstOneWhere(WhereDelegate<UserSettingColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.ApplicationRegistration.Dao.UserSetting.FirstOneWhere(where, db);
+			}
+
+			public UserSettingCollection Top(int count, WhereDelegate<UserSettingColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.ApplicationRegistration.Dao.UserSetting.Top(count, where, db);
+			}
+
+			public UserSettingCollection Top(int count, WhereDelegate<UserSettingColumns> where, OrderBy<UserSettingColumns> orderBy, Database db = null)
+			{
+				return Bam.Net.CoreServices.ApplicationRegistration.Dao.UserSetting.Top(count, where, orderBy, db);
+			}
+
+			public long Count(WhereDelegate<UserSettingColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.ApplicationRegistration.Dao.UserSetting.Count(where, db);
+			}
+	}
+
+	static UserSettingQueryContext _userSettings;
+	static object _userSettingsLock = new object();
+	public static UserSettingQueryContext UserSettings
+	{
+		get
+		{
+			return _userSettingsLock.DoubleCheckLock<UserSettingQueryContext>(ref _userSettings, () => new UserSettingQueryContext());
+		}
+	}
 	public class ClientQueryContext
 	{
 			public ClientCollection Where(WhereDelegate<ClientColumns> where, Database db = null)
