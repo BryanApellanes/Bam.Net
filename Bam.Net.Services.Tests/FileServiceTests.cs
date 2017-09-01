@@ -30,8 +30,10 @@ namespace Bam.Net.Services.Tests
         public void FileServiceRestoreTest()
         {
             SQLiteDatabase db = new SQLiteDatabase(".\\", nameof(FileServiceRestoreTest));
-            CoreFileService fmSvc = new CoreFileService(new DaoRepository(db));
-            fmSvc.ChunkLength = 111299;
+            CoreFileService fmSvc = new CoreFileService(new DaoRepository(db))
+            {
+                ChunkLength = 111299
+            };
             FileInfo testDataFile = new FileInfo("C:\\BamTestData\\TestDataFile.dll");
             ChunkedFileDescriptor chunkedFile = fmSvc.StoreFileChunksInRepo(testDataFile);
             FileInfo writeTo = new FileInfo($".\\{nameof(FileServiceRestoreTest)}_restored");
