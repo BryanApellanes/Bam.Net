@@ -124,7 +124,7 @@ namespace Bam.Net.Data.Tests.Integration
                 Expect.IsTrue(extractor.NameMap.ColumnNamesToPropertyNames.Count > 0);
                 Expect.IsTrue(extractor.NameMap.TableNamesToClassNames.Count > 0);
                 Out(extractor.NameMap.ToJson(), ConsoleColor.DarkBlue);
-                extractor.NameMap.Save($"c:\\testData\\{extractor.GetType().Name}_NameMap_test_output.json");
+                extractor.NameMap.Save($"c:\\BamTestData\\{extractor.GetType().Name}_NameMap_test_output.json");
             });
         }
 
