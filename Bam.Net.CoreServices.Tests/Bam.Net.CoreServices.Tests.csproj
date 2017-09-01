@@ -186,6 +186,10 @@
       <Project>{AA186331-A0D0-4F77-BEA2-E7B7650D3FF5}</Project>
       <Name>Bam.Net.Incubation</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Messaging\Bam.Net.Messaging.csproj">
+      <Project>{e330d601-62ea-439e-acd7-7236744562ff}</Project>
+      <Name>Bam.Net.Messaging</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Server\Bam.Net.Server.csproj">
       <Project>{6cd8ffb4-35ca-44ac-803d-cb9d4cb524a0}</Project>
       <Name>Bam.Net.Server</Name>
