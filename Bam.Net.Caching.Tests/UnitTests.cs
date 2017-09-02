@@ -17,6 +17,7 @@ using Bam.Net.Caching.File;
 using System.Threading;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Testing.Unit;
+using Bam.Net.Caching.Tests.TestData;
 
 namespace Bam.Net.Caching.Tests
 {
@@ -328,9 +329,4 @@ namespace Bam.Net.Caching.Tests
         }
     }
 
-    [Serializable]
-    public class TestMonkey : RepoData
-    {
-        public string Name { get; set; }
-    }
 }

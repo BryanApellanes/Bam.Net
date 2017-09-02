@@ -1086,7 +1086,7 @@ namespace Bam.Net.Data.Repositories
 
         private void CtorInit(ITypeTableNameProvider tableNameProvider = null, Func<SchemaDefinition, TypeSchema, string> schemaTempPathProvider = null)
         {
-            TypeSchemaGenerator = new TypeInheritanceSchemaGenerator(tableNameProvider, schemaTempPathProvider);
+            TypeSchemaGenerator = new TypeSchemaGenerator(tableNameProvider, schemaTempPathProvider);
             TypeDaoGenerator = new TypeDaoGenerator(TypeSchemaGenerator);
             TypeDaoGenerator.SchemaWarning += (o, a) =>
             {
