@@ -116,6 +116,10 @@ namespace Bam.Net.Html
             _directory = directory;
             if (PartialsDirectory == null)
             {
+                if (!_directory.Exists)
+                {
+                    _directory.Create();
+                }
                 DirectoryInfo partials = _directory.GetDirectories("Partials").FirstOrDefault();
                 if (partials != null)
                 {
