@@ -122,6 +122,12 @@ namespace Bam.Net.Services.Clients
             SetKeyToken(request.Headers, stringToHash);
         }
 
+        /// <summary>
+        /// Set the key token header (X-Bam-Keytoken) using the secret (ApiKey)
+        /// for the current application
+        /// </summary>
+        /// <param name="headers"></param>
+        /// <param name="stringToHash"></param>
         public void SetKeyToken(NameValueCollection headers, string stringToHash)
         {
             headers[Headers.KeyToken] = CreateKeyToken(stringToHash);
@@ -192,7 +198,7 @@ namespace Bam.Net.Services.Clients
             string appName = ApplicationName;
             if (string.IsNullOrEmpty(appName))
             {
-                Logger.AddEntry("ApplicatoinName not specified: {0}", LogEventType.Warning, Assembly.GetEntryAssembly().GetFilePath());
+                Logger.AddEntry("ApplicationName not specified: {0}", LogEventType.Warning, Assembly.GetEntryAssembly().GetFilePath());
             }
             return appName.Or($"{nameof(CoreClient)}.ApplicationName.Unspecified");
         }

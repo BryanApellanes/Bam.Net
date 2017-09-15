@@ -28,7 +28,8 @@ namespace Bam.Net.ServiceProxy
         MethodNotProxied,
         ParameterCountMismatch,
         PermissionDenied,
-        InvalidApiKeyToken
+        InvalidApiKeyToken,
+        RemoteExecutionNotAllowed
     }
 
     public class ValidationResult
@@ -79,10 +80,21 @@ namespace Bam.Net.ServiceProxy
 
             if (_toValidate.TargetType != null && 
                 _toValidate.MethodInfo != null &&
-                _toValidate.MethodInfo.HasCustomAttributeOfType<ExcludeAttribute>())
+                _toValidate.MethodInfo.HasCustomAttributeOfType(out ExcludeAttribute attr))
             {
-                failures.Add(ServiceProxy.ValidationFailures.MethodNotProxied);
-                messages.Add("The specified method has been explicitly excluded from being proxied: {0}"._Format(_toValidate.MethodName));
+                if(attr is LocalAttribute)
+                {
+                    if (!context.Request.UserHostAddress.StartsWith("127.0.0.1"))
+                    {
+                        failures.Add(ServiceProxy.ValidationFailures.RemoteExecutionNotAllowed);
+                        messages.Add("The specified method is marked [Local] and the request was directed to {0}: {1}"._Format(context.Request.UserHostAddress, _toValidate.MethodName));
+                    }
+                }
+                else
+                {
+                    failures.Add(ServiceProxy.ValidationFailures.MethodNotProxied);
+                    messages.Add("The specified method has been explicitly excluded from being proxied: {0}"._Format(_toValidate.MethodName));
+                }
             }
 
             if (_toValidate.ParameterInfos != null && _toValidate.ParameterInfos.Length != _toValidate.Parameters.Length)

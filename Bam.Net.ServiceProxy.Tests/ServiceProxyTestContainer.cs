@@ -36,6 +36,7 @@ using Bam.Net.UserAccounts;
 using Bam.Net.UserAccounts.Data;
 using Bam.Net.Web;
 using Bam.Net.Testing.Unit;
+using NSubstitute;
 
 namespace Bam.Net.ServiceProxy.Tests
 {
@@ -436,6 +437,11 @@ namespace Bam.Net.ServiceProxy.Tests
             {
                 return "Yay";
             }
+
+            [Local]
+            public virtual void LocalMethod()
+            {
+            }
         }
 
         [UnitTest]
@@ -447,6 +453,39 @@ namespace Bam.Net.ServiceProxy.Tests
             Expect.IsFalse(result.Success);
             Expect.IsTrue(result.ValidationFailures.ToList().Contains(ValidationFailures.MethodNameNotSpecified));
             OutLineFormat(result.Message);
+        }
+
+        [UnitTest]
+        public void LocalMethodShouldNotValidateIfNotLoopback()
+        {
+            ServiceProxySystem.Register<TestClass>();
+            IRequest request = Substitute.For<IRequest>();
+            request.QueryString.Returns(new System.Collections.Specialized.NameValueCollection());
+            request.UserHostAddress.Returns("192.168.0.80:80");
+            IResponse response = Substitute.For<IResponse>();
+            IHttpContext context = Substitute.For<IHttpContext>();
+            context.Request.Returns(request);
+            context.Response.Returns(response);
+            ExecutionRequest er = new ExecutionRequest("TestClass", "LocalMethod", "json") { Context = context };
+            ValidationResult result = er.Validate();
+            Expect.IsFalse(result.Success);
+            Expect.IsTrue(result.ValidationFailures.ToList().Contains(ValidationFailures.RemoteExecutionNotAllowed));
+        }
+
+        [UnitTest]
+        public void LocalMethodShouldValidateIfLocalClient()
+        {
+            ServiceProxySystem.Register<TestClass>();
+            IRequest request = Substitute.For<IRequest>();
+            request.QueryString.Returns(new System.Collections.Specialized.NameValueCollection());
+            request.UserHostAddress.Returns("127.0.0.1:80");
+            IResponse response = Substitute.For<IResponse>();
+            IHttpContext context = Substitute.For<IHttpContext>();
+            context.Request.Returns(request);
+            context.Response.Returns(response);
+            ExecutionRequest er = new ExecutionRequest("TestClass", "LocalMethod", "json") { Context = context };
+            ValidationResult result = er.Validate();
+            Expect.IsTrue(result.Success);
         }
 
         [UnitTest]

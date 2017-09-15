@@ -74,6 +74,7 @@ namespace Bam.Net
             return ToAssembly(directory, assemblyFileName, out results, true);
         }
 
+
         /// <summary>
         /// Compile all .cs files found in the specified directory to 
         /// the specified assemblyFileName and return the assembly.  Does
@@ -100,10 +101,44 @@ namespace Bam.Net
 
             return results.CompiledAssembly;
         }
+
+        public static Assembly ToAssembly(this FileInfo file, string assemblyFileName)
+        {
+            return ToAssembly(new FileInfo[] { file }, assemblyFileName, out CompilerResults results, true);
+        }
+
+        /// <summary>
+        /// Compile the specified files containing csharp source into the assembly of the 
+        /// specified assemblyFileName
+        /// </summary>
+        /// <param name="files"></param>
+        /// <param name="assemblyFileName"></param>
+        /// <returns></returns>
+        public static Assembly ToAssembly(this FileInfo[] files, string assemblyFileName)
+        {
+            return ToAssembly(files, assemblyFileName, out CompilerResults results, true);
+        }
+
+        public static Assembly ToAssembly(this FileInfo[] files, string assemblyFileName, out CompilerResults results, bool throwOnError = true)
+        {
+            if(_referenceAssemblies.Length == 0)
+            {
+                _referenceAssemblies = DefaultReferenceAssemblies;
+            }
+
+            results = CompileFiles(files, assemblyFileName, _referenceAssemblies);
+            if(results.Errors.Count > 0 && throwOnError)
+            {
+                throw new CompilationException(results);
+            }
+            return results.CompiledAssembly;
+        }
+
         public static CompilerResults CompileDirectory(DirectoryInfo directory, string assemblyFileName, Assembly[] referenceAssemblies, bool executable = false)
         {
             return CompileDirectory(directory, assemblyFileName, referenceAssemblies.Select(a => a.GetFilePath()).ToArray(), executable);
         }
+
         public static CompilerResults CompileDirectory(DirectoryInfo directory, string assemblyFileName, string[] referenceAssemblies, bool executable)
         {
             return CompileDirectories(new DirectoryInfo[] { directory }, assemblyFileName, referenceAssemblies, executable);
@@ -129,10 +164,38 @@ namespace Bam.Net
             return codeProvider.CompileAssemblyFromFile(parameters, fileNames.ToArray());
         }
 
+        public static CompilerResults CompileFile(FileInfo file, string assemblyFileName, Assembly[] referenceAssemblies = null, bool executable = false)
+        {
+            return CompileFiles(new FileInfo[] { file }, assemblyFileName, referenceAssemblies, executable);
+        }
+
+        public static CompilerResults CompileFiles(FileInfo[] files, string assemblyFileName, Assembly[] referenceAssemblies = null, bool executable = false)
+        {
+            string[] refAssemblies = referenceAssemblies == null ? _defaultReferenceAssemblies : referenceAssemblies.Select(a => a.GetFilePath()).ToArray();
+            return CompileFiles(files, assemblyFileName, refAssemblies, executable);
+        }
+
+        public static CompilerResults CompileFile(FileInfo file, string assemblyFileName, string[] referenceAssemblies, bool executable = false)
+        {
+            return CompileFiles(new FileInfo[] { file }, assemblyFileName, referenceAssemblies, executable);
+        }
+
+        public static CompilerResults CompileFiles(FileInfo[] files, string assemblyFileName, string[] referenceAssemblies, bool executable = false)
+        {
+            if(referenceAssemblies.Length == 0)
+            {
+                referenceAssemblies = _defaultReferenceAssemblies;
+            }
+            CSharpCodeProvider codeProvider = new CSharpCodeProvider();
+            CompilerParameters parameters = GetCompilerParameters(assemblyFileName, referenceAssemblies, executable);
+            return codeProvider.CompileAssemblyFromFile(parameters, files.Select(f => f.FullName).ToArray());
+        }
+
         public static CompilerResults CompileSource(string source, string assemblyFileName, Assembly[] referenceAssemblies, bool executable = false)
         {
             return CompileSource(source, assemblyFileName, referenceAssemblies.Select(a => a.GetFilePath()).ToArray(), executable);
         }
+
         public static CompilerResults CompileSource(string source, string assemblyFileName, string[] referenceAssemblies, bool executable)
         {
             return CompileSource(new string[] { source }, assemblyFileName, referenceAssemblies, executable);
@@ -158,8 +221,12 @@ namespace Bam.Net
         public static void SetCompilerOptions(string[] referenceAssemblies, CompilerParameters parameters)
         {
             StringBuilder compilerOptions = new StringBuilder();
-
-            foreach (string referenceAssembly in referenceAssemblies)
+            string[] refAssemblies = referenceAssemblies;
+            if(refAssemblies.Length == 0)
+            {
+                refAssemblies = DefaultReferenceAssemblies;
+            }
+            foreach (string referenceAssembly in refAssemblies)
             {
                 compilerOptions.AppendFormat("/reference:\"{0}\" ", referenceAssembly);
             }

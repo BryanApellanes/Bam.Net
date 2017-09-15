@@ -191,8 +191,7 @@ call git_tag_version.cmd %1");
                 nuspecFile.Authors = info.Authors;
                 nuspecFile.Owners = info.Owners;
                 GitReleaseNotes releaseNotes = GitReleaseNotes.SinceVersion(nuspecFile.Id, srcRoot, sinceMajor, sinceMinor, sincePatch);
-                string projectRoot;
-                if(!WriteReleaseNotes(srcRoot, releaseNotes, out projectRoot))
+                if (!WriteReleaseNotes(srcRoot, releaseNotes, out string projectRoot))
                 {
                     Warn("Unable to find project directory ({0}) to write release notes", projectRoot);
                 }

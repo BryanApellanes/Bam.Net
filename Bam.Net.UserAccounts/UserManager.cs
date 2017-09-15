@@ -120,6 +120,8 @@ namespace Bam.Net.UserAccounts
             get;
             set;
         }
+
+        [Local]
         public Vault GetSmtpSettingsVault(string applicationName = null)
         {
             return SmtpSettingsProvider.GetSmtpSettingsVault(applicationName);
@@ -185,7 +187,7 @@ namespace Bam.Net.UserAccounts
             }
         }
 
-        [Exclude]
+        [Local]
         public Email CreateEmail(string fromAddress = null, string fromDisplayName = null)
         {
             return SmtpSettingsProvider.CreateEmail(fromAddress, fromDisplayName);

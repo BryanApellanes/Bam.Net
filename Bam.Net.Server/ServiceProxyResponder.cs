@@ -585,12 +585,13 @@ namespace Bam.Net.Server
         protected void SendJsProxyScript(IRequest request, IResponse response)
         {
             string appName = AppConf.AppNameFromUri(request.Url, BamConf.AppConfigs);
+            bool includeLocalMethods = request.UserHostAddress.StartsWith("127.0.0.1");
 
-            StringBuilder script = ServiceProxySystem.GenerateJsProxyScript(CommonServiceProvider, CommonServiceProvider.ClassNames);
+            StringBuilder script = ServiceProxySystem.GenerateJsProxyScript(CommonServiceProvider, CommonServiceProvider.ClassNames, includeLocalMethods);
             if (AppServiceProviders.ContainsKey(appName))
             {
                 Incubator appProviders = AppServiceProviders[appName];
-                script.AppendLine(ServiceProxySystem.GenerateJsProxyScript(appProviders, appProviders.ClassNames).ToString());
+                script.AppendLine(ServiceProxySystem.GenerateJsProxyScript(appProviders, appProviders.ClassNames, includeLocalMethods).ToString());
             }
 
             response.ContentType = "application/javascript";
@@ -615,7 +616,7 @@ namespace Bam.Net.Server
 
             string[] classNames = request.QueryString["classes"] == null ? combined.ClassNames : request.QueryString["classes"].DelimitSplit(",", ";");
             
-            StringBuilder csharpCode = ServiceProxySystem.GenerateCSharpProxyCode(defaultBaseAddress, classNames, nameSpace, contractNameSpace, combined, this.Logger);
+            StringBuilder csharpCode = ServiceProxySystem.GenerateCSharpProxyCode(defaultBaseAddress, classNames, nameSpace, contractNameSpace, combined, Logger, request.UserHostAddress.StartsWith("127.0.0.1"));
 
             response.Headers.Add("Content-Disposition", "attachment;filename=" + nameSpace + ".cs");
             response.Headers.Add("Content-Type", "text/plain");

@@ -2357,6 +2357,15 @@ namespace Bam.Net
             return returnValue.ToString();
         }
 
+        public static DirectoryInfo EnsureExists(this DirectoryInfo dir)
+        {
+            if (!dir.Exists)
+            {
+                dir.Create();
+            }
+            return dir;
+        }
+
         public static FileInfo[] GetFiles(this DirectoryInfo parent, string[] searchPatterns, SearchOption option = SearchOption.TopDirectoryOnly)
         {
             List<FileInfo> results = new List<FileInfo>();

@@ -98,16 +98,22 @@ namespace Bam.Net.Html
         {
             lock (_reloadLock)
             {
-                _templates = new Dictionary<string, Func<object, string>>();
-                foreach (FileInfo partial in PartialsDirectory?.GetFiles($"*.{FileExtension}"))
+                if (PartialsDirectory != null)
                 {
-                    string name = Path.GetFileNameWithoutExtension(partial.FullName);
-                    Handlebars.RegisterTemplate(name, partial.ReadAllText());
+                    _templates = new Dictionary<string, Func<object, string>>();
+                    foreach (FileInfo partial in PartialsDirectory.GetFiles($"*.{FileExtension}"))
+                    {
+                        string name = Path.GetFileNameWithoutExtension(partial.FullName);
+                        Handlebars.RegisterTemplate(name, partial.ReadAllText());
+                    }
                 }
-                foreach (FileInfo file in Directory?.GetFiles($"*.{FileExtension}"))
+                if(Directory != null)
                 {
-                    string name = Path.GetFileNameWithoutExtension(file.FullName);
-                    _templates.AddMissing(name, Handlebars.Compile(file.ReadAllText()));
+                    foreach (FileInfo file in Directory?.GetFiles($"*.{FileExtension}"))
+                    {
+                        string name = Path.GetFileNameWithoutExtension(file.FullName);
+                        _templates.AddMissing(name, Handlebars.Compile(file.ReadAllText()));
+                    }
                 }
             }
         }

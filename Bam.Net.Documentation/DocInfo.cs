@@ -809,8 +809,8 @@ namespace Bam.Net.Documentation
         }
 
         /// <summary>
-        /// Infers documentation by reading and Doc attributes found in the 
-        /// specified assembly as well as readin the xml documentation file 
+        /// Infers documentation by reading any Doc attributes found in the 
+        /// specified assembly as well as reading the xml documentation file 
         /// if it exists
         /// </summary>
         /// <param name="assembly"></param>
@@ -828,7 +828,7 @@ namespace Bam.Net.Documentation
             });
 
             string name = Path.GetFileNameWithoutExtension(assemblyFileInfo.FullName);
-            string xmlFilePath = Path.Combine(assemblyFileInfo.Directory.FullName, "{0}.xml"._Format(name));
+            string xmlFilePath = Path.Combine(assemblyFileInfo.Directory.FullName, $"{name}.xml");
             FileInfo xmlFile = new FileInfo(xmlFilePath);            
 
             if (xmlFile.Exists)
