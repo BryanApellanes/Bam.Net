@@ -17,6 +17,7 @@ namespace Bam.Net.CoreServices
         public string Host { get; set; }
         public int Port { get; set; }
         public Type ServiceType { get; set; }
+        public bool IncludeLocalMethods { get; set; }
         public StringBuilder ClientCode { get; set; }
 
         public ProxySettingsInfo ToInfo()
@@ -53,13 +54,13 @@ namespace Bam.Net.CoreServices
 
         public override bool Equals(object obj)
         {
-            ProxySettings settings = obj as ProxySettings;
-            if (settings != null)
+            if (obj is ProxySettings settings)
             {
                 return settings.Protocol == this.Protocol &&
                     settings.Host.Equals(this.Host) &&
                     settings.Port == this.Port &&
-                    settings.ServiceType == this.ServiceType;
+                    settings.ServiceType == this.ServiceType &&
+                    settings.IncludeLocalMethods == this.IncludeLocalMethods;
             }
             else
             {
@@ -86,7 +87,7 @@ namespace Bam.Net.CoreServices
             Args.ThrowIfNull(ServiceType, nameof(ServiceType));
             ProxySettingsValidation result = new ProxySettingsValidation();
             List<MethodInfo> nonOverridableMethods = new List<MethodInfo>();
-            ServiceProxySystem.GetProxiedMethods(ServiceType).Where(mi => !mi.IsOverridable()).Each(new { NonOverridableMethods = nonOverridableMethods }, (ctx, mi) =>
+            ServiceProxySystem.GetProxiedMethods(ServiceType, IncludeLocalMethods).Where(mi => !mi.IsOverridable()).Each(new { NonOverridableMethods = nonOverridableMethods }, (ctx, mi) =>
             {
                 ctx.NonOverridableMethods.Add(mi);
             });

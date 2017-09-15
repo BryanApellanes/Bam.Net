@@ -35,12 +35,12 @@ namespace Bam.Net.CoreServices
     {
         public const string RegistryName = "CoreServiceRegistry";
         static object _coreIncubatorLock = new object();
-        static ServiceRegistry _coreIncubator;
+        static ServiceRegistry _coreServiceRegistry;
         
         [ServiceRegistryLoader(RegistryName)]
         public static ServiceRegistry GetServiceRegistry()
         {
-            return _coreIncubatorLock.DoubleCheckLock(ref _coreIncubator, Create);
+            return _coreIncubatorLock.DoubleCheckLock(ref _coreServiceRegistry, Create);
         }
 
         public static ServiceRegistry Create()

@@ -91,6 +91,47 @@ namespace Bam.Net.CoreServices
             return new ApiKeyInfo { ApplicationClientId = key.ClientId, ApiKey = key.SharedSecret, ApplicationName = ApplicationName };
         }
 
+        [ApiKeyRequired]
+        public virtual ApiKeyInfo SetActiveApiKeyIndex(int index)
+        {
+            return SetActiveApiKeyIndex(this, index);
+        }
+
+        [Local]
+        public virtual ApiKeyInfo SetActiveApiKeyIndex(IApplicationNameProvider nameProvider, int index)
+        {
+            string clientId = GetApplicationClientId(nameProvider);
+            ActiveApiKeyIndex apiKeyIndex = CoreRegistryRepository.OneActiveApiKeyIndexWhere(c => c.ApplicationCuid == clientId);
+            if(apiKeyIndex == null)
+            {
+                apiKeyIndex = new ActiveApiKeyIndex { ApplicationCuid = clientId };
+            }
+
+            if (Application?.ApiKeys.Count - 1 > index)
+            {
+                throw new IndexOutOfRangeException($"Specified ApiKeyIndex index is invalid: {index}");
+            }
+            apiKeyIndex.Value = index;
+            CoreRegistryRepository.Save(apiKeyIndex);
+            return new ApiKeyInfo()
+            {
+                ApiKey = GetApplicationApiKey(clientId, index),
+                ApplicationClientId = clientId
+            };
+        }
+
+        [Local]
+        public virtual int GetActiveApiKeyIndex(IApplicationNameProvider nameProvider)
+        {
+            string clientId = GetApplicationClientId(nameProvider);
+            ActiveApiKeyIndex apiKeyIndex = CoreRegistryRepository.OneActiveApiKeyIndexWhere(c => c.ApplicationCuid == clientId);
+            if (apiKeyIndex != null)
+            {
+                return apiKeyIndex.Value;
+            }
+            return 0;
+        }
+
         public virtual string GetApplicationName()
         {
             return ApplicationName.Or(ApplicationDiagnosticInfo.UnknownApplication);
@@ -224,14 +265,16 @@ namespace Bam.Net.CoreServices
         public ApiKeyInfo GetApiKeyInfo(IApplicationNameProvider nameProvider)
         {
             string clientId = GetApplicationClientId(nameProvider);
-            ApiKeyInfo info = new ApiKeyInfo();
-            info.ApiKey = GetApplicationApiKey(clientId, 0); // TODO: enable specifying an active ApiKey index
-            info.ApplicationClientId = clientId;
+            ApiKeyInfo info = new ApiKeyInfo()
+            {
+                ApiKey = GetApplicationApiKey(clientId, GetActiveApiKeyIndex(nameProvider)), 
+                ApplicationClientId = clientId
+            };
             return info;
         }
 
-        [Exclude]
-        public string GetApplicationApiKey(string applicationClientId, int index)
+        [Local]
+        public virtual string GetApplicationApiKey(string applicationClientId, int index)
         {
             ApplicationRegistration.Application app = CoreRegistryRepository.OneApplicationWhere(c => c.Cuid == applicationClientId);
             if(app != null)
@@ -248,8 +291,8 @@ namespace Bam.Net.CoreServices
             return app?.Cuid;
         }
 
-        [Exclude]
-        public string GetCurrentApiKey()
+        [Local]
+        public virtual string GetCurrentApiKey()
         {
             return Application?.ApiKeys.FirstOrDefault()?.SharedSecret;
         }

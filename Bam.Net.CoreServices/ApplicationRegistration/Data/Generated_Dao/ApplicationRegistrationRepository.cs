@@ -24,6 +24,7 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao.Repository
 			SchemaName = "ApplicationRegistration";
 			BaseNamespace = "Bam.Net.CoreServices.ApplicationRegistration";			
 ﻿			
+			AddType<Bam.Net.CoreServices.ApplicationRegistration.ActiveApiKeyIndex>();﻿			
 			AddType<Bam.Net.CoreServices.ApplicationRegistration.UserSetting>();﻿			
 			AddType<Bam.Net.CoreServices.ApplicationRegistration.Client>();﻿			
 			AddType<Bam.Net.CoreServices.ApplicationRegistration.Configuration>();﻿			
@@ -52,6 +53,99 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao.Repository
         }
 
 ﻿		
+		/// <summary>
+		/// Get one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		/// <param name="where"></param>
+		public Bam.Net.CoreServices.ApplicationRegistration.ActiveApiKeyIndex GetOneActiveApiKeyIndexWhere(WhereDelegate<ActiveApiKeyIndexColumns> where)
+		{
+			Type wrapperType = GetWrapperType<Bam.Net.CoreServices.ApplicationRegistration.ActiveApiKeyIndex>();
+			return (Bam.Net.CoreServices.ApplicationRegistration.ActiveApiKeyIndex)Bam.Net.CoreServices.ApplicationRegistration.Dao.ActiveApiKeyIndex.GetOneWhere(where, Database).CopyAs(wrapperType, this);
+		}
+
+		/// <summary>
+		/// Execute a query that should return only one result.  If more
+		/// than one result is returned a MultipleEntriesFoundException will 
+		/// be thrown.  This method is most commonly used to retrieve a
+		/// single ActiveApiKeyIndex instance by its Id/Key value
+		/// </summary>
+		/// <param name="where">A WhereDelegate that recieves a ActiveApiKeyIndexColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between ActiveApiKeyIndexColumns and other values
+		/// </param>
+		public Bam.Net.CoreServices.ApplicationRegistration.ActiveApiKeyIndex OneActiveApiKeyIndexWhere(WhereDelegate<ActiveApiKeyIndexColumns> where)
+        {
+            Type wrapperType = GetWrapperType<Bam.Net.CoreServices.ApplicationRegistration.ActiveApiKeyIndex>();
+            return (Bam.Net.CoreServices.ApplicationRegistration.ActiveApiKeyIndex)Bam.Net.CoreServices.ApplicationRegistration.Dao.ActiveApiKeyIndex.OneWhere(where, Database).CopyAs(wrapperType, this);
+        }
+
+		/// <summary>
+		/// Execute a query and return the results. 
+		/// </summary>
+		/// <param name="where">A WhereDelegate that recieves a Bam.Net.CoreServices.ApplicationRegistration.ActiveApiKeyIndexColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between Bam.Net.CoreServices.ApplicationRegistration.ActiveApiKeyIndexColumns and other values
+		/// </param>
+		public IEnumerable<Bam.Net.CoreServices.ApplicationRegistration.ActiveApiKeyIndex> ActiveApiKeyIndexsWhere(WhereDelegate<ActiveApiKeyIndexColumns> where, OrderBy<ActiveApiKeyIndexColumns> orderBy = null)
+        {
+            return Wrap<Bam.Net.CoreServices.ApplicationRegistration.ActiveApiKeyIndex>(Bam.Net.CoreServices.ApplicationRegistration.Dao.ActiveApiKeyIndex.Where(where, orderBy, Database));
+        }
+		
+		/// <summary>
+		/// Execute a query and return the specified number
+		/// of values. This method will issue a sql TOP clause so only the 
+		/// specified number of values will be returned.
+		/// </summary>
+		/// <param name="count">The number of values to return.
+		/// This value is used in the sql query so no more than this 
+		/// number of values will be returned by the database.
+		/// </param>
+		/// <param name="where">A WhereDelegate that recieves a ActiveApiKeyIndexColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between ActiveApiKeyIndexColumns and other values
+		/// </param>
+		public IEnumerable<Bam.Net.CoreServices.ApplicationRegistration.ActiveApiKeyIndex> TopActiveApiKeyIndexsWhere(int count, WhereDelegate<ActiveApiKeyIndexColumns> where)
+        {
+            return Wrap<Bam.Net.CoreServices.ApplicationRegistration.ActiveApiKeyIndex>(Bam.Net.CoreServices.ApplicationRegistration.Dao.ActiveApiKeyIndex.Top(count, where, Database));
+        }
+
+		/// <summary>
+		/// Return the count of ActiveApiKeyIndexs
+		/// </summary>
+		public long CountActiveApiKeyIndexs()
+        {
+            return Bam.Net.CoreServices.ApplicationRegistration.Dao.ActiveApiKeyIndex.Count(Database);
+        }
+
+		/// <summary>
+		/// Execute a query and return the number of results
+		/// </summary>
+		/// <param name="where">A WhereDelegate that recieves a ActiveApiKeyIndexColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between ActiveApiKeyIndexColumns and other values
+		/// </param>
+        public long CountActiveApiKeyIndexsWhere(WhereDelegate<ActiveApiKeyIndexColumns> where)
+        {
+            return Bam.Net.CoreServices.ApplicationRegistration.Dao.ActiveApiKeyIndex.Count(where, Database);
+        }
+        
+        public async Task BatchQueryActiveApiKeyIndexs(int batchSize, WhereDelegate<ActiveApiKeyIndexColumns> where, Action<IEnumerable<Bam.Net.CoreServices.ApplicationRegistration.ActiveApiKeyIndex>> batchProcessor)
+        {
+            await Bam.Net.CoreServices.ApplicationRegistration.Dao.ActiveApiKeyIndex.BatchQuery(batchSize, where, (batch) =>
+            {
+				batchProcessor(Wrap<Bam.Net.CoreServices.ApplicationRegistration.ActiveApiKeyIndex>(batch));
+            }, Database);
+        }
+		
+        public async Task BatchAllActiveApiKeyIndexs(int batchSize, Action<IEnumerable<Bam.Net.CoreServices.ApplicationRegistration.ActiveApiKeyIndex>> batchProcessor)
+        {
+            await Bam.Net.CoreServices.ApplicationRegistration.Dao.ActiveApiKeyIndex.BatchAll(batchSize, (batch) =>
+            {
+				batchProcessor(Wrap<Bam.Net.CoreServices.ApplicationRegistration.ActiveApiKeyIndex>(batch));
+            }, Database);
+        }﻿		
 		/// <summary>
 		/// Get one entry matching the specified filter.  If none exists 
 		/// one will be created; success will depend on the nullability

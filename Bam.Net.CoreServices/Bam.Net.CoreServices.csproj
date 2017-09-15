@@ -90,8 +90,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationNameNotSpecifiedException.cs" />
+    <Compile Include="ApplicationRegistration\Data\ActiveApiKeyIndex.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\ActiveApiKeyIndex.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\ActiveApiKeyIndexCollection.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\ActiveApiKeyIndexColumns.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\ActiveApiKeyIndexPagedQuery.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\ActiveApiKeyIndexQuery.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\ActiveApiKeyIndexWrapper.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\ApplicationRegistrationContext.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\ApplicationRegistrationRepository.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\Qi\ActiveApiKeyIndex.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\Qi\UserSetting.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserSetting.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserSettingCollection.cs" />

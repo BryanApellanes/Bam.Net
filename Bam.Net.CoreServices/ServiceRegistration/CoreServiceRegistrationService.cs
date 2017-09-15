@@ -16,6 +16,11 @@ using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.CoreServices
 {
+    /// <summary>
+    /// Provides a central point of management for
+    /// registering and retrieving services and their
+    /// implementations
+    /// </summary>
     [ApiKeyRequired]
     [Proxy("coreServiceRegistrationSvc")]
     [ServiceSubdomain("svcreg")]
@@ -39,7 +44,7 @@ namespace Bam.Net.CoreServices
         /// <param name="name"></param>
         /// <returns></returns>
         [Local]
-        public CoreServices.ServiceRegistry GetServiceRegistry(string name)
+        public ServiceRegistry GetServiceRegistry(string name)
         {
             ServiceRegistryLoaderDescriptor loader = GetServiceRegistryLoaderDescriptor(name);            
             if(loader == null)
@@ -51,13 +56,13 @@ namespace Bam.Net.CoreServices
         }
 
         /// <summary>
-        /// Local: register the specified Incubator as the specified name
+        /// Local: register the specified Incubator as the registry with the specified name
         /// </summary>
         /// <param name="registryName"></param>
         /// <param name="inc"></param>
         /// <returns></returns>
         [Local]
-        public CoreServices.ServiceRegistry RegisterServiceRegistry(string registryName, Incubator inc, bool overwrite)
+        public ServiceRegistry RegisterServiceRegistry(string registryName, Incubator inc, bool overwrite)
         {
             ServiceRegistryDescriptor descriptor = ServiceRegistryDescriptor.FromIncubator(registryName, inc);
             RegisterServiceRegistryDescriptor(descriptor, overwrite);
