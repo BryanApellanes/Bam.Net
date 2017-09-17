@@ -564,8 +564,7 @@ namespace {0}
                     PropertyInfo[] modelProps = modelType.GetProperties();
                     foreach (PropertyInfo prop in modelProps)
                     {
-                        ColumnAttribute col;
-                        if (prop.HasCustomAttributeOfType<ColumnAttribute>(out col))
+                        if (prop.HasCustomAttributeOfType(out ColumnAttribute col))
                         {
                             string typeName = prop.PropertyType.Name;
                             if (prop.PropertyType.IsGenericType &&
@@ -577,8 +576,7 @@ namespace {0}
                             stringBuilder.AppendFormat("\td.entities.{0}.cols.push({{name: '{1}', type: '{2}', nullable: {3} }});\r\n", className, col.Name, typeName, col.AllowNull ? "true" : "false");
                         }
 
-                        ForeignKeyAttribute fk;
-                        if (prop.HasCustomAttributeOfType<ForeignKeyAttribute>(out fk))
+                        if (prop.HasCustomAttributeOfType(out ForeignKeyAttribute fk))
                         {
                             stringBuilder.AppendFormat("\td.fks.push({{ pk: '{0}', pt: '{1}', fk: '{2}', ft: '{3}', nullable: {4} }});\r\n", fk.ReferencedKey, fk.ReferencedTable, fk.Name, fk.Table, fk.AllowNull ? "true" : "false");
                         }
@@ -609,14 +607,17 @@ namespace {0}
             builder.AppendFormat("\tb.{0}.{1} = function({2}{3}options)", type.Name, defaultMethodName, parameters, comma);
             builder.AppendLine("{");
 
+            string methodName = "invoke";
             if (type.HasCustomAttributeOfType<EncryptAttribute>())
             {
-                builder.AppendFormat("\t\treturn b.secureInvoke('{0}', '{1}', [{2}], options != null ? (options.format == null ? 'json': options.format) : 'json', $.isFunction(options) ? {3} : options);\r\n", type.Name, method.Name, parameters, "{success: options}");
+                methodName = "secureInvoke";
             }
-            else
+            if(type.HasCustomAttributeOfType<ApiKeyRequiredAttribute>() ||
+                method.HasCustomAttributeOfType<ApiKeyRequiredAttribute>())
             {
-                builder.AppendFormat("\t\treturn b.invoke('{0}', '{1}', [{2}], options != null ? (options.format == null ? 'json': options.format) : 'json', $.isFunction(options) ? {3} : options);\r\n", type.Name, method.Name, parameters, "{success: options}");
+                builder.Append("\t\toptions = $.extend({}, {apiKeyRequired: true}, options);");
             }
+            builder.AppendFormat("\t\treturn b.{0}('{1}', '{2}', [{3}], options != null ? (options.format == null ? 'json': options.format) : 'json', $.isFunction(options) ? {4} : options);\r\n", methodName, type.Name, method.Name, parameters, "{success: options}");
             
             builder.AppendLine("\t};");
 
