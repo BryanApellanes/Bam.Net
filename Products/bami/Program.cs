@@ -86,7 +86,14 @@ namespace Bam.Net.Server
         [ConsoleAction]
         public static void LogResponses()
         {
-            Server.Responded += (s, res, req) => Logger.Info("Responded: ClientIp={0}, Path={1}", req?.GetClientIp() ?? "[null]", req?.Url?.ToString() ?? "[null]");
+            Server.Responded += (s, res, req) =>
+            {
+                StringBuilder messageFormat = new StringBuilder();
+                messageFormat.Append("Responded: ClientIp={0}, Path={1}");
+                messageFormat.Append("\tUserAgent: {2}");
+                messageFormat.Append("\tUserLanguages: {3}");
+                Logger.Info(messageFormat.ToString(), req?.GetClientIp() ?? "[null]", req?.Url?.ToString() ?? "[null]", req?.UserAgent, string.Join(",", req?.UserLanguages));
+            };
         }
     }
 }

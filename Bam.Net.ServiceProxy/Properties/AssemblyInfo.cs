@@ -45,6 +45,7 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("Bam.Net.ServiceProxy.Tests")]
 [assembly: InternalsVisibleTo("Bam.Net.Services")]
 [assembly: InternalsVisibleTo("Bam.Net.Services.Clients")]
+[assembly: InternalsVisibleTo("gloo")]
 
 [assembly: AssemblyVersion("1.8.0")]
 [assembly: AssemblyFileVersion("1.8.0")]

@@ -523,6 +523,11 @@ namespace Bam.Net.Server
                         if (responded)
                         {
                             RenderResult(appName, path, execRequest);
+                            OnResponded(context);
+                        }
+                        else
+                        {
+                            OnNotResponded(context);
                         }
                     }
                 }
@@ -532,6 +537,7 @@ namespace Bam.Net.Server
             catch (Exception ex)
             {
                 Logger.AddEntry("An error occurred in {0}.{1}: {2}", ex, this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message);
+                OnNotResponded(context);
                 return false;
             }
         }
