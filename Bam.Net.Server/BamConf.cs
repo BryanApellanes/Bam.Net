@@ -596,6 +596,7 @@ namespace Bam.Net.Server
             }
             return config;
         }
+
         private static BamConf LoadXmlConfig(string xmlConfig)
         {
             BamConf temp = null;

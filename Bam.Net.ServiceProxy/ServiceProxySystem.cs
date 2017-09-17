@@ -290,12 +290,15 @@ namespace Bam.Net.ServiceProxy
                                     method.MemberType == MemberTypes.Method &&
                                     !method.IsProperty() &&                                    
                                     method.DeclaringType != typeof(object);
-
-            ExcludeAttribute attr = null;
-            bool result = baseCheck && !method.HasCustomAttributeOfType(out attr);
+            bool hasExcludeAttribute = method.HasCustomAttributeOfType(out ExcludeAttribute attr);
+            bool result = false;
             if (includeLocal)
             {
-                result = baseCheck && attr is LocalAttribute;
+                result = hasExcludeAttribute ? (attr is LocalAttribute && baseCheck) : baseCheck;
+            }
+            else
+            {
+                result = hasExcludeAttribute ? false : baseCheck;                
             }
             return result;
         }
@@ -542,7 +545,7 @@ namespace {0}
 
                 foreach (MethodInfo method in type.GetMethods())
                 {
-                    if (ServiceProxySystem.WillProxyMethod(method, includeLocal))
+                    if (WillProxyMethod(method, includeLocal))
                     {
                         stringBuilder.AppendLine(GetMethodCall(type, method));
                     }

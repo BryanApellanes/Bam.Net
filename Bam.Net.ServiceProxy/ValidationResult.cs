@@ -122,8 +122,13 @@ namespace Bam.Net.ServiceProxy
                 }
             }
 
+            ApiKeyRequiredAttribute keyRequired;
             if (_toValidate.TargetType != null &&
-                _toValidate.TargetType.HasCustomAttributeOfType(true, out ApiKeyRequiredAttribute keyRequired))
+                _toValidate.MethodInfo != null &&
+                (
+                    _toValidate.TargetType.HasCustomAttributeOfType(true, out keyRequired) ||
+                    _toValidate.MethodInfo.HasCustomAttributeOfType(true, out keyRequired)                
+                ))
             {
                 ValidateApiKeyToken(failures, messages);
             }
