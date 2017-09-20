@@ -20,9 +20,9 @@ using Bam.Net.Configuration;
 
 namespace Bam.Net.CoreServices
 {
-    [Proxy("appRegistrationSvc")]
+    [Proxy("appRegistrySvc")]
     [Encrypt]
-    [ServiceSubdomain("appreg")]
+    [ServiceSubdomain("appregistry")]
     [RoleRequired("/appreg/accessdenied", "Admin")]
     public class CoreApplicationRegistrationService : CoreProxyableService, IApiKeyResolver, IApiKeyProvider, IApplicationNameProvider
     {

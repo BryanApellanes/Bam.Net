@@ -55,8 +55,7 @@ namespace Bam.Net.ServiceProxy.Secure
                 logger = Log.Default;
             }
 
-            Exception ex = null;
-            Config.SchemaInitializer.Initialize(logger, out ex);
+            Config.SchemaInitializer.Initialize(logger, out Exception ex);
             if (ex != null)
             {
                 InitializationException = ex;
@@ -154,11 +153,12 @@ namespace Bam.Net.ServiceProxy.Secure
 
         internal static ClientSessionInfo GetClientSessionInfo(SecureSession session)
         {
-            ClientSessionInfo result = new ClientSessionInfo();
-            result.SessionId = session.Id.Value;
-            result.ClientIdentifier = session.Identifier;
-            result.PublicKey = session.PublicKey;
-            
+            ClientSessionInfo result = new ClientSessionInfo()
+            {
+                SessionId = session.Id.Value,
+                ClientIdentifier = session.Identifier,
+                PublicKey = session.PublicKey
+            };
             return result;
         }
 
