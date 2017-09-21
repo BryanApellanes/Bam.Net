@@ -107,7 +107,7 @@ namespace Bam.Net.CoreServices
                 apiKeyIndex = new ActiveApiKeyIndex { ApplicationCuid = clientId };
             }
 
-            if (Application?.ApiKeys.Count - 1 > index)
+            if (Application?.ApiKeys.Count - 1 > index || index < 0)
             {
                 throw new IndexOutOfRangeException($"Specified ApiKeyIndex index is invalid: {index}");
             }

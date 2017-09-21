@@ -18,7 +18,6 @@ namespace Bam.Net.Logging
         ConcurrentQueue<LogEvent> _logEventQueue;
         Thread _loggingThread;
         AutoResetEvent _waitForEnqueueLogEvent;
-        AutoResetEvent _waitForQueueToBeEmpty;
 
         List<string> requiredProperties;
         public Logger()

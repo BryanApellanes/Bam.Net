@@ -686,10 +686,10 @@ namespace Bam.Net.ServiceProxy.Tests
             ServiceProxySystem.Register<ApiKeyRequiredEcho>();
 
             string methodName = MethodBase.GetCurrentMethod().Name;
-            IApplicationNameProvider nameProvider = new TestApplicationNameProvider(methodName);
+            IApplicationNameProvider nameProvider = new TestApplicationNameProvider(methodName.RandomLetters(4));
             IApiKeyProvider keyProvider = new LocalApiKeyProvider();
 
-            ExecutionRequest er = new ExecutionRequest("ApiKeyRequiredEcho", "GetValue", "json");
+            ExecutionRequest er = new ExecutionRequest("ApiKeyRequiredEcho", "Send", "json");
             er.ApiKeyResolver = new ApiKeyResolver(keyProvider, nameProvider);
 
             er.Request = new ServiceProxyTestHelpers.TestRequest();

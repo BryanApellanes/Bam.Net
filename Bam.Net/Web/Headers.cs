@@ -18,7 +18,7 @@ namespace Bam.Net.Web
         /// Header used to prove that the client knows the shared secret by using 
         /// it to create a hash value that this header is set to
         /// </summary>
-        public static string KeyToken { get { return "X-Bam-KeyToken"; } }
+        public static string KeyToken { get { return "X-Bam-Key-Token"; } }
 
         /// <summary>
         /// Header used to request a specific responder on the server
