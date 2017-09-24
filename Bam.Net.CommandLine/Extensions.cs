@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Bam.Net.CommandLine
 {
@@ -20,6 +21,11 @@ namespace Bam.Net.CommandLine
         public static void InvokeInSeparateAppDomain(this ConsoleMethod consoleInvokeableMethod)
         {
             CommandLineInterface.InvokeInSeparateAppDomain(consoleInvokeableMethod.Method, consoleInvokeableMethod.Provider, consoleInvokeableMethod.Parameters);
+        }
+
+        public static Task<ProcessOutput> RunAsync(this string command, int timeout = 600000)
+        {
+            return Task.Run(()=> Run(command, timeout));
         }
 
         public static ProcessOutput Run(this string command, int timeout = 600000)

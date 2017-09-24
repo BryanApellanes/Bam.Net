@@ -26,7 +26,7 @@ namespace Bam.Net.ServiceProxy
 
         static ServiceProxySystem()
         {
-            UserResolvers = new ServiceProxy.UserResolvers();
+            UserResolvers = new UserResolvers();
             UserResolvers.AddResolver(new DefaultWebUserResolver());
             RoleResolvers = new RoleResolvers();
             RoleResolvers.AddResolver(new DefaultRoleResolver());

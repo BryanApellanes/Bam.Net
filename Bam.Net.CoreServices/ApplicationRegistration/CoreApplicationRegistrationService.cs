@@ -189,7 +189,7 @@ namespace Bam.Net.CoreServices
                 string organizationName = descriptor.Application.Organization.Name;
                 if (CurrentUser.Equals(UserAccounts.Data.User.Anonymous))
                 {
-                    return new CoreServiceResponse<ApplicationRegistration.Application> { Success = false, Message = "You must be logged in to do that", Data = new ApplicationRegistrationResult { Status = ApplicationRegistrationStatus.Unauthorized } };
+                    return new CoreServiceResponse<ApplicationRegistrationResult> { Success = false, Message = "You must be logged in to do that", Data = new ApplicationRegistrationResult { Status = ApplicationRegistrationStatus.Unauthorized } };
                 }
                 User user = CoreRegistryRepository.OneUserWhere(c => c.UserName == CurrentUser.UserName);
                 if (user == null)

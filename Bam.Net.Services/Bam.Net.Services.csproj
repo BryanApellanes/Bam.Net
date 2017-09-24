@@ -117,6 +117,8 @@
     <Compile Include="AsyncExecutionResponse.cs" />
     <Compile Include="AsyncExecutionResponseEventArgs.cs" />
     <Compile Include="AsyncProxyableService.cs" />
+    <Compile Include="Automation\CommandInfo.cs" />
+    <Compile Include="Automation\CommandService.cs" />
     <Compile Include="Catalog\Data\ItemCustomizationDefinition.cs" />
     <Compile Include="AsyncExecutionRequest.cs" />
     <Compile Include="ExecutionResponder.cs" />
@@ -154,6 +156,10 @@
     <ProjectReference Include="..\Bam.Net.Analytics\Bam.Net.Analytics.csproj">
       <Project>{67cca5a4-9b97-444c-9f4b-f464b2e04d6b}</Project>
       <Name>Bam.Net.Analytics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.CommandLine\Bam.Net.CommandLine.csproj">
+      <Project>{EA9863A9-8E0B-4497-B7FD-ABF450A3E468}</Project>
+      <Name>Bam.Net.CommandLine</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.CoreServices\Bam.Net.CoreServices.csproj">
       <Project>{5480d2a0-145b-4435-8e1c-4555ead0424a}</Project>
@@ -204,9 +210,7 @@
       <Name>Bam.Net</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Automation\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

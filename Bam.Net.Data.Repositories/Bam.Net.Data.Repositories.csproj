@@ -125,13 +125,14 @@
     <Compile Include="DatabaseExtensions.cs" />
     <Compile Include="DatabaseFactory.cs" />
     <Compile Include="DataSettings.cs" />
+    <Compile Include="DefaultRepositoryResolver.cs" />
     <Compile Include="FsRepoData.cs" />
     <Compile Include="FsRepository.cs" />
     <Compile Include="ICrudProvider.cs" />
     <Compile Include="ICrudResponseProvider.cs" />
     <Compile Include="IHasKeyHash.cs" />
     <Compile Include="IQueryFilterable.cs" />
-    <Compile Include="IRepositoryPathProvider.cs" />
+    <Compile Include="IRepositoryResolver.cs" />
     <Compile Include="IStorableTypesProvider.cs" />
     <Compile Include="KeyHashAuditRepoData.cs" />
     <Compile Include="KeyHashProvider.cs" />
@@ -139,6 +140,7 @@
     <Compile Include="NamespaceStorableTypesProvider.cs" />
     <Compile Include="ObjectIdentifier.cs" />
     <Compile Include="RepoData.cs" />
+    <Compile Include="RepositoryResolver.cs" />
     <Compile Include="RepositoryStorableTypesProvider.cs" />
     <Compile Include="TypeSchemaPropertyManager.cs" />
     <Compile Include="TypeSchemaScriptWriter.cs" />
