@@ -21,9 +21,10 @@ namespace Bam.Net.Automation
         public string Password { get; set; }
         protected override WorkState Do()
         {
-            WorkState result = new WorkState(this);
-            result.Message = "({0}) uploaded to ({1}) successfully"._Format(Source, Destination);
-
+            WorkState result = new WorkState(this)
+            {
+                Message = "({0}) uploaded to ({1}) successfully"._Format(Source, Destination)
+            };
             Ftp.Server(Destination).UserName(UserName).Password(Password).Upload(Source);
 
             return result;

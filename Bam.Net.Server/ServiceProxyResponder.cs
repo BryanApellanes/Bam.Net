@@ -227,10 +227,7 @@ namespace Bam.Net.Server
         public event Action<Type, object> CommonServiceAdded;
         protected void OnCommonServiceAdded(Type type, object instance)
         {
-            if (CommonServiceAdded != null)
-            {
-                CommonServiceAdded(type, instance);
-            }
+            CommonServiceAdded?.Invoke(type, instance);
         }
 
         public void AddCommoneService(Type type, Func<object> instanciator)
@@ -252,10 +249,7 @@ namespace Bam.Net.Server
         public event Action<Type> CommonServiceRemoved;
         protected void OnCommonServiceRemoved(Type type)
         {
-            if (CommonServiceRemoved != null)
-            {
-                CommonServiceRemoved(type);
-            }
+            CommonServiceRemoved?.Invoke(type);
         }
 
         /// <summary>
@@ -284,8 +278,7 @@ namespace Bam.Net.Server
         /// <param name="className"></param>
         public void RemoveCommonService(string className)
         {
-            Type type;
-            _commonServiceProvider.Remove(className, out type);
+            _commonServiceProvider.Remove(className, out Type type);
             OnCommonServiceRemoved(type);
         }
 
@@ -404,8 +397,7 @@ namespace Bam.Net.Server
 
         private void SubscribeIfLoggable(object instance)
         {
-            Loggable loggable = instance as Loggable;
-            if (loggable != null)
+            if (instance is Loggable loggable)
             {
                 loggable.Subscribe(Logger);
             }
@@ -523,15 +515,17 @@ namespace Bam.Net.Server
                         if (responded)
                         {
                             RenderResult(appName, path, execRequest);
-                            OnResponded(context);
-                        }
-                        else
-                        {
-                            OnNotResponded(context);
                         }
                     }
                 }
-
+                if (responded)
+                {
+                    OnResponded(context);
+                }
+                else
+                {
+                    OnNotResponded(context);
+                }
                 return responded;
             }
             catch (Exception ex)

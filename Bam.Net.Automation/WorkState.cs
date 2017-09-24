@@ -49,7 +49,8 @@ namespace Bam.Net.Automation
             : this(worker)
         {
             this.Status = Status.Failed;
-            this.Message = !string.IsNullOrEmpty(ex.StackTrace) ? string.Format("{0}:\r\n\r\n{1}", ex.Message, ex.StackTrace) : ex.Message;
+            string message = ex.GetInnerException().Message;
+            this.Message = !string.IsNullOrEmpty(ex.StackTrace) ? string.Format("{0}:\r\n\r\n{1}", message, ex.StackTrace) : message;
         }
 
         public int StepNumber { get; set; }

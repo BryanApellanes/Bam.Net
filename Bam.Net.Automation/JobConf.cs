@@ -200,9 +200,8 @@ namespace Bam.Net.Automation
         {
             Args.ThrowIfNull(workerType, "workerType");
 
-            string path;
             object worker = workerType.Construct();
-            if (!WorkerExists(workerName, out path))
+            if (!WorkerExists(workerName, out string path))
             {
                 Worker w = (Worker)worker;
                 w.Name = workerName;

@@ -7,8 +7,8 @@
     <ProjectGuid>{C1C1318A-F6F0-4F71-9A96-22FC36426A54}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>orch</RootNamespace>
-    <AssemblyName>orch</AssemblyName>
+    <RootNamespace>Bam.Net</RootNamespace>
+    <AssemblyName>3hbx</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>

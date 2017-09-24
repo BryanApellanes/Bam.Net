@@ -166,6 +166,7 @@
     <Compile Include="EnqueingJob.cs" />
     <Compile Include="Ftp.cs" />
     <Compile Include="IfElseWorker.cs" />
+    <Compile Include="Services\JobConductorService.cs" />
     <Compile Include="Partials\DeferredJob.cs" />
     <Compile Include="Partials\DeferredJobData.cs" />
     <Compile Include="Partials\JobData.cs" />
@@ -277,7 +278,6 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="FileCopyWorker.cs" />
     <Compile Include="FileSystemFileCopyWorker.cs" />
-    <Compile Include="JobConductorService.cs" />
     <Compile Include="FtpUploadWorker.cs" />
     <Compile Include="IWorker.cs" />
     <Compile Include="Job.cs" />

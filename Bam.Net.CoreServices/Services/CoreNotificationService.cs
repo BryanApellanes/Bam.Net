@@ -17,8 +17,8 @@ using System.Threading.Tasks;
 namespace Bam.Net.CoreServices
 {
     [Serializable]
-    [Proxy("notificationSvc")]
-    [ServiceSubdomain("notficationsvc")]
+    [Proxy("notifySvc")]
+    [ServiceSubdomain("notify")]
     public class CoreNotificationService : CoreProxyableService
     {
         public CoreNotificationService(DataSettings dataSettings, ILogger logger = null)

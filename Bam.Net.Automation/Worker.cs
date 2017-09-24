@@ -91,25 +91,27 @@ namespace Bam.Net.Automation
             }
         }
 
-
-
+        object _doLock = new object();
         public WorkState Do(Job job)
         {
-            this.Job = job;
-            WorkState state = null;
-
-            this.Busy = true;
-            try
-            {                
-                state = Do();
-            }
-            catch (Exception ex)
+            lock (_doLock)
             {
-                state = new WorkState(this, ex);
-            }
+                Busy = true;
+                Job = job;
+                WorkState state = null;
+                
+                try
+                {
+                    state = Do();
+                }
+                catch (Exception ex)
+                {
+                    state = new WorkState(this, ex);
+                }
 
-            this.Busy = false;
-            return state;
+                Busy = false;
+                return state;
+            }
         }
 
         public void Configure(WorkerConf conf)

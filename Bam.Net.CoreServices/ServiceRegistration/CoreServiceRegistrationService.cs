@@ -22,8 +22,8 @@ namespace Bam.Net.CoreServices
     /// implementations
     /// </summary>
     [ApiKeyRequired]
-    [Proxy("coreServiceRegistrationSvc")]
-    [ServiceSubdomain("svcreg")]
+    [Proxy("serviceRegistrySvc")]
+    [ServiceSubdomain("svcregistry")]
     public class CoreServiceRegistrationService : ProxyableService
     {
         public CoreServiceRegistrationService(IAssemblyService assemblyService, ServiceRegistryRepository repo, DaoRepository daoRepo, AppConf appConf) : base(daoRepo, appConf)

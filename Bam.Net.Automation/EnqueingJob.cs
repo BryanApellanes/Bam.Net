@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Quartz;
+using Bam.Net.Services;
 
 namespace Bam.Net.Automation
 {

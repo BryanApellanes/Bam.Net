@@ -131,7 +131,6 @@ namespace Bam.Net.Server
         public virtual bool Respond(IHttpContext context)
         {
             bool result = false;
-            string path = context.Request.Url.AbsolutePath;
             if (MayRespond(context))
             {
                 result = TryRespond(context);
