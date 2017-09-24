@@ -26,12 +26,12 @@ namespace Bam.Net.UserAccounts.Data
         {
             get
             {
-                Session session = Session.Get(UserName);
+                Session session = Session.Get(UserName, UserDatabase);
                 return session.IsActive.Value;
             }
             set
             {
-                Session session = Session.Get(UserName);
+                Session session = Session.Get(UserName, UserDatabase);
                 session.IsActive = value;
                 session.Save();
             }
@@ -46,13 +46,15 @@ namespace Bam.Net.UserAccounts.Data
             {
                 return _anonLock.DoubleCheckLock(ref _anon, () =>
                 {
-                    User user = User.OneWhere(c => c.UserName == AnonymousUser);
+                    User user = OneWhere(c => c.UserName == AnonymousUser, UserDatabase);
                     if (user == null)
                     {
-                        user = new User();
-                        user.UserName = AnonymousUser;
-                        user.CreationDate = DateTime.UtcNow;
-                        user.Save();
+                        user = new User()
+                        {
+                            UserName = AnonymousUser,
+                            CreationDate = DateTime.UtcNow
+                        };
+                        user.Save(UserDatabase);
                     }
 
                     return user;
@@ -85,7 +87,7 @@ namespace Bam.Net.UserAccounts.Data
             string userName = UserResolvers.Default.GetUser(context);
             if (!string.IsNullOrEmpty(userName))
             {
-                result = User.OneWhere(c => c.UserName == userName);
+                result = OneWhere(c => c.UserName == userName, UserDatabase);
             }
 
             if (result == null)
@@ -100,7 +102,7 @@ namespace Bam.Net.UserAccounts.Data
         {
             get
             {
-                Login login = Login.Where(c => c.UserId == this.Id, Order.By<LoginColumns>(c => c.DateTime, SortOrder.Descending)).FirstOrDefault();
+                Login login = Login.Where(c => c.UserId == this.Id, Order.By<LoginColumns>(c => c.DateTime, SortOrder.Descending), UserDatabase).FirstOrDefault();
                 bool result = false;
                 if (login != null)
                 {
@@ -236,7 +238,7 @@ namespace Bam.Net.UserAccounts.Data
         /// <returns></returns>
         public static User GetByUserNameOrDie(string userName, Database db = null)
         {
-            User user = User.GetByUserName(userName, db);
+            User user = GetByUserName(userName, db);
             if (user == null)
             {                
                 throw new UserNameNotFoundException(userName);

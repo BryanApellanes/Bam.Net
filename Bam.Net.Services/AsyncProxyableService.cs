@@ -21,8 +21,6 @@ namespace Bam.Net.Services
     public abstract class AsyncProxyableService : CoreProxyableService, IHasServiceProvider
     {
         ProxyFactory _proxyFactory;
-        private DaoRepository repo;
-        private AppConf conf;
 
         public AsyncProxyableService(AsyncCallbackService callbackService, DaoRepository repository, AppConf appConf) : base(repository, appConf)
         {

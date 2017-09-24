@@ -53,7 +53,7 @@ namespace Bam.Net.CoreServices
         }
         protected void IsLoggedInOrDie()
         {
-            if (CurrentUser.Equals(UserAccounts.Data.User.Anonymous))
+            if (CurrentUser.Equals(U.User.Anonymous))
             {
                 throw new InvalidOperationException("Current user not logged in");
             }

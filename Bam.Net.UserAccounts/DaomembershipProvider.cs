@@ -561,7 +561,9 @@ namespace Bam.Net.UserAccounts
             {
                 if (userIsOnline)
                 {
-                    Session.Get(username, userIsOnline);
+                    Session session = Session.Get(username);
+                    session.IsActive = userIsOnline;
+                    session.SaveAsync();
                 }
 
                 return user.ToMembershipUser();
