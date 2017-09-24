@@ -298,7 +298,7 @@
     <Compile Include="DistributedHashTable\EventSourceServiceArgs.cs" />
     <Compile Include="DistributedHashTable\ExternalEventSubscription.cs" />
     <Compile Include="DistributedHashTable\ExternalEventSubscriptionDescriptor.cs" />
-    <Compile Include="DistributedHashTable\GlobalEvents.cs" />
+    <Compile Include="DistributedHashTable\CoreSystemEvents.cs" />
     <Compile Include="DistributedHashTable\IDistributedRepository.cs" />
     <Compile Include="DistributedHashTable\IHasInfo.cs" />
     <Compile Include="DistributedHashTable\InfoAttribute.cs" />

@@ -132,6 +132,7 @@
     <Compile Include="ICrudResponseProvider.cs" />
     <Compile Include="IHasKeyHash.cs" />
     <Compile Include="IQueryFilterable.cs" />
+    <Compile Include="IRepositoryPathProvider.cs" />
     <Compile Include="IRepositoryResolver.cs" />
     <Compile Include="IStorableTypesProvider.cs" />
     <Compile Include="KeyHashAuditRepoData.cs" />
