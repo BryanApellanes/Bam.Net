@@ -25,6 +25,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.IO.Compression;
 using System.Threading.Tasks;
+using System.Collections.Specialized;
+using System.Linq;
 
 namespace Bam.Net
 {
@@ -2332,7 +2334,22 @@ namespace Bam.Net
             {
                 try
                 {
-                    if (property.GetIndexParameters().Length == 0)
+                    if (property.PropertyType == typeof(string[]))
+                    {
+                        string[] values = (string[])property.GetValue(obj, null);
+                        returnValue.AppendFormat("{0}: {1}{2}", property.Name, string.Join(", ", values), separator);
+                    }
+                    else if (property.PropertyType == typeof(NameValueCollection))
+                    {
+                        NameValueCollection values = (NameValueCollection)property.GetValue(obj, null);
+                        List<string> strings = new List<string>();
+                        foreach (string key in values.AllKeys)
+                        {
+                            strings.Add(string.Format("{0}={1}", key, values[key]));
+                        }
+                        returnValue.AppendFormat("{0}: {1}{2}", property.Name, string.Join("&", strings.ToArray()), separator);
+                    }
+                    else if (property.GetIndexParameters().Length == 0)
                     {
                         object value = property.GetValue(obj, null);
                         string stringValue = "[null]";
@@ -2343,7 +2360,7 @@ namespace Bam.Net
 
                         returnValue.AppendFormat("{0}: {1}{2}", property.Name, stringValue, separator);
                     }
-                    else
+                    else if (property.GetIndexParameters().Length > 0)
                     {
                         returnValue.AppendFormat("Indexed Property:{0}{1}", property.Name, separator);
                     }
