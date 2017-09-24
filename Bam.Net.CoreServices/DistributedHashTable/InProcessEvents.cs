@@ -9,10 +9,10 @@ using Bam.Net.CoreServices.DistributedHashTable;
 
 namespace Bam.Net.CoreServices
 {
-    public static class CoreSystemEvents
+    public static class InProcessEvents
     {
         static Dictionary<string, HashSet<EventSubscription>> _listeners;
-        static CoreSystemEvents()
+        static InProcessEvents()
         {
             _listeners = new Dictionary<string, HashSet<EventSubscription>>();
             Logger = Log.Default;

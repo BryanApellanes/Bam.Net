@@ -97,8 +97,8 @@ namespace Bam.Net.CoreServices.Tests
         {
             TestEventSourceLoggable src = GetTestEventSource();
             bool? fired = false;
-            CoreSystemEvents.ClearSubscribers<TestEventSourceLoggable>("TestEvent");
-            CoreSystemEvents.Subscribe<TestEventSourceLoggable>("TestEvent", (em, c) =>
+            InProcessEvents.ClearSubscribers<TestEventSourceLoggable>("TestEvent");
+            InProcessEvents.Subscribe<TestEventSourceLoggable>("TestEvent", (em, c) =>
             {
                 fired = true;
             });
