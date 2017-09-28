@@ -709,5 +709,19 @@
             </param>
             <param name="db"></param>
         </member>
+        <member name="M:Bam.Net.Messaging.EmailComposer.LoadTemplate(System.String)">
+            <summary>
+            Loads the email template with the specified templateName
+            </summary>
+            <param name="templateName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Messaging.EmailComposer.GetTemplatePath(System.String)">
+            <summary>
+            Gets the file path for the specified templateName
+            </summary>
+            <param name="templateName"></param>
+            <returns></returns>
+        </member>
     </members>
 </doc>

@@ -104,6 +104,13 @@
             will block on saving of the parent
             </summary>
         </member>
+        <member name="T:Bam.Net.Data.Repositories.EchoTypeTableNameProvider">
+            <summary>
+            A TypeTableNameProvider implementation that returns
+            the name of the specified type with leading and trailing
+            non letters removed
+            </summary>
+        </member>
         <member name="T:Bam.Net.Data.Repositories.TypeInheritanceSchemaGenerator">
             <summary>
             A class used to generate TypeSchemas.  A TypeSchema is 

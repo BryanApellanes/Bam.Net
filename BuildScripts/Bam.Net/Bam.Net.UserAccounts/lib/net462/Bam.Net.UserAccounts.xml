@@ -3517,13 +3517,13 @@
             </param>
             <param name="db"></param>
         </member>
-        <member name="M:Bam.Net.UserAccounts.Data.Session.Get(Bam.Net.UserAccounts.Data.User,System.Boolean,Bam.Net.Data.Database)">
+        <member name="M:Bam.Net.UserAccounts.Data.Session.Get(Bam.Net.UserAccounts.Data.User,Bam.Net.Data.Database)">
             <summary>
-            Get a Session instance for the specified userName, null will 
-            be returned if it doesn't exist
+            Get a Session instance for the specified userName, 
+            returns null if it doesn't exist
             </summary>
-            <param name="userName"></param>
-            <param name="isActive"></param>
+            <param name="user"></param>
+            <param name="db"></param>
             <returns></returns>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Session.Touch(System.Boolean)">
