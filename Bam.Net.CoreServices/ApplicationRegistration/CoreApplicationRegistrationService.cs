@@ -142,6 +142,13 @@ namespace Bam.Net.CoreServices
             return GetApiKeyInfo(this);
         }
 
+        /// <summary>
+        /// Establishes the means by which the client will 
+        /// communicate securely with the server.  Creates 
+        /// a machine account for the client
+        /// </summary>
+        /// <param name="client"></param>
+        /// <returns></returns>
         public virtual CoreServiceResponse RegisterClient(Client client)
         {
             try

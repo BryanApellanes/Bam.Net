@@ -9,6 +9,9 @@ using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.CoreServices.ApplicationRegistration
 {
+    /// <summary>
+    /// Persistable Client data
+    /// </summary>
     [Serializable]
     public class Client: AuditRepoData
     {
@@ -44,6 +47,7 @@ namespace Bam.Net.CoreServices.ApplicationRegistration
 
         protected internal string GetUserName()
         {
+            Args.ThrowIfNullOrEmpty(ApplicationName);
             return $"{ApplicationName}.{MachineName}";
         }
 

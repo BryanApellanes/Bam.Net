@@ -90,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationNameNotSpecifiedException.cs" />
+    <Compile Include="ApplicationNameResolver.cs" />
     <Compile Include="ApplicationRegistration\Data\ActiveApiKeyIndex.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\ActiveApiKeyIndex.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\ActiveApiKeyIndexCollection.cs" />
@@ -108,6 +109,7 @@
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserSettingQuery.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserSettingWrapper.cs" />
     <Compile Include="ApplicationRegistration\Data\UserSetting.cs" />
+    <Compile Include="ApplicationRepositoryResolver.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorAssemblyReferenceDescriptor.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorAssemblyReferenceDescriptorCollection.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorAssemblyReferenceDescriptorColumns.cs" />
@@ -225,6 +227,7 @@
     <Compile Include="ApplicationRegistration\Data\Nic.cs" />
     <Compile Include="ApplicationRegistration\Data\ConfigurationSetting.cs" />
     <Compile Include="DistributedHashTable\InProcessEvents.cs" />
+    <Compile Include="IApplicationNameResolver.cs" />
     <Compile Include="NotificationTemplateInfo.cs" />
     <Compile Include="OAuth\OAuthClientSettings.cs" />
     <Compile Include="ServiceRegistryContainerAttribute.cs" />
