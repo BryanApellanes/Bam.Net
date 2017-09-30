@@ -52,16 +52,8 @@ namespace Bam.Net.Server
 
         public HostPrefix FromServiceSubdomain(ServiceSubdomainAttribute attr)
         {
-            string[] segments = this.HostName.DelimitSplit(".");
-            if (segments.Length >= 2)
-            {
-                int end = segments.Length - 1;
-                int secondFromEnd = end - 1;
-                segments = new string[] { segments[secondFromEnd], segments[end] };
-            }
-
             HostPrefix result = this.CopyAs<HostPrefix>();
-            result.HostName = $"{attr.Subdomain}.{string.Join(".", segments)}";
+            result.HostName = $"{attr.Subdomain}.{HostName}";
             return result;
         }
     }

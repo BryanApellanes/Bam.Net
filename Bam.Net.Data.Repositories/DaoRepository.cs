@@ -31,28 +31,13 @@ namespace Bam.Net.Data.Repositories
         /// <param name="schemaTempPathProvider"></param>
         public DaoRepository(ITypeTableNameProvider tableNameProvider = null, Func<SchemaDefinition, TypeSchema, string> schemaTempPathProvider = null)
         {
-            TypeDaoGenerator = new TypeDaoGenerator();
-            TypeSchemaGenerator = new TypeSchemaGenerator();
-            TypeDaoGenerator.SchemaWarning += (o, a) =>
-            {
-                FireEvent(SchemaWarning, a);
-            };
-            TypeDaoGenerator.GenerateDaoAssemblySucceeded += (o, a) =>
-            {
-                GenerateDaoAssemblyEventArgs args = (GenerateDaoAssemblyEventArgs)a;
-                FireEvent(GenerateDaoAssemblySucceeded, args);
-            };
-
-            NullifyDaoAssemblyOnTypeAdd = true;
-            WrapByDefault = true;
-            WarningsAsErrors = true;
-            Logger = Log.Default;
+            CtorInit(tableNameProvider, schemaTempPathProvider);
             Database = new SQLiteDatabase(GetType().Name);
         }
 
         public DaoRepository(Database database, ILogger logger = null, string schemaName = null)
-            : this()
         {
+            CtorInit();
             Database = database;
             Logger = logger ?? Log.Default;
             Subscribe(logger);
@@ -1099,5 +1084,24 @@ namespace Bam.Net.Data.Repositories
             logger.AddEntry(signature, e, message, innerMessage);
         }
 
-	}
+        private void CtorInit(ITypeTableNameProvider tableNameProvider = null, Func<SchemaDefinition, TypeSchema, string> schemaTempPathProvider = null)
+        {
+            TypeSchemaGenerator = new TypeSchemaGenerator(tableNameProvider, schemaTempPathProvider);
+            TypeDaoGenerator = new TypeDaoGenerator(TypeSchemaGenerator);
+            TypeDaoGenerator.SchemaWarning += (o, a) =>
+            {
+                FireEvent(SchemaWarning, a);
+            };
+            TypeDaoGenerator.GenerateDaoAssemblySucceeded += (o, a) =>
+            {
+                GenerateDaoAssemblyEventArgs args = (GenerateDaoAssemblyEventArgs)a;
+                FireEvent(GenerateDaoAssemblySucceeded, args);
+            };
+
+            NullifyDaoAssemblyOnTypeAdd = true;
+            WrapByDefault = true;
+            WarningsAsErrors = true;
+            Logger = Log.Default;
+        }
+    }
 }

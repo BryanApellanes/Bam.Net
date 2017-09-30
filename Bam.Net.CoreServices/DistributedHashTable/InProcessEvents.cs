@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 using Bam.Net.Logging;
 using Bam.Net.ServiceProxy;
 using Bam.Net.CoreServices.DistributedHashTable;
-using Bam.Net.CoreServices.DistributedHashTable;
 
 namespace Bam.Net.CoreServices
 {
-    public static class GlobalEvents
+    public static class InProcessEvents
     {
         static Dictionary<string, HashSet<EventSubscription>> _listeners;
-        static GlobalEvents()
+        static InProcessEvents()
         {
             _listeners = new Dictionary<string, HashSet<EventSubscription>>();
             Logger = Log.Default;

@@ -21,6 +21,7 @@ using Microsoft.Build.Framework;
 using M = Microsoft.Build.Logging;
 using Microsoft.Build.Execution;
 using Bam.Net.Testing.Unit;
+using Bam.Net.Services;
 
 namespace Bam.Net.Automation.Tests
 {
@@ -270,17 +271,17 @@ namespace Bam.Net.Automation.Tests
             string name = MethodBase.GetCurrentMethod().Name;
             TestWorker.ValueToCheck = false;
             StepTestWorker.ValueToCheck = false;
-            JobConductorService fm = GetTestJobConductor(name);
+            JobConductorService jc = GetTestJobConductor(name);
             string jobName = "Job_" + name;
 
-            fm.AddWorker(typeof(TestWorker).AssemblyQualifiedName, "TestWorker", jobName);
-            fm.AddWorker(typeof(StepTestWorker).AssemblyQualifiedName, "StepTestWorker", jobName);
+            jc.AddWorker(typeof(TestWorker).AssemblyQualifiedName, "TestWorker", jobName);
+            jc.AddWorker(typeof(StepTestWorker).AssemblyQualifiedName, "StepTestWorker", jobName);
 
             Expect.IsFalse(TestWorker.ValueToCheck);
             Expect.IsFalse(StepTestWorker.ValueToCheck);
             bool? finished = false;
             AutoResetEvent signal = new AutoResetEvent(false);
-            fm.JobFinished += (o, a) =>
+            jc.JobFinished += (o, a) =>
             {
                 Expect.IsFalse(TestWorker.ValueToCheck, "testworker value should have been false after job finished");
                 Expect.IsTrue(StepTestWorker.ValueToCheck, "Step test worker value should have been true after job finished");
@@ -288,8 +289,8 @@ namespace Bam.Net.Automation.Tests
                 signal.Set();
             };
 
-            JobConf conf = fm.GetJob(jobName);
-            fm.RunJob(conf.CreateJob(), 1);
+            JobConf conf = jc.GetJob(jobName);
+            jc.RunJob(conf.CreateJob(), 1);
             signal.WaitOne(10000);
             Expect.IsTrue(finished.Value, "finished value should have been set");
         }

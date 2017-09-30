@@ -14,7 +14,16 @@ namespace Bam.Net.Web
         public static string Nonce { get { return "X-Bam-Timestamp"; } }
         public static string Padding { get { return "X-Bam-Padding"; } }
 
-        public static string KeyToken { get { return "X-Bam-KeyToken"; } }
+        /// <summary>
+        /// Header used to prove that the client knows the shared secret by using 
+        /// it to create a hash value that this header is set to
+        /// </summary>
+        public static string KeyToken { get { return "X-Bam-Key-Token"; } }
+
+        /// <summary>
+        /// Header used to request a specific responder on the server
+        /// handle a given request
+        /// </summary>
         public static string Responder { get { return "X-Bam-Responder"; } }
     }
 }

@@ -18,7 +18,6 @@ namespace Bam.Net.Logging
         ConcurrentQueue<LogEvent> _logEventQueue;
         Thread _loggingThread;
         AutoResetEvent _waitForEnqueueLogEvent;
-        AutoResetEvent _waitForQueueToBeEmpty;
 
         List<string> requiredProperties;
         public Logger()
@@ -27,9 +26,11 @@ namespace Bam.Net.Logging
             _logEventQueue = new ConcurrentQueue<LogEvent>();
             _waitForEnqueueLogEvent = new AutoResetEvent(false);
 
-            requiredProperties = new List<string>();
-            requiredProperties.Add("LogType");
-            requiredProperties.Add("ApplicationName");
+            requiredProperties = new List<string>
+            {
+                "LogType",
+                "ApplicationName"
+            };
             Verbosity = VerbosityLevel.Information;
             EventIdProvider = new HashingEventIdProvider();
         }

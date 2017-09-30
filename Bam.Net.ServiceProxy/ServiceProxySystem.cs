@@ -26,7 +26,7 @@ namespace Bam.Net.ServiceProxy
 
         static ServiceProxySystem()
         {
-            UserResolvers = new ServiceProxy.UserResolvers();
+            UserResolvers = new UserResolvers();
             UserResolvers.AddResolver(new DefaultWebUserResolver());
             RoleResolvers = new RoleResolvers();
             RoleResolvers.AddResolver(new DefaultRoleResolver());
@@ -267,13 +267,14 @@ namespace Bam.Net.ServiceProxy
 		/// a service proxy.
 		/// </summary>
 		/// <param name="type"></param>
+        /// <param name="includeLocalMethods"></param>
 		/// <returns></returns>
-        public static MethodInfo[] GetProxiedMethods(Type type)
+        public static MethodInfo[] GetProxiedMethods(Type type, bool includeLocalMethods = false)
         {
             List<MethodInfo> results = new List<MethodInfo>();
             foreach (MethodInfo method in type.GetMethods())
             {
-                if (WillProxyMethod(method))
+                if (WillProxyMethod(method, includeLocalMethods))
                 {
                     results.Add(method);
                 }
@@ -282,14 +283,24 @@ namespace Bam.Net.ServiceProxy
             return results.ToArray();
         }
 
-        public static bool WillProxyMethod(MethodInfo method)
+        public static bool WillProxyMethod(MethodInfo method, bool includeLocal = false)
         {
-            return !method.Name.StartsWith("remove_") &&
+            bool baseCheck = !method.Name.StartsWith("remove_") &&
                                     !method.Name.StartsWith("add_") &&
                                     method.MemberType == MemberTypes.Method &&
-                                    !method.IsProperty() &&
-                                    !method.HasCustomAttributeOfType<ExcludeAttribute>() &&
+                                    !method.IsProperty() &&                                    
                                     method.DeclaringType != typeof(object);
+            bool hasExcludeAttribute = method.HasCustomAttributeOfType(out ExcludeAttribute attr);
+            bool result = false;
+            if (includeLocal)
+            {
+                result = hasExcludeAttribute ? (attr is LocalAttribute && baseCheck) : baseCheck;
+            }
+            else
+            {
+                result = hasExcludeAttribute ? false : baseCheck;                
+            }
+            return result;
         }
 
         static Incubator incubator;
@@ -356,20 +367,6 @@ This file was generated from {0}serviceproxy/csharpproxies.  This file should no
         }}";
             }
         }
-
-        //protected static string AsyncMethodFormat
-        //{
-        //    get
-        //    {
-        //        return @"{0}
-        //public {1} {2}Async({3}, Action<AsyncExecutionResponse> handler)
-        //{{
-        //    object[] parameters = new object[] {{ {4} }};
-        //    {5}(""{2}"", parameters);
-        //}}";
-
-        //    }
-        //}
 
         protected static string UsingFormat { get { return "using {0};\r\n"; } }
 
@@ -446,7 +443,7 @@ namespace {0}
                 return "\t{0} {1}({2});\r\n";
             }
         }
-        public static StringBuilder GenerateCSharpProxyCode(string defaultBaseAddress, string[] classNames, string nameSpace, string contractNamespace, Incubator incubator, ILogger logger = null)
+        public static StringBuilder GenerateCSharpProxyCode(string defaultBaseAddress, string[] classNames, string nameSpace, string contractNamespace, Incubator incubator, ILogger logger = null, bool includeLocalMethods = false)
         {
             logger = logger ?? Log.Default;
             List<Type> types = new List<Type>();
@@ -463,25 +460,26 @@ namespace {0}
                 }
             });
             Args.ThrowIf(types.Count == 0, "None of the specified classes were found: {0}", string.Join(", ", classNames));
-            return GenerateCSharpProxyCode(defaultBaseAddress, nameSpace, contractNamespace, types.ToArray());
+            return GenerateCSharpProxyCode(defaultBaseAddress, nameSpace, contractNamespace, types.ToArray(), includeLocalMethods);
         }
-        public static StringBuilder GenerateCSharpProxyCode(string defaultBaseAddress, string nameSpace, string contractNamespace, Type[] types)
+        public static StringBuilder GenerateCSharpProxyCode(string defaultBaseAddress, string nameSpace, string contractNamespace, Type[] types, bool includeLocalMethods = false)
         {
             StringBuilder code = new StringBuilder();
             StringBuilder classes = new StringBuilder();
             StringBuilder interfaces = new StringBuilder();
-            HashSet<string> usingNamespaces = new HashSet<string>();
-            usingNamespaces.Add("System");
-            usingNamespaces.Add("Bam.Net.Configuration");
-            usingNamespaces.Add("Bam.Net.ServiceProxy");
-            usingNamespaces.Add("Bam.Net.ServiceProxy.Secure");
-            usingNamespaces.Add(contractNamespace);
-
+            HashSet<string> usingNamespaces = new HashSet<string>
+            {
+                "System",
+                "Bam.Net.Configuration",
+                "Bam.Net.ServiceProxy",
+                "Bam.Net.ServiceProxy.Secure",
+                contractNamespace
+            };
             foreach (Type type in types)
             {
                 StringBuilder methods = new StringBuilder();
                 StringBuilder interfaceMethods = new StringBuilder();
-                foreach (MethodInfo method in ServiceProxySystem.GetProxiedMethods(type))
+                foreach (MethodInfo method in ServiceProxySystem.GetProxiedMethods(type, includeLocalMethods))
                 {
                     System.Reflection.ParameterInfo[] parameters = method.GetParameters();
                     MethodGenerationInfo methodGenInfo = new MethodGenerationInfo(method);
@@ -496,7 +494,7 @@ namespace {0}
                     string genericTypeOrBlank = isVoidReturn ? "" : string.Format("<{0}>", returnType);
                     string invoke = string.Format("{0}Invoke{1}", returnOrBlank, genericTypeOrBlank);
 
-                    string methodParams = methodGenInfo.MethodSignature;//parameters.ToDelimited(p => string.Format("{0} {1}", p.ParameterType.Name, p.Name.CamelCase())); // method signature
+                    string methodParams = methodGenInfo.MethodSignature;
                     string wrapped = parameters.ToDelimited(p => p.Name.CamelCase()); // wrapped as object array
                     string methodApiKeyRequired = method.HasCustomAttributeOfType<ApiKeyRequiredAttribute>() ? "\r\n\t[ApiKeyRequired]" : "";
                     methods.AppendFormat(MethodFormat, methodApiKeyRequired, returnType, method.Name, methodParams, wrapped, invoke);
@@ -529,7 +527,7 @@ namespace {0}
             return code;
         }
         
-        internal static StringBuilder GenerateJsProxyScript(Incubator incubator, string[] classes)
+        internal static StringBuilder GenerateJsProxyScript(Incubator incubator, string[] classes, bool includeLocal = false)
         {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.AppendLine("(function(b, d, $, win){");
@@ -547,7 +545,7 @@ namespace {0}
 
                 foreach (MethodInfo method in type.GetMethods())
                 {
-                    if (ServiceProxySystem.WillProxyMethod(method))
+                    if (WillProxyMethod(method, includeLocal))
                     {
                         stringBuilder.AppendLine(GetMethodCall(type, method));
                     }
@@ -566,8 +564,7 @@ namespace {0}
                     PropertyInfo[] modelProps = modelType.GetProperties();
                     foreach (PropertyInfo prop in modelProps)
                     {
-                        ColumnAttribute col;
-                        if (prop.HasCustomAttributeOfType<ColumnAttribute>(out col))
+                        if (prop.HasCustomAttributeOfType(out ColumnAttribute col))
                         {
                             string typeName = prop.PropertyType.Name;
                             if (prop.PropertyType.IsGenericType &&
@@ -579,8 +576,7 @@ namespace {0}
                             stringBuilder.AppendFormat("\td.entities.{0}.cols.push({{name: '{1}', type: '{2}', nullable: {3} }});\r\n", className, col.Name, typeName, col.AllowNull ? "true" : "false");
                         }
 
-                        ForeignKeyAttribute fk;
-                        if (prop.HasCustomAttributeOfType<ForeignKeyAttribute>(out fk))
+                        if (prop.HasCustomAttributeOfType(out ForeignKeyAttribute fk))
                         {
                             stringBuilder.AppendFormat("\td.fks.push({{ pk: '{0}', pt: '{1}', fk: '{2}', ft: '{3}', nullable: {4} }});\r\n", fk.ReferencedKey, fk.ReferencedTable, fk.Name, fk.Table, fk.AllowNull ? "true" : "false");
                         }
@@ -611,14 +607,17 @@ namespace {0}
             builder.AppendFormat("\tb.{0}.{1} = function({2}{3}options)", type.Name, defaultMethodName, parameters, comma);
             builder.AppendLine("{");
 
+            string methodName = "invoke";
             if (type.HasCustomAttributeOfType<EncryptAttribute>())
             {
-                builder.AppendFormat("\t\treturn b.secureInvoke('{0}', '{1}', [{2}], options != null ? (options.format == null ? 'json': options.format) : 'json', $.isFunction(options) ? {3} : options);\r\n", type.Name, method.Name, parameters, "{success: options}");
+                methodName = "secureInvoke";
             }
-            else
+            if(type.HasCustomAttributeOfType<ApiKeyRequiredAttribute>() ||
+                method.HasCustomAttributeOfType<ApiKeyRequiredAttribute>())
             {
-                builder.AppendFormat("\t\treturn b.invoke('{0}', '{1}', [{2}], options != null ? (options.format == null ? 'json': options.format) : 'json', $.isFunction(options) ? {3} : options);\r\n", type.Name, method.Name, parameters, "{success: options}");
+                builder.Append("\t\toptions = $.extend({}, {apiKeyRequired: true}, options);");
             }
+            builder.AppendFormat("\t\treturn b.{0}('{1}', '{2}', [{3}], options != null ? (options.format == null ? 'json': options.format) : 'json', $.isFunction(options) ? {4} : options);\r\n", methodName, type.Name, method.Name, parameters, "{success: options}");
             
             builder.AppendLine("\t};");
 
@@ -684,7 +683,6 @@ namespace {0}
 
             return varName;
         }
-
 
         internal static bool ServiceProxyPartialExists(Type type, string viewName)
         {

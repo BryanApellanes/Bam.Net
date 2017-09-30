@@ -29,7 +29,7 @@ namespace Bam.Net.UserAccounts
     [Encrypt]
     [Proxy("user", MethodCase = MethodCase.Both)]
     [Serializable]
-    public class UserManager : Loggable, IRequiresHttpContext, ISmtpSettingsProvider, IUserManager
+    public class UserManager : Loggable, IRequiresHttpContext, IUserManager
     {
         static UserManager()
         {
@@ -120,6 +120,8 @@ namespace Bam.Net.UserAccounts
             get;
             set;
         }
+
+        [Local]
         public Vault GetSmtpSettingsVault(string applicationName = null)
         {
             return SmtpSettingsProvider.GetSmtpSettingsVault(applicationName);
@@ -185,7 +187,7 @@ namespace Bam.Net.UserAccounts
             }
         }
 
-        [Exclude]
+        [Local]
         public Email CreateEmail(string fromAddress = null, string fromDisplayName = null)
         {
             return SmtpSettingsProvider.CreateEmail(fromAddress, fromDisplayName);
@@ -673,10 +675,12 @@ namespace Bam.Net.UserAccounts
 
         private T GetFailure<T>(Exception ex) where T: ServiceResponse, new()
         {
-            T result = new T();
-            result.Success = false;
-            result.Message = ex.Message;
-            result.Data = null;
+            T result = new T()
+            {
+                Success = false,
+                Message = ex.Message,
+                Data = null
+            };
             return result;
         }
 

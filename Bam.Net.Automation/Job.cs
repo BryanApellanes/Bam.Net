@@ -54,13 +54,13 @@ namespace Bam.Net.Automation
             }
         }
 
+        /// <summary>
+        /// The event that is fired when CurrentWorkState is set
+        /// </summary>
         public event EventHandler WorkStateSet;
         protected void OnWorkStateSet()
         {
-            if (WorkStateSet != null)
-            {
-                WorkStateSet(this, new WorkStateEventArgs(CurrentWorkState));
-            }
+            WorkStateSet?.Invoke(this, new WorkStateEventArgs(CurrentWorkState));
         }
 
         object _addLock = new object();
@@ -71,7 +71,7 @@ namespace Bam.Net.Automation
 
                 if (_workers.ContainsKey(worker.Name))
                 {
-                    throw new InvalidOperationException("Worker with the name {0} has already been added"._Format(worker.Name));
+                    throw new InvalidOperationException($"Worker with the name {worker.Name} has already been added");
                 }
                 
                 worker.Job = this;

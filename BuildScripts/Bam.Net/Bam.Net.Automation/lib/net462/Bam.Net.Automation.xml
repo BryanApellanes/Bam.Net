@@ -3069,57 +3069,14 @@
             the implementation)
             </summary>
         </member>
-        <member name="T:Bam.Net.Automation.JobConductorService">
-            <summary>
-            The master for all jobs.
-            </summary>
-        </member>
-        <member name="M:Bam.Net.Automation.JobConductorService.AddWorker(System.String,System.String,System.String)">
-            <summary>
-            Add a worker of the specified type to the job with the specified
-            jobName assigning the specified workerName .
-            </summary>
-            <param name="workerTypeName"></param>
-            <param name="workerName"></param>
-            <param name="jobName"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Bam.Net.Automation.JobConductorService.AddWorker``1(System.String,Bam.Net.Automation.JobConf)">
-            <summary>
-            Adds a worker of generic type T to the
-            specified JobConf.
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="conf"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Bam.Net.Automation.JobConductorService.JobExists(System.String)">
-            <summary>
-            Returns true if a job with the specified name
-            exists under the current Orchestrator.  Determined
-            by looking in the current Orchestrator's JobsDirectory.
-            </summary>
-            <param name="name"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Bam.Net.Automation.JobConductorService.EnqueueJob(System.String,System.Int32)">
-            <summary>
-            Enqueue a job to be run next (typically instant if no other
-            jobs are running)
-            </summary>
-            <param name="name"></param>
-            <param name="stepNumber"></param>
-        </member>
-        <member name="M:Bam.Net.Automation.JobConductorService.StartJobRunnerThread">
-            <summary>
-            Starts the JobRunner thread.  This method
-            must be called prior to queueing up jobs
-            or the jobs will not be run.
-            </summary>
-        </member>
         <member name="T:Bam.Net.Automation.Job">
             <summary>
             A set of workers that are run in sequence
+            </summary>
+        </member>
+        <member name="E:Bam.Net.Automation.Job.WorkStateSet">
+            <summary>
+            The event that is fired when CurrentWorkState is set
             </summary>
         </member>
         <member name="M:Bam.Net.Automation.Job.GetWorkStateData``1">
@@ -3323,6 +3280,54 @@
             <summary>
             The full path or job relative path to the
             final zip file including the desired extension
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Services.JobConductorService">
+            <summary>
+            The master for all jobs.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Services.JobConductorService.AddWorker(System.String,System.String,System.String)">
+            <summary>
+            Add a worker of the specified type to the job with the specified
+            jobName assigning the specified workerName .
+            </summary>
+            <param name="workerTypeName"></param>
+            <param name="workerName"></param>
+            <param name="jobName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Services.JobConductorService.AddWorker``1(System.String,Bam.Net.Automation.JobConf)">
+            <summary>
+            Adds a worker of generic type T to the
+            specified JobConf.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="conf"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Services.JobConductorService.JobExists(System.String)">
+            <summary>
+            Returns true if a job with the specified name
+            exists under the current Orchestrator.  Determined
+            by looking in the current Orchestrator's JobsDirectory.
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Services.JobConductorService.EnqueueJob(System.String,System.Int32)">
+            <summary>
+            Enqueue a job to be run next (typically instant if no other
+            jobs are running)
+            </summary>
+            <param name="name"></param>
+            <param name="stepNumber"></param>
+        </member>
+        <member name="M:Bam.Net.Services.JobConductorService.StartJobRunnerThread">
+            <summary>
+            Starts the JobRunner thread.  This method
+            must be called prior to queueing up jobs
+            or the jobs will not be run.
             </summary>
         </member>
     </members>

@@ -22,11 +22,13 @@ namespace Bam.Net.CommandLine
         static event ExitDelegate Exited;
 
         static ParsedArguments arguments;
+        static Dictionary<string, string> _cachedArguments;
 
         static CommandLineInterface()
         {
             IsolateMethodCalls = true;
             ValidArgumentInfo = new List<ArgumentInfo>();
+            _cachedArguments = new Dictionary<string, string>();
         }
 
         public static string PasswordPrompt(string promptMessage = null, ConsoleColor color = ConsoleColor.Cyan)
@@ -60,8 +62,7 @@ namespace Bam.Net.CommandLine
             while (keyInfo.Key != ConsoleKey.Enter);
             return pass;
         }
-
-        static Dictionary<string, string> _cachedArguments;
+                
         public static string GetArgument(string name, bool useCache, string promptMessage = null)
         {
             if (useCache)

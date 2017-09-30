@@ -1698,13 +1698,14 @@
             <param name="handler"></param>
             <param name="reset"></param>
         </member>
-        <member name="M:Bam.Net.ServiceProxy.ServiceProxySystem.GetProxiedMethods(System.Type)">
+        <member name="M:Bam.Net.ServiceProxy.ServiceProxySystem.GetProxiedMethods(System.Type,System.Boolean)">
             <summary>
             Get the MethodInfos for the specified type that will
             be proxied if the specified type is registered as 
             a service proxy.
             </summary>
             <param name="type"></param>
+            <param name="includeLocalMethods"></param>
             <returns></returns>
         </member>
         <member name="P:Bam.Net.ServiceProxy.ServiceProxySystem.Incubator">

@@ -186,6 +186,7 @@
     <Compile Include="Instant.cs" />
     <Compile Include="IOrganizationNameProvider.cs" />
     <Compile Include="IpcMessageLockInfo.cs" />
+    <Compile Include="IRenderToStream.cs" />
     <Compile Include="IWriteSource.cs" />
     <Compile Include="LocalAttribute.cs" />
     <Compile Include="Logging\ClientLogger.cs" />

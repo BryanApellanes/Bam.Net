@@ -10,6 +10,11 @@ using Bam.Net.CoreServices.AssemblyManagement.Data;
 
 namespace Bam.Net.CoreServices
 {
+    /// <summary>
+    /// Service responsible for saving assemblies, especially those that are dynamically
+    /// generated, and making them available to consuming processes.  This service is not
+    /// proxyable but can use a proxyable implementation of IFileService.
+    /// </summary>
     public class AssemblyService : Loggable, IAssemblyService // doesn't need to be remote accessible, can use FileService which can be
     {
         public AssemblyService(IFileService fileService, Repo.AssemblyServiceRepository repo, IApplicationNameProvider appNameProvider)

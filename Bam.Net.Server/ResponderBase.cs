@@ -13,6 +13,7 @@ using Bam.Net.Server.Renderers;
 using Bam.Net.Configuration;
 using System.IO.Compression;
 using System.Collections.Concurrent;
+using System.Threading.Tasks;
 
 namespace Bam.Net.Server
 {
@@ -130,18 +131,9 @@ namespace Bam.Net.Server
         public virtual bool Respond(IHttpContext context)
         {
             bool result = false;
-            string path = context.Request.Url.AbsolutePath;
             if (MayRespond(context))
             {
                 result = TryRespond(context);
-                if (result)
-                {
-                    OnResponded(context);
-                }
-                else
-                {
-                    OnNotResponded(context);
-                }
             }
             return result;
         }
@@ -232,6 +224,7 @@ namespace Bam.Net.Server
                 return this._contentTypes;
             }
         }
+
         public virtual string Name
         {
             get
@@ -239,20 +232,32 @@ namespace Bam.Net.Server
                 return this.GetType().Name;
             }
         }
-        protected void OnResponded(IHttpContext context)
+
+        protected static void WireResponseLogging(IResponder responder, ILogger logger)
         {
-            if (Responded != null)
+            responder.Responded += (r, context) =>
             {
-                Responded(this, context);
-            }
+                logger.AddEntry("*** ({0}) Responded ***\r\n{1}", LogEventType.Information, responder.Name, context.Request.PropertiesToString());
+            };
+            responder.NotResponded += (r, context) =>
+            {
+                logger.AddEntry("*** Didn't Respond ***\r\n{0}", LogEventType.Warning, context.Request.PropertiesToString());
+            };
         }
 
-        protected void OnNotResponded(IHttpContext context)
+        protected void WireResponseLogging(ILogger logger)
         {
-            if (NotResponded != null)
-            {
-                NotResponded(this, context);
-            }
+            WireResponseLogging(this, logger);
+        }
+
+        protected internal void OnResponded(IHttpContext context)
+        {
+            Task.Run(() => Responded?.Invoke(this, context));
+        }
+
+        protected internal void OnNotResponded(IHttpContext context)
+        {
+            Task.Run(() => NotResponded?.Invoke(this, context));
         }
 
         List<string> _respondToPrefixes;
@@ -266,6 +271,7 @@ namespace Bam.Net.Server
 
             _respondToPrefixes.Add(prefix);
         }
+
         List<string> _ignorePrefixes;
         protected internal void AddIgnorPrefix(string prefix)
         {
@@ -282,6 +288,7 @@ namespace Bam.Net.Server
         {
             return ShouldIgnore(context.Request.Url.AbsolutePath.ToLowerInvariant());
         }
+
         protected internal bool ShouldIgnore(string path)
         {
             bool result = false;
@@ -295,6 +302,7 @@ namespace Bam.Net.Server
 
             return result;
         }
+
         protected static void SendResponse(IResponse response, byte[] data)
         {
             using (BinaryWriter bw = new BinaryWriter(response.OutputStream))

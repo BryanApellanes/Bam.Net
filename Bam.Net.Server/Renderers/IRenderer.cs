@@ -11,15 +11,12 @@ using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.Server.Renderers
 {
-    public interface IRenderer
+    public interface IRenderer: IRenderToStream
     {
         string[] Extensions { get; set; }
         string ContentType { get; set; }
         Stream OutputStream { get; set; }
-        void Render(object toRender);
-
-        void Render(object toRender, Stream output);
-
+        void Render(object toRender);        
         void Respond(ExecutionRequest request);
     }
 }

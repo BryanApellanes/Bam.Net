@@ -25,6 +25,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.IO.Compression;
 using System.Threading.Tasks;
+using System.Collections.Specialized;
+using System.Linq;
 
 namespace Bam.Net
 {
@@ -128,8 +130,7 @@ namespace Bam.Net
         /// <returns></returns>
         public static string GetNextFileName(this string path)
         {
-            int num;
-            return GetNextFileName(path, out num);
+            return GetNextFileName(path, out int num);
         }
 
         /// <summary>
@@ -2333,7 +2334,22 @@ namespace Bam.Net
             {
                 try
                 {
-                    if (property.GetIndexParameters().Length == 0)
+                    if (property.PropertyType == typeof(string[]))
+                    {
+                        string[] values = (string[])property.GetValue(obj, null);
+                        returnValue.AppendFormat("{0}: {1}{2}", property.Name, string.Join(", ", values), separator);
+                    }
+                    else if (property.PropertyType == typeof(NameValueCollection))
+                    {
+                        NameValueCollection values = (NameValueCollection)property.GetValue(obj, null);
+                        List<string> strings = new List<string>();
+                        foreach (string key in values.AllKeys)
+                        {
+                            strings.Add(string.Format("{0}={1}", key, values[key]));
+                        }
+                        returnValue.AppendFormat("{0}: {1}{2}", property.Name, string.Join("&", strings.ToArray()), separator);
+                    }
+                    else if (property.GetIndexParameters().Length == 0)
                     {
                         object value = property.GetValue(obj, null);
                         string stringValue = "[null]";
@@ -2344,7 +2360,7 @@ namespace Bam.Net
 
                         returnValue.AppendFormat("{0}: {1}{2}", property.Name, stringValue, separator);
                     }
-                    else
+                    else if (property.GetIndexParameters().Length > 0)
                     {
                         returnValue.AppendFormat("Indexed Property:{0}{1}", property.Name, separator);
                     }
@@ -2356,6 +2372,15 @@ namespace Bam.Net
             }
 
             return returnValue.ToString();
+        }
+
+        public static DirectoryInfo EnsureExists(this DirectoryInfo dir)
+        {
+            if (!dir.Exists)
+            {
+                dir.Create();
+            }
+            return dir;
         }
 
         public static FileInfo[] GetFiles(this DirectoryInfo parent, string[] searchPatterns, SearchOption option = SearchOption.TopDirectoryOnly)
@@ -2443,11 +2468,23 @@ namespace Bam.Net
             }
         }
 
+        /// <summary>
+        /// Write the specified textToWrite to the current filePath
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="textToWrite"></param>
+        /// <param name="postWriteAction"></param>
         public static void SafeWriteFile(this string filePath, string textToWrite, Action<object> postWriteAction = null)
         {
             SafeWriteFile(filePath, textToWrite, false, postWriteAction);
         }
 
+        /// <summary>
+        /// Write the current textToWrite to the specified filePath
+        /// </summary>
+        /// <param name="textToWrite"></param>
+        /// <param name="filePath"></param>
+        /// <param name="postWriteAction"></param>
         public static void SafeWriteToFile(this string textToWrite, string filePath, Action<object> postWriteAction = null)
         {
             filePath.SafeWriteFile(textToWrite, postWriteAction);

@@ -31,6 +31,110 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
 		}
 
 
+	public class ActiveApiKeyIndexQueryContext
+	{
+			public ActiveApiKeyIndexCollection Where(WhereDelegate<ActiveApiKeyIndexColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.ApplicationRegistration.Dao.ActiveApiKeyIndex.Where(where, db);
+			}
+		   
+			public ActiveApiKeyIndexCollection Where(WhereDelegate<ActiveApiKeyIndexColumns> where, OrderBy<ActiveApiKeyIndexColumns> orderBy = null, Database db = null)
+			{
+				return Bam.Net.CoreServices.ApplicationRegistration.Dao.ActiveApiKeyIndex.Where(where, orderBy, db);
+			}
+
+			public ActiveApiKeyIndex OneWhere(WhereDelegate<ActiveApiKeyIndexColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.ApplicationRegistration.Dao.ActiveApiKeyIndex.OneWhere(where, db);
+			}
+
+			public static ActiveApiKeyIndex GetOneWhere(WhereDelegate<ActiveApiKeyIndexColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.ApplicationRegistration.Dao.ActiveApiKeyIndex.GetOneWhere(where, db);
+			}
+		
+			public ActiveApiKeyIndex FirstOneWhere(WhereDelegate<ActiveApiKeyIndexColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.ApplicationRegistration.Dao.ActiveApiKeyIndex.FirstOneWhere(where, db);
+			}
+
+			public ActiveApiKeyIndexCollection Top(int count, WhereDelegate<ActiveApiKeyIndexColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.ApplicationRegistration.Dao.ActiveApiKeyIndex.Top(count, where, db);
+			}
+
+			public ActiveApiKeyIndexCollection Top(int count, WhereDelegate<ActiveApiKeyIndexColumns> where, OrderBy<ActiveApiKeyIndexColumns> orderBy, Database db = null)
+			{
+				return Bam.Net.CoreServices.ApplicationRegistration.Dao.ActiveApiKeyIndex.Top(count, where, orderBy, db);
+			}
+
+			public long Count(WhereDelegate<ActiveApiKeyIndexColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.ApplicationRegistration.Dao.ActiveApiKeyIndex.Count(where, db);
+			}
+	}
+
+	static ActiveApiKeyIndexQueryContext _activeApiKeyIndexs;
+	static object _activeApiKeyIndexsLock = new object();
+	public static ActiveApiKeyIndexQueryContext ActiveApiKeyIndexs
+	{
+		get
+		{
+			return _activeApiKeyIndexsLock.DoubleCheckLock<ActiveApiKeyIndexQueryContext>(ref _activeApiKeyIndexs, () => new ActiveApiKeyIndexQueryContext());
+		}
+	}
+	public class UserSettingQueryContext
+	{
+			public UserSettingCollection Where(WhereDelegate<UserSettingColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.ApplicationRegistration.Dao.UserSetting.Where(where, db);
+			}
+		   
+			public UserSettingCollection Where(WhereDelegate<UserSettingColumns> where, OrderBy<UserSettingColumns> orderBy = null, Database db = null)
+			{
+				return Bam.Net.CoreServices.ApplicationRegistration.Dao.UserSetting.Where(where, orderBy, db);
+			}
+
+			public UserSetting OneWhere(WhereDelegate<UserSettingColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.ApplicationRegistration.Dao.UserSetting.OneWhere(where, db);
+			}
+
+			public static UserSetting GetOneWhere(WhereDelegate<UserSettingColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.ApplicationRegistration.Dao.UserSetting.GetOneWhere(where, db);
+			}
+		
+			public UserSetting FirstOneWhere(WhereDelegate<UserSettingColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.ApplicationRegistration.Dao.UserSetting.FirstOneWhere(where, db);
+			}
+
+			public UserSettingCollection Top(int count, WhereDelegate<UserSettingColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.ApplicationRegistration.Dao.UserSetting.Top(count, where, db);
+			}
+
+			public UserSettingCollection Top(int count, WhereDelegate<UserSettingColumns> where, OrderBy<UserSettingColumns> orderBy, Database db = null)
+			{
+				return Bam.Net.CoreServices.ApplicationRegistration.Dao.UserSetting.Top(count, where, orderBy, db);
+			}
+
+			public long Count(WhereDelegate<UserSettingColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.ApplicationRegistration.Dao.UserSetting.Count(where, db);
+			}
+	}
+
+	static UserSettingQueryContext _userSettings;
+	static object _userSettingsLock = new object();
+	public static UserSettingQueryContext UserSettings
+	{
+		get
+		{
+			return _userSettingsLock.DoubleCheckLock<UserSettingQueryContext>(ref _userSettings, () => new UserSettingQueryContext());
+		}
+	}
 	public class ClientQueryContext
 	{
 			public ClientCollection Where(WhereDelegate<ClientColumns> where, Database db = null)

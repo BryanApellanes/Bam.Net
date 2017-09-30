@@ -18,8 +18,9 @@ using System.Threading;
 using Quartz;
 using Quartz.Impl;
 using Bam.Net.Services;
+using Bam.Net.Automation;
 
-namespace Bam.Net.Automation
+namespace Bam.Net.Services
 {
     /// <summary>
     /// The master for all jobs.
@@ -27,7 +28,7 @@ namespace Bam.Net.Automation
     [Proxy("jobConductorSvc")]
     public class JobConductorService: AsyncProxyableService
     {
-        const string ProfigurationSetKey = "OrchestratorSettings";
+        static string ProfigurationSetKey = $"{nameof(JobConductorService)}Settings";
 
         AutoResetEvent _enqueueSignal;
         AutoResetEvent _runCompleteSignal;
@@ -206,10 +207,7 @@ namespace Bam.Net.Automation
 
         protected void OnWorkerFinished(WorkState state)
         {
-            if (WorkerFinished != null)
-            {
-                WorkerFinished(this, new WorkStateEventArgs(state));
-            }
+            WorkerFinished?.Invoke(this, new WorkStateEventArgs(state));
         }
 
         [Verbosity(LogEventType.Error, MessageFormat = "EXCEPTION:{LastMessage}:Worker of type {WorkTypeName} and Step Number {StepNumber} of Job {JobName}")]
@@ -217,10 +215,7 @@ namespace Bam.Net.Automation
 
         protected void OnWorkerException(WorkState state)
         {
-            if (WorkerException != null)
-            {
-                WorkerException(this, new WorkStateEventArgs(state));
-            }
+            WorkerException?.Invoke(this, new WorkStateEventArgs(state));
         }
 
         [Verbosity(LogEventType.Information, MessageFormat = "JobName={Name}")]
@@ -228,10 +223,7 @@ namespace Bam.Net.Automation
 
         protected void OnJobFinished(WorkState state)
         {
-            if (JobFinished != null)
-            {
-                JobFinished(this, new WorkStateEventArgs(state));
-            }
+            JobFinished?.Invoke(this, new WorkStateEventArgs(state));
         }
 
         public virtual string[] ListJobNames()
@@ -269,8 +261,10 @@ namespace Bam.Net.Automation
                 throw new InvalidOperationException("The specified job {0} already exists, use GetJob to get the existing job"._Format(name));
             }
 
-            JobConf conf = new JobConf(name);
-            conf.JobDirectory = GetJobDirectoryPath(name);
+            JobConf conf = new JobConf(name)
+            {
+                JobDirectory = GetJobDirectoryPath(name)
+            };
             conf.Save();
             return conf;
         }
@@ -375,8 +369,10 @@ namespace Bam.Net.Automation
         /// </summary>
         public void StartJobRunnerThread()
         {
-            _runnerThread = new Thread(JobRunner);
-            _runnerThread.IsBackground = true;
+            _runnerThread = new Thread(JobRunner)
+            {
+                IsBackground = true
+            };
             _runnerThread.Start();
             _isRunning = true;
         }

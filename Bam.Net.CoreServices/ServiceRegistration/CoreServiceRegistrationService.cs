@@ -16,9 +16,14 @@ using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.CoreServices
 {
+    /// <summary>
+    /// Provides a central point of management for
+    /// registering and retrieving services and their
+    /// implementations
+    /// </summary>
     [ApiKeyRequired]
-    [Proxy("coreServiceRegistrationSvc")]
-    [ServiceSubdomain("svcreg")]
+    [Proxy("serviceRegistrySvc")]
+    [ServiceSubdomain("svcregistry")]
     public class CoreServiceRegistrationService : ProxyableService
     {
         public CoreServiceRegistrationService(IAssemblyService assemblyService, ServiceRegistryRepository repo, DaoRepository daoRepo, AppConf appConf) : base(daoRepo, appConf)
@@ -39,7 +44,7 @@ namespace Bam.Net.CoreServices
         /// <param name="name"></param>
         /// <returns></returns>
         [Local]
-        public CoreServices.ServiceRegistry GetServiceRegistry(string name)
+        public ServiceRegistry GetServiceRegistry(string name)
         {
             ServiceRegistryLoaderDescriptor loader = GetServiceRegistryLoaderDescriptor(name);            
             if(loader == null)
@@ -51,13 +56,13 @@ namespace Bam.Net.CoreServices
         }
 
         /// <summary>
-        /// Local: register the specified Incubator as the specified name
+        /// Local: register the specified Incubator as the registry with the specified name
         /// </summary>
         /// <param name="registryName"></param>
         /// <param name="inc"></param>
         /// <returns></returns>
         [Local]
-        public CoreServices.ServiceRegistry RegisterServiceRegistry(string registryName, Incubator inc, bool overwrite)
+        public ServiceRegistry RegisterServiceRegistry(string registryName, Incubator inc, bool overwrite)
         {
             ServiceRegistryDescriptor descriptor = ServiceRegistryDescriptor.FromIncubator(registryName, inc);
             RegisterServiceRegistryDescriptor(descriptor, overwrite);
@@ -92,7 +97,7 @@ namespace Bam.Net.CoreServices
                     ServiceRegistryLoaderAttribute loaderAttr = method.GetCustomAttributeOfType<ServiceRegistryLoaderAttribute>();
                     string registryName = loaderAttr.RegistryName ?? $"{type.Namespace}.{type.Name}.{method.Name}";
                     string description = loaderAttr.Description ?? registryName;
-                    CoreServices.ServiceRegistry registry = RegisterServiceRegistryLoader(registryName, method, true, description);
+                    ServiceRegistry registry = RegisterServiceRegistryLoader(registryName, method, true, description);
                     results.Add(new RegisterServiceRegistryContainerResult(registryName, registry, type, method, loaderAttr));
                 }
                 catch (Exception ex)
@@ -104,12 +109,11 @@ namespace Bam.Net.CoreServices
         }
 
         [Local]
-        public Bam.Net.CoreServices.ServiceRegistry RegisterServiceRegistryLoader(MethodInfo method, bool overwrite, string description = null)
+        public ServiceRegistry RegisterServiceRegistryLoader(MethodInfo method, bool overwrite, string description = null)
         {
             Type type = method.DeclaringType;
             string registryName = $"{type.Namespace}.{type.Name}.{method.Name}";
-            ServiceRegistryLoaderAttribute loaderAttr;
-            if (method.HasCustomAttributeOfType(out loaderAttr))
+            if (method.HasCustomAttributeOfType(out ServiceRegistryLoaderAttribute loaderAttr))
             {
                 registryName = loaderAttr.RegistryName ?? registryName;
             }
@@ -117,7 +121,7 @@ namespace Bam.Net.CoreServices
 
         }
         /// <summary>
-        /// Registery the specified method as the ServiceRegistryLoader for the specified registryName
+        /// Register the specified method as the ServiceRegistryLoader for the specified registryName
         /// </summary>
         /// <param name="registryName"></param>
         /// <param name="method"></param>
@@ -125,7 +129,7 @@ namespace Bam.Net.CoreServices
         /// <param name="description"></param>
         /// <returns></returns>
         [Local]
-        public CoreServices.ServiceRegistry RegisterServiceRegistryLoader(string registryName, MethodInfo method, bool overwrite, string description = null)
+        public ServiceRegistry RegisterServiceRegistryLoader(string registryName, MethodInfo method, bool overwrite, string description = null)
         {
             ServiceRegistryLoaderDescriptor loader = new ServiceRegistryLoaderDescriptor
             {
@@ -140,7 +144,7 @@ namespace Bam.Net.CoreServices
         }
 
         [Local]
-        public CoreServices.ServiceRegistry GetServiceRegistry(ServiceRegistryLoaderDescriptor descriptor, bool setProperties = false)
+        public ServiceRegistry GetServiceRegistry(ServiceRegistryLoaderDescriptor descriptor, bool setProperties = false)
         {
             Type loaderType = ResolveType(descriptor.LoaderType, descriptor.LoaderAssembly);
             MethodInfo loader = loaderType.GetMethod(descriptor.LoaderMethod);
@@ -158,7 +162,7 @@ namespace Bam.Net.CoreServices
         }
 
         [Local]
-        public CoreServices.ServiceRegistry GetServiceRegistry(ServiceRegistryDescriptor descriptor)
+        public ServiceRegistry GetServiceRegistry(ServiceRegistryDescriptor descriptor)
         {
             Args.ThrowIfNull(descriptor, "descriptor");
             ServiceRegistrationBuilder builder = new ServiceRegistrationBuilder();
@@ -263,8 +267,7 @@ namespace Bam.Net.CoreServices
         [RoleRequired("/", "Admin")]
         public virtual bool IsLocked(string name)
         {
-            ServiceRegistryLock theLock;
-            return IsLocked(name, out theLock);
+            return IsLocked(name, out ServiceRegistryLock theLock);
         }
 
         [Local]

@@ -32,6 +32,7 @@ namespace Bam.Net.UserAccounts.Data
         {
             Session clone = new Session();
             clone.CopyProperties(this);
+            clone.CopyEventHandlers(this);
             return clone;
         }
 
@@ -110,37 +111,23 @@ namespace Bam.Net.UserAccounts.Data
             set;
         }
 
-        public static Session Get(string userName, bool isActive = true, Database db = null)
+        public static Session Get(string userName, Database db = null)
         {
             User user = User.GetByUserNameOrDie(userName, db);
-            return Get(user, isActive, db);
+            return Get(user, db);
         }
 
         /// <summary>
-        /// Get a Session instance for the specified userName, null will 
-        /// be returned if it doesn't exist
+        /// Get a Session instance for the specified userName, 
+        /// returns null if it doesn't exist
         /// </summary>
-        /// <param name="userName"></param>
-        /// <param name="isActive"></param>
+        /// <param name="user"></param>
+        /// <param name="db"></param>
         /// <returns></returns>
-        public static Session Get(User user, bool isActive = true, Database db = null)
+        public static Session Get(User user, Database db = null)
         {
             Session session = user.SessionsByUserId.FirstOrDefault();
             DateTime now = DateTime.UtcNow;
-
-            if(session != null)
-            {
-                if (isActive)
-                {
-                    session.Touch(false); // save:false because save is called below
-                }
-                else
-                {
-                    session.IsActive = false;
-                }
-
-                session.Save(db);            
-            }
 
             return session;
         }
@@ -152,13 +139,15 @@ namespace Bam.Net.UserAccounts.Data
                 identifier = GenId();
             }
 
-            Session session = new Session();
-            session.Identifier = identifier;
             DateTime now = DateTime.UtcNow;
-            session.CreationDate = now;
-            session.LastActivity = now;
-            session.IsActive = isActive;
-            session.UserId = User.Anonymous.Id;
+            Session session = new Session()
+            {
+                Identifier = identifier,
+                CreationDate = now,
+                LastActivity = now,
+                IsActive = isActive,
+                UserId = User.Anonymous.Id
+            };
             session.Save(db);
 
             Cookie existing = response.Cookies[CookieName];
@@ -179,6 +168,7 @@ namespace Bam.Net.UserAccounts.Data
             SecureRandom random = new SecureRandom();
             return random.GenerateSeed(64).ToBase64().Sha256();
         }
+
         /// <summary>
         /// Updates the LastActivity property and sets IsActive to true
         /// </summary>

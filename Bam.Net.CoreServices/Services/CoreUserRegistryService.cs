@@ -8,11 +8,14 @@ using Bam.Net.Data;
 using Bam.Net.ServiceProxy;
 using Bam.Net.UserAccounts;
 using Bam.Net.UserAccounts.Data;
+using Bam.Net.Messaging;
+using Bam.Net.Encryption;
 
 namespace Bam.Net.CoreServices
 {
     [Proxy("userRegistrySvc")]
     [Encrypt]
+    [ServiceSubdomain("userregistry")]
     public class CoreUserRegistryService: CoreProxyableService, IUserManager, IUserResolver, IRoleResolver
     {
         protected CoreUserRegistryService() { } // to enable auto proxy gen
@@ -205,6 +208,11 @@ namespace Bam.Net.CoreServices
         public string[] GetRoles(IUserResolver userResolver)
         {
             return RoleResolver.GetRoles(userResolver);
+        }
+
+        public Vault GetSmtpSettingsVault(string applicationName = null)
+        {
+            return UserManager.GetSmtpSettingsVault(applicationName);
         }
     }
 }

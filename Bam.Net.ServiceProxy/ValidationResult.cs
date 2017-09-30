@@ -28,7 +28,8 @@ namespace Bam.Net.ServiceProxy
         MethodNotProxied,
         ParameterCountMismatch,
         PermissionDenied,
-        InvalidApiKeyToken
+        InvalidApiKeyToken,
+        RemoteExecutionNotAllowed
     }
 
     public class ValidationResult
@@ -37,8 +38,8 @@ namespace Bam.Net.ServiceProxy
         public ValidationResult() { }
         public ValidationResult(ExecutionRequest request, string messageDelimiter = null)
         {
-            this._toValidate = request;
-            this.Delimiter = messageDelimiter ?? ",\r\n";
+            _toValidate = request;
+            Delimiter = messageDelimiter ?? ",\r\n";
         }
         
         internal void Execute(IHttpContext context, Decrypted input)
@@ -47,25 +48,98 @@ namespace Bam.Net.ServiceProxy
             List<string> messages = new List<string>();
 
             ValidateEncryptedToken(context, input, failures, messages);
-            
-            if (string.IsNullOrWhiteSpace(_toValidate.ClassName))
-            {
-                failures.Add(ServiceProxy.ValidationFailures.ClassNameNotSpecified);
-                messages.Add("ClassName not specified");
-            }
+            ValidateClassName(failures, messages);
+            ValidateTargetType(failures, messages);
+            ValidateMethodName(failures, messages);
+            ValidateMethodExists(failures, messages);
+            ValidateLocalExcludeMethod(context, failures, messages);
+            ValidateParameterCount(failures, messages);
+            ValidateMethodRoles(context, failures, messages);
+            ValidateClassRoles(context, failures, messages);
+            ValidateApiKeyToken(failures, messages);
 
-            if (_toValidate.TargetType == null)
-            {
-                failures.Add(ServiceProxy.ValidationFailures.ClassNotRegistered);
-                messages.Add("Class {0} was not registered as a proxied service.  Register the class with the ServiceProxySystem first."._Format(_toValidate.ClassName));
-            }
+            ValidationFailures = failures.ToArray();
+            Message = messages.ToArray().ToDelimited(s => s, Delimiter);
+            this.Success = failures.Count == 0;
+        }
 
-            if (string.IsNullOrWhiteSpace(_toValidate.MethodName))
+        private void ValidateApiKeyToken(List<ValidationFailures> failures, List<string> messages)
+        {
+            ApiKeyRequiredAttribute keyRequired;
+            if (_toValidate.TargetType != null &&
+                _toValidate.MethodInfo != null &&
+                (
+                    _toValidate.TargetType.HasCustomAttributeOfType(true, out keyRequired) ||
+                    _toValidate.MethodInfo.HasCustomAttributeOfType(true, out keyRequired)
+                ))
             {
-                failures.Add(ServiceProxy.ValidationFailures.MethodNameNotSpecified);
-                messages.Add("MethodName not specified");
+                IApiKeyResolver resolver = _toValidate.ApiKeyResolver;
+                if (!resolver.IsValidRequest(_toValidate))
+                {
+                    failures.Add(ServiceProxy.ValidationFailures.InvalidApiKeyToken);
+                    messages.Add("ApiKeyValidation failed");
+                }
             }
+        }
 
+        private void ValidateClassRoles(IHttpContext context, List<ValidationFailures> failures, List<string> messages)
+        {
+            if (_toValidate.TargetType != null &&
+                _toValidate.TargetType.HasCustomAttributeOfType(true, out RoleRequiredAttribute requiredClassRoles))
+            {
+                if (requiredClassRoles.Roles.Length > 0)
+                {
+                    CheckRoles(failures, messages, requiredClassRoles, context);
+                }
+            }
+        }
+
+        private void ValidateMethodRoles(IHttpContext context, List<ValidationFailures> failures, List<string> messages)
+        {
+            if (_toValidate.TargetType != null &&
+                            _toValidate.MethodInfo != null &&
+                            _toValidate.MethodInfo.HasCustomAttributeOfType(true, out RoleRequiredAttribute requiredMethodRoles))
+            {
+                if (requiredMethodRoles.Roles.Length > 0)
+                {
+                    CheckRoles(failures, messages, requiredMethodRoles, context);
+                }
+            }
+        }
+
+        private void ValidateParameterCount(List<ValidationFailures> failures, List<string> messages)
+        {
+            if (_toValidate.ParameterInfos != null && _toValidate.ParameterInfos.Length != _toValidate.Parameters.Length)
+            {
+                failures.Add(ServiceProxy.ValidationFailures.ParameterCountMismatch);
+                messages.Add("Wrong number of parameters specified: expected ({0}), recieved ({1})"._Format(_toValidate.ParameterInfos.Length, _toValidate.Parameters.Length));
+            }
+        }
+
+        private void ValidateLocalExcludeMethod(IHttpContext context, List<ValidationFailures> failures, List<string> messages)
+        {
+            if (_toValidate.TargetType != null &&
+                            _toValidate.MethodInfo != null &&
+                            _toValidate.MethodInfo.HasCustomAttributeOfType(out ExcludeAttribute attr))
+            {
+                if (attr is LocalAttribute)
+                {
+                    if (!context.Request.UserHostAddress.StartsWith("127.0.0.1"))
+                    {
+                        failures.Add(ServiceProxy.ValidationFailures.RemoteExecutionNotAllowed);
+                        messages.Add("The specified method is marked [Local] and the request was directed to {0}: {1}"._Format(context.Request.UserHostAddress, _toValidate.MethodName));
+                    }
+                }
+                else
+                {
+                    failures.Add(ServiceProxy.ValidationFailures.MethodNotProxied);
+                    messages.Add("The specified method has been explicitly excluded from being proxied: {0}"._Format(_toValidate.MethodName));
+                }
+            }
+        }
+
+        private void ValidateMethodExists(List<ValidationFailures> failures, List<string> messages)
+        {
             if (_toValidate.TargetType != null && _toValidate.MethodInfo == null)
             {
                 failures.Add(ServiceProxy.ValidationFailures.MethodNotFound);
@@ -76,61 +150,35 @@ namespace Bam.Net.ServiceProxy
                 }
                 messages.Add(message);
             }
-
-            if (_toValidate.TargetType != null && 
-                _toValidate.MethodInfo != null &&
-                _toValidate.MethodInfo.HasCustomAttributeOfType<ExcludeAttribute>())
-            {
-                failures.Add(ServiceProxy.ValidationFailures.MethodNotProxied);
-                messages.Add("The specified method has been explicitly excluded from being proxied: {0}"._Format(_toValidate.MethodName));
-            }
-
-            if (_toValidate.ParameterInfos != null && _toValidate.ParameterInfos.Length != _toValidate.Parameters.Length)
-            {
-                failures.Add(ServiceProxy.ValidationFailures.ParameterCountMismatch);
-                messages.Add("Wrong number of parameters specified: expected ({0}), recieved ({1})"._Format(_toValidate.ParameterInfos.Length, _toValidate.Parameters.Length));
-            }
-
-            if (_toValidate.TargetType != null &&
-                _toValidate.MethodInfo != null &&
-                _toValidate.MethodInfo.HasCustomAttributeOfType(true, out RoleRequiredAttribute requiredMethodRoles))
-            {
-                if (requiredMethodRoles.Roles.Length > 0)
-                {
-                    CheckRoles(failures, messages, requiredMethodRoles, context);
-                }
-            }
-
-            if (_toValidate.TargetType != null &&
-                _toValidate.TargetType.HasCustomAttributeOfType(true, out RoleRequiredAttribute requiredClassRoles))
-            {
-                if (requiredClassRoles.Roles.Length > 0)
-                {
-                    CheckRoles(failures, messages, requiredClassRoles, context);
-                }
-            }
-
-            if (_toValidate.TargetType != null &&
-                _toValidate.TargetType.HasCustomAttributeOfType(true, out ApiKeyRequiredAttribute keyRequired))
-            {
-                ValidateApiKeyToken(failures, messages);
-            }
-
-            ValidationFailures = failures.ToArray();
-            Message = messages.ToArray().ToDelimited(s => s, Delimiter);
-            this.Success = failures.Count == 0;
         }
 
-        private void ValidateApiKeyToken(List<ValidationFailures> failures, List<string> messages)
+        private void ValidateMethodName(List<ValidationFailures> failures, List<string> messages)
         {
-            IApiKeyResolver resolver = _toValidate.ApiKeyResolver;
-            if (!resolver.IsValidRequest(_toValidate))
+            if (string.IsNullOrWhiteSpace(_toValidate.MethodName))
             {
-                failures.Add(ServiceProxy.ValidationFailures.InvalidApiKeyToken);
-                messages.Add("ApiKeyValidation failed");
+                failures.Add(ServiceProxy.ValidationFailures.MethodNameNotSpecified);
+                messages.Add("MethodName not specified");
             }
         }
 
+        private void ValidateTargetType(List<ValidationFailures> failures, List<string> messages)
+        {
+            if (_toValidate.TargetType == null)
+            {
+                failures.Add(ServiceProxy.ValidationFailures.ClassNotRegistered);
+                messages.Add("Class {0} was not registered as a proxied service.  Register the class with the ServiceProxySystem first."._Format(_toValidate.ClassName));
+            }
+        }
+
+        private void ValidateClassName(List<ValidationFailures> failures, List<string> messages)
+        {
+            if (string.IsNullOrWhiteSpace(_toValidate.ClassName))
+            {
+                failures.Add(ServiceProxy.ValidationFailures.ClassNameNotSpecified);
+                messages.Add("ClassName not specified");
+            }
+        }
+        
         private static void ValidateEncryptedToken(IHttpContext context, Decrypted input, List<ValidationFailures> failures, List<string> messages)
         {
             if (input != null)

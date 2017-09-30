@@ -22,9 +22,11 @@ namespace Bam.Net.CoreServices.ApplicationRegistration
 
         public static ApiKey FromKeyInfo(ApiKeyInfo info)
         {
-            ApiKey key = new ApiKey();
-            key.ClientId = info.ApplicationClientId;
-            key.SharedSecret = info.ApiKey;
+            ApiKey key = new ApiKey()
+            {
+                ClientId = info.ApplicationClientId,
+                SharedSecret = info.ApiKey
+            };
             return key;
         }
 

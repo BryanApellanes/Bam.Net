@@ -464,10 +464,12 @@ namespace Bam.Net.Server
                 {
                     SetContentType(response, path);
                     SendResponse(response, content);
+                    OnResponded(context);
                 }
                 else
                 {
                     LogContentNotFound(path, appName, checkedPaths);
+                    OnNotResponded(context);
                 }
             }
 

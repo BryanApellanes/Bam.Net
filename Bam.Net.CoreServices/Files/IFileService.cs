@@ -4,6 +4,10 @@ using Bam.Net.CoreServices.Files.Data;
 
 namespace Bam.Net.CoreServices.Files
 {
+    /// <summary>
+    /// When implemented provides a mechanism for saving and restoring
+    /// files of any kind.
+    /// </summary>
     public interface IFileService
     {
         int ChunkDataBatchSize { get; }

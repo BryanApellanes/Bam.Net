@@ -91,7 +91,7 @@ namespace Bam.Net.CoreServices.DistributedHashTable
 
         protected Task FireListenersAsync(string eventName, object sender, EventArgs args)
         {
-            GlobalEvents.FireListenersAsync(GetType(), eventName, sender, args);
+            InProcessEvents.FireListenersAsync(GetType(), eventName, sender, args);
             return Task.Run(() =>
             {
                 if (_listeners.ContainsKey(eventName))

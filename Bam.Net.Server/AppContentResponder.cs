@@ -134,8 +134,7 @@ namespace Bam.Net.Server
 
         public override bool TryRespond(IHttpContext context)
         {
-            string[] ignore;
-            return TryRespond(context, out ignore);
+            return TryRespond(context, out string[] ignore);
         }
 
         public bool TryRespond(IHttpContext context, out string[] checkedPaths)
@@ -199,6 +198,11 @@ namespace Bam.Net.Server
                 SetContentType(response, path);
                 SetContentDisposition(response, path);
                 SendResponse(response, content);
+                OnResponded(context);
+            }
+            else
+            {
+                OnNotResponded(context);
             }
             return result;
         }

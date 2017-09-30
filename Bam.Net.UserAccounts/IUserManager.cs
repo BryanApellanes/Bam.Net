@@ -1,10 +1,11 @@
 ﻿using System;
 using Bam.Net.ServiceProxy;
 using Bam.Net.UserAccounts.Data;
+using Bam.Net.Messaging;
 
 namespace Bam.Net.UserAccounts
 {
-    public interface IUserManager: ICloneable, IRequiresHttpContext
+    public interface IUserManager: ICloneable, IRequiresHttpContext, ISmtpSettingsProvider
     {
         IApplicationNameProvider ApplicationNameProvider { get; set; }
         Func<string, string> GetConfirmationUrlFunction { get; set; }

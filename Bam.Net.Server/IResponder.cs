@@ -11,6 +11,7 @@ namespace Bam.Net.Server
 {
     public interface IResponder: IInitialize
     {
+        string Name { get; }
         event ResponderEventHandler Responded;
         event ResponderEventHandler NotResponded;
         bool Respond(IHttpContext context);

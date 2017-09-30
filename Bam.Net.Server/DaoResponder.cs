@@ -177,10 +177,12 @@ namespace Bam.Net.Server
                     string script = _dynamicResponders[method](appName, min);
                     SendResponse(response, script);
                     handled = true;
+                    OnResponded(context);
                 }
                 else
                 {
                     handled = TryExecuteCrudRequest(chunks, context, handled, appName);
+                    OnNotResponded(context);
                 }
             }
 

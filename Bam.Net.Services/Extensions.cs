@@ -41,7 +41,10 @@ namespace Bam.Net.Services
             logger = logger ?? Log.Default;
 
             ServiceProxyServer server = new ServiceProxyServer(registry, new ServiceProxyResponder(conf, logger), logger);
-            hostPrefixes.Each(hp => server.HostPrefixes.Add(hp));
+            foreach(HostPrefix prefix in hostPrefixes)
+            {
+                server.HostPrefixes.Add(prefix);
+            }
             server.Start();
             return server;
         }

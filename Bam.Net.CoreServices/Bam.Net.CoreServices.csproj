@@ -90,8 +90,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationNameNotSpecifiedException.cs" />
+    <Compile Include="ApplicationRegistration\Data\ActiveApiKeyIndex.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\ActiveApiKeyIndex.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\ActiveApiKeyIndexCollection.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\ActiveApiKeyIndexColumns.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\ActiveApiKeyIndexPagedQuery.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\ActiveApiKeyIndexQuery.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\ActiveApiKeyIndexWrapper.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\ApplicationRegistrationContext.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\ApplicationRegistrationRepository.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\Qi\ActiveApiKeyIndex.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\Qi\UserSetting.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserSetting.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserSettingCollection.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserSettingColumns.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserSettingPagedQuery.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserSettingQuery.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserSettingWrapper.cs" />
+    <Compile Include="ApplicationRegistration\Data\UserSetting.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorAssemblyReferenceDescriptor.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorAssemblyReferenceDescriptorCollection.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorAssemblyReferenceDescriptorColumns.cs" />
@@ -208,6 +224,8 @@
     <Compile Include="ApplicationRegistration\Data\HostAddress.cs" />
     <Compile Include="ApplicationRegistration\Data\Nic.cs" />
     <Compile Include="ApplicationRegistration\Data\ConfigurationSetting.cs" />
+    <Compile Include="DistributedHashTable\InProcessEvents.cs" />
+    <Compile Include="NotificationTemplateInfo.cs" />
     <Compile Include="OAuth\OAuthClientSettings.cs" />
     <Compile Include="ServiceRegistryContainerAttribute.cs" />
     <Compile Include="ServiceRegistry.cs" />
@@ -256,6 +274,7 @@
     <Compile Include="ProxySettingsValidationException.cs" />
     <Compile Include="ApplicationRegistration\ApplicationRegistrationResult.cs" />
     <Compile Include="ApplicationRegistration\ApplicationRegistrationStatus.cs" />
+    <Compile Include="Services\CoreNotificationService.cs" />
     <Compile Include="Services\CoreRoleService.cs" />
     <Compile Include="DistributedHashTable\Arc.cs" />
     <Compile Include="DistributedHashTable\Data\CreateOperation.cs" />
@@ -280,7 +299,6 @@
     <Compile Include="DistributedHashTable\EventSourceServiceArgs.cs" />
     <Compile Include="DistributedHashTable\ExternalEventSubscription.cs" />
     <Compile Include="DistributedHashTable\ExternalEventSubscriptionDescriptor.cs" />
-    <Compile Include="DistributedHashTable\GlobalEvents.cs" />
     <Compile Include="DistributedHashTable\IDistributedRepository.cs" />
     <Compile Include="DistributedHashTable\IHasInfo.cs" />
     <Compile Include="DistributedHashTable\InfoAttribute.cs" />
@@ -402,6 +420,7 @@
     <Compile Include="ProxyTemplate.cs" />
     <Compile Include="ProxyableService.cs" />
     <Compile Include="CoreServiceResponse.cs" />
+    <Compile Include="TemplatePrecedence.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Templates\Proxy.tmpl" />
@@ -447,6 +466,10 @@
       <Project>{f27dc9a6-e432-4d20-bcef-d10b0c2a657d}</Project>
       <Name>Bam.Net.Encryption</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Html\Bam.Net.Html.csproj">
+      <Project>{795d5552-94d6-4373-b4f1-551b1d5bdafb}</Project>
+      <Name>Bam.Net.Html</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Incubation\Bam.Net.Incubation.csproj">
       <Project>{aa186331-a0d0-4f77-bea2-e7b7650d3ff5}</Project>
       <Name>Bam.Net.Incubation</Name>
@@ -482,8 +505,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy $(TargetPath) C:\BamContent\apps\stickerize\services\
-copy $(TargetPath) C:\tvg\gloo\</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

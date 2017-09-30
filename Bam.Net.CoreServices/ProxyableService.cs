@@ -33,15 +33,17 @@ namespace Bam.Net.CoreServices
             DaoRepository = repository;
             Repository = repository;
             Logger = appConf?.Logger ?? Log.Default;
+            RepositoryResolver = new DefaultRepositoryResolver(repository);
         }
 
         public ProxyableService(IRepository genericRepo, DaoRepository daoRepo, AppConf appConf) : this(daoRepo, appConf)
         {
             Repository = genericRepo;
+            RepositoryResolver = new DefaultRepositoryResolver(genericRepo);
         }
 
         public IDatabaseProvider DatabaseProvider { get; set; }
-
+        public IRepositoryResolver RepositoryResolver { get; set; }
         public string UserName
         {
             get
@@ -49,7 +51,13 @@ namespace Bam.Net.CoreServices
                 return CurrentUser.UserName;
             }
         }
-
+        protected void IsLoggedInOrDie()
+        {
+            if (CurrentUser.Equals(U.User.Anonymous))
+            {
+                throw new InvalidOperationException("Current user not logged in");
+            }
+        }
         /// <summary>
         /// Connect the specified client
         /// </summary>

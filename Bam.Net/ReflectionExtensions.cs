@@ -184,11 +184,11 @@ namespace Bam.Net
         /// <param name="instance"></param>
         /// <param name="methodName"></param>
         /// <param name="args"></param>
-        public static void Invoke(this object instance, string methodName, params object[] args)
+        public static object Invoke(this object instance, string methodName, params object[] args)
         {
             Args.ThrowIfNull(instance, "instance");
             Args.ThrowIfNull(methodName, "methodName");
-            instance.GetType().GetMethod(methodName).Invoke(instance, args);
+            return instance.GetType().GetMethod(methodName).Invoke(instance, args);
         }
 
         /// <summary>

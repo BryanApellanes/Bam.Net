@@ -227,10 +227,7 @@ namespace Bam.Net.Server
         public event Action<Type, object> CommonServiceAdded;
         protected void OnCommonServiceAdded(Type type, object instance)
         {
-            if (CommonServiceAdded != null)
-            {
-                CommonServiceAdded(type, instance);
-            }
+            CommonServiceAdded?.Invoke(type, instance);
         }
 
         public void AddCommoneService(Type type, Func<object> instanciator)
@@ -252,10 +249,7 @@ namespace Bam.Net.Server
         public event Action<Type> CommonServiceRemoved;
         protected void OnCommonServiceRemoved(Type type)
         {
-            if (CommonServiceRemoved != null)
-            {
-                CommonServiceRemoved(type);
-            }
+            CommonServiceRemoved?.Invoke(type);
         }
 
         /// <summary>
@@ -284,8 +278,7 @@ namespace Bam.Net.Server
         /// <param name="className"></param>
         public void RemoveCommonService(string className)
         {
-            Type type;
-            _commonServiceProvider.Remove(className, out type);
+            _commonServiceProvider.Remove(className, out Type type);
             OnCommonServiceRemoved(type);
         }
 
@@ -404,8 +397,7 @@ namespace Bam.Net.Server
 
         private void SubscribeIfLoggable(object instance)
         {
-            Loggable loggable = instance as Loggable;
-            if (loggable != null)
+            if (instance is Loggable loggable)
             {
                 loggable.Subscribe(Logger);
             }
@@ -526,12 +518,20 @@ namespace Bam.Net.Server
                         }
                     }
                 }
-
+                if (responded)
+                {
+                    OnResponded(context);
+                }
+                else
+                {
+                    OnNotResponded(context);
+                }
                 return responded;
             }
             catch (Exception ex)
             {
                 Logger.AddEntry("An error occurred in {0}.{1}: {2}", ex, this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message);
+                OnNotResponded(context);
                 return false;
             }
         }
@@ -585,12 +585,13 @@ namespace Bam.Net.Server
         protected void SendJsProxyScript(IRequest request, IResponse response)
         {
             string appName = AppConf.AppNameFromUri(request.Url, BamConf.AppConfigs);
+            bool includeLocalMethods = request.UserHostAddress.StartsWith("127.0.0.1");
 
-            StringBuilder script = ServiceProxySystem.GenerateJsProxyScript(CommonServiceProvider, CommonServiceProvider.ClassNames);
+            StringBuilder script = ServiceProxySystem.GenerateJsProxyScript(CommonServiceProvider, CommonServiceProvider.ClassNames, includeLocalMethods);
             if (AppServiceProviders.ContainsKey(appName))
             {
                 Incubator appProviders = AppServiceProviders[appName];
-                script.AppendLine(ServiceProxySystem.GenerateJsProxyScript(appProviders, appProviders.ClassNames).ToString());
+                script.AppendLine(ServiceProxySystem.GenerateJsProxyScript(appProviders, appProviders.ClassNames, includeLocalMethods).ToString());
             }
 
             response.ContentType = "application/javascript";
@@ -615,7 +616,7 @@ namespace Bam.Net.Server
 
             string[] classNames = request.QueryString["classes"] == null ? combined.ClassNames : request.QueryString["classes"].DelimitSplit(",", ";");
             
-            StringBuilder csharpCode = ServiceProxySystem.GenerateCSharpProxyCode(defaultBaseAddress, classNames, nameSpace, contractNameSpace, combined, this.Logger);
+            StringBuilder csharpCode = ServiceProxySystem.GenerateCSharpProxyCode(defaultBaseAddress, classNames, nameSpace, contractNameSpace, combined, Logger, request.UserHostAddress.StartsWith("127.0.0.1"));
 
             response.Headers.Add("Content-Disposition", "attachment;filename=" + nameSpace + ".cs");
             response.Headers.Add("Content-Type", "text/plain");

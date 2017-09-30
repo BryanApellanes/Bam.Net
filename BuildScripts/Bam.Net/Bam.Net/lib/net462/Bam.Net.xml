@@ -37,6 +37,15 @@
             <param name="throwOnError"></param>
             <returns></returns>
         </member>
+        <member name="M:Bam.Net.AdHocCSharpCompiler.ToAssembly(System.IO.FileInfo[],System.String)">
+            <summary>
+            Compile the specified files containing csharp source into the assembly of the 
+            specified assemblyFileName
+            </summary>
+            <param name="files"></param>
+            <param name="assemblyFileName"></param>
+            <returns></returns>
+        </member>
         <member name="M:Bam.Net.Args.ThrowIfNull(System.Object,System.String)">
             <summary>
             Throw an ArgumentNullException if the specified 
@@ -759,8 +768,10 @@
         <member name="T:Bam.Net.LocalAttribute">
             <summary>
             Used to denote a method that will not be 
-            proxied and will execute locally.  The same 
-            as Exclude, symantically different
+            proxied and will execute locally.  Also
+            allows a method to be network invoked if
+            the service is exposed to the local loopback
+            address 127.0.0.1
             </summary>
         </member>
         <member name="M:Bam.Net.Logging.ILoggable.Subscribe(Bam.Net.Logging.ILogger)">
@@ -1208,6 +1219,18 @@
             </summary>
             <param name="value"></param>
             <returns></returns>
+        </member>
+        <member name="P:Bam.Net.Web.Headers.KeyToken">
+            <summary>
+            Header used to prove that the client knows the shared secret by using 
+            it to create a hash value that this header is set to
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Web.Headers.Responder">
+            <summary>
+            Header used to request a specific responder on the server
+            handle a given request
+            </summary>
         </member>
         <member name="M:Bam.Net.Web.Http.GetJson``1(System.String,System.Collections.Generic.Dictionary{System.String,System.String})">
             <summary>
@@ -2542,6 +2565,22 @@
             </summary>
             <param name="filePath"></param>
             <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Extensions.SafeWriteFile(System.String,System.String,System.Action{System.Object})">
+            <summary>
+            Write the specified textToWrite to the current filePath
+            </summary>
+            <param name="filePath"></param>
+            <param name="textToWrite"></param>
+            <param name="postWriteAction"></param>
+        </member>
+        <member name="M:Bam.Net.Extensions.SafeWriteToFile(System.String,System.String,System.Action{System.Object})">
+            <summary>
+            Write the current textToWrite to the specified filePath
+            </summary>
+            <param name="textToWrite"></param>
+            <param name="filePath"></param>
+            <param name="postWriteAction"></param>
         </member>
         <member name="M:Bam.Net.Extensions.SafeWriteFile(System.String,System.String,System.Boolean,System.Action{System.Object})">
             <summary>

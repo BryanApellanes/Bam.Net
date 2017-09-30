@@ -39,6 +39,11 @@ namespace Bam.Net.Server.Renderers
 
         public Stream OutputStream { get; set; }
 
+        public virtual void Render(string templateName, object toRender, Stream output)
+        {
+            // This implementation discards the templateName; required to implement IRenderToStream
+            Render(toRender, output);
+        }
 
         public virtual void Render(object toRender)
         {

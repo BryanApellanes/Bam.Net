@@ -44,7 +44,15 @@ namespace baminf
         }
         internal class AssemblyNameContainer
         {
+            public string NetLib { get; set; }
+            public string NetVer { get; set; }
+            /// <summary>
+            /// The name of the assembly
+            /// </summary>
             public string LibraryName { get; set; }
+            /// <summary>
+            /// The assembly extension, either exe or dll
+            /// </summary>
             public string Ext { get; set; }
         }
 
@@ -183,8 +191,7 @@ call git_tag_version.cmd %1");
                 nuspecFile.Authors = info.Authors;
                 nuspecFile.Owners = info.Owners;
                 GitReleaseNotes releaseNotes = GitReleaseNotes.SinceVersion(nuspecFile.Id, srcRoot, sinceMajor, sinceMinor, sincePatch);
-                string projectRoot;
-                if(!WriteReleaseNotes(srcRoot, releaseNotes, out projectRoot))
+                if (!WriteReleaseNotes(srcRoot, releaseNotes, out string projectRoot))
                 {
                     Warn("Unable to find project directory ({0}) to write release notes", projectRoot);
                 }
@@ -350,7 +357,7 @@ call git_tag_version.cmd %1");
             string libraryName = sr.ReadLine().Trim();
             string fileName = string.Format(fileNameFormat, libraryName);
             string filePath = Path.Combine(outputDir.FullName, fileName);
-            string fileContent = template.NamedFormat(new AssemblyNameContainer { LibraryName = libraryName, Ext = ext });
+            string fileContent = template.NamedFormat(new AssemblyNameContainer { LibraryName = libraryName, Ext = ext, NetLib = Lib, NetVer = Ver });
             fileContent.SafeWriteToFile(filePath, true);
             copyAllScript.AppendLine($"call {fileName} %1");
             string packLine = $"nuget pack {libraryName}\\{libraryName}.nuspec";
