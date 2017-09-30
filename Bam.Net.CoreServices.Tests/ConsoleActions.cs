@@ -13,6 +13,7 @@ using Bam.Net.Testing;
 using Bam.Net.Encryption;
 using System.Net.NetworkInformation;
 using System.Net;
+using System.Reflection;
 
 namespace Bam.Net.CoreServices.Tests
 {
@@ -69,6 +70,13 @@ namespace Bam.Net.CoreServices.Tests
                 foreach (IPAddressInformation unicast in properties.UnicastAddresses)
                     Console.WriteLine("\tUniCast: {0}", unicast.Address);
             }
+        }
+
+        [ConsoleAction]
+        public void ShowEntryAssemblyLocation()
+        {
+            OutLine(Assembly.GetEntryAssembly().Location);
+            OutLine(UserUtil.GetCurrentUser());
         }
     }
 }

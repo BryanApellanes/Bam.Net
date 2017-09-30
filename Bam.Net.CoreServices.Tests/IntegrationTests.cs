@@ -90,11 +90,14 @@ namespace Bam.Net.CoreServices.Tests
         public void RegisterCreatesMachineEntry()
         {
             OutLineFormat("This test requires a gloo server to be running on port 9100 of the localhost", ConsoleColor.Yellow);
-            ConsoleLogger logger = new ConsoleLogger();
-            logger.AddDetails = false;
+            ConsoleLogger logger = new ConsoleLogger()
+            {
+                AddDetails = false
+            };
             logger.StartLoggingThread();
             ApplicationRegistrationRepository repo = CoreServiceRegistryContainer.GetServiceRegistry().Get<ApplicationRegistrationRepository>();
-            CoreClient client = new CoreClient("TestOrg", "TestApp", $".\\{nameof(RegisterCreatesMachineEntry)}", logger);
+            CoreClient client = CoreClient.Local;//new CoreClient("TestOrg", "TestApp", $".\\{nameof(RegisterCreatesMachineEntry)}", logger);
+            client.WorkspaceDirectory = $".\\{nameof(RegisterCreatesMachineEntry)}";
             client.LocalCoreRegistryRepository = repo;
             CoreServiceResponse registrationResponse = client.RegisterClient();
             Machine machine = repo.OneMachineWhere(m => m.Name == Machine.Current.Name);

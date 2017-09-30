@@ -108,5 +108,14 @@ namespace Bam.Net.CoreServices.Tests
             Expect.IsTrue(got, "didn't get any assemblies");
             Expect.IsTrue(gotReference, "didn't get any references");
         }
+
+        [UnitTest]
+        public void UriTest()
+        {
+            Uri uri = new Uri("https://sub.domain.com/path/more");
+            OutLine(uri.Host);
+            OutLine(uri.Scheme);
+            Expect.AreEqual("sub.domain.com", uri.Host);
+        }
     }
 }
