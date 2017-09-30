@@ -13,7 +13,7 @@ namespace Bam.Net.Data.Repositories
     {
         public DataSettings()
         {
-            DataRootDirectory = "C:\\BamData";
+            DataRootDirectory = "C:\\bam\\data";
             DatabaseDirectory = "Databases";
             RepositoryDirectory = "Repositories";
             FilesDirectory = "Files";

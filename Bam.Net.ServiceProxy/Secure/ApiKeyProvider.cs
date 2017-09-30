@@ -25,9 +25,11 @@ namespace Bam.Net.ServiceProxy.Secure
         public ApiKeyInfo GetApiKeyInfo(IApplicationNameProvider nameProvider)
         {
             string clientId = GetApplicationClientId(nameProvider);
-            ApiKeyInfo info = new ApiKeyInfo();            
-            info.ApiKey = GetApplicationApiKey(clientId, 0);
-            info.ApplicationClientId = clientId;
+            ApiKeyInfo info = new ApiKeyInfo()
+            {
+                ApiKey = GetApplicationApiKey(clientId, 0),
+                ApplicationClientId = clientId
+            };
             return info;
         }
 

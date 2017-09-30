@@ -2339,6 +2339,26 @@ namespace Bam.Net
                         string[] values = (string[])property.GetValue(obj, null);
                         returnValue.AppendFormat("{0}: {1}{2}", property.Name, string.Join(", ", values), separator);
                     }
+                    else if(property.PropertyType == typeof(HttpCookieCollection))
+                    {
+                        HttpCookieCollection values = (HttpCookieCollection)property.GetValue(obj, null);
+                        List<string> strings = new List<string>();
+                        foreach (HttpCookie cookie in values)
+                        {
+                            strings.Add(string.Format("{0}={1}", cookie.Name, cookie.Value));
+                        }
+                        returnValue.AppendFormat("{0}: {1}{2}", property.Name, string.Join("\r\n\t", strings.ToArray()), separator);
+                    }
+                    else if(property.PropertyType == typeof(System.Net.CookieCollection))
+                    {
+                        System.Net.CookieCollection values = (System.Net.CookieCollection)property.GetValue(obj, null);
+                        List<string> strings = new List<string>();
+                        foreach (System.Net.Cookie cookie in values)
+                        {
+                            strings.Add(string.Format("{0}={1}", cookie.Name, cookie.Value));
+                        }
+                        returnValue.AppendFormat("{0}: {1}{2}", property.Name, string.Join("\r\n\t", strings.ToArray()), separator);
+                    }
                     else if (property.PropertyType == typeof(NameValueCollection))
                     {
                         NameValueCollection values = (NameValueCollection)property.GetValue(obj, null);
@@ -2347,7 +2367,7 @@ namespace Bam.Net
                         {
                             strings.Add(string.Format("{0}={1}", key, values[key]));
                         }
-                        returnValue.AppendFormat("{0}: {1}{2}", property.Name, string.Join("&", strings.ToArray()), separator);
+                        returnValue.AppendFormat("{0}: {1}{2}", property.Name, string.Join("\r\n\t", strings.ToArray()), separator);
                     }
                     else if (property.GetIndexParameters().Length == 0)
                     {

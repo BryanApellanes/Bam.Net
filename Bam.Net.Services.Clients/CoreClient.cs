@@ -24,7 +24,7 @@ namespace Bam.Net.Services.Clients
 {
     public class CoreClient: Loggable, IApiKeyResolver, IApiKeyProvider, IApplicationNameProvider
     {
-        public CoreClient(string organizationName, string applicationName, string workingDirectory = null, ILogger logger = null)
+        internal CoreClient(string organizationName, string applicationName, string workingDirectory = null, ILogger logger = null)
         {
             string hostName = "localhost";
             int port = 9100;
@@ -34,6 +34,9 @@ namespace Bam.Net.Services.Clients
             SetClientApplicationNameProvider();
             SetLocalProperties(organizationName, applicationName, hostName, port);
         }
+
+        public CoreClient() : this(Organization.Public.Name, DefaultApplicationName, "bamapps.net", 80, null, Log.Default)
+        { }
 
         /// <summary>
         /// Instanciate a new CoreClient
@@ -52,7 +55,7 @@ namespace Bam.Net.Services.Clients
             SetClientApplicationNameProvider();
             SetLocalProperties(organizationName, applicationName, hostName, port);
         }
-
+        
         public CoreClient(string applicationName, string hostName, int port, string workingDirectory = null, ILogger logger = null)
             : this(Organization.Public.Name, applicationName, hostName, port, workingDirectory, logger)
         {
@@ -65,7 +68,33 @@ namespace Bam.Net.Services.Clients
         public CoreClient(string hostName, int port, ILogger logger = null) : this(Organization.Public.Name, CoreServices.ApplicationRegistration.Application.Unknown.Name, hostName, port, logger)
         { }
 
+
+        static CoreClient _local;
+        static object _localLock = new object();
+
+        /// <summary>
+        /// A CoreClient configured for localhost on port 9100
+        /// </summary>
+        public static CoreClient Local
+        {
+            get
+            {
+                return _localLock.DoubleCheckLock(ref _local, () => new CoreClient(Organization.Public.Name, DefaultApplicationName));
+            }
+        }
+
+        public static string DefaultApplicationName
+        {
+            get
+            {
+                return $"{UserUtil.GetCurrentWindowsUser(true)}:{ProcessDescriptor.Current.FilePath}@{ProcessDescriptor.Current.MachineName}";
+            }
+        }
         public ProcessDescriptor ProcessDescriptor { get; private set; }
+
+        /// <summary>
+        /// The local instance of the ApplicationRegistryRepository
+        /// </summary>
         public ApplicationRegistrationRepository LocalCoreRegistryRepository { get; set; }
         
         [Verbosity(VerbosityLevel.Information, MessageFormat = "{OrganizationName}:{ApplicationName} initializING")]
@@ -83,7 +112,7 @@ namespace Bam.Net.Services.Clients
         public string Message { get; set; } // used by InitializationFailed event
         public string ApplicationName { get; set; }
         public string OrganizationName { get; set; }
-        public string WorkspaceDirectory { get; private set; }
+        public string WorkspaceDirectory { get; internal set; }
         public string ApiKeyFilePath { get { return Path.Combine(WorkspaceDirectory, HostName, Port.ToString(), $"{GetApplicationName()}.apikey"); } }
         public ILogger Logger { get; set; }
         #region IApiKeyResolver
@@ -334,8 +363,10 @@ namespace Bam.Net.Services.Clients
 
         private void SetLocalProperties(string organizationName, string applicationName, string hostName, int port)
         {
-            LocalCoreRegistryRepository = new ApplicationRegistrationRepository();
-            LocalCoreRegistryRepository.Database = new SQLiteDatabase(WorkspaceDirectory, nameof(CoreClient));
+            LocalCoreRegistryRepository = new ApplicationRegistrationRepository()
+            {
+                Database = new SQLiteDatabase(WorkspaceDirectory, nameof(CoreClient))
+            };
             CoreServiceRegistryContainer.GetServiceRegistry().Get<IStorableTypesProvider>().AddTypes(LocalCoreRegistryRepository);
             ProcessDescriptor = ProcessDescriptor.ForApplicationRegistration(LocalCoreRegistryRepository, hostName, port, applicationName, organizationName);
         }

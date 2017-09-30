@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.ServiceProxy;
+using Bam.Net.Logging;
 
 namespace Bam.Net.Data.Repositories
 {
-    public abstract class RepositoryResolver : IRepositoryResolver 
+    public abstract class RepositoryResolver : Loggable, IRepositoryResolver 
     {
         public abstract IRepository GetRepository(IHttpContext context);
 
