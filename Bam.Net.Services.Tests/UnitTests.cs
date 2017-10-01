@@ -6,7 +6,7 @@ using Bam.Net.Data.Repositories;
 using Bam.Net.Data.SQLite;
 using Bam.Net.Logging;
 using Bam.Net.Server;
-using Bam.Net.CoreServices.DistributedHashTable.Data;
+using Bam.Net.Services.Distributed.Data;
 using Bam.Net.Testing;
 using Bam.Net.Caching;
 using Bam.Net.Testing.Unit;

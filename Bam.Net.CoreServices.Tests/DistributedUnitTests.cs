@@ -2,7 +2,7 @@
 	Copyright © Bryan Apellanes 2015  
 */
 using System;
-using Bam.Net.CoreServices.DistributedHashTable;
+using Bam.Net.Services.Distributed;
 using Bam.Net.Testing;
 using Bam.Net.Testing.Unit;
 

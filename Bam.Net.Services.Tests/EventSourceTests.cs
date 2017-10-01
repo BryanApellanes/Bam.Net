@@ -1,6 +1,6 @@
 ﻿using Bam.Net.CommandLine;
 using Bam.Net.CoreServices;
-using Bam.Net.CoreServices.DistributedHashTable;
+using Bam.Net.Services.Distributed;
 using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Data.SQLite;

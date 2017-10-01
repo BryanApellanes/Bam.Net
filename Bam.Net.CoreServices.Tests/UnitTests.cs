@@ -28,7 +28,7 @@ using Bam.Net.CoreServices.Services;
 using Bam.Net.CoreServices.ApplicationRegistration;
 using System.Collections.Specialized;
 using Bam.Net.Data.Dynamic;
-using Bam.Net.CoreServices.DistributedHashTable;
+using Bam.Net.Services.Distributed;
 using Bam.Net.Incubation;
 using Bam.Net.Testing.Integration;
 using Bam.Net.Testing.Unit;
