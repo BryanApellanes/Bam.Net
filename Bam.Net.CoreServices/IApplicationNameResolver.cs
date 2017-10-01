@@ -9,6 +9,6 @@ namespace Bam.Net.CoreServices
 {
     public interface IApplicationNameResolver: IApplicationNameProvider
     {
-        string GetApplicationName(IHttpContext context);
+        string ResolveApplicationName(IHttpContext context);
     }
 }

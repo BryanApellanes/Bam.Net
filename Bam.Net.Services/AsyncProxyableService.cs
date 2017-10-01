@@ -18,7 +18,7 @@ using Bam.Net.Web;
 
 namespace Bam.Net.Services
 {
-    public abstract class AsyncProxyableService : CoreProxyableService, IHasServiceProvider
+    public abstract class AsyncProxyableService : ApplicationProxyableService, IHasServiceProvider
     {
         ProxyFactory _proxyFactory;
 

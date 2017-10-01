@@ -19,7 +19,7 @@ namespace Bam.Net.CoreServices
     [Serializable]
     [Proxy("notifySvc")]
     [ServiceSubdomain("notify")]
-    public class CoreNotificationService : CoreProxyableService
+    public class CoreNotificationService : ApplicationProxyableService
     {
         public CoreNotificationService(DataSettings dataSettings, ILogger logger = null)
         {

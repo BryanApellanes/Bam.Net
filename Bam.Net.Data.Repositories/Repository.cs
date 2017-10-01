@@ -264,14 +264,25 @@ namespace Bam.Net.Data.Repositories
         }
         public virtual bool DeleteWhere(Type type, dynamic filter)
         {
+            return DeleteWhere(type, filter, out int count);
+        }
+        public virtual bool DeleteWhere(Type type, dynamic filter, out int count)
+        {
             try
             {
                 IEnumerable<object> toDelete = Query(type, filter);
-                toDelete.Each(o => Delete(o));
-                return true;
+                count = 0;
+                if(toDelete != null)
+                {
+                    object[] arr = toDelete.ToArray();
+                    count = arr.Length;
+                    arr.Each(o => Delete(o));
+                }
+                return count > 0 ? true : false;
             }
             catch (Exception ex)
             {
+                count = -1;
                 Logger.AddEntry("Error deleting values of type {0}: \r\nfilter={1}:: {2}", ex, type.Name, filter?.PropertiesToString(), ex.Message);
                 return false;
             }

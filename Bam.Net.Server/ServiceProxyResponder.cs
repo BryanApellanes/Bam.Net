@@ -730,12 +730,11 @@ namespace Bam.Net.Server
         
         public virtual ExecutionRequest CreateExecutionRequest(IHttpContext httpContext, string appName)
         {
-            Incubator proxiedClasses;
-            List<ProxyAlias> aliases;
-            GetServiceProxies(appName, out proxiedClasses, out aliases);
+            GetServiceProxies(appName, out Incubator proxiedClasses, out List<ProxyAlias> aliases);
 
             ExecutionRequest execRequest = new ExecutionRequest(httpContext, proxiedClasses, aliases.ToArray());
             ExecutionRequest.DecryptSecureChannelInvoke(execRequest);
+            execRequest.Logger = Logger;
             return execRequest;
         }
 

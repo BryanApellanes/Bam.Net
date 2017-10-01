@@ -8,12 +8,14 @@ using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.CoreServices.OAuth.Data;
 using Bam.Net.CoreServices.OAuth.Data.Dao.Repository;
 using Bam.Net.CoreServices.OAuth;
+using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.CoreServices
 {
-    [Proxy("oauthSettingsSvc")]
+    [Proxy("oauthSettingsSvc")]    
     [ApiKeyRequired]
-    public class CoreOAuthSettingsService : CoreProxyableService
+    [Authorize(Type=typeof(CoreOAuthSettingsServiceAuthorizer))]
+    public class CoreOAuthSettingsService : ApplicationProxyableService
     {
         public CoreOAuthSettingsService(OAuthSettingsRepository oauthRepo)
         {
@@ -27,11 +29,14 @@ namespace Bam.Net.CoreServices
             try
             {
                 ApplicationRegistration.Application app = ApplicationRegistrationRepository.GetOneApplicationWhere(c => c.Name == ApplicationName);
-                return new CoreServiceResponse(OAuthSettingsRepository
-                    .OAuthSettingsDatasWhere(c => c.ApplicationIdentifier == app.Cuid && c.ApplicationName == app.Name)
-                    .Select(sd => OAuthSettings.FromData(sd))
-                    .Select(os => os.CopyAs<OAuthClientSettings>())
-                    .ToArray());
+                return new CoreServiceResponse
+                    (
+                        OAuthSettingsRepository
+                            .OAuthSettingsDatasWhere(c => c.ApplicationIdentifier == app.Cuid && c.ApplicationName == app.Name)
+                            .Select(sd => OAuthSettings.FromData(sd))
+                            .Select(os => os.CopyAs<OAuthClientSettings>())
+                            .ToArray()
+                    );
             }
             catch(Exception ex)
             {
@@ -44,7 +49,8 @@ namespace Bam.Net.CoreServices
         {
             try
             {
-                ApplicationRegistration.Application app = ApplicationRegistrationRepository.GetOneApplicationWhere(c => c.Name == ApplicationName);
+                ApplicationRegistration.Application app = GetServerApplicationOrDie();
+
                 OAuthSettingsData data = new OAuthSettingsData()
                 {
                     ApplicationName = app.Name,
@@ -53,8 +59,32 @@ namespace Bam.Net.CoreServices
                     ClientId = clientId,
                     ClientSecret = clientSecret
                 };
-                OAuthClientSettings settings = ApplicationRegistrationRepository.Save(data).CopyAs<OAuthClientSettings>();
+                OAuthClientSettings settings = OAuthSettingsRepository.Save(data).CopyAs<OAuthClientSettings>();
                 return new CoreServiceResponse { Success = true, Data = settings };
+            }
+            catch (Exception ex)
+            {
+                return new CoreServiceResponse { Success = false, Message = ex.Message };
+            }
+        }
+
+        [RoleRequired("/", "Admin")]
+        public CoreServiceResponse RemoveProvider(string providerName)
+        {
+            try
+            {
+                ApplicationRegistration.Application app = GetServerApplicationOrDie();
+                OAuthSettingsData data = OAuthSettingsRepository.OneOAuthSettingsDataWhere(c => c.ApplicationIdentifier == app.Cuid && c.ApplicationName == app.Name && c.ProviderName == providerName);
+                if(data != null)
+                {
+                    bool success = OAuthSettingsRepository.Delete(data);
+                    if (!success)
+                    {
+                        throw OAuthSettingsRepository.LastException;
+                    }
+                    return new CoreServiceResponse { Success = OAuthSettingsRepository.Delete(data) };
+                }
+                throw new InvalidOperationException($"OAuthSettings not found: AppId={app.Cuid}, AppName={app.Name}, Provider={providerName}");
             }
             catch (Exception ex)
             {

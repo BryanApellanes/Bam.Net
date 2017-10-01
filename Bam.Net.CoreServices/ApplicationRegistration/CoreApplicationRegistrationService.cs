@@ -24,9 +24,8 @@ namespace Bam.Net.CoreServices
     [Encrypt]
     [ServiceSubdomain("appregistry")]
     [RoleRequired("/appreg/accessdenied", "Admin")]
-    public class CoreApplicationRegistrationService : CoreProxyableService, IApiKeyResolver, IApiKeyProvider, IApplicationNameProvider
+    public class CoreApplicationRegistrationService : ApplicationProxyableService, IApiKeyResolver, IApiKeyProvider, IApplicationNameProvider
     {
-        public const string AppNameNotSpecified = "X-APPNAME-HEADER-NOT-SPECIFIED";
         CacheManager _cacheManager;
         ApiKeyResolver _apiKeyResolver;
 
@@ -194,7 +193,7 @@ namespace Bam.Net.CoreServices
                 return new CoreServiceResponse<ApplicationRegistrationResult> { Success = false, Message = "You must be logged in to do that", Data = new ApplicationRegistrationResult { Status = ApplicationRegistrationStatus.Unauthorized } };
             }
             User user = GetApplicationRegistrationRepositoryUser();
-            CoreServiceResponse<Organization> response = EnsureUserIsInOrganization(user, Organization.Public.Name);
+            CoreServiceResponse<Organization> response = AssociateUserToOrganization(user, Organization.Public.Name);
             if (!response.Success)
             {
                 return response;
@@ -217,7 +216,7 @@ namespace Bam.Net.CoreServices
                 User user = GetApplicationRegistrationRepositoryUser();
 
                 string organizationName = descriptor.Application.Organization.Name;
-                CoreServiceResponse<Organization> response = EnsureUserIsInOrganization(user, organizationName);
+                CoreServiceResponse<Organization> response = AssociateUserToOrganization(user, organizationName);
                 if (!response.Success)
                 {
                     return response;
@@ -328,13 +327,13 @@ namespace Bam.Net.CoreServices
         [Exclude]
         public void SetKeyToken(NameValueCollection headers, string stringToHash)
         {
-            throw new NotImplementedException();// it isn't appropriate for this service to be used for this purpose
+            throw new InvalidOperationException($"It isn't appropriate for this service to be used for this purpose: {nameof(CoreApplicationRegistrationService)}.{nameof(CoreApplicationRegistrationService.SetKeyToken)}");
         }
 
         [Exclude]
         public void SetKeyToken(HttpWebRequest request, string stringToHash)
         {
-            throw new NotImplementedException();// it isn't appropriate for this service to be used for this purpose
+            throw new InvalidOperationException($"It isn't appropriate for this service to be used for this purpose: {nameof(CoreApplicationRegistrationService)}.{nameof(CoreApplicationRegistrationService.SetKeyToken)}");
         }
 
         protected CoreApplicationRegistryServiceConfig Config { get; set; }
@@ -370,7 +369,7 @@ namespace Bam.Net.CoreServices
             return app;
         }
 
-        private CoreServiceResponse<Organization> EnsureUserIsInOrganization(User user, string organizationName)
+        private CoreServiceResponse<Organization> AssociateUserToOrganization(User user, string organizationName)
         {
             OrganizationFactory orgEnforcer = new OrganizationFactory(ApplicationRegistrationRepository, user, organizationName);
             CoreServiceResponse<Organization> response = orgEnforcer.Execute();

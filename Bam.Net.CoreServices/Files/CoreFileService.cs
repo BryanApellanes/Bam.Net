@@ -22,7 +22,7 @@ namespace Bam.Net.CoreServices
     [Proxy("fileSvc")]
     [ApiKeyRequired]
     [ServiceSubdomain("file")]
-    public class CoreFileService : CoreProxyableService, IFileService
+    public class CoreFileService : ApplicationProxyableService, IFileService
     {
         protected CoreFileService() { }
         public CoreFileService(IRepository repository)

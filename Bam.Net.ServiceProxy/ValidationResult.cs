@@ -29,7 +29,8 @@ namespace Bam.Net.ServiceProxy
         ParameterCountMismatch,
         PermissionDenied,
         InvalidApiKeyToken,
-        RemoteExecutionNotAllowed
+        RemoteExecutionNotAllowed,
+        AuthorizationFailed
     }
 
     public class ValidationResult
@@ -57,10 +58,29 @@ namespace Bam.Net.ServiceProxy
             ValidateMethodRoles(context, failures, messages);
             ValidateClassRoles(context, failures, messages);
             ValidateApiKeyToken(failures, messages);
+            ValidateAuthorization(context, failures, messages);
 
             ValidationFailures = failures.ToArray();
             Message = messages.ToArray().ToDelimited(s => s, Delimiter);
             this.Success = failures.Count == 0;
+        }
+        private void ValidateAuthorization(IHttpContext context, List<ValidationFailures> failures, List<string> messages)
+        {
+            AuthorizeAttribute authroizeAttr;
+            if (_toValidate.TargetType != null &&
+                _toValidate.MethodInfo != null &&
+                (
+                    _toValidate.TargetType.HasCustomAttributeOfType(true, out authroizeAttr) ||
+                    _toValidate.MethodInfo.HasCustomAttributeOfType(true, out authroizeAttr)
+                ))
+            {
+                Authorizer authorizer = authroizeAttr.Type.Construct<Authorizer>();
+                if (!authorizer.Authorize(_toValidate))
+                {
+                    failures.Add(ServiceProxy.ValidationFailures.AuthorizationFailed);
+                    messages.Add("Authorization failed");
+                }
+            }
         }
 
         private void ValidateApiKeyToken(List<ValidationFailures> failures, List<string> messages)

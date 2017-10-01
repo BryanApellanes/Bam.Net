@@ -16,7 +16,7 @@ namespace Bam.Net.CoreServices
     [Proxy("userRegistrySvc")]
     [Encrypt]
     [ServiceSubdomain("userregistry")]
-    public class CoreUserRegistryService: CoreProxyableService, IUserManager, IUserResolver, IRoleResolver
+    public class CoreUserRegistryService: ApplicationProxyableService, IUserManager, IUserResolver, IRoleResolver
     {
         protected CoreUserRegistryService() { } // to enable auto proxy gen
         public CoreUserRegistryService(IDatabaseProvider dbProvider, IUserManager wrapped, IApplicationNameProvider appNameProvider, IUserResolver userResolver, IRoleResolver roleResolver)

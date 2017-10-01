@@ -205,9 +205,11 @@ namespace Bam.Net.ServiceProxy.Secure
             HttpArgs args = new HttpArgs();
             args.ParseJson(jsonParams);
             string parameters = args["jsonParams"];
-            SecureExecutionRequest request = new SecureExecutionRequest(HttpContext, className, methodName, parameters);
-            request.ApiKeyResolver = ApiKeyResolver;
-            request.ServiceProvider = ServiceProvider;
+            SecureExecutionRequest request = new SecureExecutionRequest(HttpContext, className, methodName, parameters)
+            {
+                ApiKeyResolver = ApiKeyResolver,
+                ServiceProvider = ServiceProvider
+            };
             bool success = request.Execute();
             
             ValidationResult validationResult = request.Result as ValidationResult;

@@ -11,7 +11,7 @@ namespace Bam.Net.Services.Distributed
 {
     [ApiKeyRequired]
     [Proxy("writeEventSvc")]
-    public class WriteEventService : CoreProxyableService
+    public class WriteEventService : ApplicationProxyableService
     {
         MetricsService _metricsEvents;
         SystemEventService _notificationEvents;

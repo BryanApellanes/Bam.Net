@@ -19,9 +19,11 @@ namespace Bam.Net.Services.Distributed.Data
 
         public static TOperation For<TOperation>(Type type) where TOperation: Operation, new()
         {
-            TOperation result = new TOperation();
-            result.TypeName = type.Name;
-            result.TypeNamespace = type.Namespace;
+            TOperation result = new TOperation()
+            {
+                TypeName = type.Name,
+                TypeNamespace = type.Namespace
+            };
             return result;
         }
 	}

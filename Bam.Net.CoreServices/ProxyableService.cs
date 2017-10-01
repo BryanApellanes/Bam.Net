@@ -132,7 +132,7 @@ namespace Bam.Net.CoreServices
             get
             {
                 string fromHeader = HttpContext?.Request?.Headers[Headers.ApplicationName];
-                return fromHeader.Or($"{Headers.ApplicationName}-Not-Specified");
+                return fromHeader.Or(ApplicationRegistration.Application.Unknown.Name);
             }
         }
 

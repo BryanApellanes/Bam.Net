@@ -20,7 +20,7 @@ namespace Bam.Net.CoreServices
     [Proxy("configSvc")]
     [ServiceProxySecure.ApiKeyRequired]
     [ServiceSubdomain("config")]
-    public class CoreConfigurationService : CoreProxyableService
+    public class CoreConfigurationService : ApplicationProxyableService
     {
         public const string CommonConfigName = "Common";
         protected CoreConfigurationService() { }

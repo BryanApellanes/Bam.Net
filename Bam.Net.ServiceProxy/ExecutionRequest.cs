@@ -115,6 +115,19 @@ namespace Bam.Net.ServiceProxy
             }
         }
 
+        ILogger _logger;
+        public ILogger Logger
+        {
+            get
+            {
+                return _logger ?? Log.Default;
+            }
+            set
+            {
+                _logger = value;
+            }
+        }
+
         protected internal ProxyAlias[] ProxyAliases
         {
             get;

@@ -91,17 +91,16 @@ namespace Bam.Net.Data.Repositories
 
         public override bool Equals(object obj)
         {
-            RepoData o = obj as RepoData;
-            if(o != null)
+            if (obj is RepoData o)
             {
-                return o.Id.Equals(Id) && o.Uuid.Equals(Uuid) && o.Cuid.Equals(Cuid);
+                return o.Uuid.Equals(Uuid) && o.Cuid.Equals(Cuid);
             }
             return base.Equals(obj);
         }
 
         public override int GetHashCode()
         {
-            return Id.GetHashCode() + Uuid.GetHashCode() + Cuid.GetHashCode();
+            return Uuid.GetHashCode() + Cuid.GetHashCode();
         }
 
         public virtual RepoData Save(IRepository repo)
