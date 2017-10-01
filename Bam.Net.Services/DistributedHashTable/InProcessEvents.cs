@@ -71,7 +71,7 @@ namespace Bam.Net.CoreServices
                         }
                         catch (Exception ex)
                         {
-                            Logger.AddEntry("GlobalEvents::Exception occurred in EventSource Listenter for event name ({0}): {1}", LogEventType.Warning, eventName, ex.Message);
+                            Logger.AddEntry("{0}::Exception occurred in EventSource Listenter for event name ({1}): {1}", LogEventType.Warning, nameof(InProcessEvents), eventName, ex.Message);
                         }
                     });
                 }

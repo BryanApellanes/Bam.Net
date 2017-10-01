@@ -27,8 +27,7 @@ namespace Bam.Net.CoreServices.DistributedHashTable
 
         public string ToJson()
         {
-            IJsonable args = EventArgs as IJsonable;
-            if(args != null)
+            if (EventArgs is IJsonable args)
             {
                 return args.ToJson();
             }

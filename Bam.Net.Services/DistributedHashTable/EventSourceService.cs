@@ -24,7 +24,7 @@ namespace Bam.Net.CoreServices.DistributedHashTable
             _listeners = new Dictionary<string, HashSet<EventSubscription>>();
         }
 
-        [Exclude]
+        [Local]
         public HashSet<EventSubscription> GetListeners(string eventName)
         {
             if (_listeners.ContainsKey(eventName))
@@ -34,7 +34,7 @@ namespace Bam.Net.CoreServices.DistributedHashTable
             return new HashSet<EventSubscription>();
         }
 
-        [Exclude]
+        [Local]
         public virtual void Subscribe(string eventName, EventHandler handler)
         {
             if (!_listeners.ContainsKey(eventName))
