@@ -262,7 +262,7 @@ namespace Bam.Net.Services.Clients
                 if (!IsInitialized)
                 {
                     FireEvent(Initializing);
-                    CoreServiceResponse response = ApplicationRegistryService.RegisterApplication(ProcessDescriptor);
+                    CoreServiceResponse response = ApplicationRegistryService.RegisterApplicationProcess(ProcessDescriptor);
                     ApplicationRegistrationResult appRegistrationResult = response.Data.FromJObject<ApplicationRegistrationResult>();
                     if (response.Success)
                     {

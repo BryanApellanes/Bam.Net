@@ -7,9 +7,15 @@ using Bam.Net.Data.Repositories;
 
 namespace Bam.Net.CoreServices.OAuth.Data
 {
-    public class OAuthSettingsData: RepoData
+    public class OAuthSettingsData: AuditRepoData
     {
-        public string ApplicationCuid { get; set; }
+        public OAuthSettingsData()
+        {
+            ProviderName = "bamapps.net";
+        }
+        public string ApplicationName { get; set; }
+        public string ApplicationIdentifier { get; set; }
+        
         public string ProviderName { get; set; }
 
         public string State { get; set; }

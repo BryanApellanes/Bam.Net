@@ -101,17 +101,31 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 		}
 	}
 
-	// property:ApplicationCuid, columnName:ApplicationCuid	
-	[Bam.Net.Data.Column(Name="ApplicationCuid", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string ApplicationCuid
+	// property:ApplicationName, columnName:ApplicationName	
+	[Bam.Net.Data.Column(Name="ApplicationName", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string ApplicationName
 	{
 		get
 		{
-			return GetStringValue("ApplicationCuid");
+			return GetStringValue("ApplicationName");
 		}
 		set
 		{
-			SetValue("ApplicationCuid", value);
+			SetValue("ApplicationName", value);
+		}
+	}
+
+	// property:ApplicationIdentifier, columnName:ApplicationIdentifier	
+	[Bam.Net.Data.Column(Name="ApplicationIdentifier", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string ApplicationIdentifier
+	{
+		get
+		{
+			return GetStringValue("ApplicationIdentifier");
+		}
+		set
+		{
+			SetValue("ApplicationIdentifier", value);
 		}
 	}
 
@@ -255,6 +269,62 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 		}
 	}
 
+	// property:CreatedBy, columnName:CreatedBy	
+	[Bam.Net.Data.Column(Name="CreatedBy", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string CreatedBy
+	{
+		get
+		{
+			return GetStringValue("CreatedBy");
+		}
+		set
+		{
+			SetValue("CreatedBy", value);
+		}
+	}
+
+	// property:ModifiedBy, columnName:ModifiedBy	
+	[Bam.Net.Data.Column(Name="ModifiedBy", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string ModifiedBy
+	{
+		get
+		{
+			return GetStringValue("ModifiedBy");
+		}
+		set
+		{
+			SetValue("ModifiedBy", value);
+		}
+	}
+
+	// property:Modified, columnName:Modified	
+	[Bam.Net.Data.Column(Name="Modified", DbDataType="DateTime", MaxLength="8", AllowNull=true)]
+	public DateTime? Modified
+	{
+		get
+		{
+			return GetDateTimeValue("Modified");
+		}
+		set
+		{
+			SetValue("Modified", value);
+		}
+	}
+
+	// property:Deleted, columnName:Deleted	
+	[Bam.Net.Data.Column(Name="Deleted", DbDataType="DateTime", MaxLength="8", AllowNull=true)]
+	public DateTime? Deleted
+	{
+		get
+		{
+			return GetDateTimeValue("Deleted");
+		}
+		set
+		{
+			SetValue("Deleted", value);
+		}
+	}
+
 
 
 				
@@ -290,7 +360,7 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<OAuthSettingsData>();
 			Database db = database ?? Db.For<OAuthSettingsData>();
-			var results = new OAuthSettingsDataCollection(sql.GetDataTable(db));
+			var results = new OAuthSettingsDataCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}

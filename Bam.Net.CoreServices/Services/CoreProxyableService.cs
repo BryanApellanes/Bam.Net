@@ -20,7 +20,7 @@ namespace Bam.Net.CoreServices
             : base(genericRepo, daoRepo, appConf)
         { }
 
-        public ApplicationRegistrationRepository CoreRegistryRepository { get; set; }
+        public ApplicationRegistrationRepository ApplicationRegistrationRepository { get; set; }
         public IApplicationNameProvider ApplicationNameProvider { get; set; }
         public override string ApplicationName
         {

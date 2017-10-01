@@ -220,8 +220,8 @@ namespace Bam.Net.CoreServices.Tests
             CoreApplicationRegistrationService svc = GetTestService();
             string orgName = 5.RandomLetters();
             string appName = 8.RandomLetters();
-            ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration(svc.CoreRegistryRepository, "localhost", 8080, appName, orgName);
-            CoreServiceResponse response = svc.RegisterApplication(descriptor);
+            ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration(svc.ApplicationRegistrationRepository, "localhost", 8080, appName, orgName);
+            CoreServiceResponse response = svc.RegisterApplicationProcess(descriptor);
             Expect.IsFalse(response.Success);
             Expect.IsNotNull(response.Data);
             Expect.IsInstanceOfType<ApplicationRegistrationResult>(response.Data);
@@ -238,11 +238,11 @@ namespace Bam.Net.CoreServices.Tests
             string orgName = 5.RandomLetters();
             string appName = 8.RandomLetters();
             CoreApplicationRegistrationService svc = GetTestServiceWithUser(userName);
-            ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration(svc.CoreRegistryRepository, "localhost", 8080, appName, orgName);
-            CoreServiceResponse response = svc.RegisterApplication(descriptor);
+            ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration(svc.ApplicationRegistrationRepository, "localhost", 8080, appName, orgName);
+            CoreServiceResponse response = svc.RegisterApplicationProcess(descriptor);
             Expect.IsTrue(response.Success);
-            var user = svc.CoreRegistryRepository.OneUserWhere(c => c.UserName == userName);
-            user = svc.CoreRegistryRepository.Retrieve<ApplicationRegistration.User>(user.Id);
+            var user = svc.ApplicationRegistrationRepository.OneUserWhere(c => c.UserName == userName);
+            user = svc.ApplicationRegistrationRepository.Retrieve<ApplicationRegistration.User>(user.Id);
             Expect.IsNotNull(user);
             Expect.AreEqual(1, user.Organizations.Count);
             Thread.Sleep(1000);
@@ -258,8 +258,8 @@ namespace Bam.Net.CoreServices.Tests
             }))
             .WhenA<CoreApplicationRegistrationService>("tries to register application when not logged in", cars =>
             {
-                ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration(cars.CoreRegistryRepository,"localhost", 8080, "testApp", "testOrg");
-                return cars.RegisterApplication(descriptor);
+                ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration(cars.ApplicationRegistrationRepository,"localhost", 8080, "testApp", "testOrg");
+                return cars.RegisterApplicationProcess(descriptor);
             })
             .TheTest
             .ShouldPass(because =>
@@ -505,13 +505,13 @@ namespace Bam.Net.CoreServices.Tests
             Session session = Session.Get(ctx);
             session.UserId = result.Id;
             session.Save();
-            IEnumerable<Organization> organizations = svc.CoreRegistryRepository.RetrieveAll<Organization>();
-            organizations.Each(o => svc.CoreRegistryRepository.Delete(o));
-            Expect.AreEqual(0, svc.CoreRegistryRepository.RetrieveAll<Organization>().Count());
-            IEnumerable<ApplicationRegistration.Application> apps = svc.CoreRegistryRepository.RetrieveAll<ApplicationRegistration.Application>();
-            apps.Each(a => svc.CoreRegistryRepository.Delete(a));
-            Expect.AreEqual(0, svc.CoreRegistryRepository.RetrieveAll<ApplicationRegistration.Application>().Count());
-            svc.CoreRegistryRepository.RetrieveAll<ApplicationRegistration.Machine>().Each(h => svc.CoreRegistryRepository.Delete(h));
+            IEnumerable<Organization> organizations = svc.ApplicationRegistrationRepository.RetrieveAll<Organization>();
+            organizations.Each(o => svc.ApplicationRegistrationRepository.Delete(o));
+            Expect.AreEqual(0, svc.ApplicationRegistrationRepository.RetrieveAll<Organization>().Count());
+            IEnumerable<ApplicationRegistration.Application> apps = svc.ApplicationRegistrationRepository.RetrieveAll<ApplicationRegistration.Application>();
+            apps.Each(a => svc.ApplicationRegistrationRepository.Delete(a));
+            Expect.AreEqual(0, svc.ApplicationRegistrationRepository.RetrieveAll<ApplicationRegistration.Application>().Count());
+            svc.ApplicationRegistrationRepository.RetrieveAll<ApplicationRegistration.Machine>().Each(h => svc.ApplicationRegistrationRepository.Delete(h));
             return result;
         }
 

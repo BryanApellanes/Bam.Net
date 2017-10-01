@@ -22,21 +22,44 @@ namespace Bam.Net.CoreServices
         public OAuthSettingsRepository OAuthSettingsRepository { get; set; }
 
         [RoleRequired("/", "Admin")]
-        public OAuthClientSettings[] GetClientSettings()
+        public CoreServiceResponse GetClientSettings()
         {
-            throw new NotImplementedException();
+            try
+            {
+                ApplicationRegistration.Application app = ApplicationRegistrationRepository.GetOneApplicationWhere(c => c.Name == ApplicationName);
+                return new CoreServiceResponse(OAuthSettingsRepository
+                    .OAuthSettingsDatasWhere(c => c.ApplicationIdentifier == app.Cuid && c.ApplicationName == app.Name)
+                    .Select(sd => OAuthSettings.FromData(sd))
+                    .Select(os => os.CopyAs<OAuthClientSettings>())
+                    .ToArray());
+            }
+            catch(Exception ex)
+            {
+                return new CoreServiceResponse { Success = false, Message = ex.Message };
+            }
         }
 
         [RoleRequired("/", "Admin")]
-        public bool SetProviders(OAuthClientSettings[] providers)
+        public CoreServiceResponse AddProvider(string providerName, string clientId, string clientSecret)
         {
-            throw new NotImplementedException();
-        }
-
-        [RoleRequired("/", "Admin")]
-        public bool AddProvider(OAuthSettingsData settings)
-        {
-            throw new NotImplementedException();
+            try
+            {
+                ApplicationRegistration.Application app = ApplicationRegistrationRepository.GetOneApplicationWhere(c => c.Name == ApplicationName);
+                OAuthSettingsData data = new OAuthSettingsData()
+                {
+                    ApplicationName = app.Name,
+                    ApplicationIdentifier = app.Cuid,
+                    ProviderName = providerName,
+                    ClientId = clientId,
+                    ClientSecret = clientSecret
+                };
+                OAuthClientSettings settings = ApplicationRegistrationRepository.Save(data).CopyAs<OAuthClientSettings>();
+                return new CoreServiceResponse { Success = true, Data = settings };
+            }
+            catch (Exception ex)
+            {
+                return new CoreServiceResponse { Success = false, Message = ex.Message };
+            }
         }
 
         public override object Clone()

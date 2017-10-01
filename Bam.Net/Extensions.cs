@@ -2341,33 +2341,48 @@ namespace Bam.Net
                     }
                     else if(property.PropertyType == typeof(HttpCookieCollection))
                     {
-                        HttpCookieCollection values = (HttpCookieCollection)property.GetValue(obj, null);
-                        List<string> strings = new List<string>();
-                        foreach (HttpCookie cookie in values)
+                        object value = property.GetValue(obj, null);
+                        if(value != null)
                         {
-                            strings.Add(string.Format("{0}={1}", cookie.Name, cookie.Value));
+                            HttpCookieCollection values = (HttpCookieCollection)value;
+                            List<string> strings = new List<string>();
+                            foreach (HttpCookie cookie in values)
+                            {
+                                strings.Add(string.Format("{0}={1}", cookie.Name, cookie.Value));
+                            }
+                            returnValue.AppendFormat("{0}: {1}{2}", property.Name, string.Join("\r\n\t", strings.ToArray()), separator);
                         }
-                        returnValue.AppendFormat("{0}: {1}{2}", property.Name, string.Join("\r\n\t", strings.ToArray()), separator);
+                        return "[null]";
                     }
                     else if(property.PropertyType == typeof(System.Net.CookieCollection))
                     {
-                        System.Net.CookieCollection values = (System.Net.CookieCollection)property.GetValue(obj, null);
-                        List<string> strings = new List<string>();
-                        foreach (System.Net.Cookie cookie in values)
+                        object value = property.GetValue(obj, null);
+                        if(value != null)
                         {
-                            strings.Add(string.Format("{0}={1}", cookie.Name, cookie.Value));
+                            System.Net.CookieCollection values = (System.Net.CookieCollection)value;
+                            List<string> strings = new List<string>();
+                            foreach (System.Net.Cookie cookie in values)
+                            {
+                                strings.Add(string.Format("{0}={1}", cookie.Name, cookie.Value));
+                            }
+                            returnValue.AppendFormat("{0}: {1}{2}", property.Name, string.Join("\r\n\t", strings.ToArray()), separator);
                         }
-                        returnValue.AppendFormat("{0}: {1}{2}", property.Name, string.Join("\r\n\t", strings.ToArray()), separator);
+                        return "[null]";
                     }
                     else if (property.PropertyType == typeof(NameValueCollection))
                     {
-                        NameValueCollection values = (NameValueCollection)property.GetValue(obj, null);
-                        List<string> strings = new List<string>();
-                        foreach (string key in values.AllKeys)
+                        object value = property.GetValue(obj, null);
+                        if(value != null)
                         {
-                            strings.Add(string.Format("{0}={1}", key, values[key]));
+                            NameValueCollection values = (NameValueCollection)value;
+                            List<string> strings = new List<string>();
+                            foreach (string key in values.AllKeys)
+                            {
+                                strings.Add(string.Format("{0}={1}", key, values[key]));
+                            }
+                            returnValue.AppendFormat("{0}: {1}{2}", property.Name, string.Join("\r\n\t", strings.ToArray()), separator);
                         }
-                        returnValue.AppendFormat("{0}: {1}{2}", property.Name, string.Join("\r\n\t", strings.ToArray()), separator);
+                        return "[null]";
                     }
                     else if (property.GetIndexParameters().Length == 0)
                     {
@@ -2375,7 +2390,19 @@ namespace Bam.Net
                         string stringValue = "[null]";
                         if (value != null)
                         {
-                            stringValue = value.ToString();
+                            if(value is IEnumerable values && !(value is string))
+                            {
+                                List<string> strings = new List<string>();
+                                foreach(object o in values)
+                                {
+                                    strings.Add(o.ToString());
+                                }
+                                stringValue = string.Join("\r\n\t", strings.ToArray());
+                            }
+                            else
+                            {
+                                stringValue = value.ToString();
+                            }
                         }
 
                         returnValue.AppendFormat("{0}: {1}{2}", property.Name, stringValue, separator);

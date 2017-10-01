@@ -85,7 +85,7 @@ namespace Bam.Net.CoreServices.ApplicationRegistration
             ProcessDescriptor result = new ProcessDescriptor();
             result.CopyProperties(Current);
             result.LocalClient = repo.GetOneClientWhere(m => m.MachineName == Machine.Current.Name && m.ApplicationName == Machine.Current.DnsName && m.ServerHost == serverHost && m.Port == port);
-            result.Application = new Application { Name = applicationName, Organization = new Organization { Name = organizationName.Or(applicationName) } };
+            result.Application = new Application { Name = applicationName, Organization = new Organization { Name = organizationName.Or(Organization.Public.Name) } };
             return result;
         }
 

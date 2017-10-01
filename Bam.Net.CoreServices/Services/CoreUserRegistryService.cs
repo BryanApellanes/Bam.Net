@@ -133,6 +133,7 @@ namespace Bam.Net.CoreServices
             return UserManager.ConfirmAccount(token);
         }
 
+        [Local]
         public virtual Email CreateEmail(string fromAddress = null, string fromDisplayName = null)
         {
             return UserManager.CreateEmail(fromAddress, fromDisplayName);

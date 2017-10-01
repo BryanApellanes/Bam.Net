@@ -10,22 +10,29 @@ namespace Bam.Net.CoreServices
 {
     public class ClientApplicationFactory : MaximumLimitEnforcer<CoreServiceResponse<ApplicationRegistration.Application>>
     {
-        public ClientApplicationFactory(CoreApplicationRegistrationService service, ApplicationRegistration.User user, string organizationName, ProcessDescriptor processDescriptor)
+        public ClientApplicationFactory(CoreApplicationRegistrationService service, User user, string organizationName, ProcessDescriptor processDescriptor)
         {
             CoreApplicationRegistryService = service;
             User = user;
-            CoreRegistryRepository = service.CoreRegistryRepository;
+            ApplicationRegistrationRepository = service.ApplicationRegistrationRepository;
             OrganizationName = organizationName;
             ProcessDescriptor = processDescriptor;
             ClientIpAddress = service.ClientIpAddress;
             HostName = service.HostName;
         }
+        public ClientApplicationFactory(CoreApplicationRegistrationService service, User user)
+        {
+            CoreApplicationRegistryService = service;
+            User = user;
+            ApplicationRegistrationRepository = service.ApplicationRegistrationRepository;
+            OrganizationName = Organization.Public.Name;
+        }
         public string ClientIpAddress { get; set; }
         public string HostName { get; set; }
-        public ApplicationRegistration.User User { get; set; }
+        public User User { get; set; }
         public ProcessDescriptor ProcessDescriptor { get; set; }
         public string OrganizationName { get; set; }
-        public ApplicationRegistrationRepository CoreRegistryRepository { get; set; }
+        public ApplicationRegistrationRepository ApplicationRegistrationRepository { get; set; }
         public CoreApplicationRegistrationService CoreApplicationRegistryService { get; set; }
         public override int GetMaximumLimit()
         {
@@ -52,21 +59,26 @@ namespace Bam.Net.CoreServices
         public override CoreServiceResponse<ApplicationRegistration.Application> LimitNotReachedAction()
         {
             string ApplicationName = ProcessDescriptor.Application.Name;
+            return CreateApplication(ApplicationName);
+        }
+
+        public CoreServiceResponse<ApplicationRegistration.Application> CreateApplication(string applicationName)
+        {
             Organization org = User.Organizations.Where(o => o.Name.Equals(OrganizationName)).FirstOrDefault();
-            ApplicationRegistration.Application app = CoreRegistryRepository.OneApplicationWhere(c => c.Name == ApplicationName && c.OrganizationId == org.Id);
+            ApplicationRegistration.Application app = ApplicationRegistrationRepository.OneApplicationWhere(c => c.Name == applicationName && c.OrganizationId == org.Id);
             if (app == null)
             {
-                app = new ApplicationRegistration.Application { Name = ApplicationName, OrganizationId = org.Id };
-                app = CoreRegistryRepository.Save(app);
+                app = new ApplicationRegistration.Application { Name = applicationName, OrganizationId = org.Id };
+                app = ApplicationRegistrationRepository.Save(app);
                 ProcessDescriptor instance = new ProcessDescriptor { InstanceIdentifier = $"{ClientIpAddress}-{app.Name}-{app.Cuid}" };
                 app.Instances.Add(instance);
                 app.Machines.Add(new Machine { Name = HostName });
-                app = CoreApplicationRegistryService.AddApiKey(CoreRegistryRepository, app);
-                return new CoreServiceResponse<ApplicationRegistration.Application>(app) { Success = true, Message = $"Application {ApplicationName} created" };
+                app = CoreApplicationRegistryService.AddApiKey(ApplicationRegistrationRepository, app);
+                return new CoreServiceResponse<ApplicationRegistration.Application>(app) { Success = true, Message = $"Application {applicationName} created" };
             }
             else
             {
-                return new CoreServiceResponse<ApplicationRegistration.Application>(app) { Success = true, Message = $"Application {ApplicationName} already registered for the organization {OrganizationName}" };
+                return new CoreServiceResponse<ApplicationRegistration.Application>(app) { Success = true, Message = $"Application {applicationName} already registered for the organization {OrganizationName}" };
             }
         }
 
