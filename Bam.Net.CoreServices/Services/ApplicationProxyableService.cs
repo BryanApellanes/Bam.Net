@@ -119,7 +119,7 @@ namespace Bam.Net.CoreServices
             IRequest request = HttpContext?.Request;
             string host = request.Url?.Host;
             int port = (request?.Url?.Port).Value;
-            ApplicationRegistration.Application app = GetServerApplicationOrDie();
+            Application app = GetServerApplicationOrDie();
             if(app.HostDomains.Count > 0)
             {
                 HostDomain hd = app.HostDomains.Where(h => h.DomainName.Equals(host) && h.Port.Equals(port)).FirstOrDefault();

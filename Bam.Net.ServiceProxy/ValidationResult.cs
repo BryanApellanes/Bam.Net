@@ -75,6 +75,7 @@ namespace Bam.Net.ServiceProxy
                 ))
             {
                 Authorizer authorizer = authroizeAttr.Type.Construct<Authorizer>();
+                authorizer.Logger = _toValidate.Logger;
                 if (!authorizer.Authorize(_toValidate))
                 {
                     failures.Add(ServiceProxy.ValidationFailures.AuthorizationFailed);
