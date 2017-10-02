@@ -66,7 +66,7 @@ namespace Bam.Net.ServiceProxy
         }
         private void ValidateAuthorization(IHttpContext context, List<ValidationFailures> failures, List<string> messages)
         {
-            AuthorizeAttribute authroizeAttr;
+            ValidatorAttribute authroizeAttr;
             if (_toValidate.TargetType != null &&
                 _toValidate.MethodInfo != null &&
                 (
@@ -74,9 +74,9 @@ namespace Bam.Net.ServiceProxy
                     _toValidate.MethodInfo.HasCustomAttributeOfType(true, out authroizeAttr)
                 ))
             {
-                Authorizer authorizer = authroizeAttr.Type.Construct<Authorizer>();
+                Validator authorizer = authroizeAttr.Type.Construct<Validator>();
                 authorizer.Logger = _toValidate.Logger;
-                if (!authorizer.Authorize(_toValidate))
+                if (!authorizer.Validate(_toValidate))
                 {
                     failures.Add(ServiceProxy.ValidationFailures.AuthorizationFailed);
                     messages.Add("Authorization failed");

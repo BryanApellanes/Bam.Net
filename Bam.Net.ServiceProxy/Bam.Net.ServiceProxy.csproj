@@ -125,8 +125,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AuthorizeAttribute.cs" />
-    <Compile Include="Authorizer.cs" />
+    <Compile Include="ValidatorAttribute.cs" />
+    <Compile Include="Validator.cs" />
     <Compile Include="DefaultRoleResolver.cs" />
     <Compile Include="DefaultUserResolver.cs" />
     <Compile Include="DefaultWebUserResolver.cs" />

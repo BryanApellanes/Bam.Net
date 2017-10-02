@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.ServiceProxy
 {
-    public abstract class Authorizer
+    public abstract class Validator
     {
         ILogger _logger;
         public ILogger Logger
@@ -22,6 +22,6 @@ namespace Bam.Net.ServiceProxy
                 _logger = value;
             }
         }
-        public abstract bool Authorize(ExecutionRequest request);
+        public abstract bool Validate(ExecutionRequest request);
     }
 }

@@ -8,13 +8,13 @@ using System.Reflection;
 
 namespace Bam.Net.CoreServices.OAuth
 {
-    public class CoreOAuthSettingsServiceAuthorizer : Authorizer
+    public class CoreOAuthSettingsServiceValidator : Validator
     {
-        public CoreOAuthSettingsServiceAuthorizer()
+        public CoreOAuthSettingsServiceValidator()
         {
 
         }
-        public override bool Authorize(ExecutionRequest request)
+        public override bool Validate(ExecutionRequest request)
         {
             CoreOAuthSettingsService service = request.Instance as CoreOAuthSettingsService;
             if(service == null)
