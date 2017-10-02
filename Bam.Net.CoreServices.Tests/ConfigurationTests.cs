@@ -20,6 +20,8 @@ namespace Bam.Net.CoreServices.Tests
     using Server;
     using ServiceProxySecure = ServiceProxy.Secure;
     using Bam.Net.Testing.Unit;
+    using System.Collections.Specialized;
+    using Bam.Net.Web;
 
     [Serializable]
     public class ConfigurationTests : CommandLineTestInterface
@@ -29,7 +31,7 @@ namespace Bam.Net.CoreServices.Tests
         {
             string appName = $"{nameof(CanSetAndGetCommonAppConfig)}_TestAppName";
             string configurationName = $"{nameof(CanSetAndGetCommonAppConfig)}_TestConfigName";
-            CoreConfigurationService configSvc = GetTestCoreConfigurationService(nameof(CanSetAndGetCommonAppConfig));
+            CoreConfigurationService configSvc = GetTestCoreConfigurationService(appName);
 
             configSvc.SetApplicationConfiguration(new Dictionary<string, string>
             {
@@ -54,7 +56,7 @@ namespace Bam.Net.CoreServices.Tests
         {
             string machineName = $"{nameof(CanSetAndGetCommonMachineConfig)}_TestMachineName";
             string configurationName = $"{nameof(CanSetAndGetCommonMachineConfig)}_TestConfigName";
-            CoreConfigurationService configSvc = GetTestCoreConfigurationService(nameof(CanSetAndGetCommonMachineConfig));
+            CoreConfigurationService configSvc = GetTestCoreConfigurationService(machineName);
 
             configSvc.SetMachineConfiguration(machineName, new Dictionary<string, string>
             {
@@ -101,7 +103,7 @@ namespace Bam.Net.CoreServices.Tests
             string configurationName = $"{nameof(ApplicationSettingOverridesMachine)}_TestConfigName";
             string expectedValue = "ApplicationValue";
             string machineName = Machine.Current.Name;
-            CoreConfigurationService configSvc = GetTestCoreConfigurationService(nameof(ApplicationSettingOverridesMachine));
+            CoreConfigurationService configSvc = GetTestCoreConfigurationService(appName);
             configSvc.SetMachineConfiguration(machineName, new Dictionary<string, string>
             {
                 {"key1", "MachineValue" }
@@ -122,7 +124,7 @@ namespace Bam.Net.CoreServices.Tests
         {
             string appName = $"{nameof(ConfigurationAggregatesCommonMachineAndApplication)}_TestAppName";
             string machineName = $"{nameof(ConfigurationAggregatesCommonMachineAndApplication)}_TestMachineName";
-            CoreConfigurationService configSvc = GetTestCoreConfigurationService(nameof(ConfigurationAggregatesCommonMachineAndApplication));
+            CoreConfigurationService configSvc = GetTestCoreConfigurationService(appName);
             configSvc.SetCommonConfiguration(new Dictionary<string, string>
             {
                 {"CommonKey1", "CommonValue1" },
@@ -198,11 +200,24 @@ namespace Bam.Net.CoreServices.Tests
             appNameProvider.GetApplicationName().Returns(appName);
             configSvc.ApplicationNameProvider = appNameProvider;
 
-            IUserManager userMgr = Substitute.For<IUserManager>();            
-            UserAccounts.Data.User testUser = new UserAccounts.Data.User();
-            testUser.UserName = testUserName;
+            IUserManager userMgr = Substitute.For<IUserManager>();
+            UserAccounts.Data.User testUser = new UserAccounts.Data.User()
+            {
+                UserName = testUserName
+            };
             userMgr.GetUser(Arg.Any<IHttpContext>()).Returns(testUser);
             configSvc.UserManager = userMgr;
+            IHttpContext ctx = Substitute.For<IHttpContext>();
+            ctx.Request = Substitute.For<IRequest>();
+            NameValueCollection headers = new NameValueCollection
+            {
+                [Headers.ApplicationName] = testName
+            };
+            ctx.Request.Headers.Returns(headers);
+            ctx.Request.Cookies.Returns(new System.Net.CookieCollection());
+            ctx.Response = Substitute.For<IResponse>();
+            ctx.Response.Cookies.Returns(new System.Net.CookieCollection());
+            configSvc.HttpContext = ctx;
             return configSvc;
         }
     }

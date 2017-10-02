@@ -95,12 +95,12 @@ namespace Bam.Net.CoreServices
         [Local]
         public bool UserIsInOrganization(string organizationName)
         {
-            if (organizationName.Equals(ApplicationRegistration.Organization.Public.Name))
+            if (organizationName.Equals(Organization.Public.Name))
             {
                 return true;
             }
-            ApplicationRegistration.User user = GetApplicationUserOrDie();
-            ApplicationRegistration.Organization org = ApplicationRegistrationRepository.OneOrganizationWhere(c => c.Name == organizationName);
+            User user = GetApplicationUserOrDie();
+            Organization org = ApplicationRegistrationRepository.OneOrganizationWhere(c => c.Name == organizationName);
             if(org != null)
             {
                 return org.Users.Contains(user);
@@ -153,7 +153,7 @@ namespace Bam.Net.CoreServices
         /// Get the User entry from the ApplicationRegistrationRepository for the current user
         /// </summary>
         /// <returns></returns>
-        protected internal ApplicationRegistration.User GetApplicationUser()
+        protected internal User GetApplicationUser()
         {
             UserIsLoggedInOrDie();
             return ApplicationRegistrationRepository.GetOneUserWhere(c => c.UserName == UserName);
@@ -172,9 +172,9 @@ namespace Bam.Net.CoreServices
             }
         }
         
-        protected internal ApplicationRegistration.Application GetServerApplicationOrDie()
+        protected internal Application GetServerApplicationOrDie()
         {
-            ApplicationRegistration.Application app = ApplicationRegistrationRepository.GetOneApplicationWhere(c => c.Name == ServerApplicationName);
+            Application app = ApplicationRegistrationRepository.GetOneApplicationWhere(c => c.Name == ServerApplicationName);
             if (app.Equals(ApplicationRegistration.Application.Unknown))
             {
                 throw new InvalidOperationException("Application is Uknown");
