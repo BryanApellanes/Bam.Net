@@ -108,15 +108,20 @@ namespace Bam.Net.CoreServices.Tests
         [ConsoleAction]
         public void WhoAmITest()
         {
-            OutLineFormat("This test requires a gloo server to be running on port 9100 of the localhost", ConsoleColor.Yellow);
-            ConsoleLogger logger = new ConsoleLogger();
-            logger.AddDetails = false;
-            const string server  = "localhost";
+            //OutLineFormat("This test requires a gloo server to be running on port 9100 of the localhost", ConsoleColor.Yellow);
+            ConsoleLogger logger = new ConsoleLogger()
+            {
+                AddDetails = false
+            };
+            const string server = "localhost";// "int-heart.bamapps.net";
             const int port = 9100;
             logger.StartLoggingThread();
             ApplicationRegistrationRepository repo = CoreServiceRegistryContainer.GetServiceRegistry().Get<ApplicationRegistrationRepository>();
-            CoreClient client = new CoreClient("TestOrg", "TestApp", server, port, logger);
-            client.LocalCoreRegistryRepository = repo;
+            CoreClient client = new CoreClient("TestOrg", "TestApp", server, port, logger)
+            {
+                UseServiceSubdomains = false,
+                LocalCoreRegistryRepository = repo
+            };
             CoreServiceResponse registrationResponse = client.RegisterClient();
             Client current = Client.Of(client.LocalCoreRegistryRepository, client.ApplicationName, server, port);
 

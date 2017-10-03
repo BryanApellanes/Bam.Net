@@ -323,6 +323,17 @@ namespace Bam.Net.Services.Clients
         {
             return ProxyFactory.GetProxy<T>(HostName, Port);
         }
+        public bool UseServiceSubdomains
+        {
+            get
+            {
+                return ProxyFactory.MungeHostNames;
+            }
+            set
+            {
+                ProxyFactory.MungeHostNames = value;
+            }
+        }
         protected ProxyFactory ProxyFactory { get; set; }
         protected bool IsInitialized { get; set; }
 
@@ -355,9 +366,9 @@ namespace Bam.Net.Services.Clients
                 yield return UserRegistryService;
                 yield return ApplicationRegistryService;                
                 yield return ConfigurationService;
-                yield return LoggerService;              
-                yield return DiagnosticService;
+                yield return LoggerService;
                 yield return RoleService;
+                yield return DiagnosticService;                
             }
         }
 

@@ -37,14 +37,48 @@ namespace Bam.Net.CoreServices
             DefaultSettings = new ProxySettings { Protocol = Protocols.Http, Host = "localhost", Port = 9100 };
             Logger = logger ?? Log.Default;
             ServiceProvider = serviceProvider ?? Incubator.Default;
-            HostNameMunger = (type, hostName) =>
+            HostNameMunger = NoMungeMunger;
+        }
+        protected Func<Type, string, string> SubdomainPrefixMunger
+        {
+            get
             {
-                if (type.HasCustomAttributeOfType(out ServiceSubdomainAttribute attr))
+                return (type, hostName) =>
                 {
-                    return $"{attr.Subdomain}.{hostName}";
+                    if (type.HasCustomAttributeOfType(out ServiceSubdomainAttribute attr))
+                    {
+                        return $"{attr.Subdomain}.{hostName}";
+                    }
+                    return hostName;
+                };
+            }
+        }
+        protected Func<Type, string, string> NoMungeMunger
+        {
+            get
+            {
+                return (type, hostName) => hostName;
+            }
+        }
+        bool _mungeHostName;
+        public bool MungeHostNames
+        {
+            get
+            {
+                return _mungeHostName;
+            }
+            set
+            {
+                _mungeHostName = value;
+                if (_mungeHostName)
+                {
+                    HostNameMunger = SubdomainPrefixMunger;
                 }
-                return hostName;
-            };
+                else
+                {
+                    HostNameMunger = NoMungeMunger;
+                }
+            }
         }
 
         public Incubator ServiceProvider { get; set; }

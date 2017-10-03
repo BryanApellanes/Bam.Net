@@ -10,6 +10,8 @@ using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Razor;
 using Bam.Net.ServiceProxy;
+using Bam.Net.Encryption;
+using Bam.Net.Messaging;
 
 namespace Bam.Net.CoreServices
 {
@@ -83,6 +85,8 @@ namespace Bam.Net.CoreServices
                 assemblies.Add(typeof(AuditRepoData).Assembly);
                 assemblies.Add(typeof(Dao).Assembly);
                 assemblies.Add(typeof(DataRow).Assembly);
+                assemblies.Add(typeof(Vault).Assembly);
+                assemblies.Add(typeof(SmtpSettingsProvider).Assembly);
                 return assemblies.ToArray();
             }
         }

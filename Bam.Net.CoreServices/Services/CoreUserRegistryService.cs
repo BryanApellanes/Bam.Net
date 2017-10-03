@@ -211,6 +211,7 @@ namespace Bam.Net.CoreServices
             return RoleResolver.GetRoles(userResolver);
         }
 
+        [Local]
         public Vault GetSmtpSettingsVault(string applicationName = null)
         {
             return UserManager.GetSmtpSettingsVault(applicationName);
