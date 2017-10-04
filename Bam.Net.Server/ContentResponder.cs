@@ -23,7 +23,7 @@ namespace Bam.Net.Server
     /// <summary>
     /// The primary responder for all content files found in ~s:/ (defined as BamServer.ContentRoot)
     /// </summary>
-    public class ContentResponder : ResponderBase, IInitialize<ContentResponder>
+    public class ContentResponder : Responder, IInitialize<ContentResponder>
     {
         public const string IncludeFileName = "include.js";
         public const string LayoutFileExtension = ".layout";

@@ -17,10 +17,10 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Server
 {
-    public abstract class ResponderBase : Loggable, IResponder
+    public abstract class Responder : Loggable, IResponder
     {
         Dictionary<string, string> _contentTypes;        
-        public ResponderBase(BamConf conf)
+        public Responder(BamConf conf)
         {
             this.BamConf = conf;
             this.Logger = Log.Default;
@@ -40,7 +40,7 @@ namespace Bam.Net.Server
             this.AddRespondToPrefix(ResponderSignificantName);
         }
 
-        public ResponderBase(BamConf conf, ILogger logger)
+        public Responder(BamConf conf, ILogger logger)
             : this(conf)
         {
             this.Logger = logger;
@@ -231,6 +231,19 @@ namespace Bam.Net.Server
             {
                 return this.GetType().Name;
             }
+        }
+
+        /// <summary>
+        /// Set the status code, flush the response and close the output 
+        /// stream
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="statusCode"></param>
+        public static void FlushResponse(IHttpContext context, int statusCode = 200)
+        {
+            context.Response.StatusCode = statusCode;
+            context.Response.OutputStream.Flush();
+            context.Response.OutputStream.Close();
         }
 
         protected static void WireResponseLogging(IResponder responder, ILogger logger)

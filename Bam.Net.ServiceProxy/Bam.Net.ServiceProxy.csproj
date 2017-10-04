@@ -125,6 +125,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SecureChannelInvokeException.cs" />
     <Compile Include="ValidatorAttribute.cs" />
     <Compile Include="Validator.cs" />
     <Compile Include="DefaultRoleResolver.cs" />

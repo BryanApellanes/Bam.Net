@@ -13,7 +13,7 @@ using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.Server
 {
-	public abstract class HttpMethodResponder : ResponderBase
+	public abstract class HttpMethodResponder : Responder
 	{
 		public HttpMethodResponder(BamConf conf)
 			: base(conf)

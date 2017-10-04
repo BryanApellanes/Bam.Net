@@ -21,6 +21,7 @@ using Org.BouncyCastle.Crypto.Encodings;
 using Org.BouncyCastle.Crypto.Generators;
 using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Crypto.Engines;
+using Bam.Net.Configuration;
 
 namespace Bam.Net.ServiceProxy.Secure
 {
@@ -34,12 +35,15 @@ namespace Bam.Net.ServiceProxy.Secure
         static SecureChannel()
         {
             InitializeDatabase();
+            Debug = DefaultConfiguration.GetAppSetting($"{nameof(SecureChannel)}.Debug", "false").IsAffirmative();
         }
+
         [Exclude]
         public object Clone()
         {
             SecureChannel clone = new SecureChannel();
             clone.CopyProperties(this);
+            
             return clone;
         }
 
@@ -212,25 +216,27 @@ namespace Bam.Net.ServiceProxy.Secure
             };
             bool success = request.Execute();
             
-            ValidationResult validationResult = request.Result as ValidationResult;
-            if (Debug && validationResult != null)
+            if(request.Result is ValidationResult validationResult)
             {
                 result.Data = "validation failed";
                 result.Message = validationResult.Message;
                 result.Success = false;
-            }
-            else
-            {
-                if (validationResult != null)
-                {
-                    Logger.AddEntry("Validation failed for SecureChannel.Invoke for {0}.{1}:\r\n *** jsonParams were ***\r\n{2}",
+                Logger.AddEntry("Validation failed for SecureChannel.Invoke for {0}.{1}:\r\n\tMessage={2}\r\n\tFailures: {3}:\r\n *** jsonParams were ***\r\n{4}",
                         LogEventType.Warning,
                         className,
                         methodName,
+                        validationResult.Message,
+                        string.Join(",", validationResult.ValidationFailures),
                         jsonParams);
+            }
+            else
+            {
+                string data = request.Result as string;
+                if (string.IsNullOrEmpty(data))
+                {
+                    throw new SecureChannelInvokeException(className, methodName, jsonParams);
                 }
-                
-                result.Data = (string)request.Result; //this will throw an exception if validation failed causing 404 not found to be sent back which is what we want for security if debug is off
+                result.Data = data;
                 result.Success = success;
             }
 

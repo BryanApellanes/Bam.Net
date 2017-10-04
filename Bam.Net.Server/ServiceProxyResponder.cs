@@ -27,7 +27,7 @@ namespace Bam.Net.Server
     /// Responder responsible for generating service proxies
     /// and responding to service proxy requests
     /// </summary>
-    public class ServiceProxyResponder : ResponderBase, IInitialize<ServiceProxyResponder>, IExecutionRequestResolver
+    public class ServiceProxyResponder : Responder, IInitialize<ServiceProxyResponder>, IExecutionRequestResolver
     {
         public const string ServiceProxyRelativePath = "~/services";
         const string MethodFormPrefixFormat = "/{0}/MethodForm";
@@ -732,9 +732,11 @@ namespace Bam.Net.Server
         {
             GetServiceProxies(appName, out Incubator proxiedClasses, out List<ProxyAlias> aliases);
 
-            ExecutionRequest execRequest = new ExecutionRequest(httpContext, proxiedClasses, aliases.ToArray());
-            ExecutionRequest.DecryptSecureChannelInvoke(execRequest);
-            execRequest.Logger = Logger;
+            ExecutionRequest execRequest = new ExecutionRequest(httpContext, proxiedClasses, aliases.ToArray())
+            {
+                Logger = Logger
+            };
+            ExecutionRequest.DecryptSecureChannelInvoke(execRequest);            
             return execRequest;
         }
 

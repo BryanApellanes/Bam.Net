@@ -226,36 +226,24 @@ namespace Bam.Net.ServiceProxy
         public event EventHandler<ServiceProxyInvokeEventArgs> InvocationException;
         protected void OnInvocationException(ServiceProxyInvokeEventArgs args)
         {
-            if (InvocationException != null)
-            {
-                InvocationException(this, args);
-            }
+            InvocationException?.Invoke(this, args);
         }
         public event EventHandler<ServiceProxyInvokeEventArgs> InvokingMethod;
         protected void OnInvokingMethod(ServiceProxyInvokeEventArgs args)
         {
-            if (InvokingMethod != null)
-            {
-                InvokingMethod(this, args);
-            }
+            InvokingMethod?.Invoke(this, args);
         }
 
         public event EventHandler<ServiceProxyInvokeEventArgs> InvokedMethod;
         protected void OnInvokedMethod(ServiceProxyInvokeEventArgs args)
         {
-            if (InvokedMethod != null)
-            {
-                InvokedMethod(this, args);
-            }
+            InvokedMethod?.Invoke(this, args);
         }
 
         public event EventHandler<ServiceProxyInvokeEventArgs> InvokeCanceled;
         protected void OnInvokeCanceled(ServiceProxyInvokeEventArgs args)
         {
-            if (InvokeCanceled != null)
-            {
-                InvokeCanceled(this, args);
-            }
+            InvokeCanceled?.Invoke(this, args);
         }
 
         public abstract string Invoke(string methodName, object[] parameters);

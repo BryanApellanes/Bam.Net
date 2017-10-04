@@ -49,8 +49,10 @@ namespace Bam.Net.ServiceProxy.Secure
         public static SecureExecutionRequest Create<T>(IHttpContext context, string methodName, Incubator serviceProvider, params object[] parameters)
         {
             string jsonParams = ApiParameters.ParametersToJsonParamsArray(parameters).ToJson();
-            SecureExecutionRequest request = new SecureExecutionRequest(context, typeof(T).Name, methodName, jsonParams);            
-            request.ServiceProvider = serviceProvider;
+            SecureExecutionRequest request = new SecureExecutionRequest(context, typeof(T).Name, methodName, jsonParams)
+            {
+                ServiceProvider = serviceProvider
+            };
             return request;
         }
 

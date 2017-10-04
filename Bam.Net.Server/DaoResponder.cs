@@ -34,7 +34,7 @@ namespace Bam.Net.Server
     /// proxy javascripts that enable client side code to
     /// execute server side .Net Dao methods over Ajax.
     /// </summary>
-    public class DaoResponder : ResponderBase, IInitialize<DaoResponder>
+    public class DaoResponder : Responder, IInitialize<DaoResponder>
     {
         const string ViewsRelativePath = "~/views";
         Dictionary<string, Func<string, bool, string>> _dynamicResponders;

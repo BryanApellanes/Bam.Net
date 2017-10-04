@@ -969,14 +969,14 @@ namespace Bam.Net.Server
         /// request handler
         /// </summary>
         /// <param name="responder"></param>
-        public void AddResponder(ResponderBase responder)
+        public void AddResponder(Responder responder)
         {
             _responders.Add(responder);
             _respondersByName.AddMissing(responder.ResponderSignificantName, responder);
             ResponderAdded?.Invoke(this, responder);
         }
 
-        public void RemoveResponder(ResponderBase responder)
+        public void RemoveResponder(Responder responder)
         {
             if(responder == null)
             {

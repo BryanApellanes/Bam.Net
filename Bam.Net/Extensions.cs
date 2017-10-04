@@ -2336,12 +2336,12 @@ namespace Bam.Net
                 {
                     if (property.PropertyType == typeof(string[]))
                     {
-                        string[] values = (string[])property.GetValue(obj, null);
+                        string[] values = ((string[])property.GetValue(obj, null)) ?? new string[] { };
                         returnValue.AppendFormat("{0}: {1}{2}", property.Name, string.Join(", ", values), separator);
                     }
                     else if(property.PropertyType == typeof(HttpCookieCollection))
                     {
-                        object value = property.GetValue(obj, null);
+                        object value = property.GetValue(obj, null);                        
                         if(value != null)
                         {
                             HttpCookieCollection values = (HttpCookieCollection)value;
@@ -2352,7 +2352,10 @@ namespace Bam.Net
                             }
                             returnValue.AppendFormat("{0}: {1}{2}", property.Name, string.Join("\r\n\t", strings.ToArray()), separator);
                         }
-                        return "[null]";
+                        else
+                        {
+                            returnValue.AppendFormat("{0}: [null]{1}", property.Name, separator);
+                        }
                     }
                     else if(property.PropertyType == typeof(System.Net.CookieCollection))
                     {
@@ -2367,7 +2370,10 @@ namespace Bam.Net
                             }
                             returnValue.AppendFormat("{0}: {1}{2}", property.Name, string.Join("\r\n\t", strings.ToArray()), separator);
                         }
-                        return "[null]";
+                        else
+                        {
+                            returnValue.AppendFormat("{0}: [null]{1}", property.Name, separator);
+                        }
                     }
                     else if (property.PropertyType == typeof(NameValueCollection))
                     {
@@ -2382,7 +2388,10 @@ namespace Bam.Net
                             }
                             returnValue.AppendFormat("{0}: {1}{2}", property.Name, string.Join("\r\n\t", strings.ToArray()), separator);
                         }
-                        return "[null]";
+                        else
+                        {
+                            returnValue.AppendFormat("{0}: [null]{1}", property.Name, separator);
+                        }
                     }
                     else if (property.GetIndexParameters().Length == 0)
                     {

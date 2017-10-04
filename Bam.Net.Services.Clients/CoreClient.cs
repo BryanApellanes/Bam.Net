@@ -33,6 +33,7 @@ namespace Bam.Net.Services.Clients
             SetApiKeyResolvers();
             SetClientApplicationNameProvider();
             SetLocalProperties(organizationName, applicationName, hostName, port);
+            WireInvocationEventHandlers();
         }
 
         public CoreClient() : this(Organization.Public.Name, DefaultApplicationName, "bamapps.net", 80, null, Log.Default)
@@ -54,6 +55,7 @@ namespace Bam.Net.Services.Clients
             SetApiKeyResolvers();
             SetClientApplicationNameProvider();
             SetLocalProperties(organizationName, applicationName, hostName, port);
+            WireInvocationEventHandlers();
         }
         
         public CoreClient(string applicationName, string hostName, int port, string workingDirectory = null, ILogger logger = null)
@@ -390,7 +392,8 @@ namespace Bam.Net.Services.Clients
             Port = port;
             WorkspaceDirectory = workingDirectory ?? DataSettings.Default.GetWorkspaceDirectory(typeof(CoreClient)).FullName;
             HashAlgorithm = HashAlgorithms.SHA256;
-            ProxyFactory = new ProxyFactory(WorkspaceDirectory, logger);
+            Logger = logger ?? Log.Default;
+            ProxyFactory = new ProxyFactory(WorkspaceDirectory, Logger);
         }
 
         private void SetDownloadedServiceProxies()
@@ -413,6 +416,29 @@ namespace Bam.Net.Services.Clients
             UserRegistryService = ProxyFactory.GetProxy<CoreUserRegistryService>();
             RoleService = ProxyFactory.GetProxy<CoreRoleService>();
             OAuthService = ProxyFactory.GetProxy<CoreOAuthService>();
+        }
+
+        private void WireInvocationEventHandlers()
+        {
+            foreach(ProxyableService service in ServiceClients)
+            {
+                ServiceProxyClient client = service.Property<ServiceProxyClient>("Client");
+                client.InvocationException += (o, a) => InvocationExceptionHandler(o, a);
+                client.InvokedMethod += (o, a) => InvocationHandler(o, a);
+            }
+        }
+        public event EventHandler InvocationException;
+        public event EventHandler MethodInvoked;
+        private void InvocationExceptionHandler(object sender, ServiceProxyInvokeEventArgs args)
+        {            
+            Logger.AddEntry("Invocation Exception: {0}", args.Exception, args.PropertiesToString());
+            InvocationException?.Invoke(sender, args);
+        }
+
+        private void InvocationHandler(object sender, ServiceProxyInvokeEventArgs args)
+        {
+            Logger.AddEntry("ProxyClient Method Invoked: {0}", args.PropertiesToString());
+            MethodInvoked?.Invoke(sender, args);
         }
 
         private void EnsureApiKeyFileDirectory()

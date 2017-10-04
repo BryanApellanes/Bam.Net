@@ -23,7 +23,6 @@ namespace Bam.Net.CoreServices
     [Proxy("appRegistrySvc")]
     [Encrypt]
     [ServiceSubdomain("appregistry")]
-    [RoleRequired("/appreg/accessdenied", "Admin")]
     public class CoreApplicationRegistrationService : ApplicationProxyableService, IApiKeyResolver, IApiKeyProvider, IApplicationNameProvider
     {
         CacheManager _cacheManager;

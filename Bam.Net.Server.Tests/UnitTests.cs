@@ -490,7 +490,7 @@ namespace Bam.Net.Server.Tests
             Expect.IsTrue(conf.GenerateDao);
         }
 
-        class TestResponder : ResponderBase
+        class TestResponder : Responder
         {
             public TestResponder() : base(null) { }
             public override bool TryRespond(IHttpContext context)
