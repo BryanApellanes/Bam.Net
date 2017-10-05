@@ -430,15 +430,13 @@ namespace Bam.Net.Services.Clients
         public event EventHandler InvocationException;
         public event EventHandler MethodInvoked;
         private void InvocationExceptionHandler(object sender, ServiceProxyInvokeEventArgs args)
-        {            
-            Logger.AddEntry("Invocation Exception: {0}", args.Exception, args.PropertiesToString());
-            InvocationException?.Invoke(sender, args);
+        {
+            FireEvent(InvocationException, sender, args);
         }
 
         private void InvocationHandler(object sender, ServiceProxyInvokeEventArgs args)
         {
-            Logger.AddEntry("ProxyClient Method Invoked: {0}", args.PropertiesToString());
-            MethodInvoked?.Invoke(sender, args);
+            FireEvent(MethodInvoked, sender, args);
         }
 
         private void EnsureApiKeyFileDirectory()

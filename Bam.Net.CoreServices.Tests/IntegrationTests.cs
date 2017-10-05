@@ -19,6 +19,7 @@ using Google.Protobuf;
 using Bam.Net.CoreServices.ApplicationRegistration.Dao.Repository;
 using Bam.Net.UserAccounts.Data;
 using Bam.Net.Services.Clients;
+using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.CoreServices.Tests
 {
@@ -122,9 +123,12 @@ namespace Bam.Net.CoreServices.Tests
                 UseServiceSubdomains = false,
                 LocalCoreRegistryRepository = repo
             };
+            client.InvocationException += (o, args) => logger.AddEntry("Invocation Exception: {0}", ((ServiceProxyInvokeEventArgs)args).Exception, args.PropertiesToString());
+            client.MethodInvoked += (o, args) => logger.AddEntry("ProxyClient Method Invoked: {0}", args.PropertiesToString());
+
             CoreServiceResponse registrationResponse = client.RegisterClient();
             Client current = Client.Of(client.LocalCoreRegistryRepository, client.ApplicationName, server, port);
-
+            
             CoreServiceResponse response = client.Connect();
 
             string whoAmI = client.UserRegistryService.WhoAmI();

@@ -156,5 +156,10 @@ namespace Bam.Net.Logging
 		{
             eventHandler?.Invoke(this, eventArgs);
         }
+
+        protected void FireEvent(EventHandler eventHandler, object sender, EventArgs eventArgs)
+        {
+            eventHandler?.Invoke(sender, eventArgs);
+        }
     }
 }
