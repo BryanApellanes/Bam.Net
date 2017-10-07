@@ -19,15 +19,13 @@ namespace Bam.Net.Services
             RegisterServices(serviceRegistry);            
         }
 
-        public void RegisterServices(ServiceRegistry serviceRegistry)
+        public void RegisterServices(ServiceRegistry serviceRegistry, bool requireApiKeyResover = false)
         {
             ServiceRegistry = serviceRegistry;
             Responder.ClearCommonServices();
             Responder.ClearAppServices();
             ServiceRegistry.MappedTypes.Where(t => t.HasCustomAttributeOfType<ProxyAttribute>()).Each(t => AddService(t));
-            IApiKeyResolver apiKeyResolver = ServiceRegistry.Get<IApiKeyResolver>();
-            Responder.CommonSecureChannel.ApiKeyResolver = apiKeyResolver;
-            Responder.AppSecureChannels.Values.Each(sc => sc.ApiKeyResolver = apiKeyResolver);
+            SetApiKeyResolver(serviceRegistry, requireApiKeyResover ? ApiKeyResolver.Default : null);
         }
 
         public override void Start()
@@ -55,5 +53,12 @@ namespace Bam.Net.Services
 
         public HashSet<ServiceSubdomainAttribute> ServiceSubdomains { get; set; }
         protected ServiceRegistry ServiceRegistry { get; set; }
+
+        protected void SetApiKeyResolver(ServiceRegistry registry, IApiKeyResolver ifNull)
+        {
+            IApiKeyResolver apiKeyResolver = registry.Get(ifNull);
+            Responder.CommonSecureChannel.ApiKeyResolver = apiKeyResolver;
+            Responder.AppSecureChannels.Values.Each(sc => sc.ApiKeyResolver = apiKeyResolver);
+        }
     }
 }
