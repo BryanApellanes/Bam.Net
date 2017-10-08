@@ -11,11 +11,11 @@ using Bam.Net.Presentation.Html;
 using Bam.Net.ServiceProxy;
 using Bam.Net.ServiceProxy.Js;
 
-namespace Bam.Net.Google
+namespace Bam.Net.Presentation
 {
-    public static class GoogleHelper
+    public static class Google
     {
-        public static MvcHtmlString GoogleAnalytics(this ServiceProxyHelper helper, string trackingId)
+        public static MvcHtmlString Analytics(this ServiceProxyHelper helper, string trackingId)
         {
             return new TagBuilder("script")
                 .Attr("type", "text/javascript")

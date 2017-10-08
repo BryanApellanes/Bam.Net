@@ -12,7 +12,7 @@ using System.Drawing;
 using System.Net;
 using System.Web;
 using Bam.Net;
-using Bam.Net.Yaml;
+//using Bam.Net.Yaml;
 using Bam.Net.Configuration;
 
 using BoneSoft.CSS;
@@ -36,15 +36,20 @@ namespace Bam.Net.Drawing
                 return new FileInfo(path).FromJson<ColorPalette>();
             });
 
-            _loaders.Add(".yaml", (path) =>
-            {
-                return File.ReadAllText(path).FromYaml<ColorPalette>();
-            });
-
             _loaders.Add(".xml", (path) =>
             {
                 return File.ReadAllText(path).FromXml<ColorPalette>();
             });
+        }
+
+        public static void AddLoader(string extension, Func<string, ColorPalette> loader)
+        {
+            _loaders.Add(extension, loader);
+        }
+
+        public void AddSaver(string extension, Action<ColorPalette, string, bool> saver)
+        {
+            _savers.Add(extension, saver);
         }
 
         public ColorPalette()
@@ -54,11 +59,6 @@ namespace Bam.Net.Drawing
             this._savers.Add(".json", (pal, path, overwrite) =>
             {
                 pal.ToJson().SafeWriteToFile(path, overwrite);
-            });
-
-            this._savers.Add(".yaml", (pal, path, overwrite) =>
-            {
-                pal.ToYaml().SafeWriteToFile(path, overwrite);
             });
 
             this._savers.Add(".xml", (pal, path, overwrite) =>
