@@ -28,8 +28,7 @@ namespace Bam.Net.Services.Distributed.Data
         }
         public DataPropertyCollection Prop(string name, object value)
         {
-            DataProperty ignore;
-            return Prop(name, value, out ignore);
+            return Prop(name, value, out DataProperty ignore);
         }
 
         public DataPropertyCollection Prop(string name, object value, out DataProperty dataProperty)
@@ -99,7 +98,7 @@ namespace Bam.Net.Services.Distributed.Data
 
         private void ThrowOnDuplicateNames()
         {
-            List<string> names = new List<string>();
+            HashSet<string> names = new HashSet<string>();
             foreach(DataProperty dp in this)
             {
                 Args.ThrowIf<InvalidOperationException>(names.Contains(dp.Name), "Multiple DataProperties found with the same name: {0}", dp.Name);

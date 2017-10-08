@@ -9,64 +9,61 @@ using System.Threading.Tasks;
 using System.Reflection;
 using Bam.Net;
 using Bam.Net.Logging;
-using Bam.Net.ServiceProxy;
 using System.IO;
+using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.Documentation
 {
-    public class DocInfo
+    public class ClassDocumentation
     {
-        internal DocInfo()
+        internal ClassDocumentation()
         { }
 
-        public DocInfo(Type type)
+        public ClassDocumentation(Type type)
         {
-            DocAttribute attribute;
+            ClassDocumentationAttribute attribute;
             this.DeclaringType = type;
-            this.MemberType = MemberType.Type;
+            this.MemberType = ClassMemberType.Type;
             this.MemberName = "{0}.{1}"._Format(type.Namespace, type.Name);
-            this.From = DocFrom.Reflection;
+            this.From = ClassDocumentationFrom.Reflection;
 
-            if (type.HasCustomAttributeOfType<DocAttribute>(out attribute))
+            if (type.HasCustomAttributeOfType<ClassDocumentationAttribute>(out attribute))
             {
                 this.Summary = attribute.Summary;
             }           
         }
 
-        public DocInfo(PropertyInfo property)
+        public ClassDocumentation(PropertyInfo property)
         {
-            DocAttribute attribute;
-
             Type type = property.DeclaringType;
             this.DeclaringType = type;
-            this.MemberType = MemberType.Property;
+            this.MemberType = ClassMemberType.Property;
             this.MemberName = "{0}.{1}.{2}"._Format(type.Namespace, type.Name, property.Name);
-            this.From = DocFrom.Reflection;
+            this.From = ClassDocumentationFrom.Reflection;
 
-            if (property.HasCustomAttributeOfType<DocAttribute>(out attribute))
+            if (property.HasCustomAttributeOfType(out ClassDocumentationAttribute attribute))
             {
                 this.Summary = attribute.Summary;                
             }
         }
 
-        public DocInfo(MethodInfo method)
+        public ClassDocumentation(MethodInfo method)
         {
-            DocAttribute attribute;
             Type type = method.DeclaringType;
             this.DeclaringType = type;
-            this.MemberType = MemberType.Method;
+            this.MemberType = ClassMemberType.Method;
             this.Returns = method.ReturnType.FullName;
             this.MemberName = "{0}.{1}.{2}"._Format(type.Namespace, type.Name, method.Name);
-            this.From = DocFrom.Reflection;
+            this.From = ClassDocumentationFrom.Reflection;
 
-            if (method.HasCustomAttributeOfType<DocAttribute>(out attribute))
+            if (method.HasCustomAttributeOfType(out ClassDocumentationAttribute attribute))
             {
                 this.Summary = attribute.Summary;
                 SetMethodInfo(attribute, method);
             }
         }
 
-        public DocFrom From
+        public ClassDocumentationFrom From
         {
             get;
             set;
@@ -105,7 +102,7 @@ namespace Bam.Net.Documentation
         public string Exception { get; set; }
 
         public string MemberName { get; set; }
-        public MemberType MemberType { get; set; }
+        public ClassMemberType MemberType { get; set; }
         public string Returns { get; set; }
 
         public bool HasExtraItems
@@ -314,16 +311,16 @@ namespace Bam.Net.Documentation
             }
         }
 
-        internal static Dictionary<string, List<DocInfo>> FromXmlFilesIn(string directoryPath)
+        internal static Dictionary<string, List<ClassDocumentation>> FromXmlFilesIn(string directoryPath)
         {
             return FromXmlFilesIn(new DirectoryInfo(directoryPath));
         }
 
-        internal static Dictionary<string, List<DocInfo>> FromXmlFilesIn(DirectoryInfo dir)
+        internal static Dictionary<string, List<ClassDocumentation>> FromXmlFilesIn(DirectoryInfo dir)
         {
             Args.ThrowIfNull(dir, "dir");
 
-            Dictionary<string, List<DocInfo>> allResults = new Dictionary<string, List<DocInfo>>();
+            Dictionary<string, List<ClassDocumentation>> allResults = new Dictionary<string, List<ClassDocumentation>>();
 
             if (dir.Exists)
             {
@@ -332,12 +329,12 @@ namespace Bam.Net.Documentation
                 {
                     try
                     {
-                        Dictionary<string, List<DocInfo>> tmp = FromXmlFile(f);
+                        Dictionary<string, List<ClassDocumentation>> tmp = FromXmlFile(f);
                         tmp.Keys.Each(s =>
                         {
                             if (!allResults.ContainsKey(s))
                             {
-                                allResults.Add(s, new List<DocInfo>());
+                                allResults.Add(s, new List<ClassDocumentation>());
                             }
 
                             allResults[s].AddRange(tmp[s]);
@@ -358,12 +355,12 @@ namespace Bam.Net.Documentation
             return allResults;
         }
 
-        internal static bool TryFromXmlFile(string filePath, out  Dictionary<string, List<DocInfo>> docInfos)
+        internal static bool TryFromXmlFile(string filePath, out  Dictionary<string, List<ClassDocumentation>> docInfos)
         {
             return TryFromXmlFile(new FileInfo(filePath), out docInfos);
         }
 
-        internal static bool TryFromXmlFile(FileInfo file, out Dictionary<string, List<DocInfo>> docInfos)
+        internal static bool TryFromXmlFile(FileInfo file, out Dictionary<string, List<ClassDocumentation>> docInfos)
         {
             docInfos = null;
             bool result = true;
@@ -380,16 +377,16 @@ namespace Bam.Net.Documentation
             return result;
         }
 
-        internal static Dictionary<string, List<DocInfo>> FromXmlFile(string filePath)
+        internal static Dictionary<string, List<ClassDocumentation>> FromXmlFile(string filePath)
         {
             return FromXmlFile(new FileInfo(filePath));
         }
 
-        internal static Dictionary<string, List<DocInfo>> FromXmlFile(FileInfo file)
+        internal static Dictionary<string, List<ClassDocumentation>> FromXmlFile(FileInfo file)
         {
             Args.ThrowIfNull(file, "file");
 
-            Dictionary<string, List<DocInfo>> tempResults = new Dictionary<string, List<DocInfo>>();
+            Dictionary<string, List<ClassDocumentation>> tempResults = new Dictionary<string, List<ClassDocumentation>>();
 
             if (file.Exists)
             {
@@ -399,12 +396,12 @@ namespace Bam.Net.Documentation
                 {
                     doc.members.Items.Each(mem =>
                     {
-                        DocInfo info = new DocInfo();
+                        ClassDocumentation info = new ClassDocumentation();
                         info.AssemblyName = assemblyName;
                         string memberName;
                         info.MemberType = GetMemberType(mem.name, out memberName);
                         info.MemberName = memberName;
-                        info.From = DocFrom.Xml;
+                        info.From = ClassDocumentationFrom.Xml;
                         
                         #region ugly
                        
@@ -449,7 +446,7 @@ namespace Bam.Net.Documentation
 
                         if (!tempResults.ContainsKey(memberName))
                         {
-                            tempResults.Add(memberName, new List<DocInfo>());
+                            tempResults.Add(memberName, new List<ClassDocumentation>());
                         }
 
                         tempResults[memberName].Add(info);
@@ -722,38 +719,38 @@ namespace Bam.Net.Documentation
             return result;
         }
 
-        internal MemberType GetMemberType(member m, out string memberName)
+        internal ClassMemberType GetMemberType(member m, out string memberName)
         {
             string tmp = m.name;
             return GetMemberType(tmp, out memberName);
         }
 
-        internal static MemberType GetMemberType(string tmp, out string memberName)
+        internal static ClassMemberType GetMemberType(string tmp, out string memberName)
         {
             string type = tmp.Substring(0, 1);
             memberName = tmp.Substring(2, tmp.Length - 2);
-            DocMemberType memberType;
-            Enum.TryParse<DocMemberType>(type, out memberType);
+            ClassDocumentationMemberType memberType;
+            Enum.TryParse<ClassDocumentationMemberType>(type, out memberType);
 
-            return (MemberType)((int)memberType);
+            return (ClassMemberType)((int)memberType);
         }
 
-        internal static Dictionary<string, List<DocInfo>> FromDocAttributes(Type type)
+        internal static Dictionary<string, List<ClassDocumentation>> FromDocAttributes(Type type)
         {
-            Dictionary<string, List<DocInfo>> documentation = new Dictionary<string, List<DocInfo>>();
-            List<DocInfo> docInfos = new List<DocInfo>();
-            docInfos.Add(new DocInfo(type));
+            Dictionary<string, List<ClassDocumentation>> documentation = new Dictionary<string, List<ClassDocumentation>>();
+            List<ClassDocumentation> docInfos = new List<ClassDocumentation>();
+            docInfos.Add(new ClassDocumentation(type));
             PropertyInfo[] properties = type.GetProperties();
             properties.Each(p =>
             {
-                docInfos.Add(new DocInfo(p));
+                docInfos.Add(new ClassDocumentation(p));
             });
             MethodInfo[] methods = type.GetMethods();
             methods.Each(m =>
             {
-                if (ServiceProxySystem.WillProxyMethod(m))
+                if (m.WillProxy())
                 {
-                    docInfos.Add(new DocInfo(m));
+                    docInfos.Add(new ClassDocumentation(m));
                 }
             });
 
@@ -761,7 +758,7 @@ namespace Bam.Net.Documentation
             return documentation;
         }
 
-        private void SetMethodInfo(DocAttribute attr, MethodInfo method)
+        private void SetMethodInfo(ClassDocumentationAttribute attr, MethodInfo method)
         {
             ParameterInfo[] actualInfos = method.GetParameters();
             if (actualInfos.Length != attr.ParameterDescriptions.Length)
@@ -816,12 +813,12 @@ namespace Bam.Net.Documentation
         /// <param name="assembly"></param>
         /// <param name="precedence"></param>
         /// <returns></returns>
-        public static Dictionary<string, List<DocInfo>> Infer(Assembly assembly, DocPrecedence precedence = DocPrecedence.Xml)
+        public static Dictionary<string, List<ClassDocumentation>> Infer(Assembly assembly, DocumentationPrecedence precedence = DocumentationPrecedence.Xml)
         {
             Args.ThrowIfNull(assembly, "assembly");
 
             FileInfo assemblyFileInfo = new FileInfo(assembly.Location);
-            Dictionary<string, List<DocInfo>> results = new Dictionary<string,List<DocInfo>>();
+            Dictionary<string, List<ClassDocumentation>> results = new Dictionary<string,List<ClassDocumentation>>();
             assembly.GetTypes().Each(type =>
             {
                 AddDocInfos(results, type);
@@ -839,19 +836,19 @@ namespace Bam.Net.Documentation
             return results;
         }
 
-        public static void AddDocInfos(Dictionary<string, List<DocInfo>> results, FileInfo xmlFile, DocPrecedence precedence = DocPrecedence.Xml)
+        public static void AddDocInfos(Dictionary<string, List<ClassDocumentation>> results, FileInfo xmlFile, DocumentationPrecedence precedence = DocumentationPrecedence.Xml)
         {
-            Dictionary<string, List<DocInfo>> xmlResults;
+            Dictionary<string, List<ClassDocumentation>> xmlResults;
             if (TryFromXmlFile(xmlFile, out xmlResults))
             {
                 xmlResults.Keys.Each(typeName =>
                 {
-                    if ((results.ContainsKey(typeName) && precedence == DocPrecedence.Xml) ||
+                    if ((results.ContainsKey(typeName) && precedence == DocumentationPrecedence.Xml) ||
                         !results.ContainsKey(typeName))
                     {
                         if (!results.ContainsKey(typeName))
                         {
-                            results.Add(typeName, new List<DocInfo>());
+                            results.Add(typeName, new List<ClassDocumentation>());
                         }
 
                         results[typeName].AddRange(xmlResults[typeName]);
@@ -860,14 +857,14 @@ namespace Bam.Net.Documentation
             }
         }
 
-        public static void AddDocInfos(Dictionary<string, List<DocInfo>> results, Type type)
+        public static void AddDocInfos(Dictionary<string, List<ClassDocumentation>> results, Type type)
         {
-            Dictionary<string, List<DocInfo>> tempResults = FromDocAttributes(type);
+            Dictionary<string, List<ClassDocumentation>> tempResults = FromDocAttributes(type);
             tempResults.Keys.Each(typeName =>
             {
                 if (!results.ContainsKey(typeName))
                 {
-                    results.Add(typeName, new List<DocInfo>());
+                    results.Add(typeName, new List<ClassDocumentation>());
                 }
 
                 results[typeName].AddRange(tempResults[typeName]);

@@ -35,8 +35,10 @@ namespace Bam.Net.Services.Tests
         [UnitTest]
         public void ThrowsOnDuplicateName()
         {
-            DataPropertyCollection propList = new DataPropertyCollection();
-            propList.Add("Name", "some value");
+            DataPropertyCollection propList = new DataPropertyCollection
+            {
+                { "Name", "some value" }
+            };
             Expect.Throws(() =>
             {
                 propList.Add("Name", "bad bad");

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Documentation
 {
-    internal enum DocMemberType
+    internal enum ClassDocumentationMemberType
     {
         NotFound,
         T, // Type

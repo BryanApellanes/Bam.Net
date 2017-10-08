@@ -9,10 +9,12 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Documentation
 {
-    public enum DocFrom
+    public enum ClassMemberType
     {
-        Invalid,
-        Xml,
-        Reflection
+        NotFound,
+        Type,
+        Field,
+        Property,
+        Method
     }
 }

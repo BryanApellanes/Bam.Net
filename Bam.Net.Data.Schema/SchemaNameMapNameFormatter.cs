@@ -14,7 +14,7 @@ namespace Bam.Net.Data.Schema
     /// A name formatter that uses a SchemaNameMap to 
     /// name classes and properties
     /// </summary>
-    [Doc("A name formatter tha uses a SchemaNameMap to name classes and properties")]
+    [ClassDocumentation("A name formatter tha uses a SchemaNameMap to name classes and properties")]
     public class SchemaNameMapNameFormatter: INameFormatter
     {
         public SchemaNameMapNameFormatter() { }
@@ -23,7 +23,7 @@ namespace Bam.Net.Data.Schema
             this.NameMap = nameMap;
         }
 
-        [Doc("The SchemaNameMap to use")]
+        [ClassDocumentation("The SchemaNameMap to use")]
         public SchemaNameMap NameMap { get; set; }
         public string FormatClassName(string tableName)
         {

@@ -11,24 +11,23 @@ using System.IO;
 using Bam.Net;
 using Bam.Net.Incubation;
 using System.Reflection;
-using Bam.Net.ServiceProxy;
 using Bam.Net.Logging;
 
 namespace Bam.Net.Documentation
 {
-    public class DocResult: ActionResult
+    public class ClassDocumentationResult: ActionResult
     {
-        public DocResult(string[] classNames)
+        public ClassDocumentationResult(string[] classNames)
         {
             this.ClassNames = classNames;
         }
         
         public string[] ClassNames { get; set; }
-        public static DocRenderDelegate DefaultRenderer { get; set; }
+        public static DocumentationRenderDelegate DefaultRenderer { get; set; }
 
-        DocRenderDelegate _renderer;
+        DocumentationRenderDelegate _renderer;
         object _rendererLock = new object();
-        public DocRenderDelegate Renderer
+        public DocumentationRenderDelegate Renderer
         {
             get
             {
@@ -54,14 +53,14 @@ namespace Bam.Net.Documentation
         {
             get
             {
-                return _sync.DoubleCheckLock(ref _serviceContainer, () => ServiceProxySystem.Incubator);
+                return _sync.DoubleCheckLock(ref _serviceContainer, () => Incubator.Default);
             }
         }
 
         private void RenderFromDocAttributes(ControllerContext context)
         {
             StringBuilder output = new StringBuilder();
-            Dictionary<string, List<DocInfo>> documentation = new Dictionary<string, List<DocInfo>>();
+            Dictionary<string, List<ClassDocumentation>> documentation = new Dictionary<string, List<ClassDocumentation>>();
 
             if (ClassNames.Length > 0)
             {
@@ -70,7 +69,7 @@ namespace Bam.Net.Documentation
                 ClassNames.Each(cn =>
                 {
                     Type type = container[cn];
-                    documentation = DocInfo.FromDocAttributes(type);
+                    documentation = ClassDocumentation.FromDocAttributes(type);
                 });
             }
 

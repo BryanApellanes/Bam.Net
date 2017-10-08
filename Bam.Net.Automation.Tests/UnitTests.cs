@@ -133,17 +133,17 @@ namespace Bam.Net.Automation.Tests
         public void GetMemberTypeTest()
         {
             string name;
-            MemberType type = DocInfo.GetMemberType("M:This.Is.A.Method", out name);
-            Expect.IsTrue(type == MemberType.Method);
+            ClassMemberType type = ClassDocumentation.GetMemberType("M:This.Is.A.Method", out name);
+            Expect.IsTrue(type == ClassMemberType.Method);
             Expect.AreEqual("This.Is.A.Method", name);
-            type = DocInfo.GetMemberType("F:This.Is.A.Field", out name);
-            Expect.IsTrue(type == MemberType.Field);
+            type = ClassDocumentation.GetMemberType("F:This.Is.A.Field", out name);
+            Expect.IsTrue(type == ClassMemberType.Field);
             Expect.AreEqual("This.Is.A.Field", name);
-            type = DocInfo.GetMemberType("T:This.Is.A.Type", out name);
-            Expect.IsTrue(type == MemberType.Type);
+            type = ClassDocumentation.GetMemberType("T:This.Is.A.Type", out name);
+            Expect.IsTrue(type == ClassMemberType.Type);
             Expect.AreEqual("This.Is.A.Type", name);
-            type = DocInfo.GetMemberType("P:This.Is.A.Property", out name);
-            Expect.IsTrue(type == MemberType.Property);
+            type = ClassDocumentation.GetMemberType("P:This.Is.A.Property", out name);
+            Expect.IsTrue(type == ClassMemberType.Property);
             Expect.AreEqual("This.Is.A.Property", name);
         }
 
@@ -191,7 +191,7 @@ namespace Bam.Net.Automation.Tests
         [UnitTest]
         public void DocInfoFromXmlFileShouldHaveDeclaringTypeName()
         {
-            Dictionary<string, List<DocInfo>> infos = DocInfo.FromXmlFile("./TestBuildProject.xml");
+            Dictionary<string, List<ClassDocumentation>> infos = ClassDocumentation.FromXmlFile("./TestBuildProject.xml");
             infos.Keys.Each(s =>
             {
                 OutLine(s, ConsoleColor.Cyan);
@@ -206,25 +206,25 @@ namespace Bam.Net.Automation.Tests
         /// <summary>
         /// This is the xml summary
         /// </summary>
-        [Doc(@"This class is for testing documentation
+        [ClassDocumentation(@"This class is for testing documentation
 and whatever")]
         class DocumentedClassTest
         {
-            [Doc(@"This is a method that takes no 
+            [ClassDocumentation(@"This is a method that takes no 
 arguments")]
             public void TestMethod()
             {
 
             }
 
-            [Doc(@"This method returns 
+            [ClassDocumentation(@"This method returns 
 an empty string")]
             public string ReturnsStringMethod()
             {
                 return string.Empty;
             }
 
-            [Doc(@"This method takes arguments", "the reason this is funny")]
+            [ClassDocumentation(@"This method takes arguments", "the reason this is funny")]
             public string ReturnFunnyString(string reason)
             {
                 return reason + " funny";
@@ -234,7 +234,7 @@ an empty string")]
         [UnitTest]
         public void DocInfoFromAttributeShouldHaveDeclaringTypeName()
         {
-            Dictionary<string, List<DocInfo>> infos = DocInfo.FromDocAttributes(typeof(DocumentedClassTest));
+            Dictionary<string, List<ClassDocumentation>> infos = ClassDocumentation.FromDocAttributes(typeof(DocumentedClassTest));
             Expect.IsGreaterThan(infos.Count, 0);
 
             infos.Keys.Each(type =>
@@ -244,7 +244,7 @@ an empty string")]
                     Out("From: ");
                     OutLine(info.From.ToString(), ConsoleColor.Cyan);
 
-                    if (info.From == DocFrom.Reflection)
+                    if (info.From == ClassDocumentationFrom.Reflection)
                     {
                         Expect.IsFalse(string.IsNullOrEmpty(info.DeclaringTypeName));
                     }
@@ -256,7 +256,7 @@ an empty string")]
         [UnitTest]
         public void ShouldBeAbleToInferDocs()
         {
-            Dictionary<string, List<DocInfo>> infos = DocInfo.Infer(Assembly.GetExecutingAssembly());
+            Dictionary<string, List<ClassDocumentation>> infos = ClassDocumentation.Infer(Assembly.GetExecutingAssembly());
             Expect.IsGreaterThan(infos.Count, 0);
 
             infos.Keys.Each(type =>
@@ -264,10 +264,10 @@ an empty string")]
                 infos[type].Each(info =>
                 {
                     Out("From: ", ConsoleColor.Cyan);
-                    ConsoleColor fromColor = info.From == DocFrom.Reflection ? ConsoleColor.Blue : ConsoleColor.Yellow;
+                    ConsoleColor fromColor = info.From == ClassDocumentationFrom.Reflection ? ConsoleColor.Blue : ConsoleColor.Yellow;
                     OutLine(info.From.ToString(), fromColor);
 
-                    if (info.From == DocFrom.Reflection)
+                    if (info.From == ClassDocumentationFrom.Reflection)
                     {
                         Expect.IsFalse(string.IsNullOrEmpty(info.DeclaringTypeName));
                     }
@@ -277,14 +277,14 @@ an empty string")]
             });
         }
 
-        private static void OutputInfo(DocInfo info)
+        private static void OutputInfo(ClassDocumentation info)
         {
             OutLineFormat("Summary:\r\n{0}", ConsoleColor.Blue, info.Summary);
             OutLineFormat("DeclaringTypName: {0}", ConsoleColor.Yellow, info.DeclaringTypeName);
             OutLineFormat("MemberType: {0}", ConsoleColor.Magenta, info.MemberType.ToString());
             OutLineFormat("MemberName: {0}", ConsoleColor.Yellow, info.MemberName);
 
-            if (info.MemberType == MemberType.Method)
+            if (info.MemberType == ClassMemberType.Method)
             {
                 info.ParamInfos.Each(p =>
                 {

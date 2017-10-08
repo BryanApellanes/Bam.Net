@@ -186,7 +186,8 @@
     <Compile Include="Instant.cs" />
     <Compile Include="IOrganizationNameProvider.cs" />
     <Compile Include="IpcMessageLockInfo.cs" />
-    <Compile Include="IRenderToStream.cs" />
+    <Compile Include="IRenderable.cs" />
+    <Compile Include="IStreamRenderer.cs" />
     <Compile Include="IWriteSource.cs" />
     <Compile Include="LocalAttribute.cs" />
     <Compile Include="Logging\ClientLogger.cs" />
@@ -209,6 +210,7 @@
     <Compile Include="Razor\RazorRenderer.cs" />
     <Compile Include="Razor\RazorTemplate.cs" />
     <Compile Include="Resolver.cs" />
+    <Compile Include="ServiceProxy\Method.cs" />
     <Compile Include="SQLiteBitMonitor.cs" />
     <Compile Include="Timed.cs" />
     <Compile Include="Validate.cs" />
