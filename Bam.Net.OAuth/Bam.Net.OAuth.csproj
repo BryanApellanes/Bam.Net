@@ -111,6 +111,10 @@
     <Compile Include="QueryStringParameter.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Bam.Net.Presentation\Bam.Net.Presentation.csproj">
+      <Project>{b9e03ff5-0750-4162-bafd-3f0778d44a8c}</Project>
+      <Name>Bam.Net.Presentation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.ServiceProxy\Bam.Net.ServiceProxy.csproj">
       <Project>{8987d8c8-033b-4993-99f0-8dd5a4d6dd0d}</Project>
       <Name>Bam.Net.ServiceProxy</Name>
