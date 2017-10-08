@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Presentation.Html
+namespace Bam.Net.Presentation.Pdf
 {
     public enum PdfOrientation
     {

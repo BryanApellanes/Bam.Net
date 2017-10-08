@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.CommandLine;
 
-namespace Bam.Net.Presentation.Html 
+namespace Bam.Net.Presentation.Pdf 
 {
     public class PdfOutput : ProcessOutput
     {

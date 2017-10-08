@@ -10,7 +10,7 @@ using System.IO;
 using Bam.Net;
 using Bam.Net.CommandLine;
 
-namespace Bam.Net.Presentation.Html
+namespace Bam.Net.Presentation.Pdf
 {
     public class Pdf
     {

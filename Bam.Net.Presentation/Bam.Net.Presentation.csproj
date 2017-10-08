@@ -164,9 +164,9 @@
     <Compile Include="Html\HtmlHelperExtensions.cs" />
     <Compile Include="Html\Img.cs" />
     <Compile Include="Html\MethodFormResult.cs" />
-    <Compile Include="Html\Pdf.cs" />
-    <Compile Include="Html\PdfOrientation.cs" />
-    <Compile Include="Html\PdfOutput.cs" />
+    <Compile Include="Pdf\Pdf.cs" />
+    <Compile Include="Pdf\PdfOrientation.cs" />
+    <Compile Include="Pdf\PdfOutput.cs" />
     <Compile Include="Html\TagBuilderDelegate.cs" />
     <Compile Include="Html\JsTag.cs" />
     <Compile Include="Html\Js\DataSet.cs" />
