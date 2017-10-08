@@ -276,10 +276,6 @@
       <Project>{1db5bac4-f6fd-48d7-a89a-228f41036b78}</Project>
       <Name>Bam.Net.Drawing</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Bam.Net.Dust\Bam.Net.Dust.csproj">
-      <Project>{2a4347ab-3e15-4698-9020-722320307754}</Project>
-      <Name>Bam.Net.Dust</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Encryption\Bam.Net.Encryption.csproj">
       <Project>{f27dc9a6-e432-4d20-bcef-d10b0c2a657d}</Project>
       <Name>Bam.Net.Encryption</Name>

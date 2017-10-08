@@ -9,7 +9,6 @@ using System.IO;
 using Bam.Net;
 using Bam.Net.ServiceProxy;
 using Bam.Net.ServiceProxy.Js;
-using System.Web.Script.Serialization;
 using Bam.Net.Incubation;
 using EcmaScript.NET;
 using System.Text.RegularExpressions;

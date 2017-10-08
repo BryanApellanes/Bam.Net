@@ -116,33 +116,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dust.cs" />
-    <Compile Include="DustException.cs" />
-    <Compile Include="DustTemplate.cs" />
-    <Compile Include="DustController.cs" />
-    <Compile Include="DustTemplateResult.cs" />
-    <Compile Include="DustView.cs" />
-    <Compile Include="DustViewEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="dust-full-0.3.0.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="json2.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="dust.custom.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="feather.js" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="test.dust">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bam.Net.Presentation\Bam.Net.Presentation.csproj">
