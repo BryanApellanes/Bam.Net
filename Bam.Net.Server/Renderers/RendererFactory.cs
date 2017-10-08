@@ -93,10 +93,7 @@ namespace Bam.Net.Server.Renderers
         public event Action<RendererFactory, IRequest> CreatingRenderer;
         protected void OnCreatingRenderer(IRequest request)
         {
-            if (CreatingRenderer != null)
-            {
-                CreatingRenderer(this, request);
-            }
+            CreatingRenderer?.Invoke(this, request);
         }
         public event Action<RendererFactory, IRequest, IRenderer> CreatedRenderer;
         protected void OnCreatedRenderer(IRequest request, IRenderer renderer)

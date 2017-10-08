@@ -23,7 +23,7 @@ namespace Bam.Net.Server
     {
         static DocsController()
         {
-            DocResult.DefaultRenderer = (infos, output) =>
+            ClassDocumentationResult.DefaultRenderer = (infos, output) =>
             {
                 Tag container = new Tag("div");
                 infos.Keys.Each(type =>
@@ -41,7 +41,7 @@ namespace Bam.Net.Server
                 classNames = ServiceProxySystem.Incubator.ClassNames;
             }
 
-            return new DocResult(classNames);
+            return new ClassDocumentationResult(classNames);
         }
     }
 }

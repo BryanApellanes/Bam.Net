@@ -22,6 +22,6 @@ namespace Bam.Net.ServiceProxy
                 _logger = value;
             }
         }
-        public abstract bool Validate(ExecutionRequest request);
+        public abstract bool RequestIsValid(ExecutionRequest request, out string failureMessage);
     }
 }

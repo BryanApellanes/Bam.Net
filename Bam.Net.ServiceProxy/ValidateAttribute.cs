@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Bam.Net.ServiceProxy
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-    public class ValidatorAttribute: Attribute
+    public class ValidateAttribute: Attribute
     {
         public Type Type { get; set; }
     }

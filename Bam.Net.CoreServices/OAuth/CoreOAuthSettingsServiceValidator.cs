@@ -12,19 +12,23 @@ namespace Bam.Net.CoreServices.OAuth
     {
         public CoreOAuthSettingsServiceValidator()
         {
-
         }
-        public override bool Validate(ExecutionRequest request)
+
+        public override bool RequestIsValid(ExecutionRequest request, out string failureMessage)
         {
+            bool result = false;
+            failureMessage = null;
             CoreOAuthSettingsService service = request.Instance as CoreOAuthSettingsService;
             if(service == null)
             {
                 MethodInfo method = request.MethodInfo;
-                request.Logger.Warning("Invalid Authorizer.Type specified for AuthorizeAttribute for {0}.{1}", method.DeclaringType.Name, method.Name);
-                return false;
+                string messageFormat = $"Invalid {nameof(Validator)}.Type specified for {nameof(ValidateAttribute)} for {0}.{1}";
+                failureMessage = string.Format(messageFormat, method.DeclaringType.Name, method.Name);
+                request.Logger.Warning(messageFormat, method.DeclaringType.Name, method.Name);
             }
 
-            return service.UserIsLoggedIn() && service.RequestIsForCurrentApplication(true) && service.UserIsInApplicationOrganization();
+            result = service.UserIsLoggedIn() && service.RequestIsForCurrentApplication(true) && service.UserIsInApplicationOrganization();
+            return result;
         }
     }
 }

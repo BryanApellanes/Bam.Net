@@ -14,7 +14,7 @@ namespace Bam.Net.CoreServices
 {
     [Proxy("oauthSettingsSvc")]    
     [ApiKeyRequired]
-    [Validator(Type=typeof(CoreOAuthSettingsServiceValidator))]
+    [Validate(Type=typeof(CoreOAuthSettingsServiceValidator))]
     public class CoreOAuthSettingsService : ApplicationProxyableService
     {
         public CoreOAuthSettingsService(OAuthSettingsRepository oauthRepo)

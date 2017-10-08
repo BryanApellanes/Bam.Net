@@ -30,7 +30,12 @@ namespace Bam.Net.ServiceProxy
         PermissionDenied,
         InvalidApiKeyToken,
         RemoteExecutionNotAllowed,
-        AuthorizationFailed
+        /// <summary>
+        /// An attribute addorned the class or
+        /// method and the specified Validator Type therein
+        /// determined the request was not valid
+        /// </summary>
+        AttributeValidationFailed
     }
 
     public class ValidationResult
@@ -58,28 +63,28 @@ namespace Bam.Net.ServiceProxy
             ValidateMethodRoles(context, failures, messages);
             ValidateClassRoles(context, failures, messages);
             ValidateApiKeyToken(failures, messages);
-            ValidateAuthorization(context, failures, messages);
+            ValidateCustomValidation(context, failures, messages);
 
             ValidationFailures = failures.ToArray();
             Message = messages.ToArray().ToDelimited(s => s, Delimiter);
             this.Success = failures.Count == 0;
         }
-        private void ValidateAuthorization(IHttpContext context, List<ValidationFailures> failures, List<string> messages)
+        private void ValidateCustomValidation(IHttpContext context, List<ValidationFailures> failures, List<string> messages)
         {
-            ValidatorAttribute authroizeAttr;
+            ValidateAttribute validateAttr;
             if (_toValidate.TargetType != null &&
                 _toValidate.MethodInfo != null &&
                 (
-                    _toValidate.TargetType.HasCustomAttributeOfType(true, out authroizeAttr) ||
-                    _toValidate.MethodInfo.HasCustomAttributeOfType(true, out authroizeAttr)
+                    _toValidate.TargetType.HasCustomAttributeOfType(true, out validateAttr) ||
+                    _toValidate.MethodInfo.HasCustomAttributeOfType(true, out validateAttr)
                 ))
             {
-                Validator authorizer = authroizeAttr.Type.Construct<Validator>();
-                authorizer.Logger = _toValidate.Logger;
-                if (!authorizer.Validate(_toValidate))
+                Validator validator = validateAttr.Type.Construct<Validator>();
+                validator.Logger = _toValidate.Logger;
+                if (!validator.RequestIsValid(_toValidate, out string failureMessage))
                 {
-                    failures.Add(ServiceProxy.ValidationFailures.AuthorizationFailed);
-                    messages.Add("Authorization failed");
+                    failures.Add(ServiceProxy.ValidationFailures.AttributeValidationFailed);
+                    messages.Add(failureMessage);
                 }
             }
         }

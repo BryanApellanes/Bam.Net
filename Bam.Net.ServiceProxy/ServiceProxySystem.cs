@@ -274,33 +274,13 @@ namespace Bam.Net.ServiceProxy
             List<MethodInfo> results = new List<MethodInfo>();
             foreach (MethodInfo method in type.GetMethods())
             {
-                if (WillProxyMethod(method, includeLocalMethods))
+                if (method.WillProxy(includeLocalMethods))
                 {
                     results.Add(method);
                 }
             }
 
             return results.ToArray();
-        }
-
-        public static bool WillProxyMethod(MethodInfo method, bool includeLocal = false)
-        {
-            bool baseCheck = !method.Name.StartsWith("remove_") &&
-                                    !method.Name.StartsWith("add_") &&
-                                    method.MemberType == MemberTypes.Method &&
-                                    !method.IsProperty() &&                                    
-                                    method.DeclaringType != typeof(object);
-            bool hasExcludeAttribute = method.HasCustomAttributeOfType(out ExcludeAttribute attr);
-            bool result = false;
-            if (includeLocal)
-            {
-                result = hasExcludeAttribute ? (attr is LocalAttribute && baseCheck) : baseCheck;
-            }
-            else
-            {
-                result = hasExcludeAttribute ? false : baseCheck;                
-            }
-            return result;
         }
 
         static Incubator incubator;
@@ -545,7 +525,7 @@ namespace {0}
 
                 foreach (MethodInfo method in type.GetMethods())
                 {
-                    if (WillProxyMethod(method, includeLocal))
+                    if (method.WillProxy(includeLocal))
                     {
                         stringBuilder.AppendLine(GetMethodCall(type, method));
                     }
