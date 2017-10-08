@@ -17,7 +17,7 @@ using Bam.Net;
 using Bam.Net.Dust;
 using Bam.Net.Web;
 using Bam.Net.CommandLine;
-using Bam.Net.Html;
+using Bam.Net.Presentation.Html;
 using Bam.Net.Testing;
 using Bam.Net.Encryption;
 using Bam.Net.Incubation;

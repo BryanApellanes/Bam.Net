@@ -103,11 +103,11 @@ Bam.Net.Exegete.XML
 Bam.Net.Google.dll
 Bam.Net.Google.pdb
 Bam.Net.Google.XML
-Bam.Net.Html.dll
-Bam.Net.Html.pdb
-Bam.Net.Html.Tests.exe
-Bam.Net.Html.Tests.exe.config
-Bam.Net.Html.XML
+Bam.Net.Presentation.Html.dll
+Bam.Net.Presentation.Html.pdb
+Bam.Net.Presentation.Html.Tests.exe
+Bam.Net.Presentation.Html.Tests.exe.config
+Bam.Net.Presentation.Html.XML
 Bam.Net.Incubation.dll
 Bam.Net.Incubation.pdb
 Bam.Net.Incubation.Tests.exe

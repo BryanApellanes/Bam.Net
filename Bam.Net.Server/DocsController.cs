@@ -15,7 +15,7 @@ using Bam.Net.Logging;
 using System.IO;
 using Bam.Net.Configuration;
 using Bam.Net.Incubation;
-using Bam.Net.Html;
+using Bam.Net.Presentation.Html;
 
 namespace Bam.Net.Server
 {

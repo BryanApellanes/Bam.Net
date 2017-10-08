@@ -178,9 +178,9 @@
       <Project>{1db5bac4-f6fd-48d7-a89a-228f41036b78}</Project>
       <Name>Bam.Net.Drawing</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Bam.Net.Html\Bam.Net.Html.csproj">
+    <ProjectReference Include="..\Bam.Net.Presentation\Bam.Net.Presentation.csproj">
       <Project>{795d5552-94d6-4373-b4f1-551b1d5bdafb}</Project>
-      <Name>Bam.Net.Html</Name>
+      <Name>Bam.Net.Presentation</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Incubation\Bam.Net.Incubation.csproj">
       <Project>{AA186331-A0D0-4F77-BEA2-E7B7650D3FF5}</Project>

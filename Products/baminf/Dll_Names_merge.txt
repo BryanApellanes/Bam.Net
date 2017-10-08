@@ -11,7 +11,7 @@ Bam.Net.Documentation
 Bam.Net.Drawing
 Bam.Net.Dust
 Bam.Net.Encryption
-Bam.Net.Html
+Bam.Net.Presentation.Html
 Bam.Net.Incubation
 Bam.Net.Javascript
 Bam.Net.Logging

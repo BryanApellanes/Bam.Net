@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ServiceProcess;
-using Bam.Net.Html;
+using Bam.Net.Presentation.Html;
 using Bam.Net.Logging;
 using Bam.Net;
 using Bam.Net.Incubation;

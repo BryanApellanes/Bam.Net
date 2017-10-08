@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Javascript;
-using Bam.Net.Html;
+using Bam.Net.Presentation.Html;
 using System.Web.Mvc;
 
 namespace Bam.Net.Server

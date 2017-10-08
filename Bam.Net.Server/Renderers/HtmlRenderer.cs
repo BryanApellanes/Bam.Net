@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.IO;
 using Bam.Net.Web;
-using Bam.Net.Html;
+using Bam.Net.Presentation.Html;
 using Bam.Net.Server;
 using Bam.Net.ServiceProxy;
 using System.Reflection;

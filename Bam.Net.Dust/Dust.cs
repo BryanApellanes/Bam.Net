@@ -11,7 +11,7 @@ using System.Web;
 using System.Web.Mvc;
 using Bam.Net.Configuration;
 using Bam.Net.ServiceProxy.Js;
-using Bam.Net.Html;
+using Bam.Net.Presentation.Html;
 using EcmaScript.NET;
 
 namespace Bam.Net.Dust

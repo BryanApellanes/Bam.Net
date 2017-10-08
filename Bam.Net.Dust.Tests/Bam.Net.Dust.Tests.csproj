@@ -125,9 +125,9 @@
       <Project>{2a4347ab-3e15-4698-9020-722320307754}</Project>
       <Name>Bam.Net.Dust</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Bam.Net.Html\Bam.Net.Html.csproj">
+    <ProjectReference Include="..\Bam.Net.Presentation\Bam.Net.Presentation.csproj">
       <Project>{795d5552-94d6-4373-b4f1-551b1d5bdafb}</Project>
-      <Name>Bam.Net.Html</Name>
+      <Name>Bam.Net.Presentation</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Testing\Bam.Net.Testing.csproj">
       <Project>{85212881-c676-4b40-b311-37c2d1706042}</Project>

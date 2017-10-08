@@ -143,9 +143,9 @@
       <Project>{f27dc9a6-e432-4d20-bcef-d10b0c2a657d}</Project>
       <Name>Bam.Net.Encryption</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Bam.Net.Html\Bam.Net.Html.csproj">
+    <ProjectReference Include="..\Bam.Net.Presentation\Bam.Net.Presentation.csproj">
       <Project>{795d5552-94d6-4373-b4f1-551b1d5bdafb}</Project>
-      <Name>Bam.Net.Html</Name>
+      <Name>Bam.Net.Presentation</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net\Bam.Net.csproj">
       <Project>{8794c09d-d72c-420c-812f-bfda251b64c9}</Project>

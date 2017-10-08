@@ -210,9 +210,9 @@
       <Project>{8febe7ea-4f1f-44e2-a694-52b9a33c2414}</Project>
       <Name>Bam.Net.Documentation</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Bam.Net.Html\Bam.Net.Html.csproj">
+    <ProjectReference Include="..\Bam.Net.Presentation\Bam.Net.Presentation.csproj">
       <Project>{795d5552-94d6-4373-b4f1-551b1d5bdafb}</Project>
-      <Name>Bam.Net.Html</Name>
+      <Name>Bam.Net.Presentation</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Javascript\Bam.Net.Javascript.csproj">
       <Project>{34c5016d-5265-4394-a9ba-cb2f70d8e93b}</Project>

@@ -9,7 +9,7 @@ using System.Text;
 using System.Web.Mvc;
 using System.IO;
 using Bam.Net;
-using Bam.Net.Html;
+using Bam.Net.Presentation.Html;
 using Bam.Net.ServiceProxy;
 using Bam.Net.ServiceProxy.Js;
 using Newtonsoft.Json;

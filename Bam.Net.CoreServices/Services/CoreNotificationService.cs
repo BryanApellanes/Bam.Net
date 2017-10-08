@@ -1,7 +1,7 @@
 ﻿using Bam.Net.CoreServices.ApplicationRegistration;
 using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
-using Bam.Net.Html;
+using Bam.Net.Presentation.Html;
 using Bam.Net.Logging;
 using Bam.Net.Messaging;
 using Bam.Net.ServiceProxy;

@@ -14,9 +14,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bam.Net.Incubation.Tests", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bam.Net.Incubation", "Bam.Net.Incubation\Bam.Net.Incubation.csproj", "{AA186331-A0D0-4F77-BEA2-E7B7650D3FF5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bam.Net.Html.Tests", "Bam.Net.Html.Tests\Bam.Net.Html.Tests.csproj", "{DD394846-FEC8-4C5D-A70F-774EEF520AF1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bam.Net.Presentation.Tests", "Bam.Net.Presentation.Tests\Bam.Net.Presentation.Tests.csproj", "{DD394846-FEC8-4C5D-A70F-774EEF520AF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bam.Net.Html", "Bam.Net.Html\Bam.Net.Html.csproj", "{795D5552-94D6-4373-B4F1-551B1D5BDAFB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bam.Net.Presentation", "Bam.Net.Presentation\Bam.Net.Presentation.csproj", "{795D5552-94D6-4373-B4F1-551B1D5BDAFB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bam.Net.Data.Tests", "Bam.Net.Data.Tests\Bam.Net.Data.Tests.csproj", "{4B5D6697-BD0E-4AEF-B1B0-7563482CC033}"
 EndProject

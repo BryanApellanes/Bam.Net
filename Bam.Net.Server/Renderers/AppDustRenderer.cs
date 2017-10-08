@@ -10,7 +10,7 @@ using System.IO;
 using Bam.Net;
 using Bam.Net.Web;
 using Bam.Net.Incubation;
-using Bam.Net.Html;
+using Bam.Net.Presentation.Html;
 using System.Reflection;
 using Bam.Net.Logging;
 

@@ -16,7 +16,7 @@ using Bam.Net.ServiceProxy;
 using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.Web;
 using Bam.Net.Server.Renderers;
-using Bam.Net.Html;
+using Bam.Net.Presentation.Html;
 using Bam.Net.Configuration;
 using System.Web.Mvc;
 using System.Threading.Tasks;
