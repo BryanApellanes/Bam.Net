@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{795D5552-94D6-4373-B4F1-551B1D5BDAFB}</ProjectGuid>
+    <ProjectGuid>{B9E03FF5-0750-4162-BAFD-3F0778D44A8C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Bam.Net.Presentation</RootNamespace>
@@ -160,7 +160,7 @@
     <Compile Include="Html\DeferredViewController.cs" />
     <Compile Include="Html\DeferredViewState.cs" />
     <Compile Include="Html\Extensions.cs" />
-    <Compile Include="Html\HandlebarsDirectory.cs" />
+    <Compile Include="Handlebars\HandlebarsDirectory.cs" />
     <Compile Include="Html\HtmlHelperExtensions.cs" />
     <Compile Include="Html\Img.cs" />
     <Compile Include="Html\MethodFormResult.cs" />

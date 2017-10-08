@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Presentation.Html
+namespace Bam.Net.Presentation.Handlebars
 {
     public class HandlebarsDirectory
     {
@@ -44,7 +44,7 @@ namespace Bam.Net.Presentation.Html
             }
             else
             {
-                _templates.AddMissing(name, Handlebars.Compile(source));
+                _templates.AddMissing(name, HandlebarsDotNet.Handlebars.Compile(source));
             }
         }
 
@@ -62,7 +62,7 @@ namespace Bam.Net.Presentation.Html
             }
             else
             {
-                Handlebars.RegisterTemplate(name, source);
+                HandlebarsDotNet.Handlebars.RegisterTemplate(name, source);
             }
         }
 
@@ -104,7 +104,7 @@ namespace Bam.Net.Presentation.Html
                     foreach (FileInfo partial in PartialsDirectory.GetFiles($"*.{FileExtension}"))
                     {
                         string name = Path.GetFileNameWithoutExtension(partial.FullName);
-                        Handlebars.RegisterTemplate(name, partial.ReadAllText());
+                        HandlebarsDotNet.Handlebars.RegisterTemplate(name, partial.ReadAllText());
                     }
                 }
                 if(Directory != null)
@@ -112,7 +112,7 @@ namespace Bam.Net.Presentation.Html
                     foreach (FileInfo file in Directory?.GetFiles($"*.{FileExtension}"))
                     {
                         string name = Path.GetFileNameWithoutExtension(file.FullName);
-                        _templates.AddMissing(name, Handlebars.Compile(file.ReadAllText()));
+                        _templates.AddMissing(name, HandlebarsDotNet.Handlebars.Compile(file.ReadAllText()));
                     }
                 }
             }

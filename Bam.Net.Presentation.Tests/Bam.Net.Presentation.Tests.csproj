@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{DD394846-FEC8-4C5D-A70F-774EEF520AF1}</ProjectGuid>
+    <ProjectGuid>{33C87ED3-C715-419A-94C3-35C23EE3E7BA}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Bam.Net.Presentation.Tests</RootNamespace>
@@ -118,7 +118,7 @@
       <Name>Bam.Net.CommandLine</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Presentation\Bam.Net.Presentation.csproj">
-      <Project>{795d5552-94d6-4373-b4f1-551b1d5bdafb}</Project>
+      <Project>{b9e03ff5-0750-4162-bafd-3f0778d44a8c}</Project>
       <Name>Bam.Net.Presentation</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Testing\Bam.Net.Testing.csproj">
