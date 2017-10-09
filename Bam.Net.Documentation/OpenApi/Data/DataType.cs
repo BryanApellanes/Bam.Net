@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Documentation.OpenApi
+namespace Bam.Net.Documentation.OpenApi.Markdown
 {
     public class DataType
     {

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Documentation.OpenApi.Data
+namespace Bam.Net.Documentation.OpenApi.Markdown
 {
-    public class DocumentSection
+    public class DocumentSection: DocumentComponent
     {
         public DocumentSection()
         {
@@ -30,6 +30,10 @@ namespace Bam.Net.Documentation.OpenApi.Data
                 _title = value;
             }
         }
-        public virtual string BodyContent { get; set; }
+        public string Content { get; set; }
+        public override string GetContent()
+        {
+            return Content;
+        }
     }
 }

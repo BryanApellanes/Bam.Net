@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Documentation.OpenApi.Data
 {
-    public class ObjectDocumentation: DocumentSection
+    public class ObjectDocumentation
     {
         public ObjectDocumentation()
         {
-            Fields = new List<FieldDocumentation>();            
+            FieldDocumentations = new List<FieldDocumentation>();            
         }
 
         public string ObjectName { get; set; }
         public string Description { get; set; }
-        public List<FieldDocumentation> Fields { get; set; }
+        public List<FieldDocumentation> FieldDocumentations { get; set; }
     }
 }

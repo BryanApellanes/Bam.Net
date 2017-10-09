@@ -98,9 +98,11 @@
     <Compile Include="DocumentationPrecedence.cs" />
     <Compile Include="ClassDocumentationResult.cs" />
     <Compile Include="ClassMemberType.cs" />
-    <Compile Include="OpenApi\Data\DocumentSection.cs" />
-    <Compile Include="OpenApi\Data\ReferenceDocument.cs" />
-    <Compile Include="OpenApi\DataType.cs" />
+    <Compile Include="OpenApi\Data\ApiDocumentation.cs" />
+    <Compile Include="OpenApi\Markdown\DocumentComponent.cs" />
+    <Compile Include="OpenApi\Markdown\DocumentSection.cs" />
+    <Compile Include="OpenApi\Markdown\ReferenceDocument.cs" />
+    <Compile Include="OpenApi\Data\DataType.cs" />
     <Compile Include="OpenApi\Data\FieldDocumentation.cs" />
     <Compile Include="OpenApi\Data\ObjectDocumentation.cs" />
     <Compile Include="ParamInfo.cs" />
@@ -113,6 +115,10 @@
     <ProjectReference Include="..\Bam.Net.Incubation\Bam.Net.Incubation.csproj">
       <Project>{aa186331-a0d0-4f77-bea2-e7b7650d3ff5}</Project>
       <Name>Bam.Net.Incubation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Presentation\Bam.Net.Presentation.csproj">
+      <Project>{b9e03ff5-0750-4162-bafd-3f0778d44a8c}</Project>
+      <Name>Bam.Net.Presentation</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net\Bam.Net.csproj">
       <Project>{8794c09d-d72c-420c-812f-bfda251b64c9}</Project>
