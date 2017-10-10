@@ -9,7 +9,7 @@ Bam.Net.Data.Repositories
 Bam.Net.Distributed
 Bam.Net.Documentation
 Bam.Net.Drawing
-Bam.Net.Dust
+Bam.Net.Presentation.Dust
 Bam.Net.Encryption
 Bam.Net.Presentation.Html
 Bam.Net.Incubation

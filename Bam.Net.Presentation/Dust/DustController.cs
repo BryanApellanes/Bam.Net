@@ -14,10 +14,9 @@ using Bam.Net.ServiceProxy;
 using Bam.Net.ServiceProxy.Js;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.IO;
 using System.Reflection;
 
-namespace Bam.Net.Dust
+namespace Bam.Net.Presentation.Dust
 {
     public class DustController: Controller
     {

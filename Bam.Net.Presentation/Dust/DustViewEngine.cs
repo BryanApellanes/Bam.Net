@@ -8,7 +8,7 @@ using System.Text;
 using System.Web.Mvc;
 using System.IO;
 
-namespace Bam.Net.Dust
+namespace Bam.Net.Presentation.Dust
 {
     public class DustViewEngine: IViewEngine
     {

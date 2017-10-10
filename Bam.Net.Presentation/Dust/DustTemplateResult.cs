@@ -12,7 +12,7 @@ using Bam.Net.Incubation;
 using System.Reflection;
 using Bam.Net.Presentation.Html;
 
-namespace Bam.Net.Dust
+namespace Bam.Net.Presentation.Dust
 {
     public class DustTemplateResult: ActionResult
     {

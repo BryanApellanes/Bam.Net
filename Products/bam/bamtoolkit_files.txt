@@ -86,11 +86,11 @@ Bam.Net.Drawing.Tests.exe
 Bam.Net.Drawing.Tests.exe.config
 Bam.Net.Drawing.Tests.pdb
 Bam.Net.Drawing.XML
-Bam.Net.Dust.dll
-Bam.Net.Dust.pdb
-Bam.Net.Dust.Tests.exe
-Bam.Net.Dust.Tests.exe.config
-Bam.Net.Dust.XML
+Bam.Net.Presentation.Dust.dll
+Bam.Net.Presentation.Dust.pdb
+Bam.Net.Presentation.Dust.Tests.exe
+Bam.Net.Presentation.Dust.Tests.exe.config
+Bam.Net.Presentation.Dust.XML
 Bam.Net.Encryption.dll
 Bam.Net.Encryption.pdb
 Bam.Net.Encryption.Tests.exe

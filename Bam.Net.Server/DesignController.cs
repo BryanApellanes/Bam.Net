@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Dst = Bam.Net.Dust;
+using Dst = Bam.Net.Presentation.Dust;
 using Bam.Net;
 using Bam.Net.Configuration;
 using Bam.Net.Logging;

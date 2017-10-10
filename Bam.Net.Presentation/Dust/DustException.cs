@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Bam.Net.Dust
+namespace Bam.Net.Presentation.Dust
 {
     [Serializable]
     public class DustException: Exception

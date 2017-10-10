@@ -740,7 +740,7 @@ namespace Bam.Net
             Args.ThrowIfNull(instance);
 
             Type type = instance.GetType();
-            return type.ImplementsInterface<T>();//ImplementsInterface<T>(type);
+            return type.ImplementsInterface<T>();
         }
 
         public static bool ImplementsInterface<T>(this Type type)

@@ -1,4 +1,4 @@
-﻿using Bam.Net.Dust;
+﻿using Bam.Net.Presentation.Dust;
 using Bam.Net.Testing;
 using Bam.Net.Testing.Unit;
 using System;
@@ -46,12 +46,12 @@ namespace Bam.Net.Presentation.Tests
             DustTemplate dc = new DustTemplate("Hello {Name}!", "test");
             dc.Compile();
             object value = new { Name = "Guy" };
-            MvcHtmlString result = Bam.Net.Dust.Dust.RenderMvcHtmlString("test", value);
+            MvcHtmlString result = Bam.Net.Presentation.Dust.Dust.RenderMvcHtmlString("test", value);
             Expect.AreEqual("Hello Guy!", result.ToHtmlString());
             OutLine();
             OutLine(result.ToString(), ConsoleColor.Yellow);
             value = new { Name = "Dude" };
-            result = Bam.Net.Dust.Dust.RenderMvcHtmlString("test", value);
+            result = Bam.Net.Presentation.Dust.Dust.RenderMvcHtmlString("test", value);
             Expect.AreEqual("Hello Dude!", result.ToHtmlString());
             OutLine(result.ToString(), ConsoleColor.Yellow);
         }
@@ -65,7 +65,7 @@ and another", "test");
             dc.Compile();
 
             object value = new { Name = "Guy" };
-            string result = Bam.Net.Dust.Dust.RenderMvcHtmlString("test", value).ToString();
+            string result = Bam.Net.Presentation.Dust.Dust.RenderMvcHtmlString("test", value).ToString();
             OutLine(result, ConsoleColor.Yellow);
         }
 

@@ -13,7 +13,7 @@ using Bam.Net.Incubation;
 using EcmaScript.NET;
 using System.Text.RegularExpressions;
 
-namespace Bam.Net.Dust
+namespace Bam.Net.Presentation.Dust
 {
     /// <summary>
     /// Represents a dust template

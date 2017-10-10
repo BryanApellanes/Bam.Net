@@ -14,7 +14,7 @@ using Bam.Net.ServiceProxy.Js;
 using Bam.Net.Presentation.Html;
 using EcmaScript.NET;
 
-namespace Bam.Net.Dust
+namespace Bam.Net.Presentation.Dust
 {
     /// <summary>
     /// Convenience entry point into Dust initialization and 

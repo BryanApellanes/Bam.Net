@@ -10,7 +10,7 @@ using System.IO;
 using Bam.Net;
 using Bam.Net.ServiceProxy;
 
-namespace Bam.Net.Dust
+namespace Bam.Net.Presentation.Dust
 {
     public class DustView: IView
     {
