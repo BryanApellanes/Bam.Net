@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 namespace Bam.Net.ServiceProxy
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-    public class ValidateAttribute: Attribute
+    public abstract class RequestFilterAttribute: Attribute
     {
-        public Type Type { get; set; }
+        public abstract bool RequestIsAllowed(ExecutionRequest request, out string failureMessage);
     }
 }

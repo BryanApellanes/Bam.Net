@@ -32,10 +32,10 @@ namespace Bam.Net.ServiceProxy
         RemoteExecutionNotAllowed,
         /// <summary>
         /// An attribute addorned the class or
-        /// method and the specified Validator Type therein
+        /// method and the specified RequestFilter Type therein
         /// determined the request was not valid
         /// </summary>
-        AttributeValidationFailed
+        AttributeFilterFailed
     }
 
     public class ValidationResult
@@ -63,27 +63,25 @@ namespace Bam.Net.ServiceProxy
             ValidateMethodRoles(context, failures, messages);
             ValidateClassRoles(context, failures, messages);
             ValidateApiKeyToken(failures, messages);
-            ValidateCustomValidation(context, failures, messages);
+            ValidateRequestFilters(context, failures, messages);
 
             ValidationFailures = failures.ToArray();
             Message = messages.ToArray().ToDelimited(s => s, Delimiter);
             this.Success = failures.Count == 0;
         }
-        private void ValidateCustomValidation(IHttpContext context, List<ValidationFailures> failures, List<string> messages)
+        private void ValidateRequestFilters(IHttpContext context, List<ValidationFailures> failures, List<string> messages)
         {
-            ValidateAttribute validateAttr;
+            RequestFilterAttribute filterAttr;
             if (_toValidate.TargetType != null &&
                 _toValidate.MethodInfo != null &&
                 (
-                    _toValidate.TargetType.HasCustomAttributeOfType(true, out validateAttr) ||
-                    _toValidate.MethodInfo.HasCustomAttributeOfType(true, out validateAttr)
+                    _toValidate.TargetType.HasCustomAttributeOfType(true, out filterAttr) ||
+                    _toValidate.MethodInfo.HasCustomAttributeOfType(true, out filterAttr)
                 ))
             {
-                Validator validator = validateAttr.Type.Construct<Validator>();
-                validator.Logger = _toValidate.Logger;
-                if (!validator.RequestIsValid(_toValidate, out string failureMessage))
+                if (!filterAttr.RequestIsAllowed(_toValidate, out string failureMessage))
                 {
-                    failures.Add(ServiceProxy.ValidationFailures.AttributeValidationFailed);
+                    failures.Add(ServiceProxy.ValidationFailures.AttributeFilterFailed);
                     messages.Add(failureMessage);
                 }
             }

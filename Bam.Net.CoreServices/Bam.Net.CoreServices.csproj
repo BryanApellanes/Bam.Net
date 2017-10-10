@@ -226,7 +226,7 @@
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserWrapper.cs" />
     <Compile Include="ApplicationRegistration\Data\HostDomain.cs" />
     <Compile Include="ApplicationRegistration\Data\UserSetting.cs" />
-    <Compile Include="HostDomainValidator.cs" />
+    <Compile Include="HostDomainRequestFilter.cs" />
     <Compile Include="ApplicationRepositoryResolver.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorAssemblyReferenceDescriptor.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorAssemblyReferenceDescriptorCollection.cs" />
@@ -245,7 +245,7 @@
     <Compile Include="NotificationTemplateInfo.cs" />
     <Compile Include="OAuth\ApplicationUserNotFoundException.cs" />
     <Compile Include="OAuth\OAuthClientSettings.cs" />
-    <Compile Include="OAuth\CoreOAuthSettingsServiceValidator.cs" />
+    <Compile Include="OAuth\AuthenticatedAttribute.cs" />
     <Compile Include="ServiceRegistryContainerAttribute.cs" />
     <Compile Include="ServiceRegistry.cs" />
     <Compile Include="ServiceRegistryLoaderAttribute.cs" />

@@ -110,7 +110,8 @@ namespace Bam.Net.CoreServices
         
         /// <summary>
         /// Returns true if the ServerApplication is authorized
-        /// for the current domain requested
+        /// for the current domain requested as specified by a
+        /// HostDomain entry for the current application
         /// </summary>
         /// <returns></returns>
         [Local]

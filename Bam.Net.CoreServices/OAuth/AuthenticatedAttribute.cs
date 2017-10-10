@@ -8,21 +8,26 @@ using System.Reflection;
 
 namespace Bam.Net.CoreServices.OAuth
 {
-    public class CoreOAuthSettingsServiceValidator : Validator
+    /// <summary>
+    /// Request filter that ensures that the user is logged in
+    /// the request is for the current application and the user is
+    /// a part of the organization of the current application
+    /// </summary>
+    public class AuthenticatedAttribute : RequestFilterAttribute
     {
-        public CoreOAuthSettingsServiceValidator()
+        public AuthenticatedAttribute()
         {
         }
 
-        public override bool RequestIsValid(ExecutionRequest request, out string failureMessage)
+        public override bool RequestIsAllowed(ExecutionRequest request, out string failureMessage)
         {
             bool result = false;
             failureMessage = null;
-            CoreOAuthSettingsService service = request.Instance as CoreOAuthSettingsService;
+            ApplicationProxyableService service = request.Instance as ApplicationProxyableService;
             if(service == null)
             {
                 MethodInfo method = request.MethodInfo;
-                string messageFormat = $"Invalid {nameof(Validator)}.Type specified for {nameof(ValidateAttribute)} for {0}.{1}";
+                string messageFormat = $"Invalid {nameof(AuthenticatedAttribute)} addorned invalid type, must be placed on ApplicationProxyableService or derivative";
                 failureMessage = string.Format(messageFormat, method.DeclaringType.Name, method.Name);
                 request.Logger.Warning(messageFormat, method.DeclaringType.Name, method.Name);
             }
