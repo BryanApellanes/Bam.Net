@@ -111,10 +111,6 @@
       <Project>{f0ed71d9-6823-4e3d-a8f6-8652581fab01}</Project>
       <Name>Bam.Net.Data.Protobuf</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Bam.Net.Data.Repositories.SchemaRepositoryGenerator.Tests\Bam.Net.Data.Repositories.SchemaRepositoryGenerator.Tests.csproj">
-      <Project>{ff327b36-ad66-4d97-a60b-3b1c0f3fb7ce}</Project>
-      <Name>Bam.Net.Data.Repositories.SchemaRepositoryGenerator.Tests</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Data.Repositories\Bam.Net.Data.Repositories.csproj">
       <Project>{222ef625-a115-49c7-8bdb-5879725a7d17}</Project>
       <Name>Bam.Net.Data.Repositories</Name>
