@@ -21,7 +21,7 @@ namespace bam
 		public void SignUp()
 		{
             UserInfo info = GetUserInfo();
-            CoreClient client = new CoreClient(info.Org, info.App, HeartServer, 80, GetLogger());
+            CoreClient client = new CoreClient(GetLogger());
             SignUpResponse response = client.SignUp(info.Email, info.Password);
             if (!response.Success)
             {
@@ -37,10 +37,8 @@ namespace bam
         {
             return new UserInfo
             {
-                Org = GetArgument("org", true, "Please enter the name of your organization"),
                 Email = GetArgument("email", true, "Please enter your email address"),
                 Password = GetPasswordArgument("password", true, "Please enter your existing or new password"),
-                App = GetArgument("app", true, "Please enter the name of your application; used as a human readable unique identifier")
             };
         }
 
