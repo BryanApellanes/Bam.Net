@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Bam.Net.Data.Dynamic;
+//using Bam.Net.Data.Dynamic;
 
 namespace Bam.Net.Data.Repositories
 {
@@ -83,7 +83,7 @@ namespace Bam.Net.Data.Repositories
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             propertyNames.Each(new { Parameters = parameters, Instance = this }, (ctx, pn) =>
             {
-                ctx.Parameters.Add(pn, Reflect.Property(ctx.Instance, pn));
+                ctx.Parameters.Add(pn, ReflectionExtensions.Property(ctx.Instance, pn));
             });
             T instance = repo.Query<T>(parameters).FirstOrDefault();
             return instance;
@@ -123,7 +123,7 @@ namespace Bam.Net.Data.Repositories
         {
             propertyNames.Each(new { Instance = this }, (ctx, pn) =>
             {
-                Args.ThrowIf(!Reflect.HasProperty(ctx.Instance, pn), "Specified property ({0}) was not found on instance of type ({1})", pn, ctx.Instance.GetType().Name);
+                Args.ThrowIf(!ReflectionExtensions.HasProperty(ctx.Instance, pn), "Specified property ({0}) was not found on instance of type ({1})", pn, ctx.Instance.GetType().Name);
             });
         }
         

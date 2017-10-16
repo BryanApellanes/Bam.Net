@@ -15,13 +15,13 @@ namespace Bam.Net.Services.Distributed
     public class RepositoryService : ApplicationProxyableService, IDistributedRepository
     {
         protected internal RepositoryService() { }
-        public RepositoryService(IRepository repository, ITypeResolver typeResolver)
+        public RepositoryService(IRepository repository, IRepositoryTypeResolver typeResolver)
         {
             Repository = repository;
             TypeResolver = typeResolver;
         }
         
-        protected internal ITypeResolver TypeResolver { get; set; }
+        protected internal IRepositoryTypeResolver TypeResolver { get; set; }
         public override object Clone()
         {
             RepositoryService clone = new RepositoryService(Repository, TypeResolver);

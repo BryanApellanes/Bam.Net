@@ -36,6 +36,7 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
+[assembly: InternalsVisibleTo("Bam.Net.Data.Dynamic")]
 [assembly: InternalsVisibleTo("Bam.Net.Data.Repositories.Tests")]
 [assembly: InternalsVisibleTo("Bam.Net.Caching")]
 [assembly: AssemblyVersion("1.8.1")]

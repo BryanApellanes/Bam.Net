@@ -40,6 +40,11 @@ namespace Bam.Net.Data.Dynamic
             set;
         }
 
+        public static implicit operator Database(DynamicDatabase dyn)
+        {
+            return dyn.Database;
+        }
+
         public SqlStringBuilder CurrentSql { get; set; }
 
         public Database Database { get; private set; }

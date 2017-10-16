@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Services.Distributed.Data;
-using Bam.Net.Services.Distributed.Data;
 
 namespace Bam.Net.Services.Distributed
 {

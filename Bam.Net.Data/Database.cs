@@ -15,7 +15,7 @@ using System.IO;
 
 namespace Bam.Net.Data
 {
-    public class Database
+    public class Database: Loggable
     {
         AutoResetEvent _resetEvent;
         List<DbConnection> _connections;
@@ -232,8 +232,7 @@ namespace Bam.Net.Data
         /// <param name="builder"></param>
         public virtual void ExecuteSql<T>(SqlStringBuilder builder) where T : Dao 
         {
-            Database db = Db.For<T>(); // TODO: review this.  It seems stupid to get the database when we ARE a database
-            ExecuteSql(builder, db.ServiceProvider.Get<IParameterBuilder>());
+            ExecuteSql(builder, ServiceProvider.Get<IParameterBuilder>());
         }
 
         public virtual void ExecuteSql(SqlStringBuilder builder)
@@ -271,48 +270,60 @@ namespace Bam.Net.Data
         {
             ExecuteSql(sqlStatement, CommandType.Text, dbParameters, conn ?? GetOpenDbConnection(), releaseConnection);
         }
+        public virtual void ExecuteSql(string sqlStatement, CommandType commandType, DbParameter[] dbParameters, DbConnection conn, bool releaseConnection = true)
+        {
+            ExecuteSql(sqlStatement, commandType, dbParameters, conn, (ex) => { }, releaseConnection);
+        }
 
-        public virtual void ExecuteSql(string sqlStatement, CommandType commandType, DbParameter[] dbParameters, DbConnection conn, bool releaseConnectin = true)
+        public event EventHandler CommandExecuted;
+        public event EventHandler CommandException;
+        public virtual void ExecuteSql(string sqlStatement, CommandType commandType, DbParameter[] dbParameters, DbConnection conn, Action<Exception> exceptionHandler, bool releaseConnection = true)
         {
             try
             {
                 DbCommand cmd = PrepareCommand(sqlStatement, commandType, dbParameters, conn);
                 cmd.ExecuteNonQuery();
+                FireEvent(CommandExecuted, new DatabaseExecutionEventArgs { Database = this, Command = cmd });
+            }
+            catch (Exception ex)
+            {
+                exceptionHandler(ex);
+                FireEvent(CommandException, new DatabaseExecutionEventArgs { Database = this, Exception = ex, Message = ex.Message });
             }
             finally
             {
-                if (releaseConnectin)
+                if (releaseConnection)
                 {
                     ReleaseConnection(conn);
                 }
             }
         }
 
-        public virtual IEnumerable<T> ExecuteReader<T>(SqlStringBuilder sqlStatement, Action onExecuted = null) where T : class, new()
+        public virtual IEnumerable<T> ExecuteReader<T>(SqlStringBuilder sqlStatement, Action<DbDataReader> onReaderExecuted = null) where T : class, new()
         {
-            return ExecuteReader<T>(sqlStatement.ToString(), GetParameters(sqlStatement), null, true, onExecuted);
+            return ExecuteReader<T>(sqlStatement.ToString(), GetParameters(sqlStatement), null, true, onReaderExecuted);
         }
 
-        public virtual IEnumerable<T> ExecuteReader<T>(string sqlStatement, object dbParameters, Action onExecuted = null) where T : class, new()
+        public virtual IEnumerable<T> ExecuteReader<T>(string sqlStatement, object dbParameters, Action<DbDataReader> onReaderExecuted = null) where T : class, new()
         {
-            return ExecuteReader<T>(sqlStatement, dbParameters.ToDbParameters(this).ToArray(), null, true, onExecuted);
+            return ExecuteReader<T>(sqlStatement, dbParameters.ToDbParameters(this).ToArray(), null, true, onReaderExecuted);
         }
 
-        public virtual IEnumerable<T> ExecuteReader<T>(string sqlStatement, DbParameter[] dbParameters, out DbConnection conn, Action onExecuted = null) where T : class, new()
+        public virtual IEnumerable<T> ExecuteReader<T>(string sqlStatement, DbParameter[] dbParameters, out DbConnection conn, Action<DbDataReader> onReaderExecuted = null) where T : class, new()
         {
             conn = GetOpenDbConnection();
-            return ExecuteReader<T>(sqlStatement, dbParameters, conn, false, onExecuted);
+            return ExecuteReader<T>(sqlStatement, dbParameters, conn, false, onReaderExecuted);
         }
 
-        public virtual IEnumerable<T> ExecuteReader<T>(string sqlStatement, DbParameter[] dbParameters, DbConnection conn = null, bool closeConnection = true, Action onExecuted = null) where T : class, new()
+        public virtual IEnumerable<T> ExecuteReader<T>(string sqlStatement, DbParameter[] dbParameters, DbConnection conn = null, bool closeConnection = true, Action<DbDataReader> onReaderExecuted = null) where T : class, new()
         {
-            return ExecuteReader<T>(sqlStatement, CommandType.Text, dbParameters, conn ?? GetOpenDbConnection(), closeConnection, onExecuted);
+            return ExecuteReader<T>(sqlStatement, CommandType.Text, dbParameters, conn ?? GetOpenDbConnection(), closeConnection, onReaderExecuted);
         }
-
-        public virtual IEnumerable<T> ExecuteReader<T>(string sqlStatement, CommandType commandType, DbParameter[] dbParameters, DbConnection conn, bool closeConnection = true, Action onExecuted = null) where T: class, new()
+        
+        public virtual IEnumerable<T> ExecuteReader<T>(string sqlStatement, CommandType commandType, DbParameter[] dbParameters, DbConnection conn, bool closeConnection = true, Action<DbDataReader> onReaderExecuted = null) where T: class, new()
         {
             DbDataReader reader = ExecuteReader(sqlStatement, commandType, dbParameters, conn);
-            onExecuted = onExecuted ?? (() => { });
+            onReaderExecuted = onReaderExecuted ?? ((dr) => { });
             if (reader.HasRows)
             {
                 List<string> columnNames = GetColumnNames(reader);
@@ -321,7 +332,6 @@ namespace Bam.Net.Data
                     T next = new T();
                     columnNames.Each(new { Value = next, Reader = reader }, (ctx, cn) =>
                     {
-                        //ReflectionExtensions.Property(ctx.Value, cn, ctx.Reader[cn]);
                         ReaderPropertySetter(ctx.Value, cn, ctx.Reader[cn]);
                     });
                     yield return next;
@@ -331,7 +341,7 @@ namespace Bam.Net.Data
             {
                 ReleaseConnection(conn);
             }
-            onExecuted();
+            onReaderExecuted(reader);
             yield break;
         }
 
@@ -339,27 +349,27 @@ namespace Bam.Net.Data
         {
             instance.Property(propertyName, propertyValue);
         }
-        public virtual IEnumerable<dynamic> ExecuteDynamicReader(SqlStringBuilder sqlStatement, Action onExecuted = null)
+        public virtual IEnumerable<dynamic> ExecuteDynamicReader(SqlStringBuilder sqlStatement, Action<DbDataReader> onExecuted = null)
         {
             return ExecuteDynamicReader(sqlStatement.ToString(), GetParameters(sqlStatement), null, true, onExecuted);
         }
-        public virtual IEnumerable<dynamic> ExecuteDynamicReader(string sqlStatement, object dbParameters, Action onExecuted = null)
+        public virtual IEnumerable<dynamic> ExecuteDynamicReader(string sqlStatement, object dbParameters, Action<DbDataReader> onExecuted = null)
         {
             return ExecuteDynamicReader(sqlStatement, dbParameters.ToDbParameters(this).ToArray(), null, true, onExecuted);
         }
-        public virtual IEnumerable<dynamic> ExecuteDynamicReader(string sqlStatement, DbParameter[] dbParameters, out DbConnection conn, Action onExecuted = null)
+        public virtual IEnumerable<dynamic> ExecuteDynamicReader(string sqlStatement, DbParameter[] dbParameters, out DbConnection conn, Action<DbDataReader> onExecuted = null)
         {
             conn = GetOpenDbConnection();
             return ExecuteDynamicReader(sqlStatement, dbParameters, conn, false, onExecuted);
         }
-        public virtual IEnumerable<dynamic> ExecuteDynamicReader(string sqlStatement, DbParameter[] dbParameters, DbConnection conn = null, bool closeConnection = true, Action onExecuted = null)
+        public virtual IEnumerable<dynamic> ExecuteDynamicReader(string sqlStatement, DbParameter[] dbParameters, DbConnection conn = null, bool closeConnection = true, Action<DbDataReader> onDataReaderExecuted = null)
         {
-            return ExecuteDynamicReader(sqlStatement, CommandType.Text, dbParameters, conn ?? GetOpenDbConnection(), closeConnection);
+            return ExecuteDynamicReader(sqlStatement, CommandType.Text, dbParameters, conn ?? GetOpenDbConnection(), closeConnection, onDataReaderExecuted);
         }
-        public virtual IEnumerable<dynamic> ExecuteDynamicReader(string sqlStatement, CommandType commandType, DbParameter[] dbParameters, DbConnection conn, bool closeConnection = true, Action onExecuted = null)
+        public virtual IEnumerable<dynamic> ExecuteDynamicReader(string sqlStatement, CommandType commandType, DbParameter[] dbParameters, DbConnection conn, bool closeConnection = true, Action<DbDataReader> onDataReaderExecuted = null)
         {
             DbDataReader reader = ExecuteReader(sqlStatement, commandType, dbParameters, conn);
-            onExecuted = onExecuted ?? (() => { });
+            onDataReaderExecuted = onDataReaderExecuted ?? ((dr) => { });
             if (reader.HasRows)
             {
                 List<string> columnNames = GetColumnNames(reader);
@@ -378,7 +388,7 @@ namespace Bam.Net.Data
             {
                 ReleaseConnection(conn);
             }
-            onExecuted();
+            onDataReaderExecuted(reader);
             yield break;
         }
 
@@ -409,10 +419,22 @@ namespace Bam.Net.Data
             return ExecuteReader(sqlStatement, CommandType.Text, dbParameters, conn ?? GetOpenDbConnection());
         }
 
+        public event EventHandler ReaderExecuted;
+        public event EventHandler ReaderException;
         public virtual DbDataReader ExecuteReader(string sqlStatement, CommandType commandType, DbParameter[] dbParameters, DbConnection conn)
         {
-            DbCommand cmd = PrepareCommand(sqlStatement, commandType, dbParameters, conn);
-            return cmd.ExecuteReader();
+            DbDataReader reader = null;
+            try
+            {
+                DbCommand cmd = PrepareCommand(sqlStatement, commandType, dbParameters, conn);
+                reader = cmd.ExecuteReader();
+                FireEvent(ReaderExecuted, new DatabaseExecutionEventArgs { Database = this, DataReader = reader });
+            }
+            catch (Exception ex)
+            {
+                FireEvent(ReaderException, new DatabaseExecutionEventArgs { Database = this, Exception = ex, Message = ex.Message });
+            }
+            return reader;
         }
 
         // -- start datatable readers

@@ -167,7 +167,7 @@ namespace Bam.Net.Data.Repositories
         /// <param name="toSave"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public object Save(Type type, object toSave)
+        public virtual object Save(Type type, object toSave)
 		{
             SetMeta(toSave);
 			long? id = GetIdValue(toSave);
@@ -209,6 +209,14 @@ namespace Bam.Net.Data.Repositories
                 yield return Save<T>(value);
             }
         }
+
+        public virtual object Retrieve(string typeIdentifier, string instanceIdentifier)
+        {
+            Type type = Type.GetType(typeIdentifier, true);
+            Args.ThrowIfNull(type, "type");
+            return Retrieve(type, instanceIdentifier);
+        }
+
         public abstract T Create<T>(T toCreate) where T : class, new();
 
 		public abstract object Create(object toCreate);

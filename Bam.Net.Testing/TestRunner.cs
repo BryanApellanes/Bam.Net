@@ -4,6 +4,7 @@ using Bam.Net.Logging;
 using Bam.Net.Testing.Unit;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -161,6 +162,7 @@ namespace Bam.Net.Testing
             }
         }
 
+        [DebuggerStepThrough]
         public void RunTest(TestMethod test)
         {
             TestEventArgs<TTestMethod> args = new TestEventArgs<TTestMethod> { Test = test, TestRunner = this };
@@ -201,6 +203,7 @@ namespace Bam.Net.Testing
             return int.TryParse(testNumber, out selectedNumber) && (selectedNumber - 1) > -1 && (selectedNumber - 1) < Tests.Count;
         }
 
+        [DebuggerStepThrough]
         protected internal static void InvokeTest(ConsoleMethod consoleMethod, Func<MethodInfo, object[]> parameterProvider, bool isolateMethodCalls = true)
         {
             object[] parameters = parameterProvider(consoleMethod.Method);

@@ -1,17 +1,14 @@
-﻿using System;
+﻿using Bam.Net.Data.Repositories;
+using Bam.Net.Services.Distributed.Data;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Bam.Net.Services.Distributed.Data;
-using Bam.Net.Data.Repositories;
-using Bam.Net.Services.Distributed;
-using Bam.Net.Services.Distributed.Data;
 
 namespace Bam.Net.Services.Distributed
 {
-    public class RepositoryTypeResolver : ITypeResolver
+    public class RepositoryTypeResolver : IRepositoryTypeResolver
     {
+        public static string DefaultNamespace = "Bam.Net.Services.Distributed.Data";
+
         public RepositoryTypeResolver(Repository repo)
         {
             Repository = repo;
@@ -36,6 +33,10 @@ namespace Bam.Net.Services.Distributed
         public Type ResolveType(Operation writeOperation)
         {
             return ResolveType(writeOperation.TypeNamespace, writeOperation.TypeName);
+        }
+        public Type ResolveType(string typeName)
+        {
+            return ResolveType(DefaultNamespace, typeName);
         }
         public Type ResolveType(string nameSpace, string typeName)
         {

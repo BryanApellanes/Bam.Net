@@ -140,7 +140,7 @@
     <Compile Include="Distributed\IHasInfo.cs" />
     <Compile Include="Distributed\InfoAttribute.cs" />
     <Compile Include="Distributed\InProcessEvents.cs" />
-    <Compile Include="Distributed\ITypeResolver.cs" />
+    <Compile Include="Distributed\IRepositoryTypeResolver.cs" />
     <Compile Include="Distributed\Keyspace.cs" />
     <Compile Include="Distributed\MetricsService.cs" />
     <Compile Include="Distributed\RepositoryKey.cs" />
@@ -195,6 +195,10 @@
     <ProjectReference Include="..\Bam.Net.CoreServices\Bam.Net.CoreServices.csproj">
       <Project>{5480d2a0-145b-4435-8e1c-4555ead0424a}</Project>
       <Name>Bam.Net.CoreServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.Dynamic\Bam.Net.Data.Dynamic.csproj">
+      <Project>{ca7f3115-848c-49ac-a0c3-f156afb6c844}</Project>
+      <Name>Bam.Net.Data.Dynamic</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Data.Repositories\Bam.Net.Data.Repositories.csproj">
       <Project>{222ef625-a115-49c7-8bdb-5879725a7d17}</Project>

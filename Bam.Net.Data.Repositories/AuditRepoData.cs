@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NCuid;
 using Bam.Net.Data;
-using Bam.Net.Data.Dynamic;
+//using Bam.Net.Data.Dynamic;
 
 namespace Bam.Net.Data.Repositories
 {
@@ -26,8 +26,7 @@ namespace Bam.Net.Data.Repositories
         {
             Created = DateTime.UtcNow;
         }
-
-        public DateTime? Created { get; set; }
+        
         public string CreatedBy { get; set; }		
         public string ModifiedBy { get; set; }
         public DateTime? Modified { get; set; }

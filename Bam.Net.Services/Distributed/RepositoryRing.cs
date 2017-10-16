@@ -18,7 +18,7 @@ using Bam.Net.Services.Distributed.Data;
 
 namespace Bam.Net.Services.Distributed
 {
-    public class RepositoryRing: Ring<RepositoryService>, ICrudProvider
+    public class RepositoryRing: Ring<RepositoryService>, IReflectionCrudProvider
     {
         public RepositoryRing()
             : base()
@@ -54,7 +54,7 @@ namespace Bam.Net.Services.Distributed
             return result;
         }        
         public UniversalIdentifier UniversalIdentifier { get; set; }
-
+        public ITypeResolver TypeResolver { get; set; }
         public override string GetHashString(object value)
         {
             Type type = value.GetType();
@@ -141,6 +141,11 @@ namespace Bam.Net.Services.Distributed
                 results.AddRange(svc.Query(operation));
             });
             return results;
+        }
+
+        public object Retrieve(string typeName, string instanceIdentifier)
+        {
+            return Retrieve(TypeResolver.ResolveType(null, typeName), instanceIdentifier);
         }
 
         public object Retrieve(Type objectType, string identifier)
