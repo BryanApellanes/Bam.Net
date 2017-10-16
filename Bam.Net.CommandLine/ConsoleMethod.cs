@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using Bam.Net;
+using System.Diagnostics;
 
 namespace Bam.Net.CommandLine
 {
@@ -74,6 +75,7 @@ namespace Bam.Net.CommandLine
             }
         }
 
+        [DebuggerStepThrough]
 		public object Invoke()
 		{
 			object result = null;
