@@ -13,6 +13,7 @@ using Bam.Net.Data.Dynamic.Data.Dao.Repository;
 using Bam.Net.Data.Dynamic.Data;
 using Bam.Net.Testing.Integration;
 using System.Threading;
+using Bam.Net.CommandLine;
 
 namespace Bam.Net.Data.Dynamic.Tests
 {
@@ -20,7 +21,8 @@ namespace Bam.Net.Data.Dynamic.Tests
     [Serializable]
     public class DynamicRepositoryTests: CommandLineTestInterface
     {
-        [UnitTest]
+        [ConsoleAction]
+        [IntegrationTest]
         public void CanReadUnc()
         {
             JObject jobj = (JObject)JsonConvert.DeserializeObject("\\\\core\\data\\events\\github\\24745fe6efe498f79b3b165be27b1feb69a851d0.json".SafeReadFile());
@@ -81,7 +83,8 @@ namespace Bam.Net.Data.Dynamic.Tests
             }
         }
 
-        [UnitTest]
+        [ConsoleAction]
+        [IntegrationTest]
         public void CanGetClrTypeNameFromArrayOf()
         {
             TestDynamicTypeManager testRepo = new TestDynamicTypeManager(new DynamicTypeDataRepository(), DataSettings.Default);
@@ -89,7 +92,8 @@ namespace Bam.Net.Data.Dynamic.Tests
         }
 
 
-        [UnitTest]
+        [ConsoleAction]
+        [IntegrationTest]
         public void CanGetClrPropertyName()
         {
             TestDynamicTypeManager testRepo = new TestDynamicTypeManager(new DynamicTypeDataRepository(), DataSettings.Default);
@@ -97,7 +101,8 @@ namespace Bam.Net.Data.Dynamic.Tests
         }
 
         // save descriptor
-        [UnitTest]
+        [ConsoleAction]
+        [IntegrationTest]
         public void SaveDescriptorDoesntDuplicte()
         {
             TestDynamicTypeManager testRepo = new TestDynamicTypeManager(new DynamicTypeDataRepository(), DataSettings.Default);            
@@ -117,7 +122,8 @@ namespace Bam.Net.Data.Dynamic.Tests
             Expect.IsTrue(count == 1);
         }
         // save child descriptors
-        [UnitTest]
+        [ConsoleAction]
+        [IntegrationTest]
         public void SaveDataSavesTypes()
         {
             string testTypeName = nameof(SaveDataSavesTypes).RandomLetters(5);
@@ -131,7 +137,8 @@ namespace Bam.Net.Data.Dynamic.Tests
         }
 
         // save data
-        [UnitTest]
+        [ConsoleAction]
+        [IntegrationTest]
         public void SaveDataSavesInstance()
         {
             string testTypeName = nameof(SaveDataSavesInstance).RandomLetters(5);
@@ -144,7 +151,7 @@ namespace Bam.Net.Data.Dynamic.Tests
             datas[0].Properties.Each(p => OutLine($"{p.PropertyName} = {p.Value}"));
         }
         
-        [UnitTest]
+        [ConsoleAction]
         [IntegrationTest]
         public void SaveRealData()
         {
@@ -157,7 +164,8 @@ namespace Bam.Net.Data.Dynamic.Tests
             wait.WaitOne();
         }
 
-        [UnitTest]
+        [ConsoleAction]
+        [IntegrationTest]
         public void AssociationsAreMade()
         {
             DynamicTypeManager mgr = new DynamicTypeManager(new DynamicTypeDataRepository(), DataSettings.Default);
@@ -172,7 +180,8 @@ namespace Bam.Net.Data.Dynamic.Tests
             Expect.AreEqual(ns, typeDescriptor.DynamicNamespaceDescriptor);
         }
 
-        [UnitTest]
+        [ConsoleAction]
+        [IntegrationTest]
         public void CanAddType()
         {
             DynamicTypeManager mgr = new DynamicTypeManager(new DynamicTypeDataRepository(), DataSettings.Default);
@@ -186,7 +195,8 @@ namespace Bam.Net.Data.Dynamic.Tests
             OutLineFormat("{0}", typeDescriptor.PropertiesToString());
         }
 
-        [UnitTest]
+        [ConsoleAction]
+        [IntegrationTest]
         public void CanAddPropertyToType()
         {
             DynamicTypeManager mgr = new DynamicTypeManager(new DynamicTypeDataRepository(), DataSettings.Default);
@@ -204,7 +214,8 @@ namespace Bam.Net.Data.Dynamic.Tests
             Expect.IsTrue(typeDescriptor.Properties.Count == 2);
         }
 
-        [UnitTest]
+        [ConsoleAction]
+        [IntegrationTest]
         public void CanSpecifyNamespace()
         {
             DynamicTypeManager mgr = new DynamicTypeManager(new DynamicTypeDataRepository(), DataSettings.Default);
@@ -220,7 +231,8 @@ namespace Bam.Net.Data.Dynamic.Tests
             Expect.IsTrue(ns.Types.Count == 2);
         }
 
-        [UnitTest]
+        [ConsoleAction]
+        [IntegrationTest]
         public void CanGetAssembly()
         {
             DynamicTypeManager mgr = new DynamicTypeManager(new DynamicTypeDataRepository(), DataSettings.Default);
