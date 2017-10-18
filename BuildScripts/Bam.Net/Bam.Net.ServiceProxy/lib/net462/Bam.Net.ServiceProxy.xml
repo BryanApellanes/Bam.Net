@@ -1956,5 +1956,12 @@
             <param name="parameters"></param>
             <returns></returns>
         </member>
+        <member name="F:Bam.Net.ServiceProxy.ValidationFailures.AttributeFilterFailed">
+            <summary>
+            An attribute addorned the class or
+            method and the specified RequestFilter Type therein
+            determined the request was not valid
+            </summary>
+        </member>
     </members>
 </doc>
