@@ -69,10 +69,15 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
 				this.ChildCollections.Add("Client_ApplicationId", new ClientCollection(Database.GetQuery<ClientColumns, Client>((c) => c.ApplicationId == GetLongValue("Id")), this, "ApplicationId"));				
 			}			if(_database != null)
 			{
+				this.ChildCollections.Add("HostDomainApplication_ApplicationId", new HostDomainApplicationCollection(Database.GetQuery<HostDomainApplicationColumns, HostDomainApplication>((c) => c.ApplicationId == GetLongValue("Id")), this, "ApplicationId"));				
+			}			if(_database != null)
+			{
 				this.ChildCollections.Add("ApplicationMachine_ApplicationId", new ApplicationMachineCollection(Database.GetQuery<ApplicationMachineColumns, ApplicationMachine>((c) => c.ApplicationId == GetLongValue("Id")), this, "ApplicationId"));				
 			}			
             this.ChildCollections.Add("Application_ApplicationMachine_Machine",  new XrefDaoCollection<ApplicationMachine, Machine>(this, false));
 							
+            this.ChildCollections.Add("Application_HostDomainApplication_HostDomain",  new XrefDaoCollection<HostDomainApplication, HostDomain>(this, false));
+				
 		}
 
 	// property:Id, columnName:Id	
@@ -338,6 +343,30 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
 	}
 	
 	[Bam.Net.Exclude]	
+	public HostDomainApplicationCollection HostDomainApplicationsByApplicationId
+	{
+		get
+		{
+			if (this.IsNew)
+			{
+				throw new InvalidOperationException("The current instance of type({0}) hasn't been saved and will have no child collections, call Save() or Save(Database) first."._Format(this.GetType().Name));
+			}
+
+			if(!this.ChildCollections.ContainsKey("HostDomainApplication_ApplicationId"))
+			{
+				SetChildren();
+			}
+
+			var c = (HostDomainApplicationCollection)this.ChildCollections["HostDomainApplication_ApplicationId"];
+			if(!c.Loaded)
+			{
+				c.Load(Database);
+			}
+			return c;
+		}
+	}
+	
+	[Bam.Net.Exclude]	
 	public ApplicationMachineCollection ApplicationMachinesByApplicationId
 	{
 		get
@@ -386,7 +415,31 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
 				return xref;
             }
         }
-		/// <summary>
+
+		// Xref       
+        public XrefDaoCollection<HostDomainApplication, HostDomain> HostDomains
+        {
+            get
+            {			
+				if (this.IsNew)
+				{
+					throw new InvalidOperationException("The current instance of type({0}) hasn't been saved and will have no child collections, call Save() or Save(Database) first."._Format(this.GetType().Name));
+				}
+
+				if(!this.ChildCollections.ContainsKey("Application_HostDomainApplication_HostDomain"))
+				{
+					SetChildren();
+				}
+
+				var xref = (XrefDaoCollection<HostDomainApplication, HostDomain>)this.ChildCollections["Application_HostDomainApplication_HostDomain"];
+				if(!xref.Loaded)
+				{
+					xref.Load(Database);
+				}
+
+				return xref;
+            }
+        }		/// <summary>
 		/// Gets a query filter that should uniquely identify
 		/// the current instance.  The default implementation
 		/// compares the Id/key field to the current instance's.

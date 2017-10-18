@@ -11,7 +11,7 @@ using Bam.Net.Configuration;
 namespace Bam.Net
 {
     /// <summary>
-    /// Symantec convenience class
+    /// Symantic convenience class
     /// </summary>
     public class Validate
     {

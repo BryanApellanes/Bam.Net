@@ -129,8 +129,10 @@
     <Compile Include="FsRepoData.cs" />
     <Compile Include="FsRepository.cs" />
     <Compile Include="ICrudProvider.cs" />
+    <Compile Include="IReflectionCrudProvider.cs" />
     <Compile Include="ICrudResponseProvider.cs" />
     <Compile Include="IHasKeyHash.cs" />
+    <Compile Include="InstanceNotFoundException.cs" />
     <Compile Include="IQueryFilterable.cs" />
     <Compile Include="IRepositoryPathProvider.cs" />
     <Compile Include="IRepositoryResolver.cs" />
@@ -234,10 +236,6 @@
     <ProjectReference Include="..\Bam.Net.CommandLine\Bam.Net.CommandLine.csproj">
       <Project>{ea9863a9-8e0b-4497-b7fd-abf450a3e468}</Project>
       <Name>Bam.Net.CommandLine</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Bam.Net.Data.Dynamic\Bam.Net.Data.Dynamic.csproj">
-      <Project>{ca7f3115-848c-49ac-a0c3-f156afb6c844}</Project>
-      <Name>Bam.Net.Data.Dynamic</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Data.MSSql\Bam.Net.Data.MsSql.csproj">
       <Project>{f373eaf9-b69c-4322-9659-a53a8fb7d43f}</Project>

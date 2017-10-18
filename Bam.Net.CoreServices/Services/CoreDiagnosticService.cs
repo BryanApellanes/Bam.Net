@@ -7,7 +7,7 @@ namespace Bam.Net.CoreServices
 {
     [Proxy("diagSvc")]
     [ApiKeyRequired]
-    public class CoreDiagnosticService: CoreProxyableService 
+    public class CoreDiagnosticService: ApplicationProxyableService 
     {
         protected CoreDiagnosticService() { } // required for client proxy generation via ProxyFactory
         public CoreDiagnosticService(AppConf conf)

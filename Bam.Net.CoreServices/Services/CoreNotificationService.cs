@@ -1,7 +1,7 @@
 ﻿using Bam.Net.CoreServices.ApplicationRegistration;
 using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
-using Bam.Net.Html;
+using Bam.Net.Presentation.Html;
 using Bam.Net.Logging;
 using Bam.Net.Messaging;
 using Bam.Net.ServiceProxy;
@@ -13,13 +13,14 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Bam.Net.Presentation.Handlebars;
 
 namespace Bam.Net.CoreServices
 {
     [Serializable]
     [Proxy("notifySvc")]
     [ServiceSubdomain("notify")]
-    public class CoreNotificationService : CoreProxyableService
+    public class CoreNotificationService : ApplicationProxyableService
     {
         public CoreNotificationService(DataSettings dataSettings, ILogger logger = null)
         {

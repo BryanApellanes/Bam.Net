@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Bam.Net.Data.Dynamic;
+//using Bam.Net.Data.Dynamic;
 
 namespace Bam.Net.Data.Repositories
 {
@@ -52,8 +52,8 @@ namespace Bam.Net.Data.Repositories
             Args.ThrowIfNull(Type);
             object instance = Type.Construct();
             ObjectIdentifier id = new ObjectIdentifier();
-            Reflect.Property(instance, "Uuid", id.Uuid, false);
-            Reflect.Property(instance, "Cuid", id.Cuid, false);
+            ReflectionExtensions.Property(instance, "Uuid", id.Uuid, false);
+            ReflectionExtensions.Property(instance, "Cuid", id.Cuid, false);
             Extensions.CopyProperties(instance, example);
             return instance;
         }

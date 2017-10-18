@@ -125,6 +125,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SecureChannelInvokeException.cs" />
+    <Compile Include="RequestFilterAttribute.cs" />
     <Compile Include="DefaultRoleResolver.cs" />
     <Compile Include="DefaultUserResolver.cs" />
     <Compile Include="DefaultWebUserResolver.cs" />

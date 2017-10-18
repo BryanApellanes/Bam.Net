@@ -42,11 +42,18 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
                 return new OAuthSettingsDataColumns("Cuid");
             }
         }
-        public OAuthSettingsDataColumns ApplicationCuid
+        public OAuthSettingsDataColumns ApplicationName
         {
             get
             {
-                return new OAuthSettingsDataColumns("ApplicationCuid");
+                return new OAuthSettingsDataColumns("ApplicationName");
+            }
+        }
+        public OAuthSettingsDataColumns ApplicationIdentifier
+        {
+            get
+            {
+                return new OAuthSettingsDataColumns("ApplicationIdentifier");
             }
         }
         public OAuthSettingsDataColumns ProviderName
@@ -117,6 +124,34 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
             get
             {
                 return new OAuthSettingsDataColumns("Created");
+            }
+        }
+        public OAuthSettingsDataColumns CreatedBy
+        {
+            get
+            {
+                return new OAuthSettingsDataColumns("CreatedBy");
+            }
+        }
+        public OAuthSettingsDataColumns ModifiedBy
+        {
+            get
+            {
+                return new OAuthSettingsDataColumns("ModifiedBy");
+            }
+        }
+        public OAuthSettingsDataColumns Modified
+        {
+            get
+            {
+                return new OAuthSettingsDataColumns("Modified");
+            }
+        }
+        public OAuthSettingsDataColumns Deleted
+        {
+            get
+            {
+                return new OAuthSettingsDataColumns("Deleted");
             }
         }
 

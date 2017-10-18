@@ -5,7 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using HandlebarsDotNet;
-using Bam.Net.Html;
+using Bam.Net.Presentation.Html;
+using Bam.Net.Presentation.Handlebars;
 
 namespace Bam.Net.Messaging
 {

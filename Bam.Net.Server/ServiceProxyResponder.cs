@@ -16,7 +16,7 @@ using Bam.Net.ServiceProxy;
 using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.Web;
 using Bam.Net.Server.Renderers;
-using Bam.Net.Html;
+using Bam.Net.Presentation.Html;
 using Bam.Net.Configuration;
 using System.Web.Mvc;
 using System.Threading.Tasks;
@@ -27,7 +27,7 @@ namespace Bam.Net.Server
     /// Responder responsible for generating service proxies
     /// and responding to service proxy requests
     /// </summary>
-    public class ServiceProxyResponder : ResponderBase, IInitialize<ServiceProxyResponder>, IExecutionRequestResolver
+    public class ServiceProxyResponder : Responder, IInitialize<ServiceProxyResponder>, IExecutionRequestResolver
     {
         public const string ServiceProxyRelativePath = "~/services";
         const string MethodFormPrefixFormat = "/{0}/MethodForm";
@@ -730,12 +730,13 @@ namespace Bam.Net.Server
         
         public virtual ExecutionRequest CreateExecutionRequest(IHttpContext httpContext, string appName)
         {
-            Incubator proxiedClasses;
-            List<ProxyAlias> aliases;
-            GetServiceProxies(appName, out proxiedClasses, out aliases);
+            GetServiceProxies(appName, out Incubator proxiedClasses, out List<ProxyAlias> aliases);
 
-            ExecutionRequest execRequest = new ExecutionRequest(httpContext, proxiedClasses, aliases.ToArray());
-            ExecutionRequest.DecryptSecureChannelInvoke(execRequest);
+            ExecutionRequest execRequest = new ExecutionRequest(httpContext, proxiedClasses, aliases.ToArray())
+            {
+                Logger = Logger
+            };
+            ExecutionRequest.DecryptSecureChannelInvoke(execRequest);            
             return execRequest;
         }
 

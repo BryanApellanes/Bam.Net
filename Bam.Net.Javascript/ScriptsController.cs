@@ -12,7 +12,7 @@ using Bam.Net;
 using System.IO;
 using Yahoo.Yui.Compressor;
 
-namespace Bam.Net.Html
+namespace Bam.Net.Presentation.Html
 {
     public class ScriptsController: Controller
     {

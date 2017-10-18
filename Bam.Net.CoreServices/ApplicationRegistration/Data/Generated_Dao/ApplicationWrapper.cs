@@ -146,6 +146,28 @@ Bam.Net.CoreServices.ApplicationRegistration.Organization _organization;
 				SetUpdatedXrefCollectionProperty("Machines", this.GetType().GetProperty("Machines"));
 			}
 		}
-	}
+// Xref property: Left -> HostDomain ; Right -> Application
+
+		List<Bam.Net.CoreServices.ApplicationRegistration.HostDomain> _hostDomains;
+		public override List<Bam.Net.CoreServices.ApplicationRegistration.HostDomain> HostDomains
+		{
+			get
+			{
+				if(_hostDomains == null)
+				{
+					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.ApplicationRegistration.Dao.HostDomainApplication, Bam.Net.CoreServices.ApplicationRegistration.Dao.HostDomain>(Repository.GetDaoInstance(this), false);
+					 xref.Load(Repository.Database);
+					 _hostDomains = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.ApplicationRegistration.HostDomain>().ToList();
+					 SetUpdatedXrefCollectionProperty("HostDomains", this.GetType().GetProperty("HostDomains"));
+				}
+
+				return _hostDomains;
+			}
+			set
+			{
+				_hostDomains = value;
+				SetUpdatedXrefCollectionProperty("HostDomains", this.GetType().GetProperty("HostDomains"));
+			}
+		}	}
 	// -- generated
 }																								

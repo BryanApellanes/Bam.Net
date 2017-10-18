@@ -36,7 +36,7 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: InternalsVisibleTo("Bam.Net.Html")]
+[assembly: InternalsVisibleTo("Bam.Net.Presentation")]
 [assembly: InternalsVisibleTo("Bam.Net.Automation.Tests")]
 [assembly: InternalsVisibleTo("Bam.Net.Server")]
 [assembly: InternalsVisibleTo("Bam.Net.CoreServices")]
@@ -47,6 +47,6 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("Bam.Net.Services.Clients")]
 [assembly: InternalsVisibleTo("gloo")]
 
-[assembly: AssemblyVersion("1.8.1")]
-[assembly: AssemblyFileVersion("1.8.1")]
+[assembly: AssemblyVersion("1.8.2")]
+[assembly: AssemblyFileVersion("1.8.2")]
 

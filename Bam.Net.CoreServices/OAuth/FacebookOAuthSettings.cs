@@ -8,7 +8,7 @@ namespace Bam.Net.CoreServices.OAuth
 {
     public class FacebookOAuthSettings: OAuthSettings
     {
-        public FacebookOAuthSettings(string clientId, string clientSecret, string version = "v2.9") : base(clientId, clientSecret)
+        public FacebookOAuthSettings(string clientId, string clientSecret, string version = "v2.10") : base(clientId, clientSecret)
         {
             ProviderName = "facebook";
             AuthorizationEndpointFormat = "https://www.facebook.com/{Version}/dialog/oauth?client_id={ClientId}&redirect_uri={AuthCallbackUrl}&state={State}";

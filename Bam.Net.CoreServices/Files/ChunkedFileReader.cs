@@ -58,12 +58,13 @@ namespace Bam.Net.CoreServices.Files
         {
             get
             {
-                FileChunk chunk = new FileChunk();
-                chunk.ChunkIndex = chunkIndex;
-                chunk.FileHash = FileHash;
-                long streamIndex;
-                chunk.ByteData = ReadChunk(chunkIndex, out streamIndex);
-                chunk.StreamIndex = streamIndex;
+                FileChunk chunk = new FileChunk()
+                {
+                    ChunkIndex = chunkIndex,
+                    FileHash = FileHash,
+                    ByteData = ReadChunk(chunkIndex, out long streamIndex),
+                    StreamIndex = streamIndex
+                };
                 chunk.ChunkLength = chunk.ByteData.Length;
                 return chunk;
             }

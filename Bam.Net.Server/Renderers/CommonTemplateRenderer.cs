@@ -5,7 +5,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Web.Mvc;
-using Bam.Net.Html;
+using Bam.Net.Presentation.Html;
 
 namespace Bam.Net.Server.Renderers
 {

@@ -29,7 +29,13 @@ namespace Bam.Net.ServiceProxy
         ParameterCountMismatch,
         PermissionDenied,
         InvalidApiKeyToken,
-        RemoteExecutionNotAllowed
+        RemoteExecutionNotAllowed,
+        /// <summary>
+        /// An attribute addorned the class or
+        /// method and the specified RequestFilter Type therein
+        /// determined the request was not valid
+        /// </summary>
+        AttributeFilterFailed
     }
 
     public class ValidationResult
@@ -57,10 +63,28 @@ namespace Bam.Net.ServiceProxy
             ValidateMethodRoles(context, failures, messages);
             ValidateClassRoles(context, failures, messages);
             ValidateApiKeyToken(failures, messages);
+            ValidateRequestFilters(context, failures, messages);
 
             ValidationFailures = failures.ToArray();
             Message = messages.ToArray().ToDelimited(s => s, Delimiter);
             this.Success = failures.Count == 0;
+        }
+        private void ValidateRequestFilters(IHttpContext context, List<ValidationFailures> failures, List<string> messages)
+        {
+            RequestFilterAttribute filterAttr;
+            if (_toValidate.TargetType != null &&
+                _toValidate.MethodInfo != null &&
+                (
+                    _toValidate.TargetType.HasCustomAttributeOfType(true, out filterAttr) ||
+                    _toValidate.MethodInfo.HasCustomAttributeOfType(true, out filterAttr)
+                ))
+            {
+                if (!filterAttr.RequestIsAllowed(_toValidate, out string failureMessage))
+                {
+                    failures.Add(ServiceProxy.ValidationFailures.AttributeFilterFailed);
+                    messages.Add(failureMessage);
+                }
+            }
         }
 
         private void ValidateApiKeyToken(List<ValidationFailures> failures, List<string> messages)

@@ -20,7 +20,7 @@ namespace Bam.Net.CoreServices
     [Proxy("configSvc")]
     [ServiceProxySecure.ApiKeyRequired]
     [ServiceSubdomain("config")]
-    public class CoreConfigurationService : CoreProxyableService
+    public class CoreConfigurationService : ApplicationProxyableService
     {
         public const string CommonConfigName = "Common";
         protected CoreConfigurationService() { }
@@ -28,13 +28,13 @@ namespace Bam.Net.CoreServices
         {
             AppConf = conf;
             DatabaseRoot = databaseRoot;
-            CoreRegistryRepository = coreRepo;
+            ApplicationRegistrationRepository = coreRepo;
         }
         public string DatabaseRoot { get; set; }
         [Exclude]
         public override object Clone()
         {
-            CoreConfigurationService clone = new CoreConfigurationService(CoreRegistryRepository, AppConf, DatabaseRoot);
+            CoreConfigurationService clone = new CoreConfigurationService(ApplicationRegistrationRepository, AppConf, DatabaseRoot);
             clone.CopyProperties(this);
             clone.CopyEventHandlers(this);
             return clone;
@@ -71,10 +71,10 @@ namespace Bam.Net.CoreServices
         {
             lock (_commonLock)
             {
-                Configuration config = CoreRegistryRepository.GetOneConfigurationWhere(c => c.Name == CommonConfigName && c.ApplicationId == Application.Unknown.Id);
-                config.Settings.Each(s => CoreRegistryRepository.Delete(s));
+                Configuration config = ApplicationRegistrationRepository.GetOneConfigurationWhere(c => c.Name == CommonConfigName && c.ApplicationId == Application.Unknown.Id);
+                config.Settings.Each(s => ApplicationRegistrationRepository.Delete(s));
                 config.Settings = DictionaryToSettings(settings, config).ToList();
-                CoreRegistryRepository.Save(config);
+                ApplicationRegistrationRepository.Save(config);
             }
         }
         
@@ -83,7 +83,7 @@ namespace Bam.Net.CoreServices
         {
             lock (_commonLock)
             {
-                Configuration config = CoreRegistryRepository.GetOneConfigurationWhere(c => c.Name == CommonConfigName && c.ApplicationId == Application.Unknown.Id);
+                Configuration config = ApplicationRegistrationRepository.GetOneConfigurationWhere(c => c.Name == CommonConfigName && c.ApplicationId == Application.Unknown.Id);
                 if (config != null)
                 {
                     Dictionary<string, string> result = new Dictionary<string, string>();
@@ -110,7 +110,7 @@ namespace Bam.Net.CoreServices
             applicationName = applicationName ?? ApplicationName;
             ValidAppOrDie(applicationName);
             configurationName = configurationName ?? CommonConfigName;
-            Application application = CoreRegistryRepository.GetOneApplicationWhere(c => c.Name == applicationName);
+            Application application = ApplicationRegistrationRepository.GetOneApplicationWhere(c => c.Name == applicationName);
             lock (Application.ConfigurationLock)
             {
                 Configuration config = application.Configurations.FirstOrDefault(c => c.Name.Equals(configurationName));
@@ -118,10 +118,10 @@ namespace Bam.Net.CoreServices
                 {
                     config = new Configuration { Name = configurationName };
                     config.ApplicationId = application.Id;
-                    config = CoreRegistryRepository.Save(config);
+                    config = ApplicationRegistrationRepository.Save(config);
                 }
                 config.Settings = DictionaryToSettings(settings, config).ToList();
-                CoreRegistryRepository.Save(config);
+                ApplicationRegistrationRepository.Save(config);
             }
         }
 
@@ -129,7 +129,7 @@ namespace Bam.Net.CoreServices
         public virtual void SetMachineConfiguration(string machineName, Dictionary<string, string> settings, string configurationName = null)
         {
             configurationName = configurationName ?? CommonConfigName;
-            Machine machine = CoreRegistryRepository.GetOneMachineWhere(c => c.Name == machineName);
+            Machine machine = ApplicationRegistrationRepository.GetOneMachineWhere(c => c.Name == machineName);
             lock (Machine.ConfigurationLock)
             {
                 Configuration config = machine.Configurations.FirstOrDefault(c => c.Name.Equals(configurationName));
@@ -137,10 +137,10 @@ namespace Bam.Net.CoreServices
                 {
                     config = new Configuration { Name = configurationName };
                     config.MachineId = machine.Id;
-                    config = CoreRegistryRepository.Save(config);
+                    config = ApplicationRegistrationRepository.Save(config);
                 }
                 config.Settings = DictionaryToSettings(settings, config).ToList();
-                CoreRegistryRepository.Save(config);
+                ApplicationRegistrationRepository.Save(config);
             }
         }
 
@@ -149,7 +149,7 @@ namespace Bam.Net.CoreServices
             applicationName = applicationName ?? ApplicationName;
             ValidAppOrDie(applicationName);
             configurationName = configurationName ?? CommonConfigName;
-            Application application = CoreRegistryRepository.GetOneApplicationWhere(c => c.Name == applicationName);
+            Application application = ApplicationRegistrationRepository.GetOneApplicationWhere(c => c.Name == applicationName);
             Configuration config = application.Configurations.FirstOrDefault(c => c.Name.Equals(configurationName));
             if(config != null)
             {
@@ -161,7 +161,7 @@ namespace Bam.Net.CoreServices
         public virtual Dictionary<string, string> GetMachineConfiguration(string machineName, string configurationName = null)
         {
             configurationName = configurationName ?? CommonConfigName;
-            Machine machine = CoreRegistryRepository.GetOneMachineWhere(c => c.Name == machineName);
+            Machine machine = ApplicationRegistrationRepository.GetOneMachineWhere(c => c.Name == machineName);
             Configuration config = machine.Configurations.FirstOrDefault(c => c.Name.Equals(configurationName));
             if (config != null)
             {

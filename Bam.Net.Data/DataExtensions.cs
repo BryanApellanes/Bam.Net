@@ -271,6 +271,19 @@ namespace Bam.Net.Data
             return result;
         }
 
+        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this object instance, Func<PropertyInfo, KeyValuePair<TKey, TValue>> valueAdder)
+        {
+            Args.ThrowIfNull(instance, nameof(instance));
+
+            Dictionary<TKey, TValue> result = new Dictionary<TKey, TValue>();
+            instance.GetType().GetProperties().Each(pi => 
+            {
+                KeyValuePair<TKey, TValue> kvp = valueAdder(pi);
+                result.Add(kvp.Key, kvp.Value);
+            });
+            return result;
+        }
+
         public static IEnumerable<DbParameter> ToDbParameters(this Dictionary<string, object> parameters, Database db)
         {
             Args.ThrowIfNull(parameters, "parameters");

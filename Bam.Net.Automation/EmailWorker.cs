@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using Bam.Net.Html;
+using Bam.Net.Presentation.Html;
 using Bam.Net.Configuration;
 using Bam.Net.Profiguration;
 using Bam.Net.Services;

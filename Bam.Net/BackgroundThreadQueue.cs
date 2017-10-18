@@ -59,6 +59,9 @@ namespace Bam.Net
 
         public event EventHandler Exception;
         protected bool Continue { get; set; }
+        public event EventHandler Waiting;
+        public event EventHandler Processing;
+        public event EventHandler QueueEmptied;
         Thread _processThread;
         AutoResetEvent _waitSignal = new AutoResetEvent(false);
         object _processThreadLock = new object();
@@ -74,7 +77,9 @@ namespace Bam.Net
                         {
                             try
                             {
+                                FireEvent(Waiting, new BackgroundThreadQueueEventArgs());
                                 _waitSignal.WaitOne();
+                                FireEvent(Processing, new BackgroundThreadQueueEventArgs());
                                 while (_processQueue.Count > 0)
                                 {
                                     if (_processQueue.TryDequeue(out T val))
@@ -82,6 +87,7 @@ namespace Bam.Net
                                         Process(val);
                                     }
                                 }
+                                FireEvent(QueueEmptied, new BackgroundThreadQueueEventArgs());
                             }
                             catch (Exception ex)
                             {

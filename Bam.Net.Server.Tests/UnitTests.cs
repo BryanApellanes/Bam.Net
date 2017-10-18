@@ -14,10 +14,10 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Threading;
 using Bam.Net;
-using Bam.Net.Dust;
+using Bam.Net.Presentation.Dust;
 using Bam.Net.Web;
 using Bam.Net.CommandLine;
-using Bam.Net.Html;
+using Bam.Net.Presentation.Html;
 using Bam.Net.Testing;
 using Bam.Net.Encryption;
 using Bam.Net.Incubation;
@@ -490,7 +490,7 @@ namespace Bam.Net.Server.Tests
             Expect.IsTrue(conf.GenerateDao);
         }
 
-        class TestResponder : ResponderBase
+        class TestResponder : Responder
         {
             public TestResponder() : base(null) { }
             public override bool TryRespond(IHttpContext context)

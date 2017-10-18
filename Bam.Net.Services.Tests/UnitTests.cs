@@ -6,7 +6,7 @@ using Bam.Net.Data.Repositories;
 using Bam.Net.Data.SQLite;
 using Bam.Net.Logging;
 using Bam.Net.Server;
-using Bam.Net.CoreServices.DistributedHashTable.Data;
+using Bam.Net.Services.Distributed.Data;
 using Bam.Net.Testing;
 using Bam.Net.Caching;
 using Bam.Net.Testing.Unit;
@@ -35,8 +35,10 @@ namespace Bam.Net.Services.Tests
         [UnitTest]
         public void ThrowsOnDuplicateName()
         {
-            DataPropertyCollection propList = new DataPropertyCollection();
-            propList.Add("Name", "some value");
+            DataPropertyCollection propList = new DataPropertyCollection
+            {
+                { "Name", "some value" }
+            };
             Expect.Throws(() =>
             {
                 propList.Add("Name", "bad bad");

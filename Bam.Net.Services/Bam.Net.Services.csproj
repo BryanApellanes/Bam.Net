@@ -50,21 +50,12 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Common.Logging, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <HintPath>..\packages\Common.Logging.3.3.1\lib\net40\Common.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="Common.Logging.Core, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <HintPath>..\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
-    </Reference>
     <Reference Include="NCuid, Version=1.0.0.23490, Culture=neutral, PublicKeyToken=73c58d802958a09f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NCuid.1.0.0\lib\net40\NCuid.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Quartz, Version=2.6.0.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Quartz.2.6.0\lib\net40\Quartz.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -121,6 +112,45 @@
     <Compile Include="Automation\CommandService.cs" />
     <Compile Include="Catalog\Data\ItemCustomizationDefinition.cs" />
     <Compile Include="AsyncExecutionRequest.cs" />
+    <Compile Include="Distributed\Arc.cs" />
+    <Compile Include="Distributed\Data\CreateOperation.cs" />
+    <Compile Include="Distributed\Data\DataPoint.cs" />
+    <Compile Include="Distributed\Data\DataProperty.cs" />
+    <Compile Include="Distributed\Data\DataPropertyCollection.cs" />
+    <Compile Include="Distributed\Data\DataPropertyExtensions.cs" />
+    <Compile Include="Distributed\Data\DataRelationship.cs" />
+    <Compile Include="Distributed\Data\DeleteEvent.cs" />
+    <Compile Include="Distributed\Data\DeleteOperation.cs" />
+    <Compile Include="Distributed\Data\Operation.cs" />
+    <Compile Include="Distributed\Data\OperationIntent.cs" />
+    <Compile Include="Distributed\Data\OpertionEventArgs.cs" />
+    <Compile Include="Distributed\Data\QueryOperation.cs" />
+    <Compile Include="Distributed\Data\ReplicateOperation.cs" />
+    <Compile Include="Distributed\Data\ReplicationResult.cs" />
+    <Compile Include="Distributed\Data\RetrieveOperation.cs" />
+    <Compile Include="Distributed\Data\UpdateOperation.cs" />
+    <Compile Include="Distributed\Data\WriteEvent.cs" />
+    <Compile Include="Distributed\Data\WriteOperation.cs" />
+    <Compile Include="Distributed\EventMessage.cs" />
+    <Compile Include="Distributed\EventSourceService.cs" />
+    <Compile Include="Distributed\EventSourceServiceArgs.cs" />
+    <Compile Include="Distributed\ExternalEventSubscription.cs" />
+    <Compile Include="Distributed\ExternalEventSubscriptionDescriptor.cs" />
+    <Compile Include="Distributed\IDistributedRepository.cs" />
+    <Compile Include="Distributed\IHasInfo.cs" />
+    <Compile Include="Distributed\InfoAttribute.cs" />
+    <Compile Include="Distributed\InProcessEvents.cs" />
+    <Compile Include="Distributed\IRepositoryTypeResolver.cs" />
+    <Compile Include="Distributed\Keyspace.cs" />
+    <Compile Include="Distributed\MetricsService.cs" />
+    <Compile Include="Distributed\RepositoryKey.cs" />
+    <Compile Include="Distributed\RepositoryRing.cs" />
+    <Compile Include="Distributed\RepositoryService.cs" />
+    <Compile Include="Distributed\RepositoryTypeResolver.cs" />
+    <Compile Include="Distributed\Ring.cs" />
+    <Compile Include="Distributed\SystemEventService.cs" />
+    <Compile Include="Distributed\UniversalIdentifier.cs" />
+    <Compile Include="Distributed\WriteEventService.cs" />
     <Compile Include="ExecutionResponder.cs" />
     <Compile Include="ServiceResponse.cs" />
     <Compile Include="Extensions.cs" />
@@ -149,6 +179,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="AsyncCallback\regen_asyncecallback_dao.cmd" />
+    <None Include="Distributed\Data\regen_distributed_dao.cmd" />
     <None Include="packages.config" />
     <Compile Include="Validation\ValidationRuleSetProcessor.cs" />
   </ItemGroup>
@@ -164,6 +195,10 @@
     <ProjectReference Include="..\Bam.Net.CoreServices\Bam.Net.CoreServices.csproj">
       <Project>{5480d2a0-145b-4435-8e1c-4555ead0424a}</Project>
       <Name>Bam.Net.CoreServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.Dynamic\Bam.Net.Data.Dynamic.csproj">
+      <Project>{ca7f3115-848c-49ac-a0c3-f156afb6c844}</Project>
+      <Name>Bam.Net.Data.Dynamic</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Data.Repositories\Bam.Net.Data.Repositories.csproj">
       <Project>{222ef625-a115-49c7-8bdb-5879725a7d17}</Project>

@@ -16,7 +16,7 @@ namespace Bam.Net.CoreServices
     [Proxy("userRegistrySvc")]
     [Encrypt]
     [ServiceSubdomain("userregistry")]
-    public class CoreUserRegistryService: CoreProxyableService, IUserManager, IUserResolver, IRoleResolver
+    public class CoreUserRegistryService: ApplicationProxyableService, IUserManager, IUserResolver, IRoleResolver
     {
         protected CoreUserRegistryService() { } // to enable auto proxy gen
         public CoreUserRegistryService(IDatabaseProvider dbProvider, IUserManager wrapped, IApplicationNameProvider appNameProvider, IUserResolver userResolver, IRoleResolver roleResolver)
@@ -133,6 +133,7 @@ namespace Bam.Net.CoreServices
             return UserManager.ConfirmAccount(token);
         }
 
+        [Local]
         public virtual Email CreateEmail(string fromAddress = null, string fromDisplayName = null)
         {
             return UserManager.CreateEmail(fromAddress, fromDisplayName);
@@ -210,6 +211,7 @@ namespace Bam.Net.CoreServices
             return RoleResolver.GetRoles(userResolver);
         }
 
+        [Local]
         public Vault GetSmtpSettingsVault(string applicationName = null)
         {
             return UserManager.GetSmtpSettingsVault(applicationName);

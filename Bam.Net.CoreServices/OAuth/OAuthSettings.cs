@@ -11,19 +11,39 @@ namespace Bam.Net.CoreServices.OAuth
 {
     public class OAuthSettings: OAuthSettingsData
     {
-        public OAuthSettings()
+        static Dictionary<string, Type> _settingsTypeMap;
+        static OAuthSettings()
+        {
+            _settingsTypeMap = new Dictionary<string, Type>
+            {
+                { "bamapps.net", typeof(OAuthSettings) },
+                { "facebook", typeof(FacebookOAuthSettings) }
+            };
+        }
+
+        public OAuthSettings() : base()
         {
             ClientId = "1282272511809831";
             AuthorizationEndpointFormat = "https://bamapps.net/oauth/authorize?clientId={ClientId}&callbackUrl={CallbackUrl}&code={Code}&state={State}";
             TokenEndpointFormat = "https://bamapps.net/oauth/accesstoken?clientId={ClientId}&callbackUrl={TokenCallbackUrl}&clientSecret={ClientSecret}&code={Code}&state={State}";
             TokenCallbackUrl = "https://{ApplicationName}.bamapps.net/oauth/settoken?accesstoken={AccessToken}";
-            ProviderName = "bamapps.net";
         }
 
         public OAuthSettings(string clientId, string clientSecret) : this()
         {
             ClientId = clientId;
             ClientSecret = clientSecret;
+        }
+
+        public static OAuthSettings FromData(OAuthSettingsData data)
+        {
+            OAuthSettings settings = null;
+            if (_settingsTypeMap.ContainsKey(data.ProviderName))
+            {
+                settings = _settingsTypeMap[data.ProviderName].Construct<OAuthSettings>();
+                settings.CopyProperties(data);
+            }
+            return settings;
         }
 
         /// <summary>

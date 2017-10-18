@@ -1201,7 +1201,7 @@
         </member>
         <member name="T:Bam.Net.Validate">
             <summary>
-            Symantec convenience class
+            Symantic convenience class
             </summary>
         </member>
         <member name="M:Bam.Net.Validate.RequiredProperties(Bam.Net.Configuration.IHasRequiredProperties)">

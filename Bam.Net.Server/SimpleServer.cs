@@ -109,20 +109,14 @@ namespace Bam.Net.Server
         {
             Responder.Responded += (r, context) =>
             {
-                FlushResponse(context);
+                Server.Responder.FlushResponse(context);
                 Logger.AddEntry("*** Responded ***\r\n{0}", LogEventType.Information, context.Request.PropertiesToString());
             };
             Responder.NotResponded += (r, context) =>
             {
-                FlushResponse(context);
+                Server.Responder.FlushResponse(context);
                 Logger.AddEntry("*** Didn't Respond ***\r\n{0}", LogEventType.Warning, context.Request.PropertiesToString());
             };
-        }
-        private static void FlushResponse(IHttpContext context, int statusCode = 200)
-        {
-            context.Response.StatusCode = statusCode;
-            context.Response.OutputStream.Flush();
-            context.Response.OutputStream.Close();
         }
     }
 }

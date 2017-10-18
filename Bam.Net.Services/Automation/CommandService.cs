@@ -26,7 +26,7 @@ namespace Bam.Net.Services.Automation
         {
             try
             {
-                IsLoggedInOrDie();
+                UserIsLoggedInOrDie();
 
                 CommandInfo info = new CommandInfo { Command = command };
                 IRepository repo = RepositoryResolver.GetRepository(HttpContext);

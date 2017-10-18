@@ -11,7 +11,7 @@ using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.Server.Renderers
 {
-    public interface IRenderer: IRenderToStream
+    public interface IRenderer: IStreamRenderer
     {
         string[] Extensions { get; set; }
         string ContentType { get; set; }

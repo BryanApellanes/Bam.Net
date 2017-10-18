@@ -5,11 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Bam.Net.Html;
+using Bam.Net.Presentation;
 using Bam.Net;
 using System.Web.Mvc;
 using Bam.Net.ServiceProxy;
 using Bam.Net.ServiceProxy.Js;
+using Bam.Net.Presentation.Html;
 
 namespace Bam.Net.OAuth
 {

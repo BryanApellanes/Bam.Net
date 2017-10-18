@@ -8,6 +8,6 @@ namespace Bam.Net.CoreServices
 {
     public class ClientRegistrationFailedException: Exception
     {
-        public ClientRegistrationFailedException(CoreServiceResponse response) : base(response.Message) { }
+        public ClientRegistrationFailedException(CoreServiceResponse response) : base(response?.Message ?? "No response") { }
     }
 }

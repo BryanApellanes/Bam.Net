@@ -113,5 +113,37 @@ namespace Bam.Net.ServiceProxy.Tests
             Expect.IsFalse(status == EncryptedTokenValidationStatus.Success);
             Expect.AreEqual(EncryptedTokenValidationStatus.NonceFailed, status);
         }
+
+        static string _failureMessage = "I will never let it happen";
+        public class DontAllowAttribute : RequestFilterAttribute
+        {
+            public override bool RequestIsAllowed(ExecutionRequest request, out string failureMessage)
+            {
+                failureMessage = _failureMessage;
+                return false;
+            }
+        }
+        public class ClassWithTestFilterOnAMethod
+        {
+            [DontAllow]
+            public void Method()
+            {
+
+            }
+        }
+
+        [UnitTest]
+        public void Validation_FailsBecauseRequestFilter()
+        {
+            string url = "http://blah.com/ClassWithTestFilterOnAMethod/Method.json";
+            RequestWrapper req = new RequestWrapper(new { Headers = new NameValueCollection(), Url = new Uri(url), HttpMethod = "GET", ContentLength = 0, QueryString = new NameValueCollection() });
+            ResponseWrapper res = new ResponseWrapper(new object());
+
+            ExecutionRequest execRequest = new ExecutionRequest(req, res);
+            execRequest.ServiceProvider.Set(typeof(ClassWithTestFilterOnAMethod), new ClassWithTestFilterOnAMethod());
+            ValidationResult validation = execRequest.Validate();
+            Expect.AreEqual(_failureMessage, validation.Message);
+            Expect.IsFalse(validation.Success);
+        }
     }
 }

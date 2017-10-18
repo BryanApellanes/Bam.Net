@@ -116,7 +116,7 @@ namespace Bam.Net.Data
         {
             if (!string.IsNullOrWhiteSpace(this))
             {
-                return db.ExecuteReader<T>(this, ()=> OnExecuted(db));
+                return db.ExecuteReader<T>(this, (dr)=> OnExecuted(db));
             }
             return new List<T>();
         }
@@ -125,7 +125,7 @@ namespace Bam.Net.Data
         {
             if (!string.IsNullOrWhiteSpace(this))
             {
-                return db.ExecuteDynamicReader(this, () => OnExecuted(db));
+                return db.ExecuteDynamicReader(this, (dr) => OnExecuted(db));
             }
             return new List<dynamic>();
         }

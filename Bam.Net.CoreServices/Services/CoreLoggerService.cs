@@ -15,7 +15,7 @@ namespace Bam.Net.CoreServices
     [Proxy("loggerSvc")]
     [ApiKeyRequired]
     [ServiceSubdomain("logger")]
-    public class CoreLoggerService: CoreProxyableService, ILog, ILogEventCommitter
+    public class CoreLoggerService: ApplicationProxyableService, ILog, ILogEventCommitter
     {
         DaoLogger2 _logger;
         protected CoreLoggerService() { }

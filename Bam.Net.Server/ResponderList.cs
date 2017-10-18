@@ -9,7 +9,7 @@ using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.Server
 {
-    public class ResponderList: ResponderBase
+    public class ResponderList: Responder
     {
         List<IResponder> _responders;
         public ResponderList(BamConf conf, IEnumerable<IResponder> responders)

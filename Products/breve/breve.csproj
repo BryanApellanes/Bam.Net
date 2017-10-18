@@ -82,10 +82,6 @@
       <Project>{ea9863a9-8e0b-4497-b7fd-abf450a3e468}</Project>
       <Name>Bam.Net.CommandLine</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Bam.Net.Dust\Bam.Net.Dust.csproj">
-      <Project>{2a4347ab-3e15-4698-9020-722320307754}</Project>
-      <Name>Bam.Net.Dust</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Bam.Net.Javascript\Bam.Net.Javascript.csproj">
       <Project>{34c5016d-5265-4394-a9ba-cb2f70d8e93b}</Project>
       <Name>Bam.Net.Javascript</Name>

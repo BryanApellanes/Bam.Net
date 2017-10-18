@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using Bam.Net.Web;
-using Bam.Net.Html;
+using Bam.Net.Presentation.Html;
 using Bam.Net;
 using Bam.Net.Logging;
 using Bam.Net.Server;
@@ -93,10 +93,7 @@ namespace Bam.Net.Server.Renderers
         public event Action<RendererFactory, IRequest> CreatingRenderer;
         protected void OnCreatingRenderer(IRequest request)
         {
-            if (CreatingRenderer != null)
-            {
-                CreatingRenderer(this, request);
-            }
+            CreatingRenderer?.Invoke(this, request);
         }
         public event Action<RendererFactory, IRequest, IRenderer> CreatedRenderer;
         protected void OnCreatedRenderer(IRequest request, IRenderer renderer)

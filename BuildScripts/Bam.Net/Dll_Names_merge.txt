@@ -17,9 +17,9 @@ Bam.Net.Data.Dynamic
 Bam.Net.Data.Repositories
 Bam.Net.Documentation
 Bam.Net.Drawing
-Bam.Net.Dust
+Bam.Net.Presentation.Dust
 Bam.Net.Encryption
-Bam.Net.Html
+Bam.Net.Presentation
 Bam.Net.Incubation
 Bam.Net.Javascript
 Bam.Net.Logging

@@ -20,6 +20,11 @@ namespace Bam.Net.ServiceProxy.Secure
     /// </summary>
     public class ApiKeyResolver : IApiKeyProvider, IApplicationNameProvider, IApiKeyResolver
     {
+        static ApiKeyResolver()
+        {
+            Default = new ApiKeyResolver();
+        }
+
         public ApiKeyResolver()
         {
             ApiKeyProvider = DefaultConfigurationApiKeyProvider.Instance;
@@ -43,6 +48,11 @@ namespace Bam.Net.ServiceProxy.Secure
         {
             ApiKeyProvider = apiKeyProvider;
             ApplicationNameProvider = nameProvider;
+        }
+
+        public static ApiKeyResolver Default
+        {
+            get;
         }
 
         public IApiKeyProvider ApiKeyProvider

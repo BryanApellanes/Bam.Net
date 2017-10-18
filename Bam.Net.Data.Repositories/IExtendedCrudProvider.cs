@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Bam.Net.Data.Repositories
 {
-    public interface IExtendedCrudProvider: ICrudProvider
+    public interface IExtendedCrudProvider: IReflectionCrudProvider
     {
         object Create(object toCreate);
         T Create<T>(T toCreate) where T : class, new();

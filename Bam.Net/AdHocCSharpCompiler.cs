@@ -190,7 +190,10 @@ namespace Bam.Net
             CompilerParameters parameters = GetCompilerParameters(assemblyFileName, referenceAssemblies, executable);
             return codeProvider.CompileAssemblyFromFile(parameters, files.Select(f => f.FullName).ToArray());
         }
-
+        public static CompilerResults CompileSource(string source, string assemblyFileName)
+        {
+            return CompileSource(source, assemblyFileName, DefaultReferenceAssemblies.ToArray(), false);
+        }
         public static CompilerResults CompileSource(string source, string assemblyFileName, Assembly[] referenceAssemblies, bool executable = false)
         {
             return CompileSource(source, assemblyFileName, referenceAssemblies.Select(a => a.GetFilePath()).ToArray(), executable);

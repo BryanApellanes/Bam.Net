@@ -505,14 +505,15 @@ namespace Bam.Net.Data.Repositories
 			try
 			{
 				Initialize();
-				object daoInstance = GetDaoInstanceById(type, GetIdValue(toDelete).Value);
+                long id = GetIdValue(toDelete).Value;
+                object daoInstance = GetDaoInstanceById(type, id);
 				if (daoInstance != null)
 				{
 					MethodInfo deleteMethod = daoInstance.GetType().GetMethod("Delete", new Type[] { typeof(Database) });
 					deleteMethod.Invoke(daoInstance, new object[] { Database });
 					return true;
 				}
-				return false;
+                throw new InstanceNotFoundException(type, id);
 			}
 			catch (Exception ex)
 			{

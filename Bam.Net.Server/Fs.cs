@@ -8,7 +8,7 @@ using System.Text;
 using System.IO;
 using Bam.Net;
 using Bam.Net.Configuration;
-using Bam.Net.Html;
+using Bam.Net.Presentation.Html;
 using Bam.Net.Data;
 using Bam.Net.ServiceProxy;
 using System.Web.Mvc;

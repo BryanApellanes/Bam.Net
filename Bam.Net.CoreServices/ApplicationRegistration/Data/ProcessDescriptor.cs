@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Bam.Net.Data.Repositories;
 using System.Net.Sockets;
 using Bam.Net.CoreServices.ApplicationRegistration.Dao.Repository;
+using Newtonsoft.Json;
 
 namespace Bam.Net.CoreServices.ApplicationRegistration
 {
@@ -25,6 +26,7 @@ namespace Bam.Net.CoreServices.ApplicationRegistration
         public string InstanceIdentifier { get; set; }
         #endregion
         public long MachineId { get; set; }
+        [JsonIgnore]
         public virtual Machine LocalMachine { get; set; }
         public virtual Client LocalClient { get; set; }
         public string HashAlgorithm { get; set; }
@@ -85,7 +87,7 @@ namespace Bam.Net.CoreServices.ApplicationRegistration
             ProcessDescriptor result = new ProcessDescriptor();
             result.CopyProperties(Current);
             result.LocalClient = repo.GetOneClientWhere(m => m.MachineName == Machine.Current.Name && m.ApplicationName == Machine.Current.DnsName && m.ServerHost == serverHost && m.Port == port);
-            result.Application = new Application { Name = applicationName, Organization = new Organization { Name = organizationName.Or(applicationName) } };
+            result.Application = new Application { Name = applicationName, Organization = new Organization { Name = organizationName.Or(Organization.Public.Name) } };
             return result;
         }
 

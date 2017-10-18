@@ -8,6 +8,7 @@ using System.Text;
 
 namespace Bam.Net.Incubation
 {
+    [Serializable]
     public class ConstructFailedException: Exception
     {
 		public ConstructFailedException(Type type, Type[] ctorTypes)

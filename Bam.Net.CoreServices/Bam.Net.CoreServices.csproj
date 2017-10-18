@@ -90,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationNameNotSpecifiedException.cs" />
+    <Compile Include="ApplicationNameResolver.cs" />
     <Compile Include="ApplicationRegistration\Data\ActiveApiKeyIndex.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\ActiveApiKeyIndex.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\ActiveApiKeyIndexCollection.cs" />
@@ -97,27 +98,6 @@
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\ActiveApiKeyIndexPagedQuery.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\ActiveApiKeyIndexQuery.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\ActiveApiKeyIndexWrapper.cs" />
-    <Compile Include="ApplicationRegistration\Data\Generated_Dao\ApplicationRegistrationContext.cs" />
-    <Compile Include="ApplicationRegistration\Data\Generated_Dao\ApplicationRegistrationRepository.cs" />
-    <Compile Include="ApplicationRegistration\Data\Generated_Dao\Qi\ActiveApiKeyIndex.cs" />
-    <Compile Include="ApplicationRegistration\Data\Generated_Dao\Qi\UserSetting.cs" />
-    <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserSetting.cs" />
-    <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserSettingCollection.cs" />
-    <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserSettingColumns.cs" />
-    <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserSettingPagedQuery.cs" />
-    <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserSettingQuery.cs" />
-    <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserSettingWrapper.cs" />
-    <Compile Include="ApplicationRegistration\Data\UserSetting.cs" />
-    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorAssemblyReferenceDescriptor.cs" />
-    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorAssemblyReferenceDescriptorCollection.cs" />
-    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorAssemblyReferenceDescriptorColumns.cs" />
-    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorAssemblyReferenceDescriptorPagedQuery.cs" />
-    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorAssemblyReferenceDescriptorQuery.cs" />
-    <Compile Include="AssemblyManagement\Data\Generated_Dao\Qi\AssemblyDescriptorAssemblyReferenceDescriptor.cs" />
-    <Compile Include="ClientRegistrationFailedException.cs" />
-    <Compile Include="CoreExtensions.cs" />
-    <Compile Include="ApplicationRegistration\Data\Client.cs" />
-    <Compile Include="ApplicationRegistration\Data\Configuration.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\ApiKey.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\ApiKeyCollection.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\ApiKeyColumns.cs" />
@@ -134,6 +114,8 @@
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\ApplicationMachineQuery.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\ApplicationPagedQuery.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\ApplicationQuery.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\ApplicationRegistrationContext.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\ApplicationRegistrationRepository.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\ApplicationWrapper.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\Client.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\ClientCollection.cs" />
@@ -165,6 +147,17 @@
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\HostAddressPagedQuery.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\HostAddressQuery.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\HostAddressWrapper.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\HostDomain.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\HostDomainApplication.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\HostDomainApplicationCollection.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\HostDomainApplicationColumns.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\HostDomainApplicationPagedQuery.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\HostDomainApplicationQuery.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\HostDomainCollection.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\HostDomainColumns.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\HostDomainPagedQuery.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\HostDomainQuery.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\HostDomainWrapper.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\Machine.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\MachineCollection.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\MachineColumns.cs" />
@@ -194,6 +187,7 @@
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\ProcessDescriptorPagedQuery.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\ProcessDescriptorQuery.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\ProcessDescriptorWrapper.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\Qi\ActiveApiKeyIndex.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\Qi\ApiKey.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\Qi\Application.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\Qi\ApplicationMachine.cs" />
@@ -202,6 +196,8 @@
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\Qi\Configuration.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\Qi\ConfigurationSetting.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\Qi\HostAddress.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\Qi\HostDomain.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\Qi\HostDomainApplication.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\Qi\Machine.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\Qi\Nic.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\Qi\Organization.cs" />
@@ -209,6 +205,7 @@
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\Qi\ProcessDescriptor.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\Qi\Subscription.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\Qi\User.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\Qi\UserSetting.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\Subscription.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\SubscriptionCollection.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\SubscriptionColumns.cs" />
@@ -220,13 +217,35 @@
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserColumns.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserPagedQuery.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserQuery.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserSetting.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserSettingCollection.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserSettingColumns.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserSettingPagedQuery.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserSettingQuery.cs" />
+    <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserSettingWrapper.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserWrapper.cs" />
+    <Compile Include="ApplicationRegistration\Data\HostDomain.cs" />
+    <Compile Include="ApplicationRegistration\Data\UserSetting.cs" />
+    <Compile Include="HostDomainRequestFilter.cs" />
+    <Compile Include="ApplicationRepositoryResolver.cs" />
+    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorAssemblyReferenceDescriptor.cs" />
+    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorAssemblyReferenceDescriptorCollection.cs" />
+    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorAssemblyReferenceDescriptorColumns.cs" />
+    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorAssemblyReferenceDescriptorPagedQuery.cs" />
+    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorAssemblyReferenceDescriptorQuery.cs" />
+    <Compile Include="AssemblyManagement\Data\Generated_Dao\Qi\AssemblyDescriptorAssemblyReferenceDescriptor.cs" />
+    <Compile Include="ClientRegistrationFailedException.cs" />
+    <Compile Include="CoreExtensions.cs" />
+    <Compile Include="ApplicationRegistration\Data\Client.cs" />
+    <Compile Include="ApplicationRegistration\Data\Configuration.cs" />
     <Compile Include="ApplicationRegistration\Data\HostAddress.cs" />
     <Compile Include="ApplicationRegistration\Data\Nic.cs" />
     <Compile Include="ApplicationRegistration\Data\ConfigurationSetting.cs" />
-    <Compile Include="DistributedHashTable\InProcessEvents.cs" />
+    <Compile Include="IApplicationNameResolver.cs" />
     <Compile Include="NotificationTemplateInfo.cs" />
+    <Compile Include="OAuth\ApplicationUserNotFoundException.cs" />
     <Compile Include="OAuth\OAuthClientSettings.cs" />
+    <Compile Include="OAuth\AuthenticatedAttribute.cs" />
     <Compile Include="ServiceRegistryContainerAttribute.cs" />
     <Compile Include="ServiceRegistry.cs" />
     <Compile Include="ServiceRegistryLoaderAttribute.cs" />
@@ -268,7 +287,7 @@
     <Compile Include="AssemblyManagement\Data\ProcessRuntimeDescriptor.cs" />
     <Compile Include="AssemblyManagement\IAssemblyService.cs" />
     <Compile Include="AssemblyManagement\ProcessRuntimeDescriptorEventArgs.cs" />
-    <Compile Include="ApplicationRegistration\Data\ClientApplicationFactory.cs" />
+    <Compile Include="ApplicationRegistration\ClientApplicationFactory.cs" />
     <Compile Include="MaximumLimitEnforcer.cs" />
     <Compile Include="ProxySettingsValidation.cs" />
     <Compile Include="ProxySettingsValidationException.cs" />
@@ -276,44 +295,6 @@
     <Compile Include="ApplicationRegistration\ApplicationRegistrationStatus.cs" />
     <Compile Include="Services\CoreNotificationService.cs" />
     <Compile Include="Services\CoreRoleService.cs" />
-    <Compile Include="DistributedHashTable\Arc.cs" />
-    <Compile Include="DistributedHashTable\Data\CreateOperation.cs" />
-    <Compile Include="DistributedHashTable\Data\DataPoint.cs" />
-    <Compile Include="DistributedHashTable\Data\DataProperty.cs" />
-    <Compile Include="DistributedHashTable\Data\DataPropertyCollection.cs" />
-    <Compile Include="DistributedHashTable\Data\DataPropertyExtensions.cs" />
-    <Compile Include="DistributedHashTable\Data\DataRelationship.cs" />
-    <Compile Include="DistributedHashTable\Data\DeleteEvent.cs" />
-    <Compile Include="DistributedHashTable\Data\DeleteOperation.cs" />
-    <Compile Include="DistributedHashTable\Data\Operation.cs" />
-    <Compile Include="DistributedHashTable\Data\OperationIntent.cs" />
-    <Compile Include="DistributedHashTable\Data\OpertionEventArgs.cs" />
-    <Compile Include="DistributedHashTable\Data\QueryOperation.cs" />
-    <Compile Include="DistributedHashTable\Data\ReplicateOperation.cs" />
-    <Compile Include="DistributedHashTable\Data\ReplicationResult.cs" />
-    <Compile Include="DistributedHashTable\Data\RetrieveOperation.cs" />
-    <Compile Include="DistributedHashTable\Data\UpdateOperation.cs" />
-    <Compile Include="DistributedHashTable\Data\WriteEvent.cs" />
-    <Compile Include="DistributedHashTable\Data\WriteOperation.cs" />
-    <Compile Include="DistributedHashTable\EventSourceService.cs" />
-    <Compile Include="DistributedHashTable\EventSourceServiceArgs.cs" />
-    <Compile Include="DistributedHashTable\ExternalEventSubscription.cs" />
-    <Compile Include="DistributedHashTable\ExternalEventSubscriptionDescriptor.cs" />
-    <Compile Include="DistributedHashTable\IDistributedRepository.cs" />
-    <Compile Include="DistributedHashTable\IHasInfo.cs" />
-    <Compile Include="DistributedHashTable\InfoAttribute.cs" />
-    <Compile Include="DistributedHashTable\ITypeResolver.cs" />
-    <Compile Include="DistributedHashTable\Keyspace.cs" />
-    <Compile Include="DistributedHashTable\MetricsService.cs" />
-    <Compile Include="DistributedHashTable\RepositoryKey.cs" />
-    <Compile Include="DistributedHashTable\RepositoryRing.cs" />
-    <Compile Include="DistributedHashTable\RepositoryService.cs" />
-    <Compile Include="DistributedHashTable\RepositoryTypeResolver.cs" />
-    <Compile Include="DistributedHashTable\Ring.cs" />
-    <Compile Include="DistributedHashTable\SystemEventMessage.cs" />
-    <Compile Include="DistributedHashTable\SystemEventService.cs" />
-    <Compile Include="DistributedHashTable\UniversalIdentifier.cs" />
-    <Compile Include="DistributedHashTable\WriteEventService.cs" />
     <Compile Include="Files\ChunkedFileDataDescriptor.cs" />
     <Compile Include="Files\ChunkedFileReader.cs" />
     <Compile Include="Files\ChunkedFileWriter.cs" />
@@ -388,7 +369,7 @@
     <Compile Include="ServiceRegistration\CoreServiceRegistrationService.cs" />
     <Compile Include="Services\SettingSource.cs" />
     <Compile Include="ApplicationRegistration\CoreApplicationRegistryServiceConfig.cs" />
-    <Compile Include="Services\CoreProxyableService.cs" />
+    <Compile Include="Services\ApplicationProxyableService.cs" />
     <Compile Include="ApplicationRegistration\Data\ApiKey.cs" />
     <Compile Include="ApplicationRegistration\Data\Application.cs" />
     <Compile Include="ApplicationRegistration\Data\ClientServerConnection.cs" />
@@ -434,7 +415,6 @@
     <None Include="AssemblyManagement\regen_assemblymanagement_dao.cmd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="DistributedHashTable\Data\regen_distributed_dao.cmd" />
     <None Include="OAuth\regen_oauth_dao.cmd" />
     <None Include="ServiceRegistration\regen_applicationserviceregistry_dao.cmd" />
   </ItemGroup>
@@ -466,10 +446,6 @@
       <Project>{f27dc9a6-e432-4d20-bcef-d10b0c2a657d}</Project>
       <Name>Bam.Net.Encryption</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Bam.Net.Html\Bam.Net.Html.csproj">
-      <Project>{795d5552-94d6-4373-b4f1-551b1d5bdafb}</Project>
-      <Name>Bam.Net.Html</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Incubation\Bam.Net.Incubation.csproj">
       <Project>{aa186331-a0d0-4f77-bea2-e7b7650d3ff5}</Project>
       <Name>Bam.Net.Incubation</Name>
@@ -481,6 +457,10 @@
     <ProjectReference Include="..\Bam.Net.Messaging\Bam.Net.Messaging.csproj">
       <Project>{e330d601-62ea-439e-acd7-7236744562ff}</Project>
       <Name>Bam.Net.Messaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Presentation\Bam.Net.Presentation.csproj">
+      <Project>{b9e03ff5-0750-4162-bafd-3f0778d44a8c}</Project>
+      <Name>Bam.Net.Presentation</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Server\Bam.Net.Server.csproj">
       <Project>{6cd8ffb4-35ca-44ac-803d-cb9d4cb524a0}</Project>

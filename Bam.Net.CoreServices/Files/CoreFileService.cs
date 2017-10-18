@@ -22,7 +22,7 @@ namespace Bam.Net.CoreServices
     [Proxy("fileSvc")]
     [ApiKeyRequired]
     [ServiceSubdomain("file")]
-    public class CoreFileService : CoreProxyableService, IFileService
+    public class CoreFileService : ApplicationProxyableService, IFileService
     {
         protected CoreFileService() { }
         public CoreFileService(IRepository repository)
@@ -135,7 +135,7 @@ namespace Bam.Net.CoreServices
             return chunks;
         }
 
-        [Exclude]
+        [Local]
         public IEnumerable<FileChunk> YieldFileChunks(string fileHash, int fromIndex, int batchSize)
         {
             IEnumerable<ChunkDataDescriptor> xrefs = ChunkDataDescriptorRetriever(fileHash, fromIndex, batchSize);
@@ -207,7 +207,7 @@ namespace Bam.Net.CoreServices
         /// <param name="file"></param>
         /// <param name="chunkLength"></param>
         /// <returns></returns>
-        [Exclude]
+        [Local]
         public ChunkedFileDescriptor StoreFileChunksInRepo(FileInfo file, string description = null)
         {
             ChunkedFileReader chunked = new ChunkedFileReader(file, ChunkLength);
@@ -224,13 +224,13 @@ namespace Bam.Net.CoreServices
             return chunkedFileDescriptor;
         }
 
-        [Exclude]
+        [Local]
         public FileInfo RestoreFile(ChunkedFileDescriptor fileDescriptor, string localPath = null)
         {
             return RestoreFile(fileDescriptor.FileHash, localPath ?? Path.Combine(fileDescriptor.OriginalDirectory, fileDescriptor.FileName));
         }
 
-        [Exclude]
+        [Local]
         public FileInfo RestoreFile(string fileHash, string localPath, bool overwrite = true)
         {
             HandleExistingFile(localPath, overwrite);
@@ -247,7 +247,7 @@ namespace Bam.Net.CoreServices
             return file;
         }
 
-        [Exclude]
+        [Local]
         public FileInfo WriteFileToDirectory(string fileNameOrHash, string directoryPath)
         {
             ChunkedFileDescriptor fileDescriptor = GetFileDescriptor(fileNameOrHash);
@@ -273,7 +273,7 @@ namespace Bam.Net.CoreServices
             return file;
         }
 
-        [Exclude]
+        [Local]
         public void WriteFileToStream(string fileNameOrHash, Stream stream)
         {
             ChunkedFileDescriptor fileDescriptor = GetFileDescriptor(fileNameOrHash);
@@ -281,7 +281,7 @@ namespace Bam.Net.CoreServices
             WriteFileHashToStream(fileDescriptor.FileHash, stream);
         }
 
-        [Exclude]
+        [Local]
         public void WriteFileHashToStream(string fileHash, Stream fs)
         {
             List<FileChunk> chunks = GetFileChunks(fileHash, -1);
@@ -317,8 +317,7 @@ namespace Bam.Net.CoreServices
 
         private void SetChunkDataDescriptorRetriever()
         {
-            DaoRepository daoRepo = Repository as DaoRepository;
-            if (daoRepo != null)
+            if (Repository is DaoRepository daoRepo)
             {
                 ChunkDataDescriptorRetriever = (fileHash, fromIndex, chunkDataBatchSize) =>
                 {

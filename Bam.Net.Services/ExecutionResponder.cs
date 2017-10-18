@@ -9,7 +9,7 @@ using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.Services
 {
-    public class ExecutionResponder : ResponderBase
+    public class ExecutionResponder : Responder
     {
         public ExecutionResponder(BamConf conf) : base(conf)
         {

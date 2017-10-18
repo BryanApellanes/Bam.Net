@@ -301,7 +301,7 @@
             <param name="appName"></param>
             <param name="instanciator"></param>
         </member>
-        <member name="M:Bam.Net.Server.BamServer.AddResponder(Bam.Net.Server.ResponderBase)">
+        <member name="M:Bam.Net.Server.BamServer.AddResponder(Bam.Net.Server.Responder)">
             <summary>
             Add an IResponder implementation to this
             request handler
@@ -1021,17 +1021,17 @@
             when it is started
             </summary>
         </member>
-        <member name="E:Bam.Net.Server.ResponderBase.Responded">
+        <member name="E:Bam.Net.Server.Responder.Responded">
             <summary>
             The event that fires when a response is sent
             </summary>
         </member>
-        <member name="E:Bam.Net.Server.ResponderBase.NotResponded">
+        <member name="E:Bam.Net.Server.Responder.NotResponded">
             <summary>
             The event that fires when a response is not sent
             </summary>
         </member>
-        <member name="M:Bam.Net.Server.ResponderBase.MayRespond(Bam.Net.ServiceProxy.IHttpContext)">
+        <member name="M:Bam.Net.Server.Responder.MayRespond(Bam.Net.ServiceProxy.IHttpContext)">
             <summary>
             Returns true if the AbsolutePath of the requested
             Url starts with the name of the current class.  Extenders
@@ -1040,6 +1040,14 @@
             </summary>
             <param name="context"></param>
             <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Server.Responder.FlushResponse(Bam.Net.ServiceProxy.IHttpContext,System.Int32)">
+            <summary>
+            Set the status code, flush the response and close the output 
+            stream
+            </summary>
+            <param name="context"></param>
+            <param name="statusCode"></param>
         </member>
         <member name="T:Bam.Net.Server.ResponderEventHandler">
             <summary>

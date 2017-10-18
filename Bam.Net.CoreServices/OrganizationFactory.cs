@@ -41,10 +41,14 @@ namespace Bam.Net.CoreServices
             Organization org = User.Organizations.Where(c => c.Name == OrganizationName).FirstOrDefault();
             if (org == null)
             {
-                org = new Organization { Name = OrganizationName };
-                User.Organizations.Add(org);
-                User = ApplicationRegistryRepository.Save(User);
                 org = ApplicationRegistryRepository.OneOrganizationWhere(c => c.Name == OrganizationName);
+                if(org == null)
+                {
+                    org = new Organization { Name = OrganizationName };
+                    org = ApplicationRegistryRepository.Save(org);
+                }
+                User.Organizations.Add(org);
+                User = ApplicationRegistryRepository.Save(User);                
             }
             return new CoreServiceResponse<Organization>(org) { Success = true, Message = $"Organization {OrganizationName} created" };
         }

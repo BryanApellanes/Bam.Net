@@ -10,9 +10,8 @@ call copy_Bam.Net.Data.Dynamic.cmd %1
 call copy_Bam.Net.Data.Repositories.cmd %1
 call copy_Bam.Net.Documentation.cmd %1
 call copy_Bam.Net.Drawing.cmd %1
-call copy_Bam.Net.Dust.cmd %1
 call copy_Bam.Net.Encryption.cmd %1
-call copy_Bam.Net.Html.cmd %1
+call copy_Bam.Net.Presentation.cmd %1
 call copy_Bam.Net.Incubation.cmd %1
 call copy_Bam.Net.Javascript.cmd %1
 call copy_Bam.Net.Logging.cmd %1

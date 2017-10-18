@@ -112,6 +112,20 @@ namespace Bam.Net.ServiceProxy
                 HttpArgs args = new HttpArgs();
                 args.ParseJson(execRequest.InputString);
                 execRequest.JsonParams = args["jsonParams"];
+                execRequest.Instance.Property("Logger", execRequest.Logger);
+            }
+        }
+
+        ILogger _logger;
+        public ILogger Logger
+        {
+            get
+            {
+                return _logger ?? Log.Default;
+            }
+            set
+            {
+                _logger = value;
             }
         }
 

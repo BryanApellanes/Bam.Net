@@ -28,7 +28,7 @@ using Bam.Net.CoreServices.Services;
 using Bam.Net.CoreServices.ApplicationRegistration;
 using System.Collections.Specialized;
 using Bam.Net.Data.Dynamic;
-using Bam.Net.CoreServices.DistributedHashTable;
+using Bam.Net.Services.Distributed;
 using Bam.Net.Incubation;
 using Bam.Net.Testing.Integration;
 using Bam.Net.Testing.Unit;
@@ -44,71 +44,7 @@ namespace Bam.Net.CoreServices.Tests
             void GoAgain();
         }
 
-        public class TestEventSourceLoggable: EventSourceService
-        {
-            public TestEventSourceLoggable(DaoRepository daoRepository, ILogger logger) : base(daoRepository, new AppConf("Test"), logger)
-            {
-                IHttpContext context = Substitute.For<IHttpContext>();
-                context.Request = Substitute.For<IRequest>();
-                context.Request.Cookies.Returns(new CookieCollection());
-                context.Response = Substitute.For<IResponse>();
-                context.Response.Cookies.Returns(new CookieCollection());
-                HttpContext = context;
-            }
-
-            public event EventHandler TestEvent;
-            public async Task Test()
-            {
-                await Trigger("TestEvent");
-            }
-        }
-
-        [UnitTest]
-        public async void CopyEventHandlersTest()
-        {
-            TestEventSourceLoggable src = GetTestEventSource();
-            TestEventSourceLoggable src2 = GetTestEventSource();
-            bool? fired = false;
-            int expectCount = 0;
-            src.TestEvent += (o, a) => { fired = true; };
-            src2.CopyEventHandlers(src);
-            await src2.Test().ContinueWith(t =>
-            {
-                expectCount++;
-                Expect.IsTrue(fired.Value);
-            });
-            Expect.IsTrue(expectCount == 1);
-        }
-
-        [UnitTest]
-        public void GetEventSubscriptionsTest()
-        {
-            TestEventSourceLoggable src = GetTestEventSource();
-            bool? fired = false;
-            src.TestEvent += (o, a) => { fired = true; };
-            List<EventSubscription> subs = src.GetEventSubscriptions().ToList();
-            Expect.AreEqual(1, subs.Count);
-            subs.First().Invoke(src, EventArgs.Empty);
-            Expect.IsTrue(fired.Value);
-        }
-
-        [UnitTest]
-        public async void FireNamedEventTest()
-        {
-            TestEventSourceLoggable src = GetTestEventSource();
-            bool? fired = false;
-            InProcessEvents.ClearSubscribers<TestEventSourceLoggable>("TestEvent");
-            InProcessEvents.Subscribe<TestEventSourceLoggable>("TestEvent", (em, c) =>
-            {
-                fired = true;
-            });
-            await src.Test();
-            Thread.Sleep(300);
-            Expect.IsTrue(fired.Value);
-            OutLineFormat("fire named event test ran to completion", ConsoleColor.Green);
-            OutLineFormat("done", ConsoleColor.Green);
-        }
-
+        
         [UnitTest]
         public void TestGetInterfaceMethods()
         {
@@ -220,8 +156,8 @@ namespace Bam.Net.CoreServices.Tests
             CoreApplicationRegistrationService svc = GetTestService();
             string orgName = 5.RandomLetters();
             string appName = 8.RandomLetters();
-            ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration(svc.CoreRegistryRepository, "localhost", 8080, appName, orgName);
-            CoreServiceResponse response = svc.RegisterApplication(descriptor);
+            ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration(svc.ApplicationRegistrationRepository, "localhost", 8080, appName, orgName);
+            CoreServiceResponse response = svc.RegisterApplicationProcess(descriptor);
             Expect.IsFalse(response.Success);
             Expect.IsNotNull(response.Data);
             Expect.IsInstanceOfType<ApplicationRegistrationResult>(response.Data);
@@ -238,11 +174,11 @@ namespace Bam.Net.CoreServices.Tests
             string orgName = 5.RandomLetters();
             string appName = 8.RandomLetters();
             CoreApplicationRegistrationService svc = GetTestServiceWithUser(userName);
-            ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration(svc.CoreRegistryRepository, "localhost", 8080, appName, orgName);
-            CoreServiceResponse response = svc.RegisterApplication(descriptor);
+            ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration(svc.ApplicationRegistrationRepository, "localhost", 8080, appName, orgName);
+            CoreServiceResponse response = svc.RegisterApplicationProcess(descriptor);
             Expect.IsTrue(response.Success);
-            var user = svc.CoreRegistryRepository.OneUserWhere(c => c.UserName == userName);
-            user = svc.CoreRegistryRepository.Retrieve<ApplicationRegistration.User>(user.Id);
+            var user = svc.ApplicationRegistrationRepository.OneUserWhere(c => c.UserName == userName);
+            user = svc.ApplicationRegistrationRepository.Retrieve<ApplicationRegistration.User>(user.Id);
             Expect.IsNotNull(user);
             Expect.AreEqual(1, user.Organizations.Count);
             Thread.Sleep(1000);
@@ -258,8 +194,8 @@ namespace Bam.Net.CoreServices.Tests
             }))
             .WhenA<CoreApplicationRegistrationService>("tries to register application when not logged in", cars =>
             {
-                ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration(cars.CoreRegistryRepository,"localhost", 8080, "testApp", "testOrg");
-                return cars.RegisterApplication(descriptor);
+                ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration(cars.ApplicationRegistrationRepository,"localhost", 8080, "testApp", "testOrg");
+                return cars.RegisterApplicationProcess(descriptor);
             })
             .TheTest
             .ShouldPass(because =>
@@ -389,9 +325,9 @@ namespace Bam.Net.CoreServices.Tests
             repo.Delete(machine);
             Machine retrieved = repo.Query<Machine>(Filter.Where("Name") == machine.Name && Filter.Where("Cuid") == machine.Cuid).FirstOrDefault();
             Expect.IsNull(retrieved);
-            Machine ensured = machine.EnsureSingle<Machine>(repo, "Name", "Cuid");
+            Machine ensured = machine.EnsureSingle<Machine>(repo, "Test UserName of modifier", "Cuid");
             Expect.IsNotNull(ensured, "Ensured was null");
-            Machine ensuredAgain = ensured.EnsureSingle<Machine>(repo, "Name", "Cuid");
+            Machine ensuredAgain = ensured.EnsureSingle<Machine>(repo, "Test UserName of modifier", "Cuid");
             Expect.AreEqual(ensured.Id, ensuredAgain.Id);
             Expect.AreEqual(ensured.Uuid, ensuredAgain.Uuid);
             Expect.AreEqual(ensured.Cuid, ensuredAgain.Cuid);
@@ -505,13 +441,13 @@ namespace Bam.Net.CoreServices.Tests
             Session session = Session.Get(ctx);
             session.UserId = result.Id;
             session.Save();
-            IEnumerable<Organization> organizations = svc.CoreRegistryRepository.RetrieveAll<Organization>();
-            organizations.Each(o => svc.CoreRegistryRepository.Delete(o));
-            Expect.AreEqual(0, svc.CoreRegistryRepository.RetrieveAll<Organization>().Count());
-            IEnumerable<ApplicationRegistration.Application> apps = svc.CoreRegistryRepository.RetrieveAll<ApplicationRegistration.Application>();
-            apps.Each(a => svc.CoreRegistryRepository.Delete(a));
-            Expect.AreEqual(0, svc.CoreRegistryRepository.RetrieveAll<ApplicationRegistration.Application>().Count());
-            svc.CoreRegistryRepository.RetrieveAll<ApplicationRegistration.Machine>().Each(h => svc.CoreRegistryRepository.Delete(h));
+            IEnumerable<Organization> organizations = svc.ApplicationRegistrationRepository.RetrieveAll<Organization>();
+            organizations.Each(o => svc.ApplicationRegistrationRepository.Delete(o));
+            Expect.AreEqual(0, svc.ApplicationRegistrationRepository.RetrieveAll<Organization>().Count());
+            IEnumerable<ApplicationRegistration.Application> apps = svc.ApplicationRegistrationRepository.RetrieveAll<ApplicationRegistration.Application>();
+            apps.Each(a => svc.ApplicationRegistrationRepository.Delete(a));
+            Expect.AreEqual(0, svc.ApplicationRegistrationRepository.RetrieveAll<ApplicationRegistration.Application>().Count());
+            svc.ApplicationRegistrationRepository.RetrieveAll<ApplicationRegistration.Machine>().Each(h => svc.ApplicationRegistrationRepository.Delete(h));
             return result;
         }
 
@@ -523,14 +459,6 @@ namespace Bam.Net.CoreServices.Tests
             return logger;
         }
 
-        private static TestEventSourceLoggable GetTestEventSource()
-        {
-            Database db = new SQLiteDatabase(".\\EventSourceTests", "UserAccounts");
-            db.TryEnsureSchema(typeof(UserAccounts.Data.User));
-            Db.For<UserAccounts.Data.User>(db);
-            TestEventSourceLoggable src = new TestEventSourceLoggable(new DaoRepository(db), new ConsoleLogger());
-            return src;
-        }
 
     }
 }

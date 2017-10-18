@@ -24,7 +24,7 @@ namespace Bam.Net.Services.Clients
 {
     public class CoreClient: Loggable, IApiKeyResolver, IApiKeyProvider, IApplicationNameProvider
     {
-        public CoreClient(string organizationName, string applicationName, string workingDirectory = null, ILogger logger = null)
+        internal CoreClient(string organizationName, string applicationName, string workingDirectory = null, ILogger logger = null)
         {
             string hostName = "localhost";
             int port = 9100;
@@ -33,7 +33,11 @@ namespace Bam.Net.Services.Clients
             SetApiKeyResolvers();
             SetClientApplicationNameProvider();
             SetLocalProperties(organizationName, applicationName, hostName, port);
+            WireInvocationEventHandlers();
         }
+
+        public CoreClient(ILogger logger = null) : this(Organization.Public.Name, DefaultApplicationName, "bamapps.net", 80, null, logger ?? Log.Default)
+        { }
 
         /// <summary>
         /// Instanciate a new CoreClient
@@ -51,8 +55,9 @@ namespace Bam.Net.Services.Clients
             SetApiKeyResolvers();
             SetClientApplicationNameProvider();
             SetLocalProperties(organizationName, applicationName, hostName, port);
+            WireInvocationEventHandlers();
         }
-
+        
         public CoreClient(string applicationName, string hostName, int port, string workingDirectory = null, ILogger logger = null)
             : this(Organization.Public.Name, applicationName, hostName, port, workingDirectory, logger)
         {
@@ -65,7 +70,33 @@ namespace Bam.Net.Services.Clients
         public CoreClient(string hostName, int port, ILogger logger = null) : this(Organization.Public.Name, CoreServices.ApplicationRegistration.Application.Unknown.Name, hostName, port, logger)
         { }
 
+
+        static CoreClient _local;
+        static object _localLock = new object();
+
+        /// <summary>
+        /// A CoreClient configured for localhost on port 9100
+        /// </summary>
+        public static CoreClient Local
+        {
+            get
+            {
+                return _localLock.DoubleCheckLock(ref _local, () => new CoreClient(Organization.Public.Name, DefaultApplicationName));
+            }
+        }
+
+        public static string DefaultApplicationName
+        {
+            get
+            {
+                return $"{UserUtil.GetCurrentWindowsUser(true)}:{ProcessDescriptor.Current.FilePath}@{ProcessDescriptor.Current.MachineName}";
+            }
+        }
         public ProcessDescriptor ProcessDescriptor { get; private set; }
+
+        /// <summary>
+        /// The local instance of the ApplicationRegistryRepository
+        /// </summary>
         public ApplicationRegistrationRepository LocalCoreRegistryRepository { get; set; }
         
         [Verbosity(VerbosityLevel.Information, MessageFormat = "{OrganizationName}:{ApplicationName} initializING")]
@@ -83,7 +114,7 @@ namespace Bam.Net.Services.Clients
         public string Message { get; set; } // used by InitializationFailed event
         public string ApplicationName { get; set; }
         public string OrganizationName { get; set; }
-        public string WorkspaceDirectory { get; private set; }
+        public string WorkspaceDirectory { get; internal set; }
         public string ApiKeyFilePath { get { return Path.Combine(WorkspaceDirectory, HostName, Port.ToString(), $"{GetApplicationName()}.apikey"); } }
         public ILogger Logger { get; set; }
         #region IApiKeyResolver
@@ -233,7 +264,7 @@ namespace Bam.Net.Services.Clients
                 if (!IsInitialized)
                 {
                     FireEvent(Initializing);
-                    CoreServiceResponse response = ApplicationRegistryService.RegisterApplication(ProcessDescriptor);
+                    CoreServiceResponse response = ApplicationRegistryService.RegisterApplicationProcess(ProcessDescriptor);
                     ApplicationRegistrationResult appRegistrationResult = response.Data.FromJObject<ApplicationRegistrationResult>();
                     if (response.Success)
                     {
@@ -294,6 +325,17 @@ namespace Bam.Net.Services.Clients
         {
             return ProxyFactory.GetProxy<T>(HostName, Port);
         }
+        public bool UseServiceSubdomains
+        {
+            get
+            {
+                return ProxyFactory.MungeHostNames;
+            }
+            set
+            {
+                ProxyFactory.MungeHostNames = value;
+            }
+        }
         protected ProxyFactory ProxyFactory { get; set; }
         protected bool IsInitialized { get; set; }
 
@@ -326,16 +368,18 @@ namespace Bam.Net.Services.Clients
                 yield return UserRegistryService;
                 yield return ApplicationRegistryService;                
                 yield return ConfigurationService;
-                yield return LoggerService;              
-                yield return DiagnosticService;
+                yield return LoggerService;
                 yield return RoleService;
+                yield return DiagnosticService;                
             }
         }
 
         private void SetLocalProperties(string organizationName, string applicationName, string hostName, int port)
         {
-            LocalCoreRegistryRepository = new ApplicationRegistrationRepository();
-            LocalCoreRegistryRepository.Database = new SQLiteDatabase(WorkspaceDirectory, nameof(CoreClient));
+            LocalCoreRegistryRepository = new ApplicationRegistrationRepository()
+            {
+                Database = new SQLiteDatabase(WorkspaceDirectory, nameof(CoreClient))
+            };
             CoreServiceRegistryContainer.GetServiceRegistry().Get<IStorableTypesProvider>().AddTypes(LocalCoreRegistryRepository);
             ProcessDescriptor = ProcessDescriptor.ForApplicationRegistration(LocalCoreRegistryRepository, hostName, port, applicationName, organizationName);
         }
@@ -348,7 +392,8 @@ namespace Bam.Net.Services.Clients
             Port = port;
             WorkspaceDirectory = workingDirectory ?? DataSettings.Default.GetWorkspaceDirectory(typeof(CoreClient)).FullName;
             HashAlgorithm = HashAlgorithms.SHA256;
-            ProxyFactory = new ProxyFactory(WorkspaceDirectory, logger);
+            Logger = logger ?? Log.Default;
+            ProxyFactory = new ProxyFactory(WorkspaceDirectory, Logger);
         }
 
         private void SetDownloadedServiceProxies()
@@ -371,6 +416,27 @@ namespace Bam.Net.Services.Clients
             UserRegistryService = ProxyFactory.GetProxy<CoreUserRegistryService>();
             RoleService = ProxyFactory.GetProxy<CoreRoleService>();
             OAuthService = ProxyFactory.GetProxy<CoreOAuthService>();
+        }
+
+        private void WireInvocationEventHandlers()
+        {
+            foreach(ProxyableService service in ServiceClients)
+            {
+                ServiceProxyClient client = service.Property<ServiceProxyClient>("Client");
+                client.InvocationException += (o, a) => InvocationExceptionHandler(o, a);
+                client.InvokedMethod += (o, a) => InvocationHandler(o, a);
+            }
+        }
+        public event EventHandler InvocationException;
+        public event EventHandler MethodInvoked;
+        private void InvocationExceptionHandler(object sender, ServiceProxyInvokeEventArgs args)
+        {
+            FireEvent(InvocationException, sender, args);
+        }
+
+        private void InvocationHandler(object sender, ServiceProxyInvokeEventArgs args)
+        {
+            FireEvent(MethodInvoked, sender, args);
         }
 
         private void EnsureApiKeyFileDirectory()

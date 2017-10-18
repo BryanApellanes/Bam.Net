@@ -37,8 +37,8 @@ namespace Bam.Net.Services.Tests
         {
             MethodInfo method1 = typeof(TestProxy).GetMethod("MethodExclude");
             MethodInfo method2 = typeof(TestProxy).GetMethod("MethodLocal");
-            Expect.IsFalse(ServiceProxySystem.WillProxyMethod(method1));
-            Expect.IsFalse(ServiceProxySystem.WillProxyMethod(method2));
+            Expect.IsFalse(method1.WillProxy());
+            Expect.IsFalse(method2.WillProxy());
         }
 
         public class TestMonkey

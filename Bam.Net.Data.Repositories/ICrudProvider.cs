@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -8,10 +11,9 @@ namespace Bam.Net.Data.Repositories
     {
         object Create(object toCreate);
         bool Delete(object toDelete);
-        IEnumerable<object> Query(Type type, Dictionary<string, object> queryParameters);
-        object Retrieve(Type objectType, string identifier);
         object Save(object toSave);
         IEnumerable SaveCollection(IEnumerable values);
         object Update(object toUpdate);
+        object Retrieve(string typeIdentifier, string instanceId);
     }
 }

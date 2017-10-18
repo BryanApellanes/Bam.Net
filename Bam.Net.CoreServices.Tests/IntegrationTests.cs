@@ -19,6 +19,7 @@ using Google.Protobuf;
 using Bam.Net.CoreServices.ApplicationRegistration.Dao.Repository;
 using Bam.Net.UserAccounts.Data;
 using Bam.Net.Services.Clients;
+using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.CoreServices.Tests
 {
@@ -90,11 +91,14 @@ namespace Bam.Net.CoreServices.Tests
         public void RegisterCreatesMachineEntry()
         {
             OutLineFormat("This test requires a gloo server to be running on port 9100 of the localhost", ConsoleColor.Yellow);
-            ConsoleLogger logger = new ConsoleLogger();
-            logger.AddDetails = false;
+            ConsoleLogger logger = new ConsoleLogger()
+            {
+                AddDetails = false
+            };
             logger.StartLoggingThread();
             ApplicationRegistrationRepository repo = CoreServiceRegistryContainer.GetServiceRegistry().Get<ApplicationRegistrationRepository>();
-            CoreClient client = new CoreClient("TestOrg", "TestApp", $".\\{nameof(RegisterCreatesMachineEntry)}", logger);
+            CoreClient client = CoreClient.Local;//new CoreClient("TestOrg", "TestApp", $".\\{nameof(RegisterCreatesMachineEntry)}", logger);
+            client.WorkspaceDirectory = $".\\{nameof(RegisterCreatesMachineEntry)}";
             client.LocalCoreRegistryRepository = repo;
             CoreServiceResponse registrationResponse = client.RegisterClient();
             Machine machine = repo.OneMachineWhere(m => m.Name == Machine.Current.Name);
@@ -105,18 +109,26 @@ namespace Bam.Net.CoreServices.Tests
         [ConsoleAction]
         public void WhoAmITest()
         {
-            OutLineFormat("This test requires a gloo server to be running on port 9100 of the localhost", ConsoleColor.Yellow);
-            ConsoleLogger logger = new ConsoleLogger();
-            logger.AddDetails = false;
-            const string server  = "localhost";
-            const int port = 9100;
+            //OutLineFormat("This test requires a gloo server to be running on port 9100 of the localhost", ConsoleColor.Yellow);
+            ConsoleLogger logger = new ConsoleLogger()
+            {
+                AddDetails = false
+            };
+            const string server = "localhost";// "int-heart.bamapps.net";
+            const int port = 80;
             logger.StartLoggingThread();
             ApplicationRegistrationRepository repo = CoreServiceRegistryContainer.GetServiceRegistry().Get<ApplicationRegistrationRepository>();
-            CoreClient client = new CoreClient("TestOrg", "TestApp", server, port, logger);
-            client.LocalCoreRegistryRepository = repo;
+            CoreClient client = new CoreClient("TestOrg", "TestApp", server, port, logger)
+            {
+                UseServiceSubdomains = false,
+                LocalCoreRegistryRepository = repo
+            };
+            client.InvocationException += (o, args) => logger.AddEntry("Invocation Exception: {0}", ((ServiceProxyInvokeEventArgs)args).Exception, args.PropertiesToString());
+            client.MethodInvoked += (o, args) => logger.AddEntry("ProxyClient Method Invoked: {0}", args.PropertiesToString());
+
             CoreServiceResponse registrationResponse = client.RegisterClient();
             Client current = Client.Of(client.LocalCoreRegistryRepository, client.ApplicationName, server, port);
-
+            
             CoreServiceResponse response = client.Connect();
 
             string whoAmI = client.UserRegistryService.WhoAmI();

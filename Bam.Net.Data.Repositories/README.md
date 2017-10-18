@@ -16,5 +16,13 @@ doesn't define a child array no association will be implicitly made
 property representing the parent is not declared "virtual" no association will be 
 implicitly made
 
+- If a class defines a parent class (ParentId and Parent property pairs) the child must
+follow the naming convention shown here:
+
+```
+	public long [ParentTypeName]Id { get; set; }
+	public virtual [ParentTypeName] [ParentTypeName] { get; set; } 
+```
+
 - If a class defines a child list and the child list is not declared "virtual" no association
 will be implicitly made

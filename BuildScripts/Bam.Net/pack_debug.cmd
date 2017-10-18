@@ -13,9 +13,8 @@ nuget pack Bam.Net.Data.Dynamic\Bam.Net.Data.Dynamic.nuspec
 nuget pack Bam.Net.Data.Repositories\Bam.Net.Data.Repositories.nuspec
 nuget pack Bam.Net.Documentation\Bam.Net.Documentation.nuspec
 nuget pack Bam.Net.Drawing\Bam.Net.Drawing.nuspec
-nuget pack Bam.Net.Dust\Bam.Net.Dust.nuspec
 nuget pack Bam.Net.Encryption\Bam.Net.Encryption.nuspec
-nuget pack Bam.Net.Html\Bam.Net.Html.nuspec
+nuget pack Bam.Net.Presentation\Bam.Net.Presentation.nuspec
 nuget pack Bam.Net.Incubation\Bam.Net.Incubation.nuspec
 nuget pack Bam.Net.Javascript\Bam.Net.Javascript.nuspec
 nuget pack Bam.Net.Logging\Bam.Net.Logging.nuspec

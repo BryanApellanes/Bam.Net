@@ -49,9 +49,8 @@ namespace Bam.Net.Data
             Type type = instance.GetType();
             type.GetProperties().Where(pi => pi.PropertyType.Equals(typeof(Database))).Each(new { Instance = instance }, (ctx, pi) =>
             {
-                Database db = new SQLiteDatabase(root, $"{type.Name}.{pi.Name}");                
-                SchemasAttribute schemas;
-                if(pi.HasCustomAttributeOfType(out schemas))
+                Database db = new SQLiteDatabase(root, $"{type.Name}.{pi.Name}");
+                if (pi.HasCustomAttributeOfType(out SchemasAttribute schemas))
                 {
                     TryEnsureSchemas(db, schemas.DaoSchemaTypes);
                 }

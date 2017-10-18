@@ -226,8 +226,10 @@ namespace Bam.Net
         /// <returns></returns>
         public static DateTime Trim(this DateTime dateTime)
         {
-            Instant copy = new Instant(dateTime);
-            copy.Millisecond = 0;
+            Instant copy = new Instant(dateTime)
+            {
+                Millisecond = 0
+            };
             return copy.ToDateTime();
         }
 
@@ -740,7 +742,7 @@ namespace Bam.Net
             Args.ThrowIfNull(instance);
 
             Type type = instance.GetType();
-            return type.ImplementsInterface<T>();//ImplementsInterface<T>(type);
+            return type.ImplementsInterface<T>();
         }
 
         public static bool ImplementsInterface<T>(this Type type)
@@ -2336,18 +2338,62 @@ namespace Bam.Net
                 {
                     if (property.PropertyType == typeof(string[]))
                     {
-                        string[] values = (string[])property.GetValue(obj, null);
+                        string[] values = ((string[])property.GetValue(obj, null)) ?? new string[] { };
                         returnValue.AppendFormat("{0}: {1}{2}", property.Name, string.Join(", ", values), separator);
+                    }
+                    else if(property.PropertyType == typeof(HttpCookieCollection))
+                    {
+                        object value = property.GetValue(obj, null);                        
+                        if(value != null)
+                        {
+                            HttpCookieCollection values = (HttpCookieCollection)value;
+                            List<string> strings = new List<string>();
+                            foreach (HttpCookie cookie in values)
+                            {
+                                strings.Add(string.Format("{0}={1}", cookie.Name, cookie.Value));
+                            }
+                            returnValue.AppendFormat("{0}: {1}{2}", property.Name, string.Join("\r\n\t", strings.ToArray()), separator);
+                        }
+                        else
+                        {
+                            returnValue.AppendFormat("{0}: [null]{1}", property.Name, separator);
+                        }
+                    }
+                    else if(property.PropertyType == typeof(System.Net.CookieCollection))
+                    {
+                        object value = property.GetValue(obj, null);
+                        if(value != null)
+                        {
+                            System.Net.CookieCollection values = (System.Net.CookieCollection)value;
+                            List<string> strings = new List<string>();
+                            foreach (System.Net.Cookie cookie in values)
+                            {
+                                strings.Add(string.Format("{0}={1}", cookie.Name, cookie.Value));
+                            }
+                            returnValue.AppendFormat("{0}: {1}{2}", property.Name, string.Join("\r\n\t", strings.ToArray()), separator);
+                        }
+                        else
+                        {
+                            returnValue.AppendFormat("{0}: [null]{1}", property.Name, separator);
+                        }
                     }
                     else if (property.PropertyType == typeof(NameValueCollection))
                     {
-                        NameValueCollection values = (NameValueCollection)property.GetValue(obj, null);
-                        List<string> strings = new List<string>();
-                        foreach (string key in values.AllKeys)
+                        object value = property.GetValue(obj, null);
+                        if(value != null)
                         {
-                            strings.Add(string.Format("{0}={1}", key, values[key]));
+                            NameValueCollection values = (NameValueCollection)value;
+                            List<string> strings = new List<string>();
+                            foreach (string key in values.AllKeys)
+                            {
+                                strings.Add(string.Format("{0}={1}", key, values[key]));
+                            }
+                            returnValue.AppendFormat("{0}: {1}{2}", property.Name, string.Join("\r\n\t", strings.ToArray()), separator);
                         }
-                        returnValue.AppendFormat("{0}: {1}{2}", property.Name, string.Join("&", strings.ToArray()), separator);
+                        else
+                        {
+                            returnValue.AppendFormat("{0}: [null]{1}", property.Name, separator);
+                        }
                     }
                     else if (property.GetIndexParameters().Length == 0)
                     {
@@ -2355,7 +2401,19 @@ namespace Bam.Net
                         string stringValue = "[null]";
                         if (value != null)
                         {
-                            stringValue = value.ToString();
+                            if(value is IEnumerable values && !(value is string))
+                            {
+                                List<string> strings = new List<string>();
+                                foreach(object o in values)
+                                {
+                                    strings.Add(o.ToString());
+                                }
+                                stringValue = string.Join("\r\n\t", strings.ToArray());
+                            }
+                            else
+                            {
+                                stringValue = value.ToString();
+                            }
                         }
 
                         returnValue.AppendFormat("{0}: {1}{2}", property.Name, stringValue, separator);
@@ -3671,7 +3729,7 @@ namespace Bam.Net
                         }
                         else if (valueType == typeof(Dictionary<object, object>))
                         {
-                            string childTypeName = "{0}{1}"._Format(typeName, propertyName);
+                            string childTypeName = "{0}_{1}"._Format(typeName, propertyName);
                             Type childType = ((Dictionary<object, object>)value).ToDynamicType(childTypeName, ++recursionThusFar, false);
                             createdTypes.Add(childType);
                             AddPropertyToDynamicType(typeBuilder, propertyName, childType);

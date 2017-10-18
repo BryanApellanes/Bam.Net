@@ -77,6 +77,7 @@
     <Compile Include="AsyncProxyableEcho.cs" />
     <Compile Include="AsyncProxyableServiceTests.cs" />
     <Compile Include="ConsoleActions.cs" />
+    <Compile Include="EventSourceTests.cs" />
     <Compile Include="FileServiceTests.cs" />
     <Compile Include="IntegrationTests.cs" />
     <Compile Include="Program.cs" />

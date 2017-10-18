@@ -131,6 +131,7 @@
     <Compile Include="DaoProxyRegistrationInfo.cs" />
     <Compile Include="DaoProxySystem.cs" />
     <Compile Include="DaoTransaction.cs" />
+    <Compile Include="DatabaseExecutionEventArgs.cs" />
     <Compile Include="DatabaseInfo.cs" />
     <Compile Include="DatabaseInitializationFailedException.cs" />
     <Compile Include="DatabaseProvider.cs" />

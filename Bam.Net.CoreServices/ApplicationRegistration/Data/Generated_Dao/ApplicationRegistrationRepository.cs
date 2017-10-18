@@ -25,6 +25,7 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao.Repository
 			BaseNamespace = "Bam.Net.CoreServices.ApplicationRegistration";			
 ﻿			
 			AddType<Bam.Net.CoreServices.ApplicationRegistration.ActiveApiKeyIndex>();﻿			
+			AddType<Bam.Net.CoreServices.ApplicationRegistration.HostDomain>();﻿			
 			AddType<Bam.Net.CoreServices.ApplicationRegistration.UserSetting>();﻿			
 			AddType<Bam.Net.CoreServices.ApplicationRegistration.Client>();﻿			
 			AddType<Bam.Net.CoreServices.ApplicationRegistration.Configuration>();﻿			
@@ -144,6 +145,99 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao.Repository
             await Bam.Net.CoreServices.ApplicationRegistration.Dao.ActiveApiKeyIndex.BatchAll(batchSize, (batch) =>
             {
 				batchProcessor(Wrap<Bam.Net.CoreServices.ApplicationRegistration.ActiveApiKeyIndex>(batch));
+            }, Database);
+        }﻿		
+		/// <summary>
+		/// Get one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		/// <param name="where"></param>
+		public Bam.Net.CoreServices.ApplicationRegistration.HostDomain GetOneHostDomainWhere(WhereDelegate<HostDomainColumns> where)
+		{
+			Type wrapperType = GetWrapperType<Bam.Net.CoreServices.ApplicationRegistration.HostDomain>();
+			return (Bam.Net.CoreServices.ApplicationRegistration.HostDomain)Bam.Net.CoreServices.ApplicationRegistration.Dao.HostDomain.GetOneWhere(where, Database).CopyAs(wrapperType, this);
+		}
+
+		/// <summary>
+		/// Execute a query that should return only one result.  If more
+		/// than one result is returned a MultipleEntriesFoundException will 
+		/// be thrown.  This method is most commonly used to retrieve a
+		/// single HostDomain instance by its Id/Key value
+		/// </summary>
+		/// <param name="where">A WhereDelegate that recieves a HostDomainColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between HostDomainColumns and other values
+		/// </param>
+		public Bam.Net.CoreServices.ApplicationRegistration.HostDomain OneHostDomainWhere(WhereDelegate<HostDomainColumns> where)
+        {
+            Type wrapperType = GetWrapperType<Bam.Net.CoreServices.ApplicationRegistration.HostDomain>();
+            return (Bam.Net.CoreServices.ApplicationRegistration.HostDomain)Bam.Net.CoreServices.ApplicationRegistration.Dao.HostDomain.OneWhere(where, Database).CopyAs(wrapperType, this);
+        }
+
+		/// <summary>
+		/// Execute a query and return the results. 
+		/// </summary>
+		/// <param name="where">A WhereDelegate that recieves a Bam.Net.CoreServices.ApplicationRegistration.HostDomainColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between Bam.Net.CoreServices.ApplicationRegistration.HostDomainColumns and other values
+		/// </param>
+		public IEnumerable<Bam.Net.CoreServices.ApplicationRegistration.HostDomain> HostDomainsWhere(WhereDelegate<HostDomainColumns> where, OrderBy<HostDomainColumns> orderBy = null)
+        {
+            return Wrap<Bam.Net.CoreServices.ApplicationRegistration.HostDomain>(Bam.Net.CoreServices.ApplicationRegistration.Dao.HostDomain.Where(where, orderBy, Database));
+        }
+		
+		/// <summary>
+		/// Execute a query and return the specified number
+		/// of values. This method will issue a sql TOP clause so only the 
+		/// specified number of values will be returned.
+		/// </summary>
+		/// <param name="count">The number of values to return.
+		/// This value is used in the sql query so no more than this 
+		/// number of values will be returned by the database.
+		/// </param>
+		/// <param name="where">A WhereDelegate that recieves a HostDomainColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between HostDomainColumns and other values
+		/// </param>
+		public IEnumerable<Bam.Net.CoreServices.ApplicationRegistration.HostDomain> TopHostDomainsWhere(int count, WhereDelegate<HostDomainColumns> where)
+        {
+            return Wrap<Bam.Net.CoreServices.ApplicationRegistration.HostDomain>(Bam.Net.CoreServices.ApplicationRegistration.Dao.HostDomain.Top(count, where, Database));
+        }
+
+		/// <summary>
+		/// Return the count of HostDomains
+		/// </summary>
+		public long CountHostDomains()
+        {
+            return Bam.Net.CoreServices.ApplicationRegistration.Dao.HostDomain.Count(Database);
+        }
+
+		/// <summary>
+		/// Execute a query and return the number of results
+		/// </summary>
+		/// <param name="where">A WhereDelegate that recieves a HostDomainColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between HostDomainColumns and other values
+		/// </param>
+        public long CountHostDomainsWhere(WhereDelegate<HostDomainColumns> where)
+        {
+            return Bam.Net.CoreServices.ApplicationRegistration.Dao.HostDomain.Count(where, Database);
+        }
+        
+        public async Task BatchQueryHostDomains(int batchSize, WhereDelegate<HostDomainColumns> where, Action<IEnumerable<Bam.Net.CoreServices.ApplicationRegistration.HostDomain>> batchProcessor)
+        {
+            await Bam.Net.CoreServices.ApplicationRegistration.Dao.HostDomain.BatchQuery(batchSize, where, (batch) =>
+            {
+				batchProcessor(Wrap<Bam.Net.CoreServices.ApplicationRegistration.HostDomain>(batch));
+            }, Database);
+        }
+		
+        public async Task BatchAllHostDomains(int batchSize, Action<IEnumerable<Bam.Net.CoreServices.ApplicationRegistration.HostDomain>> batchProcessor)
+        {
+            await Bam.Net.CoreServices.ApplicationRegistration.Dao.HostDomain.BatchAll(batchSize, (batch) =>
+            {
+				batchProcessor(Wrap<Bam.Net.CoreServices.ApplicationRegistration.HostDomain>(batch));
             }, Database);
         }﻿		
 		/// <summary>

@@ -44,6 +44,11 @@ namespace Bam.Net.CoreServices
     public class CoreServiceResponse
     {
         public CoreServiceResponse() { }
+
+        public CoreServiceResponse(object data)
+        {
+            Data = data;
+        }
         public bool Success { get; set; }
         public string Message { get; set; }
         public object Data { get; set; }          

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ServiceProcess;
-using Bam.Net.Html;
+using Bam.Net.Presentation.Html;
 using Bam.Net.Logging;
 using Bam.Net;
 using Bam.Net.Incubation;
@@ -969,14 +969,14 @@ namespace Bam.Net.Server
         /// request handler
         /// </summary>
         /// <param name="responder"></param>
-        public void AddResponder(ResponderBase responder)
+        public void AddResponder(Responder responder)
         {
             _responders.Add(responder);
             _respondersByName.AddMissing(responder.ResponderSignificantName, responder);
             ResponderAdded?.Invoke(this, responder);
         }
 
-        public void RemoveResponder(ResponderBase responder)
+        public void RemoveResponder(Responder responder)
         {
             if(responder == null)
             {

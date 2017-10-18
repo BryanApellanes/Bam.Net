@@ -27,6 +27,12 @@ namespace Bam.Net.CoreServices
     public abstract class ProxyableService: Loggable, IRequiresHttpContext
     {
         protected ProxyableService() { }
+        public ProxyableService(ApplicationRepositoryResolver repoResolver, AppConf appConf)
+        {
+            AppConf = appConf;
+            RepositoryResolver = repoResolver;
+            Logger = appConf?.Logger ?? Log.Default;
+        }
         public ProxyableService(DaoRepository repository, AppConf appConf)
         {
             AppConf = appConf;
@@ -126,7 +132,7 @@ namespace Bam.Net.CoreServices
             get
             {
                 string fromHeader = HttpContext?.Request?.Headers[Headers.ApplicationName];
-                return fromHeader.Or($"{Headers.ApplicationName}-Not-Specified");
+                return fromHeader.Or(ApplicationRegistration.Application.Unknown.Name);
             }
         }
 
@@ -208,11 +214,33 @@ namespace Bam.Net.CoreServices
         [Exclude]
         public IRoleResolver RoleResolver { get; set; }
 
+        DaoRepository _daoRepository;
         [Exclude]
-        public DaoRepository DaoRepository { get; set; }
+        public DaoRepository DaoRepository
+        {
+            get
+            {
+                return _daoRepository ?? RepositoryResolver?.GetRepository<DaoRepository>(HttpContext);
+            }
+            set
+            {
+                _daoRepository = value;
+            }
+        }
 
+        IRepository _repository;
         [Exclude]
-        public IRepository Repository { get; set; }
+        public IRepository Repository
+        {
+            get
+            {
+                return _repository ?? RepositoryResolver?.GetRepository(HttpContext);
+            }
+            set
+            {
+                _repository = value;
+            }
+        }
         
         [Exclude]
         public AppConf AppConf { get; set; }
