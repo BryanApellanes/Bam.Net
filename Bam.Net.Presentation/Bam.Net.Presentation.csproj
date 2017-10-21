@@ -145,6 +145,25 @@
     <Compile Include="Dust\DustTemplateResult.cs" />
     <Compile Include="Dust\DustView.cs" />
     <Compile Include="Dust\DustViewEngine.cs" />
+    <Compile Include="Emoji_Generated\Category.cs" />
+    <Compile Include="Emoji_Generated\CategoryCollection.cs" />
+    <Compile Include="Emoji_Generated\CategoryColumns.cs" />
+    <Compile Include="Emoji_Generated\CategoryPagedQuery.cs" />
+    <Compile Include="Emoji_Generated\CategoryQuery.cs" />
+    <Compile Include="Emoji_Generated\Code.cs" />
+    <Compile Include="Emoji_Generated\CodeCollection.cs" />
+    <Compile Include="Emoji_Generated\CodeColumns.cs" />
+    <Compile Include="Emoji_Generated\CodePagedQuery.cs" />
+    <Compile Include="Emoji_Generated\CodeQuery.cs" />
+    <Compile Include="Emoji_Generated\Emoji.cs" />
+    <Compile Include="Emoji_Generated\EmojiCollection.cs" />
+    <Compile Include="Emoji_Generated\EmojiColumns.cs" />
+    <Compile Include="Emoji_Generated\EmojiPagedQuery.cs" />
+    <Compile Include="Emoji_Generated\EmojiQuery.cs" />
+    <Compile Include="Emoji_Generated\EmojisContext.cs" />
+    <Compile Include="Emoji_Generated\Qi\Category.cs" />
+    <Compile Include="Emoji_Generated\Qi\Code.cs" />
+    <Compile Include="Emoji_Generated\Qi\Emoji.cs" />
     <Compile Include="GoogleHelper.cs" />
     <Compile Include="Html\Attributes\DropDown.cs" />
     <Compile Include="Html\Attributes\Hidden.cs" />
@@ -192,6 +211,7 @@
     <EmbeddedResource Include="Dust\dust.custom.js" />
     <EmbeddedResource Include="Dust\feather.js" />
     <EmbeddedResource Include="Dust\json2.js" />
+    <Content Include="Emoji.db.js" />
     <Content Include="Html\Js\spin.js" />
     <Content Include="Markdown\TODO.txt" />
   </ItemGroup>

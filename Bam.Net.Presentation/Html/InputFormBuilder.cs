@@ -162,7 +162,7 @@ namespace Bam.Net.Presentation.Html
         }
 
         /// <summary>
-        /// The format used for the labels rendered by the current ParametersBuilder.
+        /// The format used for the labels rendered by the current InputFormBuilder.
         /// The default is "{0}".
         /// </summary>
         public string LabelFormat
@@ -228,12 +228,15 @@ namespace Bam.Net.Presentation.Html
 		{
 			return MethodForm(type, wrapperTagName, methodName, defaults, false, out paramCount);
 		}
+
         /// <summary>
         /// Build a form to be used as parameters for the specified method
         /// </summary>
+        /// <param name="type"></param>
         /// <param name="wrapperTagName"></param>
         /// <param name="methodName"></param>
         /// <param name="defaults"></param>
+        /// <param name="registerProxy"></param>
         /// <param name="paramCount"></param>
         /// <returns></returns>
         public TagBuilder MethodForm(Type type, string wrapperTagName, string methodName, Dictionary<string, object> defaults, bool registerProxy, out int paramCount)
@@ -245,12 +248,7 @@ namespace Bam.Net.Presentation.Html
 			}
 
             MethodInfo method = type.GetMethod(methodName);
-        
-            // Prevent NullReferenceException
-            if (defaults == null)
-            {
-                defaults = new Dictionary<string, object>();
-            }
+            defaults = defaults ?? new Dictionary<string, object>();
 
             System.Reflection.ParameterInfo[] parameters = method.GetParameters();
             paramCount = parameters.Length;
@@ -270,11 +268,9 @@ namespace Bam.Net.Presentation.Html
                 bool addValue = true;
                 bool wasObject = false;
                 bool handled = false;
-                TagBuilder toAdd;
-                Type paramType;
-                TryBuildPrimitiveInput(parameter, defaultValue, ref addValue, ref handled, out toAdd, out paramType);
+                TryBuildPrimitiveInput(parameter, defaultValue, ref addValue, ref handled, out TagBuilder toAdd, out Type paramType);
 
-                if(!handled)
+                if (!handled)
                 {
                     string legend = GetLegend(paramType);
                     toAdd = FieldsetFor(paramType, defaultValue, legend);
