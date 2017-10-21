@@ -38,7 +38,7 @@ namespace Bam.Net.Logging
         /// An array of all the ILoggers that have
         /// been subscribed to this Loggable
         /// </summary>
-        public ILogger[] Subscribers
+        public virtual ILogger[] Subscribers
         {
             get { return _subscribers.ToArray(); }
         }
@@ -132,7 +132,7 @@ namespace Bam.Net.Logging
         /// <param name="logger"></param>
         /// <returns></returns>
         [Exclude]
-        public bool IsSubscribed(ILogger logger)
+        public virtual bool IsSubscribed(ILogger logger)
         {
             return _subscribers.Contains(logger);
         }

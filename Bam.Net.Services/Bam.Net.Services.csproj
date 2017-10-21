@@ -152,6 +152,25 @@
     <Compile Include="Distributed\UniversalIdentifier.cs" />
     <Compile Include="Distributed\WriteEventService.cs" />
     <Compile Include="ExecutionResponder.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\FixedField.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\FixedFieldCollection.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\FixedFieldColumns.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\FixedFieldPagedQuery.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\FixedFieldQuery.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\ObjectDescriptor.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\ObjectDescriptorCollection.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\ObjectDescriptorColumns.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\ObjectDescriptorPagedQuery.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\ObjectDescriptorQuery.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\OpenApiContext.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\PatternedField.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\PatternedFieldCollection.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\PatternedFieldColumns.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\PatternedFieldPagedQuery.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\PatternedFieldQuery.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\Qi\FixedField.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\Qi\ObjectDescriptor.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\Qi\PatternedField.cs" />
     <Compile Include="ServiceResponse.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Catalog\KindsOfCatalogs.cs" />
@@ -245,7 +264,9 @@
       <Name>Bam.Net</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="OpenApi\OpenApi.db.js" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
