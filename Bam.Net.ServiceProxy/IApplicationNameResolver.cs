@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.CoreServices
+namespace Bam.Net.ServiceProxy
 {
     public interface IApplicationNameResolver: IApplicationNameProvider
     {

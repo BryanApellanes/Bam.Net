@@ -25,15 +25,16 @@ namespace Bam.Net.Server
             this.BamConf = conf;
             this.Logger = Log.Default;
 
-            this._contentTypes = new Dictionary<string, string>();
-            this._contentTypes.Add(".json", "application/json");
-            this._contentTypes.Add(".js", "application/javascript");
-            this._contentTypes.Add(".css", "text/css");
-            this._contentTypes.Add(".jpg", "image/jpg");
-            this._contentTypes.Add(".gif", "image/gif");
-            this._contentTypes.Add(".png", "image/png");
-            this._contentTypes.Add(".html", "text/html");
-            
+            this._contentTypes = new Dictionary<string, string>
+            {
+                { ".json", "application/json" },
+                { ".js", "application/javascript" },
+                { ".css", "text/css" },
+                { ".jpg", "image/jpg" },
+                { ".gif", "image/gif" },
+                { ".png", "image/png" },
+                { ".html", "text/html" }
+            };
             this._respondToPrefixes = new List<string>();
             this._ignorePrefixes = new List<string>();
 
@@ -70,7 +71,7 @@ namespace Bam.Net.Server
         public virtual bool IsInitialized
         {
             get;
-            private set;
+            protected set;
         }
 
         /// <summary>

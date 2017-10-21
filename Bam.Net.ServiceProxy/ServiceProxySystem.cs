@@ -83,27 +83,6 @@ namespace Bam.Net.ServiceProxy
             );
         }
 
-        static ServiceProxySystem current;
-        static object currentLock = new object();
-        /// <summary>
-        /// Provides an extension point to add functionality to the ServiceProxySystem
-        /// </summary>
-        public static ServiceProxySystem Current
-        {
-            get
-            {
-                if (current == null)
-                {
-                    lock (currentLock)
-                    {
-                        current = new ServiceProxySystem();
-                    }
-                }
-
-                return current;
-            }
-        }
-
         static string _proxySearchPattern;
         static object _proxySearchPatternLock = new object();
         /// <summary>
@@ -671,11 +650,13 @@ namespace {0}
 
         internal static bool ServiceProxyPartialExists(string typeName, string viewName)
         {
-            List<string> fileExtensions = new List<string>();
-            fileExtensions.Add(".cshtml");
-            fileExtensions.Add(".vbhtml");
-            fileExtensions.Add(".aspx");
-            fileExtensions.Add(".ascx");
+            List<string> fileExtensions = new List<string>
+            {
+                ".cshtml",
+                ".vbhtml",
+                ".aspx",
+                ".ascx"
+            };
             string path = System.Web.HttpContext.Current.Server.MapPath(string.Format(ServiceProxyPartialFormat, typeName, viewName));
 
             bool exists = false;
@@ -746,7 +727,5 @@ namespace {0}
             source.AppendLine("</div>");
             return source;
         }
-
-
     }
 }

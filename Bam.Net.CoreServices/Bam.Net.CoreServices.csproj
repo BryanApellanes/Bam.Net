@@ -90,7 +90,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationNameNotSpecifiedException.cs" />
-    <Compile Include="ApplicationNameResolver.cs" />
     <Compile Include="ApplicationRegistration\Data\ActiveApiKeyIndex.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\ActiveApiKeyIndex.cs" />
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\ActiveApiKeyIndexCollection.cs" />
@@ -241,7 +240,6 @@
     <Compile Include="ApplicationRegistration\Data\HostAddress.cs" />
     <Compile Include="ApplicationRegistration\Data\Nic.cs" />
     <Compile Include="ApplicationRegistration\Data\ConfigurationSetting.cs" />
-    <Compile Include="IApplicationNameResolver.cs" />
     <Compile Include="NotificationTemplateInfo.cs" />
     <Compile Include="OAuth\ApplicationUserNotFoundException.cs" />
     <Compile Include="OAuth\OAuthClientSettings.cs" />

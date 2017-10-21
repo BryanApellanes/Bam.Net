@@ -44,9 +44,12 @@ namespace Bam.Net.Server
             _appServiceProviders = new Dictionary<string, Incubator>();
             _appSecureChannels = new Dictionary<string, SecureChannel>();
             _commonSecureChannel = new SecureChannel();
+            _clientProxyGenerators = new Dictionary<string, IClientProxyGenerator>();
             RendererFactory = new RendererFactory(logger);
 
             AddCommonService(_commonSecureChannel);
+            AddClientProxyGenerator(new CsClientProxyGenerator(), "proxies.cs", "csproxies", "csharpproxies");
+            AddClientProxyGenerator(new JsClientProxyGenerator(), "proxies.js", "jsproxies", "javascriptproxies");
 
             CommonServiceAdded += (type, obj) =>
             {
@@ -117,6 +120,19 @@ namespace Bam.Net.Server
             }
         }
 
+        public void AddClientProxyGenerator<T>(T proxyGenerator, params string[] fileNames) where T : IClientProxyGenerator
+        {
+            foreach(string fileName in fileNames)
+            {
+                AddClientProxyGenerator<T>(fileName, proxyGenerator);
+            }
+        }
+
+        public void AddClientProxyGenerator<T>(string fileNameKey, T proxyGenerator) where T: IClientProxyGenerator
+        {
+            _clientProxyGenerators.Set(fileNameKey, proxyGenerator);
+        }
+
         /// <summary>
         /// Add the specified instance to the specified appName
         /// </summary>
@@ -146,10 +162,7 @@ namespace Bam.Net.Server
         public event Action<string, Type, object> AppServiceAdded;
         protected void OnAppServiceAdded(string appName, Type type, object instance)
         {
-            if (AppServiceAdded != null)
-            {
-                AppServiceAdded(appName, type, instance);
-            }
+            AppServiceAdded?.Invoke(appName, type, instance);
         }
         public void AddAppService<T>(string appName, Func<T> instanciator, bool throwIfSet = false)
         {
@@ -358,9 +371,7 @@ namespace Bam.Net.Server
                 {
                     Action<Type> serviceAdder = (type) =>
                     {
-                        object instance;
-                        if (type.TryConstruct(out instance,
-                            ex => Logger.AddEntry("RegisterProxiedClasses: Unable to construct instance of type {0}: {1}", ex, type.Name, ex.Message)))
+                        if (type.TryConstruct(out object instance, ex => Logger.AddEntry("RegisterProxiedClasses: Unable to construct instance of type {0}: {1}", ex, type.Name, ex.Message)))
                         {
                             SubscribeIfLoggable(instance);
                             AddAppService(appConf.Name, instance);
@@ -384,9 +395,7 @@ namespace Bam.Net.Server
                 Type type = Type.GetType(typeName);
                 if (type != null)
                 {
-                    object instance = null;
-                    if (type.TryConstruct(out instance,
-                        ex => Logger.AddEntry("AddConfiguredServiceProxyTypes: Unable to construct instance of type {0}: {1}", ex, type.Name, ex.Message)))
+                    if (type.TryConstruct(out object instance, ex => Logger.AddEntry("AddConfiguredServiceProxyTypes: Unable to construct instance of type {0}: {1}", ex, type.Name, ex.Message)))
                     {
                         SubscribeIfLoggable(instance);
                         AddAppService(appConf.Name, instance);
@@ -457,32 +466,7 @@ namespace Bam.Net.Server
                 }
             }
         }
-
-
-        protected virtual string[] ProxyFileNames
-        {
-            get
-            {
-                return new string[] { "proxies.js", "proxies.cs", "javascriptproxies", "jsproxies", "csproxies", "csharpproxies" };
-            }
-        }
-
-        protected virtual string[] JsProxyFileNames
-        {
-            get
-            {
-                return new string[] { "proxies.js", "javascriptproxies", "jsproxies" };
-            }
-        }
-
-        protected virtual string[] CsProxyFileNames
-        {
-            get
-            {
-                return new string[] { "proxies.cs", "csproxies", "csharpproxies" };
-            }
-        }
-
+        
         public override bool TryRespond(IHttpContext context)
         {
             try
@@ -501,11 +485,11 @@ namespace Bam.Net.Server
                     {
                         if (path.StartsWith(MethodFormPrefixFormat._Format(ResponderSignificantName).ToLowerInvariant()))
                         {
-                            responded = SendMethodForm(context, appName);
+                            responded = SendMethodForm(context);
                         }
                         else
                         {
-                            responded = SendProxyCode(request, response, path);
+                            responded = SendProxyCode(context);
                         }
                     }
                     else
@@ -536,10 +520,11 @@ namespace Bam.Net.Server
             }
         }
 
-        private bool SendMethodForm(IHttpContext context, string appName)
+        private bool SendMethodForm(IHttpContext context)
         {
             bool result = false;
             IRequest request = context.Request;
+            string appName = AppConf.AppNameFromUri(request.Url, BamConf.AppConfigs);
             string path = request.Url.AbsolutePath;
             string prefix = MethodFormPrefixFormat._Format(ResponderSignificantName.ToLowerInvariant());
             string partsICareAbout = path.TruncateFront(prefix.Length);
@@ -547,9 +532,7 @@ namespace Bam.Net.Server
 
             if (segments.Length == 2)
             {
-                Incubator providers;
-                List<ProxyAlias> aliases;
-                GetServiceProxies(appName, out providers, out aliases);
+                GetServiceProxies(appName, out Incubator providers, out List<ProxyAlias> aliases);
                 string className = segments[0];
                 string methodName = segments[1];
                 Type type = providers[className];
@@ -582,74 +565,26 @@ namespace Bam.Net.Server
             return result;
         }
 
-        protected void SendJsProxyScript(IRequest request, IResponse response)
-        {
-            string appName = AppConf.AppNameFromUri(request.Url, BamConf.AppConfigs);
-            bool includeLocalMethods = request.UserHostAddress.StartsWith("127.0.0.1");
-
-            StringBuilder script = ServiceProxySystem.GenerateJsProxyScript(CommonServiceProvider, CommonServiceProvider.ClassNames, includeLocalMethods);
-            if (AppServiceProviders.ContainsKey(appName))
-            {
-                Incubator appProviders = AppServiceProviders[appName];
-                script.AppendLine(ServiceProxySystem.GenerateJsProxyScript(appProviders, appProviders.ClassNames, includeLocalMethods).ToString());
-            }
-
-            response.ContentType = "application/javascript";
-            byte[] data = Encoding.UTF8.GetBytes(script.ToString());
-            response.OutputStream.Write(data, 0, data.Length);
-        }
-
-        protected void SendCsProxyCode(IRequest request, IResponse response)
-        {
-            string appName = AppConf.AppNameFromUri(request.Url, BamConf.AppConfigs);
-            string defaultBaseAddress = ServiceProxySystem.GetBaseAddress(request.Url);
-            string nameSpace = request.QueryString["namespace"] ?? "ServiceProxyClients";
-            string contractNameSpace = "{0}.Contracts"._Format(nameSpace);
-            Incubator combined = new Incubator();
-            combined.CopyFrom(CommonServiceProvider);
-
-            if (AppServiceProviders.ContainsKey(appName))
-            {
-                Incubator appProviders = AppServiceProviders[appName];
-                combined.CopyFrom(appProviders, true);
-            }
-
-            string[] classNames = request.QueryString["classes"] == null ? combined.ClassNames : request.QueryString["classes"].DelimitSplit(",", ";");
-            
-            StringBuilder csharpCode = ServiceProxySystem.GenerateCSharpProxyCode(defaultBaseAddress, classNames, nameSpace, contractNameSpace, combined, Logger, request.UserHostAddress.StartsWith("127.0.0.1"));
-
-            response.Headers.Add("Content-Disposition", "attachment;filename=" + nameSpace + ".cs");
-            response.Headers.Add("Content-Type", "text/plain");
-            byte[] data = Encoding.UTF8.GetBytes(csharpCode.ToString());
-            response.OutputStream.Write(data, 0, data.Length);
-        }
-
         public event Action<ServiceProxyResponder> Initializing;
         protected void OnInitializing()
         {
-            if (Initializing != null)
-            {
-                Initializing(this);
-            }
+            Initializing?.Invoke(this);
         }
 
         public event Action<ServiceProxyResponder> Initialized;
         protected void OnInitialized()
         {
-            if (Initialized != null)
-            {
-                Initialized(this);
-            }
+            Initialized?.Invoke(this);
         }
 
-        public bool IsInitialized
+        public override bool IsInitialized
         {
             get;
-            private set;
+            protected set;
         }
 
         object _initializeLock = new object();
-        public void Initialize()
+        public override void Initialize()
         {
             OnInitializing();
 
@@ -666,7 +601,7 @@ namespace Bam.Net.Server
         }
         List<ILogger> _subscribers = new List<ILogger>();
         object _subscriberLock = new object();
-        public ILogger[] Subscribers
+        public override ILogger[] Subscribers
         {
             get
             {
@@ -681,14 +616,14 @@ namespace Bam.Net.Server
             }
         }
 
-        public bool IsSubscribed(ILogger logger)
+        public override bool IsSubscribed(ILogger logger)
         {
             lock (_subscriberLock)
             {
                 return _subscribers.Contains(logger);
             }
         }
-        public void Subscribe(ILogger logger)
+        public override void Subscribe(ILogger logger)
         {
             if (!IsSubscribed(logger))
             {
@@ -778,26 +713,58 @@ namespace Bam.Net.Server
             return results.ToArray();
         }
 
-        private bool SendProxyCode(RequestWrapper request, ResponseWrapper response, string path)
+        Dictionary<string, IClientProxyGenerator> _clientProxyGenerators;
+        private bool SendProxyCode(IHttpContext context)
         {
             bool result = false;
+            IRequest request = context.Request;
+            string path = request.Url.AbsolutePath.ToLowerInvariant();
+            string appName = AppConf.AppNameFromUri(request.Url, BamConf.AppConfigs);
+            bool includeLocalMethods = request.UserHostAddress.StartsWith("127.0.0.1");
             string[] split = path.DelimitSplit("/", ".");
 
             if (split.Length >= 2)
-            {
+            {                
                 string fileName = Path.GetFileName(path);
-                if (JsProxyFileNames.Contains(fileName))
+                if (_clientProxyGenerators.ContainsKey(fileName))
                 {
-                    SendJsProxyScript(request, response);
-                    result = true;
-                }
-                else if (CsProxyFileNames.Contains(fileName))
-                {
-                    SendCsProxyCode(request, response);
+                    Incubator combined = new Incubator();
+                    combined.CopyFrom(CommonServiceProvider);
+                    if (AppServiceProviders.ContainsKey(appName))
+                    {
+                        Incubator appProviders = AppServiceProviders[appName];
+                        combined.CopyFrom(appProviders, true);
+                    }
+                    _clientProxyGenerators[fileName].SendProxyCode(combined, context);
                     result = true;
                 }
             }
             return result;
+        }
+
+        protected void SendCsProxyCode(IRequest request, IResponse response)
+        {
+            string appName = AppConf.AppNameFromUri(request.Url, BamConf.AppConfigs);
+            string defaultBaseAddress = ServiceProxySystem.GetBaseAddress(request.Url);
+            string nameSpace = request.QueryString["namespace"] ?? "ServiceProxyClients";
+            string contractNameSpace = "{0}.Contracts"._Format(nameSpace);
+            Incubator combined = new Incubator();
+            combined.CopyFrom(CommonServiceProvider);
+
+            if (AppServiceProviders.ContainsKey(appName))
+            {
+                Incubator appProviders = AppServiceProviders[appName];
+                combined.CopyFrom(appProviders, true);
+            }
+
+            string[] classNames = request.QueryString["classes"] == null ? combined.ClassNames : request.QueryString["classes"].DelimitSplit(",", ";");
+
+            StringBuilder csharpCode = ServiceProxySystem.GenerateCSharpProxyCode(defaultBaseAddress, classNames, nameSpace, contractNameSpace, combined, Logger, request.UserHostAddress.StartsWith("127.0.0.1"));
+
+            response.Headers.Add("Content-Disposition", "attachment;filename=" + nameSpace + ".cs");
+            response.Headers.Add("Content-Type", "text/plain");
+            byte[] data = Encoding.UTF8.GetBytes(csharpCode.ToString());
+            response.OutputStream.Write(data, 0, data.Length);
         }
 
         private LayoutModel GetLayoutModel(string appName)
