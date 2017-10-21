@@ -35,10 +35,10 @@ namespace Bam.Net.Automation.SourceControl
         }
         static Dictionary<string, Dictionary<string, GitReleaseNotes>> _logCache = new Dictionary<string, Dictionary<string, GitReleaseNotes>>();
         static object _logCacheLock = new object();
-        public static GitReleaseNotes MiscSinceVersion(string gitRepoPath, int major, int minor, int patch = 0)
+        public static GitReleaseNotes MiscSinceLatestRelease(string gitRepoPath)
         {
-            string version = $"{major}.{minor}.{patch}";
-            HashSet<GitLog> logsSinceLast = GitLog.SinceVersion(gitRepoPath, major, minor, patch);
+            string version = Git.LatestRelease(gitRepoPath);
+            HashSet<GitLog> logsSinceLast = GitLog.SinceLatestRelease(gitRepoPath);
             if(!_logCache.ContainsKey("Misc") || !_logCache["Misc"].ContainsKey(version))
             {
                 lock (_logCacheLock)
@@ -57,15 +57,15 @@ namespace Bam.Net.Automation.SourceControl
             }
             return _logCache["Misc"][version];
         }
-        public static GitReleaseNotes SinceVersion(string packageId, string gitRepoPath, int major, int minor = 0, int patch = 0)
+        public static GitReleaseNotes SinceLatestRelease(string packageId, string gitRepoPath)
         {
-            string version = $"{major}.{minor}.{patch}";
+            string version = Git.LatestRelease(gitRepoPath);
 
             if (!_logCache.ContainsKey(packageId) || !_logCache[packageId].ContainsKey(version))
             {
                 lock (_logCacheLock)
                 {
-                    HashSet<GitLog> logsSinceLast = GitLog.SinceVersion(gitRepoPath, major, minor, patch);
+                    HashSet<GitLog> logsSinceLast = GitLog.SinceLatestRelease(gitRepoPath);
                     GitReleaseNotes result = new GitReleaseNotes(version, packageId);
                     logsSinceLast.Each(gl =>
                     {

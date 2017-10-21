@@ -72,6 +72,17 @@ namespace Bam.Net.Automation.SourceControl
 
         static Dictionary<string, HashSet<GitLog>> _logCache = new Dictionary<string, HashSet<GitLog>>();
         static object _logCacheLock = new object();
+        public static HashSet<GitLog> SinceLatestRelease(string gitRepoPath, bool useCache = true)
+        {
+            string latestRelease = Git.LatestRelease(gitRepoPath);
+            if (!useCache)
+            {
+                return SinceTag(gitRepoPath, latestRelease);
+            }
+
+            return SinceTagFromCache(gitRepoPath, latestRelease);
+        }
+
         public static HashSet<GitLog> SinceVersion(string gitRepoPath, int major, int minor = 0, int patch = 0, bool useCache = true)
         {
             string version = $"v{major}.{minor}.{patch}";
@@ -80,14 +91,7 @@ namespace Bam.Net.Automation.SourceControl
                 return SinceTag(gitRepoPath, version);
             }
 
-            lock (_logCacheLock)
-            {
-                if (!_logCache.ContainsKey(version))
-                {
-                    _logCache[version] = SinceTag(gitRepoPath, version);
-                }
-                return _logCache[version];
-            }
+            return SinceTagFromCache(gitRepoPath, version);
         }
 
         public static HashSet<GitLog> SinceTag(string gitRepoPath, string tag)
@@ -139,5 +143,18 @@ namespace Bam.Net.Automation.SourceControl
             result.Append("}\"\r\n");
             return result.ToString();
         }
+
+        private static HashSet<GitLog> SinceTagFromCache(string gitRepoPath, string version)
+        {
+            lock (_logCacheLock)
+            {
+                if (!_logCache.ContainsKey(version))
+                {
+                    _logCache[version] = SinceTag(gitRepoPath, version);
+                }
+                return _logCache[version];
+            }
+        }
+
     }
 }
