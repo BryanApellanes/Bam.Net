@@ -108,20 +108,10 @@ namespace Bam.Net.Automation.SourceControl
         {
             string startDirectory = Environment.CurrentDirectory;
             Environment.CurrentDirectory = gitRepoPath;
-            string command = $"git --no-pager log --pretty=format:{GetPrettyFormatArg()} {commitIdentifier}..{toCommit}";
-            ProcessOutput output = null;
-            HashSet<GitLog> results = new HashSet<GitLog>();
-            AutoResetEvent wait = new AutoResetEvent(false);
-            output = command.Run((o, a) =>
-            {
-                Environment.CurrentDirectory = startDirectory;                
-                output.StandardOutput.DelimitSplit("\r", "\n").Each(log =>
-                {
-                    results.Add(log.FromJson<GitLog>());
-                });
-                wait.Set();
-            });
-            wait.WaitOne();
+            string command = $"git --no-pager log --pretty=format:{GetPrettyFormatArg()} {commitIdentifier}..{toCommit}";            
+            HashSet<GitLog> results = new HashSet<GitLog>();            
+            ProcessOutput output = command.Run();
+            output.StandardOutput.DelimitSplit("\r", "\n").Each(log => results.Add(log.FromJson<GitLog>()));            
             return results;
         }
 
@@ -140,7 +130,7 @@ namespace Bam.Net.Automation.SourceControl
                 result.AppendFormat("\\\"{0}\\\": \\\"{1}\\\"", propInfo.Name, option.Value);
                 first = false;
             });
-            result.Append("}\"\r\n");
+            result.Append("}\"");
             return result.ToString();
         }
 

@@ -100,7 +100,7 @@ namespace Bam.Net.CommandLine
         {
             output = output ?? new StringBuilder();
             error = error ?? new StringBuilder();
-            ProcessOutputCollector receiver = new ProcessOutputCollector(d => output.Append(d), e => error.Append(e));
+            ProcessOutputCollector receiver = new ProcessOutputCollector(output, error);
             return Run(startInfo, receiver, timeout);
         }
         

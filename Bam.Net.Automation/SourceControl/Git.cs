@@ -101,8 +101,11 @@ namespace Bam.Net.Automation.SourceControl
 
         public string LatestRelease()
         {
-            ProcessOutput output = "git describe --abrev=0".Run();
-            return output.StandardOutput;
+            string currentDirectory = Environment.CurrentDirectory;
+            Environment.CurrentDirectory = _configStack.Repository;
+            ProcessOutput output = "git describe --abbrev=0".Run();
+            Environment.CurrentDirectory = currentDirectory;
+            return output.StandardOutput.Trim();
         }
 
         public ProcessOutput LastOutput()
