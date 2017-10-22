@@ -10,12 +10,22 @@ using Bam.Net.Services.Distributed.Data;
 using Bam.Net.Testing;
 using Bam.Net.Caching;
 using Bam.Net.Testing.Unit;
+using Bam.Net.Services.OpenApi;
 
 namespace Bam.Net.Services.Tests
 {
     [Serializable]
     public partial class UnitTests : CommandLineTestInterface
     {
+        [UnitTest]
+        public void OpenApiDatabaseHasData()
+        {
+            OpenApiObjectDatabase db = new OpenApiObjectDatabase();
+            ObjectDescriptorCollection objects = ObjectDescriptor.Where(c => c.Id > 0, db);
+            Expect.IsGreaterThan(objects.Count, 0);
+            OutLine(objects[0].PropertiesToLine(), ConsoleColor.Green);
+        }
+
         [UnitTest]
         public void CanSerializeAndDeserializeDataPropertyList()
         {

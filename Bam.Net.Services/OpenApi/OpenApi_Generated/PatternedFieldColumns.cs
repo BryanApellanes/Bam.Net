@@ -42,11 +42,11 @@ namespace Bam.Net.Services.OpenApi
                 return new PatternedFieldColumns("Cuid");
             }
         }
-        public PatternedFieldColumns FieldName
+        public PatternedFieldColumns FieldPattern
         {
             get
             {
-                return new PatternedFieldColumns("FieldName");
+                return new PatternedFieldColumns("FieldPattern");
             }
         }
         public PatternedFieldColumns Type

@@ -11,6 +11,7 @@ using CsQuery;
 using System.IO;
 using Bam.Net.Services.OpenApi;
 using Bam.Net.Data.SQLite;
+using Bam.Net.Data;
 
 namespace Bam.Net.Services.Tests
 {
@@ -27,57 +28,99 @@ namespace Bam.Net.Services.Tests
         [ConsoleAction]
         public void ScrapeOpenApi()
         {
-            string html = File.ReadAllText("c:\\temp\\OpenAPISpec.htm");
-            SQLiteDatabase db = new SQLiteDatabase("c:\\temp\\OpenaApi");
+            string html = File.ReadAllText("c:\\temp\\OpenAPISpec.htm"); // downloaded from https://swagger.io/specification
+            SQLiteDatabase db = new SQLiteDatabase("c:\\temp", "OpenApi");
+            db.TryEnsureSchema<ObjectDescriptor>();
             CQ cq = CQ.Create(html);
             var h4s = cq["h4"];
+            bool first = true;
+            Dictionary<string, Func<Dao>> fieldCtors = new Dictionary<string, Func<Dao>>()
+            {
+                { "FixedFields", ()=> new FixedField() },
+                { "PatternedFields", ()=> new PatternedField() }
+            };
+            Dictionary<string, string> fieldProperty = new Dictionary<string, string>()
+            {
+                { "FixedFields", "FieldName" },
+                { "PatternedFields", "FieldPattern" }
+            };
             h4s.Each(h4 =>
             {
-                string objectName = h4.InnerText.PascalCase();
-                OutLineFormat("{0}", ConsoleColor.Cyan, objectName);
-                string descriptionText = WhileNextIsP(h4.NextSibling, out IDomObject description);
-                OutLineFormat(descriptionText, ConsoleColor.Green);
-                ObjectDescriptor objectDescriptor = new ObjectDescriptor
+                if (!first)
                 {
-                    Name = objectName,
-                    Description = descriptionText,
-                    Cuid = NCuid.Cuid.Generate()
-                };
-                var fieldType = description.NextElementSibling;
-                OutLineFormat("{0}", ConsoleColor.Blue, fieldType.InnerText);
-                var table = fieldType.NextElementSibling;
-                var rows = cq["tr", table];
-                rows.Each(row =>
-                {
-                    var cells = cq["td", row];
-                    if (cells.Length > 0)
+                    string objectName = h4.InnerText.PascalCase();
+                    OutLineFormat("{0}", ConsoleColor.Cyan, objectName);
+                    string descriptionText = WhileNextIsP(h4.NextSibling, out IDomObject description);
+                    OutLineFormat(descriptionText, ConsoleColor.Green);
+                    ObjectDescriptor objectDescriptor = new ObjectDescriptor
                     {
-                        string fieldName = cells[0].InnerText;
-                        string type = CleanUpHtml(cells[1].InnerHTML);
-                        string appliesTo = null;
-                        string fieldDescription = null;
-                        if (cells.Length == 4)
-                        {
-                            appliesTo = CleanUpHtml(cells[2].InnerHTML);
-                            fieldDescription = CleanUpHtml(cells[3].InnerHTML);
-                        }
-                        else
-                        {
-                            fieldDescription = CleanUpHtml(cells[2].InnerHTML);
-                        }
-                        OutLineFormat("{0} {1}", ConsoleColor.White, fieldName, type);
-                        if (!string.IsNullOrEmpty(appliesTo))
-                        {
-                            OutLineFormat("\tApplies To: {0}", ConsoleColor.White, appliesTo);
-                        }
-                        OutLineFormat("Description: {0}", ConsoleColor.White, fieldDescription);
-                        OutLine();
-                        
+                        Name = objectName,
+                        Description = descriptionText,
+                        Cuid = NCuid.Cuid.Generate()
+                    };
+                    objectDescriptor.Save(db);
+                    var fieldTypeElement = GetNext(description, "H5");
+                    string fieldType = fieldTypeElement.InnerText.PascalCase();
+                    if (fieldType.Equals("ParameterLocations"))
+                    {
+                        fieldTypeElement = GetNext(fieldTypeElement, "H5");
+                        fieldType = fieldTypeElement.InnerText.PascalCase();
                     }
-                });
+                    OutLineFormat("{0}", ConsoleColor.Blue, fieldType);
+                    if (fieldCtors.ContainsKey(fieldType))
+                    {
+                        var table = GetNext(fieldTypeElement, "TABLE");//fieldTypeElement.NextElementSibling;
+                        var rows = cq["tr", table];
+                        rows.Each(row =>
+                        {
+                            var cells = cq["td", row];
+                            if (cells.Length > 0)
+                            {
+                                Dao fieldEntry = fieldCtors[fieldType]();
+                                fieldEntry.Property("ObjectDescriptorId", objectDescriptor.Id);
+                                string fieldName = cells[0].InnerText;
+                                string type = CleanUpHtml(cells[1].InnerHTML);
+                                string appliesTo = null;
+                                fieldEntry.Property(fieldProperty[fieldType], fieldName);
+                                fieldEntry.Property("Type", type);
+                                fieldEntry.Property("AppliesTo", appliesTo);
+                                string fieldDescription = null;
+                                if (cells.Length == 4)
+                                {
+                                    appliesTo = CleanUpHtml(cells[2].InnerHTML);
+                                    fieldDescription = CleanUpHtml(cells[3].InnerHTML);
+                                }
+                                else
+                                {
+                                    fieldDescription = CleanUpHtml(cells[2].InnerHTML);
+                                }
+                                OutLineFormat("{0} {1}", ConsoleColor.White, fieldName, type);
+                                if (!string.IsNullOrEmpty(appliesTo))
+                                {
+                                    OutLineFormat("\tApplies To: {0}", ConsoleColor.White, appliesTo);
+                                }
+                                OutLineFormat("Description: {0}", ConsoleColor.White, fieldDescription);
+                                fieldEntry.Property("Description", fieldDescription);
+                                fieldEntry.Save(db);
+                                OutLine();
+                            }
+                        });
+                    }
+                }
+                first = false;
             });
         }
-
+        private IDomObject GetNext(IDomObject domObj, string tagType)
+        {
+            if (domObj.NextElementSibling.NodeName.Equals(tagType, StringComparison.InvariantCultureIgnoreCase))
+            {
+                return domObj.NextElementSibling;
+            }
+            else
+            {
+                return GetNext(domObj.NextElementSibling, tagType);
+            }
+        }
         private string WhileNextIsP(IDomObject domObj, out IDomObject last)
         {
             string innerText = string.Empty;

@@ -27,7 +27,7 @@
                 { ObjectDescriptorId: "ObjectDescriptor" }
             ],
             cols: [
-                { FieldName: "String", Null: false },
+                { FieldPattern: "String", Null: false },
                 { Type: "String", Null: false },
                 { AppliesTo: "String", Null: true },
                 { Description: "String", Null: false }

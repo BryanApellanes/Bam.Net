@@ -101,17 +101,17 @@ namespace Bam.Net.Services.OpenApi
 		}
 	}
 
-	// property:FieldName, columnName:FieldName	
-	[Bam.Net.Data.Column(Name="FieldName", DbDataType="VarChar", MaxLength="4000", AllowNull=false)]
-	public string FieldName
+	// property:FieldPattern, columnName:FieldPattern	
+	[Bam.Net.Data.Column(Name="FieldPattern", DbDataType="VarChar", MaxLength="4000", AllowNull=false)]
+	public string FieldPattern
 	{
 		get
 		{
-			return GetStringValue("FieldName");
+			return GetStringValue("FieldPattern");
 		}
 		set
 		{
-			SetValue("FieldName", value);
+			SetValue("FieldPattern", value);
 		}
 	}
 
