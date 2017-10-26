@@ -17,6 +17,7 @@ using Bam.Net.Javascript;
 using Bam.Net.Javascript.Sql;
 using Bam.Net.Configuration;
 using System.Reflection;
+using System.Security.Cryptography;
 
 namespace Bam.Net.Data.Tests
 {
