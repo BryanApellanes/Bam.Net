@@ -743,31 +743,6 @@ namespace Bam.Net.Server
             return result;
         }
 
-        protected void SendCsProxyCode(IRequest request, IResponse response)
-        {
-            string appName = UriApplicationNameResolver.ResolveApplicationName(request.Url, BamConf.AppConfigs);
-            string defaultBaseAddress = ServiceProxySystem.GetBaseAddress(request.Url);
-            string nameSpace = request.QueryString["namespace"] ?? "ServiceProxyClients";
-            string contractNameSpace = "{0}.Contracts"._Format(nameSpace);
-            Incubator combined = new Incubator();
-            combined.CopyFrom(CommonServiceProvider);
-
-            if (AppServiceProviders.ContainsKey(appName))
-            {
-                Incubator appProviders = AppServiceProviders[appName];
-                combined.CopyFrom(appProviders, true);
-            }
-
-            string[] classNames = request.QueryString["classes"] == null ? combined.ClassNames : request.QueryString["classes"].DelimitSplit(",", ";");
-
-            StringBuilder csharpCode = ServiceProxySystem.GenerateCSharpProxyCode(defaultBaseAddress, classNames, nameSpace, contractNameSpace, combined, Logger, request.UserHostAddress.StartsWith("127.0.0.1"));
-
-            response.Headers.Add("Content-Disposition", "attachment;filename=" + nameSpace + ".cs");
-            response.Headers.Add("Content-Type", "text/plain");
-            byte[] data = Encoding.UTF8.GetBytes(csharpCode.ToString());
-            response.OutputStream.Write(data, 0, data.Length);
-        }
-
         private LayoutModel GetLayoutModel(string appName)
         {
             AppConf conf = BamConf.AppConfigs.FirstOrDefault(c => c.Name.Equals(appName));
