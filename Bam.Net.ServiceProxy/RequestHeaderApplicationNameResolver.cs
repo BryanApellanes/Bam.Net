@@ -9,14 +9,17 @@ using Bam.Net.ServiceProxy.Secure;
 
 namespace Bam.Net.ServiceProxy
 {
-    public class ApplicationNameResolver : IApplicationNameResolver
+    /// <summary>
+    /// IApplicationNameResolver implementation that reads the application name
+    /// from the X-Bam-AppName header if it exists
+    /// </summary>
+    public class RequestHeaderApplicationNameResolver : IApplicationNameResolver
     {
-        public ApplicationNameResolver()
+        public RequestHeaderApplicationNameResolver()
         {
-
         }
 
-        public ApplicationNameResolver(IHttpContext context)
+        public RequestHeaderApplicationNameResolver(IHttpContext context)
         {
             HttpContext = context;
         }
@@ -44,7 +47,7 @@ namespace Bam.Net.ServiceProxy
 
         public static string Resolve(IHttpContext context)
         {
-            return new ApplicationNameResolver(context).GetApplicationName();
+            return new RequestHeaderApplicationNameResolver(context).GetApplicationName();
         }
     }
 }

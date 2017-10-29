@@ -49,13 +49,6 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
                 return new ConfigurationColumns("Name");
             }
         }
-        public ConfigurationColumns Created
-        {
-            get
-            {
-                return new ConfigurationColumns("Created");
-            }
-        }
         public ConfigurationColumns CreatedBy
         {
             get
@@ -82,6 +75,13 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
             get
             {
                 return new ConfigurationColumns("Deleted");
+            }
+        }
+        public ConfigurationColumns Created
+        {
+            get
+            {
+                return new ConfigurationColumns("Created");
             }
         }
 

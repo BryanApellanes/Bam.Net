@@ -224,6 +224,7 @@
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserWrapper.cs" />
     <Compile Include="ApplicationRegistration\Data\HostDomain.cs" />
     <Compile Include="ApplicationRegistration\Data\UserSetting.cs" />
+    <Compile Include="ClientApplicationNameResolver.cs" />
     <Compile Include="HostDomainRequestFilter.cs" />
     <Compile Include="ApplicationRepositoryResolver.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorAssemblyReferenceDescriptor.cs" />

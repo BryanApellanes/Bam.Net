@@ -143,18 +143,18 @@ namespace Bam.Net.CoreServices
             }
         }
 
-        IApplicationNameProvider _clientApplicationNameProvider;
-        object _clientApplicationNameProviderLock = new object();
+        ClientApplicationNameResolver _clientApplicationNameResolver;
+        object _clientApplicationNameResolverLock = new object();
         [Local]
-        public virtual IApplicationNameProvider ClientApplicationNameProvider
+        public virtual ClientApplicationNameResolver ClientApplicationNameResolver
         {
             get
             {
-                return _clientApplicationNameProviderLock.DoubleCheckLock(ref _clientApplicationNameProvider, () => ApplicationNameProvider.Default);
+                return null;//_clientApplicationNameProviderLock.DoubleCheckLock(ref _clientApplicationNameProvider, () => ApplicationNameProvider.Default);
             }
             set
             {
-                _clientApplicationNameProvider = value;
+                _clientApplicationNameResolver = value;
             }
         }
 

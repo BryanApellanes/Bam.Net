@@ -56,13 +56,6 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
                 return new ClientServerConnectionColumns("ServerId");
             }
         }
-        public ClientServerConnectionColumns Created
-        {
-            get
-            {
-                return new ClientServerConnectionColumns("Created");
-            }
-        }
         public ClientServerConnectionColumns CreatedBy
         {
             get
@@ -89,6 +82,13 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
             get
             {
                 return new ClientServerConnectionColumns("Deleted");
+            }
+        }
+        public ClientServerConnectionColumns Created
+        {
+            get
+            {
+                return new ClientServerConnectionColumns("Created");
             }
         }
 

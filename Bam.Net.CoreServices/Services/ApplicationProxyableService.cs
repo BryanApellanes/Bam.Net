@@ -24,6 +24,7 @@ namespace Bam.Net.CoreServices
         { }
 
         public ApplicationRegistrationRepository ApplicationRegistrationRepository { get; set; }
+
         public IApplicationNameProvider ApplicationNameProvider { get; set; }
         public string ServerApplicationName
         {
@@ -132,6 +133,7 @@ namespace Bam.Net.CoreServices
                 {
                     Authorized = true,
                     DomainName = host,
+                    DefaultApplicationName = app.Name,
                     Port = port
                 };
                 app.HostDomains.Add(hd);

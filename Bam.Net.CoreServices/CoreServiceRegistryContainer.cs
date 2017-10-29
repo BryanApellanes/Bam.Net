@@ -109,6 +109,8 @@ namespace Bam.Net.CoreServices
                 .For<ILog>().Use(loggerSvc)
                 .For<CoreLoggerService>().Use(loggerSvc)
                 .For<DataSettings>().Use(DataSettings.Default)
+                .For<IApplicationNameResolver>().Use<ClientApplicationNameResolver>()
+                .For<ClientApplicationNameResolver>().Use<ClientApplicationNameResolver>()
                 .For<CoreNotificationService>().Use<CoreNotificationService>();
 
             reg.SetProperties(userMgr);

@@ -56,13 +56,6 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
                 return new MachineColumns("DnsName");
             }
         }
-        public MachineColumns Created
-        {
-            get
-            {
-                return new MachineColumns("Created");
-            }
-        }
         public MachineColumns CreatedBy
         {
             get
@@ -89,6 +82,13 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
             get
             {
                 return new MachineColumns("Deleted");
+            }
+        }
+        public MachineColumns Created
+        {
+            get
+            {
+                return new MachineColumns("Created");
             }
         }
 

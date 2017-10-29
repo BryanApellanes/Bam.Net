@@ -42,6 +42,13 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
                 return new HostDomainColumns("Cuid");
             }
         }
+        public HostDomainColumns DefaultApplicationName
+        {
+            get
+            {
+                return new HostDomainColumns("DefaultApplicationName");
+            }
+        }
         public HostDomainColumns DomainName
         {
             get
@@ -49,18 +56,18 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
                 return new HostDomainColumns("DomainName");
             }
         }
+        public HostDomainColumns Port
+        {
+            get
+            {
+                return new HostDomainColumns("Port");
+            }
+        }
         public HostDomainColumns Authorized
         {
             get
             {
                 return new HostDomainColumns("Authorized");
-            }
-        }
-        public HostDomainColumns Created
-        {
-            get
-            {
-                return new HostDomainColumns("Created");
             }
         }
         public HostDomainColumns CreatedBy
@@ -89,6 +96,13 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
             get
             {
                 return new HostDomainColumns("Deleted");
+            }
+        }
+        public HostDomainColumns Created
+        {
+            get
+            {
+                return new HostDomainColumns("Created");
             }
         }
 

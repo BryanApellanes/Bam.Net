@@ -56,13 +56,6 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
                 return new ActiveApiKeyIndexColumns("Value");
             }
         }
-        public ActiveApiKeyIndexColumns Created
-        {
-            get
-            {
-                return new ActiveApiKeyIndexColumns("Created");
-            }
-        }
         public ActiveApiKeyIndexColumns CreatedBy
         {
             get
@@ -89,6 +82,13 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
             get
             {
                 return new ActiveApiKeyIndexColumns("Deleted");
+            }
+        }
+        public ActiveApiKeyIndexColumns Created
+        {
+            get
+            {
+                return new ActiveApiKeyIndexColumns("Created");
             }
         }
 

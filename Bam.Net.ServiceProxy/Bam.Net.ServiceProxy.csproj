@@ -124,7 +124,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationNameResolver.cs" />
+    <Compile Include="RequestHeaderApplicationNameResolver.cs" />
     <Compile Include="IApplicationNameResolver.cs" />
     <Compile Include="SecureChannelInvokeException.cs" />
     <Compile Include="RequestFilterAttribute.cs" />

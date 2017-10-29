@@ -10,9 +10,10 @@ namespace Bam.Net.CoreServices.ApplicationRegistration
     [Serializable]
     public class Application: AuditRepoData
     {
-        public long OrganizationId { get; set; }
-        public virtual Organization Organization { get; set; }
         public string Name { get; set; }
+        public string Description { get; set; }
+        public long OrganizationId { get; set; }
+        public virtual Organization Organization { get; set; }        
         public virtual List<HostDomain> HostDomains { get; set; }
         public virtual List<Machine> Machines { get; set; }
         public virtual List<ApiKey> ApiKeys { get; set; }

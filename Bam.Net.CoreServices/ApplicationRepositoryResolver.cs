@@ -25,7 +25,7 @@ namespace Bam.Net.CoreServices
 
         public ILogger Logger { get; set; }
         public DataSettings DataSettings { get; set; }
-        public ApplicationNameResolver ApplicationNameResolver { get; set; }
+        public IApplicationNameResolver ApplicationNameResolver { get; set; }
         public Func<IHttpContext, IRepository> GetRepositoryFunc { get; set; }
         public override IRepository GetRepository(IHttpContext context)
         {
