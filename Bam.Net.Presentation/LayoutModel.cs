@@ -47,7 +47,20 @@ namespace Bam.Net.Presentation
         /// <summary>
         /// Used to sanitize the app name
         /// </summary>
-        public string DomApplicationId { get; set; }
+        public string DomApplicationId
+        {
+            get
+            {
+                string[] split = ApplicationName.DelimitSplit(".");
+                string result = split[0];
+                if (split.Length == 3)
+                {
+                    result = split[1];
+                }
+                
+                return result;
+            }
+        }
 
         public string Year
         {
