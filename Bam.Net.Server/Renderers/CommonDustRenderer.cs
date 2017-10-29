@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.IO;
 using Bam.Net.Logging;
+using Bam.Net.Presentation;
 
 namespace Bam.Net.Server.Renderers
 {
@@ -37,6 +38,14 @@ namespace Bam.Net.Server.Renderers
             }
         }
 
+        public string ContentRoot
+        {
+            get
+            {
+                return ContentResponder.Root;
+            }
+        }
+
         string _compiledDustTemplates;
         object _compiledDustTemplatesLock = new object();
         /// <summary>
@@ -50,7 +59,7 @@ namespace Bam.Net.Server.Renderers
                 return _compiledDustTemplatesLock.DoubleCheckLock(ref _compiledDustTemplates, () =>
                 {
                     StringBuilder templates = new StringBuilder();
-                    DirectoryInfo commonDust = new DirectoryInfo(Path.Combine(ContentResponder.Root, "common", "views"));
+                    DirectoryInfo commonDust = new DirectoryInfo(Path.Combine(ContentRoot, "common", "views"));
 
                     string commonCompiledTemplates = DustScript.CompileDirectory(commonDust, "*.dust");
                     
@@ -73,7 +82,7 @@ namespace Bam.Net.Server.Renderers
                 return _compiledLayoutTemplatesLock.DoubleCheckLock(ref _compiledLayoutTemplates, () =>
                 {
                     StringBuilder templates = new StringBuilder();
-                    DirectoryInfo layouts = new DirectoryInfo(Path.Combine(ContentResponder.Root, "common", "views", "layouts"));
+                    DirectoryInfo layouts = new DirectoryInfo(Path.Combine(ContentRoot, "common", "views", "layouts"));
                     string compiledLayouts = DustScript.CompileDirectory(layouts.FullName, "*.dust", Logger);
                     templates.Append(compiledLayouts);
                     return templates.ToString();
@@ -94,7 +103,7 @@ namespace Bam.Net.Server.Renderers
                 return _compiledCommonTemplatesLock.DoubleCheckLock(ref _compiledCommonTemplates, () =>
                 {
                     StringBuilder templates = new StringBuilder();
-                    DirectoryInfo common = new DirectoryInfo(Path.Combine(ContentResponder.Root, "common", "views"));
+                    DirectoryInfo common = new DirectoryInfo(Path.Combine(ContentRoot, "common", "views"));
 
                     string compiledCommon = DustScript.CompileDirectory(common.FullName, "*.dust", Logger);
 

@@ -22,10 +22,11 @@ namespace Bam.Net.Server
         Dictionary<string, string> _contentTypes;        
         public Responder(BamConf conf)
         {
-            this.BamConf = conf;
-            this.Logger = Log.Default;
+            BamConf = conf;
+            Logger = Log.Default;
+            UriApplicationNameResolver = new UriApplicationNameResolver(conf);
 
-            this._contentTypes = new Dictionary<string, string>
+            _contentTypes = new Dictionary<string, string>
             {
                 { ".json", "application/json" },
                 { ".js", "application/javascript" },
@@ -35,10 +36,10 @@ namespace Bam.Net.Server
                 { ".png", "image/png" },
                 { ".html", "text/html" }
             };
-            this._respondToPrefixes = new List<string>();
-            this._ignorePrefixes = new List<string>();
+            _respondToPrefixes = new List<string>();
+            _ignorePrefixes = new List<string>();
 
-            this.AddRespondToPrefix(ResponderSignificantName);
+            AddRespondToPrefix(ResponderSignificantName);
         }
 
         public Responder(BamConf conf, ILogger logger)
@@ -73,6 +74,8 @@ namespace Bam.Net.Server
             get;
             protected set;
         }
+
+        public UriApplicationNameResolver UriApplicationNameResolver { get; set; }
 
         /// <summary>
         /// The event that fires when a response is sent

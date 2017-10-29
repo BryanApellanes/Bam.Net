@@ -13,6 +13,7 @@ using Bam.Net.ServiceProxy;
 using Bam.Net.UserAccounts;
 using Bam.Net.UserAccounts.Data;
 using Yahoo.Yui.Compressor;
+using Bam.Net.Presentation;
 
 namespace Bam.Net.Server
 {

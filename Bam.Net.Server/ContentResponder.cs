@@ -408,7 +408,7 @@ namespace Bam.Net.Server
             string commonPath = Path.Combine("/common", path.TruncateFront(1));
 
             byte[] content = new byte[] { };
-            string appName = AppConf.AppNameFromUri(request.Url, BamConf.AppConfigs);
+            string appName = UriApplicationNameResolver.ResolveApplicationName(request.Url, BamConf.AppConfigs);
             string[] checkedPaths = new string[] { };
             if (AppContentResponders.ContainsKey(appName))
             {

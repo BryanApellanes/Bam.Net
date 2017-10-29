@@ -194,8 +194,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Renderers\HtmlRenderer.cs" />
-    <Compile Include="Renderers\IRenderer.cs" />
-    <Compile Include="LayoutModel.cs" />
     <Compile Include="BamConf.cs" />
     <Compile Include="ConfFormat.cs" />
     <Compile Include="ContentResponder.cs" />
@@ -221,6 +219,7 @@
     <Compile Include="DaoResponder.cs" />
     <Compile Include="TcpContext.cs" />
     <Compile Include="TemplateInitializerBase.cs" />
+    <Compile Include="UriApplicationNameResolver.cs" />
     <Compile Include="WebBook.cs" />
     <Compile Include="WebBookEventArgs.cs" />
     <Compile Include="WebBookInitializer.cs" />

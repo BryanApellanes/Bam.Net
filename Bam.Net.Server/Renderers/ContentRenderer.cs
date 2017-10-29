@@ -24,7 +24,6 @@ namespace Bam.Net.Server.Renderers
             this.ContentResponder = content;
         }
 
-
         protected ExecutionRequest ExecutionRequest
         {
             get;

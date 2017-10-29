@@ -20,6 +20,7 @@ using Bam.Net.Presentation.Html;
 using Bam.Net.Configuration;
 using System.Web.Mvc;
 using System.Threading.Tasks;
+using Bam.Net.Presentation;
 
 namespace Bam.Net.Server
 {
@@ -473,7 +474,7 @@ namespace Bam.Net.Server
             {
                 RequestWrapper request = context.Request as RequestWrapper;
                 ResponseWrapper response = context.Response as ResponseWrapper;
-                string appName = AppConf.AppNameFromUri(request.Url, BamConf.AppConfigs);
+                string appName = UriApplicationNameResolver.ResolveApplicationName(request.Url, BamConf.AppConfigs);
 
                 bool responded = false;
 
@@ -524,7 +525,7 @@ namespace Bam.Net.Server
         {
             bool result = false;
             IRequest request = context.Request;
-            string appName = AppConf.AppNameFromUri(request.Url, BamConf.AppConfigs);
+            string appName = UriApplicationNameResolver.ResolveApplicationName(request.Url, BamConf.AppConfigs);
             string path = request.Url.AbsolutePath;
             string prefix = MethodFormPrefixFormat._Format(ResponderSignificantName.ToLowerInvariant());
             string partsICareAbout = path.TruncateFront(prefix.Length);
@@ -719,7 +720,7 @@ namespace Bam.Net.Server
             bool result = false;
             IRequest request = context.Request;
             string path = request.Url.AbsolutePath.ToLowerInvariant();
-            string appName = AppConf.AppNameFromUri(request.Url, BamConf.AppConfigs);
+            string appName = UriApplicationNameResolver.ResolveApplicationName(request.Url, BamConf.AppConfigs);
             bool includeLocalMethods = request.UserHostAddress.StartsWith("127.0.0.1");
             string[] split = path.DelimitSplit("/", ".");
 
@@ -744,7 +745,7 @@ namespace Bam.Net.Server
 
         protected void SendCsProxyCode(IRequest request, IResponse response)
         {
-            string appName = AppConf.AppNameFromUri(request.Url, BamConf.AppConfigs);
+            string appName = UriApplicationNameResolver.ResolveApplicationName(request.Url, BamConf.AppConfigs);
             string defaultBaseAddress = ServiceProxySystem.GetBaseAddress(request.Url);
             string nameSpace = request.QueryString["namespace"] ?? "ServiceProxyClients";
             string contractNameSpace = "{0}.Contracts"._Format(nameSpace);
