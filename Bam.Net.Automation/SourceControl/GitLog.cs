@@ -133,7 +133,7 @@ namespace Bam.Net.Automation.SourceControl
                     result.Append(", ");
                 }
                 GitOption option = propInfo.GetCustomAttributeOfType<GitOption>();
-                result.AppendFormat("\\\"{0}\\\": \\\"{1}\\\"", propInfo.Name, option.Value.ToJson());
+                result.AppendFormat("\\\"{0}\\\": \\\"{1}\\\"", propInfo.Name, option.Value.Replace("\"", "'").ToJson());
                 first = false;
             });
             result.Append("}\"");

@@ -30,8 +30,7 @@ namespace Bam.Net.CoreServices
         public string AssemblyDirectory { get; set; }
         public IFileService FileService { get; set; }
         public Repo.AssemblyServiceRepository AssemblyManagementRepository { get; set; }
-        public IApplicationNameProvider ApplicationNameProvider { get; set; }
-        
+        public IApplicationNameProvider ApplicationNameProvider { get; set; }        
 
         public Assembly ResolveAssembly(string assemblyName, string assemblyDirectory = null)
         {
