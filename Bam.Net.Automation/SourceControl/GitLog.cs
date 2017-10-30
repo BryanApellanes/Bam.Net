@@ -35,7 +35,7 @@ namespace Bam.Net.Automation.SourceControl
         [GitOption("%ae", "Author email")]
         public string AuthorEmail { get; set; }
 
-        [GitOption("%ad", "Author date (format respects the --date=option)")]
+        [GitOption("%ad", "Author date ~ format respects the --date=option")]
         public string AuthorDate { get; set; }
 
         [GitOption("%ar", "Author date, relative")]
@@ -53,7 +53,7 @@ namespace Bam.Net.Automation.SourceControl
         [GitOption("%cr", "Committer date, relative")]
         public string CommitterDateRelative { get; set; }
 
-        [GitOption("%s", "(Subject) commit message")]
+        [GitOption("%s", "Subject ~ commit message")]
         public string Subject { get; set; }
 
         public override int GetHashCode()
@@ -111,7 +111,13 @@ namespace Bam.Net.Automation.SourceControl
             string command = $"git --no-pager log --pretty=format:{GetPrettyFormatArg()} {commitIdentifier}..{toCommit}";            
             HashSet<GitLog> results = new HashSet<GitLog>();            
             ProcessOutput output = command.Run();
-            output.StandardOutput.DelimitSplit("\r", "\n").Each(log => results.Add(log.FromJson<GitLog>()));            
+            int num = 0;
+            output.StandardOutput.DelimitSplit("\r", "\n").Each(log => 
+            {
+                log.SafeWriteToFile($".\\gitlog_{++num}.txt");
+                results.Add(log.FromJson<GitLog>());
+            });
+
             return results;
         }
 

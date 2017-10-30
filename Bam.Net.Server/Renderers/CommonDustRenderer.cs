@@ -125,7 +125,7 @@ namespace Bam.Net.Server.Renderers
             Render(toRender.GetType().Name, toRender, output);
         }
 
-        public virtual void Render(string templateName, object toRender, Stream output)
+        public override void Render(string templateName, object toRender, Stream output)
         {
             string result = DustScript.Render(CompiledTemplates, templateName, toRender);
 
@@ -134,7 +134,7 @@ namespace Bam.Net.Server.Renderers
         }
 
 		/// <summary>
-		/// Render the specified LayoutModel to the specifie output Stream
+		/// Render the specified LayoutModel to the specified output Stream
 		/// </summary>
 		/// <param name="toRender"></param>
 		/// <param name="output"></param>

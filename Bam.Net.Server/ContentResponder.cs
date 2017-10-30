@@ -417,9 +417,8 @@ namespace Bam.Net.Server
 
             if (!handled && !ShouldIgnore(path))
             {
-                string readFileFromPath;
                 bool exists;
-                exists = ServerRoot.FileExists(path, out readFileFromPath);
+                exists = ServerRoot.FileExists(path, out string readFileFromPath);
                 if (!exists)
                 {
                     exists = ServerRoot.FileExists(commonPath, out readFileFromPath);
