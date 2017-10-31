@@ -15,6 +15,7 @@ namespace Bam.Net.CoreServices
     /// Service responsible for saving assemblies, especially those that are dynamically
     /// generated, and making them available to consuming processes.  
     /// </summary>
+    [Proxy("assemblySvc")]
     public class CoreAssemblyService : ApplicationProxyableService, IAssemblyService
     {
         public CoreAssemblyService(IFileService fileService, Repo.AssemblyServiceRepository repo, IApplicationNameProvider appNameProvider)

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <id>Bam.Net.Html</id>
+    <id>Bam.Net.Presentation</id>
     <version>1.8.2</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
@@ -9,7 +9,7 @@
     <projectUrl>http://bryanapellanes.github.io/Bam.Net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>
-		Fluent extensions to TagBuilder
+		View layer for Bam.Net
     </description>
     <releaseNotes>Version 1.8.2
 </releaseNotes>
