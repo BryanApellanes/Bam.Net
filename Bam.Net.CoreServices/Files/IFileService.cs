@@ -30,7 +30,7 @@ namespace Bam.Net.CoreServices.Files
         ChunkedFileDescriptor SaveFileDescriptor(ChunkedFileDescriptor fileDescriptor);
         ChunkedFileDescriptor StoreFileChunksInRepo(FileInfo file, string description = null);
         void WriteFileHashToStream(string fileHash, Stream fs);
-        FileInfo WriteFileToDirectory(string fileNameOrHash, string directoryPath);
+        FileInfo WriteFileDataToDirectory(string fileNameOrHash, string directoryPath);
         void WriteFileToStream(string fileNameOrHash, Stream stream);
         IEnumerable<FileChunk> YieldFileChunks(string fileHash, int fromIndex, int batchSize);
     }

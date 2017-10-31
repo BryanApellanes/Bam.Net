@@ -7,24 +7,31 @@ using Bam.Net.Logging;
 using Repo = Bam.Net.CoreServices.AssemblyManagement.Data.Dao.Repository;
 using Bam.Net.CoreServices.Files;
 using Bam.Net.CoreServices.AssemblyManagement.Data;
+using System.Collections.Generic;
 
 namespace Bam.Net.CoreServices
 {
     /// <summary>
     /// Service responsible for saving assemblies, especially those that are dynamically
-    /// generated, and making them available to consuming processes.  This service is not
-    /// proxyable but can use a proxyable implementation of IFileService.
+    /// generated, and making them available to consuming processes.  
     /// </summary>
-    public class AssemblyService : Loggable, IAssemblyService // doesn't need to be remote accessible, can use FileService which can be
+    public class CoreAssemblyService : ApplicationProxyableService, IAssemblyService
     {
-        public AssemblyService(IFileService fileService, Repo.AssemblyServiceRepository repo, IApplicationNameProvider appNameProvider)
+        public CoreAssemblyService(IFileService fileService, Repo.AssemblyServiceRepository repo, IApplicationNameProvider appNameProvider)
         {
             FileService = fileService;
             AssemblyManagementRepository = repo;
             ApplicationNameProvider = appNameProvider;
-            LoadCurrentRuntimeDescriptorTask = LoadCurrentRuntimeDescriptor();
+            LoadCurrentRuntimeDescriptorTask = RegisterCurrentRuntimeDescriptor();
         }
 
+        public override object Clone()
+        {
+            CoreAssemblyService result = new CoreAssemblyService(FileService, AssemblyManagementRepository, ApplicationNameProvider);
+            result.CopyProperties(this);
+            result.CopyEventHandlers(this);
+            return result;
+        }
         public event EventHandler CurrentRuntimePersisted;
         public event EventHandler RuntimeRestored;
         public string AssemblyDirectory { get; set; }
@@ -32,17 +39,24 @@ namespace Bam.Net.CoreServices
         public Repo.AssemblyServiceRepository AssemblyManagementRepository { get; set; }
         public IApplicationNameProvider ApplicationNameProvider { get; set; }        
 
+        public virtual List<AssemblyDescriptor> GetDescriptors(string assemblyFulName)
+        {
+            return AssemblyManagementRepository.AssemblyDescriptorsWhere(ad => ad.AssemblyFullName == assemblyFulName).ToList();
+        }
+
+        [Local]
         public Assembly ResolveAssembly(string assemblyName, string assemblyDirectory = null)
         {
             Assembly assembly = Assembly.Load(assemblyName);
             if(assembly == null)
             {
-                FileInfo file = FileService.WriteFileToDirectory(assemblyName, assemblyDirectory ?? AssemblyDirectory);
+                FileInfo file = FileService.WriteFileDataToDirectory(assemblyName, assemblyDirectory ?? AssemblyDirectory);
                 assembly = Assembly.LoadFrom(file.FullName);
             }
             return assembly;
         }
 
+        [Local]
         public void RestoreApplicationRuntime(string applicationName, string directoryPath)
         {
             ProcessRuntimeDescriptor prd = ProcessRuntimeDescriptor.LoadByAppName(applicationName, AssemblyManagementRepository);
@@ -68,28 +82,6 @@ namespace Bam.Net.CoreServices
             {
                 _current = value;
             }
-        }
-
-        protected internal Task<ProcessRuntimeDescriptor> LoadCurrentRuntimeDescriptorTask { get;  }
-        /// <summary>
-        /// Loads the current ProcessRuntimeDescriptor persisting it 
-        /// if it isn't found
-        /// </summary>
-        /// <returns></returns>
-        protected internal Task<ProcessRuntimeDescriptor> LoadCurrentRuntimeDescriptor()
-        {
-            return Task.Run(() =>
-            {
-                ProcessRuntimeDescriptor current = ProcessRuntimeDescriptor.GetCurrent();
-                ProcessRuntimeDescriptor retrieved = LoadRuntimeDescriptor(current);
-
-                if (retrieved == null)
-                {
-                    retrieved = PersistRuntimeDescriptor(current);
-                }
-
-                return retrieved;
-            });
         }
 
         public ProcessRuntimeDescriptor PersistRuntimeDescriptor(ProcessRuntimeDescriptor runtimeDescriptor)
@@ -120,6 +112,28 @@ namespace Bam.Net.CoreServices
                             c.MachineName == machineName &&
                             c.ApplicationName == applicationName)
                         .FirstOrDefault();
+        }
+
+        protected internal Task<ProcessRuntimeDescriptor> LoadCurrentRuntimeDescriptorTask { get; }
+        /// <summary>
+        /// Loads the current ProcessRuntimeDescriptor persisting it 
+        /// if it isn't found
+        /// </summary>
+        /// <returns></returns>
+        protected internal Task<ProcessRuntimeDescriptor> RegisterCurrentRuntimeDescriptor()
+        {
+            return Task.Run(() =>
+            {
+                ProcessRuntimeDescriptor current = ProcessRuntimeDescriptor.GetCurrent();
+                ProcessRuntimeDescriptor retrieved = LoadRuntimeDescriptor(current);
+
+                if (retrieved == null)
+                {
+                    retrieved = PersistRuntimeDescriptor(current);
+                }
+
+                return retrieved;
+            });
         }
 
         protected void RestoreProcessRuntime(ProcessRuntimeDescriptor prd, string directoryPath)

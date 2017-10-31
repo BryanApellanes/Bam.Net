@@ -67,7 +67,7 @@
     <Compile Include="ApplicationManager.cs" />
     <Compile Include="ApplicationDataManager.cs" />
     <Compile Include="CoreClient.cs" />
-    <Compile Include="CoreFileClient.cs" />
+    <Compile Include="CoreAssemblyClient.cs" />
     <Compile Include="CoreLoggerClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

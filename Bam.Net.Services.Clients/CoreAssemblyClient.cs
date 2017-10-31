@@ -8,16 +8,28 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Services.Clients
 {
-    public class CoreFileClient
+    public class CoreAssemblyClient
     {
-        CoreFileService _fileService;
+        CoreAssemblyService _fileService;
         ProxyFactory _proxyFactory;
-        public CoreFileClient(string hostName, int port, ILogger logger = null)
+        public CoreAssemblyClient(ILogger logger = null) : this("bamapps.net", 80, logger)
+        { }
+
+        public CoreAssemblyClient(string hostName, int port, ILogger logger = null)
         {
             _proxyFactory = new ProxyFactory(logger);
-            _fileService = _proxyFactory.GetProxy<CoreFileService>(hostName, port);
+            _fileService = _proxyFactory.GetProxy<CoreAssemblyService>(hostName, port);
         }
 
+        static CoreAssemblyClient()
+        {
+            Resolver.AssemblyResolver = (rea) =>
+            {
+                // get the assembly descriptor for the requesting assembly
+                // 
+                return null;
+            };
+        }
         // Resolver.AssemblyResolver
         //
         // resolve assembly passes the assembly.fullname

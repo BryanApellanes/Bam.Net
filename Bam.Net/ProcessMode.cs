@@ -26,7 +26,7 @@ namespace Bam.Net
         {
             Current = FromConfig;
         }
-        public ProcessModes Value { get; set; }
+        public ProcessModes Mode { get; set; }
         public static ProcessMode Default
         {
             get { return Dev; }
@@ -45,28 +45,28 @@ namespace Bam.Net
             get;
             set;
         }
-        public static ProcessMode Dev { get { return new ProcessMode { Value = ProcessModes.Dev }; } }
-        public static ProcessMode Test { get { return new ProcessMode { Value = ProcessModes.Test }; } }
-        public static ProcessMode Prod { get { return new ProcessMode { Value = ProcessModes.Prod }; } }
+        public static ProcessMode Dev { get { return new ProcessMode { Mode = ProcessModes.Dev }; } }
+        public static ProcessMode Test { get { return new ProcessMode { Mode = ProcessModes.Test }; } }
+        public static ProcessMode Prod { get { return new ProcessMode { Mode = ProcessModes.Prod }; } }
         public static ProcessMode FromString(string value)
         {
-            return new ProcessMode { Value = (ProcessModes)Enum.Parse(typeof(ProcessModes), value) };
+            return new ProcessMode { Mode = (ProcessModes)Enum.Parse(typeof(ProcessModes), value) };
         }
         public override int GetHashCode()
         {
-            return Value.GetHashCode();
+            return Mode.GetHashCode();
         }
         public override bool Equals(object obj)
         {
             if(obj is ProcessMode mode)
             {
-                return mode.Value.Equals(Value);
+                return mode.Mode.Equals(Mode);
             }
             return false;
         }
         public override string ToString()
         {
-            return Value.ToString();
+            return Mode.ToString();
         }
     }
 }

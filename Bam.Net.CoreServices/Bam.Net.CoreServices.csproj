@@ -250,7 +250,7 @@
     <Compile Include="ProxySettingsInfo.cs" />
     <Compile Include="ServiceConfig.cs" />
     <Compile Include="ApplicationConfiguration.cs" />
-    <Compile Include="AssemblyManagement\AssemblyService.cs" />
+    <Compile Include="AssemblyManagement\CoreAssemblyService.cs" />
     <Compile Include="AssemblyManagement\Data\AssemblyDescriptor.cs" />
     <Compile Include="AssemblyManagement\Data\AssemblyReferenceDescriptor.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptor.cs" />

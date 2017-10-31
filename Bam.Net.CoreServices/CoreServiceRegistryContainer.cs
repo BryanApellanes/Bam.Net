@@ -102,7 +102,7 @@ namespace Bam.Net.CoreServices
                 .For<CoreFileService>().Use<CoreFileService>()
                 .For<IFileService>().Use<CoreFileService>()
                 .For<AssemblyServiceRepository>().Use(assSvcRepo)
-                .For<IAssemblyService>().Use<AssemblyService>()
+                .For<IAssemblyService>().Use<CoreAssemblyService>()
                 .For<ServiceRegistryRepository>().Use<ServiceRegistryRepository>()
                 .For<CoreServiceRegistrationService>().Use<CoreServiceRegistrationService>()
                 .For<CoreOAuthService>().Use<CoreOAuthService>()
