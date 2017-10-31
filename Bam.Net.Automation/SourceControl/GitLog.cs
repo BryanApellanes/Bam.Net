@@ -114,7 +114,7 @@ namespace Bam.Net.Automation.SourceControl
             int num = 0;
             output.StandardOutput.DelimitSplit("\r", "\n").Each(log => 
             {
-                string line = ReplaceQuotes(log, "$$~", "~$$");
+                string line = log.DelimitedReplace("\"", "\'");
                 line.SafeWriteToFile($".\\gitlog_{++num}.txt");
                 results.Add(line.FromJson<GitLog>());
             });
@@ -138,47 +138,6 @@ namespace Bam.Net.Automation.SourceControl
                 first = false;
             });
             result.Append("}\"");
-            return result.ToString();
-        }
-
-        private static string ReplaceQuotes(string input, string startDelimiter, string endDelimiter)
-        {
-            StringBuilder result = new StringBuilder();
-            StringBuilder innerValue = new StringBuilder();
-            bool replacing = false;
-            foreach (char c in input)
-            {
-                if (replacing)
-                {
-                    if (c.Equals('"'))
-                    {
-                        innerValue.Append('\'');
-                    }
-                    else
-                    {
-                        innerValue.Append(c);
-                    }
-
-                    if (innerValue.ToString().EndsWith(endDelimiter))
-                    {
-                        replacing = false;
-                        result.Append(innerValue.ToString().Truncate(3));
-                    }
-                }
-                else
-                {
-                    result.Append(c);
-                    string soFar = result.ToString();
-                    if (soFar.EndsWith(startDelimiter))
-                    {
-                        replacing = true;
-                        StringBuilder tmp = new StringBuilder();
-                        tmp.Append(result.ToString().Truncate(3));
-                        result = tmp;
-                    }
-                }
-            }
-
             return result.ToString();
         }
 

@@ -67,5 +67,21 @@ namespace Bam.Net.Tests
             Expect.AreEqual(expected, value4.CaseAcronym(false));
             Expect.IsFalse(expected.Equals(value4.CaseAcronym()));
         }
+
+        [UnitTest]
+        public void ShouldDelimitReplace()
+        {
+            string input = "{ some kind of \" value \" baloney, $$~Do replace in \"Here\" yay ~$$good";
+            string shouldBe = "{ some kind of \" value \" baloney, Do replace in 'Here' yay good";
+            Expect.AreEqual(shouldBe, input.DelimitedReplace("\"", "'"));
+        }
+
+        [UnitTest]
+        public void ShouldDelimitReplaceWithDelimiters()
+        {
+            string input = "{ some kind@ of \" value \" baloney, $$~Do replace in \"Here\" /@yay ~$$good";
+            string shouldBe = "{ some kind of \" value \" banana, $$~Do replace in \"Here\" yay ~$$good";
+            Expect.AreEqual(shouldBe, input.DelimitedReplace("baloney", "banana", "@", "/@"));
+        }
     }
 }

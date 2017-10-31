@@ -3028,6 +3028,48 @@ namespace Bam.Net
             return DelimitSplit(valueToSplit, new string[] { delimiter }, trimValues);
         }
 
+        public static string DelimitedReplace(this string input, string toReplace, string replaceWith, string startDelimiter = "$$~", string endDelimiter = "~$$")
+        {
+            StringBuilder result = new StringBuilder();
+            StringBuilder innerValue = new StringBuilder();
+            bool replacing = false;
+            foreach (char c in input)
+            {
+                if (replacing)
+                {
+                    innerValue.Append(c);
+                    string innerSoFar = innerValue.ToString();
+                    if (innerSoFar.EndsWith(toReplace))
+                    {
+                        StringBuilder tmp = new StringBuilder();
+                        tmp.Append(innerSoFar.Truncate(toReplace.Length));
+                        tmp.Append(replaceWith);
+                        innerValue = tmp;
+                    }
+
+                    if (innerValue.ToString().EndsWith(endDelimiter))
+                    {
+                        replacing = false;
+                        result.Append(innerValue.ToString().Truncate(endDelimiter.Length));
+                    }
+                }
+                else
+                {
+                    result.Append(c);
+                    string soFar = result.ToString();
+                    if (soFar.EndsWith(startDelimiter))
+                    {
+                        replacing = true;
+                        StringBuilder tmp = new StringBuilder();
+                        tmp.Append(result.ToString().Truncate(startDelimiter.Length));
+                        result = tmp;
+                    }
+                }
+            }
+
+            return result.ToString();
+        }
+
         /// <summary>
         /// Split the string on the specified delimiters removing empty entries
         /// and optionally trimming each value
