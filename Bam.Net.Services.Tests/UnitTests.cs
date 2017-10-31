@@ -18,6 +18,36 @@ namespace Bam.Net.Services.Tests
     public partial class UnitTests : CommandLineTestInterface
     {
         [UnitTest]
+        public void FixedFieldRenderTest()
+        {
+            OpenApiFixedFieldModel model = new OpenApiFixedFieldModel
+            {
+                FieldName = "_malarkey",
+                
+                Type = "object"
+            };
+
+            OpenApiFixedFieldModel model2 = new OpenApiFixedFieldModel
+            {
+                FieldName = "_malarkey2",
+                
+                Type = "string"
+            };
+
+            OpenApiObjectDescriptorModel objModel = new OpenApiObjectDescriptorModel
+            {
+                Namespace = "Test.This.Out",
+                ObjectName = "TheObjectName",
+                ObjectDescription = "This is a comprehensive description",
+                FixedFields = new List<OpenApiFixedFieldModel>
+                {
+                    model,
+                    model2
+                }
+            };
+            OutLine(objModel.Render());
+        }
+        [UnitTest]
         public void OpenApiDatabaseHasData()
         {
             OpenApiObjectDatabase db = new OpenApiObjectDatabase();

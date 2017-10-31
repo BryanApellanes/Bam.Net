@@ -1,0 +1,16 @@
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
+
+namespace @Model.Namespace
+{
+    /// <summary>
+    /// @Model.FormattedDescription
+    /// </summary>
+	public class @Model.ObjectName
+	{	
+		@foreach(Bam.Net.Services.OpenApi.OpenApiFixedFieldModel fixedField in Model.FixedFields)
+		{
+			WriteFixedField(fixedField);
+		}
+	}
+}

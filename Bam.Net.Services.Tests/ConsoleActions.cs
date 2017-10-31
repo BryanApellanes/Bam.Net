@@ -19,6 +19,27 @@ namespace Bam.Net.Services.Tests
     public class ConsoleActions : CommandLineTestInterface
     {
         [ConsoleAction]
+        public void GenerateOpenApiObjects()
+        {
+            OpenApiObjectDatabase db = new OpenApiObjectDatabase();
+            ObjectDescriptorCollection allObjectDescriptors = ObjectDescriptor.LoadAll(db);
+            string nameSpace = "Bam.Net.Services.OpenApi.Objects";
+            foreach (ObjectDescriptor objectDescriptor in allObjectDescriptors)
+            {
+                List<OpenApiFixedFieldModel> fields = objectDescriptor.FixedFieldsByObjectDescriptorId.Select(ff => new OpenApiFixedFieldModel { FieldName = ff.FieldName.Trim(), Type = ff.Type.Trim(), Description = ff.Description.Trim() }).ToList();
+                
+                OpenApiObjectDescriptorModel model = new OpenApiObjectDescriptorModel
+                {
+                    Namespace = nameSpace,
+                    ObjectName = objectDescriptor.Name,
+                    ObjectDescription = objectDescriptor.Description,
+                    FixedFields = fields
+                };
+                model.Render().SafeWriteToFile(string.Format("C:\\src\\Bam.Net\\Bam.Net.Services\\OpenApi\\Objects\\{0}.cs", model.ObjectName));
+            }
+        }
+
+        [ConsoleAction]
         public void CanSerializeAndDeserializeDataPropertyList()
         {
             DataPropertyCollection list = new DataPropertyCollection();
