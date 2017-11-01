@@ -543,9 +543,9 @@
             against all the files found in ~s:/dust/layouts.
             </summary>
         </member>
-        <member name="M:Bam.Net.Server.Renderers.CommonDustRenderer.RenderLayout(Bam.Net.Server.LayoutModel,System.IO.Stream)">
+        <member name="M:Bam.Net.Server.Renderers.CommonDustRenderer.RenderLayout(Bam.Net.Presentation.LayoutModel,System.IO.Stream)">
             <summary>
-            Render the specified LayoutModel to the specifie output Stream
+            Render the specified LayoutModel to the specified output Stream
             </summary>
             <param name="toRender"></param>
             <param name="output"></param>
@@ -778,20 +778,9 @@
             Required for deserialization
             </summary>
         </member>
-        <member name="T:Bam.Net.Server.LayoutModel">
-            <summary>
-            Model used to write the default application layout
-            for an application
-            </summary>
-        </member>
-        <member name="P:Bam.Net.Server.LayoutModel.DomApplicationId">
-            <summary>
-            Used to sanitize the app name
-            </summary>
-        </member>
         <member name="T:Bam.Net.Server.BamConf">
             <summary>
-            Configuratoin for the BamServer
+            Configuration for the BamServer
             </summary>
         </member>
         <member name="F:Bam.Net.Server.BamConf.ContentRootConfigKey">

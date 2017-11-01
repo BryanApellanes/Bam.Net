@@ -1144,6 +1144,14 @@
             <param name="thread"></param>
             <returns></returns>
         </member>
+        <member name="T:Bam.Net.ProcessMode">
+            <summary>
+            Represents the mode that the current process is
+            in.  Intended primarily to determine where to
+            save and retrieve data from but can be used
+            to pivot other configuration values as well
+            </summary>
+        </member>
         <member name="P:Bam.Net.Razor.RazorBaseTemplate.DefaultInspector">
             <summary>
             The default Action that will be given razor parse results; primarily for
@@ -1177,8 +1185,10 @@
             Executes the specified input and returns the resulting output
             </summary>
             <param name="input"></param>
+            <param name="hashKey"></param>
             <param name="options">Arguments to pass to the template engine including the Model</param>
             <param name="inspector"></param>
+            <param name="assembliesToReference"></param>
             <returns></returns>
         </member>
         <member name="M:Bam.Net.Razor.RazorRenderer.RenderResource``1(``0,System.String,System.Collections.Generic.IEnumerable{System.Reflection.Assembly})">

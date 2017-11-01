@@ -4,6 +4,12 @@
         <name>Bam.Net.ServiceProxy</name>
     </assembly>
     <members>
+        <member name="T:Bam.Net.ServiceProxy.RequestHeaderApplicationNameResolver">
+            <summary>
+            IApplicationNameResolver implementation that reads the application name
+            from the X-Bam-AppName header if it exists
+            </summary>
+        </member>
         <member name="T:Bam.Net.ServiceProxy.DefaultUserResolver">
             <summary>
             Resolves the current user of the 
@@ -1622,11 +1628,6 @@
             Maps the ServiceProxy routes in the specified RouteCollection.
             This should be called from Global before setting the default
             action route.
-            </summary>
-        </member>
-        <member name="P:Bam.Net.ServiceProxy.ServiceProxySystem.Current">
-            <summary>
-            Provides an extension point to add functionality to the ServiceProxySystem
             </summary>
         </member>
         <member name="P:Bam.Net.ServiceProxy.ServiceProxySystem.ProxySearchPattern">
