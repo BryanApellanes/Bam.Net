@@ -3051,6 +3051,7 @@ namespace Bam.Net
                     {
                         replacing = false;
                         result.Append(innerValue.ToString().Truncate(endDelimiter.Length));
+                        innerValue = new StringBuilder();
                     }
                 }
                 else
