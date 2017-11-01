@@ -27,5 +27,11 @@ namespace Bam.Net.ServiceProxy.Secure
         {
             return keyManager.CreateApplication(applicationName);
         }
+        static object _defaultLock = new object();
+        static Application _defaultApplication;
+        public static Application Unknown
+        {
+            get { return _defaultLock.DoubleCheckLock(ref _defaultApplication, () => new Application { Name = ApplicationDiagnosticInfo.UnknownApplication }); }
+        }
     }
 }																								

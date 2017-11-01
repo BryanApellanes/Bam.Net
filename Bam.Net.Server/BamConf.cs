@@ -21,7 +21,7 @@ using System.Reflection;
 namespace Bam.Net.Server
 {
     /// <summary>
-    /// Configuratoin for the BamServer
+    /// Configuration for the BamServer
     /// </summary>
     public class BamConf
     {
@@ -43,7 +43,7 @@ namespace Bam.Net.Server
             this.LoggerPaths = new string[] { "." };
             this.LoggerSearchPattern = "*Logging.dll";
             this.ServiceSearchPattern = "*Services.dll,*Proxyables.dll";
-            this.ServerEventListenerSearchPath = "c:\\BamContent\\server-listeners,c:\\BamContent\\server-listeners-temp";
+            this.ServerEventListenerSearchPath = "c:\\bam\\content\\server-listeners,c:\\bam\\content\\server-listeners-temp";
             this.ServerEventListenerAssemblySearchPattern = "*ServerListeners.dll,*ServerEventListeners.dll";
             this.MainLoggerName = "ConsoleLogger";
             this.InitializeFileSystemFromEnum = InitializeFrom.Resource;

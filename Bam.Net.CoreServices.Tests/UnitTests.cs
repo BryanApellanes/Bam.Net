@@ -92,9 +92,7 @@ namespace Bam.Net.CoreServices.Tests
         [UnitTest]
         public void ShouldBeAbleToUseGeneratedClient()
         {
-            BamServer server;
-            SecureServiceProxyClient<EncryptedEcho> sspc;
-            ServiceProxyTestHelpers.StartSecureChannelTestServerGetEncryptedEchoClient(out server, out sspc);
+            ServiceProxyTestHelpers.StartSecureChannelTestServerGetEncryptedEchoClient(out BamServer server, out SecureServiceProxyClient<EncryptedEcho> sspc);
             ConsoleLogger logger = GetTestConsoleLogger();
             ProxyFactory serviceFactory = new ProxyFactory(".\\workspace_".RandomLetters(4), logger);
             try

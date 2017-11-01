@@ -201,7 +201,7 @@ namespace Bam.Net.Services.Tests
             fileRepo.EnsureDaoAssemblyAndSchema();
             CoreFileService fmSvc = new CoreFileService(fileRepo);
 
-            AssemblyService svc = new AssemblyService(fmSvc, assManRepo, DefaultConfigurationApplicationNameProvider.Instance);
+            CoreAssemblyService svc = new CoreAssemblyService(fmSvc, assManRepo, DefaultConfigurationApplicationNameProvider.Instance);
             ProcessRuntimeDescriptor prd1 = svc.CurrentProcessRuntimeDescriptor;
             ProcessRuntimeDescriptor prd2 = svc.CurrentProcessRuntimeDescriptor;
             ProcessRuntimeDescriptor byName = assManRepo.OneProcessRuntimeDescriptorWhere(c => c.ApplicationName == prd1.ApplicationName);

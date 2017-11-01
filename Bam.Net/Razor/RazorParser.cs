@@ -143,14 +143,17 @@ namespace Bam.Net.Razor
 			return Execute(input, null, options, inspector);
 		}
 
+
         /// <summary>
         /// Executes the specified input and returns the resulting output
         /// </summary>
         /// <param name="input"></param>
+        /// <param name="hashKey"></param>
         /// <param name="options">Arguments to pass to the template engine including the Model</param>
         /// <param name="inspector"></param>
+        /// <param name="assembliesToReference"></param>
         /// <returns></returns>
-		public string Execute(TextReader input, string hashKey = null, object options = null, Action<string> inspector = null, params Assembly[] assembliesToReference)
+        public string Execute(TextReader input, string hashKey = null, object options = null, Action<string> inspector = null, params Assembly[] assembliesToReference)
 		{
 			Assembly templateAssembly;
 			if (!string.IsNullOrEmpty(hashKey) && CompiledTemplates.ContainsKey(hashKey))
@@ -163,10 +166,8 @@ namespace Bam.Net.Razor
 				{
 					assembliesToReference = GetDefaultAssembliesToReference();
 				}
-				GeneratorResults results = null;
-				CSharpCodeProvider codeProvider = null;
-				templateAssembly = GetTemplateAssembly(input, hashKey, assembliesToReference, out codeProvider, out results);
-				OptionallyOutputToInspector(inspector, codeProvider, results);
+                templateAssembly = GetTemplateAssembly(input, hashKey, assembliesToReference, out CSharpCodeProvider codeProvider, out GeneratorResults results);
+                OutputToInspector(inspector, codeProvider, results);
 			}
 			
 			return GetRazorTemplateResult(options, templateAssembly);
@@ -204,7 +205,7 @@ namespace Bam.Net.Razor
 			return new CompilerParameters(referencePaths);
 		}
 
-		private static void OptionallyOutputToInspector(Action<string> inspector, CSharpCodeProvider codeProvider, GeneratorResults results)
+		private static void OutputToInspector(Action<string> inspector, CSharpCodeProvider codeProvider, GeneratorResults results)
 		{
 			if (inspector != null)
 			{

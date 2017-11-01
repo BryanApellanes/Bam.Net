@@ -77,13 +77,6 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
                 return new ClientColumns("Secret");
             }
         }
-        public ClientColumns Created
-        {
-            get
-            {
-                return new ClientColumns("Created");
-            }
-        }
         public ClientColumns CreatedBy
         {
             get
@@ -110,6 +103,13 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
             get
             {
                 return new ClientColumns("Deleted");
+            }
+        }
+        public ClientColumns Created
+        {
+            get
+            {
+                return new ClientColumns("Created");
             }
         }
 

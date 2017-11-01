@@ -106,6 +106,20 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
 		}
 	}
 
+	// property:DefaultApplicationName, columnName:DefaultApplicationName	
+	[Bam.Net.Data.Column(Name="DefaultApplicationName", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string DefaultApplicationName
+	{
+		get
+		{
+			return GetStringValue("DefaultApplicationName");
+		}
+		set
+		{
+			SetValue("DefaultApplicationName", value);
+		}
+	}
+
 	// property:DomainName, columnName:DomainName	
 	[Bam.Net.Data.Column(Name="DomainName", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
 	public string DomainName
@@ -120,6 +134,20 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
 		}
 	}
 
+	// property:Port, columnName:Port	
+	[Bam.Net.Data.Column(Name="Port", DbDataType="Int", MaxLength="10", AllowNull=true)]
+	public int? Port
+	{
+		get
+		{
+			return GetIntValue("Port");
+		}
+		set
+		{
+			SetValue("Port", value);
+		}
+	}
+
 	// property:Authorized, columnName:Authorized	
 	[Bam.Net.Data.Column(Name="Authorized", DbDataType="Bit", MaxLength="1", AllowNull=true)]
 	public bool? Authorized
@@ -131,20 +159,6 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
 		set
 		{
 			SetValue("Authorized", value);
-		}
-	}
-
-	// property:Created, columnName:Created	
-	[Bam.Net.Data.Column(Name="Created", DbDataType="DateTime", MaxLength="8", AllowNull=true)]
-	public DateTime? Created
-	{
-		get
-		{
-			return GetDateTimeValue("Created");
-		}
-		set
-		{
-			SetValue("Created", value);
 		}
 	}
 
@@ -201,6 +215,20 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
 		set
 		{
 			SetValue("Deleted", value);
+		}
+	}
+
+	// property:Created, columnName:Created	
+	[Bam.Net.Data.Column(Name="Created", DbDataType="DateTime", MaxLength="8", AllowNull=true)]
+	public DateTime? Created
+	{
+		get
+		{
+			return GetDateTimeValue("Created");
+		}
+		set
+		{
+			SetValue("Created", value);
 		}
 	}
 

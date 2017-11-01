@@ -63,13 +63,6 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
                 return new UserSettingColumns("Value");
             }
         }
-        public UserSettingColumns Created
-        {
-            get
-            {
-                return new UserSettingColumns("Created");
-            }
-        }
         public UserSettingColumns CreatedBy
         {
             get
@@ -96,6 +89,13 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
             get
             {
                 return new UserSettingColumns("Deleted");
+            }
+        }
+        public UserSettingColumns Created
+        {
+            get
+            {
+                return new UserSettingColumns("Created");
             }
         }
 

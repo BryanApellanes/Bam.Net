@@ -109,7 +109,7 @@ namespace Bam.Net.Automation.Tests
         [ConsoleAction("Test GitReleaseNotes")]
         public void TestGitReleaseNotes()
         {
-            GitReleaseNotes notes = GitReleaseNotes.SinceVersion("Bam.Net.CommandLine", "C:\\src\\Bam.Net", 1, 4, 4);
+            GitReleaseNotes notes = GitReleaseNotes.SinceLatestRelease("Bam.Net.CommandLine", "C:\\src\\Bam.Net");
             notes.Summary = "Put a nice summary here";
             OutLineFormat("{0}", ConsoleColor.Cyan, notes.Value);
         }
@@ -117,7 +117,7 @@ namespace Bam.Net.Automation.Tests
         [ConsoleAction("Test Misc GitReleaseNotes")]
         public void TestGitMiscReleaseNotes()
         {
-            GitReleaseNotes notes = GitReleaseNotes.MiscSinceVersion("C:\\src\\Bam.Net", 1, 4, 4);
+            GitReleaseNotes notes = GitReleaseNotes.MiscSinceLatestRelease("C:\\src\\Bam.Net");
             notes.Summary = "Misc";
             OutLineFormat("{0}", ConsoleColor.Cyan, notes.Value);
         }

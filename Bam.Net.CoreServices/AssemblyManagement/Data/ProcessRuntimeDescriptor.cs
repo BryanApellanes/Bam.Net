@@ -11,6 +11,10 @@ using Bam.Net.CoreServices.AssemblyManagement.Data.Dao.Repository;
 
 namespace Bam.Net.CoreServices.AssemblyManagement.Data
 {
+    /// <summary>
+    /// Represents through analysis all the assemblies recorded
+    /// during the execution of a process
+    /// </summary>
     [Serializable]
     public class ProcessRuntimeDescriptor: KeyHashRepoData
     {

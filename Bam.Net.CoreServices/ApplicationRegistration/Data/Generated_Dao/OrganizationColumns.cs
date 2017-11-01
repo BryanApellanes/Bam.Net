@@ -49,13 +49,6 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
                 return new OrganizationColumns("Name");
             }
         }
-        public OrganizationColumns Created
-        {
-            get
-            {
-                return new OrganizationColumns("Created");
-            }
-        }
         public OrganizationColumns CreatedBy
         {
             get
@@ -82,6 +75,13 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
             get
             {
                 return new OrganizationColumns("Deleted");
+            }
+        }
+        public OrganizationColumns Created
+        {
+            get
+            {
+                return new OrganizationColumns("Created");
             }
         }
 

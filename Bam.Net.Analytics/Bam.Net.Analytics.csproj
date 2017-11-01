@@ -239,6 +239,19 @@
     <Compile Include="DiffReportFormatter.cs" />
     <Compile Include="DiffReportToken.cs" />
     <Compile Include="Classification\FisherClassifier.cs" />
+    <Compile Include="EnglishDictionary\EnglishDictionary_Generated\Definition.cs" />
+    <Compile Include="EnglishDictionary\EnglishDictionary_Generated\DefinitionCollection.cs" />
+    <Compile Include="EnglishDictionary\EnglishDictionary_Generated\DefinitionColumns.cs" />
+    <Compile Include="EnglishDictionary\EnglishDictionary_Generated\DefinitionPagedQuery.cs" />
+    <Compile Include="EnglishDictionary\EnglishDictionary_Generated\DefinitionQuery.cs" />
+    <Compile Include="EnglishDictionary\EnglishDictionary_Generated\EnglishDictionaryContext.cs" />
+    <Compile Include="EnglishDictionary\EnglishDictionary_Generated\Qi\Definition.cs" />
+    <Compile Include="EnglishDictionary\EnglishDictionary_Generated\Qi\Word.cs" />
+    <Compile Include="EnglishDictionary\EnglishDictionary_Generated\Word.cs" />
+    <Compile Include="EnglishDictionary\EnglishDictionary_Generated\WordCollection.cs" />
+    <Compile Include="EnglishDictionary\EnglishDictionary_Generated\WordColumns.cs" />
+    <Compile Include="EnglishDictionary\EnglishDictionary_Generated\WordPagedQuery.cs" />
+    <Compile Include="EnglishDictionary\EnglishDictionary_Generated\WordQuery.cs" />
     <Compile Include="HtmlTableDiffReportFormatter.cs" />
     <Compile Include="InsertedDiffReportToken.cs" />
     <Compile Include="Classification\NaiveBayesClassifier.cs" />
@@ -276,6 +289,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Analytics.db.js" />
+    <Content Include="EnglishDictionary\EnglishDictionary.db.js" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

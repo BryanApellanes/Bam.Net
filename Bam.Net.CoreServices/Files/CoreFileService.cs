@@ -189,7 +189,7 @@ namespace Bam.Net.CoreServices
             return result;
         }
 
-        [Exclude]
+        [Local]
         public ChunkData GetChunkDataFromFileSystem(string chunkHash)
         {
             string data = Path.Combine(ChunkDirectory, chunkHash).SafeReadFile();
@@ -248,7 +248,7 @@ namespace Bam.Net.CoreServices
         }
 
         [Local]
-        public FileInfo WriteFileToDirectory(string fileNameOrHash, string directoryPath)
+        public FileInfo WriteFileDataToDirectory(string fileNameOrHash, string directoryPath)
         {
             ChunkedFileDescriptor fileDescriptor = GetFileDescriptor(fileNameOrHash);
             Args.ThrowIfNull(fileDescriptor, "fileDescriptor");

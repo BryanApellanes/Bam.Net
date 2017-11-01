@@ -17,7 +17,19 @@ namespace baminf
     [Serializable]
     public class BuildActions: CommandLineTestInterface
     {
-        const string NugetReleaseDirectory = @"Z:\Workspace\NugetPackages\Push\";
+        static string _nugetReleaseDirectory;
+        public static string NugetReleaseDirectory
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_nugetReleaseDirectory))
+                {
+                    _nugetReleaseDirectory = ".\\nugetreleasedirectory.txt".SafeReadFile().Or(@"Z:\Workspace\NugetPackages\Push\");
+                }
+                return _nugetReleaseDirectory;
+            }
+        }
+
         static string _lib;
         public static string Lib
         {
@@ -30,6 +42,7 @@ namespace baminf
                 return _lib;
             }
         }
+
         static string _ver;
         public static string Ver
         {
@@ -165,9 +178,6 @@ call git_tag_version.cmd %1");
             string srcRoot = GetSourceRoot();
             
             BamInfo info = bamInfoPath.FromJsonFile<BamInfo>();
-            int sinceMajor = info.MajorVersion;
-            int sinceMinor = info.MinorVersion;
-            int sincePatch = info.PatchVersion;
             Out("*** baminfo.json ***", ConsoleColor.Cyan);
             OutLine(info.PropertiesToString(), ConsoleColor.Cyan);
             OutLine("***", ConsoleColor.Cyan);
@@ -175,7 +185,7 @@ call git_tag_version.cmd %1");
             info.VersionString = versionString;
             info.ToJsonFile(bamInfoPath);
 
-            GitReleaseNotes miscReleaseNotes = GitReleaseNotes.MiscSinceVersion(srcRoot, sinceMajor, sinceMinor, sincePatch);
+            GitReleaseNotes miscReleaseNotes = GitReleaseNotes.MiscSinceLatestRelease(srcRoot);
             miscReleaseNotes.Summary = $"Version {versionString}";
             OutLineFormat("Updating release notes:\r\n{0}", ConsoleColor.DarkYellow, info.ReleaseNotes);
             info.ReleaseNotes = miscReleaseNotes.Value;
@@ -187,10 +197,12 @@ call git_tag_version.cmd %1");
             FileInfo[] nuspecFiles = nuspecRootDir.GetFiles("*.nuspec", SearchOption.AllDirectories);
             foreach (FileInfo file in nuspecFiles)
             {
-                NuspecFile nuspecFile = new NuspecFile(file.FullName);
-                nuspecFile.Authors = info.Authors;
-                nuspecFile.Owners = info.Owners;
-                GitReleaseNotes releaseNotes = GitReleaseNotes.SinceVersion(nuspecFile.Id, srcRoot, sinceMajor, sinceMinor, sincePatch);
+                NuspecFile nuspecFile = new NuspecFile(file.FullName)
+                {
+                    Authors = info.Authors,
+                    Owners = info.Owners
+                };
+                GitReleaseNotes releaseNotes = GitReleaseNotes.SinceLatestRelease(nuspecFile.Id, srcRoot);
                 if (!WriteReleaseNotes(srcRoot, releaseNotes, out string projectRoot))
                 {
                     Warn("Unable to find project directory ({0}) to write release notes", projectRoot);
@@ -221,8 +233,7 @@ call git_tag_version.cmd %1");
         [ConsoleAction("sai", "Set assembly info")]
         public static void SetAssemblyInfo()
         {
-            string srcRoot, version, nuspecRoot;
-            GetParameters(out srcRoot, out version, out nuspecRoot);
+            GetParameters(out string srcRoot, out string version, out string nuspecRoot);
 
             DirectoryInfo srcRootDir = new DirectoryInfo(srcRoot);
             srcRootDir.GetFiles("AssemblyInfo.cs", SearchOption.AllDirectories).Each(infoFile =>

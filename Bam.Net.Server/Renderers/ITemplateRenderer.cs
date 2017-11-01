@@ -3,6 +3,8 @@
 */
 using System;
 using Bam.Net.ServiceProxy;
+using Bam.Net.Presentation;
+
 namespace Bam.Net.Server.Renderers
 {
 	public interface ITemplateRenderer
@@ -11,7 +13,7 @@ namespace Bam.Net.Server.Renderers
 		string CompiledCommonTemplates { get; }
 		string CompiledLayoutTemplates { get; }
         string CompiledTemplates { get; }
-		ContentResponder ContentResponder { get; set; }
+        string ContentRoot { get; }
 		void Render(object toRender, System.IO.Stream output);
 		void Render(string templateName, object toRender, System.IO.Stream output);
 		void RenderLayout(LayoutModel toRender, System.IO.Stream output);

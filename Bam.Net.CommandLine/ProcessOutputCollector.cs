@@ -11,6 +11,14 @@ namespace Bam.Net.CommandLine
 {
     public class ProcessOutputCollector
     {
+        public ProcessOutputCollector(StringBuilder output, StringBuilder error)
+        {
+            StandardOutput = output;
+            StandardError = error;
+            DataHandler = (s) => StandardOutput.AppendLine(s);
+            ErrorHandler = (e) => StandardError.AppendLine(e);
+            ExitCode = -100;
+        }
         public ProcessOutputCollector(Action<string> dataHandler = null, Action<string> errorHandler = null)
         {
             StandardOutput = new StringBuilder();

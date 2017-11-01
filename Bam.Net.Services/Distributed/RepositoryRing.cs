@@ -14,7 +14,6 @@ using Bam.Net.Services.Distributed.Data;
 using Bam.Net.Data.Repositories;
 using System.Collections;
 using Bam.Net.Services.Distributed;
-using Bam.Net.Services.Distributed.Data;
 
 namespace Bam.Net.Services.Distributed
 {
@@ -55,6 +54,12 @@ namespace Bam.Net.Services.Distributed
         }        
         public UniversalIdentifier UniversalIdentifier { get; set; }
         public ITypeResolver TypeResolver { get; set; }
+
+        public Task<string> GetHashStringAsync(object value)
+        {
+            return Task.Run(() => GetHashString(value));
+        }
+
         public override string GetHashString(object value)
         {
             Type type = value.GetType();
@@ -145,7 +150,7 @@ namespace Bam.Net.Services.Distributed
 
         public object Retrieve(string typeName, string instanceIdentifier)
         {
-            return Retrieve(TypeResolver.ResolveType(null, typeName), instanceIdentifier);
+            return Retrieve(TypeResolver.ResolveType(typeName), instanceIdentifier);
         }
 
         public object Retrieve(Type objectType, string identifier)

@@ -54,20 +54,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NCuid.1.0.0\lib\net40\NCuid.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -152,6 +143,63 @@
     <Compile Include="Distributed\UniversalIdentifier.cs" />
     <Compile Include="Distributed\WriteEventService.cs" />
     <Compile Include="ExecutionResponder.cs" />
+    <Compile Include="OpenApi\Objects\CallbackObject.cs" />
+    <Compile Include="OpenApi\Objects\ComponentsObject.cs" />
+    <Compile Include="OpenApi\Objects\ContactObject.cs" />
+    <Compile Include="OpenApi\Objects\DiscriminatorObject.cs" />
+    <Compile Include="OpenApi\Objects\EncodingObject.cs" />
+    <Compile Include="OpenApi\Objects\ExampleObject.cs" />
+    <Compile Include="OpenApi\Objects\ExamplesObject.cs" />
+    <Compile Include="OpenApi\Objects\ExternalDocumentationObject.cs" />
+    <Compile Include="OpenApi\Objects\HeaderObject.cs" />
+    <Compile Include="OpenApi\Objects\InfoObject.cs" />
+    <Compile Include="OpenApi\Objects\LicenseObject.cs" />
+    <Compile Include="OpenApi\Objects\LinkObject.cs" />
+    <Compile Include="OpenApi\Objects\MediaTypeObject.cs" />
+    <Compile Include="OpenApi\Objects\OAuthFlowObject.cs" />
+    <Compile Include="OpenApi\Objects\OAuthFlowsObject.cs" />
+    <Compile Include="OpenApi\Objects\OpenAPIObject.cs" />
+    <Compile Include="OpenApi\Objects\OperationObject.cs" />
+    <Compile Include="OpenApi\Objects\ParameterObject.cs" />
+    <Compile Include="OpenApi\Objects\PathItemObject.cs" />
+    <Compile Include="OpenApi\Objects\PathsObject.cs" />
+    <Compile Include="OpenApi\Objects\ReferenceObject.cs" />
+    <Compile Include="OpenApi\Objects\RequestBodyObject.cs" />
+    <Compile Include="OpenApi\Objects\ResponseObject.cs" />
+    <Compile Include="OpenApi\Objects\ResponsesObject.cs" />
+    <Compile Include="OpenApi\Objects\SchemaObject.cs" />
+    <Compile Include="OpenApi\Objects\SecurityRequirementObject.cs" />
+    <Compile Include="OpenApi\Objects\SecuritySchemeObject.cs" />
+    <Compile Include="OpenApi\Objects\ServerObject.cs" />
+    <Compile Include="OpenApi\Objects\ServerVariableObject.cs" />
+    <Compile Include="OpenApi\Objects\TagObject.cs" />
+    <Compile Include="OpenApi\Objects\XMLObject.cs" />
+    <Compile Include="OpenApi\OpenApiFixedFieldModel.cs" />
+    <Compile Include="OpenApi\OpenApiObjectDatabase.cs" />
+    <Compile Include="OpenApi\OpenApiObjectDescriptorModel.cs" />
+    <Compile Include="OpenApi\OpenApiObjectDescriptorModelTemplate.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\FixedField.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\FixedFieldCollection.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\FixedFieldColumns.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\FixedFieldPagedQuery.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\FixedFieldQuery.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\ObjectDescriptor.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\ObjectDescriptorCollection.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\ObjectDescriptorColumns.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\ObjectDescriptorPagedQuery.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\ObjectDescriptorQuery.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\OpenApiContext.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\PatternedField.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\PatternedFieldCollection.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\PatternedFieldColumns.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\PatternedFieldPagedQuery.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\PatternedFieldQuery.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\Qi\FixedField.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\Qi\ObjectDescriptor.cs" />
+    <Compile Include="OpenApi\OpenApi_Generated\Qi\PatternedField.cs" />
+    <Compile Include="OpenApi\Partials\FixedField.cs" />
+    <Compile Include="OpenApi\Partials\ObjectDescriptor.cs" />
+    <Compile Include="OpenApi\Partials\PatternedField.cs" />
     <Compile Include="ServiceResponse.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Catalog\KindsOfCatalogs.cs" />
@@ -180,6 +228,11 @@
     <None Include="app.config" />
     <None Include="AsyncCallback\regen_asyncecallback_dao.cmd" />
     <None Include="Distributed\Data\regen_distributed_dao.cmd" />
+    <None Include="OpenApi\OpenApi.sqlite">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <EmbeddedResource Include="OpenApi\Templates\FixedField.tmpl" />
+    <EmbeddedResource Include="OpenApi\Templates\ObjectDescriptor.tmpl" />
     <None Include="packages.config" />
     <Compile Include="Validation\ValidationRuleSetProcessor.cs" />
   </ItemGroup>
@@ -207,6 +260,10 @@
     <ProjectReference Include="..\Bam.Net.Data.Schema\Bam.Net.Data.Schema.csproj">
       <Project>{d2c2b1c0-1047-4211-92fc-37f332861161}</Project>
       <Name>Bam.Net.Data.Schema</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.SQLite\Bam.Net.Data.SQLite.csproj">
+      <Project>{ae48f655-c3eb-49d6-98d3-42c428e39a1d}</Project>
+      <Name>Bam.Net.Data.SQLite</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Data\Bam.Net.Data.csproj">
       <Project>{3b52b739-58fd-4b49-b815-6b317e701520}</Project>
@@ -244,6 +301,9 @@
       <Project>{8794c09d-d72c-420c-812f-bfda251b64c9}</Project>
       <Name>Bam.Net</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="OpenApi\OpenApi.db.js" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

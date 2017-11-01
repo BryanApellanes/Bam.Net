@@ -17,7 +17,8 @@ namespace Bam.Net.CoreServices.ApplicationRegistration
         {
             Port = 80;
         }
-        public string DomainName { get; set; }
+        public string DefaultApplicationName { get; set; }
+        public string DomainName { get; set; }        
         public int Port { get; set; }
         public bool Authorized { get; set; }
         public virtual List<Application> Applications { get; set; }

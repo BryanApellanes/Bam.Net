@@ -26,7 +26,14 @@ namespace Bam.Net.CoreServices
     [Encrypt]
     public abstract class ProxyableService: Loggable, IRequiresHttpContext
     {
-        protected ProxyableService() { }
+        protected ProxyableService()
+        {
+            AppConf = new AppConf();
+            RepositoryResolver = new ApplicationRepositoryResolver();
+            Logger = Log.Default;
+            Repository = new DaoRepository();
+            RepositoryResolver = new DefaultRepositoryResolver(Repository);
+        }
         public ProxyableService(ApplicationRepositoryResolver repoResolver, AppConf appConf)
         {
             AppConf = appConf;
@@ -136,18 +143,18 @@ namespace Bam.Net.CoreServices
             }
         }
 
-        IApplicationNameProvider _clientApplicationNameProvider;
-        object _clientApplicationNameProviderLock = new object();
+        ClientApplicationNameResolver _clientApplicationNameResolver;
+        object _clientApplicationNameResolverLock = new object();
         [Local]
-        public virtual IApplicationNameProvider ClientApplicationNameProvider
+        public virtual ClientApplicationNameResolver ClientApplicationNameResolver
         {
             get
             {
-                return _clientApplicationNameProviderLock.DoubleCheckLock(ref _clientApplicationNameProvider, () => ApplicationNameProvider.Default);
+                return null;//_clientApplicationNameProviderLock.DoubleCheckLock(ref _clientApplicationNameProvider, () => ApplicationNameProvider.Default);
             }
             set
             {
-                _clientApplicationNameProvider = value;
+                _clientApplicationNameResolver = value;
             }
         }
 

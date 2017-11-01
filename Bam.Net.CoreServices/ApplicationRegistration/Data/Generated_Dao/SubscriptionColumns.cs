@@ -70,13 +70,6 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
                 return new SubscriptionColumns("ExpirationDate");
             }
         }
-        public SubscriptionColumns Created
-        {
-            get
-            {
-                return new SubscriptionColumns("Created");
-            }
-        }
         public SubscriptionColumns CreatedBy
         {
             get
@@ -103,6 +96,13 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
             get
             {
                 return new SubscriptionColumns("Deleted");
+            }
+        }
+        public SubscriptionColumns Created
+        {
+            get
+            {
+                return new SubscriptionColumns("Created");
             }
         }
 

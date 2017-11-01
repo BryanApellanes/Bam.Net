@@ -119,13 +119,6 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
                 return new ProcessDescriptorColumns("CommandLine");
             }
         }
-        public ProcessDescriptorColumns Created
-        {
-            get
-            {
-                return new ProcessDescriptorColumns("Created");
-            }
-        }
         public ProcessDescriptorColumns CreatedBy
         {
             get
@@ -152,6 +145,13 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
             get
             {
                 return new ProcessDescriptorColumns("Deleted");
+            }
+        }
+        public ProcessDescriptorColumns Created
+        {
+            get
+            {
+                return new ProcessDescriptorColumns("Created");
             }
         }
 

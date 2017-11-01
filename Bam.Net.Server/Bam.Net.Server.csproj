@@ -73,9 +73,8 @@
     <Reference Include="NCuid">
       <HintPath>..\packages\NCuid.1.0.0\lib\net40\NCuid.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -115,6 +114,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppConf.cs" />
+    <Compile Include="AppConfApplicationNameProvider.cs" />
     <Compile Include="BamApplicationNameProvider.cs" />
     <Compile Include="AppContentResponder.cs" />
     <Compile Include="AppInitializerBase.cs" />
@@ -125,10 +125,14 @@
     <Compile Include="BamApplicationManagerResult.cs" />
     <Compile Include="BamDaoServer.cs" />
     <Compile Include="BamServer.cs" />
+    <Compile Include="ClientProxyGenerator.cs" />
+    <Compile Include="CsClientProxyGenerator.cs" />
     <Compile Include="FileUploadEventArgs.cs" />
     <Compile Include="HttpPostedFile.cs" />
     <Compile Include="IAppInitializer.cs" />
+    <Compile Include="IClientProxyGenerator.cs" />
     <Compile Include="InitializeFailedEventArgs.cs" />
+    <Compile Include="JsClientProxyGenerator.cs" />
     <Compile Include="Listeners\ServerEventListenerAttribute.cs" />
     <Compile Include="Listeners\BamServerEventListener.cs" />
     <Compile Include="Listeners\BamServerEventListenerBinder.cs" />
@@ -190,8 +194,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Renderers\HtmlRenderer.cs" />
-    <Compile Include="Renderers\IRenderer.cs" />
-    <Compile Include="LayoutModel.cs" />
     <Compile Include="BamConf.cs" />
     <Compile Include="ConfFormat.cs" />
     <Compile Include="ContentResponder.cs" />
@@ -217,6 +219,7 @@
     <Compile Include="DaoResponder.cs" />
     <Compile Include="TcpContext.cs" />
     <Compile Include="TemplateInitializerBase.cs" />
+    <Compile Include="UriApplicationNameResolver.cs" />
     <Compile Include="WebBook.cs" />
     <Compile Include="WebBookEventArgs.cs" />
     <Compile Include="WebBookInitializer.cs" />
@@ -311,7 +314,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy $(TargetPath) c:\BamContent\apps\stickerize\services\</PostBuildEvent>
+    <PostBuildEvent>mkdir c:\BamContent\apps\stickerize\services\
+copy $(TargetPath) c:\BamContent\apps\stickerize\services\</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

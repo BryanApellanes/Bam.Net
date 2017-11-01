@@ -102,13 +102,15 @@ namespace Bam.Net.CoreServices
                 .For<CoreFileService>().Use<CoreFileService>()
                 .For<IFileService>().Use<CoreFileService>()
                 .For<AssemblyServiceRepository>().Use(assSvcRepo)
-                .For<IAssemblyService>().Use<AssemblyService>()
+                .For<IAssemblyService>().Use<CoreAssemblyService>()
                 .For<ServiceRegistryRepository>().Use<ServiceRegistryRepository>()
                 .For<CoreServiceRegistrationService>().Use<CoreServiceRegistrationService>()
                 .For<CoreOAuthService>().Use<CoreOAuthService>()
                 .For<ILog>().Use(loggerSvc)
                 .For<CoreLoggerService>().Use(loggerSvc)
                 .For<DataSettings>().Use(DataSettings.Default)
+                .For<IApplicationNameResolver>().Use<ClientApplicationNameResolver>()
+                .For<ClientApplicationNameResolver>().Use<ClientApplicationNameResolver>()
                 .For<CoreNotificationService>().Use<CoreNotificationService>();
 
             reg.SetProperties(userMgr);

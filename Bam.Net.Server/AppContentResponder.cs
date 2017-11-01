@@ -13,6 +13,7 @@ using Bam.Net.ServiceProxy;
 using Bam.Net.UserAccounts;
 using Bam.Net.UserAccounts.Data;
 using Yahoo.Yui.Compressor;
+using Bam.Net.Presentation;
 
 namespace Bam.Net.Server
 {
@@ -152,7 +153,6 @@ namespace Bam.Net.Server
             byte[] content = new byte[] { };
             bool result = false;
 
-            string locatedPath;
             if (path.Equals("/upload", StringComparison.InvariantCultureIgnoreCase))
             {
                 HandleUpload(context, HttpPostedFile.FromRequest(request));
@@ -165,7 +165,7 @@ namespace Bam.Net.Server
                 result = true;
             }
             else if (string.IsNullOrEmpty(ext) && !ShouldIgnore(path) ||
-               (AppRoot.FileExists("~/pages{0}.html"._Format(path), out locatedPath)))
+               (AppRoot.FileExists("~/pages{0}.html"._Format(path), out string locatedPath)))
             {
                 content = RenderLayout(response, path);
                 result = true;

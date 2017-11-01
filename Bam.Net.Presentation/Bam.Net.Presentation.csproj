@@ -87,8 +87,8 @@
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -145,6 +145,25 @@
     <Compile Include="Dust\DustTemplateResult.cs" />
     <Compile Include="Dust\DustView.cs" />
     <Compile Include="Dust\DustViewEngine.cs" />
+    <Compile Include="Emoji_Generated\Category.cs" />
+    <Compile Include="Emoji_Generated\CategoryCollection.cs" />
+    <Compile Include="Emoji_Generated\CategoryColumns.cs" />
+    <Compile Include="Emoji_Generated\CategoryPagedQuery.cs" />
+    <Compile Include="Emoji_Generated\CategoryQuery.cs" />
+    <Compile Include="Emoji_Generated\Code.cs" />
+    <Compile Include="Emoji_Generated\CodeCollection.cs" />
+    <Compile Include="Emoji_Generated\CodeColumns.cs" />
+    <Compile Include="Emoji_Generated\CodePagedQuery.cs" />
+    <Compile Include="Emoji_Generated\CodeQuery.cs" />
+    <Compile Include="Emoji_Generated\Emoji.cs" />
+    <Compile Include="Emoji_Generated\EmojiCollection.cs" />
+    <Compile Include="Emoji_Generated\EmojiColumns.cs" />
+    <Compile Include="Emoji_Generated\EmojiPagedQuery.cs" />
+    <Compile Include="Emoji_Generated\EmojiQuery.cs" />
+    <Compile Include="Emoji_Generated\EmojisContext.cs" />
+    <Compile Include="Emoji_Generated\Qi\Category.cs" />
+    <Compile Include="Emoji_Generated\Qi\Code.cs" />
+    <Compile Include="Emoji_Generated\Qi\Emoji.cs" />
     <Compile Include="GoogleHelper.cs" />
     <Compile Include="Html\Attributes\DropDown.cs" />
     <Compile Include="Html\Attributes\Hidden.cs" />
@@ -164,6 +183,8 @@
     <Compile Include="Html\HtmlHelperExtensions.cs" />
     <Compile Include="Html\Img.cs" />
     <Compile Include="Html\MethodFormResult.cs" />
+    <Compile Include="IRenderer.cs" />
+    <Compile Include="LayoutModel.cs" />
     <Compile Include="Markdown\IDocumentComponent.cs" />
     <Compile Include="Markdown\MarkdownDocument.cs" />
     <Compile Include="Pdf\Pdf.cs" />
@@ -192,12 +213,16 @@
     <EmbeddedResource Include="Dust\dust.custom.js" />
     <EmbeddedResource Include="Dust\feather.js" />
     <EmbeddedResource Include="Dust\json2.js" />
+    <Content Include="Emoji.db.js" />
     <Content Include="Html\Js\spin.js" />
     <Content Include="Markdown\TODO.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Dust\test.dust">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Emojis.sqlite">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />

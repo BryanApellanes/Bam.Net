@@ -22,22 +22,24 @@ namespace Bam.Net.Server
         Dictionary<string, string> _contentTypes;        
         public Responder(BamConf conf)
         {
-            this.BamConf = conf;
-            this.Logger = Log.Default;
+            BamConf = conf;
+            Logger = Log.Default;
+            UriApplicationNameResolver = new UriApplicationNameResolver(conf);
 
-            this._contentTypes = new Dictionary<string, string>();
-            this._contentTypes.Add(".json", "application/json");
-            this._contentTypes.Add(".js", "application/javascript");
-            this._contentTypes.Add(".css", "text/css");
-            this._contentTypes.Add(".jpg", "image/jpg");
-            this._contentTypes.Add(".gif", "image/gif");
-            this._contentTypes.Add(".png", "image/png");
-            this._contentTypes.Add(".html", "text/html");
-            
-            this._respondToPrefixes = new List<string>();
-            this._ignorePrefixes = new List<string>();
+            _contentTypes = new Dictionary<string, string>
+            {
+                { ".json", "application/json" },
+                { ".js", "application/javascript" },
+                { ".css", "text/css" },
+                { ".jpg", "image/jpg" },
+                { ".gif", "image/gif" },
+                { ".png", "image/png" },
+                { ".html", "text/html" }
+            };
+            _respondToPrefixes = new List<string>();
+            _ignorePrefixes = new List<string>();
 
-            this.AddRespondToPrefix(ResponderSignificantName);
+            AddRespondToPrefix(ResponderSignificantName);
         }
 
         public Responder(BamConf conf, ILogger logger)
@@ -70,8 +72,10 @@ namespace Bam.Net.Server
         public virtual bool IsInitialized
         {
             get;
-            private set;
+            protected set;
         }
+
+        public UriApplicationNameResolver UriApplicationNameResolver { get; set; }
 
         /// <summary>
         /// The event that fires when a response is sent

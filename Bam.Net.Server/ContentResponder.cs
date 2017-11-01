@@ -116,18 +116,12 @@ namespace Bam.Net.Server
 
         protected internal void OnCommonTemplateRendererInitializing()
         {
-            if (CommonTemplateRendererInitializing != null)
-            {
-                CommonTemplateRendererInitializing(this);
-            }
+            CommonTemplateRendererInitializing?.Invoke(this);
         }
 
         protected internal void OnCommonTemplateRendererInitialized()
         {
-            if (CommonTemplateRendererInitialized != null)
-            {
-                CommonTemplateRendererInitialized(this);
-            }
+            CommonTemplateRendererInitialized?.Invoke(this);
         }
 
         public ITemplateRenderer CommonTemplateRenderer
@@ -204,10 +198,7 @@ namespace Bam.Net.Server
 
         protected internal void OnAppContentRespondersInitializing()
         {
-            if (AppContentRespondersInitializing != null)
-            {
-                AppContentRespondersInitializing(this);
-            }
+            AppContentRespondersInitializing?.Invoke(this);
         }
 
         public event Action<ContentResponder, AppConf> AppContentResponderInitializing;
@@ -215,26 +206,17 @@ namespace Bam.Net.Server
 
         protected internal void OnAppContentResponderInitializing(AppConf appConf)
         {
-            if (AppContentResponderInitializing != null)
-            {
-                AppContentResponderInitializing(this, appConf);
-            }
+            AppContentResponderInitializing?.Invoke(this, appConf);
         }
 
         protected internal void OnAppContentResponderInitialized(AppConf appConf)
         {
-            if (AppContentResponderInitialized != null)
-            {
-                AppContentResponderInitialized(this, appConf);
-            }
+            AppContentResponderInitialized?.Invoke(this, appConf);
         }
 
         protected internal void OnAppRespondersInitialized()
         {
-            if (AppContentRespondersInitialized != null)
-            {
-                AppContentRespondersInitialized(this);
-            }
+            AppContentRespondersInitialized?.Invoke(this);
         }
 
         object _initAppsLock = new object();
@@ -268,8 +250,10 @@ namespace Bam.Net.Server
             {
                 OnAppContentResponderInitializing(ac);
                 Logger.RestartLoggingThread();
-                AppContentResponder responder = new AppContentResponder(this, ac);                
-                responder.Logger = Logger;
+                AppContentResponder responder = new AppContentResponder(this, ac)
+                {
+                    Logger = Logger
+                };
                 Subscribers.Each(logger =>
                 {
                     logger.RestartLoggingThread();
@@ -424,7 +408,7 @@ namespace Bam.Net.Server
             string commonPath = Path.Combine("/common", path.TruncateFront(1));
 
             byte[] content = new byte[] { };
-            string appName = AppConf.AppNameFromUri(request.Url, BamConf.AppConfigs);
+            string appName = UriApplicationNameResolver.ResolveApplicationName(request.Url, BamConf.AppConfigs);
             string[] checkedPaths = new string[] { };
             if (AppContentResponders.ContainsKey(appName))
             {
@@ -433,9 +417,8 @@ namespace Bam.Net.Server
 
             if (!handled && !ShouldIgnore(path))
             {
-                string readFileFromPath;
                 bool exists;
-                exists = ServerRoot.FileExists(path, out readFileFromPath);
+                exists = ServerRoot.FileExists(path, out string readFileFromPath);
                 if (!exists)
                 {
                     exists = ServerRoot.FileExists(commonPath, out readFileFromPath);
@@ -576,7 +559,7 @@ namespace Bam.Net.Server
         }
         #endregion
 
-        public bool IsInitialized
+        public override bool IsInitialized
         {
             get
             {
@@ -584,7 +567,7 @@ namespace Bam.Net.Server
             }
         }
 
-        public virtual void Initialize()
+        public override void Initialize()
         {
             if (!IsInitialized)
             {
@@ -600,19 +583,13 @@ namespace Bam.Net.Server
 
         protected void OnInitializing()
         {
-            if (Initializing != null)
-            {
-                Initializing(this);
-            }
+            Initializing?.Invoke(this);
         }
 
         public event Action<ContentResponder> Initialized;
         protected void OnInitialized()
         {
-            if (Initialized != null)
-            {
-                Initialized(this);
-            }
+            Initialized?.Invoke(this);
         }
 
         protected FileCache CreateCache(string fileExtension)

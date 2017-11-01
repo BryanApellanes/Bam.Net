@@ -98,11 +98,11 @@ namespace Bam.Net.Services.Tests
             return new CoreServiceRegistrationService(GetAssemblyService(db), GetServiceRegistryRepository(db), GetDaoRepository(db), new Server.AppConf());
         }
 
-        private AssemblyService GetAssemblyService(Database db)
+        private CoreAssemblyService GetAssemblyService(Database db)
         {
             CoreFileService fmSvc = new CoreFileService(GetDaoRepository(db));
             AssemblyServiceRepository assManRepo = new AssemblyServiceRepository() { Database = db };
-            return new AssemblyService(fmSvc, assManRepo, DefaultConfigurationApplicationNameProvider.Instance);
+            return new CoreAssemblyService(fmSvc, assManRepo, DefaultConfigurationApplicationNameProvider.Instance);
         }
 
         private Database GetDatabase(string databaseName)

@@ -35,7 +35,7 @@ namespace Bam.Net.Automation.SourceControl
         [GitOption("%ae", "Author email")]
         public string AuthorEmail { get; set; }
 
-        [GitOption("%ad", "Author date (format respects the --date=option)")]
+        [GitOption("%ad", "Author date ~ format respects the --date=option")]
         public string AuthorDate { get; set; }
 
         [GitOption("%ar", "Author date, relative")]
@@ -53,7 +53,7 @@ namespace Bam.Net.Automation.SourceControl
         [GitOption("%cr", "Committer date, relative")]
         public string CommitterDateRelative { get; set; }
 
-        [GitOption("%s", "(Subject) commit message")]
+        [GitOption("%s", "Subject ~ commit message")]
         public string Subject { get; set; }
 
         public override int GetHashCode()
@@ -72,6 +72,17 @@ namespace Bam.Net.Automation.SourceControl
 
         static Dictionary<string, HashSet<GitLog>> _logCache = new Dictionary<string, HashSet<GitLog>>();
         static object _logCacheLock = new object();
+        public static HashSet<GitLog> SinceLatestRelease(string gitRepoPath, bool useCache = true)
+        {
+            string latestRelease = Git.LatestRelease(gitRepoPath);
+            if (!useCache)
+            {
+                return SinceTag(gitRepoPath, latestRelease);
+            }
+
+            return SinceTagFromCache(gitRepoPath, latestRelease);
+        }
+
         public static HashSet<GitLog> SinceVersion(string gitRepoPath, int major, int minor = 0, int patch = 0, bool useCache = true)
         {
             string version = $"v{major}.{minor}.{patch}";
@@ -80,14 +91,7 @@ namespace Bam.Net.Automation.SourceControl
                 return SinceTag(gitRepoPath, version);
             }
 
-            lock (_logCacheLock)
-            {
-                if (!_logCache.ContainsKey(version))
-                {
-                    _logCache[version] = SinceTag(gitRepoPath, version);
-                }
-                return _logCache[version];
-            }
+            return SinceTagFromCache(gitRepoPath, version);
         }
 
         public static HashSet<GitLog> SinceTag(string gitRepoPath, string tag)
@@ -104,20 +108,17 @@ namespace Bam.Net.Automation.SourceControl
         {
             string startDirectory = Environment.CurrentDirectory;
             Environment.CurrentDirectory = gitRepoPath;
-            string command = $"git --no-pager log --pretty=format:{GetPrettyFormatArg()} {commitIdentifier}..{toCommit}";
-            ProcessOutput output = null;
-            HashSet<GitLog> results = new HashSet<GitLog>();
-            AutoResetEvent wait = new AutoResetEvent(false);
-            output = command.Run((o, a) =>
+            string command = $"git --no-pager log --pretty=format:{GetPrettyFormatArg()} {commitIdentifier}..{toCommit}";            
+            HashSet<GitLog> results = new HashSet<GitLog>();            
+            ProcessOutput output = command.Run();
+            int num = 0;
+            output.StandardOutput.DelimitSplit("\r", "\n").Each(log => 
             {
-                Environment.CurrentDirectory = startDirectory;                
-                output.StandardOutput.DelimitSplit("\r", "\n").Each(log =>
-                {
-                    results.Add(log.FromJson<GitLog>());
-                });
-                wait.Set();
+                string line = log.DelimitedReplace("\"", "\'");
+                line.SafeWriteToFile($".\\gitlog_{++num}.txt");
+                results.Add(line.FromJson<GitLog>());
             });
-            wait.WaitOne();
+
             return results;
         }
 
@@ -133,11 +134,24 @@ namespace Bam.Net.Automation.SourceControl
                     result.Append(", ");
                 }
                 GitOption option = propInfo.GetCustomAttributeOfType<GitOption>();
-                result.AppendFormat("\\\"{0}\\\": \\\"{1}\\\"", propInfo.Name, option.Value);
+                result.AppendFormat("\\\"{0}\\\": \\\"$$~{1}~$$\\\"", propInfo.Name, option.Value);
                 first = false;
             });
-            result.Append("}\"\r\n");
+            result.Append("}\"");
             return result.ToString();
         }
+
+        private static HashSet<GitLog> SinceTagFromCache(string gitRepoPath, string version)
+        {
+            lock (_logCacheLock)
+            {
+                if (!_logCache.ContainsKey(version))
+                {
+                    _logCache[version] = SinceTag(gitRepoPath, version);
+                }
+                return _logCache[version];
+            }
+        }
+
     }
 }

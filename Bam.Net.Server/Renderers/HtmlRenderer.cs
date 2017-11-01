@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.IO;
 using Bam.Net.Web;
+using Bam.Net.Presentation;
 using Bam.Net.Presentation.Html;
 using Bam.Net.Server;
 using Bam.Net.ServiceProxy;
@@ -21,7 +22,7 @@ namespace Bam.Net.Server.Renderers
         public HtmlRenderer(ExecutionRequest request, ContentResponder contentResponder)
             : base(request, contentResponder, "text/html", ".htm", ".html")
         {
-            this.AppName = AppConf.AppNameFromUri(request.Request.Url);
+            this.AppName = UriApplicationNameResolver.ResolveApplicationName(request.Request.Url);
             this.ContentResponder = contentResponder;
             this.ExecutionRequest = request;
         }

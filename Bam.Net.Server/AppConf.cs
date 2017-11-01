@@ -278,27 +278,6 @@ namespace Bam.Net.Server
             return insteadIfNullOrEmpty;
         }
 
-        public static string AppNameFromUri(Uri uri, AppConf[] appConfigs = null)
-        {
-            string result = AppNameFromBinding(uri, appConfigs);
-            if (string.IsNullOrEmpty(result))
-            {
-                string fullDomainName = uri.Authority.DelimitSplit(":")[0].ToLowerInvariant();
-                string[] splitOnDots = fullDomainName.DelimitSplit(".");
-                result = fullDomainName;
-                if (splitOnDots.Length == 2)
-                {
-                    result = splitOnDots[0];
-                }
-                else if (splitOnDots.Length == 3)
-                {
-                    result = splitOnDots[1];
-                }
-            }
-
-            return result;
-        }
-
         /// <summary>
         /// Get the application id used in the dom by parsing the appName.
         /// </summary>
@@ -352,16 +331,6 @@ namespace Bam.Net.Server
             {
                 return _domAppIdsSync.DoubleCheckLock(ref _appNamesByDomAppId, () => new Dictionary<string, string>());
             }
-        }
-
-        private static string AppNameFromBinding(Uri uri, AppConf[] configs)
-        {
-            AppConf conf = configs.Where(c => c.Bindings.Any(h => h.HostName.Equals(uri.Authority))).FirstOrDefault();
-            if (conf != null)
-            {
-                return conf.Name;
-            }
-            return string.Empty;
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Bam.Net.Server.Rest
             : base(conf, logger)
         {
             Repository = repository;
-            this.RendererFactory = new RendererFactory(logger);
+            RendererFactory = new RendererFactory(logger);
         }
 
         public IRepository Repository { get; set; }

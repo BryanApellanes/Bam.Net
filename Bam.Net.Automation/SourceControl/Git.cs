@@ -25,6 +25,11 @@ namespace Bam.Net.Automation.SourceControl
             return new Git(repository);
         }
 
+        public static string LatestRelease(string repository)
+        {
+            return new Git(repository).LatestRelease();
+        }
+
         public Git CloneTo(string directory, int timeout = 1800000)
         {
             return CloneTo(new DirectoryInfo(directory), timeout);
@@ -92,6 +97,15 @@ namespace Bam.Net.Automation.SourceControl
         {
             _configStack.GitBinPath = gitBinPath;
             return this;
+        }
+
+        public string LatestRelease()
+        {
+            string currentDirectory = Environment.CurrentDirectory;
+            Environment.CurrentDirectory = _configStack.Repository;
+            ProcessOutput output = "git describe --abbrev=0".Run();
+            Environment.CurrentDirectory = currentDirectory;
+            return output.StandardOutput.Trim();
         }
 
         public ProcessOutput LastOutput()

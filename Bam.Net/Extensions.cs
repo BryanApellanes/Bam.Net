@@ -31,30 +31,48 @@ using System.Linq;
 namespace Bam.Net
 {
     public static class Extensions
-    {
+    {        
         static Dictionary<HashAlgorithms, Func<HashAlgorithm>> _hashAlgorithms;
+        static Dictionary<HashAlgorithms, Func<byte[], HMAC>> _hmacs;
         static Dictionary<ExistingFileAction, Action<ZipArchiveEntry, string>> _extractActions;
         static Dictionary<ExistingFileAction, Action<Stream, FileInfo>> _writeResourceActions;
         static Extensions()
         {
-            _hashAlgorithms = new Dictionary<HashAlgorithms, Func<HashAlgorithm>>();
-            _hashAlgorithms.Add(HashAlgorithms.MD5, () => MD5.Create());
-            _hashAlgorithms.Add(HashAlgorithms.RIPEMD160, () => RIPEMD160.Create());
-            _hashAlgorithms.Add(HashAlgorithms.SHA1, () => SHA1.Create());
-            _hashAlgorithms.Add(HashAlgorithms.SHA256, () => SHA256.Create());
-            _hashAlgorithms.Add(HashAlgorithms.SHA384, () => SHA384.Create());
-            _hashAlgorithms.Add(HashAlgorithms.SHA512, () => SHA512.Create());
+            _hashAlgorithms = new Dictionary<HashAlgorithms, Func<HashAlgorithm>>
+            {
+                { HashAlgorithms.MD5, () => MD5.Create() },
+                { HashAlgorithms.RIPEMD160, () => RIPEMD160.Create() },
+                { HashAlgorithms.SHA1, () => SHA1.Create() },
+                { HashAlgorithms.SHA256, () => SHA256.Create() },
+                { HashAlgorithms.SHA384, () => SHA384.Create() },
+                { HashAlgorithms.SHA512, () => SHA512.Create() }
+            };
 
-            _extractActions = new Dictionary<ExistingFileAction, Action<ZipArchiveEntry, string>>();
-            _extractActions.Add(ExistingFileAction.Throw, (zip, dest) => Args.Throw<InvalidOperationException>("File exists, can't extract {0}", dest));
-            _extractActions.Add(ExistingFileAction.OverwriteSilently, (zip, dest) => zip.ExtractToFile(dest, true));
-            _extractActions.Add(ExistingFileAction.DoNotOverwrite, (zip, dest) => Logging.Log.Warn("File exists, can't extract {0}", dest));
+            _hmacs = new Dictionary<HashAlgorithms, Func<byte[], HMAC>>
+            {
+                {HashAlgorithms.MD5, (key) => new HMACMD5(key) },
+                {HashAlgorithms.RIPEMD160, (key) => new HMACRIPEMD160(key) },
+                {HashAlgorithms.SHA1, (key) => new HMACSHA1(key) },
+                {HashAlgorithms.SHA256, (key) => new HMACSHA256(key) },
+                {HashAlgorithms.SHA384, (key) => new HMACSHA384(key) },
+                {HashAlgorithms.SHA512, (key) => new HMACSHA512(key) }
+            };
 
-            _writeResourceActions = new Dictionary<ExistingFileAction, Action<Stream, FileInfo>>();
-            _writeResourceActions.Add(ExistingFileAction.Throw, (resource, output) => Args.Throw<InvalidOperationException>("File exists, can't write resource to {0}", output.FullName));
-            _writeResourceActions.Add(ExistingFileAction.OverwriteSilently, (resource, output) => resource.CopyTo(output.Create()));
-            _writeResourceActions.Add(ExistingFileAction.DoNotOverwrite, (resource, output) => Logging.Log.Warn("File exists, can't write resource to {0}", output.FullName));
+            _extractActions = new Dictionary<ExistingFileAction, Action<ZipArchiveEntry, string>>
+            {
+                { ExistingFileAction.Throw, (zip, dest) => Args.Throw<InvalidOperationException>("File exists, can't extract {0}", dest) },
+                { ExistingFileAction.OverwriteSilently, (zip, dest) => zip.ExtractToFile(dest, true) },
+                { ExistingFileAction.DoNotOverwrite, (zip, dest) => Logging.Log.Warn("File exists, can't extract {0}", dest) }
+            };
+            _writeResourceActions = new Dictionary<ExistingFileAction, Action<Stream, FileInfo>>
+            {
+                { ExistingFileAction.Throw, (resource, output) => Args.Throw<InvalidOperationException>("File exists, can't write resource to {0}", output.FullName) },
+                { ExistingFileAction.OverwriteSilently, (resource, output) => resource.CopyTo(output.Create()) },
+                { ExistingFileAction.DoNotOverwrite, (resource, output) => Logging.Log.Warn("File exists, can't write resource to {0}", output.FullName) }
+            };
         }
+
+
 
         public static int GetHashCode(this object instance, params string[] propertiesToInclude)
         {
@@ -1674,6 +1692,32 @@ namespace Bam.Net
             return toBeHashed.Hash(HashAlgorithms.SHA512, encoding);
         }
 
+        public static string HmacSha1(this string toValidate, string key, Encoding encoding = null)
+        {
+            return Hmac(toValidate, key, HashAlgorithms.SHA1, encoding);
+        }
+
+        public static string HmacSha256(this string toValidate, string key, Encoding encoding = null)
+        {
+            return Hmac(toValidate, key, HashAlgorithms.SHA256, encoding);
+        }
+
+        public static string HmacSha384(this string toValidate, string key, Encoding encoding = null)
+        {
+            return Hmac(toValidate, key, HashAlgorithms.SHA384, encoding);
+        }
+
+        public static string HmacSha512(this string toValidate, string key, Encoding encoding = null)
+        {
+            return Hmac(toValidate, key, HashAlgorithms.SHA512, encoding);
+        }
+
+        public static string Hmac(this string toValidate, string key, HashAlgorithms algorithm, Encoding encoding = null)
+        {
+            encoding = encoding ?? Encoding.UTF8;
+            HMAC hmac = _hmacs[algorithm](encoding.GetBytes(key));
+            return hmac.ComputeHash(encoding.GetBytes(toValidate)).ToHexString();
+        }
 
         public static string Hash(this string toBeHashed, HashAlgorithms algorithm, Encoding encoding = null)
         {
@@ -2982,6 +3026,48 @@ namespace Bam.Net
         public static string[] DelimitSplit(this string valueToSplit, string delimiter, bool trimValues)
         {
             return DelimitSplit(valueToSplit, new string[] { delimiter }, trimValues);
+        }
+
+        public static string DelimitedReplace(this string input, string toReplace, string replaceWith, string startDelimiter = "$$~", string endDelimiter = "~$$")
+        {
+            StringBuilder result = new StringBuilder();
+            StringBuilder innerValue = new StringBuilder();
+            bool replacing = false;
+            foreach (char c in input)
+            {
+                if (replacing)
+                {
+                    innerValue.Append(c);
+                    string innerSoFar = innerValue.ToString();
+                    if (innerSoFar.EndsWith(toReplace))
+                    {
+                        StringBuilder tmp = new StringBuilder();
+                        tmp.Append(innerSoFar.Truncate(toReplace.Length));
+                        tmp.Append(replaceWith);
+                        innerValue = tmp;
+                    }
+
+                    if (innerValue.ToString().EndsWith(endDelimiter))
+                    {
+                        replacing = false;
+                        result.Append(innerValue.ToString().Truncate(endDelimiter.Length));
+                    }
+                }
+                else
+                {
+                    result.Append(c);
+                    string soFar = result.ToString();
+                    if (soFar.EndsWith(startDelimiter))
+                    {
+                        replacing = true;
+                        StringBuilder tmp = new StringBuilder();
+                        tmp.Append(result.ToString().Truncate(startDelimiter.Length));
+                        result = tmp;
+                    }
+                }
+            }
+
+            return result.ToString();
         }
 
         /// <summary>

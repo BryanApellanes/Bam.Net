@@ -129,20 +129,6 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
 		}
 	}
 
-	// property:Created, columnName:Created	
-	[Bam.Net.Data.Column(Name="Created", DbDataType="DateTime", MaxLength="8", AllowNull=true)]
-	public DateTime? Created
-	{
-		get
-		{
-			return GetDateTimeValue("Created");
-		}
-		set
-		{
-			SetValue("Created", value);
-		}
-	}
-
 	// property:CreatedBy, columnName:CreatedBy	
 	[Bam.Net.Data.Column(Name="CreatedBy", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
 	public string CreatedBy
@@ -196,6 +182,20 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
 		set
 		{
 			SetValue("Deleted", value);
+		}
+	}
+
+	// property:Created, columnName:Created	
+	[Bam.Net.Data.Column(Name="Created", DbDataType="DateTime", MaxLength="8", AllowNull=true)]
+	public DateTime? Created
+	{
+		get
+		{
+			return GetDateTimeValue("Created");
+		}
+		set
+		{
+			SetValue("Created", value);
 		}
 	}
 

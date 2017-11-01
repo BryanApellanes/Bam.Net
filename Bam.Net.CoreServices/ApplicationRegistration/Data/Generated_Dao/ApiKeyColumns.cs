@@ -77,13 +77,6 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
                 return new ApiKeyColumns("DisabledBy");
             }
         }
-        public ApiKeyColumns Created
-        {
-            get
-            {
-                return new ApiKeyColumns("Created");
-            }
-        }
         public ApiKeyColumns CreatedBy
         {
             get
@@ -110,6 +103,13 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
             get
             {
                 return new ApiKeyColumns("Deleted");
+            }
+        }
+        public ApiKeyColumns Created
+        {
+            get
+            {
+                return new ApiKeyColumns("Created");
             }
         }
 

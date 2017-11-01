@@ -224,10 +224,10 @@ namespace Bam.Net.Data
 
         public T AddNew()
         {
-            T dao = new T();
-            
-            dao.Database = Database;
-
+            T dao = new T()
+            {
+                Database = Database
+            };
             Add(dao);
 
             return dao;
@@ -285,8 +285,7 @@ namespace Bam.Net.Data
 
             foreach (PropertyInfo property in properties)
             {
-                ForeignKeyAttribute fk;
-                if (property.HasCustomAttributeOfType<ForeignKeyAttribute>(out fk))
+                if (property.HasCustomAttributeOfType(out ForeignKeyAttribute fk))
                 {
                     if (fk.ReferencedTable.Equals(Dao.TableName(_parent)) && fk.Name.Equals(ReferencingColumn))
                     {

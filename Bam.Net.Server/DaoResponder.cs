@@ -162,7 +162,7 @@ namespace Bam.Net.Server
             IResponse response = context.Response;
             bool handled = false;
             string path = request.Url.AbsolutePath;
-            string appName = AppConf.AppNameFromUri(request.Url, BamConf.AppConfigs);
+            string appName = UriApplicationNameResolver.ResolveApplicationName(request.Url, BamConf.AppConfigs);
             string[] chunks = path.DelimitSplit("/");
 
             HttpArgs queryString = new HttpArgs(request.Url.Query);

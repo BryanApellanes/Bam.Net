@@ -12,7 +12,7 @@ namespace Bam.Net.Services.Distributed
 {
     [Encrypt]
     [Proxy("repoSvc")]
-    public class RepositoryService : ApplicationProxyableService, IDistributedRepository
+    public class RepositoryService : AsyncProxyableService, IDistributedRepository
     {
         protected internal RepositoryService() { }
         public RepositoryService(IRepository repository, IRepositoryTypeResolver typeResolver)

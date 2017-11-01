@@ -49,11 +49,11 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
                 return new ApplicationColumns("Name");
             }
         }
-        public ApplicationColumns Created
+        public ApplicationColumns Description
         {
             get
             {
-                return new ApplicationColumns("Created");
+                return new ApplicationColumns("Description");
             }
         }
         public ApplicationColumns CreatedBy
@@ -82,6 +82,13 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
             get
             {
                 return new ApplicationColumns("Deleted");
+            }
+        }
+        public ApplicationColumns Created
+        {
+            get
+            {
+                return new ApplicationColumns("Created");
             }
         }
 

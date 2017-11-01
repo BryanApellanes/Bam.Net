@@ -56,9 +56,7 @@ namespace Bam.Net.ServiceProxy.Tests
         [UnitTest]
         public void ShouldBeAbleToDownloadAndCompileCSharpProxy()
         {
-            BamServer server;
-            SecureServiceProxyClient<EncryptedEcho> sspc;
-            ServiceProxyTestHelpers.StartSecureChannelTestServerGetEncryptedEchoClient(out server, out sspc);
+            ServiceProxyTestHelpers.StartSecureChannelTestServerGetEncryptedEchoClient(out BamServer server, out SecureServiceProxyClient<EncryptedEcho> sspc);
 
             string value = Http.Get("http://localhost:8080/ServiceProxy/CSharpProxies?namespace=My.Test.Namespace&classes=EncryptedEcho");
             FileInfo codeFile = new FileInfo(".\\Tmp\\code.cs");

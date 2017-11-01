@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using CsQuery;
 using Bam.Net.Server;
 using Newtonsoft.Json;
+using Bam.Net.Presentation;
 
 namespace Bam.Net.Server
 {
@@ -47,14 +48,15 @@ namespace Bam.Net.Server
 
         public LayoutModel CreateLayoutModel(string[] htmlPathSegments = null)
         {
-            LayoutModel model = new LayoutModel();
-            model.ApplicationName = AppConf.Name;
-            model.QueryString = QueryString;
-            model.Extras = string.IsNullOrEmpty(Extras) ? null : JsonConvert.DeserializeObject(Extras);
-            
-            model.LayoutName = LayoutName;
-            model.ApplicationDisplayName = AppConf.DisplayName;            
+            LayoutModel model = new LayoutModel()
+            {
+                ApplicationName = AppConf.Name,
+                QueryString = QueryString,
+                Extras = string.IsNullOrEmpty(Extras) ? null : JsonConvert.DeserializeObject(Extras),
 
+                LayoutName = LayoutName,
+                ApplicationDisplayName = AppConf.DisplayName
+            };
             SetIncludes(AppConf, model);
 
             if (htmlPathSegments != null && RenderBody) 
@@ -73,7 +75,7 @@ namespace Bam.Net.Server
                 Includes commonIncludes = ContentResponder.GetCommonIncludes(conf.BamConf.ContentRoot);
                 includes = commonIncludes.Combine(includes);
             }
-            // TODO: add a config flag "Debug"
+            // TODO: add a config flag "Debug" based on ProcessMode.Current
             layoutModel.ScriptTags = includes.GetScriptTags().ToHtmlString();
             layoutModel.StyleSheetLinkTags = includes.GetStyleSheetLinkTags().ToHtmlString();
         }

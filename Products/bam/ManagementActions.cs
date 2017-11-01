@@ -33,6 +33,33 @@ namespace bam
             }
 		}
 
+        [ConsoleAction("login", "Log in user to begin secure session")]
+        public void Login()
+        {
+            throw new NotImplementedException();
+        }
+
+        [ConsoleAction("registerService", "Register Service")]
+		public void RegisterApplication()
+		{
+			throw new NotImplementedException();
+		}
+
+		[ConsoleAction("registerClientApplication", "Register Client Application")]
+		public void RegisterApp()
+		{
+			BamServer server = new BamServer(BamConf.Load(GetRoot()));
+            ConsoleLogger logger = new ConsoleLogger()
+            {
+                AddDetails = false,
+                UseColors = true
+            };
+            server.Subscribe(logger);
+			AppContentResponder app = server.CreateApp(GetArgument("appName"));
+			app.Subscribe(logger);
+			app.Initialize();
+		}
+        
         private UserInfo GetUserInfo()
         {
             return new UserInfo
@@ -42,32 +69,7 @@ namespace bam
             };
         }
 
-        [ConsoleAction("registerApplication", "Register Application")]
-		public void RegisterApplication()
-		{
-			throw new NotImplementedException();
-		}
-		
-        [ConsoleAction("login", "Log in user to begin secure session")]
-        public void Login()
-        {
-            throw new NotImplementedException();
-        }
-
-		[ConsoleAction("registerClientApplication", "Register Client Application")]
-		public void RegisterApp()
-		{
-			BamServer server = new BamServer(BamConf.Load(GetRoot()));
-			ConsoleLogger logger = new ConsoleLogger();
-			logger.AddDetails = false;
-			logger.UseColors = true;
-			server.Subscribe(logger);
-			AppContentResponder app = server.CreateApp(GetArgument("appName"));
-			app.Subscribe(logger);
-			app.Initialize();
-		}
-
-		private static string GetArgument(string name)
+        private static string GetArgument(string name)
 		{
 			string value = Arguments.Contains(name) ? Arguments[name] : Prompt("Please enter a value for {0}"._Format(name));
 			return value;

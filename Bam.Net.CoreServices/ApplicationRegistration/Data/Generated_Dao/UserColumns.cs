@@ -56,13 +56,6 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
                 return new UserColumns("UserName");
             }
         }
-        public UserColumns Created
-        {
-            get
-            {
-                return new UserColumns("Created");
-            }
-        }
         public UserColumns CreatedBy
         {
             get
@@ -89,6 +82,13 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
             get
             {
                 return new UserColumns("Deleted");
+            }
+        }
+        public UserColumns Created
+        {
+            get
+            {
+                return new UserColumns("Created");
             }
         }
 

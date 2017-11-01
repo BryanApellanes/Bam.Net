@@ -21,7 +21,7 @@ namespace baminf
         static void Main(string[] args)
         {
             PreInit();
-
+            IsolateMethodCalls = false;
             AddValidArgument("t", true);
             DefaultMethod = typeof(Program).GetMethod("Start");
 

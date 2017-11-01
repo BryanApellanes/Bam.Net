@@ -5780,6 +5780,486 @@
             </summary>
             <param name="filePath"></param>
         </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Definition.GetUniqueFilter">
+            <summary>
+            Gets a query filter that should uniquely identify
+            the current instance.  The default implementation
+            compares the Id/key field to the current instance's.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Definition.LoadAll(Bam.Net.Data.Database)">
+            <summary>
+            Return every record in the Definition table.
+            </summary>
+            <param name="database">
+            The database to load from or null
+            </param>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Definition.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.EnglishDictionary.Definition}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Definition.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.EnglishDictionary.Definition}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Definition.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.EnglishDictionary.DefinitionColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.EnglishDictionary.Definition}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Definition.Where(System.Func{Bam.Net.Analytics.EnglishDictionary.DefinitionColumns,Bam.Net.Data.QueryFilter{Bam.Net.Analytics.EnglishDictionary.DefinitionColumns}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.EnglishDictionary.DefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A Func delegate that recieves a DefinitionColumns 
+            and returns a QueryFilter which is the result of any comparisons
+            between DefinitionColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Definition.Where(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.EnglishDictionary.DefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a DefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between DefinitionColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Definition.Where(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.EnglishDictionary.DefinitionColumns},Bam.Net.Data.OrderBy{Bam.Net.Analytics.EnglishDictionary.DefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a DefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between DefinitionColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Definition.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;DefinitionColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Definition.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Definition.OneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Definition.GetOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.EnglishDictionary.DefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Definition.OneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.EnglishDictionary.DefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  This method is most commonly used to retrieve a
+            single Definition instance by its Id/Key value
+            </summary>
+            <param name="where">A WhereDelegate that recieves a DefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between DefinitionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Analytics.EnglishDictionary.Definition.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Definition.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.EnglishDictionary.DefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a DefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between DefinitionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Definition.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.EnglishDictionary.DefinitionColumns},Bam.Net.Data.OrderBy{Bam.Net.Analytics.EnglishDictionary.DefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a DefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between DefinitionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Definition.FirstOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Analytics.EnglishDictionary.DefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Shortcut for Top(1, where, orderBy, database)
+            </summary>
+            <param name="where">A WhereDelegate that recieves a DefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between DefinitionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Definition.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.EnglishDictionary.DefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number
+            of values. This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a DefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between DefinitionColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Definition.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.EnglishDictionary.DefinitionColumns},Bam.Net.Data.OrderBy{Bam.Net.Analytics.EnglishDictionary.DefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a DefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between DefinitionColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Definition.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Analytics.EnglishDictionary.DefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Definition.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Definition.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of Definitions
+            </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Definition.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.EnglishDictionary.DefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the number of results
+            </summary>
+            <param name="where">A WhereDelegate that recieves a DefinitionColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between DefinitionColumns and other values
+            </param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Word.GetUniqueFilter">
+            <summary>
+            Gets a query filter that should uniquely identify
+            the current instance.  The default implementation
+            compares the Id/key field to the current instance's.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Word.LoadAll(Bam.Net.Data.Database)">
+            <summary>
+            Return every record in the Word table.
+            </summary>
+            <param name="database">
+            The database to load from or null
+            </param>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Word.BatchAll(System.Int32,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.EnglishDictionary.Word}},Bam.Net.Data.Database)">
+            <summary>
+            Process all records in batches of the specified size
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Word.BatchQuery(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.EnglishDictionary.Word}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Word.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.EnglishDictionary.WordColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.EnglishDictionary.Word}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Word.Where(System.Func{Bam.Net.Analytics.EnglishDictionary.WordColumns,Bam.Net.Data.QueryFilter{Bam.Net.Analytics.EnglishDictionary.WordColumns}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.EnglishDictionary.WordColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A Func delegate that recieves a WordColumns 
+            and returns a QueryFilter which is the result of any comparisons
+            between WordColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Word.Where(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.EnglishDictionary.WordColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a WordColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between WordColumns and other values
+            </param>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Word.Where(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.EnglishDictionary.WordColumns},Bam.Net.Data.OrderBy{Bam.Net.Analytics.EnglishDictionary.WordColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the results. 
+            </summary>
+            <param name="where">A WhereDelegate that recieves a WordColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between WordColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Word.Where(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            This method is intended to respond to client side Qi queries.
+            Use of this method from .Net should be avoided in favor of 
+            one of the methods that take a delegate of type
+            WhereDelegate&lt;WordColumns&gt;.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Word.GetOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Word.OneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Word.GetOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.EnglishDictionary.WordColumns},Bam.Net.Data.Database)">
+            <summary>
+            Get one entry matching the specified filter.  If none exists 
+            one will be created; success will depend on the nullability
+            of the specified columns.
+            </summary>
+            <param name="where"></param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Word.OneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.EnglishDictionary.WordColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query that should return only one result.  If more
+            than one result is returned a MultipleEntriesFoundException will 
+            be thrown.  This method is most commonly used to retrieve a
+            single Word instance by its Id/Key value
+            </summary>
+            <param name="where">A WhereDelegate that recieves a WordColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between WordColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.Analytics.EnglishDictionary.Word.OneWhere(Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)" -->
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Word.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.EnglishDictionary.WordColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a WordColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between WordColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Word.FirstOneWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.EnglishDictionary.WordColumns},Bam.Net.Data.OrderBy{Bam.Net.Analytics.EnglishDictionary.WordColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="where">A WhereDelegate that recieves a WordColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between WordColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Word.FirstOneWhere(Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Analytics.EnglishDictionary.WordColumns},Bam.Net.Data.Database)">
+            <summary>
+            Shortcut for Top(1, where, orderBy, database)
+            </summary>
+            <param name="where">A WhereDelegate that recieves a WordColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between WordColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Word.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.EnglishDictionary.WordColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number
+            of values. This method will issue a sql TOP clause so only the 
+            specified number of values will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a WordColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between WordColumns and other values
+            </param>
+            <param name="database"></param>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Word.Top(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.EnglishDictionary.WordColumns},Bam.Net.Data.OrderBy{Bam.Net.Analytics.EnglishDictionary.WordColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A WhereDelegate that recieves a WordColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between WordColumns and other values
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Word.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Analytics.EnglishDictionary.WordColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="orderBy">
+            Specifies what column and direction to order the results by
+            </param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Word.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the specified number of values.  This method
+            will issue a sql TOP clause so only the specified number of values
+            will be returned.
+            of values
+            </summary>
+            <param name="count">The number of values to return.
+            This value is used in the sql query so no more than this 
+            number of values will be returned by the database.
+            </param>
+            <param name="where">A QueryFilter used to filter the 
+            results
+            </param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Word.Count(Bam.Net.Data.Database)">
+            <summary>
+            Return the count of Words
+            </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Word.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.EnglishDictionary.WordColumns},Bam.Net.Data.Database)">
+            <summary>
+            Execute a query and return the number of results
+            </summary>
+            <param name="where">A WhereDelegate that recieves a WordColumns 
+            and returns a IQueryFilter which is the result of any comparisons
+            between WordColumns and other values
+            </param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
+        </member>
         <member name="M:Bam.Net.Analytics.BaseCrawler.ExtractTargets(System.String)">
             <summary>
             When implemented by a derived class will extract
