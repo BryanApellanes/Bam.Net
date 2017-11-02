@@ -12,11 +12,38 @@ namespace Bam.Net.Documentation.Markdown
     {
         public ReferenceDocumentation()
         {
-           
+            TitleFormat = "{Name} Reference";
+            _sections = new List<DocumentComponent>();
+            DescriptionProvider = new DocInfoInferredDescriptionProvider();
+        }
+        public IDescriptionProvider DescriptionProvider { get; set; }
+        string _description;
+        public string Description
+        {
+            get
+            {
+                return _description;
+            }
+            set
+            {
+                _description = value;
+                OnUpdated(new DocumentComponentEventArgs { DocumentComponent = this });
+            }
         }
 
-        public string Description { get; set; }
-        public List<DocumentComponent> Sections { get; set; }
+        List<DocumentComponent> _sections;
+        public List<DocumentComponent> Sections
+        {
+            get
+            {
+                return _sections.Select(dc => dc).ToList();
+            }
+        }
+
+        public void AddSection(DocumentComponent section)
+        {
+            _sections.Add(section);
+        }
 
         public override string GetContent()
         {
@@ -38,6 +65,39 @@ namespace Bam.Net.Documentation.Markdown
                 _content = value;
                 OnUpdated(new DocumentComponentEventArgs { DocumentComponent = this });
             }
+        }
+
+        string _name;
+        public string Name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                _name = value;
+                OnUpdated(new DocumentComponentEventArgs { DocumentComponent = this });
+            }
+        }
+
+        string _titleFormat;
+        public string TitleFormat
+        {
+            get
+            {
+                return _titleFormat;
+            }
+            set
+            {
+                _titleFormat = value;
+                OnUpdated(new DocumentComponentEventArgs { DocumentComponent = this });
+            }
+        }
+
+        public override string GetTitle()
+        {
+            return $"{new string('#', HeaderLevel)}{TitleFormat.NamedFormat(this)}";
         }
     }
 }

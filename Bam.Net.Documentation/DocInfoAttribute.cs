@@ -14,15 +14,15 @@ namespace Bam.Net.Documentation
     /// documentation
     /// </summary>
     [AttributeUsage(AttributeTargets.All)]
-    public class ClassDocumentationAttribute: Attribute
+    public class DocInfoAttribute: Attribute
     {
-        public ClassDocumentationAttribute(string summary)
+        public DocInfoAttribute(string summary)
         {
             this.Summary = summary;
             this.ParameterDescriptions = new string[] { };
         }
 
-        public ClassDocumentationAttribute(string summary, params string[] parameterDescriptions)
+        public DocInfoAttribute(string summary, params string[] parameterDescriptions)
             : this(summary)
         {
             this.ParameterDescriptions = parameterDescriptions;

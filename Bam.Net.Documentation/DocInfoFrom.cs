@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Documentation
 {
-    public enum ClassDocumentationFrom
+    public enum DocInfoFrom
     {
         Invalid,
         Xml,

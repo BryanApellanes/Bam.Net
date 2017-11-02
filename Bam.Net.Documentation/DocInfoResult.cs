@@ -15,9 +15,9 @@ using Bam.Net.Logging;
 
 namespace Bam.Net.Documentation
 {
-    public class ClassDocumentationResult: ActionResult
+    public class DocInfoResult: ActionResult
     {
-        public ClassDocumentationResult(string[] classNames)
+        public DocInfoResult(string[] classNames)
         {
             this.ClassNames = classNames;
         }
@@ -60,7 +60,7 @@ namespace Bam.Net.Documentation
         private void RenderFromDocAttributes(ControllerContext context)
         {
             StringBuilder output = new StringBuilder();
-            Dictionary<string, List<ClassDocumentation>> documentation = new Dictionary<string, List<ClassDocumentation>>();
+            Dictionary<string, List<DocInfo>> documentation = new Dictionary<string, List<DocInfo>>();
 
             if (ClassNames.Length > 0)
             {
@@ -69,7 +69,7 @@ namespace Bam.Net.Documentation
                 ClassNames.Each(cn =>
                 {
                     Type type = container[cn];
-                    documentation = ClassDocumentation.FromDocAttributes(type);
+                    documentation = DocInfo.FromDocAttributes(type);
                 });
             }
 

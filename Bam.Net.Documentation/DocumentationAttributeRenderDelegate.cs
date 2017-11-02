@@ -9,6 +9,6 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Documentation
 {
-    public delegate void DocumentationRenderDelegate(Dictionary<string, List<ClassDocumentation>> docInfosByType, StringBuilder renderInto);
+    public delegate void DocumentationRenderDelegate(Dictionary<string, List<DocInfo>> docInfosByType, StringBuilder renderInto);
     
 }
