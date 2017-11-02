@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Bam.Net.CoreServices;
 using Bam.Net.Services.Distributed.Data;
 using Bam.Net.Data.Repositories;
-using Bam.Net.Services.Distributed.Data;
+using Bam.Net.CoreServices.ApplicationRegistration;
 
 namespace Bam.Net.Services.Distributed
 {
@@ -22,6 +22,17 @@ namespace Bam.Net.Services.Distributed
         }
         
         protected internal IRepositoryTypeResolver TypeResolver { get; set; }
+        
+        public virtual string[] GetTypes()
+        {
+            return Repository.StorableTypes.Select(t => $"{t.Namespace}.{t.Name}").ToArray();
+        }
+
+        public virtual IEnumerable<object> BatchAll(string type, int batchSize)
+        {
+            throw new NotImplementedException();
+        }
+
         public override object Clone()
         {
             RepositoryService clone = new RepositoryService(Repository, TypeResolver);
@@ -30,43 +41,46 @@ namespace Bam.Net.Services.Distributed
             return clone;
         }
 
-        public object Create(CreateOperation value)
+        public virtual object Create(CreateOperation value)
         {
-            Type type;
-            object instance;
-            ResolveTypeAndInstance(value, out type, out instance);
+            ResolveTypeAndInstance(value, out Type type, out object instance);
             return Repository.Create(type, instance);
         }
 
-        public bool Delete(DeleteOperation value)
+        public virtual bool Delete(DeleteOperation value)
         {
-            Type type;
-            object instance;
-            ResolveTypeAndInstance(value, out type, out instance);
+            ResolveTypeAndInstance(value, out Type type, out object instance);
             return Repository.Delete(type, instance);
         }
 
-        public IEnumerable<object> Query(QueryOperation query)
+        public virtual IEnumerable<object> Query(QueryOperation query)
         {
             Type type = TypeResolver.ResolveType(query);
             return Repository.Query(type, query.Properties.ToDictionary(dp => dp.Name, dp => dp.Value));
         }
 
-        public Task<ReplicationResult> RecieveReplica(ReplicateOperation operation)
+        public ReplicationState RecieveReplica(ReplicateOperation operation)
         {
-            throw new NotImplementedException();
+            ReplicationState result = new ReplicationState
+            {
+                SourceHost = operation.SourceHost,
+                SourcePort = operation.SourcePort,
+                DestinationHost = Machine.Current.DnsName,
+                DestinationPort = 80,
+                Status = ReplicationStatuses.InProgress
+            };
+            Task.Run(() => (ReplicationState)operation.Execute(this));
+            return result;
         }
 
-        public object Retrieve(RetrieveOperation value)
+        public virtual object Retrieve(RetrieveOperation value)
         {
             return Repository.Query(value.UniversalIdentifier.ToString(), value.Identifier).FirstOrDefault();
         }
 
-        public object Update(UpdateOperation value)
+        public virtual object Update(UpdateOperation value)
         {
-            Type type;
-            object instance;
-            ResolveTypeAndInstance(value, out type, out instance);            
+            ResolveTypeAndInstance(value, out Type type, out object instance);
             return Repository.Update(type, instance);
         }
 

@@ -14,6 +14,8 @@ namespace Bam.Net.Services.Distributed.Data
         {
             DataPropertyCollection = new DataPropertyCollection();
         }
+        public string TypeNamespace { get; set; }
+        public string TypeName { get; set; }
         public string Description { get; set; }
         public string DataProperties
         {
@@ -30,8 +32,7 @@ namespace Bam.Net.Services.Distributed.Data
 
         public DataProperty Property(string name, object value = null)
         {
-            DataProperty prop;
-            DataPropertyCollection.Prop(name, value, out prop);
+            DataPropertyCollection.Prop(name, value, out DataProperty prop);
             return prop;
         }
 
@@ -43,7 +44,7 @@ namespace Bam.Net.Services.Distributed.Data
         public static DataPoint FromInstance(object instance)
         {
             Type instanceType = instance.GetType();
-            return new DataPoint { Description = $"{instanceType.Namespace}.{instanceType.Name}", DataPropertyCollection = DataPropertyCollection.FromInstance(instance) };
+            return new DataPoint { TypeNamespace = instanceType.Namespace, TypeName = instanceType.Name, Description = $"{instanceType.Namespace}.{instanceType.Name}", DataPropertyCollection = DataPropertyCollection.FromInstance(instance) };
         }
 
         public T ToInsance<T>() where T: class, new()

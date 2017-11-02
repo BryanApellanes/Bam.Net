@@ -18,6 +18,8 @@ namespace Bam.Net.Services.Distributed
         bool Delete(DeleteOperation value);
         IEnumerable<object> Query(QueryOperation query);
 
-		Task<ReplicationResult> RecieveReplica(ReplicateOperation operation);
+		ReplicationState RecieveReplica(ReplicateOperation operation);
+
+        IEnumerable<object> BatchAll(string type, int batchSize);
     }
 }

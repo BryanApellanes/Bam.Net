@@ -117,7 +117,7 @@
     <Compile Include="Distributed\Data\OpertionEventArgs.cs" />
     <Compile Include="Distributed\Data\QueryOperation.cs" />
     <Compile Include="Distributed\Data\ReplicateOperation.cs" />
-    <Compile Include="Distributed\Data\ReplicationResult.cs" />
+    <Compile Include="Distributed\Data\ReplicationState.cs" />
     <Compile Include="Distributed\Data\RetrieveOperation.cs" />
     <Compile Include="Distributed\Data\UpdateOperation.cs" />
     <Compile Include="Distributed\Data\WriteEvent.cs" />
@@ -142,6 +142,11 @@
     <Compile Include="Distributed\SystemEventService.cs" />
     <Compile Include="Distributed\UniversalIdentifier.cs" />
     <Compile Include="Distributed\WriteEventService.cs" />
+    <Compile Include="Documentation\Data\ServiceDescriptor.cs" />
+    <Compile Include="Documentation\Data\ObjectDescriptor.cs" />
+    <Compile Include="Documentation\Data\OperationDescriptor.cs" />
+    <Compile Include="Documentation\Data\ParameterDescriptor.cs" />
+    <Compile Include="Documentation\Data\PropertyDescriptor.cs" />
     <Compile Include="ExecutionResponder.cs" />
     <Compile Include="OpenApi\Objects\CallbackObject.cs" />
     <Compile Include="OpenApi\Objects\ComponentsObject.cs" />
@@ -309,9 +314,7 @@
   <ItemGroup>
     <Content Include="OpenApi\OpenApi.db.js" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Documentation\Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
