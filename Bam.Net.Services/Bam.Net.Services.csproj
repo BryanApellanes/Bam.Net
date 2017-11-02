@@ -269,6 +269,10 @@
       <Project>{3b52b739-58fd-4b49-b815-6b317e701520}</Project>
       <Name>Bam.Net.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Documentation\Bam.Net.Documentation.csproj">
+      <Project>{8febe7ea-4f1f-44e2-a694-52b9a33c2414}</Project>
+      <Name>Bam.Net.Documentation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Encryption\Bam.Net.Encryption.csproj">
       <Project>{f27dc9a6-e432-4d20-bcef-d10b0c2a657d}</Project>
       <Name>Bam.Net.Encryption</Name>
@@ -305,7 +309,9 @@
   <ItemGroup>
     <Content Include="OpenApi\OpenApi.db.js" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Documentation\Data\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

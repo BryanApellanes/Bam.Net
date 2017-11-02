@@ -838,8 +838,7 @@ namespace Bam.Net.Documentation
 
         public static void AddDocInfos(Dictionary<string, List<ClassDocumentation>> results, FileInfo xmlFile, DocumentationPrecedence precedence = DocumentationPrecedence.Xml)
         {
-            Dictionary<string, List<ClassDocumentation>> xmlResults;
-            if (TryFromXmlFile(xmlFile, out xmlResults))
+            if (TryFromXmlFile(xmlFile, out Dictionary<string, List<ClassDocumentation>> xmlResults))
             {
                 xmlResults.Keys.Each(typeName =>
                 {

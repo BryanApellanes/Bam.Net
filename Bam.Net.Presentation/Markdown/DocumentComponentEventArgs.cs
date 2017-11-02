@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Presentation.Markdown
 {
-    public interface IDocumentComponent
+    public class DocumentComponentEventArgs: EventArgs
     {
-        event EventHandler<DocumentComponentEventArgs> Updated;
-        string GetTitle();
-        string GetContent();
+        public IDocumentComponent DocumentComponent { get; set; }
     }
 }

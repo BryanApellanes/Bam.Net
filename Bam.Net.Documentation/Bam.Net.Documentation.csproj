@@ -90,10 +90,9 @@
     <Compile Include="DocumentationPrecedence.cs" />
     <Compile Include="ClassDocumentationResult.cs" />
     <Compile Include="ClassMemberType.cs" />
+    <Compile Include="Markdown\ReferenceDocumentation.cs" />
+    <Compile Include="Markdown\TypeDocumentation.cs" />
     <Compile Include="OpenApi\Data\ApiDocumentation.cs" />
-    <Compile Include="OpenApi\Markdown\DocumentComponent.cs" />
-    <Compile Include="OpenApi\Markdown\DocumentSection.cs" />
-    <Compile Include="OpenApi\Markdown\ReferenceDocument.cs" />
     <Compile Include="OpenApi\Data\DataType.cs" />
     <Compile Include="OpenApi\Data\FieldDocumentation.cs" />
     <Compile Include="OpenApi\Data\ObjectDocumentation.cs" />
