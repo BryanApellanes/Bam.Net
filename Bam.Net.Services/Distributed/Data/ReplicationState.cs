@@ -18,6 +18,7 @@ namespace Bam.Net.Services.Distributed.Data
         Complete
     }
 
+    [Serializable]
 	public class ReplicationState: AuditRepoData
 	{
         public ReplicationStatuses Status { get; set; }

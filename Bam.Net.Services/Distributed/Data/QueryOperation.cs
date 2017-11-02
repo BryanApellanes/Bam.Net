@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Services.Distributed.Data
 {
+    [Serializable]
 	public class QueryOperation: Operation
 	{
         public List<DataProperty> Properties { get; set; }

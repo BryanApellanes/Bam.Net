@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Services.Distributed.Data
 {
+    [Serializable]
     public class CreateOperation : WriteOperation
     {
         public override object Execute(IDistributedRepository repository)

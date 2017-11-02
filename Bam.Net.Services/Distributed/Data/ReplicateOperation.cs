@@ -10,6 +10,7 @@ using Bam.Net.CoreServices;
 
 namespace Bam.Net.Services.Distributed.Data
 { 
+    [Serializable]
     public class ReplicateOperation: Operation
 	{
         public string SourceHost { get; set; }

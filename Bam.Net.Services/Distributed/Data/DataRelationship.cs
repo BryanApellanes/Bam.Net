@@ -9,6 +9,7 @@ using System.Collections;
 
 namespace Bam.Net.Services.Distributed.Data
 {
+    [Serializable]
     public class DataRelationship: RepoData
     {
         public string LeftCuid { get; set; }
