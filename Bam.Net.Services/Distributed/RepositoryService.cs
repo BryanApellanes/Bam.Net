@@ -15,9 +15,9 @@ namespace Bam.Net.Services.Distributed
     public class RepositoryService : AsyncProxyableService, IDistributedRepository
     {
         protected internal RepositoryService() { }
-        public RepositoryService(IRepository repository, IRepositoryTypeResolver typeResolver)
+        public RepositoryService(IRepositoryTypeResolver typeResolver)
         {
-            Repository = repository;
+            Repository = DaoRepository;
             TypeResolver = typeResolver;
         }
         
@@ -35,7 +35,7 @@ namespace Bam.Net.Services.Distributed
 
         public override object Clone()
         {
-            RepositoryService clone = new RepositoryService(Repository, TypeResolver);
+            RepositoryService clone = new RepositoryService(TypeResolver);
             clone.CopyProperties(this);
             clone.CopyEventHandlers(this);
             return clone;
@@ -59,17 +59,10 @@ namespace Bam.Net.Services.Distributed
             return Repository.Query(type, query.Properties.ToDictionary(dp => dp.Name, dp => dp.Value));
         }
 
-        public ReplicationState RecieveReplica(ReplicateOperation operation)
+        public virtual ReplicateOperation Replicate(ReplicateOperation operation)
         {
-            ReplicationState result = new ReplicationState
-            {
-                SourceHost = operation.SourceHost,
-                SourcePort = operation.SourcePort,
-                DestinationHost = Machine.Current.DnsName,
-                DestinationPort = 80,
-                Status = ReplicationStatuses.InProgress
-            };
-            Task.Run(() => (ReplicationState)operation.Execute(this));
+            ReplicateOperation result = DaoRepository.Save(operation);
+            Task.Run(() => (ReplicateOperation)operation.Execute(this));
             return result;
         }
 
