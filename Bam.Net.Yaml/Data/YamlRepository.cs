@@ -239,6 +239,20 @@ namespace Bam.Net.Yaml.Data
             object dao = DaoRepository.Retrieve(objectType, uuid);
             return GetLatest(dao);
         }
+        
+        public override void BatchRetrieveAll(Type type, int batchSize, Action<IEnumerable<object>> processor)
+        {
+            List<object> batch = new List<object>();
+            foreach (object obj in RetrieveAll(type))
+            {
+                batch.Add(obj);
+                if (batch.Count == batchSize)
+                {
+                    processor(batch);
+                    batch = new List<object>();
+                }
+            }
+        }
 
         public override IEnumerable<object> RetrieveAll(Type type)
         {

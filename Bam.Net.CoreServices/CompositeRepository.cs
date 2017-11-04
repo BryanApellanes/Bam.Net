@@ -179,7 +179,10 @@ namespace Bam.Net.CoreServices
         {
             return ReadRepository.Retrieve<T>(id);
         }
-
+        public override void BatchRetrieveAll(Type type, int batchSize, Action<IEnumerable<object>> processor)
+        {
+            ReadRepository.BatchRetrieveAll(type, batchSize, processor);
+        }
         public override IEnumerable<object> RetrieveAll(Type type)
         {
             return ReadRepository.RetrieveAll(type);

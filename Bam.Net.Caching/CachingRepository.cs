@@ -147,6 +147,11 @@ namespace Bam.Net.Caching
 			return SourceRepository.RetrieveAll<T>();
 		}
 
+        public override void BatchRetrieveAll(Type type, int batchSize, Action<IEnumerable<object>> processor)
+        {
+            SourceRepository.BatchRetrieveAll(type, batchSize, processor);
+        }
+
 		/// <summary>
 		/// Delegates to the underlying SourceRepository
 		/// without caching
