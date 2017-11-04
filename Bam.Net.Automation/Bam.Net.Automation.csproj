@@ -166,6 +166,7 @@
     <Compile Include="EnqueingJob.cs" />
     <Compile Include="Ftp.cs" />
     <Compile Include="IfElseWorker.cs" />
+    <Compile Include="MSBuild\Microsoft_Build.cs" />
     <Compile Include="Services\JobConductorService.cs" />
     <Compile Include="Partials\DeferredJob.cs" />
     <Compile Include="Partials\DeferredJobData.cs" />
