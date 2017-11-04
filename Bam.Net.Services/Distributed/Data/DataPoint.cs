@@ -12,7 +12,7 @@ namespace Bam.Net.Services.Distributed.Data
     {
         public DataPoint()
         {
-            DataPropertyCollection = new DataPropertyCollection();
+            DataPropertyCollection = new DataPropertySet();
         }
         public string TypeNamespace { get; set; }
         public string TypeName { get; set; }
@@ -25,10 +25,10 @@ namespace Bam.Net.Services.Distributed.Data
             }
             set
             {
-                DataPropertyCollection = value.FromBase64().FromBinaryBytes<DataPropertyCollection>();
+                DataPropertyCollection = value.FromBase64().FromBinaryBytes<DataPropertySet>();
             }
         }
-        protected internal DataPropertyCollection DataPropertyCollection { get; set; }
+        protected internal DataPropertySet DataPropertyCollection { get; set; }
 
         public DataProperty Property(string name, object value = null)
         {
@@ -44,7 +44,7 @@ namespace Bam.Net.Services.Distributed.Data
         public static DataPoint FromInstance(object instance)
         {
             Type instanceType = instance.GetType();
-            return new DataPoint { TypeNamespace = instanceType.Namespace, TypeName = instanceType.Name, Description = $"{instanceType.Namespace}.{instanceType.Name}", DataPropertyCollection = DataPropertyCollection.FromInstance(instance) };
+            return new DataPoint { TypeNamespace = instanceType.Namespace, TypeName = instanceType.Name, Description = $"{instanceType.Namespace}.{instanceType.Name}", DataPropertyCollection = DataPropertySet.FromInstance(instance) };
         }
 
         public T ToInsance<T>() where T: class, new()

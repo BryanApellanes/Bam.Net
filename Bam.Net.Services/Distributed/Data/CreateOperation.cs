@@ -14,7 +14,8 @@ namespace Bam.Net.Services.Distributed.Data
     {
         public override object Execute(IDistributedRepository repository)
         {
-            return repository.Create(this);
+            repository.Create(this);
+            return base.Execute(repository);
         }
 
         public static CreateOperation For(object toCreate)
@@ -25,9 +26,5 @@ namespace Bam.Net.Services.Distributed.Data
             return result;
         }
 
-        protected override void Commit(IDistributedRepository repo, WriteEvent writeEvent)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
