@@ -126,6 +126,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyAttributeInfo.cs" />
+    <Compile Include="AssemblyReference.cs" />
     <Compile Include="automation_Generated\AutomationContext.cs" />
     <Compile Include="automation_Generated\DeferredJobData.cs" />
     <Compile Include="automation_Generated\DeferredJobDataCollection.cs" />
@@ -147,6 +148,7 @@
     <Compile Include="automation_Generated\Qi\JobRunData.cs" />
     <Compile Include="BamInfo.cs" />
     <Compile Include="AdvancedInstaller\BamToolkit.cs" />
+    <Compile Include="BamProject.cs" />
     <Compile Include="ContinuousIntegration\continuousIntegration_Generated\BuildJob.cs" />
     <Compile Include="ContinuousIntegration\continuousIntegration_Generated\BuildJobCollection.cs" />
     <Compile Include="ContinuousIntegration\continuousIntegration_Generated\BuildJobColumns.cs" />

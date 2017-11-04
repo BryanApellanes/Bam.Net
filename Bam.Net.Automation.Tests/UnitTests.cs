@@ -44,17 +44,20 @@ namespace Bam.Net.Automation.Tests
         public void CanDeserializeProject()
         {
             MSBuild.Project bamProj = "C:\\src\\Bam.Net\\Bam.Net\\Bam.Net.csproj".FromXmlFile<MSBuild.Project>();
-            bamProj.PropertyGroup.Each(pgt =>
-            {
-                OutLine(pgt.PropertiesToString(), ConsoleColor.Cyan);
-            });
-            OutLine("Item group", ConsoleColor.Blue);
+            OutLine("Item groups", ConsoleColor.Blue);
             bamProj.ItemGroup.Each(igt =>
             {
-                OutLine(igt.PropertiesToString(), ConsoleColor.Blue);
+                //OutLine(igt.PropertiesToString(), ConsoleColor.Blue);
+                OutLine("Source files");
                 igt.Compile.Each(item =>
                 {
-                    OutLine(item.PropertiesToString(), ConsoleColor.Green);
+                    OutLine(item.Include, ConsoleColor.Green);
+                });
+                OutLine("References");
+                igt.Reference.Each(reference =>
+                {
+                    OutLineFormat("File: {0}", reference.Include, ConsoleColor.DarkGreen);
+                    OutLineFormat("HintPath: {0}", reference.HintPath, ConsoleColor.DarkGreen);
                 });
             });
         }
