@@ -47,7 +47,6 @@ namespace Bam.Net.Automation.Tests
             OutLine("Item groups", ConsoleColor.Blue);
             bamProj.ItemGroup.Each(igt =>
             {
-                //OutLine(igt.PropertiesToString(), ConsoleColor.Blue);
                 OutLine("Source files");
                 igt.Compile.Each(item =>
                 {

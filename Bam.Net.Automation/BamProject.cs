@@ -9,12 +9,8 @@ namespace Bam.Net.Automation
     [Serializable]
     public class BamProject
     {
-        public BamProject()
-        {
-            Uuid = System.Guid.NewGuid().ToString();
-        }
         public string Uuid { get; set; }
-        public string[] CsFiles { get; set; }
+        public CsFile[] CsFiles { get; set; }
         public AssemblyReference[] AssemblyReferences { get; set; }
     }
 }

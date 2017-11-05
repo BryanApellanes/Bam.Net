@@ -164,6 +164,7 @@
     <Compile Include="ContinuousIntegration\continuousIntegration_Generated\Qi\BuildResult.cs" />
     <Compile Include="ContinuousIntegration\Partials\BuildJob.cs" />
     <Compile Include="ContinuousIntegration\Partials\BuildResult.cs" />
+    <Compile Include="CsFile.cs" />
     <Compile Include="EmailWorker.cs" />
     <Compile Include="EnqueingJob.cs" />
     <Compile Include="Ftp.cs" />
