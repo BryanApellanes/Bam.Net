@@ -56,7 +56,10 @@ namespace bam
             List<CsFile> targetCsFiles = new List<CsFile>();
             foreach(CsFile csFile in bamProject.CsFiles)
             {
-                targetCsFiles.Add(csFile.CopyTo(dir.FullName));
+                CsFile targetCsFile = csFile.CopyTo(dir.FullName);
+                DirectoryInfo rootDir = new DirectoryInfo(csFile.Root);
+                targetCsFile.Root = Path.Combine(bamPackageDir, rootDir.Name);
+                targetCsFiles.Add(targetCsFile);
             }
             bamPackage.CsFiles = targetCsFiles.ToArray();
             bamPackage.AssemblyReferences = bamProject.AssemblyReferences;
@@ -130,7 +133,10 @@ namespace bam
             {
                 itemGroup.Compile.Each(compileItem =>
                 {
-                    csFiles.Add(new CsFile { Root = projectFile.Directory.FullName, Path = compileItem.Include });
+                    if (!compileItem.Include.Equals("Properties\\AssemblyInfo.cs"))
+                    {
+                        csFiles.Add(new CsFile { Root = projectFile.Directory.FullName, Path = compileItem.Include });
+                    }
                 });
                 itemGroup.Reference.Each(reference =>
                 {

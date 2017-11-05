@@ -15,7 +15,8 @@ namespace Bam.Net.Automation
         public CsFile CopyTo(string directoryPath)
         {
             string srcFile = System.IO.Path.Combine(Root, Path);
-            string destFile = System.IO.Path.Combine(directoryPath, Path);
+            DirectoryInfo rootDir = new DirectoryInfo(Root);
+            string destFile = System.IO.Path.Combine(directoryPath, rootDir.Name, Path);
             FileInfo destFileInfo = new FileInfo(destFile);
             if (!destFileInfo.Directory.Exists)
             {
