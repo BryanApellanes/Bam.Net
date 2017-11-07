@@ -358,15 +358,9 @@ namespace Bam.Net.Data
         public static event DaoDelegate AfterCommitAny;
         protected internal void OnAfterCommit(Database db)
         {
-            if (AfterCommit != null)
-            {
-                AfterCommit(db, this);
-            }
+            AfterCommit?.Invoke(db, this);
 
-            if (AfterCommitAny != null)
-            {
-                AfterCommitAny(db, this);
-            }
+            AfterCommitAny?.Invoke(db, this);
         }
 
         public event DaoDelegate BeforeWriteDelete;
