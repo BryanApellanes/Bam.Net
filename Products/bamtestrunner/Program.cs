@@ -1,31 +1,16 @@
 /*
 	Copyright © Bryan Apellanes 2015  
 */
+using Bam.Net.Automation.TestReporting;
+using Bam.Net.CommandLine;
+using Bam.Net.Configuration;
+using Bam.Net.Logging;
+using Bam.Net.Testing.Integration;
+using Bam.Net.Testing.Unit;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Reflection;
-using System.Data;
-using System.Data.Common;
-using System.Data.Sql;
-using System.Data.SqlClient;
 using System.IO;
-using Bam.Net.Data;
-using Bam.Net.Data.Repositories;
-using Bam.Net.Data.SQLite;
-using Bam.Net.CommandLine;
-using Bam.Net;
-using Bam.Net.Testing;
-using Bam.Net.Encryption;
-using Bam.Net.Logging;
-using System.Threading.Tasks;
-using Bam.Net.Testing.Integration;
-using Bam.Net.Testing.Data;
-using Bam.Net.Testing.Unit;
-using Bam.Net.Configuration;
-using Bam.Net.CoreServices;
-using Bam.Net.Automation.TestReporting;
+using System.Reflection;
 
 namespace Bam.Net.Testing
 {
