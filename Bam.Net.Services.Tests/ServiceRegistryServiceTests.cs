@@ -133,9 +133,9 @@ namespace Bam.Net.Services.Tests
             return db;
         }
 
-        private ServiceRegistryRepository GetServiceRegistryRepository(Database db)
+        private ServiceRegistrationRepository GetServiceRegistryRepository(Database db)
         {
-            return new ServiceRegistryRepository() { Database = db };
+            return new ServiceRegistrationRepository() { Database = db };
         }
 
         private CoreFileService GetFileService(Database db)

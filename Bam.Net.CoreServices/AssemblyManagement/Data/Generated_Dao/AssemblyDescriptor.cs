@@ -286,29 +286,27 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 				return (colFilter.KeyColumn == IdValue);
 			}			
 		}
-        
-        /// <summary>
-        /// Return every record in the AssemblyDescriptor table.
-        /// </summary>
-        /// <param name="database">
-        /// The database to load from or null
-        /// </param>
-        public static AssemblyDescriptorCollection LoadAll(Database database = null)
+
+		/// <summary>
+		/// Return every record in the AssemblyDescriptor table.
+		/// </summary>
+		/// <param name="database">
+		/// The database to load from or null
+		/// </param>
+		public static AssemblyDescriptorCollection LoadAll(Database database = null)
 		{
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<AssemblyDescriptor>();
 			Database db = database ?? Db.For<AssemblyDescriptor>();
-            var results = new AssemblyDescriptorCollection(db, sql.GetDataTable(db))
-            {
-                Database = db
-            };
-            return results;
+			var results = new AssemblyDescriptorCollection(db, sql.GetDataTable(db));
+			results.Database = db;
+			return results;
 		}
-        
-        /// <summary>
-        /// Process all records in batches of the specified size
-        /// </summary>
-        [Bam.Net.Exclude]
+
+		/// <summary>
+		/// Process all records in batches of the specified size
+		/// </summary>
+		[Bam.Net.Exclude]
 		public static async Task BatchAll(int batchSize, Action<IEnumerable<AssemblyDescriptor>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
@@ -321,7 +319,7 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 					await Task.Run(()=>
 					{
 						batchProcessor(results);
-					});                    
+					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (c) => c.KeyColumn > topId, orderBy, database);
 				}
@@ -356,6 +354,37 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (AssemblyDescriptorColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<AssemblyDescriptor>> batchProcessor, Bam.Net.Data.OrderBy<AssemblyDescriptorColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<AssemblyDescriptorColumns> where, Action<IEnumerable<AssemblyDescriptor>> batchProcessor, Bam.Net.Data.OrderBy<AssemblyDescriptorColumns> orderBy, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				AssemblyDescriptorColumns columns = new AssemblyDescriptorColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (AssemblyDescriptorColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}

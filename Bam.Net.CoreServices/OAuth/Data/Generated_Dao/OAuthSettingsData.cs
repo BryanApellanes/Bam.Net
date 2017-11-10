@@ -255,20 +255,6 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 		}
 	}
 
-	// property:Created, columnName:Created	
-	[Bam.Net.Data.Column(Name="Created", DbDataType="DateTime", MaxLength="8", AllowNull=true)]
-	public DateTime? Created
-	{
-		get
-		{
-			return GetDateTimeValue("Created");
-		}
-		set
-		{
-			SetValue("Created", value);
-		}
-	}
-
 	// property:CreatedBy, columnName:CreatedBy	
 	[Bam.Net.Data.Column(Name="CreatedBy", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
 	public string CreatedBy
@@ -322,6 +308,20 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 		set
 		{
 			SetValue("Deleted", value);
+		}
+	}
+
+	// property:Created, columnName:Created	
+	[Bam.Net.Data.Column(Name="Created", DbDataType="DateTime", MaxLength="8", AllowNull=true)]
+	public DateTime? Created
+	{
+		get
+		{
+			return GetDateTimeValue("Created");
+		}
+		set
+		{
+			SetValue("Created", value);
 		}
 	}
 
@@ -416,6 +416,37 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (OAuthSettingsDataColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<OAuthSettingsData>> batchProcessor, Bam.Net.Data.OrderBy<OAuthSettingsDataColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<OAuthSettingsDataColumns> where, Action<IEnumerable<OAuthSettingsData>> batchProcessor, Bam.Net.Data.OrderBy<OAuthSettingsDataColumns> orderBy, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				OAuthSettingsDataColumns columns = new OAuthSettingsDataColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (OAuthSettingsDataColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}

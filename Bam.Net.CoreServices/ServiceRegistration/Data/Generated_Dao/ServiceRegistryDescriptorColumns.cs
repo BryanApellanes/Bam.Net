@@ -56,13 +56,6 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
                 return new ServiceRegistryDescriptorColumns("Description");
             }
         }
-        public ServiceRegistryDescriptorColumns Created
-        {
-            get
-            {
-                return new ServiceRegistryDescriptorColumns("Created");
-            }
-        }
         public ServiceRegistryDescriptorColumns CreatedBy
         {
             get
@@ -89,6 +82,13 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
             get
             {
                 return new ServiceRegistryDescriptorColumns("Deleted");
+            }
+        }
+        public ServiceRegistryDescriptorColumns Created
+        {
+            get
+            {
+                return new ServiceRegistryDescriptorColumns("Created");
             }
         }
 
