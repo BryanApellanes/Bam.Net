@@ -18,7 +18,7 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 	// connection Name = ContinuousIntegration
 	[Serializable]
 	[Bam.Net.Data.Table("BuildJob", "ContinuousIntegration")]
-	public partial class BuildJob: Dao
+	public partial class BuildJob: Bam.Net.Data.Dao
 	{
 		public BuildJob():base()
 		{
@@ -55,8 +55,10 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 
 		private void SetChildren()
 		{
-
-            this.ChildCollections.Add("BuildResult_BuildJobId", new BuildResultCollection(Database.GetQuery<BuildResultColumns, BuildResult>((c) => c.BuildJobId == GetLongValue("Id")), this, "BuildJobId"));							
+			if(_database != null)
+			{
+				this.ChildCollections.Add("BuildResult_BuildJobId", new BuildResultCollection(Database.GetQuery<BuildResultColumns, BuildResult>((c) => c.BuildJobId == GetLongValue("Id")), this, "BuildJobId"));				
+			}						
 		}
 
 	// property:Id, columnName:Id	
@@ -217,7 +219,7 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<BuildJob>();
 			Database db = database ?? Db.For<BuildJob>();
-			var results = new BuildJobCollection(sql.GetDataTable(db));
+			var results = new BuildJobCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
@@ -273,6 +275,37 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (BuildJobColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<BuildJob>> batchProcessor, Bam.Net.Data.OrderBy<BuildJobColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<BuildJobColumns> where, Action<IEnumerable<BuildJob>> batchProcessor, Bam.Net.Data.OrderBy<BuildJobColumns> orderBy, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				BuildJobColumns columns = new BuildJobColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (BuildJobColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
@@ -564,7 +597,9 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="database"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static BuildJobCollection Top(int count, WhereDelegate<BuildJobColumns> where, OrderBy<BuildJobColumns> orderBy, Database database = null)
 		{
@@ -608,7 +643,9 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static BuildJobCollection Top(int count, QueryFilter where, OrderBy<BuildJobColumns> orderBy = null, Database database = null)
 		{
@@ -641,10 +678,9 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		/// <param name="where">A QueryFilter used to filter the 
 		/// results
 		/// </param>
-		/// <param name="orderBy">
-		/// Specifies what column and direction to order the results by
+		/// <param name="database">
+		/// Which database to query or null to use the default
 		/// </param>
-		/// <param name="db"></param>
 		public static BuildJobCollection Top(int count, QiQuery where, Database database = null)
 		{
 			Database db = database ?? Db.For<BuildJob>();
@@ -660,6 +696,9 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		/// <summary>
 		/// Return the count of BuildJobs
 		/// </summary>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		public static long Count(Database database = null)
         {
 			Database db = database ?? Db.For<BuildJob>();
@@ -676,7 +715,9 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 		/// and returns a IQueryFilter which is the result of any comparisons
 		/// between BuildJobColumns and other values
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<BuildJobColumns> where, Database database = null)
 		{

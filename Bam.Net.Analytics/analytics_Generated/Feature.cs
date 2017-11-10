@@ -18,7 +18,7 @@ namespace Bam.Net.Analytics
 	// connection Name = Analytics
 	[Serializable]
 	[Bam.Net.Data.Table("Feature", "Analytics")]
-	public partial class Feature: Dao
+	public partial class Feature: Bam.Net.Data.Dao
 	{
 		public Feature():base()
 		{
@@ -199,7 +199,7 @@ namespace Bam.Net.Analytics
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Feature>();
 			Database db = database ?? Db.For<Feature>();
-			var results = new FeatureCollection(sql.GetDataTable(db));
+			var results = new FeatureCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
@@ -255,6 +255,37 @@ namespace Bam.Net.Analytics
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (FeatureColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<Feature>> batchProcessor, Bam.Net.Data.OrderBy<FeatureColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<FeatureColumns> where, Action<IEnumerable<Feature>> batchProcessor, Bam.Net.Data.OrderBy<FeatureColumns> orderBy, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				FeatureColumns columns = new FeatureColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (FeatureColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
@@ -546,7 +577,9 @@ namespace Bam.Net.Analytics
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="database"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static FeatureCollection Top(int count, WhereDelegate<FeatureColumns> where, OrderBy<FeatureColumns> orderBy, Database database = null)
 		{
@@ -590,7 +623,9 @@ namespace Bam.Net.Analytics
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static FeatureCollection Top(int count, QueryFilter where, OrderBy<FeatureColumns> orderBy = null, Database database = null)
 		{
@@ -623,10 +658,9 @@ namespace Bam.Net.Analytics
 		/// <param name="where">A QueryFilter used to filter the 
 		/// results
 		/// </param>
-		/// <param name="orderBy">
-		/// Specifies what column and direction to order the results by
+		/// <param name="database">
+		/// Which database to query or null to use the default
 		/// </param>
-		/// <param name="db"></param>
 		public static FeatureCollection Top(int count, QiQuery where, Database database = null)
 		{
 			Database db = database ?? Db.For<Feature>();
@@ -642,6 +676,9 @@ namespace Bam.Net.Analytics
 		/// <summary>
 		/// Return the count of Features
 		/// </summary>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		public static long Count(Database database = null)
         {
 			Database db = database ?? Db.For<Feature>();
@@ -658,7 +695,9 @@ namespace Bam.Net.Analytics
 		/// and returns a IQueryFilter which is the result of any comparisons
 		/// between FeatureColumns and other values
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<FeatureColumns> where, Database database = null)
 		{

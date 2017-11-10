@@ -13,9 +13,9 @@ namespace Bam.Net.Automation.Data
     public class JobDataCollection: DaoCollection<JobDataColumns, JobData>
     { 
 		public JobDataCollection(){}
-		public JobDataCollection(Database db, DataTable table, Dao dao = null, string rc = null) : base(db, table, dao, rc) { }
-		public JobDataCollection(DataTable table, Dao dao = null, string rc = null) : base(table, dao, rc) { }
-		public JobDataCollection(Query<JobDataColumns, JobData> q, Dao dao = null, string rc = null) : base(q, dao, rc) { }
+		public JobDataCollection(Database db, DataTable table, Bam.Net.Data.Dao dao = null, string rc = null) : base(db, table, dao, rc) { }
+		public JobDataCollection(DataTable table, Bam.Net.Data.Dao dao = null, string rc = null) : base(table, dao, rc) { }
+		public JobDataCollection(Query<JobDataColumns, JobData> q, Bam.Net.Data.Dao dao = null, string rc = null) : base(q, dao, rc) { }
 		public JobDataCollection(Database db, Query<JobDataColumns, JobData> q, bool load) : base(db, q, load) { }
 		public JobDataCollection(Query<JobDataColumns, JobData> q, bool load) : base(q, load) { }
     }

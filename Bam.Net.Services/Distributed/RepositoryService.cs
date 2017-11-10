@@ -7,6 +7,7 @@ using Bam.Net.CoreServices;
 using Bam.Net.Services.Distributed.Data;
 using Bam.Net.Data.Repositories;
 using Bam.Net.CoreServices.ApplicationRegistration;
+using Bam.Net.Data;
 
 namespace Bam.Net.Services.Distributed
 {
@@ -25,12 +26,13 @@ namespace Bam.Net.Services.Distributed
         
         public virtual string[] GetTypes()
         {
-            return Repository.StorableTypes.Select(t => $"{t.Namespace}.{t.Name}").ToArray();
+            return DaoRepository.StorableTypes.Select(t => $"{t.Namespace}.{t.Name}").ToArray();
         }
 
-        public virtual IEnumerable<object> BatchAll(string type, int batchSize)
+        public virtual IEnumerable<object> NextSet(ReplicationOperation operation)
         {
-            throw new NotImplementedException();
+            Type type = TypeResolver.ResolveType(operation);
+            yield return DaoRepository.Top(operation.BatchSize, type, QueryFilter.Where("Cuid") > operation.FromCuid);
         }
 
         public override object Clone()
@@ -39,6 +41,12 @@ namespace Bam.Net.Services.Distributed
             clone.CopyProperties(this);
             clone.CopyEventHandlers(this);
             return clone;
+        }
+
+        public virtual object Save(SaveOperation value)
+        {
+            ResolveTypeAndInstance(value, out Type type, out object instance);
+            return Repository.Save(instance);
         }
 
         public virtual object Create(CreateOperation value)
@@ -59,10 +67,10 @@ namespace Bam.Net.Services.Distributed
             return Repository.Query(type, query.Properties.ToDictionary(dp => dp.Name, dp => dp.Value));
         }
 
-        public virtual ReplicateOperation Replicate(ReplicateOperation operation)
+        public virtual ReplicationOperation Replicate(ReplicationOperation operation)
         {
-            ReplicateOperation result = DaoRepository.Save(operation);
-            Task.Run(() => (ReplicateOperation)operation.Execute(this));
+            ReplicationOperation result = DaoRepository.Save(operation);
+            Task.Run(() => (ReplicationOperation)operation.Execute(this));
             return result;
         }
 

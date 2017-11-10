@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Services.Distributed
 {
-    class Class1
+    public enum ReplicationStatus
     {
+        Invalid,
+        Pending,
+        Warning,
+        Failed,
+        Success
     }
 }

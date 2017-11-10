@@ -49,13 +49,6 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
                 return new ServiceRegistryLockColumns("Name");
             }
         }
-        public ServiceRegistryLockColumns Created
-        {
-            get
-            {
-                return new ServiceRegistryLockColumns("Created");
-            }
-        }
         public ServiceRegistryLockColumns CreatedBy
         {
             get
@@ -82,6 +75,13 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
             get
             {
                 return new ServiceRegistryLockColumns("Deleted");
+            }
+        }
+        public ServiceRegistryLockColumns Created
+        {
+            get
+            {
+                return new ServiceRegistryLockColumns("Created");
             }
         }
 

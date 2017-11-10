@@ -131,6 +131,11 @@ namespace Bam.Net.Data.Repositories
             return DaoRepository.RetrieveAll(type);
         }
 
+        public override void BatchRetrieveAll(Type type, int batchSize, Action<IEnumerable<object>> processor)
+        {
+            DaoRepository.BatchRetrieveAll(type, batchSize, processor);
+        }
+
         public override IEnumerable<T> RetrieveAll<T>()
         {
             return DaoRepository.RetrieveAll<T>();

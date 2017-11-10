@@ -119,13 +119,6 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
                 return new OAuthSettingsDataColumns("TokenEndpointFormat");
             }
         }
-        public OAuthSettingsDataColumns Created
-        {
-            get
-            {
-                return new OAuthSettingsDataColumns("Created");
-            }
-        }
         public OAuthSettingsDataColumns CreatedBy
         {
             get
@@ -152,6 +145,13 @@ namespace Bam.Net.CoreServices.OAuth.Data.Dao
             get
             {
                 return new OAuthSettingsDataColumns("Deleted");
+            }
+        }
+        public OAuthSettingsDataColumns Created
+        {
+            get
+            {
+                return new OAuthSettingsDataColumns("Created");
             }
         }
 

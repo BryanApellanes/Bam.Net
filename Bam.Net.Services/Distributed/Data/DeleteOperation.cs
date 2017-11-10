@@ -17,7 +17,7 @@ namespace Bam.Net.Services.Distributed.Data
         public override object Execute(IDistributedRepository repository)
         {
             repository.Delete(this);
-            return this.CopyAs<DeleteEvent>();
+            return base.Execute(repository);
         }
 
         public static DeleteOperation For(object toDelete, UniversalIdentifier identifier = UniversalIdentifier.Cuid)
@@ -28,9 +28,5 @@ namespace Bam.Net.Services.Distributed.Data
             return operation;
         }
 
-        protected override void Commit(IDistributedRepository repo, WriteEvent writeEvent)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

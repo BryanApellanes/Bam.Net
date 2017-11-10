@@ -18,7 +18,7 @@ namespace Bam.Net.Logging.Data
 	// connection Name = DaoLogger2
 	[Serializable]
 	[Bam.Net.Data.Table("ComputerName", "DaoLogger2")]
-	public partial class ComputerName: Dao
+	public partial class ComputerName: Bam.Net.Data.Dao
 	{
 		public ComputerName():base()
 		{
@@ -55,8 +55,10 @@ namespace Bam.Net.Logging.Data
 
 		private void SetChildren()
 		{
-
-            this.ChildCollections.Add("Event_ComputerNameId", new EventCollection(Database.GetQuery<EventColumns, Event>((c) => c.ComputerNameId == GetLongValue("Id")), this, "ComputerNameId"));							
+			if(_database != null)
+			{
+				this.ChildCollections.Add("Event_ComputerNameId", new EventCollection(Database.GetQuery<EventColumns, Event>((c) => c.ComputerNameId == GetLongValue("Id")), this, "ComputerNameId"));				
+			}						
 		}
 
 	// property:Id, columnName:Id	
@@ -175,7 +177,7 @@ namespace Bam.Net.Logging.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<ComputerName>();
 			Database db = database ?? Db.For<ComputerName>();
-			var results = new ComputerNameCollection(sql.GetDataTable(db));
+			var results = new ComputerNameCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
@@ -231,6 +233,37 @@ namespace Bam.Net.Logging.Data
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (ComputerNameColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<ComputerName>> batchProcessor, Bam.Net.Data.OrderBy<ComputerNameColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<ComputerNameColumns> where, Action<IEnumerable<ComputerName>> batchProcessor, Bam.Net.Data.OrderBy<ComputerNameColumns> orderBy, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				ComputerNameColumns columns = new ComputerNameColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (ComputerNameColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
@@ -522,7 +555,9 @@ namespace Bam.Net.Logging.Data
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="database"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static ComputerNameCollection Top(int count, WhereDelegate<ComputerNameColumns> where, OrderBy<ComputerNameColumns> orderBy, Database database = null)
 		{
@@ -566,7 +601,9 @@ namespace Bam.Net.Logging.Data
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static ComputerNameCollection Top(int count, QueryFilter where, OrderBy<ComputerNameColumns> orderBy = null, Database database = null)
 		{
@@ -599,10 +636,9 @@ namespace Bam.Net.Logging.Data
 		/// <param name="where">A QueryFilter used to filter the 
 		/// results
 		/// </param>
-		/// <param name="orderBy">
-		/// Specifies what column and direction to order the results by
+		/// <param name="database">
+		/// Which database to query or null to use the default
 		/// </param>
-		/// <param name="db"></param>
 		public static ComputerNameCollection Top(int count, QiQuery where, Database database = null)
 		{
 			Database db = database ?? Db.For<ComputerName>();
@@ -618,6 +654,9 @@ namespace Bam.Net.Logging.Data
 		/// <summary>
 		/// Return the count of ComputerNames
 		/// </summary>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		public static long Count(Database database = null)
         {
 			Database db = database ?? Db.For<ComputerName>();
@@ -634,7 +673,9 @@ namespace Bam.Net.Logging.Data
 		/// and returns a IQueryFilter which is the result of any comparisons
 		/// between ComputerNameColumns and other values
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<ComputerNameColumns> where, Database database = null)
 		{

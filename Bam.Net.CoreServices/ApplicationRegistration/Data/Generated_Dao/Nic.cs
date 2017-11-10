@@ -287,6 +287,37 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
 			});			
 		}
 
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<Nic>> batchProcessor, Bam.Net.Data.OrderBy<NicColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<NicColumns> where, Action<IEnumerable<Nic>> batchProcessor, Bam.Net.Data.OrderBy<NicColumns> orderBy, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				NicColumns columns = new NicColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (NicColumns)where(columns) && orderBy.Column > top, orderBy, database);
+				}
+			});			
+		}
+
 		public static Nic GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);

@@ -13,9 +13,9 @@ namespace Bam.Net.UserAccounts.Data
     public class PasswordResetCollection: DaoCollection<PasswordResetColumns, PasswordReset>
     { 
 		public PasswordResetCollection(){}
-		public PasswordResetCollection(Database db, DataTable table, Dao dao = null, string rc = null) : base(db, table, dao, rc) { }
-		public PasswordResetCollection(DataTable table, Dao dao = null, string rc = null) : base(table, dao, rc) { }
-		public PasswordResetCollection(Query<PasswordResetColumns, PasswordReset> q, Dao dao = null, string rc = null) : base(q, dao, rc) { }
+		public PasswordResetCollection(Database db, DataTable table, Bam.Net.Data.Dao dao = null, string rc = null) : base(db, table, dao, rc) { }
+		public PasswordResetCollection(DataTable table, Bam.Net.Data.Dao dao = null, string rc = null) : base(table, dao, rc) { }
+		public PasswordResetCollection(Query<PasswordResetColumns, PasswordReset> q, Bam.Net.Data.Dao dao = null, string rc = null) : base(q, dao, rc) { }
 		public PasswordResetCollection(Database db, Query<PasswordResetColumns, PasswordReset> q, bool load) : base(db, q, load) { }
 		public PasswordResetCollection(Query<PasswordResetColumns, PasswordReset> q, bool load) : base(q, load) { }
     }

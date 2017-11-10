@@ -18,7 +18,7 @@ namespace Bam.Net.Logging.Data
 	// connection Name = DaoLogger2
 	[Serializable]
 	[Bam.Net.Data.Table("UserName", "DaoLogger2")]
-	public partial class UserName: Dao
+	public partial class UserName: Bam.Net.Data.Dao
 	{
 		public UserName():base()
 		{
@@ -55,8 +55,10 @@ namespace Bam.Net.Logging.Data
 
 		private void SetChildren()
 		{
-
-            this.ChildCollections.Add("Event_UserNameId", new EventCollection(Database.GetQuery<EventColumns, Event>((c) => c.UserNameId == GetLongValue("Id")), this, "UserNameId"));							
+			if(_database != null)
+			{
+				this.ChildCollections.Add("Event_UserNameId", new EventCollection(Database.GetQuery<EventColumns, Event>((c) => c.UserNameId == GetLongValue("Id")), this, "UserNameId"));				
+			}						
 		}
 
 	// property:Id, columnName:Id	
@@ -175,7 +177,7 @@ namespace Bam.Net.Logging.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<UserName>();
 			Database db = database ?? Db.For<UserName>();
-			var results = new UserNameCollection(sql.GetDataTable(db));
+			var results = new UserNameCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
@@ -231,6 +233,37 @@ namespace Bam.Net.Logging.Data
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (UserNameColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<UserName>> batchProcessor, Bam.Net.Data.OrderBy<UserNameColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<UserNameColumns> where, Action<IEnumerable<UserName>> batchProcessor, Bam.Net.Data.OrderBy<UserNameColumns> orderBy, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				UserNameColumns columns = new UserNameColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (UserNameColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
@@ -522,7 +555,9 @@ namespace Bam.Net.Logging.Data
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="database"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static UserNameCollection Top(int count, WhereDelegate<UserNameColumns> where, OrderBy<UserNameColumns> orderBy, Database database = null)
 		{
@@ -566,7 +601,9 @@ namespace Bam.Net.Logging.Data
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static UserNameCollection Top(int count, QueryFilter where, OrderBy<UserNameColumns> orderBy = null, Database database = null)
 		{
@@ -599,10 +636,9 @@ namespace Bam.Net.Logging.Data
 		/// <param name="where">A QueryFilter used to filter the 
 		/// results
 		/// </param>
-		/// <param name="orderBy">
-		/// Specifies what column and direction to order the results by
+		/// <param name="database">
+		/// Which database to query or null to use the default
 		/// </param>
-		/// <param name="db"></param>
 		public static UserNameCollection Top(int count, QiQuery where, Database database = null)
 		{
 			Database db = database ?? Db.For<UserName>();
@@ -618,6 +654,9 @@ namespace Bam.Net.Logging.Data
 		/// <summary>
 		/// Return the count of UserNames
 		/// </summary>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		public static long Count(Database database = null)
         {
 			Database db = database ?? Db.For<UserName>();
@@ -634,7 +673,9 @@ namespace Bam.Net.Logging.Data
 		/// and returns a IQueryFilter which is the result of any comparisons
 		/// between UserNameColumns and other values
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<UserNameColumns> where, Database database = null)
 		{

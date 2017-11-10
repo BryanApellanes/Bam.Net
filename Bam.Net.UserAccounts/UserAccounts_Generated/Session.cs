@@ -18,7 +18,7 @@ namespace Bam.Net.UserAccounts.Data
 	// connection Name = UserAccounts
 	[Serializable]
 	[Bam.Net.Data.Table("Session", "UserAccounts")]
-	public partial class Session: Dao
+	public partial class Session: Bam.Net.Data.Dao
 	{
 		public Session():base()
 		{
@@ -55,9 +55,13 @@ namespace Bam.Net.UserAccounts.Data
 
 		private void SetChildren()
 		{
-
-            this.ChildCollections.Add("SessionState_SessionId", new SessionStateCollection(Database.GetQuery<SessionStateColumns, SessionState>((c) => c.SessionId == GetLongValue("Id")), this, "SessionId"));	
-            this.ChildCollections.Add("UserBehavior_SessionId", new UserBehaviorCollection(Database.GetQuery<UserBehaviorColumns, UserBehavior>((c) => c.SessionId == GetLongValue("Id")), this, "SessionId"));							
+			if(_database != null)
+			{
+				this.ChildCollections.Add("SessionState_SessionId", new SessionStateCollection(Database.GetQuery<SessionStateColumns, SessionState>((c) => c.SessionId == GetLongValue("Id")), this, "SessionId"));				
+			}			if(_database != null)
+			{
+				this.ChildCollections.Add("UserBehavior_SessionId", new UserBehaviorCollection(Database.GetQuery<UserBehaviorColumns, UserBehavior>((c) => c.SessionId == GetLongValue("Id")), this, "SessionId"));				
+			}						
 		}
 
 	// property:Id, columnName:Id	
@@ -277,7 +281,7 @@ namespace Bam.Net.UserAccounts.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Session>();
 			Database db = database ?? Db.For<Session>();
-			var results = new SessionCollection(sql.GetDataTable(db));
+			var results = new SessionCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
@@ -333,6 +337,37 @@ namespace Bam.Net.UserAccounts.Data
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (SessionColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<Session>> batchProcessor, Bam.Net.Data.OrderBy<SessionColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<SessionColumns> where, Action<IEnumerable<Session>> batchProcessor, Bam.Net.Data.OrderBy<SessionColumns> orderBy, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				SessionColumns columns = new SessionColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (SessionColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
@@ -624,7 +659,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="database"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static SessionCollection Top(int count, WhereDelegate<SessionColumns> where, OrderBy<SessionColumns> orderBy, Database database = null)
 		{
@@ -668,7 +705,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static SessionCollection Top(int count, QueryFilter where, OrderBy<SessionColumns> orderBy = null, Database database = null)
 		{
@@ -701,10 +740,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// <param name="where">A QueryFilter used to filter the 
 		/// results
 		/// </param>
-		/// <param name="orderBy">
-		/// Specifies what column and direction to order the results by
+		/// <param name="database">
+		/// Which database to query or null to use the default
 		/// </param>
-		/// <param name="db"></param>
 		public static SessionCollection Top(int count, QiQuery where, Database database = null)
 		{
 			Database db = database ?? Db.For<Session>();
@@ -720,6 +758,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// <summary>
 		/// Return the count of Sessions
 		/// </summary>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		public static long Count(Database database = null)
         {
 			Database db = database ?? Db.For<Session>();
@@ -736,7 +777,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// and returns a IQueryFilter which is the result of any comparisons
 		/// between SessionColumns and other values
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<SessionColumns> where, Database database = null)
 		{

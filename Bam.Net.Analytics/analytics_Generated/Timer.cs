@@ -18,7 +18,7 @@ namespace Bam.Net.Analytics
 	// connection Name = Analytics
 	[Serializable]
 	[Bam.Net.Data.Table("Timer", "Analytics")]
-	public partial class Timer: Dao
+	public partial class Timer: Bam.Net.Data.Dao
 	{
 		public Timer():base()
 		{
@@ -55,10 +55,16 @@ namespace Bam.Net.Analytics
 
 		private void SetChildren()
 		{
-
-            this.ChildCollections.Add("MethodTimer_TimerId", new MethodTimerCollection(Database.GetQuery<MethodTimerColumns, MethodTimer>((c) => c.TimerId == GetLongValue("Id")), this, "TimerId"));	
-            this.ChildCollections.Add("LoadTimer_TimerId", new LoadTimerCollection(Database.GetQuery<LoadTimerColumns, LoadTimer>((c) => c.TimerId == GetLongValue("Id")), this, "TimerId"));	
-            this.ChildCollections.Add("CustomTimer_TimerId", new CustomTimerCollection(Database.GetQuery<CustomTimerColumns, CustomTimer>((c) => c.TimerId == GetLongValue("Id")), this, "TimerId"));							
+			if(_database != null)
+			{
+				this.ChildCollections.Add("MethodTimer_TimerId", new MethodTimerCollection(Database.GetQuery<MethodTimerColumns, MethodTimer>((c) => c.TimerId == GetLongValue("Id")), this, "TimerId"));				
+			}			if(_database != null)
+			{
+				this.ChildCollections.Add("LoadTimer_TimerId", new LoadTimerCollection(Database.GetQuery<LoadTimerColumns, LoadTimer>((c) => c.TimerId == GetLongValue("Id")), this, "TimerId"));				
+			}			if(_database != null)
+			{
+				this.ChildCollections.Add("CustomTimer_TimerId", new CustomTimerCollection(Database.GetQuery<CustomTimerColumns, CustomTimer>((c) => c.TimerId == GetLongValue("Id")), this, "TimerId"));				
+			}						
 		}
 
 	// property:Id, columnName:Id	
@@ -225,7 +231,7 @@ namespace Bam.Net.Analytics
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Timer>();
 			Database db = database ?? Db.For<Timer>();
-			var results = new TimerCollection(sql.GetDataTable(db));
+			var results = new TimerCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
@@ -281,6 +287,37 @@ namespace Bam.Net.Analytics
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (TimerColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<Timer>> batchProcessor, Bam.Net.Data.OrderBy<TimerColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<TimerColumns> where, Action<IEnumerable<Timer>> batchProcessor, Bam.Net.Data.OrderBy<TimerColumns> orderBy, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				TimerColumns columns = new TimerColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (TimerColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
@@ -572,7 +609,9 @@ namespace Bam.Net.Analytics
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="database"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static TimerCollection Top(int count, WhereDelegate<TimerColumns> where, OrderBy<TimerColumns> orderBy, Database database = null)
 		{
@@ -616,7 +655,9 @@ namespace Bam.Net.Analytics
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static TimerCollection Top(int count, QueryFilter where, OrderBy<TimerColumns> orderBy = null, Database database = null)
 		{
@@ -649,10 +690,9 @@ namespace Bam.Net.Analytics
 		/// <param name="where">A QueryFilter used to filter the 
 		/// results
 		/// </param>
-		/// <param name="orderBy">
-		/// Specifies what column and direction to order the results by
+		/// <param name="database">
+		/// Which database to query or null to use the default
 		/// </param>
-		/// <param name="db"></param>
 		public static TimerCollection Top(int count, QiQuery where, Database database = null)
 		{
 			Database db = database ?? Db.For<Timer>();
@@ -668,6 +708,9 @@ namespace Bam.Net.Analytics
 		/// <summary>
 		/// Return the count of Timers
 		/// </summary>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		public static long Count(Database database = null)
         {
 			Database db = database ?? Db.For<Timer>();
@@ -684,7 +727,9 @@ namespace Bam.Net.Analytics
 		/// and returns a IQueryFilter which is the result of any comparisons
 		/// between TimerColumns and other values
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<TimerColumns> where, Database database = null)
 		{

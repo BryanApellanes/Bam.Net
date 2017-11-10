@@ -49,6 +49,13 @@ namespace Bam.Net.Translation
                 return new LanguageDetectionColumns("Detector");
             }
         }
+        public LanguageDetectionColumns ResponseData
+        {
+            get
+            {
+                return new LanguageDetectionColumns("ResponseData");
+            }
+        }
 
         public LanguageDetectionColumns LanguageId
         {

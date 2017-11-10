@@ -18,7 +18,7 @@ namespace Bam.Net.UserAccounts.Data
 	// connection Name = UserAccounts
 	[Serializable]
 	[Bam.Net.Data.Table("Group", "UserAccounts")]
-	public partial class Group: Dao
+	public partial class Group: Bam.Net.Data.Dao
 	{
 		public Group():base()
 		{
@@ -55,9 +55,13 @@ namespace Bam.Net.UserAccounts.Data
 
 		private void SetChildren()
 		{
-
-            this.ChildCollections.Add("UserGroup_GroupId", new UserGroupCollection(Database.GetQuery<UserGroupColumns, UserGroup>((c) => c.GroupId == GetLongValue("Id")), this, "GroupId"));	
-            this.ChildCollections.Add("GroupPermission_GroupId", new GroupPermissionCollection(Database.GetQuery<GroupPermissionColumns, GroupPermission>((c) => c.GroupId == GetLongValue("Id")), this, "GroupId"));				
+			if(_database != null)
+			{
+				this.ChildCollections.Add("UserGroup_GroupId", new UserGroupCollection(Database.GetQuery<UserGroupColumns, UserGroup>((c) => c.GroupId == GetLongValue("Id")), this, "GroupId"));				
+			}			if(_database != null)
+			{
+				this.ChildCollections.Add("GroupPermission_GroupId", new GroupPermissionCollection(Database.GetQuery<GroupPermissionColumns, GroupPermission>((c) => c.GroupId == GetLongValue("Id")), this, "GroupId"));				
+			}			
             this.ChildCollections.Add("Group_GroupPermission_Permission",  new XrefDaoCollection<GroupPermission, Permission>(this, false));
 							
             this.ChildCollections.Add("Group_UserGroup_User",  new XrefDaoCollection<UserGroup, User>(this, false));
@@ -287,7 +291,7 @@ namespace Bam.Net.UserAccounts.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Group>();
 			Database db = database ?? Db.For<Group>();
-			var results = new GroupCollection(sql.GetDataTable(db));
+			var results = new GroupCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
@@ -343,6 +347,37 @@ namespace Bam.Net.UserAccounts.Data
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (GroupColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<Group>> batchProcessor, Bam.Net.Data.OrderBy<GroupColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<GroupColumns> where, Action<IEnumerable<Group>> batchProcessor, Bam.Net.Data.OrderBy<GroupColumns> orderBy, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				GroupColumns columns = new GroupColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (GroupColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
@@ -634,7 +669,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="database"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static GroupCollection Top(int count, WhereDelegate<GroupColumns> where, OrderBy<GroupColumns> orderBy, Database database = null)
 		{
@@ -678,7 +715,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static GroupCollection Top(int count, QueryFilter where, OrderBy<GroupColumns> orderBy = null, Database database = null)
 		{
@@ -711,10 +750,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// <param name="where">A QueryFilter used to filter the 
 		/// results
 		/// </param>
-		/// <param name="orderBy">
-		/// Specifies what column and direction to order the results by
+		/// <param name="database">
+		/// Which database to query or null to use the default
 		/// </param>
-		/// <param name="db"></param>
 		public static GroupCollection Top(int count, QiQuery where, Database database = null)
 		{
 			Database db = database ?? Db.For<Group>();
@@ -730,6 +768,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// <summary>
 		/// Return the count of Groups
 		/// </summary>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		public static long Count(Database database = null)
         {
 			Database db = database ?? Db.For<Group>();
@@ -746,7 +787,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// and returns a IQueryFilter which is the result of any comparisons
 		/// between GroupColumns and other values
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<GroupColumns> where, Database database = null)
 		{

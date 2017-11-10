@@ -120,6 +120,9 @@
     <Compile Include="AppInitializerBase.cs" />
     <Compile Include="Bam.cs" />
     <Compile Include="BamController.cs" />
+    <Compile Include="Binary\BinaryClient.cs" />
+    <Compile Include="Binary\BinaryRequest.cs" />
+    <Compile Include="Binary\BinaryResponse.cs" />
     <Compile Include="BootstrapIcons.cs" />
     <Compile Include="BamApplicationManager.cs" />
     <Compile Include="BamApplicationManagerResult.cs" />
@@ -131,6 +134,7 @@
     <Compile Include="HttpPostedFile.cs" />
     <Compile Include="IAppInitializer.cs" />
     <Compile Include="IClientProxyGenerator.cs" />
+    <Compile Include="IHasMessage.cs" />
     <Compile Include="InitializeFailedEventArgs.cs" />
     <Compile Include="JsClientProxyGenerator.cs" />
     <Compile Include="Listeners\ServerEventListenerAttribute.cs" />
@@ -178,7 +182,7 @@
     <Compile Include="SearchRule.cs" />
     <Compile Include="AppSetting.cs" />
     <Compile Include="SimpleServer.cs" />
-    <Compile Include="TcpServer.cs" />
+    <Compile Include="Binary\BinaryServer.cs" />
     <Compile Include="IInitialize.cs" />
     <Compile Include="Includes.cs" />
     <Compile Include="InitializeFrom.cs" />
@@ -217,7 +221,7 @@
     <Compile Include="ResponderList.cs" />
     <Compile Include="ResultBase.cs" />
     <Compile Include="DaoResponder.cs" />
-    <Compile Include="TcpContext.cs" />
+    <Compile Include="Binary\BinaryContext.cs" />
     <Compile Include="TemplateInitializerBase.cs" />
     <Compile Include="UriApplicationNameResolver.cs" />
     <Compile Include="WebBook.cs" />
@@ -312,6 +316,7 @@
       <Name>Bam.Net</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

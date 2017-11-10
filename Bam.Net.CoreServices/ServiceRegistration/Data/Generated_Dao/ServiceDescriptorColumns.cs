@@ -84,13 +84,6 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
                 return new ServiceDescriptorColumns("UseAssembly");
             }
         }
-        public ServiceDescriptorColumns Created
-        {
-            get
-            {
-                return new ServiceDescriptorColumns("Created");
-            }
-        }
         public ServiceDescriptorColumns CreatedBy
         {
             get
@@ -117,6 +110,13 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
             get
             {
                 return new ServiceDescriptorColumns("Deleted");
+            }
+        }
+        public ServiceDescriptorColumns Created
+        {
+            get
+            {
+                return new ServiceDescriptorColumns("Created");
             }
         }
 

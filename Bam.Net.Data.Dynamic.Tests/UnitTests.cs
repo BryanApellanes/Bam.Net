@@ -28,7 +28,7 @@ namespace Bam.Net.Data.Dynamic.Tests
         [IntegrationTest]
         public void ExtensionExecuteSqlShouldInsert()
         {
-            FileInfo inputFile = new FileInfo("c:\\BamTestData\\Db_SillydatabaseNameMap_NormalizEDOnTypes.json");
+            FileInfo inputFile = new FileInfo("c:\\Bam\\Data\\Test\\Db_SillydatabaseNameMap_NormalizEDOnTypes.json");
             SchemaNameMap map = SchemaNameMap.Load(inputFile.FullName);
             Database db = GetDatabase();
             "INSERT INTO {Customer} ({FirstName}, {LastName}, {Birthday}, {Age}) VALUES (@FirstName, @LastName, @Birthday, @Age)"
@@ -81,7 +81,7 @@ namespace Bam.Net.Data.Dynamic.Tests
         [IntegrationTest]
         public void DynamicCrudTest()
         {
-            FileInfo inputFile = new FileInfo("c:\\BamTestData\\Db_SillydatabaseNameMap_NormalizEDOnTypes.json");
+            FileInfo inputFile = new FileInfo("c:\\Bam\\Data\\Test\\Db_SillydatabaseNameMap_NormalizEDOnTypes.json");
             SchemaNameMap map = SchemaNameMap.Load(inputFile.FullName);
             DynamicDatabase db = new DynamicDatabase(GetDatabase(), map);
             var bryan = new

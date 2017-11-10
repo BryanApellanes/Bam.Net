@@ -18,7 +18,7 @@ namespace Bam.Net.UserAccounts.Data
 	// connection Name = UserAccounts
 	[Serializable]
 	[Bam.Net.Data.Table("PasswordReset", "UserAccounts")]
-	public partial class PasswordReset: Dao
+	public partial class PasswordReset: Bam.Net.Data.Dao
 	{
 		public PasswordReset():base()
 		{
@@ -227,7 +227,7 @@ namespace Bam.Net.UserAccounts.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<PasswordReset>();
 			Database db = database ?? Db.For<PasswordReset>();
-			var results = new PasswordResetCollection(sql.GetDataTable(db));
+			var results = new PasswordResetCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
@@ -283,6 +283,37 @@ namespace Bam.Net.UserAccounts.Data
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (PasswordResetColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<PasswordReset>> batchProcessor, Bam.Net.Data.OrderBy<PasswordResetColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<PasswordResetColumns> where, Action<IEnumerable<PasswordReset>> batchProcessor, Bam.Net.Data.OrderBy<PasswordResetColumns> orderBy, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				PasswordResetColumns columns = new PasswordResetColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (PasswordResetColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
@@ -574,7 +605,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="database"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static PasswordResetCollection Top(int count, WhereDelegate<PasswordResetColumns> where, OrderBy<PasswordResetColumns> orderBy, Database database = null)
 		{
@@ -618,7 +651,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static PasswordResetCollection Top(int count, QueryFilter where, OrderBy<PasswordResetColumns> orderBy = null, Database database = null)
 		{
@@ -651,10 +686,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// <param name="where">A QueryFilter used to filter the 
 		/// results
 		/// </param>
-		/// <param name="orderBy">
-		/// Specifies what column and direction to order the results by
+		/// <param name="database">
+		/// Which database to query or null to use the default
 		/// </param>
-		/// <param name="db"></param>
 		public static PasswordResetCollection Top(int count, QiQuery where, Database database = null)
 		{
 			Database db = database ?? Db.For<PasswordReset>();
@@ -670,6 +704,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// <summary>
 		/// Return the count of PasswordResets
 		/// </summary>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		public static long Count(Database database = null)
         {
 			Database db = database ?? Db.For<PasswordReset>();
@@ -686,7 +723,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// and returns a IQueryFilter which is the result of any comparisons
 		/// between PasswordResetColumns and other values
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<PasswordResetColumns> where, Database database = null)
 		{

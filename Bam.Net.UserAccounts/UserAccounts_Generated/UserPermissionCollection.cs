@@ -13,9 +13,9 @@ namespace Bam.Net.UserAccounts.Data
     public class UserPermissionCollection: DaoCollection<UserPermissionColumns, UserPermission>
     { 
 		public UserPermissionCollection(){}
-		public UserPermissionCollection(Database db, DataTable table, Dao dao = null, string rc = null) : base(db, table, dao, rc) { }
-		public UserPermissionCollection(DataTable table, Dao dao = null, string rc = null) : base(table, dao, rc) { }
-		public UserPermissionCollection(Query<UserPermissionColumns, UserPermission> q, Dao dao = null, string rc = null) : base(q, dao, rc) { }
+		public UserPermissionCollection(Database db, DataTable table, Bam.Net.Data.Dao dao = null, string rc = null) : base(db, table, dao, rc) { }
+		public UserPermissionCollection(DataTable table, Bam.Net.Data.Dao dao = null, string rc = null) : base(table, dao, rc) { }
+		public UserPermissionCollection(Query<UserPermissionColumns, UserPermission> q, Bam.Net.Data.Dao dao = null, string rc = null) : base(q, dao, rc) { }
 		public UserPermissionCollection(Database db, Query<UserPermissionColumns, UserPermission> q, bool load) : base(db, q, load) { }
 		public UserPermissionCollection(Query<UserPermissionColumns, UserPermission> q, bool load) : base(q, load) { }
     }

@@ -2770,6 +2770,28 @@ namespace Bam.Net
             return largest;
         }
 
+        public static T Largest<T>(this T[] values)
+        {
+            if (values.Length == 0)
+            {
+                return default(T);
+            }
+            T result = values[0];
+            values.Each(s => result = s.ToString().CompareTo(result.ToString()) == 1 ? s : result);
+            return result;
+        }
+
+        public static string Largest(this string[] strings)
+        {
+            if(strings.Length == 0)
+            {
+                return string.Empty;
+            }
+            string result = strings[0];
+            strings.Each(s => result = s.CompareTo(result) == 1 ? s : result);
+            return result;
+        }
+
         /// <summary>
         /// Splits the specified text at capital letters inserting the specified separator.
         /// </summary>

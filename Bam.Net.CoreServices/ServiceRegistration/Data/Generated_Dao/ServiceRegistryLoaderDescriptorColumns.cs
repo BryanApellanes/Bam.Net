@@ -77,13 +77,6 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
                 return new ServiceRegistryLoaderDescriptorColumns("LoaderMethod");
             }
         }
-        public ServiceRegistryLoaderDescriptorColumns Created
-        {
-            get
-            {
-                return new ServiceRegistryLoaderDescriptorColumns("Created");
-            }
-        }
         public ServiceRegistryLoaderDescriptorColumns CreatedBy
         {
             get
@@ -110,6 +103,13 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
             get
             {
                 return new ServiceRegistryLoaderDescriptorColumns("Deleted");
+            }
+        }
+        public ServiceRegistryLoaderDescriptorColumns Created
+        {
+            get
+            {
+                return new ServiceRegistryLoaderDescriptorColumns("Created");
             }
         }
 

@@ -18,6 +18,8 @@ using Bam.Net.CoreServices.AssemblyManagement.Data.Dao;
 using Bam.Net.CoreServices.ServiceRegistration.Data.Dao;
 using Bam.Net.CoreServices.ServiceRegistration.Data.Dao.Repository;
 using Bam.Net.Testing.Unit;
+using Bam.Net.Services.Documentation.Data;
+using Bam.Net.Services.OpenApi;
 
 namespace Bam.Net.Services.Tests
 {
@@ -30,6 +32,24 @@ namespace Bam.Net.Services.Tests
             public void MethodExclude() { }
             [Local]
             public void MethodLocal() { }
+        }
+
+        //[UnitTest]
+        //public void CanCallBatchAllWithReflection()
+        //{
+        //    //Bam.Net.Services.OpenApi.ObjectDescriptor.BatchAll
+        //    MethodInfo method = typeof(Bam.Net.Services.OpenApi.ObjectDescriptor).GetMethod("BatchAll");
+        //    var delegateType = typeof(Action<>).MakeGenericType(typeof(IEnumerable<>));
+        //    var del = Delegate.CreateDelegate(method.GetParameters()[1].ParameterType, typeof(ServiceRegistryServiceTests).GetMethod("EnumerableAction"));
+        //    method.Invoke(null, new object[] { 5, del, new OpenApiObjectDatabase() });
+        //}
+
+        public void EnumerableAction(IEnumerable<object> values)
+        {
+            foreach(object value in values)
+            {
+                OutLine(value.PropertiesToLine());
+            }
         }
 
         [UnitTest]
@@ -109,13 +129,13 @@ namespace Bam.Net.Services.Tests
         {
             SQLiteDatabase db = new SQLiteDatabase(".\\", databaseName);
             db.TryEnsureSchema<AssemblyDescriptor>();
-            db.TryEnsureSchema<ServiceDescriptor>();
+            db.TryEnsureSchema<Bam.Net.CoreServices.ServiceRegistration.Data.Dao.ServiceDescriptor>();
             return db;
         }
 
-        private ServiceRegistryRepository GetServiceRegistryRepository(Database db)
+        private ServiceRegistrationRepository GetServiceRegistryRepository(Database db)
         {
-            return new ServiceRegistryRepository() { Database = db };
+            return new ServiceRegistrationRepository() { Database = db };
         }
 
         private CoreFileService GetFileService(Database db)

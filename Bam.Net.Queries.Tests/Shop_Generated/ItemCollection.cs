@@ -13,9 +13,9 @@ namespace Bam.Net.Data.Tests
     public class ItemCollection: DaoCollection<ItemColumns, Item>
     { 
 		public ItemCollection(){}
-		public ItemCollection(Database db, DataTable table, Dao dao = null, string rc = null) : base(db, table, dao, rc) { }
-		public ItemCollection(DataTable table, Dao dao = null, string rc = null) : base(table, dao, rc) { }
-		public ItemCollection(Query<ItemColumns, Item> q, Dao dao = null, string rc = null) : base(q, dao, rc) { }
+		public ItemCollection(Database db, DataTable table, Bam.Net.Data.Dao dao = null, string rc = null) : base(db, table, dao, rc) { }
+		public ItemCollection(DataTable table, Bam.Net.Data.Dao dao = null, string rc = null) : base(table, dao, rc) { }
+		public ItemCollection(Query<ItemColumns, Item> q, Bam.Net.Data.Dao dao = null, string rc = null) : base(q, dao, rc) { }
 		public ItemCollection(Database db, Query<ItemColumns, Item> q, bool load) : base(db, q, load) { }
 		public ItemCollection(Query<ItemColumns, Item> q, bool load) : base(q, load) { }
     }

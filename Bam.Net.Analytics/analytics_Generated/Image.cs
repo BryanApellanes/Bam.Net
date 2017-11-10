@@ -18,7 +18,7 @@ namespace Bam.Net.Analytics
 	// connection Name = Analytics
 	[Serializable]
 	[Bam.Net.Data.Table("Image", "Analytics")]
-	public partial class Image: Dao
+	public partial class Image: Bam.Net.Data.Dao
 	{
 		public Image():base()
 		{
@@ -55,8 +55,10 @@ namespace Bam.Net.Analytics
 
 		private void SetChildren()
 		{
-
-            this.ChildCollections.Add("ImageTag_ImageId", new ImageTagCollection(Database.GetQuery<ImageTagColumns, ImageTag>((c) => c.ImageId == GetLongValue("Id")), this, "ImageId"));				
+			if(_database != null)
+			{
+				this.ChildCollections.Add("ImageTag_ImageId", new ImageTagCollection(Database.GetQuery<ImageTagColumns, ImageTag>((c) => c.ImageId == GetLongValue("Id")), this, "ImageId"));				
+			}			
             this.ChildCollections.Add("Image_ImageTag_Tag",  new XrefDaoCollection<ImageTag, Tag>(this, false));
 							
 		}
@@ -271,7 +273,7 @@ namespace Bam.Net.Analytics
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Image>();
 			Database db = database ?? Db.For<Image>();
-			var results = new ImageCollection(sql.GetDataTable(db));
+			var results = new ImageCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
@@ -327,6 +329,37 @@ namespace Bam.Net.Analytics
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (ImageColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<Image>> batchProcessor, Bam.Net.Data.OrderBy<ImageColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<ImageColumns> where, Action<IEnumerable<Image>> batchProcessor, Bam.Net.Data.OrderBy<ImageColumns> orderBy, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				ImageColumns columns = new ImageColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (ImageColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
@@ -618,7 +651,9 @@ namespace Bam.Net.Analytics
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="database"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static ImageCollection Top(int count, WhereDelegate<ImageColumns> where, OrderBy<ImageColumns> orderBy, Database database = null)
 		{
@@ -662,7 +697,9 @@ namespace Bam.Net.Analytics
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static ImageCollection Top(int count, QueryFilter where, OrderBy<ImageColumns> orderBy = null, Database database = null)
 		{
@@ -695,10 +732,9 @@ namespace Bam.Net.Analytics
 		/// <param name="where">A QueryFilter used to filter the 
 		/// results
 		/// </param>
-		/// <param name="orderBy">
-		/// Specifies what column and direction to order the results by
+		/// <param name="database">
+		/// Which database to query or null to use the default
 		/// </param>
-		/// <param name="db"></param>
 		public static ImageCollection Top(int count, QiQuery where, Database database = null)
 		{
 			Database db = database ?? Db.For<Image>();
@@ -714,6 +750,9 @@ namespace Bam.Net.Analytics
 		/// <summary>
 		/// Return the count of Images
 		/// </summary>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		public static long Count(Database database = null)
         {
 			Database db = database ?? Db.For<Image>();
@@ -730,7 +769,9 @@ namespace Bam.Net.Analytics
 		/// and returns a IQueryFilter which is the result of any comparisons
 		/// between ImageColumns and other values
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<ImageColumns> where, Database database = null)
 		{

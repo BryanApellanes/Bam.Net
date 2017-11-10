@@ -86,7 +86,7 @@ namespace Bam.Net.UserAccounts.Data.Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Bam.Net.UserAccounts.Data.PasswordReset));
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.UserAccounts.Data.PasswordReset));
 				object value = Bam.Net.UserAccounts.Data.PasswordReset.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Bam.Net.UserAccounts.Data.Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Bam.Net.UserAccounts.Data.PasswordReset));
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.UserAccounts.Data.PasswordReset));
 				object[] value = Bam.Net.UserAccounts.Data.PasswordReset.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

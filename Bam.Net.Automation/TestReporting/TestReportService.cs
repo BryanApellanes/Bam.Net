@@ -99,9 +99,11 @@ namespace Bam.Net.Automation.TestReporting
 				NotificationSubscription subscription = Repository.Query<NotificationSubscription>(Query.Where("EmailAddress") == emailAddress).FirstOrDefault();
 				if (subscription == null)
 				{
-					subscription = new NotificationSubscription();
-					subscription.EmailAddress = emailAddress;
-				}
+                    subscription = new NotificationSubscription()
+                    {
+                        EmailAddress = emailAddress
+                    };
+                }
 
 				subscription.IsActive = true;
 				subscription = Repository.Save(subscription);

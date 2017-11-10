@@ -18,7 +18,7 @@ namespace Bam.Net.Data.Repositories.Tests
 	// connection Name = RepoTests
 	[Serializable]
 	[Bam.Net.Data.Table("TernaryObject", "RepoTests")]
-	public partial class TernaryObject: Dao
+	public partial class TernaryObject: Bam.Net.Data.Dao
 	{
 		public TernaryObject():base()
 		{
@@ -55,8 +55,10 @@ namespace Bam.Net.Data.Repositories.Tests
 
 		private void SetChildren()
 		{
-
-            this.ChildCollections.Add("SecondaryObjectTernaryObject_TernaryObjectId", new SecondaryObjectTernaryObjectCollection(Database.GetQuery<SecondaryObjectTernaryObjectColumns, SecondaryObjectTernaryObject>((c) => c.TernaryObjectId == GetLongValue("Id")), this, "TernaryObjectId"));							
+			if(_database != null)
+			{
+				this.ChildCollections.Add("SecondaryObjectTernaryObject_TernaryObjectId", new SecondaryObjectTernaryObjectCollection(Database.GetQuery<SecondaryObjectTernaryObjectColumns, SecondaryObjectTernaryObject>((c) => c.TernaryObjectId == GetLongValue("Id")), this, "TernaryObjectId"));				
+			}						
             this.ChildCollections.Add("TernaryObject_SecondaryObjectTernaryObject_SecondaryObject",  new XrefDaoCollection<SecondaryObjectTernaryObject, SecondaryObject>(this, false));
 				
 		}
@@ -215,7 +217,7 @@ namespace Bam.Net.Data.Repositories.Tests
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<TernaryObject>();
 			Database db = database ?? Db.For<TernaryObject>();
-			var results = new TernaryObjectCollection(sql.GetDataTable(db));
+			var results = new TernaryObjectCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
@@ -271,6 +273,37 @@ namespace Bam.Net.Data.Repositories.Tests
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (TernaryObjectColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<TernaryObject>> batchProcessor, Bam.Net.Data.OrderBy<TernaryObjectColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<TernaryObjectColumns> where, Action<IEnumerable<TernaryObject>> batchProcessor, Bam.Net.Data.OrderBy<TernaryObjectColumns> orderBy, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				TernaryObjectColumns columns = new TernaryObjectColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (TernaryObjectColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
@@ -562,7 +595,9 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="database"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static TernaryObjectCollection Top(int count, WhereDelegate<TernaryObjectColumns> where, OrderBy<TernaryObjectColumns> orderBy, Database database = null)
 		{
@@ -606,7 +641,9 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static TernaryObjectCollection Top(int count, QueryFilter where, OrderBy<TernaryObjectColumns> orderBy = null, Database database = null)
 		{
@@ -639,10 +676,9 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// <param name="where">A QueryFilter used to filter the 
 		/// results
 		/// </param>
-		/// <param name="orderBy">
-		/// Specifies what column and direction to order the results by
+		/// <param name="database">
+		/// Which database to query or null to use the default
 		/// </param>
-		/// <param name="db"></param>
 		public static TernaryObjectCollection Top(int count, QiQuery where, Database database = null)
 		{
 			Database db = database ?? Db.For<TernaryObject>();
@@ -658,6 +694,9 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// <summary>
 		/// Return the count of TernaryObjects
 		/// </summary>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		public static long Count(Database database = null)
         {
 			Database db = database ?? Db.For<TernaryObject>();
@@ -674,7 +713,9 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// and returns a IQueryFilter which is the result of any comparisons
 		/// between TernaryObjectColumns and other values
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<TernaryObjectColumns> where, Database database = null)
 		{

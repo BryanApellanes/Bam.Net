@@ -86,7 +86,7 @@ namespace Bam.Net.Logging.Data.Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Bam.Net.Logging.Data.Signature));
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.Logging.Data.Signature));
 				object value = Bam.Net.Logging.Data.Signature.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Bam.Net.Logging.Data.Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Bam.Net.Logging.Data.Signature));
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.Logging.Data.Signature));
 				object[] value = Bam.Net.Logging.Data.Signature.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

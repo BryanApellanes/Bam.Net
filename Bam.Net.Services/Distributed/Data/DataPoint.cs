@@ -12,7 +12,7 @@ namespace Bam.Net.Services.Distributed.Data
     {
         public DataPoint()
         {
-            DataPropertyCollection = new DataPropertyCollection();
+            DataPropertySet = new DataPropertySet();
         }
         public string TypeNamespace { get; set; }
         public string TypeName { get; set; }
@@ -21,18 +21,18 @@ namespace Bam.Net.Services.Distributed.Data
         {
             get
             {
-                return DataPropertyCollection.ToBinaryBytes().ToBase64();
+                return DataPropertySet.ToBinaryBytes().ToBase64();
             }
             set
             {
-                DataPropertyCollection = value.FromBase64().FromBinaryBytes<DataPropertyCollection>();
+                DataPropertySet = value.FromBase64().FromBinaryBytes<DataPropertySet>();
             }
         }
-        protected internal DataPropertyCollection DataPropertyCollection { get; set; }
+        protected internal DataPropertySet DataPropertySet { get; set; }
 
         public DataProperty Property(string name, object value = null)
         {
-            DataPropertyCollection.Prop(name, value, out DataProperty prop);
+            DataPropertySet.Prop(name, value, out DataProperty prop);
             return prop;
         }
 
@@ -44,13 +44,13 @@ namespace Bam.Net.Services.Distributed.Data
         public static DataPoint FromInstance(object instance)
         {
             Type instanceType = instance.GetType();
-            return new DataPoint { TypeNamespace = instanceType.Namespace, TypeName = instanceType.Name, Description = $"{instanceType.Namespace}.{instanceType.Name}", DataPropertyCollection = DataPropertyCollection.FromInstance(instance) };
+            return new DataPoint { TypeNamespace = instanceType.Namespace, TypeName = instanceType.Name, Description = $"{instanceType.Namespace}.{instanceType.Name}", DataPropertySet = DataPropertySet.FromInstance(instance) };
         }
 
         public T ToInsance<T>() where T: class, new()
         {
             T result = new T();
-            DataPropertyCollection.Each(dp => result.Property(dp.Name, dp.Value));            
+            DataPropertySet.Each(dp => result.Property(dp.Name, dp.Value));            
             return result;
         }
     }

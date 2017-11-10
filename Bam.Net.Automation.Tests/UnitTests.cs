@@ -33,12 +33,34 @@ using Bam.Net.Automation.ContinuousIntegration.Loggers;
 using Bam.Net.Documentation;
 using Bam.Net.Testing.Unit;
 using Bam.Net.Services;
+using MSBuild = Bam.Net.Automation.MSBuild;
 
 namespace Bam.Net.Automation.Tests
 {
     [Serializable]
     public class UnitTests: CommandLineTestInterface
     {
+        [ConsoleAction]
+        public void CanDeserializeProject()
+        {
+            MSBuild.Project bamProj = "C:\\src\\Bam.Net\\Bam.Net\\Bam.Net.csproj".FromXmlFile<MSBuild.Project>();
+            OutLine("Item groups", ConsoleColor.Blue);
+            bamProj.ItemGroup.Each(igt =>
+            {
+                OutLine("Source files");
+                igt.Compile.Each(item =>
+                {
+                    OutLine(item.Include, ConsoleColor.Green);
+                });
+                OutLine("References");
+                igt.Reference.Each(reference =>
+                {
+                    OutLineFormat("File: {0}", reference.Include, ConsoleColor.DarkGreen);
+                    OutLineFormat("HintPath: {0}", reference.HintPath, ConsoleColor.DarkGreen);
+                });
+            });
+        }
+
         [UnitTest]
         public void TestRunListenerEventsShouldFire()
         {
