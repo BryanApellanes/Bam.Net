@@ -18,7 +18,7 @@ namespace Bam.Net.Logging.Data
 	// connection Name = DaoLogger
 	[Serializable]
 	[Bam.Net.Data.Table("LogEvent", "DaoLogger")]
-	public partial class LogEvent: Dao
+	public partial class LogEvent: Bam.Net.Data.Dao
 	{
 		public LogEvent():base()
 		{
@@ -276,7 +276,7 @@ namespace Bam.Net.Logging.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<LogEvent>();
 			Database db = database ?? Db.For<LogEvent>();
-			var results = new LogEventCollection(sql.GetDataTable(db));
+			var results = new LogEventCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
@@ -332,6 +332,37 @@ namespace Bam.Net.Logging.Data
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (LogEventColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<LogEvent>> batchProcessor, Bam.Net.Data.OrderBy<LogEventColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<LogEventColumns> where, Action<IEnumerable<LogEvent>> batchProcessor, Bam.Net.Data.OrderBy<LogEventColumns> orderBy, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				LogEventColumns columns = new LogEventColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (LogEventColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
@@ -623,7 +654,9 @@ namespace Bam.Net.Logging.Data
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="database"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static LogEventCollection Top(int count, WhereDelegate<LogEventColumns> where, OrderBy<LogEventColumns> orderBy, Database database = null)
 		{
@@ -667,7 +700,9 @@ namespace Bam.Net.Logging.Data
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static LogEventCollection Top(int count, QueryFilter where, OrderBy<LogEventColumns> orderBy = null, Database database = null)
 		{
@@ -700,10 +735,9 @@ namespace Bam.Net.Logging.Data
 		/// <param name="where">A QueryFilter used to filter the 
 		/// results
 		/// </param>
-		/// <param name="orderBy">
-		/// Specifies what column and direction to order the results by
+		/// <param name="database">
+		/// Which database to query or null to use the default
 		/// </param>
-		/// <param name="db"></param>
 		public static LogEventCollection Top(int count, QiQuery where, Database database = null)
 		{
 			Database db = database ?? Db.For<LogEvent>();
@@ -719,6 +753,9 @@ namespace Bam.Net.Logging.Data
 		/// <summary>
 		/// Return the count of LogEvents
 		/// </summary>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		public static long Count(Database database = null)
         {
 			Database db = database ?? Db.For<LogEvent>();
@@ -735,7 +772,9 @@ namespace Bam.Net.Logging.Data
 		/// and returns a IQueryFilter which is the result of any comparisons
 		/// between LogEventColumns and other values
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<LogEventColumns> where, Database database = null)
 		{

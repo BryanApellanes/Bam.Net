@@ -18,7 +18,7 @@ namespace Bam.Net.Logging.Data
 	// connection Name = DaoLogger2
 	[Serializable]
 	[Bam.Net.Data.Table("Param", "DaoLogger2")]
-	public partial class Param: Dao
+	public partial class Param: Bam.Net.Data.Dao
 	{
 		public Param():base()
 		{
@@ -55,8 +55,10 @@ namespace Bam.Net.Logging.Data
 
 		private void SetChildren()
 		{
-
-            this.ChildCollections.Add("EventParam_ParamId", new EventParamCollection(Database.GetQuery<EventParamColumns, EventParam>((c) => c.ParamId == GetLongValue("Id")), this, "ParamId"));							
+			if(_database != null)
+			{
+				this.ChildCollections.Add("EventParam_ParamId", new EventParamCollection(Database.GetQuery<EventParamColumns, EventParam>((c) => c.ParamId == GetLongValue("Id")), this, "ParamId"));				
+			}						
             this.ChildCollections.Add("Param_EventParam_Event",  new XrefDaoCollection<EventParam, Event>(this, false));
 				
 		}
@@ -215,7 +217,7 @@ namespace Bam.Net.Logging.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Param>();
 			Database db = database ?? Db.For<Param>();
-			var results = new ParamCollection(sql.GetDataTable(db));
+			var results = new ParamCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
@@ -271,6 +273,37 @@ namespace Bam.Net.Logging.Data
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (ParamColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<Param>> batchProcessor, Bam.Net.Data.OrderBy<ParamColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<ParamColumns> where, Action<IEnumerable<Param>> batchProcessor, Bam.Net.Data.OrderBy<ParamColumns> orderBy, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				ParamColumns columns = new ParamColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (ParamColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
@@ -562,7 +595,9 @@ namespace Bam.Net.Logging.Data
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="database"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static ParamCollection Top(int count, WhereDelegate<ParamColumns> where, OrderBy<ParamColumns> orderBy, Database database = null)
 		{
@@ -606,7 +641,9 @@ namespace Bam.Net.Logging.Data
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static ParamCollection Top(int count, QueryFilter where, OrderBy<ParamColumns> orderBy = null, Database database = null)
 		{
@@ -639,10 +676,9 @@ namespace Bam.Net.Logging.Data
 		/// <param name="where">A QueryFilter used to filter the 
 		/// results
 		/// </param>
-		/// <param name="orderBy">
-		/// Specifies what column and direction to order the results by
+		/// <param name="database">
+		/// Which database to query or null to use the default
 		/// </param>
-		/// <param name="db"></param>
 		public static ParamCollection Top(int count, QiQuery where, Database database = null)
 		{
 			Database db = database ?? Db.For<Param>();
@@ -658,6 +694,9 @@ namespace Bam.Net.Logging.Data
 		/// <summary>
 		/// Return the count of Params
 		/// </summary>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		public static long Count(Database database = null)
         {
 			Database db = database ?? Db.For<Param>();
@@ -674,7 +713,9 @@ namespace Bam.Net.Logging.Data
 		/// and returns a IQueryFilter which is the result of any comparisons
 		/// between ParamColumns and other values
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<ParamColumns> where, Database database = null)
 		{

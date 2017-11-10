@@ -18,7 +18,7 @@ namespace Bam.Net.ServiceProxy.Secure
 	// connection Name = SecureServiceProxy
 	[Serializable]
 	[Bam.Net.Data.Table("SecureSession", "SecureServiceProxy")]
-	public partial class SecureSession: Dao
+	public partial class SecureSession: Bam.Net.Data.Dao
 	{
 		public SecureSession():base()
 		{
@@ -283,7 +283,7 @@ namespace Bam.Net.ServiceProxy.Secure
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<SecureSession>();
 			Database db = database ?? Db.For<SecureSession>();
-			var results = new SecureSessionCollection(sql.GetDataTable(db));
+			var results = new SecureSessionCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
@@ -339,6 +339,37 @@ namespace Bam.Net.ServiceProxy.Secure
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (SecureSessionColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<SecureSession>> batchProcessor, Bam.Net.Data.OrderBy<SecureSessionColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<SecureSessionColumns> where, Action<IEnumerable<SecureSession>> batchProcessor, Bam.Net.Data.OrderBy<SecureSessionColumns> orderBy, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				SecureSessionColumns columns = new SecureSessionColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (SecureSessionColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
@@ -630,7 +661,9 @@ namespace Bam.Net.ServiceProxy.Secure
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="database"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static SecureSessionCollection Top(int count, WhereDelegate<SecureSessionColumns> where, OrderBy<SecureSessionColumns> orderBy, Database database = null)
 		{
@@ -674,7 +707,9 @@ namespace Bam.Net.ServiceProxy.Secure
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static SecureSessionCollection Top(int count, QueryFilter where, OrderBy<SecureSessionColumns> orderBy = null, Database database = null)
 		{
@@ -707,10 +742,9 @@ namespace Bam.Net.ServiceProxy.Secure
 		/// <param name="where">A QueryFilter used to filter the 
 		/// results
 		/// </param>
-		/// <param name="orderBy">
-		/// Specifies what column and direction to order the results by
+		/// <param name="database">
+		/// Which database to query or null to use the default
 		/// </param>
-		/// <param name="db"></param>
 		public static SecureSessionCollection Top(int count, QiQuery where, Database database = null)
 		{
 			Database db = database ?? Db.For<SecureSession>();
@@ -726,6 +760,9 @@ namespace Bam.Net.ServiceProxy.Secure
 		/// <summary>
 		/// Return the count of SecureSessions
 		/// </summary>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		public static long Count(Database database = null)
         {
 			Database db = database ?? Db.For<SecureSession>();
@@ -742,7 +779,9 @@ namespace Bam.Net.ServiceProxy.Secure
 		/// and returns a IQueryFilter which is the result of any comparisons
 		/// between SecureSessionColumns and other values
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<SecureSessionColumns> where, Database database = null)
 		{

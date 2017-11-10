@@ -86,7 +86,7 @@ namespace Bam.Net.Encryption.Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Bam.Net.Encryption.VaultItem));
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.Encryption.VaultItem));
 				object value = Bam.Net.Encryption.VaultItem.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Bam.Net.Encryption.Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Bam.Net.Encryption.VaultItem));
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.Encryption.VaultItem));
 				object[] value = Bam.Net.Encryption.VaultItem.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

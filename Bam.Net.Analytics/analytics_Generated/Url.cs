@@ -18,7 +18,7 @@ namespace Bam.Net.Analytics
 	// connection Name = Analytics
 	[Serializable]
 	[Bam.Net.Data.Table("Url", "Analytics")]
-	public partial class Url: Dao
+	public partial class Url: Bam.Net.Data.Dao
 	{
 		public Url():base()
 		{
@@ -55,9 +55,13 @@ namespace Bam.Net.Analytics
 
 		private void SetChildren()
 		{
-
-            this.ChildCollections.Add("Image_UrlId", new ImageCollection(Database.GetQuery<ImageColumns, Image>((c) => c.UrlId == GetLongValue("Id")), this, "UrlId"));	
-            this.ChildCollections.Add("UrlTag_UrlId", new UrlTagCollection(Database.GetQuery<UrlTagColumns, UrlTag>((c) => c.UrlId == GetLongValue("Id")), this, "UrlId"));				
+			if(_database != null)
+			{
+				this.ChildCollections.Add("Image_UrlId", new ImageCollection(Database.GetQuery<ImageColumns, Image>((c) => c.UrlId == GetLongValue("Id")), this, "UrlId"));				
+			}			if(_database != null)
+			{
+				this.ChildCollections.Add("UrlTag_UrlId", new UrlTagCollection(Database.GetQuery<UrlTagColumns, UrlTag>((c) => c.UrlId == GetLongValue("Id")), this, "UrlId"));				
+			}			
             this.ChildCollections.Add("Url_UrlTag_Tag",  new XrefDaoCollection<UrlTag, Tag>(this, false));
 							
 		}
@@ -422,7 +426,7 @@ namespace Bam.Net.Analytics
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Url>();
 			Database db = database ?? Db.For<Url>();
-			var results = new UrlCollection(sql.GetDataTable(db));
+			var results = new UrlCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
@@ -478,6 +482,37 @@ namespace Bam.Net.Analytics
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (UrlColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<Url>> batchProcessor, Bam.Net.Data.OrderBy<UrlColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<UrlColumns> where, Action<IEnumerable<Url>> batchProcessor, Bam.Net.Data.OrderBy<UrlColumns> orderBy, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				UrlColumns columns = new UrlColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (UrlColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
@@ -769,7 +804,9 @@ namespace Bam.Net.Analytics
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="database"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static UrlCollection Top(int count, WhereDelegate<UrlColumns> where, OrderBy<UrlColumns> orderBy, Database database = null)
 		{
@@ -813,7 +850,9 @@ namespace Bam.Net.Analytics
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static UrlCollection Top(int count, QueryFilter where, OrderBy<UrlColumns> orderBy = null, Database database = null)
 		{
@@ -846,10 +885,9 @@ namespace Bam.Net.Analytics
 		/// <param name="where">A QueryFilter used to filter the 
 		/// results
 		/// </param>
-		/// <param name="orderBy">
-		/// Specifies what column and direction to order the results by
+		/// <param name="database">
+		/// Which database to query or null to use the default
 		/// </param>
-		/// <param name="db"></param>
 		public static UrlCollection Top(int count, QiQuery where, Database database = null)
 		{
 			Database db = database ?? Db.For<Url>();
@@ -865,6 +903,9 @@ namespace Bam.Net.Analytics
 		/// <summary>
 		/// Return the count of Urls
 		/// </summary>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		public static long Count(Database database = null)
         {
 			Database db = database ?? Db.For<Url>();
@@ -881,7 +922,9 @@ namespace Bam.Net.Analytics
 		/// and returns a IQueryFilter which is the result of any comparisons
 		/// between UrlColumns and other values
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<UrlColumns> where, Database database = null)
 		{

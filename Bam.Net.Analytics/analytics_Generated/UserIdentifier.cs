@@ -18,7 +18,7 @@ namespace Bam.Net.Analytics
 	// connection Name = Analytics
 	[Serializable]
 	[Bam.Net.Data.Table("UserIdentifier", "Analytics")]
-	public partial class UserIdentifier: Dao
+	public partial class UserIdentifier: Bam.Net.Data.Dao
 	{
 		public UserIdentifier():base()
 		{
@@ -55,9 +55,13 @@ namespace Bam.Net.Analytics
 
 		private void SetChildren()
 		{
-
-            this.ChildCollections.Add("ClickCounter_UserIdentifierId", new ClickCounterCollection(Database.GetQuery<ClickCounterColumns, ClickCounter>((c) => c.UserIdentifierId == GetLongValue("Id")), this, "UserIdentifierId"));	
-            this.ChildCollections.Add("LoginCounter_UserIdentifierId", new LoginCounterCollection(Database.GetQuery<LoginCounterColumns, LoginCounter>((c) => c.UserIdentifierId == GetLongValue("Id")), this, "UserIdentifierId"));							
+			if(_database != null)
+			{
+				this.ChildCollections.Add("ClickCounter_UserIdentifierId", new ClickCounterCollection(Database.GetQuery<ClickCounterColumns, ClickCounter>((c) => c.UserIdentifierId == GetLongValue("Id")), this, "UserIdentifierId"));				
+			}			if(_database != null)
+			{
+				this.ChildCollections.Add("LoginCounter_UserIdentifierId", new LoginCounterCollection(Database.GetQuery<LoginCounterColumns, LoginCounter>((c) => c.UserIdentifierId == GetLongValue("Id")), this, "UserIdentifierId"));				
+			}						
 		}
 
 	// property:Id, columnName:Id	
@@ -214,7 +218,7 @@ namespace Bam.Net.Analytics
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<UserIdentifier>();
 			Database db = database ?? Db.For<UserIdentifier>();
-			var results = new UserIdentifierCollection(sql.GetDataTable(db));
+			var results = new UserIdentifierCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
@@ -270,6 +274,37 @@ namespace Bam.Net.Analytics
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (UserIdentifierColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<UserIdentifier>> batchProcessor, Bam.Net.Data.OrderBy<UserIdentifierColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<UserIdentifierColumns> where, Action<IEnumerable<UserIdentifier>> batchProcessor, Bam.Net.Data.OrderBy<UserIdentifierColumns> orderBy, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				UserIdentifierColumns columns = new UserIdentifierColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (UserIdentifierColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
@@ -561,7 +596,9 @@ namespace Bam.Net.Analytics
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="database"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static UserIdentifierCollection Top(int count, WhereDelegate<UserIdentifierColumns> where, OrderBy<UserIdentifierColumns> orderBy, Database database = null)
 		{
@@ -605,7 +642,9 @@ namespace Bam.Net.Analytics
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static UserIdentifierCollection Top(int count, QueryFilter where, OrderBy<UserIdentifierColumns> orderBy = null, Database database = null)
 		{
@@ -638,10 +677,9 @@ namespace Bam.Net.Analytics
 		/// <param name="where">A QueryFilter used to filter the 
 		/// results
 		/// </param>
-		/// <param name="orderBy">
-		/// Specifies what column and direction to order the results by
+		/// <param name="database">
+		/// Which database to query or null to use the default
 		/// </param>
-		/// <param name="db"></param>
 		public static UserIdentifierCollection Top(int count, QiQuery where, Database database = null)
 		{
 			Database db = database ?? Db.For<UserIdentifier>();
@@ -657,6 +695,9 @@ namespace Bam.Net.Analytics
 		/// <summary>
 		/// Return the count of UserIdentifiers
 		/// </summary>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		public static long Count(Database database = null)
         {
 			Database db = database ?? Db.For<UserIdentifier>();
@@ -673,7 +714,9 @@ namespace Bam.Net.Analytics
 		/// and returns a IQueryFilter which is the result of any comparisons
 		/// between UserIdentifierColumns and other values
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<UserIdentifierColumns> where, Database database = null)
 		{

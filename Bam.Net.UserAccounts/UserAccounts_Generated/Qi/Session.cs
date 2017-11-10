@@ -86,7 +86,7 @@ namespace Bam.Net.UserAccounts.Data.Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Bam.Net.UserAccounts.Data.Session));
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.UserAccounts.Data.Session));
 				object value = Bam.Net.UserAccounts.Data.Session.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Bam.Net.UserAccounts.Data.Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Bam.Net.UserAccounts.Data.Session));
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.UserAccounts.Data.Session));
 				object[] value = Bam.Net.UserAccounts.Data.Session.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

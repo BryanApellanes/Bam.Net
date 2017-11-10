@@ -86,7 +86,7 @@ namespace Bam.Net.DaoRef.Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Bam.Net.DaoRef.DaoReferenceObjectWithForeignKey));
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.DaoRef.DaoReferenceObjectWithForeignKey));
 				object value = Bam.Net.DaoRef.DaoReferenceObjectWithForeignKey.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Bam.Net.DaoRef.Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Bam.Net.DaoRef.DaoReferenceObjectWithForeignKey));
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.DaoRef.DaoReferenceObjectWithForeignKey));
 				object[] value = Bam.Net.DaoRef.DaoReferenceObjectWithForeignKey.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

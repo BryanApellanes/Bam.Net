@@ -18,7 +18,7 @@ namespace Bam.Net.Automation.Data
 	// connection Name = Automation
 	[Serializable]
 	[Bam.Net.Data.Table("JobRunData", "Automation")]
-	public partial class JobRunData: Dao
+	public partial class JobRunData: Bam.Net.Data.Dao
 	{
 		public JobRunData():base()
 		{
@@ -199,7 +199,7 @@ namespace Bam.Net.Automation.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<JobRunData>();
 			Database db = database ?? Db.For<JobRunData>();
-			var results = new JobRunDataCollection(sql.GetDataTable(db));
+			var results = new JobRunDataCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
@@ -255,6 +255,37 @@ namespace Bam.Net.Automation.Data
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (JobRunDataColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<JobRunData>> batchProcessor, Bam.Net.Data.OrderBy<JobRunDataColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<JobRunDataColumns> where, Action<IEnumerable<JobRunData>> batchProcessor, Bam.Net.Data.OrderBy<JobRunDataColumns> orderBy, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				JobRunDataColumns columns = new JobRunDataColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (JobRunDataColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
@@ -546,7 +577,9 @@ namespace Bam.Net.Automation.Data
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="database"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static JobRunDataCollection Top(int count, WhereDelegate<JobRunDataColumns> where, OrderBy<JobRunDataColumns> orderBy, Database database = null)
 		{
@@ -590,7 +623,9 @@ namespace Bam.Net.Automation.Data
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static JobRunDataCollection Top(int count, QueryFilter where, OrderBy<JobRunDataColumns> orderBy = null, Database database = null)
 		{
@@ -623,10 +658,9 @@ namespace Bam.Net.Automation.Data
 		/// <param name="where">A QueryFilter used to filter the 
 		/// results
 		/// </param>
-		/// <param name="orderBy">
-		/// Specifies what column and direction to order the results by
+		/// <param name="database">
+		/// Which database to query or null to use the default
 		/// </param>
-		/// <param name="db"></param>
 		public static JobRunDataCollection Top(int count, QiQuery where, Database database = null)
 		{
 			Database db = database ?? Db.For<JobRunData>();
@@ -642,6 +676,9 @@ namespace Bam.Net.Automation.Data
 		/// <summary>
 		/// Return the count of JobRunDatas
 		/// </summary>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		public static long Count(Database database = null)
         {
 			Database db = database ?? Db.For<JobRunData>();
@@ -658,7 +695,9 @@ namespace Bam.Net.Automation.Data
 		/// and returns a IQueryFilter which is the result of any comparisons
 		/// between JobRunDataColumns and other values
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<JobRunDataColumns> where, Database database = null)
 		{

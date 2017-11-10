@@ -13,9 +13,9 @@ namespace Bam.Net.UserAccounts.Data
     public class UserGroupCollection: DaoCollection<UserGroupColumns, UserGroup>
     { 
 		public UserGroupCollection(){}
-		public UserGroupCollection(Database db, DataTable table, Dao dao = null, string rc = null) : base(db, table, dao, rc) { }
-		public UserGroupCollection(DataTable table, Dao dao = null, string rc = null) : base(table, dao, rc) { }
-		public UserGroupCollection(Query<UserGroupColumns, UserGroup> q, Dao dao = null, string rc = null) : base(q, dao, rc) { }
+		public UserGroupCollection(Database db, DataTable table, Bam.Net.Data.Dao dao = null, string rc = null) : base(db, table, dao, rc) { }
+		public UserGroupCollection(DataTable table, Bam.Net.Data.Dao dao = null, string rc = null) : base(table, dao, rc) { }
+		public UserGroupCollection(Query<UserGroupColumns, UserGroup> q, Bam.Net.Data.Dao dao = null, string rc = null) : base(q, dao, rc) { }
 		public UserGroupCollection(Database db, Query<UserGroupColumns, UserGroup> q, bool load) : base(db, q, load) { }
 		public UserGroupCollection(Query<UserGroupColumns, UserGroup> q, bool load) : base(q, load) { }
     }

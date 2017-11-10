@@ -115,6 +115,20 @@ namespace Bam.Net.Translation
 		}
 	}
 
+	// property:ResponseData, columnName:ResponseData	
+	[Bam.Net.Data.Column(Name="ResponseData", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string ResponseData
+	{
+		get
+		{
+			return GetStringValue("ResponseData");
+		}
+		set
+		{
+			SetValue("ResponseData", value);
+		}
+	}
+
 
 
 	// start LanguageId -> LanguageId
@@ -220,7 +234,7 @@ namespace Bam.Net.Translation
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<LanguageDetection>();
 			Database db = database ?? Db.For<LanguageDetection>();
-			var results = new LanguageDetectionCollection(sql.GetDataTable(db));
+			var results = new LanguageDetectionCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
@@ -276,6 +290,37 @@ namespace Bam.Net.Translation
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (LanguageDetectionColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<LanguageDetection>> batchProcessor, Bam.Net.Data.OrderBy<LanguageDetectionColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<LanguageDetectionColumns> where, Action<IEnumerable<LanguageDetection>> batchProcessor, Bam.Net.Data.OrderBy<LanguageDetectionColumns> orderBy, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				LanguageDetectionColumns columns = new LanguageDetectionColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (LanguageDetectionColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
@@ -567,7 +612,9 @@ namespace Bam.Net.Translation
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="database"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static LanguageDetectionCollection Top(int count, WhereDelegate<LanguageDetectionColumns> where, OrderBy<LanguageDetectionColumns> orderBy, Database database = null)
 		{
@@ -611,7 +658,9 @@ namespace Bam.Net.Translation
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static LanguageDetectionCollection Top(int count, QueryFilter where, OrderBy<LanguageDetectionColumns> orderBy = null, Database database = null)
 		{
@@ -644,10 +693,9 @@ namespace Bam.Net.Translation
 		/// <param name="where">A QueryFilter used to filter the 
 		/// results
 		/// </param>
-		/// <param name="orderBy">
-		/// Specifies what column and direction to order the results by
+		/// <param name="database">
+		/// Which database to query or null to use the default
 		/// </param>
-		/// <param name="db"></param>
 		public static LanguageDetectionCollection Top(int count, QiQuery where, Database database = null)
 		{
 			Database db = database ?? Db.For<LanguageDetection>();
@@ -663,6 +711,9 @@ namespace Bam.Net.Translation
 		/// <summary>
 		/// Return the count of LanguageDetections
 		/// </summary>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		public static long Count(Database database = null)
         {
 			Database db = database ?? Db.For<LanguageDetection>();
@@ -679,7 +730,9 @@ namespace Bam.Net.Translation
 		/// and returns a IQueryFilter which is the result of any comparisons
 		/// between LanguageDetectionColumns and other values
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<LanguageDetectionColumns> where, Database database = null)
 		{

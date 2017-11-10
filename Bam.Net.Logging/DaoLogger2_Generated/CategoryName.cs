@@ -18,7 +18,7 @@ namespace Bam.Net.Logging.Data
 	// connection Name = DaoLogger2
 	[Serializable]
 	[Bam.Net.Data.Table("CategoryName", "DaoLogger2")]
-	public partial class CategoryName: Dao
+	public partial class CategoryName: Bam.Net.Data.Dao
 	{
 		public CategoryName():base()
 		{
@@ -55,8 +55,10 @@ namespace Bam.Net.Logging.Data
 
 		private void SetChildren()
 		{
-
-            this.ChildCollections.Add("Event_CategoryNameId", new EventCollection(Database.GetQuery<EventColumns, Event>((c) => c.CategoryNameId == GetLongValue("Id")), this, "CategoryNameId"));							
+			if(_database != null)
+			{
+				this.ChildCollections.Add("Event_CategoryNameId", new EventCollection(Database.GetQuery<EventColumns, Event>((c) => c.CategoryNameId == GetLongValue("Id")), this, "CategoryNameId"));				
+			}						
 		}
 
 	// property:Id, columnName:Id	
@@ -175,7 +177,7 @@ namespace Bam.Net.Logging.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<CategoryName>();
 			Database db = database ?? Db.For<CategoryName>();
-			var results = new CategoryNameCollection(sql.GetDataTable(db));
+			var results = new CategoryNameCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
@@ -231,6 +233,37 @@ namespace Bam.Net.Logging.Data
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (CategoryNameColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<CategoryName>> batchProcessor, Bam.Net.Data.OrderBy<CategoryNameColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<CategoryNameColumns> where, Action<IEnumerable<CategoryName>> batchProcessor, Bam.Net.Data.OrderBy<CategoryNameColumns> orderBy, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				CategoryNameColumns columns = new CategoryNameColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (CategoryNameColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
@@ -522,7 +555,9 @@ namespace Bam.Net.Logging.Data
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="database"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static CategoryNameCollection Top(int count, WhereDelegate<CategoryNameColumns> where, OrderBy<CategoryNameColumns> orderBy, Database database = null)
 		{
@@ -566,7 +601,9 @@ namespace Bam.Net.Logging.Data
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static CategoryNameCollection Top(int count, QueryFilter where, OrderBy<CategoryNameColumns> orderBy = null, Database database = null)
 		{
@@ -599,10 +636,9 @@ namespace Bam.Net.Logging.Data
 		/// <param name="where">A QueryFilter used to filter the 
 		/// results
 		/// </param>
-		/// <param name="orderBy">
-		/// Specifies what column and direction to order the results by
+		/// <param name="database">
+		/// Which database to query or null to use the default
 		/// </param>
-		/// <param name="db"></param>
 		public static CategoryNameCollection Top(int count, QiQuery where, Database database = null)
 		{
 			Database db = database ?? Db.For<CategoryName>();
@@ -618,6 +654,9 @@ namespace Bam.Net.Logging.Data
 		/// <summary>
 		/// Return the count of CategoryNames
 		/// </summary>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		public static long Count(Database database = null)
         {
 			Database db = database ?? Db.For<CategoryName>();
@@ -634,7 +673,9 @@ namespace Bam.Net.Logging.Data
 		/// and returns a IQueryFilter which is the result of any comparisons
 		/// between CategoryNameColumns and other values
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<CategoryNameColumns> where, Database database = null)
 		{

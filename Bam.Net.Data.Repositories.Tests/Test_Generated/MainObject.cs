@@ -18,7 +18,7 @@ namespace Bam.Net.Data.Repositories.Tests
 	// connection Name = RepoTests
 	[Serializable]
 	[Bam.Net.Data.Table("MainObject", "RepoTests")]
-	public partial class MainObject: Dao
+	public partial class MainObject: Bam.Net.Data.Dao
 	{
 		public MainObject():base()
 		{
@@ -55,8 +55,10 @@ namespace Bam.Net.Data.Repositories.Tests
 
 		private void SetChildren()
 		{
-
-            this.ChildCollections.Add("SecondaryObject_MainId", new SecondaryObjectCollection(Database.GetQuery<SecondaryObjectColumns, SecondaryObject>((c) => c.MainId == GetLongValue("Id")), this, "MainId"));							
+			if(_database != null)
+			{
+				this.ChildCollections.Add("SecondaryObject_MainId", new SecondaryObjectCollection(Database.GetQuery<SecondaryObjectColumns, SecondaryObject>((c) => c.MainId == GetLongValue("Id")), this, "MainId"));				
+			}						
 		}
 
 	// property:Id, columnName:Id	
@@ -189,7 +191,7 @@ namespace Bam.Net.Data.Repositories.Tests
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<MainObject>();
 			Database db = database ?? Db.For<MainObject>();
-			var results = new MainObjectCollection(sql.GetDataTable(db));
+			var results = new MainObjectCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
@@ -245,6 +247,37 @@ namespace Bam.Net.Data.Repositories.Tests
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (MainObjectColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<MainObject>> batchProcessor, Bam.Net.Data.OrderBy<MainObjectColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<MainObjectColumns> where, Action<IEnumerable<MainObject>> batchProcessor, Bam.Net.Data.OrderBy<MainObjectColumns> orderBy, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				MainObjectColumns columns = new MainObjectColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (MainObjectColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
@@ -536,7 +569,9 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="database"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static MainObjectCollection Top(int count, WhereDelegate<MainObjectColumns> where, OrderBy<MainObjectColumns> orderBy, Database database = null)
 		{
@@ -580,7 +615,9 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static MainObjectCollection Top(int count, QueryFilter where, OrderBy<MainObjectColumns> orderBy = null, Database database = null)
 		{
@@ -613,10 +650,9 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// <param name="where">A QueryFilter used to filter the 
 		/// results
 		/// </param>
-		/// <param name="orderBy">
-		/// Specifies what column and direction to order the results by
+		/// <param name="database">
+		/// Which database to query or null to use the default
 		/// </param>
-		/// <param name="db"></param>
 		public static MainObjectCollection Top(int count, QiQuery where, Database database = null)
 		{
 			Database db = database ?? Db.For<MainObject>();
@@ -632,6 +668,9 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// <summary>
 		/// Return the count of MainObjects
 		/// </summary>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		public static long Count(Database database = null)
         {
 			Database db = database ?? Db.For<MainObject>();
@@ -648,7 +687,9 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// and returns a IQueryFilter which is the result of any comparisons
 		/// between MainObjectColumns and other values
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<MainObjectColumns> where, Database database = null)
 		{

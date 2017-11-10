@@ -18,7 +18,7 @@ namespace Bam.Net.Analytics
 	// connection Name = Analytics
 	[Serializable]
 	[Bam.Net.Data.Table("Port", "Analytics")]
-	public partial class Port: Dao
+	public partial class Port: Bam.Net.Data.Dao
 	{
 		public Port():base()
 		{
@@ -55,8 +55,10 @@ namespace Bam.Net.Analytics
 
 		private void SetChildren()
 		{
-
-            this.ChildCollections.Add("Url_PortId", new UrlCollection(Database.GetQuery<UrlColumns, Url>((c) => c.PortId == GetLongValue("Id")), this, "PortId"));							
+			if(_database != null)
+			{
+				this.ChildCollections.Add("Url_PortId", new UrlCollection(Database.GetQuery<UrlColumns, Url>((c) => c.PortId == GetLongValue("Id")), this, "PortId"));				
+			}						
 		}
 
 	// property:Id, columnName:Id	
@@ -175,7 +177,7 @@ namespace Bam.Net.Analytics
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Port>();
 			Database db = database ?? Db.For<Port>();
-			var results = new PortCollection(sql.GetDataTable(db));
+			var results = new PortCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
@@ -231,6 +233,37 @@ namespace Bam.Net.Analytics
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (PortColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<Port>> batchProcessor, Bam.Net.Data.OrderBy<PortColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<PortColumns> where, Action<IEnumerable<Port>> batchProcessor, Bam.Net.Data.OrderBy<PortColumns> orderBy, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				PortColumns columns = new PortColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (PortColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
@@ -522,7 +555,9 @@ namespace Bam.Net.Analytics
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="database"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static PortCollection Top(int count, WhereDelegate<PortColumns> where, OrderBy<PortColumns> orderBy, Database database = null)
 		{
@@ -566,7 +601,9 @@ namespace Bam.Net.Analytics
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static PortCollection Top(int count, QueryFilter where, OrderBy<PortColumns> orderBy = null, Database database = null)
 		{
@@ -599,10 +636,9 @@ namespace Bam.Net.Analytics
 		/// <param name="where">A QueryFilter used to filter the 
 		/// results
 		/// </param>
-		/// <param name="orderBy">
-		/// Specifies what column and direction to order the results by
+		/// <param name="database">
+		/// Which database to query or null to use the default
 		/// </param>
-		/// <param name="db"></param>
 		public static PortCollection Top(int count, QiQuery where, Database database = null)
 		{
 			Database db = database ?? Db.For<Port>();
@@ -618,6 +654,9 @@ namespace Bam.Net.Analytics
 		/// <summary>
 		/// Return the count of Ports
 		/// </summary>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		public static long Count(Database database = null)
         {
 			Database db = database ?? Db.For<Port>();
@@ -634,7 +673,9 @@ namespace Bam.Net.Analytics
 		/// and returns a IQueryFilter which is the result of any comparisons
 		/// between PortColumns and other values
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<PortColumns> where, Database database = null)
 		{
