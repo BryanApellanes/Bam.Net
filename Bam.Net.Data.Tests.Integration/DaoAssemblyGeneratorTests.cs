@@ -23,7 +23,7 @@ namespace Bam.Net.Data.Tests.Integration
             MsSqlCredentials creds = new MsSqlCredentials { UserName = "mssqluser", Password = "mssqlP455w0rd" };
             MsSqlDatabase db = new MsSqlDatabase(new MsSqlConnectionStringResolver("chumsql2", "Db_Sillydatabase", creds));
             MsSqlSmoSchemaExtractor extractor = new MsSqlSmoSchemaExtractor(db);
-            DaoAssemblyGenerator generator = new DaoAssemblyGenerator(extractor, "C:\\BamTestData");
+            DaoAssemblyGenerator generator = new DaoAssemblyGenerator(extractor, "C:\\Bam\\Data\\Test");
             
             Out(generator.PropertiesToString(), ConsoleColor.Cyan);
         }
