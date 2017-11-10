@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Bam.Net.ServiceProxy;
 using Bam.Net.Incubation;
 
-namespace Bam.Net.Server
+namespace Bam.Net.ServiceProxy
 {
     public class JsClientProxyGenerator : ClientProxyGenerator
     {

@@ -8,7 +8,7 @@ using Bam.Net.ServiceProxy;
 using Bam.Net.Incubation;
 using Bam.Net.Logging;
 
-namespace Bam.Net.Server
+namespace Bam.Net.ServiceProxy
 {
     public abstract class ClientProxyGenerator : IClientProxyGenerator
     {

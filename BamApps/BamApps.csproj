@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bam.Net.Analytics\Bam.Net.Analytics.csproj" />
+    <ProjectReference Include="..\Bam.Net.Automation\Bam.Net.Automation.csproj" />
+    <ProjectReference Include="..\Bam.Net.Caching\Bam.Net.Caching.csproj" />
+    <ProjectReference Include="..\Bam.Net.CoreServices\Bam.Net.CoreServices.csproj" />
+    <ProjectReference Include="..\Bam.Net.Data.Dynamic\Bam.Net.Data.Dynamic.csproj" />
+    <ProjectReference Include="..\Bam.Net.Data.Repositories\Bam.Net.Data.Repositories.csproj" />
+    <ProjectReference Include="..\Bam.Net.Data.Schema\Bam.Net.Data.Schema.csproj" />
+    <ProjectReference Include="..\Bam.Net.Data.SQLite\Bam.Net.Data.SQLite.csproj" />
+    <ProjectReference Include="..\Bam.Net.Data\Bam.Net.Data.csproj" />
+    <ProjectReference Include="..\Bam.Net.Documentation\Bam.Net.Documentation.csproj" />
+    <ProjectReference Include="..\Bam.Net.Encryption\Bam.Net.Encryption.csproj" />
+    <ProjectReference Include="..\Bam.Net.Incubation\Bam.Net.Incubation.csproj" />
+    <ProjectReference Include="..\Bam.Net\Bam.Net.csproj" />
+  </ItemGroup>
+</Project>

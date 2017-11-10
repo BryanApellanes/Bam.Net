@@ -128,15 +128,11 @@
     <Compile Include="BamApplicationManagerResult.cs" />
     <Compile Include="BamDaoServer.cs" />
     <Compile Include="BamServer.cs" />
-    <Compile Include="ClientProxyGenerator.cs" />
-    <Compile Include="CsClientProxyGenerator.cs" />
     <Compile Include="FileUploadEventArgs.cs" />
     <Compile Include="HttpPostedFile.cs" />
     <Compile Include="IAppInitializer.cs" />
-    <Compile Include="IClientProxyGenerator.cs" />
     <Compile Include="IHasMessage.cs" />
     <Compile Include="InitializeFailedEventArgs.cs" />
-    <Compile Include="JsClientProxyGenerator.cs" />
     <Compile Include="Listeners\ServerEventListenerAttribute.cs" />
     <Compile Include="Listeners\BamServerEventListener.cs" />
     <Compile Include="Listeners\BamServerEventListenerBinder.cs" />
