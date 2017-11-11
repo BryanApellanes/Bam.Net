@@ -167,7 +167,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bam.Net.Data.OleDb", "Bam.N
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vault", "Products\vault\vault.csproj", "{2F5A9E6A-A8D7-459B-A5F1-C85D4691F480}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{AF15178A-E3EA-4804-82A2-ECA4295F37D3}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LegacyBuildScripts", "LegacyBuildScripts", "{AF15178A-E3EA-4804-82A2-ECA4295F37D3}"
 	ProjectSection(SolutionItems) = preProject
 		BuildScripts\Bam.Net\backup_packages.cmd = BuildScripts\Bam.Net\backup_packages.cmd
 		BuildScripts\Bam.Net\build_and_install_toolkit.cmd = BuildScripts\Bam.Net\build_and_install_toolkit.cmd

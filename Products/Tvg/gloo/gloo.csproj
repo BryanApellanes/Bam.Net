@@ -91,10 +91,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BamCore, Version=1.4.9.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\BamCore.1.4.9\lib\net462\BamCore.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
@@ -165,10 +161,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Emojis\Emojis.csproj">
-      <Project>{6992c55d-29fa-4e2d-9c70-587760c187df}</Project>
-      <Name>Emojis</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Bam.Net.Automation\Bam.Net.Automation.csproj">
       <Project>{b65e4fcd-de50-4d9e-91d7-dddf80c25c47}</Project>
       <Name>Bam.Net.Automation</Name>

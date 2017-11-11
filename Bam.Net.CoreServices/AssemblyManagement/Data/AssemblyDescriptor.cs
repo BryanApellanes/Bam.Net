@@ -59,8 +59,11 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data
         }
 
         public virtual List<ProcessRuntimeDescriptor> ProcessRuntimeDescriptor { get; set; }
+        
         /// <summary>
-        /// The name of the assembly file
+        /// The name of the assembly file as reported by Assembly.GetFileInfo().Name
+        /// (where GetFileInfo() is the extension method Bam.Net.Extensions.GetFileInfo(Assembly assembly)
+        /// which returns a FileInfo instance representing the specified assembly)
         /// </summary>
         [CompositeKey]
         public string Name { get; set; }
