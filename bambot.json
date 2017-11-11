@@ -3,7 +3,7 @@
   "repoName": "Bam.Net",
   "branch": "next",
   "clean": false,
-  "buildName": "All",
+  "buildName": "Bambot",
   "projectFile": "Bam.Net.Nuget.sln",
   "msbuildPath": "C:\\bam\\tools\\MSBuild\\MSBuild.exe",
   "config": "Debug",
