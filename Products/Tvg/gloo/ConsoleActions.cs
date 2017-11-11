@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 
 namespace Bam.Net.Application
 {
@@ -52,17 +53,31 @@ namespace Bam.Net.Application
         [ConsoleAction("serve", "Start the gloo server serving a specific service class")]
         public void Serve()
         {
-            string serviceClassName = GetArgument("serve", "Enter the name of the class to serve ");
-            string contentRoot = GetArgument("ContentRoot", $"Enter the path to the content root (default: {defaultContentRoot} ");
-            Type serviceType = GetServiceType(serviceClassName);
-            HostPrefix prefix = GetConfiguredHostPrefix();
-            if (serviceType.HasCustomAttributeOfType(out ServiceSubdomainAttribute attr))
+            try
             {
-                prefix.HostName = $"{attr.Subdomain}.{prefix.HostName}";
-            }
+                string serviceClassName = GetArgument("serve", "Enter the name of the class to serve ");
+                string contentRoot = GetArgument("ContentRoot", $"Enter the path to the content root (default: {defaultContentRoot} ");                
+                Type serviceType = GetServiceType(serviceClassName, out Assembly assembly);
+                if(serviceType == null)
+                {
+                    throw new InvalidOperationException(string.Format("The type {0} was not found in the assembly {1}", serviceClassName, assembly.GetFilePath()));
+                }
+                HostPrefix prefix = GetConfiguredHostPrefix();
+                if (serviceType.HasCustomAttributeOfType(out ServiceSubdomainAttribute attr))
+                {
+                    prefix.HostName = $"{attr.Subdomain}.{prefix.HostName}";
+                }
 
-            ServeServiceTypes(contentRoot, prefix, null, serviceType);
-            Pause($"Gloo server is serving service {serviceClassName}");
+                ServeServiceTypes(contentRoot, prefix, null, serviceType);
+                Pause($"Gloo server is serving service {serviceClassName}");
+            }
+            catch (Exception ex)
+            {
+                Args.PopMessageAndStackTrace(ex, out StringBuilder message, out StringBuilder stackTrace);
+                OutLineFormat("An error occurred: {0}", ConsoleColor.Red, message.ToString());
+                OutLineFormat("{0}", stackTrace.ToString());
+                Thread.Sleep(1500);
+            }
         }
 
         [ConsoleAction("csgloo", "Start the gloo server serving the compiled results of the specified csgloo files")]
@@ -217,9 +232,9 @@ namespace Bam.Net.Application
             return logger;
         }
 
-        private Type GetServiceType(string className)
-        {
-            Assembly assembly = GetAssembly(className, out Type result);
+        private Type GetServiceType(string className, out Assembly assembly)
+        { 
+            assembly = GetAssembly(className, out Type result);
             return result;
         }
 
