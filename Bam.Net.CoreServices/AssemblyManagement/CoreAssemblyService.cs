@@ -37,8 +37,7 @@ namespace Bam.Net.CoreServices
         public event EventHandler RuntimeRestored;
         public string AssemblyDirectory { get; set; }
         public IFileService FileService { get; set; }
-        public Repo.AssemblyServiceRepository AssemblyManagementRepository { get; set; }
-        public IApplicationNameProvider ApplicationNameProvider { get; set; }        
+        public Repo.AssemblyServiceRepository AssemblyManagementRepository { get; set; }    
 
         public virtual List<AssemblyDescriptor> GetDescriptors(string assemblyFulName)
         {

@@ -1,7 +1,7 @@
 /*
 	Copyright © Bryan Apellanes 2015  
 */
-using Bam.Net.Automation.TestReporting;
+using Bam.Net.Automation.Testing;
 using Bam.Net.CommandLine;
 using Bam.Net.Configuration;
 using Bam.Net.Logging;
