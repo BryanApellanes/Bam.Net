@@ -36,8 +36,7 @@ namespace Bam.Net.Data.Model
                     )
                 {
                     toBeAdded = new ModelAction(this.Provider, current);
-                    ModelActionAttribute actionAttr = attribute as ModelActionAttribute;
-                    if (actionAttr != null)
+                    if (attribute is ModelActionAttribute actionAttr)
                     {
                         toBeAdded.Description = actionAttr.Description;
                     }

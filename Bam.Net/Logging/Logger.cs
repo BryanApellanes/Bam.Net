@@ -129,14 +129,13 @@ namespace Bam.Net.Logging
                 Thread.Sleep(CommitCycleDelay);
                 while (_logEventQueue.Count > 0)
                 {
-                    LogEvent logEvent;
-                    if (_logEventQueue.TryDequeue(out logEvent))
+                    if (_logEventQueue.TryDequeue(out LogEvent logEvent))
                     {
                         if (logEvent != null && (int)logEvent.Severity <= (int)Verbosity)
                         {
                             CommitLogEvent(logEvent);
                         }
-                    }                    
+                    }
                 }
             }
         }
