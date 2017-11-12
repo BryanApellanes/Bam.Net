@@ -54,6 +54,7 @@ namespace Bam.Net.Testing
             AddValidArgument("dataPrefix", true, description: "The file prefix for the sqlite data file or 'BamTests' if not specified");
             AddValidArgument("type", false, description: "The type of tests to run [Unit | Integration], default is unit.");
             AddValidArgument("testReportHost", false, description: "The hostname of the test report service");
+            AddValidArgument("testReportPort", false, description: "The port that the test report service is listening on");
 
             AddValidArgument(_exitOnFailure, true);
             AddSwitches(typeof(Program));
@@ -185,7 +186,11 @@ namespace Bam.Net.Testing
             }
             if (!string.IsNullOrEmpty(reportHost))
             {
-                testRunListeners.Add(new UnitTestRunReportingListener(reportHost));
+                if(!int.TryParse(Arguments["testReportPort"].Or(DefaultConfiguration.GetAppSetting("TestReportHost", string.Empty)).Or("80"), out int port))
+                {
+                    port = 80;
+                }
+                testRunListeners.Add(new UnitTestRunReportingListener(reportHost, port));
             }
 
             GetUnitTestRunListeners = () => testRunListeners;

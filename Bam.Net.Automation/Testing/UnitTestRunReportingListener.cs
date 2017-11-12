@@ -23,6 +23,7 @@ namespace Bam.Net.Automation.Testing
 
         public UnitTestRunReportingListener(string testReportHost, int port = 80, ILogger logger = null)
         {
+            Logger = logger ?? Log.Default;
             ProxyFactory proxyFactory = new ProxyFactory();
             TestReportService = proxyFactory.GetProxy<TestReportService>(testReportHost, port);
             TestReportHost = testReportHost;

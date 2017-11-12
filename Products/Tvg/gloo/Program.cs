@@ -1,5 +1,6 @@
 using Bam.Net.Testing;
 using System;
+using System.Threading;
 
 namespace Bam.Net.Application
 {
@@ -19,7 +20,8 @@ namespace Bam.Net.Application
                 Initialize(args, (a) =>
                 {
                     OutLineFormat("Error parsing arguments: {0}", ConsoleColor.Red, a.Message);
-                    Environment.Exit(1);
+                    Thread.Sleep(1000);
+                    Exit(1);
                 });
                 if (Arguments.Contains("i"))
                 {

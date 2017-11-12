@@ -461,18 +461,12 @@ namespace Bam.Net.CommandLine
 
         private static void OnExiting(int code)
         {
-            if (Exiting != null)
-            {
-                Exiting(code);
-            }
+            Exiting?.Invoke(code);
         }
 
         private static void OnExited(int code)
         {
-            if (Exited != null)
-            {
-                Exited(code);
-            }
+            Exited?.Invoke(code);
         }
 
         public static void Usage(Assembly assembly)

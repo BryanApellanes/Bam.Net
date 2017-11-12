@@ -24,6 +24,8 @@ namespace Bam.Net.Automation.Testing
 	[Proxy("testReportSvc", MethodCase = MethodCase.CamelCase)]
 	public class TestReportService : Loggable, IRequiresHttpContext, ITestReportService
     {
+        protected TestReportService() { } // for proxy generation
+
 		public TestReportService(IDatabaseProvider dbProvider, ILogger logger = null)
 		{
             DatabaseProvider = dbProvider;
@@ -66,24 +68,24 @@ namespace Bam.Net.Automation.Testing
 		}
 
 		#region handlers for client side reporter calls
-		public SaveTestSuiteExecutionSummaryResponse Start()
+		public virtual SaveTestSuiteExecutionSummaryResponse Start()
 		{
 			return SaveTestSuiteExecutionSummary();
 		}
 
-		public GetSuiteDefinitionResponse Suite(TestSuiteDefinition suite)
+		public virtual GetSuiteDefinitionResponse Suite(TestSuiteDefinition suite)
 		{
 			return GetSuiteDefinition(suite.Title);
 		}
 
-		public SaveTestExecutionResponse Pass(int summaryId, string suiteTitle, string testTitle)
+		public virtual SaveTestExecutionResponse Pass(int summaryId, string suiteTitle, string testTitle)
 		{
 			TestDefinition testDefinition = GetOrCreateTestDefinition(suiteTitle, testTitle);
 			TestExecution execution = new TestExecution { TestSuiteExecutionSummaryId = summaryId, TestDefinitionId = testDefinition.Id, Passed = true };
 			return SaveTestExecution(execution);
 		}
 
-		public SaveTestExecutionResponse Fail(int summaryId, string suiteTitle, string testTitle, string error)
+		public virtual SaveTestExecutionResponse Fail(int summaryId, string suiteTitle, string testTitle, string error)
 		{
 			TestDefinition testDefinition = GetOrCreateTestDefinition(suiteTitle, testTitle);
 			TestExecution execution = new TestExecution { TestSuiteExecutionSummaryId = summaryId, TestDefinitionId = testDefinition.Id, Passed = false, Exception = error };
@@ -92,7 +94,7 @@ namespace Bam.Net.Automation.Testing
 
 		#endregion
 
-		public NotificationSubscriptionResponse SubscribeToNotifications(string emailAddress)
+		public virtual NotificationSubscriptionResponse SubscribeToNotifications(string emailAddress)
 		{
 			try
 			{
@@ -116,7 +118,7 @@ namespace Bam.Net.Automation.Testing
 			}
 		}
 
-		public NotificationSubscriptionResponse UnsubscribeFromNotifications(string emailAddress)
+		public virtual NotificationSubscriptionResponse UnsubscribeFromNotifications(string emailAddress)
 		{
 			try
 			{
@@ -139,7 +141,7 @@ namespace Bam.Net.Automation.Testing
 			}
 		}
 
-		public RetrieveNotificationSubscriptionsResponse RetrieveNotificationSubscribers()
+		public virtual RetrieveNotificationSubscriptionsResponse RetrieveNotificationSubscribers()
 		{
 			try
 			{
@@ -158,7 +160,7 @@ namespace Bam.Net.Automation.Testing
         /// </summary>
         /// <param name="suiteTitle"></param>
         /// <returns></returns>
-		public GetSuiteDefinitionResponse GetSuiteDefinition(string suiteTitle)
+		public virtual GetSuiteDefinitionResponse GetSuiteDefinition(string suiteTitle)
 		{
 			try
 			{
@@ -178,7 +180,7 @@ namespace Bam.Net.Automation.Testing
         /// <param name="suiteTitle"></param>
         /// <param name="testTitle"></param>
         /// <returns></returns>
-        public GetTestDefinitionResponse GetTestDefinition(string suiteTitle, string testTitle)
+        public virtual GetTestDefinitionResponse GetTestDefinition(string suiteTitle, string testTitle)
         {
             try
             {
@@ -191,7 +193,7 @@ namespace Bam.Net.Automation.Testing
             }
         }
 
-        public SaveTestSuiteExecutionSummaryResponse SaveTestSuiteExecutionSummary(TestSuiteExecutionSummary toCreate = null)
+        public virtual SaveTestSuiteExecutionSummaryResponse SaveTestSuiteExecutionSummary(TestSuiteExecutionSummary toCreate = null)
         {
             try
             {
@@ -206,19 +208,19 @@ namespace Bam.Net.Automation.Testing
             }
         }
 
-        public SaveTestExecutionResponse StartTest(long executionSummaryId, long testDefinitionId)
+        public virtual SaveTestExecutionResponse StartTest(long executionSummaryId, long testDefinitionId)
         {
             return SaveTestExecution(new TestExecution { StartedTime = DateTime.UtcNow, TestDefinitionId = testDefinitionId, TestSuiteExecutionSummaryId = executionSummaryId });
         }
 
-        public SaveTestExecutionResponse FinishTest(long executionId)
+        public virtual SaveTestExecutionResponse FinishTest(long executionId)
         {
             TestExecution execution = Repository.OneTestExecutionWhere(c => c.Id == executionId);
             execution.FinishedTime = DateTime.UtcNow;
             return SaveTestExecution(execution);
         }
 
-        public SaveTestExecutionResponse SaveTestExecution(TestExecution execution)
+        public virtual SaveTestExecutionResponse SaveTestExecution(TestExecution execution)
 		{
 			try
 			{
@@ -232,17 +234,17 @@ namespace Bam.Net.Automation.Testing
 			}
 		}
 
-		public SearchTestExecutionResponse SearchTestExecutionsByDate(DateTime from, DateTime to)
+		public virtual SearchTestExecutionResponse SearchTestExecutionsByDate(DateTime from, DateTime to)
 		{
 			throw new NotImplementedException();
 		}
 
-		public SearchTestExecutionResponse SearchTestExecutionsByTestDefinitionId(long testId)
+		public virtual SearchTestExecutionResponse SearchTestExecutionsByTestDefinitionId(long testId)
 		{
 			throw new NotImplementedException();
 		}
 
-		public RetrieveTestExecutionResponse RetrieveTestExecutionById(long id)
+		public virtual RetrieveTestExecutionResponse RetrieveTestExecutionById(long id)
 		{
 			try
 			{
@@ -255,7 +257,7 @@ namespace Bam.Net.Automation.Testing
 			}
 		}
 
-		public RetrieveTestExecutionResponse RetrieveTestExecutionByUuid(string uuid)
+		public virtual RetrieveTestExecutionResponse RetrieveTestExecutionByUuid(string uuid)
 		{
 			try
 			{
@@ -353,6 +355,7 @@ namespace Bam.Net.Automation.Testing
 			set;
 		}
 
+        [Local]
         public object Clone()
         {
             TestReportService clone = new TestReportService(DatabaseProvider, Logger);
