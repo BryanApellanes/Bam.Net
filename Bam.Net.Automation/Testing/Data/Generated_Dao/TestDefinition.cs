@@ -14,10 +14,10 @@ using Bam.Net.Data.Qi;
 
 namespace Bam.Net.Automation.Testing.Data.Dao
 {
-	// schema = TestReporting
-	// connection Name = TestReporting
+	// schema = Testing
+	// connection Name = Testing
 	[Serializable]
-	[Bam.Net.Data.Table("TestDefinition", "TestReporting")]
+	[Bam.Net.Data.Table("TestDefinition", "Testing")]
 	public partial class TestDefinition: Bam.Net.Data.Dao
 	{
 		public TestDefinition():base()
@@ -188,6 +188,62 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		}
 	}
 
+	// property:CreatedBy, columnName:CreatedBy	
+	[Bam.Net.Data.Column(Name="CreatedBy", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string CreatedBy
+	{
+		get
+		{
+			return GetStringValue("CreatedBy");
+		}
+		set
+		{
+			SetValue("CreatedBy", value);
+		}
+	}
+
+	// property:ModifiedBy, columnName:ModifiedBy	
+	[Bam.Net.Data.Column(Name="ModifiedBy", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string ModifiedBy
+	{
+		get
+		{
+			return GetStringValue("ModifiedBy");
+		}
+		set
+		{
+			SetValue("ModifiedBy", value);
+		}
+	}
+
+	// property:Modified, columnName:Modified	
+	[Bam.Net.Data.Column(Name="Modified", DbDataType="DateTime", MaxLength="8", AllowNull=true)]
+	public DateTime? Modified
+	{
+		get
+		{
+			return GetDateTimeValue("Modified");
+		}
+		set
+		{
+			SetValue("Modified", value);
+		}
+	}
+
+	// property:Deleted, columnName:Deleted	
+	[Bam.Net.Data.Column(Name="Deleted", DbDataType="DateTime", MaxLength="8", AllowNull=true)]
+	public DateTime? Deleted
+	{
+		get
+		{
+			return GetDateTimeValue("Deleted");
+		}
+		set
+		{
+			SetValue("Deleted", value);
+		}
+	}
+
 	// property:Created, columnName:Created	
 	[Bam.Net.Data.Column(Name="Created", DbDataType="DateTime", MaxLength="8", AllowNull=true)]
 	public DateTime? Created
@@ -352,6 +408,37 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (TestDefinitionColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<TestDefinition>> batchProcessor, Bam.Net.Data.OrderBy<TestDefinitionColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<TestDefinitionColumns> where, Action<IEnumerable<TestDefinition>> batchProcessor, Bam.Net.Data.OrderBy<TestDefinitionColumns> orderBy, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				TestDefinitionColumns columns = new TestDefinitionColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (TestDefinitionColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}

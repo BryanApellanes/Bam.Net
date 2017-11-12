@@ -11,14 +11,14 @@ using Bam.Net.Data.Qi;
 
 namespace Bam.Net.Automation.Testing.Data.Dao
 {
-	// schema = TestReporting 
-    public static class TestReportingContext
+	// schema = Testing 
+    public static class TestingContext
     {
 		public static string ConnectionName
 		{
 			get
 			{
-				return "TestReporting";
+				return "Testing";
 			}
 		}
 

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Testing;
 using Bam.Net.CommandLine;
+using System.Reflection;
 
 namespace Bam.Net.Automation.Testing.Data
 {
@@ -17,12 +18,13 @@ namespace Bam.Net.Automation.Testing.Data
     /// belonging to a common suite of tests
     /// </summary>
 	[Serializable]
-	public class TestSuiteDefinition: RepoData
+	public class TestSuiteDefinition: AuditRepoData
 	{
 		public TestSuiteDefinition()
 		{
 		}
-		public string Title { get; set; }
+        public static string DefaultTestSuiteTitle => "Default Test Suite";
+        public string Title { get; set; }
 		public virtual TestDefinition[] TestDefinitions { get; set; }
 
         public static TestSuiteDefinition FromMethod(ConsoleMethod test)
@@ -32,17 +34,24 @@ namespace Bam.Net.Automation.Testing.Data
 
         private static string GetSuiteTitle(ConsoleMethod test)
         {
-            Args.ThrowIfNull(test);
-            Args.ThrowIfNull(test.Method);
-            Type containingType = test.Method.DeclaringType;
+            if(test == null || test.Method == null)
+            {
+                return DefaultTestSuiteTitle;
+            }
+            string title = GetSuiteTitle(test.Method.DeclaringType);
+            if (test.Method.HasCustomAttributeOfType(out TestSuiteAttribute methodAttr))
+            {
+                title = methodAttr.Title;
+            }
+            return title;
+        }
+
+        private static string GetSuiteTitle(Type containingType)
+        {            
             string title = $"{containingType.Assembly.FullName}:{containingType.Name}";
             if (containingType.HasCustomAttributeOfType(out TestSuiteAttribute typeAttr))
             {
                 title = typeAttr.Title;
-            }
-            else if (test.Method.HasCustomAttributeOfType(out TestSuiteAttribute methodAttr))
-            {
-                title = methodAttr.Title;
             }
             return title;
         }

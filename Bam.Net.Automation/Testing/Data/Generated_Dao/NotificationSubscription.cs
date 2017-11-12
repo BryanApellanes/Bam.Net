@@ -14,10 +14,10 @@ using Bam.Net.Data.Qi;
 
 namespace Bam.Net.Automation.Testing.Data.Dao
 {
-	// schema = TestReporting
-	// connection Name = TestReporting
+	// schema = Testing
+	// connection Name = Testing
 	[Serializable]
-	[Bam.Net.Data.Table("NotificationSubscription", "TestReporting")]
+	[Bam.Net.Data.Table("NotificationSubscription", "Testing")]
 	public partial class NotificationSubscription: Bam.Net.Data.Dao
 	{
 		public NotificationSubscription():base()
@@ -234,6 +234,37 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (NotificationSubscriptionColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<NotificationSubscription>> batchProcessor, Bam.Net.Data.OrderBy<NotificationSubscriptionColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<NotificationSubscriptionColumns> where, Action<IEnumerable<NotificationSubscription>> batchProcessor, Bam.Net.Data.OrderBy<NotificationSubscriptionColumns> orderBy, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				NotificationSubscriptionColumns columns = new NotificationSubscriptionColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (NotificationSubscriptionColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}

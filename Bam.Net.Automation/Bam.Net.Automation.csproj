@@ -177,6 +177,8 @@
     <Compile Include="Partials\JobRunData.cs" />
     <Compile Include="Partials\RunningJob.cs" />
     <Compile Include="Testing\CreateStatus.cs" />
+    <Compile Include="Testing\Data\Generated_Dao\TestingContext.cs" />
+    <Compile Include="Testing\Data\Generated_Dao\TestingRepository.cs" />
     <Compile Include="Testing\SaveTestSuiteExecutionSummaryResponse.cs" />
     <Compile Include="Testing\Data\Generated_Dao\NotificationSubscription.cs" />
     <Compile Include="Testing\Data\Generated_Dao\NotificationSubscriptionCollection.cs" />
@@ -201,8 +203,6 @@
     <Compile Include="Testing\Data\Generated_Dao\TestExecutionPagedQuery.cs" />
     <Compile Include="Testing\Data\Generated_Dao\TestExecutionQuery.cs" />
     <Compile Include="Testing\Data\Generated_Dao\TestExecutionWrapper.cs" />
-    <Compile Include="Testing\Data\Generated_Dao\TestReportingContext.cs" />
-    <Compile Include="Testing\Data\Generated_Dao\TestReportingRepository.cs" />
     <Compile Include="Testing\Data\Generated_Dao\TestSuiteDefinition.cs" />
     <Compile Include="Testing\Data\Generated_Dao\TestSuiteDefinitionCollection.cs" />
     <Compile Include="Testing\Data\Generated_Dao\TestSuiteDefinitionColumns.cs" />

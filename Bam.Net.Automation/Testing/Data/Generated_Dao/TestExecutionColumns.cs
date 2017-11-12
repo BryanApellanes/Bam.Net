@@ -77,6 +77,34 @@ namespace Bam.Net.Automation.Testing.Data.Dao
                 return new TestExecutionColumns("StackTrace");
             }
         }
+        public TestExecutionColumns CreatedBy
+        {
+            get
+            {
+                return new TestExecutionColumns("CreatedBy");
+            }
+        }
+        public TestExecutionColumns ModifiedBy
+        {
+            get
+            {
+                return new TestExecutionColumns("ModifiedBy");
+            }
+        }
+        public TestExecutionColumns Modified
+        {
+            get
+            {
+                return new TestExecutionColumns("Modified");
+            }
+        }
+        public TestExecutionColumns Deleted
+        {
+            get
+            {
+                return new TestExecutionColumns("Deleted");
+            }
+        }
         public TestExecutionColumns Created
         {
             get

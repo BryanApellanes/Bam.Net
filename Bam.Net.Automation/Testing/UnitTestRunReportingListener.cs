@@ -44,7 +44,7 @@ namespace Bam.Net.Automation.Testing
         {
             UnitTestMethod test = args.Test.CopyAs<UnitTestMethod>();
             TestSuiteDefinition suite = TestSuiteDefinition.FromMethod(test);
-            TestDefinition testDefinition = GetTestDefinition(suite.Title, test.Description);
+            TestDefinition testDefinition = GetTestDefinition(suite.Title, test);
             SetTestExecution(test);
         }
 
@@ -103,7 +103,7 @@ namespace Bam.Net.Automation.Testing
         protected TestSuiteDefinition GetTestSuiteDefinition(ConsoleMethod test)
         {
             TestSuiteDefinition suite = TestSuiteDefinition.FromMethod(test);
-            if (!_testSuiteDefinitionLookupByTitle.TryGetValue(suite.Title, out suite))
+            if (!_testSuiteDefinitionLookupByTitle.TryGetValue(suite.Title, out TestSuiteDefinition fromCache))
             {
                 GetSuiteDefinitionResponse response = TestReportService.GetSuiteDefinition(suite.Title);
                 if (response.Success)
@@ -115,7 +115,10 @@ namespace Bam.Net.Automation.Testing
                     Logger.Warning("Failed to define test suite: {0}", response.Message);
                 }
             }
-
+            if (fromCache != null)
+            {
+                suite = fromCache;
+            }
             return suite;
         }
 
@@ -148,23 +151,24 @@ namespace Bam.Net.Automation.Testing
             return summary;
         }
 
-        protected TestDefinition GetTestDefinition(string suiteTitle, string testTitle)
+        protected TestDefinition GetTestDefinition(string suiteTitle, UnitTestMethod test)
         {
+            string testTitle = test.Description;
             string key = $"Suite:{suiteTitle},Test:{testTitle}";
-            if(!_testDefinitionLookupByTitle.TryGetValue(key, out TestDefinition test))
+            if(!_testDefinitionLookupByTitle.TryGetValue(key, out TestDefinition testDefinition))
             {
-                GetTestDefinitionResponse response = TestReportService.GetTestDefinition(suiteTitle, testTitle);
+                GetTestDefinitionResponse response = TestReportService.GetTestDefinition(suiteTitle, TestDefinition.FromUnitTestMethod(test));
                 if (response.Success)
                 {
-                    test = response.TestDefinition;
-                    _testDefinitionLookupByTitle.TryAdd(key, test);
+                    testDefinition = response.TestDefinition;
+                    _testDefinitionLookupByTitle.TryAdd(key, testDefinition);
                 }
                 else
                 {
                     Logger.Warning("Failed to get TestDefinition: {0}", key);
                 }
             }
-            return test;
+            return testDefinition;
         }
         protected TestExecution GetTestExecution(UnitTestMethod test)
         {
@@ -175,7 +179,7 @@ namespace Bam.Net.Automation.Testing
             if(!_testExecutionLookupByMethodInfo.TryGetValue(test.Method, out TestExecution execution))
             {
                 TestSuiteDefinition suiteDefinition = GetTestSuiteDefinition(test);
-                TestDefinition testDefinition = GetTestDefinition(suiteDefinition.Title, test.Description);
+                TestDefinition testDefinition = GetTestDefinition(suiteDefinition.Title, test);
                 TestSuiteExecutionSummary executionSummary = GetTestSuiteExecutionSummary(suiteDefinition);
                 SaveTestExecutionResponse saveResponse = TestReportService.StartTest(executionSummary.Id, testDefinition.Id);
                 if (saveResponse.Success)

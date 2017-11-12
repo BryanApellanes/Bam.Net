@@ -17,19 +17,19 @@ using Bam.Net.Automation.Testing.Data;
 namespace Bam.Net.Automation.Testing.Data.Dao.Repository
 {
 	[Serializable]
-	public class TestReportingRepository: DaoRepository
+	public class TestingRepository: DaoRepository
 	{
-		public TestReportingRepository()
+		public TestingRepository()
 		{
-			SchemaName = "TestReporting";
-			BaseNamespace = "Bam.Net.Automation.TestReporting.Data";			
+			SchemaName = "Testing";
+			BaseNamespace = "Bam.Net.Automation.Testing.Data";			
 ﻿			
 			AddType<Bam.Net.Automation.Testing.Data.NotificationSubscription>();﻿			
 			AddType<Bam.Net.Automation.Testing.Data.TestSuiteDefinition>();﻿			
 			AddType<Bam.Net.Automation.Testing.Data.TestDefinition>();﻿			
 			AddType<Bam.Net.Automation.Testing.Data.TestExecution>();﻿			
 			AddType<Bam.Net.Automation.Testing.Data.TestSuiteExecutionSummary>();
-			DaoAssembly = typeof(TestReportingRepository).Assembly;
+			DaoAssembly = typeof(TestingRepository).Assembly;
 		}
 
 		object _addLock = new object();
@@ -38,7 +38,7 @@ namespace Bam.Net.Automation.Testing.Data.Dao.Repository
             lock (_addLock)
             {
                 base.AddType(type);
-                DaoAssembly = typeof(TestReportingRepository).Assembly;
+                DaoAssembly = typeof(TestingRepository).Assembly;
             }
         }
 
@@ -74,9 +74,9 @@ namespace Bam.Net.Automation.Testing.Data.Dao.Repository
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a Bam.Net.Automation.TestReporting.Data.NotificationSubscriptionColumns 
+		/// <param name="where">A WhereDelegate that recieves a Bam.Net.Automation.Testing.Data.NotificationSubscriptionColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between Bam.Net.Automation.TestReporting.Data.NotificationSubscriptionColumns and other values
+		/// between Bam.Net.Automation.Testing.Data.NotificationSubscriptionColumns and other values
 		/// </param>
 		public IEnumerable<Bam.Net.Automation.Testing.Data.NotificationSubscription> NotificationSubscriptionsWhere(WhereDelegate<NotificationSubscriptionColumns> where, OrderBy<NotificationSubscriptionColumns> orderBy = null)
         {
@@ -167,9 +167,9 @@ namespace Bam.Net.Automation.Testing.Data.Dao.Repository
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a Bam.Net.Automation.TestReporting.Data.TestSuiteDefinitionColumns 
+		/// <param name="where">A WhereDelegate that recieves a Bam.Net.Automation.Testing.Data.TestSuiteDefinitionColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between Bam.Net.Automation.TestReporting.Data.TestSuiteDefinitionColumns and other values
+		/// between Bam.Net.Automation.Testing.Data.TestSuiteDefinitionColumns and other values
 		/// </param>
 		public IEnumerable<Bam.Net.Automation.Testing.Data.TestSuiteDefinition> TestSuiteDefinitionsWhere(WhereDelegate<TestSuiteDefinitionColumns> where, OrderBy<TestSuiteDefinitionColumns> orderBy = null)
         {
@@ -260,9 +260,9 @@ namespace Bam.Net.Automation.Testing.Data.Dao.Repository
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a Bam.Net.Automation.TestReporting.Data.TestDefinitionColumns 
+		/// <param name="where">A WhereDelegate that recieves a Bam.Net.Automation.Testing.Data.TestDefinitionColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between Bam.Net.Automation.TestReporting.Data.TestDefinitionColumns and other values
+		/// between Bam.Net.Automation.Testing.Data.TestDefinitionColumns and other values
 		/// </param>
 		public IEnumerable<Bam.Net.Automation.Testing.Data.TestDefinition> TestDefinitionsWhere(WhereDelegate<TestDefinitionColumns> where, OrderBy<TestDefinitionColumns> orderBy = null)
         {
@@ -353,9 +353,9 @@ namespace Bam.Net.Automation.Testing.Data.Dao.Repository
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a Bam.Net.Automation.TestReporting.Data.TestExecutionColumns 
+		/// <param name="where">A WhereDelegate that recieves a Bam.Net.Automation.Testing.Data.TestExecutionColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between Bam.Net.Automation.TestReporting.Data.TestExecutionColumns and other values
+		/// between Bam.Net.Automation.Testing.Data.TestExecutionColumns and other values
 		/// </param>
 		public IEnumerable<Bam.Net.Automation.Testing.Data.TestExecution> TestExecutionsWhere(WhereDelegate<TestExecutionColumns> where, OrderBy<TestExecutionColumns> orderBy = null)
         {
@@ -446,9 +446,9 @@ namespace Bam.Net.Automation.Testing.Data.Dao.Repository
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a Bam.Net.Automation.TestReporting.Data.TestSuiteExecutionSummaryColumns 
+		/// <param name="where">A WhereDelegate that recieves a Bam.Net.Automation.Testing.Data.TestSuiteExecutionSummaryColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between Bam.Net.Automation.TestReporting.Data.TestSuiteExecutionSummaryColumns and other values
+		/// between Bam.Net.Automation.Testing.Data.TestSuiteExecutionSummaryColumns and other values
 		/// </param>
 		public IEnumerable<Bam.Net.Automation.Testing.Data.TestSuiteExecutionSummary> TestSuiteExecutionSummariesWhere(WhereDelegate<TestSuiteExecutionSummaryColumns> where, OrderBy<TestSuiteExecutionSummaryColumns> orderBy = null)
         {

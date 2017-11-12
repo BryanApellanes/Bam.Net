@@ -11,7 +11,7 @@ using Bam.Net.Data.Repositories;
 namespace Bam.Net.Automation.Testing.Data
 {
 	[Serializable]
-	public class TestSuiteExecutionSummary : RepoData
+	public class TestSuiteExecutionSummary : AuditRepoData
     {
         public TestSuiteExecutionSummary()
         {
@@ -25,19 +25,19 @@ namespace Bam.Net.Automation.Testing.Data
         public virtual TestSuiteDefinition SuiteDefinition { get; set; }
 		public virtual TestExecution[] TestExecutions { get; set; }
 
-        public DateTime LocalStartedTime
+        public DateTime? LocalStartedTime
         {
             get
             {
-                return StartedTime.Value.ToLocalTime();
+                return StartedTime?.ToLocalTime();
             }
         }
 
-        public DateTime LocalFinishedTime
+        public DateTime? LocalFinishedTime
         {
             get
             {
-                return FinishedTime.Value.ToLocalTime();
+                return FinishedTime?.ToLocalTime();
             }
         }
 	}

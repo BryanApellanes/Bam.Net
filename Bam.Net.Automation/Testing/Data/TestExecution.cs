@@ -15,7 +15,7 @@ namespace Bam.Net.Automation.Testing.Data
     /// a single test
     /// </summary>
 	[Serializable]
-	public class TestExecution: RepoData
+	public class TestExecution: AuditRepoData
 	{
 		public long TestDefinitionId { get; set; }
 		public virtual TestDefinition TestDefinition { get; set; }

@@ -21,138 +21,140 @@ using Bam.Net.Automation.Testing.Data.Dao.Repository;
 
 namespace Bam.Net.Automation.Testing
 {
-	[Proxy("testReportSvc", MethodCase = MethodCase.CamelCase)]
-	public class TestReportService : Loggable, IRequiresHttpContext, ITestReportService
+    [Proxy("testReportSvc", MethodCase = MethodCase.CamelCase)]
+    public class TestReportService : Loggable, IRequiresHttpContext, ITestReportService
     {
-        protected TestReportService() { } // for proxy generation
+        public TestReportService() : this(new SQLiteDatabaseProvider(DataSettings.Default.GetDatabaseDirectory().FullName, Log.Default), Log.Default)
+        {
+        }
 
-		public TestReportService(IDatabaseProvider dbProvider, ILogger logger = null)
-		{
+        public TestReportService(IDatabaseProvider dbProvider, ILogger logger = null)
+        {
             DatabaseProvider = dbProvider;
-            logger = logger ?? Log.Default;			
-            TestReportingRepository repo = new TestReportingRepository();
+            logger = logger ?? Log.Default;
+            TestingRepository repo = new TestingRepository();
             DatabaseProvider.SetDatabases(repo);
-            
-			repo.SchemaWarning += (s, e) =>
-			{
+
+            repo.SchemaWarning += (s, e) =>
+            {
                 logger.AddEntry("SchemaWarning: {0}", LogEventType.Warning, e.TryPropertiesToString());
-			};
+            };
             repo.CreateFailed += (s, e) =>
-			{
+            {
                 logger.AddEntry("CreateFailed: {0}", LogEventType.Error, e.TryPropertiesToString());
-			};
+            };
             repo.RetrieveFailed += (s, e) =>
-			{
+            {
                 logger.AddEntry("RetrieveFailed: {0}", LogEventType.Error, e.TryPropertiesToString());
-			};
+            };
             repo.UpdateFailed += (s, e) =>
-			{
+            {
                 logger.AddEntry("UpdateFailed: {0}", LogEventType.Error, e.TryPropertiesToString());
-			};
+            };
 
             Logger = logger;
-			Repository = repo;
-		}
-		protected IDatabaseProvider DatabaseProvider { get; set; }
+            Repository = repo;
+        }
+        protected IDatabaseProvider DatabaseProvider { get; set; }
         protected ILogger Logger { get; set; }
-		public Database Database { get; set; }
+        public Database Database { get; set; }
 
-		public override void Subscribe(ILogger logger)
-		{
-			Repository.Subscribe(logger);
-		}
+        public override void Subscribe(ILogger logger)
+        {
+            Repository.Subscribe(logger);
+        }
 
-		public override void Subscribe(Loggable loggable)
-		{
-			Repository.Subscribe(loggable);
-		}
+        public override void Subscribe(Loggable loggable)
+        {
+            Repository.Subscribe(loggable);
+        }
 
-		#region handlers for client side reporter calls
-		public virtual SaveTestSuiteExecutionSummaryResponse Start()
-		{
-			return SaveTestSuiteExecutionSummary();
-		}
+        #region handlers for client side reporter calls
+        public virtual SaveTestSuiteExecutionSummaryResponse Start()
+        {
+            return SaveTestSuiteExecutionSummary();
+        }
 
-		public virtual GetSuiteDefinitionResponse Suite(TestSuiteDefinition suite)
-		{
-			return GetSuiteDefinition(suite.Title);
-		}
+        public virtual GetSuiteDefinitionResponse Suite(TestSuiteDefinition suite)
+        {
+            return GetSuiteDefinition(suite.Title);
+        }
 
-		public virtual SaveTestExecutionResponse Pass(int summaryId, string suiteTitle, string testTitle)
-		{
-			TestDefinition testDefinition = GetOrCreateTestDefinition(suiteTitle, testTitle);
-			TestExecution execution = new TestExecution { TestSuiteExecutionSummaryId = summaryId, TestDefinitionId = testDefinition.Id, Passed = true };
-			return SaveTestExecution(execution);
-		}
+        public virtual SaveTestExecutionResponse Pass(int summaryId, string suiteTitle, string testTitle)
+        {
+            TestDefinition testDefinition = GetOrCreateTestDefinition(suiteTitle, testTitle);
+            TestExecution execution = new TestExecution { TestSuiteExecutionSummaryId = summaryId, TestDefinitionId = testDefinition.Id, Passed = true };
+            return SaveTestExecution(execution);
+        }
 
-		public virtual SaveTestExecutionResponse Fail(int summaryId, string suiteTitle, string testTitle, string error)
-		{
-			TestDefinition testDefinition = GetOrCreateTestDefinition(suiteTitle, testTitle);
-			TestExecution execution = new TestExecution { TestSuiteExecutionSummaryId = summaryId, TestDefinitionId = testDefinition.Id, Passed = false, Exception = error };
-			return SaveTestExecution(execution);
-		}
+        public virtual SaveTestExecutionResponse Fail(int summaryId, string suiteTitle, string testTitle, string error)
+        {
+            TestDefinition testDefinition = GetOrCreateTestDefinition(suiteTitle, testTitle);
+            TestExecution execution = new TestExecution { TestSuiteExecutionSummaryId = summaryId, TestDefinitionId = testDefinition.Id, Passed = false, Exception = error };
+            return SaveTestExecution(execution);
+        }
 
-		#endregion
+        #endregion
 
-		public virtual NotificationSubscriptionResponse SubscribeToNotifications(string emailAddress)
-		{
-			try
-			{
-				NotificationSubscription subscription = Repository.Query<NotificationSubscription>(Query.Where("EmailAddress") == emailAddress).FirstOrDefault();
-				if (subscription == null)
-				{
+        public virtual NotificationSubscriptionResponse SubscribeToNotifications(string emailAddress)
+        {
+            try
+            {
+                NotificationSubscription subscription = Repository.Query<NotificationSubscription>(Query.Where("EmailAddress") == emailAddress).FirstOrDefault();
+                if (subscription == null)
+                {
                     subscription = new NotificationSubscription()
                     {
                         EmailAddress = emailAddress
                     };
                 }
 
-				subscription.IsActive = true;
-				subscription = Repository.Save(subscription);
+                subscription.IsActive = true;
+                subscription = Repository.Save(subscription);
 
-				return new NotificationSubscriptionResponse { Success = true, Data = subscription, SubscriptionStatus = SubscriptionStatus.Active, Uuid = subscription.Uuid };
-			}
-			catch (Exception ex)
-			{
-				return new NotificationSubscriptionResponse { Success = false, Message = ex.Message };
-			}
-		}
+                return new NotificationSubscriptionResponse { Success = true, Data = subscription, SubscriptionStatus = SubscriptionStatus.Active, Uuid = subscription.Uuid };
+            }
+            catch (Exception ex)
+            {
+                return new NotificationSubscriptionResponse { Success = false, Message = ex.Message };
+            }
+        }
 
-		public virtual NotificationSubscriptionResponse UnsubscribeFromNotifications(string emailAddress)
-		{
-			try
-			{
-				NotificationSubscription subscription = Repository.Query<NotificationSubscription>(Query.Where("EmailAddress") == emailAddress).FirstOrDefault();
-				string uuid = string.Empty;
-				SubscriptionStatus status = SubscriptionStatus.NotFound;
-				if(subscription != null)
-				{
-					subscription.IsActive = false;
-					subscription = Repository.Save(subscription);
-					uuid = subscription.Uuid;
-					status = SubscriptionStatus.NotActive;
-				}
-				
-				return new NotificationSubscriptionResponse { Success = true, SubscriptionStatus = status, Uuid = uuid };
-			}
-			catch (Exception ex)
-			{
-				return new NotificationSubscriptionResponse { Success = false, Message = ex.Message };
-			}
-		}
+        public virtual NotificationSubscriptionResponse UnsubscribeFromNotifications(string emailAddress)
+        {
+            try
+            {
+                NotificationSubscription subscription = Repository.Query<NotificationSubscription>(Query.Where("EmailAddress") == emailAddress).FirstOrDefault();
+                string uuid = string.Empty;
+                SubscriptionStatus status = SubscriptionStatus.NotFound;
+                if (subscription != null)
+                {
+                    subscription.IsActive = false;
+                    subscription = Repository.Save(subscription);
+                    uuid = subscription.Uuid;
+                    status = SubscriptionStatus.NotActive;
+                }
 
-		public virtual RetrieveNotificationSubscriptionsResponse RetrieveNotificationSubscribers()
-		{
-			try
-			{
-				NotificationSubscription[] subscriptions = Repository.Query<NotificationSubscription>(Query.Where("IsActive") == true).ToArray();
-				return new RetrieveNotificationSubscriptionsResponse { Success = true, Data = subscriptions };
-			}
-			catch (Exception ex)
-			{
-				return new RetrieveNotificationSubscriptionsResponse { Success = false, Message = ex.Message };
-			}
-		}
+                return new NotificationSubscriptionResponse { Success = true, SubscriptionStatus = status, Uuid = uuid };
+            }
+            catch (Exception ex)
+            {
+                return new NotificationSubscriptionResponse { Success = false, Message = ex.Message };
+            }
+        }
+
+        public virtual RetrieveNotificationSubscriptionsResponse RetrieveNotificationSubscribers()
+        {
+            try
+            {
+                NotificationSubscription[] subscriptions = Repository.Query<NotificationSubscription>(Query.Where("IsActive") == true).ToArray();
+                return new RetrieveNotificationSubscriptionsResponse { Success = true, Data = subscriptions };
+            }
+            catch (Exception ex)
+            {
+                return new RetrieveNotificationSubscriptionsResponse { Success = false, Message = ex.Message };
+            }
+        }
 
         /// <summary>
         /// Get an exisintg SuiteDefinition with the specified suiteTitle or
@@ -161,30 +163,31 @@ namespace Bam.Net.Automation.Testing
         /// <param name="suiteTitle"></param>
         /// <returns></returns>
 		public virtual GetSuiteDefinitionResponse GetSuiteDefinition(string suiteTitle)
-		{
-			try
-			{
-				TestSuiteDefinition result = GetOrCreateSuiteDefinition(new TestSuiteDefinition { Title = suiteTitle }, out CreateStatus createStatus);
+        {
+            try
+            {
+                TestSuiteDefinition result = GetOrCreateSuiteDefinition(new TestSuiteDefinition { Title = suiteTitle }, out CreateStatus createStatus);
                 return new GetSuiteDefinitionResponse { Success = true, Data = result, CreateStatus = createStatus };
-			}
-			catch (Exception ex)
-			{
-				return new GetSuiteDefinitionResponse { Success = false, Message = ex.Message };
-			}
-		}
+            }
+            catch (Exception ex)
+            {
+                return new GetSuiteDefinitionResponse { Success = false, Message = ex.Message };
+            }
+        }
 
         /// <summary>
         /// Get an existing TestDefinition for the specified suiteTitle and testTitle
         /// or create it if none exists
         /// </summary>
         /// <param name="suiteTitle"></param>
-        /// <param name="testTitle"></param>
+        /// <param name="testDefinition"></param>
         /// <returns></returns>
-        public virtual GetTestDefinitionResponse GetTestDefinition(string suiteTitle, string testTitle)
+        public virtual GetTestDefinitionResponse GetTestDefinition(string suiteTitle, TestDefinition testDefinition)
         {
             try
             {
-                TestDefinition result = GetOrCreateTestDefinition(suiteTitle, testTitle, out CreateStatus createStatus);
+                TestDefinition result = GetOrCreateTestDefinition(suiteTitle, testDefinition, out CreateStatus createStatus);
+                result.CopyProperties(testDefinition);
                 return new GetTestDefinitionResponse { Success = true, Data = result, CreateStatus = createStatus };
             }
             catch (Exception ex)
@@ -200,7 +203,7 @@ namespace Bam.Net.Automation.Testing
                 toCreate = toCreate ?? new TestSuiteExecutionSummary();
                 Meta.SetAuditFields(toCreate);
                 TestSuiteExecutionSummary sum = Repository.Save(toCreate);
-                return new SaveTestSuiteExecutionSummaryResponse { Success = true, Data = sum, CreateStatus = toCreate.Id > 0 ? CreateStatus.Existing: CreateStatus.Created };
+                return new SaveTestSuiteExecutionSummaryResponse { Success = true, Data = sum, CreateStatus = toCreate.Id > 0 ? CreateStatus.Existing : CreateStatus.Created };
             }
             catch (Exception ex)
             {
@@ -221,69 +224,89 @@ namespace Bam.Net.Automation.Testing
         }
 
         public virtual SaveTestExecutionResponse SaveTestExecution(TestExecution execution)
-		{
-			try
-			{
-				Meta.SetAuditFields(execution);
-				TestExecution exec = Repository.Save(execution);
-				return new SaveTestExecutionResponse { Success = true, Data = exec };
-			}
-			catch (Exception ex)
-			{
-				return new SaveTestExecutionResponse { Success = false, Message = ex.Message };
-			}
-		}
+        {
+            try
+            {
+                Meta.SetAuditFields(execution);
+                TestExecution exec = Repository.Save(execution);
+                return new SaveTestExecutionResponse { Success = true, Data = exec };
+            }
+            catch (Exception ex)
+            {
+                return new SaveTestExecutionResponse { Success = false, Message = ex.Message };
+            }
+        }
 
-		public virtual SearchTestExecutionResponse SearchTestExecutionsByDate(DateTime from, DateTime to)
-		{
-			throw new NotImplementedException();
-		}
+        public virtual SearchTestExecutionResponse SearchTestExecutionsByDate(DateTime from, DateTime to)
+        {
+            throw new NotImplementedException();
+        }
 
-		public virtual SearchTestExecutionResponse SearchTestExecutionsByTestDefinitionId(long testId)
-		{
-			throw new NotImplementedException();
-		}
+        public virtual SearchTestExecutionResponse SearchTestExecutionsByTestDefinitionId(long testId)
+        {
+            throw new NotImplementedException();
+        }
 
-		public virtual RetrieveTestExecutionResponse RetrieveTestExecutionById(long id)
-		{
-			try
-			{
-				TestExecution retrieved = Repository.Retrieve<TestExecution>(id);
-				return new RetrieveTestExecutionResponse { Success = true, Data = retrieved, CreateStatus = CreateStatus.Existing };
-			}
-			catch (Exception ex)
-			{
-				return new RetrieveTestExecutionResponse { Success = false, Message = ex.Message };
-			}
-		}
+        public virtual RetrieveTestExecutionResponse RetrieveTestExecutionById(long id)
+        {
+            try
+            {
+                TestExecution retrieved = Repository.Retrieve<TestExecution>(id);
+                return new RetrieveTestExecutionResponse { Success = true, Data = retrieved, CreateStatus = CreateStatus.Existing };
+            }
+            catch (Exception ex)
+            {
+                return new RetrieveTestExecutionResponse { Success = false, Message = ex.Message };
+            }
+        }
 
-		public virtual RetrieveTestExecutionResponse RetrieveTestExecutionByUuid(string uuid)
-		{
-			try
-			{
-				TestExecution queried = Repository.Query<TestExecution>(Query.Where("Uuid") == uuid).FirstOrDefault();
-				if (queried == null)
-				{
-					Args.Throw<ArgumentException>("TestExecution with the specified Uuid was not found: {0}", uuid);
-				}
-				TestExecution retrieved = Repository.Retrieve<TestExecution>(queried.Id);
-				return new RetrieveTestExecutionResponse { Success = true, Data = retrieved };
-			}
-			catch (Exception ex)
-			{
-				return new RetrieveTestExecutionResponse { Success = false, Message = ex.Message };
-			}
-		}
+        public virtual RetrieveTestExecutionResponse RetrieveTestExecutionByUuid(string uuid)
+        {
+            try
+            {
+                TestExecution queried = Repository.Query<TestExecution>(Query.Where("Uuid") == uuid).FirstOrDefault();
+                if (queried == null)
+                {
+                    Args.Throw<ArgumentException>("TestExecution with the specified Uuid was not found: {0}", uuid);
+                }
+                TestExecution retrieved = Repository.Retrieve<TestExecution>(queried.Id);
+                return new RetrieveTestExecutionResponse { Success = true, Data = retrieved };
+            }
+            catch (Exception ex)
+            {
+                return new RetrieveTestExecutionResponse { Success = false, Message = ex.Message };
+            }
+        }
 
-		protected internal TestReportingRepository Repository { get; set; }
+        protected internal TestingRepository Repository { get; set; }
 
         private TestDefinition GetOrCreateTestDefinition(string suiteTitle, string testTitle)
         {
-            return GetOrCreateTestDefinition(suiteTitle, testTitle, out CreateStatus createStatus);
+            return GetOrCreateTestDefinition(suiteTitle, GetTestDefinition(suiteTitle, testTitle), out CreateStatus createStatus);
+        }
+
+        private TestDefinition GetTestDefinition(string suiteTitle, string testTitle)
+        {
+            TestSuiteDefinition suite = Repository.Query<TestSuiteDefinition>(Query.Where("Title") == suiteTitle).FirstOrDefault();
+            if (suite == null)
+            {
+                suite = GetOrCreateSuiteDefinition(new TestSuiteDefinition { Title = suiteTitle });
+            }
+            TestDefinition result = Repository.Query<TestDefinition>(Query.Where("Title") == testTitle && Query.Where("SuiteDefinitionId") == suite.Id).FirstOrDefault();
+            if(result == null)
+            {
+                result = GetOrCreateTestDefinition(suiteTitle, new TestDefinition { Title = testTitle });
+            }
+            return result;
+        }
+
+        private TestDefinition GetOrCreateTestDefinition(string suiteTitle, TestDefinition testDefinition)
+        {
+            return GetOrCreateTestDefinition(suiteTitle, testDefinition, out CreateStatus ignore);
         }
 
         static object _testLock = new object();
-        private TestDefinition GetOrCreateTestDefinition(string suiteTitle, string testTitle, out CreateStatus createStatus)
+        private TestDefinition GetOrCreateTestDefinition(string suiteTitle, TestDefinition testDefinition, out CreateStatus createStatus)
 		{
             lock (_testLock)
             {
@@ -293,16 +316,13 @@ namespace Bam.Net.Automation.Testing
                 {
                     suite = GetOrCreateSuiteDefinition(new TestSuiteDefinition { Title = suiteTitle });
                 }
-
+                string testTitle = testDefinition.Title;
                 TestDefinition result = Repository.Query<TestDefinition>(Query.Where("Title") == testTitle && Query.Where("SuiteDefinitionId") == suite.Id).FirstOrDefault();
                 if (result == null)
                 {
-                    result = new TestDefinition()
-                    {
-                        Title = testTitle,
-                        SuiteDefinitionId = suite.Id
-                    };
-                    Meta.SetAuditFields(result);
+                    result = testDefinition;
+                    result.SuiteDefinitionId = suite.Id;
+                    Meta.SetAuditFields(result);                    
                     result = Repository.Create(result);
                     createStatus = CreateStatus.Created;
                 }

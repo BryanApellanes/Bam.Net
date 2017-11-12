@@ -8,11 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Data.Repositories;
 using Bam.Net.CommandLine;
+using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.Automation.Testing.Data
 {
 	[Serializable]
-	public class TestDefinition: RepoData
+	public class TestDefinition: AuditRepoData
 	{
 		public long SuiteDefinitionId { get; set; }
 		public virtual TestSuiteDefinition SuiteDefinition { get; set; }
@@ -33,5 +34,16 @@ namespace Bam.Net.Automation.Testing.Data
         /// </summary>
 		public string AssemblyFullName { get; set; }
 
+        public static TestDefinition FromUnitTestMethod(UnitTestMethod testMethod)
+        {
+            return new TestDefinition
+            {
+                Title = testMethod.Description,
+                TestType = testMethod.Method.DeclaringType.FullName,
+                MethodName = testMethod.Method.Name,
+                Description = testMethod.Description,
+                AssemblyFullName = testMethod.Method.DeclaringType.Assembly.FullName
+            };
+        }
 	}
 }

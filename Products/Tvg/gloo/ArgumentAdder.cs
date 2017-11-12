@@ -13,6 +13,7 @@ namespace Bam.Net.Application
         private static void AddUtilityArguments()
         {
             AddValidArgument("assemblyPath", false, addAcronym: true, description: "The path to the assembly to find the service class in");
+            AddValidArgument("verbose", false, addAcronym: true, description: "If affirmative log responses to the console");
         }
     }
 }

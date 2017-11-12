@@ -84,6 +84,34 @@ namespace Bam.Net.Automation.Testing.Data.Dao
                 return new TestDefinitionColumns("AssemblyFullName");
             }
         }
+        public TestDefinitionColumns CreatedBy
+        {
+            get
+            {
+                return new TestDefinitionColumns("CreatedBy");
+            }
+        }
+        public TestDefinitionColumns ModifiedBy
+        {
+            get
+            {
+                return new TestDefinitionColumns("ModifiedBy");
+            }
+        }
+        public TestDefinitionColumns Modified
+        {
+            get
+            {
+                return new TestDefinitionColumns("Modified");
+            }
+        }
+        public TestDefinitionColumns Deleted
+        {
+            get
+            {
+                return new TestDefinitionColumns("Deleted");
+            }
+        }
         public TestDefinitionColumns Created
         {
             get

@@ -6,7 +6,7 @@ namespace Bam.Net.Automation.Testing
     public interface ITestReportService
     {
         GetSuiteDefinitionResponse GetSuiteDefinition(string suiteTitle);
-        GetTestDefinitionResponse GetTestDefinition(string suiteTitle, string testTitle);
+        GetTestDefinitionResponse GetTestDefinition(string suiteTitle, TestDefinition testDefinition);
         SaveTestSuiteExecutionSummaryResponse SaveTestSuiteExecutionSummary(TestSuiteExecutionSummary suiteExecutionSummary);
         SaveTestExecutionResponse StartTest(long executionSummaryId, long testDefinitionId);
         SaveTestExecutionResponse SaveTestExecution(TestExecution execution);

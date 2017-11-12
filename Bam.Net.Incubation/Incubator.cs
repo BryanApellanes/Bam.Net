@@ -19,7 +19,6 @@ namespace Bam.Net.Incubation
         Dictionary<Type, object> _typeInstanceDictionary;
         Dictionary<string, Type> _classNameTypeDictionary;
         Dictionary<Type, Dictionary<string, object>> _ctorParams;
-        //Dictionary<Type, ConstructorInfo> implementations;
 
         static Incubator()
         {
@@ -31,7 +30,6 @@ namespace Bam.Net.Incubation
             _typeInstanceDictionary = new Dictionary<Type, object>();
             _classNameTypeDictionary = new Dictionary<string, Type>();
             _ctorParams = new Dictionary<Type, Dictionary<string, object>>();
-            //this.implementations = new Dictionary<Type, ConstructorInfo>();
         }
 
         public static Incubator Default
@@ -296,8 +294,7 @@ namespace Bam.Net.Incubation
 
         public object Get(string className)
         {
-            Type t;
-            return Get(className, out t);
+            return Get(className, out Type t);
         }
 
         public object Get(Type type)
@@ -311,10 +308,9 @@ namespace Bam.Net.Incubation
             if (type != null)
             {
                 object result = this[type];
-                Func<object> fn = result as Func<object>;
-                if(fn != null)
+                if (result is Func<object> fn)
                 {
-                    return fn();
+                    return fn() ?? Get(type, GetCtorParams(type));
                 }
                 else
                 {

@@ -11,6 +11,7 @@ using System.IO;
 using System.Web;
 using System.Reflection;
 using Bam.Net.Configuration;
+using System.Diagnostics;
 
 namespace Bam.Net.ServiceProxy
 {
@@ -79,6 +80,7 @@ namespace Bam.Net.ServiceProxy
             }
         }
 
+        [DebuggerStepThrough]
         private object Get(string name)
         {
             if (Wrapped != null)
