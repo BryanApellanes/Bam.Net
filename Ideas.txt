@@ -1,4 +1,6 @@
-	- Exegete: An automatic translation script that can translate any page
+	- Lingus: Multi language service client proxy generator (CSharp, JavaScript, 
+		Java, Python)
+	- Polyglot: An automatic translation script that can translate any page
 		and provides the ability to accept custom translations in the cases
 		where automatic translation (google translate, and others) provides
 		less than optimal translations.
