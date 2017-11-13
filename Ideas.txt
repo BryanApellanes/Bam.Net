@@ -1,14 +1,13 @@
 	- Lingus: Multi language service client proxy generator (CSharp, JavaScript, 
 		Java, Python)
-	- Polyglot: An automatic translation script that can translate any page
-		and provides the ability to accept custom translations in the cases
-		where automatic translation (google translate, and others) provides
-		less than optimal translations.
-		
 	- App Dashboard: A central management console for all custom software
 		developed by our group.  Including the ability to test, configure and
 		deploy.
-		
+
+		-- Polyglot: An automatic translation script that can translate any page
+			and provides the ability to accept custom translations in the cases
+			where automatic translation (google translate, and others) provides
+			less than optimal translations.		
 		-- Fig Tree: Configuration server.
 		-- Lumberjack: A centralized logging system that agreggates logs for ALL 
 			applications under our ownership.
