@@ -104,20 +104,6 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		}
 	}
 
-	// property:SuiteDefinitionId, columnName:SuiteDefinitionId	
-	[Bam.Net.Data.Column(Name="SuiteDefinitionId", DbDataType="BigInt", MaxLength="19", AllowNull=true)]
-	public long? SuiteDefinitionId
-	{
-		get
-		{
-			return GetLongValue("SuiteDefinitionId");
-		}
-		set
-		{
-			SetValue("SuiteDefinitionId", value);
-		}
-	}
-
 	// property:Title, columnName:Title	
 	[Bam.Net.Data.Column(Name="Title", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
 	public string Title

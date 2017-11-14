@@ -3728,8 +3728,7 @@ namespace Bam.Net
         /// <returns></returns>
         public static Type ToDynamicType(this object instance, string typeName, Func<PropertyInfo, bool> propertyPredicate)
         {
-            AssemblyBuilder ignore;
-            return ToDynamicType(instance, typeName, propertyPredicate, out ignore);
+            return ToDynamicType(instance, typeName, propertyPredicate, out AssemblyBuilder ignore);
         }
 
         /// <summary>
@@ -3753,8 +3752,7 @@ namespace Bam.Net
                 }
                 else
                 {
-                    TypeBuilder typeBuilder;
-                    GetAssemblyAndTypeBuilder(typeName, out assemblyBuilder, out typeBuilder);
+                    GetAssemblyAndTypeBuilder(typeName, out assemblyBuilder, out TypeBuilder typeBuilder);
 
                     Type actualType = instance.GetType();
                     PropertyInfo[] properties = actualType.GetProperties();
@@ -3773,8 +3771,7 @@ namespace Bam.Net
 
         public static Type ToDynamicType(this Dictionary<object, object> dictionary, string typeName, List<Type> created)
         {
-            AssemblyBuilder ignore;
-            return ToDynamicType(dictionary, typeName, 0, created, out ignore, false);
+            return ToDynamicType(dictionary, typeName, 0, created, out AssemblyBuilder ignore, false);
         }
 
         public static Type ToDynamicType(this Dictionary<object, object> dictionary, string typeName, bool useCache = true)
@@ -3784,8 +3781,7 @@ namespace Bam.Net
 
         internal static Type ToDynamicType(this Dictionary<object, object> dictionary, string typeName, int recursionThusFar, bool useCache = true)
         {
-            AssemblyBuilder ignore;
-            return dictionary.ToDynamicType(typeName, recursionThusFar, out ignore, useCache);
+            return dictionary.ToDynamicType(typeName, recursionThusFar, out AssemblyBuilder ignore, useCache);
         }
         internal static Type ToDynamicType(this Dictionary<object, object> dictionary, string typeName, int recursionThusFar, out AssemblyBuilder assemblyBuilder, bool useCache = true)
         {

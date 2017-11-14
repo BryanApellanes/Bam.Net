@@ -62,7 +62,22 @@ Bam.Net.Automation.Testing.Data.TestExecution[] _testExecutions;
 				_testExecutions = value;
 			}
 		}
-
+Bam.Net.Automation.Testing.Data.TestSuiteDefinition _testSuiteDefinition;
+		public override Bam.Net.Automation.Testing.Data.TestSuiteDefinition TestSuiteDefinition
+		{
+			get
+			{
+				if (_testSuiteDefinition == null)
+				{
+					_testSuiteDefinition = (Bam.Net.Automation.Testing.Data.TestSuiteDefinition)Repository.GetParentPropertyOfChild(this, typeof(Bam.Net.Automation.Testing.Data.TestSuiteDefinition));
+				}
+				return _testSuiteDefinition;
+			}
+			set
+			{
+				_testSuiteDefinition = value;
+			}
+		}
 
 	}
 	// -- generated

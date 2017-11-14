@@ -126,6 +126,8 @@ namespace Bam.Net.Automation.Testing
         {
             return SetTestSuiteExecutionSummary(suite);
         }
+
+        object _testSuiteExecutionSummaryLock = new object();
         /// <summary>
         /// Set a TestSuiteExecutionSummary for the specified test creating it if necessary
         /// and populating the internal cache
@@ -134,21 +136,24 @@ namespace Bam.Net.Automation.Testing
         /// <returns></returns>
         protected TestSuiteExecutionSummary SetTestSuiteExecutionSummary(TestSuiteDefinition suite)
         {
-            if (!_testSuiteExecutionLookupByTitle.TryGetValue(suite.Title, out TestSuiteExecutionSummary summary))
+            lock (_testSuiteExecutionSummaryLock)
             {
-                TestSuiteExecutionSummary executionSummary = new TestSuiteExecutionSummary { SuiteDefinitionId = suite.Id, StartedTime = DateTime.UtcNow };
-                SaveTestSuiteExecutionSummaryResponse response = TestReportService.SaveTestSuiteExecutionSummary(executionSummary);
-                if (response.Success)
+                if (!_testSuiteExecutionLookupByTitle.TryGetValue(suite.Title, out TestSuiteExecutionSummary summary))
                 {
-                    summary = response.TestSuiteExecutionSummary;
-                    _testSuiteExecutionLookupByTitle.TryAdd(suite.Title, summary);
+                    TestSuiteExecutionSummary executionSummary = new TestSuiteExecutionSummary { TestSuiteDefinitionId = suite.Id, StartedTime = DateTime.UtcNow };
+                    SaveTestSuiteExecutionSummaryResponse response = TestReportService.SaveTestSuiteExecutionSummary(executionSummary);
+                    if (response.Success)
+                    {
+                        summary = response.TestSuiteExecutionSummary;
+                        _testSuiteExecutionLookupByTitle.TryAdd(suite.Title, summary);
+                    }
+                    else
+                    {
+                        Logger.Warning("Failed to create TestSuiteExecutionSummary: {0}", response.Message);
+                    }
                 }
-                else
-                {
-                    Logger.Warning("Failed to create TestSuiteExecutionSummary: {0}", response.Message);
-                }
+                return summary;
             }
-            return summary;
         }
 
         protected TestDefinition GetTestDefinition(string suiteTitle, UnitTestMethod test)
@@ -170,10 +175,12 @@ namespace Bam.Net.Automation.Testing
             }
             return testDefinition;
         }
+
         protected TestExecution GetTestExecution(UnitTestMethod test)
         {
             return SetTestExecution(test);
         }
+
         protected TestExecution SetTestExecution(UnitTestMethod test)
         {
             if(!_testExecutionLookupByMethodInfo.TryGetValue(test.Method, out TestExecution execution))

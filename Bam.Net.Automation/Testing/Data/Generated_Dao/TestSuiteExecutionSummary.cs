@@ -160,17 +160,17 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		}
 	}
 
-	// property:SuiteDefinitionId, columnName:SuiteDefinitionId	
-	[Bam.Net.Data.Column(Name="SuiteDefinitionId", DbDataType="BigInt", MaxLength="19", AllowNull=true)]
-	public long? SuiteDefinitionId
+	// property:TestSuiteDefinitionId, columnName:TestSuiteDefinitionId	
+	[Bam.Net.Data.Column(Name="TestSuiteDefinitionId", DbDataType="BigInt", MaxLength="19", AllowNull=true)]
+	public long? TestSuiteDefinitionId
 	{
 		get
 		{
-			return GetLongValue("SuiteDefinitionId");
+			return GetLongValue("TestSuiteDefinitionId");
 		}
 		set
 		{
-			SetValue("SuiteDefinitionId", value);
+			SetValue("TestSuiteDefinitionId", value);
 		}
 	}
 

@@ -70,11 +70,11 @@ namespace Bam.Net.Automation.Testing.Data.Dao
                 return new TestSuiteExecutionSummaryColumns("FinishedTime");
             }
         }
-        public TestSuiteExecutionSummaryColumns SuiteDefinitionId
+        public TestSuiteExecutionSummaryColumns TestSuiteDefinitionId
         {
             get
             {
-                return new TestSuiteExecutionSummaryColumns("SuiteDefinitionId");
+                return new TestSuiteExecutionSummaryColumns("TestSuiteDefinitionId");
             }
         }
         public TestSuiteExecutionSummaryColumns CreatedBy

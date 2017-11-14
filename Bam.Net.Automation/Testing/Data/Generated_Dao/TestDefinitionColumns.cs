@@ -42,13 +42,6 @@ namespace Bam.Net.Automation.Testing.Data.Dao
                 return new TestDefinitionColumns("Cuid");
             }
         }
-        public TestDefinitionColumns SuiteDefinitionId
-        {
-            get
-            {
-                return new TestDefinitionColumns("SuiteDefinitionId");
-            }
-        }
         public TestDefinitionColumns Title
         {
             get

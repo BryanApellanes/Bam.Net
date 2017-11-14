@@ -13,19 +13,12 @@ namespace Bam.Net.ServiceProxy
     {
         public bool Success { get; set; }
         public string Message { get; set; }
+        
         /// <summary>
         /// Relevant data returned in response
         /// to a request
         /// </summary>
         public object Data { get; set; }
-		public T DataAs<T>() where T : class
-		{
-			return Data as T;
-		}
-        public T DataFromJObject<T>()
-        {
-            return Data.FromJObject<T>();
-        }
 
         public T DataTo<T>()
         {

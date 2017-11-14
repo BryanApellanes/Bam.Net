@@ -166,7 +166,7 @@ namespace Bam.Net.Automation.Testing
         {
             try
             {
-                TestSuiteDefinition result = GetOrCreateSuiteDefinition(new TestSuiteDefinition { Title = suiteTitle }, out CreateStatus createStatus);
+                TestSuiteDefinition result = GetOrCreateSuiteDefinition(new TestSuiteDefinition { Title = suiteTitle }, out CreateStatus createStatus).ToDynamicData().CopyAs<TestSuiteDefinition>();
                 return new GetSuiteDefinitionResponse { Success = true, Data = result, CreateStatus = createStatus };
             }
             catch (Exception ex)
@@ -187,7 +187,7 @@ namespace Bam.Net.Automation.Testing
             try
             {
                 TestDefinition result = GetOrCreateTestDefinition(suiteTitle, testDefinition, out CreateStatus createStatus);
-                result.CopyProperties(testDefinition);
+                result = result.ToDynamicData().CopyAs<TestDefinition>();
                 return new GetTestDefinitionResponse { Success = true, Data = result, CreateStatus = createStatus };
             }
             catch (Exception ex)
@@ -202,7 +202,7 @@ namespace Bam.Net.Automation.Testing
             {
                 toCreate = toCreate ?? new TestSuiteExecutionSummary();
                 Meta.SetAuditFields(toCreate);
-                TestSuiteExecutionSummary sum = Repository.Save(toCreate);
+                TestSuiteExecutionSummary sum = Repository.Save(toCreate).ToDynamicData().CopyAs<TestSuiteExecutionSummary>();
                 return new SaveTestSuiteExecutionSummaryResponse { Success = true, Data = sum, CreateStatus = toCreate.Id > 0 ? CreateStatus.Existing : CreateStatus.Created };
             }
             catch (Exception ex)
@@ -239,12 +239,31 @@ namespace Bam.Net.Automation.Testing
 
         public virtual SearchTestExecutionResponse SearchTestExecutionsByDate(DateTime from, DateTime to)
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<TestExecution> results = Repository.Query<TestExecution>(
+                    QueryFilter.Where(nameof(TestExecution.StartedTime)) > from &&
+                    QueryFilter.Where(nameof(TestExecution.StartedTime)) > to).ToList();
+                return new SearchTestExecutionResponse { Success = true, Data = results };
+            }
+            catch (Exception ex)
+            {
+                return new SearchTestExecutionResponse { Success = false, Message = ex.Message };
+            }
         }
 
         public virtual SearchTestExecutionResponse SearchTestExecutionsByTestDefinitionId(long testId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<TestExecution> results = Repository.Query<TestExecution>(
+                    QueryFilter.Where(nameof(TestExecution.TestDefinitionId)) == testId).ToList();
+                return new SearchTestExecutionResponse { Success = true, Data = results };
+            }
+            catch (Exception ex)
+            {
+                return new SearchTestExecutionResponse { Success = false, Message = ex.Message };
+            }
         }
 
         public virtual RetrieveTestExecutionResponse RetrieveTestExecutionById(long id)
@@ -287,12 +306,13 @@ namespace Bam.Net.Automation.Testing
 
         private TestDefinition GetTestDefinition(string suiteTitle, string testTitle)
         {
-            TestSuiteDefinition suite = Repository.Query<TestSuiteDefinition>(Query.Where("Title") == suiteTitle).FirstOrDefault();
+            TestSuiteDefinition suite = Repository.Query<TestSuiteDefinition>(Query.Where(nameof(TestSuiteDefinition.Title)) == suiteTitle).FirstOrDefault();
             if (suite == null)
             {
                 suite = GetOrCreateSuiteDefinition(new TestSuiteDefinition { Title = suiteTitle });
             }
-            TestDefinition result = Repository.Query<TestDefinition>(Query.Where("Title") == testTitle && Query.Where("SuiteDefinitionId") == suite.Id).FirstOrDefault();
+            TestDefinition result = Repository.Query<TestDefinition>(Query.Where(nameof(TestDefinition.Title)) == testTitle &&
+                Query.Where(nameof(TestDefinition.TestSuiteDefinitionId)) == suite.Id).FirstOrDefault();
             if(result == null)
             {
                 result = GetOrCreateTestDefinition(suiteTitle, new TestDefinition { Title = testTitle });
@@ -311,17 +331,19 @@ namespace Bam.Net.Automation.Testing
             lock (_testLock)
             {
                 createStatus = CreateStatus.Existing;
-                TestSuiteDefinition suite = Repository.Query<TestSuiteDefinition>(Query.Where("Title") == suiteTitle).FirstOrDefault();
+                TestSuiteDefinition suite = Repository.Query<TestSuiteDefinition>(Query.Where(nameof(TestSuiteDefinition.Title)) == suiteTitle).FirstOrDefault();
                 if (suite == null)
                 {
                     suite = GetOrCreateSuiteDefinition(new TestSuiteDefinition { Title = suiteTitle });
                 }
                 string testTitle = testDefinition.Title;
-                TestDefinition result = Repository.Query<TestDefinition>(Query.Where("Title") == testTitle && Query.Where("SuiteDefinitionId") == suite.Id).FirstOrDefault();
+                TestDefinition result = Repository.Query<TestDefinition>(
+                    Query.Where(nameof(TestDefinition.Title)) == testTitle && 
+                    Query.Where(nameof(TestDefinition.TestSuiteDefinitionId)) == suite.Id).FirstOrDefault();
                 if (result == null)
                 {
                     result = testDefinition;
-                    result.SuiteDefinitionId = suite.Id;
+                    result.TestSuiteDefinitionId = suite.Id;
                     Meta.SetAuditFields(result);                    
                     result = Repository.Create(result);
                     createStatus = CreateStatus.Created;
