@@ -18,16 +18,6 @@ ServiceProxySystem.Initialize();
 ServiceProxySystem.Register<Echo>();
 ```
 
-### Web Service Endpoints
-The web service endpoints or endpoint urls that are defined for each registered 
-class will conform to the following route signature:
-
-```
-/{VERB}/{ClassName}/{MethodName}.{ext}
-```
-
-Where VERB is one of GET or POST.
-
 ### Web Service Clients
 In addition to automatically exposing any class that you choose as a
 web service, the ServiceProxySystem will also automatically generate clients

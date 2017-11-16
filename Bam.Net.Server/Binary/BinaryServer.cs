@@ -94,45 +94,25 @@ namespace Bam.Net.Server.Binary
         {
             get { return new string[] { "Port", "MaxThreads", "ReadBufferSize" }; }
         }
+
         [Verbosity(VerbosityLevel.Information, MessageFormat = "\r\nBinaryServer={Name};Port={Port};Started")]
         public event EventHandler Starting;
 
         [Verbosity(VerbosityLevel.Information, MessageFormat = "\r\nBinaryServer={Name};Port={Port};Started")]
         public event EventHandler Started;
 
-        protected void OnStarting()
-        {
-            Starting?.Invoke(this, new EventArgs());
-        }
-
-        protected void OnStarted()
-        {
-            Started?.Invoke(this, new EventArgs());
-        }
 
 		[Verbosity(VerbosityLevel.Information, MessageFormat = "\r\nBinaryServer={Name};Port={Port};Stopped")]
         public event EventHandler Stopped;
 
-        protected void OnStopped()
-        {
-            Stopped?.Invoke(this, new EventArgs());
-        }
+        [Verbosity(LogEventType.Error, MessageFormat = "\r\nLastMessage: {LastExceptionMessage}")]
+        public event EventHandler StartExceptionThrown;
 
         [Verbosity(LogEventType.Error, MessageFormat = "\r\nLastMessage: {LastExceptionMessage}")]
-        public event EventHandler ExceptionThrown;
-
-        protected void OnException(Exception ex)
-        {
-            ExceptionThrown?.Invoke(this, new ErrorEventArgs(ex));
-        }
-
+        public event EventHandler RequestExceptionThrown;
+        
         [Verbosity(LogEventType.Error, MessageFormat = "\r\nLastMessage: {LastExceptionMessage}")]
-        public event EventHandler InitializationException;
-
-        protected void OnInitializationException(Exception ex)
-        {
-            InitializationException?.Invoke(this, new ErrorEventArgs(ex));
-        }               
+        public event EventHandler InitializationException;             
 
         public void Dispose()
         {
@@ -142,14 +122,14 @@ namespace Bam.Net.Server.Binary
         public void Stop()
         {
             Listener.Stop();
-            OnStopped();
+            FireEvent(Stopped);
         }
 
         public void Start()
         {
             try
             {
-                OnStarting();
+                FireEvent(Starting);
                 Listener = new TcpListener(IPAddress.Any, Port);
 
                 try
@@ -161,16 +141,17 @@ namespace Bam.Net.Server.Binary
                 catch (Exception ex)
                 {
                     LastExceptionMessage = ex.Message;
-                    OnException(ex);
+                    FireEvent(StartExceptionThrown, new ErrorEventArgs(ex));
                 }
-                OnStarted();
+                FireEvent(Started);
             }
             catch (Exception ex)
             {
                 LastExceptionMessage = ex.Message;
-                OnInitializationException(ex);
+                FireEvent(InitializationException, new ErrorEventArgs(ex));
             }
         }
+
         protected TcpListener Listener { get; set; }
         protected ILogger Logger { get; set; }
 
@@ -202,6 +183,7 @@ namespace Bam.Net.Server.Binary
                 }
                 catch (Exception ex)
                 {
+                    FireEvent(RequestExceptionThrown, new ErrorEventArgs(ex));
                     Logger.AddEntry("Error reading request: {0}", ex, ex.Message);
                 }
             }            
@@ -223,6 +205,7 @@ namespace Bam.Net.Server.Binary
                 stream = null;
                 requestData = new byte[] { };
                 Logger.AddEntry("Error reading stream data: {0}", ex, ex.Message);
+                throw;
             }
         }
 
@@ -255,6 +238,5 @@ namespace Bam.Net.Server.Binary
             this.CopyProperties(configuration);
             this.CheckRequiredProperties();
         }
-
     }
 }
