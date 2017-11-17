@@ -9,7 +9,7 @@ namespace Bam.Net.Server.Binary
     [Serializable]
     public class BinaryRequest<T>: BinaryRequest
     {
-        public T Message { get; set; }
+        public new T Message { get; set; }
     }
 
     [Serializable]

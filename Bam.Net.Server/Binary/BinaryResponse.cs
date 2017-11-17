@@ -9,12 +9,12 @@ namespace Bam.Net.Server.Binary
     [Serializable]
     public class BinaryResponse<T>: BinaryResponse
     {
-        public T Message { get; set; }
+        public new T Data { get; set; }
     }
 
     [Serializable]
     public class BinaryResponse
     {
-        public object Message { get; set; }
+        public object Data { get; set; }
     }
 }

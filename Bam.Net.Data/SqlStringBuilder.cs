@@ -141,8 +141,7 @@ namespace Bam.Net.Data
             {
                 conn = db.GetDbConnection();
             }
-            IParameterBuilder parameterBuilder;
-            if (db.ServiceProvider.TryGet<IParameterBuilder>(out parameterBuilder))
+            if (db.ServiceProvider.TryGet(out IParameterBuilder parameterBuilder))
             {
                 DataSet ds = db.GetDataSetFromSql(this, CommandType.Text, releaseConnection, conn, tx, parameterBuilder.GetParameters(this));
                 OnExecuted(db);

@@ -103,6 +103,12 @@
     <Compile Include="Automation\CommandService.cs" />
     <Compile Include="Catalog\Data\ItemCustomizationDefinition.cs" />
     <Compile Include="AsyncExecutionRequest.cs" />
+    <Compile Include="Chunking\Chunk.cs" />
+    <Compile Include="Chunking\ChunkClient.cs" />
+    <Compile Include="Chunking\ChunkRequest.cs" />
+    <Compile Include="Chunking\ChunkOperation.cs" />
+    <Compile Include="Chunking\ChunkResponse.cs" />
+    <Compile Include="Chunking\ChunkServer.cs" />
     <Compile Include="Distributed\Arc.cs" />
     <Compile Include="Distributed\Data\CreateOperation.cs" />
     <Compile Include="Distributed\Data\DataPoint.cs" />
@@ -234,7 +240,6 @@
     <Compile Include="Documentation\Data\OperationDescriptor.cs" />
     <Compile Include="Documentation\Data\ParameterDescriptor.cs" />
     <Compile Include="Documentation\Data\PropertyDescriptor.cs" />
-    <Compile Include="ExecutionResponder.cs" />
     <Compile Include="OpenApi\Objects\CallbackObject.cs" />
     <Compile Include="OpenApi\Objects\ComponentsObject.cs" />
     <Compile Include="OpenApi\Objects\ContactObject.cs" />

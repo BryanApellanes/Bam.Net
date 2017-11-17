@@ -53,8 +53,7 @@ namespace Bam.Net.CoreServices.Files
             };
             return writer;
         }
-
-        protected List<MemoryMappedViewAccessor> MemoryMappedFileChunks { get; set; }
+        
         public Task Write(string localPath)
         {
             return Task.Run(() => FileService.RestoreFile(FileHash, localPath));

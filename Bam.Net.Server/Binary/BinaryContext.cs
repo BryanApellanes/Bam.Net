@@ -12,7 +12,7 @@ namespace Bam.Net.Server.Binary
 {
     public class BinaryContext<T>: BinaryContext
     {
-        public BinaryRequest<T> Request { get; set; }
+        public new BinaryRequest<T> Request { get; set; }
     }
 
     public class BinaryContext

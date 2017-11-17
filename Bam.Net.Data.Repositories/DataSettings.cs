@@ -17,6 +17,7 @@ namespace Bam.Net.Data.Repositories
             DatabaseDirectory = "Databases";
             RepositoryDirectory = "Repositories";
             FilesDirectory = "Files";
+            ChunksDirectory = "Chunks";
             WorkspacesDirectory = "Workspaces";
             EmailTemplatesDirectory = "EmailTemplates";
             ProcessMode = ProcessMode.Default;
@@ -39,6 +40,7 @@ namespace Bam.Net.Data.Repositories
         public string DatabaseDirectory { get; set; }
         public string RepositoryDirectory { get; set; }
         public string FilesDirectory { get; set; }
+        public string ChunksDirectory { get; set; }
         public string WorkspacesDirectory { get; set; }
         public string EmailTemplatesDirectory { get; set; }
 
@@ -70,6 +72,11 @@ namespace Bam.Net.Data.Repositories
         public DirectoryInfo GetFilesDirectory()
         {
             return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, FilesDirectory));
+        }
+
+        public DirectoryInfo GetChunksDirectory()
+        {
+            return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, ChunksDirectory));
         }
 
         public DirectoryInfo GetWorkspaceDirectory(Type type)

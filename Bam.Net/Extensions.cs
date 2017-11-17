@@ -72,9 +72,7 @@ namespace Bam.Net
                 { ExistingFileAction.DoNotOverwrite, (resource, output) => Logging.Log.Warn("File exists, can't write resource to {0}", output.FullName) }
             };
         }
-
-
-
+        
         public static int GetHashCode(this object instance, params string[] propertiesToInclude)
         {
             return GetHashCode(instance, propertiesToInclude.Select(p => instance.Property(p)).ToArray());
@@ -2184,6 +2182,13 @@ namespace Bam.Net
             return txt.ToString();
         }
 
+        public static IEnumerable<string> SplitByLength(this string value, int maxLength)
+        {
+            for (int index = 0; index < value.Length; index += maxLength)
+            {
+                yield return value.Substring(index, Math.Min(maxLength, value.Length - index));
+            }
+        }
         /// <summary>
         /// Returns a random lowercase letter from a-z."
         /// </summary>

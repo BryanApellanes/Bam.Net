@@ -25,7 +25,7 @@ namespace Bam.Net.CoreServices
     public class CoreFileService : ApplicationProxyableService, IFileService
     {
         protected CoreFileService() { }
-        public CoreFileService(IRepository repository)
+        public CoreFileService(IRepository repository, DataSettings dataSettings = null)
         {
             Repository = repository;
             Repository.AddTypes(new Type[]
@@ -34,10 +34,11 @@ namespace Bam.Net.CoreServices
                 typeof(ChunkDataDescriptor),
                 typeof(ChunkData)
             });
+            DataSettings = dataSettings ?? DataSettings.Default;
+
             ChunkDataBatchSize = 10;
             ChunkLength = 256000;
-            ChunkDirectory = new FileInfo(".\\ChunkData").FullName;
-
+            ChunkDirectory = DataSettings.GetChunksDirectory().FullName;
             SetChunkDataDescriptorRetriever();
         }
 
@@ -299,6 +300,8 @@ namespace Bam.Net.CoreServices
         {
             return GetFileChunks(fileHash, fromIndex, ChunkDataBatchSize);
         }
+
+        protected DataSettings DataSettings { get; }
 
         private static void HandleExistingFile(string localPath, bool overwrite)
         {

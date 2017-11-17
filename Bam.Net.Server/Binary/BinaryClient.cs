@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Server.Binary
 {
-    public class BinaryClient<T>: BinaryClient
+    public class BinaryClient<TRequest, TResponse>: BinaryClient
     {
         public BinaryClient(string hostName, int port) : base(hostName, port) { }
 
-        public BinaryResponse<T> SendRequest(T message)
+        public BinaryResponse<TResponse> SendRequest(TRequest message)
         {
-            BinaryRequest<T> request = new BinaryRequest<T> { Message = message };
+            BinaryRequest<TRequest> request = new BinaryRequest<TRequest> { Message = message };
             SendRequest(request);
-            return ReceiveResponse<BinaryResponse<T>>(NetworkStream);
+            return ReceiveResponse<BinaryResponse<TResponse>>(NetworkStream);
         }
     }
 

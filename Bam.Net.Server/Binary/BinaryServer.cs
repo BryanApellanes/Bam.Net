@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Server.Binary
 {
-    public abstract class BinaryServer<T>: BinaryServer
+    public abstract class BinaryServer<TRequest, TResponse>: BinaryServer
     {
         protected internal override void ReadRequest(TcpClient client)
         {
@@ -26,13 +26,15 @@ namespace Bam.Net.Server.Binary
                 {
                     GetStreamData(client, out NetworkStream stream, out byte[] requestData);
 
-                    BinaryRequest<T> request = requestData.FromBinaryBytes<BinaryRequest<T>>();
-                    ProcessRequest(new BinaryContext<T>
+                    BinaryRequest<TRequest> request = requestData.FromBinaryBytes<BinaryRequest<TRequest>>();
+                    BinaryContext<TRequest> ctx = new BinaryContext<TRequest>
                     {
                         Request = request,
                         ResponseStream = stream,
                         Encoding = Encoding
-                    });
+                    };
+                    TResponse response = ProcessRequest(ctx);
+                    WriteResponse(ctx, response);
                 }
                 catch (Exception ex)
                 {
@@ -41,11 +43,18 @@ namespace Bam.Net.Server.Binary
             }
         }
 
-        public virtual void WriteResponse(BinaryContext context, T message)
+        public virtual void WriteResponse(BinaryContext context, TResponse message)
         {
-            BinaryResponse<T> msg = new BinaryResponse<T> { Message = message };
+            BinaryResponse<TResponse> msg = new BinaryResponse<TResponse> { Data = message };
             WriteResponse(context, msg);
         }
+
+        public override void ProcessRequest(BinaryContext context)
+        {
+            ProcessRequest((BinaryContext<TRequest>)context);
+        }
+
+        public abstract TResponse ProcessRequest(BinaryContext<TRequest> context);
     }
 
     public abstract class BinaryServer: Loggable, IConfigurable, IDisposable
@@ -213,7 +222,7 @@ namespace Bam.Net.Server.Binary
         
         protected virtual void WriteResponse(BinaryContext context, object message)
         {
-            BinaryResponse msg = new BinaryResponse { Message = message };
+            BinaryResponse msg = new BinaryResponse { Data = message };
             WriteResponse(context, msg);
         }
 

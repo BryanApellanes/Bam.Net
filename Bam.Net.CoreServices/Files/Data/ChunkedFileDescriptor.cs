@@ -23,8 +23,7 @@ namespace Bam.Net.CoreServices.Files.Data
         public int ChunkLength { get; set; }
         public override bool Equals(object obj)
         {
-            ChunkedFileDescriptor o = obj as ChunkedFileDescriptor;
-            if(o != null)
+            if (obj is ChunkedFileDescriptor o)
             {
                 return o.FileHash.Equals(FileHash);
             }

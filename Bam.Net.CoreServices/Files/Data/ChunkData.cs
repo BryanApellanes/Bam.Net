@@ -19,7 +19,13 @@ namespace Bam.Net.CoreServices.Files.Data
         /// value of this chunks Data
         /// </summary>
         public string ChunkHash { get; set; }
+
+        /// <summary>
+        /// The length of the base 64 decoded
+        /// value of this chunks Data
+        /// </summary>
         public int ChunkLength { get; set; }
+
         /// <summary>
         /// Base64 encoded data
         /// </summary>

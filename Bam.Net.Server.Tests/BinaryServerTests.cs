@@ -25,7 +25,7 @@ namespace Bam.Net.Server.Tests
     }
 
     [Serializable]
-    public class TcpServerTests: CommandLineTestInterface
+    public class BinaryServerTests: CommandLineTestInterface
     {
         [UnitTest]
         public void CanServe()
@@ -39,9 +39,9 @@ namespace Bam.Net.Server.Tests
 
             BinaryClient client = new BinaryClient("localhost", port);
             BinaryResponse response = client.SendRequest((object)"this is a test");
-            Console.WriteLine("Response: " + response.Message);
+            Console.WriteLine("Response: " + response.Data);
             response = client.SendRequest((object)"second message");
-            Console.WriteLine("Second resposne: " + response.Message);
+            Console.WriteLine("Second resposne: " + response.Data);
             Thread.Sleep(1000);
         }
         
