@@ -27,8 +27,7 @@ namespace Bam.Net.CoreServices.Files.Data
 
         public override bool Equals(object obj)
         {
-            ChunkData data = obj as ChunkData;
-            if(data != null)
+            if (obj is ChunkData data)
             {
                 return data.ChunkHash.Equals(ChunkHash);
             }

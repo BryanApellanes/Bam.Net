@@ -13,6 +13,11 @@ using Bam.Net.Configuration;
 using Bam.Net.ServiceProxy;
 using Bam.Net.Logging;
 using System.Reflection;
+using Bam.Net.UserAccounts;
+using Bam.Net.Data.Repositories;
+using Bam.Net.UserAccounts.Data;
+using Bam.Net.Data;
+using Bam.Net.ServiceProxy.Secure;
 
 namespace Bam.Net.Application
 {
@@ -47,6 +52,10 @@ namespace Bam.Net.Application
 
         public static void StartVyooServer(ConsoleLogger logger)
         {
+            DataSettings.Default.SetDefaultDatabaseFor<Session>(out Database userDb);
+            userDb.TryEnsureSchema<Session>();
+            DataSettings.Default.SetDefaultDatabaseFor<SecureSession>(out Database sessionDb);
+            sessionDb.TryEnsureSchema<SecureSession>();
             BamConf conf = BamConf.Load(DefaultConfiguration.GetAppSetting(contentRootConfigKey).Or(defaultRoot));
             vyooServer = new VyooServer(conf, logger)
             {
@@ -55,6 +64,7 @@ namespace Bam.Net.Application
             };
             vyooServer.Start();
         }
+
         public static HostPrefix GetConfiguredHostPrefix()
         {
             HostPrefix hostPrefix = new HostPrefix()
@@ -65,6 +75,7 @@ namespace Bam.Net.Application
             };
             return hostPrefix;
         }
+
         private static ConsoleLogger GetLogger()
         {
             ConsoleLogger logger = new ConsoleLogger()
