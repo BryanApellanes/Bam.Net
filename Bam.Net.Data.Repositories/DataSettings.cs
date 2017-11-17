@@ -42,14 +42,14 @@ namespace Bam.Net.Data.Repositories
         public string WorkspacesDirectory { get; set; }
         public string EmailTemplatesDirectory { get; set; }
 
-        public DirectoryInfo GetDataDirectory(string directoryName)
-        {
-            return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, directoryName));
-        }
-
         public DirectoryInfo GetRootDataDirectory()
         {
             return new DirectoryInfo(Path.Combine(DataRootDirectory, ProcessMode.ToString()));
+        }
+
+        public DirectoryInfo GetDataDirectory(string directoryName)
+        {
+            return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, directoryName));
         }
 
         public DirectoryInfo GetDatabaseDirectory()
@@ -90,7 +90,7 @@ namespace Bam.Net.Data.Repositories
         public void SetDatabaseFor(object instance)
         {
             instance.Property("Database", GetDatabaseFor(instance), false);
-        }
+        }        
 
         public override SQLiteDatabase GetDatabaseFor(object instance)
         {
@@ -102,16 +102,19 @@ namespace Bam.Net.Data.Repositories
             }
             return new SQLiteDatabase(GetDatabaseDirectory().FullName, databaseName);
         }
+
         public override string GetDatabasePathFor(Type type, string info = null)
         {
             return GetDatabaseFor(type, info).DatabaseFile.FullName;
         }
+
         public override SQLiteDatabase GetDatabaseFor(Type objectType, string info = null)
         {
-            string name = string.IsNullOrEmpty(info) ? objectType.FullName : $"{objectType.FullName}_{info}";
+            string connectionName = Dao.ConnectionName(objectType);
+            string fileName = string.IsNullOrEmpty(info) ? (string.IsNullOrEmpty(connectionName) ? objectType.FullName: connectionName) : $"{objectType.FullName}_{info}";
             string fullPath = GetDatabaseDirectory().FullName;
-            SQLiteDatabase db = new SQLiteDatabase(fullPath, name);
-            Logger.Info("Returned SQLiteDatabase with path {0} for type {1}\r\nFullPath: {2}\r\nName: {3}", db.DatabaseFile.FullName, objectType.Name, fullPath, name);
+            SQLiteDatabase db = new SQLiteDatabase(fullPath, fileName);
+            Logger.Info("Returned SQLiteDatabase with path {0} for type {1}\r\nFullPath: {2}\r\nName: {3}", db.DatabaseFile.FullName, objectType.Name, fullPath, fileName);
             return db;
         }
     }

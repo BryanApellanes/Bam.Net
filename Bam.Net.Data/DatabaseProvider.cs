@@ -41,6 +41,17 @@ namespace Bam.Net.Data
             });
         }
 
+        public virtual void SetDefaultDatabaseFor<TDao>() where TDao : Dao
+        {
+            SetDefaultDatabaseFor<TDao>(out Database db);
+        }
+
+        public virtual void SetDefaultDatabaseFor<TDao>(out Database db) where TDao: Dao
+        {
+            db = GetDatabaseFor(typeof(TDao));
+            Db.For<TDao>(db);
+        }
+
         public abstract T GetDatabaseFor(object instance);
         public abstract T GetDatabaseFor(Type objectType, string info = null);
         public abstract string GetDatabasePathFor(Type type, string info = null);

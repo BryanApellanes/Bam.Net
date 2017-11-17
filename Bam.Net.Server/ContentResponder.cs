@@ -17,6 +17,7 @@ using Bam.Net.ServiceProxy;
 using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.UserAccounts.Data;
 using Newtonsoft.Json.Linq;
+using System.Reflection;
 
 namespace Bam.Net.Server
 {
@@ -393,76 +394,94 @@ namespace Bam.Net.Server
 
         public override bool TryRespond(IHttpContext context)
         {
-            if (!IsInitialized)
+            try
             {
-                Initialize();
-            }
-
-            IRequest request = context.Request;
-            IResponse response = context.Response;
-            Session.Init(context);
-            SecureSession.Init(context);
-
-            bool handled = false;
-            string path = request.Url.AbsolutePath;
-            string commonPath = Path.Combine("/common", path.TruncateFront(1));
-
-            byte[] content = new byte[] { };
-            string appName = UriApplicationNameResolver.ResolveApplicationName(request.Url, BamConf.AppConfigs);
-            string[] checkedPaths = new string[] { };
-            if (AppContentResponders.ContainsKey(appName))
-            {
-                handled = AppContentResponders[appName].TryRespond(context, out checkedPaths);
-            }
-
-            if (!handled && !ShouldIgnore(path))
-            {
-                bool exists;
-                exists = ServerRoot.FileExists(path, out string readFileFromPath);
-                if (!exists)
+                if (!IsInitialized)
                 {
-                    exists = ServerRoot.FileExists(commonPath, out readFileFromPath);
+                    Initialize();
                 }
 
-                if (exists)
+                IRequest request = context.Request;
+                IResponse response = context.Response;
+                Session.Init(context);
+                SecureSession.Init(context);
+
+                bool handled = false;
+                string path = request.Url.AbsolutePath;
+                string commonPath = Path.Combine("/common", path.TruncateFront(1));
+
+                byte[] content = new byte[] { };
+                string appName = UriApplicationNameResolver.ResolveApplicationName(request.Url, BamConf.AppConfigs);
+                string[] checkedPaths = new string[] { };
+                if (AppContentResponders.ContainsKey(appName))
                 {
-                    string ext = Path.GetExtension(readFileFromPath);
-                    if (FileCachesByExtension.ContainsKey(ext))
+                    handled = AppContentResponders[appName].TryRespond(context, out checkedPaths);
+                }
+
+                if (!handled && !ShouldIgnore(path))
+                {
+                    bool exists;
+                    exists = ServerRoot.FileExists(path, out string readFileFromPath);
+                    if (!exists)
                     {
-                        FileCache cache = FileCachesByExtension[ext];
-                        if (ShouldZip(request))
+                        exists = ServerRoot.FileExists(commonPath, out readFileFromPath);
+                    }
+
+                    if (exists)
+                    {
+                        string ext = Path.GetExtension(readFileFromPath);
+                        if (FileCachesByExtension.ContainsKey(ext))
                         {
-                            SetGzipContentEncodingHeader(response);
-                            content = cache.GetZippedContent(readFileFromPath);
+                            FileCache cache = FileCachesByExtension[ext];
+                            if (ShouldZip(request))
+                            {
+                                SetGzipContentEncodingHeader(response);
+                                content = cache.GetZippedContent(readFileFromPath);
+                            }
+                            else
+                            {
+                                content = cache.GetContent(readFileFromPath);
+                            }
+                            handled = true;
                         }
-                        else
-                        {
-                            content = cache.GetContent(readFileFromPath);
-                        }
-                        handled = true;
+                    }
+
+                    if (handled)
+                    {
+                        SetContentType(response, path);
+                        SendResponse(response, content);
+                        OnResponded(context);
+                    }
+                    else
+                    {
+                        LogContentNotFound(path, appName, checkedPaths);
+                        OnNotResponded(context);
                     }
                 }
 
-                if (handled)
-                {
-                    SetContentType(response, path);
-                    SendResponse(response, content);
-                    OnResponded(context);
-                }
-                else
-                {
-                    LogContentNotFound(path, appName, checkedPaths);
-                    OnNotResponded(context);
-                }
+                return handled;
             }
-
-            return handled;
+            catch (Exception ex)
+            {
+                Logger.AddEntry("An error occurred in {0}.{1}: {2}", ex, this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message);
+                OnNotResponded(context);
+                return false;
+            }
         }
 
         private void LogContentNotFound(string path, string appName, string[] checkedPaths)
         {
-            List<string> serviceNames = new List<string>(BamConf.Server.ServiceProxyResponder.AppServices(appName).Select(s => s.ToLowerInvariant()));
-            string firstPart = path.DelimitSplit("/", "\\")[0];
+            // Not Sure what this is checking for???
+            string[] svcNames = BamConf?.Server?.ServiceProxyResponder?.AppServices(appName).Select(s => s.ToLowerInvariant()).ToArray();
+            List<string> serviceNames = new List<string>();
+            if(svcNames != null)
+            {
+                serviceNames.AddRange(svcNames);
+            }
+            string[] splitPath = path.DelimitSplit("/", "\\");
+            string firstPart = splitPath.Length > 0 ? splitPath[0] : path;
+            // / -- ???
+
             if(!ShouldIgnore(path) && !serviceNames.Contains(firstPart.ToLowerInvariant()))
             {
                 StringBuilder checkedPathString = new StringBuilder();

@@ -401,7 +401,7 @@
     <None Include="OpenCover.zip" />
     <None Include="packages.config" />
     <None Include="ReportGenerator.zip" />
-    <None Include="Testing\Data\regen_testreporting_dao.cmd" />
+    <None Include="Testing\Data\regen_testing_dao.cmd" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Automation.db.js" />
