@@ -12,7 +12,7 @@ using Bam.Net.Automation;
 using Bam.Net.Automation.MSBuild;
 using System.IO.Compression;
 
-namespace bam
+namespace Bam.Net.Application
 {
     [Serializable]
     public class UtilityActions: CommandLineTestInterface

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Testing;
 
-namespace ThreeHeadz.Tvg.CoreHeart
+namespace Bam.Net.Application
 {
     [Serializable]
     public class Program : CommandLineTestInterface

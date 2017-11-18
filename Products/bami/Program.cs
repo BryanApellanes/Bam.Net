@@ -18,8 +18,9 @@ using System.Reflection;
 using Bam.Net.UserAccounts;
 using Bam.Net.Data;
 using Bam.Net.ServiceProxy;
+using Bam.Net.Server;
 
-namespace Bam.Net.Server
+namespace Bam.Net.Application
 {
     [Serializable]
     class Program : CommandLineTestInterface

@@ -13,11 +13,10 @@ using Bam.Net.Configuration;
 using Bam.Net.ServiceProxy;
 using Bam.Net.Logging;
 using System.Reflection;
-using ThreeHeadz.Tvg;
 using Bam.Net.Services;
 using Bam.Net.CoreServices;
 
-namespace ThreeHeadz.Tvg.CoreHeart
+namespace Bam.Net.Application
 {
     [Serializable]
     public class ConsoleActions : CommandLineTestInterface

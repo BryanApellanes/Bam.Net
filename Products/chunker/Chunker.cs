@@ -1,20 +1,6 @@
-﻿/*
-	Copyright © Bryan Apellanes 2015  
-*/
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using Bam.Net;
-using Bam.Net.CommandLine;
-using Bam.Net.Logging;
-using Bam.Net.Incubation;
-using Bam.Net.Configuration;
-using System.IO;
-using Bam.Net.Testing;
-using System.Reflection;
+﻿using Bam.Net.CommandLine;
 using Bam.Net.Services.Chunking;
+using System.Threading;
 
 namespace Bam.Net.Server
 {

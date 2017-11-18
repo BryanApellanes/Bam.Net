@@ -15,8 +15,9 @@ using System.IO;
 using Bam.Net.Yaml;
 using Bam.Net.Testing;
 using System.Reflection;
+using Bam.Net.Server;
 
-namespace Bam.Net.Server
+namespace Bam.Net.Application
 {
     class Program : ServiceExe
     {

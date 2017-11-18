@@ -1,27 +1,14 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using Bam.Net;
 using Bam.Net.CommandLine;
-using Bam.Net.Logging;
-using Bam.Net.Incubation;
 using Bam.Net.Configuration;
-using System.IO;
-using Bam.Net.Testing;
-using System.Reflection;
-using Bam.Net.Data;
-using Bam.Net.Javascript;
 using Bam.Net.Javascript.Sql;
-using System.Collections.Specialized;
+using Bam.Net.Server;
+using Bam.Net.Testing;
+using System;
+using System.IO;
 
-namespace Bam.Net.Server
+namespace Bam.Net.Application
 {
-	[Serializable]
+    [Serializable]
 	class Program : CommandLineTestInterface
 	{
 		static void Main(string[] args)

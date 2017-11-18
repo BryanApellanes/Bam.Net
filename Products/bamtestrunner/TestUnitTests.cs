@@ -1,13 +1,7 @@
-﻿using Bam.Net;
-using Bam.Net.Testing;
-using Bam.Net.Testing.Unit;
+﻿using Bam.Net.Testing.Unit;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace bamtestrunner
+namespace Bam.Net.Testing
 {
     [Serializable]
     public class TestUnitTests: CommandLineTestInterface

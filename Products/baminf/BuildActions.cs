@@ -12,7 +12,7 @@ using Bam.Net.Automation.Nuget;
 using Bam.Net.Automation;
 using Bam.Net.Automation.SourceControl;
 
-namespace baminf
+namespace Bam.Net.Automation
 {
     [Serializable]
     public class BuildActions: CommandLineTestInterface

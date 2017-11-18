@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using Bam.Net.Automation.Testing;
 using Bam.Net.CommandLine;
 using Bam.Net.Configuration;

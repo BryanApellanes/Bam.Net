@@ -13,7 +13,7 @@ using Bam.Net;
 using Bam.Net.Testing;
 using Bam.Net.Encryption;
 
-namespace baminf
+namespace Bam.Net.Automation
 {
     [Serializable]
     class Program : CommandLineTestInterface
