@@ -73,12 +73,11 @@ namespace Bam.Net.Services.Chunking
             {
                 return chunk;
             }
+            else
+            {
+                Task.Run(() => Logger.AddEntry("Chunk not found: {0}", LogEventType.Warning, chunkHash));
+            }
             return null;
-        }
-
-        private bool ChunkExists(string hash)
-        {
-            return ChunkExists(hash, out Chunk ignore);
         }
 
         private bool ChunkExists(string hash, out Chunk chunk)
