@@ -7,7 +7,7 @@ using Bam.Net;
 using Bam.Net.Web;
 using Bam.Net.CoreServices.ApplicationRegistration;
 
-namespace Bam.Net.Services.Distributed
+namespace Bam.Net.Services.Events
 {
     /// <summary>
     /// A subscription made by a process outside of
@@ -26,11 +26,6 @@ namespace Bam.Net.Services.Distributed
             object inProcessResult = base.Invoke(args);
             Exec.TryAsync(() => Http.Post(WebHookEndpoint.ToString(), args.ToJson()), ExceptionHandler);
             return inProcessResult;
-        }
-
-        //public ExternalEventSubscriptionDescriptor ToRepoData()
-        //{
-        //    return ExternalEventSubscriptionDescriptor.FromExternalEventSubscription(this);
-        //}
+        }        
     }
 }

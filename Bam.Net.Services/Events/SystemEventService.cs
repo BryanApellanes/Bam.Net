@@ -9,7 +9,7 @@ using Bam.Net.Messaging;
 using Bam.Net.Server;
 using Bam.Net.ServiceProxy;
 
-namespace Bam.Net.Services.Distributed
+namespace Bam.Net.Services.Events
 { 
     [Proxy("systemEventSvc")]
     public class SystemEventService : EventSourceService

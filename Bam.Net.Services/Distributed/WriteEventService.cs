@@ -4,6 +4,7 @@ using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Server;
 using Bam.Net.ServiceProxy.Secure;
+using Bam.Net.Services.Events;
 using System;
 using System.Linq;
 

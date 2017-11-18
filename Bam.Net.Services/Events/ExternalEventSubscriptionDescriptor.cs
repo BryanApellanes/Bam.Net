@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Services.Distributed;
 
-namespace Bam.Net.Services.Distributed
+namespace Bam.Net.Services.Events
 {
     public class ExternalEventSubscriptionDescriptor: AuditRepoData
     {

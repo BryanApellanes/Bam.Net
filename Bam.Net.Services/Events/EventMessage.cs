@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Data.Repositories;
 
-namespace Bam.Net.Services.Distributed
+namespace Bam.Net.Services.Events
 {
     public class EventMessage: AuditRepoData, IJsonable
     {
