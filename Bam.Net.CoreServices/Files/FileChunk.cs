@@ -16,7 +16,7 @@ namespace Bam.Net.CoreServices.Files
     /// A chunk or segment of a file
     /// </summary>
 	[Serializable]
-	public class FileChunk
+	public class FileChunk: IChunkable
 	{
 		public FileChunk()
 		{
@@ -110,5 +110,10 @@ namespace Bam.Net.CoreServices.Files
         {
             ChunkHash = _byteData.Sha256();
         }
-	}
+
+        public IChunk ToChunk()
+        {
+            return new Chunk { Hash = ChunkHash, Data = Data.FromBase64() };
+        }
+    }
 }

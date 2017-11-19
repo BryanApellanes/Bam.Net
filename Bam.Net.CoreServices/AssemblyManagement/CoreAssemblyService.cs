@@ -152,7 +152,7 @@ namespace Bam.Net.CoreServices
             Assembly assembly = Assembly.Load(assemblyDescriptor.AssemblyFullName);
             FileInfo fileInfo = assembly.GetFileInfo();
             Args.ThrowIf(!fileInfo.Sha256().Equals(assemblyDescriptor.FileHash), "FileHash validation failed: {0}", assemblyDescriptor.AssemblyFullName);
-            FileService.StoreFileChunksInRepo(fileInfo, assemblyDescriptor.Name);
+            FileService.StoreFileChunks(fileInfo, assemblyDescriptor.Name);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bam.Net.Logging;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace Bam.Net.Server.Binary
         }
     }
 
-    public class BinaryClient
+    public class BinaryClient: Loggable
     {
         TcpClient _client;
         public BinaryClient(string hostName, int port)

@@ -12,7 +12,7 @@ namespace Bam.Net.CoreServices.Files.Data
     /// identified by its hash (Sha256)
     /// </summary>
     [Serializable]
-    public class ChunkData: RepoData
+    public class ChunkData: RepoData, IChunkable
     {
         /// <summary>
         /// The Sha256 hash of the base 64 decoded
@@ -38,6 +38,16 @@ namespace Bam.Net.CoreServices.Files.Data
                 return data.ChunkHash.Equals(ChunkHash);
             }
             return false;
+        }
+
+        public IChunk ToChunk()
+        {
+            return new Chunk { Hash = ChunkHash, Data = Data.FromBase64() };
+        }
+
+        public static ChunkData FromChunk(IChunk chunk)
+        {
+            return new ChunkData { ChunkHash = chunk.Hash, Data = chunk.Data.ToBase64(), ChunkLength = chunk.Data.Length };
         }
 
         public override int GetHashCode()

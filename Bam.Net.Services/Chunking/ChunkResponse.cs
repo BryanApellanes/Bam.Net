@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bam.Net.CoreServices.Files;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace Bam.Net.Services.Chunking
     {
         public bool Success { get; set; }
         public string Message { get; set; }
-        public Chunk Chunk { get; set; }
+        public IChunk Chunk { get; set; }
         /// <summary>
         /// Throw an exception if the Data.Hash does not
         /// match Hash

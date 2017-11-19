@@ -1,4 +1,5 @@
 ﻿using Bam.Net.CommandLine;
+using Bam.Net.CoreServices;
 using Bam.Net.Services.Chunking;
 using System.Threading;
 
@@ -35,7 +36,7 @@ namespace Bam.Net.Server
         {
             get
             {
-                return _serverLock.DoubleCheckLock(ref _server, () => new ChunkServer());
+                return _serverLock.DoubleCheckLock(ref _server, () => new ChunkServer(new FileSystemChunkStorage()));
             }
         }
 

@@ -105,6 +105,9 @@
     <Compile Include="AsyncExecutionRequest.cs" />
     <Compile Include="Chunking\Chunk.cs" />
     <Compile Include="Chunking\ChunkClient.cs" />
+    <Compile Include="Chunking\ChunkException.cs" />
+    <Compile Include="Chunking\ChunkExceptionEventArgs.cs" />
+    <Compile Include="Chunking\ChunkExceptionMode.cs" />
     <Compile Include="Chunking\ChunkRequest.cs" />
     <Compile Include="Chunking\ChunkOperation.cs" />
     <Compile Include="Chunking\ChunkResponse.cs" />

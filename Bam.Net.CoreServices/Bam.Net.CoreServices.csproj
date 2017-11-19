@@ -225,6 +225,12 @@
     <Compile Include="ApplicationRegistration\Data\HostDomain.cs" />
     <Compile Include="ApplicationRegistration\Data\UserSetting.cs" />
     <Compile Include="ClientApplicationNameResolver.cs" />
+    <Compile Include="FileSystemChunkStorage.cs" />
+    <Compile Include="Files\Chunk.cs" />
+    <Compile Include="Files\CompositeChunkStorage.cs" />
+    <Compile Include="Files\IChunk.cs" />
+    <Compile Include="Files\IChunkable.cs" />
+    <Compile Include="Files\IChunkStorage.cs" />
     <Compile Include="HostDomainRequestFilter.cs" />
     <Compile Include="ApplicationRepositoryResolver.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptorAssemblyReferenceDescriptor.cs" />
@@ -244,6 +250,7 @@
     <Compile Include="OAuth\ApplicationUserNotFoundException.cs" />
     <Compile Include="OAuth\OAuthClientSettings.cs" />
     <Compile Include="OAuth\AuthenticatedAttribute.cs" />
+    <Compile Include="RepositoryChunkStorage.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\Qi\ServiceDescriptor.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\Qi\ServiceDescriptorServiceRegistryDescriptor.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\Qi\ServiceRegistryDescriptor.cs" />
