@@ -18,7 +18,7 @@ namespace Bam.Net.Analytics
 	// connection Name = Analytics
 	[Serializable]
 	[Bam.Net.Data.Table("Crawler", "Analytics")]
-	public partial class Crawler: Dao
+	public partial class Crawler: Bam.Net.Data.Dao
 	{
 		public Crawler():base()
 		{
@@ -55,8 +55,10 @@ namespace Bam.Net.Analytics
 
 		private void SetChildren()
 		{
-
-            this.ChildCollections.Add("Image_CrawlerId", new ImageCollection(Database.GetQuery<ImageColumns, Image>((c) => c.CrawlerId == GetLongValue("Id")), this, "CrawlerId"));							
+			if(_database != null)
+			{
+				this.ChildCollections.Add("Image_CrawlerId", new ImageCollection(Database.GetQuery<ImageColumns, Image>((c) => c.CrawlerId == GetLongValue("Id")), this, "CrawlerId"));				
+			}						
 		}
 
 	// property:Id, columnName:Id	
@@ -189,7 +191,7 @@ namespace Bam.Net.Analytics
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Crawler>();
 			Database db = database ?? Db.For<Crawler>();
-			var results = new CrawlerCollection(sql.GetDataTable(db));
+			var results = new CrawlerCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
@@ -245,6 +247,37 @@ namespace Bam.Net.Analytics
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (CrawlerColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<Crawler>> batchProcessor, Bam.Net.Data.OrderBy<CrawlerColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<CrawlerColumns> where, Action<IEnumerable<Crawler>> batchProcessor, Bam.Net.Data.OrderBy<CrawlerColumns> orderBy, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				CrawlerColumns columns = new CrawlerColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (CrawlerColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
@@ -536,7 +569,9 @@ namespace Bam.Net.Analytics
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="database"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static CrawlerCollection Top(int count, WhereDelegate<CrawlerColumns> where, OrderBy<CrawlerColumns> orderBy, Database database = null)
 		{
@@ -580,7 +615,9 @@ namespace Bam.Net.Analytics
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static CrawlerCollection Top(int count, QueryFilter where, OrderBy<CrawlerColumns> orderBy = null, Database database = null)
 		{
@@ -613,10 +650,9 @@ namespace Bam.Net.Analytics
 		/// <param name="where">A QueryFilter used to filter the 
 		/// results
 		/// </param>
-		/// <param name="orderBy">
-		/// Specifies what column and direction to order the results by
+		/// <param name="database">
+		/// Which database to query or null to use the default
 		/// </param>
-		/// <param name="db"></param>
 		public static CrawlerCollection Top(int count, QiQuery where, Database database = null)
 		{
 			Database db = database ?? Db.For<Crawler>();
@@ -632,6 +668,9 @@ namespace Bam.Net.Analytics
 		/// <summary>
 		/// Return the count of Crawlers
 		/// </summary>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		public static long Count(Database database = null)
         {
 			Database db = database ?? Db.For<Crawler>();
@@ -648,7 +687,9 @@ namespace Bam.Net.Analytics
 		/// and returns a IQueryFilter which is the result of any comparisons
 		/// between CrawlerColumns and other values
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<CrawlerColumns> where, Database database = null)
 		{

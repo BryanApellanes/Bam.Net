@@ -27,6 +27,7 @@ using System.IO.Compression;
 using System.Threading.Tasks;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Diagnostics;
 
 namespace Bam.Net
 {
@@ -71,9 +72,7 @@ namespace Bam.Net
                 { ExistingFileAction.DoNotOverwrite, (resource, output) => Logging.Log.Warn("File exists, can't write resource to {0}", output.FullName) }
             };
         }
-
-
-
+        
         public static int GetHashCode(this object instance, params string[] propertiesToInclude)
         {
             return GetHashCode(instance, propertiesToInclude.Select(p => instance.Property(p)).ToArray());
@@ -2183,6 +2182,13 @@ namespace Bam.Net
             return txt.ToString();
         }
 
+        public static IEnumerable<string> SplitByLength(this string value, int maxLength)
+        {
+            for (int index = 0; index < value.Length; index += maxLength)
+            {
+                yield return value.Substring(index, Math.Min(maxLength, value.Length - index));
+            }
+        }
         /// <summary>
         /// Returns a random lowercase letter from a-z."
         /// </summary>
@@ -2373,107 +2379,114 @@ namespace Bam.Net
             return obj.PropertiesToString(properties, separator);
         }
 
+        [DebuggerStepThrough]
         public static string PropertiesToString(this object obj, PropertyInfo[] properties, string separator = "\r\n")
         {
-            StringBuilder returnValue = new StringBuilder();
-            foreach (PropertyInfo property in properties)
+            try
             {
-                try
+                StringBuilder returnValue = new StringBuilder();
+                foreach (PropertyInfo property in properties)
                 {
-                    if (property.PropertyType == typeof(string[]))
+                    try
                     {
-                        string[] values = ((string[])property.GetValue(obj, null)) ?? new string[] { };
-                        returnValue.AppendFormat("{0}: {1}{2}", property.Name, string.Join(", ", values), separator);
-                    }
-                    else if(property.PropertyType == typeof(HttpCookieCollection))
-                    {
-                        object value = property.GetValue(obj, null);                        
-                        if(value != null)
+                        if (property.PropertyType == typeof(string[]))
                         {
-                            HttpCookieCollection values = (HttpCookieCollection)value;
-                            List<string> strings = new List<string>();
-                            foreach (HttpCookie cookie in values)
+                            string[] values = ((string[])property.GetValue(obj, null)) ?? new string[] { };
+                            returnValue.AppendFormat("{0}: {1}{2}", property.Name, string.Join(", ", values), separator);
+                        }
+                        else if (property.PropertyType == typeof(HttpCookieCollection))
+                        {
+                            object value = property.GetValue(obj, null);
+                            if (value != null)
                             {
-                                strings.Add(string.Format("{0}={1}", cookie.Name, cookie.Value));
-                            }
-                            returnValue.AppendFormat("{0}: {1}{2}", property.Name, string.Join("\r\n\t", strings.ToArray()), separator);
-                        }
-                        else
-                        {
-                            returnValue.AppendFormat("{0}: [null]{1}", property.Name, separator);
-                        }
-                    }
-                    else if(property.PropertyType == typeof(System.Net.CookieCollection))
-                    {
-                        object value = property.GetValue(obj, null);
-                        if(value != null)
-                        {
-                            System.Net.CookieCollection values = (System.Net.CookieCollection)value;
-                            List<string> strings = new List<string>();
-                            foreach (System.Net.Cookie cookie in values)
-                            {
-                                strings.Add(string.Format("{0}={1}", cookie.Name, cookie.Value));
-                            }
-                            returnValue.AppendFormat("{0}: {1}{2}", property.Name, string.Join("\r\n\t", strings.ToArray()), separator);
-                        }
-                        else
-                        {
-                            returnValue.AppendFormat("{0}: [null]{1}", property.Name, separator);
-                        }
-                    }
-                    else if (property.PropertyType == typeof(NameValueCollection))
-                    {
-                        object value = property.GetValue(obj, null);
-                        if(value != null)
-                        {
-                            NameValueCollection values = (NameValueCollection)value;
-                            List<string> strings = new List<string>();
-                            foreach (string key in values.AllKeys)
-                            {
-                                strings.Add(string.Format("{0}={1}", key, values[key]));
-                            }
-                            returnValue.AppendFormat("{0}: {1}{2}", property.Name, string.Join("\r\n\t", strings.ToArray()), separator);
-                        }
-                        else
-                        {
-                            returnValue.AppendFormat("{0}: [null]{1}", property.Name, separator);
-                        }
-                    }
-                    else if (property.GetIndexParameters().Length == 0)
-                    {
-                        object value = property.GetValue(obj, null);
-                        string stringValue = "[null]";
-                        if (value != null)
-                        {
-                            if(value is IEnumerable values && !(value is string))
-                            {
+                                HttpCookieCollection values = (HttpCookieCollection)value;
                                 List<string> strings = new List<string>();
-                                foreach(object o in values)
+                                foreach (HttpCookie cookie in values)
                                 {
-                                    strings.Add(o.ToString());
+                                    strings.Add(string.Format("{0}={1}", cookie.Name, cookie.Value));
                                 }
-                                stringValue = string.Join("\r\n\t", strings.ToArray());
+                                returnValue.AppendFormat("{0}: {1}{2}", property.Name, string.Join("\r\n\t", strings.ToArray()), separator);
                             }
                             else
                             {
-                                stringValue = value.ToString();
+                                returnValue.AppendFormat("{0}: [null]{1}", property.Name, separator);
                             }
                         }
+                        else if (property.PropertyType == typeof(System.Net.CookieCollection))
+                        {
+                            object value = property.GetValue(obj, null);
+                            if (value != null)
+                            {
+                                System.Net.CookieCollection values = (System.Net.CookieCollection)value;
+                                List<string> strings = new List<string>();
+                                foreach (System.Net.Cookie cookie in values)
+                                {
+                                    strings.Add(string.Format("{0}={1}", cookie.Name, cookie.Value));
+                                }
+                                returnValue.AppendFormat("{0}: {1}{2}", property.Name, string.Join("\r\n\t", strings.ToArray()), separator);
+                            }
+                            else
+                            {
+                                returnValue.AppendFormat("{0}: [null]{1}", property.Name, separator);
+                            }
+                        }
+                        else if (property.PropertyType == typeof(NameValueCollection))
+                        {
+                            object value = property.GetValue(obj, null);
+                            if (value != null)
+                            {
+                                NameValueCollection values = (NameValueCollection)value;
+                                List<string> strings = new List<string>();
+                                foreach (string key in values.AllKeys)
+                                {
+                                    strings.Add(string.Format("{0}={1}", key, values[key]));
+                                }
+                                returnValue.AppendFormat("{0}: {1}{2}", property.Name, string.Join("\r\n\t", strings.ToArray()), separator);
+                            }
+                            else
+                            {
+                                returnValue.AppendFormat("{0}: [null]{1}", property.Name, separator);
+                            }
+                        }
+                        else if (property.GetIndexParameters().Length == 0)
+                        {
+                            object value = property.GetValue(obj, null);
+                            string stringValue = "[null]";
+                            if (value != null)
+                            {
+                                if (value is IEnumerable values && !(value is string))
+                                {
+                                    List<string> strings = new List<string>();
+                                    foreach (object o in values)
+                                    {
+                                        strings.Add(o.ToString());
+                                    }
+                                    stringValue = string.Join("\r\n\t", strings.ToArray());
+                                }
+                                else
+                                {
+                                    stringValue = value.ToString();
+                                }
+                            }
 
-                        returnValue.AppendFormat("{0}: {1}{2}", property.Name, stringValue, separator);
+                            returnValue.AppendFormat("{0}: {1}{2}", property.Name, stringValue, separator);
+                        }
+                        else if (property.GetIndexParameters().Length > 0)
+                        {
+                            returnValue.AppendFormat("Indexed Property:{0}{1}", property.Name, separator);
+                        }
                     }
-                    else if (property.GetIndexParameters().Length > 0)
+                    catch (Exception ex)
                     {
-                        returnValue.AppendFormat("Indexed Property:{0}{1}", property.Name, separator);
+                        returnValue.AppendFormat("{0}: ({1}){2}", property.Name, ex.Message, separator);
                     }
                 }
-                catch (Exception ex)
-                {
-                    returnValue.AppendFormat("{0}: ({1}){2}", property.Name, ex.Message, separator);
-                }
+                return returnValue.ToString();
             }
-
-            return returnValue.ToString();
+            catch (Exception ex)
+            {
+                return $"Error Getting Properties: {ex.Message}";
+            }
         }
 
         public static DirectoryInfo EnsureExists(this DirectoryInfo dir)
@@ -2770,6 +2783,28 @@ namespace Bam.Net
             return largest;
         }
 
+        public static T Largest<T>(this T[] values)
+        {
+            if (values.Length == 0)
+            {
+                return default(T);
+            }
+            T result = values[0];
+            values.Each(s => result = s.ToString().CompareTo(result.ToString()) == 1 ? s : result);
+            return result;
+        }
+
+        public static string Largest(this string[] strings)
+        {
+            if(strings.Length == 0)
+            {
+                return string.Empty;
+            }
+            string result = strings[0];
+            strings.Each(s => result = s.CompareTo(result) == 1 ? s : result);
+            return result;
+        }
+
         /// <summary>
         /// Splits the specified text at capital letters inserting the specified separator.
         /// </summary>
@@ -3051,6 +3086,7 @@ namespace Bam.Net
                     {
                         replacing = false;
                         result.Append(innerValue.ToString().Truncate(endDelimiter.Length));
+                        innerValue = new StringBuilder();
                     }
                 }
                 else
@@ -3697,8 +3733,7 @@ namespace Bam.Net
         /// <returns></returns>
         public static Type ToDynamicType(this object instance, string typeName, Func<PropertyInfo, bool> propertyPredicate)
         {
-            AssemblyBuilder ignore;
-            return ToDynamicType(instance, typeName, propertyPredicate, out ignore);
+            return ToDynamicType(instance, typeName, propertyPredicate, out AssemblyBuilder ignore);
         }
 
         /// <summary>
@@ -3722,8 +3757,7 @@ namespace Bam.Net
                 }
                 else
                 {
-                    TypeBuilder typeBuilder;
-                    GetAssemblyAndTypeBuilder(typeName, out assemblyBuilder, out typeBuilder);
+                    GetAssemblyAndTypeBuilder(typeName, out assemblyBuilder, out TypeBuilder typeBuilder);
 
                     Type actualType = instance.GetType();
                     PropertyInfo[] properties = actualType.GetProperties();
@@ -3742,8 +3776,7 @@ namespace Bam.Net
 
         public static Type ToDynamicType(this Dictionary<object, object> dictionary, string typeName, List<Type> created)
         {
-            AssemblyBuilder ignore;
-            return ToDynamicType(dictionary, typeName, 0, created, out ignore, false);
+            return ToDynamicType(dictionary, typeName, 0, created, out AssemblyBuilder ignore, false);
         }
 
         public static Type ToDynamicType(this Dictionary<object, object> dictionary, string typeName, bool useCache = true)
@@ -3753,8 +3786,7 @@ namespace Bam.Net
 
         internal static Type ToDynamicType(this Dictionary<object, object> dictionary, string typeName, int recursionThusFar, bool useCache = true)
         {
-            AssemblyBuilder ignore;
-            return dictionary.ToDynamicType(typeName, recursionThusFar, out ignore, useCache);
+            return dictionary.ToDynamicType(typeName, recursionThusFar, out AssemblyBuilder ignore, useCache);
         }
         internal static Type ToDynamicType(this Dictionary<object, object> dictionary, string typeName, int recursionThusFar, out AssemblyBuilder assemblyBuilder, bool useCache = true)
         {

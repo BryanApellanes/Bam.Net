@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace bam
+namespace Bam.Net.Application
 {
     internal class UserInfo
     {

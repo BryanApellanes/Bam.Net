@@ -11,6 +11,7 @@ using Bam.Net.Services.Distributed;
 
 namespace Bam.Net.Services.Distributed.Data
 {
+    [Serializable]
     public class RetrieveOperation: Operation
 	{
         public UniversalIdentifier UniversalIdentifier { get; set; }

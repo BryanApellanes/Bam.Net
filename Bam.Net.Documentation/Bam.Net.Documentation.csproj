@@ -82,18 +82,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeInfo.cs" />
-    <Compile Include="ClassDocumentationAttribute.cs" />
+    <Compile Include="DocInfoAttribute.cs" />
+    <Compile Include="DocInfoDescriptionProvider.cs" />
+    <Compile Include="DocInfoInferredDescriptionProvider.cs" />
     <Compile Include="DocumentationAttributeRenderDelegate.cs" />
-    <Compile Include="ClassDocumentationFrom.cs" />
-    <Compile Include="ClassDocumentation.cs" />
-    <Compile Include="ClassDocumentationMemberType.cs" />
+    <Compile Include="DocInfoFrom.cs" />
+    <Compile Include="DocInfo.cs" />
+    <Compile Include="DocInfoMemberType.cs" />
     <Compile Include="DocumentationPrecedence.cs" />
-    <Compile Include="ClassDocumentationResult.cs" />
+    <Compile Include="DocInfoResult.cs" />
     <Compile Include="ClassMemberType.cs" />
+    <Compile Include="IDescriptionProvider.cs" />
+    <Compile Include="Markdown\MethodReferenceDocumentation.cs" />
+    <Compile Include="Markdown\ReferenceDocumentation.cs" />
+    <Compile Include="Markdown\TypeReferenceDocumentation.cs" />
     <Compile Include="OpenApi\Data\ApiDocumentation.cs" />
-    <Compile Include="OpenApi\Markdown\DocumentComponent.cs" />
-    <Compile Include="OpenApi\Markdown\DocumentSection.cs" />
-    <Compile Include="OpenApi\Markdown\ReferenceDocument.cs" />
     <Compile Include="OpenApi\Data\DataType.cs" />
     <Compile Include="OpenApi\Data\FieldDocumentation.cs" />
     <Compile Include="OpenApi\Data\ObjectDocumentation.cs" />

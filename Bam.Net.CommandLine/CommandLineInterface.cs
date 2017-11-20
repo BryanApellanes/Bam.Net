@@ -102,6 +102,7 @@ namespace Bam.Net.CommandLine
         {
             return GetArgument(name, promptMessage, null);
         }
+
         /// <summary>
         /// Get the value specified for the argument with the 
         /// specified name either from the command line or
@@ -110,6 +111,7 @@ namespace Bam.Net.CommandLine
         /// </summary>
         /// <param name="name"></param>
         /// <param name="promptMessage"></param>
+        /// <param name="prompter"></param>
         /// <returns></returns>
         public static string GetArgument(string name, string promptMessage = null, Func<string, string> prompter = null)
         {
@@ -461,18 +463,12 @@ namespace Bam.Net.CommandLine
 
         private static void OnExiting(int code)
         {
-            if (Exiting != null)
-            {
-                Exiting(code);
-            }
+            Exiting?.Invoke(code);
         }
 
         private static void OnExited(int code)
         {
-            if (Exited != null)
-            {
-                Exited(code);
-            }
+            Exited?.Invoke(code);
         }
 
         public static void Usage(Assembly assembly)

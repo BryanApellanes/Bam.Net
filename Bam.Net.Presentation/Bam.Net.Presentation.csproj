@@ -185,8 +185,10 @@
     <Compile Include="Html\MethodFormResult.cs" />
     <Compile Include="IRenderer.cs" />
     <Compile Include="LayoutModel.cs" />
+    <Compile Include="Markdown\DocumentComponentEventArgs.cs" />
     <Compile Include="Markdown\IDocumentComponent.cs" />
-    <Compile Include="Markdown\MarkdownDocument.cs" />
+    <Compile Include="Markdown\DocumentComponent.cs" />
+    <Compile Include="Markdown\PipeTableDocumentComponent.cs" />
     <Compile Include="Pdf\Pdf.cs" />
     <Compile Include="Pdf\PdfOrientation.cs" />
     <Compile Include="Pdf\PdfOutput.cs" />

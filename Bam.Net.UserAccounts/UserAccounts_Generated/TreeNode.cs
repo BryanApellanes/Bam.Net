@@ -18,7 +18,7 @@ namespace Bam.Net.UserAccounts.Data
 	// connection Name = UserAccounts
 	[Serializable]
 	[Bam.Net.Data.Table("TreeNode", "UserAccounts")]
-	public partial class TreeNode: Dao
+	public partial class TreeNode: Bam.Net.Data.Dao
 	{
 		public TreeNode():base()
 		{
@@ -55,9 +55,13 @@ namespace Bam.Net.UserAccounts.Data
 
 		private void SetChildren()
 		{
-
-            this.ChildCollections.Add("TreeNode_ParentTreeNodeId", new TreeNodeCollection(Database.GetQuery<TreeNodeColumns, TreeNode>((c) => c.ParentTreeNodeId == GetLongValue("Id")), this, "ParentTreeNodeId"));	
-            this.ChildCollections.Add("Permission_TreeNodeId", new PermissionCollection(Database.GetQuery<PermissionColumns, Permission>((c) => c.TreeNodeId == GetLongValue("Id")), this, "TreeNodeId"));							
+			if(_database != null)
+			{
+				this.ChildCollections.Add("TreeNode_ParentTreeNodeId", new TreeNodeCollection(Database.GetQuery<TreeNodeColumns, TreeNode>((c) => c.ParentTreeNodeId == GetLongValue("Id")), this, "ParentTreeNodeId"));				
+			}			if(_database != null)
+			{
+				this.ChildCollections.Add("Permission_TreeNodeId", new PermissionCollection(Database.GetQuery<PermissionColumns, Permission>((c) => c.TreeNodeId == GetLongValue("Id")), this, "TreeNodeId"));				
+			}						
 		}
 
 	// property:Id, columnName:Id	
@@ -249,7 +253,7 @@ namespace Bam.Net.UserAccounts.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<TreeNode>();
 			Database db = database ?? Db.For<TreeNode>();
-			var results = new TreeNodeCollection(sql.GetDataTable(db));
+			var results = new TreeNodeCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
@@ -305,6 +309,37 @@ namespace Bam.Net.UserAccounts.Data
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (TreeNodeColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<TreeNode>> batchProcessor, Bam.Net.Data.OrderBy<TreeNodeColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<TreeNodeColumns> where, Action<IEnumerable<TreeNode>> batchProcessor, Bam.Net.Data.OrderBy<TreeNodeColumns> orderBy, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				TreeNodeColumns columns = new TreeNodeColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (TreeNodeColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
@@ -596,7 +631,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="database"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static TreeNodeCollection Top(int count, WhereDelegate<TreeNodeColumns> where, OrderBy<TreeNodeColumns> orderBy, Database database = null)
 		{
@@ -640,7 +677,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static TreeNodeCollection Top(int count, QueryFilter where, OrderBy<TreeNodeColumns> orderBy = null, Database database = null)
 		{
@@ -673,10 +712,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// <param name="where">A QueryFilter used to filter the 
 		/// results
 		/// </param>
-		/// <param name="orderBy">
-		/// Specifies what column and direction to order the results by
+		/// <param name="database">
+		/// Which database to query or null to use the default
 		/// </param>
-		/// <param name="db"></param>
 		public static TreeNodeCollection Top(int count, QiQuery where, Database database = null)
 		{
 			Database db = database ?? Db.For<TreeNode>();
@@ -692,6 +730,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// <summary>
 		/// Return the count of TreeNodes
 		/// </summary>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		public static long Count(Database database = null)
         {
 			Database db = database ?? Db.For<TreeNode>();
@@ -708,7 +749,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// and returns a IQueryFilter which is the result of any comparisons
 		/// between TreeNodeColumns and other values
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<TreeNodeColumns> where, Database database = null)
 		{

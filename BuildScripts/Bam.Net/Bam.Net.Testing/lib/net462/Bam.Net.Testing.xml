@@ -323,6 +323,12 @@
             Attribute used to mark a method as a Unit Test
             </summary>
         </member>
+        <member name="T:Bam.Net.Testing.Unit.UnitTestRunListener">
+            <summary>
+            A local test run listener for basic 
+            reporting of test results
+            </summary>
+        </member>
         <member name="P:Bam.Net.Testing.Data.TestResult.Passed">
             <summary>
             Boolean indicating whether the test passed

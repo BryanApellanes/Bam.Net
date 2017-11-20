@@ -111,9 +111,7 @@ namespace Bam.Net.Schema.Org.Tests
 				}
 			}
         }
-
-
-
+        
         [ConsoleAction("List sub types")]
         public void ListTypes()
         {

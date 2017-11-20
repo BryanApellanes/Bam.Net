@@ -86,7 +86,7 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data.Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Bam.Net.Automation.ContinuousIntegration.Data.BuildJob));
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.Automation.ContinuousIntegration.Data.BuildJob));
 				object value = Bam.Net.Automation.ContinuousIntegration.Data.BuildJob.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data.Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Bam.Net.Automation.ContinuousIntegration.Data.BuildJob));
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.Automation.ContinuousIntegration.Data.BuildJob));
 				object[] value = Bam.Net.Automation.ContinuousIntegration.Data.BuildJob.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

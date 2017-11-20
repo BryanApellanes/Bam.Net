@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.CommandLine;
 
-namespace bam
+namespace Bam.Net.Application
 {
     internal class ArgumentAdder: CommandLineInterface
     {

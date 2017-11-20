@@ -29,6 +29,7 @@ namespace Bam.Net.Data.Repositories
         /// <returns></returns>
         T Save<T>(T toSave) where T : class, new();
 
+        object Save(Type type, object toSave);
         /// <summary>
         /// When implemented in a derived class, calls
         /// Create or Update as appropriate
@@ -66,7 +67,8 @@ namespace Bam.Net.Data.Repositories
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
 		IEnumerable<T> RetrieveAll<T>() where T : class, new();
-		IEnumerable<object> RetrieveAll(Type type);
+        void BatchRetrieveAll(Type type, int batchSize, Action<IEnumerable<object>> processor);
+        IEnumerable<object> RetrieveAll(Type type);
 		IEnumerable<object> Query(string propertyName, object propertyValue);
         IEnumerable<T> Query<T>(Dictionary<string, object> queryParams) where T: class, new();
         IEnumerable<object> Query(Type type, dynamic queryParams);

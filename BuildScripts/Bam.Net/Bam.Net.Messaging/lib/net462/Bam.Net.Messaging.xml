@@ -43,6 +43,16 @@
             Process results of a query in batches of the specified size
             </summary>	
         </member>
+        <member name="M:Bam.Net.Messaging.Data.DirectMessage.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Messaging.Data.DirectMessage}},Bam.Net.Data.OrderBy{Bam.Net.Messaging.Data.DirectMessageColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Messaging.Data.DirectMessage.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Messaging.Data.DirectMessageColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Messaging.Data.DirectMessage}},Bam.Net.Data.OrderBy{Bam.Net.Messaging.Data.DirectMessageColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.Messaging.Data.DirectMessage.Where(System.Func{Bam.Net.Messaging.Data.DirectMessageColumns,Bam.Net.Data.QueryFilter{Bam.Net.Messaging.Data.DirectMessageColumns}},Bam.Net.Data.OrderBy{Bam.Net.Messaging.Data.DirectMessageColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -190,7 +200,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Messaging.Data.DirectMessage.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Messaging.Data.DirectMessageColumns},Bam.Net.Data.Database)">
             <summary>
@@ -209,7 +221,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Messaging.Data.DirectMessage.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -225,15 +239,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Messaging.Data.DirectMessage.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of DirectMessages
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Messaging.Data.DirectMessage.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Messaging.Data.DirectMessageColumns},Bam.Net.Data.Database)">
             <summary>
@@ -243,7 +259,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between DirectMessageColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Messaging.Data.EmailMessage.GetUniqueFilter">
             <summary>
@@ -271,6 +289,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Messaging.Data.EmailMessage.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Messaging.Data.EmailMessageColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Messaging.Data.EmailMessage}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Messaging.Data.EmailMessage.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Messaging.Data.EmailMessage}},Bam.Net.Data.OrderBy{Bam.Net.Messaging.Data.EmailMessageColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Messaging.Data.EmailMessage.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Messaging.Data.EmailMessageColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Messaging.Data.EmailMessage}},Bam.Net.Data.OrderBy{Bam.Net.Messaging.Data.EmailMessageColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -422,7 +450,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Messaging.Data.EmailMessage.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Messaging.Data.EmailMessageColumns},Bam.Net.Data.Database)">
             <summary>
@@ -441,7 +471,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Messaging.Data.EmailMessage.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -457,15 +489,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Messaging.Data.EmailMessage.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of EmailMessages
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Messaging.Data.EmailMessage.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Messaging.Data.EmailMessageColumns},Bam.Net.Data.Database)">
             <summary>
@@ -475,7 +509,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between EmailMessageColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Messaging.Data.Message.GetUniqueFilter">
             <summary>
@@ -503,6 +539,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Messaging.Data.Message.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Messaging.Data.MessageColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Messaging.Data.Message}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Messaging.Data.Message.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Messaging.Data.Message}},Bam.Net.Data.OrderBy{Bam.Net.Messaging.Data.MessageColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Messaging.Data.Message.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Messaging.Data.MessageColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Messaging.Data.Message}},Bam.Net.Data.OrderBy{Bam.Net.Messaging.Data.MessageColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -654,7 +700,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Messaging.Data.Message.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Messaging.Data.MessageColumns},Bam.Net.Data.Database)">
             <summary>
@@ -673,7 +721,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Messaging.Data.Message.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -689,15 +739,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Messaging.Data.Message.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of Messages
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Messaging.Data.Message.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Messaging.Data.MessageColumns},Bam.Net.Data.Database)">
             <summary>
@@ -707,7 +759,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between MessageColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Messaging.EmailComposer.LoadTemplate(System.String)">
             <summary>

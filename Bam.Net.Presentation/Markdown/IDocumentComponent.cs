@@ -8,6 +8,7 @@ namespace Bam.Net.Presentation.Markdown
 {
     public interface IDocumentComponent
     {
+        event EventHandler<DocumentComponentEventArgs> Updated;
         string GetTitle();
         string GetContent();
     }

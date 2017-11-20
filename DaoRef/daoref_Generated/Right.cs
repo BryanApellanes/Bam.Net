@@ -18,7 +18,7 @@ namespace Bam.Net.DaoRef
 	// connection Name = DaoRef
 	[Serializable]
 	[Bam.Net.Data.Table("Right", "DaoRef")]
-	public partial class Right: Dao
+	public partial class Right: Bam.Net.Data.Dao
 	{
 		public Right():base()
 		{
@@ -55,8 +55,10 @@ namespace Bam.Net.DaoRef
 
 		private void SetChildren()
 		{
-
-            this.ChildCollections.Add("LeftRight_RightId", new LeftRightCollection(Database.GetQuery<LeftRightColumns, LeftRight>((c) => c.RightId == GetLongValue("Id")), this, "RightId"));							
+			if(_database != null)
+			{
+				this.ChildCollections.Add("LeftRight_RightId", new LeftRightCollection(Database.GetQuery<LeftRightColumns, LeftRight>((c) => c.RightId == GetLongValue("Id")), this, "RightId"));				
+			}						
             this.ChildCollections.Add("Right_LeftRight_Left",  new XrefDaoCollection<LeftRight, Left>(this, false));
 				
 		}
@@ -201,7 +203,7 @@ namespace Bam.Net.DaoRef
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Right>();
 			Database db = database ?? Db.For<Right>();
-			var results = new RightCollection(sql.GetDataTable(db));
+			var results = new RightCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
@@ -257,6 +259,37 @@ namespace Bam.Net.DaoRef
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (RightColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<Right>> batchProcessor, Bam.Net.Data.OrderBy<RightColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<RightColumns> where, Action<IEnumerable<Right>> batchProcessor, Bam.Net.Data.OrderBy<RightColumns> orderBy, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				RightColumns columns = new RightColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (RightColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
@@ -548,7 +581,9 @@ namespace Bam.Net.DaoRef
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="database"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static RightCollection Top(int count, WhereDelegate<RightColumns> where, OrderBy<RightColumns> orderBy, Database database = null)
 		{
@@ -592,7 +627,9 @@ namespace Bam.Net.DaoRef
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static RightCollection Top(int count, QueryFilter where, OrderBy<RightColumns> orderBy = null, Database database = null)
 		{
@@ -625,10 +662,9 @@ namespace Bam.Net.DaoRef
 		/// <param name="where">A QueryFilter used to filter the 
 		/// results
 		/// </param>
-		/// <param name="orderBy">
-		/// Specifies what column and direction to order the results by
+		/// <param name="database">
+		/// Which database to query or null to use the default
 		/// </param>
-		/// <param name="db"></param>
 		public static RightCollection Top(int count, QiQuery where, Database database = null)
 		{
 			Database db = database ?? Db.For<Right>();
@@ -644,6 +680,9 @@ namespace Bam.Net.DaoRef
 		/// <summary>
 		/// Return the count of Rights
 		/// </summary>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		public static long Count(Database database = null)
         {
 			Database db = database ?? Db.For<Right>();
@@ -660,7 +699,9 @@ namespace Bam.Net.DaoRef
 		/// and returns a IQueryFilter which is the result of any comparisons
 		/// between RightColumns and other values
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<RightColumns> where, Database database = null)
 		{

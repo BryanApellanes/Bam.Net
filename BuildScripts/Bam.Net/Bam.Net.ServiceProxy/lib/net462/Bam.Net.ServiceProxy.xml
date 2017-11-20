@@ -122,6 +122,16 @@
             Process results of a query in batches of the specified size
             </summary>	
         </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ApiKey.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.ServiceProxy.Secure.ApiKey}},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ApiKeyColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ApiKey.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ApiKeyColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.ServiceProxy.Secure.ApiKey}},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ApiKeyColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.ApiKey.Where(System.Func{Bam.Net.ServiceProxy.Secure.ApiKeyColumns,Bam.Net.Data.QueryFilter{Bam.Net.ServiceProxy.Secure.ApiKeyColumns}},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ApiKeyColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -269,7 +279,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.ApiKey.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ApiKeyColumns},Bam.Net.Data.Database)">
             <summary>
@@ -288,7 +300,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.ApiKey.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -304,15 +318,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.ApiKey.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of ApiKeys
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.ApiKey.Count(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ApiKeyColumns},Bam.Net.Data.Database)">
             <summary>
@@ -322,7 +338,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between ApiKeyColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.Application.Create(System.String)">
             <summary>
@@ -357,6 +375,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.Application.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ApplicationColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.ServiceProxy.Secure.Application}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Application.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.ServiceProxy.Secure.Application}},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ApplicationColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Application.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ApplicationColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.ServiceProxy.Secure.Application}},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ApplicationColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -508,7 +536,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.Application.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ApplicationColumns},Bam.Net.Data.Database)">
             <summary>
@@ -527,7 +557,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.Application.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -543,15 +575,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.Application.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of Applications
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.Application.Count(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ApplicationColumns},Bam.Net.Data.Database)">
             <summary>
@@ -561,7 +595,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between ApplicationColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.ConfigSetting.GetUniqueFilter">
             <summary>
@@ -589,6 +625,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.ConfigSetting.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ConfigSettingColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.ServiceProxy.Secure.ConfigSetting}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ConfigSetting.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.ServiceProxy.Secure.ConfigSetting}},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ConfigSettingColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.ConfigSetting.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ConfigSettingColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.ServiceProxy.Secure.ConfigSetting}},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ConfigSettingColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -740,7 +786,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.ConfigSetting.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ConfigSettingColumns},Bam.Net.Data.Database)">
             <summary>
@@ -759,7 +807,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.ConfigSetting.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -775,15 +825,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.ConfigSetting.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of ConfigSettings
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.ConfigSetting.Count(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ConfigSettingColumns},Bam.Net.Data.Database)">
             <summary>
@@ -793,7 +845,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between ConfigSettingColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.Configuration.GetUniqueFilter">
             <summary>
@@ -821,6 +875,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.Configuration.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ConfigurationColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.ServiceProxy.Secure.Configuration}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Configuration.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.ServiceProxy.Secure.Configuration}},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ConfigurationColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.Configuration.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ConfigurationColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.ServiceProxy.Secure.Configuration}},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ConfigurationColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -972,7 +1036,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.Configuration.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.ConfigurationColumns},Bam.Net.Data.Database)">
             <summary>
@@ -991,7 +1057,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.Configuration.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -1007,15 +1075,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.Configuration.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of Configurations
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.Configuration.Count(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.ConfigurationColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1025,7 +1095,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between ConfigurationColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="P:Bam.Net.ServiceProxy.Secure.SecureSession.CookieName">
             <summary>
@@ -1115,6 +1187,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.SecureSessionColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.ServiceProxy.Secure.SecureSession}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.ServiceProxy.Secure.SecureSession}},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.SecureSessionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.SecureSessionColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.ServiceProxy.Secure.SecureSession}},Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.SecureSessionColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -1266,7 +1348,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.ServiceProxy.Secure.SecureSessionColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1285,7 +1369,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -1301,15 +1387,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of SecureSessions
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.ServiceProxy.Secure.SecureSession.Count(Bam.Net.Data.WhereDelegate{Bam.Net.ServiceProxy.Secure.SecureSessionColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1319,7 +1407,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between SecureSessionColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="T:Bam.Net.ServiceProxy.Secure.SecureChannelConfig">
             <summary>

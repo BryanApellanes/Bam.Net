@@ -124,6 +124,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientProxyGenerator.cs" />
+    <Compile Include="CsClientProxyGenerator.cs" />
+    <Compile Include="IClientProxyGenerator.cs" />
+    <Compile Include="JsClientProxyGenerator.cs" />
     <Compile Include="RequestHeaderApplicationNameResolver.cs" />
     <Compile Include="IApplicationNameResolver.cs" />
     <Compile Include="SecureChannelInvokeException.cs" />

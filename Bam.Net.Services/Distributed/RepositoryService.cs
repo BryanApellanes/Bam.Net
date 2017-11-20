@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 using Bam.Net.CoreServices;
 using Bam.Net.Services.Distributed.Data;
 using Bam.Net.Data.Repositories;
-using Bam.Net.Services.Distributed.Data;
+using Bam.Net.CoreServices.ApplicationRegistration;
+using Bam.Net.Data;
 
 namespace Bam.Net.Services.Distributed
 {
@@ -15,58 +16,72 @@ namespace Bam.Net.Services.Distributed
     public class RepositoryService : AsyncProxyableService, IDistributedRepository
     {
         protected internal RepositoryService() { }
-        public RepositoryService(IRepository repository, IRepositoryTypeResolver typeResolver)
+        public RepositoryService(IRepositoryTypeResolver typeResolver)
         {
-            Repository = repository;
+            Repository = DaoRepository;
             TypeResolver = typeResolver;
         }
         
         protected internal IRepositoryTypeResolver TypeResolver { get; set; }
+        
+        public virtual string[] GetTypes()
+        {
+            return DaoRepository.StorableTypes.Select(t => $"{t.Namespace}.{t.Name}").ToArray();
+        }
+
+        public virtual IEnumerable<object> NextSet(ReplicationOperation operation)
+        {
+            Type type = TypeResolver.ResolveType(operation);
+            yield return DaoRepository.Top(operation.BatchSize, type, QueryFilter.Where("Cuid") > operation.FromCuid);
+        }
+
         public override object Clone()
         {
-            RepositoryService clone = new RepositoryService(Repository, TypeResolver);
+            RepositoryService clone = new RepositoryService(TypeResolver);
             clone.CopyProperties(this);
             clone.CopyEventHandlers(this);
             return clone;
         }
 
-        public object Create(CreateOperation value)
+        public virtual object Save(SaveOperation value)
         {
-            Type type;
-            object instance;
-            ResolveTypeAndInstance(value, out type, out instance);
+            ResolveTypeAndInstance(value, out Type type, out object instance);
+            return Repository.Save(instance);
+        }
+
+        public virtual object Create(CreateOperation value)
+        {
+            ResolveTypeAndInstance(value, out Type type, out object instance);
             return Repository.Create(type, instance);
         }
 
-        public bool Delete(DeleteOperation value)
+        public virtual bool Delete(DeleteOperation value)
         {
-            Type type;
-            object instance;
-            ResolveTypeAndInstance(value, out type, out instance);
+            ResolveTypeAndInstance(value, out Type type, out object instance);
             return Repository.Delete(type, instance);
         }
 
-        public IEnumerable<object> Query(QueryOperation query)
+        public virtual IEnumerable<object> Query(QueryOperation query)
         {
             Type type = TypeResolver.ResolveType(query);
             return Repository.Query(type, query.Properties.ToDictionary(dp => dp.Name, dp => dp.Value));
         }
 
-        public Task<ReplicationResult> RecieveReplica(ReplicateOperation operation)
+        public virtual ReplicationOperation Replicate(ReplicationOperation operation)
         {
-            throw new NotImplementedException();
+            ReplicationOperation result = DaoRepository.Save(operation);
+            Task.Run(() => (ReplicationOperation)operation.Execute(this));
+            return result;
         }
 
-        public object Retrieve(RetrieveOperation value)
+        public virtual object Retrieve(RetrieveOperation value)
         {
             return Repository.Query(value.UniversalIdentifier.ToString(), value.Identifier).FirstOrDefault();
         }
 
-        public object Update(UpdateOperation value)
+        public virtual object Update(UpdateOperation value)
         {
-            Type type;
-            object instance;
-            ResolveTypeAndInstance(value, out type, out instance);            
+            ResolveTypeAndInstance(value, out Type type, out object instance);
             return Repository.Update(type, instance);
         }
 

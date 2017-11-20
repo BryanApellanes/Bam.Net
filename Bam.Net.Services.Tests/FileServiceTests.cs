@@ -34,8 +34,8 @@ namespace Bam.Net.Services.Tests
             {
                 ChunkLength = 111299
             };
-            FileInfo testDataFile = new FileInfo("C:\\BamTestData\\TestDataFile.dll");
-            ChunkedFileDescriptor chunkedFile = fmSvc.StoreFileChunksInRepo(testDataFile);
+            FileInfo testDataFile = new FileInfo("C:\\Bam\\Data\\Test\\TestDataFile.dll");
+            ChunkedFileDescriptor chunkedFile = fmSvc.StoreFileChunks(testDataFile);
             FileInfo writeTo = new FileInfo($".\\{nameof(FileServiceRestoreTest)}_restored");
             DateTime start = DateTime.UtcNow;
             FileInfo written = fmSvc.RestoreFile(chunkedFile.FileHash, writeTo.FullName, true);
@@ -54,8 +54,8 @@ namespace Bam.Net.Services.Tests
             ConsoleLogger logger = new ConsoleLogger();
             logger.AddDetails = false;
             logger.StartLoggingThread();
-            FileInfo testDataFile = new FileInfo("C:\\BamTestData\\TestDataFile.dll");
-            ChunkedFileDescriptor chunkedFile = fmSvc.StoreFileChunksInRepo(testDataFile);
+            FileInfo testDataFile = new FileInfo("C:\\Bam\\Data\\Test\\TestDataFile.dll");
+            ChunkedFileDescriptor chunkedFile = fmSvc.StoreFileChunks(testDataFile);
             FileInfo writeTo = new FileInfo($".\\{nameof(FileServiceRestoreAsyncTest)}_restored.dat");
             DateTime start = DateTime.UtcNow;
             ChunkedFileWriter writer = ChunkedFileWriter.FromFileHash(fmSvc, chunkedFile.FileHash, logger);

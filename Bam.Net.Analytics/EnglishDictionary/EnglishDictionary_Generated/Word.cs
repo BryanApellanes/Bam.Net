@@ -237,6 +237,37 @@ namespace Bam.Net.Analytics.EnglishDictionary
 			});			
 		}
 
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<Word>> batchProcessor, Bam.Net.Data.OrderBy<WordColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<WordColumns> where, Action<IEnumerable<Word>> batchProcessor, Bam.Net.Data.OrderBy<WordColumns> orderBy, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				WordColumns columns = new WordColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (WordColumns)where(columns) && orderBy.Column > top, orderBy, database);
+				}
+			});			
+		}
+
 		public static Word GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);

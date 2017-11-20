@@ -1,6 +1,3 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
 using System;
 using Bam.Net;
 using Bam.Net.CommandLine;
@@ -10,7 +7,7 @@ using Bam.Net.Services.Clients;
 using Bam.Net.Logging;
 using Bam.Net.UserAccounts;
 
-namespace bam
+namespace Bam.Net.Application
 {
     [Serializable]
 	public class ManagementActions : CommandLineTestInterface

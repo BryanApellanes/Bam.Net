@@ -45,6 +45,7 @@ namespace Bam.Net.CoreServices
 
         public static ServiceRegistry Create()
         {
+            // TODO: change this to use Bam.Net.Data.Repositories.DataSettings.Default
             string databasesPath = Path.Combine(DefaultConfiguration.GetAppSetting("ContentRoot"), "Databases");
             string userDatabasesPath = Path.Combine(databasesPath, "UserDbs");
 
@@ -103,7 +104,7 @@ namespace Bam.Net.CoreServices
                 .For<IFileService>().Use<CoreFileService>()
                 .For<AssemblyServiceRepository>().Use(assSvcRepo)
                 .For<IAssemblyService>().Use<CoreAssemblyService>()
-                .For<ServiceRegistryRepository>().Use<ServiceRegistryRepository>()
+                .For<ServiceRegistrationRepository>().Use<ServiceRegistrationRepository>()
                 .For<CoreServiceRegistrationService>().Use<CoreServiceRegistrationService>()
                 .For<CoreOAuthService>().Use<CoreOAuthService>()
                 .For<ILog>().Use(loggerSvc)

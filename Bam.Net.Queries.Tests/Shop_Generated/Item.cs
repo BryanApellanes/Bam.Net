@@ -18,7 +18,7 @@ namespace Bam.Net.Data.Tests
 	// connection Name = Shop
 	[Serializable]
 	[Bam.Net.Data.Table("Item", "Shop")]
-	public partial class Item: Dao
+	public partial class Item: Bam.Net.Data.Dao
 	{
 		public Item():base()
 		{
@@ -55,9 +55,13 @@ namespace Bam.Net.Data.Tests
 
 		private void SetChildren()
 		{
-
-            this.ChildCollections.Add("CartItem_ItemId", new CartItemCollection(Database.GetQuery<CartItemColumns, CartItem>((c) => c.ItemId == GetLongValue("Id")), this, "ItemId"));	
-            this.ChildCollections.Add("ListItem_ItemId", new ListItemCollection(Database.GetQuery<ListItemColumns, ListItem>((c) => c.ItemId == GetLongValue("Id")), this, "ItemId"));							
+			if(_database != null)
+			{
+				this.ChildCollections.Add("CartItem_ItemId", new CartItemCollection(Database.GetQuery<CartItemColumns, CartItem>((c) => c.ItemId == GetLongValue("Id")), this, "ItemId"));				
+			}			if(_database != null)
+			{
+				this.ChildCollections.Add("ListItem_ItemId", new ListItemCollection(Database.GetQuery<ListItemColumns, ListItem>((c) => c.ItemId == GetLongValue("Id")), this, "ItemId"));				
+			}						
             this.ChildCollections.Add("Item_ListItem_List",  new XrefDaoCollection<ListItem, List>(this, false));
 				
 		}
@@ -226,7 +230,7 @@ namespace Bam.Net.Data.Tests
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Item>();
 			Database db = database ?? Db.For<Item>();
-			var results = new ItemCollection(sql.GetDataTable(db));
+			var results = new ItemCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
@@ -282,6 +286,37 @@ namespace Bam.Net.Data.Tests
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (ItemColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<Item>> batchProcessor, Bam.Net.Data.OrderBy<ItemColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<ItemColumns> where, Action<IEnumerable<Item>> batchProcessor, Bam.Net.Data.OrderBy<ItemColumns> orderBy, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				ItemColumns columns = new ItemColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (ItemColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
@@ -573,7 +608,9 @@ namespace Bam.Net.Data.Tests
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="database"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static ItemCollection Top(int count, WhereDelegate<ItemColumns> where, OrderBy<ItemColumns> orderBy, Database database = null)
 		{
@@ -617,7 +654,9 @@ namespace Bam.Net.Data.Tests
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static ItemCollection Top(int count, QueryFilter where, OrderBy<ItemColumns> orderBy = null, Database database = null)
 		{
@@ -650,10 +689,9 @@ namespace Bam.Net.Data.Tests
 		/// <param name="where">A QueryFilter used to filter the 
 		/// results
 		/// </param>
-		/// <param name="orderBy">
-		/// Specifies what column and direction to order the results by
+		/// <param name="database">
+		/// Which database to query or null to use the default
 		/// </param>
-		/// <param name="db"></param>
 		public static ItemCollection Top(int count, QiQuery where, Database database = null)
 		{
 			Database db = database ?? Db.For<Item>();
@@ -669,6 +707,9 @@ namespace Bam.Net.Data.Tests
 		/// <summary>
 		/// Return the count of Items
 		/// </summary>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		public static long Count(Database database = null)
         {
 			Database db = database ?? Db.For<Item>();
@@ -685,7 +726,9 @@ namespace Bam.Net.Data.Tests
 		/// and returns a IQueryFilter which is the result of any comparisons
 		/// between ItemColumns and other values
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<ItemColumns> where, Database database = null)
 		{

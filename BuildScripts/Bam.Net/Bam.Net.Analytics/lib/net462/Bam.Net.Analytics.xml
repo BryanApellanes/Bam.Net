@@ -34,6 +34,16 @@
             Process results of a query in batches of the specified size
             </summary>	
         </member>
+        <member name="M:Bam.Net.Analytics.Category.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Category}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.CategoryColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.Category.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.CategoryColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Category}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.CategoryColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.Analytics.Category.Where(System.Func{Bam.Net.Analytics.CategoryColumns,Bam.Net.Data.QueryFilter{Bam.Net.Analytics.CategoryColumns}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.CategoryColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -181,7 +191,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Category.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Analytics.CategoryColumns},Bam.Net.Data.Database)">
             <summary>
@@ -200,7 +212,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Category.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -216,15 +230,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Analytics.Category.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of Categories
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Category.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.CategoryColumns},Bam.Net.Data.Database)">
             <summary>
@@ -234,7 +250,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between CategoryColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.ClickCounter.GetUniqueFilter">
             <summary>
@@ -262,6 +280,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Analytics.ClickCounter.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.ClickCounterColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.ClickCounter}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Analytics.ClickCounter.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.ClickCounter}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.ClickCounterColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.ClickCounter.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.ClickCounterColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.ClickCounter}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.ClickCounterColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -413,7 +441,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.ClickCounter.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Analytics.ClickCounterColumns},Bam.Net.Data.Database)">
             <summary>
@@ -432,7 +462,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.ClickCounter.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -448,15 +480,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Analytics.ClickCounter.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of ClickCounters
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.ClickCounter.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.ClickCounterColumns},Bam.Net.Data.Database)">
             <summary>
@@ -466,7 +500,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between ClickCounterColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Counter.GetUniqueFilter">
             <summary>
@@ -494,6 +530,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Analytics.Counter.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.CounterColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Counter}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Analytics.Counter.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Counter}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.CounterColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.Counter.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.CounterColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Counter}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.CounterColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -645,7 +691,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Counter.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Analytics.CounterColumns},Bam.Net.Data.Database)">
             <summary>
@@ -664,7 +712,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Counter.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -680,15 +730,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Analytics.Counter.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of Counters
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Counter.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.CounterColumns},Bam.Net.Data.Database)">
             <summary>
@@ -698,7 +750,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between CounterColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Crawler.GetUniqueFilter">
             <summary>
@@ -726,6 +780,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Analytics.Crawler.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.CrawlerColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Crawler}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Analytics.Crawler.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Crawler}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.CrawlerColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.Crawler.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.CrawlerColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Crawler}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.CrawlerColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -877,7 +941,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Crawler.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Analytics.CrawlerColumns},Bam.Net.Data.Database)">
             <summary>
@@ -896,7 +962,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Crawler.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -912,15 +980,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Analytics.Crawler.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of Crawlers
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Crawler.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.CrawlerColumns},Bam.Net.Data.Database)">
             <summary>
@@ -930,7 +1000,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between CrawlerColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.CustomTimer.GetUniqueFilter">
             <summary>
@@ -958,6 +1030,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Analytics.CustomTimer.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.CustomTimerColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.CustomTimer}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Analytics.CustomTimer.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.CustomTimer}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.CustomTimerColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.CustomTimer.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.CustomTimerColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.CustomTimer}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.CustomTimerColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -1109,7 +1191,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.CustomTimer.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Analytics.CustomTimerColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1128,7 +1212,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.CustomTimer.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -1144,15 +1230,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Analytics.CustomTimer.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of CustomTimers
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.CustomTimer.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.CustomTimerColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1162,7 +1250,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between CustomTimerColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Domain.GetUniqueFilter">
             <summary>
@@ -1190,6 +1280,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Analytics.Domain.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.DomainColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Domain}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Analytics.Domain.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Domain}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.DomainColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.Domain.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.DomainColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Domain}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.DomainColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -1341,7 +1441,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Domain.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Analytics.DomainColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1360,7 +1462,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Domain.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -1376,15 +1480,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Analytics.Domain.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of Domains
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Domain.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.DomainColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1394,7 +1500,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between DomainColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Feature.GetUniqueFilter">
             <summary>
@@ -1422,6 +1530,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Analytics.Feature.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.FeatureColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Feature}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Analytics.Feature.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Feature}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.FeatureColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.Feature.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.FeatureColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Feature}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.FeatureColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -1573,7 +1691,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Feature.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Analytics.FeatureColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1592,7 +1712,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Feature.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -1608,15 +1730,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Analytics.Feature.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of Features
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Feature.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.FeatureColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1626,7 +1750,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between FeatureColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Fragment.GetUniqueFilter">
             <summary>
@@ -1654,6 +1780,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Analytics.Fragment.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.FragmentColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Fragment}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Analytics.Fragment.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Fragment}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.FragmentColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.Fragment.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.FragmentColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Fragment}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.FragmentColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -1805,7 +1941,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Fragment.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Analytics.FragmentColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1824,7 +1962,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Fragment.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -1840,15 +1980,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Analytics.Fragment.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of Fragments
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Fragment.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.FragmentColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1858,7 +2000,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between FragmentColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Image.GetUniqueFilter">
             <summary>
@@ -1886,6 +2030,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Analytics.Image.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.ImageColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Image}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Analytics.Image.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Image}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.ImageColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.Image.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.ImageColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Image}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.ImageColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -2037,7 +2191,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Image.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Analytics.ImageColumns},Bam.Net.Data.Database)">
             <summary>
@@ -2056,7 +2212,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Image.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -2072,15 +2230,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Analytics.Image.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of Images
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Image.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.ImageColumns},Bam.Net.Data.Database)">
             <summary>
@@ -2090,7 +2250,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between ImageColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.ImageTag.GetUniqueFilter">
             <summary>
@@ -2118,6 +2280,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Analytics.ImageTag.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.ImageTagColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.ImageTag}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Analytics.ImageTag.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.ImageTag}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.ImageTagColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.ImageTag.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.ImageTagColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.ImageTag}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.ImageTagColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -2269,7 +2441,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.ImageTag.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Analytics.ImageTagColumns},Bam.Net.Data.Database)">
             <summary>
@@ -2288,7 +2462,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.ImageTag.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -2304,15 +2480,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Analytics.ImageTag.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of ImageTags
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.ImageTag.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.ImageTagColumns},Bam.Net.Data.Database)">
             <summary>
@@ -2322,7 +2500,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between ImageTagColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.LoadCounter.GetUniqueFilter">
             <summary>
@@ -2350,6 +2530,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Analytics.LoadCounter.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.LoadCounterColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.LoadCounter}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Analytics.LoadCounter.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.LoadCounter}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.LoadCounterColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.LoadCounter.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.LoadCounterColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.LoadCounter}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.LoadCounterColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -2501,7 +2691,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.LoadCounter.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Analytics.LoadCounterColumns},Bam.Net.Data.Database)">
             <summary>
@@ -2520,7 +2712,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.LoadCounter.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -2536,15 +2730,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Analytics.LoadCounter.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of LoadCounters
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.LoadCounter.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.LoadCounterColumns},Bam.Net.Data.Database)">
             <summary>
@@ -2554,7 +2750,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between LoadCounterColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.LoadTimer.GetUniqueFilter">
             <summary>
@@ -2582,6 +2780,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Analytics.LoadTimer.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.LoadTimerColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.LoadTimer}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Analytics.LoadTimer.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.LoadTimer}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.LoadTimerColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.LoadTimer.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.LoadTimerColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.LoadTimer}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.LoadTimerColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -2733,7 +2941,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.LoadTimer.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Analytics.LoadTimerColumns},Bam.Net.Data.Database)">
             <summary>
@@ -2752,7 +2962,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.LoadTimer.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -2768,15 +2980,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Analytics.LoadTimer.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of LoadTimers
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.LoadTimer.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.LoadTimerColumns},Bam.Net.Data.Database)">
             <summary>
@@ -2786,7 +3000,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between LoadTimerColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.LoginCounter.GetUniqueFilter">
             <summary>
@@ -2814,6 +3030,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Analytics.LoginCounter.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.LoginCounterColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.LoginCounter}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Analytics.LoginCounter.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.LoginCounter}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.LoginCounterColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.LoginCounter.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.LoginCounterColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.LoginCounter}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.LoginCounterColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -2965,7 +3191,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.LoginCounter.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Analytics.LoginCounterColumns},Bam.Net.Data.Database)">
             <summary>
@@ -2984,7 +3212,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.LoginCounter.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -3000,15 +3230,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Analytics.LoginCounter.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of LoginCounters
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.LoginCounter.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.LoginCounterColumns},Bam.Net.Data.Database)">
             <summary>
@@ -3018,7 +3250,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between LoginCounterColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.MethodCounter.GetUniqueFilter">
             <summary>
@@ -3046,6 +3280,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Analytics.MethodCounter.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.MethodCounterColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.MethodCounter}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Analytics.MethodCounter.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.MethodCounter}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.MethodCounterColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.MethodCounter.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.MethodCounterColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.MethodCounter}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.MethodCounterColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -3197,7 +3441,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.MethodCounter.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Analytics.MethodCounterColumns},Bam.Net.Data.Database)">
             <summary>
@@ -3216,7 +3462,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.MethodCounter.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -3232,15 +3480,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Analytics.MethodCounter.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of MethodCounters
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.MethodCounter.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.MethodCounterColumns},Bam.Net.Data.Database)">
             <summary>
@@ -3250,7 +3500,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between MethodCounterColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.MethodTimer.GetUniqueFilter">
             <summary>
@@ -3278,6 +3530,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Analytics.MethodTimer.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.MethodTimerColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.MethodTimer}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Analytics.MethodTimer.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.MethodTimer}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.MethodTimerColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.MethodTimer.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.MethodTimerColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.MethodTimer}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.MethodTimerColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -3429,7 +3691,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.MethodTimer.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Analytics.MethodTimerColumns},Bam.Net.Data.Database)">
             <summary>
@@ -3448,7 +3712,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.MethodTimer.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -3464,15 +3730,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Analytics.MethodTimer.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of MethodTimers
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.MethodTimer.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.MethodTimerColumns},Bam.Net.Data.Database)">
             <summary>
@@ -3482,7 +3750,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between MethodTimerColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Path.GetUniqueFilter">
             <summary>
@@ -3510,6 +3780,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Analytics.Path.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.PathColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Path}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Analytics.Path.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Path}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.PathColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.Path.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.PathColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Path}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.PathColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -3661,7 +3941,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Path.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Analytics.PathColumns},Bam.Net.Data.Database)">
             <summary>
@@ -3680,7 +3962,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Path.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -3696,15 +3980,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Analytics.Path.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of Paths
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Path.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.PathColumns},Bam.Net.Data.Database)">
             <summary>
@@ -3714,7 +4000,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between PathColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Port.GetUniqueFilter">
             <summary>
@@ -3742,6 +4030,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Analytics.Port.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.PortColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Port}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Analytics.Port.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Port}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.PortColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.Port.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.PortColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Port}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.PortColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -3893,7 +4191,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Port.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Analytics.PortColumns},Bam.Net.Data.Database)">
             <summary>
@@ -3912,7 +4212,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Port.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -3928,15 +4230,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Analytics.Port.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of Ports
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Port.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.PortColumns},Bam.Net.Data.Database)">
             <summary>
@@ -3946,7 +4250,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between PortColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Protocol.GetUniqueFilter">
             <summary>
@@ -3974,6 +4280,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Analytics.Protocol.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.ProtocolColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Protocol}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Analytics.Protocol.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Protocol}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.ProtocolColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.Protocol.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.ProtocolColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Protocol}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.ProtocolColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -4125,7 +4441,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Protocol.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Analytics.ProtocolColumns},Bam.Net.Data.Database)">
             <summary>
@@ -4144,7 +4462,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Protocol.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -4160,15 +4480,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Analytics.Protocol.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of Protocols
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Protocol.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.ProtocolColumns},Bam.Net.Data.Database)">
             <summary>
@@ -4178,7 +4500,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between ProtocolColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.QueryString.GetUniqueFilter">
             <summary>
@@ -4206,6 +4530,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Analytics.QueryString.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.QueryStringColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.QueryString}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Analytics.QueryString.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.QueryString}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.QueryStringColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.QueryString.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.QueryStringColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.QueryString}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.QueryStringColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -4357,7 +4691,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.QueryString.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Analytics.QueryStringColumns},Bam.Net.Data.Database)">
             <summary>
@@ -4376,7 +4712,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.QueryString.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -4392,15 +4730,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Analytics.QueryString.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of QueryStrings
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.QueryString.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.QueryStringColumns},Bam.Net.Data.Database)">
             <summary>
@@ -4410,7 +4750,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between QueryStringColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Tag.GetUniqueFilter">
             <summary>
@@ -4438,6 +4780,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Analytics.Tag.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.TagColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Tag}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Analytics.Tag.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Tag}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.TagColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.Tag.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.TagColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Tag}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.TagColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -4589,7 +4941,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Tag.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Analytics.TagColumns},Bam.Net.Data.Database)">
             <summary>
@@ -4608,7 +4962,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Tag.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -4624,15 +4980,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Analytics.Tag.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of Tags
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Tag.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.TagColumns},Bam.Net.Data.Database)">
             <summary>
@@ -4642,7 +5000,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between TagColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Timer.GetUniqueFilter">
             <summary>
@@ -4670,6 +5030,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Analytics.Timer.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.TimerColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Timer}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Analytics.Timer.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Timer}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.TimerColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.Timer.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.TimerColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Timer}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.TimerColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -4821,7 +5191,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Timer.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Analytics.TimerColumns},Bam.Net.Data.Database)">
             <summary>
@@ -4840,7 +5212,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Timer.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -4856,15 +5230,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Analytics.Timer.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of Timers
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Timer.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.TimerColumns},Bam.Net.Data.Database)">
             <summary>
@@ -4874,7 +5250,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between TimerColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Url.GetUniqueFilter">
             <summary>
@@ -4902,6 +5280,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Analytics.Url.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.UrlColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Url}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Analytics.Url.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Url}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.UrlColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.Url.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.UrlColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.Url}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.UrlColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -5053,7 +5441,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Url.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Analytics.UrlColumns},Bam.Net.Data.Database)">
             <summary>
@@ -5072,7 +5462,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Url.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -5088,15 +5480,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Analytics.Url.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of Urls
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Url.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.UrlColumns},Bam.Net.Data.Database)">
             <summary>
@@ -5106,7 +5500,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between UrlColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.UrlTag.GetUniqueFilter">
             <summary>
@@ -5134,6 +5530,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Analytics.UrlTag.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.UrlTagColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.UrlTag}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Analytics.UrlTag.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.UrlTag}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.UrlTagColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.UrlTag.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.UrlTagColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.UrlTag}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.UrlTagColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -5285,7 +5691,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.UrlTag.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Analytics.UrlTagColumns},Bam.Net.Data.Database)">
             <summary>
@@ -5304,7 +5712,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.UrlTag.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -5320,15 +5730,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Analytics.UrlTag.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of UrlTags
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.UrlTag.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.UrlTagColumns},Bam.Net.Data.Database)">
             <summary>
@@ -5338,7 +5750,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between UrlTagColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.UserIdentifier.GetUniqueFilter">
             <summary>
@@ -5366,6 +5780,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Analytics.UserIdentifier.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.UserIdentifierColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.UserIdentifier}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Analytics.UserIdentifier.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.UserIdentifier}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.UserIdentifierColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.UserIdentifier.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.UserIdentifierColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.UserIdentifier}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.UserIdentifierColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -5517,7 +5941,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.UserIdentifier.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Analytics.UserIdentifierColumns},Bam.Net.Data.Database)">
             <summary>
@@ -5536,7 +5962,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.UserIdentifier.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -5552,15 +5980,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Analytics.UserIdentifier.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of UserIdentifiers
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.UserIdentifier.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.UserIdentifierColumns},Bam.Net.Data.Database)">
             <summary>
@@ -5570,7 +6000,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between UserIdentifierColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Analytics.Classification.Classifier.Probability(System.String,System.String)">
             <summary>
@@ -5806,6 +6238,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Analytics.EnglishDictionary.Definition.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.EnglishDictionary.DefinitionColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.EnglishDictionary.Definition}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Definition.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.EnglishDictionary.Definition}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.EnglishDictionary.DefinitionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Definition.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.EnglishDictionary.DefinitionColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.EnglishDictionary.Definition}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.EnglishDictionary.DefinitionColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -6046,6 +6488,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Analytics.EnglishDictionary.Word.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.EnglishDictionary.WordColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.EnglishDictionary.Word}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Word.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.EnglishDictionary.Word}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.EnglishDictionary.WordColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Analytics.EnglishDictionary.Word.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Analytics.EnglishDictionary.WordColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Analytics.EnglishDictionary.Word}},Bam.Net.Data.OrderBy{Bam.Net.Analytics.EnglishDictionary.WordColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	

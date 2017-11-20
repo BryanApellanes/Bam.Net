@@ -19,7 +19,7 @@ using Bam.Net.Web;
 using Bam.Net.Data;
 using Bam.Net.Logging;
 
-namespace bam
+namespace Bam.Net.Application
 {
     [Serializable]
     class Program : CommandLineTestInterface

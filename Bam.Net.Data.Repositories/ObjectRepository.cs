@@ -142,6 +142,20 @@ namespace Bam.Net.Data.Repositories
 			return this.Query<T>(t => ((object)t).Property<long>("Id") > 0);
 		}
 
+        public override void BatchRetrieveAll(Type type, int batchSize, Action<IEnumerable<object>> processor)
+        {
+            List<object> batch = new List<object>();
+            foreach(object obj in RetrieveAll(type))
+            {
+                batch.Add(obj);
+                if(batch.Count == batchSize)
+                {
+                    processor(batch);
+                    batch = new List<object>();
+                }
+            }
+        }
+
 		public override IEnumerable<object> RetrieveAll(Type type)
 		{
 			return Query(type, t => ((object)t).Property<long>("Id") > 0);

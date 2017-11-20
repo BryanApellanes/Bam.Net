@@ -15,6 +15,7 @@ using Bam.Net.CoreServices.Files.Data;
 using Bam.Net.CoreServices.Files;
 using Bam.Net.Server;
 using Bam.Net.ServiceProxy;
+using Bam.Net.Logging;
 
 namespace Bam.Net.CoreServices
 {
@@ -25,7 +26,7 @@ namespace Bam.Net.CoreServices
     public class CoreFileService : ApplicationProxyableService, IFileService
     {
         protected CoreFileService() { }
-        public CoreFileService(IRepository repository)
+        public CoreFileService(IRepository repository, DataSettings dataSettings = null, ILogger logger = null)
         {
             Repository = repository;
             Repository.AddTypes(new Type[]
@@ -34,10 +35,17 @@ namespace Bam.Net.CoreServices
                 typeof(ChunkDataDescriptor),
                 typeof(ChunkData)
             });
+            DataSettings = dataSettings ?? DataSettings.Default;
+            Logger = logger ?? Log.Default;
+            FileSystemChunkStorage = new FileSystemChunkStorage(DataSettings, Logger);
+            RepositoryChunkStorage = new RepositoryChunkStorage(Repository, DataSettings, Logger);
+            ChunkStorage = new CompositeChunkStorage();
+            ChunkStorage.AddStorage(FileSystemChunkStorage);
+            ChunkStorage.AddStorage(RepositoryChunkStorage);
+
             ChunkDataBatchSize = 10;
             ChunkLength = 256000;
-            ChunkDirectory = new FileInfo(".\\ChunkData").FullName;
-
+            ChunkDirectory = DataSettings.GetChunksDirectory().FullName;
             SetChunkDataDescriptorRetriever();
         }
 
@@ -53,7 +61,9 @@ namespace Bam.Net.CoreServices
         public string ChunkDirectory { get; internal set; }
         public int ChunkDataBatchSize { get; internal set; }
         public int ChunkLength { get; internal set; }
-
+        public CompositeChunkStorage ChunkStorage { get; set; }
+        protected FileSystemChunkStorage FileSystemChunkStorage { get; set; }
+        protected RepositoryChunkStorage RepositoryChunkStorage { get; set; }
         public virtual ChunkDataDescriptor SaveChunkDataDescriptor(ChunkDataDescriptor xref)
         {
             ChunkDataDescriptor existingXref = Repository
@@ -83,15 +93,26 @@ namespace Bam.Net.CoreServices
             return existing;
         }
 
-        public virtual ChunkData SaveChunkData(ChunkData chunk)
+        /// <summary>
+        /// Save the ChunkData
+        /// </summary>
+        /// <param name="chunk"></param>
+        /// <returns></returns>
+        public virtual void SaveChunkData(ChunkData chunk)
         {
             Args.ThrowIf(!chunk.ChunkHash.Equals(chunk.Data.FromBase64().Sha256()), "Hash validation failed");
-            ChunkData existingChunk = Repository.Query<ChunkData>(Filter.Where(nameof(ChunkData.ChunkHash)) == chunk.ChunkHash).FirstOrDefault();
-            if (existingChunk == null)
-            {
-                existingChunk = Repository.Save(chunk);
-            }
-            return existingChunk;
+            ChunkStorage.SetChunk(chunk.ToChunk());
+        }
+
+        /// <summary>
+        /// Retrieves the specified chunkdata from the 
+        /// file system if its there otherwise from the repository
+        /// </summary>
+        /// <param name="chunkHash"></param>
+        /// <returns></returns>
+        public virtual ChunkData GetChunkData(string chunkHash)
+        {
+            return ChunkData.FromChunk(ChunkStorage.GetChunk(chunkHash));
         }
 
         public virtual ChunkedFileDescriptor GetFileDescriptor(string fileHashOrName)
@@ -160,27 +181,6 @@ namespace Bam.Net.CoreServices
             return ChunkedFileWriter.FromFileHash(this, fileHash, Logger);
         }
 
-        /// <summary>
-        /// Retrieves the specified chunkdata from the 
-        /// file system if its there otherwise from the repository
-        /// </summary>
-        /// <param name="chunkHash"></param>
-        /// <returns></returns>
-        public virtual ChunkData GetChunkData(string chunkHash)
-        {
-            ChunkData result = new ChunkData { ChunkHash = chunkHash };
-            string chunkDataFile = Path.Combine(ChunkDirectory, chunkHash);
-            if (File.Exists(chunkDataFile))
-            {
-                result = GetChunkDataFromFileSystem(chunkHash);
-            }
-            else
-            {
-                result = GetChunkDataFromRepository(chunkHash);
-            }
-            return result;
-        }
-
         public virtual ChunkData GetChunkDataFromRepository(string chunkHash)
         {
             ChunkData result = Repository.Query<ChunkData>(Filter.Where(nameof(ChunkData.ChunkHash)) == chunkHash).FirstOrDefault();
@@ -192,13 +192,7 @@ namespace Bam.Net.CoreServices
         [Local]
         public ChunkData GetChunkDataFromFileSystem(string chunkHash)
         {
-            string data = Path.Combine(ChunkDirectory, chunkHash).SafeReadFile();
-            return new ChunkData
-            {
-                ChunkHash = chunkHash,
-                Data = data,
-                ChunkLength = data.FromBase64().Length
-            };
+            return ChunkData.FromChunk(FileSystemChunkStorage.GetChunk(chunkHash));
         }
 
         /// <summary>
@@ -208,7 +202,7 @@ namespace Bam.Net.CoreServices
         /// <param name="chunkLength"></param>
         /// <returns></returns>
         [Local]
-        public ChunkedFileDescriptor StoreFileChunksInRepo(FileInfo file, string description = null)
+        public ChunkedFileDescriptor StoreFileChunks(FileInfo file, string description = null)
         {
             ChunkedFileReader chunked = new ChunkedFileReader(file, ChunkLength);
             ChunkedFileDescriptor chunkedFileDescriptor = chunked.ToChunkedFileDescriptor(description);
@@ -299,6 +293,8 @@ namespace Bam.Net.CoreServices
         {
             return GetFileChunks(fileHash, fromIndex, ChunkDataBatchSize);
         }
+
+        protected DataSettings DataSettings { get; }
 
         private static void HandleExistingFile(string localPath, bool overwrite)
         {

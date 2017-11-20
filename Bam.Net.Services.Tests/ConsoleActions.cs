@@ -12,6 +12,7 @@ using System.IO;
 using Bam.Net.Services.OpenApi;
 using Bam.Net.Data.SQLite;
 using Bam.Net.Data;
+using Bam.Net.Services.Distributed;
 
 namespace Bam.Net.Services.Tests
 {
@@ -37,13 +38,6 @@ namespace Bam.Net.Services.Tests
                 };
                 model.Render().SafeWriteToFile(string.Format("C:\\src\\Bam.Net\\Bam.Net.Services\\OpenApi\\Objects\\{0}.cs", model.ObjectName));
             }
-        }
-
-        [ConsoleAction]
-        public void CanSerializeAndDeserializeDataPropertyList()
-        {
-            DataPropertyCollection list = new DataPropertyCollection();
-            list.Prop("Monkey", true);
         }
 
         [ConsoleAction]

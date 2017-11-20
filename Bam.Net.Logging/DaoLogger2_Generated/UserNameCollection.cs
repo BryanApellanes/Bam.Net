@@ -13,9 +13,9 @@ namespace Bam.Net.Logging.Data
     public class UserNameCollection: DaoCollection<UserNameColumns, UserName>
     { 
 		public UserNameCollection(){}
-		public UserNameCollection(Database db, DataTable table, Dao dao = null, string rc = null) : base(db, table, dao, rc) { }
-		public UserNameCollection(DataTable table, Dao dao = null, string rc = null) : base(table, dao, rc) { }
-		public UserNameCollection(Query<UserNameColumns, UserName> q, Dao dao = null, string rc = null) : base(q, dao, rc) { }
+		public UserNameCollection(Database db, DataTable table, Bam.Net.Data.Dao dao = null, string rc = null) : base(db, table, dao, rc) { }
+		public UserNameCollection(DataTable table, Bam.Net.Data.Dao dao = null, string rc = null) : base(table, dao, rc) { }
+		public UserNameCollection(Query<UserNameColumns, UserName> q, Bam.Net.Data.Dao dao = null, string rc = null) : base(q, dao, rc) { }
 		public UserNameCollection(Database db, Query<UserNameColumns, UserName> q, bool load) : base(db, q, load) { }
 		public UserNameCollection(Query<UserNameColumns, UserName> q, bool load) : base(q, load) { }
     }

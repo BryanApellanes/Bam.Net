@@ -86,7 +86,7 @@ namespace Bam.Net.Messaging.Data.Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Bam.Net.Messaging.Data.EmailMessage));
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.Messaging.Data.EmailMessage));
 				object value = Bam.Net.Messaging.Data.EmailMessage.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Bam.Net.Messaging.Data.Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Bam.Net.Messaging.Data.EmailMessage));
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.Messaging.Data.EmailMessage));
 				object[] value = Bam.Net.Messaging.Data.EmailMessage.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

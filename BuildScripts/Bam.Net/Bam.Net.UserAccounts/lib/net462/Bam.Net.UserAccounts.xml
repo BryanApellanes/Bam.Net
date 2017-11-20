@@ -39,6 +39,16 @@
             Process results of a query in batches of the specified size
             </summary>	
         </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Group.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Group}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.GroupColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Group.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.GroupColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Group}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.GroupColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.UserAccounts.Data.Group.Where(System.Func{Bam.Net.UserAccounts.Data.GroupColumns,Bam.Net.Data.QueryFilter{Bam.Net.UserAccounts.Data.GroupColumns}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.GroupColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -186,7 +196,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Group.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.GroupColumns},Bam.Net.Data.Database)">
             <summary>
@@ -205,7 +217,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Group.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -221,15 +235,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Group.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of Groups
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Group.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.GroupColumns},Bam.Net.Data.Database)">
             <summary>
@@ -239,7 +255,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between GroupColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.GroupPermission.GetUniqueFilter">
             <summary>
@@ -267,6 +285,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.GroupPermission.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.GroupPermissionColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.GroupPermission}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.GroupPermission.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.GroupPermission}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.GroupPermissionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.GroupPermission.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.GroupPermissionColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.GroupPermission}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.GroupPermissionColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -418,7 +446,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.GroupPermission.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.GroupPermissionColumns},Bam.Net.Data.Database)">
             <summary>
@@ -437,7 +467,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.GroupPermission.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -453,15 +485,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.GroupPermission.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of GroupPermissions
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.GroupPermission.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.GroupPermissionColumns},Bam.Net.Data.Database)">
             <summary>
@@ -471,7 +505,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between GroupPermissionColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Permission.GetUniqueFilter">
             <summary>
@@ -499,6 +535,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Permission.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PermissionColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Permission}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Permission.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Permission}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Permission.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PermissionColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Permission}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -650,7 +696,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Permission.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.Database)">
             <summary>
@@ -669,7 +717,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Permission.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -685,15 +735,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Permission.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of Permissions
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Permission.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PermissionColumns},Bam.Net.Data.Database)">
             <summary>
@@ -703,7 +755,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between PermissionColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.TreeNode.GetUniqueFilter">
             <summary>
@@ -731,6 +785,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.TreeNode.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.TreeNodeColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.TreeNode}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.TreeNode}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.TreeNode.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.TreeNodeColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.TreeNode}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -882,7 +946,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.TreeNode.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.Database)">
             <summary>
@@ -901,7 +967,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.TreeNode.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -917,15 +985,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.TreeNode.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of TreeNodes
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.TreeNode.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.TreeNodeColumns},Bam.Net.Data.Database)">
             <summary>
@@ -935,7 +1005,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between TreeNodeColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserGroup.GetUniqueFilter">
             <summary>
@@ -963,6 +1035,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserGroup.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserGroupColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.UserGroup}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.UserGroup}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserGroup.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserGroupColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.UserGroup}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -1114,7 +1196,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserGroup.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1133,7 +1217,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserGroup.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -1149,15 +1235,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserGroup.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of UserGroups
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserGroup.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserGroupColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1167,7 +1255,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between UserGroupColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserPermission.GetUniqueFilter">
             <summary>
@@ -1195,6 +1285,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserPermission.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserPermissionColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.UserPermission}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.UserPermission}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserPermission.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserPermissionColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.UserPermission}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -1346,7 +1446,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserPermission.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1365,7 +1467,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserPermission.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -1381,15 +1485,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserPermission.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of UserPermissions
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserPermission.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserPermissionColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1399,7 +1505,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between UserPermissionColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Account.GetUniqueFilter">
             <summary>
@@ -1427,6 +1535,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Account.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.AccountColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Account}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Account.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Account}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.AccountColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Account.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.AccountColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Account}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.AccountColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -1578,7 +1696,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Account.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.AccountColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1597,7 +1717,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Account.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -1613,15 +1735,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Account.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of Accounts
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Account.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.AccountColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1631,7 +1755,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between AccountColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Account.Create(Bam.Net.UserAccounts.Data.User,System.String,System.String,System.Boolean,Bam.Net.Data.Database)">
             <summary>
@@ -1671,6 +1797,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.LockOut.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.LockOutColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.LockOut}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.LockOut.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.LockOut}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.LockOutColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.LockOut.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.LockOutColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.LockOut}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.LockOutColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -1822,7 +1958,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.LockOut.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.LockOutColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1841,7 +1979,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.LockOut.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -1857,15 +1997,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.LockOut.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of LockOuts
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.LockOut.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.LockOutColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1875,7 +2017,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between LockOutColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Login.GetUniqueFilter">
             <summary>
@@ -1903,6 +2047,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Login.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.LoginColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Login}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Login.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Login}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.LoginColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Login.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.LoginColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Login}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.LoginColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -2054,7 +2208,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Login.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.LoginColumns},Bam.Net.Data.Database)">
             <summary>
@@ -2073,7 +2229,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Login.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -2089,15 +2247,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Login.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of Logins
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Login.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.LoginColumns},Bam.Net.Data.Database)">
             <summary>
@@ -2107,7 +2267,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between LoginColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Password.GetUniqueFilter">
             <summary>
@@ -2135,6 +2297,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Password.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PasswordColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Password}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Password.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Password}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.PasswordColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Password.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PasswordColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Password}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.PasswordColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -2286,7 +2458,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Password.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.PasswordColumns},Bam.Net.Data.Database)">
             <summary>
@@ -2305,7 +2479,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Password.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -2321,15 +2497,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Password.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of Passwords
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Password.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PasswordColumns},Bam.Net.Data.Database)">
             <summary>
@@ -2339,7 +2517,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between PasswordColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Password.Set(Bam.Net.UserAccounts.Data.User,System.String,Bam.Net.Data.Database)">
             <summary>
@@ -2375,6 +2555,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.PasswordFailure.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PasswordFailureColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.PasswordFailure}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.PasswordFailure.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.PasswordFailure}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.PasswordFailureColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.PasswordFailure.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PasswordFailureColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.PasswordFailure}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.PasswordFailureColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -2526,7 +2716,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.PasswordFailure.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.PasswordFailureColumns},Bam.Net.Data.Database)">
             <summary>
@@ -2545,7 +2737,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.PasswordFailure.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -2561,15 +2755,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.PasswordFailure.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of PasswordFailures
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.PasswordFailure.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PasswordFailureColumns},Bam.Net.Data.Database)">
             <summary>
@@ -2579,7 +2775,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between PasswordFailureColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.PasswordQuestion.GetUniqueFilter">
             <summary>
@@ -2607,6 +2805,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.PasswordQuestion.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PasswordQuestionColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.PasswordQuestion}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.PasswordQuestion.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.PasswordQuestion}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.PasswordQuestionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.PasswordQuestion.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PasswordQuestionColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.PasswordQuestion}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.PasswordQuestionColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -2758,7 +2966,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.PasswordQuestion.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.PasswordQuestionColumns},Bam.Net.Data.Database)">
             <summary>
@@ -2777,7 +2987,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.PasswordQuestion.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -2793,15 +3005,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.PasswordQuestion.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of PasswordQuestions
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.PasswordQuestion.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PasswordQuestionColumns},Bam.Net.Data.Database)">
             <summary>
@@ -2811,7 +3025,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between PasswordQuestionColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.PasswordReset.GetUniqueFilter">
             <summary>
@@ -2839,6 +3055,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.PasswordReset.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PasswordResetColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.PasswordReset}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.PasswordReset.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.PasswordReset}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.PasswordResetColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.PasswordReset.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PasswordResetColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.PasswordReset}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.PasswordResetColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -2990,7 +3216,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.PasswordReset.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.PasswordResetColumns},Bam.Net.Data.Database)">
             <summary>
@@ -3009,7 +3237,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.PasswordReset.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -3025,15 +3255,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.PasswordReset.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of PasswordResets
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.PasswordReset.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.PasswordResetColumns},Bam.Net.Data.Database)">
             <summary>
@@ -3043,7 +3275,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between PasswordResetColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.PasswordReset.Create(Bam.Net.UserAccounts.Data.User,System.Int32)">
             <summary>
@@ -3079,6 +3313,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Role.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.RoleColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Role}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Role.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Role}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.RoleColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Role.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.RoleColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Role}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.RoleColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -3230,7 +3474,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Role.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.RoleColumns},Bam.Net.Data.Database)">
             <summary>
@@ -3249,7 +3495,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Role.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -3265,15 +3513,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Role.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of Roles
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Role.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.RoleColumns},Bam.Net.Data.Database)">
             <summary>
@@ -3283,7 +3533,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between RoleColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Session.GetUniqueFilter">
             <summary>
@@ -3311,6 +3563,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Session.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.SessionColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Session}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Session.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Session}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.SessionColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Session.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.SessionColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Session}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.SessionColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -3462,7 +3724,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Session.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.SessionColumns},Bam.Net.Data.Database)">
             <summary>
@@ -3481,7 +3745,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Session.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -3497,15 +3763,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Session.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of Sessions
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Session.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.SessionColumns},Bam.Net.Data.Database)">
             <summary>
@@ -3515,7 +3783,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between SessionColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Session.Get(Bam.Net.UserAccounts.Data.User,Bam.Net.Data.Database)">
             <summary>
@@ -3568,6 +3838,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.SessionState.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.SessionStateColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.SessionState}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.SessionState.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.SessionState}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.SessionStateColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.SessionState.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.SessionStateColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.SessionState}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.SessionStateColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -3719,7 +3999,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.SessionState.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.SessionStateColumns},Bam.Net.Data.Database)">
             <summary>
@@ -3738,7 +4020,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.SessionState.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -3754,15 +4038,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.SessionState.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of SessionStates
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.SessionState.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.SessionStateColumns},Bam.Net.Data.Database)">
             <summary>
@@ -3772,7 +4058,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between SessionStateColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Setting.GetUniqueFilter">
             <summary>
@@ -3800,6 +4088,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Setting.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.SettingColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Setting}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Setting.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Setting}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.SettingColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.Setting.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.SettingColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.Setting}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.SettingColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -3951,7 +4249,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Setting.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.SettingColumns},Bam.Net.Data.Database)">
             <summary>
@@ -3970,7 +4270,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Setting.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -3986,15 +4288,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Setting.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of Settings
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.Setting.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.SettingColumns},Bam.Net.Data.Database)">
             <summary>
@@ -4004,7 +4308,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between SettingColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.User.GetUniqueFilter">
             <summary>
@@ -4032,6 +4338,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.User.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.User}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.User.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.User}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.User.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.User}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -4183,7 +4499,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.User.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserColumns},Bam.Net.Data.Database)">
             <summary>
@@ -4202,7 +4520,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.User.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -4218,15 +4538,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.User.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of Users
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.User.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserColumns},Bam.Net.Data.Database)">
             <summary>
@@ -4236,7 +4558,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between UserColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.User.GetByUserNameOrDie(System.String,Bam.Net.Data.Database)">
             <summary>
@@ -4295,6 +4619,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserBehavior.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserBehaviorColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.UserBehavior}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserBehavior.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.UserBehavior}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserBehaviorColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserBehavior.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserBehaviorColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.UserBehavior}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserBehaviorColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -4446,7 +4780,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserBehavior.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserBehaviorColumns},Bam.Net.Data.Database)">
             <summary>
@@ -4465,7 +4801,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserBehavior.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -4481,15 +4819,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserBehavior.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of UserBehaviors
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserBehavior.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserBehaviorColumns},Bam.Net.Data.Database)">
             <summary>
@@ -4499,7 +4839,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between UserBehaviorColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserRole.GetUniqueFilter">
             <summary>
@@ -4527,6 +4869,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserRole.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserRoleColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.UserRole}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserRole.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.UserRole}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserRoleColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.UserAccounts.Data.UserRole.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserRoleColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.UserAccounts.Data.UserRole}},Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserRoleColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -4678,7 +5030,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserRole.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.UserAccounts.Data.UserRoleColumns},Bam.Net.Data.Database)">
             <summary>
@@ -4697,7 +5051,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserRole.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -4713,15 +5069,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserRole.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of UserRoles
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.UserAccounts.Data.UserRole.Count(Bam.Net.Data.WhereDelegate{Bam.Net.UserAccounts.Data.UserRoleColumns},Bam.Net.Data.Database)">
             <summary>
@@ -4731,7 +5089,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between UserRoleColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="P:Bam.Net.UserAccounts.UserManagerConfig.SuppressMessages">
             <summary>

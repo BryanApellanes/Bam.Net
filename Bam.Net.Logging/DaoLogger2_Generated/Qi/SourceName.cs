@@ -86,7 +86,7 @@ namespace Bam.Net.Logging.Data.Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Bam.Net.Logging.Data.SourceName));
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.Logging.Data.SourceName));
 				object value = Bam.Net.Logging.Data.SourceName.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Bam.Net.Logging.Data.Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Bam.Net.Logging.Data.SourceName));
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.Logging.Data.SourceName));
 				object[] value = Bam.Net.Logging.Data.SourceName.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

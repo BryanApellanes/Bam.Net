@@ -86,7 +86,7 @@ namespace Bam.Net.Analytics.Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Bam.Net.Analytics.Image));
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.Analytics.Image));
 				object value = Bam.Net.Analytics.Image.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Bam.Net.Analytics.Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Bam.Net.Analytics.Image));
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.Analytics.Image));
 				object[] value = Bam.Net.Analytics.Image.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

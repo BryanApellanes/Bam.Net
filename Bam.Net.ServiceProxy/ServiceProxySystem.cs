@@ -409,7 +409,7 @@ namespace {0}
             classNames.Each(new { Logger = logger, Types = types }, (ctx, cn) =>
             {
                 Type type = incubator[cn];
-                if(type == null)
+                if (type == null)
                 {
                     ctx.Logger.AddEntry("Specified class name was not registered: {0}", LogEventType.Warning, cn);
                 }
@@ -419,7 +419,7 @@ namespace {0}
                 }
             });
             Args.ThrowIf(types.Count == 0, "None of the specified classes were found: {0}", string.Join(", ", classNames));
-            return GenerateCSharpProxyCode(defaultBaseAddress, nameSpace, contractNamespace, types.ToArray(), includeLocalMethods);
+            return ServiceProxySystem.GenerateCSharpProxyCode(defaultBaseAddress, nameSpace, contractNamespace, types.ToArray(), includeLocalMethods);
         }
         public static StringBuilder GenerateCSharpProxyCode(string defaultBaseAddress, string nameSpace, string contractNamespace, Type[] types, bool includeLocalMethods = false)
         {
@@ -506,7 +506,7 @@ namespace {0}
                 {
                     if (method.WillProxy(includeLocal))
                     {
-                        stringBuilder.AppendLine(GetMethodCall(type, method));
+                        stringBuilder.AppendLine(GetJsMethodCall(type, method));
                     }
                 }
 
@@ -553,7 +553,7 @@ namespace {0}
             return stringBuilder;
         }
 
-        internal static string GetMethodCall(Type type, MethodInfo method)
+        internal static string GetJsMethodCall(Type type, MethodInfo method)
         {
             StringBuilder builder = new StringBuilder();
             System.Reflection.ParameterInfo[] parameterInfos = method.GetParameters();

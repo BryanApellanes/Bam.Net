@@ -13,9 +13,9 @@ namespace Bam.Net.Logging.Data
     public class ComputerNameCollection: DaoCollection<ComputerNameColumns, ComputerName>
     { 
 		public ComputerNameCollection(){}
-		public ComputerNameCollection(Database db, DataTable table, Dao dao = null, string rc = null) : base(db, table, dao, rc) { }
-		public ComputerNameCollection(DataTable table, Dao dao = null, string rc = null) : base(table, dao, rc) { }
-		public ComputerNameCollection(Query<ComputerNameColumns, ComputerName> q, Dao dao = null, string rc = null) : base(q, dao, rc) { }
+		public ComputerNameCollection(Database db, DataTable table, Bam.Net.Data.Dao dao = null, string rc = null) : base(db, table, dao, rc) { }
+		public ComputerNameCollection(DataTable table, Bam.Net.Data.Dao dao = null, string rc = null) : base(table, dao, rc) { }
+		public ComputerNameCollection(Query<ComputerNameColumns, ComputerName> q, Bam.Net.Data.Dao dao = null, string rc = null) : base(q, dao, rc) { }
 		public ComputerNameCollection(Database db, Query<ComputerNameColumns, ComputerName> q, bool load) : base(db, q, load) { }
 		public ComputerNameCollection(Query<ComputerNameColumns, ComputerName> q, bool load) : base(q, load) { }
     }

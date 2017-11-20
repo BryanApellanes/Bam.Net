@@ -13,6 +13,7 @@
             </summary>
             <param name="name"></param>
             <param name="promptMessage"></param>
+            <param name="prompter"></param>
             <returns></returns>
         </member>
         <member name="P:Bam.Net.CommandLine.CommandLineInterface.Arguments">

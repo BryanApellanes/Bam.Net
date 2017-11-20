@@ -18,6 +18,10 @@ using System.Collections;
 
 namespace Bam.Net.Data.Repositories
 {
+    /// <summary>
+    /// An incomplete Repository implementation using Mongo as a backing 
+    /// data store
+    /// </summary>
 	public class MongoRepository: Repository
 	{
 		private string _connectionString;
@@ -155,7 +159,12 @@ namespace Bam.Net.Data.Repositories
 			throw new NotImplementedException(); // see Mongo docs to implement this correctly
 		}
 
-		public override IEnumerable<object> RetrieveAll(Type type)
+        public override void BatchRetrieveAll(Type type, int batchSize, Action<IEnumerable<object>> processor)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IEnumerable<object> RetrieveAll(Type type)
 		{
 			throw new NotImplementedException();
 		}

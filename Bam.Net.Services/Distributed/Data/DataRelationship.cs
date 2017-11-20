@@ -9,6 +9,7 @@ using System.Collections;
 
 namespace Bam.Net.Services.Distributed.Data
 {
+    [Serializable]
     public class DataRelationship: RepoData
     {
         public string LeftCuid { get; set; }
@@ -17,8 +18,7 @@ namespace Bam.Net.Services.Distributed.Data
         public  string RelationshipDescription { get; set; }
         public override bool Equals(object obj)
         {
-            DataRelationship other = obj as DataRelationship;
-            if(other != null)
+            if (obj is DataRelationship other)
             {
                 return (other.LeftCuid.Equals(LeftCuid) && other.RightCuid.Equals(RightCuid)) ||
                     (other.LeftCuid.Equals(RightCuid) && other.RightCuid.Equals(LeftCuid));

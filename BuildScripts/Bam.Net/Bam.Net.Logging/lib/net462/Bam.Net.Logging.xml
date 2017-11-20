@@ -48,6 +48,16 @@
             Process results of a query in batches of the specified size
             </summary>	
         </member>
+        <member name="M:Bam.Net.Logging.Data.CategoryName.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.CategoryName}},Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.CategoryNameColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Logging.Data.CategoryName.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.CategoryNameColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.CategoryName}},Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.CategoryNameColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.Logging.Data.CategoryName.Where(System.Func{Bam.Net.Logging.Data.CategoryNameColumns,Bam.Net.Data.QueryFilter{Bam.Net.Logging.Data.CategoryNameColumns}},Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.CategoryNameColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -195,7 +205,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.CategoryName.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.CategoryNameColumns},Bam.Net.Data.Database)">
             <summary>
@@ -214,7 +226,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.CategoryName.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -230,15 +244,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Logging.Data.CategoryName.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of CategoryNames
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.CategoryName.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.CategoryNameColumns},Bam.Net.Data.Database)">
             <summary>
@@ -248,7 +264,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between CategoryNameColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.ComputerName.GetUniqueFilter">
             <summary>
@@ -276,6 +294,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Logging.Data.ComputerName.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.ComputerNameColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.ComputerName}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Logging.Data.ComputerName.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.ComputerName}},Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.ComputerNameColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Logging.Data.ComputerName.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.ComputerNameColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.ComputerName}},Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.ComputerNameColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -427,7 +455,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.ComputerName.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.ComputerNameColumns},Bam.Net.Data.Database)">
             <summary>
@@ -446,7 +476,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.ComputerName.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -462,15 +494,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Logging.Data.ComputerName.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of ComputerNames
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.ComputerName.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.ComputerNameColumns},Bam.Net.Data.Database)">
             <summary>
@@ -480,7 +514,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between ComputerNameColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.Event.GetUniqueFilter">
             <summary>
@@ -508,6 +544,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Logging.Data.Event.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.EventColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.Event}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Logging.Data.Event.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.Event}},Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.EventColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Logging.Data.Event.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.EventColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.Event}},Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.EventColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -659,7 +705,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.Event.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.EventColumns},Bam.Net.Data.Database)">
             <summary>
@@ -678,7 +726,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.Event.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -694,15 +744,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Logging.Data.Event.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of Events
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.Event.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.EventColumns},Bam.Net.Data.Database)">
             <summary>
@@ -712,7 +764,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between EventColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.EventParam.GetUniqueFilter">
             <summary>
@@ -740,6 +794,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Logging.Data.EventParam.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.EventParamColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.EventParam}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Logging.Data.EventParam.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.EventParam}},Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.EventParamColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Logging.Data.EventParam.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.EventParamColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.EventParam}},Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.EventParamColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -891,7 +955,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.EventParam.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.EventParamColumns},Bam.Net.Data.Database)">
             <summary>
@@ -910,7 +976,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.EventParam.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -926,15 +994,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Logging.Data.EventParam.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of EventParams
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.EventParam.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.EventParamColumns},Bam.Net.Data.Database)">
             <summary>
@@ -944,7 +1014,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between EventParamColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.Param.GetUniqueFilter">
             <summary>
@@ -972,6 +1044,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Logging.Data.Param.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.ParamColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.Param}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Logging.Data.Param.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.Param}},Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.ParamColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Logging.Data.Param.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.ParamColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.Param}},Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.ParamColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -1123,7 +1205,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.Param.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.ParamColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1142,7 +1226,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.Param.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -1158,15 +1244,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Logging.Data.Param.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of Params
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.Param.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.ParamColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1176,7 +1264,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between ParamColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.Signature.GetUniqueFilter">
             <summary>
@@ -1204,6 +1294,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Logging.Data.Signature.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.SignatureColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.Signature}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Logging.Data.Signature.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.Signature}},Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.SignatureColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Logging.Data.Signature.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.SignatureColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.Signature}},Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.SignatureColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -1355,7 +1455,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.Signature.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.SignatureColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1374,7 +1476,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.Signature.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -1390,15 +1494,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Logging.Data.Signature.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of Signatures
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.Signature.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.SignatureColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1408,7 +1514,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between SignatureColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.SourceName.GetUniqueFilter">
             <summary>
@@ -1436,6 +1544,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Logging.Data.SourceName.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.SourceNameColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.SourceName}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Logging.Data.SourceName.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.SourceName}},Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.SourceNameColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Logging.Data.SourceName.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.SourceNameColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.SourceName}},Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.SourceNameColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -1587,7 +1705,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.SourceName.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.SourceNameColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1606,7 +1726,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.SourceName.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -1622,15 +1744,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Logging.Data.SourceName.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of SourceNames
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.SourceName.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.SourceNameColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1640,7 +1764,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between SourceNameColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.UserName.GetUniqueFilter">
             <summary>
@@ -1668,6 +1794,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Logging.Data.UserName.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.UserNameColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.UserName}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Logging.Data.UserName.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.UserName}},Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.UserNameColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Logging.Data.UserName.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.UserNameColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.UserName}},Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.UserNameColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -1819,7 +1955,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.UserName.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.UserNameColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1838,7 +1976,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.UserName.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -1854,15 +1994,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Logging.Data.UserName.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of UserNames
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.UserName.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.UserNameColumns},Bam.Net.Data.Database)">
             <summary>
@@ -1872,7 +2014,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between UserNameColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.LogEvent.GetUniqueFilter">
             <summary>
@@ -1900,6 +2044,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Logging.Data.LogEvent.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.LogEventColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.LogEvent}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Logging.Data.LogEvent.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.LogEvent}},Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.LogEventColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Logging.Data.LogEvent.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.LogEventColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Logging.Data.LogEvent}},Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.LogEventColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -2051,7 +2205,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.LogEvent.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Logging.Data.LogEventColumns},Bam.Net.Data.Database)">
             <summary>
@@ -2070,7 +2226,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.LogEvent.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -2086,15 +2244,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Logging.Data.LogEvent.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of LogEvents
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Logging.Data.LogEvent.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Logging.Data.LogEventColumns},Bam.Net.Data.Database)">
             <summary>
@@ -2104,7 +2264,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between LogEventColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="T:Bam.Net.Logging.Info">
             <summary>

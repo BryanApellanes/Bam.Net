@@ -13,9 +13,9 @@ namespace Bam.Net.UserAccounts.Data
     public class GroupPermissionCollection: DaoCollection<GroupPermissionColumns, GroupPermission>
     { 
 		public GroupPermissionCollection(){}
-		public GroupPermissionCollection(Database db, DataTable table, Dao dao = null, string rc = null) : base(db, table, dao, rc) { }
-		public GroupPermissionCollection(DataTable table, Dao dao = null, string rc = null) : base(table, dao, rc) { }
-		public GroupPermissionCollection(Query<GroupPermissionColumns, GroupPermission> q, Dao dao = null, string rc = null) : base(q, dao, rc) { }
+		public GroupPermissionCollection(Database db, DataTable table, Bam.Net.Data.Dao dao = null, string rc = null) : base(db, table, dao, rc) { }
+		public GroupPermissionCollection(DataTable table, Bam.Net.Data.Dao dao = null, string rc = null) : base(table, dao, rc) { }
+		public GroupPermissionCollection(Query<GroupPermissionColumns, GroupPermission> q, Bam.Net.Data.Dao dao = null, string rc = null) : base(q, dao, rc) { }
 		public GroupPermissionCollection(Database db, Query<GroupPermissionColumns, GroupPermission> q, bool load) : base(db, q, load) { }
 		public GroupPermissionCollection(Query<GroupPermissionColumns, GroupPermission> q, bool load) : base(q, load) { }
     }

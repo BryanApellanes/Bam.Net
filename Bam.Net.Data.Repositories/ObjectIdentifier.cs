@@ -3,18 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-//using Bam.Net.Data.Dynamic;
 
 namespace Bam.Net.Data.Repositories
 {
-    public class ObjectIdentifier<T>: ObjectIdentifier where T: RepoData, new()
-    {
-        public T GetInstance<T>(IRepository repo) where T : class, new()
-        {
-            return repo.Retrieve<T>(Uuid);
-        }
-    }
-
     public class ObjectIdentifier
     {
         public ObjectIdentifier()
@@ -62,6 +53,7 @@ namespace Bam.Net.Data.Repositories
         {
             return repo.Retrieve(Type, Uuid);
         }
+
         public static ObjectIdentifier FromRepoData(RepoData data)
         {
             return new ObjectIdentifier

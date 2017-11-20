@@ -14,6 +14,7 @@ using Bam.Net.UserAccounts;
 using Bam.Net.UserAccounts.Data;
 using Yahoo.Yui.Compressor;
 using Bam.Net.Presentation;
+using System.Reflection;
 
 namespace Bam.Net.Server
 {
@@ -141,70 +142,79 @@ namespace Bam.Net.Server
         public bool TryRespond(IHttpContext context, out string[] checkedPaths)
         {
             checkedPaths = new string[] { };
-            IRequest request = context.Request;
-            IResponse response = context.Response;
-            string path = request.Url.AbsolutePath;
-
-            string ext = Path.GetExtension(path);
-
-            path = RemoveBamAppsPrefix(path);
-
-            string[] split = path.DelimitSplit("/");
-            byte[] content = new byte[] { };
-            bool result = false;
-
-            if (path.Equals("/upload", StringComparison.InvariantCultureIgnoreCase))
+            try
             {
-                HandleUpload(context, HttpPostedFile.FromRequest(request));
-                string query = request.Url.Query.Length > 0 ? request.Url.Query : string.Empty;
-                if (query.StartsWith("?"))
+                IRequest request = context.Request;
+                IResponse response = context.Response;
+                string path = request.Url.AbsolutePath;
+
+                string ext = Path.GetExtension(path);
+
+                path = RemoveBamAppsPrefix(path);
+
+                string[] split = path.DelimitSplit("/");
+                byte[] content = new byte[] { };
+                bool result = false;
+
+                if (path.Equals("/upload", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    query = query.TruncateFront(1);
-                }
-                content = RenderLayout(response, path, query);
-                result = true;
-            }
-            else if (string.IsNullOrEmpty(ext) && !ShouldIgnore(path) ||
-               (AppRoot.FileExists("~/pages{0}.html"._Format(path), out string locatedPath)))
-            {
-                content = RenderLayout(response, path);
-                result = true;
-            }
-            else if (AppContentLocator.Locate(path, out locatedPath, out checkedPaths))
-            {
-                result = true;
-                string foundExt = Path.GetExtension(locatedPath);
-                if (FileCachesByExtension.ContainsKey(foundExt))
-                {
-                    FileCache cache = FileCachesByExtension[ext];
-                    if (ShouldZip(request))
+                    HandleUpload(context, HttpPostedFile.FromRequest(request));
+                    string query = request.Url.Query.Length > 0 ? request.Url.Query : string.Empty;
+                    if (query.StartsWith("?"))
                     {
-                        SetGzipContentEncodingHeader(response);
-                        content = cache.GetZippedContent(locatedPath);
+                        query = query.TruncateFront(1);
+                    }
+                    content = RenderLayout(response, path, query);
+                    result = true;
+                }
+                else if (string.IsNullOrEmpty(ext) && !ShouldIgnore(path) ||
+                   (AppRoot.FileExists("~/pages{0}.html"._Format(path), out string locatedPath)))
+                {
+                    content = RenderLayout(response, path);
+                    result = true;
+                }
+                else if (AppContentLocator.Locate(path, out locatedPath, out checkedPaths))
+                {
+                    result = true;
+                    string foundExt = Path.GetExtension(locatedPath);
+                    if (FileCachesByExtension.ContainsKey(foundExt))
+                    {
+                        FileCache cache = FileCachesByExtension[ext];
+                        if (ShouldZip(request))
+                        {
+                            SetGzipContentEncodingHeader(response);
+                            content = cache.GetZippedContent(locatedPath);
+                        }
+                        else
+                        {
+                            content = cache.GetContent(locatedPath);
+                        }
                     }
                     else
                     {
-                        content = cache.GetContent(locatedPath);
+                        content = File.ReadAllBytes(locatedPath);
                     }
+                }
+
+                if (result)
+                {
+                    SetContentType(response, path);
+                    SetContentDisposition(response, path);
+                    SendResponse(response, content);
+                    OnResponded(context);
                 }
                 else
                 {
-                    content = File.ReadAllBytes(locatedPath);
+                    OnNotResponded(context);
                 }
+                return result;
             }
-
-            if (result)
+            catch (Exception ex)
             {
-                SetContentType(response, path);
-                SetContentDisposition(response, path);
-                SendResponse(response, content);
-                OnResponded(context);
-            }
-            else
-            {
+                Logger.AddEntry("An error occurred in {0}.{1}: {2}", ex, this.GetType().Name, MethodBase.GetCurrentMethod().Name, ex.Message);
                 OnNotResponded(context);
+                return false;
             }
-            return result;
         }
 
         [Verbosity(LogEventType.Information)]

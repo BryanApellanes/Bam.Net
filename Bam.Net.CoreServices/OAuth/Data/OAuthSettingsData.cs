@@ -31,24 +31,25 @@ namespace Bam.Net.CoreServices.OAuth.Data
         public string ClientSecret { get; set; }
 
         /// <summary>
-        /// The url of our app that will receive the
-        /// authenticated redirect
+        /// The url of the provider's authorization endpoint;
+        /// this is typically a login page
         /// </summary>
-        public string AuthCallbackUrl { get; set; }
+        public string AuthorizationUrl { get; set; }
 
         /// <summary>
         /// The url of our app that will receive the
-        /// token redirect
+        /// authenticated redirect
         /// </summary>
-        public string TokenCallbackUrl { get; set; }
+        public string AuthorizationCallbackUrl { get; set; }
+        
 
-        public string AuthorizationEndpointFormat
+        public string AuthorizationUrlFormat
         {
             get;
             set;
         }
 
-        public string TokenEndpointFormat
+        public string AuthorizationCallbackUrlFormat
         {
             get;
             set;

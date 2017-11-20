@@ -37,8 +37,7 @@ namespace Bam.Net.CoreServices
         public event EventHandler RuntimeRestored;
         public string AssemblyDirectory { get; set; }
         public IFileService FileService { get; set; }
-        public Repo.AssemblyServiceRepository AssemblyManagementRepository { get; set; }
-        public IApplicationNameProvider ApplicationNameProvider { get; set; }        
+        public Repo.AssemblyServiceRepository AssemblyManagementRepository { get; set; }    
 
         public virtual List<AssemblyDescriptor> GetDescriptors(string assemblyFulName)
         {
@@ -153,7 +152,7 @@ namespace Bam.Net.CoreServices
             Assembly assembly = Assembly.Load(assemblyDescriptor.AssemblyFullName);
             FileInfo fileInfo = assembly.GetFileInfo();
             Args.ThrowIf(!fileInfo.Sha256().Equals(assemblyDescriptor.FileHash), "FileHash validation failed: {0}", assemblyDescriptor.AssemblyFullName);
-            FileService.StoreFileChunksInRepo(fileInfo, assemblyDescriptor.Name);
+            FileService.StoreFileChunks(fileInfo, assemblyDescriptor.Name);
         }
     }
 }

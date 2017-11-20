@@ -66,6 +66,10 @@
     <Compile Include="ApplicationDataDescriptor.cs" />
     <Compile Include="ApplicationManager.cs" />
     <Compile Include="ApplicationDataManager.cs" />
+    <Compile Include="ApplicationConfigurationProvider.cs" />
+    <Compile Include="ApplicationLogDatabase.cs" />
+    <Compile Include="ApplicationLogger.cs" />
+    <Compile Include="ApplicationServiceRegistry.cs" />
     <Compile Include="CoreClient.cs" />
     <Compile Include="CoreAssemblyClient.cs" />
     <Compile Include="CoreLoggerClient.cs" />

@@ -86,7 +86,7 @@ namespace Bam.Net.Analytics.Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Bam.Net.Analytics.QueryString));
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.Analytics.QueryString));
 				object value = Bam.Net.Analytics.QueryString.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Bam.Net.Analytics.Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Bam.Net.Analytics.QueryString));
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.Analytics.QueryString));
 				object[] value = Bam.Net.Analytics.QueryString.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

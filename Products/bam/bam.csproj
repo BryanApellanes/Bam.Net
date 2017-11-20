@@ -60,6 +60,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -72,6 +73,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ManagementActions.cs" />
     <Compile Include="UserInfo.cs" />
+    <Compile Include="UtilityActions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -85,6 +87,10 @@
     <Content Include="Notes.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Bam.Net.Automation\Bam.Net.Automation.csproj">
+      <Project>{b65e4fcd-de50-4d9e-91d7-dddf80c25c47}</Project>
+      <Name>Bam.Net.Automation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Bam.Net.CommandLine\Bam.Net.CommandLine.csproj">
       <Project>{ea9863a9-8e0b-4497-b7fd-abf450a3e468}</Project>
       <Name>Bam.Net.CommandLine</Name>

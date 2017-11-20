@@ -23,8 +23,10 @@ namespace laotzu
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             LaoTzuForm laoTzu = new LaoTzuForm();
-            List<MenuStrip> toolStrips = new List<MenuStrip>();
-            toolStrips.Add(laoTzu.MenuStripMain);
+            List<MenuStrip> toolStrips = new List<MenuStrip>
+            {
+                laoTzu.MenuStripMain
+            };
             FormModelBinder modelBinder = new FormModelBinder(laoTzu.Controls, toolStrips);
             LaoTzuViewModel viewModel = new LaoTzuViewModel(modelBinder, laoTzu);
             modelBinder.ViewModel = viewModel;

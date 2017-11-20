@@ -86,7 +86,7 @@ namespace Bam.Net.Data.Tests.Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Bam.Net.Data.Tests.Cart));
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.Data.Tests.Cart));
 				object value = Bam.Net.Data.Tests.Cart.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
@@ -100,7 +100,7 @@ namespace Bam.Net.Data.Tests.Qi
 		{
 			try
 			{
-				query.table = Dao.TableName(typeof(Bam.Net.Data.Tests.Cart));
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.Data.Tests.Cart));
 				object[] value = Bam.Net.Data.Tests.Cart.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}

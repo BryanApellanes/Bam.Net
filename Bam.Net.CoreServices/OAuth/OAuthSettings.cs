@@ -24,9 +24,8 @@ namespace Bam.Net.CoreServices.OAuth
         public OAuthSettings() : base()
         {
             ClientId = "1282272511809831";
-            AuthorizationEndpointFormat = "https://bamapps.net/oauth/authorize?clientId={ClientId}&callbackUrl={CallbackUrl}&code={Code}&state={State}";
-            TokenEndpointFormat = "https://bamapps.net/oauth/accesstoken?clientId={ClientId}&callbackUrl={TokenCallbackUrl}&clientSecret={ClientSecret}&code={Code}&state={State}";
-            TokenCallbackUrl = "https://{ApplicationName}.bamapps.net/oauth/settoken?accesstoken={AccessToken}";
+            AuthorizationUrlFormat = "https://bamapps.net/oauth/authorize?clientId={ClientId}&callbackUrl={CallbackUrl}&code={Code}&state={State}";
+            AuthorizationCallbackUrlFormat = "https://bamapps.net/oauth/setaccesstoken?clientId={ClientId}&callbackUrl={TokenCallbackUrl}&clientSecret={ClientSecret}&code={Code}&state={State}";
         }
 
         public OAuthSettings(string clientId, string clientSecret) : this()
@@ -49,27 +48,24 @@ namespace Bam.Net.CoreServices.OAuth
         /// <summary>
         /// The providers user login endpoint 
         /// </summary>
-        public string AuthorizationEndpoint
+        public string AuthorizationUrl
         {
             get
             {
-                return AuthorizationEndpointFormat.NamedFormat(this);
+                return AuthorizationUrlFormat.NamedFormat(this);
+            }
+        }
+
+        public string AuthorizationCallbackUrl
+        {
+            get
+            {
+                return AuthorizationCallbackUrlFormat.NamedFormat(this);
             }
         }
 
         public string Version { get; set; }
-
-        /// <summary>
-        /// The providers endpoint used to acquire
-        /// an access token for the current user
-        /// </summary>
-        public string TokenEndpoint
-        {
-            get
-            {
-                return TokenEndpointFormat.NamedFormat(this);
-            }
-        }
+        
 
         public string AccessToken { get; set; }
 

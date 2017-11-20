@@ -73,6 +73,16 @@
             Process results of a query in batches of the specified size
             </summary>	
         </member>
+        <member name="M:Bam.Net.Encryption.Vault.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Encryption.Vault}},Bam.Net.Data.OrderBy{Bam.Net.Encryption.VaultColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Encryption.Vault.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Encryption.VaultColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Encryption.Vault}},Bam.Net.Data.OrderBy{Bam.Net.Encryption.VaultColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
         <member name="M:Bam.Net.Encryption.Vault.Where(System.Func{Bam.Net.Encryption.VaultColumns,Bam.Net.Data.QueryFilter{Bam.Net.Encryption.VaultColumns}},Bam.Net.Data.OrderBy{Bam.Net.Encryption.VaultColumns},Bam.Net.Data.Database)">
             <summary>
             Execute a query and return the results. 
@@ -220,7 +230,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Encryption.Vault.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Encryption.VaultColumns},Bam.Net.Data.Database)">
             <summary>
@@ -239,7 +251,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Encryption.Vault.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -255,15 +269,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Encryption.Vault.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of Vaults
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Encryption.Vault.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Encryption.VaultColumns},Bam.Net.Data.Database)">
             <summary>
@@ -273,7 +289,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between VaultColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Encryption.Vault.Retrieve(System.String)">
             <summary>
@@ -360,6 +378,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Encryption.VaultItem.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Encryption.VaultItemColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Encryption.VaultItem}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Encryption.VaultItem.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Encryption.VaultItem}},Bam.Net.Data.OrderBy{Bam.Net.Encryption.VaultItemColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Encryption.VaultItem.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Encryption.VaultItemColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Encryption.VaultItem}},Bam.Net.Data.OrderBy{Bam.Net.Encryption.VaultItemColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -511,7 +539,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Encryption.VaultItem.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Encryption.VaultItemColumns},Bam.Net.Data.Database)">
             <summary>
@@ -530,7 +560,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Encryption.VaultItem.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -546,15 +578,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Encryption.VaultItem.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of VaultItems
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Encryption.VaultItem.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Encryption.VaultItemColumns},Bam.Net.Data.Database)">
             <summary>
@@ -564,7 +598,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between VaultItemColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Encryption.VaultKey.GetUniqueFilter">
             <summary>
@@ -592,6 +628,16 @@
             </summary>			 
         </member>
         <member name="M:Bam.Net.Encryption.VaultKey.BatchQuery(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Encryption.VaultKeyColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Encryption.VaultKey}},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>	
+        </member>
+        <member name="M:Bam.Net.Encryption.VaultKey.BatchQuery``1(System.Int32,Bam.Net.Data.QueryFilter,System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Encryption.VaultKey}},Bam.Net.Data.OrderBy{Bam.Net.Encryption.VaultKeyColumns},Bam.Net.Data.Database)">
+            <summary>
+            Process results of a query in batches of the specified size
+            </summary>			 
+        </member>
+        <member name="M:Bam.Net.Encryption.VaultKey.BatchQuery``1(System.Int32,Bam.Net.Data.WhereDelegate{Bam.Net.Encryption.VaultKeyColumns},System.Action{System.Collections.Generic.IEnumerable{Bam.Net.Encryption.VaultKey}},Bam.Net.Data.OrderBy{Bam.Net.Encryption.VaultKeyColumns},Bam.Net.Data.Database)">
             <summary>
             Process results of a query in batches of the specified size
             </summary>	
@@ -743,7 +789,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="database"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Encryption.VaultKey.Top(System.Int32,Bam.Net.Data.QueryFilter,Bam.Net.Data.OrderBy{Bam.Net.Encryption.VaultKeyColumns},Bam.Net.Data.Database)">
             <summary>
@@ -762,7 +810,9 @@
             <param name="orderBy">
             Specifies what column and direction to order the results by
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Encryption.VaultKey.Top(System.Int32,Bam.Net.Data.Qi.QiQuery,Bam.Net.Data.Database)">
             <summary>
@@ -778,15 +828,17 @@
             <param name="where">A QueryFilter used to filter the 
             results
             </param>
-            <param name="orderBy">
-            Specifies what column and direction to order the results by
+            <param name="database">
+            Which database to query or null to use the default
             </param>
-            <param name="db"></param>
         </member>
         <member name="M:Bam.Net.Encryption.VaultKey.Count(Bam.Net.Data.Database)">
             <summary>
             Return the count of VaultKeys
             </summary>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Encryption.VaultKey.Count(Bam.Net.Data.WhereDelegate{Bam.Net.Encryption.VaultKeyColumns},Bam.Net.Data.Database)">
             <summary>
@@ -796,7 +848,9 @@
             and returns a IQueryFilter which is the result of any comparisons
             between VaultKeyColumns and other values
             </param>
-            <param name="db"></param>
+            <param name="database">
+            Which database to query or null to use the default
+            </param>
         </member>
         <member name="M:Bam.Net.Encryption.Extensions.EncryptWithPublicKey(System.String,Org.BouncyCastle.Crypto.AsymmetricCipherKeyPair,System.Text.Encoding)">
             <summary>

@@ -18,7 +18,7 @@ namespace Bam.Net.ServiceProxy.Secure
 	// connection Name = SecureServiceProxy
 	[Serializable]
 	[Bam.Net.Data.Table("Application", "SecureServiceProxy")]
-	public partial class Application: Dao
+	public partial class Application: Bam.Net.Data.Dao
 	{
 		public Application():base()
 		{
@@ -55,10 +55,16 @@ namespace Bam.Net.ServiceProxy.Secure
 
 		private void SetChildren()
 		{
-
-            this.ChildCollections.Add("Configuration_ApplicationId", new ConfigurationCollection(Database.GetQuery<ConfigurationColumns, Configuration>((c) => c.ApplicationId == GetLongValue("Id")), this, "ApplicationId"));	
-            this.ChildCollections.Add("ApiKey_ApplicationId", new ApiKeyCollection(Database.GetQuery<ApiKeyColumns, ApiKey>((c) => c.ApplicationId == GetLongValue("Id")), this, "ApplicationId"));	
-            this.ChildCollections.Add("SecureSession_ApplicationId", new SecureSessionCollection(Database.GetQuery<SecureSessionColumns, SecureSession>((c) => c.ApplicationId == GetLongValue("Id")), this, "ApplicationId"));							
+			if(_database != null)
+			{
+				this.ChildCollections.Add("Configuration_ApplicationId", new ConfigurationCollection(Database.GetQuery<ConfigurationColumns, Configuration>((c) => c.ApplicationId == GetLongValue("Id")), this, "ApplicationId"));				
+			}			if(_database != null)
+			{
+				this.ChildCollections.Add("ApiKey_ApplicationId", new ApiKeyCollection(Database.GetQuery<ApiKeyColumns, ApiKey>((c) => c.ApplicationId == GetLongValue("Id")), this, "ApplicationId"));				
+			}			if(_database != null)
+			{
+				this.ChildCollections.Add("SecureSession_ApplicationId", new SecureSessionCollection(Database.GetQuery<SecureSessionColumns, SecureSession>((c) => c.ApplicationId == GetLongValue("Id")), this, "ApplicationId"));				
+			}						
 		}
 
 	// property:Id, columnName:Id	
@@ -225,7 +231,7 @@ namespace Bam.Net.ServiceProxy.Secure
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Application>();
 			Database db = database ?? Db.For<Application>();
-			var results = new ApplicationCollection(sql.GetDataTable(db));
+			var results = new ApplicationCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
@@ -281,6 +287,37 @@ namespace Bam.Net.ServiceProxy.Secure
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (ApplicationColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<Application>> batchProcessor, Bam.Net.Data.OrderBy<ApplicationColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<ApplicationColumns> where, Action<IEnumerable<Application>> batchProcessor, Bam.Net.Data.OrderBy<ApplicationColumns> orderBy, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				ApplicationColumns columns = new ApplicationColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (ApplicationColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
@@ -572,7 +609,9 @@ namespace Bam.Net.ServiceProxy.Secure
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="database"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static ApplicationCollection Top(int count, WhereDelegate<ApplicationColumns> where, OrderBy<ApplicationColumns> orderBy, Database database = null)
 		{
@@ -616,7 +655,9 @@ namespace Bam.Net.ServiceProxy.Secure
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static ApplicationCollection Top(int count, QueryFilter where, OrderBy<ApplicationColumns> orderBy = null, Database database = null)
 		{
@@ -649,10 +690,9 @@ namespace Bam.Net.ServiceProxy.Secure
 		/// <param name="where">A QueryFilter used to filter the 
 		/// results
 		/// </param>
-		/// <param name="orderBy">
-		/// Specifies what column and direction to order the results by
+		/// <param name="database">
+		/// Which database to query or null to use the default
 		/// </param>
-		/// <param name="db"></param>
 		public static ApplicationCollection Top(int count, QiQuery where, Database database = null)
 		{
 			Database db = database ?? Db.For<Application>();
@@ -668,6 +708,9 @@ namespace Bam.Net.ServiceProxy.Secure
 		/// <summary>
 		/// Return the count of Applications
 		/// </summary>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		public static long Count(Database database = null)
         {
 			Database db = database ?? Db.For<Application>();
@@ -684,7 +727,9 @@ namespace Bam.Net.ServiceProxy.Secure
 		/// and returns a IQueryFilter which is the result of any comparisons
 		/// between ApplicationColumns and other values
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<ApplicationColumns> where, Database database = null)
 		{

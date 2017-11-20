@@ -12,12 +12,15 @@ namespace Bam.Net.Services.Distributed
 {
     public interface IDistributedRepository
     {
+        object Save(SaveOperation value);
         object Create(CreateOperation value);
         object Retrieve(RetrieveOperation value);
         object Update(UpdateOperation value);
         bool Delete(DeleteOperation value);
         IEnumerable<object> Query(QueryOperation query);
 
-		Task<ReplicationResult> RecieveReplica(ReplicateOperation operation);
+        ReplicationOperation Replicate(ReplicationOperation operation);
+
+        IEnumerable<object> NextSet(ReplicationOperation operation);
     }
 }

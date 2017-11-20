@@ -18,7 +18,7 @@ namespace Bam.Net.Data.Repositories.Tests
 	// connection Name = RepoTests
 	[Serializable]
 	[Bam.Net.Data.Table("SecondaryObjectTernaryObject", "RepoTests")]
-	public partial class SecondaryObjectTernaryObject: Dao
+	public partial class SecondaryObjectTernaryObject: Bam.Net.Data.Dao
 	{
 		public SecondaryObjectTernaryObject():base()
 		{
@@ -192,7 +192,7 @@ namespace Bam.Net.Data.Repositories.Tests
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<SecondaryObjectTernaryObject>();
 			Database db = database ?? Db.For<SecondaryObjectTernaryObject>();
-			var results = new SecondaryObjectTernaryObjectCollection(sql.GetDataTable(db));
+			var results = new SecondaryObjectTernaryObjectCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
@@ -248,6 +248,37 @@ namespace Bam.Net.Data.Repositories.Tests
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (SecondaryObjectTernaryObjectColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<SecondaryObjectTernaryObject>> batchProcessor, Bam.Net.Data.OrderBy<SecondaryObjectTernaryObjectColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<SecondaryObjectTernaryObjectColumns> where, Action<IEnumerable<SecondaryObjectTernaryObject>> batchProcessor, Bam.Net.Data.OrderBy<SecondaryObjectTernaryObjectColumns> orderBy, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				SecondaryObjectTernaryObjectColumns columns = new SecondaryObjectTernaryObjectColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (SecondaryObjectTernaryObjectColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
@@ -539,7 +570,9 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="database"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static SecondaryObjectTernaryObjectCollection Top(int count, WhereDelegate<SecondaryObjectTernaryObjectColumns> where, OrderBy<SecondaryObjectTernaryObjectColumns> orderBy, Database database = null)
 		{
@@ -583,7 +616,9 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static SecondaryObjectTernaryObjectCollection Top(int count, QueryFilter where, OrderBy<SecondaryObjectTernaryObjectColumns> orderBy = null, Database database = null)
 		{
@@ -616,10 +651,9 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// <param name="where">A QueryFilter used to filter the 
 		/// results
 		/// </param>
-		/// <param name="orderBy">
-		/// Specifies what column and direction to order the results by
+		/// <param name="database">
+		/// Which database to query or null to use the default
 		/// </param>
-		/// <param name="db"></param>
 		public static SecondaryObjectTernaryObjectCollection Top(int count, QiQuery where, Database database = null)
 		{
 			Database db = database ?? Db.For<SecondaryObjectTernaryObject>();
@@ -635,6 +669,9 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// <summary>
 		/// Return the count of SecondaryObjectTernaryObjects
 		/// </summary>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		public static long Count(Database database = null)
         {
 			Database db = database ?? Db.For<SecondaryObjectTernaryObject>();
@@ -651,7 +688,9 @@ namespace Bam.Net.Data.Repositories.Tests
 		/// and returns a IQueryFilter which is the result of any comparisons
 		/// between SecondaryObjectTernaryObjectColumns and other values
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<SecondaryObjectTernaryObjectColumns> where, Database database = null)
 		{

@@ -9,11 +9,13 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Services.Distributed.Data
 { 
+    [Serializable]
     public class UpdateOperation: WriteOperation
 	{
 		public override object Execute(IDistributedRepository repository)
 		{
-            return repository.Update(this);
+            repository.Update(this);
+            return base.Execute(repository);
 		}
 
         public static UpdateOperation For(object toUpdate)
@@ -21,11 +23,6 @@ namespace Bam.Net.Services.Distributed.Data
             UpdateOperation operation = For<UpdateOperation>(toUpdate.GetType());
             operation.Properties = GetData(toUpdate);
             return operation;
-        }
-
-        protected override void Commit(IDistributedRepository repo, WriteEvent writeEvent)
-        {
-            throw new NotImplementedException();
-        }
+        }        
     }
 }

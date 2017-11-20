@@ -18,7 +18,7 @@ namespace Bam.Net.UserAccounts.Data
 	// connection Name = UserAccounts
 	[Serializable]
 	[Bam.Net.Data.Table("Setting", "UserAccounts")]
-	public partial class Setting: Dao
+	public partial class Setting: Bam.Net.Data.Dao
 	{
 		public Setting():base()
 		{
@@ -213,7 +213,7 @@ namespace Bam.Net.UserAccounts.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Setting>();
 			Database db = database ?? Db.For<Setting>();
-			var results = new SettingCollection(sql.GetDataTable(db));
+			var results = new SettingCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
@@ -269,6 +269,37 @@ namespace Bam.Net.UserAccounts.Data
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
 					results = Top(batchSize, (SettingColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+				}
+			});			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>			 
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<Setting>> batchProcessor, Bam.Net.Data.OrderBy<SettingColumns> orderBy, Database database = null)
+		{
+			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
+		}
+
+		/// <summary>
+		/// Process results of a query in batches of the specified size
+		/// </summary>	
+		[Bam.Net.Exclude]
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<SettingColumns> where, Action<IEnumerable<Setting>> batchProcessor, Bam.Net.Data.OrderBy<SettingColumns> orderBy, Database database = null)
+		{
+			await Task.Run(async ()=>
+			{
+				SettingColumns columns = new SettingColumns();
+				var results = Top(batchSize, where, orderBy, database);
+				while(results.Count > 0)
+				{
+					await Task.Run(()=>
+					{ 
+						batchProcessor(results);
+					});
+					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
+					results = Top(batchSize, (SettingColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
@@ -560,7 +591,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="database"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static SettingCollection Top(int count, WhereDelegate<SettingColumns> where, OrderBy<SettingColumns> orderBy, Database database = null)
 		{
@@ -604,7 +637,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static SettingCollection Top(int count, QueryFilter where, OrderBy<SettingColumns> orderBy = null, Database database = null)
 		{
@@ -637,10 +672,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// <param name="where">A QueryFilter used to filter the 
 		/// results
 		/// </param>
-		/// <param name="orderBy">
-		/// Specifies what column and direction to order the results by
+		/// <param name="database">
+		/// Which database to query or null to use the default
 		/// </param>
-		/// <param name="db"></param>
 		public static SettingCollection Top(int count, QiQuery where, Database database = null)
 		{
 			Database db = database ?? Db.For<Setting>();
@@ -656,6 +690,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// <summary>
 		/// Return the count of Settings
 		/// </summary>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		public static long Count(Database database = null)
         {
 			Database db = database ?? Db.For<Setting>();
@@ -672,7 +709,9 @@ namespace Bam.Net.UserAccounts.Data
 		/// and returns a IQueryFilter which is the result of any comparisons
 		/// between SettingColumns and other values
 		/// </param>
-		/// <param name="db"></param>
+		/// <param name="database">
+		/// Which database to query or null to use the default
+		/// </param>
 		[Bam.Net.Exclude]
 		public static long Count(WhereDelegate<SettingColumns> where, Database database = null)
 		{

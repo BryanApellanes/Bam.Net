@@ -11,6 +11,7 @@ using Bam.Net.Testing;
 using Bam.Net.Caching;
 using Bam.Net.Testing.Unit;
 using Bam.Net.Services.OpenApi;
+using Bam.Net.Services.Distributed;
 
 namespace Bam.Net.Services.Tests
 {
@@ -59,13 +60,13 @@ namespace Bam.Net.Services.Tests
         [UnitTest]
         public void CanSerializeAndDeserializeDataPropertyList()
         {
-            DataPropertyCollection propList = new DataPropertyCollection();
+            DataPropertySet propList = new DataPropertySet();
             propList.Add("Prop1", true);
             propList.Add("Prop2", false);
             propList.Add("Name", "Banana");
             byte[] serialized = propList.ToBinaryBytes();
 
-            DataPropertyCollection deserialized = serialized.FromBinaryBytes<DataPropertyCollection>();
+            DataPropertySet deserialized = serialized.FromBinaryBytes<DataPropertySet>();
             Expect.AreEqual(3, deserialized.Count);
             Expect.IsTrue(deserialized.Value<bool>("Prop1"));
             Expect.IsFalse(deserialized.Value<bool>("Prop2"));
@@ -75,7 +76,7 @@ namespace Bam.Net.Services.Tests
         [UnitTest]
         public void ThrowsOnDuplicateName()
         {
-            DataPropertyCollection propList = new DataPropertyCollection
+            DataPropertySet propList = new DataPropertySet
             {
                 { "Name", "some value" }
             };
@@ -98,7 +99,7 @@ namespace Bam.Net.Services.Tests
         public void ToAndFromDataPropertyCollection()
         {
             TestMonkey value = new TestMonkey { Monkey = "Yay", HasTail = false };
-            DataPropertyCollection dpc = value.ToDataPropertyCollection();
+            DataPropertySet dpc = value.ToDataPropertyCollection();
             Expect.AreEqual(value.Monkey, dpc.Value<string>("Monkey"));
             Expect.IsFalse(dpc.Value<bool>("HasTail"));
 

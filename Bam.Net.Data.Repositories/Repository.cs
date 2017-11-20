@@ -227,7 +227,8 @@ namespace Bam.Net.Data.Repositories
         public abstract T Retrieve<T>(string uuid) where T : class, new();
 		public abstract IEnumerable<T> RetrieveAll<T>() where T : class, new();
 		public abstract IEnumerable<object> RetrieveAll(Type type);
-		public abstract object Retrieve(Type objectType, long id);
+        public abstract void BatchRetrieveAll(Type dtoOrPocoType, int batchSize, Action<IEnumerable<object>> processor);
+        public abstract object Retrieve(Type objectType, long id);
 		public abstract object Retrieve(Type objectType, string uuid);
         public abstract IEnumerable<object> Query(string propertyName, object propertyValue);
         /// <summary>

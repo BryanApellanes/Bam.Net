@@ -160,6 +160,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RestResponderTests.cs" />
     <Compile Include="JsonRpcResponderTests.cs" />
+    <Compile Include="BinaryServerTests.cs" />
     <Compile Include="TestMonkey.cs" />
     <Compile Include="Tools.cs" />
     <Compile Include="UnitTests.cs" />

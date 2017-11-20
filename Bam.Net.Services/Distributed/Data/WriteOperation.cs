@@ -8,6 +8,7 @@ namespace Bam.Net.Services.Distributed.Data
 {
     public abstract class WriteOperation: Operation
     {  
+        public OperationIntent Intent { get; set; }
         /// <summary>
         /// The properties that were written
         /// </summary>
@@ -19,7 +20,10 @@ namespace Bam.Net.Services.Distributed.Data
             Any?.Invoke(this, new OpertionEventArgs { WriteEvent = writeEvent });
             return writeEvent;
         }
-        protected abstract void Commit(IDistributedRepository repo, WriteEvent writeEvent);
+        protected void Commit(IDistributedRepository repo, WriteEvent writeEvent)
+        {
+            repo.Save(SaveOperation.For(writeEvent));
+        }
 
         public static event EventHandler Any;
 

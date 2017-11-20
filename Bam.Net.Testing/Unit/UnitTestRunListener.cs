@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Testing.Unit
 {
+    /// <summary>
+    /// A local test run listener for basic 
+    /// reporting of test results
+    /// </summary>
     public class UnitTestRunListener : TestRunListener<UnitTestMethod>
     {
         public UnitTestRunListener()

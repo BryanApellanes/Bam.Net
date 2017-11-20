@@ -11,6 +11,7 @@ namespace Bam.Net.Services.Distributed.Data
     /// A recordable instance of a data write
     /// event that occurred whether create, update or delete
     /// </summary>
+    [Serializable]
     public class WriteEvent: RepoData
     {
         public OperationIntent Intent { get; set; }

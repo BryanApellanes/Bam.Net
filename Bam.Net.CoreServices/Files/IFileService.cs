@@ -25,10 +25,10 @@ namespace Bam.Net.CoreServices.Files
         ChunkedFileWriter GetFileWriter(string fileHash);
         FileInfo RestoreFile(ChunkedFileDescriptor fileDescriptor, string localPath = null);
         FileInfo RestoreFile(string fileHash, string localPath, bool overwrite = true);
-        ChunkData SaveChunkData(ChunkData chunk);
+        void SaveChunkData(ChunkData chunk);
         ChunkDataDescriptor SaveChunkDataDescriptor(ChunkDataDescriptor xref);
         ChunkedFileDescriptor SaveFileDescriptor(ChunkedFileDescriptor fileDescriptor);
-        ChunkedFileDescriptor StoreFileChunksInRepo(FileInfo file, string description = null);
+        ChunkedFileDescriptor StoreFileChunks(FileInfo file, string description = null);
         void WriteFileHashToStream(string fileHash, Stream fs);
         FileInfo WriteFileDataToDirectory(string fileNameOrHash, string directoryPath);
         void WriteFileToStream(string fileNameOrHash, Stream stream);
