@@ -173,7 +173,9 @@
     <None Include="Language.sqlite">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="regendao.cmd" />
+    <None Include="regendao.cmd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bam.Net.Analytics\Bam.Net.Analytics.csproj">

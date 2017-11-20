@@ -88,10 +88,7 @@ namespace Bam.Net.UserAccounts.Tests
 
         public static void SignUp(string userName, string email)
         {
-            UserManager mgr;
-            IHttpContext context;
-            string passHash;
-            UserTestTools.SignUp(userName, email, out mgr, out context, out passHash);
+            UserTestTools.SignUp(userName, email, out UserManager mgr, out IHttpContext context, out string passHash);
         }
 
         public static UserManager CreateTestUserManager(string appName = "test")
