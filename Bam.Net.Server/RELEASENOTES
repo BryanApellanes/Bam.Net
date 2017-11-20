@@ -1,4 +1,1 @@
-Version 1.8.4
- -   file chunking (e0990ce)
- -   updated session and securesession db handling (0bd1a48)
- -   refactor tcpserver to binaryserver (8642cd6)
+

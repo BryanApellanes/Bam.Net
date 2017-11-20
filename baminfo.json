@@ -3,9 +3,9 @@
   "Owners": "Bryan Apellanes",
   "LicenseUrl": "http://opensource.org/licenses/MIT",
   "ProjectUrl": "http://bryanapellanes.github.io/Bam.Net/",
-  "ReleaseNotes": "Version 1.8.4\r\n -  add readme for bamtestrunner (c95a5b1)\r\n -  tickle (7fef311)\r\n -  fix tests (d5a235b)\r\n -  tickle build (186e516)\r\n -  minor update to chunkserver (128d166)\r\n -  add file to test build (ef97a80)\r\n -  fix test script (13a0e63)\r\n -  fix test build script (2878064)\r\n -  Merge work from different workstations. (63e8546)\r\n -  update vector logo (6485923)\r\n -  remove bamweb, other minor tweaks (03d8fc8)\r\n -  minor updates (c2a5a74)\r\n -  ideas (0057935)\r\n -  update ideas (b4c876a)\r\n -  rm delete me (96ca0a3)\r\n -  rm commit (46f0719)\r\n -  touch (de8eb82)\r\n -  minor cleanup and doc (4c93ff8)\r\n -  remove broken project for now (81b3bae)\r\n -  merged changes made to branch 'next' from different workstations (e988aea)\r\n -  rename folder (cfbee36)\r\n -  Reneerate dao to add BatchQuery (bb000c7)\r\n -  update test data paths (f36b8a1)\r\n -  filter tests and data from tests (00beead)\r\n -  minor tweak (4e00645)\r\n -  add dictionary (f5a9a11)\r\n -  update sln (4a301c5)\r\n -  delete 3hbx (16873fa)\r\n -  rename file (f598b54)\r\n -  wip (59ba41f)\r\n -  testing (b2e6f17)\r\n -  remove post build command (b595280)\r\n -  remove build event (0de78a8)\r\n -  refactor and clean up (305f630)\r\n -  Merge pull request #83 from BryanApellanes/next (7ffb4de)\r\n",
+  "ReleaseNotes": "Version 1.8.5\r\n -  fix nuget scripts (b4ae705)\r\n",
   "MajorVersion": 1,
   "MinorVersion": 8,
-  "PatchVersion": 4,
+  "PatchVersion": 5,
   "BuildNumber": ""
 }
