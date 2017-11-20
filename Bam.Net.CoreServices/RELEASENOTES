@@ -1,1 +1,5 @@
-Version 1.8.3
+Version 1.8.4
+ -   modular file chunking (d3c338a)
+ -   minor refactor for OAuthSettings (3afe7e3)
+ -   regenerate dao (8a803b4)
+ -   cleanup refactor (e49d280)

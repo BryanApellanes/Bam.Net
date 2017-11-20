@@ -2,24 +2,28 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.CoreServices</id>
-    <version>1.8.3</version>
+    <version>1.8.4</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>http://bryanapellanes.github.io/Bam.Net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Memory caching for Bam.Net</description>
-    <releaseNotes>Version 1.8.3
+    <releaseNotes>Version 1.8.4
+ -   modular file chunking (d3c338a)
+ -   minor refactor for OAuthSettings (3afe7e3)
+ -   regenerate dao (8a803b4)
+ -   cleanup refactor (e49d280)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2017</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.8.3" />
-      <dependency id="Bam.Net.CommandLine" version="1.8.3" />
-      <dependency id="Bam.Net.Data" version="1.8.3" />
-      <dependency id="Bam.Net.Data.Repositories" version="1.8.3" />
-      <dependency id="Bam.Net.Data.Schema" version="1.8.3" />
-      <dependency id="Bam.Net.Javascript" version="1.8.3" />
-      <dependency id="Bam.Net.Testing" version="1.8.3" />
+      <dependency id="Bam.Net" version="1.8.4" />
+      <dependency id="Bam.Net.CommandLine" version="1.8.4" />
+      <dependency id="Bam.Net.Data" version="1.8.4" />
+      <dependency id="Bam.Net.Data.Repositories" version="1.8.4" />
+      <dependency id="Bam.Net.Data.Schema" version="1.8.4" />
+      <dependency id="Bam.Net.Javascript" version="1.8.4" />
+      <dependency id="Bam.Net.Testing" version="1.8.4" />
     </dependencies>
   </metadata>
 </package>

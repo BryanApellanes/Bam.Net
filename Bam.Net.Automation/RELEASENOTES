@@ -1,1 +1,9 @@
 
+ -   update testreportservice (6d7fbc5)
+ -   extending/refactoring testreportservice (1d9cf02)
+ -   fix TestReportService to allow proper proxy generation (3991ef0)
+ -   rename TestReporting to Testing (66ea49b)
+ -   bampackager (3ba2419)
+ -   create bampackage.json (7857582)
+ -   create BamProject from solution and csproj files (2066e41)
+ -   generate deserializable project to read csproj files (0bd729e)
