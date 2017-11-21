@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Logging;
 using Bam.Net.ServiceProxy;
-using Bam.Net.Services.Distributed;
+using Bam.Net.Services.DataReplication;
 using Bam.Net.Services.Events;
 
 namespace Bam.Net.Services.Events
