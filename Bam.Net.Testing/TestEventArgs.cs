@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,5 +13,6 @@ namespace Bam.Net.Testing
         public TestEventArgs() { }
         public ITestRunner<TTestMethod> TestRunner { get; set; }
         public ConsoleMethod Test { get; set; }
+        public Assembly Assembly { get; set; }
     }
 }

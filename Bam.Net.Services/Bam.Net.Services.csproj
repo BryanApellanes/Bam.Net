@@ -208,6 +208,7 @@
     <Compile Include="DataReplication\Data\Generated_Dao\WriteEventQuery.cs" />
     <Compile Include="DataReplication\Data\Generated_Dao\WriteEventWrapper.cs" />
     <Compile Include="DataReplication\Data\Operation.cs" />
+    <Compile Include="DataReplication\ObjectIdentifier.cs" />
     <Compile Include="DataReplication\OperationIntent.cs" />
     <Compile Include="DataReplication\OpertionEventArgs.cs" />
     <Compile Include="DataReplication\Data\QueryOperation.cs" />
