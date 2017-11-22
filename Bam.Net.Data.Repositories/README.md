@@ -17,7 +17,7 @@ property representing the parent is not declared "virtual" no association will b
 implicitly made
 
 - If a class defines a parent class (ParentId and Parent property pairs) the child must
-follow the naming convention shown here:
+follow the naming convention shown here for implicit association:
 
 ```
 	public long [ParentTypeName]Id { get; set; }
