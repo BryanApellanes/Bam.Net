@@ -14,5 +14,9 @@ namespace Bam.Net.Testing
         public ITestRunner<TTestMethod> TestRunner { get; set; }
         public ConsoleMethod Test { get; set; }
         public Assembly Assembly { get; set; }
+        /// <summary>
+        /// The tag to associate with a TestExecution
+        /// </summary>
+        public string Tag { get; set; }
     }
 }

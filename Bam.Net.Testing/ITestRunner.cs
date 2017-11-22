@@ -5,6 +5,7 @@ namespace Bam.Net.Testing
 {
     public interface ITestRunner<TTestMethod> where TTestMethod : TestMethod
     {
+        string Tag { get; set; }
         TestRunnerSummary TestSummary { get; set; }
 
         event EventHandler InvalidTestNumberSpecified;

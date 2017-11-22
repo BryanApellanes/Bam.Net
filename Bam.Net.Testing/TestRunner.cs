@@ -49,6 +49,8 @@ namespace Bam.Net.Testing
             return _factory[typeof(TTestMethod)](assembly, logger);
         }
 
+        public string Tag { get; set; }
+
         public event EventHandler TestPassed;
         public event EventHandler TestFailed;
 
@@ -162,7 +164,7 @@ namespace Bam.Net.Testing
         [DebuggerStepThrough]
         public void RunTest(TestMethod test)
         {
-            TestEventArgs<TTestMethod> args = new TestEventArgs<TTestMethod> { Test = test, TestRunner = this };
+            TestEventArgs<TTestMethod> args = new TestEventArgs<TTestMethod> { Test = test, TestRunner = this, Tag = Tag };
             FireEvent(TestStarting, args);
             try
             {

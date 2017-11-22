@@ -58,6 +58,7 @@ namespace Bam.Net.Testing
 			AddValidArgument("?", true, description: "Show usage");
 			AddValidArgument("t", true, description: "Run all unit tests");
             AddValidArgument("it", true, description: "Run all integration tests");
+            AddValidArgument("tag", false, description: "Specify a tag to associate with test executions");
 
 			ParseArgs(args);
 
@@ -223,6 +224,10 @@ namespace Bam.Net.Testing
         protected internal static ITestRunner<TTestMethod> GetTestRunner<TTestMethod>(Assembly assembly, ILogger logger) where TTestMethod : TestMethod
         {
             ITestRunner<TTestMethod> runner = TestRunner<TTestMethod>.Create(assembly, logger);
+            if (Arguments.Contains("tag"))
+            {
+                runner.Tag = Arguments["tag"];
+            }
             runner.NoTestsDiscovered += (o, e) => OutLineFormat("No tests were found in {0}", ConsoleColor.Yellow, assembly.FullName);
             runner.TestsDiscovered += (o, e) =>
             {

@@ -211,9 +211,9 @@ namespace Bam.Net.Automation.Testing
             }
         }
 
-        public virtual SaveTestExecutionResponse StartTest(long executionSummaryId, long testDefinitionId)
+        public virtual SaveTestExecutionResponse StartTest(long executionSummaryId, long testDefinitionId, string tag = null)
         {
-            return SaveTestExecution(new TestExecution { StartedTime = DateTime.UtcNow, TestDefinitionId = testDefinitionId, TestSuiteExecutionSummaryId = executionSummaryId });
+            return SaveTestExecution(new TestExecution { StartedTime = DateTime.UtcNow, TestDefinitionId = testDefinitionId, TestSuiteExecutionSummaryId = executionSummaryId, Tag = tag });
         }
 
         public virtual SaveTestExecutionResponse FinishTest(long executionId)
