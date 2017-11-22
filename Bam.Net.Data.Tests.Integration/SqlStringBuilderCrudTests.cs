@@ -8,6 +8,7 @@ using Bam.Net.DaoRef;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Testing;
 using Bam.Net.Testing.Integration;
+using Bam.Net.Services.DataReplication;
 
 namespace Bam.Net.Data.Tests.Integration
 {

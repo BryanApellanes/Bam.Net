@@ -45,7 +45,7 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("Bam.Net.Data.OleDb")]
 [assembly: InternalsVisibleTo("Bam.Net.ServiceProxy")]
 [assembly: InternalsVisibleTo("Bam.Net.Server")]
-[assembly: InternalsVisibleTo("Bam.Net.Data.Integration.Tests")]
+[assembly: InternalsVisibleTo("Bam.Net.Data.Tests.Integration")]
 [assembly: InternalsVisibleTo("Bam.Net.CoreServices")]
 [assembly: InternalsVisibleTo("Bam.Net.Services")]
 [assembly: AssemblyVersion("1.8.5")]
