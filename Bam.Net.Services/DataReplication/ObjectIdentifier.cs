@@ -55,7 +55,7 @@ namespace Bam.Net.Services.DataReplication
             ObjectIdentifier id = new ObjectIdentifier();
             ReflectionExtensions.Property(instance, "Uuid", id.Uuid, false);
             ReflectionExtensions.Property(instance, "Cuid", id.Cuid, false);
-            Extensions.CopyProperties(instance, example);
+            Bam.Net.Extensions.CopyProperties(instance, example);
             return instance;
         }
 

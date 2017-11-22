@@ -171,6 +171,20 @@ namespace Bam.Net.Automation.Testing.Data.Dao
 		}
 	}
 
+	// property:Tag, columnName:Tag	
+	[Bam.Net.Data.Column(Name="Tag", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string Tag
+	{
+		get
+		{
+			return GetStringValue("Tag");
+		}
+		set
+		{
+			SetValue("Tag", value);
+		}
+	}
+
 	// property:CreatedBy, columnName:CreatedBy	
 	[Bam.Net.Data.Column(Name="CreatedBy", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
 	public string CreatedBy
