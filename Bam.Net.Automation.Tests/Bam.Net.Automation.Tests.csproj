@@ -98,6 +98,7 @@
     <Compile Include="JobConductorUnitTests.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SshUnitTests.cs" />
     <Compile Include="TestMessageBody.cs" />
     <Compile Include="TestTestRunner.cs" />
     <Compile Include="TestUnitTestRunListener.cs" />

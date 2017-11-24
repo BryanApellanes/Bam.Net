@@ -85,6 +85,9 @@
     <Reference Include="Quartz, Version=2.5.0.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
       <HintPath>..\packages\Quartz.2.5.0\lib\net40\Quartz.dll</HintPath>
     </Reference>
+    <Reference Include="Renci.SshNet, Version=2016.1.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
@@ -189,6 +192,8 @@
     <Compile Include="Partials\JobData.cs" />
     <Compile Include="Partials\JobRunData.cs" />
     <Compile Include="Partials\RunningJob.cs" />
+    <Compile Include="Sftp.cs" />
+    <Compile Include="Ssh.cs" />
     <Compile Include="Testing\CreateStatus.cs" />
     <Compile Include="Testing\Data\Generated_Dao\TestingContext.cs" />
     <Compile Include="Testing\Data\Generated_Dao\TestingRepository.cs" />
