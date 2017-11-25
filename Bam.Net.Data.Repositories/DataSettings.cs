@@ -14,6 +14,7 @@ namespace Bam.Net.Data.Repositories
         public DataSettings()
         {
             DataRootDirectory = "C:\\bam\\data";
+            AppDataDirectory = "AppData";
             DatabaseDirectory = "Databases";
             RepositoryDirectory = "Repositories";
             FilesDirectory = "Files";
@@ -35,8 +36,8 @@ namespace Bam.Net.Data.Repositories
         }
 
         public ProcessMode ProcessMode { get; set; }
-
         public string DataRootDirectory { get; set; }
+        public string AppDataDirectory { get; set; }
         public string DatabaseDirectory { get; set; }
         public string RepositoryDirectory { get; set; }
         public string FilesDirectory { get; set; }
@@ -49,49 +50,91 @@ namespace Bam.Net.Data.Repositories
             return new DirectoryInfo(Path.Combine(DataRootDirectory, ProcessMode.ToString()));
         }
 
-        public DirectoryInfo GetDataDirectory(string directoryName)
+        public DirectoryInfo GetRootDataDirectory(string directoryName)
         {
             return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, directoryName));
         }
 
+        public DirectoryInfo GetAppDataDirectory(IApplicationNameProvider appNameProvider)
+        {
+            return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, AppDataDirectory, appNameProvider.GetApplicationName()));
+        }
+
+        public DirectoryInfo GetAppDataDirectory(IApplicationNameProvider appNameProvider, string directoryName)
+        {
+            return new DirectoryInfo(Path.Combine(GetAppDataDirectory(appNameProvider).FullName, directoryName));
+        }
+
+        public DirectoryInfo GetAppDatabaseDirectory(IApplicationNameProvider appNameProvider)
+        {
+            return GetAppDataDirectory(appNameProvider, DatabaseDirectory);
+        }
+
         public DirectoryInfo GetDatabaseDirectory()
         {
-            return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, DatabaseDirectory));
+            return GetRootDataDirectory(DatabaseDirectory);
+        }
+
+        public DirectoryInfo GetAppRepositoryDirectory(IApplicationNameProvider appNameProvider)
+        {
+            return GetAppDataDirectory(appNameProvider, RepositoryDirectory);
         }
 
         public DirectoryInfo GetRepositoryDirectory()
         {
-            return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, RepositoryDirectory));
+            return GetRootDataDirectory(RepositoryDirectory);
+        }
+
+        public DirectoryInfo GetAppRepositoryWorkspaceDirectory(IApplicationNameProvider appNameProvider)
+        {
+            return GetAppDataDirectory(appNameProvider, WorkspacesDirectory);
         }
 
         public DirectoryInfo GetRepositoryWorkspaceDirectory()
         {
-            return new DirectoryInfo(Path.Combine(GetRepositoryDirectory().FullName, "RepoWorkspaces"));
+            return GetRootDataDirectory(RepositoryDirectory);
+        }
+
+        public DirectoryInfo GetAppFilesDirectory(IApplicationNameProvider appNameProvider)
+        {
+            return GetAppDataDirectory(appNameProvider, FilesDirectory);
         }
 
         public DirectoryInfo GetFilesDirectory()
         {
-            return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, FilesDirectory));
+            return GetRootDataDirectory(FilesDirectory);
         }
-
+        
         public DirectoryInfo GetChunksDirectory()
         {
-            return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, ChunksDirectory));
+            return GetRootDataDirectory(ChunksDirectory);
+        }
+
+        public DirectoryInfo GetAppWorkspaceDirectory(IApplicationNameProvider appNameProvider, Type type)
+        {
+            string hash = type.ToInfoHash();
+            return new DirectoryInfo(Path.Combine(GetAppDataDirectory(appNameProvider).FullName, WorkspacesDirectory, type.Name, hash));
         }
 
         public DirectoryInfo GetWorkspaceDirectory(Type type)
         {
-            return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, WorkspacesDirectory, type.Name));
+            string hash = type.ToInfoHash();
+            return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, WorkspacesDirectory, type.Name, hash));
         }
 
         public DaoRepository GetGenericDaoRepository(ILogger logger = null, string schemaName = null)
         {
             return new DaoRepository(GetDatabaseFor(typeof(DaoRepository)), logger, schemaName);
         }
+        
+        public DirectoryInfo GetAppEmailTemplatesDirectory(IApplicationNameProvider appNameProvider)
+        {
+            return GetAppDataDirectory(appNameProvider, EmailTemplatesDirectory);
+        }
 
         public DirectoryInfo GetEmailTemplatesDirectory()
         {
-            return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, EmailTemplatesDirectory));
+            return GetRootDataDirectory(EmailTemplatesDirectory);
         }
 
         public void SetDatabaseFor(object instance)
@@ -114,14 +157,41 @@ namespace Bam.Net.Data.Repositories
         {
             return GetDatabaseFor(type, info).DatabaseFile.FullName;
         }
-
+        
         public override SQLiteDatabase GetDatabaseFor(Type objectType, string info = null)
         {
+            return GetDatabaseFor(objectType, () => GetDatabaseDirectory().FullName, info);
+        }
+
+        public override SQLiteDatabase GetAppDatabaseFor(IApplicationNameProvider appNameProvider, object instance)
+        {
+            return GetDatabaseFor(instance.GetType(), () => GetAppDatabaseDirectory(appNameProvider).FullName);
+        }
+
+        public override SQLiteDatabase GetAppDatabaseFor(IApplicationNameProvider appNameProvider, Type objectType, string info = null)
+        {
+            return GetDatabaseFor(objectType, () => GetAppDatabaseDirectory(appNameProvider).FullName, info);
+        }
+
+        /// <summary>
+        /// Get the path to the application specific SQLite database file for the specified type
+        /// </summary>
+        /// <param name="appNameProvider"></param>
+        /// <param name="type"></param>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        public override string GetAppDatabasePathFor(IApplicationNameProvider appNameProvider, Type type, string info = null)
+        {
+            return GetAppDatabaseFor(appNameProvider, type, info).DatabaseFile.FullName;
+        }
+
+        protected SQLiteDatabase GetDatabaseFor(Type objectType, Func<string> databasePathProvider, string info = null)
+        {
             string connectionName = Dao.ConnectionName(objectType);
-            string fileName = string.IsNullOrEmpty(info) ? (string.IsNullOrEmpty(connectionName) ? objectType.FullName: connectionName) : $"{objectType.FullName}_{info}";
-            string fullPath = GetDatabaseDirectory().FullName;
-            SQLiteDatabase db = new SQLiteDatabase(fullPath, fileName);
-            Logger.Info("Returned SQLiteDatabase with path {0} for type {1}\r\nFullPath: {2}\r\nName: {3}", db.DatabaseFile.FullName, objectType.Name, fullPath, fileName);
+            string fileName = string.IsNullOrEmpty(info) ? (string.IsNullOrEmpty(connectionName) ? objectType.FullName : connectionName) : $"{objectType.FullName}_{info}";
+            string directoryPath = databasePathProvider();
+            SQLiteDatabase db = new SQLiteDatabase(directoryPath, fileName);
+            Logger.Info("Returned SQLiteDatabase with path {0} for type {1}\r\nFullPath: {2}\r\nName: {3}", db.DatabaseFile.FullName, objectType.Name, directoryPath, fileName);
             return db;
         }
     }

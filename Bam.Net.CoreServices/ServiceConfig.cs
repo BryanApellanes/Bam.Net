@@ -17,15 +17,18 @@ namespace Bam.Net.Server
         {
             get
             {
-                return DefaultConfiguration.GetAppSetting("ContentRoot").Or(".\\");
+                return DefaultConfiguration.GetAppSetting("ContentRoot").Or("C:\\bam");
             }
         }
 
-        public static string ApplicationName
+        /// <summary>
+        /// A logical identifier for the current process
+        /// </summary>
+        public static string ProcessName
         {
             get
             {
-                return DefaultConfiguration.GetAppSetting("ApplicationName").Or(DefaultConfiguration.DefaultApplicationName);
+                return DefaultConfiguration.GetAppSetting("ProcessName").Or(DefaultConfiguration.DefaultProcessName);
             }
         }
 
@@ -46,10 +49,12 @@ namespace Bam.Net.Server
 
         public static HostPrefix GetConfiguredHostPrefix()
         {
-            HostPrefix hostPrefix = new HostPrefix();
-            hostPrefix.HostName = DefaultConfiguration.GetAppSetting("HostName").Or("localhost");
-            hostPrefix.Port = int.Parse(DefaultConfiguration.GetAppSetting("Port"));
-            hostPrefix.Ssl = bool.Parse(DefaultConfiguration.GetAppSetting("Ssl"));
+            HostPrefix hostPrefix = new HostPrefix()
+            {
+                HostName = DefaultConfiguration.GetAppSetting("HostName").Or("localhost"),
+                Port = int.Parse(DefaultConfiguration.GetAppSetting("Port")),
+                Ssl = bool.Parse(DefaultConfiguration.GetAppSetting("Ssl"))
+            };
             return hostPrefix;
         }
         static ILogger multiTargetLogger;
@@ -58,8 +63,10 @@ namespace Bam.Net.Server
             if (multiTargetLogger == null)
             {
                 MultiTargetLogger multiLogger = new MultiTargetLogger();
-                TextFileLogger fileLogger = new TextFileLogger();
-                fileLogger.Folder = new DirectoryInfo(ContentRoot);
+                TextFileLogger fileLogger = new TextFileLogger()
+                {
+                    Folder = new DirectoryInfo(ContentRoot)
+                };
                 multiLogger.AddLogger(fileLogger);
                 multiLogger.AddLogger(logger);
                 multiLogger.StartLoggingThread();

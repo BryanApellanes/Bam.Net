@@ -49,7 +49,7 @@ namespace Bam.Net.CoreServices
             string databasesPath = Path.Combine(DefaultConfiguration.GetAppSetting("ContentRoot"), "Databases");
             string userDatabasesPath = Path.Combine(databasesPath, "UserDbs");
 
-            AppConf conf = new AppConf(BamConf.Load(ServiceConfig.ContentRoot), ServiceConfig.ApplicationName.Or(RegistryName));
+            AppConf conf = new AppConf(BamConf.Load(ServiceConfig.ContentRoot), ServiceConfig.ProcessName.Or(RegistryName));
             UserManager userMgr = conf.UserManagerConfig.Create();
             DaoUserResolver userResolver = new DaoUserResolver();
             DaoRoleResolver roleResolver = new DaoRoleResolver();

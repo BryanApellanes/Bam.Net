@@ -52,8 +52,11 @@ namespace Bam.Net.Data
             Db.For<TDao>(db);
         }
 
+        public abstract T GetAppDatabaseFor(IApplicationNameProvider appNameProvider, object instance);
         public abstract T GetDatabaseFor(object instance);
+        public abstract T GetAppDatabaseFor(IApplicationNameProvider appNameProvider, Type objectType, string info = null);
         public abstract T GetDatabaseFor(Type objectType, string info = null);
+        public abstract string GetAppDatabasePathFor(IApplicationNameProvider appNameProvider, Type type, string info = null);
         public abstract string GetDatabasePathFor(Type type, string info = null);
         private void TryEnsureSchemas(Database db, params Type[] daoTypes)
         {
