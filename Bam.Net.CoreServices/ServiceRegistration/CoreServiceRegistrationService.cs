@@ -13,6 +13,8 @@ using Bam.Net.CoreServices.ServiceRegistration;
 using Bam.Net.CoreServices.ServiceRegistration.Data;
 using Bam.Net.CoreServices.ServiceRegistration.Data.Dao.Repository;
 using Bam.Net.ServiceProxy;
+using System.IO;
+using Bam.Net.Yaml;
 
 namespace Bam.Net.CoreServices
 {
@@ -26,13 +28,14 @@ namespace Bam.Net.CoreServices
     [ServiceSubdomain("svcregistry")]
     public class CoreServiceRegistrationService : ProxyableService
     {
-        public CoreServiceRegistrationService(IAssemblyService assemblyService, ServiceRegistrationRepository repo, DaoRepository daoRepo, AppConf appConf) : base(daoRepo, appConf)
+        public CoreServiceRegistrationService(IAssemblyService assemblyService, ServiceRegistrationRepository repo, DaoRepository daoRepo, AppConf appConf, DataSettings dataSettings = null) : base(daoRepo, appConf)
         {
             ServiceRegistryRepository = repo;
             AssemblyService = assemblyService;
-            RuntimeDirectory = ".";
+            DataSettings = dataSettings ?? DataSettings.Default;
         }
-        public string RuntimeDirectory { get; set; }
+
+        public DataSettings DataSettings { get; set; }
         public ServiceRegistrationRepository ServiceRegistryRepository { get; set; }
 
         public IAssemblyService AssemblyService { get; set; }
@@ -175,10 +178,40 @@ namespace Bam.Net.CoreServices
             return builder.Build();
         }
 
+        /// <summary>
+        /// Get the ServiceRegistryDescriptor with the specified name by loading it from the first file found of
+        /// {name}.yml, {name}.yaml, {name}.json in DataSettings.GetSysDataDirectory().  If the 
+        /// file is not found and a ServiceRegistryDescriptor with the specified name is found in the 
+        /// ServiceRegistryRepository then the file {name}.yml will be written from the ServiceRegistryDescriptor
+        /// found.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         [RoleRequired("/", "Admin")]
         public virtual ServiceRegistryDescriptor GetServiceRegistryDescriptor(string name)
         {
-            return ServiceRegistryRepository.ServiceRegistryDescriptorsWhere(c => c.Name == name).FirstOrDefault();
+            DirectoryInfo systemServiceRegistryDir = DataSettings.GetSysDataDirectory(nameof(ServiceRegistry).Pluralize());
+            FileInfo file = null;
+            foreach(string extension in new string[] { ".yml", ".yaml", ".json" })
+            {
+                string path = Path.Combine(systemServiceRegistryDir.FullName, $"{name}{extension}");
+                if (File.Exists(path))
+                {
+                    file = new FileInfo(path);
+                    break;
+                }
+            }
+            if(file == null)
+            {
+                ServiceRegistryDescriptor descriptor = ServiceRegistryRepository.ServiceRegistryDescriptorsWhere(c => c.Name == name).FirstOrDefault();
+                if(descriptor != null)
+                {
+                    descriptor.ToYamlFile(Path.Combine(systemServiceRegistryDir.FullName, $"{name}.yml"));
+                    return descriptor;
+                }
+                return null;
+            }
+            return file.FromYamlFile<ServiceRegistryDescriptor>();
         }
 
         [RoleRequired("/", "Admin")]

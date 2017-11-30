@@ -15,6 +15,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using Bam.Net.Yaml;
+using Bam.Net.CoreServices.ServiceRegistration.Data;
 
 namespace Bam.Net.Application
 {
@@ -80,6 +82,62 @@ namespace Bam.Net.Application
             }
         }
 
+        [ConsoleAction("registries", "Start the gloo server serving the registries of the specified names")]
+        public void ServeRegistries()
+        {
+            ConsoleLogger logger = GetLogger();
+            string registries = GetArgument("registries", "Enter the registry names to serve in a comma separated list ");
+            ServeRegistries(logger, registries);
+        }
+
+        [ConsoleAction("app", "Start the gloo server serving the registry for the current application (determined by the default configuration file ApplicationName value)")]
+        public void ServeApplicationRegistry()
+        {
+            ConsoleLogger logger = GetLogger();
+            ServeRegistries(logger, DefaultConfigurationApplicationNameProvider.Instance.GetApplicationName());
+        }
+
+        [ConsoleAction("createRegistry", "Menu driven Service Registry creation")]
+        public void CreateRegistry()
+        {
+            List<dynamic> types = new List<dynamic>();
+            string assemblyPath = "\r\n";
+            while (!assemblyPath.Equals(string.Empty))
+            {
+                if (!string.IsNullOrEmpty(assemblyPath.Trim()))
+                {
+                    Assembly assembly = Assembly.LoadFrom(assemblyPath);
+                    if(assembly == null)
+                    {
+                        OutLineFormat("Assembly not found: {0}", ConsoleColor.Magenta, assemblyPath);
+                    }
+                    else
+                    {
+                        string className = "\r\n";
+                        while (!className.Equals(string.Empty))
+                        {
+                            if (!string.IsNullOrEmpty(className.Trim()))
+                            {
+                                Type type = GetType(assembly, className);
+                                if(type == null)
+                                {
+                                    OutLineFormat("Specified class was not found in the current assembly: {0}", assembly.FullName);
+                                }
+                                else
+                                {
+                                    types.Add(new { ForAssembly = type.Assembly.FullName, ForType = type.FullName, UseAssembly = type.Assembly.FullName, UseType = type.FullName });
+                                }
+                            }
+                            className = Prompt("Enter the name of a class to add to the service registry (leave blank to finish)");
+                        }
+                    }
+                }
+                assemblyPath = Prompt("Enter the path to an assembly file containing service types (leave blank to finish)");
+            }
+            string registryName = Prompt("Enter a name for the registry");
+            types.ToArray().ToYamlFile($".\\{registryName}.yml");
+        }
+
         [ConsoleAction("csgloo", "Start the gloo server serving the compiled results of the specified csgloo files")]
         public void ServeCsGloo()
         {
@@ -111,28 +169,13 @@ namespace Bam.Net.Application
             {
                 csglooAssembly = Assembly.LoadFile(csglooAssemblyBinPath);
             }
-            
+
             string contentRoot = GetArgument("ContentRoot", $"Enter the path to the content root (default: {defaultContentRoot} ");
-            
+
             HostPrefix prefix = GetConfiguredHostPrefix();
             Type[] glooTypes = csglooAssembly.GetTypes().Where(t => t.HasCustomAttributeOfType<ProxyAttribute>()).ToArray();
             ServeServiceTypes(contentRoot, prefix, null, glooTypes);
-            Pause($"Gloo server is serving cs gloo types: {string.Join(", ", glooTypes.Select(t=> t.Name).ToArray())}");
-        }
-
-        [ConsoleAction("registries", "Start the gloo server serving the registries of the specified names")]
-        public void ServeRegistries()
-        {
-            ConsoleLogger logger = GetLogger();
-            string registries = GetArgument("registries", "Enter the registry names to serve in a comma separated list ");
-            ServeRegistries(logger, registries);
-        }
-
-        [ConsoleAction("app", "Start the gloo server serving the registry for the current application (determined by the default configuration file ApplicationName value)")]
-        public void ServeApplicationRegistry()
-        {
-            ConsoleLogger logger = GetLogger();
-            ServeRegistries(logger, DefaultConfigurationApplicationNameProvider.Instance.GetApplicationName());
+            Pause($"Gloo server is serving cs gloo types: {string.Join(", ", glooTypes.Select(t => t.Name).ToArray())}");
         }
 
         private static void ServeRegistries(ILogger logger, string registries)

@@ -15,6 +15,7 @@ namespace Bam.Net.Data.Repositories
         {
             DataRootDirectory = "C:\\bam\\data";
             AppDataDirectory = "AppData";
+            SysDataDirectory = "SysData";
             DatabaseDirectory = "Databases";
             RepositoryDirectory = "Repositories";
             FilesDirectory = "Files";
@@ -38,6 +39,7 @@ namespace Bam.Net.Data.Repositories
         public ProcessMode ProcessMode { get; set; }
         public string DataRootDirectory { get; set; }
         public string AppDataDirectory { get; set; }
+        public string SysDataDirectory { get; set; }
         public string DatabaseDirectory { get; set; }
         public string RepositoryDirectory { get; set; }
         public string FilesDirectory { get; set; }
@@ -53,6 +55,16 @@ namespace Bam.Net.Data.Repositories
         public DirectoryInfo GetRootDataDirectory(string directoryName)
         {
             return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, directoryName));
+        }
+
+        public DirectoryInfo GetSysDataDirectory()
+        {
+            return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, SysDataDirectory));
+        }
+
+        public DirectoryInfo GetSysDataDirectory(string directoryName)
+        {
+            return new DirectoryInfo(Path.Combine(GetSysDataDirectory().FullName, directoryName));
         }
 
         public DirectoryInfo GetAppDataDirectory(IApplicationNameProvider appNameProvider)

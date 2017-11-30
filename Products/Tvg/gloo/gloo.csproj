@@ -100,6 +100,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="YamlSerializer, Version=0.9.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\YamlSerializer.1.0\lib\Net35\YamlSerializer.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArgumentAdder.cs" />
@@ -177,6 +180,10 @@
     <ProjectReference Include="..\..\..\Bam.Net.UserAccounts\Bam.Net.UserAccounts.csproj">
       <Project>{74d5a262-b0b9-40e6-a3fd-b120dc8e9f54}</Project>
       <Name>Bam.Net.UserAccounts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Bam.Net.Yaml\Bam.Net.Yaml.csproj">
+      <Project>{1c5258ec-7579-4032-94ec-b016bdc1b876}</Project>
+      <Name>Bam.Net.Yaml</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Bam.Net\Bam.Net.csproj">
       <Project>{8794c09d-d72c-420c-812f-bfda251b64c9}</Project>

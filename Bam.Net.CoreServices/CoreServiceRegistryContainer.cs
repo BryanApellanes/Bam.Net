@@ -45,8 +45,7 @@ namespace Bam.Net.CoreServices
 
         public static ServiceRegistry Create()
         {
-            // TODO: change this to use Bam.Net.Data.Repositories.DataSettings.Default
-            string databasesPath = Path.Combine(DefaultConfiguration.GetAppSetting("ContentRoot"), "Databases");
+            string databasesPath = DataSettings.Default.GetDatabaseDirectory().FullName;
             string userDatabasesPath = Path.Combine(databasesPath, "UserDbs");
 
             AppConf conf = new AppConf(BamConf.Load(ServiceConfig.ContentRoot), ServiceConfig.ProcessName.Or(RegistryName));
