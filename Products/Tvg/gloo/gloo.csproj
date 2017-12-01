@@ -133,6 +133,10 @@
       <Project>{b65e4fcd-de50-4d9e-91d7-dddf80c25c47}</Project>
       <Name>Bam.Net.Automation</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Bam.Net.Services.Clients\Bam.Net.Services.Clients.csproj">
+      <Project>{9193fb41-32e6-4cef-a44a-211fb3bfea8b}</Project>
+      <Name>Bam.Net.Services.Clients</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Bam.Net.Services\Bam.Net.Services.csproj">
       <Project>{f67630bf-5e73-46bf-a7f1-6d7e9648135f}</Project>
       <Name>Bam.Net.Services</Name>

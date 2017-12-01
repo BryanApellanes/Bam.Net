@@ -8,20 +8,20 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Services.Clients
 {
-    public class CoreAssemblyClient
+    public class CoreSystemClient
     {
         CoreAssemblyService _fileService;
         ProxyFactory _proxyFactory;
-        public CoreAssemblyClient(ILogger logger = null) : this("bamapps.net", 80, logger)
+        public CoreSystemClient(ILogger logger = null) : this("bamapps.net", 80, logger)
         { }
 
-        public CoreAssemblyClient(string hostName, int port, ILogger logger = null)
+        public CoreSystemClient(string hostName, int port, ILogger logger = null)
         {
             _proxyFactory = new ProxyFactory(logger);
             _fileService = _proxyFactory.GetProxy<CoreAssemblyService>(hostName, port);
         }
 
-        static CoreAssemblyClient()
+        static CoreSystemClient()
         {
             Resolver.AssemblyResolver = (rea) =>
             {

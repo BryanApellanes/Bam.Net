@@ -189,23 +189,30 @@ namespace Bam.Net.CoreServices
         /// <returns></returns>
         [RoleRequired("/", "Admin")]
         public virtual ServiceRegistryDescriptor GetServiceRegistryDescriptor(string name)
-        {
+        {            
+            Dictionary<string, Func<FileInfo, ServiceRegistryDescriptor>> deserializers = new Dictionary<string, Func<FileInfo, ServiceRegistryDescriptor>>
+            {
+                {".json", (fi)=> fi.FromJsonFile<ServiceRegistryDescriptor>() },
+                {".yml", (fi)=> fi.FromYamlFile<ServiceRegistryDescriptor>() }
+            };
             DirectoryInfo systemServiceRegistryDir = DataSettings.GetSysDataDirectory(nameof(ServiceRegistry).Pluralize());
-            string path = Path.Combine(systemServiceRegistryDir.FullName, $"{name}.json");
-            ServiceRegistryDescriptor result = null;
-            FileInfo file = null;
-            if (File.Exists(path))
-            {
-                file = new FileInfo(path);             
-            }
-            
             ServiceRegistryDescriptor fromFile = null;
-            if(file != null)
+            FileInfo file = null;
+            foreach(string extension in new[] { ".yml", ".json" })
             {
-                fromFile = file.FromJsonFile<ServiceRegistryDescriptor>();
-                result = fromFile;
+                string path = Path.Combine(systemServiceRegistryDir.FullName, $"{name}{extension}");
+                if (File.Exists(path))
+                {
+                    file = new FileInfo(path);
+                    fromFile = deserializers[extension](file);
+                }
             }
 
+            Dictionary<string, Action<ServiceRegistryDescriptor, FileInfo>> serializers = new Dictionary<string, Action<ServiceRegistryDescriptor, FileInfo>>
+            {
+                {".json", (sr, fi)=> sr.ToJsonFile(fi) },
+                {".yml", (sr, fi)=> sr.ToYamlFile(fi) }
+            };
             ServiceRegistryDescriptor fromRepo = ServiceRegistryRepository.ServiceRegistryDescriptorsWhere(c => c.Name == name).FirstOrDefault();
             if (fromRepo != null)
             {                
@@ -216,12 +223,15 @@ namespace Bam.Net.CoreServices
                 }
                 fromRepo.Services?.Each(svc => svcs.Add(svc));
                 fromRepo.Services = svcs.ToList();
-                fromRepo.ToJsonFile(file);
-                result = fromRepo;
+                serializers[Path.GetExtension(file.FullName)](fromRepo, file);
             }
 
-            ServiceRegistryRepository.Save(result);
-            return result;
+            ServiceRegistryDescriptor toSave = fromRepo ?? fromFile;
+            if (toSave != null)
+            {
+                ServiceRegistryRepository.Save(toSave);
+            }
+            return fromRepo ?? fromFile;
         }
 
         [RoleRequired("/", "Admin")]

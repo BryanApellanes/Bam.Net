@@ -258,12 +258,7 @@ namespace Bam.Net.Incubation
             {
                 Type type = ctorParamTypes[i];
                 object instance = this[type];
-                if (instance == null)
-                {
-                    throw new InvalidOperationException(string.Format("An object of type {0} has not been instantiated in the current container context.", type.Name));
-                }
-
-                ctorParams[i] = instance;
+                ctorParams[i] = instance ?? throw new InvalidOperationException(string.Format("An object of type {0} has not been instantiated in the current container context.", type.Name));
             }
             return ctorParams;
         }
@@ -295,6 +290,27 @@ namespace Bam.Net.Incubation
         public object Get(string className)
         {
             return Get(className, out Type t);
+        }
+
+        public bool TryGet(Type type, out object value)
+        {
+            return TryGet(type, out value, out Exception e);
+        }
+
+        public bool TryGet(Type type, out object value, out Exception e)
+        {
+            try
+            {
+                value = Get(type);
+                e = null;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                value = null;
+                e = ex;
+                return false;
+            }
         }
 
         public object Get(Type type)

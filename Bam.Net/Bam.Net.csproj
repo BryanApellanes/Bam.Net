@@ -208,6 +208,7 @@
     <Compile Include="Month.cs" />
     <Compile Include="NamedThread.cs" />
     <Compile Include="NetworkExtensions.cs" />
+    <Compile Include="ProcessInfo.cs" />
     <Compile Include="ProcessMode.cs" />
     <Compile Include="Razor\RazorBaseTemplate.cs" />
     <Compile Include="Razor\RazorParser.cs" />

@@ -138,6 +138,7 @@ namespace Bam.Net.Application
             }
             string registryName = Prompt("Enter a name for the registry");
             string path = Path.Combine(sysData.FullName, $"{registryName}.json");
+            registry.Name = registryName;
             registry.ToJsonFile(path);
         }
 
@@ -215,6 +216,7 @@ namespace Bam.Net.Application
             CoreFileService fileService = new CoreFileService(new DaoRepository(dataSettings.GetDatabaseFor(typeof(CoreFileService), $"{nameof(CoreServiceRegistrationService)}_{nameof(CoreFileService)}")));
             AssemblyServiceRepository assRepo = new AssemblyServiceRepository();
             assRepo.Database = dataSettings.GetDatabaseFor(assRepo);
+            assRepo.EnsureDaoAssemblyAndSchema();
             CoreAssemblyService assemblyService = new CoreAssemblyService(fileService, assRepo, appNameProvider);
             ServiceRegistrationRepository serviceRegistryRepo = new ServiceRegistrationRepository();
             serviceRegistryRepo.Database = dataSettings.GetDatabaseFor(serviceRegistryRepo);

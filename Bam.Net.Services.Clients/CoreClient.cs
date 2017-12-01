@@ -70,6 +70,9 @@ namespace Bam.Net.Services.Clients
         public CoreClient(string hostName, int port, ILogger logger = null) : this(Organization.Public.Name, CoreServices.ApplicationRegistration.Application.Unknown.Name, hostName, port, logger)
         { }
 
+        public CoreClient(): this(DefaultConfiguration.GetAppSetting("CoreHostName", "bamapps.net"), DefaultConfiguration.GetAppSetting("CorePort", "80").ToInt())
+        {
+        }
 
         static CoreClient _local;
         static object _localLock = new object();

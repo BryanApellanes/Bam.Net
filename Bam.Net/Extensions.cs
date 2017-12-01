@@ -1491,6 +1491,10 @@ namespace Bam.Net
         /// <param name="file"></param>
         public static void ToJsonFile(this object value, FileInfo file)
         {
+            if (!file.Directory.Exists)
+            {
+                file.Directory.Create();
+            }
             using (StreamWriter sw = new StreamWriter(file.FullName))
             {
                 sw.Write(ToJson(value, Newtonsoft.Json.Formatting.Indented));
@@ -1661,6 +1665,21 @@ namespace Bam.Net
             byte[] hashBytes = alg.ComputeHash(fileContents);
 
             return hashBytes.ToHexString();
+        }
+
+        /// <summary>
+        /// Use int.TryParse to try to convert the specified
+        /// number to an integer; returns 0 on failure
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
+        public static int ToInt(this string number)
+        {
+            if (int.TryParse(number, out int value))
+            {
+                return value;
+            }
+            return 0;
         }
 
         public static string Md5(this FileInfo file, Encoding encoding = null)
