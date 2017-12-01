@@ -26,6 +26,12 @@ namespace Bam.Net.Data.Repositories
             Logger = Log.Default;
         }
 
+        public DataSettings(ProcessMode processMode, ILogger logger = null):this()
+        {
+            ProcessMode = processMode;
+            Logger = logger ?? Log.Default;
+        }
+
         static DataSettings _default;
         static object _defaultLock = new object();
         public static DataSettings Default
@@ -33,6 +39,16 @@ namespace Bam.Net.Data.Repositories
             get
             {
                 return _defaultLock.DoubleCheckLock(ref _default, () => new DataSettings());
+            }
+        }
+
+        static DataSettings _fromConfig;
+        static object _fromConfigLock = new object();
+        public static DataSettings FromConfig
+        {
+            get
+            {
+                return _fromConfigLock.DoubleCheckLock(ref _fromConfig, () => new DataSettings(ProcessMode.FromConfig));
             }
         }
 

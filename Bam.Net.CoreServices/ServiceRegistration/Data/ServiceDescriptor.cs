@@ -44,6 +44,23 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data
         public string UseType { get; set; }
         public string UseAssembly { get; set; }
 
-        public List<ServiceRegistryDescriptor> ServiceRegistry { get; set; }
+        public virtual List<ServiceRegistryDescriptor> ServiceRegistry { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if(obj is ServiceDescriptor sd)
+            {
+                return sd.ForType.Equals(ForType) &&
+                    sd.ForAssembly.Equals(ForAssembly) &&
+                    sd.UseType.Equals(UseType) &&
+                    sd.UseAssembly.Equals(UseAssembly);
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return $"{SequenceNumber}{ForType}{ForAssembly}{UseType}{UseAssembly}".ToSha1Int();
+        }
     }
 }

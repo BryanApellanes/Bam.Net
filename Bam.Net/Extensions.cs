@@ -37,6 +37,8 @@ namespace Bam.Net
         static Dictionary<HashAlgorithms, Func<byte[], HMAC>> _hmacs;
         static Dictionary<ExistingFileAction, Action<ZipArchiveEntry, string>> _extractActions;
         static Dictionary<ExistingFileAction, Action<Stream, FileInfo>> _writeResourceActions;
+        static Dictionary<SerializationFormat, Action<Stream, object>> _serializeActions;
+        static Dictionary<SerializationFormat, Func<Stream, Type, object>> _deserializers;
         static Extensions()
         {
             _hashAlgorithms = new Dictionary<HashAlgorithms, Func<HashAlgorithm>>
@@ -70,6 +72,26 @@ namespace Bam.Net
                 { ExistingFileAction.Throw, (resource, output) => Args.Throw<InvalidOperationException>("File exists, can't write resource to {0}", output.FullName) },
                 { ExistingFileAction.OverwriteSilently, (resource, output) => resource.CopyTo(output.Create()) },
                 { ExistingFileAction.DoNotOverwrite, (resource, output) => Logging.Log.Warn("File exists, can't write resource to {0}", output.FullName) }
+            };
+            _serializeActions = new Dictionary<SerializationFormat, Action<Stream, object>>
+            {
+                { SerializationFormat.Invalid, (stream, obj) => Args.Throw<InvalidOperationException>("Invalid SerializationFormat specified") },
+                { SerializationFormat.Xml, (stream, obj) => obj.ToXmlStream(stream) },
+                { SerializationFormat.Json, (stream, obj) => obj.ToJsonStream(stream) },
+                { SerializationFormat.Yaml, (stream, obj) => obj.ToYamlStream(stream) },
+                { SerializationFormat.Binary, (stream, obj) => obj.ToBinaryStream(stream) }
+            };
+            _deserializers = new Dictionary<SerializationFormat, Func<Stream, Type, object>>
+            {
+                { SerializationFormat.Invalid, (stream, type) => {
+                        Args.Throw<InvalidOperationException>("Invalid SerializationFormat specified");
+                        return null;
+                    }
+                },
+                { SerializationFormat.Xml, (stream, type)=> stream.FromXmlStream(type) },
+                { SerializationFormat.Json, (stream, type) => stream.FromJsonStream<object>() }, // this might not work; should be tested
+                { SerializationFormat.Yaml, (stream, type) => stream.FromYamlStream<object>() }, // this might not work; should be tested
+                { SerializationFormat.Binary, (stream, type) => stream.FromBinaryStream() } // this might not work; should be tested
             };
         }
         
@@ -1392,6 +1414,28 @@ namespace Bam.Net
             return objAs != null;
         }
 
+        public static void SerializeToFile(this object obj, SerializationFormat format, string filePath)
+        {
+            SerializeToFile(obj, format, new FileInfo(filePath));
+        }
+        public static void SerializeToFile(this object obj, SerializationFormat format, FileInfo file)
+        {
+            MemoryStream output = new MemoryStream();
+            Serialize(obj, format, output);
+            using(StreamWriter sw = new StreamWriter(file.FullName))
+            {
+                using(StreamReader reader = new StreamReader(output))
+                {
+                    sw.Write(reader.ReadToEnd());
+                }
+            }
+        }
+
+        public static void Serialize(this object obj, SerializationFormat format, Stream output)
+        {
+            _serializeActions[format](output, obj);
+        }
+
         /// <summary>
         /// An extension method to enable functional programming access
         /// to string.Format.
@@ -1462,11 +1506,21 @@ namespace Bam.Net
         public static Stream ToJsonStream(this object value)
         {
             MemoryStream stream = new MemoryStream();
-            StreamWriter writer = new StreamWriter(stream);
+            ToJsonStream(value, stream);
+            return stream;
+        }
+
+        /// <summary>
+        /// Write the specified value to the specified stream as json
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="stream"></param>
+        public static void ToJsonStream(this object value, Stream stream)
+        {
+            StreamWriter writer = new StreamWriter(stream);            
             writer.Write(value.ToJson());
             writer.Flush();
             stream.Seek(0, SeekOrigin.Begin);
-            return stream;
         }
 
         public static string ToJson(this object value)

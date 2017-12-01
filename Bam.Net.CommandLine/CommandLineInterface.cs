@@ -843,6 +843,7 @@ File Version: {1}
             }
         }
 
+        [DebuggerStepThrough]
         protected internal static void InvokeInCurrentAppDomain(MethodInfo method, object instance, object[] ps = null)
         {
             // added this method for consistency with InvokeInSeparateAppDomain method

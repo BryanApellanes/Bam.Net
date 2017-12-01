@@ -102,6 +102,8 @@ namespace Bam.Net.Application
         {
             List<dynamic> types = new List<dynamic>();
             string assemblyPath = "\r\n";
+            DirectoryInfo sysData = DataSettings.FromConfig.GetSysDataDirectory(nameof(ServiceRegistry).Pluralize());
+            ServiceRegistryDescriptor registry = new ServiceRegistryDescriptor();
             while (!assemblyPath.Equals(string.Empty))
             {
                 if (!string.IsNullOrEmpty(assemblyPath.Trim()))
@@ -125,7 +127,7 @@ namespace Bam.Net.Application
                                 }
                                 else
                                 {
-                                    types.Add(new { ForAssembly = type.Assembly.FullName, ForType = type.FullName, UseAssembly = type.Assembly.FullName, UseType = type.FullName });
+                                    registry.AddService(type, type);
                                 }
                             }
                             className = Prompt("Enter the name of a class to add to the service registry (leave blank to finish)");
@@ -135,7 +137,8 @@ namespace Bam.Net.Application
                 assemblyPath = Prompt("Enter the path to an assembly file containing service types (leave blank to finish)");
             }
             string registryName = Prompt("Enter a name for the registry");
-            types.ToArray().ToYamlFile($".\\{registryName}.yml");
+            string path = Path.Combine(sysData.FullName, $"{registryName}.json");
+            registry.ToJsonFile(path);
         }
 
         [ConsoleAction("csgloo", "Start the gloo server serving the compiled results of the specified csgloo files")]

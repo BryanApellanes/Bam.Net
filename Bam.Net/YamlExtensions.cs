@@ -10,9 +10,9 @@ using System.Yaml;
 using System.IO;
 using Bam.Net;
 
-namespace Bam.Net.Yaml
+namespace Bam.Net
 {
-    public static class Extensions
+    public static class YamlExtensions
     {
         /// <summary>
         /// Serialize the specified object to yaml
@@ -33,6 +33,10 @@ namespace Bam.Net.Yaml
 
         public static void ToYamlFile(this object val, FileInfo file, YamlConfig conf = null)
         {
+            if (!file.Directory.Exists)
+            {
+                file.Directory.Create();
+            }
             using (StreamWriter sw = new StreamWriter(file.FullName))
             {
                 sw.Write(val.ToYaml());
@@ -69,11 +73,16 @@ namespace Bam.Net.Yaml
         public static Stream ToYamlStream(this object value)
         {
             MemoryStream stream = new MemoryStream();
+            ToYamlStream(value, stream);
+            return stream;
+        }
+
+        public static void ToYamlStream(this object value, Stream stream)
+        {
             StreamWriter writer = new StreamWriter(stream);
             writer.Write(value.ToYaml());
             writer.Flush();
             stream.Seek(0, SeekOrigin.Begin);
-            return stream;
         }
 
         public static T FromYamlStream<T>(this Stream stream)

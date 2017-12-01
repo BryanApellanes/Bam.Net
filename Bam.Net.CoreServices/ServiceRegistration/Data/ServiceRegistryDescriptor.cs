@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Incubation;
+using Bam.Net.Yaml;
 
 namespace Bam.Net.CoreServices.ServiceRegistration.Data
 {
@@ -18,7 +19,7 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data
         public ServiceRegistryDescriptor(string name, string description) { }
         public string Name { get; set; }
         public string Description { get; set; }
-        public List<ServiceDescriptor> Services { get; set; }
+        public virtual List<ServiceDescriptor> Services { get; set; }
 
         public ServiceDescriptor AddService(Type forType, Type useType)
         {
@@ -39,6 +40,16 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data
                 result.AddService(type, incubator[type].GetType());
             }
             return result;
+        }
+
+        public void ToYamlFile(string filePath)
+        {
+            List<dynamic> types = new List<dynamic>();
+            foreach(ServiceDescriptor sd in Services)
+            {
+                types.Add(new { ForAssembly = sd.ForAssembly, ForType = sd.ForType, UseAssembly = sd.UseAssembly, UseType = sd.UseType});
+            }
+            types.ToYamlFile(filePath);
         }
 
         private void SetSequenceValues()

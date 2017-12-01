@@ -180,7 +180,7 @@ namespace Bam.Net.CoreServices
 
         /// <summary>
         /// Get the ServiceRegistryDescriptor with the specified name by loading it from the first file found of
-        /// {name}.yml, {name}.yaml, {name}.json in DataSettings.GetSysDataDirectory().  If the 
+        /// {name}.yml, {name}.json in DataSettings.GetSysDataDirectory().  If the 
         /// file is not found and a ServiceRegistryDescriptor with the specified name is found in the 
         /// ServiceRegistryRepository then the file {name}.yml will be written from the ServiceRegistryDescriptor
         /// found.
@@ -191,27 +191,37 @@ namespace Bam.Net.CoreServices
         public virtual ServiceRegistryDescriptor GetServiceRegistryDescriptor(string name)
         {
             DirectoryInfo systemServiceRegistryDir = DataSettings.GetSysDataDirectory(nameof(ServiceRegistry).Pluralize());
+            string path = Path.Combine(systemServiceRegistryDir.FullName, $"{name}.json");
+            ServiceRegistryDescriptor result = null;
             FileInfo file = null;
-            foreach(string extension in new string[] { ".yml", ".yaml", ".json" })
+            if (File.Exists(path))
             {
-                string path = Path.Combine(systemServiceRegistryDir.FullName, $"{name}{extension}");
-                if (File.Exists(path))
-                {
-                    file = new FileInfo(path);
-                    break;
-                }
+                file = new FileInfo(path);             
             }
-            if(file == null)
+            
+            ServiceRegistryDescriptor fromFile = null;
+            if(file != null)
             {
-                ServiceRegistryDescriptor descriptor = ServiceRegistryRepository.ServiceRegistryDescriptorsWhere(c => c.Name == name).FirstOrDefault();
-                if(descriptor != null)
-                {
-                    descriptor.ToYamlFile(Path.Combine(systemServiceRegistryDir.FullName, $"{name}.yml"));
-                    return descriptor;
-                }
-                return null;
+                fromFile = file.FromJsonFile<ServiceRegistryDescriptor>();
+                result = fromFile;
             }
-            return file.FromYamlFile<ServiceRegistryDescriptor>();
+
+            ServiceRegistryDescriptor fromRepo = ServiceRegistryRepository.ServiceRegistryDescriptorsWhere(c => c.Name == name).FirstOrDefault();
+            if (fromRepo != null)
+            {                
+                HashSet<ServiceDescriptor> svcs = new HashSet<ServiceDescriptor>();
+                if (fromFile != null)
+                {
+                    fromFile.Services.Each(svc => svcs.Add(svc));
+                }
+                fromRepo.Services?.Each(svc => svcs.Add(svc));
+                fromRepo.Services = svcs.ToList();
+                fromRepo.ToJsonFile(file);
+                result = fromRepo;
+            }
+
+            ServiceRegistryRepository.Save(result);
+            return result;
         }
 
         [RoleRequired("/", "Admin")]
