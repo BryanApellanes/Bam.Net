@@ -32,9 +32,11 @@ namespace Bam.Net.UserAccounts.Tests
             user = User.OneWhere(c => c.UserName == TestUser);
             if (user == null)
             {
-                user = new User();
-                user.CreationDate = DateTime.UtcNow;
-                user.UserName = TestUser;
+                user = new User()
+                {
+                    CreationDate = DateTime.UtcNow,
+                    UserName = TestUser
+                };
                 user.Save();
             }
             return user;
@@ -70,8 +72,7 @@ namespace Bam.Net.UserAccounts.Tests
 
         public static void SignUpAndLogin(string userName, out IHttpContext context, out LoginResponse result)
         {
-            UserManager userProxy;
-            SignUpAndLogin(userName, out context, out result, out userProxy);
+            SignUpAndLogin(userName, out context, out result, out UserManager userProxy);
         }
 
         public static void SignUpAndLogin(string userName, out IHttpContext context, out LoginResponse result, out UserManager userProxy)

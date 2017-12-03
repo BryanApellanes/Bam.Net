@@ -8,18 +8,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Sockets;
 
-namespace Bam.Net.Server.Binary
+namespace Bam.Net.Server.Streaming
 {
-    public class BinaryContext<T>: BinaryContext
+    public class BinaryContext<T>: StreamingContext
     {
         public new BinaryRequest<T> Request { get; set; }
     }
 
-    public class BinaryContext
+    public class StreamingContext
     {
-        public BinaryContext() { }
+        public StreamingContext() { }
         
-        public BinaryRequest Request { get; set; }
+        public StreamingRequest Request { get; set; }
 
         public NetworkStream ResponseStream { get; set; }
 

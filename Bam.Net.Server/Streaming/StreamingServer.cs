@@ -14,9 +14,9 @@ using Bam.Net.Logging;
 using Bam.Net.Configuration;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Server.Binary
+namespace Bam.Net.Server.Streaming
 {
-    public abstract class BinaryServer<TRequest, TResponse>: BinaryServer
+    public abstract class BinaryServer<TRequest, TResponse>: StreamingServer
     {
         protected internal override void ReadRequest(TcpClient client)
         {
@@ -43,13 +43,13 @@ namespace Bam.Net.Server.Binary
             }
         }
 
-        public virtual void WriteResponse(BinaryContext context, TResponse message)
+        public virtual void WriteResponse(StreamingContext context, TResponse message)
         {
-            BinaryResponse<TResponse> msg = new BinaryResponse<TResponse> { Data = message };
+            StreamingResponse<TResponse> msg = new StreamingResponse<TResponse> { Data = message };
             WriteResponse(context, msg);
         }
 
-        public override void ProcessRequest(BinaryContext context)
+        public override void ProcessRequest(StreamingContext context)
         {
             ProcessRequest((BinaryContext<TRequest>)context);
         }
@@ -57,9 +57,9 @@ namespace Bam.Net.Server.Binary
         public abstract TResponse ProcessRequest(BinaryContext<TRequest> context);
     }
 
-    public abstract class BinaryServer: Loggable, IConfigurable, IDisposable
+    public abstract class StreamingServer: Loggable, IConfigurable, IDisposable
     {
-        public BinaryServer(ILogger logger = null, int port = 8888)
+        public StreamingServer(ILogger logger = null, int port = 8888)
         {
             Logger = logger ?? Log.Default;
             Port = port;
@@ -182,8 +182,8 @@ namespace Bam.Net.Server.Binary
                 {
                     GetStreamData(client, out NetworkStream stream, out byte[] requestData);
 
-                    BinaryRequest request = requestData.FromBinaryBytes<BinaryRequest>();
-                    ProcessRequest(new BinaryContext
+                    StreamingRequest request = requestData.FromBinaryBytes<StreamingRequest>();
+                    ProcessRequest(new StreamingContext
                     {
                         Request = request,
                         ResponseStream = stream,
@@ -198,7 +198,7 @@ namespace Bam.Net.Server.Binary
             }            
         }
 
-        protected void GetStreamData(TcpClient client, out NetworkStream stream, out byte[] requestData)
+        protected virtual void GetStreamData(TcpClient client, out NetworkStream stream, out byte[] requestData)
         {
             try
             {
@@ -218,15 +218,15 @@ namespace Bam.Net.Server.Binary
             }
         }
 
-        public abstract void ProcessRequest(BinaryContext context);
+        public abstract void ProcessRequest(StreamingContext context);
         
-        protected virtual void WriteResponse(BinaryContext context, object message)
+        protected virtual void WriteResponse(StreamingContext context, object message)
         {
-            BinaryResponse msg = new BinaryResponse { Data = message };
+            StreamingResponse msg = new StreamingResponse { Data = message };
             WriteResponse(context, msg);
         }
 
-        protected static void WriteResponse(BinaryContext context, BinaryResponse msg)
+        protected static void WriteResponse(StreamingContext context, StreamingResponse msg)
         {
             byte[] binMsg = msg.ToBinaryBytes();
             List<byte> sendMsg = new List<byte>();

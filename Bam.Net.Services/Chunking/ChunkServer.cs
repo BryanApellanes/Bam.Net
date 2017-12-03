@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Bam.Net.CoreServices.Files.Data;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Logging;
-using Bam.Net.Server.Binary;
+using Bam.Net.Server.Streaming;
 using Bam.Net.CoreServices.Files;
 
 namespace Bam.Net.Services.Chunking

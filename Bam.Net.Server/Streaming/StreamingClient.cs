@@ -7,24 +7,24 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Server.Binary
+namespace Bam.Net.Server.Streaming
 {
-    public class BinaryClient<TRequest, TResponse>: BinaryClient
+    public class StreamingClient<TRequest, TResponse>: StreamingClient
     {
-        public BinaryClient(string hostName, int port) : base(hostName, port) { }
+        public StreamingClient(string hostName, int port) : base(hostName, port) { }
 
-        public BinaryResponse<TResponse> SendRequest(TRequest message)
+        public StreamingResponse<TResponse> SendRequest(TRequest message)
         {
             BinaryRequest<TRequest> request = new BinaryRequest<TRequest> { Message = message };
             SendRequest(request);
-            return ReceiveResponse<BinaryResponse<TResponse>>(NetworkStream);
+            return ReceiveResponse<StreamingResponse<TResponse>>(NetworkStream);
         }
     }
 
-    public class BinaryClient: Loggable
+    public class StreamingClient: Loggable
     {
         TcpClient _client;
-        public BinaryClient(string hostName, int port)
+        public StreamingClient(string hostName, int port)
         {
             HostName = hostName;
             Port = port;
@@ -42,10 +42,10 @@ namespace Bam.Net.Server.Binary
 
         protected NetworkStream NetworkStream { get; set; }
 
-        public BinaryResponse SendRequest(object message)
+        public StreamingResponse SendRequest(object message)
         {
             SendRequest(NetworkStream, message);
-            return ReceiveResponse<BinaryResponse>(NetworkStream);
+            return ReceiveResponse<StreamingResponse>(NetworkStream);
         }
 
         protected T ReceiveResponse<T>(Stream stream)
@@ -60,11 +60,11 @@ namespace Bam.Net.Server.Binary
 
         private void SendRequest(Stream stream, object message)
         {
-            BinaryRequest msg = new BinaryRequest { Message = message };
+            StreamingRequest msg = new StreamingRequest { Message = message };
             SendRequest(stream, msg);
         }
 
-        private static void SendRequest(Stream stream, BinaryRequest msg)
+        private static void SendRequest(Stream stream, StreamingRequest msg)
         {
             byte[] binMsg = msg.ToBinaryBytes();
             List<byte> sendMsg = new List<byte>();

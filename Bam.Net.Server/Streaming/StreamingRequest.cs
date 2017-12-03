@@ -4,16 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Server.Binary
+namespace Bam.Net.Server.Streaming
 {
     [Serializable]
-    public class BinaryRequest<T>: BinaryRequest
+    public class BinaryRequest<T>: StreamingRequest
     {
         public new T Message { get; set; }
     }
 
     [Serializable]
-    public class BinaryRequest
+    public class StreamingRequest
     {
         public object Message { get; set; }
     }

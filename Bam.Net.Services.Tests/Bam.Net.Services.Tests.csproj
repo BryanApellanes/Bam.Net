@@ -83,6 +83,7 @@
     <Compile Include="AssemblyServiceTests.cs" />
     <Compile Include="AsyncProxyableEcho.cs" />
     <Compile Include="AsyncProxyableServiceTests.cs" />
+    <Compile Include="CommandServiceTests.cs" />
     <Compile Include="ConsoleActions.cs" />
     <Compile Include="DocumentationServiceTests.cs" />
     <Compile Include="EventSourceTests.cs" />
@@ -124,6 +125,10 @@
     <ProjectReference Include="..\Bam.Net.Services\Bam.Net.Services.csproj">
       <Project>{f67630bf-5e73-46bf-a7f1-6d7e9648135f}</Project>
       <Name>Bam.Net.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.UserAccounts.Tests\Bam.Net.UserAccounts.Tests.csproj">
+      <Project>{34429357-c328-43e5-a25b-24c6bffd55b1}</Project>
+      <Name>Bam.Net.UserAccounts.Tests</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net\Bam.Net.csproj">
       <Project>{8794c09d-d72c-420c-812f-bfda251b64c9}</Project>

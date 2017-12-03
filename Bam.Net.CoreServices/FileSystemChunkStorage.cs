@@ -14,7 +14,7 @@ namespace Bam.Net.CoreServices
     {
         public FileSystemChunkStorage()
         {
-            DataSettings = DataSettings.Default;
+            DataSettings = DataSettings.FromConfig;
             Logger = Log.Default;
         }
 

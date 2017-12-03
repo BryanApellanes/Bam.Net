@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.CoreServices.Files.Data;
-using Bam.Net.Server.Binary;
+using Bam.Net.Server.Streaming;
 using Bam.Net.CoreServices.Files;
 
 namespace Bam.Net.Services.Chunking
 {
-    public class ChunkClient : BinaryClient<ChunkRequest, ChunkResponse>, IChunkStorage
+    public class ChunkClient : StreamingClient<ChunkRequest, ChunkResponse>, IChunkStorage
     {
         public ChunkClient(string hostName, int port) : base(hostName, port)
         {
@@ -21,7 +21,7 @@ namespace Bam.Net.Services.Chunking
 
         public IChunk GetChunk(string hash)
         {
-            BinaryResponse<ChunkResponse> response = SendRequest(new ChunkRequest
+            StreamingResponse<ChunkResponse> response = SendRequest(new ChunkRequest
             {
                 Operation = ChunkOperation.Get,
                 Hash = hash
@@ -37,7 +37,7 @@ namespace Bam.Net.Services.Chunking
 
         public void SetChunk(IChunk chunkData)
         {
-            BinaryResponse<ChunkResponse> response = SendRequest(new ChunkRequest
+            StreamingResponse<ChunkResponse> response = SendRequest(new ChunkRequest
             {
                 Operation = ChunkOperation.Set,
                 Chunk = new Chunk
@@ -53,7 +53,7 @@ namespace Bam.Net.Services.Chunking
             }
         }
 
-        private void HandleException(EventHandler toFire, string hash, BinaryResponse<ChunkResponse> response)
+        private void HandleException(EventHandler toFire, string hash, StreamingResponse<ChunkResponse> response)
         {
             switch (ExceptionMode)
             {
