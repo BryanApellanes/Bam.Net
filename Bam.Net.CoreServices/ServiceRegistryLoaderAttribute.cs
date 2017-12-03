@@ -8,7 +8,7 @@ namespace Bam.Net.CoreServices
 {
     /// <summary>
     /// Attribute used to denote a method 
-    /// that will return a CoreRegistry.  This 
+    /// that will return a CoreRegistry.  The 
     /// method must be static 
     /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
