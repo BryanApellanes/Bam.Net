@@ -88,7 +88,7 @@ namespace Bam.Net.Services.Tests
         [UnitTest]
         public void CanRegisterContainer()
         {
-            ServiceRegistrationService svc = GetServiceRegistrationService(nameof(ServiceRegistryLoaderTest));
+            ServiceRegistryService svc = GetServiceRegistrationService(nameof(ServiceRegistryLoaderTest));
             List<ServiceRegistryContainerRegistrationResult> results = svc.RegisterServiceRegistryContainers(Assembly.GetExecutingAssembly());
             Expect.AreEqual(1, results.Count);
             CoreServices.ServiceRegistry registry = svc.GetServiceRegistry(results[0].Name);
@@ -100,7 +100,7 @@ namespace Bam.Net.Services.Tests
         [UnitTest]
         public void ServiceRegistryLoaderTest()
         {
-            ServiceRegistrationService svc = GetServiceRegistrationService(nameof(ServiceRegistryLoaderTest));
+            ServiceRegistryService svc = GetServiceRegistrationService(nameof(ServiceRegistryLoaderTest));
             string name = nameof(ServiceRegistryLoaderTest);
             svc.RegisterServiceRegistryLoader(name, typeof(TestServiceRegistryContainer).GetMethod("Create"), true);
 
@@ -112,10 +112,10 @@ namespace Bam.Net.Services.Tests
             Expect.IsObjectOfType<ConsoleLogger>(value.Logger);
         }
 
-        private ServiceRegistrationService GetServiceRegistrationService(string databaseName)
+        private ServiceRegistryService GetServiceRegistrationService(string databaseName)
         {
             Database db = GetDatabase(databaseName);
-            return new ServiceRegistrationService(GetAssemblyService(db), GetServiceRegistryRepository(db), GetDaoRepository(db), new Server.AppConf());
+            return new ServiceRegistryService(GetAssemblyService(db), GetServiceRegistryRepository(db), GetDaoRepository(db), new Server.AppConf());
         }
 
         private AssemblyService GetAssemblyService(Database db)

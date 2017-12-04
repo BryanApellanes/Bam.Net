@@ -188,7 +188,7 @@ namespace Bam.Net.Application
             DataSettings dataSettings = DataSettings.Default;
             IApplicationNameProvider appNameProvider = DefaultConfigurationApplicationNameProvider.Instance;
 
-            ServiceRegistrationService serviceRegistryService = GetCoreServiceRegistrationService(logger, dataSettings, appNameProvider);
+            ServiceRegistryService serviceRegistryService = GetCoreServiceRegistrationService(logger, dataSettings, appNameProvider);
 
             string[] requestedRegistries = registries.DelimitSplit(",");
             HashSet<Type> serviceTypes = new HashSet<Type>();
@@ -211,9 +211,9 @@ namespace Bam.Net.Application
             Pause($"Gloo server is serving services\r\n\t{services.ToArray().ToDelimited(s => s.FullName, "\r\n\t")}");
         }
 
-        private static ServiceRegistrationService GetCoreServiceRegistrationService(ILogger logger, DataSettings dataSettings, IApplicationNameProvider appNameProvider)
+        private static ServiceRegistryService GetCoreServiceRegistrationService(ILogger logger, DataSettings dataSettings, IApplicationNameProvider appNameProvider)
         {
-            FileService fileService = new FileService(new DaoRepository(dataSettings.GetSysDatabaseFor(typeof(FileService), $"{nameof(ServiceRegistrationService)}_{nameof(FileService)}")));
+            FileService fileService = new FileService(new DaoRepository(dataSettings.GetSysDatabaseFor(typeof(FileService), $"{nameof(ServiceRegistryService)}_{nameof(FileService)}")));
             AssemblyServiceRepository assRepo = new AssemblyServiceRepository();
             assRepo.Database = dataSettings.GetSysDatabaseFor(assRepo);
             assRepo.EnsureDaoAssemblyAndSchema();
@@ -221,7 +221,7 @@ namespace Bam.Net.Application
             ServiceRegistrationRepository serviceRegistryRepo = new ServiceRegistrationRepository();
             serviceRegistryRepo.Database = dataSettings.GetSysDatabaseFor(serviceRegistryRepo);
             serviceRegistryRepo.EnsureDaoAssemblyAndSchema();
-            ServiceRegistrationService serviceRegistryService = new ServiceRegistrationService(
+            ServiceRegistryService serviceRegistryService = new ServiceRegistryService(
                 assemblyService,
                 serviceRegistryRepo,
                 DataSettings.Default.GetGenericDaoRepository(logger),
