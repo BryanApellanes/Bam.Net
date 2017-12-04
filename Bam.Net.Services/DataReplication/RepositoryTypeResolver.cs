@@ -7,7 +7,7 @@ namespace Bam.Net.Services.DataReplication
 {
     public class RepositoryTypeResolver : IRepositoryTypeResolver
     {
-        public static string DefaultNamespace = "Bam.Net.Services.Distributed.Data";
+        public static string DefaultNamespace = "Bam.Net.Services.DataReplication.Data";
 
         public RepositoryTypeResolver(Repository repo)
         {
@@ -30,14 +30,17 @@ namespace Bam.Net.Services.DataReplication
         }
 
         public Repository Repository { get; }
+
         public Type ResolveType(Operation writeOperation)
         {
             return ResolveType(writeOperation.TypeNamespace, writeOperation.TypeName);
         }
+
         public Type ResolveType(string typeName)
         {
             return ResolveType(DefaultNamespace, typeName);
         }
+
         public Type ResolveType(string nameSpace, string typeName)
         {
             lock (_lookupLock)

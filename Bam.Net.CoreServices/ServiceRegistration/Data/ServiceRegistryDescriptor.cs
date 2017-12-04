@@ -42,16 +42,6 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data
             return result;
         }
 
-        public void ToYamlFile(string filePath)
-        {
-            List<dynamic> types = new List<dynamic>();
-            foreach(ServiceDescriptor sd in Services)
-            {
-                types.Add(new { ForAssembly = sd.ForAssembly, ForType = sd.ForType, UseAssembly = sd.UseAssembly, UseType = sd.UseType});
-            }
-            types.ToYamlFile(filePath);
-        }
-
         private void SetSequenceValues()
         {
             if(Services != null)

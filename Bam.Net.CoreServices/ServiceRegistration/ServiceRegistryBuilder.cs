@@ -6,23 +6,23 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.CoreServices.ServiceRegistration
 {
-    public class ServiceRegistrationBuilder
+    public class ServiceRegistryBuilder
     {
         List<Type> _forTypes;
         List<Type> _useTypes;
-        public ServiceRegistrationBuilder()
+        public ServiceRegistryBuilder()
         {
             _forTypes = new List<Type>();
             _useTypes = new List<Type>();
         }
         
-        public ServiceRegistrationBuilder For(Type type)
+        public ServiceRegistryBuilder For(Type type)
         {
             _forTypes.Add(type);
             return this;
         }
 
-        public ServiceRegistrationBuilder Use(Type type)
+        public ServiceRegistryBuilder Use(Type type)
         {
             _useTypes.Add(type);
             return this;

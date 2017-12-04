@@ -14,13 +14,18 @@ namespace Bam.Net.CoreServices.Tests
 {
     using System.IO;
     using Bam.Net.CoreServices.ApplicationRegistration;
+    using Bam.Net.Testing.Unit;
     using Net.Data.SQLite;
     using Server;
     using ServiceProxySecure = ServiceProxy.Secure;
 
     [Serializable]
-    public class ApplicationRegistryTests : CommandLineTestInterface
+    public class ServiceRegistryTests : CommandLineTestInterface
     {
-        //[UnitTest("AppRegistry: ")]
+        [UnitTest("AppRegistry: ")]
+        public void ServiceTypeResolves()
+        {
+
+        }
     }
 }

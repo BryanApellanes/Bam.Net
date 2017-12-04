@@ -9,7 +9,8 @@ using Bam.Net.CoreServices.Files;
 namespace Bam.Net.CoreServices.ServiceRegistration.Data
 {
     /// <summary>
-    /// A persistable descriptor for a .Net Type
+    /// A persistable descriptor for an interface
+    /// class pair used as a service.
     /// </summary>
     [Serializable]
     public class ServiceDescriptor: AuditRepoData
@@ -20,47 +21,65 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data
 
         public ServiceDescriptor(Type forType, Type useType)
         {
-            ForType = forType.FullName;
-            ForAssembly = forType.Assembly.FullName;
-            UseType = useType.FullName;
-            UseAssembly = useType.Assembly.FullName;
+            ForTypeIdentifier = ServiceTypeIdentifier.FromType(forType);
+            UseTypeIdentifier = ServiceTypeIdentifier.FromType(useType);
         }
-
-        string _description;
-        public string Description
-        {
-            get
-            {
-                return _description ?? $"For<{ForType}>().Use<{UseType}>()";
-            }
-            set
-            {
-                _description = value;
-            }
-        }
+        
         public int SequenceNumber { get; set; }
-        public string ForType { get; set; }
-        public string ForAssembly { get; set; }
-        public string UseType { get; set; }
-        public string UseAssembly { get; set; }
+        public int ForTypeDurableHash { get; set; }
+        public int UseTypeDurableHash { get; set; }
+        
+        protected ServiceTypeIdentifier ForTypeIdentifier { get; set; }
+        protected ServiceTypeIdentifier UseTypeIdentifier { get; set; }
 
         public virtual List<ServiceRegistryDescriptor> ServiceRegistry { get; set; }
+
+        public new ServiceDescriptor Save(IRepository repo)
+        {
+            if(ForTypeIdentifier != null)
+            {
+                ForTypeIdentifier.Save(repo);
+            }
+            if(UseTypeIdentifier != null)
+            {
+                UseTypeIdentifier.Save(repo);
+            }
+            return Save(repo);
+        }
+
+        public ServiceTypeIdentifier GetForTypeIdentifier(IRepository repo)
+        {
+            return GetTypeIdentifier(repo, ForTypeDurableHash);
+        }
+
+        public ServiceTypeIdentifier GetUseTypeIdentifier(IRepository repo)
+        {
+            return GetTypeIdentifier(repo, UseTypeDurableHash);
+        }
+
+        public ServiceTypeIdentifier GetTypeIdentifier(IRepository repo, int durableHashCode)
+        {
+            var result = repo.Query(typeof(ServiceTypeIdentifier), new { DurableHashCode = durableHashCode }).FirstOrDefault();
+            if(result != null)
+            {
+                return result.CopyAs<ServiceTypeIdentifier>();
+            }
+            return null;
+        }
 
         public override bool Equals(object obj)
         {
             if(obj is ServiceDescriptor sd)
             {
-                return sd.ForType.Equals(ForType) &&
-                    sd.ForAssembly.Equals(ForAssembly) &&
-                    sd.UseType.Equals(UseType) &&
-                    sd.UseAssembly.Equals(UseAssembly);
+                return sd.ForTypeDurableHash.Equals(ForTypeDurableHash) &&
+                    sd.UseTypeDurableHash.Equals(UseTypeDurableHash);
             }
             return false;
         }
 
         public override int GetHashCode()
         {
-            return $"{SequenceNumber}{ForType}{ForAssembly}{UseType}{UseAssembly}".ToSha1Int();
+            return $"{SequenceNumber}{ForTypeDurableHash}{UseTypeDurableHash}".ToSha1Int();
         }
     }
 }

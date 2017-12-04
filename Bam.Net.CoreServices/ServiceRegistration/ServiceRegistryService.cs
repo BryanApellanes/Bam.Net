@@ -15,6 +15,7 @@ using Bam.Net.CoreServices.ServiceRegistration.Data.Dao.Repository;
 using Bam.Net.ServiceProxy;
 using System.IO;
 using Bam.Net.Yaml;
+using Bam.Net.CoreServices.Files;
 
 namespace Bam.Net.CoreServices
 {
@@ -28,13 +29,14 @@ namespace Bam.Net.CoreServices
     [ServiceSubdomain("svcregistry")]
     public class ServiceRegistryService : ProxyableService
     {
-        public ServiceRegistryService(IAssemblyService assemblyService, ServiceRegistrationRepository repo, DaoRepository daoRepo, AppConf appConf, DataSettings dataSettings = null) : base(daoRepo, appConf)
+        public ServiceRegistryService(IFileService fileservice, IAssemblyService assemblyService, ServiceRegistrationRepository repo, DaoRepository daoRepo, AppConf appConf, DataSettings dataSettings = null) : base(daoRepo, appConf)
         {
+            FileService = fileservice;
             ServiceRegistryRepository = repo;
             AssemblyService = assemblyService;
             DataSettings = dataSettings ?? DataSettings.Default;
         }
-
+        public IFileService FileService { get; set; }
         public DataSettings DataSettings { get; set; }
         public ServiceRegistrationRepository ServiceRegistryRepository { get; set; }
 
@@ -168,7 +170,7 @@ namespace Bam.Net.CoreServices
         public ServiceRegistry GetServiceRegistry(ServiceRegistryDescriptor descriptor)
         {
             Args.ThrowIfNull(descriptor, "descriptor");
-            ServiceRegistrationBuilder builder = new ServiceRegistrationBuilder();
+            ServiceRegistryBuilder builder = new ServiceRegistryBuilder();
             foreach (ServiceDescriptor service in descriptor.Services)
             {
                 ServiceDefinition definition = ResolveDefinition(service);
@@ -333,7 +335,7 @@ namespace Bam.Net.CoreServices
         [Local]
         public override object Clone()
         {
-            ServiceRegistryService clone = new ServiceRegistryService(AssemblyService, ServiceRegistryRepository, DaoRepository, AppConf);
+            ServiceRegistryService clone = new ServiceRegistryService(FileService, AssemblyService, ServiceRegistryRepository, DaoRepository, AppConf);
             clone.CopyProperties(this);
             clone.CopyEventHandlers(this);
             return clone;
@@ -342,8 +344,8 @@ namespace Bam.Net.CoreServices
         [Local]
         public ServiceDefinition ResolveDefinition(ServiceDescriptor serviceDescriptor)
         {
-            Type forType = ResolveType(serviceDescriptor.ForType, serviceDescriptor.ForAssembly);
-            Type useType = ResolveType(serviceDescriptor.UseType, serviceDescriptor.UseAssembly);
+            Type forType = ResolveType(serviceDescriptor.GetForTypeIdentifier(ServiceRegistryRepository));
+            Type useType = ResolveType(serviceDescriptor.GetUseTypeIdentifier(ServiceRegistryRepository));
 
             Args.ThrowIfNull(forType, "forType");
             Args.ThrowIfNull(useType, "useType");
@@ -355,6 +357,16 @@ namespace Bam.Net.CoreServices
                 ForType = forType,
                 UseType = useType
             };
+        }
+                
+        [Local]
+        public Type ResolveType(ServiceTypeIdentifier typeIdentifier)
+        {
+            string localAssemblyPath = Path.Combine(DataSettings.GetSysAssemblyDirectory().FullName, typeIdentifier.AssemblyFullName);
+            FileInfo assemblyFile = FileService.RestoreFile(typeIdentifier.AssemblyFileHash, localAssemblyPath);
+            Assembly assembly = Assembly.LoadFile(localAssemblyPath);
+            Type result = assembly.GetTypes().Where(t => t.Name.Equals(typeIdentifier.TypeName) && t.Namespace.Equals(typeIdentifier.Namespace)).FirstOrDefault();
+            return result;
         }
 
         [Local]

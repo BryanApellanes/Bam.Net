@@ -307,7 +307,7 @@
     <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceRegistryLockQuery.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceRegistryLockWrapper.cs" />
     <Compile Include="ServiceRegistration\Data\MachineRegistries.cs" />
-    <Compile Include="ServiceRegistration\ITypeResolver.cs" />
+    <Compile Include="ServiceRegistration\Data\ServiceTypeIdentifier.cs" />
     <Compile Include="ServiceRegistryContainerAttribute.cs" />
     <Compile Include="ServiceRegistry.cs" />
     <Compile Include="ServiceRegistryLoaderAttribute.cs" />
@@ -391,7 +391,7 @@
     <Compile Include="ServiceRegistration\Data\ServiceRegistryLock.cs" />
     <Compile Include="ServiceRegistration\ServiceRegistryContainerRegistrationResult.cs" />
     <Compile Include="ServiceRegistration\ServiceDefinition.cs" />
-    <Compile Include="ServiceRegistration\ServiceRegistrationBuilder.cs" />
+    <Compile Include="ServiceRegistration\ServiceRegistryBuilder.cs" />
     <Compile Include="ServiceRegistration\ServiceRegistryService.cs" />
     <Compile Include="Configuration\SettingSource.cs" />
     <Compile Include="ApplicationRegistration\ApplicationRegistryServiceConfig.cs" />
