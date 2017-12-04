@@ -31,6 +31,58 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		}
 
 
+	public class MachineServicesQueryContext
+	{
+			public MachineServicesCollection Where(WhereDelegate<MachineServicesColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices.Where(where, db);
+			}
+		   
+			public MachineServicesCollection Where(WhereDelegate<MachineServicesColumns> where, OrderBy<MachineServicesColumns> orderBy = null, Database db = null)
+			{
+				return Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices.Where(where, orderBy, db);
+			}
+
+			public MachineServices OneWhere(WhereDelegate<MachineServicesColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices.OneWhere(where, db);
+			}
+
+			public static MachineServices GetOneWhere(WhereDelegate<MachineServicesColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices.GetOneWhere(where, db);
+			}
+		
+			public MachineServices FirstOneWhere(WhereDelegate<MachineServicesColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices.FirstOneWhere(where, db);
+			}
+
+			public MachineServicesCollection Top(int count, WhereDelegate<MachineServicesColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices.Top(count, where, db);
+			}
+
+			public MachineServicesCollection Top(int count, WhereDelegate<MachineServicesColumns> where, OrderBy<MachineServicesColumns> orderBy, Database db = null)
+			{
+				return Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices.Top(count, where, orderBy, db);
+			}
+
+			public long Count(WhereDelegate<MachineServicesColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices.Count(where, db);
+			}
+	}
+
+	static MachineServicesQueryContext _machineServiceses;
+	static object _machineServicesesLock = new object();
+	public static MachineServicesQueryContext MachineServiceses
+	{
+		get
+		{
+			return _machineServicesesLock.DoubleCheckLock<MachineServicesQueryContext>(ref _machineServiceses, () => new MachineServicesQueryContext());
+		}
+	}
 	public class ServiceDescriptorQueryContext
 	{
 			public ServiceDescriptorCollection Where(WhereDelegate<ServiceDescriptorColumns> where, Database db = null)

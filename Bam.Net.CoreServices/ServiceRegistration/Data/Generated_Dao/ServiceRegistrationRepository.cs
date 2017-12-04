@@ -24,6 +24,7 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao.Repository
 			SchemaName = "ServiceRegistration";
 			BaseNamespace = "Bam.Net.CoreServices.ServiceRegistration.Data";			
 ﻿			
+			AddType<Bam.Net.CoreServices.ServiceRegistration.Data.MachineServices>();﻿			
 			AddType<Bam.Net.CoreServices.ServiceRegistration.Data.ServiceDescriptor>();﻿			
 			AddType<Bam.Net.CoreServices.ServiceRegistration.Data.ServiceRegistryDescriptor>();﻿			
 			AddType<Bam.Net.CoreServices.ServiceRegistration.Data.ServiceRegistryLoaderDescriptor>();﻿			
@@ -42,6 +43,99 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao.Repository
         }
 
 ﻿		
+		/// <summary>
+		/// Get one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		/// <param name="where"></param>
+		public Bam.Net.CoreServices.ServiceRegistration.Data.MachineServices GetOneMachineServicesWhere(WhereDelegate<MachineServicesColumns> where)
+		{
+			Type wrapperType = GetWrapperType<Bam.Net.CoreServices.ServiceRegistration.Data.MachineServices>();
+			return (Bam.Net.CoreServices.ServiceRegistration.Data.MachineServices)Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices.GetOneWhere(where, Database).CopyAs(wrapperType, this);
+		}
+
+		/// <summary>
+		/// Execute a query that should return only one result.  If more
+		/// than one result is returned a MultipleEntriesFoundException will 
+		/// be thrown.  This method is most commonly used to retrieve a
+		/// single MachineServices instance by its Id/Key value
+		/// </summary>
+		/// <param name="where">A WhereDelegate that recieves a MachineServicesColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between MachineServicesColumns and other values
+		/// </param>
+		public Bam.Net.CoreServices.ServiceRegistration.Data.MachineServices OneMachineServicesWhere(WhereDelegate<MachineServicesColumns> where)
+        {
+            Type wrapperType = GetWrapperType<Bam.Net.CoreServices.ServiceRegistration.Data.MachineServices>();
+            return (Bam.Net.CoreServices.ServiceRegistration.Data.MachineServices)Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices.OneWhere(where, Database).CopyAs(wrapperType, this);
+        }
+
+		/// <summary>
+		/// Execute a query and return the results. 
+		/// </summary>
+		/// <param name="where">A WhereDelegate that recieves a Bam.Net.CoreServices.ServiceRegistration.Data.MachineServicesColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between Bam.Net.CoreServices.ServiceRegistration.Data.MachineServicesColumns and other values
+		/// </param>
+		public IEnumerable<Bam.Net.CoreServices.ServiceRegistration.Data.MachineServices> MachineServicesesWhere(WhereDelegate<MachineServicesColumns> where, OrderBy<MachineServicesColumns> orderBy = null)
+        {
+            return Wrap<Bam.Net.CoreServices.ServiceRegistration.Data.MachineServices>(Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices.Where(where, orderBy, Database));
+        }
+		
+		/// <summary>
+		/// Execute a query and return the specified number
+		/// of values. This method will issue a sql TOP clause so only the 
+		/// specified number of values will be returned.
+		/// </summary>
+		/// <param name="count">The number of values to return.
+		/// This value is used in the sql query so no more than this 
+		/// number of values will be returned by the database.
+		/// </param>
+		/// <param name="where">A WhereDelegate that recieves a MachineServicesColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between MachineServicesColumns and other values
+		/// </param>
+		public IEnumerable<Bam.Net.CoreServices.ServiceRegistration.Data.MachineServices> TopMachineServicesesWhere(int count, WhereDelegate<MachineServicesColumns> where)
+        {
+            return Wrap<Bam.Net.CoreServices.ServiceRegistration.Data.MachineServices>(Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices.Top(count, where, Database));
+        }
+
+		/// <summary>
+		/// Return the count of MachineServiceses
+		/// </summary>
+		public long CountMachineServiceses()
+        {
+            return Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices.Count(Database);
+        }
+
+		/// <summary>
+		/// Execute a query and return the number of results
+		/// </summary>
+		/// <param name="where">A WhereDelegate that recieves a MachineServicesColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between MachineServicesColumns and other values
+		/// </param>
+        public long CountMachineServicesesWhere(WhereDelegate<MachineServicesColumns> where)
+        {
+            return Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices.Count(where, Database);
+        }
+        
+        public async Task BatchQueryMachineServiceses(int batchSize, WhereDelegate<MachineServicesColumns> where, Action<IEnumerable<Bam.Net.CoreServices.ServiceRegistration.Data.MachineServices>> batchProcessor)
+        {
+            await Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices.BatchQuery(batchSize, where, (batch) =>
+            {
+				batchProcessor(Wrap<Bam.Net.CoreServices.ServiceRegistration.Data.MachineServices>(batch));
+            }, Database);
+        }
+		
+        public async Task BatchAllMachineServiceses(int batchSize, Action<IEnumerable<Bam.Net.CoreServices.ServiceRegistration.Data.MachineServices>> batchProcessor)
+        {
+            await Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices.BatchAll(batchSize, (batch) =>
+            {
+				batchProcessor(Wrap<Bam.Net.CoreServices.ServiceRegistration.Data.MachineServices>(batch));
+            }, Database);
+        }﻿		
 		/// <summary>
 		/// Get one entry matching the specified filter.  If none exists 
 		/// one will be created; success will depend on the nullability

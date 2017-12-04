@@ -262,6 +262,13 @@
     <Compile Include="OAuth\OAuthClientSettings.cs" />
     <Compile Include="OAuth\AuthenticatedAttribute.cs" />
     <Compile Include="RepositoryChunkStorage.cs" />
+    <Compile Include="ServiceRegistration\Data\Generated_Dao\MachineServices.cs" />
+    <Compile Include="ServiceRegistration\Data\Generated_Dao\MachineServicesCollection.cs" />
+    <Compile Include="ServiceRegistration\Data\Generated_Dao\MachineServicesColumns.cs" />
+    <Compile Include="ServiceRegistration\Data\Generated_Dao\MachineServicesPagedQuery.cs" />
+    <Compile Include="ServiceRegistration\Data\Generated_Dao\MachineServicesQuery.cs" />
+    <Compile Include="ServiceRegistration\Data\Generated_Dao\MachineServicesWrapper.cs" />
+    <Compile Include="ServiceRegistration\Data\Generated_Dao\Qi\MachineServices.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\Qi\ServiceDescriptor.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\Qi\ServiceDescriptorServiceRegistryDescriptor.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\Qi\ServiceRegistryDescriptor.cs" />
