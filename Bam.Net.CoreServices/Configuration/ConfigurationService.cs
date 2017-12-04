@@ -1,22 +1,14 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using Bam.Net.Data;
-using Bam.Net.Configuration;
 
 namespace Bam.Net.CoreServices
 {
-    using System.IO;
     using Bam.Net.CoreServices.ApplicationRegistration.Data;
-    //using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Repository;
-    using Net.Data.SQLite;
     using Server;
     using ServiceProxySecure = ServiceProxy.Secure;
     using Bam.Net.ServiceProxy;
     using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Repository;
+    using Bam.Net.CoreServices.Configuration;
 
     [Proxy("configSvc")]
     [ServiceProxySecure.ApiKeyRequired]
@@ -72,7 +64,7 @@ namespace Bam.Net.CoreServices
         {
             lock (_commonLock)
             {
-                Configuration config = ApplicationRegistrationRepository.GetOneConfigurationWhere(c => c.Name == CommonConfigName && c.ApplicationId == Application.Unknown.Id);
+                ApplicationRegistration.Data.Configuration config = ApplicationRegistrationRepository.GetOneConfigurationWhere(c => c.Name == CommonConfigName && c.ApplicationId == Application.Unknown.Id);
                 config.Settings.Each(s => ApplicationRegistrationRepository.Delete(s));
                 config.Settings = DictionaryToSettings(settings, config).ToList();
                 ApplicationRegistrationRepository.Save(config);
@@ -84,7 +76,7 @@ namespace Bam.Net.CoreServices
         {
             lock (_commonLock)
             {
-                Configuration config = ApplicationRegistrationRepository.GetOneConfigurationWhere(c => c.Name == CommonConfigName && c.ApplicationId == Application.Unknown.Id);
+                ApplicationRegistration.Data.Configuration config = ApplicationRegistrationRepository.GetOneConfigurationWhere(c => c.Name == CommonConfigName && c.ApplicationId == Application.Unknown.Id);
                 if (config != null)
                 {
                     Dictionary<string, string> result = new Dictionary<string, string>();
@@ -114,10 +106,10 @@ namespace Bam.Net.CoreServices
             Application application = ApplicationRegistrationRepository.GetOneApplicationWhere(c => c.Name == applicationName);
             lock (Application.ConfigurationLock)
             {
-                Configuration config = application.Configurations.FirstOrDefault(c => c.Name.Equals(configurationName));
+                ApplicationRegistration.Data.Configuration config = application.Configurations.FirstOrDefault(c => c.Name.Equals(configurationName));
                 if (config == null)
                 {
-                    config = new Configuration { Name = configurationName };
+                    config = new ApplicationRegistration.Data.Configuration { Name = configurationName };
                     config.ApplicationId = application.Id;
                     config = ApplicationRegistrationRepository.Save(config);
                 }
@@ -133,10 +125,10 @@ namespace Bam.Net.CoreServices
             Machine machine = ApplicationRegistrationRepository.GetOneMachineWhere(c => c.Name == machineName);
             lock (Machine.ConfigurationLock)
             {
-                Configuration config = machine.Configurations.FirstOrDefault(c => c.Name.Equals(configurationName));
+                ApplicationRegistration.Data.Configuration config = machine.Configurations.FirstOrDefault(c => c.Name.Equals(configurationName));
                 if (config == null)
                 {
-                    config = new Configuration { Name = configurationName };
+                    config = new ApplicationRegistration.Data.Configuration { Name = configurationName };
                     config.MachineId = machine.Id;
                     config = ApplicationRegistrationRepository.Save(config);
                 }
@@ -151,7 +143,7 @@ namespace Bam.Net.CoreServices
             ValidAppOrDie(applicationName);
             configurationName = configurationName ?? CommonConfigName;
             Application application = ApplicationRegistrationRepository.GetOneApplicationWhere(c => c.Name == applicationName);
-            Configuration config = application.Configurations.FirstOrDefault(c => c.Name.Equals(configurationName));
+            ApplicationRegistration.Data.Configuration config = application.Configurations.FirstOrDefault(c => c.Name.Equals(configurationName));
             if(config != null)
             {
                 return SettingsToDictionary(config.Settings);
@@ -163,7 +155,7 @@ namespace Bam.Net.CoreServices
         {
             configurationName = configurationName ?? CommonConfigName;
             Machine machine = ApplicationRegistrationRepository.GetOneMachineWhere(c => c.Name == machineName);
-            Configuration config = machine.Configurations.FirstOrDefault(c => c.Name.Equals(configurationName));
+            ApplicationRegistration.Data.Configuration config = machine.Configurations.FirstOrDefault(c => c.Name.Equals(configurationName));
             if (config != null)
             {
                 return SettingsToDictionary(config.Settings);
@@ -181,7 +173,7 @@ namespace Bam.Net.CoreServices
             return result;
         }
 
-        private IEnumerable<ConfigurationSetting> DictionaryToSettings(Dictionary<string, string> settings, Configuration config = null)
+        private IEnumerable<ConfigurationSetting> DictionaryToSettings(Dictionary<string, string> settings, ApplicationRegistration.Data.Configuration config = null)
         {
             foreach(string key in settings.Keys)
             {

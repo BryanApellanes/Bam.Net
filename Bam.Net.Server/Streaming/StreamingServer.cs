@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Server.Streaming
 {
-    public abstract class BinaryServer<TRequest, TResponse>: StreamingServer
+    public abstract class StreamingServer<TRequest, TResponse>: StreamingServer
     {
         protected internal override void ReadRequest(TcpClient client)
         {

@@ -371,7 +371,7 @@
     <Compile Include="ServiceRegistration\Data\ServiceRegistryDescriptor.cs" />
     <Compile Include="ServiceRegistration\Data\ServiceRegistryLoaderDescriptor.cs" />
     <Compile Include="ServiceRegistration\Data\ServiceRegistryLock.cs" />
-    <Compile Include="ServiceRegistration\RegisterServiceRegistryContainerResult.cs" />
+    <Compile Include="ServiceRegistration\ServiceRegistryContainerRegistrationResult.cs" />
     <Compile Include="ServiceRegistration\ServiceDefinition.cs" />
     <Compile Include="ServiceRegistration\ServiceRegistrationBuilder.cs" />
     <Compile Include="ServiceRegistration\ServiceRegistrationService.cs" />

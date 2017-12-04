@@ -24,7 +24,7 @@ namespace Bam.Net.Services.Clients
 
         public override void CommitLogEvent(LogEvent logEvent)
         {
-            _loggerService.CommitLogEvent(logEvent);
+            Task.Run(() => _loggerService.CommitLogEvent(logEvent));
         }
     }
 }

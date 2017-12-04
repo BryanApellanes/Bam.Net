@@ -89,7 +89,7 @@ namespace Bam.Net.Services.Tests
         public void CanRegisterContainer()
         {
             ServiceRegistrationService svc = GetServiceRegistrationService(nameof(ServiceRegistryLoaderTest));
-            List<RegisterServiceRegistryContainerResult> results = svc.RegisterServiceRegistryContainers(Assembly.GetExecutingAssembly());
+            List<ServiceRegistryContainerRegistrationResult> results = svc.RegisterServiceRegistryContainers(Assembly.GetExecutingAssembly());
             Expect.AreEqual(1, results.Count);
             CoreServices.ServiceRegistry registry = svc.GetServiceRegistry(results[0].Name);
             TestRegistryClass instance = registry.Get<TestRegistryClass>();

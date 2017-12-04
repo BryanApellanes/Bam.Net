@@ -12,7 +12,7 @@ using Bam.Net.CoreServices.Files;
 
 namespace Bam.Net.Services.Chunking
 {
-    public class ChunkServer : BinaryServer<ChunkRequest, ChunkResponse>
+    public class ChunkServer : StreamingServer<ChunkRequest, ChunkResponse>
     {
         public ChunkServer(IChunkStorage chunkStorage, ILogger logger = null)
         {

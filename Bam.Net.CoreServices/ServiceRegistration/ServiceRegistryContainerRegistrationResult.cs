@@ -6,11 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.CoreServices;
 
-namespace Bam.Net.CoreServices
+namespace Bam.Net.CoreServices.ServiceRegistration
 {
-    public class RegisterServiceRegistryContainerResult
+    public class ServiceRegistryContainerRegistrationResult
     {
-        public RegisterServiceRegistryContainerResult(string name, CoreServices.ServiceRegistry registry, Type type, MethodInfo method, ServiceRegistryLoaderAttribute attr)
+        public ServiceRegistryContainerRegistrationResult(string name, CoreServices.ServiceRegistry registry, Type type, MethodInfo method, ServiceRegistryLoaderAttribute attr)
         {
             Success = true;
             Type = type;
@@ -20,7 +20,7 @@ namespace Bam.Net.CoreServices
             Name = name;
         }
 
-        public RegisterServiceRegistryContainerResult(Exception ex)
+        public ServiceRegistryContainerRegistrationResult(Exception ex)
         {
             Exception = ex;
             Success = false;

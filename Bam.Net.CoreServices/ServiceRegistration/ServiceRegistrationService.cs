@@ -79,9 +79,9 @@ namespace Bam.Net.CoreServices
         /// <param name="assembly"></param>
         /// <returns></returns>
         [Local]
-        public List<RegisterServiceRegistryContainerResult> RegisterServiceRegistryContainers(Assembly assembly)
+        public List<ServiceRegistryContainerRegistrationResult> RegisterServiceRegistryContainers(Assembly assembly)
         {
-            List<RegisterServiceRegistryContainerResult> results = new List<RegisterServiceRegistryContainerResult>();
+            List<ServiceRegistryContainerRegistrationResult> results = new List<ServiceRegistryContainerRegistrationResult>();
             foreach (Type type in assembly.GetTypes().Where(t => t.HasCustomAttributeOfType<ServiceRegistryContainerAttribute>()))
             {
                 results.AddRange(RegisterServiceRegistryContainer(type));
@@ -90,9 +90,9 @@ namespace Bam.Net.CoreServices
         }
 
         [Local]
-        public List<RegisterServiceRegistryContainerResult> RegisterServiceRegistryContainer(Type type)
+        public List<ServiceRegistryContainerRegistrationResult> RegisterServiceRegistryContainer(Type type)
         {
-            List<RegisterServiceRegistryContainerResult> results = new List<RegisterServiceRegistryContainerResult>();
+            List<ServiceRegistryContainerRegistrationResult> results = new List<ServiceRegistryContainerRegistrationResult>();
             foreach (MethodInfo method in type.GetMethods().Where(m => m.HasCustomAttributeOfType<ServiceRegistryLoaderAttribute>()))
             {
                 try
@@ -101,11 +101,11 @@ namespace Bam.Net.CoreServices
                     string registryName = loaderAttr.RegistryName ?? $"{type.Namespace}.{type.Name}.{method.Name}";
                     string description = loaderAttr.Description ?? registryName;
                     ServiceRegistry registry = RegisterServiceRegistryLoader(registryName, method, true, description);
-                    results.Add(new RegisterServiceRegistryContainerResult(registryName, registry, type, method, loaderAttr));
+                    results.Add(new ServiceRegistryContainerRegistrationResult(registryName, registry, type, method, loaderAttr));
                 }
                 catch (Exception ex)
                 {
-                    results.Add(new RegisterServiceRegistryContainerResult(ex));
+                    results.Add(new ServiceRegistryContainerRegistrationResult(ex));
                 }
             }
             return results;
