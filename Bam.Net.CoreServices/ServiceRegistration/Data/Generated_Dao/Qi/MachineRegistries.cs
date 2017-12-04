@@ -12,13 +12,13 @@ using Bam.Net.CoreServices.ServiceRegistration.Data.Dao;
 
 namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao.Qi
 {
-    public class MachineServicesController : DaoController
+    public class MachineRegistriesController : DaoController
     {	
-		public ActionResult Save(Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices[] values)
+		public ActionResult Save(Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineRegistries[] values)
 		{
 			try
 			{
-				MachineServicesCollection saver = new MachineServicesCollection();
+				MachineRegistriesCollection saver = new MachineRegistriesCollection();
 				saver.AddRange(values);
 				saver.Save();
 				return Json(new { Success = true, Message = "", Dao = "" });
@@ -29,7 +29,7 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao.Qi
 			}
 		}
 
-		public ActionResult Create(Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices dao)
+		public ActionResult Create(Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineRegistries dao)
 		{
 			return Update(dao);
 		}
@@ -38,7 +38,7 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao.Qi
         {
 			try
 			{
-				object value = Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices.OneWhere(c => c.KeyColumn == id).ToJsonSafe();
+				object value = Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineRegistries.OneWhere(c => c.KeyColumn == id).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
 			catch(Exception ex)
@@ -47,7 +47,7 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao.Qi
 			}
         }
 
-		public ActionResult Update(Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices dao)
+		public ActionResult Update(Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineRegistries dao)
         {
 			try
 			{
@@ -65,14 +65,14 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao.Qi
 			try
 			{
 				string msg = "";
-				Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices dao = Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices.OneWhere(c => c.KeyColumn == id);				
+				Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineRegistries dao = Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineRegistries.OneWhere(c => c.KeyColumn == id);				
 				if(dao != null)
 				{
 					dao.Delete();	
 				}
 				else
 				{
-					msg = string.Format("The specified id ({0}) was not found in the table (MachineServices)", id);
+					msg = string.Format("The specified id ({0}) was not found in the table (MachineRegistries)", id);
 				}
 				return Json(new { Success = true, Message = msg, Dao = "" });
 			}
@@ -86,8 +86,8 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao.Qi
 		{
 			try
 			{
-				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices));
-				object value = Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices.OneWhere(query).ToJsonSafe();
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineRegistries));
+				object value = Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineRegistries.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
 			catch(Exception ex)
@@ -100,8 +100,8 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao.Qi
 		{
 			try
 			{
-				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices));
-				object[] value = Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices.Where(query).ToJsonSafe();
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineRegistries));
+				object[] value = Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineRegistries.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
 			catch(Exception ex)

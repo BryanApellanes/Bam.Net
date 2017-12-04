@@ -10,8 +10,8 @@ using Bam.Net.Data;
 
 namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 {
-    public class MachineServicesPagedQuery: PagedQuery<MachineServicesColumns, MachineServices>
+    public class MachineRegistriesPagedQuery: PagedQuery<MachineRegistriesColumns, MachineRegistries>
     { 
-		public MachineServicesPagedQuery(MachineServicesColumns orderByColumn, MachineServicesQuery query, Database db = null) : base(orderByColumn, query, db) { }
+		public MachineRegistriesPagedQuery(MachineRegistriesColumns orderByColumn, MachineRegistriesQuery query, Database db = null) : base(orderByColumn, query, db) { }
     }
 }

@@ -16,14 +16,14 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Wrappers
 {
 	// generated
 	[Serializable]
-	public class MachineServicesWrapper: Bam.Net.CoreServices.ServiceRegistration.Data.MachineRegistries, IHasUpdatedXrefCollectionProperties
+	public class MachineRegistriesWrapper: Bam.Net.CoreServices.ServiceRegistration.Data.MachineRegistries, IHasUpdatedXrefCollectionProperties
 	{
-		public MachineServicesWrapper()
+		public MachineRegistriesWrapper()
 		{
 			this.UpdatedXrefCollectionProperties = new Dictionary<string, PropertyInfo>();
 		}
 
-		public MachineServicesWrapper(DaoRepository repository) : this()
+		public MachineRegistriesWrapper(DaoRepository repository) : this()
 		{
 			this.Repository = repository;
 		}

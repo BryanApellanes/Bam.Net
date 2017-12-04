@@ -17,30 +17,30 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 	// schema = ServiceRegistration
 	// connection Name = ServiceRegistration
 	[Serializable]
-	[Bam.Net.Data.Table("MachineServices", "ServiceRegistration")]
-	public partial class MachineServices: Bam.Net.Data.Dao
+	[Bam.Net.Data.Table("MachineRegistries", "ServiceRegistration")]
+	public partial class MachineRegistries: Bam.Net.Data.Dao
 	{
-		public MachineServices():base()
+		public MachineRegistries():base()
 		{
 			this.SetKeyColumnName();
 			this.SetChildren();
 		}
 
-		public MachineServices(DataRow data)
+		public MachineRegistries(DataRow data)
 			: base(data)
 		{
 			this.SetKeyColumnName();
 			this.SetChildren();
 		}
 
-		public MachineServices(Database db)
+		public MachineRegistries(Database db)
 			: base(db)
 		{
 			this.SetKeyColumnName();
 			this.SetChildren();
 		}
 
-		public MachineServices(Database db, DataRow data)
+		public MachineRegistries(Database db, DataRow data)
 			: base(db, data)
 		{
 			this.SetKeyColumnName();
@@ -48,9 +48,9 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		}
 
 		[Bam.Net.Exclude]
-		public static implicit operator MachineServices(DataRow data)
+		public static implicit operator MachineRegistries(DataRow data)
 		{
-			return new MachineServices(data);
+			return new MachineRegistries(data);
 		}
 
 		private void SetChildren()
@@ -129,17 +129,17 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		}
 	}
 
-	// property:ServiceRegistries, columnName:ServiceRegistries	
-	[Bam.Net.Data.Column(Name="ServiceRegistries", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string ServiceRegistries
+	// property:RegistryNames, columnName:RegistryNames	
+	[Bam.Net.Data.Column(Name="RegistryNames", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string RegistryNames
 	{
 		get
 		{
-			return GetStringValue("ServiceRegistries");
+			return GetStringValue("RegistryNames");
 		}
 		set
 		{
-			SetValue("ServiceRegistries", value);
+			SetValue("RegistryNames", value);
 		}
 	}
 
@@ -232,23 +232,23 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 			}
 			else
 			{
-				var colFilter = new MachineServicesColumns();
+				var colFilter = new MachineRegistriesColumns();
 				return (colFilter.KeyColumn == IdValue);
 			}			
 		}
 
 		/// <summary>
-		/// Return every record in the MachineServices table.
+		/// Return every record in the MachineRegistries table.
 		/// </summary>
 		/// <param name="database">
 		/// The database to load from or null
 		/// </param>
-		public static MachineServicesCollection LoadAll(Database database = null)
+		public static MachineRegistriesCollection LoadAll(Database database = null)
 		{
 			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<MachineServices>();
-			Database db = database ?? Db.For<MachineServices>();
-			var results = new MachineServicesCollection(db, sql.GetDataTable(db));
+			sql.Select<MachineRegistries>();
+			Database db = database ?? Db.For<MachineRegistries>();
+			var results = new MachineRegistriesCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
@@ -257,12 +257,12 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// Process all records in batches of the specified size
 		/// </summary>
 		[Bam.Net.Exclude]
-		public static async Task BatchAll(int batchSize, Action<IEnumerable<MachineServices>> batchProcessor, Database database = null)
+		public static async Task BatchAll(int batchSize, Action<IEnumerable<MachineRegistries>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
-				MachineServicesColumns columns = new MachineServicesColumns();
-				var orderBy = Bam.Net.Data.Order.By<MachineServicesColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
+				MachineRegistriesColumns columns = new MachineRegistriesColumns();
+				var orderBy = Bam.Net.Data.Order.By<MachineRegistriesColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -280,7 +280,7 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// Process results of a query in batches of the specified size
 		/// </summary>			 
 		[Bam.Net.Exclude]
-		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<MachineServices>> batchProcessor, Database database = null)
+		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<MachineRegistries>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
@@ -289,12 +289,12 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// Process results of a query in batches of the specified size
 		/// </summary>	
 		[Bam.Net.Exclude]
-		public static async Task BatchQuery(int batchSize, WhereDelegate<MachineServicesColumns> where, Action<IEnumerable<MachineServices>> batchProcessor, Database database = null)
+		public static async Task BatchQuery(int batchSize, WhereDelegate<MachineRegistriesColumns> where, Action<IEnumerable<MachineRegistries>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
-				MachineServicesColumns columns = new MachineServicesColumns();
-				var orderBy = Bam.Net.Data.Order.By<MachineServicesColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
+				MachineRegistriesColumns columns = new MachineRegistriesColumns();
+				var orderBy = Bam.Net.Data.Order.By<MachineRegistriesColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -303,7 +303,7 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 						batchProcessor(results);
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
-					results = Top(batchSize, (MachineServicesColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+					results = Top(batchSize, (MachineRegistriesColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
 				}
 			});			
 		}
@@ -312,7 +312,7 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// Process results of a query in batches of the specified size
 		/// </summary>			 
 		[Bam.Net.Exclude]
-		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<MachineServices>> batchProcessor, Bam.Net.Data.OrderBy<MachineServicesColumns> orderBy, Database database = null)
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<MachineRegistries>> batchProcessor, Bam.Net.Data.OrderBy<MachineRegistriesColumns> orderBy, Database database = null)
 		{
 			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
 		}
@@ -321,11 +321,11 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// Process results of a query in batches of the specified size
 		/// </summary>	
 		[Bam.Net.Exclude]
-		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<MachineServicesColumns> where, Action<IEnumerable<MachineServices>> batchProcessor, Bam.Net.Data.OrderBy<MachineServicesColumns> orderBy, Database database = null)
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<MachineRegistriesColumns> where, Action<IEnumerable<MachineRegistries>> batchProcessor, Bam.Net.Data.OrderBy<MachineRegistriesColumns> orderBy, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
-				MachineServicesColumns columns = new MachineServicesColumns();
+				MachineRegistriesColumns columns = new MachineRegistriesColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -334,91 +334,91 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 						batchProcessor(results);
 					});
 					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
-					results = Top(batchSize, (MachineServicesColumns)where(columns) && orderBy.Column > top, orderBy, database);
+					results = Top(batchSize, (MachineRegistriesColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
 
-		public static MachineServices GetById(int id, Database database = null)
+		public static MachineRegistries GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
-		public static MachineServices GetById(long id, Database database = null)
+		public static MachineRegistries GetById(long id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}
 
-		public static MachineServices GetByUuid(string uuid, Database database = null)
+		public static MachineRegistries GetByUuid(string uuid, Database database = null)
 		{
 			return OneWhere(c => Bam.Net.Data.Query.Where("Uuid") == uuid, database);
 		}
 
-		public static MachineServices GetByCuid(string cuid, Database database = null)
+		public static MachineRegistries GetByCuid(string cuid, Database database = null)
 		{
 			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
 		[Bam.Net.Exclude]
-		public static MachineServicesCollection Query(QueryFilter filter, Database database = null)
+		public static MachineRegistriesCollection Query(QueryFilter filter, Database database = null)
 		{
 			return Where(filter, database);
 		}
 
 		[Bam.Net.Exclude]		
-		public static MachineServicesCollection Where(QueryFilter filter, Database database = null)
+		public static MachineRegistriesCollection Where(QueryFilter filter, Database database = null)
 		{
-			WhereDelegate<MachineServicesColumns> whereDelegate = (c) => filter;
+			WhereDelegate<MachineRegistriesColumns> whereDelegate = (c) => filter;
 			return Where(whereDelegate, database);
 		}
 
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A Func delegate that recieves a MachineServicesColumns 
+		/// <param name="where">A Func delegate that recieves a MachineRegistriesColumns 
 		/// and returns a QueryFilter which is the result of any comparisons
-		/// between MachineServicesColumns and other values
+		/// between MachineRegistriesColumns and other values
 		/// </param>
 		/// <param name="db"></param>
 		[Bam.Net.Exclude]
-		public static MachineServicesCollection Where(Func<MachineServicesColumns, QueryFilter<MachineServicesColumns>> where, OrderBy<MachineServicesColumns> orderBy = null, Database database = null)
+		public static MachineRegistriesCollection Where(Func<MachineRegistriesColumns, QueryFilter<MachineRegistriesColumns>> where, OrderBy<MachineRegistriesColumns> orderBy = null, Database database = null)
 		{
-			database = database ?? Db.For<MachineServices>();
-			return new MachineServicesCollection(database.GetQuery<MachineServicesColumns, MachineServices>(where, orderBy), true);
+			database = database ?? Db.For<MachineRegistries>();
+			return new MachineRegistriesCollection(database.GetQuery<MachineRegistriesColumns, MachineRegistries>(where, orderBy), true);
 		}
 		
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a MachineServicesColumns 
+		/// <param name="where">A WhereDelegate that recieves a MachineRegistriesColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between MachineServicesColumns and other values
+		/// between MachineRegistriesColumns and other values
 		/// </param>
 		/// <param name="db"></param>
 		[Bam.Net.Exclude]
-		public static MachineServicesCollection Where(WhereDelegate<MachineServicesColumns> where, Database database = null)
+		public static MachineRegistriesCollection Where(WhereDelegate<MachineRegistriesColumns> where, Database database = null)
 		{		
-			database = database ?? Db.For<MachineServices>();
-			var results = new MachineServicesCollection(database, database.GetQuery<MachineServicesColumns, MachineServices>(where), true);
+			database = database ?? Db.For<MachineRegistries>();
+			var results = new MachineRegistriesCollection(database, database.GetQuery<MachineRegistriesColumns, MachineRegistries>(where), true);
 			return results;
 		}
 		   
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a MachineServicesColumns 
+		/// <param name="where">A WhereDelegate that recieves a MachineRegistriesColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between MachineServicesColumns and other values
+		/// between MachineRegistriesColumns and other values
 		/// </param>
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static MachineServicesCollection Where(WhereDelegate<MachineServicesColumns> where, OrderBy<MachineServicesColumns> orderBy = null, Database database = null)
+		public static MachineRegistriesCollection Where(WhereDelegate<MachineRegistriesColumns> where, OrderBy<MachineRegistriesColumns> orderBy = null, Database database = null)
 		{		
-			database = database ?? Db.For<MachineServices>();
-			var results = new MachineServicesCollection(database, database.GetQuery<MachineServicesColumns, MachineServices>(where, orderBy), true);
+			database = database ?? Db.For<MachineRegistries>();
+			var results = new MachineRegistriesCollection(database, database.GetQuery<MachineRegistriesColumns, MachineRegistries>(where, orderBy), true);
 			return results;
 		}
 
@@ -426,13 +426,13 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate&lt;MachineServicesColumns&gt;.
+		/// WhereDelegate&lt;MachineRegistriesColumns&gt;.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
-		public static MachineServicesCollection Where(QiQuery where, Database database = null)
+		public static MachineRegistriesCollection Where(QiQuery where, Database database = null)
 		{
-			var results = new MachineServicesCollection(database, Select<MachineServicesColumns>.From<MachineServices>().Where(where, database));
+			var results = new MachineRegistriesCollection(database, Select<MachineRegistriesColumns>.From<MachineRegistries>().Where(where, database));
 			return results;
 		}
 				
@@ -442,7 +442,7 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// of the specified columns.
 		/// </summary>
 		[Bam.Net.Exclude]
-		public static MachineServices GetOneWhere(QueryFilter where, Database database = null)
+		public static MachineRegistries GetOneWhere(QueryFilter where, Database database = null)
 		{
 			var result = OneWhere(where, database);
 			if(result == null)
@@ -461,9 +461,9 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// <param name="where"></param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static MachineServices OneWhere(QueryFilter where, Database database = null)
+		public static MachineRegistries OneWhere(QueryFilter where, Database database = null)
 		{
-			WhereDelegate<MachineServicesColumns> whereDelegate = (c) => where;
+			WhereDelegate<MachineRegistriesColumns> whereDelegate = (c) => where;
 			var result = Top(1, whereDelegate, database);
 			return OneOrThrow(result);
 		}
@@ -476,12 +476,12 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// <param name="where"></param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static MachineServices GetOneWhere(WhereDelegate<MachineServicesColumns> where, Database database = null)
+		public static MachineRegistries GetOneWhere(WhereDelegate<MachineRegistriesColumns> where, Database database = null)
 		{
 			var result = OneWhere(where, database);
 			if(result == null)
 			{
-				MachineServicesColumns c = new MachineServicesColumns();
+				MachineRegistriesColumns c = new MachineRegistriesColumns();
 				IQueryFilter filter = where(c); 
 				result = CreateFromFilter(filter, database);
 			}
@@ -493,15 +493,15 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// Execute a query that should return only one result.  If more
 		/// than one result is returned a MultipleEntriesFoundException will 
 		/// be thrown.  This method is most commonly used to retrieve a
-		/// single MachineServices instance by its Id/Key value
+		/// single MachineRegistries instance by its Id/Key value
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a MachineServicesColumns 
+		/// <param name="where">A WhereDelegate that recieves a MachineRegistriesColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between MachineServicesColumns and other values
+		/// between MachineRegistriesColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static MachineServices OneWhere(WhereDelegate<MachineServicesColumns> where, Database database = null)
+		public static MachineRegistries OneWhere(WhereDelegate<MachineRegistriesColumns> where, Database database = null)
 		{
 			var result = Top(1, where, database);
 			return OneOrThrow(result);
@@ -511,11 +511,11 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate<MachineServicesColumns>.
+		/// WhereDelegate<MachineRegistriesColumns>.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
-		public static MachineServices OneWhere(QiQuery where, Database database = null)
+		public static MachineRegistries OneWhere(QiQuery where, Database database = null)
 		{
 			var results = Top(1, where, database);
 			return OneOrThrow(results);
@@ -525,13 +525,13 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
 		/// specified number of values will be returned.
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a MachineServicesColumns 
+		/// <param name="where">A WhereDelegate that recieves a MachineRegistriesColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between MachineServicesColumns and other values
+		/// between MachineRegistriesColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static MachineServices FirstOneWhere(WhereDelegate<MachineServicesColumns> where, Database database = null)
+		public static MachineRegistries FirstOneWhere(WhereDelegate<MachineRegistriesColumns> where, Database database = null)
 		{
 			var results = Top(1, where, database);
 			if(results.Count > 0)
@@ -548,13 +548,13 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
 		/// specified number of values will be returned.
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a MachineServicesColumns 
+		/// <param name="where">A WhereDelegate that recieves a MachineRegistriesColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between MachineServicesColumns and other values
+		/// between MachineRegistriesColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static MachineServices FirstOneWhere(WhereDelegate<MachineServicesColumns> where, OrderBy<MachineServicesColumns> orderBy, Database database = null)
+		public static MachineRegistries FirstOneWhere(WhereDelegate<MachineRegistriesColumns> where, OrderBy<MachineRegistriesColumns> orderBy, Database database = null)
 		{
 			var results = Top(1, where, orderBy, database);
 			if(results.Count > 0)
@@ -570,15 +570,15 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// <summary>
 		/// Shortcut for Top(1, where, orderBy, database)
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a MachineServicesColumns 
+		/// <param name="where">A WhereDelegate that recieves a MachineRegistriesColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between MachineServicesColumns and other values
+		/// between MachineRegistriesColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static MachineServices FirstOneWhere(QueryFilter where, OrderBy<MachineServicesColumns> orderBy = null, Database database = null)
+		public static MachineRegistries FirstOneWhere(QueryFilter where, OrderBy<MachineRegistriesColumns> orderBy = null, Database database = null)
 		{
-			WhereDelegate<MachineServicesColumns> whereDelegate = (c) => where;
+			WhereDelegate<MachineRegistriesColumns> whereDelegate = (c) => where;
 			var results = Top(1, whereDelegate, orderBy, database);
 			if(results.Count > 0)
 			{
@@ -599,13 +599,13 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// This value is used in the sql query so no more than this 
 		/// number of values will be returned by the database.
 		/// </param>
-		/// <param name="where">A WhereDelegate that recieves a MachineServicesColumns 
+		/// <param name="where">A WhereDelegate that recieves a MachineRegistriesColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between MachineServicesColumns and other values
+		/// between MachineRegistriesColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static MachineServicesCollection Top(int count, WhereDelegate<MachineServicesColumns> where, Database database = null)
+		public static MachineRegistriesCollection Top(int count, WhereDelegate<MachineRegistriesColumns> where, Database database = null)
 		{
 			return Top(count, where, null, database);
 		}
@@ -619,9 +619,9 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// This value is used in the sql query so no more than this 
 		/// number of values will be returned by the database.
 		/// </param>
-		/// <param name="where">A WhereDelegate that recieves a MachineServicesColumns 
+		/// <param name="where">A WhereDelegate that recieves a MachineRegistriesColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between MachineServicesColumns and other values
+		/// between MachineRegistriesColumns and other values
 		/// </param>
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
@@ -630,29 +630,29 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// Which database to query or null to use the default
 		/// </param>
 		[Bam.Net.Exclude]
-		public static MachineServicesCollection Top(int count, WhereDelegate<MachineServicesColumns> where, OrderBy<MachineServicesColumns> orderBy, Database database = null)
+		public static MachineRegistriesCollection Top(int count, WhereDelegate<MachineRegistriesColumns> where, OrderBy<MachineRegistriesColumns> orderBy, Database database = null)
 		{
-			MachineServicesColumns c = new MachineServicesColumns();
+			MachineRegistriesColumns c = new MachineRegistriesColumns();
 			IQueryFilter filter = where(c);         
 			
-			Database db = database ?? Db.For<MachineServices>();
+			Database db = database ?? Db.For<MachineRegistries>();
 			QuerySet query = GetQuerySet(db); 
-			query.Top<MachineServices>(count);
+			query.Top<MachineRegistries>(count);
 			query.Where(filter);
 
 			if(orderBy != null)
 			{
-				query.OrderBy<MachineServicesColumns>(orderBy);
+				query.OrderBy<MachineRegistriesColumns>(orderBy);
 			}
 
 			query.Execute(db);
-			var results = query.Results.As<MachineServicesCollection>(0);
+			var results = query.Results.As<MachineRegistriesCollection>(0);
 			results.Database = db;
 			return results;
 		}
 
 		[Bam.Net.Exclude]
-		public static MachineServicesCollection Top(int count, QueryFilter where, Database database)
+		public static MachineRegistriesCollection Top(int count, QueryFilter where, Database database)
 		{
 			return Top(count, where, null, database);
 		}
@@ -676,20 +676,20 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// Which database to query or null to use the default
 		/// </param>
 		[Bam.Net.Exclude]
-		public static MachineServicesCollection Top(int count, QueryFilter where, OrderBy<MachineServicesColumns> orderBy = null, Database database = null)
+		public static MachineRegistriesCollection Top(int count, QueryFilter where, OrderBy<MachineRegistriesColumns> orderBy = null, Database database = null)
 		{
-			Database db = database ?? Db.For<MachineServices>();
+			Database db = database ?? Db.For<MachineRegistries>();
 			QuerySet query = GetQuerySet(db);
-			query.Top<MachineServices>(count);
+			query.Top<MachineRegistries>(count);
 			query.Where(where);
 
 			if(orderBy != null)
 			{
-				query.OrderBy<MachineServicesColumns>(orderBy);
+				query.OrderBy<MachineRegistriesColumns>(orderBy);
 			}
 
 			query.Execute(db);
-			var results = query.Results.As<MachineServicesCollection>(0);
+			var results = query.Results.As<MachineRegistriesCollection>(0);
 			results.Database = db;
 			return results;
 		}
@@ -710,29 +710,29 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// <param name="database">
 		/// Which database to query or null to use the default
 		/// </param>
-		public static MachineServicesCollection Top(int count, QiQuery where, Database database = null)
+		public static MachineRegistriesCollection Top(int count, QiQuery where, Database database = null)
 		{
-			Database db = database ?? Db.For<MachineServices>();
+			Database db = database ?? Db.For<MachineRegistries>();
 			QuerySet query = GetQuerySet(db);
-			query.Top<MachineServices>(count);
+			query.Top<MachineRegistries>(count);
 			query.Where(where);
 			query.Execute(db);
-			var results = query.Results.As<MachineServicesCollection>(0);
+			var results = query.Results.As<MachineRegistriesCollection>(0);
 			results.Database = db;
 			return results;
 		}
 
 		/// <summary>
-		/// Return the count of MachineServiceses
+		/// Return the count of MachineRegistries
 		/// </summary>
 		/// <param name="database">
 		/// Which database to query or null to use the default
 		/// </param>
 		public static long Count(Database database = null)
         {
-			Database db = database ?? Db.For<MachineServices>();
+			Database db = database ?? Db.For<MachineRegistries>();
             QuerySet query = GetQuerySet(db);
-            query.Count<MachineServices>();
+            query.Count<MachineRegistries>();
             query.Execute(db);
             return (long)query.Results[0].DataRow[0];
         }
@@ -740,22 +740,22 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// <summary>
 		/// Execute a query and return the number of results
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a MachineServicesColumns 
+		/// <param name="where">A WhereDelegate that recieves a MachineRegistriesColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between MachineServicesColumns and other values
+		/// between MachineRegistriesColumns and other values
 		/// </param>
 		/// <param name="database">
 		/// Which database to query or null to use the default
 		/// </param>
 		[Bam.Net.Exclude]
-		public static long Count(WhereDelegate<MachineServicesColumns> where, Database database = null)
+		public static long Count(WhereDelegate<MachineRegistriesColumns> where, Database database = null)
 		{
-			MachineServicesColumns c = new MachineServicesColumns();
+			MachineRegistriesColumns c = new MachineRegistriesColumns();
 			IQueryFilter filter = where(c) ;
 
-			Database db = database ?? Db.For<MachineServices>();
+			Database db = database ?? Db.For<MachineRegistries>();
 			QuerySet query = GetQuerySet(db);	 
-			query.Count<MachineServices>();
+			query.Count<MachineRegistries>();
 			query.Where(filter);	  
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
@@ -763,18 +763,18 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		 
 		public static long Count(QiQuery where, Database database = null)
 		{
-		    Database db = database ?? Db.For<MachineServices>();
+		    Database db = database ?? Db.For<MachineRegistries>();
 			QuerySet query = GetQuerySet(db);	 
-			query.Count<MachineServices>();
+			query.Count<MachineRegistries>();
 			query.Where(where);	  
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
 		} 		
 
-		private static MachineServices CreateFromFilter(IQueryFilter filter, Database database = null)
+		private static MachineRegistries CreateFromFilter(IQueryFilter filter, Database database = null)
 		{
-			Database db = database ?? Db.For<MachineServices>();			
-			var dao = new MachineServices();
+			Database db = database ?? Db.For<MachineRegistries>();			
+			var dao = new MachineRegistries();
 			filter.Parameters.Each(p=>
 			{
 				dao.Property(p.ColumnName, p.Value);
@@ -783,7 +783,7 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 			return dao;
 		}
 		
-		private static MachineServices OneOrThrow(MachineServicesCollection c)
+		private static MachineRegistries OneOrThrow(MachineRegistriesCollection c)
 		{
 			if(c.Count == 1)
 			{
