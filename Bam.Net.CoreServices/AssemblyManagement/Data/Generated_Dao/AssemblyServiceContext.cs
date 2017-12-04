@@ -31,6 +31,58 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Dao
 		}
 
 
+	public class AssemblyRevisionQueryContext
+	{
+			public AssemblyRevisionCollection Where(WhereDelegate<AssemblyRevisionColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyRevision.Where(where, db);
+			}
+		   
+			public AssemblyRevisionCollection Where(WhereDelegate<AssemblyRevisionColumns> where, OrderBy<AssemblyRevisionColumns> orderBy = null, Database db = null)
+			{
+				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyRevision.Where(where, orderBy, db);
+			}
+
+			public AssemblyRevision OneWhere(WhereDelegate<AssemblyRevisionColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyRevision.OneWhere(where, db);
+			}
+
+			public static AssemblyRevision GetOneWhere(WhereDelegate<AssemblyRevisionColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyRevision.GetOneWhere(where, db);
+			}
+		
+			public AssemblyRevision FirstOneWhere(WhereDelegate<AssemblyRevisionColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyRevision.FirstOneWhere(where, db);
+			}
+
+			public AssemblyRevisionCollection Top(int count, WhereDelegate<AssemblyRevisionColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyRevision.Top(count, where, db);
+			}
+
+			public AssemblyRevisionCollection Top(int count, WhereDelegate<AssemblyRevisionColumns> where, OrderBy<AssemblyRevisionColumns> orderBy, Database db = null)
+			{
+				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyRevision.Top(count, where, orderBy, db);
+			}
+
+			public long Count(WhereDelegate<AssemblyRevisionColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyRevision.Count(where, db);
+			}
+	}
+
+	static AssemblyRevisionQueryContext _assemblyRevisions;
+	static object _assemblyRevisionsLock = new object();
+	public static AssemblyRevisionQueryContext AssemblyRevisions
+	{
+		get
+		{
+			return _assemblyRevisionsLock.DoubleCheckLock<AssemblyRevisionQueryContext>(ref _assemblyRevisions, () => new AssemblyRevisionQueryContext());
+		}
+	}
 	public class AssemblyDescriptorQueryContext
 	{
 			public AssemblyDescriptorCollection Where(WhereDelegate<AssemblyDescriptorColumns> where, Database db = null)

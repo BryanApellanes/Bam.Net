@@ -60,7 +60,7 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Wrappers
 					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.AssemblyManagement.Data.Dao.AssemblyDescriptorProcessRuntimeDescriptor,  Bam.Net.CoreServices.AssemblyManagement.Data.Dao.ProcessRuntimeDescriptor>(Repository.GetDaoInstance(this), false);
 					 xref.Load(Repository.Database);
 					 _processRuntimeDescriptors = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.AssemblyManagement.Data.ProcessRuntimeDescriptor>().ToList();
-					 SetUpdatedXrefCollectionProperty("ProcessRuntimeDescriptors", this.GetType().GetProperty("ProcessRuntimeDescriptor"));
+					 SetUpdatedXrefCollectionProperty("ProcessRuntimeDescriptors", this.GetType().GetProperty("ProcessRuntimeDescriptors"));
 				}
 
 				return _processRuntimeDescriptors;
@@ -68,7 +68,7 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Wrappers
 			set
 			{
 				_processRuntimeDescriptors = value;
-				SetUpdatedXrefCollectionProperty("ProcessRuntimeDescriptors", this.GetType().GetProperty("ProcessRuntimeDescriptor"));
+				SetUpdatedXrefCollectionProperty("ProcessRuntimeDescriptors", this.GetType().GetProperty("ProcessRuntimeDescriptors"));
 			}
 		}// Xref property: Left -> AssemblyDescriptor ; Right -> AssemblyReferenceDescriptor
 

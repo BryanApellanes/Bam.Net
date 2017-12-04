@@ -228,6 +228,13 @@
     <Compile Include="ApplicationRegistration\Data\HostDomain.cs" />
     <Compile Include="ApplicationRegistration\Data\UserSetting.cs" />
     <Compile Include="AssemblyManagement\Data\AssemblyRevision.cs" />
+    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyRevision.cs" />
+    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyRevisionCollection.cs" />
+    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyRevisionColumns.cs" />
+    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyRevisionPagedQuery.cs" />
+    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyRevisionQuery.cs" />
+    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyRevisionWrapper.cs" />
+    <Compile Include="AssemblyManagement\Data\Generated_Dao\Qi\AssemblyRevision.cs" />
     <Compile Include="ClientApplicationNameResolver.cs" />
     <Compile Include="FileSystemChunkStorage.cs" />
     <Compile Include="Files\Chunk.cs" />
