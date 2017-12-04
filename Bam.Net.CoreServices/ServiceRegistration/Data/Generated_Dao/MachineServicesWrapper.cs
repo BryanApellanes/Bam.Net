@@ -16,7 +16,7 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Wrappers
 {
 	// generated
 	[Serializable]
-	public class MachineServicesWrapper: Bam.Net.CoreServices.ServiceRegistration.Data.MachineServices, IHasUpdatedXrefCollectionProperties
+	public class MachineServicesWrapper: Bam.Net.CoreServices.ServiceRegistration.Data.MachineRegistries, IHasUpdatedXrefCollectionProperties
 	{
 		public MachineServicesWrapper()
 		{

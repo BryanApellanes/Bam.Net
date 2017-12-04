@@ -24,7 +24,7 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao.Repository
 			SchemaName = "ServiceRegistration";
 			BaseNamespace = "Bam.Net.CoreServices.ServiceRegistration.Data";			
 ﻿			
-			AddType<Bam.Net.CoreServices.ServiceRegistration.Data.MachineServices>();﻿			
+			AddType<Bam.Net.CoreServices.ServiceRegistration.Data.MachineRegistries>();﻿			
 			AddType<Bam.Net.CoreServices.ServiceRegistration.Data.ServiceDescriptor>();﻿			
 			AddType<Bam.Net.CoreServices.ServiceRegistration.Data.ServiceRegistryDescriptor>();﻿			
 			AddType<Bam.Net.CoreServices.ServiceRegistration.Data.ServiceRegistryLoaderDescriptor>();﻿			
@@ -49,10 +49,10 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao.Repository
 		/// of the specified columns.
 		/// </summary>
 		/// <param name="where"></param>
-		public Bam.Net.CoreServices.ServiceRegistration.Data.MachineServices GetOneMachineServicesWhere(WhereDelegate<MachineServicesColumns> where)
+		public Bam.Net.CoreServices.ServiceRegistration.Data.MachineRegistries GetOneMachineServicesWhere(WhereDelegate<MachineServicesColumns> where)
 		{
-			Type wrapperType = GetWrapperType<Bam.Net.CoreServices.ServiceRegistration.Data.MachineServices>();
-			return (Bam.Net.CoreServices.ServiceRegistration.Data.MachineServices)Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices.GetOneWhere(where, Database).CopyAs(wrapperType, this);
+			Type wrapperType = GetWrapperType<Bam.Net.CoreServices.ServiceRegistration.Data.MachineRegistries>();
+			return (Bam.Net.CoreServices.ServiceRegistration.Data.MachineRegistries)Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices.GetOneWhere(where, Database).CopyAs(wrapperType, this);
 		}
 
 		/// <summary>
@@ -65,10 +65,10 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao.Repository
 		/// and returns a IQueryFilter which is the result of any comparisons
 		/// between MachineServicesColumns and other values
 		/// </param>
-		public Bam.Net.CoreServices.ServiceRegistration.Data.MachineServices OneMachineServicesWhere(WhereDelegate<MachineServicesColumns> where)
+		public Bam.Net.CoreServices.ServiceRegistration.Data.MachineRegistries OneMachineServicesWhere(WhereDelegate<MachineServicesColumns> where)
         {
-            Type wrapperType = GetWrapperType<Bam.Net.CoreServices.ServiceRegistration.Data.MachineServices>();
-            return (Bam.Net.CoreServices.ServiceRegistration.Data.MachineServices)Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices.OneWhere(where, Database).CopyAs(wrapperType, this);
+            Type wrapperType = GetWrapperType<Bam.Net.CoreServices.ServiceRegistration.Data.MachineRegistries>();
+            return (Bam.Net.CoreServices.ServiceRegistration.Data.MachineRegistries)Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices.OneWhere(where, Database).CopyAs(wrapperType, this);
         }
 
 		/// <summary>
@@ -78,9 +78,9 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao.Repository
 		/// and returns a IQueryFilter which is the result of any comparisons
 		/// between Bam.Net.CoreServices.ServiceRegistration.Data.MachineServicesColumns and other values
 		/// </param>
-		public IEnumerable<Bam.Net.CoreServices.ServiceRegistration.Data.MachineServices> MachineServicesesWhere(WhereDelegate<MachineServicesColumns> where, OrderBy<MachineServicesColumns> orderBy = null)
+		public IEnumerable<Bam.Net.CoreServices.ServiceRegistration.Data.MachineRegistries> MachineServicesesWhere(WhereDelegate<MachineServicesColumns> where, OrderBy<MachineServicesColumns> orderBy = null)
         {
-            return Wrap<Bam.Net.CoreServices.ServiceRegistration.Data.MachineServices>(Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices.Where(where, orderBy, Database));
+            return Wrap<Bam.Net.CoreServices.ServiceRegistration.Data.MachineRegistries>(Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices.Where(where, orderBy, Database));
         }
 		
 		/// <summary>
@@ -96,9 +96,9 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao.Repository
 		/// and returns a IQueryFilter which is the result of any comparisons
 		/// between MachineServicesColumns and other values
 		/// </param>
-		public IEnumerable<Bam.Net.CoreServices.ServiceRegistration.Data.MachineServices> TopMachineServicesesWhere(int count, WhereDelegate<MachineServicesColumns> where)
+		public IEnumerable<Bam.Net.CoreServices.ServiceRegistration.Data.MachineRegistries> TopMachineServicesesWhere(int count, WhereDelegate<MachineServicesColumns> where)
         {
-            return Wrap<Bam.Net.CoreServices.ServiceRegistration.Data.MachineServices>(Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices.Top(count, where, Database));
+            return Wrap<Bam.Net.CoreServices.ServiceRegistration.Data.MachineRegistries>(Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices.Top(count, where, Database));
         }
 
 		/// <summary>
@@ -121,19 +121,19 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao.Repository
             return Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices.Count(where, Database);
         }
         
-        public async Task BatchQueryMachineServiceses(int batchSize, WhereDelegate<MachineServicesColumns> where, Action<IEnumerable<Bam.Net.CoreServices.ServiceRegistration.Data.MachineServices>> batchProcessor)
+        public async Task BatchQueryMachineServiceses(int batchSize, WhereDelegate<MachineServicesColumns> where, Action<IEnumerable<Bam.Net.CoreServices.ServiceRegistration.Data.MachineRegistries>> batchProcessor)
         {
             await Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices.BatchQuery(batchSize, where, (batch) =>
             {
-				batchProcessor(Wrap<Bam.Net.CoreServices.ServiceRegistration.Data.MachineServices>(batch));
+				batchProcessor(Wrap<Bam.Net.CoreServices.ServiceRegistration.Data.MachineRegistries>(batch));
             }, Database);
         }
 		
-        public async Task BatchAllMachineServiceses(int batchSize, Action<IEnumerable<Bam.Net.CoreServices.ServiceRegistration.Data.MachineServices>> batchProcessor)
+        public async Task BatchAllMachineServiceses(int batchSize, Action<IEnumerable<Bam.Net.CoreServices.ServiceRegistration.Data.MachineRegistries>> batchProcessor)
         {
             await Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineServices.BatchAll(batchSize, (batch) =>
             {
-				batchProcessor(Wrap<Bam.Net.CoreServices.ServiceRegistration.Data.MachineServices>(batch));
+				batchProcessor(Wrap<Bam.Net.CoreServices.ServiceRegistration.Data.MachineRegistries>(batch));
             }, Database);
         }﻿		
 		/// <summary>
