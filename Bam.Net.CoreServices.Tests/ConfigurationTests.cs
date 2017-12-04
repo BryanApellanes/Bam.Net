@@ -13,15 +13,14 @@ using NSubstitute;
 namespace Bam.Net.CoreServices.Tests
 {
     using System.IO;
-    using Bam.Net.CoreServices.ApplicationRegistration;
-    using Bam.Net.CoreServices.ApplicationRegistration.Dao.Repository;
-    using Bam.Net.CoreServices.Services;
+    using Bam.Net.CoreServices.ApplicationRegistration.Data;
     using Net.Data.SQLite;
     using Server;
     using ServiceProxySecure = ServiceProxy.Secure;
     using Bam.Net.Testing.Unit;
     using System.Collections.Specialized;
     using Bam.Net.Web;
+    using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Repository;
 
     [Serializable]
     public class ConfigurationTests : CommandLineTestInterface
@@ -31,7 +30,7 @@ namespace Bam.Net.CoreServices.Tests
         {
             string appName = $"{nameof(CanSetAndGetCommonAppConfig)}_TestAppName";
             string configurationName = $"{nameof(CanSetAndGetCommonAppConfig)}_TestConfigName";
-            CoreConfigurationService configSvc = GetTestCoreConfigurationService(appName);
+            ConfigurationService configSvc = GetTestCoreConfigurationService(appName);
 
             configSvc.SetApplicationConfiguration(new Dictionary<string, string>
             {
@@ -56,7 +55,7 @@ namespace Bam.Net.CoreServices.Tests
         {
             string machineName = $"{nameof(CanSetAndGetCommonMachineConfig)}_TestMachineName";
             string configurationName = $"{nameof(CanSetAndGetCommonMachineConfig)}_TestConfigName";
-            CoreConfigurationService configSvc = GetTestCoreConfigurationService(machineName);
+            ConfigurationService configSvc = GetTestCoreConfigurationService(machineName);
 
             configSvc.SetMachineConfiguration(machineName, new Dictionary<string, string>
             {
@@ -81,7 +80,7 @@ namespace Bam.Net.CoreServices.Tests
         {
             string appName = $"{nameof(CanSetAndGetCommonConfiguration)}_TestAppName";
             string configurationName = $"{nameof(CanSetAndGetCommonConfiguration)}_TestConfigName";
-            CoreConfigurationService configSvc = GetTestCoreConfigurationService(nameof(CanSetAndGetCommonConfiguration));
+            ConfigurationService configSvc = GetTestCoreConfigurationService(nameof(CanSetAndGetCommonConfiguration));
 
             configSvc.SetCommonConfiguration(new Dictionary<string, string>
             {
@@ -103,7 +102,7 @@ namespace Bam.Net.CoreServices.Tests
             string configurationName = $"{nameof(ApplicationSettingOverridesMachine)}_TestConfigName";
             string expectedValue = "ApplicationValue";
             string machineName = Machine.Current.Name;
-            CoreConfigurationService configSvc = GetTestCoreConfigurationService(appName);
+            ConfigurationService configSvc = GetTestCoreConfigurationService(appName);
             configSvc.SetMachineConfiguration(machineName, new Dictionary<string, string>
             {
                 {"key1", "MachineValue" }
@@ -124,7 +123,7 @@ namespace Bam.Net.CoreServices.Tests
         {
             string appName = $"{nameof(ConfigurationAggregatesCommonMachineAndApplication)}_TestAppName";
             string machineName = $"{nameof(ConfigurationAggregatesCommonMachineAndApplication)}_TestMachineName";
-            CoreConfigurationService configSvc = GetTestCoreConfigurationService(appName);
+            ConfigurationService configSvc = GetTestCoreConfigurationService(appName);
             configSvc.SetCommonConfiguration(new Dictionary<string, string>
             {
                 {"CommonKey1", "CommonValue1" },
@@ -182,7 +181,7 @@ namespace Bam.Net.CoreServices.Tests
             Expect.AreEqual("ApplicationValue2", config["ApplicationKey2"]);
         }
 
-        private CoreConfigurationService GetTestCoreConfigurationService(string testName)
+        private ConfigurationService GetTestCoreConfigurationService(string testName)
         {
             string appName = $"{testName}_TestAppName";
             string userDbPath = $".\\{testName}_Test";
@@ -194,7 +193,7 @@ namespace Bam.Net.CoreServices.Tests
             userDb.TryEnsureSchema<UserAccounts.Data.User>();
             Db.For<UserAccounts.Data.User>(userDb);
 
-            CoreConfigurationService configSvc = new CoreConfigurationService(coreRepo, new Server.AppConf(), userDbPath);
+            ConfigurationService configSvc = new ConfigurationService(coreRepo, new Server.AppConf(), userDbPath);
             configSvc.DaoRepository = coreRepo;
             IApplicationNameProvider appNameProvider = Substitute.For<IApplicationNameProvider>();
             appNameProvider.GetApplicationName().Returns(appName);

@@ -23,10 +23,10 @@ namespace Bam.Net.CoreServices
     [Proxy("fileSvc")]
     [ApiKeyRequired]
     [ServiceSubdomain("file")]
-    public class CoreFileService : ApplicationProxyableService, IFileService
+    public class FileService : ApplicationProxyableService, IFileService
     {
-        protected CoreFileService() { }
-        public CoreFileService(IRepository repository, DataSettings dataSettings = null, ILogger logger = null)
+        protected FileService() { }
+        public FileService(IRepository repository, DataSettings dataSettings = null, ILogger logger = null)
         {
             Repository = repository;
             Repository.AddTypes(new Type[]
@@ -51,7 +51,7 @@ namespace Bam.Net.CoreServices
 
         public override object Clone()
         {
-            CoreFileService clone = new CoreFileService(Repository);
+            FileService clone = new FileService(Repository);
             clone.CopyProperties(this);
             clone.CopyEventHandlers(this);
             return clone;

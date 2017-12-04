@@ -20,7 +20,7 @@ namespace Bam.Net.Services.Chunking
             Logger = logger ?? Log.Default;
         }
         public IChunkStorage ChunkStorage { get; set; }
-        public override ChunkResponse ProcessRequest(BinaryContext<ChunkRequest> context)
+        public override ChunkResponse ProcessRequest(StreamingContext<ChunkRequest> context)
         {
             try
             {

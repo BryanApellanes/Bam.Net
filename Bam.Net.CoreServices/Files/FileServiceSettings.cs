@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.CoreServices.Files
 {
-    public class CoreFileServiceSettings // Used by Copy from within CoreFileService
+    public class FileServiceSettings // Used by Copy from within FileService
     {
         public string ChunkDirectory { get; set; }
         public int ChunkDataBatchSize { get; set; }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Bam.Net.Data;
 
-namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
+namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 {
     public class OrganizationUserColumns: QueryFilter<OrganizationUserColumns>, IFilterToken
     {

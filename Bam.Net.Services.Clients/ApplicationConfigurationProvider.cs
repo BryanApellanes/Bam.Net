@@ -4,6 +4,7 @@ using Bam.Net.Configuration;
 using Bam.Net.CoreServices;
 using Bam.Net.Services.Clients;
 using Bam.Net.CoreServices.ApplicationRegistration;
+using Bam.Net.CoreServices.ApplicationRegistration.Data;
 
 namespace Bam.Net.Services.Clients
 {

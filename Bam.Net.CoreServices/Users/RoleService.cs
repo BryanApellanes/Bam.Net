@@ -16,10 +16,10 @@ namespace Bam.Net.CoreServices
     [Proxy("roleSvc")]
     [Encrypt]
     [ServiceSubdomain("role")]
-    public class CoreRoleService : ApplicationProxyableService, IRoleProvider
+    public class RoleService : ApplicationProxyableService, IRoleProvider
     {
-        protected CoreRoleService() { } // required for proxy gen
-        public CoreRoleService(IRoleProvider wrapped, AppConf conf)
+        protected RoleService() { } // required for proxy gen
+        public RoleService(IRoleProvider wrapped, AppConf conf)
         {
             AppConf = conf;
         }
@@ -28,7 +28,7 @@ namespace Bam.Net.CoreServices
 
         public override object Clone()
         {
-            CoreRoleService clone = new CoreRoleService(RoleProvider, AppConf);
+            RoleService clone = new RoleService(RoleProvider, AppConf);
             clone.CloneProperties(this);
             return clone;
         }

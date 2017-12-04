@@ -7,10 +7,10 @@ namespace Bam.Net.CoreServices
 {
     [Proxy("diagSvc")]
     [ApiKeyRequired]
-    public class CoreDiagnosticService: ApplicationProxyableService 
+    public class DiagnosticService: ApplicationProxyableService 
     {
-        protected CoreDiagnosticService() { } // required for client proxy generation via ProxyFactory
-        public CoreDiagnosticService(AppConf conf)
+        protected DiagnosticService() { } // required for client proxy generation via ProxyFactory
+        public DiagnosticService(AppConf conf)
         {
             AppConf = conf;
         }
@@ -23,7 +23,7 @@ namespace Bam.Net.CoreServices
         [Exclude]
         public override object Clone()
         {
-            CoreDiagnosticService clone = new CoreDiagnosticService(AppConf);
+            DiagnosticService clone = new DiagnosticService(AppConf);
             clone.CopyProperties(this);
             clone.CopyEventHandlers(this);
             return clone;

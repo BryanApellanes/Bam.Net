@@ -26,8 +26,8 @@ namespace Bam.Net.Server.Streaming
                 {
                     GetStreamData(client, out NetworkStream stream, out byte[] requestData);
 
-                    BinaryRequest<TRequest> request = requestData.FromBinaryBytes<BinaryRequest<TRequest>>();
-                    BinaryContext<TRequest> ctx = new BinaryContext<TRequest>
+                    StreamingRequest<TRequest> request = requestData.FromBinaryBytes<StreamingRequest<TRequest>>();
+                    StreamingContext<TRequest> ctx = new StreamingContext<TRequest>
                     {
                         Request = request,
                         ResponseStream = stream,
@@ -51,10 +51,10 @@ namespace Bam.Net.Server.Streaming
 
         public override void ProcessRequest(StreamingContext context)
         {
-            ProcessRequest((BinaryContext<TRequest>)context);
+            ProcessRequest((StreamingContext<TRequest>)context);
         }
 
-        public abstract TResponse ProcessRequest(BinaryContext<TRequest> context);
+        public abstract TResponse ProcessRequest(StreamingContext<TRequest> context);
     }
 
     public abstract class StreamingServer: Loggable, IConfigurable, IDisposable

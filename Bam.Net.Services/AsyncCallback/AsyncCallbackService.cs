@@ -13,6 +13,7 @@ using Dao = Bam.Net.Services.AsyncCallback.Data.Dao;
 using Bam.Net.Services.AsyncCallback.Data;
 using Bam.Net.Services.AsyncCallback.Data.Dao.Repository;
 using System.Threading;
+using Bam.Net.CoreServices.ApplicationRegistration.Data;
 
 namespace Bam.Net.Services
 {

@@ -8,8 +8,8 @@ using Bam.Net.Data.Repositories;
 using Bam.Net.Logging;
 using Bam.Net.ServiceProxy;
 using Bam.Net.ServiceProxy.Secure;
-using Bam.Net.CoreServices.ApplicationRegistration;
-using Bam.Net.CoreServices.ApplicationRegistration.Dao.Repository;
+using Bam.Net.CoreServices.ApplicationRegistration.Data;
+//using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Repository;
 using Bam.Net.UserAccounts;
 using Bam.Net.Caching;
 using System.Collections.Specialized;
@@ -17,20 +17,21 @@ using System.Net;
 using Bam.Net.Server;
 using Bam.Net.Web;
 using Bam.Net.Configuration;
+using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Repository;
 
 namespace Bam.Net.CoreServices
 {
     [Proxy("appRegistrySvc")]
     [Encrypt]
     [ServiceSubdomain("appregistry")]
-    public class CoreApplicationRegistrationService : ApplicationProxyableService, IApiKeyResolver, IApiKeyProvider, IApplicationNameProvider
+    public class ApplicationRegistrationService : ApplicationProxyableService, IApiKeyResolver, IApiKeyProvider, IApplicationNameProvider
     {
         CacheManager _cacheManager;
         ApiKeyResolver _apiKeyResolver;
 
-        protected CoreApplicationRegistrationService() { }
+        protected ApplicationRegistrationService() { }
 
-        public CoreApplicationRegistrationService(CoreApplicationRegistryServiceConfig config, AppConf conf, ApplicationRegistrationRepository coreRepo, ILogger logger)
+        public ApplicationRegistrationService(ApplicationRegistryServiceConfig config, AppConf conf, ApplicationRegistrationRepository coreRepo, ILogger logger)
         {
             ApplicationRegistrationRepository = coreRepo;
             ApplicationRegistrationRepository.WarningsAsErrors = false;
@@ -80,12 +81,12 @@ namespace Bam.Net.CoreServices
             {
                 throw new ApplicationNameNotSpecifiedException();
             }
-            ApplicationRegistration.Application app = CompositeRepository.Query<ApplicationRegistration.Application>(a => a.Name.Equals(ApplicationName)).FirstOrDefault();
+            CoreServices.ApplicationRegistration.Data.Application app = CompositeRepository.Query<CoreServices.ApplicationRegistration.Data.Application>(a => a.Name.Equals(base.ApplicationName)).FirstOrDefault();
             if(app == null)
             {
                 throw new InvalidOperationException("Application not registered");
             }
-            AddApiKey(ApplicationRegistrationRepository, app, out ApplicationRegistration.ApiKey key);
+            AddApiKey(ApplicationRegistrationRepository, app, out CoreServices.ApplicationRegistration.Data.ApiKey key);
             return new ApiKeyInfo { ApplicationClientId = key.ClientId, ApiKey = key.SharedSecret, ApplicationName = ApplicationName };
         }
 
@@ -181,7 +182,7 @@ namespace Bam.Net.CoreServices
             }
             catch (Exception ex)
             {
-                return HandleException(ex, nameof(CoreApplicationRegistrationService.RegisterClient));
+                return HandleException(ex, nameof(ApplicationRegistrationService.RegisterClient));
             }
         }
 
@@ -226,17 +227,17 @@ namespace Bam.Net.CoreServices
             }
             catch (Exception ex)
             {
-                Logger.AddEntry("Exception occurred in {0}", ex, nameof(CoreApplicationRegistrationService.RegisterApplicationProcess));
+                Logger.AddEntry("Exception occurred in {0}", ex, nameof(ApplicationRegistrationService.RegisterApplicationProcess));
                 return new CoreServiceResponse { Success = false, Message = ex.Message };
             }
         }
 
         [Exclude]
-        public ApplicationRegistration.Application Application
+        public CoreServices.ApplicationRegistration.Data.Application Application
         {
             get
             {
-                return CompositeRepository.Query<ApplicationRegistration.Application>(a => a.Name.Equals(ApplicationName)).FirstOrDefault();
+                return CompositeRepository.Query<CoreServices.ApplicationRegistration.Data.Application>(a => a.Name.Equals(base.ApplicationName)).FirstOrDefault();
             }
         }
 
@@ -249,7 +250,7 @@ namespace Bam.Net.CoreServices
         [Exclude]
         public override object Clone()
         {
-            CoreApplicationRegistrationService result = new CoreApplicationRegistrationService(Config, AppConf, ApplicationRegistrationRepository, Logger);
+            ApplicationRegistrationService result = new ApplicationRegistrationService(Config, AppConf, ApplicationRegistrationRepository, Logger);
             result.CopyProperties(this);
             return result;
         }
@@ -276,7 +277,7 @@ namespace Bam.Net.CoreServices
         [Local]
         public virtual string GetApplicationApiKey(string applicationClientId, int index)
         {
-            ApplicationRegistration.Application app = ApplicationRegistrationRepository.OneApplicationWhere(c => c.Cuid == applicationClientId);
+            CoreServices.ApplicationRegistration.Data.Application app = ApplicationRegistrationRepository.OneApplicationWhere(c => c.Cuid == applicationClientId);
             if(app != null)
             {
                 return app.ApiKeys[index]?.SharedSecret;
@@ -287,7 +288,7 @@ namespace Bam.Net.CoreServices
         [Exclude]
         public string GetApplicationClientId(IApplicationNameProvider nameProvider)
         {
-            ApplicationRegistration.Application app = ApplicationRegistrationRepository.OneApplicationWhere(c => c.Name == nameProvider.GetApplicationName());
+            CoreServices.ApplicationRegistration.Data.Application app = ApplicationRegistrationRepository.OneApplicationWhere(c => c.Name == nameProvider.GetApplicationName());
             return app?.Cuid;
         }
 
@@ -326,18 +327,18 @@ namespace Bam.Net.CoreServices
         [Exclude]
         public void SetKeyToken(NameValueCollection headers, string stringToHash)
         {
-            throw new InvalidOperationException($"It isn't appropriate for this service to be used for this purpose: {nameof(CoreApplicationRegistrationService)}.{nameof(CoreApplicationRegistrationService.SetKeyToken)}");
+            throw new InvalidOperationException($"It isn't appropriate for this service to be used for this purpose: {nameof(ApplicationRegistrationService)}.{nameof(ApplicationRegistrationService.SetKeyToken)}");
         }
 
         [Exclude]
         public void SetKeyToken(HttpWebRequest request, string stringToHash)
         {
-            throw new InvalidOperationException($"It isn't appropriate for this service to be used for this purpose: {nameof(CoreApplicationRegistrationService)}.{nameof(CoreApplicationRegistrationService.SetKeyToken)}");
+            throw new InvalidOperationException($"It isn't appropriate for this service to be used for this purpose: {nameof(ApplicationRegistrationService)}.{nameof(ApplicationRegistrationService.SetKeyToken)}");
         }
 
-        protected CoreApplicationRegistryServiceConfig Config { get; set; }
+        protected ApplicationRegistryServiceConfig Config { get; set; }
 
-        protected internal ApiKeyInfo GenerateApiKeyInfo(ApplicationRegistration.Application app)
+        protected internal ApiKeyInfo GenerateApiKeyInfo(CoreServices.ApplicationRegistration.Data.Application app)
         {
             ApiKeyInfo info = new ApiKeyInfo();
             info.ApplicationNameProvider = new StaticApplicationNameProvider(app.Name);
@@ -352,15 +353,15 @@ namespace Bam.Net.CoreServices
         /// <param name="repo"></param>
         /// <param name="app"></param>
         /// <returns></returns>
-        protected internal ApplicationRegistration.Application AddApiKey(ApplicationRegistrationRepository repo, ApplicationRegistration.Application app)
+        protected internal CoreServices.ApplicationRegistration.Data.Application AddApiKey(ApplicationRegistrationRepository repo, CoreServices.ApplicationRegistration.Data.Application app)
         {
-            ApplicationRegistration.ApiKey ignore;
+            CoreServices.ApplicationRegistration.Data.ApiKey ignore;
             return AddApiKey(repo, app, out ignore);
         }
-        protected internal ApplicationRegistration.Application AddApiKey(ApplicationRegistrationRepository repo, ApplicationRegistration.Application app, out ApplicationRegistration.ApiKey key)
+        protected internal CoreServices.ApplicationRegistration.Data.Application AddApiKey(ApplicationRegistrationRepository repo, CoreServices.ApplicationRegistration.Data.Application app, out CoreServices.ApplicationRegistration.Data.ApiKey key)
         {
             ApiKeyInfo keyInfo = GenerateApiKeyInfo(app);
-            key = ApplicationRegistration.ApiKey.FromKeyInfo(keyInfo);
+            key = CoreServices.ApplicationRegistration.Data.ApiKey.FromKeyInfo(keyInfo);
             key.Created = DateTime.UtcNow;
             key.CreatedBy = CurrentUser.UserName;
             app.ApiKeys.Add(key);
@@ -377,7 +378,7 @@ namespace Bam.Net.CoreServices
 
         private static CoreServiceResponse GetApplicationRegistrationResponse(ClientApplicationFactory appFactory)
         {
-            CoreServiceResponse<ApplicationRegistration.Application> appResponse = appFactory.Execute();
+            CoreServiceResponse<ApplicationRegistration.Data.Application> appResponse = appFactory.Execute();
             if (appResponse.Success)
             {
                 return GetApplicationRegistrationSuccessResult(appResponse);
@@ -401,9 +402,9 @@ namespace Bam.Net.CoreServices
             return user;
         }
 
-        private static CoreServiceResponse GetApplicationRegistrationSuccessResult(CoreServiceResponse<ApplicationRegistration.Application> appResponse)
+        private static CoreServiceResponse GetApplicationRegistrationSuccessResult(CoreServiceResponse<CoreServices.ApplicationRegistration.Data.Application> appResponse)
         {
-            ApplicationRegistration.Application app = appResponse.TypedData();
+            CoreServices.ApplicationRegistration.Data.Application app = appResponse.TypedData();
             return new CoreServiceResponse<ApplicationRegistrationResult>(
                 new ApplicationRegistrationResult
                 {

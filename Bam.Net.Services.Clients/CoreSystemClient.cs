@@ -10,7 +10,7 @@ namespace Bam.Net.Services.Clients
 {
     public class CoreSystemClient
     {
-        CoreAssemblyService _fileService;
+        AssemblyService _fileService;
         ProxyFactory _proxyFactory;
         public CoreSystemClient(ILogger logger = null) : this("bamapps.net", 80, logger)
         { }
@@ -18,7 +18,7 @@ namespace Bam.Net.Services.Clients
         public CoreSystemClient(string hostName, int port, ILogger logger = null)
         {
             _proxyFactory = new ProxyFactory(logger);
-            _fileService = _proxyFactory.GetProxy<CoreAssemblyService>(hostName, port);
+            _fileService = _proxyFactory.GetProxy<AssemblyService>(hostName, port);
         }
 
         static CoreSystemClient()

@@ -1,4 +1,4 @@
-﻿using Bam.Net.CoreServices.ApplicationRegistration;
+﻿using Bam.Net.CoreServices.ApplicationRegistration.Data;
 using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Presentation.Html;
@@ -20,9 +20,9 @@ namespace Bam.Net.CoreServices
     [Serializable]
     [Proxy("notifySvc")]
     [ServiceSubdomain("notify")]
-    public class CoreNotificationService : ApplicationProxyableService
+    public class NotificationService : ApplicationProxyableService
     {
-        public CoreNotificationService(DataSettings dataSettings, ILogger logger = null)
+        public NotificationService(DataSettings dataSettings, ILogger logger = null)
         {
             Logger = logger ?? Log.Default;
             DataSettings = dataSettings;
@@ -157,7 +157,7 @@ namespace Bam.Net.CoreServices
         [Local]
         public override object Clone()
         {
-            CoreNotificationService clone = new CoreNotificationService(DataSettings, Logger);
+            NotificationService clone = new NotificationService(DataSettings, Logger);
             clone.CopyProperties(this);
             clone.CopyEventHandlers(this);            
             return clone;

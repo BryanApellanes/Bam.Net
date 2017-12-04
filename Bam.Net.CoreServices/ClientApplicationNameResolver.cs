@@ -1,5 +1,5 @@
-﻿using Bam.Net.CoreServices.ApplicationRegistration;
-using Bam.Net.CoreServices.ApplicationRegistration.Dao.Repository;
+﻿using Bam.Net.CoreServices.ApplicationRegistration.Data;
+using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Repository;
 using Bam.Net.ServiceProxy;
 using Bam.Net.Web;
 using System;
@@ -59,7 +59,7 @@ namespace Bam.Net.CoreServices
                     }
                 }
             }
-            return fromHeader.Or(Application.Unknown.Name);
+            return fromHeader.Or(Bam.Net.CoreServices.ApplicationRegistration.Data.Application.Unknown.Name);
         }
     }
 }

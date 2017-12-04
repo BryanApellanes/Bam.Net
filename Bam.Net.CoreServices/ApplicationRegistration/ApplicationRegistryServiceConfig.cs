@@ -12,7 +12,7 @@ namespace Bam.Net.CoreServices
     /// CoreApplicationRegistryServiceConfig providing
     /// IDatabaseProvider, WorkspacePath and ILogger
     /// </summary>
-    public class CoreApplicationRegistryServiceConfig
+    public class ApplicationRegistryServiceConfig
     {
         public IDatabaseProvider DatabaseProvider { get; set; }
         public string WorkspacePath { get; set; }

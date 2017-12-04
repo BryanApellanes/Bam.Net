@@ -26,9 +26,9 @@ namespace Bam.Net.CoreServices
     [ApiKeyRequired]
     [Proxy("serviceRegistrySvc")]
     [ServiceSubdomain("svcregistry")]
-    public class CoreServiceRegistrationService : ProxyableService
+    public class ServiceRegistrationService : ProxyableService
     {
-        public CoreServiceRegistrationService(IAssemblyService assemblyService, ServiceRegistrationRepository repo, DaoRepository daoRepo, AppConf appConf, DataSettings dataSettings = null) : base(daoRepo, appConf)
+        public ServiceRegistrationService(IAssemblyService assemblyService, ServiceRegistrationRepository repo, DaoRepository daoRepo, AppConf appConf, DataSettings dataSettings = null) : base(daoRepo, appConf)
         {
             ServiceRegistryRepository = repo;
             AssemblyService = assemblyService;
@@ -333,7 +333,7 @@ namespace Bam.Net.CoreServices
         [Local]
         public override object Clone()
         {
-            CoreServiceRegistrationService clone = new CoreServiceRegistrationService(AssemblyService, ServiceRegistryRepository, DaoRepository, AppConf);
+            ServiceRegistrationService clone = new ServiceRegistrationService(AssemblyService, ServiceRegistryRepository, DaoRepository, AppConf);
             clone.CopyProperties(this);
             clone.CopyEventHandlers(this);
             return clone;

@@ -8,7 +8,6 @@ using Bam.Net.CommandLine;
 using Bam.Net.Testing;
 using Bam.Net.UserAccounts;
 using Bam.Net.ServiceProxy.Secure;
-using Bam.Net.CoreServices.Services;
 using System.IO;
 using Bam.Net.CoreServices.ApplicationRegistration;
 using Bam.Net.DaoRef;
@@ -16,10 +15,11 @@ using Bam.Net.CoreServices.ProtoBuf;
 using Bam.Net.Data.Repositories;
 using System.Reflection;
 using Google.Protobuf;
-using Bam.Net.CoreServices.ApplicationRegistration.Dao.Repository;
 using Bam.Net.UserAccounts.Data;
 using Bam.Net.Services.Clients;
 using Bam.Net.ServiceProxy;
+using Bam.Net.CoreServices.ApplicationRegistration.Data;
+using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Repository;
 
 namespace Bam.Net.CoreServices.Tests
 {
@@ -190,7 +190,7 @@ namespace Bam.Net.CoreServices.Tests
             ProxyFactory factory = new ProxyFactory();
             CoreClient coreClient = new CoreClient("ThreeHeadz", "CoreServicesTestApp", "localhost", 80, logger);
 
-            CoreUserRegistryService userService = coreClient.UserRegistryService;
+            UserRegistryService userService = coreClient.UserRegistryService;
             Expect.IsNotNull(userService);
             Expect.AreSame(coreClient, userService.Property("ApiKeyResolver"));
             Expect.AreSame(coreClient, userService.Property("ClientApplicationNameProvider"));

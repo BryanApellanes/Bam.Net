@@ -20,10 +20,7 @@ namespace Bam.Net.Application
 {
     [Serializable]
     public class ConsoleActions : CommandLineTestInterface
-    {
-        const string Organization = "Three Headz";
-        const string ApplicationName = "CoreHeartServer";
-        
+    {        
         static ServiceProxyServer server;
 
         [ConsoleAction("killHeartServer", "Kill the Heart server")]

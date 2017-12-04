@@ -8,7 +8,7 @@ using System.Data;
 using System.Data.Common;
 using Bam.Net.Data;
 
-namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
+namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 {
     public class OrganizationUserCollection: DaoCollection<OrganizationUserColumns, OrganizationUser>
     { 

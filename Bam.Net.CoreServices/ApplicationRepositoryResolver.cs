@@ -17,16 +17,14 @@ namespace Bam.Net.CoreServices
         ConcurrentDictionary<string, IRepository> _repositoriesByAppName;
         public ApplicationRepositoryResolver(DataSettings settings = null, ILogger logger = null)
         {
-            DataSettings = settings ?? DataSettings.Default;
+            DataSettings = settings ?? DataSettings.Current;
             Logger = logger ?? Log.Default;
             _repositoriesByAppName = new ConcurrentDictionary<string, IRepository>();
             GetRepositoryFunc = GetDaoRepository;
         }
 
-        public ILogger Logger { get; set; }
-        public DataSettings DataSettings { get; set; }
         public IApplicationNameResolver ApplicationNameResolver { get; set; }
-        public Func<IHttpContext, IRepository> GetRepositoryFunc { get; set; }
+        
         public override IRepository GetRepository(IHttpContext context)
         {
             return GetRepository(context, 3);

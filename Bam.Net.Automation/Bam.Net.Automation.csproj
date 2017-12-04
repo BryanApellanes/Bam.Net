@@ -162,6 +162,7 @@
     <Compile Include="Automation_Generated\Qi\DeferredJobData.cs" />
     <Compile Include="Automation_Generated\Qi\JobData.cs" />
     <Compile Include="Automation_Generated\Qi\JobRunData.cs" />
+    <Compile Include="BamAppManifest.cs" />
     <Compile Include="BamInfo.cs" />
     <Compile Include="AdvancedInstaller\BamToolkit.cs" />
     <Compile Include="BamProject.cs" />

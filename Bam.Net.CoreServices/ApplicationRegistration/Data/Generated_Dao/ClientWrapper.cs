@@ -9,14 +9,14 @@ using Bam.Net;
 using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 using Newtonsoft.Json;
-using Bam.Net.CoreServices.ApplicationRegistration;
-using Bam.Net.CoreServices.ApplicationRegistration.Dao;
+using Bam.Net.CoreServices.ApplicationRegistration.Data;
+using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao;
 
-namespace Bam.Net.CoreServices.ApplicationRegistration.Wrappers
+namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Wrappers
 {
 	// generated
 	[Serializable]
-	public class ClientWrapper: Bam.Net.CoreServices.ApplicationRegistration.Client, IHasUpdatedXrefCollectionProperties
+	public class ClientWrapper: Bam.Net.CoreServices.ApplicationRegistration.Data.Client, IHasUpdatedXrefCollectionProperties
 	{
 		public ClientWrapper()
 		{
@@ -47,14 +47,14 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Wrappers
 		}
 
 
-Bam.Net.CoreServices.ApplicationRegistration.Application _application;
-		public override Bam.Net.CoreServices.ApplicationRegistration.Application Application
+Bam.Net.CoreServices.ApplicationRegistration.Data.Application _application;
+		public override Bam.Net.CoreServices.ApplicationRegistration.Data.Application Application
 		{
 			get
 			{
 				if (_application == null)
 				{
-					_application = (Bam.Net.CoreServices.ApplicationRegistration.Application)Repository.GetParentPropertyOfChild(this, typeof(Bam.Net.CoreServices.ApplicationRegistration.Application));
+					_application = (Bam.Net.CoreServices.ApplicationRegistration.Data.Application)Repository.GetParentPropertyOfChild(this, typeof(Bam.Net.CoreServices.ApplicationRegistration.Data.Application));
 				}
 				return _application;
 			}
@@ -62,14 +62,14 @@ Bam.Net.CoreServices.ApplicationRegistration.Application _application;
 			{
 				_application = value;
 			}
-		}Bam.Net.CoreServices.ApplicationRegistration.Machine _machine;
-		public override Bam.Net.CoreServices.ApplicationRegistration.Machine Machine
+		}Bam.Net.CoreServices.ApplicationRegistration.Data.Machine _machine;
+		public override Bam.Net.CoreServices.ApplicationRegistration.Data.Machine Machine
 		{
 			get
 			{
 				if (_machine == null)
 				{
-					_machine = (Bam.Net.CoreServices.ApplicationRegistration.Machine)Repository.GetParentPropertyOfChild(this, typeof(Bam.Net.CoreServices.ApplicationRegistration.Machine));
+					_machine = (Bam.Net.CoreServices.ApplicationRegistration.Data.Machine)Repository.GetParentPropertyOfChild(this, typeof(Bam.Net.CoreServices.ApplicationRegistration.Data.Machine));
 				}
 				return _machine;
 			}

@@ -44,11 +44,11 @@ namespace Bam.Net.Data.Repositories
 
         static DataSettings _fromConfig;
         static object _fromConfigLock = new object();
-        public static DataSettings FromConfig
+        public static DataSettings Current
         {
             get
             {
-                return _fromConfigLock.DoubleCheckLock(ref _fromConfig, () => new DataSettings(ProcessMode.FromConfig));
+                return _fromConfigLock.DoubleCheckLock(ref _fromConfig, () => new DataSettings(ProcessMode.Current));
             }
         }
 

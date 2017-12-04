@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Bam.Net.CoreServices.ApplicationRegistration;
-using Bam.Net.CoreServices.ApplicationRegistration.Dao.Repository;
+using Bam.Net.CoreServices.ApplicationRegistration.Data;
+using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Repository;
+//using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Repository;
 
 namespace Bam.Net.CoreServices
 {

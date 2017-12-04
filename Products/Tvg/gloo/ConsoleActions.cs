@@ -102,7 +102,7 @@ namespace Bam.Net.Application
         {
             List<dynamic> types = new List<dynamic>();
             string assemblyPath = "\r\n";
-            DirectoryInfo sysData = DataSettings.FromConfig.GetSysDataDirectory(nameof(ServiceRegistry).Pluralize());
+            DirectoryInfo sysData = DataSettings.Current.GetSysDataDirectory(nameof(ServiceRegistry).Pluralize());
             ServiceRegistryDescriptor registry = new ServiceRegistryDescriptor();
             while (!assemblyPath.Equals(string.Empty))
             {
@@ -188,7 +188,7 @@ namespace Bam.Net.Application
             DataSettings dataSettings = DataSettings.Default;
             IApplicationNameProvider appNameProvider = DefaultConfigurationApplicationNameProvider.Instance;
 
-            CoreServiceRegistrationService serviceRegistryService = GetCoreServiceRegistrationService(logger, dataSettings, appNameProvider);
+            ServiceRegistrationService serviceRegistryService = GetCoreServiceRegistrationService(logger, dataSettings, appNameProvider);
 
             string[] requestedRegistries = registries.DelimitSplit(",");
             HashSet<Type> serviceTypes = new HashSet<Type>();
@@ -211,17 +211,17 @@ namespace Bam.Net.Application
             Pause($"Gloo server is serving services\r\n\t{services.ToArray().ToDelimited(s => s.FullName, "\r\n\t")}");
         }
 
-        private static CoreServiceRegistrationService GetCoreServiceRegistrationService(ILogger logger, DataSettings dataSettings, IApplicationNameProvider appNameProvider)
+        private static ServiceRegistrationService GetCoreServiceRegistrationService(ILogger logger, DataSettings dataSettings, IApplicationNameProvider appNameProvider)
         {
-            CoreFileService fileService = new CoreFileService(new DaoRepository(dataSettings.GetDatabaseFor(typeof(CoreFileService), $"{nameof(CoreServiceRegistrationService)}_{nameof(CoreFileService)}")));
+            FileService fileService = new FileService(new DaoRepository(dataSettings.GetDatabaseFor(typeof(FileService), $"{nameof(ServiceRegistrationService)}_{nameof(FileService)}")));
             AssemblyServiceRepository assRepo = new AssemblyServiceRepository();
             assRepo.Database = dataSettings.GetDatabaseFor(assRepo);
             assRepo.EnsureDaoAssemblyAndSchema();
-            CoreAssemblyService assemblyService = new CoreAssemblyService(fileService, assRepo, appNameProvider);
+            AssemblyService assemblyService = new AssemblyService(fileService, assRepo, appNameProvider);
             ServiceRegistrationRepository serviceRegistryRepo = new ServiceRegistrationRepository();
             serviceRegistryRepo.Database = dataSettings.GetDatabaseFor(serviceRegistryRepo);
             serviceRegistryRepo.EnsureDaoAssemblyAndSchema();
-            CoreServiceRegistrationService serviceRegistryService = new CoreServiceRegistrationService(
+            ServiceRegistrationService serviceRegistryService = new ServiceRegistrationService(
                 assemblyService,
                 serviceRegistryRepo,
                 DataSettings.Default.GetGenericDaoRepository(logger),

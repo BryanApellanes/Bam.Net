@@ -9,14 +9,14 @@ using Bam.Net;
 using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 using Newtonsoft.Json;
-using Bam.Net.CoreServices.ApplicationRegistration;
-using Bam.Net.CoreServices.ApplicationRegistration.Dao;
+using Bam.Net.CoreServices.ApplicationRegistration.Data;
+using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao;
 
-namespace Bam.Net.CoreServices.ApplicationRegistration.Wrappers
+namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Wrappers
 {
 	// generated
 	[Serializable]
-	public class SubscriptionWrapper: Bam.Net.CoreServices.ApplicationRegistration.Subscription, IHasUpdatedXrefCollectionProperties
+	public class SubscriptionWrapper: Bam.Net.CoreServices.ApplicationRegistration.Data.Subscription, IHasUpdatedXrefCollectionProperties
 	{
 		public SubscriptionWrapper()
 		{
@@ -47,14 +47,14 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Wrappers
 		}
 
 
-Bam.Net.CoreServices.ApplicationRegistration.User _user;
-		public override Bam.Net.CoreServices.ApplicationRegistration.User User
+Bam.Net.CoreServices.ApplicationRegistration.Data.User _user;
+		public override Bam.Net.CoreServices.ApplicationRegistration.Data.User User
 		{
 			get
 			{
 				if (_user == null)
 				{
-					_user = (Bam.Net.CoreServices.ApplicationRegistration.User)Repository.GetParentPropertyOfChild(this, typeof(Bam.Net.CoreServices.ApplicationRegistration.User));
+					_user = (Bam.Net.CoreServices.ApplicationRegistration.Data.User)Repository.GetParentPropertyOfChild(this, typeof(Bam.Net.CoreServices.ApplicationRegistration.Data.User));
 				}
 				return _user;
 			}

@@ -9,14 +9,14 @@ using Bam.Net;
 using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 using Newtonsoft.Json;
-using Bam.Net.CoreServices.ApplicationRegistration;
-using Bam.Net.CoreServices.ApplicationRegistration.Dao;
+using Bam.Net.CoreServices.ApplicationRegistration.Data;
+using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao;
 
-namespace Bam.Net.CoreServices.ApplicationRegistration.Wrappers
+namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Wrappers
 {
 	// generated
 	[Serializable]
-	public class UserWrapper: Bam.Net.CoreServices.ApplicationRegistration.User, IHasUpdatedXrefCollectionProperties
+	public class UserWrapper: Bam.Net.CoreServices.ApplicationRegistration.Data.User, IHasUpdatedXrefCollectionProperties
 	{
 		public UserWrapper()
 		{
@@ -46,14 +46,14 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Wrappers
 			}
 		}
 
-Bam.Net.CoreServices.ApplicationRegistration.Subscription[] _subscriptions;
-		public override Bam.Net.CoreServices.ApplicationRegistration.Subscription[] Subscriptions
+Bam.Net.CoreServices.ApplicationRegistration.Data.Subscription[] _subscriptions;
+		public override Bam.Net.CoreServices.ApplicationRegistration.Data.Subscription[] Subscriptions
 		{
 			get
 			{
 				if (_subscriptions == null)
 				{
-					_subscriptions = Repository.ForeignKeyCollectionLoader<Bam.Net.CoreServices.ApplicationRegistration.User, Bam.Net.CoreServices.ApplicationRegistration.Subscription>(this).ToArray();
+					_subscriptions = Repository.ForeignKeyCollectionLoader<Bam.Net.CoreServices.ApplicationRegistration.Data.User, Bam.Net.CoreServices.ApplicationRegistration.Data.Subscription>(this).ToArray();
 				}
 				return _subscriptions;
 			}
@@ -66,16 +66,16 @@ Bam.Net.CoreServices.ApplicationRegistration.Subscription[] _subscriptions;
 
 // Xref property: Left -> Organization ; Right -> User
 
-		List<Bam.Net.CoreServices.ApplicationRegistration.Organization> _organizations;
-		public override List<Bam.Net.CoreServices.ApplicationRegistration.Organization> Organizations
+		List<Bam.Net.CoreServices.ApplicationRegistration.Data.Organization> _organizations;
+		public override List<Bam.Net.CoreServices.ApplicationRegistration.Data.Organization> Organizations
 		{
 			get
 			{
 				if(_organizations == null)
 				{
-					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.ApplicationRegistration.Dao.OrganizationUser, Bam.Net.CoreServices.ApplicationRegistration.Dao.Organization>(Repository.GetDaoInstance(this), false);
+					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.OrganizationUser, Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Organization>(Repository.GetDaoInstance(this), false);
 					 xref.Load(Repository.Database);
-					 _organizations = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.ApplicationRegistration.Organization>().ToList();
+					 _organizations = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.ApplicationRegistration.Data.Organization>().ToList();
 					 SetUpdatedXrefCollectionProperty("Organizations", this.GetType().GetProperty("Organizations"));
 				}
 

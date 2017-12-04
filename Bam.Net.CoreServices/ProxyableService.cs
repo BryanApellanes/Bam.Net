@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Bam.Net.CoreServices.ApplicationRegistration;
+using Bam.Net.CoreServices.ApplicationRegistration.Data;
 using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Logging;
@@ -139,7 +139,7 @@ namespace Bam.Net.CoreServices
             get
             {
                 string fromHeader = HttpContext?.Request?.Headers[Headers.ApplicationName];
-                return fromHeader.Or(ApplicationRegistration.Application.Unknown.Name);
+                return fromHeader.Or(ApplicationRegistration.Data.Application.Unknown.Name);
             }
         }
 

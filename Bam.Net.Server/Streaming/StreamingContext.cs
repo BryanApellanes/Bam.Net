@@ -10,9 +10,9 @@ using System.Net.Sockets;
 
 namespace Bam.Net.Server.Streaming
 {
-    public class BinaryContext<T>: StreamingContext
+    public class StreamingContext<T>: StreamingContext
     {
-        public new BinaryRequest<T> Request { get; set; }
+        public new StreamingRequest<T> Request { get; set; }
     }
 
     public class StreamingContext

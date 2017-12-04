@@ -10,21 +10,22 @@ using Bam.Net.Configuration;
 namespace Bam.Net.CoreServices
 {
     using System.IO;
-    using Bam.Net.CoreServices.ApplicationRegistration;
-    using Bam.Net.CoreServices.ApplicationRegistration.Dao.Repository;
+    using Bam.Net.CoreServices.ApplicationRegistration.Data;
+    //using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Repository;
     using Net.Data.SQLite;
     using Server;
     using ServiceProxySecure = ServiceProxy.Secure;
     using Bam.Net.ServiceProxy;
+    using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Repository;
 
     [Proxy("configSvc")]
     [ServiceProxySecure.ApiKeyRequired]
     [ServiceSubdomain("config")]
-    public class CoreConfigurationService : ApplicationProxyableService
+    public class ConfigurationService : ApplicationProxyableService
     {
         public const string CommonConfigName = "Common";
-        protected CoreConfigurationService() { }
-        public CoreConfigurationService(ApplicationRegistrationRepository coreRepo, AppConf conf, string databaseRoot)
+        protected ConfigurationService() { }
+        public ConfigurationService(ApplicationRegistrationRepository coreRepo, AppConf conf, string databaseRoot)
         {
             AppConf = conf;
             DatabaseRoot = databaseRoot;
@@ -34,7 +35,7 @@ namespace Bam.Net.CoreServices
         [Exclude]
         public override object Clone()
         {
-            CoreConfigurationService clone = new CoreConfigurationService(ApplicationRegistrationRepository, AppConf, DatabaseRoot);
+            ConfigurationService clone = new ConfigurationService(ApplicationRegistrationRepository, AppConf, DatabaseRoot);
             clone.CopyProperties(this);
             clone.CopyEventHandlers(this);
             return clone;
@@ -51,15 +52,15 @@ namespace Bam.Net.CoreServices
             ApplicationConfiguration result = new ApplicationConfiguration { Name = configurationName };
             foreach(string key in commonConfig.Keys)
             {
-                result[key] = new SourcedConfigurationSetting { SettingSource = Services.SettingSource.CommonSetting, Key = key, Value = commonConfig[key] };
+                result[key] = new SourcedConfigurationSetting { SettingSource = SettingSource.CommonSetting, Key = key, Value = commonConfig[key] };
             }
             foreach(string key in machineConfig.Keys)
             {
-                result[key] = new SourcedConfigurationSetting { SettingSource = Services.SettingSource.MachineSetting, Key = key, Value = machineConfig[key] };
+                result[key] = new SourcedConfigurationSetting { SettingSource = SettingSource.MachineSetting, Key = key, Value = machineConfig[key] };
             }
             foreach(string key in appConfig.Keys)
             {
-                result[key] = new SourcedConfigurationSetting { SettingSource = Services.SettingSource.ApplicationSetting, Key = key, Value = appConfig[key] };
+                result[key] = new SourcedConfigurationSetting { SettingSource = SettingSource.ApplicationSetting, Key = key, Value = appConfig[key] };
             }
             return result;
         }

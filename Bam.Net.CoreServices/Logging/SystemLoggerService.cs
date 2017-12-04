@@ -12,15 +12,15 @@ using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.CoreServices
 {
-    [Proxy("loggerSvc")]
+    [Proxy("sysLoggerSvc")]
     [ApiKeyRequired]
-    [ServiceSubdomain("logger")]
-    public class CoreLoggerService: ApplicationProxyableService, ILog, ILogEventCommitter
+    [ServiceSubdomain("syslogger")]
+    public class SystemLoggerService: ApplicationProxyableService, ILog, ILogEventCommitter
     {
         DaoLogger2 _logger;
-        protected CoreLoggerService() { }
+        protected SystemLoggerService() { }
 
-        public CoreLoggerService(AppConf conf)
+        public SystemLoggerService(AppConf conf)
         {
             AppConf = conf;
         }
@@ -66,7 +66,7 @@ namespace Bam.Net.CoreServices
 
         public override object Clone()
         {
-            CoreLoggerService clone = new CoreLoggerService(AppConf);
+            SystemLoggerService clone = new SystemLoggerService(AppConf);
             clone.CopyProperties(this);
             return clone;
         }

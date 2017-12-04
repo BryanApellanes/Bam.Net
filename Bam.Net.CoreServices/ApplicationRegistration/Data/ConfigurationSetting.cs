@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Data.Repositories;
 
-namespace Bam.Net.CoreServices.ApplicationRegistration
+namespace Bam.Net.CoreServices.ApplicationRegistration.Data
 {
     [Serializable]
     public class ConfigurationSetting: AuditRepoData

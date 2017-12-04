@@ -15,12 +15,12 @@ namespace Bam.Net.CoreServices
 {
     [Proxy("oauthSvc")]
     [ServiceSubdomain("oauth")]
-    public class CoreOAuthService: ApplicationProxyableService // This is not fully implemented
+    public class OAuthService: ApplicationProxyableService // This is not fully implemented
     {
         [Exclude]
         public override object Clone()
         {
-            CoreOAuthService clone = new CoreOAuthService();
+            OAuthService clone = new OAuthService();
             clone.CopyProperties(this);
             clone.CopyEventHandlers(this);
             return clone;

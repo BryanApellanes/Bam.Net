@@ -8,13 +8,13 @@ using Bam.Net;
 using System.Web.Mvc;
 using Bam.Net.Data;
 using Bam.Net.Data.Qi;
-using Bam.Net.CoreServices.ApplicationRegistration.Dao;
+using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao;
 
-namespace Bam.Net.CoreServices.ApplicationRegistration.Dao.Qi
+namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Qi
 {
     public class OrganizationUserController : DaoController
     {	
-		public ActionResult Save(Bam.Net.CoreServices.ApplicationRegistration.Dao.OrganizationUser[] values)
+		public ActionResult Save(Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.OrganizationUser[] values)
 		{
 			try
 			{
@@ -29,7 +29,7 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao.Qi
 			}
 		}
 
-		public ActionResult Create(Bam.Net.CoreServices.ApplicationRegistration.Dao.OrganizationUser dao)
+		public ActionResult Create(Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.OrganizationUser dao)
 		{
 			return Update(dao);
 		}
@@ -38,7 +38,7 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao.Qi
         {
 			try
 			{
-				object value = Bam.Net.CoreServices.ApplicationRegistration.Dao.OrganizationUser.OneWhere(c => c.KeyColumn == id).ToJsonSafe();
+				object value = Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.OrganizationUser.OneWhere(c => c.KeyColumn == id).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
 			catch(Exception ex)
@@ -47,7 +47,7 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao.Qi
 			}
         }
 
-		public ActionResult Update(Bam.Net.CoreServices.ApplicationRegistration.Dao.OrganizationUser dao)
+		public ActionResult Update(Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.OrganizationUser dao)
         {
 			try
 			{
@@ -65,7 +65,7 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao.Qi
 			try
 			{
 				string msg = "";
-				Bam.Net.CoreServices.ApplicationRegistration.Dao.OrganizationUser dao = Bam.Net.CoreServices.ApplicationRegistration.Dao.OrganizationUser.OneWhere(c => c.KeyColumn == id);				
+				Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.OrganizationUser dao = Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.OrganizationUser.OneWhere(c => c.KeyColumn == id);				
 				if(dao != null)
 				{
 					dao.Delete();	
@@ -86,8 +86,8 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao.Qi
 		{
 			try
 			{
-				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.CoreServices.ApplicationRegistration.Dao.OrganizationUser));
-				object value = Bam.Net.CoreServices.ApplicationRegistration.Dao.OrganizationUser.OneWhere(query).ToJsonSafe();
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.OrganizationUser));
+				object value = Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.OrganizationUser.OneWhere(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
 			catch(Exception ex)
@@ -100,8 +100,8 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Dao.Qi
 		{
 			try
 			{
-				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.CoreServices.ApplicationRegistration.Dao.OrganizationUser));
-				object[] value = Bam.Net.CoreServices.ApplicationRegistration.Dao.OrganizationUser.Where(query).ToJsonSafe();
+				query.table = Bam.Net.Data.Dao.TableName(typeof(Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.OrganizationUser));
+				object[] value = Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.OrganizationUser.Where(query).ToJsonSafe();
 				return Json(new { Success = true, Message = "", Dao = value });
 			}
 			catch(Exception ex)

@@ -15,7 +15,7 @@ namespace Bam.Net.Server.Streaming
 
         public StreamingResponse<TResponse> SendRequest(TRequest message)
         {
-            BinaryRequest<TRequest> request = new BinaryRequest<TRequest> { Message = message };
+            StreamingRequest<TRequest> request = new StreamingRequest<TRequest> { Message = message };
             SendRequest(request);
             return ReceiveResponse<StreamingResponse<TResponse>>(NetworkStream);
         }

@@ -15,9 +15,9 @@ namespace Bam.Net.CoreServices
     [Proxy("oauthSettingsSvc")]    
     [ApiKeyRequired]
     [Authenticated]
-    public class CoreOAuthSettingsService : ApplicationProxyableService
+    public class OAuthSettingsService : ApplicationProxyableService
     {
-        public CoreOAuthSettingsService(OAuthSettingsRepository oauthRepo)
+        public OAuthSettingsService(OAuthSettingsRepository oauthRepo)
         {
             OAuthSettingsRepository = oauthRepo;
         }
@@ -28,7 +28,7 @@ namespace Bam.Net.CoreServices
         {
             try
             {
-                ApplicationRegistration.Application app = ApplicationRegistrationRepository.GetOneApplicationWhere(c => c.Name == ApplicationName);
+                ApplicationRegistration.Data.Application app = ApplicationRegistrationRepository.GetOneApplicationWhere(c => c.Name == base.ApplicationName);
                 return new CoreServiceResponse
                     (
                         OAuthSettingsRepository
@@ -49,7 +49,7 @@ namespace Bam.Net.CoreServices
         {
             try
             {
-                ApplicationRegistration.Application app = GetServerApplicationOrDie();
+                ApplicationRegistration.Data.Application app = GetServerApplicationOrDie();
 
                 OAuthSettingsData data = new OAuthSettingsData()
                 {
@@ -73,7 +73,7 @@ namespace Bam.Net.CoreServices
         {
             try
             {
-                ApplicationRegistration.Application app = GetServerApplicationOrDie();
+                ApplicationRegistration.Data.Application app = GetServerApplicationOrDie();
                 OAuthSettingsData data = OAuthSettingsRepository.OneOAuthSettingsDataWhere(c => c.ApplicationIdentifier == app.Cuid && c.ApplicationName == app.Name && c.ProviderName == providerName);
                 if(data != null)
                 {
@@ -94,7 +94,7 @@ namespace Bam.Net.CoreServices
 
         public override object Clone()
         {
-            CoreOAuthSettingsService clone = new CoreOAuthSettingsService(OAuthSettingsRepository);
+            OAuthSettingsService clone = new OAuthSettingsService(OAuthSettingsRepository);
             clone.CopyProperties(this);
             clone.CopyEventHandlers(this);
             return clone;

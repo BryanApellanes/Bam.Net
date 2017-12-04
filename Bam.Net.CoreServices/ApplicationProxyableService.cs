@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Bam.Net.CoreServices.ApplicationRegistration.Dao.Repository;
+//using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Repository;
 using Bam.Net.Server;
 using Bam.Net.Data.Repositories;
 using Bam.Net.CoreServices.OAuth;
-using Bam.Net.CoreServices.ApplicationRegistration;
+using Bam.Net.CoreServices.ApplicationRegistration.Data;
 using Bam.Net.ServiceProxy;
+using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Repository;
 
 namespace Bam.Net.CoreServices
 {
@@ -34,7 +35,7 @@ namespace Bam.Net.CoreServices
                 {
                     return ApplicationNameProvider.GetApplicationName();
                 }
-                return ApplicationRegistration.Application.Unknown.Name;
+                return ApplicationRegistration.Data.Application.Unknown.Name;
             }
         }
 
@@ -49,7 +50,7 @@ namespace Bam.Net.CoreServices
         /// <summary>
         /// The application representing what the server thinks it is
         /// </summary>
-        public ApplicationRegistration.Application ServerApplication
+        public ApplicationRegistration.Data.Application ServerApplication
         {
             get
             {
@@ -60,7 +61,7 @@ namespace Bam.Net.CoreServices
         /// <summary>
         /// The application representing what the client requested
         /// </summary>
-        public ApplicationRegistration.Application ClientApplication
+        public ApplicationRegistration.Data.Application ClientApplication
         {
             get
             {
@@ -121,7 +122,7 @@ namespace Bam.Net.CoreServices
             IRequest request = HttpContext?.Request;
             string host = request.Url?.Host;
             int port = (request?.Url?.Port).Value;
-            Application app = GetServerApplicationOrDie();
+            Bam.Net.CoreServices.ApplicationRegistration.Data.Application app = GetServerApplicationOrDie();
             if(app.HostDomains.Count > 0)
             {
                 HostDomain hd = app.HostDomains.Where(h => h.DomainName.Equals(host) && h.Port.Equals(port)).FirstOrDefault();
@@ -142,9 +143,9 @@ namespace Bam.Net.CoreServices
             }
         }
 
-        protected internal ApplicationRegistration.User GetApplicationUserOrDie()
+        protected internal ApplicationRegistration.Data.User GetApplicationUserOrDie()
         {
-            ApplicationRegistration.User user = GetApplicationUser();
+            ApplicationRegistration.Data.User user = GetApplicationUser();
             if(user == null)
             {
                 throw new ApplicationUserNotFoundException(ApplicationName, UserName);
@@ -175,10 +176,10 @@ namespace Bam.Net.CoreServices
             }
         }
         
-        protected internal Application GetServerApplicationOrDie()
+        protected internal Bam.Net.CoreServices.ApplicationRegistration.Data.Application GetServerApplicationOrDie()
         {
-            Application app = ApplicationRegistrationRepository.GetOneApplicationWhere(c => c.Name == ServerApplicationName);
-            if (app.Equals(ApplicationRegistration.Application.Unknown))
+            Bam.Net.CoreServices.ApplicationRegistration.Data.Application app = ApplicationRegistrationRepository.GetOneApplicationWhere(c => c.Name == ServerApplicationName);
+            if (app.Equals(ApplicationRegistration.Data.Application.Unknown))
             {
                 throw new InvalidOperationException("Application is Uknown");
             }

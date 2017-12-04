@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Bam.Net.Server.Streaming
 {
     [Serializable]
-    public class BinaryRequest<T>: StreamingRequest
+    public class StreamingRequest<T>: StreamingRequest
     {
         public new T Message { get; set; }
     }

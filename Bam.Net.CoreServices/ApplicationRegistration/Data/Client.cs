@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Bam.Net.CoreServices.ApplicationRegistration.Dao.Repository;
+//using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Repository;
 using Bam.Net.Data.Repositories;
 using Bam.Net.ServiceProxy;
+using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Repository;
 
-namespace Bam.Net.CoreServices.ApplicationRegistration
+namespace Bam.Net.CoreServices.ApplicationRegistration.Data
 {
     /// <summary>
     /// Persistable Client data

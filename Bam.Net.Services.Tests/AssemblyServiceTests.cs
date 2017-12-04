@@ -199,9 +199,9 @@ namespace Bam.Net.Services.Tests
                 typeof(ChunkDataDescriptor),
                 typeof(ChunkData));
             fileRepo.EnsureDaoAssemblyAndSchema();
-            CoreFileService fmSvc = new CoreFileService(fileRepo);
+            FileService fmSvc = new FileService(fileRepo);
 
-            CoreAssemblyService svc = new CoreAssemblyService(fmSvc, assManRepo, DefaultConfigurationApplicationNameProvider.Instance);
+            AssemblyService svc = new AssemblyService(fmSvc, assManRepo, DefaultConfigurationApplicationNameProvider.Instance);
             ProcessRuntimeDescriptor prd1 = svc.CurrentProcessRuntimeDescriptor;
             ProcessRuntimeDescriptor prd2 = svc.CurrentProcessRuntimeDescriptor;
             ProcessRuntimeDescriptor byName = assManRepo.OneProcessRuntimeDescriptorWhere(c => c.ApplicationName == prd1.ApplicationName);

@@ -16,9 +16,9 @@ namespace Bam.Net.CoreServices
     /// generated, and making them available to consuming processes.  
     /// </summary>
     [Proxy("assemblySvc")]
-    public class CoreAssemblyService : ApplicationProxyableService, IAssemblyService
+    public class AssemblyService : ApplicationProxyableService, IAssemblyService
     {
-        public CoreAssemblyService(IFileService fileService, Repo.AssemblyServiceRepository repo, IApplicationNameProvider appNameProvider)
+        public AssemblyService(IFileService fileService, Repo.AssemblyServiceRepository repo, IApplicationNameProvider appNameProvider)
         {
             FileService = fileService;
             AssemblyManagementRepository = repo;
@@ -28,7 +28,7 @@ namespace Bam.Net.CoreServices
 
         public override object Clone()
         {
-            CoreAssemblyService result = new CoreAssemblyService(FileService, AssemblyManagementRepository, ApplicationNameProvider);
+            AssemblyService result = new AssemblyService(FileService, AssemblyManagementRepository, ApplicationNameProvider);
             result.CopyProperties(this);
             result.CopyEventHandlers(this);
             return result;

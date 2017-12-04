@@ -9,14 +9,14 @@ using Bam.Net;
 using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 using Newtonsoft.Json;
-using Bam.Net.CoreServices.ApplicationRegistration;
-using Bam.Net.CoreServices.ApplicationRegistration.Dao;
+using Bam.Net.CoreServices.ApplicationRegistration.Data;
+using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao;
 
-namespace Bam.Net.CoreServices.ApplicationRegistration.Wrappers
+namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Wrappers
 {
 	// generated
 	[Serializable]
-	public class ConfigurationSettingWrapper: Bam.Net.CoreServices.ApplicationRegistration.ConfigurationSetting, IHasUpdatedXrefCollectionProperties
+	public class ConfigurationSettingWrapper: Bam.Net.CoreServices.ApplicationRegistration.Data.ConfigurationSetting, IHasUpdatedXrefCollectionProperties
 	{
 		public ConfigurationSettingWrapper()
 		{
@@ -47,14 +47,14 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Wrappers
 		}
 
 
-Bam.Net.CoreServices.ApplicationRegistration.Configuration _configuration;
-		public override Bam.Net.CoreServices.ApplicationRegistration.Configuration Configuration
+Bam.Net.CoreServices.ApplicationRegistration.Data.Configuration _configuration;
+		public override Bam.Net.CoreServices.ApplicationRegistration.Data.Configuration Configuration
 		{
 			get
 			{
 				if (_configuration == null)
 				{
-					_configuration = (Bam.Net.CoreServices.ApplicationRegistration.Configuration)Repository.GetParentPropertyOfChild(this, typeof(Bam.Net.CoreServices.ApplicationRegistration.Configuration));
+					_configuration = (Bam.Net.CoreServices.ApplicationRegistration.Data.Configuration)Repository.GetParentPropertyOfChild(this, typeof(Bam.Net.CoreServices.ApplicationRegistration.Data.Configuration));
 				}
 				return _configuration;
 			}

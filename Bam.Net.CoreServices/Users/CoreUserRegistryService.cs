@@ -16,10 +16,10 @@ namespace Bam.Net.CoreServices
     [Proxy("userRegistrySvc")]
     [Encrypt]
     [ServiceSubdomain("userregistry")]
-    public class CoreUserRegistryService: ApplicationProxyableService, IUserManager, IUserResolver, IRoleResolver
+    public class UserRegistryService: ApplicationProxyableService, IUserManager, IUserResolver, IRoleResolver
     {
-        protected CoreUserRegistryService() { } // to enable auto proxy gen
-        public CoreUserRegistryService(IDatabaseProvider dbProvider, IUserManager wrapped, IApplicationNameProvider appNameProvider, IUserResolver userResolver, IRoleResolver roleResolver)
+        protected UserRegistryService() { } // to enable auto proxy gen
+        public UserRegistryService(IDatabaseProvider dbProvider, IUserManager wrapped, IApplicationNameProvider appNameProvider, IUserResolver userResolver, IRoleResolver roleResolver)
         {
             DatabaseProvider = dbProvider;
             UserManager = wrapped;
@@ -35,7 +35,7 @@ namespace Bam.Net.CoreServices
         [Exclude]
         public override object Clone()
         {
-            CoreUserRegistryService clone = new CoreUserRegistryService(DatabaseProvider, UserManager, ApplicationNameProvider, UserResolver, RoleResolver);
+            UserRegistryService clone = new UserRegistryService(DatabaseProvider, UserManager, ApplicationNameProvider, UserResolver, RoleResolver);
             clone.CloneProperties(this);
             clone.CopyEventHandlers(this);
             return clone;

@@ -12,7 +12,6 @@ using Bam.Net.Data.MsSql;
 using Bam.Net.Data.MySql;
 using Bam.Net.Data.Oracle;
 using Bam.Net.Yaml;
-using Bam.Net.CoreServices.Services;
 using Bam.Net.Testing.Unit;
 
 namespace Bam.Net.CoreServices.Tests
@@ -25,7 +24,7 @@ namespace Bam.Net.CoreServices.Tests
         {
             string name = 8.RandomLetters();
             SQLiteDatabase db = new SQLiteDatabase(".\\{0}"._Format(MethodBase.GetCurrentMethod().Name), name);
-            CoreDiagnosticService svc = new CoreDiagnosticService(null);
+            DiagnosticService svc = new DiagnosticService(null);
             DiagnosticInfo info = svc.GetDiagnosticInfo();
             DatabaseInfo dbInfo = info.Databases.FirstOrDefault(dbi => dbi.ConnectionName.Equals(name));
             Expect.IsNotNull(dbInfo);
@@ -39,7 +38,7 @@ namespace Bam.Net.CoreServices.Tests
         {
             string name = 8.RandomLetters();
             MsSqlDatabase msDatabase = new MsSqlDatabase("chumsql2", "DaoRef", name);
-            CoreDiagnosticService svc = new CoreDiagnosticService(null);
+            DiagnosticService svc = new DiagnosticService(null);
             DiagnosticInfo info = svc.GetDiagnosticInfo();
             DatabaseInfo dbInfo = info.Databases.FirstOrDefault(dbi => dbi.ConnectionName.Equals(name));
             Expect.IsNotNull(dbInfo);
@@ -53,7 +52,7 @@ namespace Bam.Net.CoreServices.Tests
         {
             string name = 8.RandomLetters();
             OracleDatabase msDatabase = new OracleDatabase("chumsql2", name);
-            CoreDiagnosticService svc = new CoreDiagnosticService(null);
+            DiagnosticService svc = new DiagnosticService(null);
             DiagnosticInfo info = svc.GetDiagnosticInfo();
             DatabaseInfo dbInfo = info.Databases.FirstOrDefault(dbi => dbi.ConnectionName.Equals(name));
             Expect.IsNotNull(dbInfo);
@@ -66,7 +65,7 @@ namespace Bam.Net.CoreServices.Tests
         {
             string name = 8.RandomLetters();
             MySqlDatabase mySqlDatabase = new MySqlDatabase("chumsql2", "DaoRef", name);
-            CoreDiagnosticService svc = new CoreDiagnosticService(null);
+            DiagnosticService svc = new DiagnosticService(null);
             DiagnosticInfo info = svc.GetDiagnosticInfo();
             DatabaseInfo dbInfo = info.Databases.FirstOrDefault(dbi => dbi.ConnectionName.Equals(name));
             Expect.IsNotNull(dbInfo);

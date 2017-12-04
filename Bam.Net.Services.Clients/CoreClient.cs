@@ -12,13 +12,13 @@ using Bam.Net.ServiceProxy.Secure;
 using System.Reflection;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Data.SQLite;
-using Bam.Net.CoreServices.Services;
 using Bam.Net.CoreServices.ApplicationRegistration;
-using Bam.Net.CoreServices.ApplicationRegistration.Dao.Repository;
 using Bam.Net.UserAccounts;
 using Bam.Net.Configuration;
 using Bam.Net.Web;
 using Bam.Net.CoreServices;
+using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Repository;
+using Bam.Net.CoreServices.ApplicationRegistration.Data;
 
 namespace Bam.Net.Services.Clients
 {
@@ -67,7 +67,7 @@ namespace Bam.Net.Services.Clients
             : this(organizationName, applicationName, hostName, port, null, logger)
         { }
 
-        public CoreClient(string hostName, int port, ILogger logger = null) : this(Organization.Public.Name, CoreServices.ApplicationRegistration.Application.Unknown.Name, hostName, port, logger)
+        public CoreClient(string hostName, int port, ILogger logger = null) : this(Organization.Public.Name, CoreServices.ApplicationRegistration.Data.Application.Unknown.Name, hostName, port, logger)
         { }
 
         public CoreClient(): this(DefaultConfiguration.GetAppSetting("CoreHostName", "bamapps.net"), DefaultConfiguration.GetAppSetting("CorePort", "80").ToInt())
@@ -353,13 +353,13 @@ namespace Bam.Net.Services.Clients
         /// </summary>
         public int Port { get; private set; }
 
-        protected internal CoreUserRegistryService UserRegistryService { get; set; }
-        protected internal CoreRoleService RoleService { get; set; }
-        protected internal CoreOAuthService OAuthService { get; set; }
-        protected internal CoreApplicationRegistrationService ApplicationRegistryService { get; set; }
-        protected internal CoreConfigurationService ConfigurationService { get; set; }
-        protected internal CoreLoggerService LoggerService { get; set; }
-        protected internal CoreDiagnosticService DiagnosticService { get; set; }
+        protected internal UserRegistryService UserRegistryService { get; set; }
+        protected internal RoleService RoleService { get; set; }
+        protected internal OAuthService OAuthService { get; set; }
+        protected internal ApplicationRegistrationService ApplicationRegistryService { get; set; }
+        protected internal ConfigurationService ConfigurationService { get; set; }
+        protected internal SystemLoggerService LoggerService { get; set; }
+        protected internal DiagnosticService DiagnosticService { get; set; }
 
         /// <summary>
         /// Each of the Core service proxies
@@ -401,24 +401,24 @@ namespace Bam.Net.Services.Clients
 
         private void SetDownloadedServiceProxies()
         {
-            ApplicationRegistryService = ProxyFactory.GetProxy<CoreApplicationRegistrationService>(HostName, Port);
-            ConfigurationService = ProxyFactory.GetProxy<CoreConfigurationService>(HostName, Port);
-            DiagnosticService = ProxyFactory.GetProxy<CoreDiagnosticService>(HostName, Port);
-            LoggerService = ProxyFactory.GetProxy<CoreLoggerService>(HostName, Port);
-            UserRegistryService = ProxyFactory.GetProxy<CoreUserRegistryService>(HostName, Port);
-            RoleService = ProxyFactory.GetProxy<CoreRoleService>(HostName, Port);
-            OAuthService = ProxyFactory.GetProxy<CoreOAuthService>(HostName, Port);
+            ApplicationRegistryService = ProxyFactory.GetProxy<ApplicationRegistrationService>(HostName, Port);
+            ConfigurationService = ProxyFactory.GetProxy<ConfigurationService>(HostName, Port);
+            DiagnosticService = ProxyFactory.GetProxy<DiagnosticService>(HostName, Port);
+            LoggerService = ProxyFactory.GetProxy<SystemLoggerService>(HostName, Port);
+            UserRegistryService = ProxyFactory.GetProxy<UserRegistryService>(HostName, Port);
+            RoleService = ProxyFactory.GetProxy<RoleService>(HostName, Port);
+            OAuthService = ProxyFactory.GetProxy<OAuthService>(HostName, Port);
         }
 
         private void SetLocalServiceProxies()
         {
-            ApplicationRegistryService = ProxyFactory.GetProxy<CoreApplicationRegistrationService>();
-            ConfigurationService = ProxyFactory.GetProxy<CoreConfigurationService>();
-            DiagnosticService = ProxyFactory.GetProxy<CoreDiagnosticService>();
-            LoggerService = ProxyFactory.GetProxy<CoreLoggerService>();
-            UserRegistryService = ProxyFactory.GetProxy<CoreUserRegistryService>();
-            RoleService = ProxyFactory.GetProxy<CoreRoleService>();
-            OAuthService = ProxyFactory.GetProxy<CoreOAuthService>();
+            ApplicationRegistryService = ProxyFactory.GetProxy<ApplicationRegistrationService>();
+            ConfigurationService = ProxyFactory.GetProxy<ConfigurationService>();
+            DiagnosticService = ProxyFactory.GetProxy<DiagnosticService>();
+            LoggerService = ProxyFactory.GetProxy<SystemLoggerService>();
+            UserRegistryService = ProxyFactory.GetProxy<UserRegistryService>();
+            RoleService = ProxyFactory.GetProxy<RoleService>();
+            OAuthService = ProxyFactory.GetProxy<OAuthService>();
         }
 
         private void WireInvocationEventHandlers()
