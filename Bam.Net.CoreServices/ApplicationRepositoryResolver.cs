@@ -53,7 +53,7 @@ namespace Bam.Net.CoreServices
         {
             IRequest request = context.Request;
             Uri url = new Uri(request.RawUrl);
-            DirectoryInfo dbDirectory = new DirectoryInfo(Path.Combine(DataSettings.GetDatabaseDirectory().FullName, url.Host));
+            DirectoryInfo dbDirectory = new DirectoryInfo(Path.Combine(DataSettings.GetSysDatabaseDirectory().FullName, url.Host));
             if (!dbDirectory.Exists)
             {
                 dbDirectory.Create();

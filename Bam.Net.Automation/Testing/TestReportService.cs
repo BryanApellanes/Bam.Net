@@ -24,7 +24,7 @@ namespace Bam.Net.Automation.Testing
     [Proxy("testReportSvc", MethodCase = MethodCase.CamelCase)]
     public class TestReportService : Loggable, IRequiresHttpContext, ITestReportService
     {
-        public TestReportService() : this(new SQLiteDatabaseProvider(DataSettings.Default.GetDatabaseDirectory().FullName, Log.Default), Log.Default)
+        public TestReportService() : this(new SQLiteDatabaseProvider(DataSettings.Default.GetSysDatabaseDirectory().FullName, Log.Default), Log.Default)
         {
         }
 

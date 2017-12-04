@@ -213,13 +213,13 @@ namespace Bam.Net.Application
 
         private static ServiceRegistrationService GetCoreServiceRegistrationService(ILogger logger, DataSettings dataSettings, IApplicationNameProvider appNameProvider)
         {
-            FileService fileService = new FileService(new DaoRepository(dataSettings.GetDatabaseFor(typeof(FileService), $"{nameof(ServiceRegistrationService)}_{nameof(FileService)}")));
+            FileService fileService = new FileService(new DaoRepository(dataSettings.GetSysDatabaseFor(typeof(FileService), $"{nameof(ServiceRegistrationService)}_{nameof(FileService)}")));
             AssemblyServiceRepository assRepo = new AssemblyServiceRepository();
-            assRepo.Database = dataSettings.GetDatabaseFor(assRepo);
+            assRepo.Database = dataSettings.GetSysDatabaseFor(assRepo);
             assRepo.EnsureDaoAssemblyAndSchema();
             AssemblyService assemblyService = new AssemblyService(fileService, assRepo, appNameProvider);
             ServiceRegistrationRepository serviceRegistryRepo = new ServiceRegistrationRepository();
-            serviceRegistryRepo.Database = dataSettings.GetDatabaseFor(serviceRegistryRepo);
+            serviceRegistryRepo.Database = dataSettings.GetSysDatabaseFor(serviceRegistryRepo);
             serviceRegistryRepo.EnsureDaoAssemblyAndSchema();
             ServiceRegistrationService serviceRegistryService = new ServiceRegistrationService(
                 assemblyService,

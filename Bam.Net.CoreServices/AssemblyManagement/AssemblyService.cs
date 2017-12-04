@@ -8,6 +8,7 @@ using Repo = Bam.Net.CoreServices.AssemblyManagement.Data.Dao.Repository;
 using Bam.Net.CoreServices.Files;
 using Bam.Net.CoreServices.AssemblyManagement.Data;
 using System.Collections.Generic;
+using Bam.Net.Data.Repositories;
 
 namespace Bam.Net.CoreServices
 {
@@ -18,8 +19,9 @@ namespace Bam.Net.CoreServices
     [Proxy("assemblySvc")]
     public class AssemblyService : ApplicationProxyableService, IAssemblyService
     {
-        public AssemblyService(IFileService fileService, Repo.AssemblyServiceRepository repo, IApplicationNameProvider appNameProvider)
+        public AssemblyService(DataSettings dataSettings, IFileService fileService, Repo.AssemblyServiceRepository repo, IApplicationNameProvider appNameProvider)
         {
+            DataSettings = dataSettings;
             FileService = fileService;
             AssemblyManagementRepository = repo;
             ApplicationNameProvider = appNameProvider;
@@ -28,14 +30,21 @@ namespace Bam.Net.CoreServices
 
         public override object Clone()
         {
-            AssemblyService result = new AssemblyService(FileService, AssemblyManagementRepository, ApplicationNameProvider);
+            AssemblyService result = new AssemblyService(DataSettings, FileService, AssemblyManagementRepository, ApplicationNameProvider);
             result.CopyProperties(this);
             result.CopyEventHandlers(this);
             return result;
         }
         public event EventHandler CurrentRuntimePersisted;
         public event EventHandler RuntimeRestored;
-        public string AssemblyDirectory { get; set; }
+        public DataSettings DataSettings { get; set; }
+        public string AssemblyDirectory
+        {
+            get
+            {
+                return DataSettings.GetSysAssemblyDirectory().FullName;
+            }
+        }
         public IFileService FileService { get; set; }
         public Repo.AssemblyServiceRepository AssemblyManagementRepository { get; set; }    
 

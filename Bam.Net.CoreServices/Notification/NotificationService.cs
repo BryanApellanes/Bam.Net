@@ -26,7 +26,7 @@ namespace Bam.Net.CoreServices
         {
             Logger = logger ?? Log.Default;
             DataSettings = dataSettings;
-            string emailTemplatesDirectory = dataSettings.GetEmailTemplatesDirectory().FullName;
+            string emailTemplatesDirectory = dataSettings.GetSysEmailTemplatesDirectory().FullName;
             NotificationTemplateDirectory = new DirectoryInfo(Path.Combine(dataSettings.GetRootDataDirectory().FullName, "NotificationTemplates"));
             Templates = new HandlebarsDirectory(NotificationTemplateDirectory);
             Tld = "com";

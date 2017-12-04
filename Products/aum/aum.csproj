@@ -8,9 +8,10 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>aum</RootNamespace>
     <AssemblyName>aum</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -47,6 +48,33 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="README_INTERNAL.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Bam.Net.Analytics\Bam.Net.Analytics.csproj">
+      <Project>{67cca5a4-9b97-444c-9f4b-f464b2e04d6b}</Project>
+      <Name>Bam.Net.Analytics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Bam.Net.Automation\Bam.Net.Automation.csproj">
+      <Project>{b65e4fcd-de50-4d9e-91d7-dddf80c25c47}</Project>
+      <Name>Bam.Net.Automation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Bam.Net.Caching\Bam.Net.Caching.csproj">
+      <Project>{06bae7ad-8657-4415-bbc0-dad16bb29361}</Project>
+      <Name>Bam.Net.Caching</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Bam.Net.CoreServices\Bam.Net.CoreServices.csproj">
+      <Project>{5480d2a0-145b-4435-8e1c-4555ead0424a}</Project>
+      <Name>Bam.Net.CoreServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Bam.Net.Services.Clients\Bam.Net.Services.Clients.csproj">
+      <Project>{9193fb41-32e6-4cef-a44a-211fb3bfea8b}</Project>
+      <Name>Bam.Net.Services.Clients</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Bam.Net\Bam.Net.csproj">
+      <Project>{8794c09d-d72c-420c-812f-bfda251b64c9}</Project>
+      <Name>Bam.Net</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

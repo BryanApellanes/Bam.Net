@@ -27,6 +27,24 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data
             SetReferenceDescriptors(assembly);
         }
 
+        public AssemblyDescriptor Save(IRepository repo)
+        {
+            Task.Run(() =>
+            {
+                AssemblyRevision rev = repo.Query<AssemblyRevision>(new { FileHash = FileHash, FileName = Name, Number = FileHash.ToSha1Int() }).FirstOrDefault();
+                if (rev == null)
+                {
+                    rev = new AssemblyRevision
+                    {
+                        FileHash = FileHash,
+                        FileName = Name,
+                        Number = FileHash.ToSha1Int()
+                    };
+                    repo.Save(rev);
+                }
+            });
+            return repo.Save(this);
+        }
         /// <summary>
         /// Set the AssemblyReferenceDescriptors property by
         /// calling assembly.GetReferencedAssemblies()
@@ -58,7 +76,7 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data
             }
         }
 
-        public virtual List<ProcessRuntimeDescriptor> ProcessRuntimeDescriptor { get; set; }
+        public virtual List<ProcessRuntimeDescriptor> ProcessRuntimeDescriptors { get; set; }
         
         /// <summary>
         /// The name of the assembly file as reported by Assembly.GetFileInfo().Name
@@ -79,7 +97,7 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data
         public string AssemblyFullName { get; set; }
         
         /// <summary>
-        /// Descriptors of the assemblies referenced by the assembly
+        /// Association descriptors of the assemblies referenced by the assembly
         /// described by the current descriptor
         /// </summary>
         public virtual List<AssemblyReferenceDescriptor> AssemblyReferenceDescriptors
@@ -120,8 +138,7 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data
 
         public override bool Equals(object obj)
         {
-            AssemblyDescriptor ad = obj as AssemblyDescriptor;
-            if(ad != null)
+            if (obj is AssemblyDescriptor ad)
             {
                 return FileHash.Equals(ad.FileHash);
             }

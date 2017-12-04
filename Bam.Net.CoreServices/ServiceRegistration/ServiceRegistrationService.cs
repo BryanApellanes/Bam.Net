@@ -44,15 +44,15 @@ namespace Bam.Net.CoreServices
         /// Get the service registry using the underlying ServcieRegistryLoaderDescriptor
         /// or ServiceRegistryDescriptor with the specified name
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="registryName"></param>
         /// <returns></returns>
         [Local]
-        public ServiceRegistry GetServiceRegistry(string name)
+        public ServiceRegistry GetServiceRegistry(string registryName)
         {
-            ServiceRegistryLoaderDescriptor loader = GetServiceRegistryLoaderDescriptor(name);            
+            ServiceRegistryLoaderDescriptor loader = GetServiceRegistryLoaderDescriptor(registryName);            
             if(loader == null)
             {
-                ServiceRegistryDescriptor descriptor = GetServiceRegistryDescriptor(name);
+                ServiceRegistryDescriptor descriptor = GetServiceRegistryDescriptor(registryName);
                 return GetServiceRegistry(descriptor);
             }
             return GetServiceRegistry(loader);

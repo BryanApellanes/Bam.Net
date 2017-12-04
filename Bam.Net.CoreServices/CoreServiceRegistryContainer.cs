@@ -16,7 +16,6 @@ using Bam.Net.Data.SQLite;
 using Bam.Net.Data;
 using Bam.Net.Translation.Yandex;
 using Bam.Net.Translation;
-//using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Repository;
 using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.CoreServices.Files;
 using Bam.Net.CoreServices.AssemblyManagement.Data.Dao.Repository;
@@ -47,7 +46,7 @@ namespace Bam.Net.CoreServices
 
         public static ServiceRegistry Create()
         {
-            string databasesPath = DataSettings.Default.GetDatabaseDirectory().FullName;
+            string databasesPath = DataSettings.Default.GetSysDatabaseDirectory().FullName;
             string userDatabasesPath = Path.Combine(databasesPath, "UserDbs");
 
             AppConf conf = new AppConf(BamConf.Load(ServiceConfig.ContentRoot), ServiceConfig.ProcessName.Or(RegistryName));

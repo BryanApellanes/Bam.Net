@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Bam.Net.Data.SQLite;
 using Bam.Net.Logging;
 
@@ -22,6 +18,7 @@ namespace Bam.Net.Data.Repositories
             ChunksDirectory = "Chunks";
             WorkspacesDirectory = "Workspaces";
             EmailTemplatesDirectory = "EmailTemplates";
+            AssemblyDirectory = "Assemblies";
             ProcessMode = ProcessMode.Default;
             Logger = Log.Default;
         }
@@ -62,6 +59,7 @@ namespace Bam.Net.Data.Repositories
         public string ChunksDirectory { get; set; }
         public string WorkspacesDirectory { get; set; }
         public string EmailTemplatesDirectory { get; set; }
+        public string AssemblyDirectory { get; set; }
 
         public DirectoryInfo GetRootDataDirectory()
         {
@@ -83,6 +81,16 @@ namespace Bam.Net.Data.Repositories
             return new DirectoryInfo(Path.Combine(GetSysDataDirectory().FullName, directoryName));
         }
 
+        public DirectoryInfo GetSysAssemblyDirectory()
+        {
+            return GetSysDataDirectory(AssemblyDirectory);
+        }
+
+        public DirectoryInfo GetAppAssemblyDirectory(IApplicationNameProvider appNameProvider)
+        {
+            return GetAppDataDirectory(appNameProvider, AssemblyDirectory);
+        }
+
         public DirectoryInfo GetAppDataDirectory(IApplicationNameProvider appNameProvider)
         {
             return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, AppDataDirectory, appNameProvider.GetApplicationName()));
@@ -98,19 +106,19 @@ namespace Bam.Net.Data.Repositories
             return GetAppDataDirectory(appNameProvider, DatabaseDirectory);
         }
 
-        public DirectoryInfo GetDatabaseDirectory()
+        public DirectoryInfo GetSysDatabaseDirectory()
         {
-            return GetRootDataDirectory(DatabaseDirectory);
+            return GetSysDataDirectory(DatabaseDirectory);
         }
-
+        
         public DirectoryInfo GetAppRepositoryDirectory(IApplicationNameProvider appNameProvider)
         {
             return GetAppDataDirectory(appNameProvider, RepositoryDirectory);
         }
 
-        public DirectoryInfo GetRepositoryDirectory()
+        public DirectoryInfo GetSysRepositoryDirectory()
         {
-            return GetRootDataDirectory(RepositoryDirectory);
+            return GetSysDataDirectory(RepositoryDirectory);
         }
 
         public DirectoryInfo GetAppRepositoryWorkspaceDirectory(IApplicationNameProvider appNameProvider)
@@ -152,7 +160,7 @@ namespace Bam.Net.Data.Repositories
 
         public DaoRepository GetGenericDaoRepository(ILogger logger = null, string schemaName = null)
         {
-            return new DaoRepository(GetDatabaseFor(typeof(DaoRepository)), logger, schemaName);
+            return new DaoRepository(GetSysDatabaseFor(typeof(DaoRepository)), logger, schemaName);
         }
         
         public DirectoryInfo GetAppEmailTemplatesDirectory(IApplicationNameProvider appNameProvider)
@@ -160,17 +168,17 @@ namespace Bam.Net.Data.Repositories
             return GetAppDataDirectory(appNameProvider, EmailTemplatesDirectory);
         }
 
-        public DirectoryInfo GetEmailTemplatesDirectory()
+        public DirectoryInfo GetSysEmailTemplatesDirectory()
         {
-            return GetRootDataDirectory(EmailTemplatesDirectory);
+            return GetSysDataDirectory(EmailTemplatesDirectory);
         }
 
-        public void SetDatabaseFor(object instance)
+        public void SetSysDatabaseFor(object instance)
         {
-            instance.Property("Database", GetDatabaseFor(instance), false);
+            instance.Property("Database", GetSysDatabaseFor(instance), false);
         }        
 
-        public override SQLiteDatabase GetDatabaseFor(object instance)
+        public override SQLiteDatabase GetSysDatabaseFor(object instance)
         {
             string databaseName = instance.GetType().FullName;
             string schemaName = instance.Property<string>("SchemaName");
@@ -178,17 +186,17 @@ namespace Bam.Net.Data.Repositories
             {
                 databaseName = $"{databaseName}_{schemaName}";
             }
-            return new SQLiteDatabase(GetDatabaseDirectory().FullName, databaseName);
+            return new SQLiteDatabase(GetSysDatabaseDirectory().FullName, databaseName);
         }
 
-        public override string GetDatabasePathFor(Type type, string info = null)
+        public override string GetSysDatabasePathFor(Type type, string info = null)
         {
-            return GetDatabaseFor(type, info).DatabaseFile.FullName;
+            return GetSysDatabaseFor(type, info).DatabaseFile.FullName;
         }
         
-        public override SQLiteDatabase GetDatabaseFor(Type objectType, string info = null)
+        public override SQLiteDatabase GetSysDatabaseFor(Type objectType, string info = null)
         {
-            return GetDatabaseFor(objectType, () => GetDatabaseDirectory().FullName, info);
+            return GetDatabaseFor(objectType, () => GetSysDatabaseDirectory().FullName, info);
         }
 
         public override SQLiteDatabase GetAppDatabaseFor(IApplicationNameProvider appNameProvider, object instance)

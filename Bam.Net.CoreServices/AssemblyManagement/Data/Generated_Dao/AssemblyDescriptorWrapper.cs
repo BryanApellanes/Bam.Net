@@ -51,7 +51,7 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data.Wrappers
 // Xref property: Left -> AssemblyDescriptor ; Right -> ProcessRuntimeDescriptor
 
 		List<Bam.Net.CoreServices.AssemblyManagement.Data.ProcessRuntimeDescriptor> _processRuntimeDescriptors;
-		public override List<Bam.Net.CoreServices.AssemblyManagement.Data.ProcessRuntimeDescriptor> ProcessRuntimeDescriptor
+		public override List<Bam.Net.CoreServices.AssemblyManagement.Data.ProcessRuntimeDescriptor> ProcessRuntimeDescriptors
 		{
 			get
 			{

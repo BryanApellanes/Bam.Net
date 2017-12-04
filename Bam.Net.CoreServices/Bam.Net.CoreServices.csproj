@@ -227,6 +227,7 @@
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserWrapper.cs" />
     <Compile Include="ApplicationRegistration\Data\HostDomain.cs" />
     <Compile Include="ApplicationRegistration\Data\UserSetting.cs" />
+    <Compile Include="AssemblyManagement\Data\AssemblyRevision.cs" />
     <Compile Include="ClientApplicationNameResolver.cs" />
     <Compile Include="FileSystemChunkStorage.cs" />
     <Compile Include="Files\Chunk.cs" />
@@ -290,6 +291,7 @@
     <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceRegistryLockPagedQuery.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceRegistryLockQuery.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceRegistryLockWrapper.cs" />
+    <Compile Include="ServiceRegistration\Data\MachineServices.cs" />
     <Compile Include="ServiceRegistryContainerAttribute.cs" />
     <Compile Include="ServiceRegistry.cs" />
     <Compile Include="ServiceRegistryLoaderAttribute.cs" />
