@@ -100,7 +100,7 @@ namespace Bam.Net.Automation.Testing
         {
             try
             {
-                NotificationSubscription subscription = Repository.Query<NotificationSubscription>(Query.Where("EmailAddress") == emailAddress).FirstOrDefault();
+                NotificationSubscription subscription = Repository.Query<NotificationSubscription>(Query.Where(nameof(NotificationSubscription.EmailAddress)) == emailAddress).FirstOrDefault();
                 if (subscription == null)
                 {
                     subscription = new NotificationSubscription()
@@ -124,7 +124,7 @@ namespace Bam.Net.Automation.Testing
         {
             try
             {
-                NotificationSubscription subscription = Repository.Query<NotificationSubscription>(Query.Where("EmailAddress") == emailAddress).FirstOrDefault();
+                NotificationSubscription subscription = Repository.Query<NotificationSubscription>(Query.Where(nameof(NotificationSubscription.EmailAddress)) == emailAddress).FirstOrDefault();
                 string uuid = string.Empty;
                 SubscriptionStatus status = SubscriptionStatus.NotFound;
                 if (subscription != null)

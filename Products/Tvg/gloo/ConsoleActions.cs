@@ -217,11 +217,12 @@ namespace Bam.Net.Application
             AssemblyServiceRepository assRepo = new AssemblyServiceRepository();
             assRepo.Database = dataSettings.GetSysDatabaseFor(assRepo);
             assRepo.EnsureDaoAssemblyAndSchema();
-            AssemblyService assemblyService = new AssemblyService(fileService, assRepo, appNameProvider);
+            AssemblyService assemblyService = new AssemblyService(DataSettings.Current, fileService, assRepo, appNameProvider);
             ServiceRegistrationRepository serviceRegistryRepo = new ServiceRegistrationRepository();
             serviceRegistryRepo.Database = dataSettings.GetSysDatabaseFor(serviceRegistryRepo);
             serviceRegistryRepo.EnsureDaoAssemblyAndSchema();
             ServiceRegistryService serviceRegistryService = new ServiceRegistryService(
+                fileService,
                 assemblyService,
                 serviceRegistryRepo,
                 DataSettings.Default.GetGenericDaoRepository(logger),
