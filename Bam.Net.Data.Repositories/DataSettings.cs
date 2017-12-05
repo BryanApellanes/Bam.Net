@@ -123,10 +123,8 @@ namespace Bam.Net.Data.Repositories
 
         public T GetSysDaoRepository<T>() where T: DaoRepository, new()
         {
-            T result = new T
-            {
-                Database = GetSysDatabaseFor(typeof(T))
-            };
+            T result = new T();
+            result.Database = GetSysDatabaseFor(result);
             result.EnsureDaoAssemblyAndSchema();
             return result;
         }
