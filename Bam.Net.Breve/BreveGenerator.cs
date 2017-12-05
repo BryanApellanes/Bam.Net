@@ -19,7 +19,7 @@ namespace Bam.Net.Breve
         public BreveInfo Info { get; private set; }
 
         public abstract void Go(string outputFile);
-
+        public BreveFormat Format { get; set; }
         public static BreveGenerator Create(Languages lang, BreveInfo info)
         {
             BreveGenerator generator = new JavaBreveGenerator(info);
