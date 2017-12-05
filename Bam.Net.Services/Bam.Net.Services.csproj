@@ -244,6 +244,7 @@
     <Compile Include="Documentation\Data\OperationDescriptor.cs" />
     <Compile Include="Documentation\Data\ParameterDescriptor.cs" />
     <Compile Include="Documentation\Data\PropertyDescriptor.cs" />
+    <Compile Include="FileManager.cs" />
     <Compile Include="OpenApi\Objects\CallbackObject.cs" />
     <Compile Include="OpenApi\Objects\ComponentsObject.cs" />
     <Compile Include="OpenApi\Objects\ContactObject.cs" />

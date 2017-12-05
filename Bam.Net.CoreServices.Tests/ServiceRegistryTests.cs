@@ -22,7 +22,7 @@ namespace Bam.Net.CoreServices.Tests
     [Serializable]
     public class ServiceRegistryTests : CommandLineTestInterface
     {
-        [UnitTest("AppRegistry: ")]
+        [UnitTest]
         public void ServiceTypeResolves()
         {
 

@@ -193,7 +193,7 @@ namespace Bam.Net.CoreServices
         }
 
         /// <summary>
-        /// Save the specified file into the repository as chunks
+        /// Save the specified file into chunk storage
         /// </summary>
         /// <param name="file"></param>
         /// <param name="chunkLength"></param>
