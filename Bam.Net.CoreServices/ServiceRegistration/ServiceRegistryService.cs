@@ -199,13 +199,14 @@ namespace Bam.Net.CoreServices
         [RoleRequired("/", "Admin")]
         public virtual ServiceRegistryDescriptor GetServiceRegistryDescriptor(string name)
         {            
-            Dictionary<string, Func<FileInfo, ServiceRegistryDescriptor>> deserializers = new Dictionary<string, Func<FileInfo, ServiceRegistryDescriptor>>
+            Dictionary<string, Func<FileInfo, List<ServiceDescriptor>>> deserializers = new Dictionary<string, Func<FileInfo, List<ServiceDescriptor>>>
             {
-                {".json", (fi)=> fi.FromJsonFile<ServiceRegistryDescriptor>() },
-                {".yml", (fi)=> fi.FromYamlFile<ServiceRegistryDescriptor>() }
+                {".json", (fi)=> fi.FromJsonFile<List<ServiceDescriptor>>() },
+                {".yml", (fi)=> fi.FromYamlFile<List<ServiceDescriptor>>() }
             };
             DirectoryInfo systemServiceRegistryDir = DataSettings.GetSysDataDirectory(nameof(ServiceRegistry).Pluralize());
-            ServiceRegistryDescriptor fromFile = null;
+            ServiceRegistryDescriptor fromFile = new ServiceRegistryDescriptor { Name = name };
+            List<ServiceDescriptor> descriptors = new List<ServiceDescriptor>();
             FileInfo file = null;
             foreach(string extension in new[] { ".yml", ".json" })
             {
@@ -213,7 +214,8 @@ namespace Bam.Net.CoreServices
                 if (File.Exists(path))
                 {
                     file = new FileInfo(path);
-                    fromFile = deserializers[extension](file);
+                    fromFile.Services = deserializers[extension](file);
+                    break;
                 }
             }
 

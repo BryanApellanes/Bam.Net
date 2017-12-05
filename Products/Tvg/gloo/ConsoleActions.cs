@@ -103,6 +103,7 @@ namespace Bam.Net.Application
             List<dynamic> types = new List<dynamic>();
             string assemblyPath = "\r\n";
             DirectoryInfo sysData = DataSettings.Current.GetSysDataDirectory(nameof(ServiceRegistry).Pluralize());
+            ServiceRegistryRepository repo = DataSettings.Current.GetSysDaoRepository<ServiceRegistryRepository>();
             ServiceRegistryDescriptor registry = new ServiceRegistryDescriptor();
             while (!assemblyPath.Equals(string.Empty))
             {
@@ -138,8 +139,13 @@ namespace Bam.Net.Application
             }
             string registryName = Prompt("Enter a name for the registry");
             string path = Path.Combine(sysData.FullName, $"{registryName}.json");
-            registry.Name = registryName;
-            registry.ToJsonFile(path);
+            registry.Save(repo);
+            registry.Services.Select(sd=> new {
+                ForTypeDurableHash = sd.ForTypeDurableHash,
+                ForTypeDurableSecondaryHash  = sd.ForTypeDurableSecondaryHash,
+                UseTypeDurableHash = sd.UseTypeDurableHash,
+                UseTypeDurableSecondaryHash = sd.UseTypeDurableSecondaryHash
+            }).ToJsonFile(path);            
         }
 
         [ConsoleAction("csgloo", "Start the gloo server serving the compiled results of the specified csgloo files")]

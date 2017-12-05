@@ -32,6 +32,7 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data
             SetSequenceValues();
             return add;
         }
+
         public static ServiceRegistryDescriptor FromIncubator(string name, Incubator incubator, string desciption = null)
         {
             ServiceRegistryDescriptor result = new ServiceRegistryDescriptor(name, desciption);
@@ -40,6 +41,15 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data
                 result.AddService(type, incubator[type].GetType());
             }
             return result;
+        }
+
+        public override RepoData Save(IRepository repo)
+        {
+            foreach(ServiceDescriptor svcDesc in Services)
+            {
+                svcDesc.Save(repo);
+            }
+            return base.Save(repo);
         }
 
         private void SetSequenceValues()

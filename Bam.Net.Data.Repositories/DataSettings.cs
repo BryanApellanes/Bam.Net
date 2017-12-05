@@ -121,6 +121,26 @@ namespace Bam.Net.Data.Repositories
             return GetSysDataDirectory(RepositoryDirectory);
         }
 
+        public T GetSysDaoRepository<T>() where T: DaoRepository, new()
+        {
+            T result = new T
+            {
+                Database = GetSysDatabaseFor(typeof(T))
+            };
+            result.EnsureDaoAssemblyAndSchema();
+            return result;
+        }
+
+        public T GetAppDaoRepository<T>(IApplicationNameProvider applicationNameProvider) where T : DaoRepository, new()
+        {
+            T result = new T
+            {
+                Database = GetAppDatabaseFor(applicationNameProvider, typeof(T))
+            };
+            result.EnsureDaoAssemblyAndSchema();
+            return result;
+        }
+
         public DirectoryInfo GetAppRepositoryWorkspaceDirectory(IApplicationNameProvider appNameProvider)
         {
             return GetAppDataDirectory(appNameProvider, WorkspacesDirectory);

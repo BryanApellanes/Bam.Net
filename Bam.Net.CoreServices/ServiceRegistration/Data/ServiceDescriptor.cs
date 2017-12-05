@@ -51,7 +51,7 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data
             {
                 UseTypeIdentifier.Save(repo);
             }
-            return Save(repo);
+            return repo.Save(this);
         }
 
         public ServiceTypeIdentifier GetForTypeIdentifier(IRepository repo)

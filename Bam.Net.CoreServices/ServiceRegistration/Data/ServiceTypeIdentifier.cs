@@ -41,7 +41,11 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data
         public new ServiceTypeIdentifier Save(IRepository repo)
         {
             SetDurableHashes();
-            return repo.Save(this);
+            if(QueryFirstOrDefault<ServiceTypeIdentifier>(repo, nameof(DurableHash), nameof(DurableSecondaryHash)) == null)
+            {
+                return repo.Save(this);
+            }
+            return this;
         }
 
         public static ServiceTypeIdentifier FromType(Type type, ILogger logger = null)
