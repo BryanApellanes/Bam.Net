@@ -12,25 +12,10 @@ namespace Bam.Net.Breve
 {
     public class JavaBreveGenerator: BreveGenerator
     {
-        string _classFormat;
-        string _propertyFormat;
         public JavaBreveGenerator(BreveInfo breve)
             : base(breve)
         {
-            this._classFormat = @"public class {ClassName}{{
-{Properties}
-}}";
-            this._propertyFormat = @"
-    {PropertyType} {PropertyField};
-    public {PropertyType} {PropertyName}(){{
-        return {PropertyField};
-    }}
-
-    public {ClassName} {PropertyName}({PropertyType} value){{
-        {PropertyField} = value;
-        return this;
-    }}
-";
+            Format = new BreveJavaFormat();
         }
 
         public override void Go(string outputFile)
@@ -40,7 +25,7 @@ namespace Bam.Net.Breve
             StringBuilder properties = new StringBuilder();
             Info.Properties.Each(bp =>
             {
-                properties.Append(_propertyFormat.NamedFormat(new { 
+                properties.Append(Format.PropertyFormat.NamedFormat(new { 
                     PropertyType = bp.PropertyType, 
                     PropertyField = bp.PropertyField,  
                     ClassName = bp.ClassName,
@@ -48,7 +33,7 @@ namespace Bam.Net.Breve
                 }));
             });
 
-            output.Append(_classFormat.NamedFormat(new { ClassName = Info.ClassName, Properties = properties.ToString() }));
+            output.Append(Format.ClassFormat.NamedFormat(new { ClassName = Info.ClassName, Properties = properties.ToString() }));
 
             output.ToString().SafeWriteToFile(file.FullName);
         }

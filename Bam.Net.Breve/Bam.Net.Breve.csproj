@@ -67,10 +67,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BreveCSharpFormat.cs" />
+    <Compile Include="BreveFormat.cs" />
     <Compile Include="BreveGenerator.cs" />
     <Compile Include="BreveInfo.cs" />
+    <Compile Include="BreveClassicJavaFormat.cs" />
     <Compile Include="BreveProperty.cs" />
     <Compile Include="CSharpBreveGenerator.cs" />
+    <Compile Include="BreveJavaFormat.cs" />
     <Compile Include="JavaBreveGenerator.cs" />
     <Compile Include="Languages.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
