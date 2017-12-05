@@ -401,7 +401,6 @@
     <Compile Include="ServiceRegistration\ServiceRegistryBuilder.cs" />
     <Compile Include="ServiceRegistration\ServiceRegistryService.cs" />
     <Compile Include="Configuration\SettingSource.cs" />
-    <Compile Include="ApplicationRegistration\ApplicationRegistryServiceConfig.cs" />
     <Compile Include="ApplicationProxyableService.cs" />
     <Compile Include="ApplicationRegistration\Data\ApiKey.cs" />
     <Compile Include="ApplicationRegistration\Data\Application.cs" />

@@ -66,7 +66,6 @@ namespace Bam.Net.CoreServices
             assSvcRepo.EnsureDaoAssemblyAndSchema();
 
             ConfigurationService configSvc = new ConfigurationService(coreRepo, conf, userDatabasesPath);
-            ApplicationRegistryServiceConfig config = new ApplicationRegistryServiceConfig { DatabaseProvider = dbProvider, WorkspacePath = databasesPath, Logger = Log.Default };
             CompositeRepository compositeRepo = new CompositeRepository(coreRepo);
             SystemLoggerService loggerSvc = new SystemLoggerService(conf);
             dbProvider.SetDatabases(loggerSvc);
@@ -90,7 +89,6 @@ namespace Bam.Net.CoreServices
                 .For<IRoleProvider>().Use(coreRoleService)
                 .For<RoleService>().Use(coreRoleService)
                 .For<EmailComposer>().Use(userMgr.EmailComposer)
-                .For<ApplicationRegistryServiceConfig>().Use(config)
                 .For<IApplicationNameProvider>().Use<ApplicationRegistrationService>()
                 .For<ApplicationRegistrationService>().Use<ApplicationRegistrationService>()
                 .For<IApiKeyResolver>().Use<ApplicationRegistrationService>()
