@@ -1,23 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net;
+using Bam.Net.Caching;
+using Bam.Net.Configuration;
+using Bam.Net.CoreServices.ApplicationRegistration.Data;
+using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Repository;
 using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Logging;
+using Bam.Net.Server;
 using Bam.Net.ServiceProxy;
 using Bam.Net.ServiceProxy.Secure;
-using Bam.Net.CoreServices.ApplicationRegistration.Data;
-//using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Repository;
 using Bam.Net.UserAccounts;
-using Bam.Net.Caching;
-using System.Collections.Specialized;
-using System.Net;
-using Bam.Net.Server;
 using Bam.Net.Web;
-using Bam.Net.Configuration;
-using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Repository;
 
 namespace Bam.Net.CoreServices
 {
@@ -31,16 +27,16 @@ namespace Bam.Net.CoreServices
 
         protected ApplicationRegistrationService() { }
 
-        public ApplicationRegistrationService(ApplicationRegistryServiceConfig config, AppConf conf, ApplicationRegistrationRepository coreRepo, ILogger logger)
+        public ApplicationRegistrationService(DataSettings dataSettings, AppConf conf, ApplicationRegistrationRepository coreRepo, ILogger logger)
         {
             ApplicationRegistrationRepository = coreRepo;
             ApplicationRegistrationRepository.WarningsAsErrors = false;
-            config.DatabaseProvider.SetDatabases(this);
-            CompositeRepository = new CompositeRepository(ApplicationRegistrationRepository, config.WorkspacePath);
+            dataSettings.SetDatabases(this);
+            CompositeRepository = new CompositeRepository(ApplicationRegistrationRepository, dataSettings);
             _cacheManager = new CacheManager(100000000);
             _apiKeyResolver = new ApiKeyResolver(this, this);
             AppConf = conf;
-            Config = config;
+            DataSettings = dataSettings;
             Logger = logger;
             HashAlgorithm = HashAlgorithms.SHA256;         
         }
@@ -250,7 +246,7 @@ namespace Bam.Net.CoreServices
         [Exclude]
         public override object Clone()
         {
-            ApplicationRegistrationService result = new ApplicationRegistrationService(Config, AppConf, ApplicationRegistrationRepository, Logger);
+            ApplicationRegistrationService result = new ApplicationRegistrationService(DataSettings, AppConf, ApplicationRegistrationRepository, Logger);
             result.CopyProperties(this);
             return result;
         }
@@ -336,7 +332,7 @@ namespace Bam.Net.CoreServices
             throw new InvalidOperationException($"It isn't appropriate for this service to be used for this purpose: {nameof(ApplicationRegistrationService)}.{nameof(ApplicationRegistrationService.SetKeyToken)}");
         }
 
-        protected ApplicationRegistryServiceConfig Config { get; set; }
+        protected DataSettings DataSettings { get; set; }
 
         protected internal ApiKeyInfo GenerateApiKeyInfo(CoreServices.ApplicationRegistration.Data.Application app)
         {

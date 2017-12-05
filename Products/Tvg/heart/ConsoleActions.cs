@@ -43,7 +43,7 @@ namespace Bam.Net.Application
             HostPrefix[] prefixes = GetConfiguredHostPrefixes();
             ILogger logger = GetLogger();
             Log.Default = logger;
-            ServiceRegistry serviceRegistry = CoreServiceRegistryContainer.Create();            
+            ServiceRegistry serviceRegistry = ApplicationServiceRegistryContainer.Create();            
             server = serviceRegistry.Serve(prefixes, logger);
             Pause($"Heart server is serving service registry {serviceRegistry.Name}");
         }

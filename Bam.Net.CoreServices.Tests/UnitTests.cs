@@ -188,7 +188,7 @@ namespace Bam.Net.CoreServices.Tests
         {
             After.Setup((Action<SetupContext>)(ctx =>
             {
-                ctx.CopyFrom((Incubation.Incubator)CoreServiceRegistryContainer.GetServiceRegistry());
+                ctx.CopyFrom((Incubation.Incubator)ApplicationServiceRegistryContainer.GetServiceRegistry());
             }))
             .WhenA<ApplicationRegistrationService>("tries to register application when not logged in", cars =>
             {
@@ -210,7 +210,7 @@ namespace Bam.Net.CoreServices.Tests
         [UnitTest]
         public void CanSaveUserToCompositeRepo()
         {
-            CompositeRepository repo = CoreServiceRegistryContainer.GetServiceRegistry().Get<CompositeRepository>();
+            CompositeRepository repo = ApplicationServiceRegistryContainer.GetServiceRegistry().Get<CompositeRepository>();
             ApplicationRegistration.Data.User user = new ApplicationRegistration.Data.User();
             user.UserName = 9.RandomLetters();
             user = repo.Save(user);
@@ -223,7 +223,7 @@ namespace Bam.Net.CoreServices.Tests
         [UnitTest]
         public void CanListCoreServices()
         {
-            Assembly coreServicesAssembly = typeof(CoreServiceRegistryContainer).Assembly;
+            Assembly coreServicesAssembly = typeof(ApplicationServiceRegistryContainer).Assembly;
             bool foundOne = false;
             foreach(Type type in coreServicesAssembly.GetTypes())
             {
@@ -315,7 +315,7 @@ namespace Bam.Net.CoreServices.Tests
         [UnitTest]
         public void EnsureSingleDoesntDuplicate()
         {
-            ServiceRegistry glooRegistry = CoreServiceRegistryContainer.GetServiceRegistry();
+            ServiceRegistry glooRegistry = ApplicationServiceRegistryContainer.GetServiceRegistry();
             ApplicationRegistrationRepository repo = glooRegistry.Get<ApplicationRegistrationRepository>();
             CompositeRepository compositeRepo = glooRegistry.Get<CompositeRepository>();
             compositeRepo.UnwireBackup();
@@ -386,7 +386,7 @@ namespace Bam.Net.CoreServices.Tests
         [UnitTest]
         public void CoreServiceRegistryTest()
         {
-            ServiceRegistry reg = CoreServiceRegistryContainer.Create();
+            ServiceRegistry reg = ApplicationServiceRegistryContainer.Create();
             IUserResolver userResolver = reg.Get<IUserResolver>();
             Expect.IsNotNull(userResolver);
         }
@@ -394,7 +394,7 @@ namespace Bam.Net.CoreServices.Tests
         [UnitTest]
         public void CoreServiceRegistryCopyTest()
         {
-            ServiceRegistry reg = CoreServiceRegistryContainer.Create();
+            ServiceRegistry reg = ApplicationServiceRegistryContainer.Create();
             Incubator copy = new Incubator();
             copy.CopyFrom(reg);
             IUserResolver userResolver = copy.Get<IUserResolver>();
@@ -410,7 +410,7 @@ namespace Bam.Net.CoreServices.Tests
 
         private ApplicationRegistrationService GetTestService()
         {
-            ServiceRegistry registry = CoreServiceRegistryContainer.GetServiceRegistry();
+            ServiceRegistry registry = ApplicationServiceRegistryContainer.GetServiceRegistry();
             ApplicationRegistrationService svc = registry.Get<ApplicationRegistrationService>();
             registry.SetProperties(svc);
             return svc;

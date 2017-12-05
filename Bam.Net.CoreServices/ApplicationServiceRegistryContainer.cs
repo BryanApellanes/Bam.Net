@@ -28,11 +28,10 @@ using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Repository;
 namespace Bam.Net.CoreServices
 {
     /// <summary>
-    /// Registry for the Core service
-    /// provider of all applications
+    /// Default application registry container for applications
     /// </summary>
     [ServiceRegistryContainer]
-    public static class CoreServiceRegistryContainer
+    public static class ApplicationServiceRegistryContainer
     {
         public const string RegistryName = "CoreServiceRegistry";
         static object _coreIncubatorLock = new object();
@@ -46,7 +45,7 @@ namespace Bam.Net.CoreServices
 
         public static ServiceRegistry Create()
         {
-            string databasesPath = DataSettings.Default.GetSysDatabaseDirectory().FullName;
+            string databasesPath = DataSettings.Current.GetSysDatabaseDirectory().FullName;
             string userDatabasesPath = Path.Combine(databasesPath, "UserDbs");
 
             AppConf conf = new AppConf(BamConf.Load(ServiceConfig.ContentRoot), ServiceConfig.ProcessName.Or(RegistryName));
@@ -68,7 +67,7 @@ namespace Bam.Net.CoreServices
 
             ConfigurationService configSvc = new ConfigurationService(coreRepo, conf, userDatabasesPath);
             ApplicationRegistryServiceConfig config = new ApplicationRegistryServiceConfig { DatabaseProvider = dbProvider, WorkspacePath = databasesPath, Logger = Log.Default };
-            CompositeRepository compositeRepo = new CompositeRepository(coreRepo, databasesPath);
+            CompositeRepository compositeRepo = new CompositeRepository(coreRepo);
             SystemLoggerService loggerSvc = new SystemLoggerService(conf);
             dbProvider.SetDatabases(loggerSvc);
             loggerSvc.SetLogger();
