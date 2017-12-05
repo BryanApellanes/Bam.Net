@@ -17,30 +17,30 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 	// schema = ServiceRegistry
 	// connection Name = ServiceRegistry
 	[Serializable]
-	[Bam.Net.Data.Table("ServiceRegistryLock", "ServiceRegistry")]
-	public partial class ServiceRegistryLock: Bam.Net.Data.Dao
+	[Bam.Net.Data.Table("ServiceTypeIdentifier", "ServiceRegistry")]
+	public partial class ServiceTypeIdentifier: Bam.Net.Data.Dao
 	{
-		public ServiceRegistryLock():base()
+		public ServiceTypeIdentifier():base()
 		{
 			this.SetKeyColumnName();
 			this.SetChildren();
 		}
 
-		public ServiceRegistryLock(DataRow data)
+		public ServiceTypeIdentifier(DataRow data)
 			: base(data)
 		{
 			this.SetKeyColumnName();
 			this.SetChildren();
 		}
 
-		public ServiceRegistryLock(Database db)
+		public ServiceTypeIdentifier(Database db)
 			: base(db)
 		{
 			this.SetKeyColumnName();
 			this.SetChildren();
 		}
 
-		public ServiceRegistryLock(Database db, DataRow data)
+		public ServiceTypeIdentifier(Database db, DataRow data)
 			: base(db, data)
 		{
 			this.SetKeyColumnName();
@@ -48,9 +48,9 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		}
 
 		[Bam.Net.Exclude]
-		public static implicit operator ServiceRegistryLock(DataRow data)
+		public static implicit operator ServiceTypeIdentifier(DataRow data)
 		{
-			return new ServiceRegistryLock(data);
+			return new ServiceTypeIdentifier(data);
 		}
 
 		private void SetChildren()
@@ -101,73 +101,101 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		}
 	}
 
-	// property:Name, columnName:Name	
-	[Bam.Net.Data.Column(Name="Name", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string Name
+	// property:BuildNumber, columnName:BuildNumber	
+	[Bam.Net.Data.Column(Name="BuildNumber", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string BuildNumber
 	{
 		get
 		{
-			return GetStringValue("Name");
+			return GetStringValue("BuildNumber");
 		}
 		set
 		{
-			SetValue("Name", value);
+			SetValue("BuildNumber", value);
 		}
 	}
 
-	// property:CreatedBy, columnName:CreatedBy	
-	[Bam.Net.Data.Column(Name="CreatedBy", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string CreatedBy
+	// property:Namespace, columnName:Namespace	
+	[Bam.Net.Data.Column(Name="Namespace", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string Namespace
 	{
 		get
 		{
-			return GetStringValue("CreatedBy");
+			return GetStringValue("Namespace");
 		}
 		set
 		{
-			SetValue("CreatedBy", value);
+			SetValue("Namespace", value);
 		}
 	}
 
-	// property:ModifiedBy, columnName:ModifiedBy	
-	[Bam.Net.Data.Column(Name="ModifiedBy", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string ModifiedBy
+	// property:TypeName, columnName:TypeName	
+	[Bam.Net.Data.Column(Name="TypeName", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string TypeName
 	{
 		get
 		{
-			return GetStringValue("ModifiedBy");
+			return GetStringValue("TypeName");
 		}
 		set
 		{
-			SetValue("ModifiedBy", value);
+			SetValue("TypeName", value);
 		}
 	}
 
-	// property:Modified, columnName:Modified	
-	[Bam.Net.Data.Column(Name="Modified", DbDataType="DateTime", MaxLength="8", AllowNull=true)]
-	public DateTime? Modified
+	// property:AssemblyFullName, columnName:AssemblyFullName	
+	[Bam.Net.Data.Column(Name="AssemblyFullName", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string AssemblyFullName
 	{
 		get
 		{
-			return GetDateTimeValue("Modified");
+			return GetStringValue("AssemblyFullName");
 		}
 		set
 		{
-			SetValue("Modified", value);
+			SetValue("AssemblyFullName", value);
 		}
 	}
 
-	// property:Deleted, columnName:Deleted	
-	[Bam.Net.Data.Column(Name="Deleted", DbDataType="DateTime", MaxLength="8", AllowNull=true)]
-	public DateTime? Deleted
+	// property:AssemblyFileHash, columnName:AssemblyFileHash	
+	[Bam.Net.Data.Column(Name="AssemblyFileHash", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string AssemblyFileHash
 	{
 		get
 		{
-			return GetDateTimeValue("Deleted");
+			return GetStringValue("AssemblyFileHash");
 		}
 		set
 		{
-			SetValue("Deleted", value);
+			SetValue("AssemblyFileHash", value);
+		}
+	}
+
+	// property:DurableHash, columnName:DurableHash	
+	[Bam.Net.Data.Column(Name="DurableHash", DbDataType="Int", MaxLength="10", AllowNull=true)]
+	public int? DurableHash
+	{
+		get
+		{
+			return GetIntValue("DurableHash");
+		}
+		set
+		{
+			SetValue("DurableHash", value);
+		}
+	}
+
+	// property:DurableSecondaryHash, columnName:DurableSecondaryHash	
+	[Bam.Net.Data.Column(Name="DurableSecondaryHash", DbDataType="Int", MaxLength="10", AllowNull=true)]
+	public int? DurableSecondaryHash
+	{
+		get
+		{
+			return GetIntValue("DurableSecondaryHash");
+		}
+		set
+		{
+			SetValue("DurableSecondaryHash", value);
 		}
 	}
 
@@ -204,23 +232,23 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 			}
 			else
 			{
-				var colFilter = new ServiceRegistryLockColumns();
+				var colFilter = new ServiceTypeIdentifierColumns();
 				return (colFilter.KeyColumn == IdValue);
 			}			
 		}
 
 		/// <summary>
-		/// Return every record in the ServiceRegistryLock table.
+		/// Return every record in the ServiceTypeIdentifier table.
 		/// </summary>
 		/// <param name="database">
 		/// The database to load from or null
 		/// </param>
-		public static ServiceRegistryLockCollection LoadAll(Database database = null)
+		public static ServiceTypeIdentifierCollection LoadAll(Database database = null)
 		{
 			SqlStringBuilder sql = new SqlStringBuilder();
-			sql.Select<ServiceRegistryLock>();
-			Database db = database ?? Db.For<ServiceRegistryLock>();
-			var results = new ServiceRegistryLockCollection(db, sql.GetDataTable(db));
+			sql.Select<ServiceTypeIdentifier>();
+			Database db = database ?? Db.For<ServiceTypeIdentifier>();
+			var results = new ServiceTypeIdentifierCollection(db, sql.GetDataTable(db));
 			results.Database = db;
 			return results;
 		}
@@ -229,12 +257,12 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// Process all records in batches of the specified size
 		/// </summary>
 		[Bam.Net.Exclude]
-		public static async Task BatchAll(int batchSize, Action<IEnumerable<ServiceRegistryLock>> batchProcessor, Database database = null)
+		public static async Task BatchAll(int batchSize, Action<IEnumerable<ServiceTypeIdentifier>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
-				ServiceRegistryLockColumns columns = new ServiceRegistryLockColumns();
-				var orderBy = Bam.Net.Data.Order.By<ServiceRegistryLockColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
+				ServiceTypeIdentifierColumns columns = new ServiceTypeIdentifierColumns();
+				var orderBy = Bam.Net.Data.Order.By<ServiceTypeIdentifierColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, (c) => c.KeyColumn > 0, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -252,7 +280,7 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// Process results of a query in batches of the specified size
 		/// </summary>			 
 		[Bam.Net.Exclude]
-		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<ServiceRegistryLock>> batchProcessor, Database database = null)
+		public static async Task BatchQuery(int batchSize, QueryFilter filter, Action<IEnumerable<ServiceTypeIdentifier>> batchProcessor, Database database = null)
 		{
 			await BatchQuery(batchSize, (c) => filter, batchProcessor, database);			
 		}
@@ -261,12 +289,12 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// Process results of a query in batches of the specified size
 		/// </summary>	
 		[Bam.Net.Exclude]
-		public static async Task BatchQuery(int batchSize, WhereDelegate<ServiceRegistryLockColumns> where, Action<IEnumerable<ServiceRegistryLock>> batchProcessor, Database database = null)
+		public static async Task BatchQuery(int batchSize, WhereDelegate<ServiceTypeIdentifierColumns> where, Action<IEnumerable<ServiceTypeIdentifier>> batchProcessor, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
-				ServiceRegistryLockColumns columns = new ServiceRegistryLockColumns();
-				var orderBy = Bam.Net.Data.Order.By<ServiceRegistryLockColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
+				ServiceTypeIdentifierColumns columns = new ServiceTypeIdentifierColumns();
+				var orderBy = Bam.Net.Data.Order.By<ServiceTypeIdentifierColumns>(c => c.KeyColumn, Bam.Net.Data.SortOrder.Ascending);
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -275,7 +303,7 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 						batchProcessor(results);
 					});
 					long topId = results.Select(d => d.Property<long>(columns.KeyColumn.ToString())).ToArray().Largest();
-					results = Top(batchSize, (ServiceRegistryLockColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
+					results = Top(batchSize, (ServiceTypeIdentifierColumns)where(columns) && columns.KeyColumn > topId, orderBy, database);
 				}
 			});			
 		}
@@ -284,7 +312,7 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// Process results of a query in batches of the specified size
 		/// </summary>			 
 		[Bam.Net.Exclude]
-		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<ServiceRegistryLock>> batchProcessor, Bam.Net.Data.OrderBy<ServiceRegistryLockColumns> orderBy, Database database = null)
+		public static async Task BatchQuery<ColType>(int batchSize, QueryFilter filter, Action<IEnumerable<ServiceTypeIdentifier>> batchProcessor, Bam.Net.Data.OrderBy<ServiceTypeIdentifierColumns> orderBy, Database database = null)
 		{
 			await BatchQuery<ColType>(batchSize, (c) => filter, batchProcessor, orderBy, database);			
 		}
@@ -293,11 +321,11 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// Process results of a query in batches of the specified size
 		/// </summary>	
 		[Bam.Net.Exclude]
-		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<ServiceRegistryLockColumns> where, Action<IEnumerable<ServiceRegistryLock>> batchProcessor, Bam.Net.Data.OrderBy<ServiceRegistryLockColumns> orderBy, Database database = null)
+		public static async Task BatchQuery<ColType>(int batchSize, WhereDelegate<ServiceTypeIdentifierColumns> where, Action<IEnumerable<ServiceTypeIdentifier>> batchProcessor, Bam.Net.Data.OrderBy<ServiceTypeIdentifierColumns> orderBy, Database database = null)
 		{
 			await Task.Run(async ()=>
 			{
-				ServiceRegistryLockColumns columns = new ServiceRegistryLockColumns();
+				ServiceTypeIdentifierColumns columns = new ServiceTypeIdentifierColumns();
 				var results = Top(batchSize, where, orderBy, database);
 				while(results.Count > 0)
 				{
@@ -306,91 +334,91 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 						batchProcessor(results);
 					});
 					ColType top = results.Select(d => d.Property<ColType>(orderBy.Column.ToString())).ToArray().Largest();
-					results = Top(batchSize, (ServiceRegistryLockColumns)where(columns) && orderBy.Column > top, orderBy, database);
+					results = Top(batchSize, (ServiceTypeIdentifierColumns)where(columns) && orderBy.Column > top, orderBy, database);
 				}
 			});			
 		}
 
-		public static ServiceRegistryLock GetById(int id, Database database = null)
+		public static ServiceTypeIdentifier GetById(int id, Database database = null)
 		{
 			return GetById((long)id, database);
 		}
 
-		public static ServiceRegistryLock GetById(long id, Database database = null)
+		public static ServiceTypeIdentifier GetById(long id, Database database = null)
 		{
 			return OneWhere(c => c.KeyColumn == id, database);
 		}
 
-		public static ServiceRegistryLock GetByUuid(string uuid, Database database = null)
+		public static ServiceTypeIdentifier GetByUuid(string uuid, Database database = null)
 		{
 			return OneWhere(c => Bam.Net.Data.Query.Where("Uuid") == uuid, database);
 		}
 
-		public static ServiceRegistryLock GetByCuid(string cuid, Database database = null)
+		public static ServiceTypeIdentifier GetByCuid(string cuid, Database database = null)
 		{
 			return OneWhere(c => Bam.Net.Data.Query.Where("Cuid") == cuid, database);
 		}
 
 		[Bam.Net.Exclude]
-		public static ServiceRegistryLockCollection Query(QueryFilter filter, Database database = null)
+		public static ServiceTypeIdentifierCollection Query(QueryFilter filter, Database database = null)
 		{
 			return Where(filter, database);
 		}
 
 		[Bam.Net.Exclude]		
-		public static ServiceRegistryLockCollection Where(QueryFilter filter, Database database = null)
+		public static ServiceTypeIdentifierCollection Where(QueryFilter filter, Database database = null)
 		{
-			WhereDelegate<ServiceRegistryLockColumns> whereDelegate = (c) => filter;
+			WhereDelegate<ServiceTypeIdentifierColumns> whereDelegate = (c) => filter;
 			return Where(whereDelegate, database);
 		}
 
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A Func delegate that recieves a ServiceRegistryLockColumns 
+		/// <param name="where">A Func delegate that recieves a ServiceTypeIdentifierColumns 
 		/// and returns a QueryFilter which is the result of any comparisons
-		/// between ServiceRegistryLockColumns and other values
+		/// between ServiceTypeIdentifierColumns and other values
 		/// </param>
 		/// <param name="db"></param>
 		[Bam.Net.Exclude]
-		public static ServiceRegistryLockCollection Where(Func<ServiceRegistryLockColumns, QueryFilter<ServiceRegistryLockColumns>> where, OrderBy<ServiceRegistryLockColumns> orderBy = null, Database database = null)
+		public static ServiceTypeIdentifierCollection Where(Func<ServiceTypeIdentifierColumns, QueryFilter<ServiceTypeIdentifierColumns>> where, OrderBy<ServiceTypeIdentifierColumns> orderBy = null, Database database = null)
 		{
-			database = database ?? Db.For<ServiceRegistryLock>();
-			return new ServiceRegistryLockCollection(database.GetQuery<ServiceRegistryLockColumns, ServiceRegistryLock>(where, orderBy), true);
+			database = database ?? Db.For<ServiceTypeIdentifier>();
+			return new ServiceTypeIdentifierCollection(database.GetQuery<ServiceTypeIdentifierColumns, ServiceTypeIdentifier>(where, orderBy), true);
 		}
 		
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a ServiceRegistryLockColumns 
+		/// <param name="where">A WhereDelegate that recieves a ServiceTypeIdentifierColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between ServiceRegistryLockColumns and other values
+		/// between ServiceTypeIdentifierColumns and other values
 		/// </param>
 		/// <param name="db"></param>
 		[Bam.Net.Exclude]
-		public static ServiceRegistryLockCollection Where(WhereDelegate<ServiceRegistryLockColumns> where, Database database = null)
+		public static ServiceTypeIdentifierCollection Where(WhereDelegate<ServiceTypeIdentifierColumns> where, Database database = null)
 		{		
-			database = database ?? Db.For<ServiceRegistryLock>();
-			var results = new ServiceRegistryLockCollection(database, database.GetQuery<ServiceRegistryLockColumns, ServiceRegistryLock>(where), true);
+			database = database ?? Db.For<ServiceTypeIdentifier>();
+			var results = new ServiceTypeIdentifierCollection(database, database.GetQuery<ServiceTypeIdentifierColumns, ServiceTypeIdentifier>(where), true);
 			return results;
 		}
 		   
 		/// <summary>
 		/// Execute a query and return the results. 
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a ServiceRegistryLockColumns 
+		/// <param name="where">A WhereDelegate that recieves a ServiceTypeIdentifierColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between ServiceRegistryLockColumns and other values
+		/// between ServiceTypeIdentifierColumns and other values
 		/// </param>
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static ServiceRegistryLockCollection Where(WhereDelegate<ServiceRegistryLockColumns> where, OrderBy<ServiceRegistryLockColumns> orderBy = null, Database database = null)
+		public static ServiceTypeIdentifierCollection Where(WhereDelegate<ServiceTypeIdentifierColumns> where, OrderBy<ServiceTypeIdentifierColumns> orderBy = null, Database database = null)
 		{		
-			database = database ?? Db.For<ServiceRegistryLock>();
-			var results = new ServiceRegistryLockCollection(database, database.GetQuery<ServiceRegistryLockColumns, ServiceRegistryLock>(where, orderBy), true);
+			database = database ?? Db.For<ServiceTypeIdentifier>();
+			var results = new ServiceTypeIdentifierCollection(database, database.GetQuery<ServiceTypeIdentifierColumns, ServiceTypeIdentifier>(where, orderBy), true);
 			return results;
 		}
 
@@ -398,13 +426,13 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate&lt;ServiceRegistryLockColumns&gt;.
+		/// WhereDelegate&lt;ServiceTypeIdentifierColumns&gt;.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
-		public static ServiceRegistryLockCollection Where(QiQuery where, Database database = null)
+		public static ServiceTypeIdentifierCollection Where(QiQuery where, Database database = null)
 		{
-			var results = new ServiceRegistryLockCollection(database, Select<ServiceRegistryLockColumns>.From<ServiceRegistryLock>().Where(where, database));
+			var results = new ServiceTypeIdentifierCollection(database, Select<ServiceTypeIdentifierColumns>.From<ServiceTypeIdentifier>().Where(where, database));
 			return results;
 		}
 				
@@ -414,7 +442,7 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// of the specified columns.
 		/// </summary>
 		[Bam.Net.Exclude]
-		public static ServiceRegistryLock GetOneWhere(QueryFilter where, Database database = null)
+		public static ServiceTypeIdentifier GetOneWhere(QueryFilter where, Database database = null)
 		{
 			var result = OneWhere(where, database);
 			if(result == null)
@@ -433,9 +461,9 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// <param name="where"></param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static ServiceRegistryLock OneWhere(QueryFilter where, Database database = null)
+		public static ServiceTypeIdentifier OneWhere(QueryFilter where, Database database = null)
 		{
-			WhereDelegate<ServiceRegistryLockColumns> whereDelegate = (c) => where;
+			WhereDelegate<ServiceTypeIdentifierColumns> whereDelegate = (c) => where;
 			var result = Top(1, whereDelegate, database);
 			return OneOrThrow(result);
 		}
@@ -448,12 +476,12 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// <param name="where"></param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static ServiceRegistryLock GetOneWhere(WhereDelegate<ServiceRegistryLockColumns> where, Database database = null)
+		public static ServiceTypeIdentifier GetOneWhere(WhereDelegate<ServiceTypeIdentifierColumns> where, Database database = null)
 		{
 			var result = OneWhere(where, database);
 			if(result == null)
 			{
-				ServiceRegistryLockColumns c = new ServiceRegistryLockColumns();
+				ServiceTypeIdentifierColumns c = new ServiceTypeIdentifierColumns();
 				IQueryFilter filter = where(c); 
 				result = CreateFromFilter(filter, database);
 			}
@@ -465,15 +493,15 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// Execute a query that should return only one result.  If more
 		/// than one result is returned a MultipleEntriesFoundException will 
 		/// be thrown.  This method is most commonly used to retrieve a
-		/// single ServiceRegistryLock instance by its Id/Key value
+		/// single ServiceTypeIdentifier instance by its Id/Key value
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a ServiceRegistryLockColumns 
+		/// <param name="where">A WhereDelegate that recieves a ServiceTypeIdentifierColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between ServiceRegistryLockColumns and other values
+		/// between ServiceTypeIdentifierColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static ServiceRegistryLock OneWhere(WhereDelegate<ServiceRegistryLockColumns> where, Database database = null)
+		public static ServiceTypeIdentifier OneWhere(WhereDelegate<ServiceTypeIdentifierColumns> where, Database database = null)
 		{
 			var result = Top(1, where, database);
 			return OneOrThrow(result);
@@ -483,11 +511,11 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// This method is intended to respond to client side Qi queries.
 		/// Use of this method from .Net should be avoided in favor of 
 		/// one of the methods that take a delegate of type
-		/// WhereDelegate<ServiceRegistryLockColumns>.
+		/// WhereDelegate<ServiceTypeIdentifierColumns>.
 		/// </summary>
 		/// <param name="where"></param>
 		/// <param name="database"></param>
-		public static ServiceRegistryLock OneWhere(QiQuery where, Database database = null)
+		public static ServiceTypeIdentifier OneWhere(QiQuery where, Database database = null)
 		{
 			var results = Top(1, where, database);
 			return OneOrThrow(results);
@@ -497,13 +525,13 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
 		/// specified number of values will be returned.
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a ServiceRegistryLockColumns 
+		/// <param name="where">A WhereDelegate that recieves a ServiceTypeIdentifierColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between ServiceRegistryLockColumns and other values
+		/// between ServiceTypeIdentifierColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static ServiceRegistryLock FirstOneWhere(WhereDelegate<ServiceRegistryLockColumns> where, Database database = null)
+		public static ServiceTypeIdentifier FirstOneWhere(WhereDelegate<ServiceTypeIdentifierColumns> where, Database database = null)
 		{
 			var results = Top(1, where, database);
 			if(results.Count > 0)
@@ -520,13 +548,13 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// Execute a query and return the first result.  This method will issue a sql TOP clause so only the 
 		/// specified number of values will be returned.
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a ServiceRegistryLockColumns 
+		/// <param name="where">A WhereDelegate that recieves a ServiceTypeIdentifierColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between ServiceRegistryLockColumns and other values
+		/// between ServiceTypeIdentifierColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static ServiceRegistryLock FirstOneWhere(WhereDelegate<ServiceRegistryLockColumns> where, OrderBy<ServiceRegistryLockColumns> orderBy, Database database = null)
+		public static ServiceTypeIdentifier FirstOneWhere(WhereDelegate<ServiceTypeIdentifierColumns> where, OrderBy<ServiceTypeIdentifierColumns> orderBy, Database database = null)
 		{
 			var results = Top(1, where, orderBy, database);
 			if(results.Count > 0)
@@ -542,15 +570,15 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// <summary>
 		/// Shortcut for Top(1, where, orderBy, database)
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a ServiceRegistryLockColumns 
+		/// <param name="where">A WhereDelegate that recieves a ServiceTypeIdentifierColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between ServiceRegistryLockColumns and other values
+		/// between ServiceTypeIdentifierColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static ServiceRegistryLock FirstOneWhere(QueryFilter where, OrderBy<ServiceRegistryLockColumns> orderBy = null, Database database = null)
+		public static ServiceTypeIdentifier FirstOneWhere(QueryFilter where, OrderBy<ServiceTypeIdentifierColumns> orderBy = null, Database database = null)
 		{
-			WhereDelegate<ServiceRegistryLockColumns> whereDelegate = (c) => where;
+			WhereDelegate<ServiceTypeIdentifierColumns> whereDelegate = (c) => where;
 			var results = Top(1, whereDelegate, orderBy, database);
 			if(results.Count > 0)
 			{
@@ -571,13 +599,13 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// This value is used in the sql query so no more than this 
 		/// number of values will be returned by the database.
 		/// </param>
-		/// <param name="where">A WhereDelegate that recieves a ServiceRegistryLockColumns 
+		/// <param name="where">A WhereDelegate that recieves a ServiceTypeIdentifierColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between ServiceRegistryLockColumns and other values
+		/// between ServiceTypeIdentifierColumns and other values
 		/// </param>
 		/// <param name="database"></param>
 		[Bam.Net.Exclude]
-		public static ServiceRegistryLockCollection Top(int count, WhereDelegate<ServiceRegistryLockColumns> where, Database database = null)
+		public static ServiceTypeIdentifierCollection Top(int count, WhereDelegate<ServiceTypeIdentifierColumns> where, Database database = null)
 		{
 			return Top(count, where, null, database);
 		}
@@ -591,9 +619,9 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// This value is used in the sql query so no more than this 
 		/// number of values will be returned by the database.
 		/// </param>
-		/// <param name="where">A WhereDelegate that recieves a ServiceRegistryLockColumns 
+		/// <param name="where">A WhereDelegate that recieves a ServiceTypeIdentifierColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between ServiceRegistryLockColumns and other values
+		/// between ServiceTypeIdentifierColumns and other values
 		/// </param>
 		/// <param name="orderBy">
 		/// Specifies what column and direction to order the results by
@@ -602,29 +630,29 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// Which database to query or null to use the default
 		/// </param>
 		[Bam.Net.Exclude]
-		public static ServiceRegistryLockCollection Top(int count, WhereDelegate<ServiceRegistryLockColumns> where, OrderBy<ServiceRegistryLockColumns> orderBy, Database database = null)
+		public static ServiceTypeIdentifierCollection Top(int count, WhereDelegate<ServiceTypeIdentifierColumns> where, OrderBy<ServiceTypeIdentifierColumns> orderBy, Database database = null)
 		{
-			ServiceRegistryLockColumns c = new ServiceRegistryLockColumns();
+			ServiceTypeIdentifierColumns c = new ServiceTypeIdentifierColumns();
 			IQueryFilter filter = where(c);         
 			
-			Database db = database ?? Db.For<ServiceRegistryLock>();
+			Database db = database ?? Db.For<ServiceTypeIdentifier>();
 			QuerySet query = GetQuerySet(db); 
-			query.Top<ServiceRegistryLock>(count);
+			query.Top<ServiceTypeIdentifier>(count);
 			query.Where(filter);
 
 			if(orderBy != null)
 			{
-				query.OrderBy<ServiceRegistryLockColumns>(orderBy);
+				query.OrderBy<ServiceTypeIdentifierColumns>(orderBy);
 			}
 
 			query.Execute(db);
-			var results = query.Results.As<ServiceRegistryLockCollection>(0);
+			var results = query.Results.As<ServiceTypeIdentifierCollection>(0);
 			results.Database = db;
 			return results;
 		}
 
 		[Bam.Net.Exclude]
-		public static ServiceRegistryLockCollection Top(int count, QueryFilter where, Database database)
+		public static ServiceTypeIdentifierCollection Top(int count, QueryFilter where, Database database)
 		{
 			return Top(count, where, null, database);
 		}
@@ -648,20 +676,20 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// Which database to query or null to use the default
 		/// </param>
 		[Bam.Net.Exclude]
-		public static ServiceRegistryLockCollection Top(int count, QueryFilter where, OrderBy<ServiceRegistryLockColumns> orderBy = null, Database database = null)
+		public static ServiceTypeIdentifierCollection Top(int count, QueryFilter where, OrderBy<ServiceTypeIdentifierColumns> orderBy = null, Database database = null)
 		{
-			Database db = database ?? Db.For<ServiceRegistryLock>();
+			Database db = database ?? Db.For<ServiceTypeIdentifier>();
 			QuerySet query = GetQuerySet(db);
-			query.Top<ServiceRegistryLock>(count);
+			query.Top<ServiceTypeIdentifier>(count);
 			query.Where(where);
 
 			if(orderBy != null)
 			{
-				query.OrderBy<ServiceRegistryLockColumns>(orderBy);
+				query.OrderBy<ServiceTypeIdentifierColumns>(orderBy);
 			}
 
 			query.Execute(db);
-			var results = query.Results.As<ServiceRegistryLockCollection>(0);
+			var results = query.Results.As<ServiceTypeIdentifierCollection>(0);
 			results.Database = db;
 			return results;
 		}
@@ -682,29 +710,29 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// <param name="database">
 		/// Which database to query or null to use the default
 		/// </param>
-		public static ServiceRegistryLockCollection Top(int count, QiQuery where, Database database = null)
+		public static ServiceTypeIdentifierCollection Top(int count, QiQuery where, Database database = null)
 		{
-			Database db = database ?? Db.For<ServiceRegistryLock>();
+			Database db = database ?? Db.For<ServiceTypeIdentifier>();
 			QuerySet query = GetQuerySet(db);
-			query.Top<ServiceRegistryLock>(count);
+			query.Top<ServiceTypeIdentifier>(count);
 			query.Where(where);
 			query.Execute(db);
-			var results = query.Results.As<ServiceRegistryLockCollection>(0);
+			var results = query.Results.As<ServiceTypeIdentifierCollection>(0);
 			results.Database = db;
 			return results;
 		}
 
 		/// <summary>
-		/// Return the count of ServiceRegistryLocks
+		/// Return the count of ServiceTypeIdentifiers
 		/// </summary>
 		/// <param name="database">
 		/// Which database to query or null to use the default
 		/// </param>
 		public static long Count(Database database = null)
         {
-			Database db = database ?? Db.For<ServiceRegistryLock>();
+			Database db = database ?? Db.For<ServiceTypeIdentifier>();
             QuerySet query = GetQuerySet(db);
-            query.Count<ServiceRegistryLock>();
+            query.Count<ServiceTypeIdentifier>();
             query.Execute(db);
             return (long)query.Results[0].DataRow[0];
         }
@@ -712,22 +740,22 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		/// <summary>
 		/// Execute a query and return the number of results
 		/// </summary>
-		/// <param name="where">A WhereDelegate that recieves a ServiceRegistryLockColumns 
+		/// <param name="where">A WhereDelegate that recieves a ServiceTypeIdentifierColumns 
 		/// and returns a IQueryFilter which is the result of any comparisons
-		/// between ServiceRegistryLockColumns and other values
+		/// between ServiceTypeIdentifierColumns and other values
 		/// </param>
 		/// <param name="database">
 		/// Which database to query or null to use the default
 		/// </param>
 		[Bam.Net.Exclude]
-		public static long Count(WhereDelegate<ServiceRegistryLockColumns> where, Database database = null)
+		public static long Count(WhereDelegate<ServiceTypeIdentifierColumns> where, Database database = null)
 		{
-			ServiceRegistryLockColumns c = new ServiceRegistryLockColumns();
+			ServiceTypeIdentifierColumns c = new ServiceTypeIdentifierColumns();
 			IQueryFilter filter = where(c) ;
 
-			Database db = database ?? Db.For<ServiceRegistryLock>();
+			Database db = database ?? Db.For<ServiceTypeIdentifier>();
 			QuerySet query = GetQuerySet(db);	 
-			query.Count<ServiceRegistryLock>();
+			query.Count<ServiceTypeIdentifier>();
 			query.Where(filter);	  
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
@@ -735,18 +763,18 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		 
 		public static long Count(QiQuery where, Database database = null)
 		{
-		    Database db = database ?? Db.For<ServiceRegistryLock>();
+		    Database db = database ?? Db.For<ServiceTypeIdentifier>();
 			QuerySet query = GetQuerySet(db);	 
-			query.Count<ServiceRegistryLock>();
+			query.Count<ServiceTypeIdentifier>();
 			query.Where(where);	  
 			query.Execute(db);
 			return query.Results.As<CountResult>(0).Value;
 		} 		
 
-		private static ServiceRegistryLock CreateFromFilter(IQueryFilter filter, Database database = null)
+		private static ServiceTypeIdentifier CreateFromFilter(IQueryFilter filter, Database database = null)
 		{
-			Database db = database ?? Db.For<ServiceRegistryLock>();			
-			var dao = new ServiceRegistryLock();
+			Database db = database ?? Db.For<ServiceTypeIdentifier>();			
+			var dao = new ServiceTypeIdentifier();
 			filter.Parameters.Each(p=>
 			{
 				dao.Property(p.ColumnName, p.Value);
@@ -755,7 +783,7 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 			return dao;
 		}
 		
-		private static ServiceRegistryLock OneOrThrow(ServiceRegistryLockCollection c)
+		private static ServiceTypeIdentifier OneOrThrow(ServiceTypeIdentifierCollection c)
 		{
 			if(c.Count == 1)
 			{

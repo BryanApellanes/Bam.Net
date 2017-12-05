@@ -14,10 +14,10 @@ using Bam.Net.Data.Qi;
 
 namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 {
-	// schema = ServiceRegistration
-	// connection Name = ServiceRegistration
+	// schema = ServiceRegistry
+	// connection Name = ServiceRegistry
 	[Serializable]
-	[Bam.Net.Data.Table("MachineRegistries", "ServiceRegistration")]
+	[Bam.Net.Data.Table("MachineRegistries", "ServiceRegistry")]
 	public partial class MachineRegistries: Bam.Net.Data.Dao
 	{
 		public MachineRegistries():base()

@@ -14,10 +14,10 @@ using Bam.Net.Data.Qi;
 
 namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 {
-	// schema = ServiceRegistration
-	// connection Name = ServiceRegistration
+	// schema = ServiceRegistry
+	// connection Name = ServiceRegistry
 	[Serializable]
-	[Bam.Net.Data.Table("ServiceDescriptor", "ServiceRegistration")]
+	[Bam.Net.Data.Table("ServiceDescriptor", "ServiceRegistry")]
 	public partial class ServiceDescriptor: Bam.Net.Data.Dao
 	{
 		public ServiceDescriptor():base()
@@ -106,20 +106,6 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		}
 	}
 
-	// property:Description, columnName:Description	
-	[Bam.Net.Data.Column(Name="Description", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string Description
-	{
-		get
-		{
-			return GetStringValue("Description");
-		}
-		set
-		{
-			SetValue("Description", value);
-		}
-	}
-
 	// property:SequenceNumber, columnName:SequenceNumber	
 	[Bam.Net.Data.Column(Name="SequenceNumber", DbDataType="Int", MaxLength="10", AllowNull=true)]
 	public int? SequenceNumber
@@ -134,59 +120,59 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		}
 	}
 
-	// property:ForType, columnName:ForType	
-	[Bam.Net.Data.Column(Name="ForType", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string ForType
+	// property:ForTypeDurableHash, columnName:ForTypeDurableHash	
+	[Bam.Net.Data.Column(Name="ForTypeDurableHash", DbDataType="Int", MaxLength="10", AllowNull=true)]
+	public int? ForTypeDurableHash
 	{
 		get
 		{
-			return GetStringValue("ForType");
+			return GetIntValue("ForTypeDurableHash");
 		}
 		set
 		{
-			SetValue("ForType", value);
+			SetValue("ForTypeDurableHash", value);
 		}
 	}
 
-	// property:ForAssembly, columnName:ForAssembly	
-	[Bam.Net.Data.Column(Name="ForAssembly", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string ForAssembly
+	// property:ForTypeDurableSecondaryHash, columnName:ForTypeDurableSecondaryHash	
+	[Bam.Net.Data.Column(Name="ForTypeDurableSecondaryHash", DbDataType="Int", MaxLength="10", AllowNull=true)]
+	public int? ForTypeDurableSecondaryHash
 	{
 		get
 		{
-			return GetStringValue("ForAssembly");
+			return GetIntValue("ForTypeDurableSecondaryHash");
 		}
 		set
 		{
-			SetValue("ForAssembly", value);
+			SetValue("ForTypeDurableSecondaryHash", value);
 		}
 	}
 
-	// property:UseType, columnName:UseType	
-	[Bam.Net.Data.Column(Name="UseType", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string UseType
+	// property:UseTypeDurableHash, columnName:UseTypeDurableHash	
+	[Bam.Net.Data.Column(Name="UseTypeDurableHash", DbDataType="Int", MaxLength="10", AllowNull=true)]
+	public int? UseTypeDurableHash
 	{
 		get
 		{
-			return GetStringValue("UseType");
+			return GetIntValue("UseTypeDurableHash");
 		}
 		set
 		{
-			SetValue("UseType", value);
+			SetValue("UseTypeDurableHash", value);
 		}
 	}
 
-	// property:UseAssembly, columnName:UseAssembly	
-	[Bam.Net.Data.Column(Name="UseAssembly", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string UseAssembly
+	// property:UseTypeDurableSecondaryHash, columnName:UseTypeDurableSecondaryHash	
+	[Bam.Net.Data.Column(Name="UseTypeDurableSecondaryHash", DbDataType="Int", MaxLength="10", AllowNull=true)]
+	public int? UseTypeDurableSecondaryHash
 	{
 		get
 		{
-			return GetStringValue("UseAssembly");
+			return GetIntValue("UseTypeDurableSecondaryHash");
 		}
 		set
 		{
-			SetValue("UseAssembly", value);
+			SetValue("UseTypeDurableSecondaryHash", value);
 		}
 	}
 

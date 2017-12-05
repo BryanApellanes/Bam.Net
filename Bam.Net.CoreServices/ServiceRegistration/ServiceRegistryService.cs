@@ -29,16 +29,23 @@ namespace Bam.Net.CoreServices
     [ServiceSubdomain("svcregistry")]
     public class ServiceRegistryService : ProxyableService
     {
-        public ServiceRegistryService(IFileService fileservice, IAssemblyService assemblyService, ServiceRegistrationRepository repo, DaoRepository daoRepo, AppConf appConf, DataSettings dataSettings = null) : base(daoRepo, appConf)
+        public ServiceRegistryService(
+            IFileService fileservice, 
+            IAssemblyService assemblyService, 
+            ServiceRegistryRepository repo, 
+            DaoRepository daoRepo, 
+            AppConf appConf,
+            DataSettings dataSettings = null) : base(daoRepo, appConf)
         {
             FileService = fileservice;
             ServiceRegistryRepository = repo;
             AssemblyService = assemblyService;
             DataSettings = dataSettings ?? DataSettings.Default;
         }
+
         public IFileService FileService { get; set; }
         public DataSettings DataSettings { get; set; }
-        public ServiceRegistrationRepository ServiceRegistryRepository { get; set; }
+        public ServiceRegistryRepository ServiceRegistryRepository { get; set; }
 
         public IAssemblyService AssemblyService { get; set; }
 

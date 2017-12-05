@@ -275,6 +275,7 @@
     <Compile Include="ServiceRegistration\Data\Generated_Dao\Qi\ServiceRegistryDescriptor.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\Qi\ServiceRegistryLoaderDescriptor.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\Qi\ServiceRegistryLock.cs" />
+    <Compile Include="ServiceRegistration\Data\Generated_Dao\Qi\ServiceTypeIdentifier.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceDescriptor.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceDescriptorCollection.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceDescriptorColumns.cs" />
@@ -286,8 +287,7 @@
     <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceDescriptorServiceRegistryDescriptorPagedQuery.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceDescriptorServiceRegistryDescriptorQuery.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceDescriptorWrapper.cs" />
-    <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceRegistrationContext.cs" />
-    <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceRegistrationRepository.cs" />
+    <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceRegistryContext.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceRegistryDescriptor.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceRegistryDescriptorCollection.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceRegistryDescriptorColumns.cs" />
@@ -306,6 +306,13 @@
     <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceRegistryLockPagedQuery.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceRegistryLockQuery.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceRegistryLockWrapper.cs" />
+    <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceRegistryRepository.cs" />
+    <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceTypeIdentifier.cs" />
+    <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceTypeIdentifierCollection.cs" />
+    <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceTypeIdentifierColumns.cs" />
+    <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceTypeIdentifierPagedQuery.cs" />
+    <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceTypeIdentifierQuery.cs" />
+    <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceTypeIdentifierWrapper.cs" />
     <Compile Include="ServiceRegistration\Data\MachineRegistries.cs" />
     <Compile Include="ServiceRegistration\Data\ServiceTypeIdentifier.cs" />
     <Compile Include="ServiceRegistryContainerAttribute.cs" />

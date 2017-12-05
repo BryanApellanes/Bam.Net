@@ -42,13 +42,6 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
                 return new ServiceDescriptorColumns("Cuid");
             }
         }
-        public ServiceDescriptorColumns Description
-        {
-            get
-            {
-                return new ServiceDescriptorColumns("Description");
-            }
-        }
         public ServiceDescriptorColumns SequenceNumber
         {
             get
@@ -56,32 +49,32 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
                 return new ServiceDescriptorColumns("SequenceNumber");
             }
         }
-        public ServiceDescriptorColumns ForType
+        public ServiceDescriptorColumns ForTypeDurableHash
         {
             get
             {
-                return new ServiceDescriptorColumns("ForType");
+                return new ServiceDescriptorColumns("ForTypeDurableHash");
             }
         }
-        public ServiceDescriptorColumns ForAssembly
+        public ServiceDescriptorColumns ForTypeDurableSecondaryHash
         {
             get
             {
-                return new ServiceDescriptorColumns("ForAssembly");
+                return new ServiceDescriptorColumns("ForTypeDurableSecondaryHash");
             }
         }
-        public ServiceDescriptorColumns UseType
+        public ServiceDescriptorColumns UseTypeDurableHash
         {
             get
             {
-                return new ServiceDescriptorColumns("UseType");
+                return new ServiceDescriptorColumns("UseTypeDurableHash");
             }
         }
-        public ServiceDescriptorColumns UseAssembly
+        public ServiceDescriptorColumns UseTypeDurableSecondaryHash
         {
             get
             {
-                return new ServiceDescriptorColumns("UseAssembly");
+                return new ServiceDescriptorColumns("UseTypeDurableSecondaryHash");
             }
         }
         public ServiceDescriptorColumns CreatedBy

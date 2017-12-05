@@ -21,6 +21,7 @@ namespace Bam.Net.CoreServices.Tests
     using System.Collections.Specialized;
     using Bam.Net.Web;
     using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Repository;
+    using Bam.Net.CoreServices.Configuration;
 
     [Serializable]
     public class ConfigurationTests : CommandLineTestInterface

@@ -104,7 +104,7 @@ namespace Bam.Net.CoreServices
                 .For<IFileService>().Use<FileService>()
                 .For<AssemblyServiceRepository>().Use(assSvcRepo)
                 .For<IAssemblyService>().Use<AssemblyService>()
-                .For<ServiceRegistrationRepository>().Use<ServiceRegistrationRepository>()
+                .For<ServiceRegistryRepository>().Use<ServiceRegistryRepository>()
                 .For<ServiceRegistryService>().Use<ServiceRegistryService>()
                 .For<OAuthService>().Use<OAuthService>()
                 .For<ILog>().Use(loggerSvc)

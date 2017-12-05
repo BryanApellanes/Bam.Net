@@ -23,11 +23,18 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data
         {
             ForTypeIdentifier = ServiceTypeIdentifier.FromType(forType);
             UseTypeIdentifier = ServiceTypeIdentifier.FromType(useType);
+            ForTypeDurableHash = ForTypeIdentifier.DurableHash;
+            UseTypeDurableHash = UseTypeIdentifier.DurableHash;
+            ForTypeDurableSecondaryHash = ForTypeIdentifier.DurableSecondaryHash;
+            UseTypeDurableSecondaryHash = UseTypeIdentifier.DurableSecondaryHash;
         }
         
         public int SequenceNumber { get; set; }
         public int ForTypeDurableHash { get; set; }
+        public int ForTypeDurableSecondaryHash { get; set; }
+
         public int UseTypeDurableHash { get; set; }
+        public int UseTypeDurableSecondaryHash { get; set; }
         
         protected ServiceTypeIdentifier ForTypeIdentifier { get; set; }
         protected ServiceTypeIdentifier UseTypeIdentifier { get; set; }

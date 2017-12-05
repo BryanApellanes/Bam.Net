@@ -40,7 +40,7 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data
 
         public new ServiceTypeIdentifier Save(IRepository repo)
         {
-            SetDurableHash();
+            SetDurableHashes();
             return repo.Save(this);
         }
 
@@ -65,7 +65,7 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data
                 AssemblyFullName = type.Assembly.FullName,
                 AssemblyFileHash = type.Assembly.GetFileInfo().Sha1()
             };
-            result.SetDurableHash();
+            result.SetDurableHashes();
             return result;
         }
 
@@ -79,7 +79,7 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data
             return $"{Namespace}.{TypeName}::{AssemblyFullName}({AssemblyFileHash})";
         }
 
-        public void SetDurableHash(ILogger logger = null)
+        public void SetDurableHashes(ILogger logger = null)
         {
             WarnForBlanks(logger);
             DurableHash = ToString().ToSha1Int();

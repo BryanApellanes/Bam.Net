@@ -17,19 +17,20 @@ using Bam.Net.CoreServices.ServiceRegistration.Data;
 namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao.Repository
 {
 	[Serializable]
-	public class ServiceRegistrationRepository: DaoRepository
+	public class ServiceRegistryRepository: DaoRepository
 	{
-		public ServiceRegistrationRepository()
+		public ServiceRegistryRepository()
 		{
-			SchemaName = "ServiceRegistration";
+			SchemaName = "ServiceRegistry";
 			BaseNamespace = "Bam.Net.CoreServices.ServiceRegistration.Data";			
 ﻿			
 			AddType<Bam.Net.CoreServices.ServiceRegistration.Data.MachineRegistries>();﻿			
+			AddType<Bam.Net.CoreServices.ServiceRegistration.Data.ServiceTypeIdentifier>();﻿			
 			AddType<Bam.Net.CoreServices.ServiceRegistration.Data.ServiceDescriptor>();﻿			
 			AddType<Bam.Net.CoreServices.ServiceRegistration.Data.ServiceRegistryDescriptor>();﻿			
 			AddType<Bam.Net.CoreServices.ServiceRegistration.Data.ServiceRegistryLoaderDescriptor>();﻿			
 			AddType<Bam.Net.CoreServices.ServiceRegistration.Data.ServiceRegistryLock>();
-			DaoAssembly = typeof(ServiceRegistrationRepository).Assembly;
+			DaoAssembly = typeof(ServiceRegistryRepository).Assembly;
 		}
 
 		object _addLock = new object();
@@ -38,7 +39,7 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao.Repository
             lock (_addLock)
             {
                 base.AddType(type);
-                DaoAssembly = typeof(ServiceRegistrationRepository).Assembly;
+                DaoAssembly = typeof(ServiceRegistryRepository).Assembly;
             }
         }
 
@@ -134,6 +135,99 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao.Repository
             await Bam.Net.CoreServices.ServiceRegistration.Data.Dao.MachineRegistries.BatchAll(batchSize, (batch) =>
             {
 				batchProcessor(Wrap<Bam.Net.CoreServices.ServiceRegistration.Data.MachineRegistries>(batch));
+            }, Database);
+        }﻿		
+		/// <summary>
+		/// Get one entry matching the specified filter.  If none exists 
+		/// one will be created; success will depend on the nullability
+		/// of the specified columns.
+		/// </summary>
+		/// <param name="where"></param>
+		public Bam.Net.CoreServices.ServiceRegistration.Data.ServiceTypeIdentifier GetOneServiceTypeIdentifierWhere(WhereDelegate<ServiceTypeIdentifierColumns> where)
+		{
+			Type wrapperType = GetWrapperType<Bam.Net.CoreServices.ServiceRegistration.Data.ServiceTypeIdentifier>();
+			return (Bam.Net.CoreServices.ServiceRegistration.Data.ServiceTypeIdentifier)Bam.Net.CoreServices.ServiceRegistration.Data.Dao.ServiceTypeIdentifier.GetOneWhere(where, Database).CopyAs(wrapperType, this);
+		}
+
+		/// <summary>
+		/// Execute a query that should return only one result.  If more
+		/// than one result is returned a MultipleEntriesFoundException will 
+		/// be thrown.  This method is most commonly used to retrieve a
+		/// single ServiceTypeIdentifier instance by its Id/Key value
+		/// </summary>
+		/// <param name="where">A WhereDelegate that recieves a ServiceTypeIdentifierColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between ServiceTypeIdentifierColumns and other values
+		/// </param>
+		public Bam.Net.CoreServices.ServiceRegistration.Data.ServiceTypeIdentifier OneServiceTypeIdentifierWhere(WhereDelegate<ServiceTypeIdentifierColumns> where)
+        {
+            Type wrapperType = GetWrapperType<Bam.Net.CoreServices.ServiceRegistration.Data.ServiceTypeIdentifier>();
+            return (Bam.Net.CoreServices.ServiceRegistration.Data.ServiceTypeIdentifier)Bam.Net.CoreServices.ServiceRegistration.Data.Dao.ServiceTypeIdentifier.OneWhere(where, Database).CopyAs(wrapperType, this);
+        }
+
+		/// <summary>
+		/// Execute a query and return the results. 
+		/// </summary>
+		/// <param name="where">A WhereDelegate that recieves a Bam.Net.CoreServices.ServiceRegistration.Data.ServiceTypeIdentifierColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between Bam.Net.CoreServices.ServiceRegistration.Data.ServiceTypeIdentifierColumns and other values
+		/// </param>
+		public IEnumerable<Bam.Net.CoreServices.ServiceRegistration.Data.ServiceTypeIdentifier> ServiceTypeIdentifiersWhere(WhereDelegate<ServiceTypeIdentifierColumns> where, OrderBy<ServiceTypeIdentifierColumns> orderBy = null)
+        {
+            return Wrap<Bam.Net.CoreServices.ServiceRegistration.Data.ServiceTypeIdentifier>(Bam.Net.CoreServices.ServiceRegistration.Data.Dao.ServiceTypeIdentifier.Where(where, orderBy, Database));
+        }
+		
+		/// <summary>
+		/// Execute a query and return the specified number
+		/// of values. This method will issue a sql TOP clause so only the 
+		/// specified number of values will be returned.
+		/// </summary>
+		/// <param name="count">The number of values to return.
+		/// This value is used in the sql query so no more than this 
+		/// number of values will be returned by the database.
+		/// </param>
+		/// <param name="where">A WhereDelegate that recieves a ServiceTypeIdentifierColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between ServiceTypeIdentifierColumns and other values
+		/// </param>
+		public IEnumerable<Bam.Net.CoreServices.ServiceRegistration.Data.ServiceTypeIdentifier> TopServiceTypeIdentifiersWhere(int count, WhereDelegate<ServiceTypeIdentifierColumns> where)
+        {
+            return Wrap<Bam.Net.CoreServices.ServiceRegistration.Data.ServiceTypeIdentifier>(Bam.Net.CoreServices.ServiceRegistration.Data.Dao.ServiceTypeIdentifier.Top(count, where, Database));
+        }
+
+		/// <summary>
+		/// Return the count of ServiceTypeIdentifiers
+		/// </summary>
+		public long CountServiceTypeIdentifiers()
+        {
+            return Bam.Net.CoreServices.ServiceRegistration.Data.Dao.ServiceTypeIdentifier.Count(Database);
+        }
+
+		/// <summary>
+		/// Execute a query and return the number of results
+		/// </summary>
+		/// <param name="where">A WhereDelegate that recieves a ServiceTypeIdentifierColumns 
+		/// and returns a IQueryFilter which is the result of any comparisons
+		/// between ServiceTypeIdentifierColumns and other values
+		/// </param>
+        public long CountServiceTypeIdentifiersWhere(WhereDelegate<ServiceTypeIdentifierColumns> where)
+        {
+            return Bam.Net.CoreServices.ServiceRegistration.Data.Dao.ServiceTypeIdentifier.Count(where, Database);
+        }
+        
+        public async Task BatchQueryServiceTypeIdentifiers(int batchSize, WhereDelegate<ServiceTypeIdentifierColumns> where, Action<IEnumerable<Bam.Net.CoreServices.ServiceRegistration.Data.ServiceTypeIdentifier>> batchProcessor)
+        {
+            await Bam.Net.CoreServices.ServiceRegistration.Data.Dao.ServiceTypeIdentifier.BatchQuery(batchSize, where, (batch) =>
+            {
+				batchProcessor(Wrap<Bam.Net.CoreServices.ServiceRegistration.Data.ServiceTypeIdentifier>(batch));
+            }, Database);
+        }
+		
+        public async Task BatchAllServiceTypeIdentifiers(int batchSize, Action<IEnumerable<Bam.Net.CoreServices.ServiceRegistration.Data.ServiceTypeIdentifier>> batchProcessor)
+        {
+            await Bam.Net.CoreServices.ServiceRegistration.Data.Dao.ServiceTypeIdentifier.BatchAll(batchSize, (batch) =>
+            {
+				batchProcessor(Wrap<Bam.Net.CoreServices.ServiceRegistration.Data.ServiceTypeIdentifier>(batch));
             }, Database);
         }﻿		
 		/// <summary>

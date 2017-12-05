@@ -11,14 +11,14 @@ using Bam.Net.Data.Qi;
 
 namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 {
-	// schema = ServiceRegistration 
-    public static class ServiceRegistrationContext
+	// schema = ServiceRegistry 
+    public static class ServiceRegistryContext
     {
 		public static string ConnectionName
 		{
 			get
 			{
-				return "ServiceRegistration";
+				return "ServiceRegistry";
 			}
 		}
 
@@ -81,6 +81,58 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		get
 		{
 			return _machineRegistriesLock.DoubleCheckLock<MachineRegistriesQueryContext>(ref _machineRegistries, () => new MachineRegistriesQueryContext());
+		}
+	}
+	public class ServiceTypeIdentifierQueryContext
+	{
+			public ServiceTypeIdentifierCollection Where(WhereDelegate<ServiceTypeIdentifierColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.ServiceRegistration.Data.Dao.ServiceTypeIdentifier.Where(where, db);
+			}
+		   
+			public ServiceTypeIdentifierCollection Where(WhereDelegate<ServiceTypeIdentifierColumns> where, OrderBy<ServiceTypeIdentifierColumns> orderBy = null, Database db = null)
+			{
+				return Bam.Net.CoreServices.ServiceRegistration.Data.Dao.ServiceTypeIdentifier.Where(where, orderBy, db);
+			}
+
+			public ServiceTypeIdentifier OneWhere(WhereDelegate<ServiceTypeIdentifierColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.ServiceRegistration.Data.Dao.ServiceTypeIdentifier.OneWhere(where, db);
+			}
+
+			public static ServiceTypeIdentifier GetOneWhere(WhereDelegate<ServiceTypeIdentifierColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.ServiceRegistration.Data.Dao.ServiceTypeIdentifier.GetOneWhere(where, db);
+			}
+		
+			public ServiceTypeIdentifier FirstOneWhere(WhereDelegate<ServiceTypeIdentifierColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.ServiceRegistration.Data.Dao.ServiceTypeIdentifier.FirstOneWhere(where, db);
+			}
+
+			public ServiceTypeIdentifierCollection Top(int count, WhereDelegate<ServiceTypeIdentifierColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.ServiceRegistration.Data.Dao.ServiceTypeIdentifier.Top(count, where, db);
+			}
+
+			public ServiceTypeIdentifierCollection Top(int count, WhereDelegate<ServiceTypeIdentifierColumns> where, OrderBy<ServiceTypeIdentifierColumns> orderBy, Database db = null)
+			{
+				return Bam.Net.CoreServices.ServiceRegistration.Data.Dao.ServiceTypeIdentifier.Top(count, where, orderBy, db);
+			}
+
+			public long Count(WhereDelegate<ServiceTypeIdentifierColumns> where, Database db = null)
+			{
+				return Bam.Net.CoreServices.ServiceRegistration.Data.Dao.ServiceTypeIdentifier.Count(where, db);
+			}
+	}
+
+	static ServiceTypeIdentifierQueryContext _serviceTypeIdentifiers;
+	static object _serviceTypeIdentifiersLock = new object();
+	public static ServiceTypeIdentifierQueryContext ServiceTypeIdentifiers
+	{
+		get
+		{
+			return _serviceTypeIdentifiersLock.DoubleCheckLock<ServiceTypeIdentifierQueryContext>(ref _serviceTypeIdentifiers, () => new ServiceTypeIdentifierQueryContext());
 		}
 	}
 	public class ServiceDescriptorQueryContext

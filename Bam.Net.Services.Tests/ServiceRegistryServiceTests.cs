@@ -115,14 +115,20 @@ namespace Bam.Net.Services.Tests
         private ServiceRegistryService GetServiceRegistrationService(string databaseName)
         {
             Database db = GetDatabase(databaseName);
-            return new ServiceRegistryService(GetAssemblyService(db), GetServiceRegistryRepository(db), GetDaoRepository(db), new Server.AppConf());
+            return new ServiceRegistryService(
+                GetFileService(db),
+                GetAssemblyService(db),
+                GetServiceRegistryRepository(db),
+                GetDaoRepository(db),
+                new Server.AppConf(),
+                DataSettings.Default);
         }
 
         private AssemblyService GetAssemblyService(Database db)
         {
-            FileService fmSvc = new FileService(GetDaoRepository(db));
+            FileService fmSvc = GetFileService(db);
             AssemblyServiceRepository assManRepo = new AssemblyServiceRepository() { Database = db };
-            return new AssemblyService(fmSvc, assManRepo, DefaultConfigurationApplicationNameProvider.Instance);
+            return new AssemblyService(DataSettings.Default, fmSvc, assManRepo, DefaultConfigurationApplicationNameProvider.Instance);
         }
 
         private Database GetDatabase(string databaseName)
@@ -133,9 +139,9 @@ namespace Bam.Net.Services.Tests
             return db;
         }
 
-        private ServiceRegistrationRepository GetServiceRegistryRepository(Database db)
+        private ServiceRegistryRepository GetServiceRegistryRepository(Database db)
         {
-            return new ServiceRegistrationRepository() { Database = db };
+            return new ServiceRegistryRepository() { Database = db };
         }
 
         private FileService GetFileService(Database db)
