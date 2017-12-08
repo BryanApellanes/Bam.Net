@@ -15,27 +15,8 @@ namespace Bam.Net.Breve
         public JavaBreveGenerator(BreveInfo breve)
             : base(breve)
         {
-            Format = new BreveJavaFormat();
-        }
-
-        public override void Go(string outputFile)
-        {
-            FileInfo file = new FileInfo(outputFile);
-            StringBuilder output = new StringBuilder();
-            StringBuilder properties = new StringBuilder();
-            Info.Properties.Each(bp =>
-            {
-                properties.Append(Format.PropertyFormat.NamedFormat(new { 
-                    PropertyType = bp.PropertyType, 
-                    PropertyField = bp.PropertyField,  
-                    ClassName = bp.ClassName,
-                    PropertyName = bp.PropertyName
-                }));
-            });
-
-            output.Append(Format.ClassFormat.NamedFormat(new { ClassName = Info.ClassName, Properties = properties.ToString() }));
-
-            output.ToString().SafeWriteToFile(file.FullName);
+            Language = Languages.java;
+            Format = new JavaFormat();
         }
     }
 }

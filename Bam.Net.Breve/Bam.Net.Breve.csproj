@@ -67,19 +67,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BreveCSharpFormat.cs" />
+    <Compile Include="BreveTypes.cs" />
+    <Compile Include="CSharpFormat.cs" />
     <Compile Include="BreveFormat.cs" />
     <Compile Include="BreveGenerator.cs" />
     <Compile Include="BreveInfo.cs" />
-    <Compile Include="BreveClassicJavaFormat.cs" />
+    <Compile Include="JavaClassicFormat.cs" />
     <Compile Include="BreveProperty.cs" />
     <Compile Include="CSharpBreveGenerator.cs" />
-    <Compile Include="BreveJavaFormat.cs" />
+    <Compile Include="JavaFormat.cs" />
     <Compile Include="JavaBreveGenerator.cs" />
     <Compile Include="Languages.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Bam.Net.Data.Schema\Bam.Net.Data.Schema.csproj">
+      <Project>{d2c2b1c0-1047-4211-92fc-37f332861161}</Project>
+      <Name>Bam.Net.Data.Schema</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Javascript\Bam.Net.Javascript.csproj">
+      <Project>{34C5016D-5265-4394-A9BA-CB2F70D8E93B}</Project>
+      <Name>Bam.Net.Javascript</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bam.Net\Bam.Net.csproj">
       <Project>{8794c09d-d72c-420c-812f-bfda251b64c9}</Project>
       <Name>Bam.Net</Name>

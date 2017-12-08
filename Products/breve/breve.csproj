@@ -96,6 +96,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="hotelsApi.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="breveTest.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

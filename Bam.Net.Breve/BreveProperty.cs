@@ -17,7 +17,6 @@ namespace Bam.Net.Breve
             this.PropertyName = propertyName;
             this.PropertyType = propertyType;
         }
-
         public string PropertyType { get; set; }
         public string PropertyField { get; private set; }
 
