@@ -54,6 +54,7 @@ namespace breve
             AddValidArgument("obj", false, description: "The name of the object to generate for");
             AddValidArgument("name", false, description: "The name of the breve object to generate");
             AddValidArgument("lang", false, description: "The language to generate breve objects for (C# or Java) the default is Java");
+            AddValidArgument("bean", true, description: "Use java bean format");
             
             DefaultMethod = typeof(Program).GetMethod("Start");
             Expect.IsNotNull(DefaultMethod);
@@ -85,6 +86,11 @@ namespace breve
 
             string name = literalName.PascalCase();
 
+            Dictionary<Languages, Type> formatTypes = new Dictionary<Languages, Type>
+            {
+                {Languages.cs, typeof(CSharpFormat) },
+                {Languages.java, typeof(JavaFormat) },
+            };
             Languages lang = Languages.java;
 
             if (Arguments.Contains("lang"))
@@ -95,11 +101,17 @@ namespace breve
                 }
             }
 
+            Type formatType = formatTypes[lang];
+            if (Arguments.Contains("classic"))
+            {
+                formatType = typeof(JavaClassicFormat);
+            }
+
             string json = file.JsonFromJsLiteralFile(literalName);
             JObject obj = (JObject)JsonConvert.DeserializeObject(json);
-            BreveInfo info = new BreveInfo(name, obj);
-            BreveGenerator generator = BreveGenerator.Create(lang, info);
-            generator.Go("{Name}.{Extension}".NamedFormat(new { Name = name, Extension = lang.ToString() }));
+            BreveInfo info = new BreveInfo(name, obj, lang);
+            BreveGenerator generator = BreveGenerator.Create(formatType, info);
+            generator.Go(file.FullName, "{Name}.{Extension}".NamedFormat(new { Name = name, Extension = lang.ToString() }));
             Out("Breve object generation complete", ConsoleColor.Cyan);
             Pause();
         }

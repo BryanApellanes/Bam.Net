@@ -1356,9 +1356,9 @@ namespace Bam.Net
         /// <summary>
         /// Construct an instance of the type
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="type"></param>
-        /// <param name="ctorParams"></param>
+        /// <typeparam name="T">The type to cast the result as</typeparam>
+        /// <param name="type">The type whose constructor will be called</param>
+        /// <param name="ctorParams">The parameters to pass to the constructor if any</param>
         /// <returns></returns>
         public static T Construct<T>(this Type type, params object[] ctorParams)
         {
