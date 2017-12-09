@@ -184,6 +184,7 @@
     <Compile Include="GeneratedAssemblyInfo.cs" />
     <Compile Include="IApplicationNameProvider.cs" />
     <Compile Include="IAssemblyGenerator.cs" />
+    <Compile Include="IIpcMessageStore.cs" />
     <Compile Include="IJsonable.cs" />
     <Compile Include="Instant.cs" />
     <Compile Include="IOrganizationNameProvider.cs" />
@@ -204,7 +205,7 @@
     <Compile Include="Logging\Severity.cs" />
     <Compile Include="Logging\VerbosityLevel.cs" />
     <Compile Include="IpcMessage.cs" />
-    <Compile Include="IpcMessageRoot.cs" />
+    <Compile Include="LocalIpcMessageStore.cs" />
     <Compile Include="Month.cs" />
     <Compile Include="NamedThread.cs" />
     <Compile Include="NetworkExtensions.cs" />

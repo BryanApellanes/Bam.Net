@@ -187,7 +187,7 @@
     <Compile Include="Ftp.cs" />
     <Compile Include="IfElseWorker.cs" />
     <Compile Include="MSBuild\Project.cs" />
-    <Compile Include="Services\JobConductorService.cs" />
+    <Compile Include="JobConductorService.cs" />
     <Compile Include="Partials\DeferredJob.cs" />
     <Compile Include="Partials\DeferredJobData.cs" />
     <Compile Include="Partials\JobData.cs" />
@@ -318,7 +318,6 @@
     <Compile Include="SendEmailWorker.cs" />
     <Compile Include="Worker.cs" />
     <Compile Include="WorkerConf.cs" />
-    <Compile Include="WorkSequence.cs" />
     <Compile Include="WorkState.cs" />
     <Compile Include="ZipFolderWorker.cs" />
   </ItemGroup>

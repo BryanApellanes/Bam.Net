@@ -127,13 +127,14 @@ namespace Bam.Net.Automation
             });
         }
 
-
         public void SaveConf(string path)
         {
             Type workerType = this.GetType();
             PropertyInfo[] properties = workerType.GetProperties().Where(pi => pi.PropertyType == typeof(string) && !pi.Name.Equals("Name")).ToArray();
-            WorkerConf conf = new WorkerConf(this);
-            conf.StepNumber = StepNumber;
+            WorkerConf conf = new WorkerConf(this)
+            {
+                StepNumber = StepNumber
+            };
             properties.Each(prop =>
             {
                 conf.AddProperty(prop.Name, (string)prop.GetValue(this));

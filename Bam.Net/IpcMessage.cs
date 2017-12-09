@@ -49,10 +49,14 @@ namespace Bam.Net
         /// <typeparam name="T"></typeparam>
         /// <param name="name"></param>
         /// <returns></returns>
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="messageType"></param>
+        /// <param name="rootDirectory"></param>
+        /// <returns></returns>
         public static IpcMessage Get(string name, Type messageType, string rootDirectory = null)
         {
-            IpcMessage result;
-            if (!Exists(name, messageType, rootDirectory, out result))
+            if (!Exists(name, messageType, rootDirectory, out IpcMessage result))
             {
                 result = Create(name, messageType, rootDirectory);
             }
@@ -84,8 +88,7 @@ namespace Bam.Net
 
         public static bool Exists<T>(string name)
         {
-            IpcMessage ignore;
-            return (Exists<T>(name, out ignore));
+            return (Exists<T>(name, out IpcMessage ignore));
         }
 
         public static bool Exists<T>(string name, out IpcMessage result)
@@ -102,8 +105,7 @@ namespace Bam.Net
 
         public static bool Exists(string name, Type messageType, string rootDirectory)
         {
-            IpcMessage ignore;
-            return Exists(name, messageType, rootDirectory, out ignore);
+            return Exists(name, messageType, rootDirectory, out IpcMessage ignore);
         }
 
         public static bool Exists(string name, Type messageType, string rootDirectory, out IpcMessage result)
@@ -123,7 +125,7 @@ namespace Bam.Net
 
         public string Name { get; set; }
 
-        public bool Write(object data)
+        public virtual bool Write(object data)
         {
             if(AcquireLock(LockTimeout))
             {
@@ -214,10 +216,7 @@ namespace Bam.Net
 
         protected void OnWaitingForLock()
         {
-            if (WaitingForLock != null)
-            {
-                WaitingForLock(this, new EventArgs());
-            }
+            WaitingForLock?.Invoke(this, new EventArgs());
         }
 
         public string LastExceptionMessage { get; set; }

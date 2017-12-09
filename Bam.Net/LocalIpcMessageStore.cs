@@ -11,14 +11,14 @@ using System.IO;
 namespace Bam.Net
 {
 	[Serializable]
-    public class IpcMessageRoot
+    public class LocalIpcMessageStore: IIpcMessageStore
     {
-        public IpcMessageRoot(string rootDirectory)
+        public LocalIpcMessageStore(string rootDirectory)
         {
             this._rootDirectory = new DirectoryInfo(rootDirectory);
         }
 
-        public IpcMessageRoot(DirectoryInfo directory)
+        public LocalIpcMessageStore(DirectoryInfo directory)
         {
             this._rootDirectory = directory;
         }
@@ -41,20 +41,26 @@ namespace Bam.Net
         /// <returns></returns>
         public IpcMessage GetMessage<T>(string name)
         {
-            return GetMessage(name, typeof(T));
+            return GetMessage(typeof(T), name);
         }
 
         /// <summary>
         /// Gets a message with the specified name 
         /// of the specified type creating it if necessary
         /// </summary>
-        /// <param name="name"></param>
         /// <param name="type"></param>
+        /// <param name="name"></param>
         /// <returns></returns>
-        public IpcMessage GetMessage(string name, Type type)
+        public IpcMessage GetMessage(Type type, string name)
         {
             IpcMessage result = IpcMessage.Get(name, type, RootDirectory);
             return result;
+        }
+
+        public bool SetMessage(string name, object data)
+        {
+            IpcMessage msg = GetMessage(data.GetType(), name);
+            return msg.Write(data);
         }
     }
 }

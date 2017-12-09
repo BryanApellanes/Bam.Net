@@ -20,10 +20,10 @@ using Quartz.Impl;
 using Bam.Net.Services;
 using Bam.Net.Automation;
 
-namespace Bam.Net.Services
+namespace Bam.Net.Automation
 {
     /// <summary>
-    /// The master for all jobs.
+    /// The conductor for all jobs.
     /// </summary>
     [Proxy("jobConductorSvc")]
     public class JobConductorService: AsyncProxyableService
@@ -89,7 +89,7 @@ namespace Bam.Net.Services
             set
             {
                 _jobsDirectory = new DirectoryInfo(value);
-                _messageRoot = null; // forces reinit;
+                _messageStore = null; // forces reinit;
             }
         }
 
@@ -103,13 +103,17 @@ namespace Bam.Net.Services
             }
         }
 
-        IpcMessageRoot _messageRoot;
-        object _messageRootLock = new object();
-        protected internal IpcMessageRoot SuspendedJobIpcMessageRoot
+        IIpcMessageStore _messageStore;
+        object _messageStoreLock = new object();
+        protected internal IIpcMessageStore SuspendedJobIpcMessageStore
         {
             get
             {
-                return _messageRootLock.DoubleCheckLock(ref _messageRoot, () => new IpcMessageRoot(System.IO.Path.Combine(JobsDirectory, "Suspended")));
+                return _messageStoreLock.DoubleCheckLock(ref _messageStore, () => new LocalIpcMessageStore(System.IO.Path.Combine(JobsDirectory, "Suspended")));
+            }
+            set
+            {
+                _messageStore = value;
             }
         }
 
@@ -148,6 +152,7 @@ namespace Bam.Net.Services
         /// specified JobConf.
         /// </summary>
         /// <typeparam name="T"></typeparam>
+        /// <param name="name"></param>
         /// <param name="conf"></param>
         /// <returns></returns>
         [Local]
@@ -165,7 +170,7 @@ namespace Bam.Net.Services
         [Local]
         public SuspendedJob SuspendJob(Job job)
         {
-            SuspendedJob suspended = new SuspendedJob(SuspendedJobIpcMessageRoot, job);
+            SuspendedJob suspended = new SuspendedJob(SuspendedJobIpcMessageStore, job);
             return suspended;
         }
 
@@ -196,10 +201,7 @@ namespace Bam.Net.Services
 
         protected void OnWorkerStarting(WorkState state)
         {
-            if (WorkStarting != null)
-            {
-                WorkStarting(this, new WorkStateEventArgs(state));
-            }
+            WorkStarting?.Invoke(this, new WorkStateEventArgs(state));
         }
 
         [Verbosity(LogEventType.Information, MessageFormat = "Worker of type {WorkTypeName} and Step Number {StepNumber} of Job {JobName} finished")]
@@ -240,8 +242,10 @@ namespace Bam.Net.Services
 
         protected internal JobConf GetJobConf(string name)
         {
-            JobConf conf = new JobConf(name);
-            conf.JobDirectory = GetJobDirectoryPath(name);
+            JobConf conf = new JobConf(name)
+            {
+                JobDirectory = GetJobDirectoryPath(name)
+            };
             if (JobExists(name))
             {
                 conf = JobConf.Load(conf.GetFilePath());
@@ -283,15 +287,14 @@ namespace Bam.Net.Services
 
         /// <summary>
         /// Returns true if a job with the specified name
-        /// exists under the current Orchestrator.  Determined
-        /// by looking in the current Orchestrator's JobsDirectory.
+        /// exists under the current JobConductor.  Determined
+        /// by looking in the current JobConductor's JobsDirectory.
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
         public virtual bool JobExists(string name)
         {
-            string ignore;
-            return JobExists(name, out ignore);
+            return JobExists(name, out string ignore);
         }
         protected internal bool JobExists(string name, out string jobDirectoryPath)
         {

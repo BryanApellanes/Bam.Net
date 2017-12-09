@@ -2601,20 +2601,14 @@ namespace Bam.Net
             foreach (string file in Directory.GetFiles(sourcePath))
             {
                 string dest = Path.Combine(destPath, Path.GetFileName(file));
-                if (beforeFileCopy != null)
-                {
-                    beforeFileCopy(file, dest);
-                }
+                beforeFileCopy?.Invoke(file, dest);
                 File.Copy(file, dest, overwrite);
             }
 
             foreach (string folder in Directory.GetDirectories(sourcePath))
             {
                 string dest = Path.Combine(destPath, Path.GetFileName(folder));
-                if (beforeDirectoryCopy != null)
-                {
-                    beforeDirectoryCopy(folder, dest);
-                }
+                beforeDirectoryCopy?.Invoke(folder, dest);
                 CopyDirectory(folder, dest, overwrite, beforeFileCopy, beforeDirectoryCopy);
             }
         }
