@@ -199,7 +199,7 @@ namespace Bam.Net.Data.Repositories
         public override SQLiteDatabase GetSysDatabaseFor(object instance)
         {
             string databaseName = instance.GetType().FullName;
-            string schemaName = instance.Property<string>("SchemaName");
+            string schemaName = instance.Property<string>("SchemaName", false);
             if (!string.IsNullOrEmpty(schemaName))
             {
                 databaseName = $"{databaseName}_{schemaName}";
