@@ -172,9 +172,9 @@ namespace laotze
 
 		private static void WriteSqlFile(SchemaResult result)
 		{
-			if (!Arguments.Contains("dll") || result.DaoAssembly == null)
+			if (result.DaoAssembly == null)
 			{
-				OutLine("Unable to locate Dao assembly fro sql schema generation, specify dll argument", ConsoleColor.Red);
+				OutLine("Unable to locate Dao assembly for sql schema generation, specify dll argument", ConsoleColor.Red);
 			}
 			else
 			{
@@ -205,15 +205,17 @@ namespace laotze
 			{
 				return _schemaWriterLock.DoubleCheckLock(ref _schemaWriters, () =>
 				{
-					Dictionary<SqlDialect, Func<SchemaWriter>> result = new Dictionary<SqlDialect, Func<SchemaWriter>>();
-					result.Add(SqlDialect.Invalid, () => new MsSqlSqlStringBuilder());
-                    result.Add(SqlDialect.Ms, () => new MsSqlSqlStringBuilder());
-                    result.Add(SqlDialect.MsSql, () => new MsSqlSqlStringBuilder());
-                    result.Add(SqlDialect.My, () => new MySqlSqlStringBuilder());
-                    result.Add(SqlDialect.MySql, () => new MySqlSqlStringBuilder());
-					result.Add(SqlDialect.Oracle, () => new OracleSqlStringBuilder());
-					result.Add(SqlDialect.SQLite, () => new SQLiteSqlStringBuilder());
-					return result;
+                    Dictionary<SqlDialect, Func<SchemaWriter>> result = new Dictionary<SqlDialect, Func<SchemaWriter>>
+                    {
+                        { SqlDialect.Invalid, () => new MsSqlSqlStringBuilder() },
+                        { SqlDialect.Ms, () => new MsSqlSqlStringBuilder() },
+                        { SqlDialect.MsSql, () => new MsSqlSqlStringBuilder() },
+                        { SqlDialect.My, () => new MySqlSqlStringBuilder() },
+                        { SqlDialect.MySql, () => new MySqlSqlStringBuilder() },
+                        { SqlDialect.Oracle, () => new OracleSqlStringBuilder() },
+                        { SqlDialect.SQLite, () => new SQLiteSqlStringBuilder() }
+                    };
+                    return result;
 				});
 			}
 		}
