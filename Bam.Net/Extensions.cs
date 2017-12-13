@@ -2332,24 +2332,29 @@ namespace Bam.Net
         /// <returns></returns>
         public static string Pluralize(this string stringToPluralize)
         {
-            if (stringToPluralize.ToLowerInvariant().EndsWith("ies"))
+            string checkValue = stringToPluralize.ToLowerInvariant();
+            if (checkValue.EndsWith("ies"))
             {
                 return stringToPluralize;
             }
-            else if (stringToPluralize.ToLowerInvariant().EndsWith("us"))
+            else if (checkValue.EndsWith("us"))
             {
                 return stringToPluralize.Substring(0, stringToPluralize.Length - 2) + "i";
             }
-            else if (stringToPluralize.ToLowerInvariant().EndsWith("s") ||
-                stringToPluralize.ToLowerInvariant().EndsWith("sh"))
+            else if (checkValue.EndsWith("s") ||
+                checkValue.EndsWith("sh"))
             {
                 return stringToPluralize + "es";
             }
-            else if (stringToPluralize.ToLowerInvariant().EndsWith("ey"))
+            else if (checkValue.EndsWith("ay") ||
+                checkValue.EndsWith("ey") ||
+                checkValue.EndsWith("iy") ||
+                checkValue.EndsWith("oy") ||
+                checkValue.EndsWith("uy"))
             {
                 return stringToPluralize + "s";
             }
-            else if (stringToPluralize.ToLowerInvariant().EndsWith("y"))
+            else if (checkValue.EndsWith("y"))
             {
                 return stringToPluralize.Substring(0, stringToPluralize.Length - 1) + "ies";
             }
