@@ -133,7 +133,7 @@ namespace Bam.Net.Testing
                 FireEvent(TestsStarting, new TestEventArgs<TTestMethod> { TestRunner = this, Assembly = Assembly });
                 for (int i = fromInt; i <= toInt; i++)
                 {
-                    RunTest(Tests[i]);
+                    RunTest(Tests[i-1]);
                 }
                 FireEvent(TestsFinished, new TestEventArgs<TTestMethod> { TestRunner = this, Assembly = Assembly });
             }
