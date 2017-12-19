@@ -213,7 +213,8 @@ namespace laotze
                         { SqlDialect.My, () => new MySqlSqlStringBuilder() },
                         { SqlDialect.MySql, () => new MySqlSqlStringBuilder() },
                         { SqlDialect.Oracle, () => new OracleSqlStringBuilder() },
-                        { SqlDialect.SQLite, () => new SQLiteSqlStringBuilder() }
+                        { SqlDialect.SQLite, () => new SQLiteSqlStringBuilder() },
+                        { SqlDialect.Postgres, ()=> new NpgsqlSqlStringBuilder() }
                     };
                     return result;
 				});
