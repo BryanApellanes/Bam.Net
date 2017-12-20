@@ -45,6 +45,10 @@ namespace Bam.Net.Configuration
                     return _appDataFolder;
                 });
             }
+            set
+            {
+                _appDataFolder = value;
+            }
         }
         
         public static Func<Type, bool> ClrTypeFilter

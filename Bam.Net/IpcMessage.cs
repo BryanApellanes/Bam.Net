@@ -17,8 +17,7 @@ namespace Bam.Net
 {
     /// <summary>
     /// A file based
-    /// IPC mechanism that doesn't use, MSMQ, NamedPipes
-    /// or MMF (MemoryMappedFiles).  Uses a single file
+    /// IPC mechanism that uses a single file
     /// with a binary formatted copy of an instance of T 
     /// in the directory RootDirectory with the name specified.
     /// </summary>

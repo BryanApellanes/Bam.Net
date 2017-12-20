@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Bam.Net.Configuration;
 using Bam.Net.Data.SQLite;
 using Bam.Net.Logging;
 
@@ -20,7 +21,7 @@ namespace Bam.Net.Data.Repositories
             EmailTemplatesDirectory = "EmailTemplates";
             AssemblyDirectory = "Assemblies";
             ProcessMode = ProcessMode.Default;
-            Logger = Log.Default;
+            Logger = Log.Default;            
         }
 
         public DataSettings(ProcessMode processMode, ILogger logger = null):this()
@@ -47,6 +48,11 @@ namespace Bam.Net.Data.Repositories
             {
                 return _fromConfigLock.DoubleCheckLock(ref _fromConfig, () => new DataSettings(ProcessMode.Current));
             }
+        }
+
+        public void SetRuntimeAppDataDirectory(IApplicationNameProvider appNameProvider)
+        {
+            RuntimeSettings.AppDataFolder = GetAppDataDirectory(appNameProvider).FullName;
         }
 
         public ProcessMode ProcessMode { get; set; }

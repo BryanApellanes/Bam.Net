@@ -164,19 +164,13 @@ namespace Bam.Net.ServiceProxy.Secure
         public event Action<SecureServiceProxyClient<T>> SessionStarting;
         protected void OnSessionStarting()
         {
-            if (SessionStarting != null)
-            {
-                SessionStarting(this);
-            }
+            SessionStarting?.Invoke(this);
         }
 
         public event Action<SecureServiceProxyClient<T>> SessionStarted;
         protected void OnSessionStarted()
         {
-            if (SessionStarted != null)
-            {
-                SessionStarted(this);
-            }
+            SessionStarted?.Invoke(this);
         }
 
         /// <summary>
@@ -186,10 +180,7 @@ namespace Bam.Net.ServiceProxy.Secure
         public event Action<SecureServiceProxyClient<T>, Exception> StartSessionException;
         protected void OnStartSessionException(Exception ex)
         {
-            if (StartSessionException != null)
-            {
-                StartSessionException(this, ex);
-            }
+            StartSessionException?.Invoke(this, ex);
         }
 
         object _sessionInfoLock = new object();
