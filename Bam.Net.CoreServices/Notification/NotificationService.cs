@@ -20,7 +20,7 @@ namespace Bam.Net.CoreServices
     [Serializable]
     [Proxy("notifySvc")]
     [ServiceSubdomain("notify")]
-    public class NotificationService : ApplicationProxyableService
+    public class NotificationService : ApplicationProxyableService, INotificationService
     {
         public NotificationService(DataSettings dataSettings, ILogger logger = null)
         {
@@ -76,7 +76,7 @@ namespace Bam.Net.CoreServices
         }
 
         [Local]
-        public bool NotifyUser(User user, string templateName, object data = null, string subject = null)
+        public bool TemplateNotify(User user, string templateName, object data = null, string subject = null)
         {
             Args.ThrowIfNull(user, "user");
             return TemplateNotify(user.Email, templateName, data, subject);

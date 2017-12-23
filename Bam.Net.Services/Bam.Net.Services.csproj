@@ -101,7 +101,6 @@
     <Compile Include="AsyncProxyableService.cs" />
     <Compile Include="Automation\CommandInfo.cs" />
     <Compile Include="Automation\CommandService.cs" />
-    <Compile Include="Catalog\Data\ItemCustomizationDefinition.cs" />
     <Compile Include="AsyncExecutionRequest.cs" />
     <Compile Include="Chunking\Chunk.cs" />
     <Compile Include="Chunking\ChunkClient.cs" />

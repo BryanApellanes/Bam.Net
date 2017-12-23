@@ -23,7 +23,7 @@ namespace Bam.Net.Services.DataReplication.Data
         }
         public override int GetHashCode()
         {
-            return this.GetHashCode(Name, Value);
+            return this.GetHashCode(DataPointCuid, Name, Value);
         }
     }
 }

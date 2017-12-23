@@ -259,6 +259,7 @@
     <Compile Include="ApplicationRegistration\Data\Nic.cs" />
     <Compile Include="ApplicationRegistration\Data\ConfigurationSetting.cs" />
     <Compile Include="NotificationTemplateInfo.cs" />
+    <Compile Include="Notification\INotificationService.cs" />
     <Compile Include="OAuth\ApplicationUserNotFoundException.cs" />
     <Compile Include="OAuth\OAuthClientSettings.cs" />
     <Compile Include="OAuth\AuthenticatedAttribute.cs" />

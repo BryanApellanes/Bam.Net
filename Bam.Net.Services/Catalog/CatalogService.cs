@@ -10,7 +10,7 @@ using Bam.Net.Services.Catalog.Data;
 
 namespace Bam.Net.Services
 {
-    [Proxy("listSvc")]
+    [Proxy("catalogSvc")]
     public class CatalogService : AsyncProxyableService, ICatalogService
     {
         protected CatalogService() { }
