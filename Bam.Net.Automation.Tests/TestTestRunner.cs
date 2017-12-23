@@ -14,6 +14,7 @@ namespace Bam.Net.Automation.Tests
         public TestRunnerSummary TestSummary { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public TestMethodProvider<UnitTestMethod> TestMethodProvider { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
+        public string Tag { get; set; }
         public event EventHandler InvalidTestNumberSpecified;
         public event EventHandler NoTestsDiscovered;
         public event EventHandler TestFailed;

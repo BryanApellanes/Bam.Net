@@ -133,7 +133,7 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data
             List<AssemblyDescriptor> descriptors = new List<AssemblyDescriptor>();
             foreach (AssemblyDescriptor assDescriptor in descriptor.AssemblyDescriptors)
             {
-                AssemblyDescriptor saved = repo.Save(assDescriptor);
+                AssemblyDescriptor saved = assDescriptor.Save(repo);
                 descriptors.Add(saved);
             }
             descriptor.AssemblyDescriptors = descriptors.ToArray();

@@ -318,6 +318,12 @@
             <param name="cleanup"></param>
             <returns></returns>
         </member>
+        <member name="T:Bam.Net.Testing.TestSuiteAttribute">
+            <summary>
+            An attribute used to logically group tests together
+            in a "Suite" for organization and reporting.
+            </summary>
+        </member>
         <member name="T:Bam.Net.Testing.Unit.UnitTestAttribute">
             <summary>
             Attribute used to mark a method as a Unit Test
@@ -357,6 +363,11 @@
         <member name="P:Bam.Net.Testing.Data.TestResult.StackTrace">
             <summary>
             The stack trace if any
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Testing.TestEventArgs`1.Tag">
+            <summary>
+            The tag to associate with a TestExecution
             </summary>
         </member>
         <member name="M:Bam.Net.Testing.TestRunner`1.RunSpecifiedTests(System.String)">

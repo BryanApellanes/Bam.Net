@@ -18,12 +18,12 @@ namespace Bam.Net.CoreServices.Files
 
         }
 
-        internal ChunkedFileWriter(CoreFileService fileService)
+        internal ChunkedFileWriter(FileService fileService)
         {
             FileService = fileService;
         }
 
-        public CoreFileService FileService { get; set; }
+        public FileService FileService { get; set; }
 
         public long ChunkCount { get; set; }
 
@@ -38,7 +38,7 @@ namespace Bam.Net.CoreServices.Files
         public string OriginalDirectory { get; set; }
         public ILogger Logger { get; set; }
 
-        public static ChunkedFileWriter FromFileHash(CoreFileService svc, string fileHash, ILogger logger = null)
+        public static ChunkedFileWriter FromFileHash(FileService svc, string fileHash, ILogger logger = null)
         {
             ChunkedFileDescriptor descriptor = svc.GetFileDescriptor(fileHash);
             ChunkedFileWriter writer = new ChunkedFileWriter(svc)

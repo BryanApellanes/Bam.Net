@@ -68,7 +68,6 @@ namespace Bam.Net.Messaging
 
         public static bool ValidateExtendedSettings(Vault credentialContainer, out string[] messages)
         {
-            bool result = true;
             List<string> msgTmp = new List<string>();
             if (string.IsNullOrEmpty(credentialContainer["From"]))
             {
@@ -89,7 +88,6 @@ namespace Bam.Net.Messaging
             {
                 msgTmp.Add("EnableSsl was blank");
             }
-
 
             messages = msgTmp.ToArray();
             return messages.Length == 0;

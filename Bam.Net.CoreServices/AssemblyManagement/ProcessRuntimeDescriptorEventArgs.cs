@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.CoreServices.AssemblyManagement.Data;
-using Bam.Net.CoreServices.AssemblyManagement.Data;
 
 namespace Bam.Net.CoreServices
 {

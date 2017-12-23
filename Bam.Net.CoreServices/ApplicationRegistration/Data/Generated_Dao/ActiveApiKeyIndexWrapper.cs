@@ -9,14 +9,14 @@ using Bam.Net;
 using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 using Newtonsoft.Json;
-using Bam.Net.CoreServices.ApplicationRegistration;
-using Bam.Net.CoreServices.ApplicationRegistration.Dao;
+using Bam.Net.CoreServices.ApplicationRegistration.Data;
+using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao;
 
-namespace Bam.Net.CoreServices.ApplicationRegistration.Wrappers
+namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Wrappers
 {
 	// generated
 	[Serializable]
-	public class ActiveApiKeyIndexWrapper: Bam.Net.CoreServices.ApplicationRegistration.ActiveApiKeyIndex, IHasUpdatedXrefCollectionProperties
+	public class ActiveApiKeyIndexWrapper: Bam.Net.CoreServices.ApplicationRegistration.Data.ActiveApiKeyIndex, IHasUpdatedXrefCollectionProperties
 	{
 		public ActiveApiKeyIndexWrapper()
 		{

@@ -1,1 +1,5 @@
 
+ -   minor refactor (a26bf3c)
+ -   add Database parameter to XrefDaoCollection.Remove (7c4f3c4)
+ -   fix bug in XrefDaoCollection remove; minor refactor of laotze (d801431)
+ -   add AppData directory path handling (f2c4e4d)

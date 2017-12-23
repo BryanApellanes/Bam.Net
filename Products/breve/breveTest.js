@@ -1,5 +1,14 @@
 var breve = {
     monkey: "Object",
     name: "String",
-    tail: "bool"
+    tail: "Boolean"
 }
+
+//Default,
+//    Boolean,
+//    Int,
+//    Long,
+//    Decimal,
+//    String,
+//    ByteArray,
+//    DateTime

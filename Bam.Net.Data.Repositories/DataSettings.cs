@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Bam.Net.Configuration;
 using Bam.Net.Data.SQLite;
 using Bam.Net.Logging;
 
@@ -14,14 +11,23 @@ namespace Bam.Net.Data.Repositories
         public DataSettings()
         {
             DataRootDirectory = "C:\\bam\\data";
+            AppDataDirectory = "AppData";
+            SysDataDirectory = "SysData";
             DatabaseDirectory = "Databases";
             RepositoryDirectory = "Repositories";
             FilesDirectory = "Files";
             ChunksDirectory = "Chunks";
             WorkspacesDirectory = "Workspaces";
             EmailTemplatesDirectory = "EmailTemplates";
+            AssemblyDirectory = "Assemblies";
             ProcessMode = ProcessMode.Default;
-            Logger = Log.Default;
+            Logger = Log.Default;            
+        }
+
+        public DataSettings(ProcessMode processMode, ILogger logger = null):this()
+        {
+            ProcessMode = processMode;
+            Logger = logger ?? Log.Default;
         }
 
         static DataSettings _default;
@@ -34,94 +40,218 @@ namespace Bam.Net.Data.Repositories
             }
         }
 
-        public ProcessMode ProcessMode { get; set; }
+        static DataSettings _fromConfig;
+        static object _fromConfigLock = new object();
+        public static DataSettings Current
+        {
+            get
+            {
+                return _fromConfigLock.DoubleCheckLock(ref _fromConfig, () => new DataSettings(ProcessMode.Current));
+            }
+        }
 
+        public void SetRuntimeAppDataDirectory(IApplicationNameProvider appNameProvider)
+        {
+            RuntimeSettings.AppDataFolder = GetAppDataDirectory(appNameProvider).FullName;
+        }
+
+        public ProcessMode ProcessMode { get; set; }
         public string DataRootDirectory { get; set; }
+        public string AppDataDirectory { get; set; }
+        public string SysDataDirectory { get; set; }
         public string DatabaseDirectory { get; set; }
         public string RepositoryDirectory { get; set; }
         public string FilesDirectory { get; set; }
         public string ChunksDirectory { get; set; }
         public string WorkspacesDirectory { get; set; }
         public string EmailTemplatesDirectory { get; set; }
+        public string AssemblyDirectory { get; set; }
 
         public DirectoryInfo GetRootDataDirectory()
         {
             return new DirectoryInfo(Path.Combine(DataRootDirectory, ProcessMode.ToString()));
         }
 
-        public DirectoryInfo GetDataDirectory(string directoryName)
+        public DirectoryInfo GetRootDataDirectory(string directoryName)
         {
             return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, directoryName));
         }
 
-        public DirectoryInfo GetDatabaseDirectory()
+        public DirectoryInfo GetSysDataDirectory()
         {
-            return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, DatabaseDirectory));
+            return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, SysDataDirectory));
         }
 
-        public DirectoryInfo GetRepositoryDirectory()
+        public DirectoryInfo GetSysDataDirectory(string directoryName)
         {
-            return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, RepositoryDirectory));
+            return new DirectoryInfo(Path.Combine(GetSysDataDirectory().FullName, directoryName));
+        }
+
+        public DirectoryInfo GetSysAssemblyDirectory()
+        {
+            return GetSysDataDirectory(AssemblyDirectory);
+        }
+
+        public DirectoryInfo GetAppAssemblyDirectory(IApplicationNameProvider appNameProvider)
+        {
+            return GetAppDataDirectory(appNameProvider, AssemblyDirectory);
+        }
+
+        public DirectoryInfo GetAppDataDirectory(IApplicationNameProvider appNameProvider)
+        {
+            return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, AppDataDirectory, appNameProvider.GetApplicationName()));
+        }
+
+        public DirectoryInfo GetAppDataDirectory(IApplicationNameProvider appNameProvider, string directoryName)
+        {
+            return new DirectoryInfo(Path.Combine(GetAppDataDirectory(appNameProvider).FullName, directoryName));
+        }
+
+        public DirectoryInfo GetAppDatabaseDirectory(IApplicationNameProvider appNameProvider)
+        {
+            return GetAppDataDirectory(appNameProvider, DatabaseDirectory);
+        }
+
+        public DirectoryInfo GetSysDatabaseDirectory()
+        {
+            return GetSysDataDirectory(DatabaseDirectory);
+        }
+        
+        public DirectoryInfo GetAppRepositoryDirectory(IApplicationNameProvider appNameProvider)
+        {
+            return GetAppDataDirectory(appNameProvider, RepositoryDirectory);
+        }
+
+        public DirectoryInfo GetSysRepositoryDirectory()
+        {
+            return GetSysDataDirectory(RepositoryDirectory);
+        }
+
+        public T GetSysDaoRepository<T>() where T: DaoRepository, new()
+        {
+            T result = new T();
+            result.Database = GetSysDatabaseFor(result);
+            result.EnsureDaoAssemblyAndSchema();
+            return result;
+        }
+
+        public T GetAppDaoRepository<T>(IApplicationNameProvider applicationNameProvider) where T : DaoRepository, new()
+        {
+            T result = new T
+            {
+                Database = GetAppDatabaseFor(applicationNameProvider, typeof(T))
+            };
+            result.EnsureDaoAssemblyAndSchema();
+            return result;
+        }
+
+        public DirectoryInfo GetAppRepositoryWorkspaceDirectory(IApplicationNameProvider appNameProvider)
+        {
+            return GetAppDataDirectory(appNameProvider, WorkspacesDirectory);
         }
 
         public DirectoryInfo GetRepositoryWorkspaceDirectory()
         {
-            return new DirectoryInfo(Path.Combine(GetRepositoryDirectory().FullName, "RepoWorkspaces"));
+            return GetRootDataDirectory(RepositoryDirectory);
+        }
+
+        public DirectoryInfo GetAppFilesDirectory(IApplicationNameProvider appNameProvider)
+        {
+            return GetAppDataDirectory(appNameProvider, FilesDirectory);
         }
 
         public DirectoryInfo GetFilesDirectory()
         {
-            return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, FilesDirectory));
+            return GetRootDataDirectory(FilesDirectory);
         }
-
+        
         public DirectoryInfo GetChunksDirectory()
         {
-            return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, ChunksDirectory));
+            return GetRootDataDirectory(ChunksDirectory);
+        }
+
+        public DirectoryInfo GetAppWorkspaceDirectory(IApplicationNameProvider appNameProvider, Type type)
+        {
+            string hash = type.ToInfoHash();
+            return new DirectoryInfo(Path.Combine(GetAppDataDirectory(appNameProvider).FullName, WorkspacesDirectory, type.Name, hash));
         }
 
         public DirectoryInfo GetWorkspaceDirectory(Type type)
         {
-            return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, WorkspacesDirectory, type.Name));
+            string hash = type.ToInfoHash();
+            return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, WorkspacesDirectory, type.Name, hash));
         }
 
         public DaoRepository GetGenericDaoRepository(ILogger logger = null, string schemaName = null)
         {
-            return new DaoRepository(GetDatabaseFor(typeof(DaoRepository)), logger, schemaName);
+            return new DaoRepository(GetSysDatabaseFor(typeof(DaoRepository)), logger, schemaName);
+        }
+        
+        public DirectoryInfo GetAppEmailTemplatesDirectory(IApplicationNameProvider appNameProvider)
+        {
+            return GetAppDataDirectory(appNameProvider, EmailTemplatesDirectory);
         }
 
-        public DirectoryInfo GetEmailTemplatesDirectory()
+        public DirectoryInfo GetSysEmailTemplatesDirectory()
         {
-            return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, EmailTemplatesDirectory));
+            return GetSysDataDirectory(EmailTemplatesDirectory);
         }
 
-        public void SetDatabaseFor(object instance)
+        public void SetSysDatabaseFor(object instance)
         {
-            instance.Property("Database", GetDatabaseFor(instance), false);
+            instance.Property("Database", GetSysDatabaseFor(instance), false);
         }        
 
-        public override SQLiteDatabase GetDatabaseFor(object instance)
+        public override SQLiteDatabase GetSysDatabaseFor(object instance)
         {
             string databaseName = instance.GetType().FullName;
-            string schemaName = instance.Property<string>("SchemaName");
+            string schemaName = instance.Property<string>("SchemaName", false);
             if (!string.IsNullOrEmpty(schemaName))
             {
                 databaseName = $"{databaseName}_{schemaName}";
             }
-            return new SQLiteDatabase(GetDatabaseDirectory().FullName, databaseName);
+            return new SQLiteDatabase(GetSysDatabaseDirectory().FullName, databaseName);
         }
 
-        public override string GetDatabasePathFor(Type type, string info = null)
+        public override string GetSysDatabasePathFor(Type type, string info = null)
         {
-            return GetDatabaseFor(type, info).DatabaseFile.FullName;
+            return GetSysDatabaseFor(type, info).DatabaseFile.FullName;
+        }
+        
+        public override SQLiteDatabase GetSysDatabaseFor(Type objectType, string info = null)
+        {
+            return GetDatabaseFor(objectType, () => GetSysDatabaseDirectory().FullName, info);
         }
 
-        public override SQLiteDatabase GetDatabaseFor(Type objectType, string info = null)
+        public override SQLiteDatabase GetAppDatabaseFor(IApplicationNameProvider appNameProvider, object instance)
+        {
+            return GetDatabaseFor(instance.GetType(), () => GetAppDatabaseDirectory(appNameProvider).FullName);
+        }
+
+        public override SQLiteDatabase GetAppDatabaseFor(IApplicationNameProvider appNameProvider, Type objectType, string info = null)
+        {
+            return GetDatabaseFor(objectType, () => GetAppDatabaseDirectory(appNameProvider).FullName, info);
+        }
+
+        /// <summary>
+        /// Get the path to the application specific SQLite database file for the specified type
+        /// </summary>
+        /// <param name="appNameProvider"></param>
+        /// <param name="type"></param>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        public override string GetAppDatabasePathFor(IApplicationNameProvider appNameProvider, Type type, string info = null)
+        {
+            return GetAppDatabaseFor(appNameProvider, type, info).DatabaseFile.FullName;
+        }
+
+        protected SQLiteDatabase GetDatabaseFor(Type objectType, Func<string> databasePathProvider, string info = null)
         {
             string connectionName = Dao.ConnectionName(objectType);
-            string fileName = string.IsNullOrEmpty(info) ? (string.IsNullOrEmpty(connectionName) ? objectType.FullName: connectionName) : $"{objectType.FullName}_{info}";
-            string fullPath = GetDatabaseDirectory().FullName;
-            SQLiteDatabase db = new SQLiteDatabase(fullPath, fileName);
-            Logger.Info("Returned SQLiteDatabase with path {0} for type {1}\r\nFullPath: {2}\r\nName: {3}", db.DatabaseFile.FullName, objectType.Name, fullPath, fileName);
+            string fileName = string.IsNullOrEmpty(info) ? (string.IsNullOrEmpty(connectionName) ? objectType.FullName : connectionName) : $"{objectType.FullName}_{info}";
+            string directoryPath = databasePathProvider();
+            SQLiteDatabase db = new SQLiteDatabase(directoryPath, fileName);
+            Logger.Info("Returned SQLiteDatabase with path {0} for type {1}\r\nFullPath: {2}\r\nName: {3}", db.DatabaseFile.FullName, objectType.Name, directoryPath, fileName);
             return db;
         }
     }

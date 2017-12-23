@@ -24,7 +24,7 @@ namespace Bam.Net.Automation.Testing
     [Proxy("testReportSvc", MethodCase = MethodCase.CamelCase)]
     public class TestReportService : Loggable, IRequiresHttpContext, ITestReportService
     {
-        public TestReportService() : this(new SQLiteDatabaseProvider(DataSettings.Default.GetDatabaseDirectory().FullName, Log.Default), Log.Default)
+        public TestReportService() : this(new SQLiteDatabaseProvider(DataSettings.Default.GetSysDatabaseDirectory().FullName, Log.Default), Log.Default)
         {
         }
 
@@ -100,7 +100,7 @@ namespace Bam.Net.Automation.Testing
         {
             try
             {
-                NotificationSubscription subscription = Repository.Query<NotificationSubscription>(Query.Where("EmailAddress") == emailAddress).FirstOrDefault();
+                NotificationSubscription subscription = Repository.Query<NotificationSubscription>(Query.Where(nameof(NotificationSubscription.EmailAddress)) == emailAddress).FirstOrDefault();
                 if (subscription == null)
                 {
                     subscription = new NotificationSubscription()
@@ -124,7 +124,7 @@ namespace Bam.Net.Automation.Testing
         {
             try
             {
-                NotificationSubscription subscription = Repository.Query<NotificationSubscription>(Query.Where("EmailAddress") == emailAddress).FirstOrDefault();
+                NotificationSubscription subscription = Repository.Query<NotificationSubscription>(Query.Where(nameof(NotificationSubscription.EmailAddress)) == emailAddress).FirstOrDefault();
                 string uuid = string.Empty;
                 SubscriptionStatus status = SubscriptionStatus.NotFound;
                 if (subscription != null)
@@ -211,9 +211,9 @@ namespace Bam.Net.Automation.Testing
             }
         }
 
-        public virtual SaveTestExecutionResponse StartTest(long executionSummaryId, long testDefinitionId)
+        public virtual SaveTestExecutionResponse StartTest(long executionSummaryId, long testDefinitionId, string tag = null)
         {
-            return SaveTestExecution(new TestExecution { StartedTime = DateTime.UtcNow, TestDefinitionId = testDefinitionId, TestSuiteExecutionSummaryId = executionSummaryId });
+            return SaveTestExecution(new TestExecution { StartedTime = DateTime.UtcNow, TestDefinitionId = testDefinitionId, TestSuiteExecutionSummaryId = executionSummaryId, Tag = tag });
         }
 
         public virtual SaveTestExecutionResponse FinishTest(long executionId)

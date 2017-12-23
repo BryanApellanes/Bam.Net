@@ -31,7 +31,7 @@ namespace Bam.Net.Data
                 Type type = instance.GetType();
                 type.GetProperties().Where(pi => pi.CanWrite && pi.PropertyType.Equals(typeof(Database))).Each(new { Instance = instance }, (ctx, pi) =>
                 {
-                    T db = GetDatabaseFor(instance);
+                    T db = GetSysDatabaseFor(instance);
                     if (pi.HasCustomAttributeOfType(out SchemasAttribute schemas))
                     {
                         TryEnsureSchemas(db, schemas.DaoSchemaTypes);
@@ -48,13 +48,16 @@ namespace Bam.Net.Data
 
         public virtual void SetDefaultDatabaseFor<TDao>(out Database db) where TDao: Dao
         {
-            db = GetDatabaseFor(typeof(TDao));
+            db = GetSysDatabaseFor(typeof(TDao));
             Db.For<TDao>(db);
         }
 
-        public abstract T GetDatabaseFor(object instance);
-        public abstract T GetDatabaseFor(Type objectType, string info = null);
-        public abstract string GetDatabasePathFor(Type type, string info = null);
+        public abstract T GetAppDatabaseFor(IApplicationNameProvider appNameProvider, object instance);
+        public abstract T GetSysDatabaseFor(object instance);
+        public abstract T GetAppDatabaseFor(IApplicationNameProvider appNameProvider, Type objectType, string info = null);
+        public abstract T GetSysDatabaseFor(Type objectType, string info = null);
+        public abstract string GetAppDatabasePathFor(IApplicationNameProvider appNameProvider, Type type, string info = null);
+        public abstract string GetSysDatabasePathFor(Type type, string info = null);
         private void TryEnsureSchemas(Database db, params Type[] daoTypes)
         {
             daoTypes.Each(new { Database = db, Logger = Logger }, (daoContext, dao) =>

@@ -192,7 +192,7 @@ namespace Bam.Net.Data
         /// does not delete the item from the database
         /// </summary>
         /// <param name="item"></param>
-        public void Remove(L item)
+        public void Remove(L item, Database db = null)
         {
             if (_values.Contains(item))
             {
@@ -202,7 +202,7 @@ namespace Bam.Net.Data
 
             if (XrefsByListId.ContainsKey(item.IdValue.Value))
             {
-                XrefsByListId[item.IdValue.Value].Delete();
+                XrefsByListId[item.IdValue.Value].Delete(db);
             }
         }
 

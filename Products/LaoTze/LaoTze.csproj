@@ -102,6 +102,10 @@
       <Project>{aeaaa461-99de-4daf-9e3d-0301582784e7}</Project>
       <Name>Bam.Net.Data.MySql</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Bam.Net.Data.Npgsql\Bam.Net.Data.Npgsql.csproj">
+      <Project>{49e255c4-c8eb-4ec9-baea-50ff7a9d16db}</Project>
+      <Name>Bam.Net.Data.Npgsql</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Bam.Net.Data.Oracle\Bam.Net.Data.Oracle.csproj">
       <Project>{296d4f9e-09f3-48c1-9968-d161c9666756}</Project>
       <Name>Bam.Net.Data.Oracle</Name>

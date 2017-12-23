@@ -1573,11 +1573,6 @@
             <param name="value"></param>
             <returns></returns>
         </member>
-        <member name="P:Bam.Net.ServiceProxy.ServiceProxyClient.BaseAddress">
-            <summary>
-            The BaseAddress to send requests to 
-            </summary>
-        </member>
         <member name="M:Bam.Net.ServiceProxy.ServiceProxyClient.GetFromJson``1(System.String)">
             <summary>
             Make a GET request to the specified path expecting json

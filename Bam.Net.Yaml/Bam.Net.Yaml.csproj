@@ -103,7 +103,6 @@
     <Compile Include="Data\ArrayBehavior.cs" />
     <Compile Include="Data\YamlData.cs" />
     <Compile Include="Data\YamlDataDirectory.cs" />
-    <Compile Include="Extensions.cs" />
     <Compile Include="PaletteExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceProxySystemYaml.cs" />

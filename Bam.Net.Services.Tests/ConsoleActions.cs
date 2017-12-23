@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.CommandLine;
-using Bam.Net.Services.Distributed.Data;
+using Bam.Net.Services.DataReplication.Data;
 using Bam.Net.Testing;
 using Bam.Net.Web;
 using CsQuery;
@@ -12,7 +12,7 @@ using System.IO;
 using Bam.Net.Services.OpenApi;
 using Bam.Net.Data.SQLite;
 using Bam.Net.Data;
-using Bam.Net.Services.Distributed;
+using Bam.Net.Services.DataReplication;
 
 namespace Bam.Net.Services.Tests
 {

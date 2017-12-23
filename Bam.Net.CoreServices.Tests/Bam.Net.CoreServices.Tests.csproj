@@ -122,7 +122,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationRegistryTests.cs" />
+    <Compile Include="ServiceRegistryTests.cs" />
     <Compile Include="ConfigurationTests.cs" />
     <Compile Include="ConsoleActions.cs" />
     <Compile Include="DiagnosticsTests.cs" />

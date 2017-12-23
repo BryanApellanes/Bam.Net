@@ -123,9 +123,9 @@ DEL /F /Q .\BamDotExe\lib\%LIB%\*");
 
             StringBuilder pushScript = new StringBuilder();
             pushScript.AppendLine("@echo on");
-            pushScript.AppendLine($@"nuget push {NugetReleaseDirectory}BamToolkit.%1.nupkg");
-            pushScript.AppendLine($@"nuget push {NugetReleaseDirectory}BamDotExe.%1.nupkg");
-            pushScript.AppendLine($@"nuget push {NugetReleaseDirectory}Bam.Net.Data.%1.nupkg");
+            pushScript.AppendLine($@"nuget push -source nuget.org {NugetReleaseDirectory}BamToolkit.%1.nupkg");
+            pushScript.AppendLine($@"nuget push -source nuget.org {NugetReleaseDirectory}BamDotExe.%1.nupkg");
+            pushScript.AppendLine($@"nuget push -source nuget.org {NugetReleaseDirectory}Bam.Net.Data.%1.nupkg");
 
             DirectoryInfo outputDir = new DirectoryInfo(GetOutputDirectory());
             using (StreamReader sr = new StreamReader(dllListPath))
@@ -374,7 +374,7 @@ call git_tag_version.cmd %1");
             string packLine = $"nuget pack {libraryName}\\{libraryName}.nuspec";
             packScript.AppendLine(packLine);
             packScriptDebug.AppendLine(packLine);
-            pushScript.AppendLine($"nuget push {NugetReleaseDirectory}{libraryName}.%1.nupkg");
+            pushScript.AppendLine($"nuget push -source nuget.org {NugetReleaseDirectory}{libraryName}.%1.nupkg");
 
             cleanScript.AppendLine($@"RMDIR /S /Q ..\..\{libraryName}\obj\");
             cleanScript.AppendLine($@"del /F /Q .\{libraryName}\lib\%LIB%\*");

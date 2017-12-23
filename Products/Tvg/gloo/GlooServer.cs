@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Timers;
+using Bam.Net.Services.Clients;
 
 namespace Bam.Net.Application
 {
@@ -77,7 +78,7 @@ namespace Bam.Net.Application
                 ctx.Responder.AddCommonService(serviceType, GetServiceLoader(serviceType));
                 ctx.Logger.AddEntry("Added service: {0}", serviceType.FullName);
             });
-            IApiKeyResolver apiKeyResolver = (IApiKeyResolver)GetServiceLoader(typeof(IApiKeyResolver))();
+            IApiKeyResolver apiKeyResolver = (IApiKeyResolver)GetServiceLoader(typeof(IApiKeyResolver), new CoreClient())();
             responder.CommonSecureChannel.ApiKeyResolver = apiKeyResolver;
             responder.AppSecureChannels.Values.Each(sc => sc.ApiKeyResolver = apiKeyResolver);
         }
@@ -168,7 +169,7 @@ namespace Bam.Net.Application
         }
         
         public static ServiceRegistry ServiceRegistry { get; set; }
-        protected Func<object> GetServiceLoader(Type type)
+        protected Func<object> GetServiceLoader(Type type, object orDefault = null)
         {
             if(ServiceRegistry == null)
             {
@@ -182,7 +183,14 @@ namespace Bam.Net.Application
                     }
                 }
             }
-            return ServiceRegistry == null ? (() => type.Construct()) : (Func<object>)(() => ServiceRegistry.Get(type));
+            return ServiceRegistry == null ? (() => type.Construct()) : (Func<object>)(() =>
+            {
+                if(!ServiceRegistry.TryGet(type, out object result))
+                {
+                    result = orDefault;
+                }
+                return result;
+            });
         }                
     }
 }

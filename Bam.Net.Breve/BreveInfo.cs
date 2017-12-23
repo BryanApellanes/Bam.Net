@@ -18,12 +18,13 @@ namespace Bam.Net.Breve
             this._properties = new List<BreveProperty>();
         }
 
-        public BreveInfo(string className, JObject obj)
+        public BreveInfo(string className, JObject obj, Languages lang)
             : this(className)
         {
             this.AddProperties(obj.Properties());
+            this.Language = lang;
         }
-
+        public Languages Language { get; set; }
         public string ClassName { get; set; }
 
         List<BreveProperty> _properties;
@@ -50,6 +51,11 @@ namespace Bam.Net.Breve
         public void AddProperty(JProperty property)
         {
             string propertyType = (string)property.Value;
+            if (!propertyType.Equals("object", StringComparison.InvariantCultureIgnoreCase))
+            {
+                Data.Schema.DataTypes dataType = propertyType.ToEnum<Data.Schema.DataTypes>();
+                propertyType = BreveTypes.Map[Language, dataType];
+            }
             string propertyName = property.Name;
             BreveProperty breveProperty = new BreveProperty(ClassName, propertyName, propertyType);
             _properties.Add(breveProperty);

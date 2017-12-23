@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.CoreServices.Files
 {
+    /// <summary>
+    /// ChunkStorage composed of a single Primary IChunkStorage
+    /// and zero or more Secondary IChunkStorage providers
+    /// </summary>
     public class CompositeChunkStorage : IChunkStorage
     {
         public CompositeChunkStorage()

@@ -17,14 +17,13 @@ namespace Bam.Net.Automation
         /// specified IpcMessageRoot.  A new InstanceId
         /// will be assigned.
         /// </summary>
-        /// <param name="messageRoot"></param>
+        /// <param name="messageStore"></param>
         /// <param name="job"></param>
-        public SuspendedJob(IpcMessageRoot messageRoot, Job job)
+        public SuspendedJob(IIpcMessageStore messageStore, Job job)
         {
-            this.InstanceId = Guid.NewGuid().ToString();
-            this.IpcMessageRoot = messageRoot;
-            IpcMessage message = messageRoot.GetMessage<Job>(this.InstanceId);
-            message.Write(job);
+            InstanceId = Guid.NewGuid().ToString();
+            IpcMessageStore = messageStore;
+            messageStore.SetMessage(InstanceId, job);
         }
 
         /// <summary>
@@ -34,21 +33,21 @@ namespace Bam.Net.Automation
         /// </summary>
         /// <param name="messageRoot"></param>
         /// <param name="instanceId"></param>
-        public SuspendedJob(IpcMessageRoot messageRoot, string instanceId)
+        public SuspendedJob(IIpcMessageStore messageRoot, string instanceId)
         {
-            this.InstanceId = instanceId;
-            this.IpcMessageRoot = messageRoot;
+            InstanceId = instanceId;
+            IpcMessageStore = messageRoot;
         }
 
-        public static Job ReinstantiateSuspendedJob(IpcMessageRoot messageRoot, string instanceId)
+        public static Job ReinstantiateSuspendedJob(IIpcMessageStore messageStore, string instanceId)
         {
-            IpcMessage message = messageRoot.GetMessage<Job>(instanceId);
+            IpcMessage message = messageStore.GetMessage<Job>(instanceId);
             return message.Read<Job>();
         }
 
         public Job Reinstantiate()
         {
-            return ReinstantiateSuspendedJob(IpcMessageRoot, InstanceId);
+            return ReinstantiateSuspendedJob(IpcMessageStore, InstanceId);
         }
 
         public string InstanceId
@@ -57,7 +56,7 @@ namespace Bam.Net.Automation
             set;
         }
 
-        public IpcMessageRoot IpcMessageRoot
+        public IIpcMessageStore IpcMessageStore
         {
             get;
             set;

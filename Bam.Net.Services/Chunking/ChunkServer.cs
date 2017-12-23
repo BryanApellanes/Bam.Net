@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 using Bam.Net.CoreServices.Files.Data;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Logging;
-using Bam.Net.Server.Binary;
+using Bam.Net.Server.Streaming;
 using Bam.Net.CoreServices.Files;
 
 namespace Bam.Net.Services.Chunking
 {
-    public class ChunkServer : BinaryServer<ChunkRequest, ChunkResponse>
+    public class ChunkServer : StreamingServer<ChunkRequest, ChunkResponse>
     {
         public ChunkServer(IChunkStorage chunkStorage, ILogger logger = null)
         {
@@ -20,7 +20,7 @@ namespace Bam.Net.Services.Chunking
             Logger = logger ?? Log.Default;
         }
         public IChunkStorage ChunkStorage { get; set; }
-        public override ChunkResponse ProcessRequest(BinaryContext<ChunkRequest> context)
+        public override ChunkResponse ProcessRequest(StreamingContext<ChunkRequest> context)
         {
             try
             {

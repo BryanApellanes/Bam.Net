@@ -32,9 +32,11 @@ namespace Bam.Net.UserAccounts.Tests
             user = User.OneWhere(c => c.UserName == TestUser);
             if (user == null)
             {
-                user = new User();
-                user.CreationDate = DateTime.UtcNow;
-                user.UserName = TestUser;
+                user = new User()
+                {
+                    CreationDate = DateTime.UtcNow,
+                    UserName = TestUser
+                };
                 user.Save();
             }
             return user;
@@ -70,8 +72,7 @@ namespace Bam.Net.UserAccounts.Tests
 
         public static void SignUpAndLogin(string userName, out IHttpContext context, out LoginResponse result)
         {
-            UserManager userProxy;
-            SignUpAndLogin(userName, out context, out result, out userProxy);
+            SignUpAndLogin(userName, out context, out result, out UserManager userProxy);
         }
 
         public static void SignUpAndLogin(string userName, out IHttpContext context, out LoginResponse result, out UserManager userProxy)
@@ -88,18 +89,15 @@ namespace Bam.Net.UserAccounts.Tests
 
         public static void SignUp(string userName, string email)
         {
-            UserManager mgr;
-            IHttpContext context;
-            string passHash;
-            UserTestTools.SignUp(userName, email, out mgr, out context, out passHash);
+            UserTestTools.SignUp(userName, email, out UserManager mgr, out IHttpContext context, out string passHash);
         }
 
         public static UserManager CreateTestUserManager(string appName = "test")
         {
             UserManagerConfig config = new UserManagerConfig();
-            config.SmtpSettingsVaultPath = DataSettings.Default.GetDatabasePathFor(typeof(Vault), "System");
+            config.SmtpSettingsVaultPath = DataSettings.Default.GetSysDatabasePathFor(typeof(Vault), "System");
             config.ApplicationName = appName;
-            config.EmailTemplateDirectoryPath = DataSettings.Default.GetEmailTemplatesDirectory().FullName;
+            config.EmailTemplateDirectoryPath = DataSettings.Default.GetSysEmailTemplatesDirectory().FullName;
 
             UserManager mgr = config.Create();
             return mgr;

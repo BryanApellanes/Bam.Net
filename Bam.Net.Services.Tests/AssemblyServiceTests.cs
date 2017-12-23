@@ -18,7 +18,7 @@ using Bam.Net.Testing;
 using Bam.Net.CoreServices.AssemblyManagement;
 using Bam.Net.CoreServices.Files;
 using Bam.Net.Configuration;
-using Bam.Net.Services.Distributed.Data;
+using Bam.Net.Services.DataReplication.Data;
 using Bam.Net.Testing.Integration;
 using Bam.Net.CoreServices.Files.Data;
 using Bam.Net.CoreServices;
@@ -183,7 +183,7 @@ namespace Bam.Net.Services.Tests
                 );
                 
                 Expect.AreEqual(actual.AssemblyReferenceDescriptors?.Count, retrievedDescriptor.AssemblyReferenceDescriptors?.Count);
-                OutLineFormat("ProcessRuntimeDescriptors count {0}", retrievedDescriptor.ProcessRuntimeDescriptor.Count);
+                OutLineFormat("ProcessRuntimeDescriptors count {0}", retrievedDescriptor.ProcessRuntimeDescriptors.Count);
             }
         }
 
@@ -199,9 +199,9 @@ namespace Bam.Net.Services.Tests
                 typeof(ChunkDataDescriptor),
                 typeof(ChunkData));
             fileRepo.EnsureDaoAssemblyAndSchema();
-            CoreFileService fmSvc = new CoreFileService(fileRepo);
+            FileService fmSvc = new FileService(fileRepo);
 
-            CoreAssemblyService svc = new CoreAssemblyService(fmSvc, assManRepo, DefaultConfigurationApplicationNameProvider.Instance);
+            AssemblyService svc = new AssemblyService(DataSettings.Current, fmSvc, assManRepo, DefaultConfigurationApplicationNameProvider.Instance);
             ProcessRuntimeDescriptor prd1 = svc.CurrentProcessRuntimeDescriptor;
             ProcessRuntimeDescriptor prd2 = svc.CurrentProcessRuntimeDescriptor;
             ProcessRuntimeDescriptor byName = assManRepo.OneProcessRuntimeDescriptorWhere(c => c.ApplicationName == prd1.ApplicationName);

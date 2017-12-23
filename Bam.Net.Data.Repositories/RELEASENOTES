@@ -1,1 +1,2 @@
 
+ -   don't throw if SchemaName property not found (9dcf966)

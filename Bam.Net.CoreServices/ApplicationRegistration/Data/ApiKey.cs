@@ -7,7 +7,7 @@ using Bam.Net.Configuration;
 using Bam.Net.Data.Repositories;
 using Bam.Net.ServiceProxy.Secure;
 
-namespace Bam.Net.CoreServices.ApplicationRegistration
+namespace Bam.Net.CoreServices.ApplicationRegistration.Data
 {
     [Serializable]
     public class ApiKey: AuditRepoData

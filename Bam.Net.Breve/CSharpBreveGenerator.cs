@@ -14,11 +14,8 @@ namespace Bam.Net.Breve
         public CSharpBreveGenerator(BreveInfo info)
             : base(info)
         {
-
-        }
-        public override void Go(string outputFile)
-        {
-            throw new NotImplementedException();
+            Language = Languages.cs;
+            Format = new CSharpFormat();
         }
     }
 }

@@ -7,8 +7,8 @@
     <ProjectGuid>{E0D32890-13D7-4827-A299-56726C6CD67C}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Bam.Net.Data.Integration.Tests</RootNamespace>
-    <AssemblyName>Bam.Net.Data.Integration.Tests</AssemblyName>
+    <RootNamespace>Bam.Net.Data.Tests.Integration</RootNamespace>
+    <AssemblyName>Bam.Net.Data.Tests.Integration</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -205,6 +205,10 @@
     <ProjectReference Include="..\Bam.Net.Incubation\Bam.Net.Incubation.csproj">
       <Project>{aa186331-a0d0-4f77-bea2-e7b7650d3ff5}</Project>
       <Name>Bam.Net.Incubation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Services\Bam.Net.Services.csproj">
+      <Project>{f67630bf-5e73-46bf-a7f1-6d7e9648135f}</Project>
+      <Name>Bam.Net.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Testing\Bam.Net.Testing.csproj">
       <Project>{85212881-c676-4b40-b311-37c2d1706042}</Project>

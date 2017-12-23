@@ -1078,21 +1078,12 @@
         <member name="T:Bam.Net.IpcMessage">
             <summary>
             A file based
-            IPC mechanism that doesn't use, MSMQ, NamedPipes
-            or MMF (MemoryMappedFiles).  Uses a single file
+            IPC mechanism that uses a single file
             with a binary formatted copy of an instance of T 
             in the directory RootDirectory with the name specified.
             </summary>
         </member>
-        <member name="M:Bam.Net.IpcMessage.Get(System.String,System.Type,System.String)">
-            <summary>
-            Gets a message with the specified name creating it 
-            if necessary
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="name"></param>
-            <returns></returns>
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:Bam.Net.IpcMessage.Get(System.String,System.Type,System.String)" -->
         <member name="P:Bam.Net.IpcMessage.LockTimeout">
             <summary>
             The number of milliseconds to wait to 
@@ -1105,7 +1096,7 @@
             the lock
             </summary>
         </member>
-        <member name="M:Bam.Net.IpcMessageRoot.GetMessage``1(System.String)">
+        <member name="M:Bam.Net.LocalIpcMessageStore.GetMessage``1(System.String)">
             <summary>
             Gets a message with the specified name 
             of the specified type creating it if necessary
@@ -1114,13 +1105,13 @@
             <param name="type"></param>
             <returns></returns>
         </member>
-        <member name="M:Bam.Net.IpcMessageRoot.GetMessage(System.String,System.Type)">
+        <member name="M:Bam.Net.LocalIpcMessageStore.GetMessage(System.Type,System.String)">
             <summary>
             Gets a message with the specified name 
             of the specified type creating it if necessary
             </summary>
-            <param name="name"></param>
             <param name="type"></param>
+            <param name="name"></param>
             <returns></returns>
         </member>
         <member name="P:Bam.Net.NamedThread.Action">
@@ -2265,9 +2256,9 @@
             <summary>
             Construct an instance of the type
             </summary>
-            <typeparam name="T"></typeparam>
-            <param name="type"></param>
-            <param name="ctorParams"></param>
+            <typeparam name="T">The type to cast the result as</typeparam>
+            <param name="type">The type whose constructor will be called</param>
+            <param name="ctorParams">The parameters to pass to the constructor if any</param>
             <returns></returns>
         </member>
         <member name="M:Bam.Net.Extensions.Construct(System.Type,System.Object[])">
@@ -2332,6 +2323,13 @@
             <param name="value"></param>
             <returns></returns>
         </member>
+        <member name="M:Bam.Net.Extensions.ToJsonStream(System.Object,System.IO.Stream)">
+            <summary>
+            Write the specified value to the specified stream as json
+            </summary>
+            <param name="value"></param>
+            <param name="stream"></param>
+        </member>
         <member name="M:Bam.Net.Extensions.FromJsonFile``1(System.IO.FileInfo)">
             <summary>
             Reads the file and deserializes the contents as the specified
@@ -2366,6 +2364,14 @@
             </summary>
             <typeparam name="T"></typeparam>
             <param name="filePath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Extensions.ToInt(System.String)">
+            <summary>
+            Use int.TryParse to try to convert the specified
+            number to an integer; returns 0 on failure
+            </summary>
+            <param name="number"></param>
             <returns></returns>
         </member>
         <member name="M:Bam.Net.Extensions.Sha1(System.IO.FileInfo,System.Text.Encoding)">
@@ -3273,6 +3279,14 @@
             web user's domain is returned otherwise the domain of the current
             windows user is returned.
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.YamlExtensions.ToYaml(System.Object,System.Yaml.YamlConfig)">
+            <summary>
+            Serialize the specified object to yaml
+            </summary>
+            <param name="val"></param>
+            <param name="conf"></param>
             <returns></returns>
         </member>
         <member name="T:Bam.Net._">

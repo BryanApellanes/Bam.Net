@@ -37,6 +37,8 @@ namespace Bam.Net
         static Dictionary<HashAlgorithms, Func<byte[], HMAC>> _hmacs;
         static Dictionary<ExistingFileAction, Action<ZipArchiveEntry, string>> _extractActions;
         static Dictionary<ExistingFileAction, Action<Stream, FileInfo>> _writeResourceActions;
+        static Dictionary<SerializationFormat, Action<Stream, object>> _serializeActions;
+        static Dictionary<SerializationFormat, Func<Stream, Type, object>> _deserializers;
         static Extensions()
         {
             _hashAlgorithms = new Dictionary<HashAlgorithms, Func<HashAlgorithm>>
@@ -70,6 +72,26 @@ namespace Bam.Net
                 { ExistingFileAction.Throw, (resource, output) => Args.Throw<InvalidOperationException>("File exists, can't write resource to {0}", output.FullName) },
                 { ExistingFileAction.OverwriteSilently, (resource, output) => resource.CopyTo(output.Create()) },
                 { ExistingFileAction.DoNotOverwrite, (resource, output) => Logging.Log.Warn("File exists, can't write resource to {0}", output.FullName) }
+            };
+            _serializeActions = new Dictionary<SerializationFormat, Action<Stream, object>>
+            {
+                { SerializationFormat.Invalid, (stream, obj) => Args.Throw<InvalidOperationException>("Invalid SerializationFormat specified") },
+                { SerializationFormat.Xml, (stream, obj) => obj.ToXmlStream(stream) },
+                { SerializationFormat.Json, (stream, obj) => obj.ToJsonStream(stream) },
+                { SerializationFormat.Yaml, (stream, obj) => obj.ToYamlStream(stream) },
+                { SerializationFormat.Binary, (stream, obj) => obj.ToBinaryStream(stream) }
+            };
+            _deserializers = new Dictionary<SerializationFormat, Func<Stream, Type, object>>
+            {
+                { SerializationFormat.Invalid, (stream, type) => {
+                        Args.Throw<InvalidOperationException>("Invalid SerializationFormat specified");
+                        return null;
+                    }
+                },
+                { SerializationFormat.Xml, (stream, type)=> stream.FromXmlStream(type) },
+                { SerializationFormat.Json, (stream, type) => stream.FromJsonStream<object>() }, // this might not work; should be tested
+                { SerializationFormat.Yaml, (stream, type) => stream.FromYamlStream<object>() }, // this might not work; should be tested
+                { SerializationFormat.Binary, (stream, type) => stream.FromBinaryStream() } // this might not work; should be tested
             };
         }
         
@@ -1334,9 +1356,9 @@ namespace Bam.Net
         /// <summary>
         /// Construct an instance of the type
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="type"></param>
-        /// <param name="ctorParams"></param>
+        /// <typeparam name="T">The type to cast the result as</typeparam>
+        /// <param name="type">The type whose constructor will be called</param>
+        /// <param name="ctorParams">The parameters to pass to the constructor if any</param>
         /// <returns></returns>
         public static T Construct<T>(this Type type, params object[] ctorParams)
         {
@@ -1390,6 +1412,28 @@ namespace Bam.Net
         {
             objAs = obj as T;
             return objAs != null;
+        }
+
+        public static void SerializeToFile(this object obj, SerializationFormat format, string filePath)
+        {
+            SerializeToFile(obj, format, new FileInfo(filePath));
+        }
+        public static void SerializeToFile(this object obj, SerializationFormat format, FileInfo file)
+        {
+            MemoryStream output = new MemoryStream();
+            Serialize(obj, format, output);
+            using(StreamWriter sw = new StreamWriter(file.FullName))
+            {
+                using(StreamReader reader = new StreamReader(output))
+                {
+                    sw.Write(reader.ReadToEnd());
+                }
+            }
+        }
+
+        public static void Serialize(this object obj, SerializationFormat format, Stream output)
+        {
+            _serializeActions[format](output, obj);
         }
 
         /// <summary>
@@ -1447,6 +1491,10 @@ namespace Bam.Net
         /// <param name="file"></param>
         public static void ToJsonFile(this object value, FileInfo file)
         {
+            if (!file.Directory.Exists)
+            {
+                file.Directory.Create();
+            }
             using (StreamWriter sw = new StreamWriter(file.FullName))
             {
                 sw.Write(ToJson(value, Newtonsoft.Json.Formatting.Indented));
@@ -1462,11 +1510,21 @@ namespace Bam.Net
         public static Stream ToJsonStream(this object value)
         {
             MemoryStream stream = new MemoryStream();
-            StreamWriter writer = new StreamWriter(stream);
+            ToJsonStream(value, stream);
+            return stream;
+        }
+
+        /// <summary>
+        /// Write the specified value to the specified stream as json
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="stream"></param>
+        public static void ToJsonStream(this object value, Stream stream)
+        {
+            StreamWriter writer = new StreamWriter(stream);            
             writer.Write(value.ToJson());
             writer.Flush();
             stream.Seek(0, SeekOrigin.Begin);
-            return stream;
         }
 
         public static string ToJson(this object value)
@@ -1607,6 +1665,21 @@ namespace Bam.Net
             byte[] hashBytes = alg.ComputeHash(fileContents);
 
             return hashBytes.ToHexString();
+        }
+
+        /// <summary>
+        /// Use int.TryParse to try to convert the specified
+        /// number to an integer; returns 0 on failure
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
+        public static int ToInt(this string number)
+        {
+            if (int.TryParse(number, out int value))
+            {
+                return value;
+            }
+            return 0;
         }
 
         public static string Md5(this FileInfo file, Encoding encoding = null)
@@ -2259,24 +2332,29 @@ namespace Bam.Net
         /// <returns></returns>
         public static string Pluralize(this string stringToPluralize)
         {
-            if (stringToPluralize.ToLowerInvariant().EndsWith("ies"))
+            string checkValue = stringToPluralize.ToLowerInvariant();
+            if (checkValue.EndsWith("ies"))
             {
                 return stringToPluralize;
             }
-            else if (stringToPluralize.ToLowerInvariant().EndsWith("us"))
+            else if (checkValue.EndsWith("us"))
             {
                 return stringToPluralize.Substring(0, stringToPluralize.Length - 2) + "i";
             }
-            else if (stringToPluralize.ToLowerInvariant().EndsWith("s") ||
-                stringToPluralize.ToLowerInvariant().EndsWith("sh"))
+            else if (checkValue.EndsWith("s") ||
+                checkValue.EndsWith("sh"))
             {
                 return stringToPluralize + "es";
             }
-            else if (stringToPluralize.ToLowerInvariant().EndsWith("ey"))
+            else if (checkValue.EndsWith("ay") ||
+                checkValue.EndsWith("ey") ||
+                checkValue.EndsWith("iy") ||
+                checkValue.EndsWith("oy") ||
+                checkValue.EndsWith("uy"))
             {
                 return stringToPluralize + "s";
             }
-            else if (stringToPluralize.ToLowerInvariant().EndsWith("y"))
+            else if (checkValue.EndsWith("y"))
             {
                 return stringToPluralize.Substring(0, stringToPluralize.Length - 1) + "ies";
             }
@@ -2528,20 +2606,14 @@ namespace Bam.Net
             foreach (string file in Directory.GetFiles(sourcePath))
             {
                 string dest = Path.Combine(destPath, Path.GetFileName(file));
-                if (beforeFileCopy != null)
-                {
-                    beforeFileCopy(file, dest);
-                }
+                beforeFileCopy?.Invoke(file, dest);
                 File.Copy(file, dest, overwrite);
             }
 
             foreach (string folder in Directory.GetDirectories(sourcePath))
             {
                 string dest = Path.Combine(destPath, Path.GetFileName(folder));
-                if (beforeDirectoryCopy != null)
-                {
-                    beforeDirectoryCopy(folder, dest);
-                }
+                beforeDirectoryCopy?.Invoke(folder, dest);
                 CopyDirectory(folder, dest, overwrite, beforeFileCopy, beforeDirectoryCopy);
             }
         }

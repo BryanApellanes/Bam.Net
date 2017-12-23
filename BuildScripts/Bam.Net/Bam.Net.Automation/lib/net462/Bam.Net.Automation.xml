@@ -764,6 +764,18 @@
             Which database to query or null to use the default
             </param>
         </member>
+        <member name="P:Bam.Net.Automation.BamAppManifest.FileNames">
+            <summary>
+            The names of all the files required for the 
+            current Bam Application without path information
+            </summary>
+        </member>
+        <member name="P:Bam.Net.Automation.BamAppManifest.RequiredHashes">
+            <summary>
+            The hash of the files in case of name collisions.  May
+            be null or empty.
+            </summary>
+        </member>
         <member name="T:Bam.Net.Automation.AdvancedInstaller.DOCUMENT">
             <remarks/>
         </member>
@@ -1774,6 +1786,65 @@
         </member>
         <member name="P:Bam.Net.Automation.MSBuild.NewDataSet.Items">
             <remarks/>
+        </member>
+        <member name="T:Bam.Net.Automation.JobConductorService">
+            <summary>
+            The conductor for all jobs.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.Automation.JobConductorService.AddWorker(System.String,System.String,System.String)">
+            <summary>
+            Add a worker of the specified type to the job with the specified
+            jobName assigning the specified workerName .
+            </summary>
+            <param name="workerTypeName"></param>
+            <param name="workerName"></param>
+            <param name="jobName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Automation.JobConductorService.AddWorker``1(System.String,Bam.Net.Automation.JobConf)">
+            <summary>
+            Adds a worker of generic type T to the
+            specified JobConf.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="name"></param>
+            <param name="conf"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Automation.JobConductorService.JobExists(System.String)">
+            <summary>
+            Returns true if a job with the specified name
+            exists under the current JobConductor.  Determined
+            by looking in the current JobConductor's JobsDirectory.
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Automation.JobConductorService.EnqueueJob(System.String,System.Int32)">
+            <summary>
+            Enqueue a job to be run next (typically instant if no other
+            jobs are running)
+            </summary>
+            <param name="name"></param>
+            <param name="stepNumber"></param>
+        </member>
+        <member name="M:Bam.Net.Automation.JobConductorService.StartJobRunnerThread">
+            <summary>
+            Starts the JobRunner thread.  This method
+            must be called prior to queueing up jobs
+            or the jobs will not be run.
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Automation.Sftp">
+            <summary>
+            Fluent wrapper around System.Net.SftpClient
+            </summary>
+        </member>
+        <member name="T:Bam.Net.Automation.Ssh">
+            <summary>
+            Fluent wrapper around System.Net.SshClient
+            </summary>
         </member>
         <member name="M:Bam.Net.Automation.Testing.Data.Dao.Repository.TestingRepository.GetOneNotificationSubscriptionWhere(Bam.Net.Data.WhereDelegate{Bam.Net.Automation.Testing.Data.Dao.NotificationSubscriptionColumns})">
             <summary>
@@ -3357,6 +3428,12 @@
             The stack trace if any
             </summary>
         </member>
+        <member name="P:Bam.Net.Automation.Testing.Data.TestExecution.Tag">
+            <summary>
+            A tag to logically group multiple test executions
+            or null
+            </summary>
+        </member>
         <member name="M:Bam.Net.Automation.Testing.TestReportService.GetSuiteDefinition(System.String)">
             <summary>
             Get an exisintg SuiteDefinition with the specified suiteTitle or
@@ -3390,17 +3467,17 @@
             <param name="suite"></param>
             <returns></returns>
         </member>
-        <member name="M:Bam.Net.Automation.SuspendedJob.#ctor(Bam.Net.IpcMessageRoot,Bam.Net.Automation.Job)">
+        <member name="M:Bam.Net.Automation.SuspendedJob.#ctor(Bam.Net.IIpcMessageStore,Bam.Net.Automation.Job)">
             <summary>
             Instantiate a new SuspendedJob instance saving
             the specified job as an IpcMessage to the 
             specified IpcMessageRoot.  A new InstanceId
             will be assigned.
             </summary>
-            <param name="messageRoot"></param>
+            <param name="messageStore"></param>
             <param name="job"></param>
         </member>
-        <member name="M:Bam.Net.Automation.SuspendedJob.#ctor(Bam.Net.IpcMessageRoot,System.String)">
+        <member name="M:Bam.Net.Automation.SuspendedJob.#ctor(Bam.Net.IIpcMessageStore,System.String)">
             <summary>
             Instantiate a new Suspended job instance which can 
             be reinstantiated from the specified messageRoot 
@@ -3478,6 +3555,11 @@
             JobConf.  In the form {JobDirectory}\\{Name}.job
             </summary>
             <returns></returns>
+        </member>
+        <member name="T:Bam.Net.Automation.MultiFileCopyWorker">
+            <summary>
+            Copy multiple files to a single destination folder
+            </summary>
         </member>
         <member name="T:Bam.Net.Automation.Nuget.conventionbasedpackage">
             <remarks/>
@@ -3627,54 +3709,6 @@
             <summary>
             The full path or job relative path to the
             final zip file including the desired extension
-            </summary>
-        </member>
-        <member name="T:Bam.Net.Services.JobConductorService">
-            <summary>
-            The master for all jobs.
-            </summary>
-        </member>
-        <member name="M:Bam.Net.Services.JobConductorService.AddWorker(System.String,System.String,System.String)">
-            <summary>
-            Add a worker of the specified type to the job with the specified
-            jobName assigning the specified workerName .
-            </summary>
-            <param name="workerTypeName"></param>
-            <param name="workerName"></param>
-            <param name="jobName"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Bam.Net.Services.JobConductorService.AddWorker``1(System.String,Bam.Net.Automation.JobConf)">
-            <summary>
-            Adds a worker of generic type T to the
-            specified JobConf.
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="conf"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Bam.Net.Services.JobConductorService.JobExists(System.String)">
-            <summary>
-            Returns true if a job with the specified name
-            exists under the current Orchestrator.  Determined
-            by looking in the current Orchestrator's JobsDirectory.
-            </summary>
-            <param name="name"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Bam.Net.Services.JobConductorService.EnqueueJob(System.String,System.Int32)">
-            <summary>
-            Enqueue a job to be run next (typically instant if no other
-            jobs are running)
-            </summary>
-            <param name="name"></param>
-            <param name="stepNumber"></param>
-        </member>
-        <member name="M:Bam.Net.Services.JobConductorService.StartJobRunnerThread">
-            <summary>
-            Starts the JobRunner thread.  This method
-            must be called prior to queueing up jobs
-            or the jobs will not be run.
             </summary>
         </member>
     </members>

@@ -88,8 +88,8 @@ namespace Bam.Net.Services.Tests
         [UnitTest]
         public void CanRegisterContainer()
         {
-            CoreServiceRegistrationService svc = GetServiceRegistrationService(nameof(ServiceRegistryLoaderTest));
-            List<RegisterServiceRegistryContainerResult> results = svc.RegisterServiceRegistryContainers(Assembly.GetExecutingAssembly());
+            ServiceRegistryService svc = GetServiceRegistrationService(nameof(ServiceRegistryLoaderTest));
+            List<ServiceRegistryContainerRegistrationResult> results = svc.RegisterServiceRegistryContainers(Assembly.GetExecutingAssembly());
             Expect.AreEqual(1, results.Count);
             CoreServices.ServiceRegistry registry = svc.GetServiceRegistry(results[0].Name);
             TestRegistryClass instance = registry.Get<TestRegistryClass>();
@@ -100,7 +100,7 @@ namespace Bam.Net.Services.Tests
         [UnitTest]
         public void ServiceRegistryLoaderTest()
         {
-            CoreServiceRegistrationService svc = GetServiceRegistrationService(nameof(ServiceRegistryLoaderTest));
+            ServiceRegistryService svc = GetServiceRegistrationService(nameof(ServiceRegistryLoaderTest));
             string name = nameof(ServiceRegistryLoaderTest);
             svc.RegisterServiceRegistryLoader(name, typeof(TestServiceRegistryContainer).GetMethod("Create"), true);
 
@@ -112,17 +112,23 @@ namespace Bam.Net.Services.Tests
             Expect.IsObjectOfType<ConsoleLogger>(value.Logger);
         }
 
-        private CoreServiceRegistrationService GetServiceRegistrationService(string databaseName)
+        private ServiceRegistryService GetServiceRegistrationService(string databaseName)
         {
             Database db = GetDatabase(databaseName);
-            return new CoreServiceRegistrationService(GetAssemblyService(db), GetServiceRegistryRepository(db), GetDaoRepository(db), new Server.AppConf());
+            return new ServiceRegistryService(
+                GetFileService(db),
+                GetAssemblyService(db),
+                GetServiceRegistryRepository(db),
+                GetDaoRepository(db),
+                new Server.AppConf(),
+                DataSettings.Default);
         }
 
-        private CoreAssemblyService GetAssemblyService(Database db)
+        private AssemblyService GetAssemblyService(Database db)
         {
-            CoreFileService fmSvc = new CoreFileService(GetDaoRepository(db));
+            FileService fmSvc = GetFileService(db);
             AssemblyServiceRepository assManRepo = new AssemblyServiceRepository() { Database = db };
-            return new CoreAssemblyService(fmSvc, assManRepo, DefaultConfigurationApplicationNameProvider.Instance);
+            return new AssemblyService(DataSettings.Default, fmSvc, assManRepo, DefaultConfigurationApplicationNameProvider.Instance);
         }
 
         private Database GetDatabase(string databaseName)
@@ -133,14 +139,14 @@ namespace Bam.Net.Services.Tests
             return db;
         }
 
-        private ServiceRegistrationRepository GetServiceRegistryRepository(Database db)
+        private ServiceRegistryRepository GetServiceRegistryRepository(Database db)
         {
-            return new ServiceRegistrationRepository() { Database = db };
+            return new ServiceRegistryRepository() { Database = db };
         }
 
-        private CoreFileService GetFileService(Database db)
+        private FileService GetFileService(Database db)
         {
-            return new CoreFileService(GetDaoRepository(db));
+            return new FileService(GetDaoRepository(db));
         }
 
         private DaoRepository GetDaoRepository(Database db)

@@ -12,7 +12,7 @@ using Bam.Net;
 using Bam.Net.Data;
 using Bam.Net.Data.Qi;
 
-namespace Bam.Net.CoreServices.ApplicationRegistration.Dao
+namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 {
 	// schema = ApplicationRegistration
 	// connection Name = ApplicationRegistration

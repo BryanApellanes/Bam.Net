@@ -9,14 +9,14 @@ using Bam.Net;
 using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 using Newtonsoft.Json;
-using Bam.Net.CoreServices.ApplicationRegistration;
-using Bam.Net.CoreServices.ApplicationRegistration.Dao;
+using Bam.Net.CoreServices.ApplicationRegistration.Data;
+using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao;
 
-namespace Bam.Net.CoreServices.ApplicationRegistration.Wrappers
+namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Wrappers
 {
 	// generated
 	[Serializable]
-	public class HostDomainWrapper: Bam.Net.CoreServices.ApplicationRegistration.HostDomain, IHasUpdatedXrefCollectionProperties
+	public class HostDomainWrapper: Bam.Net.CoreServices.ApplicationRegistration.Data.HostDomain, IHasUpdatedXrefCollectionProperties
 	{
 		public HostDomainWrapper()
 		{
@@ -50,16 +50,16 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Wrappers
 
 // Xref property: Left -> HostDomain ; Right -> Application
 
-		List<Bam.Net.CoreServices.ApplicationRegistration.Application> _applications;
-		public override List<Bam.Net.CoreServices.ApplicationRegistration.Application> Applications
+		List<Bam.Net.CoreServices.ApplicationRegistration.Data.Application> _applications;
+		public override List<Bam.Net.CoreServices.ApplicationRegistration.Data.Application> Applications
 		{
 			get
 			{
 				if(_applications == null)
 				{
-					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.ApplicationRegistration.Dao.HostDomainApplication,  Bam.Net.CoreServices.ApplicationRegistration.Dao.Application>(Repository.GetDaoInstance(this), false);
+					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.HostDomainApplication,  Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Application>(Repository.GetDaoInstance(this), false);
 					 xref.Load(Repository.Database);
-					 _applications = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.ApplicationRegistration.Application>().ToList();
+					 _applications = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.ApplicationRegistration.Data.Application>().ToList();
 					 SetUpdatedXrefCollectionProperty("Applications", this.GetType().GetProperty("Applications"));
 				}
 

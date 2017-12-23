@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Incubation;
+using Bam.Net.Yaml;
 
 namespace Bam.Net.CoreServices.ServiceRegistration.Data
 {
@@ -18,7 +19,7 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data
         public ServiceRegistryDescriptor(string name, string description) { }
         public string Name { get; set; }
         public string Description { get; set; }
-        public List<ServiceDescriptor> Services { get; set; }
+        public virtual List<ServiceDescriptor> Services { get; set; }
 
         public ServiceDescriptor AddService(Type forType, Type useType)
         {
@@ -31,6 +32,7 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data
             SetSequenceValues();
             return add;
         }
+
         public static ServiceRegistryDescriptor FromIncubator(string name, Incubator incubator, string desciption = null)
         {
             ServiceRegistryDescriptor result = new ServiceRegistryDescriptor(name, desciption);
@@ -39,6 +41,15 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data
                 result.AddService(type, incubator[type].GetType());
             }
             return result;
+        }
+
+        public override RepoData Save(IRepository repo)
+        {
+            foreach(ServiceDescriptor svcDesc in Services)
+            {
+                svcDesc.Save(repo);
+            }
+            return base.Save(repo);
         }
 
         private void SetSequenceValues()

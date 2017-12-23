@@ -138,6 +138,9 @@
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
+    <Reference Include="YamlSerializer, Version=0.9.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\YamlSerializer.1.0\lib\Net35\YamlSerializer.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdHocCSharpCompiler.cs" />
@@ -181,6 +184,7 @@
     <Compile Include="GeneratedAssemblyInfo.cs" />
     <Compile Include="IApplicationNameProvider.cs" />
     <Compile Include="IAssemblyGenerator.cs" />
+    <Compile Include="IIpcMessageStore.cs" />
     <Compile Include="IJsonable.cs" />
     <Compile Include="Instant.cs" />
     <Compile Include="IOrganizationNameProvider.cs" />
@@ -201,16 +205,18 @@
     <Compile Include="Logging\Severity.cs" />
     <Compile Include="Logging\VerbosityLevel.cs" />
     <Compile Include="IpcMessage.cs" />
-    <Compile Include="IpcMessageRoot.cs" />
+    <Compile Include="LocalIpcMessageStore.cs" />
     <Compile Include="Month.cs" />
     <Compile Include="NamedThread.cs" />
     <Compile Include="NetworkExtensions.cs" />
+    <Compile Include="ProcessInfo.cs" />
     <Compile Include="ProcessMode.cs" />
     <Compile Include="Razor\RazorBaseTemplate.cs" />
     <Compile Include="Razor\RazorParser.cs" />
     <Compile Include="Razor\RazorRenderer.cs" />
     <Compile Include="Razor\RazorTemplate.cs" />
     <Compile Include="Resolver.cs" />
+    <Compile Include="SerializationFormat.cs" />
     <Compile Include="ServiceProxy\Method.cs" />
     <Compile Include="SQLiteBitMonitor.cs" />
     <Compile Include="Timed.cs" />
@@ -279,6 +285,7 @@
     <Compile Include="Web\QueryStringParameter.cs" />
     <Compile Include="Web\UserAgents.cs" />
     <Compile Include="UserUtil.cs" />
+    <Compile Include="YamlExtensions.cs" />
     <Compile Include="_.cs" />
   </ItemGroup>
   <ItemGroup>

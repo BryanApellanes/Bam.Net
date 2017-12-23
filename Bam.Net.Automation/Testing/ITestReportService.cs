@@ -8,7 +8,7 @@ namespace Bam.Net.Automation.Testing
         GetSuiteDefinitionResponse GetSuiteDefinition(string suiteTitle);
         GetTestDefinitionResponse GetTestDefinition(string suiteTitle, TestDefinition testDefinition);
         SaveTestSuiteExecutionSummaryResponse SaveTestSuiteExecutionSummary(TestSuiteExecutionSummary suiteExecutionSummary);
-        SaveTestExecutionResponse StartTest(long executionSummaryId, long testDefinitionId);
+        SaveTestExecutionResponse StartTest(long executionSummaryId, long testDefinitionId, string tag = null);
         SaveTestExecutionResponse SaveTestExecution(TestExecution execution);
         SaveTestExecutionResponse Fail(int summaryId, string suiteTitle, string testTitle, string error);
         SaveTestExecutionResponse Pass(int summaryId, string suiteTitle, string testTitle);

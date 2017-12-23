@@ -29,15 +29,22 @@ namespace Bam.Net.CoreServices
         {
             List<string> namespaces = new List<string>(Namespaces);
             HashSet<Type> result = new HashSet<Type>();
-            foreach(Assembly ass in AppDomain.CurrentDomain.GetAssemblies())
+            try
             {
-                foreach(Type type in ass.GetTypes().Where(TypeDaoGenerator.ClrDaoTypeFilter))
+                foreach (Assembly ass in AppDomain.CurrentDomain.GetAssemblies())
                 {
-                    if (namespaces.Contains(type.Namespace))
+                    foreach (Type type in ass.GetTypes().Where(TypeDaoGenerator.ClrDaoTypeFilter))
                     {
-                        result.Add(type);
+                        if (namespaces.Contains(type.Namespace))
+                        {
+                            result.Add(type);
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Logging.Log.Default.AddEntry("An exception occurred in {0}: {1}", ex, MethodBase.GetCurrentMethod().Name, ex.Message);
             }
             return result;
         }

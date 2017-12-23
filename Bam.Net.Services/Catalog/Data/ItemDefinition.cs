@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Bam.Net.Data.Repositories;
-using Bam.Net.Services.Distributed.Data;
+using Bam.Net.Services.DataReplication.Data;
 
 namespace Bam.Net.Services.Catalog.Data
 {

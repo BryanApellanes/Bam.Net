@@ -35,6 +35,11 @@ namespace Bam.Net.Automation.Testing.Data
         /// </summary>
         public string StackTrace { get; set; }
 
+        /// <summary>
+        /// A tag to logically group multiple test executions
+        /// or null
+        /// </summary>
+        public string Tag { get; set; }
         public long TestSuiteExecutionSummaryId { get; set; }
 		public virtual TestSuiteExecutionSummary TestSuiteExecutionSummary { get; set; }
     }

@@ -30,7 +30,7 @@ namespace Bam.Net.Services.Tests
         public void FileServiceRestoreTest()
         {
             SQLiteDatabase db = new SQLiteDatabase(".\\", nameof(FileServiceRestoreTest));
-            CoreFileService fmSvc = new CoreFileService(new DaoRepository(db))
+            FileService fmSvc = new FileService(new DaoRepository(db))
             {
                 ChunkLength = 111299
             };
@@ -49,7 +49,7 @@ namespace Bam.Net.Services.Tests
         public void FileServiceRestoreAsyncTest()
         {
             SQLiteDatabase db = new SQLiteDatabase(".\\", nameof(FileServiceRestoreAsyncTest));
-            CoreFileService fmSvc = new CoreFileService(new DaoRepository(db));
+            FileService fmSvc = new FileService(new DaoRepository(db));
             fmSvc.ChunkLength = 111299;
             ConsoleLogger logger = new ConsoleLogger();
             logger.AddDetails = false;

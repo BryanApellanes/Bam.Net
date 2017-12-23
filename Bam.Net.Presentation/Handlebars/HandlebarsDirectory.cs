@@ -34,9 +34,9 @@ namespace Bam.Net.Presentation.Handlebars
             }
         }
 
-        public void AddTemplate(string name, string source, bool reload = false)
+        public void AddTemplate(string templateName, string source, bool reload = false)
         {
-            string filePath = Path.Combine(Directory.FullName, $"{name}.{FileExtension}");
+            string filePath = Path.Combine(Directory.FullName, $"{templateName}.{FileExtension}");
             source.SafeWriteToFile(filePath, true);
             if (reload)
             {
@@ -44,17 +44,17 @@ namespace Bam.Net.Presentation.Handlebars
             }
             else
             {
-                _templates.AddMissing(name, HandlebarsDotNet.Handlebars.Compile(source));
+                _templates.AddMissing(templateName, HandlebarsDotNet.Handlebars.Compile(source));
             }
         }
 
-        public void AddPartial(string name, string source, bool reload = false)
+        public void AddPartial(string templateName, string source, bool reload = false)
         {
             if(PartialsDirectory == null)
             {
                 SetPartialsDirectory(Path.Combine(Directory.FullName, "Partials"));
             }
-            string filePath = Path.Combine(PartialsDirectory.FullName, $"{name}.{FileExtension}");
+            string filePath = Path.Combine(PartialsDirectory.FullName, $"{templateName}.{FileExtension}");
             source.SafeWriteToFile(filePath, true);
             if (reload)
             {
@@ -62,7 +62,7 @@ namespace Bam.Net.Presentation.Handlebars
             }
             else
             {
-                HandlebarsDotNet.Handlebars.RegisterTemplate(name, source);
+                HandlebarsDotNet.Handlebars.RegisterTemplate(templateName, source);
             }
         }
 

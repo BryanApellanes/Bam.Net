@@ -49,6 +49,28 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Wrappers
 
 
 
-	}
+// Xref property: Left -> ServiceDescriptor ; Right -> ServiceRegistryDescriptor
+
+		List<Bam.Net.CoreServices.ServiceRegistration.Data.ServiceDescriptor> _serviceDescriptors;
+		public override List<Bam.Net.CoreServices.ServiceRegistration.Data.ServiceDescriptor> Services
+		{
+			get
+			{
+				if(_serviceDescriptors == null)
+				{
+					 var xref = new XrefDaoCollection<Bam.Net.CoreServices.ServiceRegistration.Data.Dao.ServiceDescriptorServiceRegistryDescriptor, Bam.Net.CoreServices.ServiceRegistration.Data.Dao.ServiceDescriptor>(Repository.GetDaoInstance(this), false);
+					 xref.Load(Repository.Database);
+					 _serviceDescriptors = ((IEnumerable)xref).CopyAs<Bam.Net.CoreServices.ServiceRegistration.Data.ServiceDescriptor>().ToList();
+					 SetUpdatedXrefCollectionProperty("ServiceDescriptors", this.GetType().GetProperty("Services"));
+				}
+
+				return _serviceDescriptors;
+			}
+			set
+			{
+				_serviceDescriptors = value;
+				SetUpdatedXrefCollectionProperty("ServiceDescriptors", this.GetType().GetProperty("Services"));
+			}
+		}	}
 	// -- generated
 }																								

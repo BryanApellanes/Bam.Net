@@ -15,6 +15,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using Bam.Net.Yaml;
+using Bam.Net.CoreServices.ServiceRegistration.Data;
 
 namespace Bam.Net.Application
 {
@@ -80,6 +82,72 @@ namespace Bam.Net.Application
             }
         }
 
+        [ConsoleAction("registries", "Start the gloo server serving the registries of the specified names")]
+        public void ServeRegistries()
+        {
+            ConsoleLogger logger = GetLogger();
+            string registries = GetArgument("registries", "Enter the registry names to serve in a comma separated list ");
+            ServeRegistries(logger, registries);
+        }
+
+        [ConsoleAction("app", "Start the gloo server serving the registry for the current application (determined by the default configuration file ApplicationName value)")]
+        public void ServeApplicationRegistry()
+        {
+            ConsoleLogger logger = GetLogger();
+            ServeRegistries(logger, DefaultConfigurationApplicationNameProvider.Instance.GetApplicationName());
+        }
+
+        [ConsoleAction("createRegistry", "Menu driven Service Registry creation")]
+        public void CreateRegistry()
+        {
+            List<dynamic> types = new List<dynamic>();
+            string assemblyPath = "\r\n";
+            DirectoryInfo sysData = DataSettings.Current.GetSysDataDirectory(nameof(ServiceRegistry).Pluralize());
+            ServiceRegistryRepository repo = DataSettings.Current.GetSysDaoRepository<ServiceRegistryRepository>();
+            ServiceRegistryDescriptor registry = new ServiceRegistryDescriptor();
+            while (!assemblyPath.Equals(string.Empty))
+            {
+                if (!string.IsNullOrEmpty(assemblyPath.Trim()))
+                {
+                    Assembly assembly = Assembly.LoadFrom(assemblyPath);
+                    if(assembly == null)
+                    {
+                        OutLineFormat("Assembly not found: {0}", ConsoleColor.Magenta, assemblyPath);
+                    }
+                    else
+                    {
+                        string className = "\r\n";
+                        while (!className.Equals(string.Empty))
+                        {
+                            if (!string.IsNullOrEmpty(className.Trim()))
+                            {
+                                Type type = GetType(assembly, className);
+                                if(type == null)
+                                {
+                                    OutLineFormat("Specified class was not found in the current assembly: {0}", assembly.FullName);
+                                }
+                                else
+                                {
+                                    registry.AddService(type, type);
+                                }
+                            }
+                            className = Prompt("Enter the name of a class to add to the service registry (leave blank to finish)");
+                        }
+                    }
+                }
+                assemblyPath = Prompt("Enter the path to an assembly file containing service types (leave blank to finish)");
+            }
+            string registryName = Prompt("Enter a name for the registry");
+            string path = Path.Combine(sysData.FullName, $"{registryName}.json");
+            registry.Save(repo);
+            registry.Services.Select(sd=> new {
+                ForTypeDurableHash = sd.ForTypeDurableHash,
+                ForTypeDurableSecondaryHash  = sd.ForTypeDurableSecondaryHash,
+                UseTypeDurableHash = sd.UseTypeDurableHash,
+                UseTypeDurableSecondaryHash = sd.UseTypeDurableSecondaryHash
+            }).ToJsonFile(path);            
+        }
+
         [ConsoleAction("csgloo", "Start the gloo server serving the compiled results of the specified csgloo files")]
         public void ServeCsGloo()
         {
@@ -111,28 +179,13 @@ namespace Bam.Net.Application
             {
                 csglooAssembly = Assembly.LoadFile(csglooAssemblyBinPath);
             }
-            
+
             string contentRoot = GetArgument("ContentRoot", $"Enter the path to the content root (default: {defaultContentRoot} ");
-            
+
             HostPrefix prefix = GetConfiguredHostPrefix();
             Type[] glooTypes = csglooAssembly.GetTypes().Where(t => t.HasCustomAttributeOfType<ProxyAttribute>()).ToArray();
             ServeServiceTypes(contentRoot, prefix, null, glooTypes);
-            Pause($"Gloo server is serving cs gloo types: {string.Join(", ", glooTypes.Select(t=> t.Name).ToArray())}");
-        }
-
-        [ConsoleAction("registries", "Start the gloo server serving the registries of the specified names")]
-        public void ServeRegistries()
-        {
-            ConsoleLogger logger = GetLogger();
-            string registries = GetArgument("registries", "Enter the registry names to serve in a comma separated list ");
-            ServeRegistries(logger, registries);
-        }
-
-        [ConsoleAction("app", "Start the gloo server serving the registry for the current application (determined by the default configuration file ApplicationName value)")]
-        public void ServeApplicationRegistry()
-        {
-            ConsoleLogger logger = GetLogger();
-            ServeRegistries(logger, DefaultConfigurationApplicationNameProvider.Instance.GetApplicationName());
+            Pause($"Gloo server is serving cs gloo types: {string.Join(", ", glooTypes.Select(t => t.Name).ToArray())}");
         }
 
         private static void ServeRegistries(ILogger logger, string registries)
@@ -141,7 +194,7 @@ namespace Bam.Net.Application
             DataSettings dataSettings = DataSettings.Default;
             IApplicationNameProvider appNameProvider = DefaultConfigurationApplicationNameProvider.Instance;
 
-            CoreServiceRegistrationService serviceRegistryService = GetCoreServiceRegistrationService(logger, dataSettings, appNameProvider);
+            ServiceRegistryService serviceRegistryService = GetCoreServiceRegistrationService(logger, dataSettings, appNameProvider);
 
             string[] requestedRegistries = registries.DelimitSplit(",");
             HashSet<Type> serviceTypes = new HashSet<Type>();
@@ -164,16 +217,18 @@ namespace Bam.Net.Application
             Pause($"Gloo server is serving services\r\n\t{services.ToArray().ToDelimited(s => s.FullName, "\r\n\t")}");
         }
 
-        private static CoreServiceRegistrationService GetCoreServiceRegistrationService(ILogger logger, DataSettings dataSettings, IApplicationNameProvider appNameProvider)
+        private static ServiceRegistryService GetCoreServiceRegistrationService(ILogger logger, DataSettings dataSettings, IApplicationNameProvider appNameProvider)
         {
-            CoreFileService fileService = new CoreFileService(new DaoRepository(dataSettings.GetDatabaseFor(typeof(CoreFileService), $"{nameof(CoreServiceRegistrationService)}_{nameof(CoreFileService)}")));
+            FileService fileService = new FileService(new DaoRepository(dataSettings.GetSysDatabaseFor(typeof(FileService), $"{nameof(ServiceRegistryService)}_{nameof(FileService)}")));
             AssemblyServiceRepository assRepo = new AssemblyServiceRepository();
-            assRepo.Database = dataSettings.GetDatabaseFor(assRepo);
-            CoreAssemblyService assemblyService = new CoreAssemblyService(fileService, assRepo, appNameProvider);
-            ServiceRegistrationRepository serviceRegistryRepo = new ServiceRegistrationRepository();
-            serviceRegistryRepo.Database = dataSettings.GetDatabaseFor(serviceRegistryRepo);
+            assRepo.Database = dataSettings.GetSysDatabaseFor(assRepo);
+            assRepo.EnsureDaoAssemblyAndSchema();
+            AssemblyService assemblyService = new AssemblyService(DataSettings.Current, fileService, assRepo, appNameProvider);
+            ServiceRegistryRepository serviceRegistryRepo = new ServiceRegistryRepository();
+            serviceRegistryRepo.Database = dataSettings.GetSysDatabaseFor(serviceRegistryRepo);
             serviceRegistryRepo.EnsureDaoAssemblyAndSchema();
-            CoreServiceRegistrationService serviceRegistryService = new CoreServiceRegistrationService(
+            ServiceRegistryService serviceRegistryService = new ServiceRegistryService(
+                fileService,
                 assemblyService,
                 serviceRegistryRepo,
                 DataSettings.Default.GetGenericDaoRepository(logger),

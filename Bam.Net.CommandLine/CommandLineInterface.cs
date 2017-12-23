@@ -204,9 +204,11 @@ namespace Bam.Net.CommandLine
         public static void Elevate()
         {
             Process current = Process.GetCurrentProcess();
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.Verb = "runas";
-            startInfo.FileName = current.MainModule.FileName;
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                Verb = "runas",
+                FileName = current.MainModule.FileName
+            };
             StringBuilder arguments = new StringBuilder();
             Environment.GetCommandLineArgs().Rest(1, arg =>
             {
@@ -843,6 +845,7 @@ File Version: {1}
             }
         }
 
+        [DebuggerStepThrough]
         protected internal static void InvokeInCurrentAppDomain(MethodInfo method, object instance, object[] ps = null)
         {
             // added this method for consistency with InvokeInSeparateAppDomain method

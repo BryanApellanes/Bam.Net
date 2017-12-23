@@ -138,8 +138,7 @@ namespace Bam.Net.Automation
             T result = default(T);
             if (CurrentWorkState != null)
             {
-                WorkState<T> workState;
-                CurrentWorkState.TryCast<WorkState<T>>(out workState);
+                CurrentWorkState.TryCast<WorkState<T>>(out WorkState<T> workState);
                 result = workState.Data;
             }
 
@@ -151,10 +150,7 @@ namespace Bam.Net.Automation
 
         protected void OnJobStarted()
         {
-            if (JobStarted != null)
-            {
-                JobStarted(this, new WorkStateEventArgs(CurrentWorkState));
-            }
+            JobStarted?.Invoke(this, new WorkStateEventArgs(CurrentWorkState));
         }
 
         [Verbosity(LogEventType.Information, MessageFormat="JobName={Name}, Worker={CurrentWorkerName}")]
@@ -162,10 +158,7 @@ namespace Bam.Net.Automation
 
         protected void OnWorkerQueued()
         {
-            if (WorkerQueued != null)
-            {
-                WorkerQueued(this, new WorkStateEventArgs(CurrentWorkState));
-            }
+            WorkerQueued?.Invoke(this, new WorkStateEventArgs(CurrentWorkState));
         }
 
         [Verbosity(LogEventType.Information, MessageFormat = "JobName={Name}")]
@@ -173,10 +166,7 @@ namespace Bam.Net.Automation
 
         protected void OnJobFinished()
         {
-            if (JobFinished != null)
-            {
-                JobFinished(this, new WorkStateEventArgs(CurrentWorkState));
-            }
+            JobFinished?.Invoke(this, new WorkStateEventArgs(CurrentWorkState));
         }
 
         [Verbosity(LogEventType.Information, MessageFormat = "JobName={Name},Worker={CurrentWorkerName}")]
@@ -184,10 +174,7 @@ namespace Bam.Net.Automation
 
         protected void OnWorkerStarting()
         {
-            if (WorkerStarting != null)
-            {
-                WorkerStarting(this, new WorkStateEventArgs(CurrentWorkState));
-            }
+            WorkerStarting?.Invoke(this, new WorkStateEventArgs(CurrentWorkState));
         }
 
         [Verbosity(LogEventType.Information, MessageFormat = "JobName={Name},Worker={CurrentWorkerName}")]
@@ -195,10 +182,7 @@ namespace Bam.Net.Automation
 
         protected void OnWorkerFinished()
         {
-            if (WorkerFinished != null)
-            {
-                WorkerFinished(this, new WorkStateEventArgs(CurrentWorkState));
-            }
+            WorkerFinished?.Invoke(this, new WorkStateEventArgs(CurrentWorkState));
         }
 
         [Verbosity(LogEventType.Error, MessageFormat = "JobName={Name},Worker={CurrentWorkerName},Message={WorkStateMessage}")]
@@ -206,10 +190,7 @@ namespace Bam.Net.Automation
 
         protected void OnWorkerException()
         {
-            if (WorkerException != null)
-            {
-                WorkerException(this, new WorkStateEventArgs(CurrentWorkState));
-            }
+            WorkerException?.Invoke(this, new WorkStateEventArgs(CurrentWorkState));
         }
 
         /// <summary>
@@ -219,9 +200,9 @@ namespace Bam.Net.Automation
         {
             get
             {
-                if(CurrentWorkState != null && !string.IsNullOrEmpty(CurrentWorkState.WorkName))
+                if(CurrentWorkState != null && !string.IsNullOrEmpty(CurrentWorkState.WorkerName))
                 {
-                    return CurrentWorkState.WorkName;
+                    return CurrentWorkState.WorkerName;
                 }
                 
                 return "UNKNOWN";

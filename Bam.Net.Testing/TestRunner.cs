@@ -28,7 +28,6 @@ namespace Bam.Net.Testing
         public TestRunner(Assembly assembly, TestMethodProvider<TTestMethod> testMethodProvider, ILogger logger = null)
         {
             Assembly = assembly;
-            ParameterProvider = CommandLineInterface.GetParameters;
             TestMethodProvider = testMethodProvider;
             TestSummary = new TestRunnerSummary();
             IsolateMethodCalls = true;
@@ -50,6 +49,8 @@ namespace Bam.Net.Testing
             return _factory[typeof(TTestMethod)](assembly, logger);
         }
 
+        public string Tag { get; set; }
+
         public event EventHandler TestPassed;
         public event EventHandler TestFailed;
 
@@ -70,9 +71,7 @@ namespace Bam.Net.Testing
         public Action<Exception> AfterEachExceptionHandler { get; set; }
 
         public TestRunnerSummary TestSummary { get; set; }
-
-        public Func<MethodInfo, object[]> ParameterProvider { get; set; }
-
+        
         public TestMethodProvider<TTestMethod> TestMethodProvider { get; set; }
 
         public ISetupMethodProvider SetupMethodProvider { get; set; }
@@ -90,12 +89,12 @@ namespace Bam.Net.Testing
             }
 
             FireEvent(TestsDiscovered, new TestsDiscoveredEventArgs<TTestMethod> { Assembly = Assembly, TestRunner = this, Tests = tests.Select(t => (TestMethod)t).ToList() });
-            FireEvent(TestsStarting, new TestEventArgs<TTestMethod> { TestRunner = this });
+            FireEvent(TestsStarting, new TestEventArgs<TTestMethod> { TestRunner = this, Assembly = Assembly });
             foreach (TestMethod test in tests)
             {
                 RunTest(test);
             }
-            FireEvent(TestsFinished, new TestEventArgs<TTestMethod> { TestRunner = this });
+            FireEvent(TestsFinished, new TestEventArgs<TTestMethod> { TestRunner = this, Assembly = Assembly });
         }
 
         /// <summary>
@@ -121,9 +120,9 @@ namespace Bam.Net.Testing
             }
             else
             {
-                FireEvent(TestsStarting, new TestEventArgs<TTestMethod> { TestRunner = this });
+                FireEvent(TestsStarting, new TestEventArgs<TTestMethod> { TestRunner = this, Assembly = Assembly });
                 RunTest(testIdentifier.Trim());
-                FireEvent(TestsFinished, new TestEventArgs<TTestMethod> { TestRunner = this });
+                FireEvent(TestsFinished, new TestEventArgs<TTestMethod> { TestRunner = this, Assembly = Assembly });
             }
         }
 
@@ -131,23 +130,23 @@ namespace Bam.Net.Testing
         {
             if(IsInRange(fromNumber, out int fromInt) && IsInRange(toNumber, out int toInt))
             {
-                FireEvent(TestsStarting, new TestEventArgs<TTestMethod> { TestRunner = this });
+                FireEvent(TestsStarting, new TestEventArgs<TTestMethod> { TestRunner = this, Assembly = Assembly });
                 for (int i = fromInt; i <= toInt; i++)
                 {
-                    RunTest(Tests[i]);
+                    RunTest(Tests[i-1]);
                 }
-                FireEvent(TestsFinished, new TestEventArgs<TTestMethod> { TestRunner = this });
+                FireEvent(TestsFinished, new TestEventArgs<TTestMethod> { TestRunner = this, Assembly = Assembly });
             }
         }
 
         public void RunTestSet(string[] testNumbers)
         {
-            FireEvent(TestsStarting, new TestEventArgs<TTestMethod> { TestRunner = this });
+            FireEvent(TestsStarting, new TestEventArgs<TTestMethod> { TestRunner = this, Assembly = Assembly });
             foreach (string testNumber in testNumbers)
             {
                 RunTest(testNumber);
             }
-            FireEvent(TestsFinished, new TestEventArgs<TTestMethod> { TestRunner = this });
+            FireEvent(TestsFinished, new TestEventArgs<TTestMethod> { TestRunner = this, Assembly = Assembly });
         }
 
         public void RunTest(string testNumber)
@@ -165,11 +164,11 @@ namespace Bam.Net.Testing
         [DebuggerStepThrough]
         public void RunTest(TestMethod test)
         {
-            TestEventArgs<TTestMethod> args = new TestEventArgs<TTestMethod> { Test = test, TestRunner = this };
+            TestEventArgs<TTestMethod> args = new TestEventArgs<TTestMethod> { Test = test, TestRunner = this, Tag = Tag };
             FireEvent(TestStarting, args);
             try
             {
-                InvokeTest(test, ParameterProvider, IsolateMethodCalls);
+                InvokeTest(test, IsolateMethodCalls);
                 TestSummary.PassedTests.Add(test);
                 FireEvent(TestPassed, args);
             }
@@ -204,9 +203,8 @@ namespace Bam.Net.Testing
         }
 
         [DebuggerStepThrough]
-        protected internal static void InvokeTest(ConsoleMethod consoleMethod, Func<MethodInfo, object[]> parameterProvider, bool isolateMethodCalls = true)
+        protected internal static void InvokeTest(ConsoleMethod consoleMethod, bool isolateMethodCalls = true)
         {
-            object[] parameters = parameterProvider(consoleMethod.Method);
             MethodInfo invokeTarget = typeof(ConsoleMethod).GetMethod("Invoke");
             if (consoleMethod.Method.IsStatic)
             {

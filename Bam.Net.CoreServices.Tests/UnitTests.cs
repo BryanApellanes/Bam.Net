@@ -23,15 +23,15 @@ using Bam.Net.Data;
 using Bam.Net.Data.SQLite;
 using Bam.Net.UserAccounts.Data;
 using System.Threading;
-using Bam.Net.CoreServices.ApplicationRegistration.Dao.Repository;
-using Bam.Net.CoreServices.Services;
 using Bam.Net.CoreServices.ApplicationRegistration;
 using System.Collections.Specialized;
 using Bam.Net.Data.Dynamic;
-using Bam.Net.Services.Distributed;
+using Bam.Net.Services.DataReplication;
 using Bam.Net.Incubation;
 using Bam.Net.Testing.Integration;
 using Bam.Net.Testing.Unit;
+using Bam.Net.CoreServices.ApplicationRegistration.Data;
+using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Repository;
 
 namespace Bam.Net.CoreServices.Tests
 {
@@ -132,7 +132,7 @@ namespace Bam.Net.CoreServices.Tests
                 Expect.IsGreaterThan(user.Id, 0);
                 OutLine(user.PropertiesToString(), ConsoleColor.Cyan);
                 repo.Delete(user);
-                user = repo.Retrieve<ApplicationRegistration.User>(user.Id);
+                user = repo.Retrieve<ApplicationRegistration.Data.User>(user.Id);
                 Expect.IsNull(user);
             });
             OutLine(elapsed.ToString(), ConsoleColor.Cyan);
@@ -144,14 +144,14 @@ namespace Bam.Net.CoreServices.Tests
         [UnitTest]
         public void CoreApplicationRegistryServiceNotLoggedInIsAnonymous()
         {
-            CoreApplicationRegistrationService svc = GetTestService();
+            ApplicationRegistrationService svc = GetTestService();
             Expect.AreSame(UserAccounts.Data.User.Anonymous, svc.CurrentUser);
         }
 
         [UnitTest]
         public void CoreApplicationRegistryServiceMustBeLoggedInToRegister()
         {
-            CoreApplicationRegistrationService svc = GetTestService();
+            ApplicationRegistrationService svc = GetTestService();
             string orgName = 5.RandomLetters();
             string appName = 8.RandomLetters();
             ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration(svc.ApplicationRegistrationRepository, "localhost", 8080, appName, orgName);
@@ -171,12 +171,12 @@ namespace Bam.Net.CoreServices.Tests
             string userName = 4.RandomLetters();
             string orgName = 5.RandomLetters();
             string appName = 8.RandomLetters();
-            CoreApplicationRegistrationService svc = GetTestServiceWithUser(userName);
+            ApplicationRegistrationService svc = GetTestServiceWithUser(userName);
             ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration(svc.ApplicationRegistrationRepository, "localhost", 8080, appName, orgName);
             CoreServiceResponse response = svc.RegisterApplicationProcess(descriptor);
             Expect.IsTrue(response.Success);
             var user = svc.ApplicationRegistrationRepository.OneUserWhere(c => c.UserName == userName);
-            user = svc.ApplicationRegistrationRepository.Retrieve<ApplicationRegistration.User>(user.Id);
+            user = svc.ApplicationRegistrationRepository.Retrieve<ApplicationRegistration.Data.User>(user.Id);
             Expect.IsNotNull(user);
             Expect.AreEqual(1, user.Organizations.Count);
             Thread.Sleep(1000);
@@ -188,9 +188,9 @@ namespace Bam.Net.CoreServices.Tests
         {
             After.Setup((Action<SetupContext>)(ctx =>
             {
-                ctx.CopyFrom((Incubation.Incubator)CoreServiceRegistryContainer.GetServiceRegistry());
+                ctx.CopyFrom((Incubation.Incubator)ApplicationServiceRegistryContainer.GetServiceRegistry());
             }))
-            .WhenA<CoreApplicationRegistrationService>("tries to register application when not logged in", cars =>
+            .WhenA<ApplicationRegistrationService>("tries to register application when not logged in", cars =>
             {
                 ProcessDescriptor descriptor = ProcessDescriptor.ForApplicationRegistration(cars.ApplicationRegistrationRepository,"localhost", 8080, "testApp", "testOrg");
                 return cars.RegisterApplicationProcess(descriptor);
@@ -210,11 +210,11 @@ namespace Bam.Net.CoreServices.Tests
         [UnitTest]
         public void CanSaveUserToCompositeRepo()
         {
-            CompositeRepository repo = CoreServiceRegistryContainer.GetServiceRegistry().Get<CompositeRepository>();
-            ApplicationRegistration.User user = new ApplicationRegistration.User();
+            CompositeRepository repo = ApplicationServiceRegistryContainer.GetServiceRegistry().Get<CompositeRepository>();
+            ApplicationRegistration.Data.User user = new ApplicationRegistration.Data.User();
             user.UserName = 9.RandomLetters();
             user = repo.Save(user);
-            ApplicationRegistration.User retrieved = repo.Retrieve<ApplicationRegistration.User>(user.Uuid);
+            ApplicationRegistration.Data.User retrieved = repo.Retrieve<ApplicationRegistration.Data.User>(user.Uuid);
             Expect.AreEqual(user.UserName, retrieved.UserName);
             Expect.AreEqual(user.Id, retrieved.Id);
             Expect.AreEqual(user.Uuid, retrieved.Uuid);
@@ -223,7 +223,7 @@ namespace Bam.Net.CoreServices.Tests
         [UnitTest]
         public void CanListCoreServices()
         {
-            Assembly coreServicesAssembly = typeof(CoreServiceRegistryContainer).Assembly;
+            Assembly coreServicesAssembly = typeof(ApplicationServiceRegistryContainer).Assembly;
             bool foundOne = false;
             foreach(Type type in coreServicesAssembly.GetTypes())
             {
@@ -266,27 +266,27 @@ namespace Bam.Net.CoreServices.Tests
         {
             Machine machine = new Machine();
             Database db = new SQLiteDatabase($".\\{nameof(SavingMachineSavesNicsAndHostAddresses)}", "CoreRegistryRepository");
-            db.TryEnsureSchema<ApplicationRegistration.Dao.Nic>();
+            db.TryEnsureSchema<ApplicationRegistration.Data.Dao.Nic>();
             ApplicationRegistrationRepository repo = new ApplicationRegistrationRepository() { Database = db };
 
-            ApplicationRegistration.Dao.Nic.LoadAll(repo.Database).Delete(repo.Database);
-            ApplicationRegistration.Dao.HostAddress.LoadAll(repo.Database).Delete(repo.Database);
-            ApplicationRegistration.Dao.Machine.LoadAll(repo.Database).Delete(repo.Database);
+            ApplicationRegistration.Data.Dao.Nic.LoadAll(repo.Database).Delete(repo.Database);
+            ApplicationRegistration.Data.Dao.HostAddress.LoadAll(repo.Database).Delete(repo.Database);
+            ApplicationRegistration.Data.Dao.Machine.LoadAll(repo.Database).Delete(repo.Database);
 
             machine = machine.Save(repo) as Machine;
             machine.NetworkInterfaces.Each(n => OutLine(n.PropertiesToString(), ConsoleColor.Cyan));
             machine.HostAddresses.Each(h => OutLine(h.PropertiesToString(), ConsoleColor.Blue));
 
-            ApplicationRegistration.Dao.NicCollection nics = ApplicationRegistration.Dao.Nic.LoadAll(repo.Database);
-            ApplicationRegistration.Dao.HostAddressCollection hosts = ApplicationRegistration.Dao.HostAddress.LoadAll(repo.Database);
+            ApplicationRegistration.Data.Dao.NicCollection nics = ApplicationRegistration.Data.Dao.Nic.LoadAll(repo.Database);
+            ApplicationRegistration.Data.Dao.HostAddressCollection hosts = ApplicationRegistration.Data.Dao.HostAddress.LoadAll(repo.Database);
 
             Machine machineAgain = machine.Save(repo) as Machine;
             Expect.AreEqual(machine.Id, machineAgain.Id, "Id didn't match");
             Expect.AreEqual(machine.Uuid, machineAgain.Uuid, "Uuid didn't match");
             Expect.AreEqual(machine.Cuid, machineAgain.Cuid, "Cuid didn't match");
 
-            ApplicationRegistration.Dao.NicCollection nicsAgain = ApplicationRegistration.Dao.Nic.LoadAll(repo.Database);
-            ApplicationRegistration.Dao.HostAddressCollection hostsAgain = ApplicationRegistration.Dao.HostAddress.LoadAll(repo.Database);
+            ApplicationRegistration.Data.Dao.NicCollection nicsAgain = ApplicationRegistration.Data.Dao.Nic.LoadAll(repo.Database);
+            ApplicationRegistration.Data.Dao.HostAddressCollection hostsAgain = ApplicationRegistration.Data.Dao.HostAddress.LoadAll(repo.Database);
 
             Expect.AreEqual(nics.Count, nicsAgain.Count, "Nic count didn't match");
             Expect.AreEqual(hosts.Count, hostsAgain.Count, "Host address count didn't match");
@@ -315,7 +315,7 @@ namespace Bam.Net.CoreServices.Tests
         [UnitTest]
         public void EnsureSingleDoesntDuplicate()
         {
-            ServiceRegistry glooRegistry = CoreServiceRegistryContainer.GetServiceRegistry();
+            ServiceRegistry glooRegistry = ApplicationServiceRegistryContainer.GetServiceRegistry();
             ApplicationRegistrationRepository repo = glooRegistry.Get<ApplicationRegistrationRepository>();
             CompositeRepository compositeRepo = glooRegistry.Get<CompositeRepository>();
             compositeRepo.UnwireBackup();
@@ -373,7 +373,7 @@ namespace Bam.Net.CoreServices.Tests
         [IntegrationTest]
         public void TestTheSetup()
         {
-            CoreApplicationRegistrationService svc = GetTestService();
+            ApplicationRegistrationService svc = GetTestService();
             string userName = 8.RandomLetters();
             UserAccounts.Data.User user = SetCurrentUser(userName, svc);
             Expect.AreEqual(userName, user.UserName);
@@ -386,7 +386,7 @@ namespace Bam.Net.CoreServices.Tests
         [UnitTest]
         public void CoreServiceRegistryTest()
         {
-            ServiceRegistry reg = CoreServiceRegistryContainer.Create();
+            ServiceRegistry reg = ApplicationServiceRegistryContainer.Create();
             IUserResolver userResolver = reg.Get<IUserResolver>();
             Expect.IsNotNull(userResolver);
         }
@@ -394,29 +394,29 @@ namespace Bam.Net.CoreServices.Tests
         [UnitTest]
         public void CoreServiceRegistryCopyTest()
         {
-            ServiceRegistry reg = CoreServiceRegistryContainer.Create();
+            ServiceRegistry reg = ApplicationServiceRegistryContainer.Create();
             Incubator copy = new Incubator();
             copy.CopyFrom(reg);
             IUserResolver userResolver = copy.Get<IUserResolver>();
             Expect.IsNotNull(userResolver);
         }
 
-        private CoreApplicationRegistrationService GetTestServiceWithUser(string userName)
+        private ApplicationRegistrationService GetTestServiceWithUser(string userName)
         {
-            CoreApplicationRegistrationService svc = GetTestService();
+            ApplicationRegistrationService svc = GetTestService();
             SetCurrentUser(userName, svc);
             return svc;
         }
 
-        private CoreApplicationRegistrationService GetTestService()
+        private ApplicationRegistrationService GetTestService()
         {
-            ServiceRegistry registry = CoreServiceRegistryContainer.GetServiceRegistry();
-            CoreApplicationRegistrationService svc = registry.Get<CoreApplicationRegistrationService>();
+            ServiceRegistry registry = ApplicationServiceRegistryContainer.GetServiceRegistry();
+            ApplicationRegistrationService svc = registry.Get<ApplicationRegistrationService>();
             registry.SetProperties(svc);
             return svc;
         }
 
-        private static UserAccounts.Data.User SetCurrentUser(string userName, CoreApplicationRegistrationService svc)
+        private static UserAccounts.Data.User SetCurrentUser(string userName, ApplicationRegistrationService svc)
         {
             IHttpContext ctx = Substitute.For<IHttpContext>();
             ctx.Request = Substitute.For<IRequest>();
@@ -442,10 +442,10 @@ namespace Bam.Net.CoreServices.Tests
             IEnumerable<Organization> organizations = svc.ApplicationRegistrationRepository.RetrieveAll<Organization>();
             organizations.Each(o => svc.ApplicationRegistrationRepository.Delete(o));
             Expect.AreEqual(0, svc.ApplicationRegistrationRepository.RetrieveAll<Organization>().Count());
-            IEnumerable<ApplicationRegistration.Application> apps = svc.ApplicationRegistrationRepository.RetrieveAll<ApplicationRegistration.Application>();
+            IEnumerable<ApplicationRegistration.Data.Application> apps = svc.ApplicationRegistrationRepository.RetrieveAll<ApplicationRegistration.Data.Application>();
             apps.Each(a => svc.ApplicationRegistrationRepository.Delete(a));
-            Expect.AreEqual(0, svc.ApplicationRegistrationRepository.RetrieveAll<ApplicationRegistration.Application>().Count());
-            svc.ApplicationRegistrationRepository.RetrieveAll<ApplicationRegistration.Machine>().Each(h => svc.ApplicationRegistrationRepository.Delete(h));
+            Expect.AreEqual(0, svc.ApplicationRegistrationRepository.RetrieveAll<ApplicationRegistration.Data.Application>().Count());
+            svc.ApplicationRegistrationRepository.RetrieveAll<ApplicationRegistration.Data.Machine>().Each(h => svc.ApplicationRegistrationRepository.Delete(h));
             return result;
         }
 

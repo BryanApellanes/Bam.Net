@@ -86,6 +86,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="YamlSerializer, Version=0.9.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\YamlSerializer.1.0\lib\Net35\YamlSerializer.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationNameNotSpecifiedException.cs" />
@@ -224,6 +227,15 @@
     <Compile Include="ApplicationRegistration\Data\Generated_Dao\UserWrapper.cs" />
     <Compile Include="ApplicationRegistration\Data\HostDomain.cs" />
     <Compile Include="ApplicationRegistration\Data\UserSetting.cs" />
+    <Compile Include="AssemblyManagement\Data\AssemblyRevision.cs" />
+    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyRevision.cs" />
+    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyRevisionCollection.cs" />
+    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyRevisionColumns.cs" />
+    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyRevisionPagedQuery.cs" />
+    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyRevisionQuery.cs" />
+    <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyRevisionWrapper.cs" />
+    <Compile Include="AssemblyManagement\Data\Generated_Dao\Qi\AssemblyRevision.cs" />
+    <Compile Include="AssemblyManagement\IAssemblyResolver.cs" />
     <Compile Include="ClientApplicationNameResolver.cs" />
     <Compile Include="FileSystemChunkStorage.cs" />
     <Compile Include="Files\Chunk.cs" />
@@ -247,15 +259,24 @@
     <Compile Include="ApplicationRegistration\Data\Nic.cs" />
     <Compile Include="ApplicationRegistration\Data\ConfigurationSetting.cs" />
     <Compile Include="NotificationTemplateInfo.cs" />
+    <Compile Include="Notification\INotificationService.cs" />
     <Compile Include="OAuth\ApplicationUserNotFoundException.cs" />
     <Compile Include="OAuth\OAuthClientSettings.cs" />
     <Compile Include="OAuth\AuthenticatedAttribute.cs" />
     <Compile Include="RepositoryChunkStorage.cs" />
+    <Compile Include="ServiceRegistration\Data\Generated_Dao\MachineRegistries.cs" />
+    <Compile Include="ServiceRegistration\Data\Generated_Dao\MachineRegistriesCollection.cs" />
+    <Compile Include="ServiceRegistration\Data\Generated_Dao\MachineRegistriesColumns.cs" />
+    <Compile Include="ServiceRegistration\Data\Generated_Dao\MachineRegistriesPagedQuery.cs" />
+    <Compile Include="ServiceRegistration\Data\Generated_Dao\MachineRegistriesQuery.cs" />
+    <Compile Include="ServiceRegistration\Data\Generated_Dao\MachineRegistriesWrapper.cs" />
+    <Compile Include="ServiceRegistration\Data\Generated_Dao\Qi\MachineRegistries.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\Qi\ServiceDescriptor.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\Qi\ServiceDescriptorServiceRegistryDescriptor.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\Qi\ServiceRegistryDescriptor.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\Qi\ServiceRegistryLoaderDescriptor.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\Qi\ServiceRegistryLock.cs" />
+    <Compile Include="ServiceRegistration\Data\Generated_Dao\Qi\ServiceTypeIdentifier.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceDescriptor.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceDescriptorCollection.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceDescriptorColumns.cs" />
@@ -267,8 +288,7 @@
     <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceDescriptorServiceRegistryDescriptorPagedQuery.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceDescriptorServiceRegistryDescriptorQuery.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceDescriptorWrapper.cs" />
-    <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceRegistrationContext.cs" />
-    <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceRegistrationRepository.cs" />
+    <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceRegistryContext.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceRegistryDescriptor.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceRegistryDescriptorCollection.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceRegistryDescriptorColumns.cs" />
@@ -287,13 +307,22 @@
     <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceRegistryLockPagedQuery.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceRegistryLockQuery.cs" />
     <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceRegistryLockWrapper.cs" />
+    <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceRegistryRepository.cs" />
+    <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceTypeIdentifier.cs" />
+    <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceTypeIdentifierCollection.cs" />
+    <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceTypeIdentifierColumns.cs" />
+    <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceTypeIdentifierPagedQuery.cs" />
+    <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceTypeIdentifierQuery.cs" />
+    <Compile Include="ServiceRegistration\Data\Generated_Dao\ServiceTypeIdentifierWrapper.cs" />
+    <Compile Include="ServiceRegistration\Data\MachineRegistries.cs" />
+    <Compile Include="ServiceRegistration\Data\ServiceTypeIdentifier.cs" />
     <Compile Include="ServiceRegistryContainerAttribute.cs" />
     <Compile Include="ServiceRegistry.cs" />
     <Compile Include="ServiceRegistryLoaderAttribute.cs" />
     <Compile Include="ProxySettingsInfo.cs" />
     <Compile Include="ServiceConfig.cs" />
     <Compile Include="ApplicationConfiguration.cs" />
-    <Compile Include="AssemblyManagement\CoreAssemblyService.cs" />
+    <Compile Include="AssemblyManagement\AssemblyService.cs" />
     <Compile Include="AssemblyManagement\Data\AssemblyDescriptor.cs" />
     <Compile Include="AssemblyManagement\Data\AssemblyReferenceDescriptor.cs" />
     <Compile Include="AssemblyManagement\Data\Generated_Dao\AssemblyDescriptor.cs" />
@@ -334,8 +363,8 @@
     <Compile Include="ProxySettingsValidationException.cs" />
     <Compile Include="ApplicationRegistration\ApplicationRegistrationResult.cs" />
     <Compile Include="ApplicationRegistration\ApplicationRegistrationStatus.cs" />
-    <Compile Include="Services\CoreNotificationService.cs" />
-    <Compile Include="Services\CoreRoleService.cs" />
+    <Compile Include="Notification\NotificationService.cs" />
+    <Compile Include="Users\RoleService.cs" />
     <Compile Include="Files\ChunkedFileDataDescriptor.cs" />
     <Compile Include="Files\ChunkedFileReader.cs" />
     <Compile Include="Files\ChunkedFileWriter.cs" />
@@ -343,8 +372,8 @@
     <Compile Include="Files\Data\ChunkDataDescriptor.cs" />
     <Compile Include="Files\Data\ChunkedFileDescriptor.cs" />
     <Compile Include="Files\FileChunk.cs" />
-    <Compile Include="Files\CoreFileService.cs" />
-    <Compile Include="Files\CoreFileServiceSettings.cs" />
+    <Compile Include="Files\FileService.cs" />
+    <Compile Include="Files\FileServiceSettings.cs" />
     <Compile Include="Files\IChunkedFileDescriptor.cs" />
     <Compile Include="Files\IFileService.cs" />
     <Compile Include="OAuth\Data\Generated_Dao\OAuthSettingsContext.cs" />
@@ -359,22 +388,21 @@
     <Compile Include="OAuth\Data\OAuthSettingsData.cs" />
     <Compile Include="OAuth\FacebookOAuthSettings.cs" />
     <Compile Include="OAuth\KnownOAuthProviders.cs" />
-    <Compile Include="OAuth\CoreOAuthService.cs" />
+    <Compile Include="OAuth\OAuthService.cs" />
     <Compile Include="OAuth\OAuthProviders.cs" />
     <Compile Include="OAuth\OAuthResponse.cs" />
     <Compile Include="OAuth\OAuthSettings.cs" />
-    <Compile Include="OAuth\CoreOAuthSettingsService.cs" />
+    <Compile Include="OAuth\OAuthSettingsService.cs" />
     <Compile Include="ServiceRegistration\Data\ServiceDescriptor.cs" />
     <Compile Include="ServiceRegistration\Data\ServiceRegistryDescriptor.cs" />
     <Compile Include="ServiceRegistration\Data\ServiceRegistryLoaderDescriptor.cs" />
     <Compile Include="ServiceRegistration\Data\ServiceRegistryLock.cs" />
-    <Compile Include="ServiceRegistration\RegisterServiceRegistryContainerResult.cs" />
+    <Compile Include="ServiceRegistration\ServiceRegistryContainerRegistrationResult.cs" />
     <Compile Include="ServiceRegistration\ServiceDefinition.cs" />
-    <Compile Include="ServiceRegistration\ServiceRegistrationBuilder.cs" />
-    <Compile Include="ServiceRegistration\CoreServiceRegistrationService.cs" />
-    <Compile Include="Services\SettingSource.cs" />
-    <Compile Include="ApplicationRegistration\CoreApplicationRegistryServiceConfig.cs" />
-    <Compile Include="Services\ApplicationProxyableService.cs" />
+    <Compile Include="ServiceRegistration\ServiceRegistryBuilder.cs" />
+    <Compile Include="ServiceRegistration\ServiceRegistryService.cs" />
+    <Compile Include="Configuration\SettingSource.cs" />
+    <Compile Include="ApplicationProxyableService.cs" />
     <Compile Include="ApplicationRegistration\Data\ApiKey.cs" />
     <Compile Include="ApplicationRegistration\Data\Application.cs" />
     <Compile Include="ApplicationRegistration\Data\ClientServerConnection.cs" />
@@ -384,17 +412,17 @@
     <Compile Include="ApplicationRegistration\Data\Subscription.cs" />
     <Compile Include="ApplicationRegistration\Data\User.cs" />
     <Compile Include="OrganizationFactory.cs" />
-    <Compile Include="Services\SourcedConfigurationSetting.cs" />
-    <Compile Include="Services\SubscriptionLevel.cs" />
-    <Compile Include="CoreServiceRegistryContainer.cs" />
-    <Compile Include="ApplicationRegistration\CoreApplicationRegistrationService.cs" />
+    <Compile Include="Configuration\SourcedConfigurationSetting.cs" />
+    <Compile Include="SubscriptionLevel.cs" />
+    <Compile Include="ApplicationServiceRegistryContainer.cs" />
+    <Compile Include="ApplicationRegistration\ApplicationRegistrationService.cs" />
     <Compile Include="ProxyAssemblyGenerationEventSource.cs" />
     <Compile Include="CompositeRepository.cs" />
-    <Compile Include="Services\CoreUserRegistryService.cs" />
-    <Compile Include="Services\CoreConfigurationService.cs" />
-    <Compile Include="Services\DiagnosticInfo.cs" />
-    <Compile Include="Services\CoreDiagnosticService.cs" />
-    <Compile Include="Services\CoreLoggerService.cs" />
+    <Compile Include="Users\CoreUserRegistryService.cs" />
+    <Compile Include="Configuration\ConfigurationService.cs" />
+    <Compile Include="Diagnostic\DiagnosticInfo.cs" />
+    <Compile Include="Diagnostic\DiagnosticService.cs" />
+    <Compile Include="Logging\SystemLoggerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Protocols.cs" />
     <Compile Include="ProxyAssemblyGenerator.cs" />
@@ -480,6 +508,10 @@
     <ProjectReference Include="..\Bam.Net.UserAccounts\Bam.Net.UserAccounts.csproj">
       <Project>{74d5a262-b0b9-40e6-a3fd-b120dc8e9f54}</Project>
       <Name>Bam.Net.UserAccounts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Yaml\Bam.Net.Yaml.csproj">
+      <Project>{1c5258ec-7579-4032-94ec-b016bdc1b876}</Project>
+      <Name>Bam.Net.Yaml</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net\Bam.Net.csproj">
       <Project>{8794c09d-d72c-420c-812f-bfda251b64c9}</Project>

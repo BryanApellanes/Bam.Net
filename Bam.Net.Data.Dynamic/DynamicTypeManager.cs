@@ -24,7 +24,7 @@ namespace Bam.Net.Data.Dynamic
         public DynamicTypeManager(DynamicTypeDataRepository descriptorRepository, DataSettings settings) 
         {
             DataSettings = settings;
-            JsonDirectory = settings.GetDataDirectory(nameof(DynamicTypeManager));
+            JsonDirectory = settings.GetRootDataDirectory(nameof(DynamicTypeManager));
             if (!JsonDirectory.Exists)
             {
                 JsonDirectory.Create();

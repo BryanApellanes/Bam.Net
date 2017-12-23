@@ -15,16 +15,16 @@ namespace Bam.Net.Services.Clients
     public class CoreLoggerClient : Logger
     {
         ProxyFactory _proxyFactory;
-        CoreLoggerService _loggerService;
+        SystemLoggerService _loggerService;
         public CoreLoggerClient(string hostName, int port)
         {
             _proxyFactory = new ProxyFactory();
-            _loggerService = _proxyFactory.GetProxy<CoreLoggerService>(hostName, port);
+            _loggerService = _proxyFactory.GetProxy<SystemLoggerService>(hostName, port);
         }
 
         public override void CommitLogEvent(LogEvent logEvent)
         {
-            _loggerService.CommitLogEvent(logEvent);
+            Task.Run(() => _loggerService.CommitLogEvent(logEvent));
         }
     }
 }

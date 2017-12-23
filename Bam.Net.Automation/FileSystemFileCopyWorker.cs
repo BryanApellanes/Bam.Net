@@ -25,7 +25,6 @@ namespace Bam.Net.Automation
             ThrowIfFileNotFound(jobName, src);
 
             FileInfo dst = new FileInfo(Destination);
-            //ThrowIfFileNotFound(jobName, dst);
 
             File.Copy(src.FullName, dst.FullName);
 

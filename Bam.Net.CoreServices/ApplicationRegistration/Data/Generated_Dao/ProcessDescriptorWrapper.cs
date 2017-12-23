@@ -9,14 +9,14 @@ using Bam.Net;
 using Bam.Net.Data;
 using Bam.Net.Data.Repositories;
 using Newtonsoft.Json;
-using Bam.Net.CoreServices.ApplicationRegistration;
-using Bam.Net.CoreServices.ApplicationRegistration.Dao;
+using Bam.Net.CoreServices.ApplicationRegistration.Data;
+using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao;
 
-namespace Bam.Net.CoreServices.ApplicationRegistration.Wrappers
+namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Wrappers
 {
 	// generated
 	[Serializable]
-	public class ProcessDescriptorWrapper: Bam.Net.CoreServices.ApplicationRegistration.ProcessDescriptor, IHasUpdatedXrefCollectionProperties
+	public class ProcessDescriptorWrapper: Bam.Net.CoreServices.ApplicationRegistration.Data.ProcessDescriptor, IHasUpdatedXrefCollectionProperties
 	{
 		public ProcessDescriptorWrapper()
 		{
@@ -47,14 +47,14 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Wrappers
 		}
 
 
-Bam.Net.CoreServices.ApplicationRegistration.Application _application;
-		public override Bam.Net.CoreServices.ApplicationRegistration.Application Application
+Bam.Net.CoreServices.ApplicationRegistration.Data.Application _application;
+		public override Bam.Net.CoreServices.ApplicationRegistration.Data.Application Application
 		{
 			get
 			{
 				if (_application == null)
 				{
-					_application = (Bam.Net.CoreServices.ApplicationRegistration.Application)Repository.GetParentPropertyOfChild(this, typeof(Bam.Net.CoreServices.ApplicationRegistration.Application));
+					_application = (Bam.Net.CoreServices.ApplicationRegistration.Data.Application)Repository.GetParentPropertyOfChild(this, typeof(Bam.Net.CoreServices.ApplicationRegistration.Data.Application));
 				}
 				return _application;
 			}

@@ -22,5 +22,6 @@ namespace Bam.Net.Testing
         public TestMethod(MethodInfo method, Attribute actionInfo) : base(method, actionInfo)
         {
         }
+        public string Tag { get; set; }
     }
 }

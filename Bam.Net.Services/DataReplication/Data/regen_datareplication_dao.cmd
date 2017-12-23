@@ -1,0 +1,1 @@
+﻿troo.exe /gsr /ta:.\Bam.Net.Services.dll /sn:DataReplication /fns:Bam.Net.Services.DataReplication.Data /cfi:yes /uis:yes /ws:C:\src\Business\Submodule\Bam.Net\Bam.Net.Services\DataReplication\Data\Generated_Dao

@@ -8,6 +8,7 @@ using Bam.Net.CoreServices;
 using Bam.Net.CoreServices.ApplicationRegistration;
 using Bam.Net.UserAccounts;
 using Bam.Net.Messaging;
+using Bam.Net.CoreServices.ApplicationRegistration.Data;
 
 namespace Bam.Net.Services.Clients
 {

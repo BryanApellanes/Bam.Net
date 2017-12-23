@@ -69,14 +69,19 @@ namespace Bam.Net
 
         public static string ToXml(this object target)
         {
-            XmlSerializer ser = new XmlSerializer(target.GetType());
-            MemoryStream serialized = new MemoryStream();
-            ser.Serialize(serialized, target);
-            serialized.Seek(0, SeekOrigin.Begin);
-            using (StreamReader reader = new StreamReader(serialized))
+            MemoryStream stream = new MemoryStream();
+            ToXmlStream(target, stream);
+            stream.Seek(0, SeekOrigin.Begin);
+            using (StreamReader reader = new StreamReader(stream))
             {
                 return reader.ReadToEnd();
             }
+        }
+
+        public static void ToXmlStream(this object target, Stream stream)
+        {
+            XmlSerializer ser = new XmlSerializer(target.GetType());
+            ser.Serialize(stream, target);
         }
 
         public static bool IsSerializable(Type t)
@@ -160,19 +165,40 @@ namespace Bam.Net
 
         public static MemoryStream ToBinaryStream(this object target)
         {
-            Args.ThrowIfNull(target, "target");
-            BinaryFormatter serializer = new BinaryFormatter();
-            MemoryStream outPut = new MemoryStream();
+            Args.ThrowIfNull(target, "target");            
+            MemoryStream stream = new MemoryStream();
+            ToBinaryStream(target, stream);
+            return stream;
+        }
+
+        public static void ToBinaryStream(this object target, Stream stream)
+        {
             try
             {
-                serializer.Serialize(outPut, target);
-                outPut.Seek(0, SeekOrigin.Begin);
+                BinaryFormatter serializer = new BinaryFormatter();
+                serializer.Serialize(stream, target);
+                stream.Seek(0, SeekOrigin.Begin);
             }
             catch (Exception ex)
             {
                 Log.Default.AddEntry("Failed to serialize target of type ({0}): {1}", ex, target.GetType().FullName, ex.Message);
             }
-            return outPut;
+        }
+
+        public static object FromBinaryStream(this Stream stream)
+        {
+            MemoryStream outPut = new MemoryStream();
+            byte[] buffer = new byte[32768]; // max int size
+            while (true)
+            {
+                int read = stream.Read(buffer, 0, buffer.Length);
+                if (read <= 0)
+                {
+                    break;
+                }
+                outPut.Write(buffer, 0, read);
+            }
+            return outPut.GetBuffer().FromBinaryBytes();
         }
 
         public static void ToBinaryFile(this object target, string filePath)
@@ -290,6 +316,11 @@ namespace Bam.Net
             }
         }
         
+        public static object FromXmlStream(this Stream xmlStream, Type type)
+        {
+            return new XmlSerializer(type).Deserialize(xmlStream);
+        }
+
         /// <summary>
         /// Deserialize the specified xmlString as the specified 
         /// generic type

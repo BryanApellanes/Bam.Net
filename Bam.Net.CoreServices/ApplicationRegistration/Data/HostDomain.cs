@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.CoreServices.ApplicationRegistration
+namespace Bam.Net.CoreServices.ApplicationRegistration.Data
 {
     /// <summary>
     /// A domain associated with an application

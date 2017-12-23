@@ -8,7 +8,6 @@ using Bam.Net.CommandLine;
 using Bam.Net.Testing;
 using Bam.Net.UserAccounts;
 using Bam.Net.ServiceProxy.Secure;
-using Bam.Net.CoreServices.Services;
 using System.IO;
 using Bam.Net.CoreServices.ApplicationRegistration;
 using Bam.Net.DaoRef;
@@ -16,10 +15,11 @@ using Bam.Net.CoreServices.ProtoBuf;
 using Bam.Net.Data.Repositories;
 using System.Reflection;
 using Google.Protobuf;
-using Bam.Net.CoreServices.ApplicationRegistration.Dao.Repository;
 using Bam.Net.UserAccounts.Data;
 using Bam.Net.Services.Clients;
 using Bam.Net.ServiceProxy;
+using Bam.Net.CoreServices.ApplicationRegistration.Data;
+using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Repository;
 
 namespace Bam.Net.CoreServices.Tests
 {
@@ -96,7 +96,7 @@ namespace Bam.Net.CoreServices.Tests
                 AddDetails = false
             };
             logger.StartLoggingThread();
-            ApplicationRegistrationRepository repo = CoreServiceRegistryContainer.GetServiceRegistry().Get<ApplicationRegistrationRepository>();
+            ApplicationRegistrationRepository repo = ApplicationServiceRegistryContainer.GetServiceRegistry().Get<ApplicationRegistrationRepository>();
             CoreClient client = CoreClient.Local;//new CoreClient("TestOrg", "TestApp", $".\\{nameof(RegisterCreatesMachineEntry)}", logger);
             client.WorkspaceDirectory = $".\\{nameof(RegisterCreatesMachineEntry)}";
             client.LocalCoreRegistryRepository = repo;
@@ -117,7 +117,7 @@ namespace Bam.Net.CoreServices.Tests
             const string server = "localhost";// "int-heart.bamapps.net";
             const int port = 80;
             logger.StartLoggingThread();
-            ApplicationRegistrationRepository repo = CoreServiceRegistryContainer.GetServiceRegistry().Get<ApplicationRegistrationRepository>();
+            ApplicationRegistrationRepository repo = ApplicationServiceRegistryContainer.GetServiceRegistry().Get<ApplicationRegistrationRepository>();
             CoreClient client = new CoreClient("TestOrg", "TestApp", server, port, logger)
             {
                 UseServiceSubdomains = false,
@@ -153,7 +153,7 @@ namespace Bam.Net.CoreServices.Tests
         [IntegrationTest]
         public void CanSaveMachineInCoreRegistryRepo()
         {
-            ApplicationRegistrationRepository repo = CoreServiceRegistryContainer.GetServiceRegistry().Get<ApplicationRegistrationRepository>();
+            ApplicationRegistrationRepository repo = ApplicationServiceRegistryContainer.GetServiceRegistry().Get<ApplicationRegistrationRepository>();
             Client test = Client.Of(repo, "test", "test", 80);//Machine.ClientOf(repo, "test", 80);
             test = repo.Save(test);
             Expect.IsTrue(test.Id > 0);
@@ -167,7 +167,7 @@ namespace Bam.Net.CoreServices.Tests
         public void CoreClientCanRegisterAndConnectClient()
         {
             OutLineFormat("This test requires a gloo server to be running on port 9100 of the localhost", ConsoleColor.Yellow);
-            ApplicationRegistrationRepository repo = CoreServiceRegistryContainer.GetServiceRegistry().Get<ApplicationRegistrationRepository>();
+            ApplicationRegistrationRepository repo = ApplicationServiceRegistryContainer.GetServiceRegistry().Get<ApplicationRegistrationRepository>();
             ConsoleLogger logger = new ConsoleLogger() { AddDetails = false };
             logger.StartLoggingThread();
             CoreClient client = new CoreClient("ThreeHeadz", "CoreServicesTestApp", "localhost", 9100, logger);
@@ -190,7 +190,7 @@ namespace Bam.Net.CoreServices.Tests
             ProxyFactory factory = new ProxyFactory();
             CoreClient coreClient = new CoreClient("ThreeHeadz", "CoreServicesTestApp", "localhost", 80, logger);
 
-            CoreUserRegistryService userService = coreClient.UserRegistryService;
+            UserRegistryService userService = coreClient.UserRegistryService;
             Expect.IsNotNull(userService);
             Expect.AreSame(coreClient, userService.Property("ApiKeyResolver"));
             Expect.AreSame(coreClient, userService.Property("ClientApplicationNameProvider"));

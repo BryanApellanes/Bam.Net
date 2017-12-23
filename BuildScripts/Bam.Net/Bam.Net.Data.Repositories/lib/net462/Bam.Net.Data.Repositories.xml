@@ -14,6 +14,12 @@
             The AssemblyQualifiedName of the type
             </summary>
         </member>
+        <member name="P:Bam.Net.Data.Repositories.CrudResponse.CxName">
+            <summary>
+            The connection name also called the
+            schema name or context name
+            </summary>
+        </member>
         <member name="T:Bam.Net.Data.Repositories.DaoBackup">
             <summary>
             Represents a backup of a Dao database schema and the data therein
@@ -43,6 +49,15 @@
             <summary>
             The database that the backup will be restored to
             </summary>
+        </member>
+        <member name="M:Bam.Net.Data.Repositories.DataSettings.GetAppDatabasePathFor(Bam.Net.IApplicationNameProvider,System.Type,System.String)">
+            <summary>
+            Get the path to the application specific SQLite database file for the specified type
+            </summary>
+            <param name="appNameProvider"></param>
+            <param name="type"></param>
+            <param name="info"></param>
+            <returns></returns>
         </member>
         <member name="T:Bam.Net.Data.Repositories.IHasKeyHash">
             <summary>

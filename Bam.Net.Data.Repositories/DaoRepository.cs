@@ -560,6 +560,10 @@ namespace Bam.Net.Data.Repositories
         public IEnumerable<object> Query(Type pocoType, QueryFilter query, bool wrap)
         {
             Type daoType = GetDaoType(pocoType);
+            if(daoType == null)
+            {
+                return new List<object>();
+            }
             MethodInfo whereMethod = daoType.GetMethod("Where", new Type[] { typeof(QueryFilter), typeof(Database) });
             IEnumerable daoResults = (IEnumerable)whereMethod.Invoke(null, new object[] { query, Database });
             

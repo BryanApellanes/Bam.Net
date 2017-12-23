@@ -39,8 +39,10 @@ namespace Bam.Net.Data
         /// <returns></returns>
         public virtual T As<T>() where T : IHasDataTable, new()
         {
-            T val = new T();
-            val.Database = this.Database;
+            T val = new T()
+            {
+                Database = this.Database
+            };
             val.SetDataTable(this.DataTable);
             return val;
         }

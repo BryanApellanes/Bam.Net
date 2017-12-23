@@ -7,9 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Configuration;
+using System.IO;
 
 namespace Bam.Net.Automation
 {
+    /// <summary>
+    /// Copy multiple files to a single destination folder
+    /// </summary>
     public class MultiFileCopyWorker: Worker, IEnumerable<string>
     {
         List<string> _filePaths;
@@ -71,7 +75,21 @@ namespace Bam.Net.Automation
 
         protected override WorkState Do()
         {
-            throw new NotImplementedException();
+            try
+            {
+                Args.ThrowIf(string.IsNullOrEmpty(Destination), "Destination not specified");
+
+                Parallel.ForEach(FilePaths, (filePath) =>
+                {
+                    FileInfo file = new FileInfo(filePath);
+                    FileInfo destinationFile = new FileInfo(Path.Combine(Destination, file.Name));
+                    File.Copy(filePath, destinationFile.FullName);
+                });
+                return new WorkState(this) { Status = Status.Succeeded };
+            }catch(Exception ex)
+            {
+                return new WorkState(this, ex);
+            }
         }
     }
 }

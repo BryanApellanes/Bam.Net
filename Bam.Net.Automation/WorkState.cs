@@ -35,7 +35,7 @@ namespace Bam.Net.Automation
         {
             Args.ThrowIfNull(worker, "worker");
 
-            this.WorkName = worker.Name;
+            this.WorkerName = worker.Name;
             this.StepNumber = worker.StepNumber;
             this.WorkTypeName = worker.GetType().AssemblyQualifiedName;
 
@@ -56,7 +56,7 @@ namespace Bam.Net.Automation
         public int StepNumber { get; set; }
 
         public string JobName { get; set; }
-        public string WorkName { get; set; }
+        public string WorkerName { get; set; }
         public string Message { get; set; }
 
         public string WorkTypeName { get; set; }

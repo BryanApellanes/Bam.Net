@@ -18,7 +18,7 @@ namespace Bam.Net.Services.Automation
     [ServiceSubdomain("command")]
     public class CommandService : AsyncProxyableService
     {
-        protected CommandService()
+        public CommandService()
         {
         }
 
@@ -48,7 +48,7 @@ namespace Bam.Net.Services.Automation
             }
             catch (Exception ex)
             {
-                Logger.AddEntry("Error in ProcessService: {0}", ex, ex.Message);
+                Logger.AddEntry("Error in CommandService: {0}", ex, ex.Message);
                 return new ServiceResponse<CommandInfo>
                 {
                     Success = false,

@@ -140,7 +140,6 @@
     <Compile Include="KeyHashProvider.cs" />
     <Compile Include="KeyHashRepoData.cs" />
     <Compile Include="NamespaceStorableTypesProvider.cs" />
-    <Compile Include="ObjectIdentifier.cs" />
     <Compile Include="RepoData.cs" />
     <Compile Include="RepositoryResolver.cs" />
     <Compile Include="RepositoryStorableTypesProvider.cs" />

@@ -7,7 +7,7 @@
     <ProjectGuid>{B971AD24-4941-4A21-9B08-C9DE89CA7F77}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>bam</RootNamespace>
+    <RootNamespace>Bam.Net.Application</RootNamespace>
     <AssemblyName>bam</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -72,6 +72,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ManagementActions.cs" />
+    <Compile Include="SystemActions.cs" />
     <Compile Include="UserInfo.cs" />
     <Compile Include="UtilityActions.cs" />
   </ItemGroup>

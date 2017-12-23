@@ -22,6 +22,7 @@ namespace Bam.Net.Configuration
     public static class DefaultConfiguration
     {
         public const string DefaultApplicationName = "UNKOWN-APPLICATION";
+        public const string DefaultProcessName = "UNKOWN-PROCESS";
 
         static NameValueCollection _appSettings = ConfigurationManager.AppSettings;
         static ConnectionStringSettingsCollection _connectionStrings = ConfigurationManager.ConnectionStrings;        

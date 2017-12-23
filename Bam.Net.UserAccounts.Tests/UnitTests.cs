@@ -458,15 +458,15 @@ namespace Bam.Net.UserAccounts.Tests
         public void LoginDateTimeShouldBeNowInstant()
         {
             string userName = MethodBase.GetCurrentMethod().Name;
-            IHttpContext context;
-            LoginResponse result;
-            UserTestTools.SignUpAndLogin(userName, out context, out result);
+            UserTestTools.SignUpAndLogin(userName, out IHttpContext context, out LoginResponse result);
 
             User user = User.GetByUserNameOrDie(userName);
             Instant nowInstant = new Instant();
-            Login login = new Login();
-            login.UserId = user.Id;
-            login.DateTime = nowInstant.ToDateTime();
+            Login login = new Login
+            {
+                UserId = user.Id,
+                DateTime = nowInstant.ToDateTime()
+            };
             login.Save();
 
             Login check = Login.OneWhere(c => c.Id == login.Id);
