@@ -2,19 +2,23 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Data</id>
-    <version>1.8.5</version>
+    <version>1.9.0</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>http://bryanapellanes.github.io/Bam.Net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Data access objects and tools for use with the Bam framework</description>
-    <releaseNotes>Version 1.8.5
+    <releaseNotes>Version 1.9.0
+ -   minor refactor (a26bf3c)
+ -   add Database parameter to XrefDaoCollection.Remove (7c4f3c4)
+ -   fix bug in XrefDaoCollection remove; minor refactor of laotze (d801431)
+ -   add AppData directory path handling (f2c4e4d)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2017</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.8.5" />
-      <dependency id="Bam.Net.Incubation" version="1.8.5" />
+      <dependency id="Bam.Net" version="1.9.0" />
+      <dependency id="Bam.Net.Incubation" version="1.9.0" />
     </dependencies>
   </metadata>
 </package>

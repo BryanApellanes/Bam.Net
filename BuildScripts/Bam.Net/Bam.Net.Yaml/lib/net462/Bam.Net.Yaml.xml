@@ -62,14 +62,6 @@
             as well as committing to the underlying DaoRepository
             </summary>
         </member>
-        <member name="M:Bam.Net.Yaml.Extensions.ToYaml(System.Object,System.Yaml.YamlConfig)">
-            <summary>
-            Serialize the specified object to yaml
-            </summary>
-            <param name="val"></param>
-            <param name="conf"></param>
-            <returns></returns>
-        </member>
         <member name="M:Bam.Net.Yaml.ServiceProxySystemYaml.Register">
             <summary>
             Registers the yaml file extension and the delegate used

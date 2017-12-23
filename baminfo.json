@@ -3,9 +3,9 @@
   "Owners": "Bryan Apellanes",
   "LicenseUrl": "http://opensource.org/licenses/MIT",
   "ProjectUrl": "http://bryanapellanes.github.io/Bam.Net/",
-  "ReleaseNotes": "Version 1.8.5\r\n -  fix nuget scripts (b4ae705)\r\n",
+  "ReleaseNotes": "Version 1.9.0\r\n -  overwrite old gitlog txt (4754a58)\r\n -  update config (ca20a37)\r\n -  merge work from different workstations (5fd3884)\r\n -  refactor, update configs (e268462)\r\n -  minor refactor (dce57cf)\r\n -  merge work from different workstations (0a6728b)\r\n -  merge work from different workstations (d3f5c19)\r\n -  update project file (d535e89)\r\n -  fix test (5025d18)\r\n -  Add and update README.md files (2529f93)\r\n -  gloo registry handling updates (8cdf705)\r\n -  fix SSH.NET package reference (c57d490)\r\n -  remove msbuild binaries (db7571a)\r\n -  fix integration references to ObjectIdentifier (d4fddfe)\r\n -  minor tweak to repo readme (a0b4479)\r\n -  move objectidentifier add assembly to testeventargs (44be346)\r\n -  Merge pull request #84 from BryanApellanes/next (2938340)\r\n",
   "MajorVersion": 1,
-  "MinorVersion": 8,
-  "PatchVersion": 5,
+  "MinorVersion": 9,
+  "PatchVersion": 0,
   "BuildNumber": ""
 }

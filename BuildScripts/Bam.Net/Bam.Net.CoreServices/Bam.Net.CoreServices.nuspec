@@ -2,29 +2,43 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.CoreServices</id>
-    <version>1.8.5</version>
+    <version>1.9.0</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>http://bryanapellanes.github.io/Bam.Net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Tools for distributed application services</description>
-    <releaseNotes>Version 1.8.5
+    <releaseNotes>Version 1.9.0
+ -   delete ApplicationRegistryServiceConfig (c1b7674)
+ -   delete ApplicationRegistryServiceConfig (f80841d)
+ -   rename CoreServiceRegistryContainer to Application...; Refactor ApplicationRegistrationService (beaacc6)
+ -   fix retrieve bug in serviceregistry (50eeb54)
+ -   refactor and regen data objects (b875ea2)
+ -   refactor serviceregistration type resolution (4ac1a61)
+ -   regen serviceregistration (3e07673)
+ -   rename machineservices to machineregistries (78fad13)
+ -   rename serviceregistrationservice to serviceregistryservice (180aca9)
+ -   regenerate serviceregitration to add machineservices (d163ebc)
+ -   regen assemblymanagement to add assemlbyrevision (e3ce50d)
+ -   refactor datasettings for sys and app specific paths (5099910)
+ -   refactor ApplicationRegistration data and related namespaces (9e67421)
+ -   update serviceregistry handling (3c7ee88)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2017</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.8.5" />
-      <dependency id="Bam.Net.Data" version="1.8.5" />
-      <dependency id="Bam.Net.Data.Repositories" version="1.8.5" />
-      <dependency id="Bam.Net.Distributed" version="1.8.5" />
-      <dependency id="Bam.Net.Documentation" version="1.8.5" />
-      <dependency id="Bam.Net.Encryption" version="1.8.5" />
-      <dependency id="Bam.Net.Incubation" version="1.8.5" />
-      <dependency id="Bam.Net.Logging" version="1.8.5" />
-      <dependency id="Bam.Net.Messaging" version="1.8.5" />
-      <dependency id="Bam.Net.Server" version="1.8.5" />
-      <dependency id="Bam.Net.ServiceProxy" version="1.8.5" />
-      <dependency id="Bam.Net.UserAccounts" version="1.8.5" />
+      <dependency id="Bam.Net" version="1.9.0" />
+      <dependency id="Bam.Net.Data" version="1.9.0" />
+      <dependency id="Bam.Net.Data.Repositories" version="1.9.0" />
+      <dependency id="Bam.Net.Distributed" version="1.9.0" />
+      <dependency id="Bam.Net.Documentation" version="1.9.0" />
+      <dependency id="Bam.Net.Encryption" version="1.9.0" />
+      <dependency id="Bam.Net.Incubation" version="1.9.0" />
+      <dependency id="Bam.Net.Logging" version="1.9.0" />
+      <dependency id="Bam.Net.Messaging" version="1.9.0" />
+      <dependency id="Bam.Net.Server" version="1.9.0" />
+      <dependency id="Bam.Net.ServiceProxy" version="1.9.0" />
+      <dependency id="Bam.Net.UserAccounts" version="1.9.0" />
     </dependencies>
   </metadata>
 </package>

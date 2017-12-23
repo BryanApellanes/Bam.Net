@@ -1048,7 +1048,7 @@
             <typeparam name="X">The Xref type</typeparam>
             <typeparam name="L">The list type</typeparam>
         </member>
-        <member name="M:Bam.Net.Data.XrefDaoCollection`2.Remove(`1)">
+        <member name="M:Bam.Net.Data.XrefDaoCollection`2.Remove(`1,Bam.Net.Data.Database)">
             <summary>
             Removes the specified item from this collection, deletes the xref entry but
             does not delete the item from the database
