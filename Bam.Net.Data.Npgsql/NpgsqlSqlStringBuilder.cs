@@ -30,7 +30,7 @@ namespace Bam.Net.Data
             Builder.AppendFormat(" RETURNING \"Id\" AS \"{0}\"{1}", idAs, this.GoText);
             return this;
         }
-        public virtual void Reset()
+        public override void Reset()
         {
             base.Reset();
             this.GoText = ";\r\n";

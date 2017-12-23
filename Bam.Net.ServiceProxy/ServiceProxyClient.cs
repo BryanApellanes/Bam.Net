@@ -142,14 +142,6 @@ namespace Bam.Net.ServiceProxy
             });
             return result;
         }
-        /// <summary>
-        /// The BaseAddress to send requests to 
-        /// </summary>
-        public string BaseAddress
-        {
-            get;
-            set;
-        }
 
         /// <summary>
         /// Make a GET request to the specified path expecting json
