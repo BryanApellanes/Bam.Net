@@ -27,7 +27,8 @@ namespace Bam.Net.Data.Repositories
         DaoGenerator _daoGenerator;
         WrapperGenerator _wrapperGenerator;
         TypeSchemaGenerator _typeSchemaGenerator;
-        HashSet<Assembly> _additonalReferenceAssemblies;
+        HashSet<Assembly> _additionalReferenceAssemblies;
+        HashSet<Type> _additionalReferenceTypes;
 
         /// <summary>
         /// Instantiate a new instance of TypeDaoGenerator
@@ -40,7 +41,8 @@ namespace Bam.Net.Data.Repositories
             _daoGenerator = new DaoGenerator(DaoNamespace);
             _wrapperGenerator = new WrapperGenerator(WrapperNamespace, DaoNamespace);
             _typeSchemaGenerator = new TypeSchemaGenerator();
-            _additonalReferenceAssemblies = new HashSet<Assembly>();
+            _additionalReferenceAssemblies = new HashSet<Assembly>();
+            _additionalReferenceTypes = new HashSet<Type>();
 
             TypeSchemaTempPathProvider = (schemaDef, typeSchema) => System.IO.Path.Combine(RuntimeSettings.AppDataFolder, "DaoTemp_{0}"._Format(schemaDef.Name));
             _types = new HashSet<Type>();
@@ -201,8 +203,51 @@ namespace Bam.Net.Data.Repositories
                 throw new NotSupportedException("Storable types cannot have enumerable properties that are of the same type as themselves.");
             }
 
-            _additonalReferenceAssemblies.Add(type.Assembly);
+            AddAdditionalReferenceAssemblies(new TypeInheritanceDescriptor(type));
             _types.Add(type);
+        }
+
+        public void AddReferenceAssembly(Assembly assembly)
+        {
+            _additionalReferenceAssemblies.Add(assembly);
+        }
+
+        private void AddAdditionalReferenceAssemblies(TypeInheritanceDescriptor typeInheritanceDescriptor)
+        {
+            if (!_additionalReferenceTypes.Contains(typeInheritanceDescriptor.Type))
+            {
+                AddAdditionalReferenceAssemblies(typeInheritanceDescriptor.Type);
+                foreach (TypeTable type in typeInheritanceDescriptor.Chain)
+                {
+                    AddAdditionalReferenceAssemblies(type.Type);
+                }
+            }
+        }
+        private void AddAdditionalReferenceAssemblies(Type type)
+        {
+            if (!_additionalReferenceTypes.Contains(type))
+            {
+                _additionalReferenceAssemblies.Add(type.Assembly);
+                foreach (MethodInfo method in type.GetMethods())
+                {
+                    _additionalReferenceAssemblies.Add(method.ReturnType.Assembly);
+                    foreach (System.Reflection.ParameterInfo parameter in method.GetParameters())
+                    {
+                        _additionalReferenceAssemblies.Add(parameter.ParameterType.Assembly);
+                    }
+                }
+                foreach (PropertyInfo property in type.GetProperties())
+                {
+                    _additionalReferenceAssemblies.Add(property.PropertyType.Assembly);
+                }
+                foreach (ConstructorInfo ctor in type.GetConstructors())
+                {
+                    foreach (System.Reflection.ParameterInfo parameter in ctor.GetParameters())
+                    {
+                        _additionalReferenceAssemblies.Add(parameter.ParameterType.Assembly);
+                    }
+                }
+            }
         }
 
         public Assembly GetDaoAssembly(bool useExisting = true)
@@ -409,7 +454,7 @@ namespace Bam.Net.Data.Repositories
         {
             HashSet<string> references = new HashSet<string>(DaoGenerator.DefaultReferenceAssemblies.ToArray());
             references.Add(typeof(JsonIgnoreAttribute).Assembly.GetFileInfo().FullName);
-            _additonalReferenceAssemblies.Each(asm =>
+            _additionalReferenceAssemblies.Each(asm =>
             {
                 references.Add(asm.GetFilePath());
             });

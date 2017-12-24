@@ -279,6 +279,14 @@ namespace Bam.Net.Data.Repositories
             }
 		}
 
+        public void AddReferenceAssemblies(params Assembly[] assemblies)
+        {
+            foreach(Assembly assembly in assemblies)
+            {
+                TypeDaoGenerator.AddReferenceAssembly(assembly);
+            }
+        }
+
         /// <summary>
         /// Convert the specified instance to it's dynamic
         /// json safe representation
@@ -631,7 +639,7 @@ namespace Bam.Net.Data.Repositories
                 }
             }
 		}
-
+        
         /// <summary>
         /// Get the wrapper type for the specified developer defined 
         /// dto of type T
@@ -1005,6 +1013,7 @@ namespace Bam.Net.Data.Repositories
 			if (values != null)
 			{
 				IAddable xrefDaoCollection = (IAddable)daoXrefProperty.GetValue(daoInstance);
+                xrefDaoCollection.Clear(daoInstance.Database);
 				foreach (object o in values)
 				{
 					Meta.SetUuid(o);

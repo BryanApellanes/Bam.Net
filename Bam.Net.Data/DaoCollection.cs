@@ -255,6 +255,13 @@ namespace Bam.Net.Data
             this._book = new Book<T>(this._values);
         }
 
+        public virtual void Clear(Database db = null)
+        {
+            Delete(db);
+            _values = new List<T>();
+            _book = new Book<T>();
+        }
+
         public virtual void AddRange(IEnumerable<T> values)
         {
             if (values == null)

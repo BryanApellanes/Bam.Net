@@ -10,14 +10,17 @@ namespace Bam.Net.Services
     public interface ICatalogService
     {
         CatalogDefinition CreateCatalog(string name);
-        ItemDefinition CreateItem(string name);
-        CatalogDefinition AddItem(string catalogCuid, string itemCuid);
-        bool RemoveItem(string listCuid, string itemCuid);
-        CatalogDefinition GetCatalog(string catalogCuid);
         CatalogDefinition FindCatalog(string name);
         CatalogDefinition RenameCatalog(string catalogCuid, string name);
-        ItemDefinition RenameItem(string itemCuid, string name);
+        CatalogDefinition GetCatalog(string catalogCuid);
         bool DeleteCatalog(string catalogCuid);
+
+        ItemDefinition CreateItem(string name);
+        ItemDefinition AddItem(string catalogCuid, string itemCuid);
+        bool RemoveItem(string catalogCuid, string itemCuid);
+        ItemDefinition RenameItem(string itemCuid, string name);
+        ItemDefinition GetItem(string itemCuid);
         bool DeleteItem(string itemCuid);
+        string[] FindItemCatalogs(string itemCuid);
     }
 }

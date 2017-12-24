@@ -40,13 +40,13 @@ namespace Bam.Net.CoreServices
             RepositoryResolver = repoResolver;
             Logger = appConf?.Logger ?? Log.Default;
         }
-        public ProxyableService(DaoRepository repository, AppConf appConf)
+        public ProxyableService(DaoRepository repository, AppConf appConf, IRepositoryResolver repositoryResolver = null)
         {
             AppConf = appConf;
             DaoRepository = repository;
             Repository = repository;
             Logger = appConf?.Logger ?? Log.Default;
-            RepositoryResolver = new DefaultRepositoryResolver(repository);
+            RepositoryResolver = repositoryResolver ?? new DefaultRepositoryResolver(repository);
         }
 
         public ProxyableService(IRepository genericRepo, DaoRepository daoRepo, AppConf appConf) : this(daoRepo, appConf)

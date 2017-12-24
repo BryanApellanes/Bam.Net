@@ -8,7 +8,7 @@ namespace Bam.Net.Services.Catalog
 {
     public enum KindsOfCatalogs
     {
-        Invalid,
+        None,
         List,
         Inventory,
         Shopping,

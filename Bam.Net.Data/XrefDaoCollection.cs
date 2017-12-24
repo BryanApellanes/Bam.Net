@@ -200,10 +200,25 @@ namespace Bam.Net.Data
                 _book = new Book<L>(_values);
             }
 
+            DeleteXrefItem(item, db);
+        }
+
+        private void DeleteXrefItem(L item, Database db)
+        {
             if (XrefsByListId.ContainsKey(item.IdValue.Value))
             {
                 XrefsByListId[item.IdValue.Value].Delete(db);
             }
+        }
+
+        public void Clear(Database db = null)
+        {
+            foreach(L item in _values)
+            {
+                DeleteXrefItem(item, db);
+            }
+            _values = new List<L>();
+            _book = new Book<L>();
         }
 
         public override bool MoveNextPage()
