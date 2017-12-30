@@ -122,9 +122,19 @@ namespace Bam.Net.Data.Repositories
             return GetAppDataDirectory(appNameProvider, RepositoryDirectory);
         }
 
+        public DirectoryInfo GetAppRepositoryDirectory(IApplicationNameProvider appNameProvider, string subDirectory)
+        {
+            return new DirectoryInfo(Path.Combine(GetAppDataDirectory(appNameProvider).FullName, subDirectory));
+        }
+
         public DirectoryInfo GetSysRepositoryDirectory()
         {
             return GetSysDataDirectory(RepositoryDirectory);
+        }
+
+        public DirectoryInfo GetSysRepositoryDirectory(string subDirectory)
+        {
+            return new DirectoryInfo(Path.Combine(GetSysRepositoryDirectory().FullName, subDirectory));
         }
 
         public T GetSysDaoRepository<T>() where T: DaoRepository, new()
@@ -173,7 +183,12 @@ namespace Bam.Net.Data.Repositories
         public DirectoryInfo GetAppWorkspaceDirectory(IApplicationNameProvider appNameProvider, Type type)
         {
             string hash = type.ToInfoHash();
-            return new DirectoryInfo(Path.Combine(GetAppDataDirectory(appNameProvider).FullName, WorkspacesDirectory, type.Name, hash));
+            return GetAppWorkspaceDirectory(appNameProvider, type.Name, hash);
+        }
+
+        public DirectoryInfo GetAppWorkspaceDirectory(IApplicationNameProvider appNameProvider, string workspaceName, string hash)
+        {
+            return new DirectoryInfo(Path.Combine(GetAppDataDirectory(appNameProvider).FullName, WorkspacesDirectory, workspaceName, hash));
         }
 
         public DirectoryInfo GetWorkspaceDirectory(Type type)
@@ -253,6 +268,16 @@ namespace Bam.Net.Data.Repositories
             SQLiteDatabase db = new SQLiteDatabase(directoryPath, fileName);
             Logger.Info("Returned SQLiteDatabase with path {0} for type {1}\r\nFullPath: {2}\r\nName: {3}", db.DatabaseFile.FullName, objectType.Name, directoryPath, fileName);
             return db;
+        }
+
+        public override SQLiteDatabase GetAppDatabase(IApplicationNameProvider appNameProvider, string databaseName)
+        {
+            return new SQLiteDatabase(GetAppDatabaseDirectory(appNameProvider).FullName, databaseName);
+        }
+
+        public override SQLiteDatabase GetSysDatabase(string databaseName)
+        {
+            return new SQLiteDatabase(GetSysDatabaseDirectory().FullName, databaseName);
         }
     }
 }

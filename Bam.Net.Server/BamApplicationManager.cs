@@ -17,7 +17,7 @@ using Bam.Net.ServiceProxy;
 namespace Bam.Net.Server
 {
     [Proxy("bam")]
-    public class BamApplicationManager: IRequiresHttpContext//: IInitialize<BamApplicationManager>
+    public class BamApplicationManager: IRequiresHttpContext
     {
         public const string AppNamePagesPathFormat = "~/apps/{appName}/pages";
         private BamApplicationManager()
