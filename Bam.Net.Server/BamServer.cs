@@ -41,7 +41,7 @@ namespace Bam.Net.Server
         {
             _responders = new HashSet<IResponder>();
             _respondersByName = new Dictionary<string, IResponder>();
-            Initialized += PostInitializationHandler;
+            Initialized += HandlePostInitialization;
             SetConf(conf);
             BindEventListeners(conf);
             EnableDao = true;
@@ -1293,7 +1293,7 @@ namespace Bam.Net.Server
                     Args.GetMessageAndStackTrace(ex));
         }
 
-        private void PostInitializationHandler(BamServer server)
+        private void HandlePostInitialization(BamServer server)
         {
             PostInitializationHandler = new PostServerInitializationHandler();
             if (server.InitializeTemplates)
