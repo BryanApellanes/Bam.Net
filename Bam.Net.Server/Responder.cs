@@ -24,7 +24,7 @@ namespace Bam.Net.Server
         {
             BamConf = conf;
             Logger = Log.Default;
-            UriApplicationNameResolver = new UriApplicationNameResolver(conf);
+            ApplicationNameResolver = new UriApplicationNameResolver(conf);
 
             _contentTypes = new Dictionary<string, string>
             {
@@ -75,7 +75,7 @@ namespace Bam.Net.Server
             protected set;
         }
 
-        public UriApplicationNameResolver UriApplicationNameResolver { get; set; }
+        public IApplicationNameResolver ApplicationNameResolver { get; set; }
 
         /// <summary>
         /// The event that fires when a response is sent

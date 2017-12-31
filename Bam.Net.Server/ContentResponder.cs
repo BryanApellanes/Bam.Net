@@ -175,12 +175,12 @@ namespace Bam.Net.Server
         {
             string etag = content.Sha1();
             response.AddHeader("ETag", etag);
-            ResponseCache.Etag.AddOrUpdate(path, etag, (p, v) => etag);
+            Etags.Values.AddOrUpdate(path, etag, (p, v) => etag);
         }
         protected void SetLastModified(IResponse response, string path, DateTime lastModified)
         {
             response.AddHeader("Last-Modified", lastModified.ToUniversalTime().ToString("r"));
-            ResponseCache.LastModified.AddOrUpdate(path, lastModified, (p, v) => lastModified);
+            Etags.LastModified.AddOrUpdate(path, lastModified, (p, v) => lastModified);
         }
         protected bool CheckResponseCache(IHttpContext context)
         {
@@ -190,7 +190,7 @@ namespace Bam.Net.Server
             string etag = request.Headers["If-None-Match"];
             if (!string.IsNullOrEmpty(etag))
             {
-                if (ResponseCache.Etag.ContainsKey(path) && ResponseCache.Etag[path].Equals(etag))
+                if (Etags.Values.ContainsKey(path) && Etags.Values[path].Equals(etag))
                 {
                     response.StatusCode = 304;
                     response.Close();
@@ -198,10 +198,10 @@ namespace Bam.Net.Server
                 }
             }
             string lastModifiedString = request.Headers["If-Modified-Since"];
-            if (!string.IsNullOrEmpty(lastModifiedString) && ResponseCache.LastModified.ContainsKey(path))
+            if (!string.IsNullOrEmpty(lastModifiedString) && Etags.LastModified.ContainsKey(path))
             {
                 DateTime modifiedSince = DateTime.Parse(lastModifiedString);
-                if (ResponseCache.LastModified[path] > modifiedSince)
+                if (Etags.LastModified[path] > modifiedSince)
                 {
                     response.StatusCode = 304;
                     response.Close();

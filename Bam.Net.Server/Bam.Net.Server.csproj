@@ -116,7 +116,7 @@
     <Compile Include="AppInitializerBase.cs" />
     <Compile Include="Bam.cs" />
     <Compile Include="BamController.cs" />
-    <Compile Include="ResponseCache.cs" />
+    <Compile Include="Etags.cs" />
     <Compile Include="Streaming\StreamingClient.cs" />
     <Compile Include="Streaming\StreamingRequest.cs" />
     <Compile Include="Streaming\StreamingResponse.cs" />
