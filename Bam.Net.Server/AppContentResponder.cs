@@ -15,6 +15,7 @@ using Bam.Net.UserAccounts.Data;
 using Yahoo.Yui.Compressor;
 using Bam.Net.Presentation;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Bam.Net.Server
 {
@@ -144,6 +145,10 @@ namespace Bam.Net.Server
             checkedPaths = new string[] { };
             try
             {
+                if (CheckResponseCache(context))
+                {
+                    return true;
+                }
                 IRequest request = context.Request;
                 IResponse response = context.Response;
                 string path = request.Url.AbsolutePath;
@@ -194,12 +199,14 @@ namespace Bam.Net.Server
                     {
                         content = File.ReadAllBytes(locatedPath);
                     }
+                    SetLastModified(response, request.Url.ToString(), new FileInfo(locatedPath).LastWriteTime);
                 }
 
                 if (result)
                 {
                     SetContentType(response, path);
                     SetContentDisposition(response, path);
+                    SetEtag(response, path, content);
                     SendResponse(response, content);
                     OnResponded(context);
                 }
@@ -216,6 +223,7 @@ namespace Bam.Net.Server
                 return false;
             }
         }
+
 
         [Verbosity(LogEventType.Information)]
         public event EventHandler FileUploading;

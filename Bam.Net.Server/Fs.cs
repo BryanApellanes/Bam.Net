@@ -210,11 +210,11 @@ namespace Bam.Net.Server
 			return FileExists(relativePath, out ignore);
 		}
 
-        public bool FileExists(string relativePath, out string absolutPath)
+        public bool FileExists(string relativePath, out string absolutePath)
         {
             relativePath = EnsureRelative(relativePath);
-			absolutPath = GetAbsolutePath(relativePath);
-            return File.Exists(absolutPath);
+			absolutePath = GetAbsolutePath(relativePath);
+            return File.Exists(absolutePath);
         }
 
         /// <summary>
