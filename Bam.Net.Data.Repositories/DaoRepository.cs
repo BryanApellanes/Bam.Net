@@ -588,6 +588,12 @@ namespace Bam.Net.Data.Repositories
         {
             return Top(count, typeof(T), query).CopyAs<T>();
         }
+
+        public IEnumerable<T> Top<T>(int count, QueryFilter query, string sortByColumn, SortOrder sortOrder) where T : new()
+        {
+            return Top(count, typeof(T), query, sortByColumn, sortOrder).CopyAs<T>();
+        }
+
         public IEnumerable Top(int count, Type pocoType, QueryFilter query)
         {
             return Top(count, pocoType, query, null, SortOrder.Ascending, WrapByDefault);
