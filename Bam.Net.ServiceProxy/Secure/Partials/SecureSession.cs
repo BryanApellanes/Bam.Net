@@ -28,15 +28,19 @@ using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Crypto.Engines;
 using Bam.Net.Web;
 using Bam.Net.Logging;
+using System.Collections.Concurrent;
 
 namespace Bam.Net.ServiceProxy.Secure
 {
     public partial class SecureSession
     {
+        static ConcurrentDictionary<string, SecureSession> _secureSessions;
         static SecureSession()
         {
-            DefaultKeySize = RsaKeyLength._1024;
+            DefaultKeySize = RsaKeyLength._1024; // TODO: change this to 2048 without breaking clients
+            _secureSessions = new ConcurrentDictionary<string, SecureSession>();
         }
+
         public static RsaKeyLength DefaultKeySize
         {
             get;
@@ -152,7 +156,7 @@ namespace Bam.Net.ServiceProxy.Secure
             Args.ThrowIfNull(sessionIdentifier, CookieName);
             return Get(sessionIdentifier, instant);
         }
-
+        
         /// <summary>
         /// Gets a SecureSession with the specified sessionIdentifier creating it
         /// if necessary
@@ -161,10 +165,19 @@ namespace Bam.Net.ServiceProxy.Secure
         /// <returns></returns>
         public static SecureSession Get(string sessionIdentifier, Instant instant = null)
         {
-            SecureSession result = SecureSession.OneWhere(c => c.Identifier == sessionIdentifier);
-            if (result == null)
+            SecureSession result = null;
+            if (_secureSessions.ContainsKey(sessionIdentifier))
             {
-                result = CreateSession(sessionIdentifier, instant);
+                result = _secureSessions[sessionIdentifier];
+            }
+            else
+            {
+                result = OneWhere(c => c.Identifier == sessionIdentifier);                
+                if (result == null)
+                {
+                    result = CreateSession(sessionIdentifier, instant);
+                }
+                _secureSessions.TryAdd(sessionIdentifier, result);
             }
 
             return result;
