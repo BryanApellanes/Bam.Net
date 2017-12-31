@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.ServiceProxy
 {
-    public interface IApplicationNameResolver: IApplicationNameProvider // TODO: move this to Bam.Net
+    public interface IApplicationNameResolver: IApplicationNameProvider 
     {
         string ResolveApplicationName(IHttpContext context);
     }
