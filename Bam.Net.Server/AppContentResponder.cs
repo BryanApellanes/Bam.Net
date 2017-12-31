@@ -145,7 +145,7 @@ namespace Bam.Net.Server
             checkedPaths = new string[] { };
             try
             {
-                if (CheckResponseCache(context))
+                if (CheckEtags(context))
                 {
                     return true;
                 }

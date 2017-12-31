@@ -182,7 +182,7 @@ namespace Bam.Net.Server
             response.AddHeader("Last-Modified", lastModified.ToUniversalTime().ToString("r"));
             Etags.LastModified.AddOrUpdate(path, lastModified, (p, v) => lastModified);
         }
-        protected bool CheckResponseCache(IHttpContext context)
+        protected bool CheckEtags(IHttpContext context)
         {
             IRequest request = context.Request;
             IResponse response = context.Response;
@@ -437,7 +437,7 @@ namespace Bam.Net.Server
         {
             try
             {
-                if (CheckResponseCache(context))
+                if (CheckEtags(context))
                 {
                     return true;
                 }

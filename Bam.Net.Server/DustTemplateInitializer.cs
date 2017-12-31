@@ -20,7 +20,7 @@ namespace Bam.Net.Server
     /// Class used to initialize dust templates for all 
     /// Dao components
     /// </summary>
-    public class DustTemplateInitializer: TemplateInitializerBase
+    public class DustTemplateInitializer: TemplateInitializer
     {
         public DustTemplateInitializer(BamServer server) : base(server) { }
 

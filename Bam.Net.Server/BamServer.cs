@@ -41,7 +41,7 @@ namespace Bam.Net.Server
         {
             _responders = new HashSet<IResponder>();
             _respondersByName = new Dictionary<string, IResponder>();
-            Initialized += HandleInitialization;
+            Initialized += PostInitializationHandler;
             SetConf(conf);
             BindEventListeners(conf);
             EnableDao = true;
@@ -51,7 +51,7 @@ namespace Bam.Net.Server
 
             AppDomain.CurrentDomain.DomainUnload += (s, a) =>
             {
-                this.Stop();
+                Stop();
             };
         }
         
@@ -148,35 +148,7 @@ namespace Bam.Net.Server
             binder.Bind();
         }
 
-        TemplateInitializerBase _templateInitializer;
-        object _templateInitializerLock = new object();
-        // The initializer used to initialize templates 
-        // after full server initialization
-        public TemplateInitializerBase TemplateInitializer
-        {
-            get
-            {
-                return _templateInitializerLock.DoubleCheckLock(ref _templateInitializer, () => new DustTemplateInitializer(this));
-            }
-            set
-            {
-                _templateInitializer = value;
-            }
-        }
-
-        WebBookInitializer _webBookInitializer;
-        object _webBookInitializerLock = new object();
-        public WebBookInitializer WebBookInitializer
-        {
-            get
-            {
-                return _webBookInitializerLock.DoubleCheckLock(ref _webBookInitializer, () => new WebBookInitializer(this));
-            }
-            set
-            {
-                _webBookInitializer = value;
-            }
-        }
+        public PostServerInitializationHandler PostInitializationHandler { get; set; }
 
         public bool IsInitialized
         {
@@ -192,49 +164,31 @@ namespace Bam.Net.Server
 
         protected void OnInitializing()
         {
-            if (Initializing != null)
-            {
-                Initializing(this);
-            }
+            Initializing?.Invoke(this);
         }
 
         protected void OnInitialized()
         {
-            if (Initialized != null)
-            {
-                Initialized(this);
-            }
+            Initialized?.Invoke(this);
         }
 
         protected void OnSchemasInitializing()
         {
-            if (SchemasInitializing != null)
-            {
-                SchemasInitializing(this);
-            }
+            SchemasInitializing?.Invoke(this);
         }
 
         protected void OnSchemasInitialized()
         {
-            if (SchemasInitialized != null)
-            {
-                SchemasInitialized(this);
-            }
+            SchemasInitialized?.Invoke(this);
         }
 
         protected void OnSchemaInitializing(SchemaInitializer initializer)
         {
-            if (SchemaInitializing != null)
-            {
-                SchemaInitializing(this, initializer);
-            }
+            SchemaInitializing?.Invoke(this, initializer);
         }
         protected void OnSchemaInitialized(SchemaInitializer initializer)
         {
-            if (SchemaInitialized != null)
-            {
-                SchemaInitialized(this, initializer);
-            }
+            SchemaInitialized?.Invoke(this, initializer);
         }
 
         public virtual void Initialize()
@@ -338,8 +292,7 @@ namespace Bam.Net.Server
             SchemaInitializers.Each(schemaInitializer =>
             {
                 OnSchemaInitializing(schemaInitializer);
-                Exception ex;
-                if (!schemaInitializer.Initialize(MainLogger, out ex))
+                if (!schemaInitializer.Initialize(MainLogger, out Exception ex))
                 {
                     MainLogger.AddEntry("An error occurred initializing schema ({0}): {1}", ex, schemaInitializer.SchemaName, ex.Message);
                 }
@@ -1340,19 +1293,20 @@ namespace Bam.Net.Server
                     Args.GetMessageAndStackTrace(ex));
         }
 
-        private void HandleInitialization(BamServer server)
+        private void PostInitializationHandler(BamServer server)
         {
+            PostInitializationHandler = new PostServerInitializationHandler();
             if (server.InitializeTemplates)
             {
-                TemplateInitializer.Subscribe(MainLogger);
-                TemplateInitializer.Initialize();
+                PostInitializationHandler.InitializationHandlers.Add(new DustTemplateInitializer(this));
             }
 
             if (server.InitializeWebBooks)
             {
-                WebBookInitializer.Subscribe(MainLogger);
-                WebBookInitializer.Initialize();
+                PostInitializationHandler.InitializationHandlers.Add(new WebBookInitializer(this));
             }
+
+            PostInitializationHandler.HandleInitialization(this);
 
             this.IsInitialized = true;
         }
@@ -1385,8 +1339,7 @@ namespace Bam.Net.Server
         {
             ServiceProxyResponder.CommonServiceAdded += (t, o) =>
             {
-                IGeneratesDaoAssembly daoGen = o as IGeneratesDaoAssembly;
-                if (daoGen != null)
+                if (o is IGeneratesDaoAssembly daoGen)
                 {
                     daoGen.GenerateDaoAssemblySucceeded += (io, a) =>
                     {

@@ -116,7 +116,10 @@
     <Compile Include="AppInitializerBase.cs" />
     <Compile Include="Bam.cs" />
     <Compile Include="BamController.cs" />
+    <Compile Include="IPostServerInitialize.cs" />
+    <Compile Include="PostServerInitializationHandler.cs" />
     <Compile Include="Etags.cs" />
+    <Compile Include="IPostServerInitializationHandler.cs" />
     <Compile Include="Streaming\StreamingClient.cs" />
     <Compile Include="Streaming\StreamingRequest.cs" />
     <Compile Include="Streaming\StreamingResponse.cs" />
@@ -215,7 +218,7 @@
     <Compile Include="ResultBase.cs" />
     <Compile Include="DaoResponder.cs" />
     <Compile Include="Streaming\StreamingContext.cs" />
-    <Compile Include="TemplateInitializerBase.cs" />
+    <Compile Include="TemplateInitializer.cs" />
     <Compile Include="UriApplicationNameResolver.cs" />
     <Compile Include="WebBook.cs" />
     <Compile Include="WebBookEventArgs.cs" />

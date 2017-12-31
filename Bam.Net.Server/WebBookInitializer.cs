@@ -11,29 +11,27 @@ using CsQuery;
 
 namespace Bam.Net.Server
 {
-    public class WebBookInitializer : Loggable, IInitialize<WebBookInitializer>
+    public class WebBookInitializer : Loggable, IInitialize<WebBookInitializer>, IPostServerInitialize
     {
         public WebBookInitializer(BamServer server)
         {
             this.Server = server;
         }
 
-        public BamServer Server { get; private set; }
+        public BamServer Server
+        {
+            get; set;
+        }
+
         public event Action<WebBookInitializer> Initializing;
         protected void OnInitializing()
         {
-            if (Initializing != null)
-            {
-                Initializing(this);
-            }
+            Initializing?.Invoke(this);
         }
         public event Action<WebBookInitializer> Initialized;
         protected void OnInitialized()
         {
-            if (Initialized != null)
-            {
-                Initialized(this);
-            }
+            Initialized?.Invoke(this);
         }
 
       [Verbosity(LogEventType.Information, MessageFormat="WebBookInitializer:: {AppName} initializ(ING)")]
