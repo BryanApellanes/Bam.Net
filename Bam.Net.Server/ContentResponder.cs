@@ -193,7 +193,6 @@ namespace Bam.Net.Server
                 if (Etags.Values.ContainsKey(path) && Etags.Values[path].Equals(etag))
                 {
                     response.StatusCode = 304;
-                    response.Close();
                     return true;
                 }
             }
@@ -204,7 +203,6 @@ namespace Bam.Net.Server
                 if (Etags.LastModified[path] > modifiedSince)
                 {
                     response.StatusCode = 304;
-                    response.Close();
                     return true;
                 }
             }
