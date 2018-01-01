@@ -33,7 +33,7 @@ namespace Bam.Net.Services.Clients
 
         private static ServiceRegistry Create()
         {
-            string contentRoot = DefaultConfiguration.GetAppSetting("ContentRoot", "c:\\tvg\\gloo");
+            string contentRoot = DefaultConfiguration.GetAppSetting("ContentRoot", "c:\\bam\\content");
             string organization = DefaultConfiguration.GetAppSetting("Organization", "PUBLIC");
             string applicationName = DefaultConfiguration.GetAppSetting("ApplicationName", "UNKNOWN");
             string databasesPath = Path.Combine(contentRoot, "Databases");

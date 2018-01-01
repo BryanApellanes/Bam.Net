@@ -15,6 +15,7 @@ using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.UserAccounts;
 using Bam.Net.Web;
 using U = Bam.Net.UserAccounts.Data;
+using Bam.Net.CoreServices.Diagnostic;
 
 namespace Bam.Net.CoreServices
 {
@@ -24,7 +25,7 @@ namespace Bam.Net.CoreServices
     /// and Data tracking
     /// </summary>
     [Encrypt]
-    public abstract class ProxyableService: Loggable, IRequiresHttpContext
+    public abstract class ProxyableService: Loggable, IRequiresHttpContext, IDiagnosable
     {
         protected ProxyableService()
         {
@@ -33,12 +34,14 @@ namespace Bam.Net.CoreServices
             Logger = Log.Default;
             Repository = new DaoRepository();
             RepositoryResolver = new DefaultRepositoryResolver(Repository);
+            DiagnosticName = GetType().Name;
         }
         public ProxyableService(ApplicationRepositoryResolver repoResolver, AppConf appConf)
         {
             AppConf = appConf;
             RepositoryResolver = repoResolver;
             Logger = appConf?.Logger ?? Log.Default;
+            DiagnosticName = GetType().Name;
         }
         public ProxyableService(DaoRepository repository, AppConf appConf, IRepositoryResolver repositoryResolver = null)
         {
@@ -47,6 +50,7 @@ namespace Bam.Net.CoreServices
             Repository = repository;
             Logger = appConf?.Logger ?? Log.Default;
             RepositoryResolver = repositoryResolver ?? new DefaultRepositoryResolver(repository);
+            DiagnosticName = GetType().Name;
         }
 
         public ProxyableService(IRepository genericRepo, DaoRepository daoRepo, AppConf appConf) : this(daoRepo, appConf)
@@ -57,6 +61,7 @@ namespace Bam.Net.CoreServices
 
         public IDatabaseProvider DatabaseProvider { get; set; }
         public IRepositoryResolver RepositoryResolver { get; set; }
+        
         public string UserName
         {
             get
@@ -140,21 +145,6 @@ namespace Bam.Net.CoreServices
             {
                 string fromHeader = HttpContext?.Request?.Headers[Headers.ApplicationName];
                 return fromHeader.Or(ApplicationRegistration.Data.Application.Unknown.Name);
-            }
-        }
-
-        ClientApplicationNameResolver _clientApplicationNameResolver;
-        object _clientApplicationNameResolverLock = new object();
-        [Local]
-        public virtual ClientApplicationNameResolver ClientApplicationNameResolver
-        {
-            get
-            {
-                return null;//_clientApplicationNameProviderLock.DoubleCheckLock(ref _clientApplicationNameProvider, () => ApplicationNameProvider.Default);
-            }
-            set
-            {
-                _clientApplicationNameResolver = value;
             }
         }
 
@@ -330,6 +320,29 @@ namespace Bam.Net.CoreServices
             UserManager copy = (UserManager)_userManager.Clone();
             copy.HttpContext = HttpContext;
             return copy;
+        }
+
+        public string DiagnosticName
+        {
+            get;set;
+        }
+
+        [RoleRequired("/", "Admin", "Diagnoser")]
+        public virtual Dictionary<string, string> GetSettings()
+        {
+            object userDatabase = UserManager?.Property("Database", false);
+
+            Dictionary<string, string> settings = new Dictionary<string, string>();
+            settings.Add("DiagnosticName", DiagnosticName);
+            settings.Add("UserManager.Database.ConnectionName", userDatabase?.Property<string>("ConnectionName"));
+            settings.Add("UserManager.Database.ConnectionString", userDatabase?.Property<string>("ConnectionString"));
+            settings.Add("ApplicationName", ApplicationName);
+            settings.Add("ProcessMode", ProcessMode.Current.ToString());
+            settings.Add("AppConfJson", AppConf.ToJson(true));
+            settings.Add("DaoRepository.Database.ConnectionName", DaoRepository?.Database?.Property<string>("ConnectionName"));
+            settings.Add("DaoRepository.Database.ConnectionString", DaoRepository?.Database?.Property<string>("ConnectionString"));
+            settings.Add("IRepository.StorableTypes", string.Join("\r\n", Repository?.StorableTypes.Select(t => t.FullName).ToArray()));
+            return settings;
         }
     }
 }

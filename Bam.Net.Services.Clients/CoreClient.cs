@@ -360,6 +360,7 @@ namespace Bam.Net.Services.Clients
         protected internal ConfigurationService ConfigurationService { get; set; }
         protected internal SystemLoggerService LoggerService { get; set; }
         protected internal DiagnosticService DiagnosticService { get; set; }
+        protected internal ServiceRegistryService ServiceRegistryService { get; set; }
 
         /// <summary>
         /// Each of the Core service proxies
@@ -373,7 +374,8 @@ namespace Bam.Net.Services.Clients
                 yield return ConfigurationService;
                 yield return LoggerService;
                 yield return RoleService;
-                yield return DiagnosticService;                
+                yield return DiagnosticService;
+                yield return ServiceRegistryService;
             }
         }
 
@@ -408,6 +410,7 @@ namespace Bam.Net.Services.Clients
             UserRegistryService = ProxyFactory.GetProxy<UserRegistryService>(HostName, Port);
             RoleService = ProxyFactory.GetProxy<RoleService>(HostName, Port);
             OAuthService = ProxyFactory.GetProxy<OAuthService>(HostName, Port);
+            ServiceRegistryService = ProxyFactory.GetProxy<ServiceRegistryService>(HostName, Port);
         }
 
         private void SetLocalServiceProxies()
@@ -419,6 +422,7 @@ namespace Bam.Net.Services.Clients
             UserRegistryService = ProxyFactory.GetProxy<UserRegistryService>();
             RoleService = ProxyFactory.GetProxy<RoleService>();
             OAuthService = ProxyFactory.GetProxy<OAuthService>();
+            ServiceRegistryService = ProxyFactory.GetProxy<ServiceRegistryService>();
         }
 
         private void WireInvocationEventHandlers()

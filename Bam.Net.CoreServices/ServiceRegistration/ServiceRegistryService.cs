@@ -27,7 +27,7 @@ namespace Bam.Net.CoreServices
     [ApiKeyRequired]
     [Proxy("serviceRegistrySvc")]
     [ServiceSubdomain("svcregistry")]
-    public class ServiceRegistryService : ProxyableService
+    public class ServiceRegistryService : ApplicationProxyableService
     {
         public ServiceRegistryService(
             IFileService fileservice, 

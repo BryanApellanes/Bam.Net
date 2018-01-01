@@ -4,14 +4,17 @@ using System.Linq;
 using Bam.Net.Data;
 using Bam.Net.ServiceProxy;
 using Bam.Net.CoreServices.ApplicationRegistration.Data;
+using Bam.Net.CoreServices.Diagnostic;
 
 namespace Bam.Net.CoreServices
 {
     [Serializable]
     public class DiagnosticInfo
     {
-        public DiagnosticInfo()
+        public DiagnosticInfo(ServiceRegistry registry = null)
         {
+            ServiceRegistry = registry;
+
             SetAssemblies();
 
             SetDatabases();
@@ -20,9 +23,13 @@ namespace Bam.Net.CoreServices
 
             SetServiceProxies();
 
-            this.AppDiagInfo = new ApplicationDiagnosticInfo();
+            SetDiagnosableSettings();
+
+            AppDiagInfo = new ApplicationDiagnosticInfo();
         }
-        
+
+        protected ServiceRegistry ServiceRegistry { get; set; }
+
         public ProcessDescriptor ProcessDescriptor
         {
             get
@@ -59,6 +66,28 @@ namespace Bam.Net.CoreServices
         {
             get;
             set;
+        }
+
+        public DiagnosableSettings[] DiagnosableSettings
+        {
+            get;
+            set;
+        }
+
+        private void SetDiagnosableSettings()
+        {
+            List<DiagnosableSettings> settings = new List<CoreServices.DiagnosableSettings>();
+            if (ServiceRegistry != null)
+            {                
+                foreach(string className in ServiceRegistry.ClassNames)
+                {
+                    if( ServiceRegistry.Get(className) is IDiagnosable diagnosable)
+                    {
+                        settings.Add(new DiagnosableSettings(diagnosable));
+                    }
+                }
+            }
+            DiagnosableSettings = settings.ToArray();
         }
 
         private void SetServiceProxies()

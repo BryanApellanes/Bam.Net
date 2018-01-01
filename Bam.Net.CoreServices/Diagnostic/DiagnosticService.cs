@@ -10,10 +10,14 @@ namespace Bam.Net.CoreServices
     public class DiagnosticService: ApplicationProxyableService 
     {
         protected DiagnosticService() { } // required for client proxy generation via ProxyFactory
-        public DiagnosticService(AppConf conf)
+        public DiagnosticService(AppConf conf, ServiceRegistry registry = null)
         {
             AppConf = conf;
+            ServiceRegistry = registry;
         }
+
+        public ServiceRegistry ServiceRegistry { get; set; }
+
         [RoleRequired("/", "Admin", "Diagnoser")]
         public virtual DiagnosticInfo GetDiagnosticInfo()
         {
@@ -23,7 +27,7 @@ namespace Bam.Net.CoreServices
         [Exclude]
         public override object Clone()
         {
-            DiagnosticService clone = new DiagnosticService(AppConf);
+            DiagnosticService clone = new DiagnosticService(AppConf, ServiceRegistry);
             clone.CopyProperties(this);
             clone.CopyEventHandlers(this);
             return clone;

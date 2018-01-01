@@ -12,6 +12,10 @@ namespace Bam.Net.Server
     /// </summary>
     public class PostServerInitializationHandler : IPostServerInitializationHandler
     {
+        public PostServerInitializationHandler()
+        {
+            InitializationHandlers = new List<IPostServerInitialize>();
+        }
         public List<IPostServerInitialize> InitializationHandlers { get; set; }
         public void HandleInitialization(BamServer server)
         {
