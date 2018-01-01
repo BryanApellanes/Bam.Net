@@ -79,20 +79,20 @@ namespace Bam.Net.UserAccounts.Data
                 else
                 {
                     session = OneWhere(c => c.Identifier == identifier, db);
-                    if (session == null)
-                    {
-                        session = Create(response, identifier, true, db);
-                    }
-                    else
-                    {
-                        Task.Run(() =>
-                        {
-                            session.LastActivity = DateTime.UtcNow;
-                            session.Save(db);
-                        });
-                    }
-                    _sessions.TryAdd(identifier, session);
                 }
+            }
+            if (session == null)
+            {
+                session = Create(response, identifier, true, db);
+                _sessions.TryAdd(identifier, session);
+            }
+            else
+            {
+                Task.Run(() =>
+                {
+                    session.LastActivity = DateTime.UtcNow;
+                    session.Save(db);
+                });
             }
             
             return session;
