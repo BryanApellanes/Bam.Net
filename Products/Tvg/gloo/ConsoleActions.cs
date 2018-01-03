@@ -25,8 +25,8 @@ namespace Bam.Net.Application
     {
         static string contentRootConfigKey = "ContentRoot";
         static string defaultContentRoot = "C:\\bam\\content";
-        static string defaultGlooScriptsSrcPath = "C:\\bam\\gloo\\scripts";
-        static string csGlooBin = "C:\\bam\\gloo\\bin";
+        static string defaultGlooScriptsSrcPath = "C:\\bam\\sys\\gloo\\scripts";
+        static string csGlooBin = "C:\\bam\\sys\\gloo\\bin";
 
         static GlooServer glooServer;
         
@@ -124,6 +124,7 @@ namespace Bam.Net.Application
                                 Type type = GetType(assembly, className);
                                 if(type == null)
                                 {
+                                    Thread.Sleep(300);
                                     OutLineFormat("Specified class was not found in the current assembly: {0}", assembly.FullName);
                                 }
                                 else
@@ -131,21 +132,19 @@ namespace Bam.Net.Application
                                     registry.AddService(type, type);
                                 }
                             }
+                            Thread.Sleep(300);
                             className = Prompt("Enter the name of a class to add to the service registry (leave blank to finish)");
                         }
                     }
                 }
+                Thread.Sleep(300);
                 assemblyPath = Prompt("Enter the path to an assembly file containing service types (leave blank to finish)");
             }
             string registryName = Prompt("Enter a name for the registry");
             string path = Path.Combine(sysData.FullName, $"{registryName}.json");
+            registry.Name = registryName;
             registry.Save(repo);
-            registry.Services.Select(sd=> new {
-                ForTypeDurableHash = sd.ForTypeDurableHash,
-                ForTypeDurableSecondaryHash  = sd.ForTypeDurableSecondaryHash,
-                UseTypeDurableHash = sd.UseTypeDurableHash,
-                UseTypeDurableSecondaryHash = sd.UseTypeDurableSecondaryHash
-            }).ToJsonFile(path);            
+            registry.Services.ToJsonFile(path);           
         }
 
         [ConsoleAction("csgloo", "Start the gloo server serving the compiled results of the specified csgloo files")]

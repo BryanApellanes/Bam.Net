@@ -29,6 +29,7 @@ namespace Bam.Net.CoreServices
     [ServiceSubdomain("svcregistry")]
     public class ServiceRegistryService : ApplicationProxyableService
     {
+        protected ServiceRegistryService() { }
         public ServiceRegistryService(
             IFileService fileservice, 
             IAssemblyService assemblyService, 
@@ -199,14 +200,14 @@ namespace Bam.Net.CoreServices
         [RoleRequired("/", "Admin")]
         public virtual ServiceRegistryDescriptor GetServiceRegistryDescriptor(string name)
         {            
-            Dictionary<string, Func<FileInfo, List<ServiceDescriptor>>> deserializers = new Dictionary<string, Func<FileInfo, List<ServiceDescriptor>>>
+            Dictionary<string, Func<FileInfo, ServiceDescriptor[]>> deserializers = new Dictionary<string, Func<FileInfo, ServiceDescriptor[]>>
             {
-                {".json", (fi)=> fi.FromJsonFile<List<ServiceDescriptor>>() },
-                {".yml", (fi)=> fi.FromYamlFile<List<ServiceDescriptor>>() }
+                {".json", (fi)=> fi.FromJsonFile<ServiceDescriptor[]>() },
+                {".yml", (fi)=> fi.FromYamlFile<ServiceDescriptor[]>() }
             };
             DirectoryInfo systemServiceRegistryDir = DataSettings.GetSysDataDirectory(nameof(ServiceRegistry).Pluralize());
             ServiceRegistryDescriptor fromFile = new ServiceRegistryDescriptor { Name = name };
-            List<ServiceDescriptor> descriptors = new List<ServiceDescriptor>();
+            ServiceDescriptor[] descriptors = new ServiceDescriptor[] { };
             FileInfo file = null;
             foreach(string extension in new[] { ".yml", ".json" })
             {
@@ -214,7 +215,7 @@ namespace Bam.Net.CoreServices
                 if (File.Exists(path))
                 {
                     file = new FileInfo(path);
-                    fromFile.Services = deserializers[extension](file);
+                    fromFile.Services = deserializers[extension](file).ToList();
                     break;
                 }
             }
