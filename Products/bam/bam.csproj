@@ -72,7 +72,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ManagementActions.cs" />
-    <Compile Include="SystemActions.cs" />
     <Compile Include="UserInfo.cs" />
     <Compile Include="UtilityActions.cs" />
   </ItemGroup>

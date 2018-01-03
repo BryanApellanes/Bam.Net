@@ -8,6 +8,8 @@ namespace Bam.Net.Automation
 {
     public class BamAppManifest
     {
+        public string AppName { get; set; }
+        public string[] DirectoryNames { get; set; }
         /// <summary>
         /// The names of all the files required for the 
         /// current Bam Application without path information
