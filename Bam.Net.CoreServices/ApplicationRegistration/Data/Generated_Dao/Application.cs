@@ -929,6 +929,25 @@ namespace Bam.Net.CoreServices.ApplicationRegistration.Data.Dao
 			return results;
 		}
 
+		[Bam.Net.Exclude]
+		public static ApplicationCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<Application>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<Application>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<ApplicationCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
 		/// <summary>
 		/// Execute a query and return the specified number of values.  This method
 		/// will issue a sql TOP clause so only the specified number of values
