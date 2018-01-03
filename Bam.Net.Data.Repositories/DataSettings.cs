@@ -127,6 +127,11 @@ namespace Bam.Net.Data.Repositories
             return new DirectoryInfo(Path.Combine(GetAppDataDirectory(appNameProvider).FullName, subDirectory));
         }
 
+        public IRepository GetSysRepository()
+        {
+            return new ObjectRepository(GetSysRepositoryDirectory().FullName);
+        }
+
         public DirectoryInfo GetSysRepositoryDirectory()
         {
             return GetSysDataDirectory(RepositoryDirectory);
