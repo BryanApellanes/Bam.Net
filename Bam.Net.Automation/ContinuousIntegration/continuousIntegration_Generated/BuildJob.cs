@@ -665,6 +665,25 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 			return results;
 		}
 
+		[Bam.Net.Exclude]
+		public static BuildJobCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<BuildJob>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<BuildJob>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<BuildJobCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
 		/// <summary>
 		/// Execute a query and return the specified number of values.  This method
 		/// will issue a sql TOP clause so only the specified number of values
