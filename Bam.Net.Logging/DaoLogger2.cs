@@ -43,16 +43,18 @@ namespace Bam.Net.Logging
 			ComputerName computer = GetComputer(logEvent, Database);
 			Signature signature = GetSignature(logEvent, Database);
 
-            Event instance = new Event();
-            instance.SignatureId = signature.Id;
-            instance.ComputerNameId = computer.Id;
-            instance.CategoryNameId = category.Id;
-            instance.SourceNameId = source.Id;
-            instance.UserNameId = user.Id;
-            instance.EventId = logEvent.EventID;
-            instance.Time = logEvent.Time;
-            instance.Severity = (int)logEvent.Severity;
-			instance.Save(Database);
+            Event instance = new Event()
+            {
+                SignatureId = signature.Id,
+                ComputerNameId = computer.Id,
+                CategoryNameId = category.Id,
+                SourceNameId = source.Id,
+                UserNameId = user.Id,
+                EventId = logEvent.EventID,
+                Time = logEvent.Time,
+                Severity = (int)logEvent.Severity
+            };
+            instance.Save(Database);
             logEvent.MessageVariableValues.Each((val, pos)=>
             {
                 Param p = instance.Params.AddNew();
@@ -67,9 +69,11 @@ namespace Bam.Net.Logging
             Signature signature = Signature.OneWhere(sc => sc.Value == logEvent.MessageSignature, db);
             if (signature == null)
             {
-                signature = new Signature();
-                signature.Value = logEvent.MessageSignature;
-				signature.Save(db);
+                signature = new Signature()
+                {
+                    Value = logEvent.MessageSignature
+                };
+                signature.Save(db);
             }
             return signature;
         }
@@ -79,9 +83,11 @@ namespace Bam.Net.Logging
             ComputerName computer = ComputerName.OneWhere(cc => cc.Value == logEvent.Computer, db);
             if (computer == null)
             {
-                computer = new ComputerName();
-                computer.Value = logEvent.Computer;
-				computer.Save(db);
+                computer = new ComputerName()
+                {
+                    Value = logEvent.Computer
+                };
+                computer.Save(db);
             }
             return computer;
         }
@@ -91,9 +97,11 @@ namespace Bam.Net.Logging
             UserName user = UserName.OneWhere(uc => uc.Value == logEvent.User, db);
             if (user == null)
             {
-                user = new UserName();
-                user.Value = logEvent.User;
-				user.Save(db);
+                user = new UserName()
+                {
+                    Value = logEvent.User
+                };
+                user.Save(db);
             }
             return user;
         }
@@ -103,9 +111,11 @@ namespace Bam.Net.Logging
             CategoryName category = CategoryName.OneWhere(cc => cc.Value == logEvent.Category, db);
             if (category == null)
             {
-                category = new CategoryName();
-                category.Value = logEvent.Category;
-				category.Save(db);
+                category = new CategoryName()
+                {
+                    Value = logEvent.Category
+                };
+                category.Save(db);
             }
             return category;
         }
@@ -115,8 +125,10 @@ namespace Bam.Net.Logging
             SourceName source = SourceName.OneWhere(sc => sc.Value == logEvent.Source, db);
             if (source == null)
             {
-                source = new SourceName();
-                source.Value = logEvent.Source;
+                source = new SourceName()
+                {
+                    Value = logEvent.Source
+                };
                 source.Save(db);
             }
             return source;
