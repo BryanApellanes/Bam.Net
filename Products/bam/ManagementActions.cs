@@ -9,6 +9,7 @@ using Bam.Net.UserAccounts;
 using Bam.Net.Automation;
 using System.IO;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Bam.Net.Application
 {
@@ -71,7 +72,7 @@ namespace Bam.Net.Application
         }
 
         [ConsoleAction("updateFromManifest", "Update the specified system app in c:\\bam\\sys\\{appName}")]
-        public void UpdateSysHeart()
+        public void UpdateSysApp()
         {
             string appName = GetArgument("appName", true, "Please enter the name of the application to update");
             string manifestPath = Path.Combine(BamSysPath, $"{appName}.bamapp.json");
@@ -79,7 +80,8 @@ namespace Bam.Net.Application
             {
                 Warn("Manifest for the specified app was not found");
                 return;
-            }
+            }            
+            Log.AddLogger(new ConsoleLogger { UseColors = true, AddDetails = false, ApplicationName = Assembly.GetEntryAssembly().GetFileInfo().Name });
             string appPath = Path.Combine(BamSysPath, appName);
             BamAppManifest manifest = manifestPath.FromJsonFile<BamAppManifest>();
             DirectoryInfo source = new DirectoryInfo(".");
@@ -92,19 +94,49 @@ namespace Bam.Net.Application
                 {
                     moveTo = $"{appPath}_{File.ReadAllText(commitFile)}";
                 }
+                else
+                {
+                    Log.Warn("Commit file {0} not found", commitFile);
+                }
+                Log.Info("Moving old instance from {0} to {1}", dest.Name, moveTo);
                 dest.MoveTo(moveTo);
             }
+            dest = new DirectoryInfo(appPath);
             foreach(string dirName in manifest.DirectoryNames)
             {
-                DirectoryInfo dir = new DirectoryInfo(Path.Combine(source.FullName, dirName));
-                DirectoryInfo destSubDir = new DirectoryInfo(Path.Combine(dest.FullName, dirName));
-                dir.Copy(dest);                
+                DirectoryInfo srcSubdir = new DirectoryInfo(Path.Combine(source.FullName, dirName));
+                if (srcSubdir.Exists)
+                {
+                    DirectoryInfo destSubDir = new DirectoryInfo(Path.Combine(dest.FullName, dirName));
+                    if (!destSubDir.Parent.Exists)
+                    {
+                        destSubDir.Parent.Create();
+                    }
+                    Log.Info("Copying {0} to {1}", srcSubdir.FullName, destSubDir.FullName);
+                    srcSubdir.Copy(destSubDir.FullName);
+                }
+                else
+                {
+                    Log.Warn("Directory {0} doesn't exist", srcSubdir.FullName);
+                }
             }
             foreach(string fileName in manifest.FileNames)
             {
-                FileInfo file = new FileInfo(Path.Combine(source.FullName, fileName));
-                FileInfo destFile = new FileInfo(Path.Combine(dest.FullName, fileName));
-                file.CopyTo(destFile.FullName);
+                FileInfo srcFile = new FileInfo(Path.Combine(source.FullName, fileName));
+                if (srcFile.Exists)
+                {
+                    FileInfo destFile = new FileInfo(Path.Combine(dest.FullName, fileName));
+                    if (!destFile.Directory.Exists)
+                    {
+                        destFile.Directory.Create();
+                    }
+                    Log.Info("Copying {0} to {1}", srcFile.FullName, destFile.FullName);
+                    srcFile.CopyTo(destFile.FullName);
+                }
+                else
+                {
+                    Log.Warn("File {0} doesn't exist", srcFile.FullName);
+                }
             }
         }
 

@@ -332,16 +332,18 @@ namespace Bam.Net.CoreServices
         {
             object userDatabase = UserManager?.Property("Database", false);
 
-            Dictionary<string, string> settings = new Dictionary<string, string>();
-            settings.Add("DiagnosticName", DiagnosticName);
-            settings.Add("UserManager.Database.ConnectionName", userDatabase?.Property<string>("ConnectionName"));
-            settings.Add("UserManager.Database.ConnectionString", userDatabase?.Property<string>("ConnectionString"));
-            settings.Add("ApplicationName", ApplicationName);
-            settings.Add("ProcessMode", ProcessMode.Current.ToString());
-            settings.Add("AppConfJson", AppConf.ToJson(true));
-            settings.Add("DaoRepository.Database.ConnectionName", DaoRepository?.Database?.Property<string>("ConnectionName"));
-            settings.Add("DaoRepository.Database.ConnectionString", DaoRepository?.Database?.Property<string>("ConnectionString"));
-            settings.Add("IRepository.StorableTypes", string.Join("\r\n", Repository?.StorableTypes.Select(t => t.FullName).ToArray()));
+            Dictionary<string, string> settings = new Dictionary<string, string>
+            {
+                { "DiagnosticName", DiagnosticName },
+                { "UserManager.Database.ConnectionName", userDatabase?.Property<string>("ConnectionName") },
+                { "UserManager.Database.ConnectionString", userDatabase?.Property<string>("ConnectionString") },
+                { "ApplicationName", ApplicationName },
+                { "ProcessMode", ProcessMode.Current.ToString() },
+                { "AppConfJson", AppConf.ToJson(true) },
+                { "DaoRepository.Database.ConnectionName", DaoRepository?.Database?.Property<string>("ConnectionName") },
+                { "DaoRepository.Database.ConnectionString", DaoRepository?.Database?.Property<string>("ConnectionString") },
+                { "IRepository.StorableTypes", string.Join("\r\n", Repository?.StorableTypes.Select(t => t.FullName).ToArray()) }
+            };
             return settings;
         }
     }
