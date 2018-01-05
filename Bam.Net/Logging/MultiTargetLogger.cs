@@ -19,11 +19,11 @@ namespace Bam.Net.Logging
     /// </summary>
     public class MultiTargetLogger: Logger
     {
-        SortedSet<ILogger> _loggers;
+        List<ILogger> _loggers;
         public MultiTargetLogger()
             : base()
         {
-            this._loggers = new SortedSet<ILogger>();
+            this._loggers = new List<ILogger>();
         }
 
         /// <summary>
