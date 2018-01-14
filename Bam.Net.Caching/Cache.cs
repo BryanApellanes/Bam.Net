@@ -73,8 +73,7 @@ namespace Bam.Net.Caching
 
         public CacheItem Retrieve(long id)
         {
-            CacheItem result = null;
-            if(ItemsById.TryGetValue(id, out result))
+            if (ItemsById.TryGetValue(id, out CacheItem result))
             {
                 result.IncrementHits();
             }
