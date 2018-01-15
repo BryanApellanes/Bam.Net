@@ -11,12 +11,27 @@ using System.Collections.Generic;
 using Bam.Net.Automation;
 using Bam.Net.Automation.MSBuild;
 using System.IO.Compression;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using Bam.Net.Configuration;
 
 namespace Bam.Net.Application
 {
     [Serializable]
     public class UtilityActions: CommandLineTestInterface
     {
+        [ConsoleAction("setAppSettings", "Add or set the specified app settings")]
+        public void SetAppSettings()
+        {
+            string json = GetArgument("appSettings", "Please specify the path to appSettings.json file to use");
+            string configPath = GetArgument("configPath", "Please enter the path to the config file to update");
+            JObject j = JObject.Parse(json);
+            foreach(JProperty prop in j.Properties())
+            {
+                DefaultConfiguration.SetAppSetting(configPath, prop.Name, prop.Value.ToString());
+            }
+        }
+
         [ConsoleAction("createBamProjectSrcPackage", "Create a BamProject package from a solution or project")]
         public void CreateBamProjectPackage()
         {

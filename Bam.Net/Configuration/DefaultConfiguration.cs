@@ -348,6 +348,17 @@ namespace Bam.Net.Configuration
             return GetConfig(assembly.Location);
         }
 
+        public static void SetAppSetting(string configPath, string key, string value)
+        {
+            System.Configuration.Configuration config = GetConfig(configPath);
+            if(config.AppSettings.Settings[key] != null)
+            {
+                config.AppSettings.Settings.Remove(key);
+            }
+            config.AppSettings.Settings.Add(key, value);
+            config.Save();
+        }
+
         public static System.Configuration.Configuration GetConfig(string configPath)
         {
             System.Configuration.Configuration config = ConfigurationManager.OpenExeConfiguration(configPath);

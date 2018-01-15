@@ -1635,7 +1635,7 @@ namespace Bam.Net
 
         public static T FromJObject<T>(this JObject jObject)
         {
-            return jObject.ToJson().FromJson<T>();
+            return jObject.ToObject<T>();
         }
 
         public static T FromJObject<T>(this object jObject)
