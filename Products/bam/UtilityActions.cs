@@ -44,6 +44,7 @@ namespace Bam.Net.Application
                 OutLineFormat("Specifed file format not supported: {0}", file.Extension, ConsoleColor.Red);
                 return;
             }
+
             List<string> projectFilePaths = new List<string>();
             if (isProject)
             {
