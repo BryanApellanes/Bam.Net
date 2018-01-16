@@ -21,9 +21,9 @@ namespace Bam.Net.Application
     public class UtilityActions: CommandLineTestInterface
     {
         [ConsoleAction("setAppSettings", "Add or set the specified app settings")]
-        public void SetAppSettings()
+        public static void SetAppSettings()
         {
-            string json = GetArgument("appSettings", "Please specify the path to appSettings.json file to use");
+            string json = GetArgument("setAppSettings", "Please specify the path to appSettings.json file to use");
             string configPath = GetArgument("configPath", "Please enter the path to the config file to update");
             JObject j = JObject.Parse(json);
             foreach(JProperty prop in j.Properties())
@@ -41,7 +41,7 @@ namespace Bam.Net.Application
         }
 
         [ConsoleAction("createBamProjectSrcPackage", "Create a BamProject package from a solution or project")]
-        public void CreateBamProjectPackage()
+        public static void CreateBamProjectPackage()
         {
             string projectOrSolutionPath = GetArgument("projectOrSolution", "Please specify the path to the solution or project file");
             FileInfo file = new FileInfo(projectOrSolutionPath);

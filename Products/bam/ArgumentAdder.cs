@@ -34,7 +34,6 @@ namespace Bam.Net.Application
 
         private static void AddUtilityArguments()
         {
-            AddValidArgument("appSettings", false, description: "appSettings in json to set for a config file");
             AddValidArgument("configPath", false, description: "The path to the config file to set appSettings for");
         }
     }
