@@ -13,6 +13,7 @@ namespace Bam.Net.Application
         {
             AddManagementArguments();
             AddHeartArguments();
+            AddUtilityArguments();
         }
 
         private static void AddHeartArguments()
@@ -29,7 +30,12 @@ namespace Bam.Net.Application
             AddValidArgument("saveTo", false, description: "The zip file to create when packing the toolkit");
             AddValidArgument("appName", false, description: "The name of the app to create when calling /cca (create client app) or /cm (create manifest)");
             AddValidArgument("appDirectory", false, description: "The directory path to create an app manifest for");
+        }
 
+        private static void AddUtilityArguments()
+        {
+            AddValidArgument("appSettings", false, description: "appSettings in json to set for a config file");
+            AddValidArgument("configPath", false, description: "The path to the config file to set appSettings for");
         }
     }
 }

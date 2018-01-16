@@ -28,7 +28,15 @@ namespace Bam.Net.Application
             JObject j = JObject.Parse(json);
             foreach(JProperty prop in j.Properties())
             {
-                DefaultConfiguration.SetAppSetting(configPath, prop.Name, prop.Value.ToString());
+                try
+                {
+                    OutLineFormat("Setting appSetting: {0}={1}", prop.Name, prop.Value.ToString());
+                    DefaultConfiguration.SetAppSetting(configPath, prop.Name, prop.Value.ToString());
+                }
+                catch (Exception ex)
+                {
+                    OutLineFormat("Exception setting appSetting: {0}={1}, {3}", prop.Name, prop.Value, ex.Message);
+                }
             }
         }
 
@@ -41,7 +49,7 @@ namespace Bam.Net.Application
             bool isProject = file.Extension.Equals(".csproj");
             if(!isSolution && !isProject)
             {
-                OutLineFormat("Specifed file format not supported: {0}", file.Extension, ConsoleColor.Red);
+                OutLineFormat("Specified file format not supported: {0}", file.Extension, ConsoleColor.Red);
                 return;
             }
 
