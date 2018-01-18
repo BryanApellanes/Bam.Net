@@ -173,6 +173,69 @@ namespace Bam.Net.CommandLine
         /// </summary>
         protected static event ConsoleArgsParsedDelegate ArgsParsedError;
 
+        /// <summary>
+        /// Try to write the current process id to a file either in the 
+        /// same directory as the main executable or the user's temp 
+        /// directory if that fails.
+        /// </summary>
+        /// <param name="killOldProcess">Try to kill the old process if the pid file already exists</param>
+        public static void TryWritePid(bool killOldProcess = false)
+        {
+            Process process = Process.GetCurrentProcess();
+            FileInfo main = new FileInfo(process.MainModule.FileName);
+            string commandLineArgs = string.Join(" ", Environment.GetCommandLineArgs());
+            string info = $"{process.Id}~{commandLineArgs}";
+            string pidFileName = $"{Path.GetFileNameWithoutExtension(main.Name)}.pid";
+            string pidFilePath = Path.Combine(main.Directory.FullName, pidFileName);
+            try
+            {
+                KillProcess(pidFilePath, commandLineArgs);                
+                info.SafeWriteToFile(pidFilePath);
+                Console.WriteLine("Wrote pid file {0}", pidFilePath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Couldn't write pid file ({0}): {1}", pidFilePath, ex.Message);
+                pidFilePath = Path.Combine(Path.GetTempPath(), pidFileName);
+                Console.WriteLine("Trying {0}", pidFilePath);
+                try
+                {
+                    KillProcess(pidFilePath, commandLineArgs);
+                    info.SafeWriteToFile(pidFilePath);
+                }
+                catch (Exception ex2)
+                {
+                    Console.WriteLine("Couldn't write pid file ({0}): {1}", pidFilePath, ex2.Message);
+                    Console.WriteLine("Giving up");
+                }
+            }
+        }
+
+        private static void KillProcess(string pidFilePath, string commandLineArgs)
+        {
+            if (File.Exists(pidFilePath))
+            {
+                string readInfo = pidFilePath.SafeReadFile();
+                string argsInFile = string.Empty;
+                string pid = readInfo.ReadUntil('~', out argsInFile);
+                if (argsInFile.Equals(commandLineArgs))
+                {
+                    try
+                    {
+                        Process.GetProcessById(int.Parse(pid)).Kill();
+                        Console.WriteLine("Killed old process ({0}) {1}", pid, commandLineArgs);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Exception trying to kill proces ({0}): {1}", pid, ex.Message);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Did NOT kill pid ({0}), command line args didn't match: PidFile={1}, Current={2}", pid, argsInFile, commandLineArgs);
+                }
+            }
+        }
 
         /// <summary>
         /// Checks if the owner of the current process has admin rights,
@@ -504,12 +567,14 @@ File Version: {1}
                 OtherMenus = new List<ConsoleMenu>();
             }
 
-            ConsoleMenu menu = new ConsoleMenu();
-            menu.HeaderText = header;
-            menu.MenuKey = option;
-            menu.MenuWriter = menuDelegate;
-            menu.Name = name;
-            menu.AssemblyToAnalyze = assemblyToAnalyze;
+            ConsoleMenu menu = new ConsoleMenu
+            {
+                HeaderText = header,
+                MenuKey = option,
+                MenuWriter = menuDelegate,
+                Name = name,
+                AssemblyToAnalyze = assemblyToAnalyze
+            };
             AddMenu(menu);
         }
 
@@ -981,16 +1046,33 @@ File Version: {1}
             return Pause(string.Empty);
         }
 
-        protected static char Pause(string message)
+        /// <summary>
+        /// Pause execution waiting for input.  If output is redirected
+        /// then execute "ifOutputRedirected" action instead.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="ifOutputRedirected"></param>
+        /// <returns></returns>
+        protected static char Pause(string message, Action ifOutputRedirected = null)
         {
             if (!string.IsNullOrEmpty(message))
                 Console.WriteLine(message);
 
-            ConsoleKeyInfo keyInfo = Console.ReadKey();
-            if (keyInfo.Key == ConsoleKey.Q)
-                Exit(0);
-
-            return keyInfo.KeyChar;
+            if (!Console.IsOutputRedirected)
+            {
+                ConsoleKeyInfo keyInfo = Console.ReadKey();
+                if (keyInfo.Key == ConsoleKey.Q)
+                {
+                    Exit(0);
+                }
+                return keyInfo.KeyChar;
+            }
+            else
+            {
+                Action action = ifOutputRedirected ?? (() => { });
+                action();
+            }
+            return char.MinValue;
         }
 
         protected internal static object[] GetParameters(MethodInfo method)
@@ -1064,8 +1146,7 @@ File Version: {1}
             bool receivedSwitches = false;
             foreach (MethodInfo method in methods)
             {
-                ConsoleActionAttribute action = null;
-                if (method.HasCustomAttributeOfType<ConsoleActionAttribute>(out action))
+                if (method.HasCustomAttributeOfType(out ConsoleActionAttribute action))
                 {
                     if (!string.IsNullOrEmpty(action.CommandLineSwitch) && !receivedSwitches)
                     {
