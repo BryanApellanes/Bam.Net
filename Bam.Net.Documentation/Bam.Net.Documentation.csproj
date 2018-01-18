@@ -96,10 +96,6 @@
     <Compile Include="Markdown\MethodReferenceDocumentation.cs" />
     <Compile Include="Markdown\ReferenceDocumentation.cs" />
     <Compile Include="Markdown\TypeReferenceDocumentation.cs" />
-    <Compile Include="OpenApi\Data\ApiDocumentation.cs" />
-    <Compile Include="OpenApi\Data\DataType.cs" />
-    <Compile Include="OpenApi\Data\FieldDocumentation.cs" />
-    <Compile Include="OpenApi\Data\ObjectDocumentation.cs" />
     <Compile Include="ParamInfo.cs" />
     <Compile Include="PermissionInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

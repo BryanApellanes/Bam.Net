@@ -110,6 +110,7 @@
     <Compile Include="Data\YamlDataFile.cs" />
     <Compile Include="YamlDeserializationFailure.cs" />
     <Compile Include="Data\YamlRepository.cs" />
+    <Compile Include="YamlExtensions.cs" />
     <Compile Include="YamlResult.cs">
       <SubType>Code</SubType>
     </Compile>
