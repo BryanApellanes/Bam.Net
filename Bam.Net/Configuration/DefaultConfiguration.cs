@@ -361,7 +361,8 @@ namespace Bam.Net.Configuration
 
         public static System.Configuration.Configuration GetConfig(string configPath)
         {
-            System.Configuration.Configuration config = ConfigurationManager.OpenExeConfiguration(configPath);
+            System.Configuration.ConfigurationFileMap fileMap = new ConfigurationFileMap(configPath);
+            System.Configuration.Configuration config = ConfigurationManager.OpenMappedMachineConfiguration(fileMap);
             return config;
         }
 

@@ -816,6 +816,12 @@ namespace Bam.Net
 
             return results;
         }
+
+        public static Dictionary<string, string> FromQueryString(this string queryString)
+        {
+            return QueryStringToDictionary(queryString);
+        }
+
         public static Dictionary<string, string> QueryStringToDictionary(this string queryString)
         {
             Dictionary<string, string> result = new Dictionary<string, string>();

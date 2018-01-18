@@ -23,19 +23,19 @@ namespace Bam.Net.Application
         [ConsoleAction("setAppSettings", "Add or set the specified app settings")]
         public static void SetAppSettings()
         {
-            string json = GetArgument("setAppSettings", "Please specify the path to appSettings.json file to use");
+            string query = GetArgument("setAppSettings", "Please specify the path to appSettings.json file to use");
+            Dictionary<string, string> settings = query.FromQueryString();
             string configPath = GetArgument("configPath", "Please enter the path to the config file to update");
-            JObject j = JObject.Parse(json);
-            foreach(JProperty prop in j.Properties())
+            foreach(string key in settings.Keys)
             {
                 try
                 {
-                    OutLineFormat("Setting appSetting: {0}={1}", prop.Name, prop.Value.ToString());
-                    DefaultConfiguration.SetAppSetting(configPath, prop.Name, prop.Value.ToString());
+                    OutLineFormat("Setting appSetting: {0}={1}", key, settings[key]);
+                    DefaultConfiguration.SetAppSetting(configPath, key, settings[key]);
                 }
                 catch (Exception ex)
                 {
-                    OutLineFormat("Exception setting appSetting: {0}={1}, {3}", prop.Name, prop.Value, ex.Message);
+                    OutLineFormat("Exception setting appSetting: {0}={1}, {2}", key, settings[key], ex.Message);
                 }
             }
         }
