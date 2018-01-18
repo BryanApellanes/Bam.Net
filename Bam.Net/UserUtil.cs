@@ -10,13 +10,27 @@ using System.Security.Principal;
 
 namespace Bam.Net
 {
+    /// <summary>
+    /// Utility for getting information about the current user.
+    /// </summary>
     public class UserUtil
     {
+        /// <summary>
+        /// Get the username of the current user if HttpContext.Current
+        /// is not null and contains user information.
+        /// </summary>
+        /// <returns></returns>
         public static string GetCurrentWebUserName()
         {
             return GetCurrentWebUserName(false);
         }
 
+        /// <summary>
+        /// Get the username of the current user if HttpContext.Current
+        /// is not null and contains user information.
+        /// </summary>
+        /// <param name="includeDomain"></param>
+        /// <returns></returns>
         public static string GetCurrentWebUserName(bool includeDomain)
         {
             string ret = "";
@@ -88,6 +102,10 @@ namespace Bam.Net
             return user;
         }
 
+        /// <summary>
+        /// Determine if the current windows (owner of the current process) user has admin rights.
+        /// </summary>
+        /// <returns></returns>
         public static bool CurrentWindowsUserHasAdminRights()
         {
             return WindowsIdentity.GetCurrent().HasAdminRights();
@@ -141,7 +159,6 @@ namespace Bam.Net
         /// <returns></returns>
         public static string GetCurrentUserDomain()
         {
-            //string retVal = "";
             string userWithDomain = GetCurrentUser(true);
             return GetDomain(userWithDomain);
         }

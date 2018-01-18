@@ -12,10 +12,10 @@ namespace Bam.Net.Application
     {
         static void Main(string[] args)
         {
+            TryWritePid(true);
             IsolateMethodCalls = false;
             AddSwitches(typeof(ConsoleActions));
             AddConfigurationSwitches();
-            AddValidArgument("nopause", true, description: "Just sleep after starting without prompting for enter");
             Initialize(args, (a) =>
             {
                 OutLineFormat("Error parsing arguments: {0}", ConsoleColor.Red, a.Message);

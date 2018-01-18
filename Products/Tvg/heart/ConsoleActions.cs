@@ -46,17 +46,13 @@ namespace Bam.Net.Application
             Log.Default = logger;
             ServiceRegistry serviceRegistry = ApplicationServiceRegistryContainer.Create();            
             server = serviceRegistry.Serve(prefixes, logger);
-            if (Arguments.Contains("nopause"))
+            Pause($"Heart server is serving service registry {serviceRegistry.Name}", () =>
             {
                 while (true)
                 {
                     Thread.Sleep(300);
                 }
-            }
-            else
-            {
-                Pause($"Heart server is serving service registry {serviceRegistry.Name}");
-            }
+            });
         }
 
         public static HostPrefix[] GetConfiguredHostPrefixes()
