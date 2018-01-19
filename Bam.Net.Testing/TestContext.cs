@@ -127,13 +127,27 @@ namespace Bam.Net.Testing
         /// <returns></returns>
         public TestContext<T> ShouldPass(Action<Because, T> actionToAssertResults)
         {
-            actionToAssertResults(because, (T)setupContext.ObjectUnderTest);
+            try
+            {
+                actionToAssertResults(because, (T)setupContext.ObjectUnderTest);
+            }
+            catch (Exception ex)
+            {
+                because.ExceptionWasThrown(ex);
+            }
             return this;
         }
 
         public TestContext<T> ShouldPass(Action<Because, AssertionWrapper> actionToAssertResults)
         {
-            actionToAssertResults(because, new AssertionWrapper(because, setupContext.ObjectUnderTest, "Object Under Test"));
+            try
+            {
+                actionToAssertResults(because, new AssertionWrapper(because, setupContext.ObjectUnderTest, "Object Under Test"));
+            }
+            catch (Exception ex)
+            {
+                because.ExceptionWasThrown(ex);
+            }
             return this;
         }
 

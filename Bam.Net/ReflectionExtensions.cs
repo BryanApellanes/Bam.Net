@@ -454,6 +454,7 @@ namespace Bam.Net
         /// <param name="instance"></param>
         /// <param name="propertyName"></param>
         /// <param name="value"></param>
+        /// <param name="throwIfPropertyNotFound"></param>
         /// <returns></returns>
         public static object Property(this object instance, string propertyName, object value, bool throwIfPropertyNotFound = true)
         {

@@ -24,8 +24,22 @@ namespace Bam.Net.Yaml
             return default(T);
         }
 
-        public static object GetValue(this YamlMapping mapping, string key)
+        public static object GetValue(this YamlMapping mapping, Type asType, string key)
         {
+            object value = GetValue(mapping, key);
+            if(value != null)
+            {
+                return System.Convert.ChangeType(value, asType);
+            }
+            return null;
+        }
+
+        public static object GetValue(this YamlMapping mapping, string key, object ifKeyNotPresent = null)
+        {
+            if (!mapping.ContainsKey(key))
+            {
+                return ifKeyNotPresent;
+            }
             object value = mapping[key];
             if(value is YamlScalar scalar)
             {
@@ -33,6 +47,15 @@ namespace Bam.Net.Yaml
             }
             return value;
         }   
+
+        public static IEnumerable<T> Convert<T>(this YamlSequence sequence)
+        {
+            foreach(YamlMapping mapping in sequence)
+            {
+                yield return Convert<T>(mapping);
+            }
+        }
+
         public static T Convert<T>(this YamlMapping mapping)
         {
             return (T)Convert(mapping, typeof(T));

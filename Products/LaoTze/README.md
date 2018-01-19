@@ -63,5 +63,9 @@ var database = {
 }
 ```
 
+To generate C# code from a *.db.js file use the following command:
+
+`laotze.exe /root:[PATH-TO-DIRECTORY-CONTAINING-DBJS] /keep`
+
 ### What's next?
 - [Performing Dao CRUD Operations (Create, Retrieve, Update, Delete)](../../DaoRef/) using generated code

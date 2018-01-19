@@ -148,9 +148,7 @@ namespace Bam.Net.Incubation
         /// <returns></returns>
         public object Construct(Type type)
         {
-            ConstructorInfo ctor;
-            List<object> ctorParams;
-            GetCtorAndParams(type, out ctor, out ctorParams);
+            GetCtorAndParams(type, out ConstructorInfo ctor, out List<object> ctorParams);
             this[type] = ctor.Invoke(ctorParams.ToArray());
             return this[type];
         }

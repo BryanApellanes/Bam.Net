@@ -256,6 +256,10 @@ namespace Bam.Net.Testing
             return this;
         }
 
+        /// <summary>
+        /// Throws an exception if the test failed.  Same as ThrowExceptionIfTheTestFailed. 
+        /// </summary>
+        /// <param name="message"></param>
         public void OrNot(string message = "TestFailed")
         {
             ThrowExceptionIfTheTestFailed(message);

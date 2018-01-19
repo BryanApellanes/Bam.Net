@@ -224,7 +224,7 @@ namespace Bam.Net.Testing
         protected internal static ITestRunner<TTestMethod> GetTestRunner<TTestMethod>(Assembly assembly, ILogger logger) where TTestMethod : TestMethod
         {
             ITestRunner<TTestMethod> runner = TestRunner<TTestMethod>.Create(assembly, logger);
-            if (Arguments.Contains("tag"))
+            if (Arguments != null && Arguments.Contains("tag"))
             {
                 runner.Tag = Arguments["tag"];
             }
