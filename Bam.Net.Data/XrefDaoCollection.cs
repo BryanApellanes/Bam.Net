@@ -160,6 +160,16 @@ namespace Bam.Net.Data
             Commit();
         }
 
+        public void Save(Database db)
+        {
+            Commit(db);
+        }
+
+        /// <summary>
+        /// Adds a new value to the collection in memory.  Does
+        /// not commit to the database until Save is called.
+        /// </summary>
+        /// <returns></returns>
         public L AddNew()
         {
             L val = new L();
@@ -167,6 +177,11 @@ namespace Bam.Net.Data
             return val;
         }
 
+        /// <summary>
+        /// Adds the value to the collection in memory.  Does
+        /// not commit to the database until Save is called.
+        /// </summary>
+        /// <param name="item"></param>
         public void Add(L item)
         {
             _values.Add(item);
@@ -211,6 +226,11 @@ namespace Bam.Net.Data
             }
         }
 
+        /// <summary>
+        /// Deletes all cross reference entries representing associations
+        /// for the objects in this collection.
+        /// </summary>
+        /// <param name="db"></param>
         public void Clear(Database db = null)
         {
             foreach(L item in _values)
@@ -279,7 +299,7 @@ namespace Bam.Net.Data
         {
             db = db ?? Database;
             SqlStringBuilder sql = db.ServiceProvider.Get<SqlStringBuilder>();
-            WriteCommit(sql);
+            WriteCommit(sql, db);
 
             sql.Execute(db);
             AfterCommit?.Invoke(db, this);
