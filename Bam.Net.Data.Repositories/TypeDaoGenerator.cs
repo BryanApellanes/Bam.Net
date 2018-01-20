@@ -452,11 +452,18 @@ namespace Bam.Net.Data.Repositories
 
         protected internal CompilerResults Compile(string assemblyNameToCreate, string writeSourceTo)
         {
-            HashSet<string> references = new HashSet<string>(DaoGenerator.DefaultReferenceAssemblies.ToArray());
-            references.Add(typeof(JsonIgnoreAttribute).Assembly.GetFileInfo().FullName);
+            HashSet<string> references = new HashSet<string>(DaoGenerator.DefaultReferenceAssemblies.ToArray())
+            {
+                typeof(JsonIgnoreAttribute).Assembly.GetFileInfo().FullName
+            };
             _additionalReferenceAssemblies.Each(asm =>
             {
-                references.Add(asm.GetFilePath());
+                FileInfo assemblyInfo = asm.GetFileInfo();
+                if (references.Contains(assemblyInfo.Name))
+                {
+                    references.Remove(assemblyInfo.Name); // removes System.Core.dll if it is later referenced by full path
+                }
+                references.Add(assemblyInfo.FullName);
             });
             SchemaDefinitionCreateResult.TypeSchema.Tables.Each(type => references.Add(type.Assembly.GetFileInfo().FullName));
             references.Add(typeof(DaoRepository).Assembly.GetFileInfo().FullName);

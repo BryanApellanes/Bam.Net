@@ -134,7 +134,7 @@ namespace Bam.Net.Services.Tests
         [UnitTest]
         public void SaveDescriptorSavesReferences()
         {
-            AssemblyServiceRepository repo = GetAssemblyManagementRepository(GetConsoleLogger(), nameof(SaveDescriptorDoesntDuplicate));
+            AssemblyServiceRepository repo = GetAssemblyManagementRepository(GetConsoleLogger(), nameof(SaveDescriptorSavesReferences));
             repo.Database.TryEnsureSchema<Dao.AssemblyDescriptor>();
             AssemblyDescriptor[] descriptors = AssemblyDescriptor.GetCurrentAppDomainDescriptors().ToArray();
             for(int i = 0; i < 3; i++)

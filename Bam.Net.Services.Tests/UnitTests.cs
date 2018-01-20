@@ -111,10 +111,14 @@ namespace Bam.Net.Services.Tests
         [UnitTest]
         public void CanSaveToRepo()
         {
-            DataPoint point = new DataPoint();
-            point.Description = "Description_".RandomLetters(5);
-            DaoRepository repo = new DaoRepository();
-            repo.Database = new SQLiteDatabase(".\\", nameof(CanSaveToRepo));
+            DataPoint point = new DataPoint()
+            {
+                Description = "Description_".RandomLetters(5)
+            };
+            DaoRepository repo = new DaoRepository()
+            {
+                Database = new SQLiteDatabase(".\\", nameof(CanSaveToRepo))
+            };
             repo.AddType<DataPoint>();
             repo.AddType<DataRelationship>();
 
