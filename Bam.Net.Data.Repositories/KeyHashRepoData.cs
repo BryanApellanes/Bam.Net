@@ -30,6 +30,17 @@ namespace Bam.Net.Data.Repositories
                 _compositeKeyProperties = value;
             }
         }
+        
+        public override string ToString()
+        {
+            string name = this.Property<string>("Name", false) ?? this.Property<string>("Cuid", false);
+            string properties = string.Join(",", CompositeKeyProperties.Select(p =>
+            {
+                object propVal = this.Property(p);
+                return $"{p}={propVal ?? "[null]"}";
+            }).ToArray());
+            return $"{name}:{properties}";
+        }
 
         public int GetIntKeyHash()
         {
@@ -50,8 +61,7 @@ namespace Bam.Net.Data.Repositories
 
         public override bool Equals(object obj)
         {
-            KeyHashRepoData o = obj as KeyHashRepoData;
-            if (o != null)
+            if (obj is KeyHashRepoData o)
             {
                 return o.GetHashCode().Equals(GetHashCode());
             }

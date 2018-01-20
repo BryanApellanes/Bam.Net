@@ -137,22 +137,20 @@ namespace Bam.Net.Services.Tests
             AssemblyServiceRepository repo = GetAssemblyManagementRepository(GetConsoleLogger(), nameof(SaveDescriptorSavesReferences));
             repo.Database.TryEnsureSchema<Dao.AssemblyDescriptor>();
             AssemblyDescriptor[] descriptors = AssemblyDescriptor.GetCurrentAppDomainDescriptors().ToArray();
-            for(int i = 0; i < 3; i++)
+
+            foreach (AssemblyDescriptor descriptor in descriptors)
             {
-                foreach (AssemblyDescriptor descriptor in descriptors)
+                int? referenceCount = descriptor.AssemblyReferenceDescriptors?.Count;
+                if (referenceCount > 0)
                 {
-                    int? referenceCount = descriptor.AssemblyReferenceDescriptors?.Count;
-                    if (referenceCount > 0)
-                    {
-                        AssemblyDescriptor wrapped = repo.Save(descriptor);
-                        AssemblyDescriptor retrieved = repo.Retrieve<AssemblyDescriptor>(wrapped.Id);
-                        Expect.AreEqual(referenceCount, retrieved.AssemblyReferenceDescriptors?.Count);
-                        Pass(descriptor.AssemblyFullName);
-                    }
-                    else
-                    {
-                        OutLineFormat("No references: {0}", ConsoleColor.Cyan, descriptor.AssemblyFullName);
-                    }
+                    AssemblyDescriptor wrapped = repo.Save(descriptor);
+                    AssemblyDescriptor retrieved = repo.Retrieve<AssemblyDescriptor>(wrapped.Id);
+                    Expect.AreEqual(referenceCount, retrieved.AssemblyReferenceDescriptors?.Count);
+                    Pass(descriptor.AssemblyFullName + " " + referenceCount.ToString());
+                }
+                else
+                {
+                    OutLineFormat("No references: {0}", ConsoleColor.Cyan, descriptor.AssemblyFullName);
                 }
             }
         }

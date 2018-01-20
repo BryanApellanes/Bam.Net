@@ -10,6 +10,8 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data
     [Serializable]
     public class AssemblyReferenceDescriptor: KeyHashRepoData
     {
+        internal string ReferencerName { get; set; }
+        internal string ReferencedName { get; set; }
         public virtual List<AssemblyDescriptor> AssemblyDescriptors { get; set; }
         [CompositeKey]
         public string ReferencerHash { get; set; }
