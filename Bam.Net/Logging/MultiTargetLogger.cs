@@ -72,6 +72,7 @@ namespace Bam.Net.Logging
         private void SetApplicationNames()
         {
             SortedSet<string> appNames = new SortedSet<string>();
+
             foreach(ILogger logger in Loggers)
             {
                 if (!logger.ApplicationName.Equals(DefaultConfiguration.DefaultApplicationName))
@@ -84,7 +85,7 @@ namespace Bam.Net.Logging
                 warned = true;
                 Warning("Multiple ApplicationNames found, using ({0}): {1}", ApplicationName, string.Join(", ", appNames.ToArray()));
             }
-            string appName= appNames.First();
+            string appName= appNames.FirstOrDefault() ?? DefaultConfiguration.DefaultApplicationName;
             ApplicationName = appName;
             foreach (ILogger logger in Loggers)
             {
