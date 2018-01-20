@@ -27,6 +27,7 @@ namespace Bam.Net.Application
     {
         static void Main(string[] args)
         {
+            TryWritePid(true);
             Initialize(args);
 
             EnsureAdminRights();
