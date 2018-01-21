@@ -64,13 +64,16 @@ namespace Bam.Net.Application
                 {
                     throw new InvalidOperationException(string.Format("The type {0} was not found in the assembly {1}", serviceClassName, assembly.GetFilePath()));
                 }
-                HostPrefix prefix = GetConfiguredHostPrefix();
+                HostPrefix[] prefixes = GetConfiguredHostPrefix();
                 if (serviceType.HasCustomAttributeOfType(out ServiceSubdomainAttribute attr))
                 {
-                    prefix.HostName = $"{attr.Subdomain}.{prefix.HostName}";
+                    foreach(HostPrefix prefix in prefixes)
+                    {
+                        prefix.HostName = $"{attr.Subdomain}.{prefix.HostName}";
+                    }
                 }
 
-                ServeServiceTypes(contentRoot, prefix, null, serviceType);
+                ServeServiceTypes(contentRoot, prefixes, null, serviceType);
                 Pause($"Gloo server is serving service {serviceClassName}");
             }
             catch (Exception ex)
@@ -181,9 +184,9 @@ namespace Bam.Net.Application
 
             string contentRoot = GetArgument("ContentRoot", $"Enter the path to the content root (default: {defaultContentRoot} ");
 
-            HostPrefix prefix = GetConfiguredHostPrefix();
+            HostPrefix[] prefixes = GetConfiguredHostPrefix();
             Type[] glooTypes = csglooAssembly.GetTypes().Where(t => t.HasCustomAttributeOfType<ProxyAttribute>()).ToArray();
-            ServeServiceTypes(contentRoot, prefix, null, glooTypes);
+            ServeServiceTypes(contentRoot, prefixes, null, glooTypes);
             Pause($"Gloo server is serving cs gloo types: {string.Join(", ", glooTypes.Select(t => t.Name).ToArray())}");
         }
 
@@ -236,7 +239,7 @@ namespace Bam.Net.Application
             return serviceRegistryService;
         }
 
-        public static void ServeServiceTypes(string contentRoot, HostPrefix prefix, ServiceRegistry registry = null, params Type[] serviceTypes)
+        public static void ServeServiceTypes(string contentRoot, HostPrefix[] prefixes, ServiceRegistry registry = null, params Type[] serviceTypes)
         {
             BamConf conf = BamConf.Load(contentRoot.Or(defaultContentRoot));
             if(registry != null && GlooServer.ServiceRegistry == null)
@@ -245,7 +248,7 @@ namespace Bam.Net.Application
             }
             glooServer = new GlooServer(conf, GetLogger(), GetArgument("verbose", "Log responses?").IsAffirmative())
             {
-                HostPrefixes = new HashSet<HostPrefix> { prefix },
+                HostPrefixes = new HashSet<HostPrefix>(prefixes),
                 MonitorDirectories = new string[] { }                
             };
             serviceTypes.Each(t => glooServer.ServiceTypes.Add(t));
@@ -258,21 +261,25 @@ namespace Bam.Net.Application
             BamConf conf = BamConf.Load(DefaultConfiguration.GetAppSetting(contentRootConfigKey).Or(defaultContentRoot));
             glooServer = new GlooServer(conf, logger, GetArgument("verbose", "Log responses?").IsAffirmative())
             {
-                HostPrefixes = new HashSet<HostPrefix> { GetConfiguredHostPrefix() },
+                HostPrefixes = new HashSet<HostPrefix>(HostPrefix.FromDefaultConfiguration("localhost", 9100)),
                 MonitorDirectories = DefaultConfiguration.GetAppSetting("MonitorDirectories").DelimitSplit(",", ";")
             };
             glooServer.Start();
         }
 
-        public static HostPrefix GetConfiguredHostPrefix()
+        public static HostPrefix[] GetConfiguredHostPrefix()
         {
             HostPrefix hostPrefix = new HostPrefix()
             {
-                HostName = DefaultConfiguration.GetAppSetting("HostName").Or("localhost"),
-                Port = int.Parse(DefaultConfiguration.GetAppSetting("Port", "91000")),
-                Ssl = bool.Parse(DefaultConfiguration.GetAppSetting("Ssl"))
+                HostName = GetArgument("HostName", true),
+                Port = int.Parse(GetArgument("Port", true).Or("9100")),
+                Ssl = bool.Parse(GetArgument("Ssl", true).Or("false"))
             };
-            return hostPrefix;
+            HashSet<HostPrefix> results = new HashSet<HostPrefix>(HostPrefix.FromDefaultConfiguration("localhost", 9100))
+            {
+                hostPrefix
+            };
+            return results.ToArray();
         }
 
         private static ConsoleLogger GetLogger()
