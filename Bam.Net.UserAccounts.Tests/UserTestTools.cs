@@ -48,7 +48,7 @@ namespace Bam.Net.UserAccounts.Tests
             context = A.Fake<IHttpContext>();
             context.Request = new TestRequest();
             userProxy.HttpContext = context;
-
+            
             Session session = Session.Get(context);
 
             passHash = "password".Sha1();
@@ -77,8 +77,7 @@ namespace Bam.Net.UserAccounts.Tests
 
         public static void SignUpAndLogin(string userName, out IHttpContext context, out LoginResponse result, out UserManager userProxy)
         {
-            string passHash;
-            SignUp(userName, out userProxy, out context, out passHash);
+            SignUp(userName, out userProxy, out context, out string passHash);
             result = userProxy.Login(userName, passHash);
         }
 

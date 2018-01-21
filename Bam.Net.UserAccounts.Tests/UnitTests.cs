@@ -444,6 +444,8 @@ namespace Bam.Net.UserAccounts.Tests
         public void UserShouldBeAuthenticatedAfterLogin()
         {
             string userName = MethodBase.GetCurrentMethod().Name;
+            User.UserDatabase = new SQLiteDatabase(userName);
+            User.UserDatabase.TryEnsureSchema<User>();
             UserTestTools.SignUpAndLogin(userName, out IHttpContext context, out LoginResponse result);
 
             IHttpContext context2 = A.Fake<IHttpContext>();
@@ -458,6 +460,8 @@ namespace Bam.Net.UserAccounts.Tests
         public void LoginDateTimeShouldBeNowInstant()
         {
             string userName = MethodBase.GetCurrentMethod().Name;
+            User.UserDatabase = new SQLiteDatabase(userName);
+            User.UserDatabase.TryEnsureSchema<User>();
             UserTestTools.SignUpAndLogin(userName, out IHttpContext context, out LoginResponse result);
 
             User user = User.GetByUserNameOrDie(userName);
@@ -480,10 +484,9 @@ namespace Bam.Net.UserAccounts.Tests
         public void SignUpShouldSetAccountToken()
         {
             string userName = MethodBase.GetCurrentMethod().Name;
-            UserManager userProxy;
-            IHttpContext context;
-            string passHash;
-            UserTestTools.SignUp(userName, out userProxy, out context, out passHash);
+            User.UserDatabase = new SQLiteDatabase(userName);
+            User.UserDatabase.TryEnsureSchema<User>();
+            UserTestTools.SignUp(userName, out UserManager userProxy, out IHttpContext context, out string passHash);
 
             User user = User.GetByUserNameOrDie(userName);
             Account account = user.AccountsByUserId.FirstOrDefault();
@@ -497,9 +500,7 @@ namespace Bam.Net.UserAccounts.Tests
         public void ConfirmShouldConfirmAccount()
         {
             string userName = MethodBase.GetCurrentMethod().Name;
-            IHttpContext context;
-            LoginResponse result;
-            UserTestTools.SignUpAndLogin(userName, out context, out result);
+            UserTestTools.SignUpAndLogin(userName, out IHttpContext context, out LoginResponse result);
 
             UserManager userMgr = new UserManager();
             User user = User.GetByUserNameOrDie(userName);

@@ -44,9 +44,9 @@ namespace Bam.Net.UserAccounts.Data
             return clone;
         }
 
-        public static Session Init(IHttpContext context)
+        public static Session Init(IHttpContext context, Database db = null)
         {
-            Session session = Get(context);
+            Session session = Get(context, db);
             if (session.UserId != User.Anonymous.Id)
             {
                 User user = session.UserOfUserId ?? User.Anonymous;
