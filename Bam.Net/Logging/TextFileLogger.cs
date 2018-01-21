@@ -17,12 +17,11 @@ namespace Bam.Net.Logging
         public TextFileLogger()
             : base()
         {
+            ApplicationNameProvider = new DefaultConfigurationApplicationNameProvider();
             _fileNumber = 1;
             MaxBytes = 1310720; // 10 MB
             FileExtension = "log";
-
-            Folder = new DirectoryInfo(GetAppDataFolder());
-            ApplicationNameProvider = new DefaultConfigurationApplicationNameProvider();
+            Folder = new DirectoryInfo(GetAppDataFolder());            
         }
 
         public TextFileLogger(IApplicationNameProvider applicationNameProvider): this()

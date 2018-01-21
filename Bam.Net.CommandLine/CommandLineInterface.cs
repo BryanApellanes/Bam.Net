@@ -1069,10 +1069,19 @@ File Version: {1}
             }
             else
             {
-                Action action = ifOutputRedirected ?? (() => { });
+                Action action = ifOutputRedirected ?? Block;
                 action();
             }
             return char.MinValue;
+        }
+
+        static AutoResetEvent _blocker = new AutoResetEvent(false);
+        /// <summary>
+        /// Block 
+        /// </summary>
+        protected static void Block()
+        {
+            _blocker.WaitOne();
         }
 
         protected internal static object[] GetParameters(MethodInfo method)

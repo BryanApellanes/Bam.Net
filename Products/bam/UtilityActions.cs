@@ -20,25 +20,6 @@ namespace Bam.Net.Application
     [Serializable]
     public class UtilityActions: CommandLineTestInterface
     {
-        [ConsoleAction("setAppSettings", "Add or set the specified app settings")]
-        public static void SetAppSettings()
-        {
-            string query = GetArgument("setAppSettings", "Please specify the path to appSettings.json file to use");
-            Dictionary<string, string> settings = query.FromQueryString();
-            string configPath = GetArgument("configPath", "Please enter the path to the config file to update");
-            foreach(string key in settings.Keys)
-            {
-                try
-                {
-                    OutLineFormat("Setting appSetting: {0}={1}", key, settings[key]);
-                    DefaultConfiguration.SetAppSetting(configPath, key, settings[key]);
-                }
-                catch (Exception ex)
-                {
-                    OutLineFormat("Exception setting appSetting: {0}={1}, {2}", key, settings[key], ex.Message);
-                }
-            }
-        }
 
         [ConsoleAction("createBamProjectSrcPackage", "Create a BamProject package from a solution or project")]
         public static void CreateBamProjectPackage()
