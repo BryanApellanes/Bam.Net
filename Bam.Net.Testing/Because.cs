@@ -83,6 +83,17 @@ namespace Bam.Net.Testing
                 }); 
         }
 
+        public void ItsTrue(string descriptionOfTrueAssertion, Action doesntThrow, string failureMessage = "")
+        {
+            assertions.Add(
+                new Assertion
+                {
+                    Passed = doesntThrow.Try(),
+                    SuccessMessage = descriptionOfTrueAssertion,
+                    FailureMessage = failureMessage
+                });
+        }
+                
         /// <summary>
         /// Asserts that the specified value is false
         /// </summary>

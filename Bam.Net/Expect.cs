@@ -103,13 +103,7 @@ namespace Bam.Net
         /// <param name="message"></param>
         public static void Throws(Action actionThatThrowsException, Action<Exception> catchDelegate = null, string message = null)
         {
-            if (catchDelegate == null)
-            {
-                catchDelegate = (e) =>
-                {
-                    
-                };
-            }
+            catchDelegate = catchDelegate ?? ((e) => { });
             bool thrown = false;
             try
             {

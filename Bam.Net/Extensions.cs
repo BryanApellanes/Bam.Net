@@ -32,7 +32,7 @@ using System.Diagnostics;
 namespace Bam.Net
 {
     public static class Extensions
-    {        
+    {
         static Dictionary<HashAlgorithms, Func<HashAlgorithm>> _hashAlgorithms;
         static Dictionary<HashAlgorithms, Func<byte[], HMAC>> _hmacs;
         static Dictionary<ExistingFileAction, Action<ZipArchiveEntry, string>> _extractActions;
@@ -94,7 +94,46 @@ namespace Bam.Net
                 { SerializationFormat.Binary, (stream, type) => stream.FromBinaryStream() } // this might not work; should be tested
             };
         }
-        
+
+        public static T Try<T>(this Func<T> toTry)
+        {
+            return Try<T>(toTry, out Exception ignore);
+        }
+
+        public static T Try<T>(this Func<T> toTry, out Exception ex)
+        {
+            try
+            {
+                ex = null;
+                return toTry();
+            }
+            catch (Exception e)
+            {
+                ex = e;
+                return default(T);
+            }
+        }
+
+        public static bool Try(this Action toTry)
+        {
+            return Try(toTry, out Exception ignore);
+
+        }
+        public static bool Try(this Action toTry, out Exception ex)
+        {
+            ex = null;
+            try
+            {
+                toTry();
+                return true;
+            }
+            catch (Exception e)
+            {
+                ex = e;
+                return false;
+            }
+        }
+
         public static int GetHashCode(this object instance, params string[] propertiesToInclude)
         {
             return GetHashCode(instance, propertiesToInclude.Select(p => instance.Property(p)).ToArray());
