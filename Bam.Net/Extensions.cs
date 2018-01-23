@@ -95,6 +95,17 @@ namespace Bam.Net
             };
         }
 
+        public static bool DatesAreEqual(this DateTime instance, DateTime other)
+        {
+            return instance.Year == other.Year && instance.Day == other.Day && instance.Month == other.Month;
+        }
+
+        public static bool TimesAreEqual(this DateTime instance, DateTime other, bool includeMilliseconds = false)
+        {
+            return (instance.Hour == other.Hour && instance.Minute == other.Minute && instance.Second == other.Second) &&
+                (includeMilliseconds ? instance.Millisecond == other.Millisecond : true);
+        }
+
         public static T Try<T>(this Func<T> toTry)
         {
             return Try<T>(toTry, out Exception ignore);
