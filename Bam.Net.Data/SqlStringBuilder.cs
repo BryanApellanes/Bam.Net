@@ -111,12 +111,12 @@ namespace Bam.Net.Data
                 OnExecuted(db);
             }
         }
-        
+
         public IEnumerable<T> ExecuteReader<T>(Database db) where T : class, new()
         {
             if (!string.IsNullOrWhiteSpace(this))
             {
-                return db.ExecuteReader<T>(this, (dr)=> OnExecuted(db));
+                return db.ExecuteReader<T>(this, (dr) => OnExecuted(db));
             }
             return new List<T>();
         }

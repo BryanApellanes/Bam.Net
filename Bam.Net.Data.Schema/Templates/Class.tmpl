@@ -131,8 +131,10 @@ namespace @Namespace
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<@(Model.ClassName)>();
 			Database db = database ?? Db.For<@(Model.ClassName)>();
-			var results = new @(Model.ClassName)Collection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new @(Model.ClassName)Collection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 

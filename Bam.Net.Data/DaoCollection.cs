@@ -63,7 +63,7 @@ namespace Bam.Net.Data
 			this.Database = query.Database;
             this.ReferencingColumn = referencingColumn;
         }
-
+        
         public DaoCollection(Database db, Query<C, T> query, bool load = false): this(query, null, null)
         {
             if (load)
