@@ -47,16 +47,11 @@ namespace Bam.Net.Server
             return DatabaseFactory.Instance.GetDatabase(sqlDialect, connectionString);
         }
 
-        public static HostPrefix GetConfiguredHostPrefix()
+        public static HostPrefix[] GetConfiguredHostPrefixes()
         {
-            HostPrefix hostPrefix = new HostPrefix()
-            {
-                HostName = DefaultConfiguration.GetAppSetting("HostName").Or("localhost"),
-                Port = int.Parse(DefaultConfiguration.GetAppSetting("Port")),
-                Ssl = bool.Parse(DefaultConfiguration.GetAppSetting("Ssl"))
-            };
-            return hostPrefix;
+            return HostPrefix.FromDefaultConfiguration();
         }
+
         static ILogger multiTargetLogger;
         public static ILogger GetMultiTargetLogger(ILogger logger)
         {

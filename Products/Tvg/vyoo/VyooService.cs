@@ -33,7 +33,7 @@ namespace Bam.Net.Application
                         ILogger logger = GetLogger();
                         VyooServer server = new VyooServer(BamConf.Load(ServiceConfig.ContentRoot), logger)
                         {
-                            HostPrefixes = new HashSet<HostPrefix> { GetConfiguredHostPrefix() },
+                            HostPrefixes = new HashSet<HostPrefix>(GetConfiguredHostPrefixes()),
                             MonitorDirectories = DefaultConfiguration.GetAppSetting("MonitorDirectories").DelimitSplit(",", ";")
                         };
                         logger.AddEntry("Created Server of Type {0}: {1}", typeof(VyooServer).FullName, server.PropertiesToString());
@@ -58,9 +58,9 @@ namespace Bam.Net.Application
             Thread.Sleep(1000);
         }
 
-        private static HostPrefix GetConfiguredHostPrefix()
+        private static HostPrefix[] GetConfiguredHostPrefixes()
         {
-            return ServiceConfig.GetConfiguredHostPrefix();
+            return ServiceConfig.GetConfiguredHostPrefixes();
         }
 
         private static ILogger GetLogger()
