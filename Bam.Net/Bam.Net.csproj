@@ -166,6 +166,7 @@
     <Compile Include="Configuration\RuntimeSettings.cs" />
     <Compile Include="Configuration\StaticApplicationNameProvider.cs" />
     <Compile Include="CsvPropertyAttribute.cs" />
+    <Compile Include="DataTypes.cs" />
     <Compile Include="Date.cs" />
     <Compile Include="Documentation\doc.cs" />
     <Compile Include="DynamicTypeRecursionLimitReachedException.cs" />

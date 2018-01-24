@@ -123,7 +123,6 @@
     <Compile Include="SchemaExtractor.cs" />
     <Compile Include="Column.cs" />
     <Compile Include="DaoRazorTemplate.cs" />
-    <Compile Include="DataTypes.cs" />
     <Compile Include="ForeignKeyColumn.cs" />
     <Compile Include="GeneratorEventDelegate.cs" />
     <Compile Include="ISchemaExtractor.cs" />
