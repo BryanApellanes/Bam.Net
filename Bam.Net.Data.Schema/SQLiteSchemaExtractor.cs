@@ -84,8 +84,7 @@ ORDER BY SUBSTR(type, 2, 1), name";
             Database.QuerySingleColumn<string>(sql).Each(createStatement =>
             {
                 string foreignKey = "FOREIGN KEY";
-                string columnDefinitions;
-                string createTableStatement = createStatement.ReadUntil('(', out columnDefinitions);
+                string createTableStatement = createStatement.ReadUntil('(', out string columnDefinitions);
                 string tableName = createTableStatement.DelimitSplit("[", "]")[1];
                 columnDefinitions.DelimitSplit(",").Each(columnDefinition =>
                 {
