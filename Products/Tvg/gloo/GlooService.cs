@@ -30,7 +30,7 @@ namespace Bam.Net.Application
                         ILogger logger = GetLogger();
                         GlooServer server = new GlooServer(BamConf.Load(ServiceConfig.ContentRoot), logger)
                         {
-                            HostPrefixes = new HashSet<HostPrefix> { GetConfiguredHostPrefixes() },
+                            HostPrefixes = new HashSet<HostPrefix>(GetConfiguredHostPrefixes()),
                             MonitorDirectories = DefaultConfiguration.GetAppSetting("MonitorDirectories").DelimitSplit(",", ";")
                         };
                         logger.AddEntry("Created Server of Type {0}: {1}", typeof(GlooServer).FullName, server.PropertiesToString());

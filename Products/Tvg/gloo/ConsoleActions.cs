@@ -147,7 +147,7 @@ namespace Bam.Net.Application
             string path = Path.Combine(sysData.FullName, $"{registryName}.json");
             registry.Name = registryName;
             registry.Save(repo);
-            registry.Services.ToJsonFile(path);           
+            registry.ToJsonFile(path);           
         }
 
         [ConsoleAction("csgloo", "Start the gloo server serving the compiled results of the specified csgloo files")]

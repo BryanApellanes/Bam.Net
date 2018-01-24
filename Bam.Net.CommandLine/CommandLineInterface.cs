@@ -190,7 +190,7 @@ namespace Bam.Net.CommandLine
             try
             {
                 KillProcess(pidFilePath, commandLineArgs);                
-                info.SafeWriteToFile(pidFilePath);
+                info.SafeWriteToFile(pidFilePath, true);
                 Console.WriteLine("Wrote pid file {0}", pidFilePath);
             }
             catch (Exception ex)
@@ -201,7 +201,7 @@ namespace Bam.Net.CommandLine
                 try
                 {
                     KillProcess(pidFilePath, commandLineArgs);
-                    info.SafeWriteToFile(pidFilePath);
+                    info.SafeWriteToFile(pidFilePath, true);
                 }
                 catch (Exception ex2)
                 {
