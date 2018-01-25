@@ -1,2 +1,6 @@
 
- -   rename 'Binary...' namespace and related to 'Streaming...' (d5d6d25)
+ -   refactor hostname handling (5c40de3)
+ -   limit read retries (019b998)
+ -   dont close response on 304 (16c6c14)
+ -   rename ResponseCache to Etags (2537806)
+ -   check headers to respond with 304 if appropriate (857667a)

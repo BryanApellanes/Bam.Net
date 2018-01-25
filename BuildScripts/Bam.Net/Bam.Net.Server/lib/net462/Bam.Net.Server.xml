@@ -127,6 +127,12 @@
             <param name="namedFormatValues"></param>
             <returns></returns>
         </member>
+        <member name="T:Bam.Net.Server.PostServerInitializationHandler">
+            <summary>
+            Handles any initialization after (Post) server initialization
+            is complete
+            </summary>
+        </member>
         <member name="M:Bam.Net.Server.BamApplicationManager.GetPages(System.String)">
             <summary>
             Called by client code

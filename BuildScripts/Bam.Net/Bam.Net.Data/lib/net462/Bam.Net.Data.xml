@@ -348,13 +348,13 @@
         </member>
         <member name="P:Bam.Net.Data.Dao.PostConstructActions">
             <summary>
-            Actions keyed by type to take after contruction
+            Actions, keyed by type, to take after contruction.
             </summary>
         </member>
         <member name="M:Bam.Net.Data.Dao.RegisterDaoTypes(System.Type)">
             <summary>
             Instantiate all dao types found in the assembly that contains the
-            specified type and place them into the Incubator.Default
+            specified type and place them into the Incubator.Default.
             </summary>
             <param name="daoSibling"></param>
         </member>
@@ -364,7 +364,7 @@
             type and place them into the specified
             serviceProvider
             </summary>
-            <param name="daoAssembly"></param>
+            <param name="daoSibling"></param>
             <param name="serviceProvider"></param>
         </member>
         <member name="M:Bam.Net.Data.Dao.RegisterDaoTypes(System.Reflection.Assembly,Bam.Net.Incubation.Incubator)">
@@ -477,6 +477,21 @@
             <summary>
             Write the update or insert statement for the current instance
             to the specified SqlStringBuilder.
+            </summary>
+            <param name="sqlStringBuilder"></param>
+        </member>
+        <member name="M:Bam.Net.Data.Dao.WriteUpdate(Bam.Net.Data.SqlStringBuilder)">
+            <summary>
+            Write an update statement into the specified SqlStringBuilder
+            which when executed will update the instance identified by
+            GetUniqueFilter().
+            </summary>
+            <param name="sqlStringBuilder"></param>
+        </member>
+        <member name="M:Bam.Net.Data.Dao.WriteInsert(Bam.Net.Data.SqlStringBuilder)">
+            <summary>
+            Write an insert statement into the specified SqlStringBuilder
+            which when executed will insert the current instance.
             </summary>
             <param name="sqlStringBuilder"></param>
         </member>
@@ -1048,12 +1063,49 @@
             <typeparam name="X">The Xref type</typeparam>
             <typeparam name="L">The list type</typeparam>
         </member>
+        <member name="M:Bam.Net.Data.XrefDaoCollection`2.AddNew">
+            <summary>
+            Adds a new value to the collection in memory.  Does
+            not commit to the database until Save is called.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.Data.XrefDaoCollection`2.Add(`1)">
+            <summary>
+            Adds the value to the collection in memory.  Does
+            not commit to the database until Save is called.
+            </summary>
+            <param name="item"></param>
+        </member>
         <member name="M:Bam.Net.Data.XrefDaoCollection`2.Remove(`1,Bam.Net.Data.Database)">
             <summary>
             Removes the specified item from this collection, deletes the xref entry but
             does not delete the item from the database
             </summary>
             <param name="item"></param>
+        </member>
+        <member name="M:Bam.Net.Data.XrefDaoCollection`2.Clear(Bam.Net.Data.Database)">
+            <summary>
+            Deletes all cross reference entries representing associations
+            for the objects in this collection.  The objects themselves
+            are not deleted.
+            </summary>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Data.XrefDaoCollection`2.Delete(Bam.Net.Data.Database)">
+            <summary>
+            Delete all the entries in this collection as 
+            well as all Xref entries if any.
+            </summary>
+            <param name="db"></param>
+        </member>
+        <member name="M:Bam.Net.Data.XrefDaoCollection`2.WriteDelete(Bam.Net.Data.SqlStringBuilder)">
+            <summary>
+            Write a sql script that can be used to delete all 
+            the entries in this collection as well as all the
+            Xref entries if any.
+            </summary>
+            <param name="sql"></param>
         </member>
     </members>
 </doc>

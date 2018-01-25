@@ -1,5 +1,5 @@
 
- -   minor refactor (a26bf3c)
- -   add Database parameter to XrefDaoCollection.Remove (7c4f3c4)
- -   fix bug in XrefDaoCollection remove; minor refactor of laotze (d801431)
- -   add AppData directory path handling (f2c4e4d)
+ -   move DataTypes from Bam.Net.Data.Schema to Bam.Net (7568adb)
+ -   fix XrefDaoCollection ctor bug.  Set the database to the Database of the specified parent (9570b41)
+ -   fix bug in XrefDaoCollection where database not properly being specified in cascading save calls (4c97b8c)
+ -   add sortby string argument to 'Top' (7e9c03d)
