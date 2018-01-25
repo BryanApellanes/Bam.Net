@@ -189,7 +189,10 @@ namespace Bam.Net.CommandLine
             string pidFilePath = Path.Combine(main.Directory.FullName, pidFileName);
             try
             {
-                KillProcess(pidFilePath, commandLineArgs);                
+                if (killOldProcess)
+                {
+                    KillProcess(pidFilePath, commandLineArgs);
+                }
                 info.SafeWriteToFile(pidFilePath, true);
                 Console.WriteLine("Wrote pid file {0}", pidFilePath);
             }
