@@ -542,18 +542,12 @@ namespace Bam.Net.Server
 
         protected void OnLoadingConf()
         {
-            if (LoadingConf != null)
-            {
-                LoadingConf(this, GetCurrentConf());
-            }
+            LoadingConf?.Invoke(this, GetCurrentConf());
         }
 
         protected void OnLoadedConf(BamConf conf)
         {
-            if (LoadedConf != null)
-            {
-                LoadedConf(this, conf);
-            }
+            LoadedConf?.Invoke(this, conf);
         }
 
         /// <summary>
@@ -572,18 +566,12 @@ namespace Bam.Net.Server
 
         protected void OnCreatingApp(AppConf conf)
         {
-            if (CreatingApp != null)
-            {
-                CreatingApp(this, conf);
-            }
+            CreatingApp?.Invoke(this, conf);
         }
 
         protected void OnCreatedApp(AppConf conf)
         {
-            if (CreatedApp != null)
-            {
-                CreatedApp(this, conf);
-            }
+            CreatedApp?.Invoke(this, conf);
         }
 
         public AppContentResponder CreateApp(string appName, string defaultLayout = null, int port = 8080, bool ssl = false)
@@ -604,26 +592,19 @@ namespace Bam.Net.Server
 
         protected void OnSettingConf(BamConf conf)
         {
-            if (SettingConf != null)
-            {
-                SettingConf(this, conf);
-            }
+            SettingConf?.Invoke(this, conf);
         }
 
         protected void OnSettedConf(BamConf conf)
         {
-            if (SettedConf != null)
-            {
-                SettedConf(this, conf);
-            }
+            SettedConf?.Invoke(this, conf);
         }
 
         public void SetConf(BamConf conf)
         {
             OnSettingConf(conf);
-            
-            Type loggerType;
-            this.MainLogger = Log.Default = conf.GetMainLogger(out loggerType);
+
+            this.MainLogger = Log.Default = conf.GetMainLogger(out Type loggerType);
             this.MainLogger.RestartLoggingThread();
             if (!loggerType.Name.Equals(conf.MainLoggerName))
             {
@@ -640,10 +621,7 @@ namespace Bam.Net.Server
         
         protected void OnSavedConf(BamConf conf)
         {
-            if (SavedConf != null)
-            {
-                SavedConf(this, conf);
-            }
+            SavedConf?.Invoke(this, conf);
         }
 
         /// <summary>
@@ -708,8 +686,7 @@ namespace Bam.Net.Server
         {
             Responders.Each(r =>
             {
-                T responder = r as T;
-                if (responder != null)
+                if (r is T responder)
                 {
                     responder.Responded += subscriber;
                 }
@@ -720,8 +697,7 @@ namespace Bam.Net.Server
         {
             Responders.Each(r =>
             {
-                T responder = r as T;
-                if (responder != null)
+                if (r is T responder)
                 {
                     responder.NotResponded += subscriber;
                 }
@@ -887,6 +863,7 @@ namespace Bam.Net.Server
         {
             ServiceProxyResponder.AddAppServices(appName, incubator);
         }
+
         /// <summary>
         /// Add or update the app service using the specified instanciator
         /// </summary>

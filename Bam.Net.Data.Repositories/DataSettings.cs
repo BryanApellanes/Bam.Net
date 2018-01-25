@@ -20,7 +20,7 @@ namespace Bam.Net.Data.Repositories
             WorkspacesDirectory = "Workspaces";
             EmailTemplatesDirectory = "EmailTemplates";
             AssemblyDirectory = "Assemblies";
-            ProcessMode = ProcessMode.Default;
+            ProcessMode = ProcessMode.Current;
             Logger = Log.Default;            
         }
 
@@ -46,7 +46,7 @@ namespace Bam.Net.Data.Repositories
         {
             get
             {
-                return _fromConfigLock.DoubleCheckLock(ref _fromConfig, () => new DataSettings(ProcessMode.Current));
+                return _fromConfigLock.DoubleCheckLock(ref _fromConfig, () => new DataSettings(ProcessMode.FromConfig));
             }
         }
 

@@ -92,7 +92,7 @@ namespace Bam.Net.Application
             string registries = GetArgument("registries", "Enter the registry names to serve in a comma separated list ");
             ServeRegistries(logger, registries);
         }
-
+        
         [ConsoleAction("app", "Start the gloo server serving the registry for the current application (determined by the default configuration file ApplicationName value)")]
         public void ServeApplicationRegistry()
         {
