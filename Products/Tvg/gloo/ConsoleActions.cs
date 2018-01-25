@@ -103,6 +103,10 @@ namespace Bam.Net.Application
         [ConsoleAction("createRegistry", "Menu driven Service Registry creation")]
         public void CreateRegistry()
         {
+            DataSettings dataSettings = DataSettings.Default;
+            IApplicationNameProvider appNameProvider = DefaultConfigurationApplicationNameProvider.Instance;
+            ServiceRegistryService serviceRegistryService = GetCoreServiceRegistrationService(GetLogger(), dataSettings, appNameProvider);
+
             List<dynamic> types = new List<dynamic>();
             string assemblyPath = "\r\n";
             DirectoryInfo sysData = DataSettings.Current.GetSysDataDirectory(nameof(ServiceRegistry).Pluralize());
@@ -119,6 +123,8 @@ namespace Bam.Net.Application
                     }
                     else
                     {
+                        OutLineFormat("Storing assembly file chunks: {0}", ConsoleColor.Cyan, assembly.FullName);
+                        serviceRegistryService.FileService.StoreFileChunks(assembly.GetFileInfo(), assembly.FullName);
                         string className = "\r\n";
                         while (!className.Equals(string.Empty))
                         {
@@ -195,7 +201,6 @@ namespace Bam.Net.Application
             string contentRoot = GetArgument("ContentRoot", $"Enter the path to the content root (default: {defaultContentRoot} ");
             DataSettings dataSettings = DataSettings.Default;
             IApplicationNameProvider appNameProvider = DefaultConfigurationApplicationNameProvider.Instance;
-
             ServiceRegistryService serviceRegistryService = GetCoreServiceRegistrationService(logger, dataSettings, appNameProvider);
 
             string[] requestedRegistries = registries.DelimitSplit(",");

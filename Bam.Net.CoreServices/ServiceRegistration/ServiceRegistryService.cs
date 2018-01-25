@@ -372,7 +372,7 @@ namespace Bam.Net.CoreServices
         [Local]
         public Type ResolveType(ServiceTypeIdentifier typeIdentifier)
         {
-            string localAssemblyPath = Path.Combine(DataSettings.GetSysAssemblyDirectory().FullName, typeIdentifier.AssemblyFullName);
+            string localAssemblyPath = Path.Combine(DataSettings.GetSysAssemblyDirectory().FullName, typeIdentifier.AssemblyName);
             FileInfo assemblyFile = FileService.RestoreFile(typeIdentifier.AssemblyFileHash, localAssemblyPath);
             Assembly assembly = Assembly.LoadFile(localAssemblyPath);
             Type result = assembly.GetTypes().Where(t => t.Name.Equals(typeIdentifier.TypeName) && t.Namespace.Equals(typeIdentifier.Namespace)).FirstOrDefault();

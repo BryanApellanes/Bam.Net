@@ -66,10 +66,9 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data
 
         public ServiceTypeIdentifier GetTypeIdentifier(IRepository repo, dynamic queryParams)
         {
-            var result = repo.Query(typeof(ServiceTypeIdentifier), queryParams);
-            if(result != null)
+            foreach(object o in repo.Query(typeof(ServiceTypeIdentifier), queryParams))
             {
-                return result.CopyAs<ServiceTypeIdentifier>();
+                return o.CopyAs<ServiceTypeIdentifier>(); // return the first entry if its there; use foreach since the runtime craps itself because of all the reflection magic
             }
             return null;
         }

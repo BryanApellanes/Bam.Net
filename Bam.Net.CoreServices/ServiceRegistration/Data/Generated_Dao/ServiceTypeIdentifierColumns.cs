@@ -63,11 +63,11 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
                 return new ServiceTypeIdentifierColumns("TypeName");
             }
         }
-        public ServiceTypeIdentifierColumns AssemblyFullName
+        public ServiceTypeIdentifierColumns AssemblyName
         {
             get
             {
-                return new ServiceTypeIdentifierColumns("AssemblyFullName");
+                return new ServiceTypeIdentifierColumns("AssemblyName");
             }
         }
         public ServiceTypeIdentifierColumns AssemblyFileHash

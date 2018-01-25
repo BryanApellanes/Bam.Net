@@ -143,17 +143,17 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 		}
 	}
 
-	// property:AssemblyFullName, columnName:AssemblyFullName	
-	[Bam.Net.Data.Column(Name="AssemblyFullName", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
-	public string AssemblyFullName
+	// property:AssemblyName, columnName:AssemblyName	
+	[Bam.Net.Data.Column(Name="AssemblyName", DbDataType="VarChar", MaxLength="4000", AllowNull=true)]
+	public string AssemblyName
 	{
 		get
 		{
-			return GetStringValue("AssemblyFullName");
+			return GetStringValue("AssemblyName");
 		}
 		set
 		{
-			SetValue("AssemblyFullName", value);
+			SetValue("AssemblyName", value);
 		}
 	}
 
@@ -248,8 +248,10 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<ServiceTypeIdentifier>();
 			Database db = database ?? Db.For<ServiceTypeIdentifier>();
-			var results = new ServiceTypeIdentifierCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new ServiceTypeIdentifierCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 

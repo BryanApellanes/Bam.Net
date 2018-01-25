@@ -70,8 +70,7 @@ namespace Bam.Net.Testing
                 ProcessOutput output = commandLine.Run(7200000); // timeout after 2 hours
                 output.StandardError.SafeWriteToFile(outputFile);
                 output.StandardOutput.SafeWriteToFile(errorFile);
-            });
-            
+            });            
         }
 
         [ConsoleAction("UnitTests", "[path_to_test_assembly]", "Run unit tests in the specified assembly")]
