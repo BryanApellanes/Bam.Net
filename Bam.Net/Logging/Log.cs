@@ -158,8 +158,7 @@ namespace Bam.Net.Logging
                     // set it here
                     lock (_currentLoggerLock)
                     {
-                        Logger current = _currentLogger as Logger;
-                        if (current != null)
+                        if (_currentLogger is Logger current)
                         {
                             current.StopLoggingThread();
                         }

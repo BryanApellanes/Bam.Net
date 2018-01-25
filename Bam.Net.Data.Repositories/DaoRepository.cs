@@ -279,6 +279,14 @@ namespace Bam.Net.Data.Repositories
             }
 		}
 
+        public void AddReferenceAssemblies(params Assembly[] assemblies)
+        {
+            foreach(Assembly assembly in assemblies)
+            {
+                TypeDaoGenerator.AddReferenceAssembly(assembly);
+            }
+        }
+
         /// <summary>
         /// Convert the specified instance to it's dynamic
         /// json safe representation
@@ -580,15 +588,32 @@ namespace Bam.Net.Data.Repositories
         {
             return Top(count, typeof(T), query).CopyAs<T>();
         }
+
+        public IEnumerable<T> Top<T>(int count, QueryFilter query, string sortByColumn, SortOrder sortOrder) where T : new()
+        {
+            return Top(count, typeof(T), query, sortByColumn, sortOrder).CopyAs<T>();
+        }
+
         public IEnumerable Top(int count, Type pocoType, QueryFilter query)
         {
-            return Top(count, pocoType, query, WrapByDefault);
+            return Top(count, pocoType, query, null, SortOrder.Ascending, WrapByDefault);
         }
-        public IEnumerable Top(int count, Type pocoType, QueryFilter query, bool wrap)
+
+        public IEnumerable Top(int count, Type pocoType, QueryFilter query, string sortByColumn)
+        {
+            return Top(count, pocoType, query, sortByColumn, SortOrder.Ascending, WrapByDefault);
+        }
+
+        public IEnumerable Top(int count, Type pocoType, QueryFilter query, string sortByColumn, SortOrder sortOrder)
+        {
+            return Top(count, pocoType, query, sortByColumn, sortOrder, WrapByDefault);
+        }
+
+        public IEnumerable Top(int count, Type pocoType, QueryFilter query, string sortByColumn, SortOrder sortOrder, bool wrap)
         {
             Type daoType = GetDaoType(pocoType);
-            MethodInfo topMethod = daoType.GetMethod("Top", new Type[] { typeof(int), typeof(QueryFilter), typeof(Database) });
-            IEnumerable daoResults = (IEnumerable)topMethod.Invoke(null, new object[] { count, query, Database });
+            MethodInfo topMethod = daoType.GetMethod("Top", new Type[] { typeof(int), typeof(QueryFilter), typeof(string), typeof(SortOrder), typeof(Database) });
+            IEnumerable daoResults = (IEnumerable)topMethod.Invoke(null, new object[] { count, query, sortByColumn, sortOrder, Database });
             return wrap ? Wrap(pocoType, daoResults) : daoResults.CopyAs(pocoType);
         }
 
@@ -631,7 +656,7 @@ namespace Bam.Net.Data.Repositories
                 }
             }
 		}
-
+        
         /// <summary>
         /// Get the wrapper type for the specified developer defined 
         /// dto of type T
@@ -1005,6 +1030,7 @@ namespace Bam.Net.Data.Repositories
 			if (values != null)
 			{
 				IAddable xrefDaoCollection = (IAddable)daoXrefProperty.GetValue(daoInstance);
+                xrefDaoCollection.Clear(daoInstance.Database);
 				foreach (object o in values)
 				{
 					Meta.SetUuid(o);

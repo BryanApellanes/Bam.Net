@@ -67,6 +67,7 @@
     <Compile Include="Cache.cs" />
     <Compile Include="CacheEvictionEventArgs.cs" />
     <Compile Include="CacheItem.cs" />
+    <Compile Include="CacheItemComparer.cs" />
     <Compile Include="CacheManager.cs" />
     <Compile Include="CacheManagerEventArgs.cs" />
     <Compile Include="CacheQueryEventArgs.cs" />

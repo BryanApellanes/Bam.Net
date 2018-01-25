@@ -170,6 +170,45 @@ namespace Bam.Net.Server
                 };
             }
         }
+
+        protected void SetEtag(IResponse response, string path, byte[] content)
+        {
+            string etag = content.Sha1();
+            response.AddHeader("ETag", etag);
+            Etags.Values.AddOrUpdate(path, etag, (p, v) => etag);
+        }
+        protected void SetLastModified(IResponse response, string path, DateTime lastModified)
+        {
+            response.AddHeader("Last-Modified", lastModified.ToUniversalTime().ToString("r"));
+            Etags.LastModified.AddOrUpdate(path, lastModified, (p, v) => lastModified);
+        }
+        protected bool CheckEtags(IHttpContext context)
+        {
+            IRequest request = context.Request;
+            IResponse response = context.Response;
+            string path = request.Url.ToString();
+            string etag = request.Headers["If-None-Match"];
+            if (!string.IsNullOrEmpty(etag))
+            {
+                if (Etags.Values.ContainsKey(path) && Etags.Values[path].Equals(etag))
+                {
+                    response.StatusCode = 304;
+                    return true;
+                }
+            }
+            string lastModifiedString = request.Headers["If-Modified-Since"];
+            if (!string.IsNullOrEmpty(lastModifiedString) && Etags.LastModified.ContainsKey(path))
+            {
+                DateTime modifiedSince = DateTime.Parse(lastModifiedString);
+                if (Etags.LastModified[path] > modifiedSince)
+                {
+                    response.StatusCode = 304;
+                    return true;
+                }
+            }
+            return false;
+        }
+
         protected virtual void SetBaseIgnorePrefixes()
         {
             AddIgnorPrefix("dao");
@@ -396,6 +435,10 @@ namespace Bam.Net.Server
         {
             try
             {
+                if (CheckEtags(context))
+                {
+                    return true;
+                }
                 if (!IsInitialized)
                 {
                     Initialize();
@@ -421,34 +464,36 @@ namespace Bam.Net.Server
                 if (!handled && !ShouldIgnore(path))
                 {
                     bool exists;
-                    exists = ServerRoot.FileExists(path, out string readFileFromPath);
+                    exists = ServerRoot.FileExists(path, out string absoluteFileSystemPath);
                     if (!exists)
                     {
-                        exists = ServerRoot.FileExists(commonPath, out readFileFromPath);
+                        exists = ServerRoot.FileExists(commonPath, out absoluteFileSystemPath);
                     }
 
                     if (exists)
                     {
-                        string ext = Path.GetExtension(readFileFromPath);
+                        string ext = Path.GetExtension(absoluteFileSystemPath);
                         if (FileCachesByExtension.ContainsKey(ext))
                         {
                             FileCache cache = FileCachesByExtension[ext];
                             if (ShouldZip(request))
                             {
                                 SetGzipContentEncodingHeader(response);
-                                content = cache.GetZippedContent(readFileFromPath);
+                                content = cache.GetZippedContent(absoluteFileSystemPath);
                             }
                             else
                             {
-                                content = cache.GetContent(readFileFromPath);
+                                content = cache.GetContent(absoluteFileSystemPath);
                             }
                             handled = true;
+                            SetLastModified(response, request.Url.ToString(), new FileInfo(absoluteFileSystemPath).LastWriteTime);
                         }
                     }
 
                     if (handled)
                     {
                         SetContentType(response, path);
+                        SetEtag(response, path, content);
                         SendResponse(response, content);
                         OnResponded(context);
                     }

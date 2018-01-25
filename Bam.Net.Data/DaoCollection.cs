@@ -63,7 +63,7 @@ namespace Bam.Net.Data
 			this.Database = query.Database;
             this.ReferencingColumn = referencingColumn;
         }
-
+        
         public DaoCollection(Database db, Query<C, T> query, bool load = false): this(query, null, null)
         {
             if (load)
@@ -253,6 +253,13 @@ namespace Bam.Net.Data
 
             this._values.Add(instance);
             this._book = new Book<T>(this._values);
+        }
+
+        public virtual void Clear(Database db = null)
+        {
+            Delete(db);
+            _values = new List<T>();
+            _book = new Book<T>();
         }
 
         public virtual void AddRange(IEnumerable<T> values)

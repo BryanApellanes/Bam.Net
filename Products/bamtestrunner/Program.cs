@@ -12,7 +12,7 @@ using System.Reflection;
 namespace Bam.Net.Testing
 {
     [Serializable]
-    class Program : CommandLineTestInterface
+    public partial class Program : CommandLineTestInterface
     {
         private const string _exitOnFailure = "exitOnFailure";
         private const string _programName = "bamtestrunner";
@@ -71,7 +71,7 @@ namespace Bam.Net.Testing
             Enum.TryParse<TestType>(Arguments["type"].Or("Unit"), out TestType testType);
 
             Setup(out string startDirectory, out FileInfo[] files);
-
+            
             switch (testType)
             {
                 case TestType.Unit:
@@ -128,39 +128,6 @@ namespace Bam.Net.Testing
             }
         }
 
-        [ConsoleAction("UnitTests", "[path_to_test_assembly]", "Run unit tests in the specified assembly")]
-        public static void RunUnitTestsInFile(string assemblyPath = null, string endDirectory = null)
-        {
-            assemblyPath = assemblyPath ?? Arguments["UnitTests"];
-            endDirectory = endDirectory ?? Environment.CurrentDirectory;
-            try
-            {
-                Assembly assembly = Assembly.LoadFrom(assemblyPath);
-                RunAllUnitTests(assembly, Log.Default, (o, a) => _passedCount++, (o, a) => _failedCount++);
-                Environment.CurrentDirectory = endDirectory;
-            }
-            catch (Exception ex)
-            {
-                Environment.CurrentDirectory = endDirectory;
-                HandleException(ex);
-            }
-        }
-
-        [ConsoleAction("IntegrationTests", "[path_to_test_assembly]", "Run integration tests in the specified assemlby")]
-        public static void RunIntegrationTestsInFile(string assemblyPath = null, string endDirectory = null)
-        {
-            assemblyPath = assemblyPath ?? Arguments["IntegrationTests"];
-            try
-            {
-                Assembly assembly = Assembly.LoadFrom(assemblyPath);
-                IntegrationTestRunner.RunIntegrationTests(assembly);
-            }
-            catch (Exception ex)
-            {
-                HandleException(ex);
-            }
-        }
-
         private static void HandleException(Exception ex)
         {
             OutLineFormat("{0}: {1}", ConsoleColor.DarkRed, _programName, ex.Message);
@@ -170,6 +137,11 @@ namespace Bam.Net.Testing
             }
         }
         
+        private static void Setup()
+        {
+            Setup(out string ignoreDirectory, out FileInfo[] ignoreFiles);
+        }
+
         private static void Setup(out string startDirectory, out FileInfo[] files)
         {
             string resultDirectory = Arguments.Contains("data") ? Arguments["data"] : ".";
@@ -183,7 +155,7 @@ namespace Bam.Net.Testing
             }
             if (!string.IsNullOrEmpty(reportHost))
             {
-                if(!int.TryParse(Arguments["testReportPort"].Or(DefaultConfiguration.GetAppSetting("TestReportHost", string.Empty)).Or("80"), out int port))
+                if(!int.TryParse(Arguments["testReportPort"].Or(DefaultConfiguration.GetAppSetting("TestReportPort", string.Empty)).Or("80"), out int port))
                 {
                     port = 80;
                 }

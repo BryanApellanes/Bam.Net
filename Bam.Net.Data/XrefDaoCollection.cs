@@ -26,14 +26,16 @@ namespace Bam.Net.Data
 
         public XrefDaoCollection(Dao parent, bool load = true)
         {
-            this.Parent = parent;
-            this._values = new List<L>();
-            this._book = new Book<L>();
+            Parent = parent;
+            _values = new List<L>();
+            _book = new Book<L>();
+            Database = parent.Database;
 
             if (load)
             {
-                Load(parent.Database);
+                Load(Database);
             }
+            _setDatabases = true;
         }
 
         protected Dao Parent
@@ -160,6 +162,16 @@ namespace Bam.Net.Data
             Commit();
         }
 
+        public void Save(Database db)
+        {
+            Commit(db);
+        }
+
+        /// <summary>
+        /// Adds a new value to the collection in memory.  Does
+        /// not commit to the database until Save is called.
+        /// </summary>
+        /// <returns></returns>
         public L AddNew()
         {
             L val = new L();
@@ -167,6 +179,11 @@ namespace Bam.Net.Data
             return val;
         }
 
+        /// <summary>
+        /// Adds the value to the collection in memory.  Does
+        /// not commit to the database until Save is called.
+        /// </summary>
+        /// <param name="item"></param>
         public void Add(L item)
         {
             _values.Add(item);
@@ -200,10 +217,32 @@ namespace Bam.Net.Data
                 _book = new Book<L>(_values);
             }
 
+            DeleteXrefItem(item, db);
+        }
+
+        private void DeleteXrefItem(L item, Database db)
+        {
             if (XrefsByListId.ContainsKey(item.IdValue.Value))
             {
                 XrefsByListId[item.IdValue.Value].Delete(db);
             }
+        }
+
+        /// <summary>
+        /// Deletes all cross reference entries representing associations
+        /// for the objects in this collection.  The objects themselves
+        /// are not deleted.
+        /// </summary>
+        /// <param name="db"></param>
+        public void Clear(Database db = null)
+        {
+            db = db ?? Database;
+            foreach(L item in _values)
+            {
+                DeleteXrefItem(item, db);
+            }
+            _values = new List<L>();
+            _book = new Book<L>();
         }
 
         public override bool MoveNextPage()
@@ -264,7 +303,7 @@ namespace Bam.Net.Data
         {
             db = db ?? Database;
             SqlStringBuilder sql = db.ServiceProvider.Get<SqlStringBuilder>();
-            WriteCommit(sql);
+            WriteCommit(sql, db);
 
             sql.Execute(db);
             AfterCommit?.Invoke(db, this);
@@ -330,14 +369,25 @@ namespace Bam.Net.Data
 
         #region IDeleteable Members
 
+        /// <summary>
+        /// Delete all the entries in this collection as 
+        /// well as all Xref entries if any.
+        /// </summary>
+        /// <param name="db"></param>
         public void Delete(Database db = null)
         {
-            db = db ?? Db.For<L>();
+            db = db ?? Database;
             SqlStringBuilder sql = db.ServiceProvider.Get<SqlStringBuilder>();
             WriteDelete(sql);
             sql.Execute(db);
         }
 
+        /// <summary>
+        /// Write a sql script that can be used to delete all 
+        /// the entries in this collection as well as all the
+        /// Xref entries if any.
+        /// </summary>
+        /// <param name="sql"></param>
         public void WriteDelete(SqlStringBuilder sql)
         {
             foreach (L item in this._values)
@@ -414,11 +464,15 @@ namespace Bam.Net.Data
 
         #endregion
 
+        bool _setDatabases; // set to true after ctor completes
         private void SetEachDatabase(Database db)
         {
-            foreach (Dao dao in this)
+            if (_setDatabases)
             {
-                dao.Database = db;
+                foreach (Dao dao in this)
+                {
+                    dao.Database = db;
+                }
             }
         }
     }

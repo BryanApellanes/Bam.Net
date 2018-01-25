@@ -56,17 +56,17 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data
 
         public ServiceTypeIdentifier GetForTypeIdentifier(IRepository repo)
         {
-            return GetTypeIdentifier(repo, new { ForTypeDurableHash = ForTypeDurableHash });
+            return GetTypeIdentifier(repo, new { DurableHash = ForTypeDurableHash });
         }
 
         public ServiceTypeIdentifier GetUseTypeIdentifier(IRepository repo)
         {
-            return GetTypeIdentifier(repo, new { UseTypeDurableHash = UseTypeDurableHash });
+            return GetTypeIdentifier(repo, new { DuarableHash = UseTypeDurableHash });
         }
 
         public ServiceTypeIdentifier GetTypeIdentifier(IRepository repo, dynamic queryParams)
         {
-            var result = repo.Query(typeof(ServiceTypeIdentifier), queryParams).FirstOrDefault();
+            var result = repo.Query(typeof(ServiceTypeIdentifier), queryParams);
             if(result != null)
             {
                 return result.CopyAs<ServiceTypeIdentifier>();

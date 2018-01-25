@@ -131,8 +131,10 @@ namespace @Namespace
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<@(Model.ClassName)>();
 			Database db = database ?? Db.For<@(Model.ClassName)>();
-			var results = new @(Model.ClassName)Collection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new @(Model.ClassName)Collection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -569,6 +571,25 @@ namespace @Namespace
 			if(orderBy != null)
 			{
 				query.OrderBy<@(Model.ClassName)Columns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<@(Model.ClassName)Collection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static @(Model.ClassName)Collection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<@(Model.ClassName)>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<@(Model.ClassName)>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

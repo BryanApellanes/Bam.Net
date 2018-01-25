@@ -96,7 +96,6 @@ namespace Bam.Net.CoreServices
                 .For<UserRegistryService>().Use<UserRegistryService>()
                 .For<ConfigurationService>().Use(configSvc)
                 .For<IStorableTypesProvider>().Use<NamespaceRepositoryStorableTypesProvider>()
-                .For<DiagnosticService>().Use<DiagnosticService>()
                 .For<FileService>().Use<FileService>()
                 .For<IFileService>().Use<FileService>()
                 .For<AssemblyServiceRepository>().Use(assSvcRepo)
@@ -109,7 +108,10 @@ namespace Bam.Net.CoreServices
                 .For<DataSettings>().Use(DataSettings.Default)
                 .For<IApplicationNameResolver>().Use<ClientApplicationNameResolver>()
                 .For<ClientApplicationNameResolver>().Use<ClientApplicationNameResolver>()
-                .For<NotificationService>().Use<NotificationService>();
+                .For<NotificationService>().Use<NotificationService>();                
+
+            reg.For<ServiceRegistry>().Use(reg)
+                .For<DiagnosticService>().Use<DiagnosticService>();
 
             reg.SetProperties(userMgr);
             userMgr.ServiceProvider = reg;

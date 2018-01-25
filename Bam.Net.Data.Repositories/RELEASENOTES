@@ -1,2 +1,5 @@
 
- -   don't throw if SchemaName property not found (9dcf966)
+ -   correct assembly references in dao repo compilation (5c9877e)
+ -   handle datasettings based on uri (e26f058)
+ -   add generic 'Top' with sortby and sortorder (3ad33f5)
+ -   update repository path handling (942bca6)

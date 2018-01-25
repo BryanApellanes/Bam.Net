@@ -1,2 +1,3 @@
 
- -   fix pluralization rules for ending with y (8450d9b)
+ -   add date and time related extension methods (3c82534)
+ -   minor logging refactor (d4750ab)

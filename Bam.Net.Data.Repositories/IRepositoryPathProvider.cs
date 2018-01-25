@@ -8,7 +8,7 @@ namespace Bam.Net.Data.Repositories
 {
     public interface IRepositoryPathProvider
     {
-        string GetPath(IRepository repo);
-        string GetPath();
+        string GetRepositoryFileSystemPath(IRepository repo);
+        string GetRepositoryFileSystemPath();
     }
 }

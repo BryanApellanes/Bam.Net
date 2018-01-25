@@ -40,6 +40,14 @@
             and there was an error.
             </summary>
         </member>
+        <member name="M:Bam.Net.CommandLine.CommandLineInterface.TryWritePid(System.Boolean)">
+            <summary>
+            Try to write the current process id to a file either in the 
+            same directory as the main executable or the user's temp 
+            directory if that fails.
+            </summary>
+            <param name="killOldProcess">Try to kill the old process if the pid file already exists</param>
+        </member>
         <member name="M:Bam.Net.CommandLine.CommandLineInterface.EnsureAdminRights">
             <summary>
             Checks if the owner of the current process has admin rights,
@@ -132,6 +140,20 @@
             If true will cause all calls to InvokeSelection to be 
             run in a separate AppDomain.  This is primarily for 
             UnitTest isolation.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.CommandLine.CommandLineInterface.Pause(System.String,System.Action)">
+            <summary>
+            Pause execution waiting for input.  If output is redirected
+            then execute "ifOutputRedirected" action instead.
+            </summary>
+            <param name="message"></param>
+            <param name="ifOutputRedirected"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.CommandLine.CommandLineInterface.Block">
+            <summary>
+            Block 
             </summary>
         </member>
         <member name="M:Bam.Net.CommandLine.CommandLineInterface.AddValidArgument(System.String,System.String)">

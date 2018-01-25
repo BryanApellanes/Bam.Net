@@ -1,3 +1,4 @@
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("@(Model.TableName)_@(Model.Name)", new @(Model.ReferencingClass)Collection(Database.GetQuery<@(Model.ReferencingClass)Columns, @(Model.ReferencingClass)>((c) => c.@(Model.PropertyName) == GetLongValue("@(Model.ReferencedKey)")), this, "@(Model.Name)"));				

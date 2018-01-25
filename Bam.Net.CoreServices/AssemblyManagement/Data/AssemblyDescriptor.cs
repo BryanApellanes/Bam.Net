@@ -15,8 +15,7 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data
     public class AssemblyDescriptor: KeyHashRepoData
     {
         public AssemblyDescriptor()
-        {
-        }
+        { }
 
         public AssemblyDescriptor(Assembly assembly)
         {
@@ -31,14 +30,15 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data
         {
             Task.Run(() =>
             {
-                AssemblyRevision rev = repo.Query<AssemblyRevision>(new { FileHash = FileHash, FileName = Name, Number = FileHash.ToSha1Int() }).FirstOrDefault();
+                int number = FileHash.ToSha1Int();
+                AssemblyRevision rev = repo.Query<AssemblyRevision>(new { FileHash = FileHash, FileName = Name, Number = number }).FirstOrDefault();
                 if (rev == null)
                 {
                     rev = new AssemblyRevision
                     {
                         FileHash = FileHash,
                         FileName = Name,
-                        Number = FileHash.ToSha1Int()
+                        Number = number
                     };
                     repo.Save(rev);
                 }
@@ -57,10 +57,13 @@ namespace Bam.Net.CoreServices.AssemblyManagement.Data
             foreach (AssemblyName name in assembly.GetReferencedAssemblies().Where(AssemblyNameFilter))
             {
                 Assembly referenced = Assembly.Load(name);
+                FileInfo file = referenced.GetFileInfo();
                 referenceDescriptors.Add(new AssemblyReferenceDescriptor
                 {
+                    ReferencerName = Name,
+                    ReferencedName = file.Name,
                     ReferencerHash = FileHash,
-                    ReferencedHash = referenced.GetFileInfo().Sha256()
+                    ReferencedHash = file.Sha256()
                 });
             };
             AssemblyReferenceDescriptors = referenceDescriptors.ToList();

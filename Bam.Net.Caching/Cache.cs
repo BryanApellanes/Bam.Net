@@ -32,8 +32,8 @@ namespace Bam.Net.Caching
 		public Cache(string name, int maxBytes, bool groomInBackground, EventHandler evictionListener = null)
 		{
 			Items = new HashSet<CacheItem>();
-			ItemsByHits = new List<CacheItem>();
-			ItemsByMisses = new List<CacheItem>();
+			ItemsByHits = new SortedSet<CacheItem>();
+			ItemsByMisses = new SortedSet<CacheItem>();
 			ItemsById = new Dictionary<long, CacheItem>();
             ItemsByUuid = new Dictionary<string, CacheItem>();
 			MetaProvider = Bam.Net.Data.Repositories.MetaProvider.Default;
@@ -57,8 +57,8 @@ namespace Bam.Net.Caching
 
 		public IMetaProvider MetaProvider { get; set; }
 		protected HashSet<CacheItem> Items { get; set; }
-		protected List<CacheItem> ItemsByHits { get; private set; }
-		protected List<CacheItem> ItemsByMisses { get; private set; }
+		protected SortedSet<CacheItem> ItemsByHits { get; private set; }
+		protected SortedSet<CacheItem> ItemsByMisses { get; private set; }
 		protected Dictionary<long, CacheItem> ItemsById { get; set; }
 		protected Dictionary<string, CacheItem> ItemsByUuid { get; set; }
         protected Dictionary<string, CacheItem> ItemsByCuid { get; set; }
@@ -73,8 +73,7 @@ namespace Bam.Net.Caching
 
         public CacheItem Retrieve(long id)
         {
-            CacheItem result = null;
-            if(ItemsById.TryGetValue(id, out result))
+            if (ItemsById.TryGetValue(id, out CacheItem result))
             {
                 result.IncrementHits();
             }
@@ -336,6 +335,7 @@ namespace Bam.Net.Caching
 
             LastEvictionCount = count > itemsCopy.Count ? Items.Count : count;
             int firstCount = itemsCopy.Count - count;
+            int tailSize = itemsCopy.Count - firstCount;
             if (firstCount < 0)
             {
                 removed = new HashSet<CacheItem>(itemsCopy);
@@ -343,13 +343,25 @@ namespace Bam.Net.Caching
             }
             else
             {
-                for (int i = 0; i < firstCount; i++)
+                int i = 0;
+                foreach(CacheItem item in ItemsByHits)
                 {
-                    itemsCopy.Add(ItemsByHits[i]);
+                    itemsCopy.Add(item);
+                    if(i >= firstCount)
+                    {
+                        break;
+                    }
+                    i++;
                 }
-                for (int i = firstCount; i < itemsCopy.Count; i++)
+                i = 0;
+                foreach(CacheItem item in ItemsByHits.Reverse())
                 {
-                    removed.Add(ItemsByHits[i]);
+                    removed.Add(item);
+                    if(i >= tailSize)
+                    {
+                        break;
+                    }
+                    i++;
                 }
             }
 
@@ -374,7 +386,7 @@ namespace Bam.Net.Caching
                     ctx.Kept.Add(ci);
                 }
             });
-            LastEvictionCount = removed.Count();
+            LastEvictionCount = removed.Count;
             Items = kept;
             Organize();
 
@@ -397,17 +409,16 @@ namespace Bam.Net.Caching
 			{
 				int currentTailSize = 0;
 				int currentItemCount = 0;
-				for (int i = Items.Count - 1; i >= 0; i--)
-				{
-					currentItemCount++;
-					CacheItem item = ItemsByHits[i];
-					currentTailSize += item.MemorySize;
-					if(currentTailSize > bytesOver)
-					{
-						result = currentItemCount;
-						break;
-					}
-				}
+                foreach(CacheItem item in ItemsByHits.Reverse())
+                {
+                    currentItemCount++;
+                    currentTailSize += item.MemorySize;
+                    if (currentTailSize > bytesOver)
+                    {
+                        result = currentItemCount;
+                        break;
+                    }
+                }
 			}
 
 			return result;
@@ -437,15 +448,12 @@ namespace Bam.Net.Caching
                 {
                     () =>
                     {
-                        List<CacheItem> itemsByHits = new List<CacheItem>(Items);
-                        itemsByHits.Sort((x, y) => y.Hits.CompareTo(x.Hits));
+                        SortedSet<CacheItem> itemsByHits = new SortedSet<CacheItem>(Items, new CacheItemComparer{ Hits = true, SortOrder = Data.SortOrder.Descending });
                         ItemsByHits = itemsByHits;
                     },
                     () =>
                     {
-                        List<CacheItem> itemsByMisses = new List<CacheItem>(Items);
-                        itemsByMisses = new List<CacheItem>(Items);
-                        itemsByMisses.Sort((x, y) => x.Misses.CompareTo(y.Misses));
+                        SortedSet<CacheItem> itemsByMisses = new SortedSet<CacheItem>(Items, new CacheItemComparer{Misses = true, SortOrder = Data.SortOrder.Descending });
                         ItemsByMisses = itemsByMisses;
                     },
                     () =>

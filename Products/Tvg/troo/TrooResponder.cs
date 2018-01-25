@@ -17,21 +17,19 @@ namespace Bam.Net.Application
             this.DaoResponder = new DaoResponder(conf, logger);
             this.RestResponder = new RestResponder(conf, repository, logger);
         }
+
         public DaoResponder DaoResponder
         {
             get;
             private set;
         }
+
         public RestResponder RestResponder
         {
             get;
             private set;
         }
-        public IRepository Repository
-        {
-            get;
-            set;
-        }
+ 
         public override bool TryRespond(ServiceProxy.IHttpContext context)
         {
             if (DaoResponder.MayRespond(context))

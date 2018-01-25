@@ -17,12 +17,19 @@ namespace Bam.Net.Logging
         public TextFileLogger()
             : base()
         {
-            this._fileNumber = 1;
-            this.MaxBytes = 1310720; // 10 MB
-            this.FileExtension = "log";
-
-            this.Folder = new DirectoryInfo(GetAppDataFolder());   
+            ApplicationNameProvider = new DefaultConfigurationApplicationNameProvider();
+            _fileNumber = 1;
+            MaxBytes = 1310720; // 10 MB
+            FileExtension = "log";
+            Folder = new DirectoryInfo(GetAppDataFolder());            
         }
+
+        public TextFileLogger(IApplicationNameProvider applicationNameProvider): this()
+        {
+            ApplicationNameProvider = applicationNameProvider;
+        }
+
+        protected IApplicationNameProvider ApplicationNameProvider { get; set; }
 
         /// <summary>
         /// Gets or sets the maximum size of any single log file created by this logger.
@@ -135,7 +142,7 @@ namespace Bam.Net.Logging
         {
             lock (fileLock)
             {
-                string appName = DefaultConfiguration.GetAppSetting("ApplicationName", unknownAppName);
+                string appName = ApplicationNameProvider.GetApplicationName();
                 string fileName = string.Format("{0}_{1}.{2}", appName, _fileNumber, FileExtension);
 
                 _file = new FileInfo(Path.Combine(Folder.FullName, fileName));

@@ -1,6 +1,7 @@
 /*
 	Copyright © Bryan Apellanes 2015  
 */
+using Bam.Net.Configuration;
 using Bam.Net.ServiceProxy;
 using System;
 using System.Collections.Generic;
@@ -55,6 +56,24 @@ namespace Bam.Net.Server
             HostPrefix result = this.CopyAs<HostPrefix>();
             result.HostName = $"{attr.Subdomain}.{HostName}";
             return result;
+        }
+
+        public static HostPrefix[] FromDefaultConfiguration(string defaultHostName = "localhost", int defaultPort = 80)
+        {
+            int port = int.Parse(DefaultConfiguration.GetAppSetting("Port", defaultPort.ToString()));
+            bool ssl = DefaultConfiguration.GetAppSetting("Ssl").IsAffirmative();
+            List<HostPrefix> results = new List<HostPrefix>();
+            foreach (string hostName in DefaultConfiguration.GetAppSetting("HostNames").Or(defaultHostName).DelimitSplit(",", true))
+            {
+                HostPrefix hostPrefix = new HostPrefix()
+                {
+                    HostName = hostName,
+                    Port = port,
+                    Ssl = ssl
+                };
+                results.Add(hostPrefix);
+            }
+            return results.ToArray();
         }
     }
 }

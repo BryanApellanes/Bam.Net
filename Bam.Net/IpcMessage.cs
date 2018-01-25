@@ -45,10 +45,6 @@ namespace Bam.Net
         /// Gets a message with the specified name creating it 
         /// if necessary
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        /// </summary>
         /// <param name="name"></param>
         /// <param name="messageType"></param>
         /// <param name="rootDirectory"></param>

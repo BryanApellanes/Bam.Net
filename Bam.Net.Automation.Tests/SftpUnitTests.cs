@@ -37,7 +37,7 @@ using Bam.Net.Testing.Unit;
 namespace Bam.Net.Automation.Tests
 {
     [Serializable]
-    public class SshUnitTests : CommandLineTestInterface
+    public class SftpUnitTests : CommandLineTestInterface
     {
 
         [UnitTest]

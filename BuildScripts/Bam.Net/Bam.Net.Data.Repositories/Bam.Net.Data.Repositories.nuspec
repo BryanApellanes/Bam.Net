@@ -2,21 +2,24 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Data.Repositories</id>
-    <version>1.9.0</version>
+    <version>1.9.1</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>http://bryanapellanes.github.io/Bam.Net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Repository pattern providers for the Bam framework</description>
-    <releaseNotes>Version 1.9.0
- -   don't throw if SchemaName property not found (9dcf966)
+    <releaseNotes>Version 1.9.1
+ -   correct assembly references in dao repo compilation (5c9877e)
+ -   handle datasettings based on uri (e26f058)
+ -   add generic 'Top' with sortby and sortorder (3ad33f5)
+ -   update repository path handling (942bca6)
 </releaseNotes>
-    <copyright>Copyright © Bryan Apellanes 2017</copyright>
+    <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.9.0" />
-      <dependency id="Bam.Net.Data" version="1.9.0" />
-      <dependency id="Bam.Net.ServiceProxy" version="1.9.0" />
+      <dependency id="Bam.Net" version="1.9.1" />
+      <dependency id="Bam.Net.Data" version="1.9.1" />
+      <dependency id="Bam.Net.ServiceProxy" version="1.9.1" />
     </dependencies>
   </metadata>
 </package>

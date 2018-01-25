@@ -169,31 +169,40 @@ namespace Bam.Net.Server.Streaming
             while (true)
             {
                 TcpClient client = Listener.AcceptTcpClient();
-                Logger.Info("Client Connected");
+                Logger.Info("Client Connected: LocalEndpoint={0}, RemoteEndpoint={1}", client.Client.LocalEndPoint.ToString(), client.Client.RemoteEndPoint.ToString());
                 Task.Run(() => ReadRequest(client));
             }
         }
 
         protected internal virtual void ReadRequest(TcpClient client)
         {
+            int retryCount = 3;
             while (client.Connected)
             {
                 try
                 {
-                    GetStreamData(client, out NetworkStream stream, out byte[] requestData);
-
-                    StreamingRequest request = requestData.FromBinaryBytes<StreamingRequest>();
-                    ProcessRequest(new StreamingContext
+                    if(retryCount > 0)
                     {
-                        Request = request,
-                        ResponseStream = stream,
-                        Encoding = Encoding
-                    });
+                        GetStreamData(client, out NetworkStream stream, out byte[] requestData);
+
+                        StreamingRequest request = requestData.FromBinaryBytes<StreamingRequest>();
+                        ProcessRequest(new StreamingContext
+                        {
+                            Request = request,
+                            ResponseStream = stream,
+                            Encoding = Encoding
+                        });
+                    }
+                    else
+                    {
+
+                    }
                 }
                 catch (Exception ex)
                 {
                     FireEvent(RequestExceptionThrown, new ErrorEventArgs(ex));
-                    Logger.AddEntry("Error reading request: {0}", ex, ex.Message);
+                    Logger.AddEntry("Error reading request (retryCount={0}): {1}", ex, retryCount.ToString(), ex.Message);
+                    --retryCount;
                 }
             }            
         }

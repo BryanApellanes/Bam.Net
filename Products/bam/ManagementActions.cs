@@ -6,14 +6,18 @@ using Bam.Net.Testing;
 using Bam.Net.Services.Clients;
 using Bam.Net.Logging;
 using Bam.Net.UserAccounts;
+using Bam.Net.Automation;
+using System.IO;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace Bam.Net.Application
 {
     [Serializable]
 	public class ManagementActions : CommandLineTestInterface
 	{
-        public const string HeartServer = "http://bamapps.net";
-        
+        const string BamSysPath = "C:\\bam\\sys\\";
+
         [ConsoleAction("signUp", "Sign Up")]
 		public void SignUp()
 		{
@@ -30,19 +34,7 @@ namespace Bam.Net.Application
             }
 		}
 
-        [ConsoleAction("login", "Log in user to begin secure session")]
-        public void Login()
-        {
-            throw new NotImplementedException();
-        }
-
-        [ConsoleAction("registerService", "Register Service")]
-		public void RegisterApplication()
-		{
-			throw new NotImplementedException();
-		}
-
-		[ConsoleAction("registerClientApplication", "Register Client Application")]
+		[ConsoleAction("createClientApplication", "Create Client Application")]
 		public void RegisterApp()
 		{
 			BamServer server = new BamServer(BamConf.Load(GetRoot()));
@@ -57,6 +49,97 @@ namespace Bam.Net.Application
 			app.Initialize();
 		}
         
+        [ConsoleAction("createManifest", "Create BamAppManifest from a specified directory")]
+        public void CreateManifest()
+        {
+            string directoryPath = GetArgument("appDirectory", true, "Please enter the path to the directory");
+            string appName = GetArgument("appName", true, "Please enter the name of the application to create the manifest for");
+            BamAppManifest manifest = new BamAppManifest() { AppName = appName };
+            DirectoryInfo dirInfo = new DirectoryInfo(directoryPath);
+            List<string> fileNames = new List<string>();
+            foreach(FileInfo file in dirInfo.GetFiles())
+            {
+                fileNames.Add(file.Name);
+            }
+            manifest.FileNames = fileNames.ToArray();
+            List<string> dirNames = new List<string>();
+            foreach(DirectoryInfo dir in dirInfo.GetDirectories())
+            {
+                dirNames.Add(dir.Name);
+            }
+            manifest.DirectoryNames = dirNames.ToArray();
+            manifest.ToJsonFile(Path.Combine(BamSysPath, $"{manifest.AppName}.bamapp.json"));
+        }
+
+        [ConsoleAction("updateFromManifest", "Update the specified system app in c:\\bam\\sys\\{appName}")]
+        public void UpdateSysApp()
+        {
+            string appName = GetArgument("appName", true, "Please enter the name of the application to update");
+            string manifestPath = Path.Combine(BamSysPath, $"{appName}.bamapp.json");
+            if (!File.Exists(manifestPath))
+            {
+                Warn("Manifest for the specified app was not found");
+                return;
+            }            
+            Log.AddLogger(new ConsoleLogger { UseColors = true, AddDetails = false, ApplicationName = Assembly.GetEntryAssembly().GetFileInfo().Name });
+            string appPath = Path.Combine(BamSysPath, appName);
+            BamAppManifest manifest = manifestPath.FromJsonFile<BamAppManifest>();
+            DirectoryInfo source = new DirectoryInfo(".");
+            DirectoryInfo dest = new DirectoryInfo(appPath);
+            if (dest.Exists)
+            {
+                string moveTo = $"{appPath}_unkown-commit-".RandomLetters(4);
+                string commitFile = Path.Combine(dest.FullName, "commit");
+                if (File.Exists(commitFile))
+                {
+                    moveTo = $"{appPath}_{File.ReadAllText(commitFile)}";
+                }
+                else
+                {
+                    Log.Warn("Commit file {0} not found", commitFile);
+                }
+                Log.Info("Moving old instance from {0} to {1}", dest.Name, moveTo);
+                dest.MoveTo(moveTo);
+            }
+            dest = new DirectoryInfo(appPath);
+            foreach(string dirName in manifest.DirectoryNames)
+            {
+                DirectoryInfo srcSubdir = new DirectoryInfo(Path.Combine(source.FullName, dirName));
+                if (srcSubdir.Exists)
+                {
+                    DirectoryInfo destSubDir = new DirectoryInfo(Path.Combine(dest.FullName, dirName));
+                    if (!destSubDir.Parent.Exists)
+                    {
+                        destSubDir.Parent.Create();
+                    }
+                    Log.Info("Copying {0} to {1}", srcSubdir.FullName, destSubDir.FullName);
+                    srcSubdir.Copy(destSubDir.FullName);
+                }
+                else
+                {
+                    Log.Warn("Directory {0} doesn't exist", srcSubdir.FullName);
+                }
+            }
+            foreach(string fileName in manifest.FileNames)
+            {
+                FileInfo srcFile = new FileInfo(Path.Combine(source.FullName, fileName));
+                if (srcFile.Exists)
+                {
+                    FileInfo destFile = new FileInfo(Path.Combine(dest.FullName, fileName));
+                    if (!destFile.Directory.Exists)
+                    {
+                        destFile.Directory.Create();
+                    }
+                    Log.Info("Copying {0} to {1}", srcFile.FullName, destFile.FullName);
+                    srcFile.CopyTo(destFile.FullName);
+                }
+                else
+                {
+                    Log.Warn("File {0} doesn't exist", srcFile.FullName);
+                }
+            }
+        }
+
         private UserInfo GetUserInfo()
         {
             return new UserInfo

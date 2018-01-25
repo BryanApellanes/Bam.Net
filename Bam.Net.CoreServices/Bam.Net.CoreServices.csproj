@@ -237,6 +237,8 @@
     <Compile Include="AssemblyManagement\Data\Generated_Dao\Qi\AssemblyRevision.cs" />
     <Compile Include="AssemblyManagement\IAssemblyResolver.cs" />
     <Compile Include="ClientApplicationNameResolver.cs" />
+    <Compile Include="DiagnosableSettings.cs" />
+    <Compile Include="Diagnostic\IDiagnosable.cs" />
     <Compile Include="FileSystemChunkStorage.cs" />
     <Compile Include="Files\Chunk.cs" />
     <Compile Include="Files\CompositeChunkStorage.cs" />

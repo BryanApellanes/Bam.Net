@@ -12,6 +12,7 @@ namespace Bam.Net.Application
     {
         static void Main(string[] args)
         {
+            TryWritePid(true);
             IsolateMethodCalls = false;
             AddSwitches(typeof(ConsoleActions));
             AddConfigurationSwitches();

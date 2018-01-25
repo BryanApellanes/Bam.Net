@@ -138,6 +138,12 @@
             The return value of the test method execution
             </summary>        
         </member>
+        <member name="M:Bam.Net.Testing.Because.OrNot(System.String)">
+            <summary>
+            Throws an exception if the test failed.  Same as ThrowExceptionIfTheTestFailed. 
+            </summary>
+            <param name="message"></param>
+        </member>
         <member name="M:Bam.Net.Testing.Because.ThrowExceptionIfTheTestFailed(System.String)">
             <summary>
             Throws an exception if the test failed.  Same as OrNot.

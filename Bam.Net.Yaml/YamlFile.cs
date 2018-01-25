@@ -33,17 +33,16 @@ namespace Bam.Net.Yaml
 					{
 						object o = instances[i];
 						string typeName = "{0}{1}"._Format(Path.GetFileNameWithoutExtension(File.Name).PascalCase(true, " "), i > 0 ? i.ToString() : "");
-						Dictionary<object, object> dict = o as Dictionary<object, object>;
-						if (dict != null)
-						{
-							dict.ToDynamicType(typeName, types);
-						}
-						else
-						{
-							Type dynamicType = o.ToDynamicType(typeName, (p) => p.PropertyType.IsArray || p.PropertyType.IsValueType || p.PropertyType.IsPrimitive);
-							types.Add(dynamicType);
-						}
-					}
+                        if (o is Dictionary<object, object> dict)
+                        {
+                            dict.ToDynamicType(typeName, types);
+                        }
+                        else
+                        {
+                            Type dynamicType = o.ToDynamicType(typeName, (p) => p.PropertyType.IsArray || p.PropertyType.IsValueType || p.PropertyType.IsPrimitive);
+                            types.Add(dynamicType);
+                        }
+                    }
 
 					return types;
 				});

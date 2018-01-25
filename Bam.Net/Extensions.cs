@@ -32,7 +32,7 @@ using System.Diagnostics;
 namespace Bam.Net
 {
     public static class Extensions
-    {        
+    {
         static Dictionary<HashAlgorithms, Func<HashAlgorithm>> _hashAlgorithms;
         static Dictionary<HashAlgorithms, Func<byte[], HMAC>> _hmacs;
         static Dictionary<ExistingFileAction, Action<ZipArchiveEntry, string>> _extractActions;
@@ -94,7 +94,57 @@ namespace Bam.Net
                 { SerializationFormat.Binary, (stream, type) => stream.FromBinaryStream() } // this might not work; should be tested
             };
         }
-        
+
+        public static bool DatesAreEqual(this DateTime instance, DateTime other)
+        {
+            return instance.Year == other.Year && instance.Day == other.Day && instance.Month == other.Month;
+        }
+
+        public static bool TimesAreEqual(this DateTime instance, DateTime other, bool includeMilliseconds = false)
+        {
+            return (instance.Hour == other.Hour && instance.Minute == other.Minute && instance.Second == other.Second) &&
+                (includeMilliseconds ? instance.Millisecond == other.Millisecond : true);
+        }
+
+        public static T Try<T>(this Func<T> toTry)
+        {
+            return Try<T>(toTry, out Exception ignore);
+        }
+
+        public static T Try<T>(this Func<T> toTry, out Exception ex)
+        {
+            try
+            {
+                ex = null;
+                return toTry();
+            }
+            catch (Exception e)
+            {
+                ex = e;
+                return default(T);
+            }
+        }
+
+        public static bool Try(this Action toTry)
+        {
+            return Try(toTry, out Exception ignore);
+
+        }
+        public static bool Try(this Action toTry, out Exception ex)
+        {
+            ex = null;
+            try
+            {
+                toTry();
+                return true;
+            }
+            catch (Exception e)
+            {
+                ex = e;
+                return false;
+            }
+        }
+
         public static int GetHashCode(this object instance, params string[] propertiesToInclude)
         {
             return GetHashCode(instance, propertiesToInclude.Select(p => instance.Property(p)).ToArray());
@@ -816,6 +866,12 @@ namespace Bam.Net
 
             return results;
         }
+
+        public static Dictionary<string, string> FromQueryString(this string queryString)
+        {
+            return QueryStringToDictionary(queryString);
+        }
+
         public static Dictionary<string, string> QueryStringToDictionary(this string queryString)
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
@@ -1635,7 +1691,7 @@ namespace Bam.Net
 
         public static T FromJObject<T>(this JObject jObject)
         {
-            return jObject.ToJson().FromJson<T>();
+            return jObject.ToObject<T>();
         }
 
         public static T FromJObject<T>(this object jObject)

@@ -1,4 +1,3 @@
 
- -   fix test range selection bug (fde4e7a)
- -   add tag to test execution (d007bfe)
- -   remove ParameterProvider, add TestExecution.Tag (47abf25)
+ -   add action argument to because (e58601b)
+ -   output full method path for failed tests (ae6fb2c)

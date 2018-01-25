@@ -114,6 +114,7 @@
     <Compile Include="AutoIdSchemaManager.cs" />
     <Compile Include="ColumnNameToPropertyName.cs" />
     <Compile Include="CuidSchemaManager.cs" />
+    <Compile Include="DataTypes.cs" />
     <Compile Include="IHasSchemaTempPathProvider.cs" />
     <Compile Include="INameFormatter.cs" />
     <Compile Include="EchoNameFormatter.cs" />
@@ -123,7 +124,6 @@
     <Compile Include="SchemaExtractor.cs" />
     <Compile Include="Column.cs" />
     <Compile Include="DaoRazorTemplate.cs" />
-    <Compile Include="DataTypes.cs" />
     <Compile Include="ForeignKeyColumn.cs" />
     <Compile Include="GeneratorEventDelegate.cs" />
     <Compile Include="ISchemaExtractor.cs" />

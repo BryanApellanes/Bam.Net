@@ -124,10 +124,12 @@
     <Compile Include="DatabaseExtensions.cs" />
     <Compile Include="DatabaseFactory.cs" />
     <Compile Include="DataSettings.cs" />
+    <Compile Include="DataSettingsResolver.cs" />
     <Compile Include="DefaultRepositoryResolver.cs" />
     <Compile Include="FsRepoData.cs" />
     <Compile Include="FsRepository.cs" />
     <Compile Include="ICrudProvider.cs" />
+    <Compile Include="IDataSettingsResolver.cs" />
     <Compile Include="IReflectionCrudProvider.cs" />
     <Compile Include="ICrudResponseProvider.cs" />
     <Compile Include="IHasKeyHash.cs" />
@@ -140,6 +142,7 @@
     <Compile Include="KeyHashProvider.cs" />
     <Compile Include="KeyHashRepoData.cs" />
     <Compile Include="NamespaceStorableTypesProvider.cs" />
+    <Compile Include="ProcessModeResolver.cs" />
     <Compile Include="RepoData.cs" />
     <Compile Include="RepositoryResolver.cs" />
     <Compile Include="RepositoryStorableTypesProvider.cs" />

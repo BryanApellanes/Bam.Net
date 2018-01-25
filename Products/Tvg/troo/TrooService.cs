@@ -35,7 +35,7 @@ namespace Bam.Net.Application
                         ILogger logger = GetLogger();
                         TrooServer server = new TrooServer(BamConf.Load(ServiceConfig.ContentRoot), logger, GetRepository(logger))
                         {
-                            HostPrefixes = new HashSet<HostPrefix> { GetConfiguredHostPrefix() },
+                            HostPrefixes = new HashSet<HostPrefix>(GetConfiguredHostPrefixes()),
                             MonitorDirectories = DefaultConfiguration.GetAppSetting("MonitorDirectories").DelimitSplit(",", ";")
                         };
                         logger.AddEntry("Created Server of Type {0}: {1}", typeof(TrooServer).FullName, server.PropertiesToString());
@@ -70,9 +70,9 @@ namespace Bam.Net.Application
             return ServiceConfig.GetConfiguredDatabase();
         }
 
-        private static HostPrefix GetConfiguredHostPrefix()
+        private static HostPrefix[] GetConfiguredHostPrefixes()
         {
-            return ServiceConfig.GetConfiguredHostPrefix();
+            return ServiceConfig.GetConfiguredHostPrefixes();
         }
 
         private static ILogger GetLogger()

@@ -7,6 +7,11 @@ namespace Bam.Net.Services.Catalog.Data
     public class ItemDefinition: AuditRepoData
     {
         public string Name { get; set; }
-        public List<DataProperty> Properties { get; set; }
+        public List<ItemProperty> Properties { get; set; }
+        public ItemDefinition Set(string propertyName, object value)
+        {
+            Properties.Add(new ItemProperty { Name = propertyName, Value = value });
+            return this;
+        }
     }
 }

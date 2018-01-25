@@ -83,6 +83,7 @@
     <Compile Include="AssemblyServiceTests.cs" />
     <Compile Include="AsyncProxyableEcho.cs" />
     <Compile Include="AsyncProxyableServiceTests.cs" />
+    <Compile Include="CatalogServiceTests.cs" />
     <Compile Include="CommandServiceTests.cs" />
     <Compile Include="ConsoleActions.cs" />
     <Compile Include="DocumentationServiceTests.cs" />

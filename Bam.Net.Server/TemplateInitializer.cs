@@ -16,80 +16,58 @@ using System.IO;
 
 namespace Bam.Net.Server
 {
-    public abstract class TemplateInitializerBase : IInitialize<TemplateInitializerBase>
+    public abstract class TemplateInitializer : IInitialize<TemplateInitializer>, IPostServerInitialize
     {
-        public TemplateInitializerBase(BamServer server)
+        public TemplateInitializer(BamServer server)
         {
-            this.Server = server;
-            this._subscribers = new List<ILogger>();
+            Server = server;
+            _subscribers = new List<ILogger>();
         }
 
         public BamServer Server
         {
-            get;
-            set;
+            get; set;
         }
 
-        public event Action<TemplateInitializerBase> Initializing;
+        public event Action<TemplateInitializer> Initializing;
         protected void OnInitializing()
         {
-            if (Initializing != null)
-            {
-                Initializing(this);
-            }
+            Initializing?.Invoke(this);
         }
-        public event Action<TemplateInitializerBase> Initialized;
+        public event Action<TemplateInitializer> Initialized;
         protected void OnInitialized()
         {
-            if (Initialized != null)
-            {
-                Initialized(this);
-            }
+            Initialized?.Invoke(this);
         }
 
         public event Action<DaoProxyRegistration> InitializingCommonDaoTemplates;
         protected void OnInitializingCommonDaoTemplates(DaoProxyRegistration reg)
         {
-            if (InitializingCommonDaoTemplates != null)
-            {
-                InitializingCommonDaoTemplates(reg);
-            }
+            InitializingCommonDaoTemplates?.Invoke(reg);
         }
 
         public event Action<DaoProxyRegistration> InitializedCommonDaoTemplates;
         protected void OnInitializedCommonDaoTemplates(DaoProxyRegistration reg)
         {
-            if (InitializedCommonDaoTemplates != null)
-            {
-                InitializedCommonDaoTemplates(reg);
-            }
+            InitializedCommonDaoTemplates?.Invoke(reg);
         }
 
         public event Action<string, DaoProxyRegistration> InitializingAppDaoTemplates;
         protected void OnInitializingAppDaoTemplates(string appName, DaoProxyRegistration reg)
         {
-            if (InitializingAppDaoTemplates != null)
-            {
-                InitializingAppDaoTemplates(appName, reg);
-            }
+            InitializingAppDaoTemplates?.Invoke(appName, reg);
         }
 
         public event Action<string, DaoProxyRegistration> InitializedAppDaoTemplates;
         protected void OnInitializedAppDaoTemplates(string appName, DaoProxyRegistration reg)
         {
-            if (InitializedAppDaoTemplates != null)
-            {
-                InitializedAppDaoTemplates(appName, reg);
-            }
+            InitializedAppDaoTemplates?.Invoke(appName, reg);
         }
 
         public event Action<Exception> InitializationException;
         protected void OnInitializationException(Exception ex)
         {
-            if (InitializationException != null)
-            {
-                InitializationException(ex);
-            }
+            InitializationException?.Invoke(ex);
         }
 
         public bool IsInitialized

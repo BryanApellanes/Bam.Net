@@ -111,12 +111,12 @@ namespace Bam.Net.Data
                 OnExecuted(db);
             }
         }
-        
+
         public IEnumerable<T> ExecuteReader<T>(Database db) where T : class, new()
         {
             if (!string.IsNullOrWhiteSpace(this))
             {
-                return db.ExecuteReader<T>(this, (dr)=> OnExecuted(db));
+                return db.ExecuteReader<T>(this, (dr) => OnExecuted(db));
             }
             return new List<T>();
         }
@@ -447,13 +447,10 @@ namespace Bam.Net.Data
 		
 		protected internal void OnExecuted(Database db)
 		{
-			if (Executed != null)
-			{
-				Executed(this, db);
-			}
-		}
+            Executed?.Invoke(this, db);
+        }
 		
-		protected internal virtual SqlStringBuilder OrderBy(string columnName, SortOrder order = SortOrder.Ascending)
+		public virtual SqlStringBuilder OrderBy(string columnName, SortOrder order = SortOrder.Ascending)
 		{
 			_stringBuilder.AppendFormat("ORDER BY {0} {1}", ColumnNameFormatter(columnName), GetSortOrder(order));
 			return this;

@@ -51,7 +51,8 @@ namespace Bam.Net.Data
             db = GetSysDatabaseFor(typeof(TDao));
             Db.For<TDao>(db);
         }
-
+        public abstract T GetAppDatabase(IApplicationNameProvider appNameProvider, string databaseName);
+        public abstract T GetSysDatabase(string databaseName);
         public abstract T GetAppDatabaseFor(IApplicationNameProvider appNameProvider, object instance);
         public abstract T GetSysDatabaseFor(object instance);
         public abstract T GetAppDatabaseFor(IApplicationNameProvider appNameProvider, Type objectType, string info = null);

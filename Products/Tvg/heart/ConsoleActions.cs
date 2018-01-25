@@ -15,6 +15,7 @@ using Bam.Net.Logging;
 using System.Reflection;
 using Bam.Net.Services;
 using Bam.Net.CoreServices;
+using System.Threading;
 
 namespace Bam.Net.Application
 {

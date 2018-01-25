@@ -1083,7 +1083,16 @@
             in the directory RootDirectory with the name specified.
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Bam.Net.IpcMessage.Get(System.String,System.Type,System.String)" -->
+        <member name="M:Bam.Net.IpcMessage.Get(System.String,System.Type,System.String)">
+            <summary>
+            Gets a message with the specified name creating it 
+            if necessary
+            </summary>
+            <param name="name"></param>
+            <param name="messageType"></param>
+            <param name="rootDirectory"></param>
+            <returns></returns>
+        </member>
         <member name="P:Bam.Net.IpcMessage.LockTimeout">
             <summary>
             The number of milliseconds to wait to 
@@ -1467,6 +1476,7 @@
             <param name="instance"></param>
             <param name="propertyName"></param>
             <param name="value"></param>
+            <param name="throwIfPropertyNotFound"></param>
             <returns></returns>
         </member>
         <member name="M:Bam.Net.ReflectionExtensions.Property(System.Object,System.Type,System.String,System.Object,System.Boolean)">
@@ -3230,6 +3240,26 @@
             <param name="result"></param>
             <returns></returns>
         </member>
+        <member name="T:Bam.Net.UserUtil">
+            <summary>
+            Utility for getting information about the current user.
+            </summary>
+        </member>
+        <member name="M:Bam.Net.UserUtil.GetCurrentWebUserName">
+            <summary>
+            Get the username of the current user if HttpContext.Current
+            is not null and contains user information.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.UserUtil.GetCurrentWebUserName(System.Boolean)">
+            <summary>
+            Get the username of the current user if HttpContext.Current
+            is not null and contains user information.
+            </summary>
+            <param name="includeDomain"></param>
+            <returns></returns>
+        </member>
         <member name="M:Bam.Net.UserUtil.StripDomain(System.String)">
             <summary>
             Returns the value at index 1 after splitting the specified name
@@ -3256,6 +3286,12 @@
             current process is returned.
             </summary>
             <param name="includeDomain"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Bam.Net.UserUtil.CurrentWindowsUserHasAdminRights">
+            <summary>
+            Determine if the current windows (owner of the current process) user has admin rights.
+            </summary>
             <returns></returns>
         </member>
         <member name="M:Bam.Net.UserUtil.GetCurrentWindowsUser(System.Boolean)">

@@ -83,13 +83,13 @@ namespace Bam.Net.Data
 
         Dictionary<string, ILoadable> _childCollections;
         /// <summary>
-        /// Actions keyed by type to take after contruction
+        /// Actions, keyed by type, to take after contruction.
         /// </summary>
         public static Dictionary<Type, Action<Dao>> PostConstructActions { get; set; }
 
         /// <summary>
         /// Instantiate all dao types found in the assembly that contains the
-        /// specified type and place them into the Incubator.Default
+        /// specified type and place them into the Incubator.Default.
         /// </summary>
         /// <param name="daoSibling"></param>
         public static void RegisterDaoTypes(Type daoSibling)
@@ -102,7 +102,7 @@ namespace Bam.Net.Data
         /// type and place them into the specified
         /// serviceProvider
         /// </summary>
-        /// <param name="daoAssembly"></param>
+        /// <param name="daoSibling"></param>
         /// <param name="serviceProvider"></param>
         public static void RegisterDaoTypes(Type daoSibling, Incubator serviceProvider)
         {
@@ -606,12 +606,10 @@ namespace Bam.Net.Data
         public void Update(Database db = null)
         {
             db = db ?? Database;
-
             ThrowIfInvalid();
-
             QuerySet querySet = GetQuerySet(db);
-
             WriteUpdate(querySet);
+
             if (!string.IsNullOrWhiteSpace(querySet.ToString()))
             {
                 ExecuteCommit(db, querySet);
@@ -623,8 +621,8 @@ namespace Bam.Net.Data
             db = db ?? Database;
             ThrowIfInvalid();
             QuerySet querySet = GetQuerySet(db);
-
             WriteInsert(querySet);
+
             if (!string.IsNullOrWhiteSpace(querySet.ToString()))
             {
                 ExecuteCommit(db, querySet);
@@ -790,6 +788,12 @@ namespace Bam.Net.Data
             OnAfterWriteCommit(db);
         }
 
+        /// <summary>
+        /// Write an update statement into the specified SqlStringBuilder
+        /// which when executed will update the instance identified by
+        /// GetUniqueFilter().
+        /// </summary>
+        /// <param name="sqlStringBuilder"></param>
         public void WriteUpdate(SqlStringBuilder sqlStringBuilder)
         {
             AssignValue[] valueAssignments = GetNewAssignValues();
@@ -799,6 +803,11 @@ namespace Bam.Net.Data
                 .Go();
         }
 
+        /// <summary>
+        /// Write an insert statement into the specified SqlStringBuilder
+        /// which when executed will insert the current instance.
+        /// </summary>
+        /// <param name="sqlStringBuilder"></param>
         public void WriteInsert(SqlStringBuilder sqlStringBuilder)
         {
             sqlStringBuilder

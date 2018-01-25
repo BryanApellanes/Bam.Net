@@ -66,6 +66,15 @@
             which uniquely identifies it
             </summary>
         </member>
+        <member name="M:Bam.Net.Data.Repositories.ProcessModeResolver.Resolve(System.Uri)">
+            <summary>
+            Returns Prod for a uri where only domain and tld are specified.
+            Will return Dev or Test for uri's where the first part of the subdomain
+            either starts with, ends with or is equal to Dev or Test.
+            </summary>
+            <param name="uri"></param>
+            <returns></returns>
+        </member>
         <member name="T:Bam.Net.Data.Repositories.RepoData">
             <summary>
             An abstract base class defining common

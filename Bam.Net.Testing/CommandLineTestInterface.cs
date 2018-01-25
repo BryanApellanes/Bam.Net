@@ -224,7 +224,7 @@ namespace Bam.Net.Testing
         protected internal static ITestRunner<TTestMethod> GetTestRunner<TTestMethod>(Assembly assembly, ILogger logger) where TTestMethod : TestMethod
         {
             ITestRunner<TTestMethod> runner = TestRunner<TTestMethod>.Create(assembly, logger);
-            if (Arguments.Contains("tag"))
+            if (Arguments != null && Arguments.Contains("tag"))
             {
                 runner.Tag = Arguments["tag"];
             }
@@ -263,7 +263,10 @@ namespace Bam.Net.Testing
                     summary.FailedTests.ForEach(cim =>
                     {
                         Out("\t");
-                        OutLineFormat("{0}", new ConsoleColorCombo(ConsoleColor.Yellow, ConsoleColor.Red), cim.Test.Information);
+                        MethodInfo method = cim.Test.Method;
+                        Type type = method.DeclaringType;
+                        string testIdentifier = $"{type.Namespace}.{type.Name}.{method.Name}";
+                        OutLineFormat("{0}: ({1})", new ConsoleColorCombo(ConsoleColor.Yellow, ConsoleColor.Red), cim.Test.Information, testIdentifier);
                     });
                 }
                 else

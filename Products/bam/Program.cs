@@ -32,6 +32,7 @@ namespace Bam.Net.Application
 			Type type = typeof(Program);
 			AddSwitches(typeof(Program));
             AddSwitches(typeof(ManagementActions));
+            AddSwitches(typeof(UtilityActions));
 			AddConfigurationSwitches();
             ArgumentAdder.AddArguments();
 
@@ -43,6 +44,7 @@ namespace Bam.Net.Application
 			{
                 ExecuteSwitches(Arguments, type, false, Log.Default);
                 ExecuteSwitches(Arguments, typeof(ManagementActions), false, Log.Default);
+                ExecuteSwitches(Arguments, typeof(UtilityActions), false, Log.Default);
 			}
 			else
 			{

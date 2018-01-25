@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using Bam.Net.Configuration;
 
 namespace Bam.Net.Logging
 {
@@ -40,6 +42,7 @@ namespace Bam.Net.Logging
             if (!_loggers.Contains(logger) && logger != this && _loggers.Where(l => l.GetType() == logger.GetType()).FirstOrDefault() == null)
             {
                 _loggers.Add(logger);
+                SetApplicationNames();
             }
         }
 
@@ -62,9 +65,31 @@ namespace Bam.Net.Logging
         /// <param name="logEvent"></param>
         public override void CommitLogEvent(LogEvent logEvent)
         {
-            foreach (ILogger logger in _loggers)
+            Parallel.ForEach(Loggers, (logger) => logger.CommitLogEvent(logEvent));
+        }
+
+        bool warned;
+        private void SetApplicationNames()
+        {
+            SortedSet<string> appNames = new SortedSet<string>();
+
+            foreach(ILogger logger in Loggers)
             {
-                logger.CommitLogEvent(logEvent);
+                if (!logger.ApplicationName.Equals(DefaultConfiguration.DefaultApplicationName))
+                {
+                    appNames.Add(logger.ApplicationName);
+                }
+            }            
+            if(appNames.Count > 1 && !warned)
+            {
+                warned = true;
+                Warning("Multiple ApplicationNames found, using ({0}): {1}", ApplicationName, string.Join(", ", appNames.ToArray()));
+            }
+            string appName= appNames.FirstOrDefault() ?? DefaultConfiguration.DefaultApplicationName;
+            ApplicationName = appName;
+            foreach (ILogger logger in Loggers)
+            {
+                logger.ApplicationName = appName;
             }
         }
     }

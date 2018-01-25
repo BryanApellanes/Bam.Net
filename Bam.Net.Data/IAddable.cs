@@ -12,5 +12,6 @@ namespace Bam.Net.Data
 	public interface IAddable 
 	{
 		void Add(object value);
+        void Clear(Database db = null);
 	}
 }

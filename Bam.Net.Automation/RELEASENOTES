@@ -1,4 +1,3 @@
 
- -   refactor jobconductor (4d42a89)
- -   add ssh (e353bdc)
- -   add implied references back, +minor tweaks (941effe)
+ -   update app manifest handling (8302599)
+ -   regen dao to add Top with order by (ed4095b)

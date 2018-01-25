@@ -14,12 +14,19 @@ using Org.BouncyCastle.Security;
 using Bam.Net.Logging;
 using Bam.Net.Data;
 using System.Runtime.Serialization;
+using System.Collections.Concurrent;
 
 namespace Bam.Net.UserAccounts.Data
 {
     [Proxy("session")]
     public partial class Session: IRequiresHttpContext
     {
+        static ConcurrentDictionary<string, Session> _sessions;
+        static Session()
+        {
+            _sessions = new ConcurrentDictionary<string, Session>();
+        }
+
         public static string CookieName
         {
             get
@@ -27,6 +34,7 @@ namespace Bam.Net.UserAccounts.Data
                 return "SESS";
             }
         }
+
         [Exclude]
         public object Clone()
         {
@@ -36,9 +44,9 @@ namespace Bam.Net.UserAccounts.Data
             return clone;
         }
 
-        public static Session Init(IHttpContext context)
+        public static Session Init(IHttpContext context, Database db = null)
         {
-            Session session = Get(context);
+            Session session = Get(context, db);
             if (session.UserId != User.Anonymous.Id)
             {
                 User user = session.UserOfUserId ?? User.Anonymous;
@@ -63,19 +71,30 @@ namespace Bam.Net.UserAccounts.Data
             string identifier = string.Empty;
             if (sessionIdCookie != null)
             {
-                identifier = sessionIdCookie.Value;                
-                session = OneWhere(c => c.Identifier == identifier, db);
+                identifier = sessionIdCookie.Value;
+                if (_sessions.ContainsKey(identifier))
+                {
+                    session = _sessions[identifier];
+                }
+                else
+                {
+                    session = OneWhere(c => c.Identifier == identifier, db);
+                }
             }
-
             if (session == null)
             {
                 session = Create(response, identifier, true, db);
+                _sessions.TryAdd(identifier, session);
             }
             else
             {
-                session.LastActivity = DateTime.UtcNow;                
-                session.Save(db);
+                Task.Run(() =>
+                {
+                    session.LastActivity = DateTime.UtcNow;
+                    session.Save(db);
+                });
             }
+            
             return session;
         }
 
@@ -83,11 +102,16 @@ namespace Bam.Net.UserAccounts.Data
         {
             try
             {
+                if (_sessions.ContainsKey(Identifier))
+                {
+                    _sessions.TryRemove(Identifier, out Session session);
+                }
+
                 if (logger == null)
                 {
                     logger = Log.Default;
                 }
-
+                
                 User user = UserOfUserId;
                 if (user == null)
                 {
@@ -97,7 +121,7 @@ namespace Bam.Net.UserAccounts.Data
 
                 Identifier = Identifier + "-Ended";
                 IsActive = false;
-                Save(db);
+                Save(db);                
             }
             catch (Exception ex)
             {

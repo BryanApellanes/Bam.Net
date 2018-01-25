@@ -11,14 +11,18 @@ using System.Collections.Generic;
 using Bam.Net.Automation;
 using Bam.Net.Automation.MSBuild;
 using System.IO.Compression;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using Bam.Net.Configuration;
 
 namespace Bam.Net.Application
 {
     [Serializable]
     public class UtilityActions: CommandLineTestInterface
     {
+
         [ConsoleAction("createBamProjectSrcPackage", "Create a BamProject package from a solution or project")]
-        public void CreateBamProjectPackage()
+        public static void CreateBamProjectPackage()
         {
             string projectOrSolutionPath = GetArgument("projectOrSolution", "Please specify the path to the solution or project file");
             FileInfo file = new FileInfo(projectOrSolutionPath);
@@ -26,9 +30,10 @@ namespace Bam.Net.Application
             bool isProject = file.Extension.Equals(".csproj");
             if(!isSolution && !isProject)
             {
-                OutLineFormat("Specifed file format not supported: {0}", file.Extension, ConsoleColor.Red);
+                OutLineFormat("Specified file format not supported: {0}", file.Extension, ConsoleColor.Red);
                 return;
             }
+
             List<string> projectFilePaths = new List<string>();
             if (isProject)
             {

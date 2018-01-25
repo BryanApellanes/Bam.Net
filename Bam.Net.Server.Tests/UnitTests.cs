@@ -510,7 +510,7 @@ namespace Bam.Net.Server.Tests
             Expect.IsTrue(test.MayRespond(ctx.Object));
         }
         
-        class TestTemplateInitializer : TemplateInitializerBase
+        class TestTemplateInitializer : TemplateInitializer
         {
             public TestTemplateInitializer(BamServer server) : base(server) { }
             public bool InitializeCalled
@@ -556,23 +556,6 @@ namespace Bam.Net.Server.Tests
             Expect.IsTrue(server.GenerateDao);
             Expect.IsTrue(server.InitializeTemplates);
         }
-
-        [UnitTest]
-        public void TemplateInitializerShouldBeCalled()
-        {
-            BamServer server = CreateServer("{0}_Content"._Format(MethodBase.GetCurrentMethod().Name));
-            BamConf conf = new BamConf();
-            conf.InitializeTemplates = true;
-            server.SetConf(conf);
-            server.SaveConf(true);
-            TestTemplateInitializer testInitializer = new TestTemplateInitializer(server);
-            server.TemplateInitializer = testInitializer;
-            Expect.IsFalse(testInitializer.InitializeCalled);
-            server.Start();
-            Expect.IsTrue(testInitializer.InitializeCalled);
-            server.Stop();
-        }
-
 
         [UnitTest]
         public void DaoResponderMayRespondToDaoProxies()

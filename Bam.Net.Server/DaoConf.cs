@@ -34,8 +34,10 @@ namespace Bam.Net.Server
         /// <returns></returns>
         public static DaoConf GetDefault(string connectionName, BamConf bryanConf)
         {
-            SQLiteConnectionStringResolver connResolver = new SQLiteConnectionStringResolver();
-            connResolver.Directory = new DirectoryInfo(Path.Combine(bryanConf.ContentRoot, "common", "workspace"));
+            SQLiteConnectionStringResolver connResolver = new SQLiteConnectionStringResolver()
+            {
+                Directory = new DirectoryInfo(Path.Combine(bryanConf.ContentRoot, "common", "workspace"))
+            };
             ConnectionStringSettings settings = connResolver.Resolve(connectionName);
             return new DaoConf { ConnectionName = connectionName, RegistrarCaller = typeof(SQLiteRegistrarCaller).AssemblyQualifiedName };
         }

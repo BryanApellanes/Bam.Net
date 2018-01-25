@@ -33,6 +33,7 @@ namespace Bam.Net.Logging
             };
             Verbosity = VerbosityLevel.Information;
             EventIdProvider = new HashingEventIdProvider();
+            StartLoggingThread();
         }
 
         protected virtual void OnDomainUnload(object sender, EventArgs e)
@@ -176,7 +177,7 @@ namespace Bam.Net.Logging
             {
                 if (string.IsNullOrEmpty(appName) || appName.Equals(DefaultConfiguration.DefaultApplicationName))
                 {
-                    appName = DefaultConfiguration.GetAppSetting("ApplicationName", "UNKNOWN");
+                    appName = DefaultConfiguration.GetAppSetting("ApplicationName", DefaultConfiguration.DefaultApplicationName);
                 }
                 return appName;
             }
@@ -287,36 +288,27 @@ namespace Bam.Net.Logging
             QueueLogEvent(ev);
 
             OnEntryAdded(ev);
-
         }
-
 
         private void OnEntryAdded(LogEvent logEvent)
         {
-            if (EntryAdded != null)
-            {
-                EntryAdded(this.ApplicationName, logEvent);
-            }
+            EntryAdded?.Invoke(this.ApplicationName, logEvent);
 
             switch (logEvent.Severity)
             {
                 case LogEventType.None:
                     break;
                 case LogEventType.Information:
-                    if (InfoEventOccurred != null)
-                        InfoEventOccurred(this.ApplicationName, logEvent);
+                    InfoEventOccurred?.Invoke(this.ApplicationName, logEvent);
                     break;
                 case LogEventType.Warning:
-                    if (WarnEventOccurred != null)
-                        WarnEventOccurred(this.ApplicationName, logEvent);
+                    WarnEventOccurred?.Invoke(this.ApplicationName, logEvent);
                     break;
                 case LogEventType.Error:
-                    if (ErrorEventOccurred != null)
-                        ErrorEventOccurred(this.ApplicationName, logEvent);
+                    ErrorEventOccurred?.Invoke(this.ApplicationName, logEvent);
                     break;
                 case LogEventType.Fatal:
-                    if (FatalEventOccurred != null)
-                        FatalEventOccurred(this.ApplicationName, logEvent);
+                    FatalEventOccurred?.Invoke(this.ApplicationName, logEvent);
                     break;
                 default:
                     break;
@@ -330,7 +322,6 @@ namespace Bam.Net.Logging
             QueueLogEvent(ev);
 
             OnEntryAdded(ev);
-
         }
 
         public void AddEntry(string messageSignature, int verbosity, Exception ex)
@@ -381,13 +372,15 @@ namespace Bam.Net.Logging
 
         protected internal LogEvent CreateLogEvent(string messageSignature, string user, string category, LogEventType type, Exception ex, params string[] messageVariableValues)
         {
-            LogEvent ev = new LogEvent();
-            ev.MessageSignature = messageSignature;
-            ev.MessageVariableValues = messageVariableValues;
-            ev.EventID = GetEventId(this.ApplicationName, messageSignature);
-            ev.Time = DateTime.UtcNow;
-            ev.Category = category;
-            ev.Computer = Environment.MachineName;
+            LogEvent ev = new LogEvent
+            {
+                MessageSignature = messageSignature,
+                MessageVariableValues = messageVariableValues,
+                EventID = GetEventId(this.ApplicationName, messageSignature),
+                Time = DateTime.UtcNow,
+                Category = category,
+                Computer = Environment.MachineName
+            };
             if (messageVariableValues.Length > 0)
             {
                 try
@@ -422,7 +415,7 @@ namespace Bam.Net.Logging
 
         protected virtual StringBuilder HandleDetails(LogEvent ev)
         {
-            ApplicationDiagnosticInfo details = new ApplicationDiagnosticInfo(ev);
+            ApplicationDiagnosticInfo details = new ApplicationDiagnosticInfo(ev) { ApplicationName = ApplicationName };
             return new StringBuilder(details.ToString());
         }
 
