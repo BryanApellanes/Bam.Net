@@ -16,19 +16,21 @@ using Bam.Net.ServiceProxy;
 using System.IO;
 using Bam.Net.Yaml;
 using Bam.Net.CoreServices.Files;
+using Bam.Net.Configuration;
 
 namespace Bam.Net.CoreServices
 {
     /// <summary>
     /// Provides a central point of management for
     /// registering and retrieving services and their
-    /// implementations
+    /// implementations.
     /// </summary>
     [ApiKeyRequired]
     [Proxy("serviceRegistrySvc")]
     [ServiceSubdomain("svcregistry")]
     public class ServiceRegistryService : ApplicationProxyableService
     {
+        Dictionary<Type, List<ServiceRegistryContainerRegistrationResult>> _scanResults;
         protected ServiceRegistryService() { }
         public ServiceRegistryService(
             IFileService fileservice, 
@@ -42,8 +44,40 @@ namespace Bam.Net.CoreServices
             ServiceRegistryRepository = repo;
             AssemblyService = assemblyService;
             DataSettings = dataSettings ?? DataSettings.Default;
+            AssemblySearchPattern = DefaultConfiguration.GetAppSetting("AssemblySearchPattern", "*.dll");
+            _scanResults = new Dictionary<Type, List<ServiceRegistryContainerRegistrationResult>>();
+            ScanningTask = ScanForServiceRegistryContainers();
         }
 
+        protected Task ScanForServiceRegistryContainers()
+        {
+            return Task.Run(() =>
+            {
+                try
+                {
+                    DirectoryInfo entryDir = Assembly.GetEntryAssembly().GetFileInfo().Directory;
+                    List<FileInfo> files = new List<FileInfo>(entryDir.GetFiles(AssemblySearchPattern));
+                    DirectoryInfo sysAssemblies = DataSettings.GetSysAssemblyDirectory();
+                    files.AddRange(sysAssemblies.GetFiles(AssemblySearchPattern));
+                    _scanResults.Clear();
+                    Parallel.ForEach(files, file =>
+                    {
+                        Assembly assembly = Assembly.LoadFile(file.FullName);
+                        foreach (Type type in assembly.GetTypes().Where(t => t.HasCustomAttributeOfType<ServiceRegistryContainerAttribute>()))
+                        {
+                            _scanResults.Add(type, RegisterServiceRegistryContainer(type));
+                        }
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Logger.AddEntry("Exception occurred scanning for service registry containers: {0}", ex, ex.Message);
+                }
+            });
+        }
+
+        protected Task ScanningTask { get; }
+        public string AssemblySearchPattern { get; set; }
         public IFileService FileService { get; set; }
         public DataSettings DataSettings { get; set; }
         public ServiceRegistryRepository ServiceRegistryRepository { get; set; }
@@ -59,6 +93,7 @@ namespace Bam.Net.CoreServices
         [Local]
         public ServiceRegistry GetServiceRegistry(string registryName)
         {
+            ScanningTask.Wait();
             ServiceRegistryLoaderDescriptor loader = GetServiceRegistryLoaderDescriptor(registryName);            
             if(loader == null)
             {
@@ -108,14 +143,17 @@ namespace Bam.Net.CoreServices
                 try
                 {
                     ServiceRegistryLoaderAttribute loaderAttr = method.GetCustomAttributeOfType<ServiceRegistryLoaderAttribute>();
-                    string registryName = loaderAttr.RegistryName ?? $"{type.Namespace}.{type.Name}.{method.Name}";
-                    string description = loaderAttr.Description ?? registryName;
-                    ServiceRegistry registry = RegisterServiceRegistryLoader(registryName, method, true, description);
-                    results.Add(new ServiceRegistryContainerRegistrationResult(registryName, registry, type, method, loaderAttr));
+                    if(loaderAttr.ProcessModes.Contains(ProcessMode.Current.Mode))
+                    {
+                        string registryName = loaderAttr.RegistryName ?? $"{type.Namespace}.{type.Name}.{method.Name}";
+                        string description = loaderAttr.Description ?? registryName;
+                        ServiceRegistry registry = RegisterServiceRegistryLoader(registryName, method, true, description);
+                        results.Add(new ServiceRegistryContainerRegistrationResult(registryName, registry, type, method, loaderAttr));
+                    }
                 }
                 catch (Exception ex)
                 {
-                    results.Add(new ServiceRegistryContainerRegistrationResult(ex));
+                    results.Add(new ServiceRegistryContainerRegistrationResult(ex) { MethodInfo = method });
                 }
             }
             return results;
@@ -131,8 +169,8 @@ namespace Bam.Net.CoreServices
                 registryName = loaderAttr.RegistryName ?? registryName;
             }
             return RegisterServiceRegistryLoader(registryName, method, overwrite, description);
-
         }
+
         /// <summary>
         /// Register the specified method as the ServiceRegistryLoader for the specified registryName
         /// </summary>
