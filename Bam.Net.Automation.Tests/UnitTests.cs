@@ -34,6 +34,7 @@ using Bam.Net.Documentation;
 using Bam.Net.Testing.Unit;
 using Bam.Net.Services;
 using MSBuild = Bam.Net.Automation.MSBuild;
+using System.Threading;
 
 namespace Bam.Net.Automation.Tests
 {
@@ -198,7 +199,7 @@ namespace Bam.Net.Automation.Tests
                         member.Items.Each(item =>
                         {
                             Type itemType = item.GetType();
-                            OutFormat("\tItem type = {0}", ConsoleColor.Yellow, itemType.FullName);
+                            OutLineFormat("\tItem type = {0}", ConsoleColor.Yellow, itemType.FullName);
                             summary summary = item as summary;
                             if (summary != null)
                             {
@@ -213,7 +214,7 @@ namespace Bam.Net.Automation.Tests
         [UnitTest]
         public void DocInfoFromXmlFileShouldHaveDeclaringTypeName()
         {
-            Dictionary<string, List<DocInfo>> infos = DocInfo.FromXmlFile("./TestBuildProject.xml");
+            Dictionary<string, List<DocInfo>> infos = DocInfo.FromXmlFile("./TestDoc.xml");
             infos.Keys.Each(s =>
             {
                 OutLine(s, ConsoleColor.Cyan);
