@@ -14,6 +14,7 @@ namespace Bam.Net.Application
         {
             AddValidArgument("assemblyPath", false, addAcronym: true, description: "The path to the assembly to find the service class in");
             AddValidArgument("verbose", false, addAcronym: true, description: "If affirmative log responses to the console");
+            AddValidArgument("singleProcess", true, addAcronym: false, description: "Kill other gloo processes currently running that were started with the same command line arguments");
         }
     }
 }

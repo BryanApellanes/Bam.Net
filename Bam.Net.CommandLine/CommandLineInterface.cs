@@ -191,7 +191,7 @@ namespace Bam.Net.CommandLine
             {
                 if (killOldProcess)
                 {
-                    KillProcess(pidFilePath, commandLineArgs);
+                    KillExistingProcess(pidFilePath, commandLineArgs);
                 }
                 info.SafeWriteToFile(pidFilePath, true);
                 Console.WriteLine("Wrote pid file {0}", pidFilePath);
@@ -203,7 +203,7 @@ namespace Bam.Net.CommandLine
                 Console.WriteLine("Trying {0}", pidFilePath);
                 try
                 {
-                    KillProcess(pidFilePath, commandLineArgs);
+                    KillExistingProcess(pidFilePath, commandLineArgs);
                     info.SafeWriteToFile(pidFilePath, true);
                 }
                 catch (Exception ex2)
@@ -214,7 +214,18 @@ namespace Bam.Net.CommandLine
             }
         }
 
-        private static void KillProcess(string pidFilePath, string commandLineArgs)
+        protected static void KillExistingProcess()
+        {
+            Process process = Process.GetCurrentProcess();
+            FileInfo main = new FileInfo(process.MainModule.FileName);
+            string commandLineArgs = string.Join(" ", Environment.GetCommandLineArgs());
+            string info = $"{process.Id}~{commandLineArgs}";
+            string pidFileName = $"{Path.GetFileNameWithoutExtension(main.Name)}.pid";
+            string pidFilePath = Path.Combine(main.Directory.FullName, pidFileName);
+            KillExistingProcess(pidFilePath, commandLineArgs);
+        }
+
+        protected static void KillExistingProcess(string pidFilePath, string commandLineArgs)
         {
             if (File.Exists(pidFilePath))
             {

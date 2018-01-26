@@ -251,7 +251,7 @@ namespace Bam.Net.Application
             {
                 GlooServer.ServiceRegistry = registry;
             }
-            glooServer = new GlooServer(conf, GetLogger(), GetArgument("verbose", "Log responses?").IsAffirmative())
+            glooServer = new GlooServer(conf, GetLogger(), GetArgument("verbose", "Log responses to the console?").IsAffirmative())
             {
                 HostPrefixes = new HashSet<HostPrefix>(prefixes),
                 MonitorDirectories = new string[] { }                
@@ -264,7 +264,7 @@ namespace Bam.Net.Application
         public static void StartGlooServer(ConsoleLogger logger)
         {
             BamConf conf = BamConf.Load(DefaultConfiguration.GetAppSetting(contentRootConfigKey).Or(defaultContentRoot));
-            glooServer = new GlooServer(conf, logger, GetArgument("verbose", "Log responses?").IsAffirmative())
+            glooServer = new GlooServer(conf, logger, GetArgument("verbose", "Log responses to the console?").IsAffirmative())
             {
                 HostPrefixes = new HashSet<HostPrefix>(HostPrefix.FromDefaultConfiguration("localhost", 9100)),
                 MonitorDirectories = DefaultConfiguration.GetAppSetting("MonitorDirectories").DelimitSplit(",", ";")
