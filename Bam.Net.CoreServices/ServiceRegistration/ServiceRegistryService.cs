@@ -56,7 +56,7 @@ namespace Bam.Net.CoreServices
                 try
                 {
                     DirectoryInfo entryDir = Assembly.GetEntryAssembly().GetFileInfo().Directory;
-                    List<FileInfo> files = new List<FileInfo>(entryDir.GetFiles(AssemblySearchPattern));
+                    List<FileInfo> files = AssemblySearchPattern.DelimitSplit(",", true).SelectMany(searchPattern => entryDir.GetFiles(searchPattern)).ToList();
                     DirectoryInfo sysAssemblies = DataSettings.GetSysAssemblyDirectory();
                     files.AddRange(sysAssemblies.GetFiles(AssemblySearchPattern));
                     _scanResults.Clear();

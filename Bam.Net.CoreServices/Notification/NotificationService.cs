@@ -32,6 +32,7 @@ namespace Bam.Net.CoreServices
             Tld = "com";
             Templates.Reload();
         }
+
         public HandlebarsDirectory Templates { get; set; }
         public string Tld { get; set; }        
         public string DefaultSubject

@@ -124,6 +124,7 @@
     <Compile Include="DatabaseExtensions.cs" />
     <Compile Include="DatabaseFactory.cs" />
     <Compile Include="DataSettings.cs" />
+    <Compile Include="DataSettingsDatabaseProvider.cs" />
     <Compile Include="DataSettingsResolver.cs" />
     <Compile Include="DefaultRepositoryResolver.cs" />
     <Compile Include="FsRepoData.cs" />

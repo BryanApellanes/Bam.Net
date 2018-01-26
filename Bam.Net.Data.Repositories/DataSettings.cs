@@ -46,7 +46,7 @@ namespace Bam.Net.Data.Repositories
         {
             get
             {
-                return _fromConfigLock.DoubleCheckLock(ref _fromConfig, () => new DataSettings(ProcessMode.FromConfig));
+                return _fromConfigLock.DoubleCheckLock(ref _fromConfig, () => new DataSettings(ProcessMode.Current));
             }
         }
 

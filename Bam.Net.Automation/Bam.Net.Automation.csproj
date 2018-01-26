@@ -249,6 +249,7 @@
     <Compile Include="Testing\SaveTestExecutionResponse.cs" />
     <Compile Include="Testing\SearchTestExecutionResponse.cs" />
     <Compile Include="Testing\SubscriptionStatus.cs" />
+    <Compile Include="Testing\TestingServiceRegistryContainer.cs" />
     <Compile Include="Testing\TestReportResponse.cs" />
     <Compile Include="Testing\TestReportService.cs" />
     <Compile Include="SourceControl\Extensions.cs" />
@@ -366,9 +367,9 @@
       <Project>{15e91407-00d6-4edf-b75c-bc817a75c8ad}</Project>
       <Name>Bam.Net.Logging</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Bam.Net.Net\Bam.Net.Net.csproj">
-      <Project>{3065ab0d-376c-4005-b025-2c59be6b18ae}</Project>
-      <Name>Bam.Net.Net</Name>
+    <ProjectReference Include="..\Bam.Net.Messaging\Bam.Net.Messaging.csproj">
+      <Project>{E330D601-62EA-439E-ACD7-7236744562FF}</Project>
+      <Name>Bam.Net.Messaging</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Presentation\Bam.Net.Presentation.csproj">
       <Project>{b9e03ff5-0750-4162-bafd-3f0778d44a8c}</Project>
@@ -382,9 +383,17 @@
       <Project>{8d98e22b-3c6d-47c0-b028-0c3e3fc6b4fd}</Project>
       <Name>Bam.Net.Schema.Org</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Server\Bam.Net.Server.csproj">
+      <Project>{6cd8ffb4-35ca-44ac-803d-cb9d4cb524a0}</Project>
+      <Name>Bam.Net.Server</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.ServiceProxy\Bam.Net.ServiceProxy.csproj">
       <Project>{8987d8c8-033b-4993-99f0-8dd5a4d6dd0d}</Project>
       <Name>Bam.Net.ServiceProxy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Services.Clients\Bam.Net.Services.Clients.csproj">
+      <Project>{9193fb41-32e6-4cef-a44a-211fb3bfea8b}</Project>
+      <Name>Bam.Net.Services.Clients</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Services\Bam.Net.Services.csproj">
       <Project>{f67630bf-5e73-46bf-a7f1-6d7e9648135f}</Project>
@@ -393,6 +402,10 @@
     <ProjectReference Include="..\Bam.Net.Testing\Bam.Net.Testing.csproj">
       <Project>{85212881-c676-4b40-b311-37c2d1706042}</Project>
       <Name>Bam.Net.Testing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.UserAccounts\Bam.Net.UserAccounts.csproj">
+      <Project>{74D5A262-B0B9-40E6-A3FD-B120DC8E9F54}</Project>
+      <Name>Bam.Net.UserAccounts</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Yaml\Bam.Net.Yaml.csproj">
       <Project>{1c5258ec-7579-4032-94ec-b016bdc1b876}</Project>

@@ -353,7 +353,7 @@ namespace Bam.Net.Services.Clients
         /// </summary>
         public int Port { get; private set; }
 
-        protected internal UserRegistryService UserRegistryService { get; set; }
+        public UserRegistryService UserRegistryService { get; set; }
         protected internal RoleService RoleService { get; set; }
         protected internal OAuthService OAuthService { get; set; }
         protected internal ApplicationRegistrationService ApplicationRegistryService { get; set; }
