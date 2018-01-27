@@ -220,6 +220,10 @@ namespace Bam.Net.Application
                 allTypes.CombineWith(registry);
             }
             Type[] services = serviceTypes.ToArray();
+            if(services.Length == 0)
+            {
+                throw new ArgumentException("No services were loaded");
+            }
             ServeServiceTypes(contentRoot, GetConfiguredHostPrefix(), allTypes, services);
             Pause($"Gloo server is serving services\r\n\t{services.ToArray().ToDelimited(s => s.FullName, "\r\n\t")}");
         }
