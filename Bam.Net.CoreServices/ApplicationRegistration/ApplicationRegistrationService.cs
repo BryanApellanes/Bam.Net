@@ -144,7 +144,7 @@ namespace Bam.Net.CoreServices
         /// for .Net client assemblies using CoreClient
         /// </summary>
         /// <param name="client"></param>
-        /// <returns></returns>
+        /// <returns>A CoreServiceResponse message detailing success or failure.</returns>
         public virtual CoreServiceResponse RegisterClient(Client client)
         {
             try
