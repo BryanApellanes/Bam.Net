@@ -15,5 +15,10 @@ namespace Bam.Net.CoreServices
             CombineWith(registry, true);
             return this;
         }
+
+        public static ServiceRegistry Create()
+        {
+            return new ServiceRegistry();
+        }
     }
 }
