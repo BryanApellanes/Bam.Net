@@ -63,7 +63,10 @@ namespace Bam.Net.CoreServices
                     {
                         List<FileInfo> tmp = new List<FileInfo>();
                         tmp.AddRange(entryDir.GetFiles(searchPattern));
-                        tmp.AddRange(sysAssemblies.GetFiles(searchPattern));
+                        if (sysAssemblies.Exists)
+                        {
+                            tmp.AddRange(sysAssemblies.GetFiles(searchPattern));
+                        }
                         return tmp;
                     }).ToList();                    
                     
