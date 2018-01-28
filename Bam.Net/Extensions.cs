@@ -681,6 +681,11 @@ namespace Bam.Net
             return result;
         }
 
+        public static T Cast<T>(this object instance)
+        {
+            return (T)instance;
+        }
+
         public static bool TryCast<T>(this object instance, out T instanceAs)
         {
             bool result = true;
