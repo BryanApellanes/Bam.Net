@@ -92,10 +92,9 @@ namespace Bam.Net.Server.Renderers
 
         protected internal void EnsureTemplate(Type anyType, string templateName)
         {
-            string fullPath;
-            if(!TemplateExists(anyType, templateName, out fullPath))
+            if (!TemplateExists(anyType, templateName, out string fullPath))
             {
-                lock(_compiledTemplatesLock)
+                lock (_compiledTemplatesLock)
                 {
                     object instance = anyType.Construct().ValuePropertiesToDynamic();
                     SetTemplateProperties(instance);

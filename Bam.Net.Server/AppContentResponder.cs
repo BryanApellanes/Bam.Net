@@ -384,9 +384,7 @@ namespace Bam.Net.Server
         {
             foreach (string script in includes.Scripts)
             {
-                string scriptPath;
-                string[] checkedPaths;
-                if (AppContentLocator.Locate(script, out scriptPath, out checkedPaths))
+                if (AppContentLocator.Locate(script, out string scriptPath, out string[] checkedPaths))
                 {
                     filePaths.Add(AppContentLocator.ContentRoot.GetAbsolutePath(scriptPath));
                 }

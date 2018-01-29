@@ -59,7 +59,7 @@ namespace Bam.Net.Application
             BamConf conf = BamConf.Load(DefaultConfiguration.GetAppSetting(contentRootConfigKey).Or(defaultRoot));
             vyooServer = new VyooServer(conf, logger)
             {
-                HostPrefixes = new HashSet<HostPrefix>(ServiceConfig.GetConfiguredHostPrefixes()),
+                HostPrefixes = new HashSet<HostPrefix>(HostPrefix.FromDefaultConfiguration("localhost", 7400)),
                 MonitorDirectories = DefaultConfiguration.GetAppSetting("MonitorDirectories").DelimitSplit(",", ";")
             };
             vyooServer.Start();
