@@ -56,6 +56,8 @@ namespace Bam.Net.Data.Repositories
         {
             WriteDtoSource(GetNamespace(), writeSourceTo);
         }
+
+        object _generateLock = new object();
         /// <summary>
         /// Implements IAssemblyGenerator.GenerateAssembly by delegating
         /// to GenerateDtoAssembly
@@ -63,7 +65,10 @@ namespace Bam.Net.Data.Repositories
         /// <returns></returns>
         public GeneratedAssemblyInfo GenerateAssembly()
         {
-            return GenerateDtoAssembly();
+            lock (_generateLock)
+            {
+                return GenerateDtoAssembly();
+            }
         }
 
         /// <summary>
@@ -89,8 +94,7 @@ namespace Bam.Net.Data.Repositories
 
             WriteDtoSource(nameSpace, writeSourceTo);
 
-            CompilerResults results;
-            sourceDir.ToAssembly(fileName, out results);
+            sourceDir.ToAssembly(fileName, out CompilerResults results);
             GeneratedAssemblyInfo result = new GeneratedAssemblyInfo(fileName, results);
             result.Save();
             return result;

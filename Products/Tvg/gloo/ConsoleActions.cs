@@ -244,7 +244,10 @@ namespace Bam.Net.Application
                 serviceRegistryRepo,
                 DataSettings.Default.GetGenericDaoRepository(logger),
                 new AppConf { Name = appNameProvider.GetApplicationName() }
-            );
+            )
+            {
+                AssemblySearchPattern = GetArgument("AssemblySearchPattern", "Please specify the AssemblySearchPattern to use")
+            };
             return serviceRegistryService;
         }
 

@@ -49,22 +49,26 @@ namespace Bam.Net.CoreServices
             return GeneratedAssemblyInfo.GetGeneratedAssembly(FileName, this);
         }
 
+        object _generateLock = new object();
         public GeneratedAssemblyInfo GenerateAssembly()
         {
-            OnAssemblyGenerating(new ProxyAssemblyGenerationEventArgs { ServiceType = ServiceType, ServiceSettings = ServiceSettings });
-
-            ProxyModel proxyModel = RenderCode();
-
-            CompilerResults compileResult = AdHocCSharpCompiler.CompileSource(Code.ToString(), FileName, proxyModel.ReferenceAssemblies);
-            if (compileResult.Errors.Count > 0)
+            lock (_generateLock)
             {
-                throw new CompilationException(compileResult);
-            }
+                OnAssemblyGenerating(new ProxyAssemblyGenerationEventArgs { ServiceType = ServiceType, ServiceSettings = ServiceSettings });
 
-            GeneratedAssemblyInfo result = new GeneratedAssemblyInfo(FileName, compileResult);
-            result.Save();
-            OnAssemblyGenerated(new ProxyAssemblyGenerationEventArgs { ServiceType = ServiceType, ServiceSettings = ServiceSettings });
-            return result;
+                ProxyModel proxyModel = RenderCode();
+
+                CompilerResults compileResult = AdHocCSharpCompiler.CompileSource(Code.ToString(), FileName, proxyModel.ReferenceAssemblies);
+                if (compileResult.Errors.Count > 0)
+                {
+                    throw new CompilationException(compileResult);
+                }
+
+                GeneratedAssemblyInfo result = new GeneratedAssemblyInfo(FileName, compileResult);
+                result.Save();
+                OnAssemblyGenerated(new ProxyAssemblyGenerationEventArgs { ServiceType = ServiceType, ServiceSettings = ServiceSettings });
+                return result;
+            }
         }
 
         private ProxyModel RenderCode()
