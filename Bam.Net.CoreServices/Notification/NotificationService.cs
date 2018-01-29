@@ -22,8 +22,9 @@ namespace Bam.Net.CoreServices
     [ServiceSubdomain("notify")]
     public class NotificationService : ApplicationProxyableService, INotificationService
     {
-        public NotificationService(DataSettings dataSettings, ILogger logger = null)
+        public NotificationService(IUserManager userManager, DataSettings dataSettings, ILogger logger)
         {
+            UserManager = userManager;
             Logger = logger ?? Log.Default;
             DataSettings = dataSettings;
             string emailTemplatesDirectory = dataSettings.GetSysEmailTemplatesDirectory().FullName;
@@ -158,7 +159,7 @@ namespace Bam.Net.CoreServices
         [Local]
         public override object Clone()
         {
-            NotificationService clone = new NotificationService(DataSettings, Logger);
+            NotificationService clone = new NotificationService(UserManager, DataSettings, Logger);
             clone.CopyProperties(this);
             clone.CopyEventHandlers(this);            
             return clone;

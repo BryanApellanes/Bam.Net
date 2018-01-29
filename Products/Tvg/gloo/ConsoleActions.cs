@@ -64,7 +64,7 @@ namespace Bam.Net.Application
                 {
                     throw new InvalidOperationException(string.Format("The type {0} was not found in the assembly {1}", serviceClassName, assembly.GetFilePath()));
                 }
-                HostPrefix[] prefixes = GetConfiguredHostPrefix();
+                HostPrefix[] prefixes = ServiceConfig.GetConfiguredHostPrefixes();
                 if (serviceType.HasCustomAttributeOfType(out ServiceSubdomainAttribute attr))
                 {
                     foreach(HostPrefix prefix in prefixes)
@@ -190,7 +190,7 @@ namespace Bam.Net.Application
 
             string contentRoot = GetArgument("ContentRoot", $"Enter the path to the content root (default: {defaultContentRoot} ");
 
-            HostPrefix[] prefixes = GetConfiguredHostPrefix();
+            HostPrefix[] prefixes = ServiceConfig.GetConfiguredHostPrefixes();
             Type[] glooTypes = csglooAssembly.GetTypes().Where(t => t.HasCustomAttributeOfType<ProxyAttribute>()).ToArray();
             ServeServiceTypes(contentRoot, prefixes, null, glooTypes);
             Pause($"Gloo server is serving cs gloo types: {string.Join(", ", glooTypes.Select(t => t.Name).ToArray())}");
@@ -220,7 +220,11 @@ namespace Bam.Net.Application
                 allTypes.CombineWith(registry);
             }
             Type[] services = serviceTypes.ToArray();
-            ServeServiceTypes(contentRoot, GetConfiguredHostPrefix(), allTypes, services);
+            if(services.Length == 0)
+            {
+                throw new ArgumentException("No services were loaded");
+            }
+            ServeServiceTypes(contentRoot, ServiceConfig.GetConfiguredHostPrefixes(), allTypes, services);
             Pause($"Gloo server is serving services\r\n\t{services.ToArray().ToDelimited(s => s.FullName, "\r\n\t")}");
         }
 
@@ -270,21 +274,6 @@ namespace Bam.Net.Application
                 MonitorDirectories = DefaultConfiguration.GetAppSetting("MonitorDirectories").DelimitSplit(",", ";")
             };
             glooServer.Start();
-        }
-
-        public static HostPrefix[] GetConfiguredHostPrefix()
-        {
-            HostPrefix hostPrefix = new HostPrefix()
-            {
-                HostName = GetArgument("HostName", true),
-                Port = int.Parse(GetArgument("Port", true).Or("9100")),
-                Ssl = bool.Parse(GetArgument("Ssl", true).Or("false"))
-            };
-            HashSet<HostPrefix> results = new HashSet<HostPrefix>(HostPrefix.FromDefaultConfiguration("localhost", 9100))
-            {
-                hostPrefix
-            };
-            return results.ToArray();
         }
 
         private static ConsoleLogger GetLogger()

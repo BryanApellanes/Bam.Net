@@ -45,7 +45,8 @@ namespace Bam.Net.CoreServices
 
         public static ServiceRegistry Create()
         {
-            string databasesPath = DataSettings.Current.GetSysDatabaseDirectory().FullName;
+            DataSettings dataSettings = DataSettings.Current;
+            string databasesPath = dataSettings.GetSysDatabaseDirectory().FullName;
             string userDatabasesPath = Path.Combine(databasesPath, "UserDbs");
 
             AppConf conf = new AppConf(BamConf.Load(ServiceConfig.ContentRoot), ServiceConfig.ProcessName.Or(RegistryName));
@@ -59,6 +60,10 @@ namespace Bam.Net.CoreServices
             userMgr.Database.TryEnsureSchema(typeof(UserAccounts.Data.User), Log.Default);
             userResolver.Database = userMgr.Database;
             roleResolver.Database = userMgr.Database;
+
+            ServiceRegistryRepository serviceRegistryRepo = new ServiceRegistryRepository();
+            serviceRegistryRepo.Database = dataSettings.GetSysDatabaseFor(serviceRegistryRepo);
+            serviceRegistryRepo.EnsureDaoAssemblyAndSchema();
 
             DaoRoleProvider daoRoleProvider = new DaoRoleProvider(userMgr.Database);
             RoleService coreRoleService = new RoleService(daoRoleProvider, conf);
@@ -100,7 +105,7 @@ namespace Bam.Net.CoreServices
                 .For<IFileService>().Use<FileService>()
                 .For<AssemblyServiceRepository>().Use(assSvcRepo)
                 .For<IAssemblyService>().Use<AssemblyService>()
-                .For<ServiceRegistryRepository>().Use<ServiceRegistryRepository>()
+                .For<ServiceRegistryRepository>().Use(serviceRegistryRepo)
                 .For<ServiceRegistryService>().Use<ServiceRegistryService>()
                 .For<OAuthService>().Use<OAuthService>()
                 .For<ILog>().Use(loggerSvc)

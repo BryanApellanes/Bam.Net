@@ -56,9 +56,20 @@ namespace Bam.Net.CoreServices
                 try
                 {
                     DirectoryInfo entryDir = Assembly.GetEntryAssembly().GetFileInfo().Directory;
-                    List<FileInfo> files = AssemblySearchPattern.DelimitSplit(",", true).SelectMany(searchPattern => entryDir.GetFiles(searchPattern)).ToList();
                     DirectoryInfo sysAssemblies = DataSettings.GetSysAssemblyDirectory();
-                    files.AddRange(sysAssemblies.GetFiles(AssemblySearchPattern));
+                    DirectoryInfo[] dirs = new DirectoryInfo[] { entryDir, sysAssemblies };
+                    string[] searchPatterns = AssemblySearchPattern.DelimitSplit(",", true);
+                    List<FileInfo> files = searchPatterns.SelectMany(searchPattern =>
+                    {
+                        List<FileInfo> tmp = new List<FileInfo>();
+                        tmp.AddRange(entryDir.GetFiles(searchPattern));
+                        if (sysAssemblies.Exists)
+                        {
+                            tmp.AddRange(sysAssemblies.GetFiles(searchPattern));
+                        }
+                        return tmp;
+                    }).ToList();                    
+                    
                     _scanResults.Clear();
                     Parallel.ForEach(files, file =>
                     {
@@ -246,7 +257,7 @@ namespace Bam.Net.CoreServices
             DirectoryInfo systemServiceRegistryDir = DataSettings.GetSysDataDirectory(nameof(ServiceRegistry).Pluralize());
             ServiceRegistryDescriptor fromFile = new ServiceRegistryDescriptor { Name = name };
             ServiceDescriptor[] descriptors = new ServiceDescriptor[] { };
-            FileInfo file = null;
+            FileInfo file = new FileInfo(Path.Combine(systemServiceRegistryDir.FullName, $"{name}.json"));
             foreach(string extension in new[] { ".yml", ".json" })
             {
                 string path = Path.Combine(systemServiceRegistryDir.FullName, $"{name}{extension}");
@@ -269,7 +280,7 @@ namespace Bam.Net.CoreServices
                 HashSet<ServiceDescriptor> svcs = new HashSet<ServiceDescriptor>();
                 if (fromFile != null)
                 {
-                    fromFile.Services.Each(svc => svcs.Add(svc));
+                    fromFile.Services?.Each(svc => svcs.Add(svc));
                 }
                 fromRepo.Services?.Each(svc => svcs.Add(svc));
                 fromRepo.Services = svcs.ToList();
