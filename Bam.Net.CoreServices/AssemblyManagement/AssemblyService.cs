@@ -96,7 +96,7 @@ namespace Bam.Net.CoreServices
         public ProcessRuntimeDescriptor PersistRuntimeDescriptor(ProcessRuntimeDescriptor runtimeDescriptor)
         {
             ProcessRuntimeDescriptor retrieved = ProcessRuntimeDescriptor.PersistToRepo(AssemblyManagementRepository, runtimeDescriptor);
-            foreach (AssemblyDescriptor descriptor in retrieved.AssemblyDescriptors)
+            foreach (AssemblyDescriptor descriptor in retrieved?.AssemblyDescriptors)
             {
                 StoreAssemblyFileChunks(descriptor);
             }

@@ -1546,7 +1546,8 @@ namespace Bam.Net
         }
 
         /// <summary>
-        /// Serialize the current object to json to the specified file
+        /// Serialize the current object as json to the specified file overwriting
+        /// the existing file if there is one.
         /// </summary>
         /// <param name="value"></param>
         /// <param name="file"></param>
@@ -1556,10 +1557,7 @@ namespace Bam.Net
             {
                 file.Directory.Create();
             }
-            using (StreamWriter sw = new StreamWriter(file.FullName))
-            {
-                sw.Write(ToJson(value, Newtonsoft.Json.Formatting.Indented));
-            }
+            ToJson(value, Newtonsoft.Json.Formatting.Indented).SafeWriteToFile(file.FullName, true);
         }
 
         /// <summary>
