@@ -126,7 +126,7 @@ namespace Bam.Net
                 if (assemblyInfo.InfoFileExists) // load it from file if it exists
                 {
                     assemblyInfo = assemblyInfo.InfoFilePath.FromJsonFile<GeneratedAssemblyInfo>();
-                    if (!assemblyInfo.InfoFileName.Equals(infoFileName) || !assemblyInfo.AssemblyExists) // regenerate if the names don't match
+                    if (assemblyInfo == null /* the file was empty for some reason */ || !assemblyInfo.InfoFileName.Equals(infoFileName) || !assemblyInfo.AssemblyExists) // regenerate if the names don't match
                     {
                         assemblyInfo = generator.GenerateAssembly();
                     }

@@ -45,8 +45,7 @@ namespace Bam.Net.CoreServices
             AssemblyService = assemblyService;
             DataSettings = dataSettings ?? DataSettings.Default;
             AssemblySearchPattern = DefaultConfiguration.GetAppSetting("AssemblySearchPattern", "*.dll");
-            _scanResults = new Dictionary<Type, List<ServiceRegistryContainerRegistrationResult>>();
-            ScanningTask = ScanForServiceRegistryContainers();
+            _scanResults = new Dictionary<Type, List<ServiceRegistryContainerRegistrationResult>>();            
         }
 
         protected Task ScanForServiceRegistryContainers()
@@ -73,10 +72,17 @@ namespace Bam.Net.CoreServices
                     _scanResults.Clear();
                     Parallel.ForEach(files, file =>
                     {
-                        Assembly assembly = Assembly.LoadFile(file.FullName);
-                        foreach (Type type in assembly.GetTypes().Where(t => t.HasCustomAttributeOfType<ServiceRegistryContainerAttribute>()))
+                        try
                         {
-                            _scanResults.Add(type, RegisterServiceRegistryContainer(type));
+                            Assembly assembly = Assembly.LoadFile(file.FullName);
+                            foreach (Type type in assembly.GetTypes().Where(t => t.HasCustomAttributeOfType<ServiceRegistryContainerAttribute>()))
+                            {
+                                _scanResults.Add(type, RegisterServiceRegistryContainer(type));
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.AddEntry("Exception scanning for ServiceRegistries in file ({0})", ex, file.FullName);
                         }
                     });
                 }
@@ -87,7 +93,16 @@ namespace Bam.Net.CoreServices
             });
         }
 
-        protected Task ScanningTask { get; }
+        static object _scanLock = new object();
+        static Task _scanningTask;
+        protected Task ScanningTask
+        {
+            get
+            {
+                return _scanLock.DoubleCheckLock(ref _scanningTask, ScanForServiceRegistryContainers);
+            }
+        }
+
         public string AssemblySearchPattern { get; set; }
         public IFileService FileService { get; set; }
         public DataSettings DataSettings { get; set; }
