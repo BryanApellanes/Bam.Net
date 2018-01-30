@@ -21,7 +21,7 @@ namespace Bam.Net.Documentation.CodeAnalysis
                                                                       });
 
         Dictionary<Type, Action<CSharpSyntaxNode>> _syntaxHandlers = new Dictionary<Type, Action<CSharpSyntaxNode>>();
-        public CSharpDocumentationSyntaxWalker()
+        public CSharpDocumentationSyntaxWalker(string sourceCodeFilePath = null)
           : base(SyntaxWalkerDepth.StructuredTrivia)
         {
         }
@@ -38,12 +38,34 @@ namespace Bam.Net.Documentation.CodeAnalysis
             }
         }
 
-        public override void VisitMethodDeclaration(MethodDeclarationSyntax node)
+        public Action<MethodDeclarationSyntax> OnMethodLocated
         {
-            Console.WriteLine("Visiting Method:");
-            Console.WriteLine($"\t{(SyntaxKind)node.RawKind}:{node.GetType().Name}");
-            Console.WriteLine($"\t{Write(node)}");
-            base.VisitMethodDeclaration(node);
+            get
+            {
+                return _syntaxHandlers.ContainsKey(typeof(MethodDeclarationSyntax)) ? _syntaxHandlers[typeof(MethodDeclarationSyntax)] : (s) => { };
+            }
+            set
+            {
+                _syntaxHandlers[typeof(MethodDeclarationSyntax)] = (Action<CSharpSyntaxNode>)value;
+            }
+        }
+
+        public Action<PropertyDeclarationSyntax> OnPropertyLocated
+        {
+            get
+            {
+                return _syntaxHandlers.ContainsKey(typeof(PropertyDeclarationSyntax)) ? _syntaxHandlers[typeof(PropertyDeclarationSyntax)] : (s) => { };
+            }
+            set
+            {
+                _syntaxHandlers[typeof(PropertyDeclarationSyntax)] = (Action<CSharpSyntaxNode>)value;
+            }
+        }
+
+        public override void VisitMethodDeclaration(MethodDeclarationSyntax syntax)
+        {
+            OnMethodLocated(syntax);
+            base.VisitMethodDeclaration(syntax);
         }
 
         public override void VisitTrivia(SyntaxTrivia trivia)
