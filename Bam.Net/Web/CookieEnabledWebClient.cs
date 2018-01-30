@@ -28,8 +28,7 @@ namespace Bam.Net.Web
         protected override WebRequest GetWebRequest(Uri address)
         {
             WebRequest request = base.GetWebRequest(address);
-            HttpWebRequest httpRequest = request as HttpWebRequest;
-            if (httpRequest != null)
+            if (request is HttpWebRequest httpRequest)
             {
                 if (httpRequest.CookieContainer == null)
                 {
@@ -49,8 +48,7 @@ namespace Bam.Net.Web
         protected override WebResponse GetWebResponse(WebRequest request)
         {
             WebResponse response = base.GetWebResponse(request);
-            HttpWebResponse httpResponse = response as HttpWebResponse;
-            if (httpResponse != null)
+            if (response is HttpWebResponse httpResponse)
             {
                 foreach (Cookie cookie in httpResponse.Cookies)
                 {
