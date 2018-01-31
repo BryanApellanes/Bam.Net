@@ -4,30 +4,25 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Data;
+using System.Diagnostics;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Web;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.InteropServices;
-using System.Data.Common;
-using System.Data;
-using System.IO;
-using Bam.Net.Configuration;
 using System.Security.Cryptography;
 using System.Security.Principal;
-using System.Web.Script.Serialization;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web;
 using System.Xml;
-using System.CodeDom;
-using System.CodeDom.Compiler;
+using Bam.Net.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.IO.Compression;
-using System.Threading.Tasks;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Diagnostics;
 
 namespace Bam.Net
 {
@@ -41,58 +36,82 @@ namespace Bam.Net
         static Dictionary<SerializationFormat, Func<Stream, Type, object>> _deserializers;
         static Extensions()
         {
-            _hashAlgorithms = new Dictionary<HashAlgorithms, Func<HashAlgorithm>>
-            {
-                { HashAlgorithms.MD5, () => MD5.Create() },
-                { HashAlgorithms.RIPEMD160, () => RIPEMD160.Create() },
-                { HashAlgorithms.SHA1, () => SHA1.Create() },
-                { HashAlgorithms.SHA256, () => SHA256.Create() },
-                { HashAlgorithms.SHA384, () => SHA384.Create() },
-                { HashAlgorithms.SHA512, () => SHA512.Create() }
-            };
+            SetDictionaries();
+        }
 
-            _hmacs = new Dictionary<HashAlgorithms, Func<byte[], HMAC>>
+        private static void SetDictionaries()
+        {
+            if (_hashAlgorithms == null)
             {
-                {HashAlgorithms.MD5, (key) => new HMACMD5(key) },
-                {HashAlgorithms.RIPEMD160, (key) => new HMACRIPEMD160(key) },
-                {HashAlgorithms.SHA1, (key) => new HMACSHA1(key) },
-                {HashAlgorithms.SHA256, (key) => new HMACSHA256(key) },
-                {HashAlgorithms.SHA384, (key) => new HMACSHA384(key) },
-                {HashAlgorithms.SHA512, (key) => new HMACSHA512(key) }
-            };
+                _hashAlgorithms = new Dictionary<HashAlgorithms, Func<HashAlgorithm>>
+                {
+                    { HashAlgorithms.MD5, () => MD5.Create() },
+                    { HashAlgorithms.RIPEMD160, () => RIPEMD160.Create() },
+                    { HashAlgorithms.SHA1, () => SHA1.Create() },
+                    { HashAlgorithms.SHA256, () => SHA256.Create() },
+                    { HashAlgorithms.SHA384, () => SHA384.Create() },
+                    { HashAlgorithms.SHA512, () => SHA512.Create() }
+                };
+            }
 
-            _extractActions = new Dictionary<ExistingFileAction, Action<ZipArchiveEntry, string>>
+            if(_hmacs == null)
             {
-                { ExistingFileAction.Throw, (zip, dest) => Args.Throw<InvalidOperationException>("File exists, can't extract {0}", dest) },
-                { ExistingFileAction.OverwriteSilently, (zip, dest) => zip.ExtractToFile(dest, true) },
-                { ExistingFileAction.DoNotOverwrite, (zip, dest) => Logging.Log.Warn("File exists, can't extract {0}", dest) }
-            };
-            _writeResourceActions = new Dictionary<ExistingFileAction, Action<Stream, FileInfo>>
+                _hmacs = new Dictionary<HashAlgorithms, Func<byte[], HMAC>>
+                {
+                    {HashAlgorithms.MD5, (key) => new HMACMD5(key) },
+                    {HashAlgorithms.RIPEMD160, (key) => new HMACRIPEMD160(key) },
+                    {HashAlgorithms.SHA1, (key) => new HMACSHA1(key) },
+                    {HashAlgorithms.SHA256, (key) => new HMACSHA256(key) },
+                    {HashAlgorithms.SHA384, (key) => new HMACSHA384(key) },
+                    {HashAlgorithms.SHA512, (key) => new HMACSHA512(key) }
+                };
+            }
+
+            if(_extractActions == null)
+            { 
+                _extractActions = new Dictionary<ExistingFileAction, Action<ZipArchiveEntry, string>>
+                {
+                    { ExistingFileAction.Throw, (zip, dest) => Args.Throw<InvalidOperationException>("File exists, can't extract {0}", dest) },
+                    { ExistingFileAction.OverwriteSilently, (zip, dest) => zip.ExtractToFile(dest, true) },
+                    { ExistingFileAction.DoNotOverwrite, (zip, dest) => Logging.Log.Warn("File exists, can't extract {0}", dest) }
+                };
+            }
+
+            if(_writeResourceActions == null)
             {
-                { ExistingFileAction.Throw, (resource, output) => Args.Throw<InvalidOperationException>("File exists, can't write resource to {0}", output.FullName) },
-                { ExistingFileAction.OverwriteSilently, (resource, output) => resource.CopyTo(output.Create()) },
-                { ExistingFileAction.DoNotOverwrite, (resource, output) => Logging.Log.Warn("File exists, can't write resource to {0}", output.FullName) }
-            };
-            _serializeActions = new Dictionary<SerializationFormat, Action<Stream, object>>
+                _writeResourceActions = new Dictionary<ExistingFileAction, Action<Stream, FileInfo>>
+                {
+                    { ExistingFileAction.Throw, (resource, output) => Args.Throw<InvalidOperationException>("File exists, can't write resource to {0}", output.FullName) },
+                    { ExistingFileAction.OverwriteSilently, (resource, output) => resource.CopyTo(output.Create()) },
+                    { ExistingFileAction.DoNotOverwrite, (resource, output) => Logging.Log.Warn("File exists, can't write resource to {0}", output.FullName) }
+                };
+            }
+            if(_serializeActions == null)
             {
-                { SerializationFormat.Invalid, (stream, obj) => Args.Throw<InvalidOperationException>("Invalid SerializationFormat specified") },
-                { SerializationFormat.Xml, (stream, obj) => obj.ToXmlStream(stream) },
-                { SerializationFormat.Json, (stream, obj) => obj.ToJsonStream(stream) },
-                { SerializationFormat.Yaml, (stream, obj) => obj.ToYamlStream(stream) },
-                { SerializationFormat.Binary, (stream, obj) => obj.ToBinaryStream(stream) }
-            };
-            _deserializers = new Dictionary<SerializationFormat, Func<Stream, Type, object>>
+                _serializeActions = new Dictionary<SerializationFormat, Action<Stream, object>>
+                {
+                    { SerializationFormat.Invalid, (stream, obj) => Args.Throw<InvalidOperationException>("Invalid SerializationFormat specified") },
+                    { SerializationFormat.Xml, (stream, obj) => obj.ToXmlStream(stream) },
+                    { SerializationFormat.Json, (stream, obj) => obj.ToJsonStream(stream) },
+                    { SerializationFormat.Yaml, (stream, obj) => obj.ToYamlStream(stream) },
+                    { SerializationFormat.Binary, (stream, obj) => obj.ToBinaryStream(stream) }
+                };
+            }
+            if(_deserializers == null)
             {
-                { SerializationFormat.Invalid, (stream, type) => {
-                        Args.Throw<InvalidOperationException>("Invalid SerializationFormat specified");
-                        return null;
-                    }
-                },
-                { SerializationFormat.Xml, (stream, type)=> stream.FromXmlStream(type) },
-                { SerializationFormat.Json, (stream, type) => stream.FromJsonStream<object>() }, // this might not work; should be tested
-                { SerializationFormat.Yaml, (stream, type) => stream.FromYamlStream<object>() }, // this might not work; should be tested
-                { SerializationFormat.Binary, (stream, type) => stream.FromBinaryStream() } // this might not work; should be tested
-            };
+                _deserializers = new Dictionary<SerializationFormat, Func<Stream, Type, object>>
+                {
+                    { SerializationFormat.Invalid, (stream, type) => {
+                            Args.Throw<InvalidOperationException>("Invalid SerializationFormat specified");
+                            return null;
+                        }
+                    },
+                    { SerializationFormat.Xml, (stream, type)=> stream.FromXmlStream(type) },
+                    { SerializationFormat.Json, (stream, type) => stream.FromJsonStream<object>() }, // this might not work; should be tested
+                    { SerializationFormat.Yaml, (stream, type) => stream.FromYamlStream<object>() }, // this might not work; should be tested
+                    { SerializationFormat.Binary, (stream, type) => stream.FromBinaryStream() } // this might not work; should be tested
+                };
+            }
         }
 
         public static bool DatesAreEqual(this DateTime instance, DateTime other)
@@ -2832,7 +2851,7 @@ namespace Bam.Net
         }
 
         /// <summary>
-        /// Clears the locks createed for writing and appending
+        /// Clears the locks created for writing and appending
         /// to files
         /// </summary>
         public static void ClearFileAccessLocks(this object any)
