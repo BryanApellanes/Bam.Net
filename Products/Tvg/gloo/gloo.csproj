@@ -130,10 +130,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\code\csharp\BingAdsRefGen.Data\BingAdsRefGen.Data.csproj">
-      <Project>{ac513fca-ee9c-4c90-b746-e6c12bfd6b6f}</Project>
-      <Name>BingAdsRefGen.Data</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Bam.Net.Automation\Bam.Net.Automation.csproj">
       <Project>{b65e4fcd-de50-4d9e-91d7-dddf80c25c47}</Project>
       <Name>Bam.Net.Automation</Name>
