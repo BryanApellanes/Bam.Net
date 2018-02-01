@@ -183,7 +183,6 @@
     <Compile Include="Html\HtmlHelperExtensions.cs" />
     <Compile Include="Html\Img.cs" />
     <Compile Include="Html\MethodFormResult.cs" />
-    <Compile Include="Html\Traversal\CsQueryExtensions.cs" />
     <Compile Include="IRenderer.cs" />
     <Compile Include="LayoutModel.cs" />
     <Compile Include="Markdown\DocumentComponentEventArgs.cs" />
@@ -262,6 +261,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Code\" />
+    <Folder Include="Html\Traversal\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
