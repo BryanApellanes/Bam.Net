@@ -23,7 +23,12 @@ namespace Bam.Net
                 if (!_names.Contains(args.Name))
                 {
                     _names.Add(args.Name);
-                    logger.AddEntry("Assembly {0}\r\nAt {1}\r\nRequested {2}\r\n\t, but it was not found", LogEventType.Warning, args.RequestingAssembly?.FullName, args.RequestingAssembly?.GetFileInfo().FullName, args.Name);
+                    string messageFormat = @"AppDomain.CurrentDomain.AssemblyResolve event fired and assembly was not found:
+\tRequesting Assembly: {0}
+\tRequesting Assembly Location: {1}
+\tRequested Assembly: {2}
+\tEvent sender: {3}";
+                    logger.AddEntry(messageFormat, LogEventType.Warning, args.RequestingAssembly?.FullName.Or("[null]"), args.RequestingAssembly?.GetFileInfo().FullName.Or("[null]"), args.Name.Or("[null]"), sender?.ToString().Or("[null]"));
                 }
                 return null;
             };
