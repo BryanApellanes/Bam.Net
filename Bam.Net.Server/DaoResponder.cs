@@ -53,10 +53,12 @@ namespace Bam.Net.Server
 
         private void Init()
         {
-            _dynamicResponders = new Dictionary<string, Func<string, bool, string>>();
-            _dynamicResponders.Add("proxies", Proxies);
-            _dynamicResponders.Add("ctors", Ctors);
-            _dynamicResponders.Add("templates", Templates);
+            _dynamicResponders = new Dictionary<string, Func<string, bool, string>>
+            {
+                { "proxies", Proxies },
+                { "ctors", Ctors },
+                { "templates", Templates }
+            };
             Dao.BeforeWriteCommitAny += (db, dao) =>
             {
                 dao.PropertyIfNullOrBlank("Created", DateTime.UtcNow, false);
@@ -147,7 +149,6 @@ namespace Bam.Net.Server
 
             return result.ToString();
         }
-
 
         #region IResponder Members
 
@@ -249,6 +250,7 @@ namespace Bam.Net.Server
 
             return result;
         }
+
         public bool IsInitialized
         {
             get;
@@ -379,17 +381,11 @@ namespace Bam.Net.Server
 
         protected void OnSchemaInitializing(string appName, SchemaInitializer initializer)
         {
-            if (SchemaInitializing != null)
-            {
-                SchemaInitializing(appName, initializer);
-            }
+            SchemaInitializing?.Invoke(appName, initializer);
         }
         protected void OnSchemaInitialized(string appName, SchemaInitializer initializer)
         {
-            if (SchemaInitialized != null)
-            {
-                SchemaInitialized(appName, initializer);
-            }
+            SchemaInitialized?.Invoke(appName, initializer);
         }
 
         Dictionary<string, DaoProxyRegistration> _commonDaoProxyRegistrations;
@@ -479,8 +475,7 @@ namespace Bam.Net.Server
                     appConf.SchemaInitializers.Each(si =>
                     {
                         OnSchemaInitializing(name, si);
-                        Exception ex;
-                        if (!si.Initialize(Logger, out ex))
+                        if (!si.Initialize(Logger, out Exception ex))
                         {
                             Logger.AddEntry("Failed to initilialize schema ({0}): {1}", ex, si.SchemaContext, ex.Message);
                         }

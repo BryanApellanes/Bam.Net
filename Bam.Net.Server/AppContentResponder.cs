@@ -349,6 +349,7 @@ namespace Bam.Net.Server
                 AppConf.AppRoot.WriteFile("~/compiledTemplates.js", Regex.Unescape(AppTemplateRenderer.CompiledTemplates));
             }
         }
+
         private void WriteAppScripts()
         {
             HashSet<string> filePaths = new HashSet<string>();

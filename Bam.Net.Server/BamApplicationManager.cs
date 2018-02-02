@@ -146,7 +146,7 @@ namespace Bam.Net.Server
         protected internal string[] GetPageNames(string appName = "localhost")
         {
             List<string> pageNames = new List<string>();
-            DirectoryInfo pagesDir = new DirectoryInfo(BamConf.Fs.GetAbsolutePath(AppNamePagesPathFormat.NamedFormat(new { appName = appName })));
+            DirectoryInfo pagesDir = new DirectoryInfo(BamConf.Fs.GetAbsolutePath(AppNamePagesPathFormat.NamedFormat(new { appName })));
 
             if (pagesDir.Exists)
             {
@@ -162,11 +162,12 @@ namespace Bam.Net.Server
             string st = stack ? ex.StackTrace : "";
             return string.Format("{0}:\r\n\r\n{1}", ex.Message, st);
         }
+
         private void AddPageNames(DirectoryInfo appPagesDir, List<string> pageNames, DirectoryInfo currentPageSubDir)
         {
             FileInfo[] files = currentPageSubDir.GetFiles("*.html");
 
-            string prefix = currentPageSubDir.FullName.TruncateFront(appPagesDir.FullName.Length).Replace("\\", "/");//.Replace(pagesDir.FullName, "");
+            string prefix = currentPageSubDir.FullName.TruncateFront(appPagesDir.FullName.Length).Replace("\\", "/");
             if (!string.IsNullOrEmpty(prefix))
             {
                 prefix = string.Format("{0}/", prefix.Substring(1, prefix.Length - 1));

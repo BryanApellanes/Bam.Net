@@ -33,6 +33,7 @@ namespace Bam.Net.Server
         {
             CommonTemplateRenderer = new CommonDustRenderer(this);
             FileCachesByExtension = new Dictionary<string, FileCache>();
+            HostAppMappings = new Dictionary<string, HostAppMapping>();
             InitializeFileExtensions();
             InitializeCaches();
         }
@@ -45,6 +46,7 @@ namespace Bam.Net.Server
             InitializeFileExtensions();
             InitializeCaches();
         }
+
         public List<string> FileExtensions { get; set; }
         public List<string> TextFileExtensions { get; set; }
         protected Dictionary<string, FileCache> FileCachesByExtension { get; set; }
@@ -177,11 +179,13 @@ namespace Bam.Net.Server
             response.AddHeader("ETag", etag);
             Etags.Values.AddOrUpdate(path, etag, (p, v) => etag);
         }
+
         protected void SetLastModified(IResponse response, string path, DateTime lastModified)
         {
             response.AddHeader("Last-Modified", lastModified.ToUniversalTime().ToString("r"));
             Etags.LastModified.AddOrUpdate(path, lastModified, (p, v) => lastModified);
         }
+
         protected bool CheckEtags(IHttpContext context)
         {
             IRequest request = context.Request;
@@ -219,6 +223,7 @@ namespace Bam.Net.Server
             AddIgnorPrefix("post");
             AddIgnorPrefix("securechannel");
         }
+
         protected internal void InitializeCommonTemplateRenderer()
         {
             OnCommonTemplateRendererInitializing();
@@ -259,6 +264,12 @@ namespace Bam.Net.Server
             AppContentRespondersInitialized?.Invoke(this);
         }
 
+        public Dictionary<string, HostAppMapping> HostAppMappings
+        {
+            get;
+            set;
+        }
+
         object _initAppsLock = new object();
         /// <summary>
         /// Initialize all the AppContentResponders for the 
@@ -271,6 +282,7 @@ namespace Bam.Net.Server
             {
                 if (!IsAppsInitialized)
                 {
+                    InitializeHostAppMap(BamConf);
                     InitializeAppResponders(BamConf.AppConfigs);
 
                     AppConfigs = BamConf.AppConfigs;
@@ -281,12 +293,36 @@ namespace Bam.Net.Server
             OnAppRespondersInitialized();
         }
 
+        private void InitializeHostAppMap(BamConf bamConf)
+        {
+            string jsonFile = Path.Combine(bamConf.ContentRoot, "apps", "hostAppMap.json");
+            HashSet<HostAppMapping> temp = new HashSet<HostAppMapping>();
+            foreach(AppConf appConf in bamConf.AppConfigs)
+            {
+                temp.Add(new HostAppMapping { Host = appConf.Name, AppName = appConf.Name });
+            }
+            if (File.Exists(jsonFile))
+            {
+                HostAppMapping[] fromFile = jsonFile.FromJsonFile<HostAppMapping[]>();
+                if(fromFile != null)
+                {
+                    foreach (HostAppMapping mapping in fromFile)
+                    {
+                        temp.Add(mapping);
+                    }
+                }
+            }
+            temp.ToJsonFile(jsonFile);
+            HostAppMappings = temp.ToDictionary(ham=> ham.Host);
+        }
+
         public event EventHandler FileUploading;
         public event EventHandler FileUploaded;
-
+        
         private void InitializeAppResponders(AppConf[] configs)
         {
-            configs.Each(ac =>
+            string currentMode = ProcessMode.Current.Mode.ToString();
+            configs.Where(c=> c.ProcessModes.Contains(currentMode)).Each(ac =>
             {
                 OnAppContentResponderInitializing(ac);
                 Logger.RestartLoggingThread();
@@ -431,7 +467,19 @@ namespace Bam.Net.Server
         }
         #region IResponder Members
 
+        /// <summary>
+        /// If true, TryRespond will send 404 and close the connection
+        /// if no content is found.  Otherwise, nothing will be done
+        /// explicitly to close the connection or end the request.
+        /// </summary>
+        public bool EndResponse { get; set; }
+
         public override bool TryRespond(IHttpContext context)
+        {
+            return TryRespond(context, EndResponse);
+        }
+
+        public bool TryRespond(IHttpContext context, bool final = false)
         {
             try
             {
@@ -454,7 +502,7 @@ namespace Bam.Net.Server
                 string commonPath = Path.Combine("/common", path.TruncateFront(1));
 
                 byte[] content = new byte[] { };
-                string appName = UriApplicationNameResolver.ResolveApplicationName(request.Url, BamConf.AppConfigs);
+                string appName = ResolveApplicationName(context);
                 string[] checkedPaths = new string[] { };
                 if (AppContentResponders.ContainsKey(appName))
                 {
@@ -504,6 +552,10 @@ namespace Bam.Net.Server
                     }
                 }
 
+                if(!handled && final)
+                {
+                    SendResponse(response, "Not Found", 404);
+                }
                 return handled;
             }
             catch (Exception ex)
@@ -512,6 +564,15 @@ namespace Bam.Net.Server
                 OnNotResponded(context);
                 return false;
             }
+        }
+
+        private string ResolveApplicationName(IHttpContext context)
+        {
+            if (HostAppMappings.ContainsKey(context.Request.Url.Host))
+            {
+                return HostAppMappings[context.Request.Url.Authority].AppName;
+            }
+            return ApplicationNameResolver.ResolveApplicationName(context);
         }
 
         private void LogContentNotFound(string path, string appName, string[] checkedPaths)

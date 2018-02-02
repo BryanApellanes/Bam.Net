@@ -111,6 +111,7 @@
   <ItemGroup>
     <Compile Include="AppConf.cs" />
     <Compile Include="AppConfApplicationNameProvider.cs" />
+    <Compile Include="HostAppMapping.cs" />
     <Compile Include="BamApplicationNameProvider.cs" />
     <Compile Include="AppContentResponder.cs" />
     <Compile Include="AppInitializerBase.cs" />

@@ -29,30 +29,31 @@ namespace Bam.Net.Server
 
         public AppConf()
         {
-            this._serviceTypeNames = new List<string>();
-            this._schemaInitializers = new List<SchemaInitializer>();
-            this._serviceTypeNames.Add(typeof(Echo).AssemblyQualifiedName);
-            this._serviceTypeNames.Add(typeof(EncryptedEcho).AssemblyQualifiedName);
+            _serviceTypeNames = new List<string>();
+            _schemaInitializers = new List<SchemaInitializer>();
+            _serviceTypeNames.Add(typeof(Echo).AssemblyQualifiedName);
+            _serviceTypeNames.Add(typeof(EncryptedEcho).AssemblyQualifiedName);
 
-            this.AppSettings = new AppSetting[] { };
-			this.RenderLayoutBody = true;
-			this.DefaultLayout = DefaultLayoutConst;
-			this.DefaultPage = DefaultPageConst;
-			this.ServiceSearchPattern = new string[] { "*Services.dll", "*Proxyables.dll" };
+            AppSettings = new AppSetting[] { };
+			RenderLayoutBody = true;
+			DefaultLayout = DefaultLayoutConst;
+			DefaultPage = DefaultPageConst;
+			ServiceSearchPattern = new string[] { "*Services.dll", "*Proxyables.dll" };
+            ProcessModes = new string[] { "Dev", "Test" };
         }
 
         public AppConf(string name, int port = 8080, bool ssl = false)
             : this()
         {
-            this.Name = name;
-            this.GenerateDao = true;
-            this.Bindings = new HostPrefix[] { new HostPrefix { HostName = name, Port = port, Ssl = ssl } };
+            Name = name;
+            GenerateDao = true;
+            Bindings = new HostPrefix[] { new HostPrefix { HostName = name, Port = port, Ssl = ssl } };
         }
 
         public AppConf(BamConf serverConf, string name)
             : this(name)
         {
-            this.BamConf = serverConf;
+            BamConf = serverConf;
         }
 
         Fs _appRoot;
@@ -127,6 +128,34 @@ namespace Bam.Net.Server
             }
         }
 
+        bool? _isTest;
+        public bool IsTest
+        {
+            get
+            {
+                if(_isTest == null)
+                {
+                    _isTest = ProcessModes.Contains("Test");
+                }
+                return _isTest.Value;
+            }
+        }
+
+        bool? _isProd;
+        public bool IsProd
+        {
+            get
+            {
+                if(_isProd == null)
+                {
+                    _isProd = ProcessModes.Contains("Prod");
+                }
+                return _isProd.Value;
+            }
+        }
+
+        public string[] ProcessModes { get; set; } 
+
         List<HostPrefix> _bindings;
         object _bindingsLock = new object();
         public HostPrefix[] Bindings
@@ -135,19 +164,21 @@ namespace Bam.Net.Server
             {
                 return _bindingsLock.DoubleCheckLock(ref _bindings, () =>
                 {
-                    List<HostPrefix> result = new List<HostPrefix>();
-                    result.Add(new HostPrefix
+                    List<HostPrefix> result = new List<HostPrefix>
                     {
-                        HostName = "www.{0}.com"._Format(Name),
-                        Port = 80,
-                        Ssl = false
-                    });
-                    result.Add(new HostPrefix
-                    {
-                        HostName = Name,
-                        Port = 8080,
-                        Ssl = false
-                    });
+                        new HostPrefix
+                        {
+                            HostName = "www.{0}.com"._Format(Name),
+                            Port = 80,
+                            Ssl = false
+                        },
+                        new HostPrefix
+                        {
+                            HostName = Name,
+                            Port = 8080,
+                            Ssl = false
+                        }
+                    };
 
                     return result;
                 }).ToArray();

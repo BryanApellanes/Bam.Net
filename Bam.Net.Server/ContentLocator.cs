@@ -36,10 +36,12 @@ namespace Bam.Net.Server
             string foundPath = string.Empty;
 			string checkNext = Fs.CleanPath("~" + path);
             Fs fs = ContentRoot;
-            List<string> pathsChecked = new List<string>();
-            pathsChecked.Add(checkNext);
+            List<string> pathsChecked = new List<string>
+            {
+                checkNext
+            };
 
-            if(!fs.FileExists(checkNext, out foundPath))
+            if (!fs.FileExists(checkNext, out foundPath))
             {
 				foundPath = string.Empty;
                 SearchRule[] extRules = _searchRules.Where(sr => sr.Ext.ToLowerInvariant().Equals(ext)).ToArray();

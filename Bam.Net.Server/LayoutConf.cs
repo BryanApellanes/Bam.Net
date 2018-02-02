@@ -10,6 +10,7 @@ using CsQuery;
 using Bam.Net.Server;
 using Newtonsoft.Json;
 using Bam.Net.Presentation;
+using Bam.Net.Presentation.Html;
 
 namespace Bam.Net.Server
 {
@@ -75,8 +76,15 @@ namespace Bam.Net.Server
                 Includes commonIncludes = ContentResponder.GetCommonIncludes(conf.BamConf.ContentRoot);
                 includes = commonIncludes.Combine(includes);
             }
-            // TODO: add a config flag "Debug" based on ProcessMode.Current
-            layoutModel.ScriptTags = includes.GetScriptTags().ToHtmlString();
+            if(conf.IsTest || conf.IsProd)
+            {
+                string min = conf.IsProd ? ".min" : "";
+                layoutModel.ScriptTags = new Tag("script").Attr("src", $"{conf.Name}{min}.js").Attr("type", "text/javascript").ToHtmlString();
+            }
+            else
+            {
+                layoutModel.ScriptTags = includes.GetScriptTags().ToHtmlString();
+            }
             layoutModel.StyleSheetLinkTags = includes.GetStyleSheetLinkTags().ToHtmlString();
         }
 

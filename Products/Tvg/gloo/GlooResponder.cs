@@ -69,8 +69,8 @@ namespace Bam.Net.Application
         }
 
         public event Action<GlooResponder> Initializing;
-
         public event Action<GlooResponder> Initialized;
+
         public override void Initialize()
         {
             OnInitializing();
@@ -83,10 +83,7 @@ namespace Bam.Net.Application
         }
         protected void OnInitialized()
         {
-            if (Initialized != null)
-            {
-                Initialized(this);
-            }
+            Initialized?.Invoke(this);
         }
 
         protected override bool Post(IHttpContext context)

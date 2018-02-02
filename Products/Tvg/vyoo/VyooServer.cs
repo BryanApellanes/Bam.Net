@@ -9,10 +9,10 @@ using Bam.Net.Server;
 
 namespace Bam.Net.Application
 {
-    public class VyooServer : SimpleServer<ContentResponder>
+    public class VyooServer : SimpleServer<VyooResponder>
     {
         public VyooServer(BamConf conf, ILogger logger)
-            : base(new ContentResponder(conf, logger), logger)
+            : base(new VyooResponder(conf, logger), logger)
         {
             Responder.Initialize();
         }
