@@ -11,16 +11,24 @@ using CsQuery;
 
 namespace Bam.Net.Server
 {
-    public class WebBookInitializer : Loggable, IInitialize<WebBookInitializer>, IPostServerInitialize
+    public class WebBookInitializer : Loggable, IInitialize<WebBookInitializer>
     {
-        public WebBookInitializer(BamServer server)
+        public WebBookInitializer(ContentResponder contentResponder)
         {
-            this.Server = server;
+            ContentResponder = contentResponder;
         }
 
-        public BamServer Server
+        public ContentResponder ContentResponder
         {
             get; set;
+        }
+
+        public Dictionary<string, AppContentResponder> AppContentResponders
+        {
+            get
+            {
+                return ContentResponder.AppContentResponders;
+            }
         }
 
         public event Action<WebBookInitializer> Initializing;
@@ -34,17 +42,17 @@ namespace Bam.Net.Server
             Initialized?.Invoke(this);
         }
 
-      [Verbosity(LogEventType.Information, MessageFormat="WebBookInitializer:: {AppName} initializ(ING)")]
+        [Verbosity(LogEventType.Information, MessageFormat = "WebBookInitializer:: {AppName} initializ(ING)")]
         public event EventHandler AppInitializing;
 
-      [Verbosity(LogEventType.Information, MessageFormat="WebBookInitializer:: {AppName} initializ(ED)")]
+        [Verbosity(LogEventType.Information, MessageFormat = "WebBookInitializer:: {AppName} initializ(ED)")]
         public event EventHandler AppInitialized;
 
-      [Verbosity(LogEventType.Information, MessageFormat = "WebBookInitializer:: {AppName}: writ(ING) book for page {CurrentPage}")]
-      public event EventHandler WritingBook;
+        [Verbosity(LogEventType.Information, MessageFormat = "WebBookInitializer:: {AppName}: writ(ING) book for page {CurrentPage}")]
+        public event EventHandler WritingBook;
 
-      [Verbosity(LogEventType.Information, MessageFormat = "WebBookInitializer:: {AppName}: writ(ED)(wrote) book for page {CurrentPage}")]
-      public event EventHandler WroteBook;
+        [Verbosity(LogEventType.Information, MessageFormat = "WebBookInitializer:: {AppName}: writ(ED)(wrote) book for page {CurrentPage}")]
+        public event EventHandler WroteBook;
 
         public bool IsInitialized
         {
@@ -55,9 +63,9 @@ namespace Bam.Net.Server
         public void Initialize()
         {
             OnInitializing();
-            Server.AppContentResponders.Keys.Each(appName =>
+            AppContentResponders.Keys.Each(appName =>
             {
-                WriteBooks(Server.AppContentResponders[appName].AppConf);
+                WriteBooks(AppContentResponders[appName].AppConf);
             });
             OnInitialized();
         }
@@ -68,7 +76,7 @@ namespace Bam.Net.Server
 
         public void WriteBooks(AppConf appConfig)
         {
-          AppName = appConfig.Name;
+            AppName = appConfig.Name;
             FireEvent(AppInitializing, new WebBookEventArgs(appConfig));
             // get all the pages 
             BamApplicationManager manager = new BamApplicationManager(appConfig.BamConf);
@@ -76,8 +84,8 @@ namespace Bam.Net.Server
             // read all the pages
             pageNames.Each(pageName =>
             {
-              FireEvent(WritingBook, new WebBookEventArgs(appConfig));
-              CurrentPage = pageName;
+                FireEvent(WritingBook, new WebBookEventArgs(appConfig));
+                CurrentPage = pageName;
                 Fs appFs = appConfig.AppRoot;
                 // create a new book for every page
                 WebBook book = new WebBook { Name = pageName };
@@ -90,12 +98,12 @@ namespace Bam.Net.Server
                     // create a WebBookPage for each target
                     string href = nav.Attributes["href"];
                     string navTo = nav.Attributes["data-navigate-to"];
-                    string url = string.IsNullOrEmpty(navTo) ? href: navTo;
-                    if(!string.IsNullOrEmpty(url))
+                    string url = string.IsNullOrEmpty(navTo) ? href : navTo;
+                    if (!string.IsNullOrEmpty(url))
                     {
                         url = url.Contains('?') ? url.Split('?')[0] : url;
                         string layout = nav.Attributes["data-layout"];
-                        layout = string.IsNullOrEmpty(layout) ? "basic" : layout;                        
+                        layout = string.IsNullOrEmpty(layout) ? "basic" : layout;
                         if (pageNames.Contains(url))
                         {
                             book.Pages.Add(new WebBookPage { Name = url, Layout = layout });

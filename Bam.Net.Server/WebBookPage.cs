@@ -20,8 +20,7 @@ namespace Bam.Net.Server
 
         public override bool Equals(object obj)
         {
-            WebBookPage page = obj as WebBookPage;
-            if (page != null)
+            if (obj is WebBookPage page)
             {
                 return page.Name.Equals(this.Name) && page.Layout.Equals(this.Layout);
             }

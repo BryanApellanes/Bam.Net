@@ -1278,11 +1278,6 @@ namespace Bam.Net.Server
                 PostInitializationHandler.InitializationHandlers.Add(new DustTemplateInitializer(this));
             }
 
-            if (server.InitializeWebBooks)
-            {
-                PostInitializationHandler.InitializationHandlers.Add(new WebBookInitializer(this));
-            }
-
             PostInitializationHandler.HandleInitialization(this);
 
             this.IsInitialized = true;
