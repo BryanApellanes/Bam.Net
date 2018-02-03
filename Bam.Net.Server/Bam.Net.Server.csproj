@@ -111,6 +111,12 @@
   <ItemGroup>
     <Compile Include="AppConf.cs" />
     <Compile Include="AppConfApplicationNameProvider.cs" />
+    <Compile Include="ErrorHandling\ApplicationErrorHandler.cs" />
+    <Compile Include="ErrorHandling\ErrorHandler.cs" />
+    <Compile Include="ErrorHandling\ErrorContent.cs" />
+    <Compile Include="ErrorHandling\FileErrorContent.cs" />
+    <Compile Include="ErrorHandling\NotFoundHtmlResponse.cs" />
+    <Compile Include="ErrorHandling\NotFoundJsonResponse.cs" />
     <Compile Include="HostAppMapping.cs" />
     <Compile Include="BamApplicationNameProvider.cs" />
     <Compile Include="AppContentResponder.cs" />

@@ -1885,6 +1885,18 @@ namespace Bam.Net
             return hashBytes.ToHexString();
         }
 
+        public static byte[] ToBytes(this string text, Encoding encoding = null)
+        {
+            encoding = encoding ?? Encoding.UTF8;
+            return encoding.GetBytes(text);
+        }
+
+        public static string FromBytes(this byte[] text, Encoding encoding = null)
+        {
+            encoding = encoding ?? Encoding.UTF8;
+            return encoding.GetString(text);
+        }
+
         public static string ToHexString(this byte[] bytes)
         {
             return BitConverter.ToString(bytes).Replace("-", "").ToLower();
@@ -2103,8 +2115,7 @@ namespace Bam.Net
         /// <returns></returns>
         public static string Tail(this string value, int count)
         {
-            string tail;
-            value.Tail(count, out tail);
+            value.Tail(count, out string tail);
             return tail;
         }
 
@@ -2282,8 +2293,10 @@ namespace Bam.Net
 
         public static Dictionary<char, List<T>> LetterGroups<T>(this List<T> list, Func<T, string> propertyReader)
         {
-            Dictionary<char, List<T>> results = new Dictionary<char, List<T>>();
-            results.Add('\0', new List<T>());
+            Dictionary<char, List<T>> results = new Dictionary<char, List<T>>
+            {
+                { '\0', new List<T>() }
+            };
             list.ForEach(val =>
             {
                 string propertyValue = propertyReader(val);

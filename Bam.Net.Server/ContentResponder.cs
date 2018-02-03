@@ -200,11 +200,11 @@ namespace Bam.Net.Server
                     return true;
                 }
             }
-            string lastModifiedString = request.Headers["If-Modified-Since"];
-            if (!string.IsNullOrEmpty(lastModifiedString) && Etags.LastModified.ContainsKey(path))
+            string ifModifiedSinceString = request.Headers["If-Modified-Since"];
+            if (!string.IsNullOrEmpty(ifModifiedSinceString) && Etags.LastModified.ContainsKey(path))
             {
-                DateTime modifiedSince = DateTime.Parse(lastModifiedString);
-                if (Etags.LastModified[path] > modifiedSince)
+                DateTime ifModifiedSince = DateTime.Parse(ifModifiedSinceString);
+                if (Etags.LastModified[path] < ifModifiedSince)
                 {
                     response.StatusCode = 304;
                     return true;
@@ -487,6 +487,7 @@ namespace Bam.Net.Server
                 {
                     return true;
                 }
+
                 if (!IsInitialized)
                 {
                     Initialize();
@@ -570,7 +571,7 @@ namespace Bam.Net.Server
         {
             if (HostAppMappings.ContainsKey(context.Request.Url.Host))
             {
-                return HostAppMappings[context.Request.Url.Authority].AppName;
+                return HostAppMappings[context.Request.Url.Host].AppName;
             }
             return ApplicationNameResolver.ResolveApplicationName(context);
         }

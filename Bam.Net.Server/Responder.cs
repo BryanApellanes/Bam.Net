@@ -153,6 +153,12 @@ namespace Bam.Net.Server
         public static void SendResponse(IResponse response, string output, int statusCode = 200, Encoding encoding = null, Dictionary<string, string> headers = null)
         {
             encoding = encoding ?? Encoding.UTF8;
+            byte[] data = encoding.GetBytes(output);
+            SendResponse(response, data, statusCode, headers);
+        }
+
+        public static void SendResponse(IResponse response, byte[] data, int statusCode, Dictionary<string, string> headers)
+        {
             if (headers != null)
             {
                 headers.Keys.Each(key =>
@@ -160,12 +166,11 @@ namespace Bam.Net.Server
                     response.Headers.Add(key, headers[key]);
                 });
             }
-            byte[] data = encoding.GetBytes(output);
             response.OutputStream.Write(data, 0, data.Length);
             response.StatusCode = statusCode;
             response.Close();
         }
-        
+
         protected string GetContentTypeForExtension(string ext)
         {
             string contentType = string.Empty;

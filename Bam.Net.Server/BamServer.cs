@@ -200,8 +200,7 @@ namespace Bam.Net.Server
 
                 Subscribe(MainLogger);
                 SubscribeResponders(MainLogger);
-
-                EnsureDefaults();
+                
                 MainLogger.AddEntry("{0} initializing: \r\n{1}", this.GetType().Name, this.PropertiesToString());
 
                 InitializeCommonSchemas();
@@ -512,19 +511,6 @@ namespace Bam.Net.Server
         public string[] ServerEventListenerSearchPaths { get; set; }
         public string ServerEventListenerAssemblySearchPattern { get; set; }
         // -end config values
-
-        int _maxThreads;
-        public int MaxThreads
-        {
-            get
-            {
-                return _maxThreads;
-            }
-            set
-            {
-                _maxThreads = value;
-            }
-        }
 
         string _contentRoot;
         public string ContentRoot
@@ -1285,28 +1271,13 @@ namespace Bam.Net.Server
 
         private void ConfigureHttpServer()
         {
-            int maxThreads = this.MaxThreads;
-            if (maxThreads < 50)
-            {
-                maxThreads = 50;
-            }
-
-            _server = new HttpServer(maxThreads, MainLogger)
+            _server = new HttpServer(MainLogger)
             {
                 HostPrefixes = GetHostPrefixes()
             };
             _server.ProcessRequest += ProcessRequest;
         }
-
-        private void EnsureDefaults()
-        {
-            if (this.MaxThreads <= 0)
-            {
-                this.MaxThreads = 50;
-                MainLogger.AddEntry("Set MaxThreads to default value {0}", this.MaxThreads);
-            }
-        }
-
+        
         private void ListenForDaoGenServices()
         {
             ServiceProxyResponder.CommonServiceAdded += (t, o) =>

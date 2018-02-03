@@ -20,12 +20,8 @@ namespace Bam.Net.Server
         private readonly HttpListener _listener;
         private readonly Thread _handlerThread;
         private ILogger _logger;
-
+        
         public HttpServer(ILogger logger = null)
-            : this(50, logger)
-        { }
-
-        public HttpServer(int maxThreads, ILogger logger)
         {
             logger = logger ?? Log.Default;
             
