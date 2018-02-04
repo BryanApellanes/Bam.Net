@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Server
+namespace Bam.Net.Server.Meta
 {
-    public class BamApplicationManagerResult
+    public class AppMetaResult
     {
-        public BamApplicationManagerResult(bool success, string message, object data)
+        public AppMetaResult(bool success, string message, object data)
         {
             this.Success = success;
             this.Message = message;

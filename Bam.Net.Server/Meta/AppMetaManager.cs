@@ -14,16 +14,16 @@ using Bam.Net.Server.Renderers;
 using Bam.Net.Logging;
 using Bam.Net.ServiceProxy;
 
-namespace Bam.Net.Server
+namespace Bam.Net.Server.Meta
 {
-    [Proxy("bam")]
-    public class BamApplicationManager: IRequiresHttpContext
+    [Proxy("appMeta")]
+    public class AppMetaManager: IRequiresHttpContext
     {
         public const string AppNamePagesPathFormat = "~/apps/{appName}/pages";
-        private BamApplicationManager()
+        private AppMetaManager()
         {
         }
-        public BamApplicationManager(BamConf conf)
+        public AppMetaManager(BamConf conf)
         {
             this.BamConf = conf;
         }
@@ -31,7 +31,7 @@ namespace Bam.Net.Server
         [Exclude]
         public object Clone()
         {
-            BamApplicationManager clone = new BamApplicationManager();
+            AppMetaManager clone = new AppMetaManager();
             clone.CopyProperties(this);
             return clone;
         }
@@ -73,17 +73,17 @@ namespace Bam.Net.Server
             private set;
         }
 
-        public BamApplicationManagerResult GetSuccessWrapper(string appName, object toWrap, string methodName = "Unspecified")
+        public AppMetaResult GetSuccessWrapper(string appName, object toWrap, string methodName = "Unspecified")
         {
             Logger.AddEntry("{0}::Success::{1}", appName, methodName);
-            return new BamApplicationManagerResult(true, "", toWrap);
+            return new AppMetaResult(true, "", toWrap);
         }
 
-        public BamApplicationManagerResult GetErrorWrapper(string appName, Exception ex, bool stack = true, string methodName = "Unspecified")
+        public AppMetaResult GetErrorWrapper(string appName, Exception ex, bool stack = true, string methodName = "Unspecified")
         {
             Logger.AddEntry("{0}::Error::{1}\r\n***{1}\r\n***", ex, appName, methodName, ex.Message);
             string message = GetMessage(ex, stack);
-            return new BamApplicationManagerResult(false, message, null);
+            return new AppMetaResult(false, message, null);
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace Bam.Net.Server
         /// </summary>
         /// <param name="appName"></param>
         /// <returns></returns>
-        public BamApplicationManagerResult GetPages(string appName = "localhost")
+        public AppMetaResult GetPages(string appName = "localhost")
         {
             try
             {
@@ -103,7 +103,7 @@ namespace Bam.Net.Server
             }
         }
 		
-        public BamApplicationManagerResult GetBook(string appName = "localhost", string pageName = "home")
+        public AppMetaResult GetBook(string appName = "localhost", string pageName = "home")
         {
             try
             {

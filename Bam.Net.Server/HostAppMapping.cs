@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Server
 {
+    /// <summary>
+    /// Represents a mapping from any possible
+    /// Uri.Host value to an application.
+    /// </summary>
     public class HostAppMapping
     {
         /// <summary>

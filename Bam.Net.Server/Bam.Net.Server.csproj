@@ -124,6 +124,9 @@
     <Compile Include="Bam.cs" />
     <Compile Include="BamController.cs" />
     <Compile Include="IPostServerInitialize.cs" />
+    <Compile Include="Meta\MethodRoute.cs" />
+    <Compile Include="Meta\RoutePrefixAttribute.cs" />
+    <Compile Include="Meta\TypeRoute.cs" />
     <Compile Include="PostServerInitializationHandler.cs" />
     <Compile Include="Etags.cs" />
     <Compile Include="IPostServerInitializationHandler.cs" />
@@ -131,8 +134,8 @@
     <Compile Include="Streaming\StreamingRequest.cs" />
     <Compile Include="Streaming\StreamingResponse.cs" />
     <Compile Include="BootstrapIcons.cs" />
-    <Compile Include="BamApplicationManager.cs" />
-    <Compile Include="BamApplicationManagerResult.cs" />
+    <Compile Include="Meta\AppMetaManager.cs" />
+    <Compile Include="Meta\AppMetaResult.cs" />
     <Compile Include="BamDaoServer.cs" />
     <Compile Include="BamServer.cs" />
     <Compile Include="FileUploadEventArgs.cs" />
@@ -227,10 +230,10 @@
     <Compile Include="Streaming\StreamingContext.cs" />
     <Compile Include="TemplateInitializer.cs" />
     <Compile Include="UriApplicationNameResolver.cs" />
-    <Compile Include="WebBook.cs" />
-    <Compile Include="WebBookEventArgs.cs" />
-    <Compile Include="WebBookInitializer.cs" />
-    <Compile Include="WebBookPage.cs" />
+    <Compile Include="Meta\WebBook.cs" />
+    <Compile Include="Meta\WebBookEventArgs.cs" />
+    <Compile Include="Meta\WebBookInitializer.cs" />
+    <Compile Include="Meta\WebBookPage.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="content.root" />

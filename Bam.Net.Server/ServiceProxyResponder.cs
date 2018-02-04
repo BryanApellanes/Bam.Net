@@ -21,6 +21,7 @@ using Bam.Net.Configuration;
 using System.Web.Mvc;
 using System.Threading.Tasks;
 using Bam.Net.Presentation;
+using Bam.Net.Server.Meta;
 
 namespace Bam.Net.Server
 {
@@ -594,7 +595,7 @@ namespace Bam.Net.Server
                 IsInitialized = true;
                 lock (_initializeLock)
                 {
-                    AddCommonService(new BamApplicationManager(BamConf));
+                    AddCommonService(new AppMetaManager(BamConf));
                     RegisterProxiedClasses();
                 }
             }

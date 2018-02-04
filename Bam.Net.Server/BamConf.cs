@@ -21,7 +21,7 @@ using System.Reflection;
 namespace Bam.Net.Server
 {
     /// <summary>
-    /// Configuration for the BamServer
+    /// Configuration for a BamServer
     /// </summary>
     public class BamConf
     {
@@ -38,7 +38,6 @@ namespace Bam.Net.Server
             this.GenerateDao = true;
             this.DaoConfigs = new DaoConf[] { };
             this.InitializeTemplates = true;
-            this.InitializeWebBooks = true;
             this.DaoSearchPattern = "*Dao.dll";
             this.LoggerPaths = new string[] { "." };
             this.LoggerSearchPattern = "*Logging.dll";
@@ -149,12 +148,6 @@ namespace Bam.Net.Server
         }
 
         public bool InitializeTemplates
-        {
-            get;
-            set;
-        }
-
-        public bool InitializeWebBooks
         {
             get;
             set;

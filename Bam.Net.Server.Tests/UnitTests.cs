@@ -29,6 +29,7 @@ using Bam.Net.Configuration;
 using Moq;
 using FakeItEasy;
 using Bam.Net.Testing.Unit;
+using Bam.Net.Server.Meta;
 
 namespace Bam.Net.Server.Tests
 {
@@ -690,7 +691,7 @@ namespace Bam.Net.Server.Tests
         [UnitTest]
         public void ShouldBeAbleToGetMethodCaseInsensitively()
         {
-            Type bam = typeof(BamApplicationManager);
+            Type bam = typeof(AppMetaManager);
             MethodInfo method = bam.GetMethod("getpages", BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
             Expect.IsNotNull(method);
         }
@@ -948,7 +949,7 @@ namespace Bam.Net.Server.Tests
 
             BamConf conf = new BamConf();
             conf.ContentRoot = root.FullName;
-            BamApplicationManager mgr = new BamApplicationManager(conf);
+            AppMetaManager mgr = new AppMetaManager(conf);
             string[] pageNames = mgr.GetPageNames("test");
             Expect.AreEqual(6, pageNames.Length);
             pageNames.Each(pn =>

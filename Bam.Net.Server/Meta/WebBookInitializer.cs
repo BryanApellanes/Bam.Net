@@ -8,8 +8,9 @@ using System.Text;
 using Bam.Net.Logging;
 using System.Threading.Tasks;
 using CsQuery;
+using Bam.Net.Server.Meta;
 
-namespace Bam.Net.Server
+namespace Bam.Net.Server.Meta
 {
     public class WebBookInitializer : Loggable, IInitialize<WebBookInitializer>
     {
@@ -79,7 +80,7 @@ namespace Bam.Net.Server
             AppName = appConfig.Name;
             FireEvent(AppInitializing, new WebBookEventArgs(appConfig));
             // get all the pages 
-            BamApplicationManager manager = new BamApplicationManager(appConfig.BamConf);
+            AppMetaManager manager = new AppMetaManager(appConfig.BamConf);
             List<string> pageNames = new List<string>(manager.GetPageNames(appConfig.Name));
             // read all the pages
             pageNames.Each(pageName =>

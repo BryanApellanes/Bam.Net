@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Server
+namespace Bam.Net.Server.Meta
 {
     public class WebBookEventArgs: EventArgs
     {

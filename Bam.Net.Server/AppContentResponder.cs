@@ -145,7 +145,7 @@ namespace Bam.Net.Server
             checkedPaths = new string[] { };
             try
             {
-                if (CheckEtags(context))
+                if (Etags.CheckEtags(context))
                 {
                     return true;
                 }
@@ -199,14 +199,14 @@ namespace Bam.Net.Server
                     {
                         content = File.ReadAllBytes(locatedPath);
                     }
-                    SetLastModified(response, request.Url.ToString(), new FileInfo(locatedPath).LastWriteTime);
+                    Etags.SetLastModified(response, request.Url.ToString(), new FileInfo(locatedPath).LastWriteTime);
                 }
 
                 if (result)
                 {
                     SetContentType(response, path);
                     SetContentDisposition(response, path);
-                    SetEtag(response, path, content);
+                    Etags.Set(response, path, content);
                     SendResponse(response, content);
                     OnResponded(context);
                 }

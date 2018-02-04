@@ -18,6 +18,7 @@ using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.UserAccounts.Data;
 using Newtonsoft.Json.Linq;
 using System.Reflection;
+using Bam.Net.Server.Meta;
 
 namespace Bam.Net.Server
 {
@@ -173,46 +174,7 @@ namespace Bam.Net.Server
             }
         }
 
-        protected void SetEtag(IResponse response, string path, byte[] content)
-        {
-            string etag = content.Sha1();
-            response.AddHeader("ETag", etag);
-            Etags.Values.AddOrUpdate(path, etag, (p, v) => etag);
-        }
-
-        protected void SetLastModified(IResponse response, string path, DateTime lastModified)
-        {
-            response.AddHeader("Last-Modified", lastModified.ToUniversalTime().ToString("r"));
-            Etags.LastModified.AddOrUpdate(path, lastModified, (p, v) => lastModified);
-        }
-
-        protected bool CheckEtags(IHttpContext context)
-        {
-            IRequest request = context.Request;
-            IResponse response = context.Response;
-            string path = request.Url.ToString();
-            string etag = request.Headers["If-None-Match"];
-            if (!string.IsNullOrEmpty(etag))
-            {
-                if (Etags.Values.ContainsKey(path) && Etags.Values[path].Equals(etag))
-                {
-                    response.StatusCode = 304;
-                    return true;
-                }
-            }
-            string ifModifiedSinceString = request.Headers["If-Modified-Since"];
-            if (!string.IsNullOrEmpty(ifModifiedSinceString) && Etags.LastModified.ContainsKey(path))
-            {
-                DateTime ifModifiedSince = DateTime.Parse(ifModifiedSinceString);
-                if (Etags.LastModified[path] < ifModifiedSince)
-                {
-                    response.StatusCode = 304;
-                    return true;
-                }
-            }
-            return false;
-        }
-
+        
         protected virtual void SetBaseIgnorePrefixes()
         {
             AddIgnorPrefix("dao");
@@ -313,7 +275,7 @@ namespace Bam.Net.Server
                 }
             }
             temp.ToJsonFile(jsonFile);
-            HostAppMappings = temp.ToDictionary(ham=> ham.Host);
+            HostAppMappings = temp.ToDictionary(ham => ham.Host);
         }
 
         public event EventHandler FileUploading;
@@ -399,7 +361,7 @@ namespace Bam.Net.Server
 
         protected static internal string[] GetPageScripts(AppConf appConf)
         {
-            BamApplicationManager manager = new BamApplicationManager(appConf.BamConf);
+            AppMetaManager manager = new AppMetaManager(appConf.BamConf);
             string[] pageNames = manager.GetPageNames(appConf.Name);
             List<string> results = new List<string>();
             pageNames.Each(pageName =>
@@ -483,7 +445,7 @@ namespace Bam.Net.Server
         {
             try
             {
-                if (CheckEtags(context))
+                if (Etags.CheckEtags(context))
                 {
                     return true;
                 }
@@ -535,14 +497,14 @@ namespace Bam.Net.Server
                                 content = cache.GetContent(absoluteFileSystemPath);
                             }
                             handled = true;
-                            SetLastModified(response, request.Url.ToString(), new FileInfo(absoluteFileSystemPath).LastWriteTime);
+                            Etags.SetLastModified(response, request.Url.ToString(), new FileInfo(absoluteFileSystemPath).LastWriteTime);
                         }
                     }
 
                     if (handled)
                     {
                         SetContentType(response, path);
-                        SetEtag(response, path, content);
+                        Etags.Set(response, path, content);
                         SendResponse(response, content);
                         OnResponded(context);
                     }

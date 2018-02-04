@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CsQuery;
 
-namespace Bam.Net.Server
+namespace Bam.Net.Server.Meta
 {
 	public class WebBook
 	{
