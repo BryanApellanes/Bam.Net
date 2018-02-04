@@ -6,7 +6,17 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Server.Meta
 {
-    class BamTypeRoute
+    public class BamTypeRoute : TypeRoute
     {
+        public BamTypeRoute()
+        {
+            PathPrefix = "bam";
+        }
+
+        public static BamTypeRoute Parse(string uri)
+        {
+            BamTypeRoute route = new BamTypeRoute();
+            return (BamTypeRoute)route.ParseRoute(uri);
+        }
     }
 }

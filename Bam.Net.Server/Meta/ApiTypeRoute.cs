@@ -6,7 +6,17 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Server.Meta
 {
-    class ApiTypeRoute
+    public class ApiTypeRoute : TypeRoute
     {
+        public ApiTypeRoute()
+        {
+            PathPrefix = "api";
+        }
+
+        public static ApiTypeRoute Parse(string uri)
+        {
+            ApiTypeRoute route = new ApiTypeRoute();
+            return (ApiTypeRoute)route.ParseRoute(uri);
+        }
     }
 }

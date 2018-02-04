@@ -6,34 +6,6 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Server.Meta
 {
-    public class BamTypeRoute: TypeRoute
-    {
-        public BamTypeRoute()
-        {
-            PathPrefix = "bam";
-        }
-
-        public static BamTypeRoute Parse(string uri)
-        {
-            BamTypeRoute route = new BamTypeRoute();
-            return (BamTypeRoute)route.ParseRoute(uri);
-        }
-    }
-
-    public class ApiTypeRoute: TypeRoute
-    {
-        public ApiTypeRoute()
-        {
-            PathPrefix = "api";
-        }
-
-        public static ApiTypeRoute Parse(string uri)
-        {
-            ApiTypeRoute route = new ApiTypeRoute();
-            return (ApiTypeRoute)route.ParseRoute(uri);
-        }
-    }
-
     public abstract class TypeRoute
     {
         public string Route
@@ -54,10 +26,12 @@ namespace Bam.Net.Server.Meta
             route.ParseMethod();
             return route;
         }
+
         public bool IsValid()
         {
             return !string.IsNullOrEmpty(Protocol) && !string.IsNullOrEmpty(Domain) && !string.IsNullOrEmpty(PathAndQuery);
         }
+
         public bool ParseMethod()
         {
             if (!IsValid())
