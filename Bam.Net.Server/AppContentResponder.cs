@@ -154,9 +154,7 @@ namespace Bam.Net.Server
                 string path = request.Url.AbsolutePath;
 
                 string ext = Path.GetExtension(path);
-
-                path = RemoveBamAppsPrefix(path);
-
+                
                 string[] split = path.DelimitSplit("/");
                 byte[] content = new byte[] { };
                 bool result = false;
@@ -316,17 +314,6 @@ namespace Bam.Net.Server
         public Includes GetAppIncludes()
         {
             return GetAppIncludes(AppConf);
-        }
-
-        private string RemoveBamAppsPrefix(string path)
-        {
-            string mgmtPrefix = $"/bam/apps/{AppConf.DomApplicationIdFromAppName(ApplicationName)}"; // TODO: this is a legacy construct resulting from the way that client side js is written; investigate removal
-            if (path.StartsWith(mgmtPrefix, StringComparison.InvariantCultureIgnoreCase))
-            {
-                path = path.TruncateFront(mgmtPrefix.Length);
-            }
-
-            return path;
         }
 
         private byte[] RenderLayout(IResponse response, string path, string queryString = null)

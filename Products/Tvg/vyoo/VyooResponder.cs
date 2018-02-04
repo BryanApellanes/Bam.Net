@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Bam.Net.Logging;
 using Bam.Net.Server;
 using Bam.Net.ServiceProxy;
+using Bam.Net.Server.Meta;
 
 namespace Bam.Net.Application
 {
@@ -15,6 +16,7 @@ namespace Bam.Net.Application
             : base(conf, logger)
         {
             ContentResponder = new ContentResponder(conf, logger);
+            
         }
 
         public ContentResponder ContentResponder { get; private set; }

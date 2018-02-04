@@ -18,6 +18,7 @@ namespace Bam.Net.Server.Meta
         public string Domain { get; set; }
         public string PathAndQuery { get; set; }      
         public MethodRoute MethodRoute { get; set; }
+        
 
         public virtual TypeRoute ParseRoute(string uri)
         {

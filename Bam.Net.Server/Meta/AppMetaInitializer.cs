@@ -12,11 +12,15 @@ using Bam.Net.Server.Meta;
 
 namespace Bam.Net.Server.Meta
 {
-    public class WebBookInitializer : Loggable, IInitialize<WebBookInitializer>
+    public class AppMetaInitializer : Loggable, IInitialize<AppMetaInitializer>
     {
-        public WebBookInitializer(ContentResponder contentResponder)
+        public const string BooksPath = "~/meta/books/{0}";
+        public const string PagesPath = "~/meta/pages";
+        
+        public AppMetaInitializer(ContentResponder contentResponder)
         {
             ContentResponder = contentResponder;
+            InitializationTask = InitializeAsync();
         }
 
         public ContentResponder ContentResponder
@@ -32,14 +36,15 @@ namespace Bam.Net.Server.Meta
             }
         }
 
-        public event Action<WebBookInitializer> Initializing;
+        public event Action<AppMetaInitializer> Initializing;
         protected void OnInitializing()
         {
             Initializing?.Invoke(this);
         }
-        public event Action<WebBookInitializer> Initialized;
+        public event Action<AppMetaInitializer> Initialized;
         protected void OnInitialized()
         {
+            IsInitialized = true;
             Initialized?.Invoke(this);
         }
 
@@ -60,6 +65,13 @@ namespace Bam.Net.Server.Meta
             get;
             private set;
         }
+        
+        public Task InitializationTask { get; }
+
+        protected Task InitializeAsync()
+        {
+            return Task.Run(() => Initialize());
+        }
 
         public void Initialize()
         {
@@ -70,7 +82,7 @@ namespace Bam.Net.Server.Meta
             });
             OnInitialized();
         }
-
+        
         public string CurrentPage { get; private set; }
 
         public string AppName { get; private set; }
@@ -79,15 +91,16 @@ namespace Bam.Net.Server.Meta
         {
             AppName = appConfig.Name;
             FireEvent(AppInitializing, new WebBookEventArgs(appConfig));
+            Fs appFs = appConfig.AppRoot;
             // get all the pages 
             AppMetaManager manager = new AppMetaManager(appConfig.BamConf);
             List<string> pageNames = new List<string>(manager.GetPageNames(appConfig.Name));
+            WritePageList(appFs, pageNames.ToArray());
             // read all the pages
             pageNames.Each(pageName =>
             {
                 FireEvent(WritingBook, new WebBookEventArgs(appConfig));
-                CurrentPage = pageName;
-                Fs appFs = appConfig.AppRoot;
+                CurrentPage = pageName;                
                 // create a new book for every page
                 WebBook book = new WebBook { Name = pageName };
                 string content = appFs.ReadAllText("pages", "{0}.html"._Format(pageName));
@@ -111,10 +124,20 @@ namespace Bam.Net.Server.Meta
                         }
                     }
                 });
-                appFs.WriteFile("~/books/{0}.json"._Format(book.Name), book.ToJson(true), true);
+                WriteBook(appFs, book);
                 FireEvent(WroteBook, new WebBookEventArgs(appConfig));
             });
             FireEvent(AppInitialized, new WebBookEventArgs(appConfig));
+        }
+
+        protected void WritePageList(Fs appFs, string[] pageNames)
+        {
+            appFs.WriteFile(PagesPath, pageNames.ToJson(true));
+        }
+
+        protected void WriteBook(Fs appFs, WebBook webBook)
+        {
+            appFs.WriteFile(BooksPath._Format(webBook.Name), webBook.ToJson(true), true);
         }
     }
 }

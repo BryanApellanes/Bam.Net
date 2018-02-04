@@ -36,7 +36,7 @@ namespace Bam.Net.Server
             FileCachesByExtension = new Dictionary<string, FileCache>();
             HostAppMappings = new Dictionary<string, HostAppMapping>();
             InitializeFileExtensions();
-            InitializeCaches();
+            InitializeCaches();            
         }
 
         public ContentResponder(BamConf conf, ILogger logger)
@@ -45,9 +45,10 @@ namespace Bam.Net.Server
             CommonTemplateRenderer = new CommonDustRenderer(this);
             FileCachesByExtension = new Dictionary<string, FileCache>();
             InitializeFileExtensions();
-            InitializeCaches();
+            InitializeCaches();            
         }
 
+        public AppMetaInitializer AppMetaInitializer { get; set; }
         public List<string> FileExtensions { get; set; }
         public List<string> TextFileExtensions { get; set; }
         protected Dictionary<string, FileCache> FileCachesByExtension { get; set; }
@@ -181,6 +182,7 @@ namespace Bam.Net.Server
             AddIgnorPrefix("serviceproxy");
             AddIgnorPrefix("api");
             AddIgnorPrefix("bam");
+            AddIgnorPrefix("meta");
             AddIgnorPrefix("get");
             AddIgnorPrefix("post");
             AddIgnorPrefix("securechannel");
@@ -662,7 +664,7 @@ namespace Bam.Net.Server
                 OnInitializing();
                 InitializeCommonTemplateRenderer();
                 InitializeAppResponders();
-
+                AppMetaInitializer = new AppMetaInitializer(this);
                 OnInitialized();
             }
         }

@@ -126,6 +126,7 @@
     <Compile Include="IPostServerInitialize.cs" />
     <Compile Include="Meta\ApiTypeRoute.cs" />
     <Compile Include="Meta\BamTypeRoute.cs" />
+    <Compile Include="Meta\DataRoute.cs" />
     <Compile Include="Meta\MethodRoute.cs" />
     <Compile Include="Meta\RoutePrefixAttribute.cs" />
     <Compile Include="Meta\TypeRoute.cs" />
@@ -234,7 +235,7 @@
     <Compile Include="UriApplicationNameResolver.cs" />
     <Compile Include="Meta\WebBook.cs" />
     <Compile Include="Meta\WebBookEventArgs.cs" />
-    <Compile Include="Meta\WebBookInitializer.cs" />
+    <Compile Include="Meta\AppMetaInitializer.cs" />
     <Compile Include="Meta\WebBookPage.cs" />
   </ItemGroup>
   <ItemGroup>
