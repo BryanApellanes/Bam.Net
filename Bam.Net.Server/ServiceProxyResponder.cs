@@ -475,7 +475,7 @@ namespace Bam.Net.Server
             {
                 RequestWrapper request = context.Request as RequestWrapper;
                 ResponseWrapper response = context.Response as ResponseWrapper;
-                string appName = UriApplicationNameResolver.ResolveApplicationName(request.Url, BamConf.AppConfigs);
+                string appName = ApplicationNameResolver.ResolveApplicationName(context);//UriApplicationNameResolver.ResolveApplicationName(request.Url, BamConf.AppConfigs);
 
                 bool responded = false;
 
@@ -526,7 +526,7 @@ namespace Bam.Net.Server
         {
             bool result = false;
             IRequest request = context.Request;
-            string appName = UriApplicationNameResolver.ResolveApplicationName(request.Url, BamConf.AppConfigs);
+            string appName = ApplicationNameResolver.ResolveApplicationName(context);//UriApplicationNameResolver.ResolveApplicationName(request.Url, BamConf.AppConfigs);
             string path = request.Url.AbsolutePath;
             string prefix = MethodFormPrefixFormat._Format(ResponderSignificantName.ToLowerInvariant());
             string partsICareAbout = path.TruncateFront(prefix.Length);
@@ -721,7 +721,7 @@ namespace Bam.Net.Server
             bool result = false;
             IRequest request = context.Request;
             string path = request.Url.AbsolutePath.ToLowerInvariant();
-            string appName = UriApplicationNameResolver.ResolveApplicationName(request.Url, BamConf.AppConfigs);
+            string appName = ApplicationNameResolver.ResolveApplicationName(context);//UriApplicationNameResolver.ResolveApplicationName(request.Url, BamConf.AppConfigs);
             bool includeLocalMethods = request.UserHostAddress.StartsWith("127.0.0.1");
             string[] split = path.DelimitSplit("/", ".");
 
