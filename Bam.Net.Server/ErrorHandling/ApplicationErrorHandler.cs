@@ -31,8 +31,11 @@ namespace Bam.Net.Server.ErrorHandling
                     dir.GetFiles().ToList().ForEach(fi =>
                     {
                         string name = Path.GetFileNameWithoutExtension(fi.Name);
-                        int code = name.TruncateFront(1).ToInt();
-                        ErrorContent.Add(code, new FileErrorContent(fi, code));
+                        int code = name.TruncateFront(1).ToInt(); // assumes files are named _<code>; for example, _404.html
+                        if (code > 0)
+                        {
+                            ErrorContent.Add(code, new FileErrorContent(fi, code));
+                        }
                     });
                 });
             }
