@@ -44,8 +44,7 @@ namespace Bam.Net.Yaml.Data
         public static YamlData Load(Type type, FileInfo file, ILogger logger = null)
         {
             object data = file.FromYamlFile().First();
-            Dictionary<object, object> dict = data as Dictionary<object, object>;
-            if(dict != null)
+            if (data is Dictionary<object, object> dict)
             {
                 data = dict.FromDictionary(type);
             }
