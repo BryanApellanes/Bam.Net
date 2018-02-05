@@ -108,20 +108,17 @@ namespace Bam.Net.Caching.File
             string fullName = file.FullName;
 
             CachedFile cachedFile = new CachedFile(file);
-            if(_cachedFiles.TryAdd(fullName, cachedFile))
+            if (_cachedFiles.TryAdd(fullName, cachedFile))
             {
-                lock (_lock)
-                {
-                    string text = _cachedFiles[fullName].GetText();
-                    byte[] bytes = _cachedFiles[fullName].GetBytes();
-                    byte[] zippedBytes = _cachedFiles[fullName].GetZippedBytes();
-                    byte[] zippedText = _cachedFiles[fullName].GetZippedText();
+                string text = _cachedFiles[fullName].GetText();
+                byte[] bytes = _cachedFiles[fullName].GetBytes();
+                byte[] zippedBytes = _cachedFiles[fullName].GetZippedBytes();
+                byte[] zippedText = _cachedFiles[fullName].GetZippedText();
 
-                    _textCache.TryAdd(fullName, text);
-                    _byteCache.TryAdd(fullName, bytes);
-                    _zippedByteCache.TryAdd(fullName, zippedBytes);
-                    _zippedTextCache.TryAdd(fullName, zippedText);
-                }
+                _textCache.TryAdd(fullName, text);
+                _byteCache.TryAdd(fullName, bytes);
+                _zippedByteCache.TryAdd(fullName, zippedBytes);
+                _zippedTextCache.TryAdd(fullName, zippedText);
             }
         }      
     }
