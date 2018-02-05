@@ -224,9 +224,9 @@ namespace Bam.Net.Server
 
 
         [Verbosity(LogEventType.Information)]
-        public event EventHandler FileUploading;
+        public new event EventHandler FileUploading;
         [Verbosity(LogEventType.Information)]
-        public event EventHandler FileUploaded;
+        public new event EventHandler FileUploaded;
 
         public virtual void HandleUpload(IHttpContext context, HttpPostedFile file)
         {

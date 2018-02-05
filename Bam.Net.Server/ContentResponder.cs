@@ -280,7 +280,9 @@ namespace Bam.Net.Server
             HostAppMappings = temp.ToDictionary(ham => ham.Host);
         }
 
+        [Verbosity(LogEventType.Information)]
         public event EventHandler FileUploading;
+        [Verbosity(LogEventType.Information)]
         public event EventHandler FileUploaded;
         
         private void InitializeAppResponders(AppConf[] configs)
