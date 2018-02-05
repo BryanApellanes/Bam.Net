@@ -254,9 +254,9 @@ namespace Bam.Net.Application
         public static void ServeServiceTypes(string contentRoot, HostPrefix[] prefixes, ServiceRegistry registry = null, params Type[] serviceTypes)
         {
             BamConf conf = BamConf.Load(contentRoot.Or(defaultContentRoot));
-            if(registry != null && GlooServer.ServiceRegistry == null)
+            if(registry != null && ServiceRegistry.Default == null)
             {
-                GlooServer.ServiceRegistry = registry;
+                ServiceRegistry.Default = registry;
             }
             glooServer = new GlooServer(conf, GetLogger(), GetArgument("verbose", "Log responses to the console?").IsAffirmative())
             {

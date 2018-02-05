@@ -44,6 +44,7 @@ namespace Bam.Net.Server
         {
             CommonTemplateRenderer = new CommonDustRenderer(this);
             FileCachesByExtension = new Dictionary<string, FileCache>();
+            HostAppMappings = new Dictionary<string, HostAppMapping>();
             InitializeFileExtensions();
             InitializeCaches();            
         }
@@ -51,6 +52,7 @@ namespace Bam.Net.Server
         public AppMetaInitializer AppMetaInitializer { get; set; }
         public List<string> FileExtensions { get; set; }
         public List<string> TextFileExtensions { get; set; }
+        public Dictionary<string, HostAppMapping> HostAppMappings { get; set; }
         protected Dictionary<string, FileCache> FileCachesByExtension { get; set; }
         protected void InitializeFileExtensions()
         {
@@ -226,12 +228,6 @@ namespace Bam.Net.Server
         protected internal void OnAppRespondersInitialized()
         {
             AppContentRespondersInitialized?.Invoke(this);
-        }
-
-        public Dictionary<string, HostAppMapping> HostAppMappings
-        {
-            get;
-            set;
         }
 
         object _initAppsLock = new object();
@@ -572,15 +568,7 @@ namespace Bam.Net.Server
                 );
             }
         }
-
-        private static void ConditionallySetGzipHeader(IResponse response, bool shouldZip)
-        {
-            if (shouldZip)
-            {
-                SetGzipContentEncodingHeader(response);
-            }
-        }
-
+        
         static HashSet<string> _cachedScripts = new HashSet<string>();
         static object _cachedScriptLock = new object();
         protected internal void SetScriptCache(
@@ -700,24 +688,6 @@ namespace Bam.Net.Server
             }
         }
 
-        protected bool ReadCache(IRequest request, string path, out byte[] content)
-        {
-            if (ShouldZip(request))
-            {
-                if (!ZippedMinCache.TryGetValue(path, out content))
-                {
-                    return ZippedCache.TryGetValue(path, out content);
-                }
-            }
-            else
-            {
-                if (!MinCache.TryGetValue(path, out content))
-                {
-                    return Cache.TryGetValue(path, out content);
-                }
-            }
-            return true;
-        }
         static object cacheLock = new object();
         static object zippedCacheLock = new object();
         static object minCacheLock = new object();

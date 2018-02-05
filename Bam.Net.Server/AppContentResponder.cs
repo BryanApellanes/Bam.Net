@@ -38,10 +38,13 @@ namespace Bam.Net.Server
             AppTemplateRenderer = new AppDustRenderer(this);
             AppContentLocator = ContentLocator.Load(this);
             Fs commonRoot = new Fs(new DirectoryInfo(Path.Combine(ServerRoot.Root, CommonFolder)));
+            CustomContentHandlers = new Dictionary<string, CustomContentHandler>();
             CommonContentLocator = ContentLocator.Load(commonRoot);
-
+            SetUploadHandler();
             SetBaseIgnorePrefixes();
         }
+
+        protected Dictionary<string, CustomContentHandler> CustomContentHandlers { get; set; }
 
         public ContentLocator AppContentLocator
         {
@@ -53,6 +56,21 @@ namespace Bam.Net.Server
         {
             get;
             private set;
+        }
+
+        protected void SetUploadHandler()
+        {
+            SetContentHandler("Application Upload", "/upload", (ctx, fs) =>
+            {
+                IRequest request = ctx.Request;
+                HandleUpload(ctx, HttpPostedFile.FromRequest(request));
+                string query = request.Url.Query.Length > 0 ? request.Url.Query : string.Empty;
+                if (query.StartsWith("?"))
+                {
+                    query = query.TruncateFront(1);
+                }
+                return RenderLayout(ctx.Response, request.Url.AbsolutePath, query);
+            });
         }
 
         /// <summary>
@@ -110,6 +128,7 @@ namespace Bam.Net.Server
             mgr.HttpContext = context;
             return mgr.GetUser(context);
         }
+
         /// <summary>
         /// The server content root
         /// </summary>
@@ -119,6 +138,20 @@ namespace Bam.Net.Server
         /// The application content root
         /// </summary>
         public Fs AppRoot { get; private set; }
+
+        public void SetContentHandler(string name, string path, Func<IHttpContext, Fs, byte[]> handler)
+        {
+            SetContentHandler(name, new string[] { path }, handler);
+        }
+
+        public void SetContentHandler(string name, string[] paths, Func<IHttpContext, Fs, byte[]> handler)
+        {
+            CustomContentHandler customHandler = new CustomContentHandler(name, AppRoot, paths) { GetContent = handler };
+            foreach(string path in paths)
+            {
+                CustomContentHandlers[path.ToLowerInvariant()] = customHandler;
+            }
+        }
 
         /// <summary>
         /// Initializes the file system from the embedded zip resource
@@ -159,16 +192,9 @@ namespace Bam.Net.Server
                 byte[] content = new byte[] { };
                 bool result = false;
 
-                if (path.Equals("/upload", StringComparison.InvariantCultureIgnoreCase))
+                if (CustomContentHandlers.ContainsKey(path.ToLowerInvariant()))
                 {
-                    HandleUpload(context, HttpPostedFile.FromRequest(request));
-                    string query = request.Url.Query.Length > 0 ? request.Url.Query : string.Empty;
-                    if (query.StartsWith("?"))
-                    {
-                        query = query.TruncateFront(1);
-                    }
-                    content = RenderLayout(response, path, query);
-                    result = true;
+                    result = CustomContentHandlers[path.ToLowerInvariant()].HandleRequest(context, out content);
                 }
                 else if (string.IsNullOrEmpty(ext) && !ShouldIgnore(path) ||
                    (AppRoot.FileExists("~/pages{0}.html"._Format(path), out string locatedPath)))

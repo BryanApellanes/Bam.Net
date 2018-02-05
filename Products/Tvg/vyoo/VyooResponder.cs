@@ -15,8 +15,7 @@ namespace Bam.Net.Application
         public VyooResponder(BamConf conf, ILogger logger, bool verbose = false)
             : base(conf, logger)
         {
-            ContentResponder = new ContentResponder(conf, logger);
-            
+            ContentResponder = new ContentResponder(conf, logger);            
         }
 
         public ContentResponder ContentResponder { get; private set; }

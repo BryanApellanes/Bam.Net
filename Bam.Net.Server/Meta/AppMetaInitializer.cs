@@ -12,6 +12,10 @@ using Bam.Net.Server.Meta;
 
 namespace Bam.Net.Server.Meta
 {
+    /// <summary>
+    /// Initializes meta data about an application given the applications
+    /// ContentResponder.
+    /// </summary>
     public class AppMetaInitializer : Loggable, IInitialize<AppMetaInitializer>
     {
         public const string BooksPath = "~/meta/books/{0}";

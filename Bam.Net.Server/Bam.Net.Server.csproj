@@ -111,6 +111,8 @@
   <ItemGroup>
     <Compile Include="AppConf.cs" />
     <Compile Include="AppConfApplicationNameProvider.cs" />
+    <Compile Include="CustomContentEventArgs.cs" />
+    <Compile Include="CustomContentHandler.cs" />
     <Compile Include="ErrorHandling\ApplicationErrorHandler.cs" />
     <Compile Include="ErrorHandling\ErrorHandler.cs" />
     <Compile Include="ErrorHandling\ErrorContent.cs" />
@@ -120,7 +122,6 @@
     <Compile Include="HostAppMapping.cs" />
     <Compile Include="BamApplicationNameProvider.cs" />
     <Compile Include="AppContentResponder.cs" />
-    <Compile Include="AppInitializerBase.cs" />
     <Compile Include="Bam.cs" />
     <Compile Include="BamController.cs" />
     <Compile Include="IPostServerInitialize.cs" />

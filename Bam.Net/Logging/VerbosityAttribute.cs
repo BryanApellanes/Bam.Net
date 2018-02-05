@@ -33,10 +33,13 @@ namespace Bam.Net.Logging
         {
             try
             {
-                message = value.TryPropertiesToString();
                 if (!string.IsNullOrEmpty(MessageFormat))
                 {
                     message = MessageFormat.NamedFormat(value);
+                }
+                else
+                {
+                    message = value.TryPropertiesToString();
                 }
 
                 return true;
