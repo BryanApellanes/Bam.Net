@@ -205,6 +205,7 @@ namespace Bam.Net.Server
                     SetContentType(response, path);
                     SetContentDisposition(response, path);
                     Etags.Set(response, path, content);
+                    SetResponseHeaders(response, path);
                     SendResponse(response, content);
                     OnResponded(context);
                 }
@@ -222,6 +223,25 @@ namespace Bam.Net.Server
             }
         }
 
+        protected virtual void SetResponseHeaders(IResponse response, string path)
+        {
+            if (path.StartsWith("/meta"))
+            {
+                path = path.TruncateFront("/meta".Length);
+            }
+            Fs meta = new Fs(Path.Combine(AppRoot.Root, "meta", "headers"));
+            if (meta.FileExists(path, out string fullPath))
+            {
+                foreach(string header in fullPath.SafeReadFile().DelimitSplit("\n"))
+                {
+                    string[] split = header.Split(new char[] { ':' }, 2);
+                    if(split.Length == 2)
+                    {
+                        response.AddHeader(split[0].Trim(), split[1].Trim());
+                    }
+                }
+            }
+        }
 
         [Verbosity(LogEventType.Information)]
         public new event EventHandler FileUploading;

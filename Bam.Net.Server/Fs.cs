@@ -206,9 +206,8 @@ namespace Bam.Net.Server
 
 		public bool FileExists(string relativePath)
 		{
-			string ignore;
-			return FileExists(relativePath, out ignore);
-		}
+            return FileExists(relativePath, out string ignore);
+        }
 
         public bool FileExists(string relativePath, out string absolutePath)
         {
