@@ -21,7 +21,7 @@ namespace Bam.Net.Server
 {
     public class AppContentResponder : ContentResponder
     {
-        public const string CommonFolder = "common";        
+        public const string CommonFolder = "common";
 
         public AppContentResponder(ContentResponder commonResponder, AppConf conf)
             : base(commonResponder.BamConf)
@@ -147,7 +147,7 @@ namespace Bam.Net.Server
         public void SetContentHandler(string name, string[] paths, Func<IHttpContext, Fs, byte[]> handler)
         {
             CustomContentHandler customHandler = new CustomContentHandler(name, AppRoot, paths) { GetContent = handler };
-            foreach(string path in paths)
+            foreach (string path in paths)
             {
                 CustomContentHandlers[path.ToLowerInvariant()] = customHandler;
             }
@@ -187,7 +187,7 @@ namespace Bam.Net.Server
                 string path = request.Url.AbsolutePath;
 
                 string ext = Path.GetExtension(path);
-                
+
                 string[] split = path.DelimitSplit("/");
                 byte[] content = new byte[] { };
                 bool result = false;
@@ -258,10 +258,10 @@ namespace Bam.Net.Server
             Fs meta = new Fs(Path.Combine(AppRoot.Root, "meta", "headers"));
             if (meta.FileExists(path, out string fullPath))
             {
-                foreach(string header in fullPath.SafeReadFile().DelimitSplit("\n"))
+                foreach (string header in fullPath.SafeReadFile().DelimitSplit("\n"))
                 {
                     string[] split = header.Split(new char[] { ':' }, 2);
-                    if(split.Length == 2)
+                    if (split.Length == 2)
                     {
                         response.AddHeader(split[0].Trim(), split[1].Trim());
                     }
@@ -330,7 +330,7 @@ namespace Bam.Net.Server
                 LayoutConf fromLayoutFile = FileCachesByExtension[LayoutFileExtension].GetText(new FileInfo(absolutePath)).FromJson<LayoutConf>();
                 layoutConf.CopyProperties(fromLayoutFile);
                 result = layoutConf.CreateLayoutModel(htmlSegments);
-                LayoutModelsByPath[lowered] = result;                
+                LayoutModelsByPath[lowered] = result;
             }
             else
             {
