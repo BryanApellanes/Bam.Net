@@ -26,7 +26,6 @@ namespace Bam.Net.Application
         static string contentRootConfigKey = "ContentRoot";
         static string defaultContentRoot = "C:\\bam\\content";
         static string defaultGlooScriptsSrcPath = "C:\\bam\\sys\\gloo\\scripts";
-        static string csGlooBin = "C:\\bam\\sys\\gloo\\bin";
 
         static GlooServer glooServer;
         
@@ -160,33 +159,7 @@ namespace Bam.Net.Application
         public void ServeCsGloo()
         {
             string csglooDirectoryPath = GetArgument("CsGlooSrc", $"Enter the path to the CsGloo source directory (default: {defaultGlooScriptsSrcPath})");
-            DirectoryInfo csglooSrcDirectory = new DirectoryInfo(csglooDirectoryPath.Or(defaultGlooScriptsSrcPath)).EnsureExists();
-            DirectoryInfo csglooBinDirectory = new DirectoryInfo(csGlooBin).EnsureExists();
-            FileInfo[] files = csglooSrcDirectory.GetFiles("*.csgloo", SearchOption.AllDirectories);
-            StringBuilder src = new StringBuilder();
-            foreach (FileInfo file in files)
-            {
-                src.AppendLine(file.ReadAllText());
-            }
-            string hash = src.ToString().Sha1();
-            string assemblyName = $"{hash}.dll";
-            Assembly csglooAssembly = null;
-            string csglooAssemblyBinPath = Path.Combine(csglooBinDirectory.FullName, assemblyName);
-            if (!File.Exists(csglooAssemblyBinPath))
-            {
-                csglooAssembly = files.ToAssembly(assemblyName);
-                FileInfo assemblyFile = csglooAssembly.GetFileInfo();
-                FileInfo targetPath = new FileInfo(csglooAssemblyBinPath);
-                if (!targetPath.Directory.Exists)
-                {
-                    targetPath.Directory.Create();
-                }
-                File.Copy(assemblyFile.FullName, csglooAssemblyBinPath);
-            }
-            else
-            {
-                csglooAssembly = Assembly.LoadFile(csglooAssemblyBinPath);
-            }
+            Assembly csglooAssembly = CompileTvgSource(csglooDirectoryPath, "csgloo");
 
             string contentRoot = GetArgument("ContentRoot", $"Enter the path to the content root (default: {defaultContentRoot} ");
 
@@ -194,6 +167,40 @@ namespace Bam.Net.Application
             Type[] glooTypes = csglooAssembly.GetTypes().Where(t => t.HasCustomAttributeOfType<ProxyAttribute>()).ToArray();
             ServeServiceTypes(contentRoot, prefixes, null, glooTypes);
             Pause($"Gloo server is serving cs gloo types: {string.Join(", ", glooTypes.Select(t => t.Name).ToArray())}");
+        }
+
+        public static Assembly CompileTvgSource(string csglooDirectoryPath, string extension)
+        {
+            string binPath = $"C:\\bam\\sys\\{extension}\\bin";
+            DirectoryInfo csTvgSrcDirectory = new DirectoryInfo(csglooDirectoryPath.Or(defaultGlooScriptsSrcPath)).EnsureExists();
+            DirectoryInfo csTvgBinDirectory = new DirectoryInfo(binPath).EnsureExists();
+            FileInfo[] files = csTvgSrcDirectory.GetFiles($"*.{extension}", SearchOption.AllDirectories);
+            StringBuilder src = new StringBuilder();
+            foreach (FileInfo file in files)
+            {
+                src.AppendLine(file.ReadAllText());
+            }
+            string hash = src.ToString().Sha1();
+            string assemblyName = $"{hash}.dll";
+            Assembly csTvgAssembly = null;
+            string csTvgAssemblyBinPath = Path.Combine(csTvgBinDirectory.FullName, assemblyName);
+            if (!File.Exists(csTvgAssemblyBinPath))
+            {
+                csTvgAssembly = files.ToAssembly(assemblyName);
+                FileInfo assemblyFile = csTvgAssembly.GetFileInfo();
+                FileInfo targetPath = new FileInfo(csTvgAssemblyBinPath);
+                if (!targetPath.Directory.Exists)
+                {
+                    targetPath.Directory.Create();
+                }
+                File.Copy(assemblyFile.FullName, csTvgAssemblyBinPath);
+            }
+            else
+            {
+                csTvgAssembly = Assembly.LoadFile(csTvgAssemblyBinPath);
+            }
+
+            return csTvgAssembly;
         }
 
         private static void ServeRegistries(ILogger logger, string registries)
