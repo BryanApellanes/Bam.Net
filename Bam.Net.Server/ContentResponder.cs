@@ -29,6 +29,8 @@ namespace Bam.Net.Server
     {
         public const string IncludeFileName = "include.js";
         public const string LayoutFileExtension = ".layout";
+        public const string HostAppMapFile = "hostAppMap.json";
+
         public ContentResponder(BamConf conf)
             : base(conf)
         {
@@ -251,29 +253,6 @@ namespace Bam.Net.Server
                 }
             }
             OnAppRespondersInitialized();
-        }
-
-        private void InitializeHostAppMap(BamConf bamConf)
-        {
-            string jsonFile = Path.Combine(bamConf.ContentRoot, "apps", "hostAppMap.json");
-            HashSet<HostAppMapping> temp = new HashSet<HostAppMapping>();
-            foreach(AppConf appConf in bamConf.AppConfigs)
-            {
-                temp.Add(new HostAppMapping { Host = appConf.Name, AppName = appConf.Name });
-            }
-            if (File.Exists(jsonFile))
-            {
-                HostAppMapping[] fromFile = jsonFile.FromJsonFile<HostAppMapping[]>();
-                if(fromFile != null)
-                {
-                    foreach (HostAppMapping mapping in fromFile)
-                    {
-                        temp.Add(mapping);
-                    }
-                }
-            }
-            temp.ToJsonFile(jsonFile);
-            HostAppMappings = temp.ToDictionary(ham => ham.Host);
         }
 
         [Verbosity(LogEventType.Information)]
@@ -708,6 +687,29 @@ namespace Bam.Net.Server
         private void SetZippedMinCacheBytes(string path, byte[] content)
         {
             ZippedCache.AddOrUpdate(path, content, (s, b) => content);
+        }
+        
+        private void InitializeHostAppMap(BamConf bamConf)
+        {
+            string jsonFile = Path.Combine(bamConf.ContentRoot, "apps", HostAppMapFile);
+            HashSet<HostAppMapping> temp = new HashSet<HostAppMapping>();
+            foreach (AppConf appConf in bamConf.AppConfigs)
+            {
+                temp.Add(new HostAppMapping { Host = appConf.Name, AppName = appConf.Name });
+            }
+            if (File.Exists(jsonFile))
+            {
+                HostAppMapping[] fromFile = jsonFile.FromJsonFile<HostAppMapping[]>();
+                if (fromFile != null)
+                {
+                    foreach (HostAppMapping mapping in fromFile)
+                    {
+                        temp.Add(mapping);
+                    }
+                }
+            }
+            temp.ToJsonFile(jsonFile);
+            HostAppMappings = temp.ToDictionary(ham => ham.Host);
         }
     }
 }
