@@ -310,12 +310,7 @@ namespace Bam.Net.Server
                     {
                         handled = ContentHandlers[path.ToLowerInvariant()].HandleRequest(context, out content);
                     }
-                    else if (string.IsNullOrEmpty(ext) && !ShouldIgnore(path) || (AppRoot.FileExists("~/pages{0}.html"._Format(path), out string locatedPath)))
-                    {
-                        content = RenderLayout(response, path);
-                        handled = true;
-                    }
-                    else if (AppContentLocator.Locate(path, out locatedPath, out checkedPaths))
+                    else if (AppContentLocator.Locate(path, out string locatedPath, out checkedPaths))
                     {
                         handled = true;
                         string foundExt = Path.GetExtension(locatedPath);
@@ -338,7 +333,11 @@ namespace Bam.Net.Server
                         }
                         Etags.SetLastModified(response, request.Url.ToString(), new FileInfo(locatedPath).LastWriteTime);
                     }
-
+                    else if (string.IsNullOrEmpty(ext) && !ShouldIgnore(path) || (AppRoot.FileExists("~/pages{0}.html"._Format(path), out locatedPath)))
+                    {
+                        content = RenderLayout(response, path);
+                        handled = true;
+                    }
                 }
 
                 if (handled)
