@@ -39,7 +39,7 @@ namespace Bam.Net.Server
 			DefaultLayout = DefaultLayoutConst;
 			DefaultPage = DefaultPageConst;
 			ServiceSearchPattern = new string[] { "*Services.dll", "*Proxyables.dll" };
-            ProcessModes = new string[] { "Dev", "Test" };
+            ProcessMode = "Dev";
         }
 
         public AppConf(string name, int port = 8080, bool ssl = false)
@@ -128,33 +128,10 @@ namespace Bam.Net.Server
             }
         }
 
-        bool? _isTest;
-        public bool IsTest
-        {
-            get
-            {
-                if(_isTest == null)
-                {
-                    _isTest = ProcessModes.Contains("Test");
-                }
-                return _isTest.Value;
-            }
-        }
+        public bool IsProd => ProcessMode.Equals("Prod");
+        public bool IsTest => ProcessMode.Equals("Test");
 
-        bool? _isProd;
-        public bool IsProd
-        {
-            get
-            {
-                if(_isProd == null)
-                {
-                    _isProd = ProcessModes.Contains("Prod");
-                }
-                return _isProd.Value;
-            }
-        }
-
-        public string[] ProcessModes { get; set; } 
+        public string ProcessMode { get; set; } 
 
         List<HostPrefix> _bindings;
         object _bindingsLock = new object();

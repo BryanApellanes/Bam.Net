@@ -14,7 +14,7 @@ using Bam.Net.Web;
 namespace Bam.Net.Server
 {
     /// <summary>
-    /// A responder that checks the value of the X-Responder HttpHeader
+    /// A responder that checks the value of the X-Bam-Responder HttpHeader
     /// to determine if the current request is intended for this responder
     /// </summary>
     public abstract class HttpHeaderResponder: HttpMethodResponder

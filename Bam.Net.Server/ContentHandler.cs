@@ -8,10 +8,10 @@ using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.Server
 {
-    public class CustomContentHandler: Loggable
+    public class ContentHandler: Loggable
     {
         HashSet<string> _paths;
-        public CustomContentHandler(string name, Fs fileSystem, params string[] paths)
+        public ContentHandler(string name, Fs fileSystem, params string[] paths)
         {
             _paths = new HashSet<string>(paths);
             Name = name;
@@ -52,7 +52,7 @@ namespace Bam.Net.Server
                 content = null;
                 return false;
             }
-            CustomContentEventArgs args = new CustomContentEventArgs { CustomContentHandler = this, Uri = context.Request.Url.ToString() };
+            ContentEventArgs args = new ContentEventArgs { ContentHandler = this, Uri = context.Request.Url.ToString() };
             FireEvent(Handling, args);
             content = GetContent(context, Fs);
             FireEvent(Handled, args);

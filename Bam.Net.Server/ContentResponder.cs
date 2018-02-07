@@ -38,7 +38,7 @@ namespace Bam.Net.Server
             FileCachesByExtension = new Dictionary<string, FileCache>();
             HostAppMappings = new Dictionary<string, HostAppMapping>();
             InitializeFileExtensions();
-            InitializeCaches();            
+            InitializeCaches();
         }
 
         public ContentResponder(BamConf conf, ILogger logger)
@@ -48,7 +48,7 @@ namespace Bam.Net.Server
             FileCachesByExtension = new Dictionary<string, FileCache>();
             HostAppMappings = new Dictionary<string, HostAppMapping>();
             InitializeFileExtensions();
-            InitializeCaches();            
+            InitializeCaches();
         }
 
         public AppMetaInitializer AppMetaInitializer { get; set; }
@@ -61,12 +61,34 @@ namespace Bam.Net.Server
             FileExtensions = new List<string> { ".html", ".htm", ".js", ".json", ".css", ".yml", ".yaml", ".txt", ".md", ".layout", ".png", ".jpg", ".jpeg", ".gif", ".woff" };
             TextFileExtensions = new List<string> { ".html", ".htm", ".js", ".json", ".css", ".yml", ".yaml", ".layout", ".txt", ".md" };
         }
+
         protected void InitializeCaches()
-        {
-            foreach(string ext in FileExtensions)
+        { 
+            foreach (string ext in FileExtensions)
             {
                 FileCachesByExtension.AddMissing(ext, CreateCache(ext));
             }
+        }
+    
+        /// <summary>
+        /// Uncache the specified file forcing it to be reloaded the next time it is 
+        /// requested.
+        /// </summary>
+        /// <param name="file"></param>
+        public void UncacheFile(FileInfo file)
+        {
+            Task.Run(() =>
+            {
+                string extension = Path.GetExtension(file.FullName).ToLower();
+                if (FileCachesByExtension.ContainsKey(extension))
+                {
+                    FileCachesByExtension[extension].Remove(file);
+                }
+                foreach(AppContentResponder appContent in AppContentResponders.Values.ToArray())
+                {
+                    appContent.UncacheFile(file);
+                }
+            });
         }
 
         /// <summary>
@@ -263,7 +285,7 @@ namespace Bam.Net.Server
         private void InitializeAppResponders(AppConf[] configs)
         {
             string currentMode = ProcessMode.Current.Mode.ToString();
-            configs.Where(c=> c.ProcessModes.Contains(currentMode)).Each(ac =>
+            configs.Where(c=> c.ProcessMode.Equals(currentMode)).Each(ac =>
             {
                 OnAppContentResponderInitializing(ac);
                 Logger.RestartLoggingThread();
@@ -280,6 +302,8 @@ namespace Bam.Net.Server
                 responder.Initialize();
                 responder.FileUploading += (o, a) => FileUploading?.Invoke(o, a);
                 responder.FileUploaded += (o, a) => FileUploaded?.Invoke(o, a);
+                responder.Responded += (r, context) => OnResponded(context);
+                responder.NotResponded += (r, context) => OnNotResponded(context);
                 AppContentResponders[appName] = responder;
 
                 OnAppContentResponderInitialized(ac);

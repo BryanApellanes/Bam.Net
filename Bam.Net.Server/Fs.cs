@@ -281,12 +281,14 @@ namespace Bam.Net.Server
 				return new FileInfo[] { };
 			}
 		}
+
 		public FileInfo GetFile(string relativePath)
 		{
 			relativePath = EnsureRelative(relativePath);
 
 			return new FileInfo(GetAbsolutePath(relativePath));
 		}
+
 		public void WriteFile(string relativeFilePath, string contentToWrite, bool overwrite = true)
 		{
 			string path = GetAbsolutePath(EnsureRelative(relativeFilePath));
@@ -307,7 +309,6 @@ namespace Bam.Net.Server
 			string path = Path.Combine(pathSegments);
 			return GetAbsolutePath(path);
 		}
-
 
         [Exclude]
         public string GetAbsolutePath(string relativePath)

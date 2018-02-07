@@ -18,6 +18,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Bam.Net.Data.Repositories;
 using System.Linq;
+using Bam.Net.Configuration;
 
 namespace Bam.Net.Server
 {
@@ -40,31 +41,38 @@ namespace Bam.Net.Server
             AppTemplateRenderer = new AppDustRenderer(this);
             AppContentLocator = ContentLocator.Load(this);
             Fs commonRoot = new Fs(new DirectoryInfo(Path.Combine(ServerRoot.Root, CommonFolder)));
-            CustomContentHandlers = new Dictionary<string, CustomContentHandler>();
-            AllRequestHandler = new CustomContentHandler($"{conf.Name}.AllRequestHandler", AppRoot) { CheckPaths = false };
+            ContentHandlers = new Dictionary<string, ContentHandler>();
+            AllRequestHandler = new ContentHandler($"{conf.Name}.AllRequestHandler", AppRoot) { CheckPaths = false };
             CustomHandlerMethods = new List<MethodInfo>();
             CommonContentLocator = ContentLocator.Load(commonRoot);
             SetUploadHandler();
             SetBaseIgnorePrefixes();
-            CustomHandlerScanTask = ScanForCustomContentHandlers();
+            ContentHandlerScanTask = ScanForContentHandlers();
             SetAllRequestHandler();
         }
 
-        protected CustomContentHandler AllRequestHandler { get; set; }
-        protected Dictionary<string, CustomContentHandler> CustomContentHandlers { get; set; }
-        protected Task CustomHandlerScanTask { get; }
+        protected ContentHandler AllRequestHandler { get; set; }
+        protected Dictionary<string, ContentHandler> ContentHandlers { get; set; }
+        protected Task ContentHandlerScanTask { get; }
 
-        protected Task ScanForCustomContentHandlers()
+        protected Task ScanForContentHandlers()
         {
-            return Task.Run(() =>
+            Task scan = Task.Run(() =>
             {
                 try
                 {
+                    string[] assemblySearchPatterns = DefaultConfiguration.GetAppSetting("AssemblySearchPattern", "*ContentHandlers.dll").DelimitSplit(",", true);
                     DirectoryInfo entryDir = Assembly.GetEntryAssembly().GetFileInfo().Directory;
                     DirectoryInfo sysAssemblies = DataSettings.GetSysAssemblyDirectory();
                     List<FileInfo> files = new List<FileInfo>();
-                    files.AddRange(entryDir.GetFiles());
-                    files.AddRange(sysAssemblies.GetFiles());
+                    foreach(string assemblySearchPattern in assemblySearchPatterns)
+                    {
+                        files.AddRange(entryDir.GetFiles(assemblySearchPattern));
+                        if (sysAssemblies.Exists)
+                        {
+                            files.AddRange(sysAssemblies.GetFiles(assemblySearchPattern));
+                        }
+                    }
                     Parallel.ForEach(files, LoadCustomHandlers);
                 }
                 catch (Exception ex)
@@ -72,6 +80,7 @@ namespace Bam.Net.Server
                     Logger.AddEntry("Exception occurred scanning for custom content handlers: {0}", ex, ex.Message);
                 }
             });
+            return scan;
         }
 
         protected List<MethodInfo> CustomHandlerMethods { get; }
@@ -85,7 +94,7 @@ namespace Bam.Net.Server
                 {
                     return;
                 }
-                Assembly assembly = Assembly.LoadFrom(file.FullName);
+                Assembly assembly = Assembly.LoadFrom(file.FullName);                
                 CustomHandlerMethods.AddRange(
                     assembly.GetTypes()
                         .Where(type => type.HasCustomAttributeOfType<ContentHandlerAttribute>())
@@ -127,9 +136,20 @@ namespace Bam.Net.Server
             private set;
         }
         
-        protected void SetAllRequestHandler()
+        protected async void SetAllRequestHandler()
         {
-            CustomHandlerScanTask.Wait();
+            try
+            {
+                await ContentHandlerScanTask;
+            }
+            catch (AggregateException ae)
+            {
+                foreach (var e in ae.InnerExceptions)
+                {
+                    Console.WriteLine(e.Message);                    
+                }
+            }
+
             AllRequestHandler.GetContent = (ctx, fs) =>
             {
                 byte[] result = null;
@@ -233,15 +253,15 @@ namespace Bam.Net.Server
 
         public void SetCustomContentHandler(string name, string[] paths, Func<IHttpContext, Fs, byte[]> handler)
         {
-            CustomContentHandler customHandler = new CustomContentHandler(name, AppRoot, paths) { GetContent = handler };
+            ContentHandler customHandler = new ContentHandler(name, AppRoot, paths) { GetContent = handler };
             SetCustomContentHandler(customHandler);
         }
 
-        public void SetCustomContentHandler(CustomContentHandler customContentHandler)
+        public void SetCustomContentHandler(ContentHandler customContentHandler)
         {
             foreach(string path in customContentHandler.Paths)
             {
-                CustomContentHandlers[path.ToLowerInvariant()] = customContentHandler;
+                ContentHandlers[path.ToLowerInvariant()] = customContentHandler;
             }
         }
 
@@ -286,9 +306,9 @@ namespace Bam.Net.Server
 
                 if (!handled)
                 {
-                    if (CustomContentHandlers.ContainsKey(path.ToLowerInvariant()))
+                    if (ContentHandlers.ContainsKey(path.ToLowerInvariant()))
                     {
-                        handled = CustomContentHandlers[path.ToLowerInvariant()].HandleRequest(context, out content);
+                        handled = ContentHandlers[path.ToLowerInvariant()].HandleRequest(context, out content);
                     }
                     else if (string.IsNullOrEmpty(ext) && !ShouldIgnore(path) || (AppRoot.FileExists("~/pages{0}.html"._Format(path), out string locatedPath)))
                     {
@@ -409,28 +429,27 @@ namespace Bam.Net.Server
                 path = "/{0}"._Format(AppConf.DefaultPage.Or(AppConf.DefaultLayoutConst));
             }
 
-            string absolutePath;
             string lowered = path.ToLowerInvariant();
             string[] layoutSegments = string.Format("~/pages/{0}{1}", path, LayoutFileExtension).DelimitSplit("/", "\\");
             string[] htmlSegments = string.Format("~/pages/{0}.html", path).DelimitSplit("/", "\\");
 
-            LayoutModel result = null;
+            LayoutModel layoutModel = null;
             if (LayoutModelsByPath.ContainsKey(lowered))
             {
-                result = LayoutModelsByPath[lowered];
+                layoutModel = LayoutModelsByPath[lowered];
             }
-            else if (AppRoot.FileExists(out absolutePath, layoutSegments))
+            else if (AppRoot.FileExists(out string absolutePath, layoutSegments))
             {
                 LayoutConf layoutConf = new LayoutConf(AppConf);
                 LayoutConf fromLayoutFile = FileCachesByExtension[LayoutFileExtension].GetText(new FileInfo(absolutePath)).FromJson<LayoutConf>();
                 layoutConf.CopyProperties(fromLayoutFile);
-                result = layoutConf.CreateLayoutModel(htmlSegments);
-                LayoutModelsByPath[lowered] = result;
+                layoutModel = layoutConf.CreateLayoutModel(htmlSegments);
+                LayoutModelsByPath[lowered] = layoutModel;
             }
             else
             {
                 LayoutConf defaultLayoutConf = new LayoutConf(AppConf);
-                result = defaultLayoutConf.CreateLayoutModel(htmlSegments);
+                layoutModel = defaultLayoutConf.CreateLayoutModel(htmlSegments);
                 FileInfo file = new FileInfo(AppRoot.GetAbsolutePath(layoutSegments));
                 if (!file.Directory.Exists)
                 {
@@ -438,7 +457,7 @@ namespace Bam.Net.Server
                 }
                 // write the file to disk                 
                 defaultLayoutConf.ToJsonFile(file);
-                LayoutModelsByPath[lowered] = result;
+                LayoutModelsByPath[lowered] = layoutModel;
             }
 
             if (string.IsNullOrEmpty(Path.GetExtension(path)))
@@ -446,10 +465,10 @@ namespace Bam.Net.Server
                 string page = path.TruncateFront(1);
                 if (!string.IsNullOrEmpty(page))
                 {
-                    result.StartPage = page;
+                    layoutModel.StartPage = page;
                 }
             }
-            return result;
+            return layoutModel;
         }
 
         public Includes GetAppIncludes()

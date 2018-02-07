@@ -35,11 +35,13 @@ namespace Bam.Net.Server.Meta
             clone.CopyProperties(this);
             return clone;
         }
+
         public IHttpContext HttpContext
         {
             get;
             set;
         }
+
         ILogger _logger;
         object _loggerLock = new object();
         public ILogger Logger

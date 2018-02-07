@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Server
 {
-    public class CustomContentEventArgs: EventArgs
+    public class ContentEventArgs: EventArgs
     {
         public string Uri { get; set; }
         public string Name
         {
             get
             {
-                return CustomContentHandler.Name;
+                return ContentHandler.Name;
             }
         }
-        public CustomContentHandler CustomContentHandler { get; set; }
+        public ContentHandler ContentHandler { get; set; }
     }
 }

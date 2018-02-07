@@ -79,18 +79,17 @@ namespace Bam.Net.Server.Renderers
             ITemplateRenderer dustRenderer = appContentResponder.AppTemplateRenderer;
             string templateName = GetTemplateName(toRender);
             string templates = dustRenderer.CompiledTemplates;            
-            string result = DustScript.Render(templates, templateName, toRender);
+            string renderedContent = DustScript.Render(templates, templateName, toRender);
 
-            string layout;
             byte[] data;
-            if (HttpArgs.Has("layout", out layout))
+            if (HttpArgs.Has("layout", out string layout))
             {
                 string absolutePath = ExecutionRequest.Request.Url.AbsolutePath;
                 string extension = Path.GetExtension(absolutePath);
                 string path = absolutePath.Truncate(extension.Length);
                 LayoutModel layoutModel = appContentResponder.GetLayoutModelForPath(path);
                 layoutModel.LayoutName = layout;
-                layoutModel.PageContent = result;
+                layoutModel.PageContent = renderedContent;
                 MemoryStream ms = new MemoryStream();
                 appContentResponder.CommonTemplateRenderer.RenderLayout(layoutModel, ms);
                 ms.Seek(0, SeekOrigin.Begin);
@@ -98,7 +97,7 @@ namespace Bam.Net.Server.Renderers
             }
             else
             {
-                data = Encoding.UTF8.GetBytes(result);
+                data = Encoding.UTF8.GetBytes(renderedContent);
             }
             output.Write(data, 0, data.Length);
         }

@@ -112,8 +112,8 @@
     <Compile Include="AppConf.cs" />
     <Compile Include="AppConfApplicationNameProvider.cs" />
     <Compile Include="ContentHandlerAttribute.cs" />
-    <Compile Include="CustomContentEventArgs.cs" />
-    <Compile Include="CustomContentHandler.cs" />
+    <Compile Include="ContentEventArgs.cs" />
+    <Compile Include="ContentHandler.cs" />
     <Compile Include="ErrorHandling\ApplicationErrorHandler.cs" />
     <Compile Include="ErrorHandling\ErrorHandler.cs" />
     <Compile Include="ErrorHandling\ErrorContent.cs" />
