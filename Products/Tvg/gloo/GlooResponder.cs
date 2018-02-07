@@ -85,25 +85,5 @@ namespace Bam.Net.Application
         {
             Initialized?.Invoke(this);
         }
-
-        protected override bool Post(IHttpContext context)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override bool Get(IHttpContext context)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override bool Put(IHttpContext context)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override bool Delete(IHttpContext context)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

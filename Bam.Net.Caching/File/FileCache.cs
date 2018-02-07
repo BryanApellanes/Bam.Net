@@ -96,6 +96,11 @@ namespace Bam.Net.Caching.File
             return false;
         }
 
+        public void Remove(FileInfo file)
+        {
+            _cachedFiles.TryRemove(file.FullName, out CachedFile value);
+        }
+
         public virtual void Reload(FileInfo file)
         {
             _cachedFiles.TryRemove(file.FullName, out CachedFile value);

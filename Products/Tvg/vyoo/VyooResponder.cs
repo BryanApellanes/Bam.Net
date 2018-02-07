@@ -15,7 +15,11 @@ namespace Bam.Net.Application
         public VyooResponder(BamConf conf, ILogger logger, bool verbose = false)
             : base(conf, logger)
         {
-            ContentResponder = new ContentResponder(conf, logger);            
+            ContentResponder = new ContentResponder(conf, logger);
+            if (verbose)
+            {
+                WireResponseLogging(ContentResponder, logger);
+            }
         }
 
         public ContentResponder ContentResponder { get; private set; }
@@ -48,26 +52,6 @@ namespace Bam.Net.Application
         protected void OnInitialized()
         {
             Initialized?.Invoke(this);
-        }
-
-        protected override bool Delete(IHttpContext context)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override bool Get(IHttpContext context)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override bool Post(IHttpContext context)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override bool Put(IHttpContext context)
-        {
-            throw new NotImplementedException();
         }
     }
 }
