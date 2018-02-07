@@ -332,23 +332,27 @@ namespace Bam.Net.CoreServices
             return existing;
         }
 
+        static object _registerLoaderLock = new object();
         [RoleRequired("/", "Admin")]
         public virtual ServiceRegistryLoaderDescriptor RegisterServiceRegistryLoaderDescriptor(ServiceRegistryLoaderDescriptor loader, bool overwrite)
         {
             Args.ThrowIfNull(loader, "loader");
-            ServiceRegistryLoaderDescriptor existing = ServiceRegistryRepository.ServiceRegistryLoaderDescriptorsWhere(c => c.Name == loader.Name).FirstOrDefault();
-            if(existing != null && overwrite && IsLocked(loader.Name))
+            lock (_registerLoaderLock)
             {
-                Args.Throw<InvalidOperationException>("Registry by that name ({0}) is locked", loader.Name);
-            }
-            Args.ThrowIf(existing != null && !overwrite, "RegistryLoader by that name ({0}) already exists", loader.Name);
+                ServiceRegistryLoaderDescriptor existing = ServiceRegistryRepository.ServiceRegistryLoaderDescriptorsWhere(c => c.Name == loader.Name).FirstOrDefault();
+                if (existing != null && overwrite && IsLocked(loader.Name))
+                {
+                    Args.Throw<InvalidOperationException>("Registry by that name ({0}) is locked", loader.Name);
+                }
+                Args.ThrowIf(existing != null && !overwrite, "RegistryLoader by that name ({0}) already exists", loader.Name);
 
-            if ((existing != null && overwrite) || existing == null)
-            {
-                existing = ServiceRegistryRepository.Save(loader);
-            }
+                if ((existing != null && overwrite) || existing == null)
+                {
+                    existing = ServiceRegistryRepository.Save(loader);
+                }
 
-            return existing;
+                return existing;
+            }            
         }
 
         /// <summary>
