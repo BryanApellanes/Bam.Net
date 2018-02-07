@@ -18,7 +18,7 @@ namespace Bam.Net
     /// Represents the mode that the current process is
     /// in.  Intended primarily to determine where to
     /// save and retrieve data from but can be used
-    /// to pivot other configuration values as well
+    /// to pivot other configuration values as well.
     /// </summary>
     public class ProcessMode
     {

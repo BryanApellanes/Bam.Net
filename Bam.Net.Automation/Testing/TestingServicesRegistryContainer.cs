@@ -18,15 +18,22 @@ namespace Bam.Net.Automation.Testing
 {
     [Serializable]
     [ServiceRegistryContainer]    
-    public class TestingServiceRegistryContainer
+    public class TestingServicesRegistryContainer
     {
         public const string Name = "TestingServicesRegistry";
         static object _registryLock = new object();
 
-        [ServiceRegistryLoader(Name, ProcessModes.Dev, ProcessModes.Test)]
+        [ServiceRegistryLoader(Name, ProcessModes.Dev)]
         public static ServiceRegistry CreateTestingServicesRegistryForDev()
         {
             CoreClient coreClient = new CoreClient(DefaultConfiguration.GetAppSetting("CoreHostName", "localhost"), DefaultConfiguration.GetAppSetting("CorePort", "9101").ToInt());
+            return GetServiceRegistry(coreClient);
+        }
+
+        [ServiceRegistryLoader(Name, ProcessModes.Test)]
+        public static ServiceRegistry CreateTestingServicesRegistryForTest()
+        {
+            CoreClient coreClient = new CoreClient("int-heart.bamapps.net", 80);
             return GetServiceRegistry(coreClient);
         }
 

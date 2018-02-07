@@ -249,7 +249,7 @@
     <Compile Include="Testing\SaveTestExecutionResponse.cs" />
     <Compile Include="Testing\SearchTestExecutionResponse.cs" />
     <Compile Include="Testing\SubscriptionStatus.cs" />
-    <Compile Include="Testing\TestingServiceRegistryContainer.cs" />
+    <Compile Include="Testing\TestingServicesRegistryContainer.cs" />
     <Compile Include="Testing\TestReportResponse.cs" />
     <Compile Include="Testing\TestReportService.cs" />
     <Compile Include="SourceControl\Extensions.cs" />
