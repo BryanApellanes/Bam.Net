@@ -19,6 +19,7 @@ namespace Bam.Net.Application
             if (verbose)
             {
                 WireResponseLogging(ContentResponder, logger);
+                ContentResponder.Subscribe(logger);
             }
         }
 

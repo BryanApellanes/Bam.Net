@@ -12,8 +12,8 @@ namespace Bam.Net.Application
 {
     public class VyooServer : SimpleServer<VyooResponder>
     {
-        public VyooServer(BamConf conf, ILogger logger)
-            : base(new VyooResponder(conf, logger), logger)
+        public VyooServer(BamConf conf, ILogger logger, bool verbose = false)
+            : base(new VyooResponder(conf, logger, verbose), logger)
         {
             Responder.Initialize();
             CreatedOrChangedHandler = (o, fsea) =>

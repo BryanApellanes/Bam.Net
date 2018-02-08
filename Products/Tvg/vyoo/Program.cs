@@ -24,12 +24,15 @@ namespace Bam.Net.Application
     {
         static void Main(string[] args)
         {
+            TryWritePid(true);
+            VyooService.SetInfo(VyooService.ServiceInfo);
             if (!VyooService.ProcessCommandLineArgs(args))
             {
                 IsolateMethodCalls = false;
                 Resolver.Register();
-                AddSwitches(typeof(ConsoleActions));
-                VyooService.SetInfo(VyooService.ServiceInfo);
+                AddSwitches(typeof(ConsoleActions));                
+                AddConfigurationSwitches();
+                ArgumentAdder.AddArguments(args);
 
                 Initialize(args, (a) =>
                 {

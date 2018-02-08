@@ -160,6 +160,12 @@ namespace Bam.Net.Server
             get;
             set;
         }
+
+        /// <summary>
+        /// Subscribe to the initialization related events
+        /// of this ContentResponder and its ApplicationResponders.
+        /// </summary>
+        /// <param name="logger"></param>
         public override void Subscribe(ILogger logger)
         {            
             if (!IsSubscribed(logger))
