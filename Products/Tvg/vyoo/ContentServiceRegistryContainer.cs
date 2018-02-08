@@ -14,13 +14,13 @@ using Bam.Net.Configuration;
 using Bam.Net.Data;
 using Bam.Net.UserAccounts;
 
-namespace Bam.Net.Automation.Testing
+namespace Bam.Net.Application
 {
     [Serializable]
-    [ServiceRegistryContainer]    
-    public class TestingServicesRegistryContainer
+    [ServiceRegistryContainer]
+    public class ContentServicesRegistryContainer
     {
-        public const string Name = "TestingServicesRegistry";
+        public const string Name = "ContentServicesRegistry";
         static object _registryLock = new object();
 
         [ServiceRegistryLoader(Name, ProcessModes.Dev)]
@@ -53,11 +53,8 @@ namespace Bam.Net.Automation.Testing
                 .For<IUserManager>().Use(coreClient.UserRegistryService)
                 .For<DataSettings>().Use(DataSettings.Current)
                 .For<ILogger>().Use(logger)
-                .For<IDatabaseProvider>().Use<DataSettingsDatabaseProvider>()
-                .For<AppConf>().Use(new AppConf(Name))
-                .For<SystemLoggerService>().Use<SystemLoggerService>()
-                .For<TestReportService>().Use<TestReportService>()
-                .For<NotificationService>().Use<NotificationService>();
+                .For<IDatabaseProvider>().Use<DataSettingsDatabaseProvider>();
+                
         }
     }
 }

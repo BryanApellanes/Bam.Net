@@ -918,8 +918,8 @@ File Version: {1}
 
             if (_methodToInvoke != null)
             {
-                object inst = invokeOn == null ? AppDomain.CurrentDomain.GetData("Instance") : invokeOn;
-                object[] parms = parameters == null ? (object[])AppDomain.CurrentDomain.GetData("Parameters") : parameters;
+                object inst = invokeOn ?? AppDomain.CurrentDomain.GetData("Instance");
+                object[] parms = parameters ?? (object[])AppDomain.CurrentDomain.GetData("Parameters");
                 _methodToInvoke.Invoke(inst, parms);
             }
         }

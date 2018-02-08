@@ -29,24 +29,14 @@ namespace Bam.Net.Server
     {
         public const string IncludeFileName = "include.js";
         public const string LayoutFileExtension = ".layout";
-        public const string HostAppMapFile = "hostAppMap.json";
+        public const string HostAppMapFile = "hostAppMaps.json";
 
-        public ContentResponder(BamConf conf)
-            : base(conf)
-        {
-            CommonTemplateRenderer = new CommonDustRenderer(this);
-            FileCachesByExtension = new Dictionary<string, FileCache>();
-            HostAppMappings = new Dictionary<string, HostAppMapping>();
-            InitializeFileExtensions();
-            InitializeCaches();
-        }
-
-        public ContentResponder(BamConf conf, ILogger logger)
+        public ContentResponder(BamConf conf, ILogger logger, ITemplateRenderer commonTemplateRenderer = null)
             : base(conf, logger)
         {
-            CommonTemplateRenderer = new CommonDustRenderer(this);
+            CommonTemplateRenderer = commonTemplateRenderer ?? new CommonDustRenderer(this);
             FileCachesByExtension = new Dictionary<string, FileCache>();
-            HostAppMappings = new Dictionary<string, HostAppMapping>();
+            HostAppMappings = new Dictionary<string, HostAppMap>();
             InitializeFileExtensions();
             InitializeCaches();
         }
@@ -54,7 +44,7 @@ namespace Bam.Net.Server
         public AppMetaInitializer AppMetaInitializer { get; set; }
         public List<string> FileExtensions { get; set; }
         public List<string> TextFileExtensions { get; set; }
-        public Dictionary<string, HostAppMapping> HostAppMappings { get; set; }
+        public Dictionary<string, HostAppMap> HostAppMappings { get; set; }
         protected Dictionary<string, FileCache> FileCachesByExtension { get; set; }
         protected void InitializeFileExtensions()
         {
@@ -108,10 +98,21 @@ namespace Bam.Net.Server
             return !WillIgnore(context);
         }
 
+        AppConf[] _appConfs;
         public AppConf[] AppConfigs
         {
-            get;
-            internal set;
+            get
+            {
+                if(_appConfs == null)
+                {
+                    _appConfs = BamConf?.AppConfigs;
+                }
+                return _appConfs ?? new AppConf[] { };
+            }
+            set
+            {
+                _appConfs = value;
+            }
         }
 
         Dictionary<string, AppContentResponder> _appContentResponders;
@@ -155,7 +156,7 @@ namespace Bam.Net.Server
             CommonTemplateRendererInitialized?.Invoke(this);
         }
 
-        public ITemplateRenderer CommonTemplateRenderer
+        public ITemplateRenderer CommonTemplateRenderer // TODO: inject this
         {
             get;
             set;
@@ -722,17 +723,17 @@ namespace Bam.Net.Server
         private void InitializeHostAppMap(BamConf bamConf)
         {
             string jsonFile = Path.Combine(bamConf.ContentRoot, "apps", HostAppMapFile);
-            HashSet<HostAppMapping> temp = new HashSet<HostAppMapping>();
+            HashSet<HostAppMap> temp = new HashSet<HostAppMap>();
             foreach (AppConf appConf in bamConf.AppConfigs)
             {
-                temp.Add(new HostAppMapping { Host = appConf.Name, AppName = appConf.Name });
+                temp.Add(new HostAppMap { Host = appConf.Name, AppName = appConf.Name });
             }
             if (File.Exists(jsonFile))
             {
-                HostAppMapping[] fromFile = jsonFile.FromJsonFile<HostAppMapping[]>();
+                HostAppMap[] fromFile = jsonFile.FromJsonFile<HostAppMap[]>();
                 if (fromFile != null)
                 {
-                    foreach (HostAppMapping mapping in fromFile)
+                    foreach (HostAppMap mapping in fromFile)
                     {
                         temp.Add(mapping);
                     }

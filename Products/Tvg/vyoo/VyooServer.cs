@@ -22,6 +22,18 @@ namespace Bam.Net.Application
             };
         }
 
+        public AppConf[] AppConfigs
+        {
+            get
+            {
+                return Responder.ContentResponder.AppConfigs;
+            }
+            set
+            {
+                Responder.ContentResponder.AppConfigs = value;
+            }
+        }
+
         protected void ReloadFile(FileSystemEventArgs args)
         {
             FileInfo file = new FileInfo(args.FullPath);

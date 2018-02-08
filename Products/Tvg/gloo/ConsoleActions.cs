@@ -104,7 +104,7 @@ namespace Bam.Net.Application
         {
             DataSettings dataSettings = DataSettings.Default;
             IApplicationNameProvider appNameProvider = DefaultConfigurationApplicationNameProvider.Instance;
-            ServiceRegistryService serviceRegistryService = GetCoreServiceRegistrationService(GetLogger(), dataSettings, appNameProvider);
+            ServiceRegistryService serviceRegistryService = ServiceRegistryService.GetLocalServiceRegistryService(dataSettings, appNameProvider, GetArgument("AssemblySearchPattern", "Please specify the AssemblySearchPattern to use"), GetLogger());
 
             List<dynamic> types = new List<dynamic>();
             string assemblyPath = "\r\n";
@@ -208,7 +208,7 @@ namespace Bam.Net.Application
             string contentRoot = GetArgument("ContentRoot", $"Enter the path to the content root (default: {defaultContentRoot} ");
             DataSettings dataSettings = DataSettings.Default;
             IApplicationNameProvider appNameProvider = DefaultConfigurationApplicationNameProvider.Instance;
-            ServiceRegistryService serviceRegistryService = GetCoreServiceRegistrationService(logger, dataSettings, appNameProvider);
+            ServiceRegistryService serviceRegistryService = ServiceRegistryService.GetLocalServiceRegistryService(dataSettings, appNameProvider, GetArgument("AssemblySearchPattern", "Please specify the AssemblySearchPattern to use"), logger);
 
             string[] requestedRegistries = registries.DelimitSplit(",");
             HashSet<Type> serviceTypes = new HashSet<Type>();
@@ -233,29 +233,6 @@ namespace Bam.Net.Application
             }
             ServeServiceTypes(contentRoot, ServiceConfig.GetConfiguredHostPrefixes(), allTypes, services);
             Pause($"Gloo server is serving services\r\n\t{services.ToArray().ToDelimited(s => s.FullName, "\r\n\t")}");
-        }
-
-        private static ServiceRegistryService GetCoreServiceRegistrationService(ILogger logger, DataSettings dataSettings, IApplicationNameProvider appNameProvider)
-        {
-            FileService fileService = new FileService(new DaoRepository(dataSettings.GetSysDatabaseFor(typeof(FileService), $"{nameof(ServiceRegistryService)}_{nameof(FileService)}")));
-            AssemblyServiceRepository assRepo = new AssemblyServiceRepository();
-            assRepo.Database = dataSettings.GetSysDatabaseFor(assRepo);
-            assRepo.EnsureDaoAssemblyAndSchema();
-            AssemblyService assemblyService = new AssemblyService(DataSettings.Current, fileService, assRepo, appNameProvider);
-            ServiceRegistryRepository serviceRegistryRepo = new ServiceRegistryRepository();
-            serviceRegistryRepo.Database = dataSettings.GetSysDatabaseFor(serviceRegistryRepo);
-            serviceRegistryRepo.EnsureDaoAssemblyAndSchema();
-            ServiceRegistryService serviceRegistryService = new ServiceRegistryService(
-                fileService,
-                assemblyService,
-                serviceRegistryRepo,
-                DataSettings.Default.GetGenericDaoRepository(logger),
-                new AppConf { Name = appNameProvider.GetApplicationName() }
-            )
-            {
-                AssemblySearchPattern = GetArgument("AssemblySearchPattern", "Please specify the AssemblySearchPattern to use")
-            };
-            return serviceRegistryService;
         }
 
         public static void ServeServiceTypes(string contentRoot, HostPrefix[] prefixes, ServiceRegistry registry = null, params Type[] serviceTypes)

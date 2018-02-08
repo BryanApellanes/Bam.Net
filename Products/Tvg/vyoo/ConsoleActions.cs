@@ -26,6 +26,8 @@ namespace Bam.Net.Application
     {
         static string contentRootConfigKey = "ContentRoot";
         static string defaultRoot = "C:\\bam\\content";
+        static string hostAppMapsFileName = "hostAppMaps.json";
+
         static VyooServer vyooServer;
         
         [ConsoleAction("startVyooServer", "Start the vyoo server")]
@@ -57,11 +59,23 @@ namespace Bam.Net.Application
             DataSettings.Default.SetDefaultDatabaseFor<SecureSession>(out Database sessionDb);
             sessionDb.TryEnsureSchema<SecureSession>();
             BamConf conf = BamConf.Load(DefaultConfiguration.GetAppSetting(contentRootConfigKey).Or(defaultRoot));
+            List<HostPrefix> hostPrefixes = new List<HostPrefix>(HostPrefix.FromDefaultConfiguration("localhost", 7400));
+            string hostAppMapsFilePath = Path.Combine(conf.ContentRoot, "apps", hostAppMapsFileName);
+            if (File.Exists(hostAppMapsFilePath))
+            {                
+                hostPrefixes.AddRange(HostPrefix.FromHostAppMaps(HostAppMap.Load(hostAppMapsFilePath)));
+            }
             vyooServer = new VyooServer(conf, logger, GetArgument("verbose", "Log responses to the console?").IsAffirmative())
             {
-                HostPrefixes = new HashSet<HostPrefix>(HostPrefix.FromDefaultConfiguration("localhost", 7400)),
+                HostPrefixes = new HashSet<HostPrefix>(hostPrefixes),
                 MonitorDirectories = DefaultConfiguration.GetAppSetting("MonitorDirectories").DelimitSplit(",", ";")
             };
+            if (Arguments.Contains("apps"))
+            {
+                string[] appNamesToServe = Arguments["apps"].DelimitSplit(",", ";");
+                AppConf[] appConfigs = conf.AppConfigs.Where(ac => ac.Name.In(appNamesToServe)).ToArray();
+                vyooServer.AppConfigs = appConfigs;
+            }
             vyooServer.Start();
         }
 

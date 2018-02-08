@@ -399,7 +399,7 @@ namespace Bam.Net.Server
         /// Represents the configs for each application found in ~s:/apps 
         /// (where each subdirectory is assumed to be a Bam application)
         /// </summary>
-        protected internal AppConf[] AppConfigs
+        public AppConf[] AppConfigs
         {
             get
             {
@@ -483,8 +483,10 @@ namespace Bam.Net.Server
 
                         if (!configFound)
                         {
-                            AppConf conf = new AppConf(this, appDir.Name);
-                            conf.GenerateDao = this.GenerateDao;
+                            AppConf conf = new AppConf(this, appDir.Name)
+                            {
+                                GenerateDao = this.GenerateDao
+                            };
                             conf.ToJsonFile(jsonConfig);
                             configs.Add(conf);
                         }

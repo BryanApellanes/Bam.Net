@@ -58,6 +58,11 @@ namespace Bam.Net.Server
             return result;
         }
 
+        public static HostPrefix[] FromHostAppMaps(IEnumerable<HostAppMap> hostAppMaps)
+        {
+            return hostAppMaps.Select(hm => new HostPrefix { HostName = hm.Host, Port = 80 }).ToArray();
+        }
+
         public static HostPrefix[] FromDefaultConfiguration(string defaultHostName = "localhost", int defaultPort = 80)
         {
             int port = int.Parse(DefaultConfiguration.GetAppSetting("Port", defaultPort.ToString()));

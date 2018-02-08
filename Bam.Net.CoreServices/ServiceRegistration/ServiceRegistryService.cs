@@ -17,6 +17,8 @@ using System.IO;
 using Bam.Net.Yaml;
 using Bam.Net.CoreServices.Files;
 using Bam.Net.Configuration;
+using Bam.Net.Logging;
+using Bam.Net.CoreServices.AssemblyManagement.Data.Dao.Repository;
 
 namespace Bam.Net.CoreServices
 {
@@ -43,9 +45,33 @@ namespace Bam.Net.CoreServices
             FileService = fileservice;
             ServiceRegistryRepository = repo;
             AssemblyService = assemblyService;
-            DataSettings = dataSettings ?? DataSettings.Default;
+            DataSettings = dataSettings ?? DataSettings.Current;
             AssemblySearchPattern = DefaultConfiguration.GetAppSetting("AssemblySearchPattern", "*.dll");
             _scanResults = new Dictionary<Type, List<ServiceRegistryContainerRegistrationResult>>();            
+        }
+
+        public static ServiceRegistryService GetLocalServiceRegistryService(DataSettings dataSettings, IApplicationNameProvider appNameProvider, string assemblySearchPattern, ILogger logger = null)
+        {
+            logger = logger ?? Log.Default;
+            FileService fileService = new FileService(new DaoRepository(dataSettings.GetSysDatabaseFor(typeof(FileService), $"{nameof(ServiceRegistryService)}_{nameof(FileService)}")));
+            AssemblyServiceRepository assRepo = new AssemblyServiceRepository();
+            assRepo.Database = dataSettings.GetSysDatabaseFor(assRepo);
+            assRepo.EnsureDaoAssemblyAndSchema();
+            AssemblyService assemblyService = new AssemblyService(DataSettings.Current, fileService, assRepo, appNameProvider);
+            ServiceRegistryRepository serviceRegistryRepo = new ServiceRegistryRepository();
+            serviceRegistryRepo.Database = dataSettings.GetSysDatabaseFor(serviceRegistryRepo);
+            serviceRegistryRepo.EnsureDaoAssemblyAndSchema();
+            ServiceRegistryService serviceRegistryService = new ServiceRegistryService(
+                fileService,
+                assemblyService,
+                serviceRegistryRepo,
+                dataSettings.GetGenericDaoRepository(logger),
+                new AppConf { Name = appNameProvider.GetApplicationName() }
+            )
+            {
+                AssemblySearchPattern = assemblySearchPattern
+            };
+            return serviceRegistryService;
         }
 
         protected Task ScanForServiceRegistryContainers()
@@ -103,6 +129,9 @@ namespace Bam.Net.CoreServices
             }
         }
 
+        /// <summary>
+        /// The search pattern to use when scanning for service assemblies.
+        /// </summary>
         public string AssemblySearchPattern { get; set; }
         public IFileService FileService { get; set; }
         public DataSettings DataSettings { get; set; }

@@ -12,6 +12,7 @@ namespace Bam.Net.Application
 
         private static void AddUtilityArguments()
         {
+            AddValidArgument("apps", false, addAcronym: false, description: "Specify the name(s) of applications to serve.");
             AddValidArgument("verbose", false, addAcronym: true, description: "If affirmative log responses to the console");
         }
     }

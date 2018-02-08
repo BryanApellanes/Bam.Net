@@ -120,7 +120,7 @@
     <Compile Include="ErrorHandling\FileErrorContent.cs" />
     <Compile Include="ErrorHandling\NotFoundHtmlResponse.cs" />
     <Compile Include="ErrorHandling\NotFoundJsonResponse.cs" />
-    <Compile Include="HostAppMapping.cs" />
+    <Compile Include="HostAppMap.cs" />
     <Compile Include="BamApplicationNameProvider.cs" />
     <Compile Include="AppContentResponder.cs" />
     <Compile Include="Bam.cs" />

@@ -10,14 +10,14 @@ namespace Bam.Net.Server
     /// Represents a mapping from any possible
     /// Uri.Host value to an application.
     /// </summary>
-    public class HostAppMapping
+    public class HostAppMap
     {
         /// <summary>
         /// Gets or sets the host.  This equates to the Host
         /// property of a Uri.
         /// </summary>
         public string Host { get; set; }
-
+        
         /// <summary>
         /// Gets or sets the AppName that the Host should be mapped to.
         /// </summary>
@@ -30,11 +30,22 @@ namespace Bam.Net.Server
 
         public override bool Equals(object obj)
         {
-            if(obj is HostAppMapping hostMapping)
+            if(obj is HostAppMap hostMapping)
             {
-                return hostMapping.Host.Equals(Host) && hostMapping.AppName.Equals(AppName);
+                return hostMapping.Host.Equals(Host) &&
+                    hostMapping.AppName.Equals(AppName);                    
             }
             return false;
+        }
+
+        public override string ToString()
+        {
+            return $"Host={Host}, AppName={AppName}";
+        }
+
+        public static HostAppMap[] Load(string filePath)
+        {
+            return new HashSet<HostAppMap>(filePath.FromJsonFile<HostAppMap[]>()).ToArray();
         }
     }
 }

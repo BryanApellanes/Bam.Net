@@ -26,8 +26,8 @@ namespace Bam.Net.Server
     {
         public const string CommonFolder = "common";
 
-        public AppContentResponder(ContentResponder commonResponder, AppConf conf, DataSettings dataSettings = null)
-            : base(commonResponder.BamConf)
+        public AppContentResponder(ContentResponder commonResponder, AppConf conf, DataSettings dataSettings = null, ILogger logger = null)
+            : base(commonResponder.BamConf, logger)
         {
             if (conf.BamConf == null)
             {
