@@ -33,8 +33,7 @@ namespace Bam.Net.Application
         [ConsoleAction("startVyooServer", "Start the vyoo server")]
         public void StartVyooServer()
         {
-            ConsoleLogger logger = GetLogger();
-            StartVyooServer(logger);
+            StartVyooServer(GetLogger());
             Pause("Vyoo is running");
         }
 
@@ -49,6 +48,16 @@ namespace Bam.Net.Application
             else
             {
                 OutLine("Vyoo server not running");
+            }
+        }
+
+        [ConsoleAction("restartVyooServer", "Restart the vyoo server")]
+        public void RestartVyooServer()
+        {
+            if(vyooServer != null)
+            {
+                vyooServer.Stop();
+                StartVyooServer();
             }
         }
 

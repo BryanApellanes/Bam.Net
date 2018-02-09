@@ -116,13 +116,21 @@ namespace Bam.Net.Server
         
         public void Stop()
         {
-            _listener.Stop();
-
-            foreach (HostPrefix hp in HostPrefixes)
+            try
             {
-                if (_listening.ContainsKey(hp))
+                _listener.Stop();
+                _listener.Close();
+            }
+            catch (Exception ex)
+            {
+                _logger.AddEntry("Error stopping HttpServer: {0}", ex, ex.Message);
+            }
+
+            foreach (HostPrefix hp in _listening.Keys)
+            {
+                try
                 {
-                    if(_listening[hp] == this)
+                    if (_listening[hp] == this)
                     {
                         if (_listening.TryRemove(hp, out HttpServer server))
                         {
@@ -130,6 +138,7 @@ namespace Bam.Net.Server
                         }
                     }
                 }
+                catch { }
             }
             
             if (_handlerThread.ThreadState == ThreadState.Running)
