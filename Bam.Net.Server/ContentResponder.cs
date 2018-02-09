@@ -273,11 +273,9 @@ namespace Bam.Net.Server
             {
                 if (!IsAppsInitialized)
                 {
-                    InitializeHostAppMap(BamConf);
-                    InitializeAppResponders(BamConf.AppConfigs);
-
-                    AppConfigs = BamConf.AppConfigs;
-
+                    InitializeHostAppMap(BamConf.ContentRoot, AppConfigs ?? BamConf.AppConfigs);
+                    InitializeAppResponders(AppConfigs ?? BamConf.AppConfigs);
+                    AppConfigs = AppConfigs ?? BamConf.AppConfigs;
                     IsAppsInitialized = true;
                 }
             }
@@ -661,6 +659,7 @@ namespace Bam.Net.Server
         {
             if (!IsInitialized)
             {
+
                 OnInitializing();
                 InitializeCommonTemplateRenderer();
                 InitializeAppResponders();
@@ -720,11 +719,11 @@ namespace Bam.Net.Server
             ZippedCache.AddOrUpdate(path, content, (s, b) => content);
         }
         
-        private void InitializeHostAppMap(BamConf bamConf)
+        private void InitializeHostAppMap(string contentRoot, AppConf[] appConfigs)
         {
-            string jsonFile = Path.Combine(bamConf.ContentRoot, "apps", HostAppMapFile);
+            string jsonFile = Path.Combine(contentRoot, "apps", HostAppMapFile);
             HashSet<HostAppMap> temp = new HashSet<HostAppMap>();
-            foreach (AppConf appConf in bamConf.AppConfigs)
+            foreach (AppConf appConf in appConfigs)
             {
                 temp.Add(new HostAppMap { Host = appConf.Name, AppName = appConf.Name });
             }

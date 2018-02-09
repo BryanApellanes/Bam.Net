@@ -63,28 +63,36 @@ namespace Bam.Net.Application
 
         public static void StartVyooServer(ConsoleLogger logger)
         {
-            DataSettings.Default.SetDefaultDatabaseFor<Session>(out Database userDb);
+            DataSettings.Current.SetDefaultDatabaseFor<Session>(out Database userDb);
             userDb.TryEnsureSchema<Session>();
-            DataSettings.Default.SetDefaultDatabaseFor<SecureSession>(out Database sessionDb);
+            DataSettings.Current.SetDefaultDatabaseFor<SecureSession>(out Database sessionDb);
             sessionDb.TryEnsureSchema<SecureSession>();
             BamConf conf = BamConf.Load(DefaultConfiguration.GetAppSetting(contentRootConfigKey).Or(defaultRoot));
+            AppConf[] appConfigs = conf.AppConfigs;
+
             List<HostPrefix> hostPrefixes = new List<HostPrefix>(HostPrefix.FromDefaultConfiguration("localhost", 7400));
             string hostAppMapsFilePath = Path.Combine(conf.ContentRoot, "apps", hostAppMapsFileName);
             if (File.Exists(hostAppMapsFilePath))
-            {                
-                hostPrefixes.AddRange(HostPrefix.FromHostAppMaps(HostAppMap.Load(hostAppMapsFilePath)));
+            {
+                HostAppMap[] hostAppMaps = HostAppMap.Load(hostAppMapsFilePath);
+                if (Arguments.Contains("apps"))
+                {
+                    string[] appNamesToServe = Arguments["apps"].DelimitSplit(",", ";");
+                    appConfigs = conf.AppConfigs.Where(ac => ac.Name.In(appNamesToServe)).ToArray();
+                    hostPrefixes.AddRange(hostAppMaps.Where(ham => ham.AppName.In(appNamesToServe)).Select(ham => new HostPrefix { HostName = ham.Host, Port = 80 }).ToArray());
+                }
+                else
+                {
+                    hostPrefixes.AddRange(HostPrefix.FromHostAppMaps(hostAppMaps));
+                }
             }
+
             vyooServer = new VyooServer(conf, logger, GetArgument("verbose", "Log responses to the console?").IsAffirmative())
             {
                 HostPrefixes = new HashSet<HostPrefix>(hostPrefixes),
                 MonitorDirectories = DefaultConfiguration.GetAppSetting("MonitorDirectories").DelimitSplit(",", ";")
             };
-            if (Arguments.Contains("apps"))
-            {
-                string[] appNamesToServe = Arguments["apps"].DelimitSplit(",", ";");
-                AppConf[] appConfigs = conf.AppConfigs.Where(ac => ac.Name.In(appNamesToServe)).ToArray();
-                vyooServer.AppConfigs = appConfigs;
-            }
+            vyooServer.AppConfigs = appConfigs;
             vyooServer.Start();
         }
 

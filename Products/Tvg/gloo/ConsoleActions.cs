@@ -206,7 +206,7 @@ namespace Bam.Net.Application
         private static void ServeRegistries(ILogger logger, string registries)
         {
             string contentRoot = GetArgument("ContentRoot", $"Enter the path to the content root (default: {defaultContentRoot} ");
-            DataSettings dataSettings = DataSettings.Default;
+            DataSettings dataSettings = DataSettings.Current;
             IApplicationNameProvider appNameProvider = DefaultConfigurationApplicationNameProvider.Instance;
             ServiceRegistryService serviceRegistryService = ServiceRegistryService.GetLocalServiceRegistryService(dataSettings, appNameProvider, GetArgument("AssemblySearchPattern", "Please specify the AssemblySearchPattern to use"), logger);
 

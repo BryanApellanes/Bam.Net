@@ -38,8 +38,7 @@ namespace Bam.Net.Server
 
         public override bool Equals(object obj)
         {
-            HostPrefix compareTo = obj as HostPrefix;
-            if(compareTo != null)
+            if (obj is HostPrefix compareTo)
             {
                 return compareTo.ToString().Equals(this.ToString());
             }
