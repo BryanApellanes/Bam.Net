@@ -659,7 +659,6 @@ namespace Bam.Net.Server
         {
             if (!IsInitialized)
             {
-
                 OnInitializing();
                 InitializeCommonTemplateRenderer();
                 InitializeAppResponders();

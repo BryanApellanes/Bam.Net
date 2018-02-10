@@ -259,11 +259,11 @@ namespace Bam.Net.Server
         {
             responder.Responded += (r, context) =>
             {
-                logger.AddEntry("*** ({0}) Responded ***\r\n{1}", LogEventType.Information, responder.Name, context.Request.PropertiesToString());
+                logger.AddEntry("*** ({0}) Responded ***\r\n{1}", LogEventType.Information, r.Name, context.Request.PropertiesToString());
             };
             responder.NotResponded += (r, context) =>
             {
-                logger.AddEntry("*** Didn't Respond ***\r\n{0}", LogEventType.Warning, context.Request.PropertiesToString());
+                logger.AddEntry("*** ({0}) Didn't Respond ***\r\n{1}", LogEventType.Warning, r.Name, context.Request.PropertiesToString());
             };
         }
 

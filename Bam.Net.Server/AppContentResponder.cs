@@ -272,7 +272,6 @@ namespace Bam.Net.Server
         public override void Initialize()
         {
             OnAppInitializing();
-            WriteAppScripts();
             WriteCompiledTemplates();
 
             AppRoot.WriteFile("appConf.json", AppConf.ToJson(true));
@@ -493,37 +492,6 @@ namespace Bam.Net.Server
             if (AppConf.CompileTemplates)
             {
                 AppConf.AppRoot.WriteFile("~/compiledTemplates.js", Regex.Unescape(AppTemplateRenderer.CompiledTemplates));
-            }
-        }
-
-        private void WriteAppScripts()
-        {
-            HashSet<string> filePaths = new HashSet<string>();
-            // get all js files
-            //		in ~/js folder non-recursively
-            AppRoot.GetFiles("~/js", "*.js").Each(fi => filePaths.Add(fi.FullName));
-            //		in ~/pages folder recursively
-            AppRoot.GetFiles("~/pages", "*.js", SearchOption.AllDirectories).Each(fi => filePaths.Add(fi.FullName));
-            //		in ~/viewModels folder recursively
-            AppRoot.GetFiles("~/viewModels", "*.js", SearchOption.AllDirectories).Each(fi => filePaths.Add(fi.FullName));
-            //		in ~/<appName>/include.js file
-            //		in ~s/include.js file
-            Includes appIncludes = GetAppIncludes();
-            LocateIncludes(filePaths, appIncludes);
-            Includes commonIncludes = GetCommonIncludes();
-            LocateIncludes(filePaths, commonIncludes);
-
-            StringBuilder combined = new StringBuilder();
-            foreach (string scriptPath in filePaths)
-            {
-                combined.AppendLine(File.ReadAllText(scriptPath));
-            }
-            JavaScriptCompressor compressor = new JavaScriptCompressor();
-            AppConf.AppRoot.WriteFile("~/{0}.js"._Format(ApplicationName), combined.ToString());
-            string combinedSrc = combined.ToString();
-            if (!string.IsNullOrEmpty(combinedSrc))
-            {
-                AppConf.AppRoot.WriteFile("~/{0}.min.js"._Format(ApplicationName), compressor.Compress(combinedSrc));
             }
         }
 
