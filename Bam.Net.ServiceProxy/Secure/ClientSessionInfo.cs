@@ -51,8 +51,7 @@ namespace Bam.Net.ServiceProxy.Secure
 
         public override bool Equals(object obj)
         {
-            ClientSessionInfo info = obj as ClientSessionInfo;
-            if(info != null)
+            if (obj is ClientSessionInfo info)
             {
                 return info.SessionId == SessionId && info.ClientIdentifier.Equals(ClientIdentifier) && info.PublicKey.Equals(PublicKey);
             }

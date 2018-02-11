@@ -50,6 +50,7 @@ namespace Bam.Net.CoreServices
             _scanResults = new Dictionary<Type, List<ServiceRegistryContainerRegistrationResult>>();            
         }
 
+        [Local]
         public static ServiceRegistryService GetLocalServiceRegistryService(DataSettings dataSettings, IApplicationNameProvider appNameProvider, string assemblySearchPattern, ILogger logger = null)
         {
             logger = logger ?? Log.Default;

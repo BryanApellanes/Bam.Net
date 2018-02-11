@@ -108,9 +108,11 @@ namespace Bam.Net.ServiceProxy
                 execRequest.Instance.GetType() == typeof(SecureChannel) &&
                 execRequest.MethodName.Equals(nameof(SecureChannel.Invoke)))
             {
-                execRequest.InputString = SecureSession.Get(execRequest.Context).Decrypt(execRequest.InputString);
+                execRequest.InputString = SecureSession.Get(execRequest.Context).Decrypt(execRequest.InputString, out Decrypted decrypted);                
+                execRequest.Decrypted = decrypted;
                 HttpArgs args = new HttpArgs();
                 args.ParseJson(execRequest.InputString);
+                
                 execRequest.JsonParams = args["jsonParams"];
                 execRequest.Instance.Property("Logger", execRequest.Logger);
             }
@@ -927,7 +929,7 @@ namespace Bam.Net.ServiceProxy
 
         public bool Execute()
         {
-            return Execute(Instance, true);
+            return Execute(Instance, false);
         }
 
         public bool Execute(object target, bool validate = true)
