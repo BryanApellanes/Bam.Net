@@ -288,7 +288,7 @@ namespace Bam.Net.Server.Tests
         [UnitTest]
         public void AppContentConfShouldNotBeNull()
         {
-            ContentResponder content = new ContentResponder(BamConf.Load());
+            ContentResponder content = new ContentResponder(BamConf.Load(), CreateLogger());
             AppContentResponder appContent = new AppContentResponder(content, new AppConf("Monkey"));
             Expect.IsNotNull(appContent.AppConf);
         }
@@ -296,7 +296,7 @@ namespace Bam.Net.Server.Tests
         [UnitTest]
         public void AppContentNameShouldNotBeNull()
         {
-            ContentResponder content = new ContentResponder(BamConf.Load());
+            ContentResponder content = new ContentResponder(BamConf.Load(), CreateLogger());
             AppContentResponder appContent = new AppContentResponder(content, new AppConf("Monkey"));
             Expect.IsNotNull(appContent.ApplicationName);
             Expect.AreEqual("Monkey", appContent.ApplicationName);
@@ -308,7 +308,7 @@ namespace Bam.Net.Server.Tests
             BamConf conf = new BamConf();
             DirectoryInfo root = new DirectoryInfo("C:\\temp\\{0}_"._Format(MethodBase.GetCurrentMethod().Name).RandomLetters(5));
             conf.ContentRoot = root.FullName;
-            ContentResponder content = new ContentResponder(conf);
+            ContentResponder content = new ContentResponder(conf, CreateLogger());
             DirectoryInfo check = new DirectoryInfo(content.Root); // don't compare strings because the content flips backslashes with forward slashes
             Expect.AreEqual("{0}\\"._Format(root.FullName), check.FullName); // content.Root adds a trailing slash
 
@@ -320,7 +320,7 @@ namespace Bam.Net.Server.Tests
             BamConf conf = new BamConf();
             DirectoryInfo root = new DirectoryInfo("c:\\temp\\{0}_"._Format(MethodBase.GetCurrentMethod().Name).RandomLetters(5));
             conf.ContentRoot = root.FullName;
-            ContentResponder content = new ContentResponder(conf);
+            ContentResponder content = new ContentResponder(conf, CreateLogger());
             AppConf appConf = new AppConf("monkey");
             AppContentResponder appContent = new AppContentResponder(content, appConf);
             // should create the folder <conf.ContentRoot>\\apps\\monkey
@@ -338,9 +338,11 @@ namespace Bam.Net.Server.Tests
         public void AppContentInitializeShouldCreateAppConfDotJson()
         {
             DirectoryInfo root = new DirectoryInfo("c:\\temp\\{0}_"._Format(MethodBase.GetCurrentMethod().Name).RandomLetters(5));
-            BamConf conf = new BamConf();
-            conf.ContentRoot = root.FullName;
-            ContentResponder content = new ContentResponder(conf);
+            BamConf conf = new BamConf()
+            {
+                ContentRoot = root.FullName
+            };
+            ContentResponder content = new ContentResponder(conf, CreateLogger());
             AppConf appConf = new AppConf("monkey");
             string layout = "".RandomLetters(4);
             appConf.DefaultLayout = layout;
@@ -539,10 +541,11 @@ namespace Bam.Net.Server.Tests
         public void SettingConfigShouldReflectInServerSettings()
         {
             BamServer server = CreateServer("{0}_Content"._Format(MethodBase.GetCurrentMethod().Name));
-            BamConf conf = new BamConf();
-            conf.GenerateDao = true;
-            conf.InitializeTemplates = true;
-
+            BamConf conf = new BamConf()
+            {
+                GenerateDao = true,
+                InitializeTemplates = true
+            };
             server.GenerateDao = false;
             server.InitializeTemplates = false;
 
@@ -801,18 +804,15 @@ namespace Bam.Net.Server.Tests
         {
             BamConf conf = new BamConf();
             conf.ContentRoot = root.FullName;
-            ContentResponder content = new ContentResponder(conf);
+            ContentResponder content = new ContentResponder(conf, CreateLogger());
             return content;
         }
 
         static List<BamServer> _servers = new List<BamServer>();
         internal static BamServer CreateServer(string rootDir = "")
-        {            
+        {
             BamServer server = new BamServer(BamConf.Load());
-            ConsoleLogger logger = new ConsoleLogger();
-            logger.AddDetails = false;
-            logger.UseColors = true;
-            logger.StartLoggingThread();
+            ConsoleLogger logger = CreateLogger();
             server.MainLogger = logger;
             if (string.IsNullOrEmpty(rootDir))
             {
@@ -822,6 +822,15 @@ namespace Bam.Net.Server.Tests
             server.SaveConf(true);
             _servers.Add(server);
             return server;
+        }
+
+        private static ConsoleLogger CreateLogger()
+        {
+            ConsoleLogger logger = new ConsoleLogger();
+            logger.AddDetails = false;
+            logger.UseColors = true;
+            logger.StartLoggingThread();
+            return logger;
         }
 
         private static DirectoryInfo CreateTestRoot(string directoryName = "")
