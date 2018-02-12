@@ -29,10 +29,17 @@ namespace Bam.Net.Web
         public HttpArgs(string inputString, string contentType = null)
             : this()
         {
+            InputString = inputString;
             ContentType = contentType;
-            ParseInput(inputString);
+            ParseInput();
         }
         
+        public string InputString
+        {
+            get;
+            set;
+        }
+
         string _contentType;
         public string ContentType
         {
@@ -48,15 +55,15 @@ namespace Bam.Net.Web
             set { _contentType = value; }
         }
         
-        private void ParseInput(string inputString)
+        protected virtual void ParseInput()
         {
             if (ContentType.Contains("application/json") || ContentType.Equals("application/json"))
             {
-                ParseJson(inputString);               
+                ParseJson(InputString);               
             }
             else if(ContentType.Contains("application/x-www-form-urlencoded") || ContentType.Equals("application/x-www-form-urlencoded"))
             {
-                ParseForm(inputString);
+                ParseForm(InputString);
             }
         }
 

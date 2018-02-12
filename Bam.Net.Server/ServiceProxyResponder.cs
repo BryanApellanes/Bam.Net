@@ -29,7 +29,7 @@ namespace Bam.Net.Server
     /// Responder responsible for generating service proxies
     /// and responding to service proxy requests
     /// </summary>
-    public class ServiceProxyResponder : Responder, IInitialize<ServiceProxyResponder>, IExecutionRequestResolver
+    public class ServiceProxyResponder : Responder, IInitialize<ServiceProxyResponder>//, IExecutionRequestResolver
     {
         public const string ServiceProxyRelativePath = "~/services";
         const string MethodFormPrefixFormat = "/{0}/MethodForm";
@@ -475,7 +475,7 @@ namespace Bam.Net.Server
             {
                 RequestWrapper request = context.Request as RequestWrapper;
                 ResponseWrapper response = context.Response as ResponseWrapper;
-                string appName = ApplicationNameResolver.ResolveApplicationName(context);//UriApplicationNameResolver.ResolveApplicationName(request.Url, BamConf.AppConfigs);
+                string appName = ApplicationNameResolver.ResolveApplicationName(context);
 
                 bool responded = false;
 
@@ -647,24 +647,6 @@ namespace Bam.Net.Server
             }
         }
 
-        private void RenderResult(string appName, string path, ExecutionRequest execRequest)
-        {
-            string ext = Path.GetExtension(path).ToLowerInvariant();
-            if (string.IsNullOrEmpty(ext))
-            {
-                AppConf appConf = this.BamConf[appName];
-                if(appConf != null)
-                {
-                    LayoutConf pageConf = new LayoutConf(appConf);
-                    string fileName = Path.GetFileName(path);
-                    string json = pageConf.ToJson(true);
-                    appConf.AppRoot.WriteFile("~/pages/{0}.layout"._Format(fileName), json);
-                }
-            }
-
-            RendererFactory.Respond(execRequest, ContentResponder);
-        }
-        
         public virtual ExecutionRequest ResolveExecutionRequest(IHttpContext httpContext, string appName)
         {
             GetServiceProxies(appName, out Incubator proxiedClasses, out List<ProxyAlias> aliases);
@@ -675,6 +657,24 @@ namespace Bam.Net.Server
             };
             ExecutionRequest.DecryptSecureChannelInvoke(execRequest);            
             return execRequest;
+        }
+
+        private void RenderResult(string appName, string path, ExecutionRequest execRequest)
+        {
+            string ext = Path.GetExtension(path).ToLowerInvariant();
+            if (string.IsNullOrEmpty(ext))
+            {
+                AppConf appConf = this.BamConf[appName];
+                if (appConf != null)
+                {
+                    LayoutConf pageConf = new LayoutConf(appConf);
+                    string fileName = Path.GetFileName(path);
+                    string json = pageConf.ToJson(true);
+                    appConf.AppRoot.WriteFile("~/pages/{0}.layout"._Format(fileName), json);
+                }
+            }
+
+            RendererFactory.Respond(execRequest, ContentResponder);
         }
 
         private void GetServiceProxies(string appName, out Incubator proxiedClasses, out List<ProxyAlias> aliases)

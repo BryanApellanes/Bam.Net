@@ -11,15 +11,33 @@ namespace Bam.Net.ServiceProxy
 {
     public class ExecutionRequestResolver: IExecutionRequestResolver
     {
-        public ExecutionRequestResolver(Incubator serviceContainer)
+        public ExecutionRequestResolver(IHttpContext context, Incubator serviceProvider, params ProxyAlias[] aliases)
         {
-
+            ServiceProvider = serviceProvider;
+            HttpContext = context;
+            ProxyAliases = aliases;
         }
-        public Incubator ServiceContainer { get; set; }
+
+        public Incubator ServiceProvider { get; set; }
+        public IHttpContext HttpContext { get; set; }
+        public ProxyAlias[] ProxyAliases { get; set; }
+        public IApplicationNameResolver ApplicationNameResolver { get; set; }
+        public virtual ExecutionRequest ResolveExecutionRequest()
+        {
+            return ResolveExecutionRequest(HttpContext, ApplicationNameResolver.ResolveApplicationName(HttpContext));
+        }
 
         public virtual ExecutionRequest ResolveExecutionRequest(IHttpContext httpContext, string appName)
         {
+            HttpArgs args = new HttpArgs(httpContext.Request.InputStream.ReadToEnd(), httpContext.Request.ContentType);
             throw new NotImplementedException();
-        }        
+        }   
+        
+        public virtual ExecutionTargetInfo ResolveExecutionTarget(IHttpContext context)
+        {
+            return ExecutionTargetInfo.ResolveExecutionTarget(context.Request.Url.AbsolutePath, ServiceProvider, ProxyAliases);
+        }
+
+        
     }
 }

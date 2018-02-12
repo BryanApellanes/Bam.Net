@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.ServiceProxy
 {
-    public interface IExecutionRequestResolver
+    public interface IExecutionRequestResolver: IExecutionTargetInfoResolver
     {
         ExecutionRequest ResolveExecutionRequest(IHttpContext httpContext, string appName);
     }

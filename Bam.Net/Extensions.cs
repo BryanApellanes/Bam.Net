@@ -125,6 +125,14 @@ namespace Bam.Net
                 (includeMilliseconds ? instance.Millisecond == other.Millisecond : true);
         }
 
+        public static string ReadToEnd(this Stream stream)
+        {
+            using (StreamReader sr = new StreamReader(stream))
+            {
+                return sr.ReadToEnd();
+            }
+        }
+
         public static T Try<T>(this Func<T> toTry)
         {
             return Try<T>(toTry, out Exception ignore);

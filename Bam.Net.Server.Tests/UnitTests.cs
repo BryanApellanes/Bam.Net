@@ -595,7 +595,7 @@ namespace Bam.Net.Server.Tests
             ExecutionRequest req = new ExecutionRequest(reqW, resW);
             req.ServiceProvider.Set<TestBam>(new TestBam());
             req.RequestUrl = new Uri(url);
-            req.ParseRequestUrl();
+            req.ResolveExecutionTargetInfo();
 
             ValidationResult result = req.Validate();
 

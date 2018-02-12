@@ -133,10 +133,10 @@ namespace Bam.Net.ServiceProxy
 
         private void ValidateParameterCount(List<ValidationFailures> failures, List<string> messages)
         {
-            if (_toValidate.ParameterInfos != null && _toValidate.ParameterInfos.Length != _toValidate.Parameters.Length)
+            if (_toValidate.ParameterInfos != null && _toValidate.ParameterInfos.Length != _toValidate.Arguments.Length)
             {
                 failures.Add(ServiceProxy.ValidationFailures.ParameterCountMismatch);
-                messages.Add("Wrong number of parameters specified: expected ({0}), recieved ({1})"._Format(_toValidate.ParameterInfos.Length, _toValidate.Parameters.Length));
+                messages.Add("Wrong number of parameters specified: expected ({0}), recieved ({1})"._Format(_toValidate.ParameterInfos.Length, _toValidate.Arguments.Length));
             }
         }
 

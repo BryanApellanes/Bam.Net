@@ -522,7 +522,7 @@ namespace Bam.Net.ServiceProxy.Tests
         {
             ServiceProxySystem.Register<TestClass>();
             ExecutionRequest er = new ExecutionRequest("TestClass", "TestMethod", "json");
-            er.Parameters = new object[] { new { }, new { } };
+            er.Arguments = new object[] { new { }, new { } };
             ValidationResult result = er.Validate();
             Expect.IsFalse(result.Success);
             Expect.IsTrue(result.ValidationFailures.ToList().Contains(ValidationFailures.ParameterCountMismatch));
@@ -696,10 +696,11 @@ namespace Bam.Net.ServiceProxy.Tests
             IApplicationNameProvider nameProvider = new TestApplicationNameProvider(methodName.RandomLetters(4));
             IApiKeyProvider keyProvider = new LocalApiKeyProvider();
 
-            ExecutionRequest er = new ExecutionRequest("ApiKeyRequiredEcho", "Send", "json");
-            er.ApiKeyResolver = new ApiKeyResolver(keyProvider, nameProvider);
-
-            er.Request = new ServiceProxyTestHelpers.JsonTestRequest();
+            ExecutionRequest er = new ExecutionRequest("ApiKeyRequiredEcho", "Send", "json")
+            {
+                ApiKeyResolver = new ApiKeyResolver(keyProvider, nameProvider),
+                Request = new ServiceProxyTestHelpers.JsonTestRequest()
+            };
             string data = ApiParameters.ParametersToJsonParamsObjectString("some random data");
             er.InputString = data;
             ApiKeyResolver resolver = new ApiKeyResolver(keyProvider, nameProvider);
