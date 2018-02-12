@@ -17,7 +17,7 @@ namespace Bam.Net.ServiceProxy
         }
         public Incubator ServiceContainer { get; set; }
 
-        public virtual ExecutionRequest CreateExecutionRequest(IHttpContext httpContext, string appName)
+        public virtual ExecutionRequest ResolveExecutionRequest(IHttpContext httpContext, string appName)
         {
             throw new NotImplementedException();
         }        

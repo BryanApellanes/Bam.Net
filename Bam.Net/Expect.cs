@@ -30,9 +30,13 @@ namespace Bam.Net
             if (!boolToCheck)
             {
                 if (string.IsNullOrEmpty(message))
+                {
                     throw new ExpectFailedException(true, boolToCheck, ShouldHtmlEncodeExceptions);
+                }
                 else
+                {
                     throw new ExpectFailedException(message);
+                }
             }
         }
         

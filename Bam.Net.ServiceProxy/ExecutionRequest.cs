@@ -459,7 +459,7 @@ namespace Bam.Net.ServiceProxy
                 }
                 return _methodInfo;
             }
-            private set
+            protected set
             {
                 _methodInfo = value;
             }
@@ -513,20 +513,19 @@ namespace Bam.Net.ServiceProxy
             // changes continue to be necessary
 
             object[] result = new object[] { }; ;
-            string jsonParams;
-            if (HttpArgs.Has("jsonParams", out jsonParams))
+            if (HttpArgs.Has("jsonParams", out string jsonParams))
             {
                 string[] jsonStrings = jsonParams.FromJson<string[]>();
                 result = GetJsonParameters(jsonStrings);
             }
-            else if (HttpArgs.Ordered.Length > 0)
-            {
-                result = new object[HttpArgs.Ordered.Length];
-                HttpArgs.Ordered.Each((val, i) =>
-                {
-                    result[i] = val;
-                });
-            }
+            //else if (HttpArgs.Ordered.Length > 0)
+            //{
+            //    result = new object[HttpArgs.Ordered.Length];
+            //    HttpArgs.Ordered.Each((val, i) =>
+            //    {
+            //        result[i] = val;
+            //    });
+            //}
             else if (!string.IsNullOrEmpty(JsonParams))
             {
                 // POST: bam.invoke
@@ -929,7 +928,7 @@ namespace Bam.Net.ServiceProxy
 
         public bool Execute()
         {
-            return Execute(Instance, false);
+            return Execute(Instance, true);
         }
 
         public bool Execute(object target, bool validate = true)

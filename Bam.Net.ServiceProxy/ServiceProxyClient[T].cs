@@ -28,7 +28,7 @@ namespace Bam.Net.ServiceProxy
         public ServiceProxyClient(string baseAddress)
             : base(baseAddress)
         {
-            if (!BaseAddress.EndsWith("/"))
+            if (!string.IsNullOrEmpty(BaseAddress) && !BaseAddress.EndsWith("/"))
             {
                 BaseAddress = string.Format("{0}/", BaseAddress);
             }

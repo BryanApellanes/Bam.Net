@@ -8,6 +8,6 @@ namespace Bam.Net.ServiceProxy
 {
     public interface IExecutionRequestResolver
     {
-        ExecutionRequest CreateExecutionRequest(IHttpContext httpContext, string appName);
+        ExecutionRequest ResolveExecutionRequest(IHttpContext httpContext, string appName);
     }
 }

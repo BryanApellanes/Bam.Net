@@ -50,7 +50,7 @@ namespace Bam.Net.Web
         
         private void ParseInput(string inputString)
         {
-            if (ContentType.Contains("application/json;") || ContentType.Equals("application/json"))
+            if (ContentType.Contains("application/json") || ContentType.Equals("application/json"))
             {
                 ParseJson(inputString);               
             }
@@ -86,8 +86,7 @@ namespace Bam.Net.Web
 
                 obj.Children().Each(jtoken =>
                 {
-                    JProperty prop = jtoken as JProperty;
-                    if (prop != null)
+                    if (jtoken is JProperty prop)
                     {
                         this.Add(prop.Name, prop.Value.ToString());
                     }
@@ -128,8 +127,7 @@ namespace Bam.Net.Web
 
         public bool Has(string key)
         {
-            string ignore;
-            return Has(key, out ignore);
+            return Has(key, out string ignore);
         }
 
         /// <summary>

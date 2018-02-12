@@ -496,7 +496,7 @@ namespace Bam.Net.Server
                     }
                     else
                     {
-                        ExecutionRequest execRequest = CreateExecutionRequest(context, appName);
+                        ExecutionRequest execRequest = ResolveExecutionRequest(context, appName);
                         responded = execRequest.Execute();
                         if (responded)
                         {
@@ -665,7 +665,7 @@ namespace Bam.Net.Server
             RendererFactory.Respond(execRequest, ContentResponder);
         }
         
-        public virtual ExecutionRequest CreateExecutionRequest(IHttpContext httpContext, string appName)
+        public virtual ExecutionRequest ResolveExecutionRequest(IHttpContext httpContext, string appName)
         {
             GetServiceProxies(appName, out Incubator proxiedClasses, out List<ProxyAlias> aliases);
 

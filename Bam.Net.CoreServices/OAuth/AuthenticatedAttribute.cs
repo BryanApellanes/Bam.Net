@@ -9,9 +9,9 @@ using System.Reflection;
 namespace Bam.Net.CoreServices.OAuth
 {
     /// <summary>
-    /// Request filter that ensures that the user is logged in
+    /// Request filter that ensures that the user is logged in,
     /// the request is for the current application and the user is
-    /// a part of the organization of the current application
+    /// a part of the organization of the current application.
     /// </summary>
     public class AuthenticatedAttribute : RequestFilterAttribute
     {
