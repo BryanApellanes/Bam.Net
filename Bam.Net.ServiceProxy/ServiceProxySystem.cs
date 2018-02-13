@@ -501,6 +501,11 @@ namespace {0}
                 stringBuilder.Append(" = {};\r\n");
                 stringBuilder.Append(var);
                 stringBuilder.Append(".proxyName = \"{0}\";\r\n"._Format(varName));
+                if(request != null)
+                {
+                    stringBuilder.Append(var);
+                    stringBuilder.Append(".host = \"{0}\";\r\n"._Format(request.Url.Host));
+                }
 
                 foreach (MethodInfo method in type.GetMethods())
                 {
