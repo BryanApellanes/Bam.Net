@@ -216,19 +216,6 @@ namespace Bam.Net.ServiceProxy
                 {
                     OnInitializing();
 
-                    if (HttpMethod.Equals("POST") && string.IsNullOrEmpty(Path.GetExtension(Request.Url.AbsolutePath)))
-                    {
-                        HttpArgs args = HttpArgs;
-                        if (args.Has("jsonParams", out string jsonParams))
-                        {
-                            JsonParams = jsonParams;
-                        }
-                    }
-                    else if (InputString.StartsWith("{")) // TODO: this should be reviewed for validity, check Content/Type
-                    {
-                        JsonParams = InputString;
-                    }
-
                     ResolveExecutionTargetInfo();
                     IsInitialized = true;
 

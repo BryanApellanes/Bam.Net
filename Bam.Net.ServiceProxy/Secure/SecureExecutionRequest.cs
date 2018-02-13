@@ -86,12 +86,6 @@ namespace Bam.Net.ServiceProxy.Secure
             }
         }
 
-        public SecureSession ReloadSession()
-        {
-            _session = null;
-            return Session;
-        }
-
         /// <summary>
         /// Decrypts the result and returns it as the specified type T
         /// </summary>

@@ -26,7 +26,8 @@ using Newtonsoft.Json;
 namespace Bam.Net.ServiceProxy
 {
     /// <summary>
-    /// A class used to properly format parameters for service proxy calls
+    /// A class used to properly format parameters for service proxy calls. :( Sadness; this should be
+    /// called ApiArguments and all instances of jsonParams should be jsonArgs.
     /// </summary>
     public class ApiParameters
     {

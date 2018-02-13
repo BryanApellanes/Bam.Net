@@ -34,11 +34,6 @@ namespace Bam.Net.Server
         public const string ServiceProxyRelativePath = "~/services";
         const string MethodFormPrefixFormat = "/{0}/MethodForm";
 
-        static ServiceProxyResponder()
-        {
-
-        }
-
         public ServiceProxyResponder(BamConf conf, ILogger logger)
             : base(conf, logger)
         {
@@ -48,6 +43,7 @@ namespace Bam.Net.Server
             _commonSecureChannel = new SecureChannel();
             _clientProxyGenerators = new Dictionary<string, IClientProxyGenerator>();
             RendererFactory = new RendererFactory(logger);
+            ExecutionRequestResolver = new ExecutionRequestResolver();
 
             AddCommonService(_commonSecureChannel);
             AddClientProxyGenerator(new CsClientProxyGenerator(), "proxies.cs", "csproxies", "csharpproxies");
@@ -72,6 +68,12 @@ namespace Bam.Net.Server
 
                 AppSecureChannels[appName].ServiceProvider.Set(type, instance, false);
             };
+        }
+
+        public IExecutionRequestResolver ExecutionRequestResolver
+        {
+            get;
+            set;
         }
 
         public ContentResponder ContentResponder
@@ -651,12 +653,7 @@ namespace Bam.Net.Server
         {
             GetServiceProxies(appName, out Incubator proxiedClasses, out List<ProxyAlias> aliases);
 
-            ExecutionRequest execRequest = new ExecutionRequest(httpContext, proxiedClasses, aliases.ToArray())
-            {
-                Logger = Logger
-            };
-            ExecutionRequest.DecryptSecureChannelInvoke(execRequest);            
-            return execRequest;
+            return ExecutionRequestResolver.ResolveExecutionRequest(httpContext, proxiedClasses, aliases.ToArray());
         }
 
         private void RenderResult(string appName, string path, ExecutionRequest execRequest)

@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.ServiceProxy
 {
+    /// <summary>
+    /// Represents a ClassName and MethodName plus file extension
+    /// referenced for execution.
+    /// </summary>
     public class ExecutionTargetInfo
     {
         public string ClassName { get; set; }
