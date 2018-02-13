@@ -718,7 +718,7 @@ namespace Bam.Net.Server
             bool result = false;
             IRequest request = context.Request;
             string path = request.Url.AbsolutePath.ToLowerInvariant();
-            string appName = ApplicationNameResolver.ResolveApplicationName(context);//UriApplicationNameResolver.ResolveApplicationName(request.Url, BamConf.AppConfigs);
+            string appName = ApplicationNameResolver.ResolveApplicationName(context);
             bool includeLocalMethods = request.UserHostAddress.StartsWith("127.0.0.1");
             string[] split = path.DelimitSplit("/", ".");
 

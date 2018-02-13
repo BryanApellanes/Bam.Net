@@ -334,6 +334,7 @@ namespace Bam.Net.Server
         /// <returns></returns>
         protected static internal Includes GetAppIncludes(AppConf appConf)
         {
+            // TODO: review this for deprecation of the use of "viewModels"
             string includeJs = Path.Combine(appConf.AppRoot.Root, IncludeFileName);
             string appRoot = Path.DirectorySeparatorChar.ToString();
             Includes includes = GetIncludesFromIncludeJs(includeJs);
@@ -351,18 +352,18 @@ namespace Bam.Net.Server
                 includes.AddScript(Path.Combine(appRoot, script).Replace("\\", "/"));
             });
 
-            DirectoryInfo viewModelsDir = appConf.AppRoot.GetDirectory("viewModels");
-            if (!Directory.Exists(viewModelsDir.FullName))
-            {
-                Directory.CreateDirectory(viewModelsDir.FullName);
-            }
-            FileInfo[] viewModels = viewModelsDir.GetFiles("*.js");
-            viewModels.Each(fi =>
-            {
-                includes.AddScript(Path.Combine(appRoot, "viewModels", fi.Name).Replace("\\", "/"));
-            });
+            //DirectoryInfo viewModelsDir = appConf.AppRoot.GetDirectory("viewModels");
+            //if (!Directory.Exists(viewModelsDir.FullName))
+            //{
+            //    Directory.CreateDirectory(viewModelsDir.FullName);
+            //}
+            //FileInfo[] viewModels = viewModelsDir.GetFiles("*.js");
+            //viewModels.Each(fi =>
+            //{
+            //    includes.AddScript(Path.Combine(appRoot, "viewModels", fi.Name).Replace("\\", "/"));
+            //});
 
-            includes.AddScript(Path.Combine(appRoot, "init.js").Replace("\\", "/"));
+            //includes.AddScript(Path.Combine(appRoot, "init.js").Replace("\\", "/"));
 
             return includes;
         }

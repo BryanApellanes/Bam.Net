@@ -486,7 +486,7 @@ namespace {0}
             return code;
         }
         
-        internal static StringBuilder GenerateJsProxyScript(Incubator incubator, string[] classes, bool includeLocal = false)
+        internal static StringBuilder GenerateJsProxyScript(Incubator incubator, string[] classes, bool includeLocal = false, IRequest request = null)
         {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.AppendLine("(function(b, d, $, win){");
@@ -546,6 +546,11 @@ namespace {0}
                 stringBuilder.AppendFormat("\t$.extend(win.{0}, {1});\r\n", varName, var.Trim());
                 stringBuilder.AppendFormat("\twin.{0}.className = '{1}';\r\n", varName, className);
                 stringBuilder.AppendFormat("\td.{0} = b.{1};\r\n", varName, className);
+
+                if(request != null && request.Url != null)
+                {
+                    stringBuilder.AppendFormat("\twin.{0}.host = '{1}';\r\n", varName, request.Url.Host);
+                }
             }
 
             stringBuilder.AppendLine("})(bam, dao, jQuery, window || {});");

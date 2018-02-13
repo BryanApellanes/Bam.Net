@@ -111,7 +111,7 @@ namespace Bam.Net.Server
             ContentLocator locator = null;
             if (rootToCheck.FileExists(FileName))
             {
-                FileInfo file = rootToCheck.GetFile(FileName);//new FileInfo(filePath);
+                FileInfo file = rootToCheck.GetFile(FileName);
                 locator = file.FromJsonFile<ContentLocator>();
             }
             else
@@ -155,6 +155,7 @@ namespace Bam.Net.Server
 
             AddSearchRule(new SearchRule(ext, searchDirs));
         }
+
         public void AddSearchRule(SearchRule rule)
         {
             _searchRules.Add(rule);
