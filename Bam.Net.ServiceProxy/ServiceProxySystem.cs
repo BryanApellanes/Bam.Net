@@ -488,10 +488,13 @@ namespace {0}
         
         internal static StringBuilder GenerateJsProxyScript(Incubator incubator, string[] classes, bool includeLocal = false, IRequest request = null)
         {
+            string daoNs = request?.QueryString?["daoNs"] ?? "dao";
+            string bamNs = request?.QueryString?["bamNs"] ?? "bam";
+            
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.AppendLine("(function(b, d, $, win){");
             stringBuilder.AppendLine(DaoProxyRegistration.GetDaoJsCtorScript(incubator, classes).ToString());
-
+            
             foreach (string className in classes)
             {
                 Type type = incubator[className];
@@ -501,10 +504,18 @@ namespace {0}
                 stringBuilder.Append(" = {};\r\n");
                 stringBuilder.Append(var);
                 stringBuilder.Append(".proxyName = \"{0}\";\r\n"._Format(varName));
-                if(request != null)
+                if(request != null && request.Url != null)
                 {
+                    string protocol = request.Url.Scheme;
+                    string host = request.Url.Host;
+                    int port = request.Url.Port;
                     stringBuilder.Append(var);
-                    stringBuilder.Append(".host = \"{0}\";\r\n"._Format(request.Url.Host));
+                    stringBuilder.Append(".protocol = \"{0}\";\r\n"._Format(protocol));
+                    stringBuilder.Append(var);
+                    stringBuilder.Append(".host = \"{0}\";\r\n"._Format(host));
+                    stringBuilder.Append(var);
+                    stringBuilder.Append(".port = \"{0}\";\r\n"._Format(port));
+                    stringBuilder.Append($"\tb.proxy('{className}', " + "{" + $"protocol: '{protocol}:', host: '{host}', port: '{port}'" + "});\r\n");
                 }
 
                 foreach (MethodInfo method in type.GetMethods())
@@ -551,14 +562,9 @@ namespace {0}
                 stringBuilder.AppendFormat("\t$.extend(win.{0}, {1});\r\n", varName, var.Trim());
                 stringBuilder.AppendFormat("\twin.{0}.className = '{1}';\r\n", varName, className);
                 stringBuilder.AppendFormat("\td.{0} = b.{1};\r\n", varName, className);
-
-                if(request != null && request.Url != null)
-                {
-                    stringBuilder.AppendFormat("\twin.{0}.host = '{1}';\r\n", varName, request.Url.Host);
-                }
             }
 
-            stringBuilder.AppendLine("})(bam, dao, jQuery, window || {});");
+            stringBuilder.AppendLine("})(" + bamNs + ", " + daoNs + ", jQuery, window || {});");
 
             return stringBuilder;
         }
@@ -567,9 +573,7 @@ namespace {0}
         {
             StringBuilder builder = new StringBuilder();
             System.Reflection.ParameterInfo[] parameterInfos = method.GetParameters();
-            string defaultMethodName;
-            string otherMethodName;
-            GetMethodDetails(method, out defaultMethodName, out otherMethodName);
+            GetMethodDetails(method, out string defaultMethodName, out string otherMethodName);
 
             string parameters = parameterInfos.ToArray().ToDelimited((pi) => pi.Name);
             string comma = parameterInfos.Length > 0 ? ", " : "";

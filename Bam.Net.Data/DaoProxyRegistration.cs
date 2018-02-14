@@ -307,9 +307,7 @@ namespace Bam.Net.Data
 
                 if (modelType.HasCustomAttributeOfType<TableAttribute>())
                 {
-                    StringBuilder parameters;
-                    StringBuilder body;
-                    GetJsCtorParamsAndBody(modelType, fkProto, out parameters, out body);
+                    GetJsCtorParamsAndBody(modelType, fkProto, out StringBuilder parameters, out StringBuilder body);
                     ctorScript.AppendFormat("b.ctor.{0} = function {0}(", className);
                     // -- params 
                     ctorScript.Append(parameters.ToString());
@@ -368,17 +366,18 @@ namespace Bam.Net.Data
             body.AppendFormat("\tthis.fks = function(){{ return dao.getFks('{0}');}};\r\n", Dao.TableName(type));
             body.AppendFormat("\tthis.pk = function(){{ return '{0}'; }};\r\n", Dao.GetKeyColumnName(type).ToLowerInvariant());
         }
+
         private static string GetVarName(Type type)
         {
             string varName = type.Name;
-            ProxyAttribute proxyAttr = null;
-            if (type.HasCustomAttributeOfType<ProxyAttribute>(true, out proxyAttr))
+            if (type.HasCustomAttributeOfType(true, out ProxyAttribute proxyAttr))
             {
                 varName = proxyAttr.VarName;
             }
 
             return varName;
         }
+
         private StringBuilder BuildProxyScript()
         {
             return BuildProxyScript(ServiceProvider, ContextName);
