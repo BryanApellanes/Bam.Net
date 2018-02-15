@@ -76,15 +76,7 @@ namespace Bam.Net.Server
                 Includes commonIncludes = ContentResponder.GetCommonIncludes(conf.BamConf.ContentRoot);
                 includes = commonIncludes.Combine(includes);
             }
-            if(conf.IsTest || conf.IsProd)
-            {
-                string min = conf.IsProd ? ".min" : "";
-                layoutModel.ScriptTags = new Tag("script").Attr("src", $"{conf.Name}{min}.js").Attr("type", "text/javascript").ToHtmlString();
-            }
-            else
-            {
-                layoutModel.ScriptTags = includes.GetScriptTags().ToHtmlString();
-            }
+            layoutModel.ScriptTags = includes.GetScriptTags().ToHtmlString();
             layoutModel.StyleSheetLinkTags = includes.GetStyleSheetLinkTags().ToHtmlString();
         }
 

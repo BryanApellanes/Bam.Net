@@ -327,14 +327,13 @@ namespace Bam.Net.Server
         }
 
         /// <summary>
-        /// Gets the Includes for the specified AppConf.  Also adds
-        /// the init.js and all viewModel .js files.
+        /// Gets the Includes for the specified AppConf by reading the 
+        /// include.js file in the application folder.
         /// </summary>
         /// <param name="appConf"></param>
         /// <returns></returns>
         protected static internal Includes GetAppIncludes(AppConf appConf)
         {
-            // TODO: review this for deprecation of the use of "viewModels"
             string includeJs = Path.Combine(appConf.AppRoot.Root, IncludeFileName);
             string appRoot = Path.DirectorySeparatorChar.ToString();
             Includes includes = GetIncludesFromIncludeJs(includeJs);
@@ -347,42 +346,7 @@ namespace Bam.Net.Server
                 includes.Css[i] = Path.Combine(appRoot, css).Replace("\\", "/");
             });
 
-            GetPageScripts(appConf).Each(script =>
-            {
-                includes.AddScript(Path.Combine(appRoot, script).Replace("\\", "/"));
-            });
-
-            //DirectoryInfo viewModelsDir = appConf.AppRoot.GetDirectory("viewModels");
-            //if (!Directory.Exists(viewModelsDir.FullName))
-            //{
-            //    Directory.CreateDirectory(viewModelsDir.FullName);
-            //}
-            //FileInfo[] viewModels = viewModelsDir.GetFiles("*.js");
-            //viewModels.Each(fi =>
-            //{
-            //    includes.AddScript(Path.Combine(appRoot, "viewModels", fi.Name).Replace("\\", "/"));
-            //});
-
-            //includes.AddScript(Path.Combine(appRoot, "init.js").Replace("\\", "/"));
-
             return includes;
-        }
-
-        protected static internal string[] GetPageScripts(AppConf appConf)
-        {
-            AppMetaManager manager = new AppMetaManager(appConf.BamConf);
-            string[] pageNames = manager.GetPageNames(appConf.Name);
-            List<string> results = new List<string>();
-            pageNames.Each(pageName =>
-            {
-                string script = "/" + Fs.CleanPath(Path.Combine("pages", pageName + ".js")).Replace("\\", "/"); // for use in html
-                if (appConf.AppRoot.FileExists(script))
-                {
-                    results.Add(script);
-                }
-            });
-
-            return results.ToArray();
         }
 
         static Dictionary<string, Includes> _includesCache;
@@ -450,7 +414,7 @@ namespace Bam.Net.Server
             return TryRespond(context, EndResponse);
         }
 
-        public bool TryRespond(IHttpContext context, bool final = false)
+        public bool TryRespond(IHttpContext context, bool endResponse = false)
         {
             try
             {
@@ -524,7 +488,7 @@ namespace Bam.Net.Server
                     }
                 }
 
-                if(!handled && final)
+                if(!handled && endResponse)
                 {
                     SendResponse(response, "Not Found", 404);
                 }
@@ -549,7 +513,10 @@ namespace Bam.Net.Server
 
         private void LogContentNotFound(string path, string appName, string[] checkedPaths)
         {
-            // Not Sure what this is checking for???
+            // Get the service names for the specified appName to determine whether it is
+            // worth logging that this request was not handled.  If the content was not 
+            // found because the request was intended for a different responder then 
+            // no log entry should be made.
             string[] svcNames = BamConf?.Server?.ServiceProxyResponder?.AppServices(appName).Select(s => s.ToLowerInvariant()).ToArray();
             List<string> serviceNames = new List<string>();
             if(svcNames != null)
@@ -558,7 +525,6 @@ namespace Bam.Net.Server
             }
             string[] splitPath = path.DelimitSplit("/", "\\");
             string firstPart = splitPath.Length > 0 ? splitPath[0] : path;
-            // / -- ???
 
             if(!ShouldIgnore(path) && !serviceNames.Contains(firstPart.ToLowerInvariant()))
             {

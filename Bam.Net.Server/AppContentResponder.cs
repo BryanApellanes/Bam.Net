@@ -85,6 +85,11 @@ namespace Bam.Net.Server
 
         protected List<MethodInfo> CustomHandlerMethods { get; }
 
+        /// <summary>
+        /// Load all methods found in the specified file that are addorned with the ContentHandlerAttribute attribute
+        /// into the CustomHandlerMethods list.
+        /// </summary>
+        /// <param name="file"></param>
         protected void LoadCustomHandlers(FileInfo file)
         {
             try
