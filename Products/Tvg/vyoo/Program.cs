@@ -39,11 +39,15 @@ namespace Bam.Net.Application
                     OutLineFormat("Error parsing arguments: {0}", ConsoleColor.Red, a.Message);
                     Environment.Exit(1);
                 });
+                if (Arguments.Contains("singleProcess"))
+                {
+                    KillExistingProcess();
+                }
                 if (Arguments.Contains("i"))
                 {
                     Interactive();
                 }
-                else
+                else if (!ExecuteSwitches(Arguments, new ConsoleActions()))
                 {
                     VyooService.RunService<VyooService>();
                 }

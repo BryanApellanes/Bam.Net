@@ -138,6 +138,7 @@
     <Compile Include="PostServerInitializationHandler.cs" />
     <Compile Include="Etags.cs" />
     <Compile Include="IPostServerInitializationHandler.cs" />
+    <Compile Include="Renderers\ICompiledTemplate.cs" />
     <Compile Include="Streaming\StreamingClient.cs" />
     <Compile Include="Streaming\StreamingRequest.cs" />
     <Compile Include="Streaming\StreamingResponse.cs" />

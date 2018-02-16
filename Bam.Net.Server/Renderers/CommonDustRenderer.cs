@@ -22,7 +22,13 @@ namespace Bam.Net.Server.Renderers
         public CommonDustRenderer(ContentResponder content)
             : base("text/html", ".htm", ".html")
         {
-            this.ContentResponder = content;
+            ContentResponder = content;
+            TemplateDirectoryNames = content.TemplateDirectoryNames.ToArray();
+        }
+
+        public string[] TemplateDirectoryNames
+        {
+            get;            
         }
 
         ILogger _logger;
@@ -46,73 +52,75 @@ namespace Bam.Net.Server.Renderers
             }
         }
 
-        string _compiledDustTemplates;
-        object _compiledDustTemplatesLock = new object();
-        /// <summary>
-        /// Represents the compiled javascript result of doing dust.compile
-        /// against all the files found in ~s:/common/views.
-        /// </summary>
-        public virtual string CompiledTemplates
-        {
-            get
-            {
-                return _compiledDustTemplatesLock.DoubleCheckLock(ref _compiledDustTemplates, () =>
-                {
-                    StringBuilder templates = new StringBuilder();
-                    DirectoryInfo commonDust = new DirectoryInfo(Path.Combine(ContentRoot, "common", "views"));
-
-                    string commonCompiledTemplates = DustScript.CompileDirectory(commonDust, "*.dust");
-                    
-                    templates.Append(commonCompiledTemplates);   
-                    return templates.ToString();
-                });
-            }
-        }
-
         string _compiledLayoutTemplates;
         object _compiledLayoutTemplatesLock = new object();
         /// <summary>
         /// Represents the compiled javascript result of doing dust.compile
         /// against all the files found in ~s:/common/views/layouts.
         /// </summary>
-        public virtual string CompiledLayoutTemplates
+        public virtual string CombinedCompiledLayoutTemplates
         {
             get
             {
                 return _compiledLayoutTemplatesLock.DoubleCheckLock(ref _compiledLayoutTemplates, () =>
                 {
                     StringBuilder templates = new StringBuilder();
-                    DirectoryInfo layouts = new DirectoryInfo(Path.Combine(ContentRoot, "common", "views", "layouts"));
-                    string compiledLayouts = DustScript.CompileDirectory(layouts.FullName, "*.dust", Logger);
-                    templates.Append(compiledLayouts);
+                    foreach(string templateDirectoryName in TemplateDirectoryNames)
+                    {
+                        DirectoryInfo layouts = new DirectoryInfo(Path.Combine(ContentRoot, "common", templateDirectoryName, "layouts"));
+                        string compiledLayouts = DustScript.CompileTemplates(layouts.FullName, "*.dust", Logger);
+                        templates.Append(compiledLayouts);
+                    }
                     return templates.ToString();
                 });
             }
         }
 
-        string _compiledCommonTemplates;
-        object _compiledCommonTemplatesLock = new object();
+        string _compiledDustTemplates;
+        object _compiledDustTemplatesLock = new object();
         /// <summary>
         /// Represents the compiled javascript result of doing dust.compile
-        /// against all the files found in ~s:/dust/layouts.
+        /// against all the files found in ~s:/common/views.
         /// </summary>
-        public virtual string CompiledCommonTemplates
+        public virtual string CombinedCompiledTemplates
         {
             get
             {
-                return _compiledCommonTemplatesLock.DoubleCheckLock(ref _compiledCommonTemplates, () =>
+                return _compiledDustTemplatesLock.DoubleCheckLock(ref _compiledDustTemplates, () =>
                 {
                     StringBuilder templates = new StringBuilder();
-                    DirectoryInfo common = new DirectoryInfo(Path.Combine(ContentRoot, "common", "views"));
 
-                    string compiledCommon = DustScript.CompileDirectory(common.FullName, "*.dust", Logger);
-
-                    templates.Append(compiledCommon);
+                    foreach (string templateDirectoryName in TemplateDirectoryNames)
+                    {
+                        DirectoryInfo commonDust = new DirectoryInfo(Path.Combine(ContentRoot, "common", templateDirectoryName));
+                        string commonCompiledTemplates = DustScript.CompileTemplates(commonDust, "*.dust");
+                        templates.Append(commonCompiledTemplates);
+                    }
                     return templates.ToString();
                 });
             }
         }
-        
+
+        List<ICompiledTemplate> _compiledTemplates;
+        object _comiledTemplatesLock = new object();
+        public virtual IEnumerable<ICompiledTemplate> CompiledTemplates
+        {
+            get
+            {
+                return _compiledLayoutTemplatesLock.DoubleCheckLock(ref _compiledTemplates, () =>
+                {
+                    List<ICompiledTemplate> allResults = new List<ICompiledTemplate>();
+                    foreach (string templateDirectoryName in TemplateDirectoryNames)
+                    {
+                        DirectoryInfo commonDust = new DirectoryInfo(Path.Combine(ContentRoot, "common", templateDirectoryName));
+                        DustScript.CompileTemplates(commonDust, out List<ICompiledTemplate> results, "*.dust");
+                        allResults.AddRange(results);
+                    }
+                    return allResults;
+                });
+            }
+        }
+
         public ContentResponder ContentResponder
         {
             get;
@@ -127,7 +135,7 @@ namespace Bam.Net.Server.Renderers
 
         public override void Render(string templateName, object toRender, Stream output)
         {
-            string result = DustScript.Render(CompiledTemplates, templateName, toRender);
+            string result = DustScript.Render(CombinedCompiledTemplates, templateName, toRender);
 
             byte[] data = Encoding.UTF8.GetBytes(result);
             output.Write(data, 0, data.Length);
@@ -140,7 +148,7 @@ namespace Bam.Net.Server.Renderers
 		/// <param name="output"></param>
         public virtual void RenderLayout(LayoutModel toRender, Stream output)
         {
-            string result = DustScript.Render(CompiledLayoutTemplates, toRender.LayoutName, toRender);
+            string result = DustScript.Render(CombinedCompiledLayoutTemplates, toRender.LayoutName, toRender);
 
             byte[] data = Encoding.UTF8.GetBytes(result);
             output.Write(data, 0, data.Length);

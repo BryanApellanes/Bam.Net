@@ -496,7 +496,14 @@ namespace Bam.Net.Server
         {
             if (AppConf.CompileTemplates)
             {
-                AppConf.AppRoot.WriteFile("~/compiledTemplates.js", Regex.Unescape(AppTemplateRenderer.CompiledTemplates));
+                AppConf.AppRoot.WriteFile("~/combinedTemplates.js", Regex.Unescape(AppTemplateRenderer.CombinedCompiledTemplates));
+                
+                foreach(ICompiledTemplate template in AppTemplateRenderer.CompiledTemplates)
+                {
+                    FileInfo templateFile = new FileInfo(template.SourceFilePath);
+                    FileInfo jsFile = new FileInfo(Path.Combine(templateFile.Directory.FullName, $"{Path.GetFileNameWithoutExtension(templateFile.Name)}.js"));
+                    jsFile.FullName.SafeWriteFile(template.Compiled);
+                }
             }
         }
 

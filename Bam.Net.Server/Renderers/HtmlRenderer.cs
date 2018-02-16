@@ -78,7 +78,7 @@ namespace Bam.Net.Server.Renderers
             AppContentResponder appContentResponder = ContentResponder.AppContentResponders[AppName];
             ITemplateRenderer dustRenderer = appContentResponder.AppTemplateRenderer;
             string templateName = GetTemplateName(toRender);
-            string templates = dustRenderer.CompiledTemplates;            
+            string templates = dustRenderer.CombinedCompiledTemplates;            
             string renderedContent = DustScript.Render(templates, templateName, toRender);
 
             byte[] data;

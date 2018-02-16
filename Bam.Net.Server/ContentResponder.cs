@@ -37,11 +37,13 @@ namespace Bam.Net.Server
             CommonTemplateRenderer = commonTemplateRenderer ?? new CommonDustRenderer(this);
             FileCachesByExtension = new Dictionary<string, FileCache>();
             HostAppMappings = new Dictionary<string, HostAppMap>();
+            TemplateDirectoryNames = new List<string>(new string[] { "views" , "templates" });
             InitializeFileExtensions();
             InitializeCaches();
         }
 
         public AppMetaInitializer AppMetaInitializer { get; set; }
+        public List<string> TemplateDirectoryNames { get; set; }
         public List<string> FileExtensions { get; set; }
         public List<string> TextFileExtensions { get; set; }
         public Dictionary<string, HostAppMap> HostAppMappings { get; set; }
@@ -225,12 +227,7 @@ namespace Bam.Net.Server
         {
             OnCommonTemplateRendererInitializing();
 
-            string viewRoot = Path.Combine(Root, "common", "views");
-            DirectoryInfo dir = new DirectoryInfo(viewRoot);
-            if (dir.Exists)
-            {
-                CommonTemplateRenderer = new CommonDustRenderer(this);
-            }
+            CommonTemplateRenderer = new CommonDustRenderer(this);
 
             OnCommonTemplateRendererInitialized();
         }

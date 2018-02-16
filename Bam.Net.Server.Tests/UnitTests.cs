@@ -472,8 +472,8 @@ namespace Bam.Net.Server.Tests
             templateRenderer.Render(monkey);
             AppContentResponder appResponder = new AppContentResponder(content, new AppConf("Test"));
             CommonDustRenderer renderer = new CommonDustRenderer(appResponder);
-            Expect.IsTrue(!string.IsNullOrEmpty(renderer.CompiledTemplates));
-            OutLine(renderer.CompiledTemplates);
+            Expect.IsTrue(!string.IsNullOrEmpty(renderer.CombinedCompiledTemplates));
+            OutLine(renderer.CombinedCompiledTemplates);
         }
 
 

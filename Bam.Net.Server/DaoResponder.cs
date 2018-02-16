@@ -94,8 +94,8 @@ namespace Bam.Net.Server
                     DirectoryInfo appTemplateDir = new DirectoryInfo(appFs.GetAbsolutePath(dustRelativePath));
 
                     StringBuilder tmp = new StringBuilder();
-                    tmp.AppendLine(DustScript.CompileDirectory(commonTemplateDir));
-                    tmp.AppendLine(DustScript.CompileDirectory(appTemplateDir));
+                    tmp.AppendLine(DustScript.CompileTemplates(commonTemplateDir));
+                    tmp.AppendLine(DustScript.CompileTemplates(appTemplateDir));
                     _compiledTemplates[appName] = tmp.ToString();
                     result = _compiledTemplates[appName];
                 }
