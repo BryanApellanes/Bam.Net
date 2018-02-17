@@ -90,7 +90,7 @@ namespace Bam.Net.Server
                     // templates are in ~s:/dao/dust and ~a:/dao/dust
                     string dustRelativePath = ViewsRelativePath;
                     DirectoryInfo commonTemplateDir = new DirectoryInfo(ServerRoot.GetAbsolutePath(dustRelativePath));
-                    Fs appFs = AppFs(appName);
+                    Fs appFs = BamConf.AppFs(appName); //AppFs(appName);
                     DirectoryInfo appTemplateDir = new DirectoryInfo(appFs.GetAbsolutePath(dustRelativePath));
 
                     StringBuilder tmp = new StringBuilder();

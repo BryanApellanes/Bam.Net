@@ -19,6 +19,8 @@ using Bam.Net.UserAccounts.Data;
 using Newtonsoft.Json.Linq;
 using System.Reflection;
 using Bam.Net.Server.Meta;
+using Bam.Net.Data.Repositories;
+using Bam.Net.Configuration;
 
 namespace Bam.Net.Server
 {
@@ -27,6 +29,8 @@ namespace Bam.Net.Server
     /// </summary>
     public class ContentResponder : Responder, IInitialize<ContentResponder>
     {
+        static string contentRootConfigKey = "ContentRoot";
+        static string defaultRoot = "C:\\bam\\content";
         public const string IncludeFileName = "include.js";
         public const string LayoutFileExtension = ".layout";
         public const string HostAppMapFile = "hostAppMaps.json";
@@ -34,13 +38,20 @@ namespace Bam.Net.Server
         public ContentResponder(BamConf conf, ILogger logger, ITemplateRenderer commonTemplateRenderer = null)
             : base(conf, logger)
         {
+            ContentRoot = conf?.ContentRoot ?? DefaultConfiguration.GetAppSetting(contentRootConfigKey, defaultRoot);
+            ServerRoot = new Fs(ContentRoot);
+            TemplateDirectoryNames = new List<string>(new string[] { "views", "templates" });
             CommonTemplateRenderer = commonTemplateRenderer ?? new CommonDustRenderer(this);
             FileCachesByExtension = new Dictionary<string, FileCache>();
-            HostAppMappings = new Dictionary<string, HostAppMap>();
-            TemplateDirectoryNames = new List<string>(new string[] { "views" , "templates" });
+            HostAppMappings = new Dictionary<string, HostAppMap>();            
             InitializeFileExtensions();
             InitializeCaches();
         }
+
+        public ContentResponder(ILogger logger, ITemplateRenderer commonTemplateRenderer = null) : this(null, logger, commonTemplateRenderer)
+        { }
+
+        public string ContentRoot { get; set; }
 
         public AppMetaInitializer AppMetaInitializer { get; set; }
         public List<string> TemplateDirectoryNames { get; set; }
@@ -79,6 +90,18 @@ namespace Bam.Net.Server
                 foreach(AppContentResponder appContent in AppContentResponders.Values.ToArray())
                 {
                     appContent.UncacheFile(file);
+                }
+            });
+        }
+
+        public void RefreshLayouts()
+        {
+            Task.Run(() =>
+            {
+                IncludesCache.Clear();
+                foreach(AppContentResponder appContent in AppContentResponders.Values.ToArray())
+                {
+                    appContent.LayoutModelsByPath.Clear();
                 }
             });
         }
@@ -209,8 +232,7 @@ namespace Bam.Net.Server
                 };
             }
         }
-
-        
+                
         protected virtual void SetBaseIgnorePrefixes()
         {
             AddIgnorPrefix("dao");
@@ -270,7 +292,7 @@ namespace Bam.Net.Server
             {
                 if (!IsAppsInitialized)
                 {
-                    InitializeHostAppMap(BamConf.ContentRoot, AppConfigs ?? BamConf.AppConfigs);
+                    InitializeHostAppMap(ContentRoot, AppConfigs ?? BamConf.AppConfigs);
                     InitializeAppResponders(AppConfigs ?? BamConf.AppConfigs);
                     AppConfigs = AppConfigs ?? BamConf.AppConfigs;
                     IsAppsInitialized = true;
@@ -474,7 +496,7 @@ namespace Bam.Net.Server
                     if (handled)
                     {
                         SetContentType(response, path);
-                        Etags.Set(response, path, content);
+                        Etags.Set(response, request.Url.ToString(), content);
                         SendResponse(response, content);
                         OnResponded(context);
                     }

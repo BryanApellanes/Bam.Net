@@ -23,6 +23,16 @@ namespace Bam.Net.Application
             }
         }
 
+        public VyooResponder(AppConf[] appConfigs, ILogger logger, bool verbose = false) : base(null, logger)
+        {
+            ContentResponder = new ContentResponder(logger) { AppConfigs = appConfigs };
+            if (verbose)
+            {
+                WireResponseLogging(ContentResponder, logger);
+                ContentResponder.Subscribe(logger);
+            }
+        }
+
         public ContentResponder ContentResponder { get; private set; }
 
         public event Action<VyooResponder> Initializing;
@@ -41,6 +51,7 @@ namespace Bam.Net.Application
         public override void Initialize()
         {
             OnInitializing();
+            ContentResponder.Initialize();
             base.Initialize();
             OnInitialized();
         }

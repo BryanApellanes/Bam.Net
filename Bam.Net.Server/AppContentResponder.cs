@@ -339,6 +339,7 @@ namespace Bam.Net.Server
                     }
                     else if (string.IsNullOrEmpty(ext) && !ShouldIgnore(path) || (AppRoot.FileExists("~/pages{0}.html"._Format(path), out locatedPath)))
                     {
+
                         content = RenderLayout(response, path);
                         handled = true;
                     }
@@ -348,7 +349,7 @@ namespace Bam.Net.Server
                 {
                     SetContentType(response, path);
                     SetContentDisposition(response, path);
-                    Etags.Set(response, path, content);
+                    Etags.Set(response, request.Url.ToString(), content);
                     SetResponseHeaders(response, path);
                     SendResponse(response, content);
                     OnResponded(context);
@@ -496,14 +497,18 @@ namespace Bam.Net.Server
         {
             if (AppConf.CompileTemplates)
             {
+                // TODO: see DustScript.cs line 91 to make Regex.Unescape calls unecessary
                 AppConf.AppRoot.WriteFile("~/combinedTemplates.js", Regex.Unescape(AppTemplateRenderer.CombinedCompiledTemplates));
-                
-                foreach(ICompiledTemplate template in AppTemplateRenderer.CompiledTemplates)
+
+                Task.Run(() =>
                 {
-                    FileInfo templateFile = new FileInfo(template.SourceFilePath);
-                    FileInfo jsFile = new FileInfo(Path.Combine(templateFile.Directory.FullName, $"{Path.GetFileNameWithoutExtension(templateFile.Name)}.js"));
-                    jsFile.FullName.SafeWriteFile(template.Compiled);
-                }
+                    Parallel.ForEach(AppTemplateRenderer.CompiledTemplates, (template) =>
+                    {
+                        FileInfo templateFile = new FileInfo(template.SourceFilePath);
+                        FileInfo jsFile = new FileInfo(Path.Combine(templateFile.Directory.FullName, $"{Path.GetFileNameWithoutExtension(templateFile.Name)}.js"));
+                        jsFile.FullName.SafeWriteFile(template.Compiled, true);
+                    });
+                });
             }
         }
 

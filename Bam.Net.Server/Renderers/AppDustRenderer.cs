@@ -31,8 +31,8 @@ namespace Bam.Net.Server.Renderers
             set;
         }
 
-        string _compiledTemplates;
-        object _compiledTemplatesLock = new object();
+        string _combinedCompiledTemplates;
+        object _combinedCompiledTemplatesLock = new object();
         /// <summary>
         /// All application compiled dust templates including Server level
         /// layouts, templates.
@@ -41,7 +41,7 @@ namespace Bam.Net.Server.Renderers
         {
             get
             {
-                return _compiledTemplatesLock.DoubleCheckLock(ref _compiledTemplates, () =>
+                return _combinedCompiledTemplatesLock.DoubleCheckLock(ref _combinedCompiledTemplates, () =>
                 {
                     StringBuilder templates = new StringBuilder();
                     Logger.AddEntry("AppDustRenderer::Appending compiled layout templates");
@@ -59,8 +59,8 @@ namespace Bam.Net.Server.Renderers
             }
         }
 
-        string _compiledLayoutTemplates;
-        object _compiledLayoutTemplatesLock = new object();
+        string _combinedCompiledLayoutTemplates;
+        object _combinedCompiledLayoutTemplatesLock = new object();
         /// <summary>
         /// Represents the compiled javascript result of doing dust.compile
         /// against all the files found in ~s:/common/views/layouts.
@@ -69,7 +69,7 @@ namespace Bam.Net.Server.Renderers
         {
             get
             {
-                return _compiledLayoutTemplatesLock.DoubleCheckLock(ref _compiledLayoutTemplates, () =>
+                return _combinedCompiledLayoutTemplatesLock.DoubleCheckLock(ref _combinedCompiledLayoutTemplates, () =>
                 {
                     StringBuilder templates = new StringBuilder();
 
@@ -82,6 +82,26 @@ namespace Bam.Net.Server.Renderers
 
                     templates.Append(base.CombinedCompiledLayoutTemplates);
                     return templates.ToString();
+                });
+            }
+        }
+
+        List<ICompiledTemplate> _compiledTemplates;
+        object _compiledTemplatesLock = new object();
+        public override IEnumerable<ICompiledTemplate> CompiledTemplates
+        {
+            get
+            {
+                return _compiledTemplatesLock.DoubleCheckLock(ref _compiledTemplates, () =>
+                {
+                    List<ICompiledTemplate> allResults = base.CompiledTemplates.ToList();
+                    foreach (string templateDirectoryName in TemplateDirectoryNames)
+                    {
+                        DirectoryInfo appDustDirectory = new DirectoryInfo(Path.Combine(AppContentResponder.AppRoot.Root, templateDirectoryName));
+                        DustScript.CompileTemplates(appDustDirectory, out List<ICompiledTemplate> results, "*.dust");
+                        allResults.AddRange(results);
+                    }
+                    return allResults;
                 });
             }
         }
@@ -102,7 +122,7 @@ namespace Bam.Net.Server.Renderers
         {
             if (!TemplateExists(anyType, templateName, out string fullPath))
             {
-                lock (_compiledTemplatesLock)
+                lock (_combinedCompiledTemplatesLock)
                 {
                     object instance = anyType.Construct().ValuePropertiesToDynamic();
                     SetTemplateProperties(instance);
@@ -115,7 +135,7 @@ namespace Bam.Net.Server.Renderers
                     }
 
                     File.WriteAllText(fullPath, htm);
-                    _compiledTemplates = null; // forces reload
+                    _combinedCompiledTemplates = null; // forces reload
                 }
             }
         }

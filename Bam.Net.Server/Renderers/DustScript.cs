@@ -88,7 +88,9 @@ namespace Bam.Net.Server.Renderers
                     ICompiledTemplate template = new CompiledDustTemplate(file.FullName, templateFullName);
                     logger.AddEntry("DustScript::Starting Dust compile: fileName={0}, templateName={1}", file.FullName, templateFullName);
                     compiled.Append(";\r\n");
-                    compiled.Append(template);
+                    // TODO: do Regex.Unescape(tempalte.Compiled) to prevent having to do it everywhere else that references the resulting "compiled.ToString()"
+                    // such as below in Render.  Do it here and it shouldn't be necessary anywhere else.
+                    compiled.Append(template.Compiled);
                     compiled.Append(";\r\n");
                     logger.AddEntry("DustScript::Finished Dust compile: fileName={0}, templateName={1}", file.FullName, templateFullName);
                     templates.Add(template);

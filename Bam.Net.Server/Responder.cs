@@ -92,17 +92,17 @@ namespace Bam.Net.Server
             set;
         }
 
+        Fs _serverRoot;
         public Fs ServerRoot
         {
             get
             {
-                return BamConf.Fs;
+                return _serverRoot ?? BamConf.Fs;
             }
-        }
-
-        public Fs AppFs(string appName)
-        {
-            return BamConf.AppFs(appName);
+            protected set
+            {
+                _serverRoot = value;
+            }
         }
 
         /// <summary>

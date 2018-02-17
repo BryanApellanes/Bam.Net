@@ -87,12 +87,11 @@ namespace Bam.Net.Application
                 }
             }
 
-            vyooServer = new VyooServer(conf, logger, GetArgument("verbose", "Log responses to the console?").IsAffirmative())
+            vyooServer = new VyooServer(appConfigs, logger, GetArgument("verbose", "Log responses to the console?").IsAffirmative())
             {
                 HostPrefixes = new HashSet<HostPrefix>(hostPrefixes),
                 MonitorDirectories = DefaultConfiguration.GetAppSetting("MonitorDirectories").DelimitSplit(",", ";")
             };
-            vyooServer.AppConfigs = appConfigs;
             vyooServer.Start();
         }
 

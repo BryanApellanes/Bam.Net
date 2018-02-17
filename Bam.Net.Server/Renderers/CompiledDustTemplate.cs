@@ -50,7 +50,7 @@ namespace Bam.Net.Server.Renderers
             }
 
             // compare the hashes
-            if (temp != null && temp.SourceHash.Equals(this.SourceHash) && temp.Name.Equals(this.Name))
+            if (temp != null && !string.IsNullOrEmpty(temp.Source) && temp.SourceHash.Equals(this.SourceHash) && temp.Name.Equals(this.Name))
             {
                 // if they match set our compiled to that of temp
                 this.Compiled = temp.Compiled;

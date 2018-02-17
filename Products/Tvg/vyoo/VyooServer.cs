@@ -15,11 +15,13 @@ namespace Bam.Net.Application
         public VyooServer(BamConf conf, ILogger logger, bool verbose = false)
             : base(new VyooResponder(conf, logger, verbose), logger)
         {
-            Responder.Initialize();
-            CreatedOrChangedHandler = (o, fsea) =>
-            {
-                ReloadFile(fsea);
-            };
+            Init();
+        }
+
+        public VyooServer(AppConf[] appConfigs, ILogger logger, bool verbose = false) 
+            : base(new VyooResponder(appConfigs, logger, verbose), logger)
+        {
+            Init();
         }
 
         public AppConf[] AppConfigs
@@ -34,13 +36,20 @@ namespace Bam.Net.Application
             }
         }
 
-        protected void ReloadFile(FileSystemEventArgs args)
+        protected void ReloadFile(object sender, FileSystemEventArgs args)
         {
             FileInfo file = new FileInfo(args.FullPath);
             if (file.Exists)
             {
                 Responder.ContentResponder.UncacheFile(file);
+                Responder.ContentResponder.RefreshLayouts();
             }
+        }
+
+        private void Init()
+        {
+            Responder.Initialize();
+            CreatedOrChangedHandler = ReloadFile;
         }
     }
 }

@@ -102,12 +102,12 @@ namespace Bam.Net.Server.Renderers
         }
 
         List<ICompiledTemplate> _compiledTemplates;
-        object _comiledTemplatesLock = new object();
+        object _compiledTemplatesLock = new object();
         public virtual IEnumerable<ICompiledTemplate> CompiledTemplates
         {
             get
             {
-                return _compiledLayoutTemplatesLock.DoubleCheckLock(ref _compiledTemplates, () =>
+                return _compiledTemplatesLock.DoubleCheckLock(ref _compiledTemplates, () =>
                 {
                     List<ICompiledTemplate> allResults = new List<ICompiledTemplate>();
                     foreach (string templateDirectoryName in TemplateDirectoryNames)

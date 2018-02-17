@@ -11,11 +11,14 @@ using Bam.Net.Server;
 using Newtonsoft.Json;
 using Bam.Net.Presentation;
 using Bam.Net.Presentation.Html;
+using Bam.Net.Configuration;
 
 namespace Bam.Net.Server
 {
     public class LayoutConf
     {
+        static string ContentRootKey = "ContentRoot";
+        static string DefaultContentRoot = "C:\\bam\\content";
         /// <summary>
         /// Required for deserialization
         /// </summary>
@@ -68,12 +71,20 @@ namespace Bam.Net.Server
             return model;
         }
 
+        protected string ContentRoot
+        {
+            get
+            {
+                return AppConf?.BamConf?.ContentRoot ?? DefaultConfiguration.GetAppSetting(ContentRootKey, DefaultContentRoot);
+            }
+        }
+
         protected internal void SetIncludes(AppConf conf, LayoutModel layoutModel)
         {
             Includes includes = AppContentResponder.GetAppIncludes(conf);
             if (IncludeCommon)
             {
-                Includes commonIncludes = ContentResponder.GetCommonIncludes(conf.BamConf.ContentRoot);
+                Includes commonIncludes = ContentResponder.GetCommonIncludes(ContentRoot);
                 includes = commonIncludes.Combine(includes);
             }
             layoutModel.ScriptTags = includes.GetScriptTags().ToHtmlString();
