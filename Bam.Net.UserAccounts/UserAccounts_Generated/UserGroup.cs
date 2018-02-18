@@ -192,8 +192,10 @@ namespace Bam.Net.UserAccounts.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<UserGroup>();
 			Database db = database ?? Db.For<UserGroup>();
-			var results = new UserGroupCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new UserGroupCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -630,6 +632,25 @@ namespace Bam.Net.UserAccounts.Data
 			if(orderBy != null)
 			{
 				query.OrderBy<UserGroupColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<UserGroupCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static UserGroupCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<UserGroup>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<UserGroup>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

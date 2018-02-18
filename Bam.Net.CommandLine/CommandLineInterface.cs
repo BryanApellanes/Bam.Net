@@ -30,7 +30,7 @@ namespace Bam.Net.CommandLine
             ValidArgumentInfo = new List<ArgumentInfo>();
             _cachedArguments = new Dictionary<string, string>();
         }
-
+        
         public static string PasswordPrompt(string promptMessage = null, ConsoleColor color = ConsoleColor.Cyan)
         {
             return PasswordPrompt(new ConsoleColorCombo(color), promptMessage);

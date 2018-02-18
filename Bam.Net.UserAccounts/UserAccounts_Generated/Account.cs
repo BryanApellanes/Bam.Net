@@ -269,8 +269,10 @@ namespace Bam.Net.UserAccounts.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Account>();
 			Database db = database ?? Db.For<Account>();
-			var results = new AccountCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new AccountCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -707,6 +709,25 @@ namespace Bam.Net.UserAccounts.Data
 			if(orderBy != null)
 			{
 				query.OrderBy<AccountColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<AccountCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static AccountCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<Account>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<Account>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

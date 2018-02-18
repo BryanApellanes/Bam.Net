@@ -55,10 +55,12 @@ namespace Bam.Net.UserAccounts.Data
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("GroupPermission_PermissionId", new GroupPermissionCollection(Database.GetQuery<GroupPermissionColumns, GroupPermission>((c) => c.PermissionId == GetLongValue("Id")), this, "PermissionId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("UserPermission_PermissionId", new UserPermissionCollection(Database.GetQuery<UserPermissionColumns, UserPermission>((c) => c.PermissionId == GetLongValue("Id")), this, "PermissionId"));				
 			}						
@@ -305,8 +307,10 @@ namespace Bam.Net.UserAccounts.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Permission>();
 			Database db = database ?? Db.For<Permission>();
-			var results = new PermissionCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new PermissionCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -743,6 +747,25 @@ namespace Bam.Net.UserAccounts.Data
 			if(orderBy != null)
 			{
 				query.OrderBy<PermissionColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<PermissionCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static PermissionCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<Permission>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<Permission>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

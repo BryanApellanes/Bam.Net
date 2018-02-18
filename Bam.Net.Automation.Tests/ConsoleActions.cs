@@ -54,7 +54,7 @@ namespace Bam.Net.Automation.Tests
                 AddDetails = false
             };
             logger.StartLoggingThread();
-            TestReportService svc = proxyFactory.GetProxy<TestReportService>("int.bamapps.net", 80, logger);
+            TestReportService svc = proxyFactory.GetProxy<TestReportService>("gloo.localhost", 9100, logger);
             Dictionary<string, string> settings = svc.GetSettings();
             if(settings != null)
             {
@@ -63,19 +63,6 @@ namespace Bam.Net.Automation.Tests
                     OutLineFormat("{0}: {1}", key, settings[key]);
                 }
             }
-        }
-
-        [ConsoleAction]
-        public void TestWhoAmi()
-        {
-            ProxyFactory proxyFactory = new ProxyFactory();
-            ConsoleLogger logger = new ConsoleLogger()
-            {
-                AddDetails = false
-            };
-            logger.StartLoggingThread();
-            TestReportService svc = proxyFactory.GetProxy<TestReportService>("int.bamapps.net", 80, logger);
-            OutLineFormat(svc.WhoAmI());
         }
 
         [ConsoleAction]

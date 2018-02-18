@@ -111,6 +111,10 @@
       <Project>{f27dc9a6-e432-4d20-bcef-d10b0c2a657d}</Project>
       <Name>Bam.Net.Encryption</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Bam.Net.Incubation\Bam.Net.Incubation.csproj">
+      <Project>{AA186331-A0D0-4F77-BEA2-E7B7650D3FF5}</Project>
+      <Name>Bam.Net.Incubation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Bam.Net.Javascript\Bam.Net.Javascript.csproj">
       <Project>{34c5016d-5265-4394-a9ba-cb2f70d8e93b}</Project>
       <Name>Bam.Net.Javascript</Name>

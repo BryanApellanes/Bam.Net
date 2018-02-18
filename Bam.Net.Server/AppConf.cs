@@ -117,7 +117,7 @@ namespace Bam.Net.Server
             {
                 if (string.IsNullOrEmpty(_displayName)) 
                 {
-                    _displayName = Name.PascalSplit(" ");
+                    _displayName = Name?.PascalSplit(" ") ?? "AppConf.DisplayName not specified";
                 }
 
                 return _displayName;

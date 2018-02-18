@@ -28,7 +28,7 @@ using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Repository;
 namespace Bam.Net.CoreServices
 {
     /// <summary>
-    /// Default application registry container for applications
+    /// Default application registry container for applications running locally.
     /// </summary>
     [ServiceRegistryContainer]
     public static class ApplicationServiceRegistryContainer
@@ -87,6 +87,7 @@ namespace Bam.Net.CoreServices
                 .For<AppConf>().Use(conf)
                 .For<IDatabaseProvider>().Use(dbProvider)
                 .For<IUserManager>().Use(userMgr)
+                .For<UserManager>().Use(userMgr)
                 .For<IUserResolver>().Use(userResolver)
                 .For<DaoUserResolver>().Use(userResolver)
                 .For<IRoleResolver>().Use(roleResolver)
