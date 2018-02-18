@@ -20,8 +20,10 @@ namespace Bam.Net.ServiceProxy
         {
             Method = method;
             UsingNamespaces = new HashSet<string>();
-            KnownTypes = new HashSet<Type>();
-            KnownTypes.Add(method.ReturnType);
+            KnownTypes = new HashSet<Type>
+            {
+                method.ReturnType
+            };
             Parameters.Each(p =>
             {
                 KnownTypes.Add(p.ParameterType);
@@ -33,10 +35,9 @@ namespace Bam.Net.ServiceProxy
                 UsingNamespaces.Add(method.ReturnType.Namespace);
             }
             ReturnTypeCodeString = IsVoidReturn ? "void" : method.ReturnType.Name;
-            Type[] genericTypesOfReturn;
-            if (method.ReturnType.HasGenericArguments(out genericTypesOfReturn))
+            if (method.ReturnType.HasGenericArguments(out Type[] genericTypesOfReturn))
             {
-                string returnTypeName = method.ReturnType == typeof(int) || method.ReturnType == typeof(long) ? method.ReturnType.Name: method.ReturnType.Name.DropTrailingNonLetters();
+                string returnTypeName = method.ReturnType == typeof(int) || method.ReturnType == typeof(long) ? method.ReturnType.Name : method.ReturnType.Name.DropTrailingNonLetters();
                 ReturnTypeCodeString = string.Format("{0}<{1}>", returnTypeName, genericTypesOfReturn.ToDelimited(t => t.ToTypeString()));
                 genericTypesOfReturn.Each(t =>
                 {

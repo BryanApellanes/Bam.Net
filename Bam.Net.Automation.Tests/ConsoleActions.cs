@@ -46,17 +46,37 @@ namespace Bam.Net.Automation.Tests
 
 
         [ConsoleAction]
-        public void TestGetSettingsFromInt()
+        public void TestGetSettingsFromIntegrationServer()
         {
             ProxyFactory proxyFactory = new ProxyFactory();
-            TestReportService svc = proxyFactory.GetProxy<TestReportService>("int.bamapps.net", 80);
-            Dictionary<string, string> settings = svc.GetSettings();
-            foreach(string key in settings.Keys)
+            ConsoleLogger logger = new ConsoleLogger()
             {
-                OutLineFormat("{0}: {1}", key, settings[key]);
+                AddDetails = false
+            };
+            logger.StartLoggingThread();
+            TestReportService svc = proxyFactory.GetProxy<TestReportService>("int.bamapps.net", 80, logger);
+            Dictionary<string, string> settings = svc.GetSettings();
+            if(settings != null)
+            {
+                foreach (string key in settings.Keys)
+                {
+                    OutLineFormat("{0}: {1}", key, settings[key]);
+                }
             }
         }
 
+        [ConsoleAction]
+        public void TestWhoAmi()
+        {
+            ProxyFactory proxyFactory = new ProxyFactory();
+            ConsoleLogger logger = new ConsoleLogger()
+            {
+                AddDetails = false
+            };
+            logger.StartLoggingThread();
+            TestReportService svc = proxyFactory.GetProxy<TestReportService>("int.bamapps.net", 80, logger);
+            OutLineFormat(svc.WhoAmI());
+        }
 
         [ConsoleAction]
         public void GetGitBranch()

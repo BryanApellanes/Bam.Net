@@ -97,6 +97,38 @@ namespace Bam.Net.CoreServices
         /// </summary>
         public string WorkspaceDirectory { get; private set; }
 
+        public T GetProxy<T>(EventHandler<ServiceProxyInvokeEventArgs> invocationExceptionHandler)
+        {
+            T result = GetProxy<T>();
+            SubscribeToInvocationExceptions(result, invocationExceptionHandler);
+            return result;
+        } 
+
+        /// <summary>
+        /// Get a proxy of the specified generic type T which, when invoked, will delegate
+        /// to the specified hostName and port subscribing the specified invocationExceptionHandler
+        /// to any exceptions related to the ServiceProxyClient delegated invocations.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="hostName"></param>
+        /// <param name="port"></param>
+        /// <param name="invocationExceptionHandler"></param>
+        /// <returns></returns>
+        public T GetProxy<T>(string hostName, int port, EventHandler<ServiceProxyInvokeEventArgs> invocationExceptionHandler)
+        {
+            T result = GetProxy<T>(hostName, port);
+            SubscribeToInvocationExceptions(result, invocationExceptionHandler);
+            return result;
+        }
+
+        public T GetProxy<T>(string hostName, int port, ILogger logger = null)
+        {
+            logger = logger ?? Log.Default;
+            T proxy = GetProxy<T>(hostName, port);
+            SubscribeToInvocationExceptions(proxy, (o, a) => logger.AddEntry("Proxy Invocation Failed:(Cuid={0}):Remote={1}:{2}.{3}: {4}", a.Exception, a.Cuid, a.BaseAddress, a.ClassName, a.MethodName, a.Message));
+            return proxy;
+        }
+
         public object GetProxy(Type type)
         {
             Assembly assembly = GetAssembly(type);
@@ -248,6 +280,12 @@ namespace Bam.Net.CoreServices
                 serviceProvider.SetProperties(result);
             }
             return result;
+        }
+        
+        private static void SubscribeToInvocationExceptions<T>(T result, EventHandler<ServiceProxyInvokeEventArgs> invocationExceptionHandler)
+        {
+            ServiceProxyClient client = result.Property<ServiceProxyClient>("Client"); // Client is defined on the generated proxy class, and this is using reflection to access it; magical knowledge 
+            client.Subscribe(nameof(ServiceProxyClient.InvocationException), invocationExceptionHandler);
         }
     }
 }

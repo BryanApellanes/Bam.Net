@@ -8,7 +8,7 @@ namespace Bam.Net.ServiceProxy
 {
     public class SecureChannelInvokeException: Exception
     {
-        public SecureChannelInvokeException(string className, string methodName, string jsonParams) : base($"Exepected Unexpected execution result for {className}.{methodName}({jsonParams})")
+        public SecureChannelInvokeException(string className, string methodName, string jsonParams) : base($"Unexpected execution result for {className}.{methodName}({jsonParams})")
         { }
     }
 }

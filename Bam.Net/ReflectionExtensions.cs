@@ -254,6 +254,11 @@ namespace Bam.Net
             return Subscribe<T>(instance, eventName, handler);
         }
 
+        public static T Subscribe<T, TEventArgs>(this T instance, string eventName, EventHandler<TEventArgs> handler)
+        {
+            return Subscribe<T>(instance, eventName, handler);
+        }
+
         public static T Subscribe<T>(this T instance, string eventName, Delegate handler)
         {
             EventInfo eventInfo = typeof(T).GetEvent(eventName);
@@ -261,6 +266,7 @@ namespace Bam.Net
             eventInfo.AddEventHandler(instance, handler);
             return instance;
         }
+
         public static T SubscribeOnce<T>(this T instance, string eventName, EventHandler handler)
         {
             return SubscribeOnce(instance, eventName, (Delegate)handler);
