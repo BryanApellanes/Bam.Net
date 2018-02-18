@@ -327,7 +327,7 @@ namespace Bam.Net.CoreServices
             get;set;
         }
 
-        [RoleRequired("/", "Admin", "Diagnoser")]
+        //[RoleRequired("/", "Admin", "Diagnoser")]
         public virtual Dictionary<string, string> GetSettings()
         {
             object userDatabase = UserManager?.Property("Database", false);
