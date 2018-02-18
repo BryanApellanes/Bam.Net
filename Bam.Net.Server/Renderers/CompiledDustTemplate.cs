@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace Bam.Net.Server.Renderers
 {
@@ -100,6 +101,14 @@ namespace Bam.Net.Server.Renderers
             get
             {
                 return Source.Sha1();
+            }
+        }
+
+        public string UnescapedCompiled
+        {
+            get
+            {
+                return Regex.Unescape(Compiled);
             }
         }
 

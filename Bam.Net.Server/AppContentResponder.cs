@@ -506,7 +506,7 @@ namespace Bam.Net.Server
                     {
                         FileInfo templateFile = new FileInfo(template.SourceFilePath);
                         FileInfo jsFile = new FileInfo(Path.Combine(templateFile.Directory.FullName, $"{Path.GetFileNameWithoutExtension(templateFile.Name)}.js"));
-                        jsFile.FullName.SafeWriteFile(template.Compiled, true);
+                        jsFile.FullName.SafeWriteFile(template.UnescapedCompiled, true);
                     });
                 });
             }
