@@ -18,11 +18,12 @@ using Bam.Net.Testing.Data;
 using Bam.Net.Automation.Testing;
 using Bam.Net.Automation.Testing.Data;
 using Bam.Net.Automation.Testing.Data.Dao.Repository;
+using Bam.Net.CoreServices;
 
 namespace Bam.Net.Automation.Testing
 {
     [Proxy("testReportSvc", MethodCase = MethodCase.CamelCase)]
-    public class TestReportService : Loggable, IRequiresHttpContext, ITestReportService
+    public class TestReportService : ProxyableService, IRequiresHttpContext, ITestReportService
     {
         protected TestReportService() : this(new SQLiteDatabaseProvider(DataSettings.Current.GetSysDatabaseDirectory().FullName, Log.Default), Log.Default)
         {
@@ -55,6 +56,16 @@ namespace Bam.Net.Automation.Testing
             Logger = logger;
             Repository = repo;
         }
+
+        [Local]
+        public override object Clone()
+        {
+            TestReportService clone = new TestReportService(DatabaseProvider, Logger);
+            clone.CopyProperties(this);
+            clone.CopyEventHandlers(this);
+            return clone;
+        }
+
         protected IDatabaseProvider DatabaseProvider { get; set; }
         protected ILogger Logger { get; set; }
         public Database Database { get; set; }
@@ -396,14 +407,6 @@ namespace Bam.Net.Automation.Testing
 			get;
 			set;
 		}
-
-        [Local]
-        public object Clone()
-        {
-            TestReportService clone = new TestReportService(DatabaseProvider, Logger);
-            clone.CopyProperties(this);
-            return clone;
-        }
 
         #endregion
     }

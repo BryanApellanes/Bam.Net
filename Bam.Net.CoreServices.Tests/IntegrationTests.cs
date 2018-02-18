@@ -37,7 +37,7 @@ namespace Bam.Net.CoreServices.Tests
         {
             
         }
-        
+
         [ConsoleAction]
         [IntegrationTest]
         public void ProtoFileGeneratorCanGenerateFiles()

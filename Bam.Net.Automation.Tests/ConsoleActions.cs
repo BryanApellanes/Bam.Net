@@ -24,6 +24,8 @@ using System.Messaging;
 using System.Threading;
 using System.Diagnostics;
 using System.ComponentModel;
+using Bam.Net.CoreServices;
+using Bam.Net.Automation.Testing;
 using Bam.Net.Automation.SourceControl;
 
 namespace Bam.Net.Automation.Tests
@@ -41,6 +43,20 @@ namespace Bam.Net.Automation.Tests
             public bool IsMonkey { get; set; }
         }
         string messageName = "test";
+
+
+        [ConsoleAction]
+        public void TestGetSettingsFromInt()
+        {
+            ProxyFactory proxyFactory = new ProxyFactory();
+            TestReportService svc = proxyFactory.GetProxy<TestReportService>("int.bamapps.net", 80);
+            Dictionary<string, string> settings = svc.GetSettings();
+            foreach(string key in settings.Keys)
+            {
+                OutLineFormat("{0}: {1}", key, settings[key]);
+            }
+        }
+
 
         [ConsoleAction]
         public void GetGitBranch()
