@@ -33,9 +33,6 @@ namespace Bam.Net.Automation.Tests
     [Serializable]
     public class ConsoleActions: CommandLineTestInterface
     {
-        public const string TFSServer = "http://tfs.bamapps.com:8080/tfs";
-        public const string TeamProjectCollection = "ISDEV";
-
         [Serializable]
         public class TestMessage
         {

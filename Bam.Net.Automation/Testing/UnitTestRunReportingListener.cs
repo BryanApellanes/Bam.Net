@@ -188,7 +188,7 @@ namespace Bam.Net.Automation.Testing
                 TestSuiteDefinition suiteDefinition = GetTestSuiteDefinition(test);
                 TestDefinition testDefinition = GetTestDefinition(suiteDefinition.Title, test);
                 TestSuiteExecutionSummary executionSummary = GetTestSuiteExecutionSummary(suiteDefinition);
-                SaveTestExecutionResponse saveResponse = TestReportService.StartTest(executionSummary.Id, testDefinition.Id, test.Tag);
+                SaveTestExecutionResponse saveResponse = TestReportService.StartTest(executionSummary.Id, testDefinition.Id, Tag);
                 if (saveResponse.Success)
                 {
                     execution = saveResponse.TestExecution;

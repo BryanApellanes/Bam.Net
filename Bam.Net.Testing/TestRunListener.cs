@@ -47,7 +47,7 @@ namespace Bam.Net.Testing
             runner.TestsFinished += TestsFinished;
             runner.TestFinished += TestFinished;
         }
-
+        public string Tag { get; set; }
         public abstract void TestFailed(object sender, TestExceptionEventArgs args);
         public abstract void TestPassed(object sender, TestEventArgs<TTestMethod> args);
         public virtual void TestsStarting(object sender, TestEventArgs<TTestMethod> args) { }

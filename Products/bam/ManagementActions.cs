@@ -22,6 +22,9 @@ namespace Bam.Net.Application
 	{
         const string BamSysPath = "C:\\bam\\sys\\";
 
+        /// <summary>
+        /// List all users from the local database.
+        /// </summary>
         [ConsoleAction("listLocalUsers", "list local users")]
         public void UserAdmin()
         {
@@ -35,6 +38,9 @@ namespace Bam.Net.Application
             }
         }
 
+        /// <summary>
+        /// Create a user in the local user database.
+        /// </summary>
         [ConsoleAction("createLocalUser", "create a local user account")]
         public void CreateLocalUser()
         {
