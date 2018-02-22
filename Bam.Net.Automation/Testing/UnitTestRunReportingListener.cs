@@ -35,23 +35,22 @@ namespace Bam.Net.Automation.Testing
         
         public override void TestsStarting(object sender, TestEventArgs<UnitTestMethod> args)
         {
-            ConsoleMethod test = args.Test;
-            TestSuiteDefinition suite = GetTestSuiteDefinition(test);
+            TestSuiteDefinition suite = GetTestSuiteDefinition<UnitTestMethod>(args);
             SetTestSuiteExecutionSummary(suite);
         }
 
         public override void TestStarting(object sender, TestEventArgs<UnitTestMethod> args)
         {
+            TestSuiteDefinition suite = TestSuiteDefinition.FromTestEventArgs(args);
             UnitTestMethod test = args.Test.CopyAs<UnitTestMethod>();
-            TestSuiteDefinition suite = TestSuiteDefinition.FromMethod(test);
             TestDefinition testDefinition = GetTestDefinition(suite.Title, test);
-            SetTestExecution(test);
+            SetTestExecution(args);
         }
 
         public override void TestPassed(object sender, TestEventArgs<UnitTestMethod> args)
         {
             UnitTestMethod test = args.Test.CopyAs<UnitTestMethod>();
-            TestExecution testExecution = GetTestExecution(test);
+            TestExecution testExecution = SetTestExecution(args);
             testExecution.Passed = true;
             TestReportService.SaveTestExecution(testExecution);
         }
@@ -59,7 +58,7 @@ namespace Bam.Net.Automation.Testing
         public override void TestFailed(object sender, TestExceptionEventArgs args)
         {
             UnitTestMethod test = args.TestMethod.CopyAs<UnitTestMethod>();
-            TestExecution testExecution = GetTestExecution(test);
+            TestExecution testExecution = SetTestExecution(test);
             testExecution.Passed = false;
             Exception ex = args.Exception?.GetInnerException();
             testExecution.Exception = ex?.Message;
@@ -70,14 +69,14 @@ namespace Bam.Net.Automation.Testing
         public override void TestFinished(object sender, TestEventArgs<UnitTestMethod> args)
         {
             UnitTestMethod test = args.Test.CopyAs<UnitTestMethod>();
-            TestExecution testExecution = GetTestExecution(test);
+            TestExecution testExecution = SetTestExecution(test);
             TestReportService.FinishTest(testExecution.Id);
         }
 
         public override void TestsFinished(object sender, TestEventArgs<UnitTestMethod> args)
         {
             UnitTestMethod test = args.Test.CopyAs<UnitTestMethod>();
-            TestSuiteDefinition suite = GetTestSuiteDefinition(test);
+            TestSuiteDefinition suite = GetTestSuiteDefinition(args);
             TestSuiteExecutionSummary summary = GetTestSuiteExecutionSummary(suite);
             summary.FinishedTime = DateTime.UtcNow;
             TestReportService.SaveTestSuiteExecutionSummary(summary);
@@ -98,8 +97,31 @@ namespace Bam.Net.Automation.Testing
         /// Get a TestSuiteDefinition for the specified test creating it if necessary
         /// and populating the internal cache
         /// </summary>
-        /// <param name="test"></param>
+        /// <param name="args"></param>
         /// <returns></returns>
+        protected TestSuiteDefinition GetTestSuiteDefinition<TTestMethod>(TestEventArgs<TTestMethod> args) where TTestMethod : TestMethod
+        {
+            ConsoleMethod test = args.Test;
+            TestSuiteDefinition suite = TestSuiteDefinition.FromTestEventArgs(args);
+            if (!_testSuiteDefinitionLookupByTitle.TryGetValue(suite.Title, out TestSuiteDefinition fromCache))
+            {
+                GetSuiteDefinitionResponse response = TestReportService.GetSuiteDefinition(suite.Title);
+                if (response.Success)
+                {
+                    _testSuiteDefinitionLookupByTitle.TryAdd(suite.Title, response.SuiteDefinition);
+                }
+                else
+                {
+                    Logger.Warning("Failed to define test suite: {0}", response.Message);
+                }
+            }
+            if (fromCache != null)
+            {
+                suite = fromCache;
+            }
+            return suite;
+        }
+
         protected TestSuiteDefinition GetTestSuiteDefinition(ConsoleMethod test)
         {
             TestSuiteDefinition suite = TestSuiteDefinition.FromMethod(test);
@@ -176,14 +198,31 @@ namespace Bam.Net.Automation.Testing
             return testDefinition;
         }
 
-        protected TestExecution GetTestExecution(UnitTestMethod test)
+        protected TestExecution SetTestExecution<TTestMethod>(TestEventArgs<TTestMethod> args) where TTestMethod : TestMethod
         {
-            return SetTestExecution(test);
+            UnitTestMethod test = args.Test.CopyAs<UnitTestMethod>();
+            if (!_testExecutionLookupByMethodInfo.TryGetValue(test.Method, out TestExecution execution))
+            {
+                TestSuiteDefinition suiteDefinition = GetTestSuiteDefinition(args);
+                TestDefinition testDefinition = GetTestDefinition(suiteDefinition.Title, test);
+                TestSuiteExecutionSummary executionSummary = GetTestSuiteExecutionSummary(suiteDefinition);
+                SaveTestExecutionResponse saveResponse = TestReportService.StartTest(executionSummary.Id, testDefinition.Id, Tag);
+                if (saveResponse.Success)
+                {
+                    execution = saveResponse.TestExecution;
+                    _testExecutionLookupByMethodInfo.TryAdd(test.Method, execution);
+                }
+                else
+                {
+                    Logger.Warning("Failed to get TestExecution: {0}", saveResponse.Message);
+                }
+            }
+            return execution;
         }
 
         protected TestExecution SetTestExecution(UnitTestMethod test)
         {
-            if(!_testExecutionLookupByMethodInfo.TryGetValue(test.Method, out TestExecution execution))
+            if (!_testExecutionLookupByMethodInfo.TryGetValue(test.Method, out TestExecution execution))
             {
                 TestSuiteDefinition suiteDefinition = GetTestSuiteDefinition(test);
                 TestDefinition testDefinition = GetTestDefinition(suiteDefinition.Title, test);
