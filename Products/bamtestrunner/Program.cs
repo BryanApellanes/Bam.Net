@@ -19,6 +19,7 @@ namespace Bam.Net.Testing
         
         static void Main(string[] args)
         {
+            IsolateMethodCalls = false;
             PreInit();
             Initialize(args);
         }
