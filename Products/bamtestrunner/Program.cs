@@ -45,7 +45,7 @@ namespace Bam.Net.Testing
 
             // the arguments protected member is not available in PreInit() (this method)
             #endregion
-            AddValidArgument("search", false, description: "The search pattern to use to locate test assemblies");
+            AddValidArgument("search", false, description: "The search pattern to use to locate test assemblies, the default is *Tests.* if not specified.");
             AddValidArgument("dir", false, description: "The directory to look for test assemblies in");
             AddValidArgument("debug", true, description: "If specified, the runner will pause to allow for a debugger to be attached to the process");
             AddValidArgument("data", false, description: "The path to save the results to, default is the current directory if not specified");
@@ -180,7 +180,7 @@ namespace Bam.Net.Testing
             }
             else
             {
-                files = testDir.GetFiles();
+                files = testDir.GetFiles("*Tests.*");
             }
             return files;
         }
