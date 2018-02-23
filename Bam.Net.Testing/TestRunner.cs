@@ -164,7 +164,7 @@ namespace Bam.Net.Testing
         [DebuggerStepThrough]
         public void RunTest(TestMethod test)
         {
-            TestEventArgs<TTestMethod> args = new TestEventArgs<TTestMethod> { Test = test, TestRunner = this, Tag = Tag };
+            TestEventArgs<TTestMethod> args = new TestEventArgs<TTestMethod> { Test = test, TestRunner = this, Tag = Tag, Assembly = test.Method.DeclaringType.Assembly };
             FireEvent(TestStarting, args);
             try
             {
