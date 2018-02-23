@@ -180,7 +180,10 @@ namespace Bam.Net.Testing
             }
             else
             {
-                files = testDir.GetFiles("*Tests.*");
+                List<FileInfo> tmp = new List<FileInfo>();
+                tmp.AddRange(testDir.GetFiles("*Tests.exe"));
+                tmp.AddRange(testDir.GetFiles("*Tests.dll"));
+                files = tmp.ToArray();
             }
             return files;
         }
