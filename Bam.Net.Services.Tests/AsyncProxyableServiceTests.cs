@@ -97,7 +97,7 @@ namespace Bam.Net.Services.Tests
             ConsoleLogger logger = GetTestConsoleLogger();
             ProxyFactory serviceFactory = new ProxyFactory(".\\workspace_".RandomLetters(4), logger);
             AsyncCallbackService callbackService = new AsyncCallbackService(new AsyncCallback.Data.Dao.Repository.AsyncCallbackRepository(), new AppConf());
-            AsyncProxyableEcho testObj = serviceFactory.GetProxy<AsyncProxyableEcho>("localhost", 8080); // the "server"
+            AsyncProxyableEcho testObj = serviceFactory.GetProxy<AsyncProxyableEcho>("localhost", 8080, logger); // the "server"
             testObj.CallbackService = callbackService;
             return testObj;
         }

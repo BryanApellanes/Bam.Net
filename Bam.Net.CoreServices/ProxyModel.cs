@@ -91,7 +91,7 @@ namespace Bam.Net.CoreServices
                 assemblies.Add(typeof(DataRow).Assembly);
                 assemblies.Add(typeof(Vault).Assembly);
                 assemblies.Add(typeof(SmtpSettingsProvider).Assembly);
-                AdditionalReferenceAssemblies.Each(a => assemblies.Add(a));
+                AdditionalReferenceAssemblies.Each(new { Assemblies = assemblies }, (ctx, a) => ctx.Assemblies.Add(a));
                 return assemblies.ToArray();
             }
         }
