@@ -90,6 +90,7 @@ namespace Bam.Net.Testing
                     string errorFile = Path.Combine(outputDirectory.FullName, "output", $"{Path.GetFileNameWithoutExtension(file.Name)}_error.txt");
                     string pidFile = Path.Combine(outputDirectory.FullName, "output", $"{Path.GetFileNameWithoutExtension(file.Name)}.pid");
                     string commandLine = $"{OpenCover} -target:\"{main.FullName}\" -targetargs:\"/{testType}Tests:{file.FullName} /testReportHost:{testReportHost} /testReportPort:{testReportPort} /tag:{tag}\" -register:user -filter:\"+[Bam.Net*]* -[*].Data.* -[*Test*].Tests.*\" -output:{xmlFile}";
+                    OutLineFormat("Running: {0}", ConsoleColor.Yellow, commandLine);
                     ProcessOutput output = commandLine.Run(7200000); // timeout after 2 hours
                     output.StandardError.SafeWriteToFile(errorFile, true);
                     output.StandardOutput.SafeWriteToFile(outputFile, true);
