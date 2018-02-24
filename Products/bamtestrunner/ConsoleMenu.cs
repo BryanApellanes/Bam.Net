@@ -50,9 +50,11 @@ namespace Bam.Net.Testing
             string testReportHost = GetArgument("testReportHost", "What server/hostname should tests report to?");
             string testReportPort = GetArgument("testReportPort", "What port is the test report service listening on?");
             string tag = string.Empty;
+            OutLine("Checking for commit file");
             string commitFile = Path.Combine(main.Directory.FullName, "commit");
             if (File.Exists(commitFile))
             {
+                OutLine("commit file found; reading commit hash to use as tag");
                 tag = File.ReadAllText(commitFile);
             }
             if (string.IsNullOrEmpty(tag))
@@ -131,14 +133,17 @@ namespace Bam.Net.Testing
 
         private static DirectoryInfo EnsureOutputDirectories(string tag)
         {
+            OutLine("Creating output directories as necessary");
             DirectoryInfo outputDirectory = new DirectoryInfo(Path.Combine(OutputRoot, tag));
             if (!outputDirectory.Exists)
             {
+                OutLineFormat("Directory doesn't exist, creating it: {0}", outputDirectory.FullName);
                 outputDirectory.Create();
             }
             string coverageDir = Path.Combine(outputDirectory.FullName, "coverage");
             if (!Directory.Exists(coverageDir))
             {
+                OutLineFormat("Coverage directory doesn't exist, creating it: {0}", coverageDir);
                 Directory.CreateDirectory(coverageDir);
             }
 

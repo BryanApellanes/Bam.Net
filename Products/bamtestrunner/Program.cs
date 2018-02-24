@@ -190,6 +190,7 @@ namespace Bam.Net.Testing
        
         private static DirectoryInfo GetTestDirectory()
         {
+            OutLine("Getting test directory");
             DirectoryInfo testDir = new DirectoryInfo(".");
             if (Arguments.Contains("dir"))
             {
@@ -201,6 +202,7 @@ namespace Bam.Net.Testing
                     Exit(1);
                 }
             }
+            OutLineFormat("Got test directory: {0}", testDir.FullName);
             return testDir;
         }
     }
