@@ -77,8 +77,10 @@ namespace Bam.Net.CoreServices
         {
             get
             {
-                HashSet<Assembly> assemblies = new HashSet<Assembly>();
-                assemblies.Add(typeof(ProxyModel).Assembly);
+                HashSet<Assembly> assemblies = new HashSet<Assembly>
+                {
+                    typeof(ProxyModel).Assembly
+                };
                 ServiceGenerationInfo.ReferenceAssemblies.Each(new { Assemblies = assemblies }, (ctx, a) => ctx.Assemblies.Add(a));
                 TypeInheritanceDescriptor inheritance = new TypeInheritanceDescriptor(BaseType);
                 inheritance.Chain.Each(new { Assemblies = assemblies }, (ctx, tt) => ctx.Assemblies.Add(tt.Type.Assembly));

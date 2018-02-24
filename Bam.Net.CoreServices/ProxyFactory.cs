@@ -235,18 +235,9 @@ namespace Bam.Net.CoreServices
 
             settings = settings ?? DefaultSettings;
             ProxyAssemblyGenerator generator = new ProxyAssemblyGenerator(settings, WorkspaceDirectory, Logger);
-            generator.AssemblyGenerating += (o, args) =>
-            {
-                OnAssemblyGenerating(args);
-            };
-            generator.AssemblyGenerated += (o, args) =>
-            {
-                OnAssemblyGenerated(args);
-            };
-            generator.MethodWarning += (o, args) =>
-            {
-                OnMethodWarning(args);
-            };
+            generator.AssemblyGenerating += (o, args) => OnAssemblyGenerating(args);
+            generator.AssemblyGenerated += (o, args) => OnAssemblyGenerated(args);
+            generator.MethodWarning += (o, args) => OnMethodWarning(args);
             return generator.GetAssembly();
         }
 

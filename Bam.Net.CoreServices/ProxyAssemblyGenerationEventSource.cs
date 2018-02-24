@@ -18,24 +18,15 @@ namespace Bam.Net.CoreServices
         public event EventHandler<ProxyAssemblyGenerationEventArgs> MethodWarning;
         protected void OnAssemblyGenerating(ProxyAssemblyGenerationEventArgs args)
         {
-            if (AssemblyGenerating != null)
-            {
-                AssemblyGenerating(this, args);
-            }
+            AssemblyGenerating?.Invoke(this, args);
         }
         protected void OnAssemblyGenerated(ProxyAssemblyGenerationEventArgs args)
         {
-            if (AssemblyGenerated != null)
-            {
-                AssemblyGenerated(this, args);
-            }
+            AssemblyGenerated?.Invoke(this, args);
         }
         protected void OnMethodWarning(ProxyAssemblyGenerationEventArgs args)
         {
-            if (MethodWarning != null)
-            {
-                MethodWarning(this, args);
-            }
+            MethodWarning?.Invoke(this, args);
         }
     }
 }

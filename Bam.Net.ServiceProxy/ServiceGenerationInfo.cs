@@ -31,13 +31,17 @@ namespace Bam.Net.ServiceProxy
         {
             get
             {
-                HashSet<Assembly> results = new HashSet<Assembly>();
-                results.Add(typeof(Uri).Assembly);
-                results.Add(Type.Assembly);
+                HashSet<Assembly> results = new HashSet<Assembly>
+                {
+                    typeof(Uri).Assembly,
+                    Type.Assembly
+                };
                 MethodGenerationInfos.Each(mgi =>
                 {
                     mgi.ReferenceAssemblies.Each(a => results.Add(a));
                 });
+                CustomAttributeTypeDescriptor customAttributes = new CustomAttributeTypeDescriptor(Type);
+                customAttributes.AttributeTypes.Each(attrType => results.Add(attrType.Assembly));
                 AddDefaultAssemblies(results);
                 return results.ToArray();
             }
