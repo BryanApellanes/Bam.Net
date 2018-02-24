@@ -25,7 +25,8 @@ namespace Bam.Net.Automation.Testing
         {
             Logger = logger ?? Log.Default;
             ProxyFactory proxyFactory = new ProxyFactory();
-            TestReportService = proxyFactory.GetProxy<TestReportService>(testReportHost, port);
+            HashSet<Assembly> reference = new HashSet<Assembly>() { typeof(TestMethod).Assembly };
+            TestReportService = proxyFactory.GetProxy<TestReportService>(testReportHost, port, reference);
             TestReportHost = testReportHost;
             _testSuiteExecutionLookupByTitle = new ConcurrentDictionary<string, TestSuiteExecutionSummary>();
             _testSuiteDefinitionLookupByTitle = new ConcurrentDictionary<string, TestSuiteDefinition>();

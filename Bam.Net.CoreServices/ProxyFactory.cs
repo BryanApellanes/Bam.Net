@@ -8,6 +8,7 @@ using Bam.Net.Logging;
 using Bam.Net.Incubation;
 using Bam.Net.Server;
 using Bam.Net.ServiceProxy;
+using System.Collections.Generic;
 
 namespace Bam.Net.CoreServices
 {
@@ -116,7 +117,7 @@ namespace Bam.Net.CoreServices
         /// <returns></returns>
         public T GetProxy<T>(string hostName, int port, EventHandler<ServiceProxyInvokeEventArgs> invocationExceptionHandler)
         {
-            T result = GetProxy<T>(hostName, port);
+            T result = GetProxy<T>(hostName, port, new HashSet<Assembly>());
             SubscribeToInvocationExceptions(result, invocationExceptionHandler);
             return result;
         }
@@ -124,7 +125,7 @@ namespace Bam.Net.CoreServices
         public T GetProxy<T>(string hostName, int port, ILogger logger = null)
         {
             logger = logger ?? Log.Default;
-            T proxy = GetProxy<T>(hostName, port);
+            T proxy = GetProxy<T>(hostName, port, new HashSet<Assembly>());
             SubscribeToInvocationExceptions(proxy, (o, a) => logger.AddEntry("Proxy Invocation Failed:(Cuid={0}):Remote={1}:{2}.{3}: {4}", a.Exception, a.Cuid, a.BaseAddress, a.ClassName, a.MethodName, a.Message));
             return proxy;
         }
@@ -155,9 +156,9 @@ namespace Bam.Net.CoreServices
         /// <param name="hostName"></param>
         /// <param name="port"></param>
         /// <returns></returns>
-        public T GetProxy<T>(string hostName, int port = 9100)
+        public T GetProxy<T>(string hostName, int port = 9100, HashSet<Assembly> addedReferenceAssemblies = null)
         {
-            Assembly assembly = GetAssembly<T>(MungeHostName(typeof(T), hostName), port);
+            Assembly assembly = GetAssembly<T>(MungeHostName(typeof(T), hostName), port, addedReferenceAssemblies);
             return ConstructProxy<T>(assembly, ServiceProvider);
         }
 
@@ -206,19 +207,19 @@ namespace Bam.Net.CoreServices
         /// <param name="hostName"></param>
         /// <param name="port"></param>
         /// <returns></returns>
-        protected internal Assembly GetAssembly<T>(string hostName, int port = 9100)
+        protected internal Assembly GetAssembly<T>(string hostName, int port = 9100, HashSet<Assembly> addedReferenceAssemblies = null)
         {
-            return GetAssembly(typeof(T), hostName, port);
+            return GetAssembly(typeof(T), hostName, port, addedReferenceAssemblies);
         }
 
-        protected internal Assembly GetAssembly(Type type, string hostName, int port= 9100)
+        protected internal Assembly GetAssembly(Type type, string hostName, int port= 9100, HashSet<Assembly> addedReferenceAssemblies = null)
         {
             ProxySettings settings = DefaultSettings.Clone();
             settings.ServiceType = type;
             settings.DownloadClient = true;
             settings.Host = hostName;
             settings.Port = port;
-            return GetAssembly(settings);
+            return GetAssembly(settings, addedReferenceAssemblies);
         }
 
         /// <summary>
@@ -228,13 +229,13 @@ namespace Bam.Net.CoreServices
         /// <typeparam name="T"></typeparam>
         /// <param name="settings"></param>
         /// <returns></returns>
-        protected internal Assembly GetAssembly(ProxySettings settings)
+        protected internal Assembly GetAssembly(ProxySettings settings, HashSet<Assembly> addedReferenceAssemblies = null)
         {
             Args.ThrowIfNull(settings.ServiceType, "ProxySettings.ServiceType");
             settings.ValidateOrThrow();
 
             settings = settings ?? DefaultSettings;
-            ProxyAssemblyGenerator generator = new ProxyAssemblyGenerator(settings, WorkspaceDirectory, Logger);
+            ProxyAssemblyGenerator generator = new ProxyAssemblyGenerator(settings, WorkspaceDirectory, Logger, addedReferenceAssemblies);
             generator.AssemblyGenerating += (o, args) => OnAssemblyGenerating(args);
             generator.AssemblyGenerated += (o, args) => OnAssemblyGenerated(args);
             generator.MethodWarning += (o, args) => OnMethodWarning(args);

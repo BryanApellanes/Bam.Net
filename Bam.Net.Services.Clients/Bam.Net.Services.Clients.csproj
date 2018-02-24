@@ -80,6 +80,10 @@
       <Project>{06bae7ad-8657-4415-bbc0-dad16bb29361}</Project>
       <Name>Bam.Net.Caching</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.CommandLine\Bam.Net.CommandLine.csproj">
+      <Project>{EA9863A9-8E0B-4497-B7FD-ABF450A3E468}</Project>
+      <Name>Bam.Net.CommandLine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.CoreServices\Bam.Net.CoreServices.csproj">
       <Project>{5480d2a0-145b-4435-8e1c-4555ead0424a}</Project>
       <Name>Bam.Net.CoreServices</Name>

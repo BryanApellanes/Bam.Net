@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.CoreServices;
+using System.Reflection;
+using Bam.Net.Logging;
 
 namespace Bam.Net.Services.DataReplication.Data
 { 
@@ -29,7 +31,7 @@ namespace Bam.Net.Services.DataReplication.Data
         public override object Execute(IDistributedRepository destination)
 		{
             ProxyFactory _proxyFactory = new ProxyFactory();
-            RepositoryService sourceRepo = _proxyFactory.GetProxy<RepositoryService>(SourceHost, SourcePort);            
+            RepositoryService sourceRepo = _proxyFactory.GetProxy<RepositoryService>(SourceHost, SourcePort, Log.Default);            
             // get types
             // for each type load all and save each
             string lastCuid = FromCuid;

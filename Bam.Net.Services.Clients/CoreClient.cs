@@ -326,7 +326,7 @@ namespace Bam.Net.Services.Clients
 
         public T GetProxy<T>()
         {
-            return ProxyFactory.GetProxy<T>(HostName, Port);
+            return ProxyFactory.GetProxy<T>(HostName, Port, new HashSet<Assembly>());
         }
         public bool UseServiceSubdomains
         {
@@ -403,14 +403,14 @@ namespace Bam.Net.Services.Clients
 
         private void SetDownloadedServiceProxies()
         {
-            ApplicationRegistryService = ProxyFactory.GetProxy<ApplicationRegistrationService>(HostName, Port);
-            ConfigurationService = ProxyFactory.GetProxy<ConfigurationService>(HostName, Port);
-            DiagnosticService = ProxyFactory.GetProxy<DiagnosticService>(HostName, Port);
-            LoggerService = ProxyFactory.GetProxy<SystemLoggerService>(HostName, Port);
-            UserRegistryService = ProxyFactory.GetProxy<UserRegistryService>(HostName, Port);
-            RoleService = ProxyFactory.GetProxy<RoleService>(HostName, Port);
-            OAuthService = ProxyFactory.GetProxy<OAuthService>(HostName, Port);
-            ServiceRegistryService = ProxyFactory.GetProxy<ServiceRegistryService>(HostName, Port);
+            ApplicationRegistryService = ProxyFactory.GetProxy<ApplicationRegistrationService>(HostName, Port, Logger);
+            ConfigurationService = ProxyFactory.GetProxy<ConfigurationService>(HostName, Port, Logger);
+            DiagnosticService = ProxyFactory.GetProxy<DiagnosticService>(HostName, Port, Logger);
+            LoggerService = ProxyFactory.GetProxy<SystemLoggerService>(HostName, Port, Logger);
+            UserRegistryService = ProxyFactory.GetProxy<UserRegistryService>(HostName, Port, Logger);
+            RoleService = ProxyFactory.GetProxy<RoleService>(HostName, Port, Logger);
+            OAuthService = ProxyFactory.GetProxy<OAuthService>(HostName, Port, Logger);
+            ServiceRegistryService = ProxyFactory.GetProxy<ServiceRegistryService>(HostName, Port, Logger);
         }
 
         private void SetLocalServiceProxies()

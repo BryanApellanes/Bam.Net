@@ -22,15 +22,17 @@ namespace Bam.Net.CoreServices
     /// </summary>
     public class ProxyModel
     {
-        public ProxyModel(Type serviceType, string protocol = "http", string host = "localhost", int port = 8080)
+        public ProxyModel(Type serviceType, string protocol = "http", string host = "localhost", int port = 8080, HashSet<Assembly> addedReferenceAssemblies = null)
         {
-            this.ServiceGenerationInfo = new ServiceGenerationInfo(serviceType);
-            this.BaseType = serviceType;
-            this.Protocol = protocol;
-            this.Host = host;
-            this.Port = port;
+            AdditionalReferenceAssemblies = addedReferenceAssemblies ?? new HashSet<Assembly>();
+            ServiceGenerationInfo = new ServiceGenerationInfo(serviceType);
+            BaseType = serviceType;
+            Protocol = protocol;
+            Host = host;
+            Port = port;
         }
 
+        public HashSet<Assembly> AdditionalReferenceAssemblies { get; set; }
         public Type BaseType { get; set; }
         public ServiceGenerationInfo ServiceGenerationInfo { get; private set; }
         public string Host { get; private set; }
@@ -89,6 +91,7 @@ namespace Bam.Net.CoreServices
                 assemblies.Add(typeof(DataRow).Assembly);
                 assemblies.Add(typeof(Vault).Assembly);
                 assemblies.Add(typeof(SmtpSettingsProvider).Assembly);
+                AdditionalReferenceAssemblies.Each(a => assemblies.Add(a));
                 return assemblies.ToArray();
             }
         }
