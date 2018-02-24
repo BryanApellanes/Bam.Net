@@ -107,7 +107,7 @@ namespace Bam.Net.CommandLine
         /// Get the value specified for the argument with the 
         /// specified name either from the command line or
         /// from the default configuration file or prompt for
-        /// it if the value was not found
+        /// it if the value was not found.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="promptMessage"></param>

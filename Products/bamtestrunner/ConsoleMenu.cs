@@ -20,7 +20,7 @@ namespace Bam.Net.Testing
         {
             get
             {
-                return "C:\\bam\\bot\\tools\\OpenCover\\OpenCover.Console.exe";
+                return "/bam/bot/tools/OpenCover/OpenCover.Console.exe";
             }
         }
 
@@ -28,7 +28,7 @@ namespace Bam.Net.Testing
         {
             get
             {
-                return "C:\\bam\\bot\\tests\\";
+                return "/bam/bot/tests/";
             }
         }
 
@@ -78,6 +78,7 @@ namespace Bam.Net.Testing
                 currentItem++;
             }
             int pageNum = 1;
+            string allPidsFile = Path.Combine(outputDirectory.FullName, "output", "pids.txt");
             foreach(List<FileInfo> page in allPages)
             {
                 int fileNum = 1;
@@ -86,10 +87,22 @@ namespace Bam.Net.Testing
                     string xmlFile = Path.Combine(outputDirectory.FullName, "coverage", $"_{pageNum}_{fileNum}.xml");
                     string outputFile = Path.Combine(outputDirectory.FullName, "output", $"{Path.GetFileNameWithoutExtension(file.Name)}_output.txt");
                     string errorFile = Path.Combine(outputDirectory.FullName, "output", $"{Path.GetFileNameWithoutExtension(file.Name)}_error.txt");
+                    string pidFile = Path.Combine(outputDirectory.FullName, "output", $"{Path.GetFileNameWithoutExtension(file.Name)}.pid");
                     string commandLine = $"{OpenCover} -target:\"{main.FullName}\" -targetargs:\"/{testType}Tests:{file.FullName} /testReportHost:{testReportHost} /testReportPort:{testReportPort} /tag:{tag}\" -register:user -filter:\"+[Bam.Net*]* -[*].Data.* -[*Test*].Tests.*\" -output:{xmlFile}";
                     ProcessOutput output = commandLine.Run(7200000); // timeout after 2 hours
                     output.StandardError.SafeWriteToFile(errorFile, true);
                     output.StandardOutput.SafeWriteToFile(outputFile, true);
+                    try
+                    {
+                        OutLineFormat("Writing pid files for tracking: \r\n\t{0}\r\n\t{1}", ConsoleColor.Cyan, pidFile, allPidsFile);
+                        string pid = output?.Process?.Id.ToString();
+                        pid.SafeAppendToFile(pidFile);
+                        pid.SafeAppendToFile(allPidsFile);
+                    }
+                    catch (Exception ex)
+                    {
+                        OutLineFormat("Failed to write pid files: {0}\r\n\t{1}\r\n\t{2}", ConsoleColor.Magenta, ex.Message, pidFile, allPidsFile);
+                    }
                     ++fileNum;
                 });
                 ++pageNum;

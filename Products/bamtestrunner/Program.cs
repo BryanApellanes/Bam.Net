@@ -198,7 +198,7 @@ namespace Bam.Net.Testing
                 testDir = new DirectoryInfo(dir);
                 if (!testDir.Exists)
                 {
-                    OutLineFormat("The specified directory ({0}) was not found", ConsoleColor.Red, dir);
+                    OutLineFormat("The specified directory ({0}) was not found", ConsoleColor.Magenta, dir);
                     Exit(1);
                 }
             }
