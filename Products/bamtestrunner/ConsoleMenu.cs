@@ -55,7 +55,8 @@ namespace Bam.Net.Testing
             if (File.Exists(commitFile))
             {
                 OutLine("commit file found; reading commit hash to use as tag");
-                tag = File.ReadAllText(commitFile);
+                tag = File.ReadAllText(commitFile).First(6);
+                OutLine(tag);
             }
             if (string.IsNullOrEmpty(tag))
             {
