@@ -139,6 +139,7 @@ namespace Bam.Net.Data
 
         private void Initialize(IEnumerable<T> items)
         {
+            allPages.Clear();
             int itemCount = items.Count();
             int remainder = itemCount % pageSize;
             int pageCount = itemCount / pageSize;
@@ -148,26 +149,21 @@ namespace Bam.Net.Data
             }
 
             PageCount = pageCount;
+            int currentPageNum = 0;
             foreach (T item in items)
-            {
-                int currentPage = allPages.Count - 1;
-                if (currentPage < 0)
-                {
-                    currentPage = 0;
-                }
-
-                if (allPages.ElementAtOrDefault(currentPage) == null)
+            {   
+                if (allPages.ElementAtOrDefault(currentPageNum) == null)
                 {
                     allPages.Add(new List<T>());
                 }
 
-                if (allPages[currentPage].Count >= pageSize)
+                if (allPages[currentPageNum].Count >= pageSize)
                 {
                     allPages.Add(new List<T>());
+                    currentPageNum++;
                 }
-
-                currentPage = allPages.Count - 1;
-                allPages[currentPage].Add(item);
+                
+                allPages[currentPageNum].Add(item);
             }
         }
     }
