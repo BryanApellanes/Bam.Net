@@ -64,37 +64,18 @@ namespace Bam.Net.Testing
             }
             DirectoryInfo outputDirectory = EnsureOutputDirectories(tag);
             FileInfo[] testAssemblies = GetTestFiles(GetTestDirectory());
-            int pageSize = Environment.ProcessorCount < 4 ? 4 : Environment.ProcessorCount;
-            List<List<FileInfo>> allPages = new List<List<FileInfo>>();
-            int currentItem = 0;
-            allPages.Add(new List<FileInfo>());
-            foreach(FileInfo testFile in testAssemblies)
+            foreach(FileInfo file in testAssemblies)
             {
-                if(currentItem == pageSize)
-                {
-                    currentItem = 0;
-                    allPages.Add(new List<FileInfo>());
-                }
-                allPages[allPages.Count - 1].Add(testFile);
-                currentItem++;
-            }
-            int pageNum = 1;
-            foreach(List<FileInfo> page in allPages)
-            {
-                int fileNum = 1;
-                Parallel.ForEach(page, (file) =>
-                {
-                    string xmlFile = Path.Combine(outputDirectory.FullName, "coverage", $"_{pageNum}_{fileNum}.xml");
-                    string outputFile = Path.Combine(outputDirectory.FullName, "output", $"{Path.GetFileNameWithoutExtension(file.Name)}_output.txt");
-                    string errorFile = Path.Combine(outputDirectory.FullName, "output", $"{Path.GetFileNameWithoutExtension(file.Name)}_error.txt");
-                    string commandLine = $"{OpenCover} -target:\"{main.FullName}\" -targetargs:\"/{testType}Tests:{file.FullName} /testReportHost:{testReportHost} /testReportPort:{testReportPort} /tag:{tag}\" -register:user -filter:\"+[Bam.Net*]* -[*].Data.* -[*Test*].Tests.*\" -output:{xmlFile}";
-                    OutLineFormat("Running: {0}", ConsoleColor.Yellow, commandLine);
-                    ProcessOutput output = commandLine.Run(7200000); // timeout after 2 hours
-                    output.StandardError.SafeWriteToFile(errorFile, true);
-                    output.StandardOutput.SafeWriteToFile(outputFile, true);
-                    ++fileNum;
-                });
-                ++pageNum;
+                OutLineFormat("Running tests in: {0}", ConsoleColor.Cyan, file.FullName);
+                string testFileName = Path.GetFileNameWithoutExtension(file.Name);
+                string xmlFile = Path.Combine(outputDirectory.FullName, "coverage", $"_{testFileName}.xml");
+                string outputFile = Path.Combine(outputDirectory.FullName, "output", $"{testFileName}_output.txt");
+                string errorFile = Path.Combine(outputDirectory.FullName, "output", $"{testFileName}_error.txt");
+                string commandLine = $"{OpenCover} -target:\"{main.FullName}\" -targetargs:\"/{testType}Tests:{file.FullName} /testReportHost:{testReportHost} /testReportPort:{testReportPort} /tag:{tag}\" -register:user -filter:\"+[Bam.Net*]* -[*].Data.* -[*Test*].Tests.*\" -output:{xmlFile}";
+                OutLineFormat("CommandLine: {0}", ConsoleColor.Yellow, commandLine);
+                ProcessOutput output = commandLine.Run(7200000); // timeout after 2 hours
+                output.StandardError.SafeWriteToFile(errorFile, true);
+                output.StandardOutput.SafeWriteToFile(outputFile, true);
             }
         }
 
