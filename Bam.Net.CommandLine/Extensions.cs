@@ -281,6 +281,7 @@ namespace Bam.Net.CommandLine
 
             return Run(startInfo, output, error, timeout);
         }
+
         private static ProcessStartInfo CreateStartInfo(bool promptForAdmin)
         {
             ProcessStartInfo startInfo = new ProcessStartInfo();
