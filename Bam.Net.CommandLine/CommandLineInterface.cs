@@ -605,7 +605,7 @@ File Version: {1}
         
         protected static void ShowMenu(Assembly assemblyToAnalyze, ConsoleMenu[] otherMenus, string headerText)
         {
-            List<ConsoleMethod> actions = ConsoleMethod.FromAssembly<ConsoleActionAttribute>(assemblyToAnalyze);// GetConsoleInvokeableMethods<ConsoleAction>(assemblyToAnalyze);
+            List<ConsoleMethod> actions = ConsoleMethod.FromAssembly<ConsoleActionAttribute>(assemblyToAnalyze);
             ShowMenu(otherMenus, headerText, actions);
         }
 

@@ -133,14 +133,16 @@ namespace Bam.Net.Testing
 
         private static DirectoryInfo EnsureOutputDirectories(string tag)
         {
-            OutLine("Creating output directories as necessary");
+            OutLineFormat("Creating output directories as necessary: OutputRoot={0}, tag={1}", ConsoleColor.Cyan, OutputRoot, tag);
             DirectoryInfo outputDirectory = new DirectoryInfo(Path.Combine(OutputRoot, tag));
+            OutLineFormat("Checking for output directory: {0}", ConsoleColor.Cyan, outputDirectory);
             if (!outputDirectory.Exists)
             {
                 OutLineFormat("Directory doesn't exist, creating it: {0}", outputDirectory.FullName);
                 outputDirectory.Create();
             }
             string coverageDir = Path.Combine(outputDirectory.FullName, "coverage");
+            OutLineFormat("Checking for coverage directory: {0}", ConsoleColor.Cyan, coverageDir);
             if (!Directory.Exists(coverageDir))
             {
                 OutLineFormat("Coverage directory doesn't exist, creating it: {0}", coverageDir);
