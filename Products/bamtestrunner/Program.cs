@@ -2,6 +2,7 @@ using Bam.Net.Automation.Testing;
 using Bam.Net.CommandLine;
 using Bam.Net.Configuration;
 using Bam.Net.Logging;
+using Bam.Net.Razor;
 using Bam.Net.Testing.Integration;
 using Bam.Net.Testing.Unit;
 using System;
@@ -20,6 +21,7 @@ namespace Bam.Net.Testing
         static void Main(string[] args)
         {
             IsolateMethodCalls = false;
+            RazorBaseTemplate.DefaultInspector = (s) => { OutLineFormat("Parsed razor: {0} ...", s.First(100).Replace("\r\n", "")); };
             PreInit();
             Initialize(args);
         }
