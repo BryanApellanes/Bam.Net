@@ -262,9 +262,11 @@ namespace Bam.Net.Data.Repositories.Tests
 
 		internal static ObjectRepository GetTestObjectRepository(string root = null)
 		{
-            ConsoleLogger logger = new ConsoleLogger();
-            logger.UseColors = true;
-            logger.AddDetails = false;
+            ConsoleLogger logger = new ConsoleLogger()
+            {
+                UseColors = true,
+                AddDetails = false
+            };
             logger.StartLoggingThread();
 
             ObjectRepository repo = string.IsNullOrEmpty(root) ? new ObjectRepository() : new ObjectRepository(root);
