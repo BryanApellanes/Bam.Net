@@ -143,6 +143,7 @@ namespace Bam.Net.Testing
         private static void HandleException(Exception ex)
         {
             OutLineFormat("{0}: {1}", ConsoleColor.DarkRed, _programName, ex.Message);
+            OutLineFormat("Stack: {0}", ConsoleColor.DarkRed, ex.StackTrace);
             if (Arguments.Contains(_exitOnFailure))
             {
                 Exit(1);
