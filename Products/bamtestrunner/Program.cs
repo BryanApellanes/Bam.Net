@@ -21,9 +21,19 @@ namespace Bam.Net.Testing
         static void Main(string[] args)
         {
             IsolateMethodCalls = false;
-            RazorBaseTemplate.DefaultInspector = (s) => { OutLineFormat("Parsed razor: {0} ...", s.First(100).Replace("\r\n", "")); };
+            RazorBaseTemplate.DefaultInspector = (s) => { OutLineFormat("Parsed razor: {0} ...", s.ReadUntil('\n')); };
             PreInit();
             Initialize(args);
+            ConsoleLogger logger = new ConsoleLogger() { AddDetails = false, ShowTime = true, ApplicationName = "bamtestrunnter", UseColors = true };
+            logger.StartLoggingThread();
+            if(ExecuteSwitches(Arguments, typeof(Program), false, logger))
+            {
+                return;
+            }
+            else
+            {
+                Start();
+            }
         }
 
         public static void PreInit()
@@ -48,11 +58,12 @@ namespace Bam.Net.Testing
             // the arguments protected member is not available in PreInit() (this method)
             #endregion
             AddValidArgument("search", false, description: "The search pattern to use to locate test assemblies, the default is *Tests.* if not specified.");
+            AddValidArgument("testFile", false, description: "The path to the assembly containing tests to run");
             AddValidArgument("dir", false, description: "The directory to look for test assemblies in");
             AddValidArgument("debug", true, description: "If specified, the runner will pause to allow for a debugger to be attached to the process");
             AddValidArgument("data", false, description: "The path to save the results to, default is the current directory if not specified");
             AddValidArgument("dataPrefix", true, description: "The file prefix for the sqlite data file or 'BamTests' if not specified");
-            AddValidArgument("type", false, description: "The type of tests to run [Unit | Integration], default is unit.");
+            AddValidArgument("type", false, description: "The type of tests to run [Unit | Integration], default is Unit.");
             AddValidArgument("testReportHost", false, description: "The hostname of the test report service");
             AddValidArgument("testReportPort", false, description: "The port that the test report service is listening on");
 
@@ -60,8 +71,6 @@ namespace Bam.Net.Testing
             AddSwitches(typeof(Program));
 
             TestAction = RunUnitTests;
-
-            DefaultMethod = typeof(Program).GetMethod("Start");
         }
         
         public static void Start()
@@ -172,13 +181,22 @@ namespace Bam.Net.Testing
 
             files = GetTestFiles(testDir);          
         }
-        
+
         private static FileInfo[] GetTestFiles(DirectoryInfo testDir)
         {
             FileInfo[] files = null;
             if (Arguments.Contains("search"))
             {
                 files = testDir.GetFiles(Arguments["search"]);
+            }
+            else if (Arguments.Contains("testFile"))
+            {
+                FileInfo file = new FileInfo(Arguments["testFile"]);
+                if (!file.Exists)
+                {
+                    throw new InvalidOperationException(string.Format("The specified test file was not found: {0}", file.FullName));
+                }
+                files = new FileInfo[] { file };
             }
             else
             {

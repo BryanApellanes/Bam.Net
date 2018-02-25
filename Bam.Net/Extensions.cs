@@ -307,6 +307,11 @@ namespace Bam.Net
             return currentPath;
         }
 
+        public static string ReadUntil(this string toRead, char charToFind)
+        {
+            return ReadUntil(toRead, charToFind, out string ignore);
+        }
+
         /// <summary>
         /// Read the specified string up to the first instance of the specified charToFind
         /// returning the characters read and producing remainder as an out parameter.  Discards

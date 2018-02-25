@@ -71,7 +71,7 @@ namespace Bam.Net.Testing
                 string xmlFile = Path.Combine(outputDirectory.FullName, "coverage", $"_{testFileName}.xml");
                 string outputFile = Path.Combine(outputDirectory.FullName, "output", $"{testFileName}_output.txt");
                 string errorFile = Path.Combine(outputDirectory.FullName, "output", $"{testFileName}_error.txt");
-                string commandLine = $"{OpenCover} -target:\"{main.FullName}\" -targetargs:\"/{testType}Tests:{file.FullName} /testReportHost:{testReportHost} /testReportPort:{testReportPort} /tag:{tag}\" -register:user -threshold:10 -filter:\"+[Bam.Net*]* -[*].Data.* -[*Test*].Tests.*\" -output:{xmlFile}";
+                string commandLine = $"{OpenCover} -target:\"{main.FullName}\" -targetargs:\"/type:{testType} /{testType}Tests:{file.FullName} /testReportHost:{testReportHost} /testReportPort:{testReportPort} /tag:{tag}\" -register:user -threshold:10 -filter:\"+[Bam.Net*]* -[*].Data.* -[*].Testing.* -[*Test*].Tests.*\" -output:{xmlFile}";
                 OutLineFormat("CommandLine: {0}", ConsoleColor.Yellow, commandLine);
                 ProcessOutput output = commandLine.Run(7200000); // timeout after 2 hours
                 output.StandardError.SafeWriteToFile(errorFile, true);
