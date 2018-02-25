@@ -101,7 +101,7 @@ namespace Bam.Net.Testing
                 Assembly assembly = Assembly.LoadFrom(assemblyPath);
                 RunAllUnitTests(assembly, Log.Default, (o, a) => _passedCount++, (o, a) => _failedCount++);
                 Environment.CurrentDirectory = endDirectory;
-                OutLineFormat("Test run complete: {0}", ConsoleColor.DarkYellow);
+                OutLineFormat("Test run complete: {0}", ConsoleColor.DarkYellow, assemblyPath);
             }
             catch (Exception ex)
             {
