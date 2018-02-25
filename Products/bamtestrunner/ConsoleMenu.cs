@@ -82,6 +82,7 @@ namespace Bam.Net.Testing
         [ConsoleAction("UnitTests", "[path_to_test_assembly]", "Run unit tests in the specified assembly")]
         public static void RunUnitTestsInFile(string assemblyPath = null, string endDirectory = null)
         {
+            OutLineFormat("Running UnitTests: {0}", ConsoleColor.DarkGreen, assemblyPath);
             assemblyPath = assemblyPath ?? Arguments["UnitTests"];
             endDirectory = endDirectory ?? Environment.CurrentDirectory;
             try
@@ -90,6 +91,7 @@ namespace Bam.Net.Testing
                 Assembly assembly = Assembly.LoadFrom(assemblyPath);
                 RunAllUnitTests(assembly, Log.Default, (o, a) => _passedCount++, (o, a) => _failedCount++);
                 Environment.CurrentDirectory = endDirectory;
+                OutLineFormat("Test run complete: {0}", ConsoleColor.DarkYellow);
             }
             catch (Exception ex)
             {
