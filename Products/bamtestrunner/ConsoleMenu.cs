@@ -80,7 +80,17 @@ namespace Bam.Net.Testing
         }
 
         [ConsoleAction("UnitTests", "[path_to_test_assembly]", "Run unit tests in the specified assembly")]
-        public static void RunUnitTestsInFile(string assemblyPath = null, string endDirectory = null)
+        public static void RunUnitTestsInFile()
+        {
+            string assemblyPath = Arguments["UnitTests"];
+            if (string.IsNullOrEmpty(assemblyPath))
+            {
+                throw new InvalidOperationException("UnitTest file not specified");
+            }
+            RunUnitTestsInFile(assemblyPath, Environment.CurrentDirectory);
+        }
+
+        public static void RunUnitTestsInFile(string assemblyPath, string endDirectory)
         {
             OutLineFormat("Running UnitTests: {0}", ConsoleColor.DarkGreen, assemblyPath);
             assemblyPath = assemblyPath ?? Arguments["UnitTests"];

@@ -80,7 +80,9 @@
     <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="README.md" />
-    <None Include="tests_with_coverage.cmd" />
+    <None Include="tests_with_coverage.cmd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Bam.Net.Automation\Bam.Net.Automation.csproj">
