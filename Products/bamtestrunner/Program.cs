@@ -184,14 +184,19 @@ namespace Bam.Net.Testing
 
         private static FileInfo[] GetTestFiles(DirectoryInfo testDir)
         {
+            OutLineFormat("Getting test files from: {0}", ConsoleColor.DarkCyan, testDir.FullName);
             FileInfo[] files = null;
             if (Arguments.Contains("search"))
             {
-                files = testDir.GetFiles(Arguments["search"]);
+                string search = Arguments["search"];
+                OutLineFormat("/search switch specified: {0}", ConsoleColor.DarkCyan, search);
+                files = testDir.GetFiles(search);
             }
             else if (Arguments.Contains("testFile"))
             {
-                FileInfo file = new FileInfo(Arguments["testFile"]);
+                string testFile = Arguments["testFile"];
+                OutLineFormat("/testFile switch specified: {0}", ConsoleColor.DarkCyan, testFile);
+                FileInfo file = new FileInfo(testFile);
                 if (!file.Exists)
                 {
                     throw new InvalidOperationException(string.Format("The specified test file was not found: {0}", file.FullName));
@@ -200,6 +205,7 @@ namespace Bam.Net.Testing
             }
             else
             {
+                OutLineFormat("Getting default tests");
                 List<FileInfo> tmp = new List<FileInfo>();
                 tmp.AddRange(testDir.GetFiles("*Tests.exe"));
                 tmp.AddRange(testDir.GetFiles("*Tests.dll"));
