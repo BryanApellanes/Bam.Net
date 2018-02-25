@@ -185,15 +185,17 @@ namespace Bam.Net.Testing
         private static FileInfo[] GetTestFiles(DirectoryInfo testDir)
         {
             OutLineFormat("Getting test files from: {0}", ConsoleColor.DarkCyan, testDir.FullName);
-            FileInfo[] files = null;
+            FileInfo[] files = new FileInfo[] { };
             if (Arguments.Contains("search"))
             {
+                OutLine("search switch specified", ConsoleColor.DarkCyan);
                 string search = Arguments["search"];
                 OutLineFormat("/search switch specified: {0}", ConsoleColor.DarkCyan, search);
                 files = testDir.GetFiles(search);
             }
             else if (Arguments.Contains("testFile"))
             {
+                OutLine("testFile switch specified", ConsoleColor.DarkCyan);
                 string testFile = Arguments["testFile"];
                 OutLineFormat("/testFile switch specified: {0}", ConsoleColor.DarkCyan, testFile);
                 FileInfo file = new FileInfo(testFile);
@@ -211,6 +213,7 @@ namespace Bam.Net.Testing
                 tmp.AddRange(testDir.GetFiles("*Tests.dll"));
                 files = tmp.ToArray();
             }
+            OutLineFormat("retrieved ({0}) files", files.Length);
             return files;
         }
        
