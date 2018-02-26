@@ -16,7 +16,7 @@ namespace Bam.Net.Data.Repositories
 	{
 		/// <summary>
 		/// Get the associated Dto types for the 
-		/// Dao types in the specified daoAssembly
+		/// Dao types in the specified daoAssembly.
 		/// </summary>
 		/// <param name="daoAssembly"></param>
 		/// <returns></returns>
@@ -30,7 +30,7 @@ namespace Bam.Net.Data.Repositories
 		/// <summary>
 		/// Get a generated Dto type for the specified Dao instance.
 		/// The Dto type will only have properties that match the columns
-		/// of the Dao
+		/// of the Dao.
 		/// </summary>
 		/// <param name="daoInstance"></param>
 		/// <returns></returns>

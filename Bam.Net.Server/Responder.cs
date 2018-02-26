@@ -257,14 +257,8 @@ namespace Bam.Net.Server
 
         protected static void WireResponseLogging(IResponder responder, ILogger logger)
         {
-            responder.Responded += (r, context) =>
-            {
-                logger.AddEntry("*** ({0}) Responded ***\r\n{1}", LogEventType.Information, r.Name, context.Request.PropertiesToString());
-            };
-            responder.NotResponded += (r, context) =>
-            {
-                logger.AddEntry("*** ({0}) Didn't Respond ***\r\n{1}", LogEventType.Warning, r.Name, context.Request.PropertiesToString());
-            };
+            responder.Responded += (r, context) => logger.AddEntry("*** ({0}) Responded ***\r\n{1}", LogEventType.Information, r.Name, context.Request.PropertiesToString());
+            responder.NotResponded += (r, context) => logger.AddEntry("*** ({0}) Didn't Respond ***\r\n{1}", LogEventType.Warning, r.Name, context.Request.PropertiesToString());
         }
 
         protected void WireResponseLogging(ILogger logger)
