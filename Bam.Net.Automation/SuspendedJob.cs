@@ -29,7 +29,7 @@ namespace Bam.Net.Automation
         /// <summary>
         /// Instantiate a new Suspended job instance which can 
         /// be reinstantiated from the specified messageRoot 
-        /// using the specified instanceId
+        /// using the specified instanceId.
         /// </summary>
         /// <param name="messageRoot"></param>
         /// <param name="instanceId"></param>

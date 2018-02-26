@@ -31,8 +31,8 @@ namespace Bam.Net.Automation.Tests
         [UnitTest("JobConductor:: Verify Jobs Folder in AppDataFolder for new JobConductor")]
         public void JobsDirectoryShouldBeInAppDataFolder()
         {
-            JobConductorService orchestrator = new JobConductorService();
-            Expect.AreEqual(Path.Combine(RuntimeSettings.AppDataFolder, "Jobs"), orchestrator.JobsDirectory);
+            JobConductorService jobConductor = new JobConductorService();
+            Expect.AreEqual(Path.Combine(RuntimeSettings.AppDataFolder, "Jobs"), jobConductor.JobsDirectory);
         }
 
         public void DeleteJobsDirectory()
@@ -48,10 +48,10 @@ namespace Bam.Net.Automation.Tests
         public void JobConductorShouldCreaetJobConf()
         {
             JobConductorService.Default.JobsDirectory = new DirectoryInfo(MethodBase.GetCurrentMethod().Name).FullName;
-            JobConductorService fm = JobConductorService.Default;
+            JobConductorService jc = JobConductorService.Default;
             string name = "JobConfTest_".RandomLetters(4);
-            JobConf conf = fm.CreateJob(name);
-            string path = Path.Combine(fm.JobsDirectory, conf.Name, conf.Name + ".job");
+            JobConf conf = jc.CreateJob(name);
+            string path = Path.Combine(jc.JobsDirectory, conf.Name, conf.Name + ".job");
             Expect.IsTrue(File.Exists(path));
         }
 
@@ -72,23 +72,22 @@ namespace Bam.Net.Automation.Tests
             {
                 dir.Delete(true);
             }
-            JobConductorService fm = new JobConductorService();
-            fm.JobsDirectory = dir.FullName;
-            return fm;
+            JobConductorService jc = new JobConductorService
+            {
+                JobsDirectory = dir.FullName
+            };
+            return jc;
         }
 
         [UnitTest("JobConductor:: CreateJob should throw an exception if it already exists")]
         public void CreateJobShouldThrowExceptionIfItExists()
         {
             string name = MethodBase.GetCurrentMethod().Name;
-            JobConductorService fm = GetTestJobConductor(name);
+            JobConductorService jc = GetTestJobConductor(name);
             string testJobName = name + "_JobName_".RandomLetters(4);
-            fm.CreateJob(testJobName);
-            Expect.IsTrue(fm.JobExists(testJobName));
-            Expect.Throws(() =>
-            {
-                fm.CreateJob(testJobName);
-            }, "Should have thrown an exception but didn't");
+            jc.CreateJob(testJobName);
+            Expect.IsTrue(jc.JobExists(testJobName));
+            Expect.Throws(() => jc.CreateJob(testJobName), "Should have thrown an exception but didn't");
         }
 
 
@@ -121,13 +120,13 @@ namespace Bam.Net.Automation.Tests
         public void GetJobShouldCreateNewJob()
         {
             string name = MethodBase.GetCurrentMethod().Name;
-            JobConductorService fm = GetTestJobConductor(name);
-            Expect.IsFalse(fm.JobExists(name));
-            JobConf validate = fm.GetJob(name);
+            JobConductorService jc = GetTestJobConductor(name);
+            Expect.IsFalse(jc.JobExists(name));
+            JobConf validate = jc.GetJob(name);
 
             Expect.IsNotNull(validate);
             Expect.AreEqual(name, validate.Name);
-            Expect.IsTrue(fm.JobExists(validate.Name));
+            Expect.IsTrue(jc.JobExists(validate.Name));
             Expect.IsTrue(File.Exists(validate.GetFilePath()));
         }
 
@@ -135,12 +134,12 @@ namespace Bam.Net.Automation.Tests
         public void GetJobShouldReturnExistingJob()
         {
             string name = MethodBase.GetCurrentMethod().Name;
-            JobConductorService orch = GetTestJobConductor(name);
-            Expect.IsFalse(orch.JobExists(name));
-            JobConf conf = orch.CreateJob(name);
-            Expect.IsTrue(orch.JobExists(name));
+            JobConductorService jc = GetTestJobConductor(name);
+            Expect.IsFalse(jc.JobExists(name));
+            JobConf conf = jc.CreateJob(name);
+            Expect.IsTrue(jc.JobExists(name));
 
-            JobConf validate = orch.GetJobConf(name);
+            JobConf validate = jc.GetJobConf(name);
             Expect.IsNotNull(validate);
             Expect.AreEqual(name, validate.Name);
         }
@@ -149,12 +148,12 @@ namespace Bam.Net.Automation.Tests
         public void JobShouldRunIfRunnerThreadIsRunning()
         {
             string name = MethodBase.GetCurrentMethod().Name;
-            JobConductorService fm = GetTestJobConductor(name);
-            fm.StopJobRunnerThread();
-            fm.JobQueue.Clear();
-            fm.StartJobRunnerThread();
+            JobConductorService jc = GetTestJobConductor(name);
+            jc.StopJobRunnerThread();
+            jc.JobQueue.Clear();
+            jc.StartJobRunnerThread();
 
-            JobConf conf = fm.CreateJob(name);
+            JobConf conf = jc.CreateJob(name);
             TestWorker.ValueToCheck = false;
             TestWorker worker = new TestWorker();
             conf.AddWorker(worker);
@@ -162,14 +161,14 @@ namespace Bam.Net.Automation.Tests
 
             bool? finished = false;
             AutoResetEvent signal = new AutoResetEvent(false);
-            fm.WorkerFinished += (o, a) =>
+            jc.WorkerFinished += (o, a) =>
             {
                 Expect.IsTrue(TestWorker.ValueToCheck);
                 finished = true;
                 signal.Set();
             };
 
-            fm.EnqueueJob(conf);
+            jc.EnqueueJob(conf);
             signal.WaitOne(10000);
             Expect.IsTrue(finished == true);
         }
@@ -178,23 +177,23 @@ namespace Bam.Net.Automation.Tests
         public void AddWorkerShouldCreateJob()
         {
             string name = MethodBase.GetCurrentMethod().Name;
-            JobConductorService fm = GetTestJobConductor(name);
+            JobConductorService jc = GetTestJobConductor(name);
             string jobName = "Job_".RandomLetters(4);
-            Expect.IsFalse(fm.JobExists(jobName));
+            Expect.IsFalse(jc.JobExists(jobName));
 
-            fm.AddWorker(typeof(TestWorker).AssemblyQualifiedName, "worker", jobName);
+            jc.AddWorker(jobName, typeof(TestWorker).AssemblyQualifiedName, "worker");
 
-            Expect.IsTrue(fm.JobExists(jobName));
+            Expect.IsTrue(jc.JobExists(jobName));
         }
 
         [UnitTest("JobConductor:: AddWorker should throw ArgumentNullException if type not found")]
         public void AddWorkerShouldThrowArgumentNullException()
         {
             string name = MethodBase.GetCurrentMethod().Name;
-            JobConductorService fm = GetTestJobConductor(name);
+            JobConductorService jc = GetTestJobConductor(name);
             Expect.Throws(() =>
             {
-                fm.AddWorker("noTypeByThisNameShouldBeFound".RandomLetters(4), "work_" + name, "JobName");
+                jc.AddWorker("JobName", "noTypeByThisNameShouldBeFound".RandomLetters(4), "work_" + name);
             }, (ex) =>
             {
                 ex.IsInstanceOfType<ArgumentNullException>("Exception wasn't the right type");
@@ -205,23 +204,23 @@ namespace Bam.Net.Automation.Tests
         public void AddWorkerShouldSetWorkerName()
         {
             string name = MethodBase.GetCurrentMethod().Name;
-            JobConductorService fm = GetTestJobConductor(name);
+            JobConductorService jc = GetTestJobConductor(name);
             string workerName = "worker_" + name;
             string jobName = "Job_" + name;
-            fm.AddWorker(typeof(TestWorker).AssemblyQualifiedName, workerName, jobName);
-            Expect.IsTrue(fm.WorkerExists(jobName, workerName));
+            jc.AddWorker(jobName, typeof(TestWorker).AssemblyQualifiedName, workerName);
+            Expect.IsTrue(jc.WorkerExists(jobName, workerName));
         }
 
         [UnitTest("JobConductor:: AddWorker should create worker and Job should know")]
         public void ShouldBeAbleToAddWorker()
         {
             string name = MethodBase.GetCurrentMethod().Name;
-            JobConductorService fm = GetTestJobConductor(name);
+            JobConductorService jc = GetTestJobConductor(name);
             string jobName = "Job_" + name;
             string workerName = "worker_1";
-            fm.AddWorker(typeof(TestWorker).AssemblyQualifiedName, workerName, jobName);
+            jc.AddWorker(jobName, typeof(TestWorker).AssemblyQualifiedName, workerName);
 
-            JobConf job = fm.GetJob(jobName);
+            JobConf job = jc.GetJob(jobName);
 
             Expect.IsTrue(job.WorkerExists(workerName));
         }
@@ -230,12 +229,12 @@ namespace Bam.Net.Automation.Tests
         public void AfterAddWorkerCreateJobShouldHaveCorrectWorkers()
         {
             string name = MethodBase.GetCurrentMethod().Name;
-            JobConductorService fm = GetTestJobConductor(name);
+            JobConductorService jc = GetTestJobConductor(name);
             string jobName = "Job_" + name;
-            fm.AddWorker(typeof(TestWorker).AssemblyQualifiedName, "one", jobName);
-            fm.AddWorker(typeof(TestWorker).AssemblyQualifiedName, "two", jobName);
+            jc.AddWorker(jobName, typeof(TestWorker).AssemblyQualifiedName, "one");
+            jc.AddWorker(jobName, typeof(TestWorker).AssemblyQualifiedName, "two");
 
-            JobConf conf = fm.GetJob(jobName);
+            JobConf conf = jc.GetJob(jobName);
             Job job = conf.CreateJob();
 
             Expect.IsTrue(job.WorkerNames.Length == 2);
@@ -274,8 +273,8 @@ namespace Bam.Net.Automation.Tests
             JobConductorService jc = GetTestJobConductor(name);
             string jobName = "Job_" + name;
 
-            jc.AddWorker(typeof(TestWorker).AssemblyQualifiedName, "TestWorker", jobName);
-            jc.AddWorker(typeof(StepTestWorker).AssemblyQualifiedName, "StepTestWorker", jobName);
+            jc.AddWorker(jobName, typeof(TestWorker).AssemblyQualifiedName, "TestWorker");
+            jc.AddWorker(jobName, typeof(StepTestWorker).AssemblyQualifiedName, "StepTestWorker");
 
             Expect.IsFalse(TestWorker.ValueToCheck);
             Expect.IsFalse(StepTestWorker.ValueToCheck);

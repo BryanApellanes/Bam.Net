@@ -42,8 +42,10 @@ namespace Bam.Net.Automation
         {
             this.CheckRequiredProperties();
 
-            WorkState result = new WorkState(this);
-            result.Status = Status.Succeeded;
+            WorkState result = new WorkState(this)
+            {
+                Status = Status.Succeeded
+            };
 
             object formatValues = new
             {
@@ -148,11 +150,11 @@ namespace Bam.Net.Automation
         {
             get
             {
-                return JobConductorService.Default.SecureGet("{0}_{1}"._Format(typeof(EmailWorker).Name, Name));
+                return JobConductorService.SecureGet("{0}_{1}"._Format(typeof(EmailWorker).Name, Name));
             }
             set
             {
-                JobConductorService.Default.SecureSet("{0}_{1}"._Format(typeof(EmailWorker).Name, Name), value);
+                JobConductorService.SecureSet("{0}_{1}"._Format(typeof(EmailWorker).Name, Name), value);
             }
         }
 

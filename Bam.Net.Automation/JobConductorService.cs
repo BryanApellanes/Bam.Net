@@ -15,10 +15,9 @@ using Bam.Net.Analytics;
 using Bam.Net.Logging;
 using Bam.Net.Configuration;
 using System.Threading;
-using Quartz;
-using Quartz.Impl;
 using Bam.Net.Services;
 using Bam.Net.Automation;
+using Bam.Net.Data.Repositories;
 
 namespace Bam.Net.Automation
 {
@@ -33,8 +32,16 @@ namespace Bam.Net.Automation
         AutoResetEvent _enqueueSignal;
         AutoResetEvent _runCompleteSignal;
         Thread _runnerThread;
-        public JobConductorService()
+        public JobConductorService() : this(DefaultConfigurationApplicationNameProvider.Instance, DataSettings.Current)
         {
+        }
+
+        public JobConductorService(IApplicationNameProvider appNameProvider, DataSettings dataSettings, ProfigurationSet profiguration = null)
+        {
+            ProfigurationSet = profiguration;
+            DataSettings = dataSettings;
+            ApplicationNameProvider = appNameProvider;
+            JobsDirectory = dataSettings.GetAppDataDirectory(appNameProvider, "Jobs").FullName;
             MaxConcurrentJobs = 3;
             _enqueueSignal = new AutoResetEvent(false);
             _runCompleteSignal = new AutoResetEvent(false);
@@ -42,10 +49,10 @@ namespace Bam.Net.Automation
 
         public override object Clone()
         {
-            JobConductorService orch = new JobConductorService();
-            orch.CopyProperties(this);
-            orch.CopyEventHandlers(this);
-            return orch;
+            JobConductorService clone = new JobConductorService(ApplicationNameProvider, DataSettings);
+            clone.CopyProperties(this);
+            clone.CopyEventHandlers(this);
+            return clone;
         }
 
         static JobConductorService _default;
@@ -58,16 +65,8 @@ namespace Bam.Net.Automation
             }
         }
 
-        static IScheduler _scheduler;
-        static object _schedulerLock = new object();
-        public static IScheduler Scheduler
-        {
-            get
-            {
-                return _schedulerLock.DoubleCheckLock(ref _scheduler, () => StdSchedulerFactory.GetDefaultScheduler());
-            }
-        }
-
+        public DataSettings DataSettings { get; }        
+        public IWorkerTypeProvider WorkerTypeProvider { get; }
         public int MaxConcurrentJobs
         {
             get;
@@ -125,17 +124,26 @@ namespace Bam.Net.Automation
             {
 				return _profigurationSetLock.DoubleCheckLock(ref _profigurationSet, () => new ProfigurationSet(System.IO.Path.Combine(JobsDirectory, "ProfigurationSet")));
             }
+            private set
+            {
+                _profigurationSet = value;
+            }
+        }
+
+        public virtual string[] GetWorkerTypes()
+        {
+            return WorkerTypeProvider.GetWorkerTypes().Select(type => type.FullName).ToArray();
         }
 
         /// <summary>
         /// Add a worker of the specified type to the job with the specified
         /// jobName assigning the specified workerName .
         /// </summary>
+        /// <param name="jobName"></param>
         /// <param name="workerTypeName"></param>
         /// <param name="workerName"></param>
-        /// <param name="jobName"></param>
         /// <returns></returns>
-        public virtual void AddWorker(string workerTypeName, string workerName, string jobName)
+        public virtual void AddWorker(string jobName, string workerTypeName, string workerName)
         {
             Type type = Type.GetType(workerTypeName);
             if (type == null)
@@ -144,7 +152,7 @@ namespace Bam.Net.Automation
             }
 
             JobConf jobConf = GetJob(jobName);
-            AddWorker(type, workerName, jobConf);
+            AddWorker(jobConf, type, workerName);
         }
 
         /// <summary>
@@ -152,17 +160,17 @@ namespace Bam.Net.Automation
         /// specified JobConf.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="name"></param>
         /// <param name="conf"></param>
+        /// <param name="name"></param>
         /// <returns></returns>
         [Local]
-        public void AddWorker<T>(string name, JobConf conf)
+        public void AddWorker<T>(JobConf conf, string name)
         {
-            AddWorker(typeof(T), name, conf);
+            AddWorker(conf, typeof(T), name);
         }
 
         [Local]
-        public void AddWorker(Type type, string name, JobConf conf)
+        public void AddWorker(JobConf conf, Type type, string name)
         {
             conf.AddWorker(type, name);
         }
@@ -235,6 +243,11 @@ namespace Bam.Net.Automation
             return jobDirectories.Select(jd => jd.Name).ToArray();
         }
 
+        /// <summary>
+        /// Get a JobConf with the specified name creating it if necessary.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public virtual JobConf GetJob(string name)
         {
             return GetJobConf(name);
@@ -242,20 +255,18 @@ namespace Bam.Net.Automation
 
         protected internal JobConf GetJobConf(string name)
         {
-            JobConf conf = new JobConf(name)
-            {
-                JobDirectory = GetJobDirectoryPath(name)
-            };
             if (JobExists(name))
             {
-                conf = JobConf.Load(conf.GetFilePath());
+                JobConf conf = new JobConf(name)
+                {
+                    JobDirectory = GetJobDirectoryPath(name)
+                };
+                return JobConf.Load(conf.GetFilePath());
             }
             else
             {
-                conf = CreateJobConf(name);
+                return CreateJobConf(name);
             }
-
-            return conf;
         }
 
         protected internal JobConf CreateJobConf(string name, bool overwrite = false)
@@ -296,36 +307,16 @@ namespace Bam.Net.Automation
         {
             return JobExists(name, out string ignore);
         }
+
         protected internal bool JobExists(string name, out string jobDirectoryPath)
         {
 			jobDirectoryPath = System.IO.Path.Combine(JobsDirectory, name);
             return Directory.Exists(jobDirectoryPath);
         }
-        
-        public virtual DateTimeOffset ScheduleJob(string name, int hour, int minute, DayOfWeek[] daysOfWeek)
-        {
-            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.AtHourAndMinuteOnGivenDaysOfWeek(hour, minute, daysOfWeek);
-            JobDataMap dataMap = new JobDataMap
-            {
-                { "JobName", name }
-            };
-            IJobDetail jobDetail = JobBuilder
-                .Create<EnqueingJob>()
-                .WithIdentity(name)
-                .SetJobData(dataMap)
-                .Build();
-            ITrigger trigger = TriggerBuilder
-                .Create()
-                .WithIdentity($"Orchestrator-{name}")
-                .WithSchedule(scheduleBuilder)
-                .Build();
-
-            return Scheduler.ScheduleJob(jobDetail, trigger);
-        }
 
         /// <summary>
         /// Enqueue a job to be run next (typically instant if no other
-        /// jobs are running)
+        /// jobs are running).
         /// </summary>
         /// <param name="name"></param>
         /// <param name="stepNumber"></param>
@@ -440,22 +431,10 @@ namespace Bam.Net.Automation
                     _runCompleteSignal.WaitOne();
                 }
 
-                job.WorkerException += (o, a) =>
-                {
-                    OnWorkerException(job.CurrentWorkState);
-                };
-                job.WorkerStarting += (o, a) =>
-                {
-                    OnWorkerStarting(job.CurrentWorkState);
-                };
-                job.WorkerFinished += (o, a) =>
-                {
-                    OnWorkerFinished(job.CurrentWorkState);
-                };
-                job.JobFinished += (o, a) =>
-                {
-                    OnJobFinished(job.CurrentWorkState);
-                };
+                job.WorkerException += (o, a) => OnWorkerException(((WorkStateEventArgs)a).WorkState);
+                job.WorkerStarting += (o, a) => OnWorkerStarting(((WorkStateEventArgs)a).WorkState);
+                job.WorkerFinished += (o, a) => OnWorkerFinished(((WorkStateEventArgs)a).WorkState);
+                job.JobFinished += (o, a) => OnJobFinished(((WorkStateEventArgs)a).WorkState);
                 Running.Add(job);
             }
 

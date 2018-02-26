@@ -23,6 +23,19 @@ namespace Bam.Net.Automation
             this.Name = name ?? System.Guid.NewGuid().ToString();
         }
 
+        JobConductorService _jobConductorService;
+        public JobConductorService JobConductorService
+        {
+            get
+            {
+                return _jobConductorService ?? JobConductorService.Default;
+            }
+            set
+            {
+                _jobConductorService = value;
+            }
+        }
+
         public Job Job { get; set; }
         public string Name { get; set; }
         public bool Busy { get; set; }
