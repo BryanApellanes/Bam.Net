@@ -153,6 +153,7 @@
     <Compile Include="AssemblyResolve.cs" />
     <Compile Include="BackgroundThreadQueue.cs" />
     <Compile Include="BackgroundThreadQueueEventArgs.cs" />
+    <Compile Include="TypeResolver.cs" />
     <Compile Include="CompilationException.cs" />
     <Compile Include="Configuration\Configurable.cs" />
     <Compile Include="Configuration\DefaultConfigurationApplicationNameProvider.cs" />

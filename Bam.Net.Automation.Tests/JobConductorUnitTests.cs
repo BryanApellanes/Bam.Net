@@ -22,6 +22,7 @@ using M = Microsoft.Build.Logging;
 using Microsoft.Build.Execution;
 using Bam.Net.Testing.Unit;
 using Bam.Net.Services;
+using System.CodeDom.Compiler;
 
 namespace Bam.Net.Automation.Tests
 {
@@ -37,18 +38,21 @@ namespace Bam.Net.Automation.Tests
 
         public void DeleteJobsDirectory()
         {
-            string dir = JobConductorService.Default.JobsDirectory;
+            JobConductorService svc = new JobConductorService();
+            string dir = svc.JobsDirectory;
             if (Directory.Exists(dir))
             {
-                Directory.Delete(JobConductorService.Default.JobsDirectory, true);
+                Directory.Delete(svc.JobsDirectory, true);
             }
         }
 
         [UnitTest("JobConductor:: Should Create JobConf")]
         public void JobConductorShouldCreaetJobConf()
         {
-            JobConductorService.Default.JobsDirectory = new DirectoryInfo(MethodBase.GetCurrentMethod().Name).FullName;
-            JobConductorService jc = JobConductorService.Default;
+            JobConductorService jc = new JobConductorService()
+            {
+                JobsDirectory = new DirectoryInfo(MethodBase.GetCurrentMethod().Name).FullName
+            };
             string name = "JobConfTest_".RandomLetters(4);
             JobConf conf = jc.CreateJob(name);
             string path = Path.Combine(jc.JobsDirectory, conf.Name, conf.Name + ".job");
@@ -63,6 +67,24 @@ namespace Bam.Net.Automation.Tests
             string testJobName = name + "_JobName_".RandomLetters(4);
             fm.CreateJob(testJobName);
             Expect.IsTrue(fm.JobExists(testJobName));
+        }
+        
+        [UnitTest("Func Compiler Test")]
+        public void FuncCompilerTest()
+        {
+            string code = @"
+using System;
+public class FuncProvider
+{ 
+    public Func<bool> GetFunc()
+    {
+        return (Func<bool>)(() => $Code$);
+    }
+}";
+            
+            CompilerResults results = AdHocCSharpCompiler.CompileSource(code.Replace("$Code$", "true"), "TestAssembly");
+            Func<bool> o = (Func<bool>)results.CompiledAssembly.GetType("FuncProvider").Construct().Invoke("GetFunc");
+            Expect.IsTrue(o());
         }
 
         private static JobConductorService GetTestJobConductor(string jobConductorName)
@@ -99,21 +121,6 @@ namespace Bam.Net.Automation.Tests
             JobConf conf = foreman.CreateJobConf(name);
             Expect.AreEqual(name, conf.Name);
             Expect.IsTrue(conf.JobDirectory.StartsWith(foreman.JobsDirectory), "conf directory wasn't set correctly");
-        }
-
-        class TestWorker : Worker
-        {
-            public static bool ValueToCheck { get; set; }
-            protected override WorkState Do()
-            {
-                ValueToCheck = true;
-                return new WorkState(this, "success");
-            }
-
-            public override string[] RequiredProperties
-            {
-                get { return new string[] { }; }
-            }
         }
 
         [UnitTest("JobConductor:: GetJob should create new job")]
@@ -244,26 +251,6 @@ namespace Bam.Net.Automation.Tests
             Expect.AreEqual("two", job["two"].Name);
         }
 
-        class StepTestWorker : Worker
-        {
-            public static bool ValueToCheck
-            {
-                get;
-                set;
-            }
-
-            protected override WorkState Do()
-            {
-                WorkState state = new WorkState(this);
-                ValueToCheck = true;
-                return state;
-            }
-
-            public override string[] RequiredProperties
-            {
-                get { return new string[] { }; }
-            }
-        }
         [UnitTest("JobConductor:: Should be able to run job with specified (0) based step number")]
         public void ShouldBeAbleToRunJobWithSpecifiedStepNumber()
         {
@@ -292,6 +279,42 @@ namespace Bam.Net.Automation.Tests
             jc.RunJob(conf.CreateJob(), 1);
             signal.WaitOne(10000);
             Expect.IsTrue(finished.Value, "finished value should have been set");
+        }
+
+        class TestWorker : Worker
+        {
+            public static bool ValueToCheck { get; set; }
+            protected override WorkState Do()
+            {
+                ValueToCheck = true;
+                return new WorkState(this, "success");
+            }
+
+            public override string[] RequiredProperties
+            {
+                get { return new string[] { }; }
+            }
+        }
+
+        class StepTestWorker : Worker
+        {
+            public static bool ValueToCheck
+            {
+                get;
+                set;
+            }
+
+            protected override WorkState Do()
+            {
+                WorkState state = new WorkState(this);
+                ValueToCheck = true;
+                return state;
+            }
+
+            public override string[] RequiredProperties
+            {
+                get { return new string[] { }; }
+            }
         }
     }
 }

@@ -32,16 +32,27 @@ namespace Bam.Net.Automation
         AutoResetEvent _enqueueSignal;
         AutoResetEvent _runCompleteSignal;
         Thread _runnerThread;
-        public JobConductorService() : this(DefaultConfigurationApplicationNameProvider.Instance, DataSettings.Current)
+        protected internal JobConductorService() : this(DefaultConfigurationApplicationNameProvider.Instance, DataSettings.Current)
         {
+        }
+
+        public JobConductorService(IApplicationNameProvider appNameProvider, 
+            DataSettings dataSettings,
+            IWorkerTypeProvider workerTypeProvider,
+            ITypeResolver typeResolver,
+            IIpcMessageStore suspendedJobStore) : this(appNameProvider, dataSettings)
+        {
+            WorkerTypeProvider = workerTypeProvider;
+            TypeResolver = typeResolver;
+            SuspendedJobIpcMessageStore = suspendedJobStore;
         }
 
         public JobConductorService(IApplicationNameProvider appNameProvider, DataSettings dataSettings, ProfigurationSet profiguration = null)
         {
-            ProfigurationSet = profiguration;
             DataSettings = dataSettings;
             ApplicationNameProvider = appNameProvider;
             JobsDirectory = dataSettings.GetAppDataDirectory(appNameProvider, "Jobs").FullName;
+            ProfigurationSet = profiguration ?? new ProfigurationSet(System.IO.Path.Combine(JobsDirectory, "ProfigurationSet"));
             MaxConcurrentJobs = 3;
             _enqueueSignal = new AutoResetEvent(false);
             _runCompleteSignal = new AutoResetEvent(false);
@@ -55,18 +66,9 @@ namespace Bam.Net.Automation
             return clone;
         }
 
-        static JobConductorService _default;
-        static object _defaultLock = new object();
-        public static JobConductorService Default
-        {
-            get
-            {
-                return _defaultLock.DoubleCheckLock(ref _default, () => new JobConductorService());
-            }
-        }
-
         public DataSettings DataSettings { get; }        
         public IWorkerTypeProvider WorkerTypeProvider { get; }
+        public ITypeResolver TypeResolver { get; set; }
         public int MaxConcurrentJobs
         {
             get;
@@ -145,10 +147,10 @@ namespace Bam.Net.Automation
         /// <returns></returns>
         public virtual void AddWorker(string jobName, string workerTypeName, string workerName)
         {
-            Type type = Type.GetType(workerTypeName);
+            Type type = TypeResolver.ResolveType(workerTypeName);
             if (type == null)
             {
-                throw new ArgumentNullException("workerTypeName", "Unable to find the specified WorkerType");
+                throw new ArgumentNullException("workerTypeName", $"Unable to find the specified WorkerType: {workerTypeName}");
             }
 
             JobConf jobConf = GetJob(jobName);

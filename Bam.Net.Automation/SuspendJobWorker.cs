@@ -15,7 +15,6 @@ namespace Bam.Net.Automation
         public SuspendJobWorker() : base() { }
         public SuspendJobWorker(string name) : base(name) { }
 
-
         protected override WorkState Do()
         {
             SuspendedJob suspended = JobConductorService.SuspendJob(Job); ;

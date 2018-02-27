@@ -38,7 +38,7 @@ namespace Bam.Net.Automation
             ProcessOutput output = CommandLine.Run();
             WorkState<ProcessOutput> result = new WorkState<ProcessOutput>(this, output)
             {
-                Message = "{0} exited with code {1}"._Format(CommandLine, output.ExitCode)
+                Message = string.Format("{0} exited with code {1}", CommandLine, output.ExitCode)
             };
             return result;
         }

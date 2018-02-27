@@ -7,7 +7,7 @@ namespace Bam.Net.Services.DataReplication
 {
     public class RepositoryTypeResolver : IRepositoryTypeResolver
     {
-        public static string DefaultNamespace = "Bam.Net.Services.DataReplication.Data";
+        public static string DefaultNamespace = $"Bam.Net.Services.DataReplication.Data";
 
         public RepositoryTypeResolver(Repository repo)
         {

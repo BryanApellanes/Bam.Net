@@ -239,7 +239,7 @@ namespace Bam.Net.Automation
             {
                 IWorker work = WorkQueue.Dequeue();
 
-                CurrentWorkState = new WorkState(work, "starting work {0}"._Format(work.Name));
+                CurrentWorkState = new WorkState(work, string.Format("starting work {0}", work.Name));
 
                 OnWorkerStarting();
 

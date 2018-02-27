@@ -85,7 +85,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClrTypeResolver.cs" />
     <Compile Include="DaoAssemblyGenerator.cs" />
     <Compile Include="DataFile.cs" />
     <Compile Include="Data\DataInstance.cs" />

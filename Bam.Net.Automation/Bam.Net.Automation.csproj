@@ -417,9 +417,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="ContinuousIntegration\README.md" />
-    <None Include="job_scheduling_data_2_0.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="MyPackage.1.0.0.nuspec" />
     <None Include="nuspec.2010.7.xsd">
       <SubType>Designer</SubType>

@@ -86,7 +86,8 @@ namespace Bam.Net.Automation
                     File.Copy(filePath, destinationFile.FullName);
                 });
                 return new WorkState(this) { Status = Status.Succeeded };
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return new WorkState(this, ex);
             }
