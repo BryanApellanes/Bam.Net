@@ -170,7 +170,7 @@
     <Compile Include="IfElseWorker.cs" />
     <Compile Include="IWorkerTypeProvider.cs" />
     <Compile Include="MSBuild\Project.cs" />
-    <Compile Include="JobConductorService.cs" />
+    <Compile Include="JobManagerService.cs" />
     <Compile Include="Partials\DeferredJob.cs" />
     <Compile Include="Partials\DeferredJobData.cs" />
     <Compile Include="Partials\JobData.cs" />

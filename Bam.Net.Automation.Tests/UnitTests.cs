@@ -81,7 +81,7 @@ namespace Bam.Net.Automation.Tests
         {
             string key = "Key_".RandomLetters(4);
             string value = "Value_".RandomLetters(4);
-            JobConductorService svc = new JobConductorService();
+            JobManagerService svc = new JobManagerService();
             svc.SecureSet(key, value);
 
             string validate = svc.SecureGet(key);

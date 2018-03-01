@@ -18,19 +18,19 @@ namespace Bam.Net.Automation
             : this(System.Guid.NewGuid().ToString())
         { }
 
-        public Worker(string name, JobConductorService svc = null)
+        public Worker(string name, JobManagerService svc = null)
         {
             Name = name ?? System.Guid.NewGuid().ToString();
             JobConductorService = svc;
         }
 
-        JobConductorService _jobConductorService;
+        JobManagerService _jobConductorService;
         object _jobConductorLock = new object();
-        public JobConductorService JobConductorService
+        public JobManagerService JobConductorService
         {
             get
             {
-                return _jobConductorLock.DoubleCheckLock(ref _jobConductorService, () => new JobConductorService());
+                return _jobConductorLock.DoubleCheckLock(ref _jobConductorService, () => new JobManagerService());
             }
             set
             {

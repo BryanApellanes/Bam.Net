@@ -24,19 +24,19 @@ namespace Bam.Net.Automation
     /// <summary>
     /// The conductor for all jobs.
     /// </summary>
-    [Proxy("jobConductorSvc")]
-    public class JobConductorService: AsyncProxyableService
+    [Proxy("jobManagerSvc")]
+    public class JobManagerService: AsyncProxyableService
     {
-        static string ProfigurationSetKey = $"{nameof(JobConductorService)}Settings";
+        static string ProfigurationSetKey = $"{nameof(JobManagerService)}Settings";
 
         AutoResetEvent _enqueueSignal;
         AutoResetEvent _runCompleteSignal;
         Thread _runnerThread;
-        protected internal JobConductorService() : this(DefaultConfigurationApplicationNameProvider.Instance, DataSettings.Current)
+        protected internal JobManagerService() : this(DefaultConfigurationApplicationNameProvider.Instance, DataSettings.Current)
         {
         }
 
-        public JobConductorService(IApplicationNameProvider appNameProvider, 
+        public JobManagerService(IApplicationNameProvider appNameProvider, 
             DataSettings dataSettings,
             IWorkerTypeProvider workerTypeProvider,
             ITypeResolver typeResolver,
@@ -47,7 +47,7 @@ namespace Bam.Net.Automation
             SuspendedJobIpcMessageStore = suspendedJobStore;
         }
 
-        public JobConductorService(IApplicationNameProvider appNameProvider, DataSettings dataSettings, ProfigurationSet profiguration = null)
+        public JobManagerService(IApplicationNameProvider appNameProvider, DataSettings dataSettings, ProfigurationSet profiguration = null)
         {
             DataSettings = dataSettings;
             ApplicationNameProvider = appNameProvider;
@@ -60,7 +60,7 @@ namespace Bam.Net.Automation
 
         public override object Clone()
         {
-            JobConductorService clone = new JobConductorService(ApplicationNameProvider, DataSettings);
+            JobManagerService clone = new JobManagerService(ApplicationNameProvider, DataSettings);
             clone.CopyProperties(this);
             clone.CopyEventHandlers(this);
             return clone;

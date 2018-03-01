@@ -25,18 +25,18 @@ using System.CodeDom.Compiler;
 namespace Bam.Net.Automation.Tests
 {
     [Serializable]
-    public class JobConductorUnitTests : CommandLineTestInterface
+    public class JobManagerUnitTests : CommandLineTestInterface
     {
         [UnitTest("JobConductor:: Verify Jobs Folder in AppDataFolder for new JobConductor")]
         public void JobsDirectoryShouldBeInAppDataFolder()
         {
-            JobConductorService jobConductor = new JobConductorService();
+            JobManagerService jobConductor = new JobManagerService();
             Expect.AreEqual(Path.Combine(RuntimeSettings.AppDataFolder, "Jobs"), jobConductor.JobsDirectory);
         }
 
         public void DeleteJobsDirectory()
         {
-            JobConductorService svc = new JobConductorService();
+            JobManagerService svc = new JobManagerService();
             string dir = svc.JobsDirectory;
             if (Directory.Exists(dir))
             {
@@ -47,7 +47,7 @@ namespace Bam.Net.Automation.Tests
         [UnitTest("JobConductor:: Should Create JobConf")]
         public void JobConductorShouldCreaetJobConf()
         {
-            JobConductorService jc = new JobConductorService()
+            JobManagerService jc = new JobManagerService()
             {
                 JobsDirectory = new DirectoryInfo(MethodBase.GetCurrentMethod().Name).FullName
             };
@@ -61,7 +61,7 @@ namespace Bam.Net.Automation.Tests
         public void ExistsShouldBeTrueAfterCreate()
         {
             string name = MethodBase.GetCurrentMethod().Name;
-            JobConductorService jc = GetTestJobConductor(name);
+            JobManagerService jc = GetTestJobConductor(name);
             string testJobName = name + "_JobName_".RandomLetters(4);
             jc.CreateJob(testJobName);
             Expect.IsTrue(jc.JobExists(testJobName));
@@ -85,14 +85,14 @@ public class FuncProvider
             Expect.IsTrue(o());
         }
 
-        private static JobConductorService GetTestJobConductor(string jobConductorName)
+        private static JobManagerService GetTestJobConductor(string jobConductorName)
         {
             DirectoryInfo dir = new DirectoryInfo("JobConductor_" + jobConductorName);
             if (dir.Exists)
             {
                 dir.Delete(true);
             }
-            JobConductorService jc = new JobConductorService
+            JobManagerService jc = new JobManagerService
             {
                 JobsDirectory = dir.FullName
             };
@@ -103,7 +103,7 @@ public class FuncProvider
         public void CreateJobShouldThrowExceptionIfItExists()
         {
             string name = MethodBase.GetCurrentMethod().Name;
-            JobConductorService jc = GetTestJobConductor(name);
+            JobManagerService jc = GetTestJobConductor(name);
             string testJobName = name + "_JobName_".RandomLetters(4);
             jc.CreateJob(testJobName);
             Expect.IsTrue(jc.JobExists(testJobName));
@@ -115,7 +115,7 @@ public class FuncProvider
         public void JobConductorShouldCreateJobConfWithJobDirectorySet()
         {
             string name = MethodBase.GetCurrentMethod().Name;
-            JobConductorService foreman = GetTestJobConductor(name);
+            JobManagerService foreman = GetTestJobConductor(name);
             JobConf conf = foreman.CreateJobConf(name);
             Expect.AreEqual(name, conf.Name);
             Expect.IsTrue(conf.JobDirectory.StartsWith(foreman.JobsDirectory), "conf directory wasn't set correctly");
@@ -125,7 +125,7 @@ public class FuncProvider
         public void GetJobShouldCreateNewJob()
         {
             string name = MethodBase.GetCurrentMethod().Name;
-            JobConductorService jc = GetTestJobConductor(name);
+            JobManagerService jc = GetTestJobConductor(name);
             Expect.IsFalse(jc.JobExists(name));
             JobConf validate = jc.GetJob(name);
 
@@ -139,7 +139,7 @@ public class FuncProvider
         public void GetJobShouldReturnExistingJob()
         {
             string name = MethodBase.GetCurrentMethod().Name;
-            JobConductorService jc = GetTestJobConductor(name);
+            JobManagerService jc = GetTestJobConductor(name);
             Expect.IsFalse(jc.JobExists(name));
             JobConf conf = jc.CreateJob(name);
             Expect.IsTrue(jc.JobExists(name));
@@ -153,7 +153,7 @@ public class FuncProvider
         public void JobShouldRunIfRunnerThreadIsRunning()
         {
             string name = MethodBase.GetCurrentMethod().Name;
-            JobConductorService jc = GetTestJobConductor(name);
+            JobManagerService jc = GetTestJobConductor(name);
             jc.StopJobRunnerThread();
             jc.JobQueue.Clear();
             jc.StartJobRunnerThread();
@@ -182,7 +182,7 @@ public class FuncProvider
         public void AddWorkerShouldCreateJob()
         {
             string name = MethodBase.GetCurrentMethod().Name;
-            JobConductorService jc = GetTestJobConductor(name);
+            JobManagerService jc = GetTestJobConductor(name);
             string jobName = "Job_".RandomLetters(4);
             Expect.IsFalse(jc.JobExists(jobName));
 
@@ -195,7 +195,7 @@ public class FuncProvider
         public void AddWorkerShouldThrowArgumentNullException()
         {
             string name = MethodBase.GetCurrentMethod().Name;
-            JobConductorService jc = GetTestJobConductor(name);
+            JobManagerService jc = GetTestJobConductor(name);
             Expect.Throws(() =>
             {
                 jc.AddWorker("JobName", "noTypeByThisNameShouldBeFound".RandomLetters(4), "work_" + name);
@@ -209,7 +209,7 @@ public class FuncProvider
         public void AddWorkerShouldSetWorkerName()
         {
             string name = MethodBase.GetCurrentMethod().Name;
-            JobConductorService jc = GetTestJobConductor(name);
+            JobManagerService jc = GetTestJobConductor(name);
             string workerName = "worker_" + name;
             string jobName = "Job_" + name;
             jc.AddWorker(jobName, typeof(TestWorker).AssemblyQualifiedName, workerName);
@@ -220,7 +220,7 @@ public class FuncProvider
         public void ShouldBeAbleToAddWorker()
         {
             string name = MethodBase.GetCurrentMethod().Name;
-            JobConductorService jc = GetTestJobConductor(name);
+            JobManagerService jc = GetTestJobConductor(name);
             string jobName = "Job_" + name;
             string workerName = "worker_1";
             jc.AddWorker(jobName, typeof(TestWorker).AssemblyQualifiedName, workerName);
@@ -234,7 +234,7 @@ public class FuncProvider
         public void AfterAddWorkerCreateJobShouldHaveCorrectWorkers()
         {
             string name = MethodBase.GetCurrentMethod().Name;
-            JobConductorService jc = GetTestJobConductor(name);
+            JobManagerService jc = GetTestJobConductor(name);
             string jobName = "Job_" + name;
             jc.AddWorker(jobName, typeof(TestWorker).AssemblyQualifiedName, "one");
             jc.AddWorker(jobName, typeof(TestWorker).AssemblyQualifiedName, "two");
@@ -255,7 +255,7 @@ public class FuncProvider
             string name = MethodBase.GetCurrentMethod().Name;
             TestWorker.ValueToCheck = false;
             StepTestWorker.ValueToCheck = false;
-            JobConductorService jc = GetTestJobConductor(name);
+            JobManagerService jc = GetTestJobConductor(name);
             string jobName = "Job_" + name;
 
             jc.AddWorker(jobName, typeof(TestWorker).AssemblyQualifiedName, "TestWorker");
