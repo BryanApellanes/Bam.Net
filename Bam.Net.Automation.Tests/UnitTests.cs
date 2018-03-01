@@ -20,7 +20,6 @@ using Bam.Net.Encryption;
 using Bam.Net.Automation;
 using Bam.Net.Automation.Nuget;
 using System.Collections.ObjectModel;
-using Bam.Net.Automation.ContinuousIntegration;
 using Bam.Net.ServiceProxy;
 using Bam.Net.Logging;
 using Microsoft.Build.BuildEngine;
@@ -29,7 +28,6 @@ using Microsoft.Build.Framework;
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Execution;
 using Microsoft.Build.Logging;
-using Bam.Net.Automation.ContinuousIntegration.Loggers;
 using Bam.Net.Documentation;
 using Bam.Net.Testing.Unit;
 using Bam.Net.Services;
@@ -90,55 +88,7 @@ namespace Bam.Net.Automation.Tests
 
             Expect.AreEqual(value, validate);
         }
-
-        [UnitTest]
-        public void CsvBuildLoggerActualLoggerShouldBeCorrectType()
-        {
-            CsvBuildLogger csv = new CsvBuildLogger();
-            Expect.IsNotNull(csv.ActualLogger);
-            Expect.AreEqual(typeof(CsvLogger), csv.ActualLogger.GetType());
-        }
-
-        [UnitTest]
-        public void Dao2BuildLoggerActualLoggerShouldBeCorrectType()
-        {
-            Dao2BuildLogger csv = new Dao2BuildLogger();
-            Expect.IsNotNull(csv.ActualLogger);
-            Expect.AreEqual(typeof(DaoLogger2), csv.ActualLogger.GetType());
-        }
-
-        [UnitTest]
-        public void DaoBuildLoggerActualLoggerShouldBeCorrectType()
-        {
-            DaoBuildLogger csv = new DaoBuildLogger();
-            Expect.IsNotNull(csv.ActualLogger);
-            Expect.AreEqual(typeof(DaoLogger), csv.ActualLogger.GetType());
-        }
-
-        [UnitTest]
-        public void TextFileBuildLoggerActualLoggerShouldBeCorrectType()
-        {
-            TextFileBuildLogger csv = new TextFileBuildLogger();
-            Expect.IsNotNull(csv.ActualLogger);
-            Expect.AreEqual(typeof(TextFileLogger), csv.ActualLogger.GetType());
-        }
         
-        [UnitTest]
-        public void WindowsBuildLoggerActualLoggerShouldBeCorrectType()
-        {
-            WindowsBuildLogger csv = new WindowsBuildLogger();
-            Expect.IsNotNull(csv.ActualLogger);
-            Expect.AreEqual(typeof(WindowsLogger), csv.ActualLogger.GetType());
-        }
-
-        [UnitTest]
-        public void XmlBuildLoggerActualLoggerShouldBeCorrectType()
-        {
-            WindowsBuildLogger csv = new WindowsBuildLogger();
-            Expect.IsNotNull(csv.ActualLogger);
-            Expect.AreEqual(typeof(WindowsLogger), csv.ActualLogger.GetType());
-        }
-
         [UnitTest]
         public void UnzipResourceTest()
         {
@@ -362,43 +312,6 @@ an empty string")]
             WorkerConf conf = new WorkerConf();
             conf.Name = "Test_".RandomLetters(4);
             return conf;
-        }
-
-        [UnitTest]
-        public void WhenWorkerConfSavesShouldSetWorkerTypeName()
-        {
-            string filePath = "{0}.json"._Format(MethodBase.GetCurrentMethod().Name);
-            AllProjectsBuildWorker worker = new AllProjectsBuildWorker("monkey");
-            worker.SaveConf(filePath);
-            WorkerConf conf = WorkerConf.Load(filePath);
-            Expect.IsNotNull(conf.WorkerTypeName);
-            Expect.AreEqual(typeof(AllProjectsBuildWorker).AssemblyQualifiedName, conf.WorkerTypeName);
-        }
-
-        [UnitTest]
-        public void JobConfShouldCreateValidJob()
-        {
-            DirectoryInfo dir = new DirectoryInfo(".\\{0}"._Format(MethodBase.GetCurrentMethod().Name));
-            if (dir.Exists)
-            {
-                dir.Delete(true);
-            }
-
-            JobConf jobConf = new JobConf();
-            jobConf.JobDirectory = dir.FullName;
-
-            GitGetSourceWorker worker = new GitGetSourceWorker("monkey");
-            jobConf.AddWorker(worker);
-            string filePath = jobConf.Save();
-
-            JobConf check = JobConf.Load(filePath);
-            Job job = check.CreateJob();
-            IWorker checkWork = job["monkey"];
-            Expect.IsNotNull(checkWork);
-            Expect.AreEqual(typeof(GitGetSourceWorker), checkWork.GetType());
-
-            GitGetSourceWorker checkWorker = job.GetWorker<GitGetSourceWorker>("monkey");
-            Expect.AreEqual("Git", checkWorker.SourceControlType);
         }
 
         [UnitTest]
