@@ -20,7 +20,7 @@ namespace Bam.Net.Automation
         public string Source { get; set; }
         public string Destination { get; set; }
 
-        protected override WorkState Do()
+        protected override WorkState Do(WorkState currentWorkState)
         {        
             string jobName = this.Job != null ? this.Job.Name : "null";
 

@@ -27,10 +27,14 @@ namespace Bam.Net.Automation
         public Func<WorkState, bool> EvaluateWorkState { get; set; }
         public Worker IfTrueWorker { get; set; }
         public Worker ElseWorker { get; set; }
-
-        protected override WorkState Do()
+        public string UserPredicate { get; set; }
+        protected override WorkState Do(WorkState currentWorkState)
         {
-            return EvaluateWorkState(Job.CurrentWorkState) ? IfTrueWorker.Do(this.Job) : ElseWorker.Do(this.Job);
+            if(Job.CurrentWorkState != currentWorkState)
+            {
+                Job.CurrentWorkState = currentWorkState;
+            }
+            return EvaluateWorkState(Job.CurrentWorkState) ? IfTrueWorker.Do(Job) : ElseWorker.Do(Job);
         }
     }
 }

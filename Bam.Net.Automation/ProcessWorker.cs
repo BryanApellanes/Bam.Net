@@ -31,14 +31,15 @@ namespace Bam.Net.Automation
             get { return new string[] { "Name", "CommandLine" }; }
         }
 
-        protected override WorkState Do()
+        protected override WorkState Do(WorkState currentWorkState)
         {
             Args.ThrowIfNullOrEmpty(CommandLine, "CommandLine");
 
             ProcessOutput output = CommandLine.Run();
             WorkState<ProcessOutput> result = new WorkState<ProcessOutput>(this, output)
             {
-                Message = string.Format("{0} exited with code {1}", CommandLine, output.ExitCode)
+                Message = string.Format("{0} exited with code {1}", CommandLine, output.ExitCode),
+                PreviousWorkState = currentWorkState
             };
             return result;
         }

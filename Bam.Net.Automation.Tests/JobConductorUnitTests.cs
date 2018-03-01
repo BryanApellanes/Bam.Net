@@ -10,13 +10,11 @@ using Bam.Net.CommandLine;
 using Bam.Net;
 using Bam.Net.Testing;
 using Bam.Net.Automation;
-using Bam.Net.Automation.ContinuousIntegration;
 using System.IO;
 using System.Reflection;
 using System.Threading;
 using Bam.Net.Configuration;
 using Bam.Net.Logging;
-using Bam.Net.Automation.ContinuousIntegration.Loggers;
 using Microsoft.Build.Framework;
 using M = Microsoft.Build.Logging;
 using Microsoft.Build.Execution;
@@ -63,10 +61,10 @@ namespace Bam.Net.Automation.Tests
         public void ExistsShouldBeTrueAfterCreate()
         {
             string name = MethodBase.GetCurrentMethod().Name;
-            JobConductorService fm = GetTestJobConductor(name);
+            JobConductorService jc = GetTestJobConductor(name);
             string testJobName = name + "_JobName_".RandomLetters(4);
-            fm.CreateJob(testJobName);
-            Expect.IsTrue(fm.JobExists(testJobName));
+            jc.CreateJob(testJobName);
+            Expect.IsTrue(jc.JobExists(testJobName));
         }
         
         [UnitTest("Func Compiler Test")]
@@ -284,10 +282,10 @@ public class FuncProvider
         class TestWorker : Worker
         {
             public static bool ValueToCheck { get; set; }
-            protected override WorkState Do()
+            protected override WorkState Do(WorkState currentWorkState)
             {
                 ValueToCheck = true;
-                return new WorkState(this, "success");
+                return new WorkState(this, "success") { PreviousWorkState = currentWorkState };
             }
 
             public override string[] RequiredProperties
@@ -304,9 +302,9 @@ public class FuncProvider
                 set;
             }
 
-            protected override WorkState Do()
+            protected override WorkState Do(WorkState currentWorkState)
             {
-                WorkState state = new WorkState(this);
+                WorkState state = new WorkState(this) { PreviousWorkState = currentWorkState };
                 ValueToCheck = true;
                 return state;
             }

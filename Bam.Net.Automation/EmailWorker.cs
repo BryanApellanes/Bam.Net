@@ -38,13 +38,14 @@ namespace Bam.Net.Automation
             this.BodyFormat = "Status: {Status}<br />Message: {Message}";
         }
 
-        protected override WorkState Do()
+        protected override WorkState Do(WorkState currentWorkState)            
         {
             this.CheckRequiredProperties();
 
             WorkState result = new WorkState(this)
             {
-                Status = Status.Succeeded
+                Status = Status.Succeeded,
+                PreviousWorkState = currentWorkState
             };
 
             object formatValues = new

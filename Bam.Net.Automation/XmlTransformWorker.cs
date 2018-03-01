@@ -27,9 +27,9 @@ namespace Bam.Net.Automation
             }
         }
 
-        protected override WorkState Do()
+        protected override WorkState Do(WorkState previousWorkState)
         {
-            WorkState workstate = new WorkState(this);
+            WorkState workstate = new WorkState(this) { PreviousWorkState = previousWorkState };
             bool success = new FileInfo(SourceFile).TransformXml(TransformFile, DestinationFile);
             workstate.Status = success ? Status.Succeeded : Status.Failed;
             return workstate;
