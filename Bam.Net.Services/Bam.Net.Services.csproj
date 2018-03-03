@@ -247,6 +247,9 @@
     <Compile Include="Documentation\Data\ParameterDescriptor.cs" />
     <Compile Include="Documentation\Data\PropertyDescriptor.cs" />
     <Compile Include="FileManager.cs" />
+    <Compile Include="Hosts\Data\HostEntryData.cs" />
+    <Compile Include="Hosts\HostEntry.cs" />
+    <Compile Include="Hosts\HostsService.cs" />
     <Compile Include="OpenApi\Objects\CallbackObject.cs" />
     <Compile Include="OpenApi\Objects\ComponentsObject.cs" />
     <Compile Include="OpenApi\Objects\ContactObject.cs" />
