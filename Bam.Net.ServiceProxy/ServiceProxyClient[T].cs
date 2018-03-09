@@ -438,7 +438,7 @@ namespace Bam.Net.ServiceProxy
         public event EventHandler<ServiceProxyInvokeEventArgs<T>> Posted;
 
         /// <summary>
-        /// Fires the Getting event 
+        /// Fires the Posting event 
         /// </summary>
         /// <param name="args"></param>
         protected void OnPosting(ServiceProxyInvokeEventArgs<T> args)

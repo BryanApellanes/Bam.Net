@@ -193,6 +193,16 @@ namespace Bam.Net.Services.Clients
             return _apiKeyInfo;
         }
 
+        public ApiKeyInfo AddApiKey()
+        {
+            return ApplicationRegistryService.AddApiKey();
+        }
+
+        public ApiKeyInfo SetActiveApiKeyIndex(int index)
+        {
+            return ApplicationRegistryService.SetActiveApiKeyIndex(index);
+        }
+
         public string GetApplicationApiKey(string applicationClientId, int index) // index ignored in this implementation //TODO: take into account the index
         {
             ApiKeyInfo key = GetApiKeyInfo(this);
