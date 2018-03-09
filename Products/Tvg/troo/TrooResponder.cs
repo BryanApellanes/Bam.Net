@@ -3,17 +3,16 @@ using Bam.Net.Logging;
 using Bam.Net.Server;
 using Bam.Net.Server.Renderers;
 using Bam.Net.Server.Rest;
+using Bam.Net.ServiceProxy;
 using System;
 
 namespace Bam.Net.Application
 {
-    public class TrooResponder : RestResponder, IInitialize<TrooResponder>
+    public class TrooResponder : HttpHeaderResponder, IInitialize<TrooResponder>
     {
-        public TrooResponder(BamConf conf, IRepository repository, ILogger logger)
-            : base(conf, repository, logger)
+        public TrooResponder(BamConf conf, ILogger logger, IRepository repository, bool verbose = false)
+            : base(conf, logger)
         {
-            this.RendererFactory = new RendererFactory(logger);
-            this.Repository = repository;
             this.DaoResponder = new DaoResponder(conf, logger);
             this.RestResponder = new RestResponder(conf, repository, logger);
         }
@@ -29,8 +28,18 @@ namespace Bam.Net.Application
             get;
             private set;
         }
- 
-        public override bool TryRespond(ServiceProxy.IHttpContext context)
+
+        public override bool Respond(IHttpContext context)
+        {
+            if (!TryRespond(context))
+            {
+                SendResponse(context, "Troo Server");
+            }
+            context.Response.Close();
+            return true;
+        }
+
+        public override bool TryRespond(IHttpContext context)
         {
             if (DaoResponder.MayRespond(context))
             {
