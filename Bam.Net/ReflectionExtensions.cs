@@ -271,34 +271,39 @@ namespace Bam.Net
         {
             return SubscribeOnce(instance, eventName, (Delegate)handler);
         }
+
         public static T SubscribeOnce<T>(this T instance, string eventName, Delegate handler)
         {
-            EventSubscription ignore;
-            return instance.SubscribeOnce<T>(eventName, handler, out ignore);
+            return instance.SubscribeOnce<T>(eventName, handler, out EventSubscription ignore);
         }
+
         public static T SubscribeOnce<T>(this T instance, string eventName, EventHandler handler, out EventSubscription subscription)
         {
             return SubscribeOnce(instance, eventName, (Delegate)handler, out subscription);
         }
+
         public static T SubscribeOnce<T>(this T instance, string eventName, Delegate handler, out EventSubscription subscription)
         {
             T result = instance.UnSubscribe(eventName, handler).Subscribe(eventName, handler);
             subscription = instance.GetEventSubscriptions(eventName).FirstOrDefault(es => es.Delegate.Equals(handler));
             return result;
         }
+
         public static object SubscribeOnce(this object instance, string eventName, EventHandler handler)
         {
             return SubscribeOnce(instance, eventName, (Delegate)handler);
         }
+
         public static object SubscribeOnce(this object instance, string eventName, Delegate handler)
         {
-            EventSubscription ignore;
-            return instance.SubscribeOnce(eventName, handler, out ignore);
+            return instance.SubscribeOnce(eventName, handler, out EventSubscription ignore);
         }
+
         public static object SubscribeOnce(this object instance, string eventName, EventHandler handler, out EventSubscription subscription)
         {
             return SubscribeOnce(instance, eventName, (Delegate)handler, out subscription);
         }
+
         public static object SubscribeOnce(this object instance, string eventName, Delegate handler, out EventSubscription subscription)
         {
             object result = instance.UnSubscribe(eventName, handler).Subscribe(eventName, handler);
