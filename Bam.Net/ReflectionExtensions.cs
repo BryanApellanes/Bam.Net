@@ -15,7 +15,7 @@ namespace Bam.Net
         /// <summary>
         /// Returns a hash representing the specified
         /// types using the specified HashAlgorithm 
-        /// and encoding
+        /// and encoding.
         /// </summary>
         /// <param name="types"></param>
         /// <param name="algorithm"></param>
@@ -69,7 +69,7 @@ namespace Bam.Net
         /// Return a string representation of the prop. This 
         /// is primarily used for hashing the property and
         /// the resulting string cannot be easily converted 
-        /// back to the original PropertyInfo
+        /// back to the original PropertyInfo.
         /// </summary>
         /// <param name="prop"></param>
         /// <returns></returns>

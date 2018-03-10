@@ -37,7 +37,10 @@ namespace Bam.Net.Data.Repositories
             string xrefHashes = string.Join("\r\n\t", sortedXrefs.Select(x => x.Hash).ToArray());
             return $"{tables}\r\n{tablesInfo}\r\nFKHashes:\r\n\t{foreignKeyHashes}\r\nXrefHashes:\r\n\t{xrefHashes}";
         }
-
+        
+        /// <summary>
+        /// The sha1 of this TypeSchema.
+        /// </summary>
         public string Hash
         {
             get
