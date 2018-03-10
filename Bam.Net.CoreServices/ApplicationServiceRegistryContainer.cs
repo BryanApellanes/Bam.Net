@@ -68,6 +68,7 @@ namespace Bam.Net.CoreServices
             DaoRoleProvider daoRoleProvider = new DaoRoleProvider(userMgr.Database);
             RoleService coreRoleService = new RoleService(daoRoleProvider, conf);
             AssemblyServiceRepository assSvcRepo = new AssemblyServiceRepository();
+            assSvcRepo.Database = dataSettings.GetSysDatabaseFor(assSvcRepo);
             assSvcRepo.EnsureDaoAssemblyAndSchema();
 
             ConfigurationService configSvc = new ConfigurationService(coreRepo, conf, userDatabasesPath);
@@ -111,7 +112,7 @@ namespace Bam.Net.CoreServices
                 .For<OAuthService>().Use<OAuthService>()
                 .For<ILog>().Use(loggerSvc)
                 .For<SystemLoggerService>().Use(loggerSvc)
-                .For<DataSettings>().Use(DataSettings.Default)
+                .For<DataSettings>().Use(DataSettings.Current)
                 .For<IApplicationNameResolver>().Use<ClientApplicationNameResolver>()
                 .For<ClientApplicationNameResolver>().Use<ClientApplicationNameResolver>()
                 .For<NotificationService>().Use<NotificationService>();                
