@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Services.DataReplication.Data;
 
 namespace Bam.Net.Services.Catalog.Data
 {
+    [Serializable]
     public class ItemDefinition: AuditRepoData
     {
         public string Name { get; set; }

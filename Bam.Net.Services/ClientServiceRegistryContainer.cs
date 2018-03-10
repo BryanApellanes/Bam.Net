@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 using Bam.Net.CoreServices;
 using Bam.Net.Data.Repositories;
 using Bam.Net.Incubation;
+using Bam.Net.Logging;
 using Bam.Net.Server;
 using Bam.Net.Services.Catalog;
+using Bam.Net.Services.Catalog.Data;
 
 namespace Bam.Net.Services
 {
@@ -27,13 +29,23 @@ namespace Bam.Net.Services
         public static ServiceRegistry Create()
         {
             AppConf conf = new AppConf(BamConf.Load(ServiceConfig.ContentRoot), ServiceConfig.ProcessName.Or(RegistryName));
+            DaoRepository repo = new DaoRepository(DataSettings.Current.GetSysDatabase(nameof(CatalogRepository)), Log.Default);
+            repo.AddNamespace(typeof(CatalogItem));
+            CatalogRepository catalogRepo = new CatalogRepository(repo, Log.Default);
+            ServiceRegistry coreReg = ApplicationServiceRegistryContainer.Create();
+
             ServiceRegistry reg = (ServiceRegistry)(new ServiceRegistry())
+                .For<ILogger>().Use(Log.Default)
                 .For<AppConf>().Use(conf)
-                .For<DaoRepository>().Use<CatalogRepository>()
+                .For<IRepository>().Use(catalogRepo)
+                .For<DaoRepository>().Use(repo)
                 .For<ICatalogService>().Use<CatalogService>()
                 .For<CatalogService>().Use<CatalogService>();
 
-                return reg;
+
+            reg.CombineWith(coreReg);
+
+            return reg;
         }
     }
 }
