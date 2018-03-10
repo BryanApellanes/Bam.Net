@@ -75,6 +75,16 @@ namespace Bam.Net.CommandLine
             return Run(string.IsNullOrEmpty(exe) ? command : exe, arguments, promptForAdmin, output, error, timeout);
         }
 
+        public static ProcessOutput Run(this string command, bool promptForAdmin, ProcessOutputCollector outputCollector, int timeout = 600000)
+        {
+            ValidateCommand(command);
+            GetExeAndArguments(command, out string exe, out string arguments);
+            ProcessStartInfo startInfo = CreateStartInfo(promptForAdmin);
+            startInfo.FileName = command;
+            startInfo.Arguments = arguments;
+            return Run(startInfo, outputCollector, timeout);
+        }
+
         /// <summary>
         /// Start a new process for the specified startInfo.  This 
         /// operation will block if a timeout greater than 0 is specified

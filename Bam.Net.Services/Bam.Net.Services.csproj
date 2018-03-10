@@ -114,6 +114,7 @@
     <Compile Include="Chunking\ChunkOperation.cs" />
     <Compile Include="Chunking\ChunkResponse.cs" />
     <Compile Include="Chunking\ChunkServer.cs" />
+    <Compile Include="ClientServiceRegistryContainer.cs" />
     <Compile Include="DataReplication\Arc.cs" />
     <Compile Include="DataReplication\Data\CreateOperation.cs" />
     <Compile Include="DataReplication\Data\DataPoint.cs" />

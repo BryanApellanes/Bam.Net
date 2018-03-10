@@ -34,7 +34,8 @@ namespace Bam.Net.Server
         /// <returns></returns>
         public override bool MayRespond(IHttpContext context)
         {
-            return GetRequestedResponderName(context).Equals(RespondToHeaderValue);
+            string requestedResponder = GetRequestedResponderName(context);
+            return requestedResponder == null ? true: requestedResponder.Equals(RespondToHeaderValue);
         }
 
         /// <summary>
