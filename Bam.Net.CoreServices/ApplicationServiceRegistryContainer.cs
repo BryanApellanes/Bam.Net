@@ -43,6 +43,16 @@ namespace Bam.Net.CoreServices
             return _coreIncubatorLock.DoubleCheckLock(ref _coreServiceRegistry, Create);
         }
 
+        static ServiceRegistry _instance;
+        static object _instanceLock = new object();
+        public static ServiceRegistry Instance
+        {
+            get
+            {
+                return _instanceLock.DoubleCheckLock(ref _instance, Create);
+            }
+        }
+
         public static ServiceRegistry Create()
         {
             DataSettings dataSettings = DataSettings.Current;

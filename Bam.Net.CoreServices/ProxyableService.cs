@@ -191,7 +191,7 @@ namespace Bam.Net.CoreServices
 
         IUserManager _userManager;
         [Exclude]
-        public IUserManager UserManager
+        public virtual IUserManager UserManager
         {
             get
             {

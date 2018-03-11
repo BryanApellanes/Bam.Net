@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Bam.Net.Configuration;
 using Bam.Net.Data;
 using Bam.Net.Logging;
 
@@ -51,6 +52,17 @@ namespace Bam.Net.Data
             db = GetSysDatabaseFor(typeof(TDao));
             Db.For<TDao>(db);
         }
+
+        public virtual T GetAppDatabase(string databaseName)
+        {
+            return GetAppDatabase(new DefaultConfigurationApplicationNameProvider(), databaseName);
+        }
+
+        public virtual T GetAppDatabaseFor(string databaseName)
+        {
+            return GetAppDatabaseFor(new DefaultConfigurationApplicationNameProvider(), databaseName);
+        }
+        
         public abstract T GetAppDatabase(IApplicationNameProvider appNameProvider, string databaseName);
         public abstract T GetSysDatabase(string databaseName);
         public abstract T GetAppDatabaseFor(IApplicationNameProvider appNameProvider, object instance);

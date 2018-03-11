@@ -70,9 +70,12 @@
     <Compile Include="ApplicationLogDatabase.cs" />
     <Compile Include="ApplicationLogger.cs" />
     <Compile Include="ApplicationServiceRegistry.cs" />
+    <Compile Include="CoreAsyncProxyableService.cs" />
     <Compile Include="CoreClient.cs" />
+    <Compile Include="CoreProxyableService.cs" />
     <Compile Include="CoreSystemClient.cs" />
     <Compile Include="CoreLoggerClient.cs" />
+    <Compile Include="IHasCoreClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

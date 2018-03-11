@@ -70,6 +70,11 @@ namespace Bam.Net.Services.Clients
         public CoreClient(string hostName, int port, ILogger logger = null) : this(Organization.Public.Name, CoreServices.ApplicationRegistration.Data.Application.Unknown.Name, hostName, port, logger)
         { }
 
+        /// <summary>
+        /// Instantiate a CoreClient configured to consume the CoreHostName and CorePort values specified in the 
+        /// default configuration file (app.config or web.config).  If no values are specified then bamapps.net:80
+        /// is used.
+        /// </summary>
         public CoreClient(): this(DefaultConfiguration.GetAppSetting("CoreHostName", "bamapps.net"), DefaultConfiguration.GetAppSetting("CorePort", "80").ToInt())
         {
         }

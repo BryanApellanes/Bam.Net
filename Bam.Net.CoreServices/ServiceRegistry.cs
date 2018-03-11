@@ -31,9 +31,10 @@ namespace Bam.Net.CoreServices
                 if (coreRegistryContainer != null)
                 {
                     MethodInfo provider = coreRegistryContainer.GetMethods().Where(mi => mi.HasCustomAttributeOfType<ServiceRegistryLoaderAttribute>() || mi.Name.Equals("Get")).FirstOrDefault();
+                    object instance = provider.IsStatic ? null: provider.DeclaringType.Construct();
                     if (provider != null)
                     {
-                        Default = (ServiceRegistry)provider.Invoke(null, null);
+                        Default = (ServiceRegistry)provider.Invoke(instance, null);
                     }
                 }
             }

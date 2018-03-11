@@ -16,6 +16,8 @@ using Bam.Net.Server;
 using Newtonsoft.Json;
 using System.Xml.Serialization;
 using Bam.Net.Incubation;
+using Bam.Net.Configuration;
+using Bam.Net.ServiceProxy.Secure;
 
 namespace Bam.Net.Server
 {
@@ -54,6 +56,11 @@ namespace Bam.Net.Server
             : this(name)
         {
             BamConf = serverConf;
+        }
+
+        public static AppConf FromDefaultConfig()
+        {
+            return new AppConf { Name = DefaultConfiguration.GetAppSetting("ApplicationName", Application.Unknown.Name) };
         }
 
         Fs _appRoot;
@@ -104,9 +111,9 @@ namespace Bam.Net.Server
         }
 
         /// <summary>
-        /// The name of the application.  This will be the name of the 
+        /// The name of the application.  This will typically be the name of the 
         /// folder being served from the "apps" folder of the root
-        /// of the BamServer
+        /// of the BamServer depending on how the AppConf was instantiated.
         /// </summary>
         public string Name { get; set; }
 

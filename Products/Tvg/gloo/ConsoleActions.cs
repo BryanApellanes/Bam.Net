@@ -297,11 +297,19 @@ namespace Bam.Net.Application
             if(result == null)
             {
                 string assemblyPath = GetArgument("assemblyPath", true);
-                result = Assembly.LoadFrom(assemblyPath);
-                type = GetType(result, className);
-                if(type == null)
+                if (!File.Exists(assemblyPath))
                 {
-                    type = result.GetType(className);
+                    assemblyPath = new FileInfo(assemblyPath).FullName;
+                }
+
+                if (File.Exists(assemblyPath))
+                { 
+                    result = Assembly.LoadFrom(assemblyPath);
+                    type = GetType(result, className);
+                    if (type == null)
+                    {
+                        type = result.GetType(className);
+                    }
                 }
             }
 

@@ -3,6 +3,8 @@ using System.IO;
 using Bam.Net.Configuration;
 using Bam.Net.Data.SQLite;
 using Bam.Net.Logging;
+using Bam.Net.UserAccounts;
+using Bam.Net.UserAccounts.Data;
 
 namespace Bam.Net.Data.Repositories
 {
@@ -48,6 +50,17 @@ namespace Bam.Net.Data.Repositories
             {
                 return _fromConfigLock.DoubleCheckLock(ref _fromConfig, () => new DataSettings(ProcessMode.Current));
             }
+        }
+
+        public void Init(UserManager userManager)
+        {
+            Init(DefaultConfigurationApplicationNameProvider.Instance, userManager);
+        }
+
+        public void Init(IApplicationNameProvider appNameProvider, UserManager userManager)
+        {            
+            SetRuntimeAppDataDirectory(appNameProvider);
+            User.UserDatabase = userManager.Database;            
         }
 
         public void SetRuntimeAppDataDirectory(IApplicationNameProvider appNameProvider)
@@ -202,7 +215,7 @@ namespace Bam.Net.Data.Repositories
             return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, WorkspacesDirectory, type.Name, hash));
         }
 
-        public DaoRepository GetGenericDaoRepository(ILogger logger = null, string schemaName = null)
+        public DaoRepository GetSysDaoRepository(ILogger logger = null, string schemaName = null)
         {
             return new DaoRepository(GetSysDatabaseFor(typeof(DaoRepository)), logger, schemaName);
         }

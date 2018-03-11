@@ -54,7 +54,8 @@ namespace Bam.Net.CoreServices
         public static ServiceRegistryService GetLocalServiceRegistryService(DataSettings dataSettings, IApplicationNameProvider appNameProvider, string assemblySearchPattern, ILogger logger = null)
         {
             logger = logger ?? Log.Default;
-            FileService fileService = new FileService(new DaoRepository(dataSettings.GetSysDatabaseFor(typeof(FileService), $"{nameof(ServiceRegistryService)}_{nameof(FileService)}")));
+            DaoRepository repo = dataSettings.GetSysDaoRepository(logger, nameof(FileService));
+            FileService fileService = new FileService(repo);
             AssemblyServiceRepository assRepo = new AssemblyServiceRepository();
             assRepo.Database = dataSettings.GetSysDatabaseFor(assRepo);
             assRepo.EnsureDaoAssemblyAndSchema();
@@ -66,7 +67,7 @@ namespace Bam.Net.CoreServices
                 fileService,
                 assemblyService,
                 serviceRegistryRepo,
-                dataSettings.GetGenericDaoRepository(logger),
+                dataSettings.GetSysDaoRepository(logger),
                 new AppConf { Name = appNameProvider.GetApplicationName() }
             )
             {
