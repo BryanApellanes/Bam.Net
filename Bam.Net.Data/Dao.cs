@@ -18,7 +18,7 @@ namespace Bam.Net.Data
     /// <summary>
     /// Data Access Object
     /// </summary>
-    public abstract class Dao : ICommittable, IHasDataRow
+    public abstract class Dao : ICommittable, IHasDataRow, IComparable
     {
         static Dictionary<string, string> _proxiedConnectionNames;
 
@@ -199,9 +199,7 @@ namespace Bam.Net.Data
             {
                 if (_globalInitializer == null)
                 {
-                    return (dao) =>
-                    {
-                    };
+                    return (dao) => { };
                 }
                 return _globalInitializer;
             }
@@ -236,18 +234,55 @@ namespace Bam.Net.Data
             }
         }
 
+        /// <summary>
+        /// The name of the property to use in CompareTo operations.
+        /// </summary>
+        public string DefaultSortProperty { get; set; }
+
+        public virtual int CompareTo(object obj)
+        {
+            Type thisType = GetType();
+            Type objType = obj.GetType();
+            if(thisType != objType)
+            {
+                return thisType.Name.CompareTo(objType.Name);
+            }
+            PropertyInfo compareProp = thisType.GetProperty(DefaultSortProperty ?? "Name");
+            if(compareProp == null)
+            {
+                compareProp = thisType.GetProperty("IdValue");
+            }
+            IComparable val1 = (IComparable)compareProp.GetValue(this);
+            IComparable val2 = (IComparable)compareProp.GetValue(obj);
+            return val1.CompareTo(val2);
+        }
+
         PropertyInfo _uuidProp;
         bool? _hasUuid;
         protected bool HasUuidProperty(out PropertyInfo uuidProp)
         {
             if (_hasUuid == null)
             {
-                _uuidProp = this.GetType().GetProperty("Uuid");
+                _uuidProp = GetType().GetProperty("Uuid");
                 _hasUuid = _uuidProp != null;
             }
 
             uuidProp = _uuidProp;
             return _hasUuid.Value;
+        }
+
+        PropertyInfo _cuidProp;
+        bool? _hasCuid;
+        protected bool HasCuidProperty(out PropertyInfo cuidProp)
+        {
+            if (_hasCuid == null)
+            {
+                _cuidProp = GetType().GetProperty("Cuid");
+                _hasCuid = _uuidProp != null;
+            }
+
+            cuidProp = _cuidProp;
+            return _hasCuid.Value;
         }
 
         protected Database _database;
@@ -1460,10 +1495,7 @@ namespace Bam.Net.Data
             this.IsNew = true;
             this.DataRow = this.ToDataRow();
             this.AutoDeleteChildren = true;
-            this.BeforeWriteCommit += (db, dao) =>
-            {
-                dao.EnsureUuid();
-            };
+            this.BeforeWriteCommit += (db, dao) => dao.SetUuid();
 
             Type currentType = this.GetType();
             if (PostConstructActions.ContainsKey(currentType))
@@ -1473,10 +1505,10 @@ namespace Bam.Net.Data
 
             this.OnInitialize();
         }
-        private void EnsureUuid()
+
+        private void SetUuid()
         {
-            PropertyInfo uuid;
-            if (HasUuidProperty(out uuid))
+            if (HasUuidProperty(out PropertyInfo uuid))
             {
                 string currentUuid = (string)uuid.GetValue(this);
                 if (string.IsNullOrEmpty(currentUuid))
@@ -1484,7 +1516,7 @@ namespace Bam.Net.Data
                     string uuidVal = Guid.NewGuid().ToString();
                     uuid.SetValue(this, uuidVal);
                 }
-            }
+            } 
         }
 
         private void ExecuteCommit(Database db, QuerySet querySet)

@@ -2050,6 +2050,11 @@ namespace Bam.Net
             File.SetAttributes(fileInfo.FullName, removed);
         }
 
+        public static string RemoveInvalidFilePathCharacters(this string value)
+        {
+            return value.Replace("<", "").Replace(">", "").Replace(":", "").Replace("\"", "").Replace("/", "").Replace("\\", "").Replace("|", "").Replace("?", "").Replace("*", "");
+        }
+
         /// <summary>
         /// Read the first line of the string and return the 
         /// result.  A line is defined as a sequence of characters 

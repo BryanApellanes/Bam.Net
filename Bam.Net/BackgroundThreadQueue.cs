@@ -47,7 +47,7 @@ namespace Bam.Net
         ConcurrentQueue<T> _processQueue = new ConcurrentQueue<T>();
         public void Enqueue(T data)
         {
-            if (ProcessThread.ThreadState != ThreadState.Running)
+            if (ProcessThread.ThreadState != ThreadState.Running && ProcessThread.ThreadState != ThreadState.Background)
             {
                 _processThread = null;
                 ProcessThread.Start();

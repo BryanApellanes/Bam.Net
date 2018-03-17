@@ -145,6 +145,7 @@
     <Compile Include="Dust\DustTemplateResult.cs" />
     <Compile Include="Dust\DustView.cs" />
     <Compile Include="Dust\DustViewEngine.cs" />
+    <Compile Include="Emoji.cs" />
     <Compile Include="Emoji_Generated\Category.cs" />
     <Compile Include="Emoji_Generated\CategoryCollection.cs" />
     <Compile Include="Emoji_Generated\CategoryColumns.cs" />
@@ -262,7 +263,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Code\" />
-    <Folder Include="Html\Traversal\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
