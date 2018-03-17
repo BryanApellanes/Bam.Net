@@ -50,6 +50,7 @@ namespace Bam.Net.Automation.Testing
             ILogger logger = new DaoLogger2(loggerDb);
             IDatabaseProvider dbProvider = new DataSettingsDatabaseProvider(DataSettings.Current, logger);
             coreClient.UserRegistryService.DatabaseProvider = dbProvider;
+            coreClient.UserRegistryService.ApplicationNameProvider = new DefaultConfigurationApplicationNameProvider();
 
             return (ServiceRegistry)(new ServiceRegistry())
                 .For<IDatabaseProvider>().Use(dbProvider)
