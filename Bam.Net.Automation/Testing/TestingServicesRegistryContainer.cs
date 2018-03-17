@@ -48,12 +48,14 @@ namespace Bam.Net.Automation.Testing
         {
             SQLiteDatabase loggerDb = DataSettings.Current.GetSysDatabase("TestServicesRegistry_DaoLogger2");
             ILogger logger = new DaoLogger2(loggerDb);
+            IDatabaseProvider dbProvider = new DataSettingsDatabaseProvider(DataSettings.Current, logger);
+            coreClient.UserRegistryService.DatabaseProvider = dbProvider;
 
             return (ServiceRegistry)(new ServiceRegistry())
+                .For<IDatabaseProvider>().Use(dbProvider)
                 .For<IUserManager>().Use(coreClient.UserRegistryService)
                 .For<DataSettings>().Use(DataSettings.Current)
                 .For<ILogger>().Use(logger)
-                .For<IDatabaseProvider>().Use<DataSettingsDatabaseProvider>()
                 .For<AppConf>().Use(new AppConf(Name))
                 .For<SystemLoggerService>().Use<SystemLoggerService>()
                 .For<TestReportService>().Use<TestReportService>()

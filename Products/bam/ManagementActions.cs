@@ -28,7 +28,10 @@ namespace Bam.Net.Application
             ConsoleLogger logger = new ConsoleLogger();
             logger.StartLoggingThread();
             ProxyFactory proxyFactory = new ProxyFactory();
-            NotificationService svc = proxyFactory.GetProxy<NotificationService>("int.bamapps.net", 80, logger);
+            NotificationService svc = proxyFactory.GetProxy<NotificationService>("gloo.localhost", 9100, logger);
+            svc.Login("bryan.apellanes@gmail.com", "password".Sha1());
+            OutLineFormat("logged in as: {0}", svc.WhoAmI());
+
             svc.Notify("bryan.apellanes@gmail.com", "This is a test", "Test Email");
         }
 
