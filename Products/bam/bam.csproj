@@ -119,6 +119,10 @@
       <Project>{34c5016d-5265-4394-a9ba-cb2f70d8e93b}</Project>
       <Name>Bam.Net.Javascript</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Bam.Net.Messaging\Bam.Net.Messaging.csproj">
+      <Project>{e330d601-62ea-439e-acd7-7236744562ff}</Project>
+      <Name>Bam.Net.Messaging</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Bam.Net.Presentation\Bam.Net.Presentation.csproj">
       <Project>{b9e03ff5-0750-4162-bafd-3f0778d44a8c}</Project>
       <Name>Bam.Net.Presentation</Name>

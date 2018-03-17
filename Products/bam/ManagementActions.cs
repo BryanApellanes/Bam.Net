@@ -22,6 +22,16 @@ namespace Bam.Net.Application
 	{
         const string BamSysPath = "C:\\bam\\sys\\";
 
+        [ConsoleAction]
+        public void NotifyThroughCore()
+        {
+            ConsoleLogger logger = new ConsoleLogger();
+            logger.StartLoggingThread();
+            ProxyFactory proxyFactory = new ProxyFactory();
+            NotificationService svc = proxyFactory.GetProxy<NotificationService>("int.bamapps.net", 80, logger);
+            svc.Notify("bryan.apellanes@gmail.com", "This is a test", "Test Email");
+        }
+
         /// <summary>
         /// List all users from the local database.
         /// </summary>

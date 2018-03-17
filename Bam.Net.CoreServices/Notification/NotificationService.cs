@@ -52,7 +52,7 @@ namespace Bam.Net.CoreServices
         /// </summary>
         /// <param name="template"></param>
         /// <returns></returns>
-        public bool AddTemplate(NotificationTemplateInfo template)
+        public virtual bool AddTemplate(NotificationTemplateInfo template)
         {
             return AddTemplate(template, out string ignore);
         }
@@ -85,7 +85,7 @@ namespace Bam.Net.CoreServices
         }
 
         [RoleRequired("/CoreNotificationService/AccessDenied", "Admin")]
-        public bool TemplateNotify(string recipientIdendtifier, string templateName, string jsonData, string subject = null)
+        public virtual bool TemplateNotify(string recipientIdendtifier, string templateName, string jsonData, string subject = null)
         {
             object data = string.IsNullOrEmpty(jsonData) ? new { } : JsonConvert.DeserializeObject(jsonData);
             return TemplateNotify(recipientIdendtifier, templateName, data, subject);
@@ -111,7 +111,7 @@ namespace Bam.Net.CoreServices
         }
 
         [RoleRequired("/CoreNotificationService/AccessDenied", "Admin")]
-        public bool Notify(string recipientIdentifier, EmailBody emailBody, string subject = null)
+        public virtual bool Notify(string recipientIdentifier, EmailBody emailBody, string subject = null)
         {
             try
             {

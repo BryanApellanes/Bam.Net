@@ -18,5 +18,10 @@ namespace Bam.Net.Messaging
         {
             return new EmailBody { IsHtml = email.Config.IsBodyHtml, Content = email.Config.Body };
         }
+
+        public static implicit operator EmailBody(string content)
+        {
+            return new EmailBody { Content = content };
+        }
     }
 }
