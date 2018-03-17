@@ -22,6 +22,8 @@ namespace Bam.Net.CoreServices
     [ServiceSubdomain("notify")]
     public class NotificationService : ApplicationProxyableService, INotificationService
     {
+        protected NotificationService() : base() { }
+
         public NotificationService(IUserManager userManager, DataSettings dataSettings, ILogger logger)
         {
             UserManager = userManager;
