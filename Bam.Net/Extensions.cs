@@ -3614,7 +3614,7 @@ namespace Bam.Net
             IEnumerable<EventSubscription> results = from eventInfo in type.GetEvents()
                                                      let eventFieldInfo = ei2fi(eventInfo)
                                                      let eventFieldValue =
-                                                         (System.Delegate)eventFieldInfo.GetValue(instance)
+                                                         (System.Delegate)eventFieldInfo?.GetValue(instance)
                                                      from subscribedDelegate in eventFieldValue == null ? new Delegate[] { } : eventFieldValue.GetInvocationList()
                                                      select new EventSubscription { EventName = eventFieldInfo.Name, Delegate = subscribedDelegate, FieldInfo = eventFieldInfo, EventInfo = eventInfo };
             // ** /yuck **

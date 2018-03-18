@@ -313,14 +313,14 @@ namespace Bam.Net.CoreServices
             });
         }
 
-        protected internal UserManager GetUserManager()
+        protected internal IUserManager GetUserManager()
         {
             if (_userManager == null)
             {
                 _userManager = AppConf.UserManagerConfig.Create(AppConf.Logger);
                 _userManager.ApplicationNameProvider = new BamApplicationNameProvider(AppConf);
             }
-            UserManager copy = (UserManager)_userManager.Clone();
+            IUserManager copy = (IUserManager)_userManager.Clone();
             copy.HttpContext = HttpContext;
             return copy;
         }

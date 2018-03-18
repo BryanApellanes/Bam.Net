@@ -194,8 +194,8 @@ namespace Bam.Net.CoreServices
 
         private UserAccounts.Data.User ValidateRecipientOrDie(string identifier)
         {
-            UserManager userManager = GetUserManager();
-            Database userDatabase = userManager.DaoUserResolver.Database;
+            IUserManager userManager = GetUserManager();
+            Database userDatabase = userManager.Property<DaoUserResolver>("DaoUserResolver", false)?.Database ?? Db.For<UserAccounts.Data.User>();
             if (!IsValidUserEmail(identifier, userDatabase, out UserAccounts.Data.User user))
             {
                 if(!IsValidUserName(identifier, userDatabase, out user))

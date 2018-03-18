@@ -1,0 +1,3 @@
+﻿select td.AssemblyFullName, td.MethodName, td.Description, te.passed, te.exception, te.stacktrace from testexecution te 
+join testdefinition td on te.TestDefinitionId = td.Id
+where passed = 0 and tag = '7b77b4'
