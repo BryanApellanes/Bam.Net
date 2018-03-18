@@ -73,23 +73,43 @@ namespace Bam.Net.Encryption
         }
 
 
-        static Database _defaultVaultDatabase;
-        static object _defaultVaultDatabaseSync = new object();
-        public static Database DefaultDatabase
+        static Database _systemVaultDatabase;
+        static object _systemVaultDatabaseSync = new object();
+        public static Database SystemVaultDatabase
         {
             get
             {
-                return _defaultVaultDatabaseSync.DoubleCheckLock(ref _defaultVaultDatabase, () => InitializeDatabase());
+                return _systemVaultDatabaseSync.DoubleCheckLock(ref _systemVaultDatabase, () => InitializeSystemDatabase());
             }
             set
             {
-                _defaultVaultDatabase = value;
+                _systemVaultDatabase = value;
             }
         }
 
-        internal static Database InitializeDatabase()
+        static Database _applicationVaultDatabase;
+        static object _applicationVaultDatabaseSync = new object();
+        public static Database ApplicationVaultDatabase
+        {
+            get
+            {
+                return _applicationVaultDatabaseSync.DoubleCheckLock(ref _applicationVaultDatabase, () => InitializeApplicationDatabase());
+            }
+            set
+            {
+                _applicationVaultDatabase = value;
+            }
+        }
+
+        internal static Database InitializeSystemDatabase()
         {
             return InitializeDatabase(".\\System.vault.sqlite", Log.Default);
+        }
+
+        internal static Database InitializeApplicationDatabase()
+        {
+            string appName = DefaultConfigurationApplicationNameProvider.Instance.GetApplicationName();
+            return InitializeDatabase($".\\Application_{appName}.vault.sqlite", Log.Default);
         }
 
         public static Database InitializeDatabase(string filePath, ILogger logger = null)
@@ -116,20 +136,27 @@ namespace Bam.Net.Encryption
             }
         }
 
-        static Vault _vault;
-        static object _vaultSync = new object();
+        static Vault _systemVault;
+        static object _systemVaultSync = new object();
         public static Vault System
         {
             get
             {
-                return _vaultSync.DoubleCheckLock(ref _vault, () =>
-                {
-                    return Retrieve(DefaultDatabase, "System", Password);
-                });
-
+                return _systemVaultSync.DoubleCheckLock(ref _systemVault, () => Retrieve(SystemVaultDatabase, "System", Password));
             }
         }
-        
+
+        static Vault _appVault;
+        static object _appVaultSync = new object();
+        public static Vault Application
+        {
+            get
+            {
+                string appName = DefaultConfigurationApplicationNameProvider.Instance.GetApplicationName();
+                return _appVaultSync.DoubleCheckLock(ref _appVault, () => Retrieve(ApplicationVaultDatabase, appName, Password));
+            }
+        }
+
         public static Vault Load(string filePath, string vaultName)
         {
             return Load(new FileInfo(filePath), vaultName);            
@@ -168,7 +195,7 @@ namespace Bam.Net.Encryption
         /// <returns></returns>
         public static Vault Retrieve(string name)
         {
-            return Retrieve(DefaultDatabase, name, Secure.RandomString());
+            return Retrieve(SystemVaultDatabase, name, Secure.RandomString());
         }
 
         /// <summary>
@@ -180,7 +207,7 @@ namespace Bam.Net.Encryption
         /// <returns></returns>
         public static Vault Retrieve(string name, string password)
         {
-            return Retrieve(DefaultDatabase, name, password);
+            return Retrieve(SystemVaultDatabase, name, password);
         }
 
         /// <summary>
@@ -244,7 +271,7 @@ namespace Bam.Net.Encryption
 
         public static Vault Create(string name, string password)
         {
-            Database db = InitializeDatabase();
+            Database db = InitializeSystemDatabase();
             return Create(db, name, password);
         }
 

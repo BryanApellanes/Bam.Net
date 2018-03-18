@@ -2,6 +2,7 @@
 using System.IO;
 using Bam.Net.Configuration;
 using Bam.Net.Data.SQLite;
+using Bam.Net.Encryption;
 using Bam.Net.Logging;
 using Bam.Net.UserAccounts;
 using Bam.Net.UserAccounts.Data;
@@ -60,7 +61,9 @@ namespace Bam.Net.Data.Repositories
         public void Init(IApplicationNameProvider appNameProvider, UserManager userManager)
         {            
             SetRuntimeAppDataDirectory(appNameProvider);
-            User.UserDatabase = userManager.Database;            
+            User.UserDatabase = userManager.Database;
+            Vault.SystemVaultDatabase = Current.GetSysDatabaseFor(typeof(Vault), "System");
+            Vault.ApplicationVaultDatabase = Current.GetAppDatabaseFor(appNameProvider, typeof(Vault), appNameProvider.GetApplicationName());
         }
 
         public void SetRuntimeAppDataDirectory(IApplicationNameProvider appNameProvider)
@@ -235,6 +238,11 @@ namespace Bam.Net.Data.Repositories
             instance.Property("Database", GetSysDatabaseFor(instance), false);
         }        
 
+        /// <summary>
+        /// Get a SQLiteDatabase for the specified object instance.
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <returns></returns>
         public override SQLiteDatabase GetSysDatabaseFor(object instance)
         {
             string databaseName = instance.GetType().FullName;
@@ -246,6 +254,12 @@ namespace Bam.Net.Data.Repositories
             return new SQLiteDatabase(GetSysDatabaseDirectory().FullName, databaseName);
         }
 
+        /// <summary>
+        /// Get the standard path for the specified type.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="info"></param>
+        /// <returns></returns>
         public override string GetSysDatabasePathFor(Type type, string info = null)
         {
             return GetSysDatabaseFor(type, info).DatabaseFile.FullName;

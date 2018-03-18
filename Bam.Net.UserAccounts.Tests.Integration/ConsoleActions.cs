@@ -21,7 +21,7 @@ namespace Bam.Net.UserAccounts.Tests.Integration
         public void SetVault()
         {
             SetVaultDatabase();
-            VaultCollection vaults = Vault.LoadAll(Vault.DefaultDatabase);
+            VaultCollection vaults = Vault.LoadAll(Vault.SystemVaultDatabase);
             _vault = SelectFrom(vaults, v => v.Name);
         }
 
@@ -73,8 +73,8 @@ namespace Bam.Net.UserAccounts.Tests.Integration
         private static void SetVaultDatabase()
         {
             DataSettings dataSettings = DataSettings.Default;
-            Vault.DefaultDatabase = dataSettings.GetSysDatabaseFor(typeof(Vault), "System");
-            Vault.DefaultDatabase.TryEnsureSchema<Vault>();
+            Vault.SystemVaultDatabase = dataSettings.GetSysDatabaseFor(typeof(Vault), "System");
+            Vault.SystemVaultDatabase.TryEnsureSchema<Vault>();
         }
 
         [ConsoleAction]

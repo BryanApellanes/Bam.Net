@@ -14,6 +14,7 @@ using Bam.Net.CoreServices;
 using Bam.Net.UserAccounts.Data;
 using Bam.Net.Data;
 using System.Linq;
+using Bam.Net.Messaging;
 
 namespace Bam.Net.Application
 {
@@ -33,6 +34,24 @@ namespace Bam.Net.Application
             OutLineFormat("logged in as: {0}", svc.WhoAmI());
 
             svc.Notify("bryan.apellanes@gmail.com", "This is a test", "Test Email");
+        }
+
+        [ConsoleAction]
+        public void SetDefaultSmtpSettings()
+        {
+            SmtpSettings settings = new SmtpSettings
+            {
+                SmtpHost = "mail.privateemail.com",
+                Port = 587,
+                UserName = "support@threeheadz.com",
+                From = "support@threeheadz.com",
+                DisplayName = "Three Headz",
+                EnableSsl = true
+            };
+
+            settings.Password = PasswordPrompt("Please enter the smtp password", ConsoleColor.Yellow);
+
+            NotificationService.SaveDefaultSmtpSettings(settings);
         }
 
         /// <summary>

@@ -46,14 +46,18 @@ namespace Bam.Net
         public static void TryAsync(Action action, Action<Exception> onException = null)
         {
             Action<Exception> exceptionHandler = onException ?? ((ex) => { });
-            try
+
+            Task t = Task.Run(() =>
             {
-                Task.Run(action);
-            }
-            catch (Exception e)
-            {
-                exceptionHandler(e);
-            }
+                try
+                {
+                    action();
+                }
+                catch (Exception ex)
+                {
+                    exceptionHandler(ex);
+                }
+            });
         }
 
         /// <summary>

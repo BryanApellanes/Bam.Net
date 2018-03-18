@@ -18,11 +18,11 @@ namespace Bam.Net.CoreServices
 
         public DataSettingsSmtpSettingsProvider(SmtpSettings smtpSettings, DataSettings dataSettings = null)
         {
-            SmtpSettings = smtpSettings;
-            SmtpSettings.Save(SmtpSettingsVault);
             DataSettings = dataSettings ?? DataSettings.Current;
+            SmtpSettings = smtpSettings;
+            SmtpSettings.Save(SmtpSettingsVault);            
         }
-
+        
         public DataSettings DataSettings { get; set; }
 
         SmtpSettings _smtpSettings;

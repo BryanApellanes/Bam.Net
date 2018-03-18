@@ -17,6 +17,17 @@ namespace Bam.Net.Messaging
         public int Port { get; set; }
         public bool EnableSsl { get; set; }
 
+        public static implicit operator SmtpSettings(Vault vault)
+        {
+            return FromVault(vault);
+        }
+
+        public static implicit operator Vault(SmtpSettings settings)
+        {
+            settings.Save(Vault.Application);
+            return Vault.Application;
+        }
+
         public static SmtpSettings FromVault(Vault smtpSettingsVault)
         {
             return new SmtpSettings
@@ -29,6 +40,11 @@ namespace Bam.Net.Messaging
                 Port = int.Parse(smtpSettingsVault[nameof(Port)]),
                 EnableSsl = bool.Parse(smtpSettingsVault[nameof(EnableSsl)])
             };
+        }
+
+        public void Save()
+        {
+            Save(Vault.Application);
         }
 
         public void Save(Vault vault)

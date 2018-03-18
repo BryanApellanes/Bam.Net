@@ -33,6 +33,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <CodeAnalysisRuleSet>Bam.Net.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -44,6 +45,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\Bam.Net.XML</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
+    <CodeAnalysisRuleSet>Bam.Net.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -54,6 +56,7 @@
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>bin\Debug\Bam.Net.XML</DocumentationFile>
+    <CodeAnalysisRuleSet>Bam.Net.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -62,6 +65,7 @@
     <Optimize>true</Optimize>
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>bin\Release\Bam.Net.XML</DocumentationFile>
+    <CodeAnalysisRuleSet>Bam.Net.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
@@ -75,7 +79,7 @@
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <DocumentationFile>bin\Debug\Bam.Net.XML</DocumentationFile>
     <PlatformTarget>x64</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>Bam.Net.ruleset</CodeAnalysisRuleSet>
     <NoWarn>1591</NoWarn>
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
@@ -85,7 +89,7 @@
     <DocumentationFile>bin\Release\Bam.Net.XML</DocumentationFile>
     <Optimize>true</Optimize>
     <PlatformTarget>x64</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>Bam.Net.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
@@ -295,6 +299,7 @@
     <Compile Include="_.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Bam.Net.ruleset" />
     <None Include="Documentation\XmlDocumentation.xsd">
       <SubType>Designer</SubType>
     </None>

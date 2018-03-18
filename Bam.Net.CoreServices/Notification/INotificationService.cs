@@ -7,7 +7,7 @@ namespace Bam.Net.CoreServices
     public interface INotificationService
     {
         bool AddTemplate(NotificationTemplateInfo template);
-        bool Notify(string recipientIdentifier, EmailBody emailBody, string subject = null);
+        bool Notify(string recipientIdentifier, EmailBody emailBody, string subject = null, bool bypassRecipientValidation = false);
         bool NotifyRecipientEmail(string toEmail, EmailBody emailBody, string subject, string from = null, string fromDisplayName = null);
         bool NotifyUser(UserAccounts.Data.User user, EmailBody emailBody, string subject, string from = null, string fromDisplayName = null);
         bool TemplateNotify(string recipientIdentifier, string templateName, object data, string subject = null);

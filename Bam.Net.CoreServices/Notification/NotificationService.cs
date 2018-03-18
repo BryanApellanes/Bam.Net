@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Presentation.Handlebars;
+using Bam.Net.Encryption;
 
 namespace Bam.Net.CoreServices
 {
@@ -22,20 +23,62 @@ namespace Bam.Net.CoreServices
     [ServiceSubdomain("notify")]
     public class NotificationService : ApplicationProxyableService, INotificationService
     {
+        public const string SmtpSettingsFileName = "bam.smtp.settings.json";
+        static NotificationService()
+        {
+            LoadSmtpSettings();
+        }
+
         protected NotificationService() : base() { }
 
-        public NotificationService(IUserManager userManager, DataSettings dataSettings, ILogger logger)
+        public NotificationService(IUserManager userManager, SmtpSettingsProvider smtpSettingsProvider, ILogger logger)
         {
             UserManager = userManager;
+            SmtpSettingsProvider = smtpSettingsProvider ?? DefaultSmtpSettingsProvider;
             Logger = logger ?? Log.Default;
-            DataSettings = dataSettings;
-            string emailTemplatesDirectory = dataSettings.GetSysEmailTemplatesDirectory().FullName;
-            NotificationTemplateDirectory = new DirectoryInfo(Path.Combine(dataSettings.GetRootDataDirectory().FullName, "NotificationTemplates"));
+            string emailTemplatesDirectory = DataSettings.Current.GetSysEmailTemplatesDirectory().FullName;
+            NotificationTemplateDirectory = new DirectoryInfo(Path.Combine(DataSettings.Current.GetRootDataDirectory().FullName, "NotificationTemplates"));
             Templates = new HandlebarsDirectory(NotificationTemplateDirectory);
             Tld = "com";
             Templates.Reload();
         }
 
+        private static void LoadSmtpSettings()
+        {
+            FileInfo smtpSettingsFile = new FileInfo(Path.Combine(DataSettings.Current.GetSysDataDirectory().FullName, SmtpSettingsFileName));
+            Console.WriteLine("Trying to load smtp settings from file: {0}", smtpSettingsFile.FullName);
+            if (smtpSettingsFile.Exists)
+            {
+                try
+                {
+                    SmtpSettings smtpSettings = smtpSettingsFile.FromJsonFile<SmtpSettings>();
+                    DefaultSender = smtpSettings.From;
+                    DefaultSmtpSettingsProvider = new DataSettingsSmtpSettingsProvider(smtpSettings);
+                    //try { smtpSettingsFile.Delete(); } catch (Exception ex) { Log.Warn("Failed to delete smtp settings (attempting to delete for security reasons): {0}", ex.Message); }
+                    //AppDomain.CurrentDomain.ProcessExit += (o, a) => smtpSettings.ToJsonFile(smtpSettingsFile);
+                }
+                catch (Exception ex)
+                {
+                    Log.Warn("Failed to load smtp settings file {0}: {1}", smtpSettingsFile.FullName, ex.Message);
+                    Console.WriteLine("failed to load smtp settings: {0}", ex.Message);
+                }
+            }
+            else
+            {
+                Log.Warn("The system smtp settings file was not present, notifications may not send correctly: {0}", smtpSettingsFile.FullName);
+                Console.WriteLine("failed to load smtp settings, settings file not present: {0}", smtpSettingsFile.FullName);
+            }
+        }
+
+        [Local]
+        public static void SaveDefaultSmtpSettings(SmtpSettings settings)
+        {
+            FileInfo smtpSettingsFile = new FileInfo(Path.Combine(DataSettings.Current.GetSysDataDirectory().FullName, SmtpSettingsFileName));
+            settings.ToJsonFile(smtpSettingsFile);
+        }
+
+        public static DataSettingsSmtpSettingsProvider DefaultSmtpSettingsProvider { get; set; }
+        public SmtpSettingsProvider SmtpSettingsProvider { get; set; }
         public HandlebarsDirectory Templates { get; set; }
         public string Tld { get; set; }        
         public string DefaultSubject
@@ -45,8 +88,13 @@ namespace Bam.Net.CoreServices
                 return $"{ApplicationName} Notification";
             }
         }
-        protected DataSettings DataSettings { get; set; }
         
+        public static string DefaultSender
+        {
+            get;
+            set;
+        }
+
         public DirectoryInfo NotificationTemplateDirectory { get; set; }
 
         /// <summary>
@@ -113,12 +161,19 @@ namespace Bam.Net.CoreServices
         }
 
         [RoleRequired("/CoreNotificationService/AccessDenied", "Admin")]
-        public virtual bool Notify(string recipientIdentifier, EmailBody emailBody, string subject = null)
+        public virtual bool Notify(string recipientIdentifier, EmailBody emailBody, string subject = null, bool bypassRecipientValidation = false)
         {
             try
             {
-                UserAccounts.Data.User user = ValidateRecipientOrDie(recipientIdentifier);
-                NotifyUser(user, emailBody, subject);
+                if (!bypassRecipientValidation)
+                {
+                    UserAccounts.Data.User user = ValidateRecipientOrDie(recipientIdentifier);
+                    NotifyUser(user, emailBody, subject);
+                }
+                else
+                {
+                    NotifyRecipientEmail(recipientIdentifier, emailBody, subject);
+                }
                 return true;
             }
             catch (Exception ex)
@@ -139,9 +194,9 @@ namespace Bam.Net.CoreServices
         {
             try
             {
-                from = from ?? $"no-reply@{ApplicationName}.{Tld}";
+                from = from ?? DefaultSender ?? $"no-reply@{ApplicationName}.{Tld}";
                 fromDisplayName = fromDisplayName ?? from;
-                Email email = UserManager
+                Email email = DefaultSmtpSettingsProvider
                     .CreateEmail(from, fromDisplayName)
                     .To(toEmail)
                     .Subject(subject ?? DefaultSubject)
@@ -161,7 +216,7 @@ namespace Bam.Net.CoreServices
         [Local]
         public override object Clone()
         {
-            NotificationService clone = new NotificationService(UserManager, DataSettings, Logger);
+            NotificationService clone = new NotificationService(UserManager, SmtpSettingsProvider, Logger);
             clone.CopyProperties(this);
             clone.CopyEventHandlers(this);            
             return clone;
