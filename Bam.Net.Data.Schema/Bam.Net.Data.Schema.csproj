@@ -115,6 +115,10 @@
     <Compile Include="ColumnNameToPropertyName.cs" />
     <Compile Include="CuidSchemaManager.cs" />
     <Compile Include="DataTypes.cs" />
+    <Compile Include="GraphQL\GraphQLArgument.cs" />
+    <Compile Include="GraphQL\GraphQLEndpoint.cs" />
+    <Compile Include="GraphQL\GraphQLRazorTemplate.cs" />
+    <Compile Include="GraphQL\GraphQLSchemaGenerator.cs" />
     <Compile Include="IHasSchemaTempPathProvider.cs" />
     <Compile Include="INameFormatter.cs" />
     <Compile Include="EchoNameFormatter.cs" />
@@ -195,6 +199,8 @@
     <None Include="app.config" />
     <EmbeddedResource Include="Templates\PagedQueryClass.tmpl" />
     <EmbeddedResource Include="Templates\QueryClass.tmpl" />
+    <EmbeddedResource Include="GraphQL\Templates\GraphQLEndpoint.tmpl" />
+    <EmbeddedResource Include="GraphQL\Templates\GraphQLQuery.tmpl" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

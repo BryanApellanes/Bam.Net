@@ -1,0 +1,12 @@
+﻿@if(Model.Arguments.Length > 0){
+	bool first = true;
+	@(Model.EndpointName + ": (");	
+	foreach(GraphQLArgument arg in Model.Arguments){
+		if(!first){@(", ")}
+		first = false;
+		@(arg.Name + ": " + arg.Type)		
+	}
+	@("): " + Model.ReturnType);
+} else {
+	@(Model.EndpointName + ": " + Model.ReturnType);	
+}
