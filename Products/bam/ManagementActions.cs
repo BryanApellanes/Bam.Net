@@ -15,6 +15,7 @@ using Bam.Net.UserAccounts.Data;
 using Bam.Net.Data;
 using System.Linq;
 using Bam.Net.Messaging;
+using Bam.Net.Testing.Integration;
 
 namespace Bam.Net.Application
 {
@@ -23,7 +24,7 @@ namespace Bam.Net.Application
 	{
         const string BamSysPath = "C:\\bam\\sys\\";
 
-        [ConsoleAction]
+        [IntegrationTest]
         public void NotifyThroughCore()
         {
             ConsoleLogger logger = new ConsoleLogger();
@@ -51,7 +52,7 @@ namespace Bam.Net.Application
 
             settings.Password = PasswordPrompt("Please enter the smtp password", ConsoleColor.Yellow);
 
-            NotificationService.SaveDefaultSmtpSettings(settings);
+            NotificationService.SetDefaultSmtpSettings(settings);
         }
 
         /// <summary>

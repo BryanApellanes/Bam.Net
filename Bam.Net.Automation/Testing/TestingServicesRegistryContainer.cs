@@ -13,6 +13,7 @@ using Bam.Net.Services.Clients;
 using Bam.Net.Configuration;
 using Bam.Net.Data;
 using Bam.Net.UserAccounts;
+using Bam.Net.Messaging;
 
 namespace Bam.Net.Automation.Testing
 {
@@ -60,6 +61,7 @@ namespace Bam.Net.Automation.Testing
                 .For<AppConf>().Use(new AppConf(Name))
                 .For<SystemLoggerService>().Use<SystemLoggerService>()
                 .For<TestReportService>().Use<TestReportService>()
+                .For<SmtpSettingsProvider>().Use(DataSettingsSmtpSettingsProvider.Default)
                 .For<NotificationService>().Use<NotificationService>();
         }
     }
