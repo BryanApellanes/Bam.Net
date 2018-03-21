@@ -55,6 +55,7 @@ namespace Bam.Net.Presentation.Unicode
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("Emoji_CategoryId", new EmojiCollection(Database.GetQuery<EmojiColumns, Emoji>((c) => c.CategoryId == GetLongValue("Id")), this, "CategoryId"));				
@@ -177,8 +178,10 @@ namespace Bam.Net.Presentation.Unicode
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Category>();
 			Database db = database ?? Db.For<Category>();
-			var results = new CategoryCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new CategoryCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -615,6 +618,25 @@ namespace Bam.Net.Presentation.Unicode
 			if(orderBy != null)
 			{
 				query.OrderBy<CategoryColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<CategoryCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static CategoryCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<Category>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<Category>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

@@ -55,6 +55,7 @@ namespace Bam.Net.Presentation.Unicode
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("Code_EmojiId", new CodeCollection(Database.GetQuery<CodeColumns, Code>((c) => c.EmojiId == GetLongValue("Id")), this, "EmojiId"));				
@@ -199,20 +200,6 @@ namespace Bam.Net.Presentation.Unicode
 		set
 		{
 			SetValue("Facebook", value);
-		}
-	}
-
-	// property:FacebookMessenger, columnName:FacebookMessenger	
-	[Bam.Net.Data.Column(Name="FacebookMessenger", DbDataType="VarChar", MaxLength="4000", AllowNull=false)]
-	public string FacebookMessenger
-	{
-		get
-		{
-			return GetStringValue("FacebookMessenger");
-		}
-		set
-		{
-			SetValue("FacebookMessenger", value);
 		}
 	}
 
@@ -408,8 +395,10 @@ namespace Bam.Net.Presentation.Unicode
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Emoji>();
 			Database db = database ?? Db.For<Emoji>();
-			var results = new EmojiCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new EmojiCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -846,6 +835,25 @@ namespace Bam.Net.Presentation.Unicode
 			if(orderBy != null)
 			{
 				query.OrderBy<EmojiColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<EmojiCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static EmojiCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<Emoji>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<Emoji>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);
