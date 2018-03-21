@@ -14,15 +14,16 @@ namespace Bam.Net.Messaging
 {
     public abstract class EmailComposer: IEmailComposer
     {
+        public EmailComposer()
+            : this(".")
+        { }
+
         public EmailComposer(string templateDirectory)
         {
             FileExtension = "json";
             TemplateDirectory = new DirectoryInfo(templateDirectory);
         }
 
-        public EmailComposer()
-            : this(".")
-        { }
         public string FileExtension { get; protected set; }
         public DirectoryInfo TemplateDirectory
         {

@@ -22,7 +22,7 @@ namespace Bam.Net.CoreServices
     /// <summary>
     /// The base abstract class for any service that might be proxied.
     /// Provides common features for User, Roles, Session, Application
-    /// and Data tracking
+    /// and Data tracking.
     /// </summary>
     [Encrypt]
     public abstract class ProxyableService: Loggable, IRequiresHttpContext, IDiagnosable
@@ -36,6 +36,7 @@ namespace Bam.Net.CoreServices
             RepositoryResolver = new DefaultRepositoryResolver(Repository);
             DiagnosticName = GetType().Name;
         }
+
         public ProxyableService(ApplicationRepositoryResolver repoResolver, AppConf appConf)
         {
             AppConf = appConf;
@@ -43,6 +44,7 @@ namespace Bam.Net.CoreServices
             Logger = appConf?.Logger ?? Log.Default;
             DiagnosticName = GetType().Name;
         }
+
         public ProxyableService(DaoRepository repository, AppConf appConf, IRepositoryResolver repositoryResolver = null)
         {
             AppConf = appConf;
@@ -69,6 +71,7 @@ namespace Bam.Net.CoreServices
                 return CurrentUser.UserName;
             }
         }
+
         protected void IsLoggedInOrDie()
         {
             if (CurrentUser.Equals(U.User.Anonymous))
@@ -188,7 +191,7 @@ namespace Bam.Net.CoreServices
 
         IUserManager _userManager;
         [Exclude]
-        public IUserManager UserManager
+        public virtual IUserManager UserManager
         {
             get
             {
@@ -310,14 +313,14 @@ namespace Bam.Net.CoreServices
             });
         }
 
-        protected internal UserManager GetUserManager()
+        protected internal IUserManager GetUserManager()
         {
             if (_userManager == null)
             {
                 _userManager = AppConf.UserManagerConfig.Create(AppConf.Logger);
                 _userManager.ApplicationNameProvider = new BamApplicationNameProvider(AppConf);
             }
-            UserManager copy = (UserManager)_userManager.Clone();
+            IUserManager copy = (IUserManager)_userManager.Clone();
             copy.HttpContext = HttpContext;
             return copy;
         }

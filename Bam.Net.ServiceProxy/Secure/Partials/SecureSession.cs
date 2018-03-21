@@ -251,15 +251,21 @@ namespace Bam.Net.ServiceProxy.Secure
             return encryptor.Value;
         }
 
+        public string Decrypt(string cipher)
+        {
+            return Decrypt(cipher, out Decrypted decrypted);
+        }
+
         /// <summary>
         /// Perform symmetric decryption on the specified cipher
         /// </summary>
         /// <param name="cipher"></param>
+        /// <param name="decrypted"></param>
         /// <returns></returns>
-        public string Decrypt(string cipher)
+        public string Decrypt(string cipher, out Decrypted decrypted)
         {
-            Decrypted decryptor = new Decrypted(cipher, PlainSymmetricKey, PlainSymmetricIV);
-            return decryptor.Value;
+            decrypted = new Decrypted(cipher, PlainSymmetricKey, PlainSymmetricIV);
+            return decrypted.Value;
         }
 
         protected internal string DecryptWithPrivateKey(string cipher, bool usePkcsPadding)

@@ -34,7 +34,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
+    <OutputPath>..\..\..\..\..\bam\sys\tvg\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -53,15 +53,11 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CsQuery, Version=1.3.3.249, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\CsQuery.1.3.4\lib\net40\CsQuery.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="CsQuery">
+      <HintPath>..\..\..\packages\CsQuery.1.3.4\lib\net40\CsQuery.dll</HintPath>
     </Reference>
-    <Reference Include="dotless.Core, Version=1.5.2.0, Culture=neutral, PublicKeyToken=96b446c9e63eae34, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\dotless.1.5.2\lib\dotless.Core.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="dotless.Core">
+      <HintPath>..\..\..\packages\dotless.1.5.2\lib\dotless.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -73,9 +69,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArgumentAdder.cs" />
+    <Compile Include="ContentServicesRegistryContainer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ConsoleActions.cs" />
+    <Compile Include="VyooResponder.cs" />
     <Compile Include="VyooServer.cs" />
     <Compile Include="VyooService.cs">
       <SubType>Component</SubType>
@@ -107,9 +106,17 @@
       <Project>{3b52b739-58fd-4b49-b815-6b317e701520}</Project>
       <Name>Bam.Net.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Bam.Net.Incubation\Bam.Net.Incubation.csproj">
+      <Project>{aa186331-a0d0-4f77-bea2-e7b7650d3ff5}</Project>
+      <Name>Bam.Net.Incubation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Bam.Net.Javascript\Bam.Net.Javascript.csproj">
       <Project>{34c5016d-5265-4394-a9ba-cb2f70d8e93b}</Project>
       <Name>Bam.Net.Javascript</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Bam.Net.Logging\Bam.Net.Logging.csproj">
+      <Project>{15e91407-00d6-4edf-b75c-bc817a75c8ad}</Project>
+      <Name>Bam.Net.Logging</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Bam.Net.Server\Bam.Net.Server.csproj">
       <Project>{6cd8ffb4-35ca-44ac-803d-cb9d4cb524a0}</Project>
@@ -118,6 +125,10 @@
     <ProjectReference Include="..\..\..\Bam.Net.ServiceProxy\Bam.Net.ServiceProxy.csproj">
       <Project>{8987d8c8-033b-4993-99f0-8dd5a4d6dd0d}</Project>
       <Name>Bam.Net.ServiceProxy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Bam.Net.Services.Clients\Bam.Net.Services.Clients.csproj">
+      <Project>{9193fb41-32e6-4cef-a44a-211fb3bfea8b}</Project>
+      <Name>Bam.Net.Services.Clients</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Bam.Net.Testing\Bam.Net.Testing.csproj">
       <Project>{85212881-c676-4b40-b311-37c2d1706042}</Project>

@@ -55,10 +55,12 @@ namespace Bam.Net.UserAccounts.Data
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("Group_RoleId", new GroupCollection(Database.GetQuery<GroupColumns, Group>((c) => c.RoleId == GetLongValue("Id")), this, "RoleId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("UserRole_RoleId", new UserRoleCollection(Database.GetQuery<UserRoleColumns, UserRole>((c) => c.RoleId == GetLongValue("Id")), this, "RoleId"));				
 			}						
@@ -230,8 +232,10 @@ namespace Bam.Net.UserAccounts.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Role>();
 			Database db = database ?? Db.For<Role>();
-			var results = new RoleCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new RoleCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -668,6 +672,25 @@ namespace Bam.Net.UserAccounts.Data
 			if(orderBy != null)
 			{
 				query.OrderBy<RoleColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<RoleCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static RoleCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<Role>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<Role>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

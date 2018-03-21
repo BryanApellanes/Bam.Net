@@ -21,7 +21,7 @@ using System.Reflection;
 namespace Bam.Net.Server
 {
     /// <summary>
-    /// Configuration for the BamServer
+    /// Configuration for a BamServer
     /// </summary>
     public class BamConf
     {
@@ -38,7 +38,6 @@ namespace Bam.Net.Server
             this.GenerateDao = true;
             this.DaoConfigs = new DaoConf[] { };
             this.InitializeTemplates = true;
-            this.InitializeWebBooks = true;
             this.DaoSearchPattern = "*Dao.dll";
             this.LoggerPaths = new string[] { "." };
             this.LoggerSearchPattern = "*Logging.dll";
@@ -149,12 +148,6 @@ namespace Bam.Net.Server
         }
 
         public bool InitializeTemplates
-        {
-            get;
-            set;
-        }
-
-        public bool InitializeWebBooks
         {
             get;
             set;
@@ -406,7 +399,7 @@ namespace Bam.Net.Server
         /// Represents the configs for each application found in ~s:/apps 
         /// (where each subdirectory is assumed to be a Bam application)
         /// </summary>
-        protected internal AppConf[] AppConfigs
+        public AppConf[] AppConfigs
         {
             get
             {
@@ -490,8 +483,10 @@ namespace Bam.Net.Server
 
                         if (!configFound)
                         {
-                            AppConf conf = new AppConf(this, appDir.Name);
-                            conf.GenerateDao = this.GenerateDao;
+                            AppConf conf = new AppConf(this, appDir.Name)
+                            {
+                                GenerateDao = this.GenerateDao
+                            };
                             conf.ToJsonFile(jsonConfig);
                             configs.Add(conf);
                         }

@@ -8,20 +8,23 @@ using System.Reflection;
 using System.Text;
 using Bam.Net.Logging;
 using Bam.Net.ServiceProxy;
+using System.Collections.Generic;
 
 namespace Bam.Net.CoreServices
 {
     public class ProxyAssemblyGenerator: ProxyAssemblyGenerationEventSource, IAssemblyGenerator
     {
-        public ProxyAssemblyGenerator(ProxySettings settings, string workspaceDirectory = ".", ILogger logger = null)
+        public ProxyAssemblyGenerator(ProxySettings settings, string workspaceDirectory = ".", ILogger logger = null, HashSet<Assembly> addedReferenceAssemblies = null)
         {
-            this.ServiceType = settings.ServiceType;
-            this.ServiceSettings = settings;
-            this.WorkspaceDirectory = workspaceDirectory;
-            this.Code = new StringBuilder();
-            this.Logger = logger ?? Log.Default;
+            AdditionalReferenceAssemblies = addedReferenceAssemblies;
+            ServiceType = settings.ServiceType;
+            ServiceSettings = settings;
+            WorkspaceDirectory = workspaceDirectory;
+            Code = new StringBuilder();
+            Logger = logger ?? Log.Default;
         }
 
+        public HashSet<Assembly> AdditionalReferenceAssemblies { get; set; }
         /// <summary>
         /// The logger used to log events for the current ProxyAssemblyGenerator
         /// </summary>
@@ -49,22 +52,26 @@ namespace Bam.Net.CoreServices
             return GeneratedAssemblyInfo.GetGeneratedAssembly(FileName, this);
         }
 
+        object _generateLock = new object();
         public GeneratedAssemblyInfo GenerateAssembly()
         {
-            OnAssemblyGenerating(new ProxyAssemblyGenerationEventArgs { ServiceType = ServiceType, ServiceSettings = ServiceSettings });
-
-            ProxyModel proxyModel = RenderCode();
-
-            CompilerResults compileResult = AdHocCSharpCompiler.CompileSource(Code.ToString(), FileName, proxyModel.ReferenceAssemblies);
-            if (compileResult.Errors.Count > 0)
+            lock (_generateLock)
             {
-                throw new CompilationException(compileResult);
-            }
+                OnAssemblyGenerating(new ProxyAssemblyGenerationEventArgs { ServiceType = ServiceType, ServiceSettings = ServiceSettings });
 
-            GeneratedAssemblyInfo result = new GeneratedAssemblyInfo(FileName, compileResult);
-            result.Save();
-            OnAssemblyGenerated(new ProxyAssemblyGenerationEventArgs { ServiceType = ServiceType, ServiceSettings = ServiceSettings });
-            return result;
+                ProxyModel proxyModel = RenderCode();
+
+                CompilerResults compileResult = AdHocCSharpCompiler.CompileSource(Code.ToString(), FileName, proxyModel.ReferenceAssemblies);
+                if (compileResult.Errors.Count > 0)
+                {
+                    throw new CompilationException(compileResult);
+                }
+
+                GeneratedAssemblyInfo result = new GeneratedAssemblyInfo(FileName, compileResult);
+                result.Save();
+                OnAssemblyGenerated(new ProxyAssemblyGenerationEventArgs { ServiceType = ServiceType, ServiceSettings = ServiceSettings });
+                return result;
+            }
         }
 
         private ProxyModel RenderCode()
@@ -79,7 +86,7 @@ namespace Bam.Net.CoreServices
 
         private ProxyModel GetProxyModel()
         {
-            return new ProxyModel(ServiceType, ServiceSettings.Protocol.ToString().ToLowerInvariant(), ServiceSettings.Host, ServiceSettings.Port);
+            return new ProxyModel(ServiceType, ServiceSettings.Protocol.ToString().ToLowerInvariant(), ServiceSettings.Host, ServiceSettings.Port, AdditionalReferenceAssemblies);
         }
 
         private void WarnNonVirtualMethods(ProxyModel model)

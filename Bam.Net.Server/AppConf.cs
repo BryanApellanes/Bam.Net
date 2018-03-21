@@ -16,6 +16,8 @@ using Bam.Net.Server;
 using Newtonsoft.Json;
 using System.Xml.Serialization;
 using Bam.Net.Incubation;
+using Bam.Net.Configuration;
+using Bam.Net.ServiceProxy.Secure;
 
 namespace Bam.Net.Server
 {
@@ -29,30 +31,36 @@ namespace Bam.Net.Server
 
         public AppConf()
         {
-            this._serviceTypeNames = new List<string>();
-            this._schemaInitializers = new List<SchemaInitializer>();
-            this._serviceTypeNames.Add(typeof(Echo).AssemblyQualifiedName);
-            this._serviceTypeNames.Add(typeof(EncryptedEcho).AssemblyQualifiedName);
+            _serviceTypeNames = new List<string>();
+            _schemaInitializers = new List<SchemaInitializer>();
+            _serviceTypeNames.Add(typeof(Echo).AssemblyQualifiedName);
+            _serviceTypeNames.Add(typeof(EncryptedEcho).AssemblyQualifiedName);
 
-            this.AppSettings = new AppSetting[] { };
-			this.RenderLayoutBody = true;
-			this.DefaultLayout = DefaultLayoutConst;
-			this.DefaultPage = DefaultPageConst;
-			this.ServiceSearchPattern = new string[] { "*Services.dll", "*Proxyables.dll" };
+            AppSettings = new AppSetting[] { };
+			RenderLayoutBody = true;
+			DefaultLayout = DefaultLayoutConst;
+			DefaultPage = DefaultPageConst;
+			ServiceSearchPattern = new string[] { "*Services.dll", "*Proxyables.dll" };
+            ProcessMode = "Dev";
         }
 
         public AppConf(string name, int port = 8080, bool ssl = false)
             : this()
         {
-            this.Name = name;
-            this.GenerateDao = true;
-            this.Bindings = new HostPrefix[] { new HostPrefix { HostName = name, Port = port, Ssl = ssl } };
+            Name = name;
+            GenerateDao = true;
+            Bindings = new HostPrefix[] { new HostPrefix { HostName = name, Port = port, Ssl = ssl } };
         }
 
         public AppConf(BamConf serverConf, string name)
             : this(name)
         {
-            this.BamConf = serverConf;
+            BamConf = serverConf;
+        }
+
+        public static AppConf FromDefaultConfig()
+        {
+            return new AppConf { Name = DefaultConfiguration.GetAppSetting("ApplicationName", Application.Unknown.Name) };
         }
 
         Fs _appRoot;
@@ -103,9 +111,9 @@ namespace Bam.Net.Server
         }
 
         /// <summary>
-        /// The name of the application.  This will be the name of the 
+        /// The name of the application.  This will typically be the name of the 
         /// folder being served from the "apps" folder of the root
-        /// of the BamServer
+        /// of the BamServer depending on how the AppConf was instantiated.
         /// </summary>
         public string Name { get; set; }
 
@@ -116,7 +124,7 @@ namespace Bam.Net.Server
             {
                 if (string.IsNullOrEmpty(_displayName)) 
                 {
-                    _displayName = Name.PascalSplit(" ");
+                    _displayName = Name?.PascalSplit(" ") ?? "AppConf.DisplayName not specified";
                 }
 
                 return _displayName;
@@ -127,6 +135,11 @@ namespace Bam.Net.Server
             }
         }
 
+        public bool IsProd => ProcessMode.Equals("Prod");
+        public bool IsTest => ProcessMode.Equals("Test");
+
+        public string ProcessMode { get; set; } 
+
         List<HostPrefix> _bindings;
         object _bindingsLock = new object();
         public HostPrefix[] Bindings
@@ -135,19 +148,21 @@ namespace Bam.Net.Server
             {
                 return _bindingsLock.DoubleCheckLock(ref _bindings, () =>
                 {
-                    List<HostPrefix> result = new List<HostPrefix>();
-                    result.Add(new HostPrefix
+                    List<HostPrefix> result = new List<HostPrefix>
                     {
-                        HostName = "www.{0}.com"._Format(Name),
-                        Port = 80,
-                        Ssl = false
-                    });
-                    result.Add(new HostPrefix
-                    {
-                        HostName = Name,
-                        Port = 8080,
-                        Ssl = false
-                    });
+                        new HostPrefix
+                        {
+                            HostName = "www.{0}.com"._Format(Name),
+                            Port = 80,
+                            Ssl = false
+                        },
+                        new HostPrefix
+                        {
+                            HostName = Name,
+                            Port = 8080,
+                            Ssl = false
+                        }
+                    };
 
                     return result;
                 }).ToArray();

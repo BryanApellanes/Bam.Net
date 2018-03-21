@@ -2,6 +2,7 @@ using Bam.Net.Automation.Testing;
 using Bam.Net.CommandLine;
 using Bam.Net.Configuration;
 using Bam.Net.Logging;
+using Bam.Net.Razor;
 using Bam.Net.Testing.Integration;
 using Bam.Net.Testing.Unit;
 using System;
@@ -19,8 +20,20 @@ namespace Bam.Net.Testing
         
         static void Main(string[] args)
         {
+            IsolateMethodCalls = false;
+            RazorBaseTemplate.DefaultInspector = (s) => { OutLineFormat("Parsed razor: {0} ...", s.ReadUntil('\n')); };
             PreInit();
             Initialize(args);
+            ConsoleLogger logger = new ConsoleLogger() { AddDetails = false, ShowTime = true, ApplicationName = "bamtestrunnter", UseColors = true };
+            logger.StartLoggingThread();
+            if(ExecuteSwitches(Arguments, typeof(Program), false, logger))
+            {
+                return;
+            }
+            else
+            {
+                Start();
+            }
         }
 
         public static void PreInit()
@@ -44,12 +57,13 @@ namespace Bam.Net.Testing
 
             // the arguments protected member is not available in PreInit() (this method)
             #endregion
-            AddValidArgument("search", false, description: "The search pattern to use to locate test assemblies");
+            AddValidArgument("search", false, description: "The search pattern to use to locate test assemblies, the default is *Tests.* if not specified.");
+            AddValidArgument("testFile", false, description: "The path to the assembly containing tests to run");
             AddValidArgument("dir", false, description: "The directory to look for test assemblies in");
             AddValidArgument("debug", true, description: "If specified, the runner will pause to allow for a debugger to be attached to the process");
             AddValidArgument("data", false, description: "The path to save the results to, default is the current directory if not specified");
             AddValidArgument("dataPrefix", true, description: "The file prefix for the sqlite data file or 'BamTests' if not specified");
-            AddValidArgument("type", false, description: "The type of tests to run [Unit | Integration], default is unit.");
+            AddValidArgument("type", false, description: "The type of tests to run [Unit | Integration], default is Unit.");
             AddValidArgument("testReportHost", false, description: "The hostname of the test report service");
             AddValidArgument("testReportPort", false, description: "The port that the test report service is listening on");
 
@@ -57,8 +71,6 @@ namespace Bam.Net.Testing
             AddSwitches(typeof(Program));
 
             TestAction = RunUnitTests;
-
-            DefaultMethod = typeof(Program).GetMethod("Start");
         }
         
         public static void Start()
@@ -131,6 +143,7 @@ namespace Bam.Net.Testing
         private static void HandleException(Exception ex)
         {
             OutLineFormat("{0}: {1}", ConsoleColor.DarkRed, _programName, ex.Message);
+            OutLineFormat("Stack: {0}", ConsoleColor.DarkRed, ex.StackTrace);
             if (Arguments.Contains(_exitOnFailure))
             {
                 Exit(1);
@@ -169,23 +182,45 @@ namespace Bam.Net.Testing
 
             files = GetTestFiles(testDir);          
         }
-        
+
         private static FileInfo[] GetTestFiles(DirectoryInfo testDir)
         {
-            FileInfo[] files = null;
+            OutLineFormat("Getting test files from: {0}", ConsoleColor.DarkCyan, testDir.FullName);
+            FileInfo[] files = new FileInfo[] { };
             if (Arguments.Contains("search"))
             {
-                files = testDir.GetFiles(Arguments["search"]);
+                OutLine("search switch specified", ConsoleColor.DarkCyan);
+                string search = Arguments["search"];
+                OutLineFormat("/search switch specified: {0}", ConsoleColor.DarkCyan, search);
+                files = testDir.GetFiles(search);
+            }
+            else if (Arguments.Contains("testFile"))
+            {
+                OutLine("testFile switch specified", ConsoleColor.DarkCyan);
+                string testFile = Arguments["testFile"];
+                OutLineFormat("/testFile switch specified: {0}", ConsoleColor.DarkCyan, testFile);
+                FileInfo file = new FileInfo(testFile);
+                if (!file.Exists)
+                {
+                    throw new InvalidOperationException(string.Format("The specified test file was not found: {0}", file.FullName));
+                }
+                files = new FileInfo[] { file };
             }
             else
             {
-                files = testDir.GetFiles();
+                OutLineFormat("Getting default tests");
+                List<FileInfo> tmp = new List<FileInfo>();
+                tmp.AddRange(testDir.GetFiles("*Tests.exe"));
+                tmp.AddRange(testDir.GetFiles("*Tests.dll"));
+                files = tmp.ToArray();
             }
+            OutLineFormat("retrieved ({0}) files", files.Length);
             return files;
         }
        
         private static DirectoryInfo GetTestDirectory()
         {
+            OutLine("Getting test directory");
             DirectoryInfo testDir = new DirectoryInfo(".");
             if (Arguments.Contains("dir"))
             {
@@ -193,10 +228,11 @@ namespace Bam.Net.Testing
                 testDir = new DirectoryInfo(dir);
                 if (!testDir.Exists)
                 {
-                    OutLineFormat("The specified directory ({0}) was not found", ConsoleColor.Red, dir);
+                    OutLineFormat("The specified directory ({0}) was not found", ConsoleColor.Magenta, dir);
                     Exit(1);
                 }
             }
+            OutLineFormat("Got test directory: {0}", testDir.FullName);
             return testDir;
         }
     }

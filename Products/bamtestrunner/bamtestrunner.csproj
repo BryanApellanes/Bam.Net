@@ -80,6 +80,9 @@
     <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="README.md" />
+    <None Include="tests_with_coverage.cmd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Bam.Net.Automation\Bam.Net.Automation.csproj">
@@ -130,6 +133,9 @@
       <Project>{8794c09d-d72c-420c-812f-bfda251b64c9}</Project>
       <Name>Bam.Net</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="test-result-sql.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\packages\System.Data.SQLite.Core.1.0.99.0\build\net45\System.Data.SQLite.Core.targets" Condition="Exists('..\..\packages\System.Data.SQLite.Core.1.0.99.0\build\net45\System.Data.SQLite.Core.targets')" />

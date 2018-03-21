@@ -20,7 +20,7 @@ namespace Bam.Net.ServiceProxy
             IRequest request = context.Request;
             bool includeLocalMethods = request.UserHostAddress.StartsWith("127.0.0.1");
 
-            return ServiceProxySystem.GenerateJsProxyScript(serviceProvider, serviceProvider.ClassNames, includeLocalMethods).ToString();
+            return ServiceProxySystem.GenerateJsProxyScript(serviceProvider, serviceProvider.ClassNames, includeLocalMethods, context.Request).ToString();
         }
     }
 }

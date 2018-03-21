@@ -227,8 +227,10 @@ namespace Bam.Net.UserAccounts.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<LockOut>();
 			Database db = database ?? Db.For<LockOut>();
-			var results = new LockOutCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new LockOutCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -665,6 +667,25 @@ namespace Bam.Net.UserAccounts.Data
 			if(orderBy != null)
 			{
 				query.OrderBy<LockOutColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<LockOutCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static LockOutCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<LockOut>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<LockOut>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

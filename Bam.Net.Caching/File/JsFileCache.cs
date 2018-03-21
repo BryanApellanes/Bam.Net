@@ -29,6 +29,7 @@ namespace Bam.Net.Caching.File
             }
             return Encoding.UTF8.GetBytes(GetText(new FileInfo(path)));
         }
+
         public override byte[] GetZippedContent(string path)
         {
             if (Minify)
@@ -37,6 +38,7 @@ namespace Bam.Net.Caching.File
             }
             return GetZippedText(new FileInfo(path));
         }
+
         public string GetMinText(FileInfo file)
         {
             if (!_minText.ContainsKey(file.FullName))
@@ -50,10 +52,31 @@ namespace Bam.Net.Caching.File
         {
             if (!_minTextBytes.ContainsKey(file.FullName))
             {
-                Load(file);
+                SetCacheContent(file);              
             }
             return _minTextBytes[file.FullName];
         }
+
+        protected void SetCacheContent(FileInfo file)
+        {
+            if (HashChanged(file))
+            {
+                Reload(file);
+            }
+            else
+            {
+                Load(file);
+            }
+        }
+
+        public override void Reload(FileInfo file)
+        {
+            _minCache.Remove(file.FullName);
+            _minText.Remove(file.FullName);
+            _minTextBytes.Remove(file.FullName);
+            base.Reload(file);
+        }
+
         public override void Load(FileInfo file)
         {
             base.Load(file);

@@ -16,11 +16,11 @@ namespace Bam.Net.Server
     {        
         public Includes()
         {
-            this._scripts = new List<string>();
+            this._scripts = new HashSet<string>();
             this._css = new List<string>();
         }
 
-        List<string> _scripts;
+        HashSet<string> _scripts;
         public string[] Scripts
         {
             get
@@ -29,8 +29,8 @@ namespace Bam.Net.Server
             }
             set
             {
-                _scripts = new List<string>();
-                _scripts.AddRange(value);
+                _scripts = new HashSet<string>();
+                value.Each(s => _scripts.Add(s));
             }
         }
 

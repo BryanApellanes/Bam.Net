@@ -13,6 +13,7 @@ using Bam.Net.Server;
 using Bam.Net.ServiceProxy;
 using System.Reflection;
 using System.Collections.Concurrent;
+using Bam.Net.Server.Meta;
 
 namespace Bam.Net.Server.Renderers
 {
@@ -32,9 +33,9 @@ namespace Bam.Net.Server.Renderers
                 request.Execute();
             }
 
-            if (request.Success && request.Result is BamApplicationManagerResult)
+            if (request.Success && request.Result is AppMetaResult)
             {
-                request.Result = ((BamApplicationManagerResult)request.Result).Data;
+                request.Result = ((AppMetaResult)request.Result).Data;
             }
 
             HandlePrependAndPostpend();

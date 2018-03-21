@@ -124,6 +124,7 @@
     <Compile Include="DatabaseExtensions.cs" />
     <Compile Include="DatabaseFactory.cs" />
     <Compile Include="DataSettings.cs" />
+    <Compile Include="DataSettingsDatabaseProvider.cs" />
     <Compile Include="DataSettingsResolver.cs" />
     <Compile Include="DefaultRepositoryResolver.cs" />
     <Compile Include="FsRepoData.cs" />
@@ -265,6 +266,10 @@
     <ProjectReference Include="..\Bam.Net.Data\Bam.Net.Data.csproj">
       <Project>{3b52b739-58fd-4b49-b815-6b317e701520}</Project>
       <Name>Bam.Net.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Encryption\Bam.Net.Encryption.csproj">
+      <Project>{f27dc9a6-e432-4d20-bcef-d10b0c2a657d}</Project>
+      <Name>Bam.Net.Encryption</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Incubation\Bam.Net.Incubation.csproj">
       <Project>{aa186331-a0d0-4f77-bea2-e7b7650d3ff5}</Project>

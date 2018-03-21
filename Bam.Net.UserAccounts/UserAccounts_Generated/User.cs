@@ -55,40 +55,52 @@ namespace Bam.Net.UserAccounts.Data
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("Account_UserId", new AccountCollection(Database.GetQuery<AccountColumns, Account>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("Password_UserId", new PasswordCollection(Database.GetQuery<PasswordColumns, Password>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("PasswordReset_UserId", new PasswordResetCollection(Database.GetQuery<PasswordResetColumns, PasswordReset>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("PasswordFailure_UserId", new PasswordFailureCollection(Database.GetQuery<PasswordFailureColumns, PasswordFailure>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("LockOut_UserId", new LockOutCollection(Database.GetQuery<LockOutColumns, LockOut>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("Login_UserId", new LoginCollection(Database.GetQuery<LoginColumns, Login>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("PasswordQuestion_UserId", new PasswordQuestionCollection(Database.GetQuery<PasswordQuestionColumns, PasswordQuestion>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("Setting_UserId", new SettingCollection(Database.GetQuery<SettingColumns, Setting>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("Session_UserId", new SessionCollection(Database.GetQuery<SessionColumns, Session>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("UserRole_UserId", new UserRoleCollection(Database.GetQuery<UserRoleColumns, UserRole>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("UserGroup_UserId", new UserGroupCollection(Database.GetQuery<UserGroupColumns, UserGroup>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("UserPermission_UserId", new UserPermissionCollection(Database.GetQuery<UserPermissionColumns, UserPermission>((c) => c.UserId == GetLongValue("Id")), this, "UserId"));				
 			}			
@@ -608,8 +620,10 @@ namespace Bam.Net.UserAccounts.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<User>();
 			Database db = database ?? Db.For<User>();
-			var results = new UserCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new UserCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -1046,6 +1060,25 @@ namespace Bam.Net.UserAccounts.Data
 			if(orderBy != null)
 			{
 				query.OrderBy<UserColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<UserCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static UserCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<User>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<User>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

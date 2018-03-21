@@ -24,15 +24,22 @@ namespace Bam.Net.Data.Repositories
     [Serializable] // for memory size calculation
     public class DaoRepository : Repository, IGeneratesDaoAssembly, IHasTypeSchemaTempPathProvider, IQueryFilterable
     {
+        public DaoRepository()
+        {
+            CtorInit();
+            Database = DataSettings.Current.GetSysDatabaseFor(this);
+            Logger = Log.Default;
+        }
         /// <summary>
         /// Create an instance of DaoRepository
         /// </summary>
         /// <param name="tableNameProvider"></param>
         /// <param name="schemaTempPathProvider"></param>
-        public DaoRepository(ITypeTableNameProvider tableNameProvider = null, Func<SchemaDefinition, TypeSchema, string> schemaTempPathProvider = null)
+        public DaoRepository(ITypeTableNameProvider tableNameProvider, Func<SchemaDefinition, TypeSchema, string> schemaTempPathProvider)
         {
             CtorInit(tableNameProvider, schemaTempPathProvider);
-            Database = new SQLiteDatabase(GetType().Name);
+            Database = DataSettings.Current.GetSysDatabaseFor(this);
+            Logger = Log.Default;
         }
 
         public DaoRepository(Database database, ILogger logger = null, string schemaName = null)
@@ -40,7 +47,7 @@ namespace Bam.Net.Data.Repositories
             CtorInit();
             Database = database;
             Logger = logger ?? Log.Default;
-            Subscribe(logger);
+            Subscribe(Logger);
             SchemaName = schemaName;
         }
 

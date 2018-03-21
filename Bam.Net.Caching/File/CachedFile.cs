@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Bam.Net.Logging;
 
@@ -26,16 +27,20 @@ namespace Bam.Net.Caching.File
             File = file;
             if (File.Exists)
             {
+                ContentHash = File.ContentHash(HashAlgorithms.MD5);
                 Task.Run(() => Load(logger ?? Log.Default));
-                file.OnChange(async (s, a) => 
-                {
-                    _zippedText = null;
-                    _zippedBytes = null;
-                    _text = null;
-                    _bytes = null;
-                    await Load(logger);
-                });
+                file.OnChange(async (s, a) => await Reload(logger));
             }
+        }
+
+        public async Task<bool> Reload(ILogger logger = null)
+        {
+            Thread.Sleep(300);
+            _zippedText = null;
+            _zippedBytes = null;
+            _text = null;
+            _bytes = null;
+            return await Load(logger);
         }
 
         public async Task<bool> Load(ILogger logger = null)
@@ -43,6 +48,7 @@ namespace Bam.Net.Caching.File
             try
             {
                 logger = logger ?? Log.Default;
+                await Task.Run(() => GetText());
                 await Task.Run(() => ContentHash = File.ContentHash(HashAlgorithms.MD5));
                 await Task.Run(() => GetZippedText());
                 await Task.Run(() => GetZippedBytes());

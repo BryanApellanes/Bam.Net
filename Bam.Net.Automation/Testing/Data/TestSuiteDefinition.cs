@@ -23,7 +23,6 @@ namespace Bam.Net.Automation.Testing.Data
 		public TestSuiteDefinition()
 		{
 		}
-        public static string DefaultTestSuiteTitle => "Default Test Suite";
         public string Title { get; set; }
 		public virtual TestDefinition[] TestDefinitions { get; set; }
 
@@ -32,11 +31,28 @@ namespace Bam.Net.Automation.Testing.Data
             return new TestSuiteDefinition { Title = GetSuiteTitle(test) };
         }
 
+        public static TestSuiteDefinition FromTestEventArgs<TTestMethod>(TestEventArgs<TTestMethod> args) where TTestMethod : TestMethod
+        {
+            string title = args.Assembly.FullName;
+            if(args.Test?.Method != null)
+            {
+                if (args.Test.Method.HasCustomAttributeOfType(out TestSuiteAttribute methodAttr))
+                {
+                    title = methodAttr.Title;
+                }
+                else if (args.Test.Method.DeclaringType.HasCustomAttributeOfType(out TestSuiteAttribute typeAttr))
+                {
+                    title = typeAttr.Title;
+                }
+            }
+            return new TestSuiteDefinition { Title = title };
+        }
+
         private static string GetSuiteTitle(ConsoleMethod test)
         {
             if(test == null || test.Method == null)
             {
-                return DefaultTestSuiteTitle;
+                throw new ArgumentNullException("test");
             }
             string title = GetSuiteTitle(test.Method.DeclaringType);
             if (test.Method.HasCustomAttributeOfType(out TestSuiteAttribute methodAttr))

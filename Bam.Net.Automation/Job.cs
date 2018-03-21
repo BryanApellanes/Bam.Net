@@ -9,14 +9,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Logging;
 using System.Reflection;
-using Quartz;
 
 namespace Bam.Net.Automation
 {
     /// <summary>
     /// A set of workers that are run in sequence
     /// </summary>
-    public class Job: Loggable, IJob
+    public class Job: Loggable
     {
         Dictionary<string, IWorker> _workers;
         public Job(string name)
@@ -41,17 +40,6 @@ namespace Bam.Net.Automation
         {
             get;
             private set;
-        }
-        public IJobExecutionContext JobExecutionContext { get; set; }
-
-        object _executeLock = new object();
-        public void Execute(IJobExecutionContext context)
-        {
-            lock (_executeLock)
-            {
-                JobExecutionContext = context;
-                Run();
-            }
         }
 
         /// <summary>
@@ -251,7 +239,7 @@ namespace Bam.Net.Automation
             {
                 IWorker work = WorkQueue.Dequeue();
 
-                CurrentWorkState = new WorkState(work, "starting work {0}"._Format(work.Name));
+                CurrentWorkState = new WorkState(work, string.Format("starting work {0}", work.Name)) { PreviousWorkState = CurrentWorkState };
 
                 OnWorkerStarting();
 

@@ -10,6 +10,7 @@ using Bam.Net.Logging;
 using Bam.Net.Testing.Integration;
 using System.IO;
 using System.Diagnostics;
+using Bam.Net.Data;
 
 namespace Bam.Net.Testing
 {
@@ -19,7 +20,7 @@ namespace Bam.Net.Testing
         {
             get
             {
-                return "C:\\bam\\bot\\tools\\OpenCover\\OpenCover.Console.exe";
+                return "/bam/bot/tools/OpenCover/OpenCover.Console.exe";
             }
         }
 
@@ -27,7 +28,7 @@ namespace Bam.Net.Testing
         {
             get
             {
-                return "C:\\bam\\bot\\tests\\";
+                return "/bam/bot/tests/";
             }
         }
 
@@ -41,7 +42,7 @@ namespace Bam.Net.Testing
             {
                 testType = Arguments["type"];
             }
-            if(!testType.Equals("Unit") && !testType.Equals("Integration"))
+            if (!testType.Equals("Unit") && !testType.Equals("Integration"))
             {
                 OutLineFormat("Invalid test type specified: {0}", testType);
                 Exit(-1);
@@ -49,33 +50,49 @@ namespace Bam.Net.Testing
             string testReportHost = GetArgument("testReportHost", "What server/hostname should tests report to?");
             string testReportPort = GetArgument("testReportPort", "What port is the test report service listening on?");
             string tag = string.Empty;
+            OutLine("Checking for commit file");
             string commitFile = Path.Combine(main.Directory.FullName, "commit");
             if (File.Exists(commitFile))
             {
-                tag = File.ReadAllText(commitFile);
+                OutLine("commit file found; reading commit hash to use as tag");
+                tag = File.ReadAllText(commitFile).First(6);
+                OutLine(tag);
             }
+            if (string.IsNullOrEmpty(tag))
+            {
+                tag = GetArgument("tag", "Enter a tag to use to identify test results");
+            }
+            DirectoryInfo outputDirectory = EnsureOutputDirectories(tag);
             FileInfo[] testAssemblies = GetTestFiles(GetTestDirectory());
-            DirectoryInfo outputDirectory = new DirectoryInfo(Path.Combine(OutputRoot, tag));
-            if (!outputDirectory.Exists)
+            foreach(FileInfo file in testAssemblies)
             {
-                outputDirectory.Create();
-            }
-            int fileNum = 1;            
-            Parallel.ForEach(testAssemblies, (file) =>
-            {
-                string xmlFile = Path.Combine(outputDirectory.FullName, "coverage", $"_{fileNum}.xml");
-                string outputFile = Path.Combine(outputDirectory.FullName, "output", $"{Path.GetFileNameWithoutExtension(file.Name)}_output.txt");
-                string errorFile = Path.Combine(outputDirectory.FullName, "output", $"{Path.GetFileNameWithoutExtension(file.Name)}_error.txt");
-                string commandLine = $"{OpenCover} -target:\"{main.FullName}\" -targetargs:\"/{testType}Tests:{file.FullName} /testReportHost:{testReportHost} /testReportPort:{testReportPort} /tag:{tag}\" -register -filter:\"+[Bam.Net *]* -[*].Data.* -[*Test*].Tests.*\" -output:{xmlFile}";
+                OutLineFormat("{0}:Running tests in: {1}", ConsoleColor.Cyan, DateTime.Now.ToLongTimeString(), file.FullName);
+                string testFileName = Path.GetFileNameWithoutExtension(file.Name);
+                string xmlFile = Path.Combine(outputDirectory.FullName, "coverage", $"_{testFileName}.xml");
+                string outputFile = Path.Combine(outputDirectory.FullName, "output", $"{testFileName}_output.txt");
+                string errorFile = Path.Combine(outputDirectory.FullName, "output", $"{testFileName}_error.txt");
+                string commandLine = $"{OpenCover} -target:\"{main.FullName}\" -targetargs:\"/type:{testType} /{testType}Tests:{file.FullName} /testReportHost:{testReportHost} /testReportPort:{testReportPort} /tag:{tag}\" -register:user -threshold:10 -filter:\"+[Bam.Net*]* -[*].Data.* -[*].Testing.* -[*Test*].Tests.*\" -output:{xmlFile}";
+                OutLineFormat("CommandLine: {0}", ConsoleColor.Yellow, commandLine);
                 ProcessOutput output = commandLine.Run(7200000); // timeout after 2 hours
-                output.StandardError.SafeWriteToFile(outputFile);
-                output.StandardOutput.SafeWriteToFile(errorFile);
-            });            
+                output.StandardError.SafeWriteToFile(errorFile, true);
+                output.StandardOutput.SafeWriteToFile(outputFile, true);
+            }
         }
 
         [ConsoleAction("UnitTests", "[path_to_test_assembly]", "Run unit tests in the specified assembly")]
-        public static void RunUnitTestsInFile(string assemblyPath = null, string endDirectory = null)
+        public static void RunUnitTestsInFile()
         {
+            string assemblyPath = Arguments["UnitTests"];
+            if (string.IsNullOrEmpty(assemblyPath))
+            {
+                throw new InvalidOperationException("UnitTest file not specified");
+            }
+            RunUnitTestsInFile(assemblyPath, Environment.CurrentDirectory);
+        }
+
+        public static void RunUnitTestsInFile(string assemblyPath, string endDirectory)
+        {
+            OutLineFormat("Running UnitTests: {0}", ConsoleColor.DarkGreen, assemblyPath);
             assemblyPath = assemblyPath ?? Arguments["UnitTests"];
             endDirectory = endDirectory ?? Environment.CurrentDirectory;
             try
@@ -84,6 +101,7 @@ namespace Bam.Net.Testing
                 Assembly assembly = Assembly.LoadFrom(assemblyPath);
                 RunAllUnitTests(assembly, Log.Default, (o, a) => _passedCount++, (o, a) => _failedCount++);
                 Environment.CurrentDirectory = endDirectory;
+                OutLineFormat("Test run complete: {0}", ConsoleColor.DarkYellow, assemblyPath);
             }
             catch (Exception ex)
             {
@@ -106,6 +124,27 @@ namespace Bam.Net.Testing
             {
                 HandleException(ex);
             }
+        }
+
+        private static DirectoryInfo EnsureOutputDirectories(string tag)
+        {
+            OutLineFormat("Creating output directories as necessary: OutputRoot={0}, tag={1}", ConsoleColor.Cyan, OutputRoot, tag);
+            DirectoryInfo outputDirectory = new DirectoryInfo(Path.Combine(OutputRoot, tag));
+            OutLineFormat("Checking for output directory: {0}", ConsoleColor.Cyan, outputDirectory);
+            if (!outputDirectory.Exists)
+            {
+                OutLineFormat("Directory doesn't exist, creating it: {0}", outputDirectory.FullName);
+                outputDirectory.Create();
+            }
+            string coverageDir = Path.Combine(outputDirectory.FullName, "coverage");
+            OutLineFormat("Checking for coverage directory: {0}", ConsoleColor.Cyan, coverageDir);
+            if (!Directory.Exists(coverageDir))
+            {
+                OutLineFormat("Coverage directory doesn't exist, creating it: {0}", coverageDir);
+                Directory.CreateDirectory(coverageDir);
+            }
+
+            return outputDirectory;
         }
     }
 }

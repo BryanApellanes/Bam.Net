@@ -206,6 +206,7 @@ namespace Bam.Net.Testing
             }
             foreach(ITestRunListener<UnitTestMethod> listener in GetUnitTestRunListeners())
             {
+                listener.Tag = runner.Tag;
                 listener.Listen(runner);
             }
             runner.RunAllTests();

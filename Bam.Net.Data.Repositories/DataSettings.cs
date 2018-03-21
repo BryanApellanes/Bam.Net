@@ -2,7 +2,10 @@
 using System.IO;
 using Bam.Net.Configuration;
 using Bam.Net.Data.SQLite;
+using Bam.Net.Encryption;
 using Bam.Net.Logging;
+using Bam.Net.UserAccounts;
+using Bam.Net.UserAccounts.Data;
 
 namespace Bam.Net.Data.Repositories
 {
@@ -20,7 +23,7 @@ namespace Bam.Net.Data.Repositories
             WorkspacesDirectory = "Workspaces";
             EmailTemplatesDirectory = "EmailTemplates";
             AssemblyDirectory = "Assemblies";
-            ProcessMode = ProcessMode.Default;
+            ProcessMode = ProcessMode.Current;
             Logger = Log.Default;            
         }
 
@@ -48,6 +51,19 @@ namespace Bam.Net.Data.Repositories
             {
                 return _fromConfigLock.DoubleCheckLock(ref _fromConfig, () => new DataSettings(ProcessMode.Current));
             }
+        }
+
+        public void Init(UserManager userManager)
+        {
+            Init(DefaultConfigurationApplicationNameProvider.Instance, userManager);
+        }
+
+        public void Init(IApplicationNameProvider appNameProvider, UserManager userManager)
+        {            
+            SetRuntimeAppDataDirectory(appNameProvider);
+            User.UserDatabase = userManager.Database;
+            Vault.SystemVaultDatabase = Current.GetSysDatabaseFor(typeof(Vault), "System");
+            Vault.ApplicationVaultDatabase = Current.GetAppDatabaseFor(appNameProvider, typeof(Vault), appNameProvider.GetApplicationName());
         }
 
         public void SetRuntimeAppDataDirectory(IApplicationNameProvider appNameProvider)
@@ -202,7 +218,7 @@ namespace Bam.Net.Data.Repositories
             return new DirectoryInfo(Path.Combine(GetRootDataDirectory().FullName, WorkspacesDirectory, type.Name, hash));
         }
 
-        public DaoRepository GetGenericDaoRepository(ILogger logger = null, string schemaName = null)
+        public DaoRepository GetSysDaoRepository(ILogger logger = null, string schemaName = null)
         {
             return new DaoRepository(GetSysDatabaseFor(typeof(DaoRepository)), logger, schemaName);
         }
@@ -222,6 +238,11 @@ namespace Bam.Net.Data.Repositories
             instance.Property("Database", GetSysDatabaseFor(instance), false);
         }        
 
+        /// <summary>
+        /// Get a SQLiteDatabase for the specified object instance.
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <returns></returns>
         public override SQLiteDatabase GetSysDatabaseFor(object instance)
         {
             string databaseName = instance.GetType().FullName;
@@ -233,6 +254,12 @@ namespace Bam.Net.Data.Repositories
             return new SQLiteDatabase(GetSysDatabaseDirectory().FullName, databaseName);
         }
 
+        /// <summary>
+        /// Get the standard path for the specified type.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="info"></param>
+        /// <returns></returns>
         public override string GetSysDatabasePathFor(Type type, string info = null)
         {
             return GetSysDatabaseFor(type, info).DatabaseFile.FullName;

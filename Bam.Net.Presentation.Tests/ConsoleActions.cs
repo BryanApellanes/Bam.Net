@@ -11,6 +11,8 @@ using Bam.Net.Data.Repositories;
 using Bam.Net.Presentation.Unicode;
 using System.IO;
 using NCuid;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace Bam.Net.Presentation.Tests
 {

@@ -15,12 +15,13 @@ namespace Bam.Net.Automation
         public SuspendJobWorker() : base() { }
         public SuspendJobWorker(string name) : base(name) { }
 
-
-        protected override WorkState Do()
+        protected override WorkState Do(WorkState currentWorkState)
         {
-            SuspendedJob suspended = JobConductorService.Default.SuspendJob(Job); ;
-            WorkState<SuspendedJob> result = new WorkState<SuspendedJob>(this, suspended);
-            result.Status = Status.Suspended;
+            SuspendedJob suspended = JobConductorService.SuspendJob(Job); ;
+            WorkState<SuspendedJob> result = new WorkState<SuspendedJob>(this, suspended)
+            {
+                Status = Status.Suspended
+            };
             return result;
         }
 

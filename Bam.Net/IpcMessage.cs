@@ -75,7 +75,7 @@ namespace Bam.Net
 
             if (File.Exists(result.MessageFile))
             {
-                throw new InvalidOperationException("The specified {0}.Name is already in use"._Format(typeof(IpcMessage).Name));
+                throw new InvalidOperationException($"The specified {nameof(IpcMessage)}.Name={name} is already in use");
             }
 
             return result;

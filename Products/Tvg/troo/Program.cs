@@ -9,6 +9,7 @@ namespace Bam.Net.Application
     {
         static void Main(string[] args)
         {
+            TryWritePid();
             TrooService.SetInfo(TrooService.ServiceInfo);
             if (!TrooService.ProcessCommandLineArgs(args))
             {

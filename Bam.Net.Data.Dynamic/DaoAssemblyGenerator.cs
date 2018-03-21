@@ -123,13 +123,17 @@ namespace Bam.Net.Data.Dynamic
             return GeneratedAssemblyInfo.GetGeneratedAssembly(FilePath, this);
         }
 
+        object _generateLock = new object();
         public GeneratedAssemblyInfo GenerateAssembly()
         {
-            string sourcePath = Path.Combine(Workspace, "src");
-            GenerateSource(sourcePath);
-            GeneratedAssemblyInfo result = Compile(sourcePath);
+            lock (_generateLock)
+            {
+                string sourcePath = Path.Combine(Workspace, "src");
+                GenerateSource(sourcePath);
+                GeneratedAssemblyInfo result = Compile(sourcePath);
 
-            return result;
+                return result;
+            }
         }
 
         public void WriteSource(string writeSourceTo)

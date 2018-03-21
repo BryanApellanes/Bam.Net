@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace Bam.Net.Server.Renderers
 {
@@ -17,21 +18,25 @@ namespace Bam.Net.Server.Renderers
     /// saves the result in a json file along with a hash of the original
     /// source to determine if compilation is necessary.
     /// </summary>
-    public class CompiledDustTemplate
+    public class CompiledDustTemplate : ICompiledTemplate
     {
         public static implicit operator string(CompiledDustTemplate result)
         {
-            return result.CompiledTemplate;
+            return result.Compiled;
         }
 
         public CompiledDustTemplate() { }
 
         public CompiledDustTemplate(string sourceFilePath, string templateName)
         {
-            this.TemplateName = templateName;
-            this.SourceFilePath = sourceFilePath;
-            this.SourceHash = new FileInfo(sourceFilePath).Sha1();
-            this.Load();
+            Name = templateName;
+            SourceFilePath = sourceFilePath;
+            Source = sourceFilePath.SafeReadFile();
+            Load();
+        }
+
+        public CompiledDustTemplate(FileInfo file) : this(file.FullName, Path.GetFileNameWithoutExtension(file.Name))
+        {
         }
 
         private void Load()
@@ -46,10 +51,10 @@ namespace Bam.Net.Server.Renderers
             }
 
             // compare the hashes
-            if (temp != null && temp.SourceHash.Equals(this.SourceHash) && temp.TemplateName.Equals(this.TemplateName))
+            if (temp != null && !string.IsNullOrEmpty(temp.Source) && temp.SourceHash.Equals(this.SourceHash) && temp.Name.Equals(this.Name))
             {
                 // if they match set our compiled to that of temp
-                this.CompiledTemplate = temp.CompiledTemplate;
+                this.Compiled = temp.Compiled;
             }
             else
             {
@@ -61,7 +66,7 @@ namespace Bam.Net.Server.Renderers
         {
             Args.ThrowIfNullOrEmpty(SourceFilePath, "SourceFilePath");           
             string source = File.ReadAllText(SourceFilePath);
-            this.CompiledTemplate = DustScript.Compile(source, this.TemplateName);
+            this.Compiled = DustScript.Compile(source, this.Name);
             this.ToJsonFile(GetSaveToPath());
         }
         
@@ -79,7 +84,13 @@ namespace Bam.Net.Server.Renderers
             set;
         }
         
-        public string TemplateName
+        public string Name
+        {
+            get;
+            set;
+        }
+
+        public string Source
         {
             get;
             set;
@@ -87,11 +98,21 @@ namespace Bam.Net.Server.Renderers
 
         public string SourceHash
         {
-            get;
-            set;
+            get
+            {
+                return Source.Sha1();
+            }
         }
 
-        public string CompiledTemplate
+        public string UnescapedCompiled
+        {
+            get
+            {
+                return Regex.Unescape(Compiled);
+            }
+        }
+
+        public string Compiled
         {
             get;
             set;

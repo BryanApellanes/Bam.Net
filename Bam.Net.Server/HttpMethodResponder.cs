@@ -38,27 +38,41 @@ namespace Bam.Net.Server
 			return responded;
 		}
 
-		protected abstract bool Post(IHttpContext context);
+        protected virtual bool Post(IHttpContext context)
+        {
+            return false;
+        }
 
-		protected abstract bool Get(IHttpContext context);		
-		
-		protected abstract bool Put(IHttpContext context);
+		protected virtual bool Get(IHttpContext context)
+        {
+            return false;
+        }
 
-		protected abstract bool Delete(IHttpContext context);
+        protected virtual bool Put(IHttpContext context)
+        {
+            return false;
+        }
 
+        protected virtual bool Delete(IHttpContext context)
+        {
+            return false;
+        }
 
-		protected virtual bool Connect(IHttpContext context)
+        protected virtual bool Connect(IHttpContext context)
 		{
 			return false;
 		}
+
 		protected virtual bool Head(IHttpContext context)
 		{
 			return false;
 		}
+
 		protected virtual bool Options(IHttpContext context)
 		{
 			return false;
 		}
+
 		protected virtual bool Trace(IHttpContext context)
 		{
 			return false;

@@ -15,6 +15,7 @@ using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.Services.AsyncCallback;
 using Bam.Net.Services.AsyncCallback.Data;
 using Bam.Net.Web;
+using System.Reflection;
 
 namespace Bam.Net.Services
 {
@@ -154,7 +155,7 @@ namespace Bam.Net.Services
         {
             Task.Run(() =>
             {
-                AsyncCallbackService asyncCallback = _proxyFactory.GetProxy<AsyncCallbackService>(request.RespondToHostName, request.RespondToPort);                
+                AsyncCallbackService asyncCallback = _proxyFactory.GetProxy<AsyncCallbackService>(request.RespondToHostName, request.RespondToPort, Logger);
                 ExecutionRequest execRequest = new ExecutionRequest(request.ClassName, request.MethodName, "json")
                 {
                     ServiceProvider = ServiceProvider,

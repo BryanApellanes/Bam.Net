@@ -14,6 +14,7 @@ namespace Bam.Net.Testing
 
     public interface ITestRunListener
     {
+        string Tag { get; set; }
         void TestPassed(object sender, EventArgs e);
         void TestFailed(object sender, EventArgs e);
         void TestFailed(object sender, TestExceptionEventArgs args);

@@ -15,7 +15,7 @@ using Bam.Net.Logging;
 
 namespace Bam.Net.Server.Renderers
 {
-    public class DustScript
+    public static class DustScript
     {
         static DustScript()
         {
@@ -32,15 +32,42 @@ namespace Bam.Net.Server.Renderers
             return script.ToString();
         }
 
-        public static string CompileDirectory(string directoryPath, string fileSearchPattern = "*.dust", ILogger logger = null)
+        public static string CompileTemplates(string directoryPath, string fileSearchPattern = "*.dust", ILogger logger = null)
         {
-            return CompileDirectory(new DirectoryInfo(directoryPath), fileSearchPattern, SearchOption.TopDirectoryOnly, "", logger);
+            return CompileTemplates(new DirectoryInfo(directoryPath), fileSearchPattern, SearchOption.TopDirectoryOnly, "", logger);
         }
 
-        public static string CompileDirectory(DirectoryInfo directory, string fileSearchPattern = "*.dust", SearchOption searchOption = SearchOption.TopDirectoryOnly, string templateNamePrefix = "", ILogger logger = null)
+        /// <summary>
+        /// Compiles all the dust templates in the specified directory returning the combined 
+        /// result as a string.
+        /// </summary>
+        /// <param name="directory"></param>
+        /// <param name="fileSearchPattern"></param>
+        /// <param name="searchOption"></param>
+        /// <param name="templateNamePrefix"></param>
+        /// <param name="logger"></param>
+        /// <returns></returns>
+        public static string CompileTemplates(DirectoryInfo directory, string fileSearchPattern = "*.dust", SearchOption searchOption = SearchOption.TopDirectoryOnly, string templateNamePrefix = "", ILogger logger = null)
+        {
+            return CompileTemplates(directory, out List<ICompiledTemplate> ignore, fileSearchPattern, searchOption, templateNamePrefix, logger);
+        }
+
+        /// <summary>
+        /// Compiles all the dust templates in the specified directory returning the combined 
+        /// result as a string and each individual template in a list as an out parameter.
+        /// </summary>
+        /// <param name="directory"></param>
+        /// <param name="templates"></param>
+        /// <param name="fileSearchPattern"></param>
+        /// <param name="searchOption"></param>
+        /// <param name="templateNamePrefix"></param>
+        /// <param name="logger"></param>
+        /// <returns></returns>
+        public static string CompileTemplates(this DirectoryInfo directory, out List<ICompiledTemplate> templates, string fileSearchPattern = "*.dust", SearchOption searchOption = SearchOption.TopDirectoryOnly, string templateNamePrefix = "", ILogger logger = null)
         {
             StringBuilder compiled = new StringBuilder();
             logger = logger ?? Log.Default;
+            templates = new List<ICompiledTemplate>();
             if (directory.Exists)
             {
                 logger.AddEntry("DustScript::Compiling Dust Directory: {0}", directory.FullName);
@@ -58,11 +85,15 @@ namespace Bam.Net.Server.Renderers
                     }
 
                     string templateFullName = templateNamePrefix + templateName;
+                    ICompiledTemplate template = new CompiledDustTemplate(file.FullName, templateFullName);
                     logger.AddEntry("DustScript::Starting Dust compile: fileName={0}, templateName={1}", file.FullName, templateFullName);
                     compiled.Append(";\r\n");
-                    compiled.Append(new CompiledDustTemplate(file.FullName, templateFullName));
+                    // TODO: do Regex.Unescape(tempalte.Compiled) to prevent having to do it everywhere else that references the resulting "compiled.ToString()"
+                    // such as below in Render.  Do it here and it shouldn't be necessary anywhere else.
+                    compiled.Append(template.Compiled);
                     compiled.Append(";\r\n");
                     logger.AddEntry("DustScript::Finished Dust compile: fileName={0}, templateName={1}", file.FullName, templateFullName);
+                    templates.Add(template);
                 }
             }
 
@@ -110,7 +141,7 @@ dust.render(templateName, JSON.parse(jsonData), function(err, out){
 
         public static string Render(DirectoryInfo templateDirectory, string templateName, object data, string searchPattern = "*.*")
         {
-            string compiled = CompileDirectory(templateDirectory, searchPattern);
+            string compiled = CompileTemplates(templateDirectory, searchPattern);
             return Render(compiled, templateName, data);
         }
     }

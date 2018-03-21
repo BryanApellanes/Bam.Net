@@ -33,6 +33,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <CodeAnalysisRuleSet>Bam.Net.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -44,6 +45,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\Bam.Net.XML</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
+    <CodeAnalysisRuleSet>Bam.Net.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -54,6 +56,7 @@
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>bin\Debug\Bam.Net.XML</DocumentationFile>
+    <CodeAnalysisRuleSet>Bam.Net.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -62,6 +65,7 @@
     <Optimize>true</Optimize>
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>bin\Release\Bam.Net.XML</DocumentationFile>
+    <CodeAnalysisRuleSet>Bam.Net.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
@@ -75,7 +79,7 @@
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <DocumentationFile>bin\Debug\Bam.Net.XML</DocumentationFile>
     <PlatformTarget>x64</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>Bam.Net.ruleset</CodeAnalysisRuleSet>
     <NoWarn>1591</NoWarn>
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
@@ -85,7 +89,7 @@
     <DocumentationFile>bin\Release\Bam.Net.XML</DocumentationFile>
     <Optimize>true</Optimize>
     <PlatformTarget>x64</PlatformTarget>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>Bam.Net.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
@@ -100,8 +104,12 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.IO.Compression, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Compression.4.3.0\lib\net46\System.IO.Compression.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression.FileSystem">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System.Management" />
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Web" />
@@ -149,6 +157,7 @@
     <Compile Include="AssemblyResolve.cs" />
     <Compile Include="BackgroundThreadQueue.cs" />
     <Compile Include="BackgroundThreadQueueEventArgs.cs" />
+    <Compile Include="TypeResolver.cs" />
     <Compile Include="CompilationException.cs" />
     <Compile Include="Configuration\Configurable.cs" />
     <Compile Include="Configuration\DefaultConfigurationApplicationNameProvider.cs" />
@@ -166,6 +175,7 @@
     <Compile Include="Configuration\RuntimeSettings.cs" />
     <Compile Include="Configuration\StaticApplicationNameProvider.cs" />
     <Compile Include="CsvPropertyAttribute.cs" />
+    <Compile Include="CustomAttributeTypeDescriptor.cs" />
     <Compile Include="Date.cs" />
     <Compile Include="Documentation\doc.cs" />
     <Compile Include="DynamicTypeRecursionLimitReachedException.cs" />
@@ -289,6 +299,7 @@
     <Compile Include="_.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Bam.Net.ruleset" />
     <None Include="Documentation\XmlDocumentation.xsd">
       <SubType>Designer</SubType>
     </None>

@@ -73,7 +73,7 @@ namespace Bam.Net.Automation
             get { return new string[] { "Name", "Destination" }; }
         }
 
-        protected override WorkState Do()
+        protected override WorkState Do(WorkState currentWorkState)
         {
             try
             {
@@ -85,10 +85,11 @@ namespace Bam.Net.Automation
                     FileInfo destinationFile = new FileInfo(Path.Combine(Destination, file.Name));
                     File.Copy(filePath, destinationFile.FullName);
                 });
-                return new WorkState(this) { Status = Status.Succeeded };
-            }catch(Exception ex)
+                return new WorkState(this) { Status = Status.Succeeded, PreviousWorkState = currentWorkState };
+            }
+            catch (Exception ex)
             {
-                return new WorkState(this, ex);
+                return new WorkState(this, ex) { PreviousWorkState = currentWorkState };
             }
         }
     }

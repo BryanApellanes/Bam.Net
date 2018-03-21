@@ -95,10 +95,11 @@
   <ItemGroup>
     <Compile Include="ConsoleActions.cs" />
     <Compile Include="FtpUnitTests.cs" />
-    <Compile Include="JobConductorUnitTests.cs" />
+    <Compile Include="JobManagerUnitTests.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SftpUnitTests.cs" />
+    <Compile Include="TestClass.cs" />
     <Compile Include="TestMessageBody.cs" />
     <Compile Include="TestTestRunner.cs" />
     <Compile Include="TestUnitTestRunListener.cs" />

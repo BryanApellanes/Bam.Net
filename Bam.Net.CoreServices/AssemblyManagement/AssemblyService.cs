@@ -36,6 +36,7 @@ namespace Bam.Net.CoreServices
             return result;
         }
         public event EventHandler CurrentRuntimePersisted;
+        public event EventHandler ExceptionPersistingCurrentRuntime;
         public event EventHandler RuntimeRestored;
         public DataSettings DataSettings { get; set; }
         public string AssemblyDirectory
@@ -95,13 +96,22 @@ namespace Bam.Net.CoreServices
 
         public ProcessRuntimeDescriptor PersistRuntimeDescriptor(ProcessRuntimeDescriptor runtimeDescriptor)
         {
-            ProcessRuntimeDescriptor retrieved = ProcessRuntimeDescriptor.PersistToRepo(AssemblyManagementRepository, runtimeDescriptor);
-            foreach (AssemblyDescriptor descriptor in retrieved.AssemblyDescriptors)
+            try
             {
-                StoreAssemblyFileChunks(descriptor);
+                ProcessRuntimeDescriptor retrieved = ProcessRuntimeDescriptor.PersistToRepo(AssemblyManagementRepository, runtimeDescriptor);
+                foreach (AssemblyDescriptor descriptor in retrieved?.AssemblyDescriptors)
+                {
+                    StoreAssemblyFileChunks(descriptor);
+                }
+                FireEvent(CurrentRuntimePersisted, new ProcessRuntimeDescriptorEventArgs { ProcessRuntimeDescriptor = retrieved });
+
+                return retrieved;
             }
-            FireEvent(CurrentRuntimePersisted, new ProcessRuntimeDescriptorEventArgs { ProcessRuntimeDescriptor = retrieved });
-            return retrieved;
+            catch(Exception ex)
+            {
+                FireEvent(ExceptionPersistingCurrentRuntime, new ProcessRuntimeDescriptorEventArgs { ProcessRuntimeDescriptor = runtimeDescriptor, Message = ex.Message });
+                return runtimeDescriptor;
+            }
         }
 
         public ProcessRuntimeDescriptor LoadRuntimeDescriptor(ProcessRuntimeDescriptor likeThis)

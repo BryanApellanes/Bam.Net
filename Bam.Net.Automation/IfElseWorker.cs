@@ -24,13 +24,17 @@ namespace Bam.Net.Automation
         {
             get { return new string[] { "Name" }; }
         }
-        public bool Condition { get; set; }
+        public Func<WorkState, bool> EvaluateWorkState { get; set; }
         public Worker IfTrueWorker { get; set; }
         public Worker ElseWorker { get; set; }
-
-        protected override WorkState Do()
+        public string UserPredicate { get; set; }
+        protected override WorkState Do(WorkState currentWorkState)
         {
-            return Condition ? IfTrueWorker.Do(this.Job) : ElseWorker.Do(this.Job);
+            if(Job.CurrentWorkState != currentWorkState)
+            {
+                Job.CurrentWorkState = currentWorkState;
+            }
+            return EvaluateWorkState(Job.CurrentWorkState) ? IfTrueWorker.Do(Job) : ElseWorker.Do(Job);
         }
     }
 }

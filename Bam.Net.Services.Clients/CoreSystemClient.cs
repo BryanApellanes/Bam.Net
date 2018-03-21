@@ -3,6 +3,7 @@ using Bam.Net.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,7 +19,7 @@ namespace Bam.Net.Services.Clients
         public CoreSystemClient(string hostName, int port, ILogger logger = null)
         {
             _proxyFactory = new ProxyFactory(logger);
-            _fileService = _proxyFactory.GetProxy<AssemblyService>(hostName, port);
+            _fileService = _proxyFactory.GetProxy<AssemblyService>(hostName, port, logger);
         }
 
         static CoreSystemClient()

@@ -20,6 +20,7 @@ namespace Bam.Net.Data
             Root = root;
             Logger = logger ?? Log.Default;
         }
+        
         public ILogger Logger { get; set; }
         public string Root { get; set; }
 

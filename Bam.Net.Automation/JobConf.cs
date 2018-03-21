@@ -138,8 +138,7 @@ namespace Bam.Net.Automation
 
         protected internal bool WorkerExists(string workerName)
         {
-            string ignore;
-            return WorkerExists(workerName, out ignore);
+            return WorkerExists(workerName, out string ignore);
         }
 
         protected internal bool WorkerExists(string workerName, out string path)

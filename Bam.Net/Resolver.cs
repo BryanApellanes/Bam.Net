@@ -15,7 +15,7 @@ namespace Bam.Net
         {
             AssemblyResolver = AssemblyResolver ?? ((rea) =>
             {
-                WriteLog($"Couldn't resolve assembly: {rea.Name}\r\nRequesting assembly: {rea.RequestingAssembly.FullName}\r\nRequesting assembly path: {rea.RequestingAssembly.GetFilePath()}");
+                WriteLog($"Couldn't resolve assembly: {rea.Name}\r\nRequesting assembly: {rea.RequestingAssembly?.FullName}\r\nRequesting assembly path: {rea.RequestingAssembly?.GetFilePath()}");
                 return null;
             });
             AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>

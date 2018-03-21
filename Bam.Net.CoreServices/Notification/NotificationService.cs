@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Presentation.Handlebars;
+using Bam.Net.Encryption;
 
 namespace Bam.Net.CoreServices
 {
@@ -22,16 +23,27 @@ namespace Bam.Net.CoreServices
     [ServiceSubdomain("notify")]
     public class NotificationService : ApplicationProxyableService, INotificationService
     {
-        public NotificationService(DataSettings dataSettings, ILogger logger = null)
+        protected NotificationService() : base() { }
+
+        public NotificationService(IUserManager userManager, SmtpSettingsProvider smtpSettingsProvider, ILogger logger)
         {
+            UserManager = userManager;
+            SmtpSettingsProvider = smtpSettingsProvider ?? DataSettingsSmtpSettingsProvider.Default;
             Logger = logger ?? Log.Default;
-            DataSettings = dataSettings;
-            string emailTemplatesDirectory = dataSettings.GetSysEmailTemplatesDirectory().FullName;
-            NotificationTemplateDirectory = new DirectoryInfo(Path.Combine(dataSettings.GetRootDataDirectory().FullName, "NotificationTemplates"));
+            string emailTemplatesDirectory = DataSettings.Current.GetSysEmailTemplatesDirectory().FullName;
+            NotificationTemplateDirectory = new DirectoryInfo(Path.Combine(DataSettings.Current.GetRootDataDirectory().FullName, "NotificationTemplates"));
             Templates = new HandlebarsDirectory(NotificationTemplateDirectory);
             Tld = "com";
             Templates.Reload();
         }
+
+        [Local]
+        public static void SetDefaultSmtpSettings(SmtpSettings settings)
+        {
+            DataSettingsSmtpSettingsProvider.SetDefaultSmtpSettings(settings);
+        }
+        
+        public SmtpSettingsProvider SmtpSettingsProvider { get; set; }
         public HandlebarsDirectory Templates { get; set; }
         public string Tld { get; set; }        
         public string DefaultSubject
@@ -41,8 +53,7 @@ namespace Bam.Net.CoreServices
                 return $"{ApplicationName} Notification";
             }
         }
-        protected DataSettings DataSettings { get; set; }
-        
+
         public DirectoryInfo NotificationTemplateDirectory { get; set; }
 
         /// <summary>
@@ -50,7 +61,7 @@ namespace Bam.Net.CoreServices
         /// </summary>
         /// <param name="template"></param>
         /// <returns></returns>
-        public bool AddTemplate(NotificationTemplateInfo template)
+        public virtual bool AddTemplate(NotificationTemplateInfo template)
         {
             return AddTemplate(template, out string ignore);
         }
@@ -83,7 +94,7 @@ namespace Bam.Net.CoreServices
         }
 
         [RoleRequired("/CoreNotificationService/AccessDenied", "Admin")]
-        public bool TemplateNotify(string recipientIdendtifier, string templateName, string jsonData, string subject = null)
+        public virtual bool TemplateNotify(string recipientIdendtifier, string templateName, string jsonData, string subject = null)
         {
             object data = string.IsNullOrEmpty(jsonData) ? new { } : JsonConvert.DeserializeObject(jsonData);
             return TemplateNotify(recipientIdendtifier, templateName, data, subject);
@@ -109,12 +120,19 @@ namespace Bam.Net.CoreServices
         }
 
         [RoleRequired("/CoreNotificationService/AccessDenied", "Admin")]
-        public bool Notify(string recipientIdentifier, EmailBody emailBody, string subject = null)
+        public virtual bool Notify(string recipientIdentifier, EmailBody emailBody, string subject = null, bool bypassRecipientValidation = false)
         {
             try
             {
-                UserAccounts.Data.User user = ValidateRecipientOrDie(recipientIdentifier);
-                NotifyUser(user, emailBody, subject);
+                if (!bypassRecipientValidation)
+                {
+                    UserAccounts.Data.User user = ValidateRecipientOrDie(recipientIdentifier);
+                    NotifyUser(user, emailBody, subject);
+                }
+                else
+                {
+                    NotifyRecipientEmail(recipientIdentifier, emailBody, subject);
+                }
                 return true;
             }
             catch (Exception ex)
@@ -134,10 +152,10 @@ namespace Bam.Net.CoreServices
         public bool NotifyRecipientEmail(string toEmail, EmailBody emailBody, string subject, string from = null, string fromDisplayName = null)
         {
             try
-            {
-                from = from ?? $"no-reply@{ApplicationName}.{Tld}";
+            {    
+                from = from ?? DataSettingsSmtpSettingsProvider.DefaultSender ?? $"no-reply@{ApplicationName}.{Tld}";
                 fromDisplayName = fromDisplayName ?? from;
-                Email email = UserManager
+                Email email = SmtpSettingsProvider
                     .CreateEmail(from, fromDisplayName)
                     .To(toEmail)
                     .Subject(subject ?? DefaultSubject)
@@ -157,7 +175,7 @@ namespace Bam.Net.CoreServices
         [Local]
         public override object Clone()
         {
-            NotificationService clone = new NotificationService(DataSettings, Logger);
+            NotificationService clone = new NotificationService(UserManager, SmtpSettingsProvider, Logger);
             clone.CopyProperties(this);
             clone.CopyEventHandlers(this);            
             return clone;
@@ -190,8 +208,8 @@ namespace Bam.Net.CoreServices
 
         private UserAccounts.Data.User ValidateRecipientOrDie(string identifier)
         {
-            UserManager userManager = GetUserManager();
-            Database userDatabase = userManager.DaoUserResolver.Database;
+            IUserManager userManager = GetUserManager();
+            Database userDatabase = userManager.Property<DaoUserResolver>("DaoUserResolver", false)?.Database ?? Db.For<UserAccounts.Data.User>();
             if (!IsValidUserEmail(identifier, userDatabase, out UserAccounts.Data.User user))
             {
                 if(!IsValidUserName(identifier, userDatabase, out user))

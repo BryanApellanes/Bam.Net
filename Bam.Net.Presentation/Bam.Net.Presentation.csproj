@@ -145,6 +145,7 @@
     <Compile Include="Dust\DustTemplateResult.cs" />
     <Compile Include="Dust\DustView.cs" />
     <Compile Include="Dust\DustViewEngine.cs" />
+    <Compile Include="Emoji.cs" />
     <Compile Include="Emoji_Generated\Category.cs" />
     <Compile Include="Emoji_Generated\CategoryCollection.cs" />
     <Compile Include="Emoji_Generated\CategoryColumns.cs" />
@@ -183,6 +184,7 @@
     <Compile Include="Html\HtmlHelperExtensions.cs" />
     <Compile Include="Html\Img.cs" />
     <Compile Include="Html\MethodFormResult.cs" />
+    <Compile Include="Html\Traversal\CsQueryExtensions.cs" />
     <Compile Include="IRenderer.cs" />
     <Compile Include="LayoutModel.cs" />
     <Compile Include="Markdown\DocumentComponentEventArgs.cs" />
@@ -259,7 +261,9 @@
       <Name>Bam.Net</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Code\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

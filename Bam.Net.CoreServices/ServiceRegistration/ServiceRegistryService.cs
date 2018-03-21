@@ -16,19 +16,23 @@ using Bam.Net.ServiceProxy;
 using System.IO;
 using Bam.Net.Yaml;
 using Bam.Net.CoreServices.Files;
+using Bam.Net.Configuration;
+using Bam.Net.Logging;
+using Bam.Net.CoreServices.AssemblyManagement.Data.Dao.Repository;
 
 namespace Bam.Net.CoreServices
 {
     /// <summary>
     /// Provides a central point of management for
     /// registering and retrieving services and their
-    /// implementations
+    /// implementations.
     /// </summary>
     [ApiKeyRequired]
     [Proxy("serviceRegistrySvc")]
     [ServiceSubdomain("svcregistry")]
     public class ServiceRegistryService : ApplicationProxyableService
     {
+        Dictionary<Type, List<ServiceRegistryContainerRegistrationResult>> _scanResults;
         protected ServiceRegistryService() { }
         public ServiceRegistryService(
             IFileService fileservice, 
@@ -41,9 +45,96 @@ namespace Bam.Net.CoreServices
             FileService = fileservice;
             ServiceRegistryRepository = repo;
             AssemblyService = assemblyService;
-            DataSettings = dataSettings ?? DataSettings.Default;
+            DataSettings = dataSettings ?? DataSettings.Current;
+            AssemblySearchPattern = DefaultConfiguration.GetAppSetting("AssemblySearchPattern", "*.dll");
+            _scanResults = new Dictionary<Type, List<ServiceRegistryContainerRegistrationResult>>();            
         }
 
+        [Local]
+        public static ServiceRegistryService GetLocalServiceRegistryService(DataSettings dataSettings, IApplicationNameProvider appNameProvider, string assemblySearchPattern, ILogger logger = null)
+        {
+            logger = logger ?? Log.Default;
+            DaoRepository repo = dataSettings.GetSysDaoRepository(logger, nameof(FileService));
+            FileService fileService = new FileService(repo);
+            AssemblyServiceRepository assRepo = new AssemblyServiceRepository();
+            assRepo.Database = dataSettings.GetSysDatabaseFor(assRepo);
+            assRepo.EnsureDaoAssemblyAndSchema();
+            AssemblyService assemblyService = new AssemblyService(DataSettings.Current, fileService, assRepo, appNameProvider);
+            ServiceRegistryRepository serviceRegistryRepo = new ServiceRegistryRepository();
+            serviceRegistryRepo.Database = dataSettings.GetSysDatabaseFor(serviceRegistryRepo);
+            serviceRegistryRepo.EnsureDaoAssemblyAndSchema();
+            ServiceRegistryService serviceRegistryService = new ServiceRegistryService(
+                fileService,
+                assemblyService,
+                serviceRegistryRepo,
+                dataSettings.GetSysDaoRepository(logger),
+                new AppConf { Name = appNameProvider.GetApplicationName() }
+            )
+            {
+                AssemblySearchPattern = assemblySearchPattern
+            };
+            return serviceRegistryService;
+        }
+
+        protected Task ScanForServiceRegistryContainers()
+        {
+            return Task.Run(() =>
+            {
+                try
+                {
+                    DirectoryInfo entryDir = Assembly.GetEntryAssembly().GetFileInfo().Directory;
+                    DirectoryInfo sysAssemblies = DataSettings.GetSysAssemblyDirectory();
+                    DirectoryInfo[] dirs = new DirectoryInfo[] { entryDir, sysAssemblies };
+                    string[] searchPatterns = AssemblySearchPattern.DelimitSplit(",", true);
+                    List<FileInfo> files = searchPatterns.SelectMany(searchPattern =>
+                    {
+                        List<FileInfo> tmp = new List<FileInfo>();
+                        tmp.AddRange(entryDir.GetFiles(searchPattern));
+                        if (sysAssemblies.Exists)
+                        {
+                            tmp.AddRange(sysAssemblies.GetFiles(searchPattern));
+                        }
+                        return tmp;
+                    }).ToList();                    
+                    
+                    _scanResults.Clear();
+                    Parallel.ForEach(files, file =>
+                    {
+                        try
+                        {
+                            Assembly assembly = Assembly.LoadFile(file.FullName);
+                            foreach (Type type in assembly.GetTypes().Where(t => t.HasCustomAttributeOfType<ServiceRegistryContainerAttribute>()))
+                            {
+                                _scanResults.Add(type, RegisterServiceRegistryContainer(type));
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.AddEntry("Exception scanning for ServiceRegistries in file ({0})", ex, file.FullName);
+                        }
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Logger.AddEntry("Exception occurred scanning for service registry containers: {0}", ex, ex.Message);
+                }
+            });
+        }
+
+        static object _scanLock = new object();
+        static Task _scanningTask;
+        protected Task ScanningTask
+        {
+            get
+            {
+                return _scanLock.DoubleCheckLock(ref _scanningTask, ScanForServiceRegistryContainers);
+            }
+        }
+
+        /// <summary>
+        /// The search pattern to use when scanning for service assemblies.
+        /// </summary>
+        public string AssemblySearchPattern { get; set; }
         public IFileService FileService { get; set; }
         public DataSettings DataSettings { get; set; }
         public ServiceRegistryRepository ServiceRegistryRepository { get; set; }
@@ -59,6 +150,7 @@ namespace Bam.Net.CoreServices
         [Local]
         public ServiceRegistry GetServiceRegistry(string registryName)
         {
+            ScanningTask.Wait();
             ServiceRegistryLoaderDescriptor loader = GetServiceRegistryLoaderDescriptor(registryName);            
             if(loader == null)
             {
@@ -108,14 +200,17 @@ namespace Bam.Net.CoreServices
                 try
                 {
                     ServiceRegistryLoaderAttribute loaderAttr = method.GetCustomAttributeOfType<ServiceRegistryLoaderAttribute>();
-                    string registryName = loaderAttr.RegistryName ?? $"{type.Namespace}.{type.Name}.{method.Name}";
-                    string description = loaderAttr.Description ?? registryName;
-                    ServiceRegistry registry = RegisterServiceRegistryLoader(registryName, method, true, description);
-                    results.Add(new ServiceRegistryContainerRegistrationResult(registryName, registry, type, method, loaderAttr));
+                    if(loaderAttr.ProcessModes.Contains(ProcessMode.Current.Mode))
+                    {
+                        string registryName = loaderAttr.RegistryName ?? $"{type.Namespace}.{type.Name}.{method.Name}";
+                        string description = loaderAttr.Description ?? registryName;
+                        ServiceRegistry registry = RegisterServiceRegistryLoader(registryName, method, true, description);
+                        results.Add(new ServiceRegistryContainerRegistrationResult(registryName, registry, type, method, loaderAttr));
+                    }
                 }
                 catch (Exception ex)
                 {
-                    results.Add(new ServiceRegistryContainerRegistrationResult(ex));
+                    results.Add(new ServiceRegistryContainerRegistrationResult(ex) { MethodInfo = method });
                 }
             }
             return results;
@@ -131,8 +226,8 @@ namespace Bam.Net.CoreServices
                 registryName = loaderAttr.RegistryName ?? registryName;
             }
             return RegisterServiceRegistryLoader(registryName, method, overwrite, description);
-
         }
+
         /// <summary>
         /// Register the specified method as the ServiceRegistryLoader for the specified registryName
         /// </summary>
@@ -208,7 +303,7 @@ namespace Bam.Net.CoreServices
             DirectoryInfo systemServiceRegistryDir = DataSettings.GetSysDataDirectory(nameof(ServiceRegistry).Pluralize());
             ServiceRegistryDescriptor fromFile = new ServiceRegistryDescriptor { Name = name };
             ServiceDescriptor[] descriptors = new ServiceDescriptor[] { };
-            FileInfo file = null;
+            FileInfo file = new FileInfo(Path.Combine(systemServiceRegistryDir.FullName, $"{name}.json"));
             foreach(string extension in new[] { ".yml", ".json" })
             {
                 string path = Path.Combine(systemServiceRegistryDir.FullName, $"{name}{extension}");
@@ -231,7 +326,7 @@ namespace Bam.Net.CoreServices
                 HashSet<ServiceDescriptor> svcs = new HashSet<ServiceDescriptor>();
                 if (fromFile != null)
                 {
-                    fromFile.Services.Each(svc => svcs.Add(svc));
+                    fromFile.Services?.Each(svc => svcs.Add(svc));
                 }
                 fromRepo.Services?.Each(svc => svcs.Add(svc));
                 fromRepo.Services = svcs.ToList();
@@ -268,23 +363,27 @@ namespace Bam.Net.CoreServices
             return existing;
         }
 
+        static object _registerLoaderLock = new object();
         [RoleRequired("/", "Admin")]
         public virtual ServiceRegistryLoaderDescriptor RegisterServiceRegistryLoaderDescriptor(ServiceRegistryLoaderDescriptor loader, bool overwrite)
         {
             Args.ThrowIfNull(loader, "loader");
-            ServiceRegistryLoaderDescriptor existing = ServiceRegistryRepository.ServiceRegistryLoaderDescriptorsWhere(c => c.Name == loader.Name).FirstOrDefault();
-            if(existing != null && overwrite && IsLocked(loader.Name))
+            lock (_registerLoaderLock)
             {
-                Args.Throw<InvalidOperationException>("Registry by that name ({0}) is locked", loader.Name);
-            }
-            Args.ThrowIf(existing != null && !overwrite, "RegistryLoader by that name ({0}) already exists", loader.Name);
+                ServiceRegistryLoaderDescriptor existing = ServiceRegistryRepository.ServiceRegistryLoaderDescriptorsWhere(c => c.Name == loader.Name).FirstOrDefault();
+                if (existing != null && overwrite && IsLocked(loader.Name))
+                {
+                    Args.Throw<InvalidOperationException>("Registry by that name ({0}) is locked", loader.Name);
+                }
+                Args.ThrowIf(existing != null && !overwrite, "RegistryLoader by that name ({0}) already exists", loader.Name);
 
-            if ((existing != null && overwrite) || existing == null)
-            {
-                existing = ServiceRegistryRepository.Save(loader);
-            }
+                if ((existing != null && overwrite) || existing == null)
+                {
+                    existing = ServiceRegistryRepository.Save(loader);
+                }
 
-            return existing;
+                return existing;
+            }            
         }
 
         /// <summary>

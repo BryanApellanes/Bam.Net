@@ -213,8 +213,10 @@ namespace Bam.Net.UserAccounts.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<SessionState>();
 			Database db = database ?? Db.For<SessionState>();
-			var results = new SessionStateCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new SessionStateCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -651,6 +653,25 @@ namespace Bam.Net.UserAccounts.Data
 			if(orderBy != null)
 			{
 				query.OrderBy<SessionStateColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<SessionStateCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static SessionStateCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<SessionState>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<SessionState>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

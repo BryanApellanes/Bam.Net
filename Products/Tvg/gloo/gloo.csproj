@@ -72,7 +72,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\..\sys\tvg\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -93,6 +93,10 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\packages\System.IO.Compression.4.3.0\lib\net46\System.IO.Compression.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
@@ -115,6 +119,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test\GlooMonkey.cs" />
+    <Compile Include="Test\GlooTestRegistry.cs" />
     <Compile Include="Test\GlooTestService.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -129,9 +134,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\code\csharp\BingAdsRefGen.Data\BingAdsRefGen.Data.csproj">
-      <Project>{ac513fca-ee9c-4c90-b746-e6c12bfd6b6f}</Project>
-      <Name>BingAdsRefGen.Data</Name>
+    <ProjectReference Include="..\..\..\..\..\ThreeHeadz.Emojis\ThreeHeadz.Emojis.csproj">
+      <Project>{6992c55d-29fa-4e2d-9c70-587760c187df}</Project>
+      <Name>ThreeHeadz.Emojis</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Bam.Net.Automation\Bam.Net.Automation.csproj">
       <Project>{b65e4fcd-de50-4d9e-91d7-dddf80c25c47}</Project>

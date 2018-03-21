@@ -373,27 +373,11 @@ namespace Bam.Net.Data.Repositories
 		public object[] Query(Type type, Func<object, bool> predicate)
 		{
             return NonSerializableQuery(type, predicate);
-			//if (type.HasCustomAttributeOfType<SerializableAttribute>())
-			//{
-			//	return SerializableQuery(type, predicate);
-			//}
-			//else
-			//{
-			//	return NonSerializableQuery(type, predicate);
-			//}
 		}
 
 		public T[] Query<T>(Func<T, bool> predicate)
 		{
             return NonSerializableQuery<T>(predicate);
-			//if(typeof(T).HasCustomAttributeOfType<SerializableAttribute>())
-			//{
-			//	return SerializableQuery<T>(predicate);
-			//}
-			//else
-			//{
-			//	return NonSerializableQuery<T>(predicate);
-			//}
 		}
 
 		public T[] QueryProperty<T>(string propertyName, object value)
@@ -433,34 +417,6 @@ namespace Bam.Net.Data.Repositories
 			}
 			return results.Select<Meta<T>, T>(m => m.TypedData).ToArray();
 		}
-
-		//public object[] QueryProperty(PropertyInfo prop, Func<object, bool> predicate)
-		//{
-		//	Type type = prop.DeclaringType;
-		//	HashSet<string> resultNames = new HashSet<string>();
-		//	List<Meta> results = new List<Meta>();
-		//	DirectoryInfo propDir = GetPropertyDirectory(prop);
-		//	foreach (DirectoryInfo dir in propDir.GetDirectories())
-		//	{
-		//		// each dir is named as a hash
-		//		string hash = dir.Name;
-		//		object valueToCheck = ReadProperty(prop, hash);
-		//		if (predicate(valueToCheck))
-		//		{
-		//			if (!resultNames.Contains(hash))
-		//			{
-		//				resultNames.Add(hash);
-		//				object instance = ReadByHash(type, hash);
-		//				Meta meta = new Meta(instance, this);
-		//				if (!results.Contains(meta))
-		//				{
-		//					results.Add(meta);
-		//				}
-		//			}
-		//		}
-		//	}
-		//	return results.Select<Meta, object>(m => m.Data).ToArray();
-		//}
 
 		public T ReadProperty<T>(PropertyInfo prop, long id)
 		{

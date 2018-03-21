@@ -55,6 +55,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AngleSharp, Version=0.9.9.0, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\AngleSharp.0.9.9.1\lib\net45\AngleSharp.dll</HintPath>
+    </Reference>
     <Reference Include="CsQuery">
       <HintPath>..\packages\CsQuery.1.3.4\lib\net40\CsQuery.dll</HintPath>
     </Reference>
@@ -111,21 +114,37 @@
   <ItemGroup>
     <Compile Include="AppConf.cs" />
     <Compile Include="AppConfApplicationNameProvider.cs" />
+    <Compile Include="ContentHandlerAttribute.cs" />
+    <Compile Include="ContentEventArgs.cs" />
+    <Compile Include="ContentHandler.cs" />
+    <Compile Include="ErrorHandling\ApplicationErrorHandler.cs" />
+    <Compile Include="ErrorHandling\ErrorHandler.cs" />
+    <Compile Include="ErrorHandling\ErrorContent.cs" />
+    <Compile Include="ErrorHandling\FileErrorContent.cs" />
+    <Compile Include="ErrorHandling\NotFoundHtmlResponse.cs" />
+    <Compile Include="ErrorHandling\NotFoundJsonResponse.cs" />
+    <Compile Include="HostAppMap.cs" />
     <Compile Include="BamApplicationNameProvider.cs" />
     <Compile Include="AppContentResponder.cs" />
-    <Compile Include="AppInitializerBase.cs" />
     <Compile Include="Bam.cs" />
     <Compile Include="BamController.cs" />
     <Compile Include="IPostServerInitialize.cs" />
+    <Compile Include="Meta\ApiTypeRoute.cs" />
+    <Compile Include="Meta\BamTypeRoute.cs" />
+    <Compile Include="Meta\DataRoute.cs" />
+    <Compile Include="Meta\MethodRoute.cs" />
+    <Compile Include="Meta\RoutePrefixAttribute.cs" />
+    <Compile Include="Meta\TypeRoute.cs" />
     <Compile Include="PostServerInitializationHandler.cs" />
     <Compile Include="Etags.cs" />
     <Compile Include="IPostServerInitializationHandler.cs" />
+    <Compile Include="Renderers\ICompiledTemplate.cs" />
     <Compile Include="Streaming\StreamingClient.cs" />
     <Compile Include="Streaming\StreamingRequest.cs" />
     <Compile Include="Streaming\StreamingResponse.cs" />
     <Compile Include="BootstrapIcons.cs" />
-    <Compile Include="BamApplicationManager.cs" />
-    <Compile Include="BamApplicationManagerResult.cs" />
+    <Compile Include="Meta\AppMetaManager.cs" />
+    <Compile Include="Meta\AppMetaResult.cs" />
     <Compile Include="BamDaoServer.cs" />
     <Compile Include="BamServer.cs" />
     <Compile Include="FileUploadEventArgs.cs" />
@@ -220,10 +239,10 @@
     <Compile Include="Streaming\StreamingContext.cs" />
     <Compile Include="TemplateInitializer.cs" />
     <Compile Include="UriApplicationNameResolver.cs" />
-    <Compile Include="WebBook.cs" />
-    <Compile Include="WebBookEventArgs.cs" />
-    <Compile Include="WebBookInitializer.cs" />
-    <Compile Include="WebBookPage.cs" />
+    <Compile Include="Meta\WebBook.cs" />
+    <Compile Include="Meta\WebBookEventArgs.cs" />
+    <Compile Include="Meta\AppMetaInitializer.cs" />
+    <Compile Include="Meta\WebBookPage.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="content.root" />

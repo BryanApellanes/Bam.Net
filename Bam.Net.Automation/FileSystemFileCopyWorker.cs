@@ -17,7 +17,7 @@ namespace Bam.Net.Automation
         public FileSystemFileCopyWorker() : base() { }
         public FileSystemFileCopyWorker(string name) : base(name) { }
 
-        protected override WorkState Do()
+        protected override WorkState Do(WorkState currentWorkState)
         {        
             string jobName = this.Job != null ? this.Job.Name : "null";
 
@@ -28,7 +28,7 @@ namespace Bam.Net.Automation
 
             File.Copy(src.FullName, dst.FullName);
 
-            return new WorkState(this, "File {0} copied successfully to {1}"._Format(src.FullName, dst.FullName));
+            return new WorkState(this, "File {0} copied successfully to {1}"._Format(src.FullName, dst.FullName)) { PreviousWorkState = currentWorkState };
         }
 
         private void ThrowIfFileNotFound(string jobName, FileInfo src)

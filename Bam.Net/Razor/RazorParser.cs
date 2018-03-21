@@ -34,7 +34,7 @@ namespace Bam.Net.Razor
 
         static RazorParser()
         {
-            DefaultRazorInspector = RazorBaseTemplate.DefaultInspector;//(s) => { Console.WriteLine(s); };
+            DefaultRazorInspector = RazorBaseTemplate.DefaultInspector;
         }
 
         /// <summary>
@@ -201,7 +201,7 @@ namespace Bam.Net.Razor
 
 		private CompilerParameters GetCompilerParameters(params Assembly[] assembliesToReference)
 		{
-			string[] referencePaths = assembliesToReference.Select(a => a.GetFilePath()).ToArray();//.Select(a => a.CodeBase.Replace("file:///", "").Replace("/", "\\")).ToArray();
+			string[] referencePaths = assembliesToReference.Select(a => a.GetFilePath()).ToArray();
 			return new CompilerParameters(referencePaths);
 		}
 

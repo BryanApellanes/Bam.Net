@@ -21,6 +21,7 @@ using Bam.Net.Configuration;
 using System.Web.Mvc;
 using System.Threading.Tasks;
 using Bam.Net.Presentation;
+using Bam.Net.Server.Meta;
 
 namespace Bam.Net.Server
 {
@@ -28,15 +29,10 @@ namespace Bam.Net.Server
     /// Responder responsible for generating service proxies
     /// and responding to service proxy requests
     /// </summary>
-    public class ServiceProxyResponder : Responder, IInitialize<ServiceProxyResponder>, IExecutionRequestResolver
+    public class ServiceProxyResponder : Responder, IInitialize<ServiceProxyResponder>//, IExecutionRequestResolver
     {
         public const string ServiceProxyRelativePath = "~/services";
         const string MethodFormPrefixFormat = "/{0}/MethodForm";
-
-        static ServiceProxyResponder()
-        {
-
-        }
 
         public ServiceProxyResponder(BamConf conf, ILogger logger)
             : base(conf, logger)
@@ -47,6 +43,7 @@ namespace Bam.Net.Server
             _commonSecureChannel = new SecureChannel();
             _clientProxyGenerators = new Dictionary<string, IClientProxyGenerator>();
             RendererFactory = new RendererFactory(logger);
+            ExecutionRequestResolver = new ExecutionRequestResolver();
 
             AddCommonService(_commonSecureChannel);
             AddClientProxyGenerator(new CsClientProxyGenerator(), "proxies.cs", "csproxies", "csharpproxies");
@@ -71,6 +68,12 @@ namespace Bam.Net.Server
 
                 AppSecureChannels[appName].ServiceProvider.Set(type, instance, false);
             };
+        }
+
+        public IExecutionRequestResolver ExecutionRequestResolver
+        {
+            get;
+            set;
         }
 
         public ContentResponder ContentResponder
@@ -474,7 +477,7 @@ namespace Bam.Net.Server
             {
                 RequestWrapper request = context.Request as RequestWrapper;
                 ResponseWrapper response = context.Response as ResponseWrapper;
-                string appName = UriApplicationNameResolver.ResolveApplicationName(request.Url, BamConf.AppConfigs);
+                string appName = ApplicationNameResolver.ResolveApplicationName(context);
 
                 bool responded = false;
 
@@ -495,10 +498,15 @@ namespace Bam.Net.Server
                     }
                     else
                     {
-                        ExecutionRequest execRequest = CreateExecutionRequest(context, appName);
+                        ExecutionRequest execRequest = ResolveExecutionRequest(context, appName);
                         responded = execRequest.Execute();
                         if (responded)
                         {
+                            // TODO: make this configuratable
+                            response.AddHeader("Access-Control-Allow-Origin", "*");
+                            response.AddHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+                            response.AddHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+                            // ---
                             RenderResult(appName, path, execRequest);
                         }
                     }
@@ -525,7 +533,7 @@ namespace Bam.Net.Server
         {
             bool result = false;
             IRequest request = context.Request;
-            string appName = UriApplicationNameResolver.ResolveApplicationName(request.Url, BamConf.AppConfigs);
+            string appName = ApplicationNameResolver.ResolveApplicationName(context);//UriApplicationNameResolver.ResolveApplicationName(request.Url, BamConf.AppConfigs);
             string path = request.Url.AbsolutePath;
             string prefix = MethodFormPrefixFormat._Format(ResponderSignificantName.ToLowerInvariant());
             string partsICareAbout = path.TruncateFront(prefix.Length);
@@ -594,7 +602,7 @@ namespace Bam.Net.Server
                 IsInitialized = true;
                 lock (_initializeLock)
                 {
-                    AddCommonService(new BamApplicationManager(BamConf));
+                    AddCommonService(new AppMetaManager(BamConf));
                     RegisterProxiedClasses();
                 }
             }
@@ -646,13 +654,20 @@ namespace Bam.Net.Server
             }
         }
 
+        public virtual ExecutionRequest ResolveExecutionRequest(IHttpContext httpContext, string appName)
+        {
+            GetServiceProxies(appName, out Incubator proxiedClasses, out List<ProxyAlias> aliases);
+
+            return ExecutionRequestResolver.ResolveExecutionRequest(httpContext, proxiedClasses, aliases.ToArray());
+        }
+
         private void RenderResult(string appName, string path, ExecutionRequest execRequest)
         {
             string ext = Path.GetExtension(path).ToLowerInvariant();
             if (string.IsNullOrEmpty(ext))
             {
                 AppConf appConf = this.BamConf[appName];
-                if(appConf != null)
+                if (appConf != null)
                 {
                     LayoutConf pageConf = new LayoutConf(appConf);
                     string fileName = Path.GetFileName(path);
@@ -662,18 +677,6 @@ namespace Bam.Net.Server
             }
 
             RendererFactory.Respond(execRequest, ContentResponder);
-        }
-        
-        public virtual ExecutionRequest CreateExecutionRequest(IHttpContext httpContext, string appName)
-        {
-            GetServiceProxies(appName, out Incubator proxiedClasses, out List<ProxyAlias> aliases);
-
-            ExecutionRequest execRequest = new ExecutionRequest(httpContext, proxiedClasses, aliases.ToArray())
-            {
-                Logger = Logger
-            };
-            ExecutionRequest.DecryptSecureChannelInvoke(execRequest);            
-            return execRequest;
         }
 
         private void GetServiceProxies(string appName, out Incubator proxiedClasses, out List<ProxyAlias> aliases)
@@ -720,7 +723,7 @@ namespace Bam.Net.Server
             bool result = false;
             IRequest request = context.Request;
             string path = request.Url.AbsolutePath.ToLowerInvariant();
-            string appName = UriApplicationNameResolver.ResolveApplicationName(request.Url, BamConf.AppConfigs);
+            string appName = ApplicationNameResolver.ResolveApplicationName(context);
             bool includeLocalMethods = request.UserHostAddress.StartsWith("127.0.0.1");
             string[] split = path.DelimitSplit("/", ".");
 

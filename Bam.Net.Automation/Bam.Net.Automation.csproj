@@ -82,9 +82,6 @@
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Quartz, Version=2.5.0.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Quartz.2.5.0\lib\net40\Quartz.dll</HintPath>
-    </Reference>
     <Reference Include="Renci.SshNet, Version=2016.1.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
       <HintPath>..\packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
     </Reference>
@@ -143,6 +140,7 @@
   <ItemGroup>
     <Compile Include="AssemblyAttributeInfo.cs" />
     <Compile Include="AssemblyReference.cs" />
+    <Compile Include="AutomationServiceRegistryContainer.cs" />
     <Compile Include="Automation_Generated\AutomationContext.cs" />
     <Compile Include="Automation_Generated\DeferredJobData.cs" />
     <Compile Include="Automation_Generated\DeferredJobDataCollection.cs" />
@@ -166,33 +164,19 @@
     <Compile Include="BamInfo.cs" />
     <Compile Include="AdvancedInstaller\BamToolkit.cs" />
     <Compile Include="BamProject.cs" />
-    <Compile Include="ContinuousIntegration\ContinuousIntegration_Generated\BuildJob.cs" />
-    <Compile Include="ContinuousIntegration\ContinuousIntegration_Generated\BuildJobCollection.cs" />
-    <Compile Include="ContinuousIntegration\ContinuousIntegration_Generated\BuildJobColumns.cs" />
-    <Compile Include="ContinuousIntegration\ContinuousIntegration_Generated\BuildJobPagedQuery.cs" />
-    <Compile Include="ContinuousIntegration\ContinuousIntegration_Generated\BuildJobQuery.cs" />
-    <Compile Include="ContinuousIntegration\ContinuousIntegration_Generated\BuildResult.cs" />
-    <Compile Include="ContinuousIntegration\ContinuousIntegration_Generated\BuildResultCollection.cs" />
-    <Compile Include="ContinuousIntegration\ContinuousIntegration_Generated\BuildResultColumns.cs" />
-    <Compile Include="ContinuousIntegration\ContinuousIntegration_Generated\BuildResultPagedQuery.cs" />
-    <Compile Include="ContinuousIntegration\ContinuousIntegration_Generated\BuildResultQuery.cs" />
-    <Compile Include="ContinuousIntegration\ContinuousIntegration_Generated\ContinuousIntegrationContext.cs" />
-    <Compile Include="ContinuousIntegration\ContinuousIntegration_Generated\Qi\BuildJob.cs" />
-    <Compile Include="ContinuousIntegration\ContinuousIntegration_Generated\Qi\BuildResult.cs" />
-    <Compile Include="ContinuousIntegration\Partials\BuildJob.cs" />
-    <Compile Include="ContinuousIntegration\Partials\BuildResult.cs" />
     <Compile Include="CsFile.cs" />
     <Compile Include="EmailWorker.cs" />
-    <Compile Include="EnqueingJob.cs" />
     <Compile Include="Ftp.cs" />
     <Compile Include="IfElseWorker.cs" />
+    <Compile Include="IWorkerTypeProvider.cs" />
     <Compile Include="MSBuild\Project.cs" />
-    <Compile Include="JobConductorService.cs" />
+    <Compile Include="JobManagerService.cs" />
     <Compile Include="Partials\DeferredJob.cs" />
     <Compile Include="Partials\DeferredJobData.cs" />
     <Compile Include="Partials\JobData.cs" />
     <Compile Include="Partials\JobRunData.cs" />
     <Compile Include="Partials\RunningJob.cs" />
+    <Compile Include="ScanningWorkerTypeProvider.cs" />
     <Compile Include="Sftp.cs" />
     <Compile Include="Ssh.cs" />
     <Compile Include="Testing\CreateStatus.cs" />
@@ -249,6 +233,7 @@
     <Compile Include="Testing\SaveTestExecutionResponse.cs" />
     <Compile Include="Testing\SearchTestExecutionResponse.cs" />
     <Compile Include="Testing\SubscriptionStatus.cs" />
+    <Compile Include="Testing\TestingServicesRegistryContainer.cs" />
     <Compile Include="Testing\TestReportResponse.cs" />
     <Compile Include="Testing\TestReportService.cs" />
     <Compile Include="SourceControl\Extensions.cs" />
@@ -263,38 +248,8 @@
     <Compile Include="SuspendedJob.cs" />
     <Compile Include="Testing\UnitTestRunReportingListener.cs" />
     <Compile Include="WorkStateEventArgs.cs" />
-    <Compile Include="ContinuousIntegration\BamTestRunProcessWorker.cs" />
-    <Compile Include="ContinuousIntegration\BuildEventInfo.cs" />
-    <Compile Include="ContinuousIntegration\BuildResultEventArgs.cs" />
-    <Compile Include="ContinuousIntegration\DeploymentWorker.cs" />
-    <Compile Include="ContinuousIntegration\ITestWorker.cs" />
-    <Compile Include="ContinuousIntegration\Loggers\BuildLogger.cs" />
-    <Compile Include="ContinuousIntegration\BuildJobResult.cs" />
-    <Compile Include="ContinuousIntegration\BuildWorker.cs" />
-    <Compile Include="ContinuousIntegration\Loggers\ConsoleBuildLogger.cs" />
-    <Compile Include="ContinuousIntegration\ContinuousIntegrationJobConf.cs" />
-    <Compile Include="ContinuousIntegration\FtpDeploymentWorker.cs" />
-    <Compile Include="ContinuousIntegration\Extensions.cs" />
-    <Compile Include="ContinuousIntegration\GetSourceException.cs" />
-    <Compile Include="ContinuousIntegration\GetSourceWorker.cs" />
-    <Compile Include="ContinuousIntegration\BamContinuousIntegrationJobConf.cs" />
-    <Compile Include="ContinuousIntegration\GitGetSourceWorker.cs" />
-    <Compile Include="ContinuousIntegration\IBuildSourceControlClient.cs" />
-    <Compile Include="ContinuousIntegration\Loggers\CsvBuildLogger.cs" />
-    <Compile Include="ContinuousIntegration\Loggers\Dao2BuildLogger.cs" />
-    <Compile Include="ContinuousIntegration\Loggers\DaoBuildLogger.cs" />
-    <Compile Include="ContinuousIntegration\Loggers\TextFileBuildLogger.cs" />
-    <Compile Include="ContinuousIntegration\Loggers\WindowsBuildLogger.cs" />
-    <Compile Include="ContinuousIntegration\Loggers\XmlBuildLogger.cs" />
     <Compile Include="Status.cs" />
     <Compile Include="NotificationWorker.cs" />
-    <Compile Include="ContinuousIntegration\ProjectBuildResult.cs" />
-    <Compile Include="ContinuousIntegration\ProjectBuildWorker.cs" />
-    <Compile Include="ContinuousIntegration\AllProjectsBuildWorker.cs" />
-    <Compile Include="ContinuousIntegration\SourceControlClient.cs" />
-    <Compile Include="ContinuousIntegration\TfsClient.cs" />
-    <Compile Include="ContinuousIntegration\TfsGetSourceWorker.cs" />
-    <Compile Include="ContinuousIntegration\WebDeployDeploymentWorker.cs" />
     <Compile Include="SuspendJobWorker.cs" />
     <Compile Include="XmlTransformWorker.cs" />
     <Compile Include="DirectoryCopyWorker.cs" />
@@ -314,8 +269,6 @@
     <Compile Include="Nuget\PackageVersion.cs" />
     <Compile Include="ProcessWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ContinuousIntegration\GitClient.cs" />
-    <Compile Include="SendEmailWorker.cs" />
     <Compile Include="Worker.cs" />
     <Compile Include="WorkerConf.cs" />
     <Compile Include="WorkState.cs" />
@@ -366,9 +319,9 @@
       <Project>{15e91407-00d6-4edf-b75c-bc817a75c8ad}</Project>
       <Name>Bam.Net.Logging</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Bam.Net.Net\Bam.Net.Net.csproj">
-      <Project>{3065ab0d-376c-4005-b025-2c59be6b18ae}</Project>
-      <Name>Bam.Net.Net</Name>
+    <ProjectReference Include="..\Bam.Net.Messaging\Bam.Net.Messaging.csproj">
+      <Project>{E330D601-62EA-439E-ACD7-7236744562FF}</Project>
+      <Name>Bam.Net.Messaging</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Presentation\Bam.Net.Presentation.csproj">
       <Project>{b9e03ff5-0750-4162-bafd-3f0778d44a8c}</Project>
@@ -382,9 +335,17 @@
       <Project>{8d98e22b-3c6d-47c0-b028-0c3e3fc6b4fd}</Project>
       <Name>Bam.Net.Schema.Org</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Server\Bam.Net.Server.csproj">
+      <Project>{6cd8ffb4-35ca-44ac-803d-cb9d4cb524a0}</Project>
+      <Name>Bam.Net.Server</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.ServiceProxy\Bam.Net.ServiceProxy.csproj">
       <Project>{8987d8c8-033b-4993-99f0-8dd5a4d6dd0d}</Project>
       <Name>Bam.Net.ServiceProxy</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Services.Clients\Bam.Net.Services.Clients.csproj">
+      <Project>{9193fb41-32e6-4cef-a44a-211fb3bfea8b}</Project>
+      <Name>Bam.Net.Services.Clients</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Services\Bam.Net.Services.csproj">
       <Project>{f67630bf-5e73-46bf-a7f1-6d7e9648135f}</Project>
@@ -393,6 +354,10 @@
     <ProjectReference Include="..\Bam.Net.Testing\Bam.Net.Testing.csproj">
       <Project>{85212881-c676-4b40-b311-37c2d1706042}</Project>
       <Name>Bam.Net.Testing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.UserAccounts\Bam.Net.UserAccounts.csproj">
+      <Project>{74D5A262-B0B9-40E6-A3FD-B120DC8E9F54}</Project>
+      <Name>Bam.Net.UserAccounts</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Yaml\Bam.Net.Yaml.csproj">
       <Project>{1c5258ec-7579-4032-94ec-b016bdc1b876}</Project>
@@ -405,10 +370,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="ContinuousIntegration\README.md" />
-    <None Include="job_scheduling_data_2_0.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="MyPackage.1.0.0.nuspec" />
     <None Include="nuspec.2010.7.xsd">
       <SubType>Designer</SubType>
@@ -423,7 +384,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Automation.db.js" />
-    <Content Include="ContinuousIntegration\ContinuousIntegration.db.js" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -257,6 +257,7 @@ namespace Bam.Net.ServiceProxy.Secure
             catch (Exception ex)
             {
                 args.Exception = ex;
+                args.Message = ex.Message;
                 OnInvocationException(args);
             }
 
