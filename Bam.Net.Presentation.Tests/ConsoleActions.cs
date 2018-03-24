@@ -20,6 +20,26 @@ namespace Bam.Net.Presentation.Tests
     public class ConsoleActions: CommandLineTestInterface
     {        
         [ConsoleAction]
+        public void WriteEmojiPngFiles()
+        {
+            SQLiteDatabase db = new SQLiteDatabase(".", "Emojis");
+            EmojiCollection emojis = Emoji.LoadAll(db);
+            string rootDir = "C:\\bam\\content\\common\\img\\emojis\\png";
+            string header = "data:image/png;base64,";
+            foreach (Emoji emoji in emojis)
+            {
+                if (emoji.Windows.StartsWith(header))
+                {
+                    string base64 = emoji.Windows.TruncateFront(header.Length);
+                    string filePath = Path.Combine(rootDir, $"{emoji.ShortName.Trim().Replace(" ", "-").Replace("~", "").Replace("#", "").Replace("%", "").Replace("&", "").Replace("*", "").Replace("{", "").Replace("}", "").Replace(":", "").Replace("\\", "")}.png");
+                    byte[] data = base64.FromBase64();
+                    OutLineFormat("Writing {0}", ConsoleColor.Green, filePath);
+                    File.WriteAllBytes(filePath, data);
+                }
+            }
+        }
+
+        [ConsoleAction]
         public void ScrapeEmojis()
         {
             CQ cq = CQ.Create(GetEmojiHtml());
