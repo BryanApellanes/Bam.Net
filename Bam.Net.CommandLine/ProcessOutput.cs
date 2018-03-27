@@ -20,7 +20,6 @@ namespace Bam.Net.CommandLine
 
         public ProcessOutput(Process process, StringBuilder output, StringBuilder errorOutput)
         {
-            ExitCode = process.ExitCode;
             Process = process;
             ActiveStandardOut = output;
             ActiveStandardError = errorOutput;
