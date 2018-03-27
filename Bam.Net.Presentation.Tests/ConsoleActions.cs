@@ -18,12 +18,32 @@ namespace Bam.Net.Presentation.Tests
 {
     [Serializable]
     public class ConsoleActions: CommandLineTestInterface
-    {
+    {        
+        [ConsoleAction]
+        public void WriteEmojiPngFiles()
+        {
+            SQLiteDatabase db = new SQLiteDatabase(".", "Emojis");
+            EmojiCollection emojis = Emoji.LoadAll(db);
+            string rootDir = "C:\\bam\\content\\common\\img\\emojis\\png";
+            string header = "data:image/png;base64,";
+            foreach (Emoji emoji in emojis)
+            {
+                if (emoji.Windows.StartsWith(header))
+                {
+                    string base64 = emoji.Windows.TruncateFront(header.Length);
+                    string filePath = Path.Combine(rootDir, $"{emoji.ShortName.Trim().Replace(" ", "-").Replace("~", "").Replace("#", "").Replace("%", "").Replace("&", "").Replace("*", "").Replace("{", "").Replace("}", "").Replace(":", "").Replace("\\", "")}.png");
+                    byte[] data = base64.FromBase64();
+                    OutLineFormat("Writing {0}", ConsoleColor.Green, filePath);
+                    File.WriteAllBytes(filePath, data);
+                }
+            }
+        }
+
         [ConsoleAction]
         public void ScrapeEmojis()
         {
             CQ cq = CQ.Create(GetEmojiHtml());
-            SQLiteDatabase db = new SQLiteDatabase("c:\\temp", "Emojis");
+            SQLiteDatabase db = new SQLiteDatabase("c:\\bam\\temp", "Emojis");
             db.TryEnsureSchema<Emoji>();
             var tables = cq["table"];
             var rows = cq["tr", tables[0]];
@@ -45,7 +65,7 @@ namespace Bam.Net.Presentation.Tests
                     OutLineFormat("New Category {0}", ConsoleColor.Cyan, category.Name);
                     category.Save(db);
                 }
-                if (cells.Length == 16)
+                if (cells.Length == 15)
                 {
                     Emoji emoji = new Emoji()
                     {
@@ -58,14 +78,13 @@ namespace Bam.Net.Presentation.Tests
                         Twitter = GetImageData(cq, cells[5]),
                         One = GetImageData(cq, cells[6]),
                         Facebook = GetImageData(cq, cells[7]),
-                        FacebookMessenger = GetImageData(cq, cells[8]),
-                        Samsung = GetImageData(cq, cells[9]),
-                        Windows = GetImageData(cq, cells[10]),
-                        GMail = GetImageData(cq, cells[11]),
-                        SoftBank = GetImageData(cq, cells[12]),
-                        DoCoMo = GetImageData(cq, cells[13]),
-                        KDDI = GetImageData(cq, cells[14]),
-                        ShortName = cells[15].InnerText
+                        Samsung = GetImageData(cq, cells[8]),
+                        Windows = GetImageData(cq, cells[9]),
+                        GMail = GetImageData(cq, cells[10]),
+                        SoftBank = GetImageData(cq, cells[11]),
+                        DoCoMo = GetImageData(cq, cells[12]),
+                        KDDI = GetImageData(cq, cells[13]),
+                        ShortName = cells[14].InnerText.Trim()
                     };
                     emoji.Save(db);
                     Expect.IsTrue(emoji.Id > 0);
@@ -101,7 +120,7 @@ namespace Bam.Net.Presentation.Tests
         {
             if (string.IsNullOrEmpty(fullHtml))
             {
-                fullHtml = File.ReadAllText("c:\\temp\\emoji.html"); // downloaded from http://unicode.org/emoji/charts/full-emoji-list.html
+                fullHtml = File.ReadAllText("c:\\bam\\temp\\full-emoji-list.html"); // downloaded from http://unicode.org/emoji/charts/full-emoji-list.html
             }
             return fullHtml;
         }

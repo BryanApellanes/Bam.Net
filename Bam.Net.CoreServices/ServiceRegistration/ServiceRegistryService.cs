@@ -89,11 +89,14 @@ namespace Bam.Net.CoreServices
                     List<FileInfo> files = searchPatterns.SelectMany(searchPattern =>
                     {
                         List<FileInfo> tmp = new List<FileInfo>();
-                        tmp.AddRange(entryDir.GetFiles(searchPattern));
-                        if (sysAssemblies.Exists)
+                        foreach (DirectoryInfo dir in dirs)
                         {
-                            tmp.AddRange(sysAssemblies.GetFiles(searchPattern));
+                            if (dir.Exists)
+                            {
+                                tmp.AddRange(dir.GetFiles(searchPattern));
+                            }
                         }
+                        
                         return tmp;
                     }).ToList();                    
                     

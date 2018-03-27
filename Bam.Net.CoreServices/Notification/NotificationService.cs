@@ -23,18 +23,12 @@ namespace Bam.Net.CoreServices
     [ServiceSubdomain("notify")]
     public class NotificationService : ApplicationProxyableService, INotificationService
     {
-        public const string SmtpSettingsFileName = "bam.smtp.settings.json";
-        static NotificationService()
-        {
-            LoadSmtpSettings();
-        }
-
         protected NotificationService() : base() { }
 
         public NotificationService(IUserManager userManager, SmtpSettingsProvider smtpSettingsProvider, ILogger logger)
         {
             UserManager = userManager;
-            SmtpSettingsProvider = smtpSettingsProvider ?? DefaultSmtpSettingsProvider;
+            SmtpSettingsProvider = smtpSettingsProvider ?? DataSettingsSmtpSettingsProvider.Default;
             Logger = logger ?? Log.Default;
             string emailTemplatesDirectory = DataSettings.Current.GetSysEmailTemplatesDirectory().FullName;
             NotificationTemplateDirectory = new DirectoryInfo(Path.Combine(DataSettings.Current.GetRootDataDirectory().FullName, "NotificationTemplates"));
@@ -43,41 +37,12 @@ namespace Bam.Net.CoreServices
             Templates.Reload();
         }
 
-        private static void LoadSmtpSettings()
-        {
-            FileInfo smtpSettingsFile = new FileInfo(Path.Combine(DataSettings.Current.GetSysDataDirectory().FullName, SmtpSettingsFileName));
-            Console.WriteLine("Trying to load smtp settings from file: {0}", smtpSettingsFile.FullName);
-            if (smtpSettingsFile.Exists)
-            {
-                try
-                {
-                    SmtpSettings smtpSettings = smtpSettingsFile.FromJsonFile<SmtpSettings>();
-                    DefaultSender = smtpSettings.From;
-                    DefaultSmtpSettingsProvider = new DataSettingsSmtpSettingsProvider(smtpSettings);
-                    //try { smtpSettingsFile.Delete(); } catch (Exception ex) { Log.Warn("Failed to delete smtp settings (attempting to delete for security reasons): {0}", ex.Message); }
-                    //AppDomain.CurrentDomain.ProcessExit += (o, a) => smtpSettings.ToJsonFile(smtpSettingsFile);
-                }
-                catch (Exception ex)
-                {
-                    Log.Warn("Failed to load smtp settings file {0}: {1}", smtpSettingsFile.FullName, ex.Message);
-                    Console.WriteLine("failed to load smtp settings: {0}", ex.Message);
-                }
-            }
-            else
-            {
-                Log.Warn("The system smtp settings file was not present, notifications may not send correctly: {0}", smtpSettingsFile.FullName);
-                Console.WriteLine("failed to load smtp settings, settings file not present: {0}", smtpSettingsFile.FullName);
-            }
-        }
-
         [Local]
-        public static void SaveDefaultSmtpSettings(SmtpSettings settings)
+        public static void SetDefaultSmtpSettings(SmtpSettings settings)
         {
-            FileInfo smtpSettingsFile = new FileInfo(Path.Combine(DataSettings.Current.GetSysDataDirectory().FullName, SmtpSettingsFileName));
-            settings.ToJsonFile(smtpSettingsFile);
+            DataSettingsSmtpSettingsProvider.SetDefaultSmtpSettings(settings);
         }
-
-        public static DataSettingsSmtpSettingsProvider DefaultSmtpSettingsProvider { get; set; }
+        
         public SmtpSettingsProvider SmtpSettingsProvider { get; set; }
         public HandlebarsDirectory Templates { get; set; }
         public string Tld { get; set; }        
@@ -87,12 +52,6 @@ namespace Bam.Net.CoreServices
             {
                 return $"{ApplicationName} Notification";
             }
-        }
-        
-        public static string DefaultSender
-        {
-            get;
-            set;
         }
 
         public DirectoryInfo NotificationTemplateDirectory { get; set; }
@@ -193,10 +152,10 @@ namespace Bam.Net.CoreServices
         public bool NotifyRecipientEmail(string toEmail, EmailBody emailBody, string subject, string from = null, string fromDisplayName = null)
         {
             try
-            {
-                from = from ?? DefaultSender ?? $"no-reply@{ApplicationName}.{Tld}";
+            {    
+                from = from ?? DataSettingsSmtpSettingsProvider.DefaultSender ?? $"no-reply@{ApplicationName}.{Tld}";
                 fromDisplayName = fromDisplayName ?? from;
-                Email email = DefaultSmtpSettingsProvider
+                Email email = SmtpSettingsProvider
                     .CreateEmail(from, fromDisplayName)
                     .To(toEmail)
                     .Subject(subject ?? DefaultSubject)

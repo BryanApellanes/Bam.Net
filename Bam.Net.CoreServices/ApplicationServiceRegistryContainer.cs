@@ -125,6 +125,7 @@ namespace Bam.Net.CoreServices
                 .For<DataSettings>().Use(DataSettings.Current)
                 .For<IApplicationNameResolver>().Use<ClientApplicationNameResolver>()
                 .For<ClientApplicationNameResolver>().Use<ClientApplicationNameResolver>()
+                .For<SmtpSettingsProvider>().Use(DataSettingsSmtpSettingsProvider.Default)
                 .For<NotificationService>().Use<NotificationService>();                
 
             reg.For<ServiceRegistry>().Use(reg)
