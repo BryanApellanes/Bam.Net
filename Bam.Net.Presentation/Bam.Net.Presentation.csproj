@@ -211,6 +211,7 @@
     <Compile Include="Html\Tag.cs" />
     <Compile Include="Html\TagBuilderExtensions.cs" />
     <Compile Include="Html\UrlHelperExtensions.cs" />
+    <Compile Include="Svg\Inkscape.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Html\Js\DataSet.js" />
@@ -264,9 +265,7 @@
       <Name>Bam.Net</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Svg\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
