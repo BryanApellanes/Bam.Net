@@ -154,6 +154,22 @@ namespace Bam.Net.CommandLine
         }
 
         /// <summary>
+        /// Execute the specified exe with the specified arguments.  This method will not block.
+        /// </summary>
+        /// <param name="exe"></param>
+        /// <param name="arguments"></param>
+        /// <param name="onExit"></param>
+        public static void Run(this string exe, string arguments, EventHandler<ProcessExitEventArgs> onExit)
+        {
+            Run(exe, arguments, (o, a) => onExit(o, (ProcessExitEventArgs)a), null);
+        }
+
+        public static void RunAndWait(this string exe, string arguments, EventHandler<ProcessExitEventArgs> onExit, int timeOut = 60000)
+        {
+            Run(exe, arguments, (o, a) => onExit(o, (ProcessExitEventArgs)a), timeOut);
+        }
+
+        /// <summary>
         /// Run the specified exe with the specified arguments, executing the specified onExit
         /// when the process completes.  This method will block if a timeout is specified, it will
         /// not block if timeout is null.
@@ -224,7 +240,7 @@ namespace Bam.Net.CommandLine
             };
             if (onExit != null)
             {
-                process.Exited += onExit;
+                process.Exited += (o, a) => onExit(o, new ProcessExitEventArgs { EventArgs = a, ProcessOutput = new ProcessOutput(process, output.StandardOutput, output.StandardError) });
             }
             process.StartInfo = startInfo;
             AutoResetEvent outputWaitHandle = new AutoResetEvent(false);

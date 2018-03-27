@@ -95,6 +95,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="IInfoAttribute.cs" />
     <Compile Include="ParsedArguments.cs" />
+    <Compile Include="ProcessExitEventArgs.cs" />
     <Compile Include="ProcessOutput.cs" />
     <Compile Include="ProcessOutputCollector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
