@@ -150,10 +150,43 @@ namespace Bam.Net.CommandLine
         {
             GetExeAndArguments(command, out string exe, out string arguments);
 
+            return Run(exe, arguments, onExit, onStandardOut, onErrorOut, promptForAdmin, timeout);
+        }
+
+        /// <summary>
+        /// Run the specified exe with the specified arguments, executing the specified onExit
+        /// when the process completes.  This method will block if a timeout is specified, it will
+        /// not block if timeout is null.
+        /// </summary>
+        /// <param name="exe"></param>
+        /// <param name="arguments"></param>
+        /// <param name="onExit"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        public static ProcessOutput Run(this string exe, string arguments, EventHandler onExit, int? timeout)
+        {
+            return Run(exe, arguments, onExit, null, null, false, timeout);
+        }
+
+        /// <summary>
+        /// Run the specified exe with the specified arguments, executing the specified onExit
+        /// when the process completes.  This method will block if a timeout is specified, it will
+        /// not block if timeout is null.
+        /// </summary>
+        /// <param name="exe"></param>
+        /// <param name="arguments"></param>
+        /// <param name="onExit"></param>
+        /// <param name="onStandardOut"></param>
+        /// <param name="onErrorOut"></param>
+        /// <param name="promptForAdmin"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        public static ProcessOutput Run(this string exe, string arguments, EventHandler onExit, Action<string> onStandardOut = null, Action<string> onErrorOut = null, bool promptForAdmin = false, int? timeout = null)
+        {
             ProcessStartInfo startInfo = CreateStartInfo(promptForAdmin);
             startInfo.FileName = exe;
             startInfo.Arguments = arguments;
-            ProcessOutputCollector receiver = new ProcessOutputCollector(onStandardOut, onErrorOut);            
+            ProcessOutputCollector receiver = new ProcessOutputCollector(onStandardOut, onErrorOut);
             return Run(startInfo, onExit, receiver, timeout);
         }
 
