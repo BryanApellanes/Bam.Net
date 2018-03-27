@@ -13,12 +13,19 @@ using System.IO;
 using NCuid;
 using System.Drawing;
 using System.Drawing.Imaging;
+using Bam.Net.Presentation.Svg;
 
 namespace Bam.Net.Presentation.Tests
 {
     [Serializable]
     public class ConsoleActions: CommandLineTestInterface
-    {        
+    {
+        [ConsoleAction]
+        public void InkscapeTests()
+        {
+            Inkscape.ExportSvg("C:\\bam\\img-ws\\empty_logo.svg", 3600, 3600);
+        }
+
         [ConsoleAction]
         public void WriteEmojiPngFiles()
         {
