@@ -47,12 +47,16 @@ namespace Bam.Net.Caching.File
         {
             try
             {
-                logger = logger ?? Log.Default;
-                await Task.Run(() => GetText());
-                await Task.Run(() => ContentHash = File.ContentHash(HashAlgorithms.MD5));
-                await Task.Run(() => GetZippedText());
-                await Task.Run(() => GetZippedBytes());
-                return true;
+                if (File.Exists)
+                {
+                    logger = logger ?? Log.Default;
+                    await Task.Run(() => GetText());
+                    await Task.Run(() => ContentHash = File.ContentHash(HashAlgorithms.MD5));
+                    await Task.Run(() => GetZippedText());
+                    await Task.Run(() => GetZippedBytes());
+                    return true;
+                }
+                return false;
             }
             catch (Exception ex)
             {
