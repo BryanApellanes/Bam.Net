@@ -7,7 +7,7 @@ using System.Drawing;
 using System.IO;
 using Bam.Net.CommandLine;
 
-namespace Bam.Net.Presentation.Svg
+namespace Bam.Net.Presentation
 {
     /// <summary>
     /// Class used to issue commands to inkscape.exe.
@@ -23,6 +23,15 @@ namespace Bam.Net.Presentation.Svg
         {
             get;
             set;
+        }
+
+        public static Bitmap ExportSvg(string svgFilePath, int width, int height, out FileInfo output)
+        {
+            FileInfo svgFile = new FileInfo(svgFilePath);
+            string fileName = Path.GetFileNameWithoutExtension(svgFile.FullName);
+            output = new FileInfo(Path.Combine(svgFile.Directory.FullName, $"{fileName}.png"));
+            Bitmap result = ExportSvg(svgFilePath, width, height, output.FullName);
+            return result;
         }
 
         public static Bitmap ExportSvg(string svgFilePath, int width, int height, string outputPngPath = null)

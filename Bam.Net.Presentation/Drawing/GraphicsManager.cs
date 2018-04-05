@@ -8,14 +8,27 @@ using System.Text;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.IO;
+using Bam.Net.Drawing;
 
-namespace Bam.Net.Drawing
+namespace Bam.Net.Presentation.Drawing
 {
-    public abstract class GraphicsManager
+    public class GraphicsManager
     {
+        public GraphicsManager()
+        {
+            Font = new Font(FontFamily.GenericSansSerif, 10, GraphicsUnit.Pixel);
+            Brush = Brushes.Black;
+            BackgroundBrush = Brushes.Transparent;
+            Dimensions = new Dimensions { Width = 600, Height = 480 };
+            Color = Color.Black;
+            BackgroundColor = Color.Transparent;
+        }
+
         static List<Bitmap> images;
         static GraphicsManager()
         {
+            Default = new GraphicsManager();
             images = new List<Bitmap>();
             AppDomain.CurrentDomain.DomainUnload += new EventHandler(DisposeImages);
         }
@@ -28,12 +41,50 @@ namespace Bam.Net.Drawing
             }
         }
 
-        public static Bitmap GetRoundedRectangle(int width, int height, int radius, int borderWidth)
+        public static GraphicsManager Default { get; set; }
+        
+        public Color Color { get; set; }
+        public Color BackgroundColor { get; set; }
+        public Font Font { get; set; }
+        public Brush Brush { get; set; }
+        public Brush BackgroundBrush { get; set; }
+        public Dimensions Dimensions { get; set; }
+
+        public Bitmap ScaleTo(Bitmap bitmap, int width, int height)
+        {
+            float scale = Math.Min(width / bitmap.Width, height / bitmap.Height);
+            Bitmap result = new Bitmap(width, height);
+            Graphics graphics = Graphics.FromImage(bitmap);            
+            graphics.InterpolationMode = InterpolationMode.High;
+            graphics.CompositingQuality = CompositingQuality.HighQuality;
+            graphics.SmoothingMode = SmoothingMode.AntiAlias;
+
+            int scaleWidth = (int)(bitmap.Width * scale);
+            int scaleHeight = (int)(bitmap.Height * scale);
+            graphics.FillRectangle(new SolidBrush(Color.Black), new RectangleF(0, 0, width, height));
+            graphics.DrawImage(bitmap, (width - scaleWidth) / 2, (height - scaleHeight) / 2, scaleWidth, scaleHeight);
+            return result;
+        }
+
+        public Bitmap ResizeCanvas(Bitmap bitmap, int width, int height, Color? backgroundColor = null)
+        {
+            backgroundColor = backgroundColor ?? Color.Transparent;
+            Bitmap result = new Bitmap(width, height);
+            Graphics graphics = Graphics.FromImage(result);
+            graphics.InterpolationMode = InterpolationMode.High;
+            graphics.CompositingQuality = CompositingQuality.HighQuality;
+            graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            graphics.FillRectangle(new SolidBrush(backgroundColor.Value), new RectangleF(0, 0, width, height));
+            graphics.DrawImage(bitmap, 0, 0, bitmap.Width, bitmap.Height);
+            return result;
+        }
+
+        public Bitmap GetRoundedRectangle(int width, int height, int radius, int borderWidth)
         {
             return GetRoundedRectangle(width, height, radius, borderWidth, Brushes.White);
         }
 
-        public static Bitmap GetRoundedRectangle(int width, int height, int radius, int borderWidth, Brush backgroundBrush)
+        public Bitmap GetRoundedRectangle(int width, int height, int radius, int borderWidth, Brush backgroundBrush)
         {
             GraphicsPath path = RoundedRectangle.Create(borderWidth, borderWidth, width - (borderWidth * 2), height - (borderWidth * 2), radius, RoundedRectangle.RectangleCorners.All);
             return FromPath(path, width, height, borderWidth, Color.Black, backgroundBrush);
@@ -44,47 +95,43 @@ namespace Bam.Net.Drawing
             DisposeImages(null, null);
         }
 
-        public static Bitmap GetStringImage(int width, int height, string words, Font font, Brush brush)
+        public Bitmap GetTextImage(string text, int width, int height, Brush brush, Brush backgroundBrush)
         {
-            return GetStringImage(width, height, words, font, brush, Brushes.White);
+            Bitmap image = new Bitmap(width, height);
+            int size = width >= height ? width: height;            
+            Font font = new Font(FontFamily.GenericSansSerif, size, GraphicsUnit.Pixel);
+            using (Graphics graphics = Graphics.FromImage(image))
+            {
+                graphics.FillRectangle(backgroundBrush, graphics.ClipBounds);
+                SizeF stringSize = graphics.MeasureString(text, font);
+                float scale = image.Width / stringSize.Width;
+                if (scale < 1)
+                {
+                    graphics.ScaleTransform(scale, scale);
+                }
+                graphics.DrawString(text, font, brush, new PointF());
+            }
+            return image;
         }
 
-        public static Bitmap GetStringImage(int width, int height, string words, Font font, Brush brush, Brush backgroundBrush)
+        public Bitmap FromPath(GraphicsPath path, int width, int height, int borderWidth, Color borderColor, Brush backgroundBrush)
         {
             Bitmap canvas = null;
             using (Graphics graphics = GetCanvas(width, height, backgroundBrush, out canvas))
             {
-                StringFormat format = new StringFormat();
-                format.Alignment = StringAlignment.Center;
-                graphics.DrawString(words, font, brush, width / 2, (height / 2) - (font.Height / 2), format);
+                graphics.DrawPath(new Pen(borderColor, borderWidth), path);
             }
 
             return canvas;
         }
 
-        public static Bitmap FromPath(GraphicsPath path, int width, int height, int borderWidth, Color borderColor, Brush backgroundBrush)
-        {
-            Bitmap canvas = null;
-            //Graphics graphics = Graphics.FromImage(canvas);
-
-            using (Graphics graphics = GetCanvas(width, height, backgroundBrush, out canvas))
-            {
-                //graphics.FillRegion(backgroundBrush, new Region(new Rectangle(0, 0, width, height)));
-
-                graphics.DrawPath(new Pen(borderColor, (float)borderWidth), path);
-
-            }
-
-            return canvas;
-        }
-
-        public static Graphics GetCanvas(int width, int height, Brush backgroundBrush, out Bitmap image)
+        public Graphics GetCanvas(int width, int height, Brush backgroundBrush, out Bitmap image)
         {
             return GetCanvas(width, height, backgroundBrush, true, out image);
         }
 
         static object canvasLock = new object();
-        public static Graphics GetCanvas(int width, int height, Brush backgroundBrush, bool retry, out Bitmap image)
+        public Graphics GetCanvas(int width, int height, Brush backgroundBrush, bool retry, out Bitmap image)
         {
             try
             {
@@ -101,7 +148,7 @@ namespace Bam.Net.Drawing
             {
                 if (retry)
                 {
-                    GraphicsManager.DisposeImages();
+                    DisposeImages();
                     return GetCanvas(width, height, backgroundBrush, false, out image);
                 }
                 else
@@ -110,7 +157,5 @@ namespace Bam.Net.Drawing
                 }
             }
         }
-
-
     }
 }
