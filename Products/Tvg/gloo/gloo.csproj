@@ -72,7 +72,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\..\..\..\..\..\sys\tvg\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\..\bam\sys\ObjectReferenceManager\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -140,6 +140,10 @@
     <ProjectReference Include="..\..\..\..\..\ThreeHeadz.Emojis\ThreeHeadz.Emojis.csproj">
       <Project>{6992c55d-29fa-4e2d-9c70-587760c187df}</Project>
       <Name>ThreeHeadz.Emojis</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\ThreeHeadz.ObjectReference\ThreeHeadz.ObjectReference.csproj">
+      <Project>{e965e4b1-b2a1-4ac9-ba1f-d3aa7cd85ac8}</Project>
+      <Name>ThreeHeadz.ObjectReference</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Bam.Net.Automation\Bam.Net.Automation.csproj">
       <Project>{b65e4fcd-de50-4d9e-91d7-dddf80c25c47}</Project>
