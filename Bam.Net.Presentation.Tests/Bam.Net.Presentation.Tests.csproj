@@ -106,7 +106,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConsoleActions.cs" />
     <Compile Include="DeferredViewTests.cs" />
     <Compile Include="DustTests.cs" />
     <Compile Include="MarkdownTests.cs" />
