@@ -3037,7 +3037,7 @@ namespace Bam.Net
         /// <returns></returns>
         public static string CaseAcronym(this string stringToAcronymize, bool alwaysUseFirst = true)
         {
-            if (stringToAcronymize.Length > 0)
+            if (stringToAcronymize?.Length > 0)
             {
                 StringBuilder result = new StringBuilder();
                 for (int i = 0; i < stringToAcronymize.Length; i++)
