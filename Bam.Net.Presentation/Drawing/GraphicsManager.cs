@@ -50,18 +50,20 @@ namespace Bam.Net.Presentation.Drawing
         public Brush BackgroundBrush { get; set; }
         public Dimensions Dimensions { get; set; }
 
-        public Bitmap ScaleTo(Bitmap bitmap, int width, int height)
+        public Bitmap ScaleTo(Bitmap bitmap, float width, float height, Color? backgroundColor = null)
         {
+            backgroundColor = backgroundColor ?? Color.Transparent;
+
             float scale = Math.Min(width / bitmap.Width, height / bitmap.Height);
-            Bitmap result = new Bitmap(width, height);
-            Graphics graphics = Graphics.FromImage(bitmap);            
+            Bitmap result = new Bitmap((int)width, (int)height);
+            Graphics graphics = Graphics.FromImage(result);
             graphics.InterpolationMode = InterpolationMode.High;
             graphics.CompositingQuality = CompositingQuality.HighQuality;
             graphics.SmoothingMode = SmoothingMode.AntiAlias;
 
             int scaleWidth = (int)(bitmap.Width * scale);
             int scaleHeight = (int)(bitmap.Height * scale);
-            graphics.FillRectangle(new SolidBrush(Color.Black), new RectangleF(0, 0, width, height));
+            graphics.FillRectangle(new SolidBrush(backgroundColor.Value), new RectangleF(0, 0, width, height));
             graphics.DrawImage(bitmap, (width - scaleWidth) / 2, (height - scaleHeight) / 2, scaleWidth, scaleHeight);
             return result;
         }
@@ -69,6 +71,7 @@ namespace Bam.Net.Presentation.Drawing
         public Bitmap ResizeCanvas(Bitmap bitmap, int width, int height, Color? backgroundColor = null)
         {
             backgroundColor = backgroundColor ?? Color.Transparent;
+
             Bitmap result = new Bitmap(width, height);
             Graphics graphics = Graphics.FromImage(result);
             graphics.InterpolationMode = InterpolationMode.High;
