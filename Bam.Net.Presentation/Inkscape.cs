@@ -41,6 +41,7 @@ namespace Bam.Net.Presentation
             outputPngPath = outputPngPath ?? Path.Combine(svgFile.Directory.FullName, $"{fileName}.png");
             Bitmap result = null;
             $"{ExePath}".Run($"-z -e {outputPngPath} -w {width} -h {height} {svgFilePath}", (o, a) => result = new Bitmap(outputPngPath), 60000);
+            result.SetResolution(300, 300);
             return result;
         }
     }

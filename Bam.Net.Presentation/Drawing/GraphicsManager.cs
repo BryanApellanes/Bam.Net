@@ -50,6 +50,19 @@ namespace Bam.Net.Presentation.Drawing
         public Brush BackgroundBrush { get; set; }
         public Dimensions Dimensions { get; set; }
 
+        // TODO: fix this using rectangles see ImageProcess from external project
+        public Bitmap Overlay(Bitmap background, Bitmap foreground, int x, int y)
+        {
+            Bitmap result = new Bitmap(background.Width, background.Height);
+            using (Graphics graphics = Graphics.FromImage(result))
+            {
+                SetHighQuality(graphics);
+                graphics.DrawImage(background, new Point(0, 0));
+                graphics.DrawImage(foreground, new Point(x, y));
+                return result;
+            }
+        }
+
         public Bitmap ScaleTo(Bitmap bitmap, float width, float height, Color? backgroundColor = null)
         {
             backgroundColor = backgroundColor ?? Color.Transparent;
@@ -58,9 +71,7 @@ namespace Bam.Net.Presentation.Drawing
             Bitmap result = new Bitmap((int)width, (int)height);
             using (Graphics graphics = Graphics.FromImage(result))
             {
-                graphics.InterpolationMode = InterpolationMode.High;
-                graphics.CompositingQuality = CompositingQuality.HighQuality;
-                graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                SetHighQuality(graphics);
 
                 int scaleWidth = (int)(bitmap.Width * scale);
                 int scaleHeight = (int)(bitmap.Height * scale);
@@ -68,6 +79,13 @@ namespace Bam.Net.Presentation.Drawing
                 graphics.DrawImage(bitmap, (width - scaleWidth) / 2, (height - scaleHeight) / 2, scaleWidth, scaleHeight);
                 return result;
             }
+        }
+
+        private static void SetHighQuality(Graphics graphics)
+        {
+            graphics.InterpolationMode = InterpolationMode.High;
+            graphics.CompositingQuality = CompositingQuality.HighQuality;
+            graphics.SmoothingMode = SmoothingMode.AntiAlias;
         }
 
         public Bitmap ResizeCanvas(Bitmap bitmap, int width, int height, Color? backgroundColor = null)

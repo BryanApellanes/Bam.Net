@@ -98,6 +98,11 @@ namespace Bam.Net.Presentation.Drawing
             return GraphicsManager.Default.ResizeCanvas(image, width, height, backGroundColor);
         }
 
+        public static Bitmap Overlay(this Bitmap background, Bitmap foreGround, int x = 0, int y = 0)
+        {
+            return GraphicsManager.Default.Overlay(background, foreGround, x, y);
+        }
+
         public static Bitmap ScaleTo(this Bitmap image, int width, int height)
         {
             return GraphicsManager.Default.ScaleTo(image, width, height);
