@@ -50,7 +50,7 @@ namespace Bam.Net.Presentation.Drawing
         public Brush BackgroundBrush { get; set; }
         public Dimensions Dimensions { get; set; }
 
-        // TODO: fix this using rectangles see ImageProcess from external project
+        // TODO: fix this using rectangles see; ImageProcess from external project
         public Bitmap Overlay(Bitmap background, Bitmap foreground, int x, int y)
         {
             Bitmap result = new Bitmap(background.Width, background.Height);
