@@ -25,6 +25,25 @@ namespace Bam.Net.Presentation
             set;
         }
 
+        /// <summary>
+        /// Exports the specified svg file at 3600 x 3600 pixels.
+        /// </summary>
+        /// <param name="svgFilePath"></param>
+        /// <returns></returns>
+        public static Bitmap ExportSvg(string svgFilePath)
+        {
+            return ExportSvg(svgFilePath, 3600, 3600, out FileInfo ignore);
+        }
+
+        /// <summary>
+        /// Exports the specified svg file at the specified dimensions and
+        /// sets the resolution to 300 x 300.
+        /// </summary>
+        /// <param name="svgFilePath"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="output"></param>
+        /// <returns></returns>
         public static Bitmap ExportSvg(string svgFilePath, int width, int height, out FileInfo output)
         {
             FileInfo svgFile = new FileInfo(svgFilePath);
@@ -34,6 +53,14 @@ namespace Bam.Net.Presentation
             return result;
         }
 
+        /// <summary>
+        /// Exports the specified svg file at the specified dimensions.
+        /// </summary>
+        /// <param name="svgFilePath"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="outputPngPath"></param>
+        /// <returns></returns>
         public static Bitmap ExportSvg(string svgFilePath, int width, int height, string outputPngPath = null)
         {
             FileInfo svgFile = new FileInfo(svgFilePath);
@@ -41,7 +68,6 @@ namespace Bam.Net.Presentation
             outputPngPath = outputPngPath ?? Path.Combine(svgFile.Directory.FullName, $"{fileName}.png");
             Bitmap result = null;
             $"{ExePath}".Run($"-z -e {outputPngPath} -w {width} -h {height} {svgFilePath}", (o, a) => result = new Bitmap(outputPngPath), 60000);
-            result.SetResolution(300, 300);
             return result;
         }
     }
