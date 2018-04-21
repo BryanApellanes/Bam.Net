@@ -13,6 +13,33 @@ using System.Collections.Concurrent;
 
 namespace Bam.Net.Caching
 {
+    public class Cache<T>: Cache where T: IMemorySize, new()
+    {
+        public Cache() : base() { }
+
+        public CacheItem<T> Add(params T[] values)
+        {
+            return (CacheItem<T>)Add<T>(values);
+        }
+
+        public new IEnumerable<CacheItem<CacheItemType>> Add<CacheItemType>(params CacheItemType[] values) where CacheItemType: IMemorySize, new()
+        {
+            List<CacheItem> results = new List<CacheItem>();
+            HashSet<CacheItem> itemsCopy = new HashSet<CacheItem>(Items);
+            foreach (CacheItemType value in values)
+            {
+                CacheItem<CacheItemType> item = new CacheItem<CacheItemType>(value, MetaProvider);
+                if (itemsCopy.Add(item))
+                {
+                    yield return item;
+                }
+            }
+            Items = itemsCopy;
+            Organize();
+            GroomerSignal.Set();
+        }
+    }
+
 	public class Cache: Loggable
 	{
 		bool _keepGrooming;
@@ -25,11 +52,12 @@ namespace Bam.Net.Caching
 		public Cache(bool groomInBackground)
 			: this(System.Guid.NewGuid().ToString(), groomInBackground)
 		{ }
+
 		public Cache(string name, bool groomInBackground)
 			: this(name, 524288, groomInBackground) // 512 kilobytes
 		{ }
 
-		public Cache(string name, int maxBytes, bool groomInBackground, EventHandler evictionListener = null)
+		public Cache(string name, uint maxBytes, bool groomInBackground, EventHandler evictionListener = null)
 		{
 			Items = new HashSet<CacheItem>();
 			ItemsByHits = new SortedSet<CacheItem>();
@@ -63,7 +91,15 @@ namespace Bam.Net.Caching
 		protected Dictionary<string, CacheItem> ItemsByUuid { get; set; }
         protected Dictionary<string, CacheItem> ItemsByCuid { get; set; }
 
-        public int MaxBytes { get; set; }			
+        protected AutoResetEvent GroomerSignal
+        {
+            get
+            {
+                return _groomerSignal;
+            }
+        }
+
+        public uint MaxBytes { get; set; }			
 
         public CacheItem Retrieve(object instance)
         {
@@ -82,8 +118,7 @@ namespace Bam.Net.Caching
 
         public CacheItem Retrieve(string uuid)
         {
-            CacheItem result = null;
-            if (ItemsByUuid.TryGetValue(uuid, out result))
+            if (ItemsByUuid.TryGetValue(uuid, out CacheItem result))
             {
                 result.IncrementHits();
             }
@@ -93,8 +128,7 @@ namespace Bam.Net.Caching
 
         public CacheItem RetrieveByCuid(string cuid)
         {
-            CacheItem result = null;
-            if(ItemsByCuid.TryGetValue(cuid, out result))
+            if (ItemsByCuid.TryGetValue(cuid, out CacheItem result))
             {
                 result.IncrementHits();
             }
@@ -108,7 +142,7 @@ namespace Bam.Net.Caching
             itemsCopy.Add(item);
             Items = itemsCopy;
             Organize();
-            _groomerSignal.Set();
+            GroomerSignal.Set();
             return item;
         }
 
@@ -130,12 +164,14 @@ namespace Bam.Net.Caching
             foreach (object value in values)
             {
                 CacheItem item = new CacheItem(value, MetaProvider);
-                itemsCopy.Add(item);
-                yield return item;
+                if (itemsCopy.Add(item))
+                {
+                    yield return item;
+                }
             }
             Items = itemsCopy;
             Organize();
-            _groomerSignal.Set();
+            GroomerSignal.Set();
         }
 
         public IEnumerable<CacheItem> Query(Predicate<object> predicate)
@@ -189,7 +225,7 @@ namespace Bam.Net.Caching
             }
         }
 
-        public IEnumerable<T> Query<T>(Func<T, bool> predicate, Func<IEnumerable<T>> sourceRetriever)
+        public IEnumerable<T> Query<T>(Func<T, bool> predicate, Func<IEnumerable<T>> sourceRetriever, bool refresh = true)
         {
             IEnumerable<T> results = Query<T>(predicate);
             if (results.Count() == 0)
@@ -197,9 +233,9 @@ namespace Bam.Net.Caching
                 results = sourceRetriever();
                 Add(results);
             }
-            else
+            else if(refresh)
             {
-                Task.Run(() => Add(sourceRetriever()));
+                Task.Run(() => Add(sourceRetriever())); // refreshes the cache from source, results are one query behind fresh
             }
             return results;
         }
@@ -219,12 +255,12 @@ namespace Bam.Net.Caching
 			set;
 		}
 
-		public int ItemsMemorySize
+		public uint ItemsMemorySize
 		{
 			get
 			{
                 HashSet<CacheItem> itemsCopy = new HashSet<CacheItem>(Items);
-				return itemsCopy.Select(c => c.MemorySize).Sum();
+				return (uint)itemsCopy.Select(c => c.MemorySize).Sum();
 			}
 		}
 
@@ -274,12 +310,11 @@ namespace Bam.Net.Caching
 					{
 						while (_evictionQueue.Count > 0)
 						{
-                            CacheItem item;
-                            if(_evictionQueue.TryDequeue(out item))
+                            if (_evictionQueue.TryDequeue(out CacheItem item))
                             {
                                 Evict(item);
                             }
-						}
+                        }
 					}
 				}
 			}
@@ -292,7 +327,7 @@ namespace Bam.Net.Caching
 			{
 				_evictionQueue.Enqueue(Retrieve(id));
 			}
-			_groomerSignal.Set();
+			GroomerSignal.Set();
 		}
 
 		public void QueueEviction(string uuid)
@@ -301,7 +336,7 @@ namespace Bam.Net.Caching
 			{
 				_evictionQueue.Enqueue(Retrieve(uuid));
 			}
-			_groomerSignal.Set();
+			GroomerSignal.Set();
 		}
 
 		public void Evict(long id)
@@ -402,8 +437,8 @@ namespace Bam.Net.Caching
         /// <returns></returns>
 		protected int GetEvictableTailCount()
 		{
-			int maxBytes = MaxBytes;
-			int bytesOver = ItemsMemorySize - MaxBytes;
+			uint maxBytes = MaxBytes;
+			uint bytesOver = ItemsMemorySize - MaxBytes;
 			int result = 0;
 			if(bytesOver > 0)
 			{
@@ -428,7 +463,7 @@ namespace Bam.Net.Caching
 		{
 			while(_keepGrooming)
 			{
-				_groomerSignal.WaitOne();
+				GroomerSignal.WaitOne();
 				Groom();
 			}
 		}
@@ -440,7 +475,7 @@ namespace Bam.Net.Caching
 			_groomerThread.Join(3000);
 		}
 
-        private async void Organize()
+        protected async void Organize()
         {
             await Task.Run(() =>
             {

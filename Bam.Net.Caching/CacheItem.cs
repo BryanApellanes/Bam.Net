@@ -13,7 +13,25 @@ using Bam.Net.Data.Repositories;
 
 namespace Bam.Net.Caching
 {
-	[Serializable]
+    [Serializable]
+    public class CacheItem<T>: CacheItem where T: IMemorySize, new()
+    {
+        public CacheItem(T value, IMetaProvider metaProvider) : base(value, metaProvider)
+        {
+        }
+
+        public new T Value
+        {
+            get
+            {
+                return (T)base.Value;
+            }            
+        }
+
+        public override int MemorySize => Value.MemorySize();
+    }
+
+    [Serializable]
 	public class CacheItem
 	{
 		public CacheItem(object value, IMetaProvider metaProvider)
@@ -25,7 +43,9 @@ namespace Bam.Net.Caching
             Uuid = value.Property<string>("Uuid", false);
             Cuid = value.Property<string>("Cuid", false);
 		}
+
 		protected Meta Meta { get; set; }
+
 		public long Id
 		{
 			get;
@@ -71,7 +91,7 @@ namespace Bam.Net.Caching
 		public int Misses { get; set; }
 
 		int _memorySize;
-		public int MemorySize 
+		public virtual int MemorySize 
 		{
 			get
 			{

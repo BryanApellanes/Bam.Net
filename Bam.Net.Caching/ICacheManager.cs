@@ -4,7 +4,7 @@ namespace Bam.Net.Caching
 {
     public interface ICacheManager
     {
-        int AllCacheSize { get; }
+        uint AllCacheSize { get; }
 
         event EventHandler CacheRemoved;
         event EventHandler CacheSet;
