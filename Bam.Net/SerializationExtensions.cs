@@ -122,9 +122,8 @@ namespace Bam.Net
 		/// <returns></returns>
 		public static int MemorySize(this object target)
 		{
-			byte[] ignore;
-			return MemorySize(target, out ignore);
-		}
+            return MemorySize(target, out byte[] ignore);
+        }
 
 		public static int MemorySize(this object target, out byte[] byteStream)
 		{
