@@ -708,8 +708,7 @@ namespace Bam.Net
 
         public static T TryToEnum<T>(this string value) where T : struct
         {
-            T result;
-            Enum.TryParse<T>(value, out result);
+            Enum.TryParse<T>(value, out T result);
             return result;
         }
 

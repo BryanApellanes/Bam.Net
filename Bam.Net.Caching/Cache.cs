@@ -64,6 +64,7 @@ namespace Bam.Net.Caching
 			ItemsByMisses = new SortedSet<CacheItem>();
 			ItemsById = new Dictionary<long, CacheItem>();
             ItemsByUuid = new Dictionary<string, CacheItem>();
+            ItemsByName = new Dictionary<string, CacheItem>();
 			MetaProvider = Bam.Net.Data.Repositories.MetaProvider.Default;
 			
 			Name = name;
@@ -90,6 +91,7 @@ namespace Bam.Net.Caching
 		protected Dictionary<long, CacheItem> ItemsById { get; set; }
 		protected Dictionary<string, CacheItem> ItemsByUuid { get; set; }
         protected Dictionary<string, CacheItem> ItemsByCuid { get; set; }
+        protected Dictionary<string, CacheItem> ItemsByName { get; set; }
 
         protected AutoResetEvent GroomerSignal
         {
@@ -119,6 +121,28 @@ namespace Bam.Net.Caching
         public CacheItem Retrieve(string uuid)
         {
             if (ItemsByUuid.TryGetValue(uuid, out CacheItem result))
+            {
+                result.IncrementHits();
+            }
+
+            return result;
+        }
+
+        public virtual T RetrieveByName<T>(string name, Func<T> sourceRetriever)
+        {
+            CacheItem item = RetrieveByName(name);
+            if(item == null)
+            {
+                item = new CacheItem(sourceRetriever(), MetaProvider);
+                ItemsByName.Add(name, item);
+            }
+
+            return item.ValueAs<T>();
+        }
+
+        public CacheItem RetrieveByName(string name)
+        {
+            if(ItemsByName.TryGetValue(name, out CacheItem result))
             {
                 result.IncrementHits();
             }
@@ -479,6 +503,7 @@ namespace Bam.Net.Caching
         {
             await Task.Run(() =>
             {
+                HashSet<CacheItem> itemsCopy = new HashSet<CacheItem>(Items);
                 Parallel.ForEach(new Action[] 
                 {
                     () =>
@@ -493,21 +518,23 @@ namespace Bam.Net.Caching
                     },
                     () =>
                     {
-                        HashSet<CacheItem> itemsCopy = new HashSet<CacheItem>(Items);
                         Dictionary<long, CacheItem> itemsById = itemsCopy.ToDictionary(ci => ci.Id);
                         ItemsById = itemsById;
                     },
                     () =>
                     {
-                        HashSet<CacheItem> itemsCopy = new HashSet<CacheItem>(Items);
                         Dictionary<string, CacheItem> itemsByUuid = itemsCopy.ToDictionary(ci => ci.Uuid);
                         ItemsByUuid = itemsByUuid;
                     },
                     () =>
                     {
-                        HashSet<CacheItem> itemsCopy = new HashSet<CacheItem>(Items);
                         Dictionary<string, CacheItem> itemsByCuid = itemsCopy.ToDictionary(ci => ci.Cuid);
                         ItemsByCuid = itemsByCuid;
+                    },
+                    () =>
+                    {
+                        Dictionary<string, CacheItem> itemsByName = itemsCopy.ToDictionary(ci=> ci.Property<string>("Name", false) ?? ci.Uuid);
+                        ItemsByName = itemsByName;
                     }
                 }, action => action());
             });

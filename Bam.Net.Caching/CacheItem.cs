@@ -42,6 +42,7 @@ namespace Bam.Net.Caching
             Id = value.Property<long>("Id", false);
             Uuid = value.Property<string>("Uuid", false);
             Cuid = value.Property<string>("Cuid", false);
+            Name = value.Property<string>("Name", false);
 		}
 
 		protected Meta Meta { get; set; }
@@ -60,7 +61,14 @@ namespace Bam.Net.Caching
 
         public string Cuid
         {
-            get;set;
+            get;
+            set;
+        }
+
+        public string Name
+        {
+            get;
+            set;
         }
 
 		Type _type;
