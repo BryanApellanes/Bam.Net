@@ -4073,6 +4073,13 @@ namespace Bam.Net
             }
         }
 
+        /// <summary>
+        /// Intended to turn a dynamic object into a dictionary. For example,
+        /// new { key1 = value1, key2 = value 2} becomes a dictionary with
+        /// two keys.
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <returns></returns>
         public static Dictionary<string, object> ToDictionary(this object instance)
         {
             Type dyn = instance.GetType();
