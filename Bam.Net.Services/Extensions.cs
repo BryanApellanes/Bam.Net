@@ -28,6 +28,7 @@ namespace Bam.Net.Services
         {
             return Serve(registry, new HostPrefix[]{ new HostPrefix { HostName = hostName, Port = port, Ssl = ssl } }, logger, conf);
         }
+
         public static ServiceProxyServer Serve<T>(this T service, HostPrefix[] hostPrefixes, ILogger logger = null, BamConf conf = null)
         {
             CoreServices.ServiceRegistry reg = new CoreServices.ServiceRegistry();
