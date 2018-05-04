@@ -343,10 +343,12 @@ namespace Bam.Net.CommandLine
 
         private static ProcessStartInfo CreateStartInfo(bool promptForAdmin)
         {
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.UseShellExecute = false;
-            startInfo.ErrorDialog = false;
-            startInfo.CreateNoWindow = true; ;
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                UseShellExecute = false,
+                ErrorDialog = false,
+                CreateNoWindow = true
+            };
             startInfo.RedirectStandardOutput = true;
             startInfo.RedirectStandardError = true;
 
