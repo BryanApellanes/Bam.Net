@@ -62,6 +62,7 @@ namespace Bam.Net.Server
             this.WireEventHandlers();
             _server.Start(HostPrefixes.ToArray());
         }
+
         public virtual void Stop()
         {
             Logger.StopLoggingThread();

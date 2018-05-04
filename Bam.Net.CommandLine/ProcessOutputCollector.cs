@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.CommandLine
 {
+    /// <summary>
+    /// Handles standard and error output from a process.
+    /// </summary>
     public class ProcessOutputCollector
     {
         public ProcessOutputCollector(StringBuilder output, StringBuilder error)

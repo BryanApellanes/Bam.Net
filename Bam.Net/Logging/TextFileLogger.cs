@@ -62,7 +62,7 @@ namespace Bam.Net.Logging
         DirectoryInfo _folder;
         object _folderLock = new object();
         /// <summary>
-        /// Gets or sets the directory where logs are written
+        /// Gets or sets the directory where logs are written.
         /// </summary>
         public DirectoryInfo Folder
         {

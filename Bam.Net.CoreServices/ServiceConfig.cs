@@ -21,6 +21,14 @@ namespace Bam.Net.Server
             }
         }
 
+        public static string LogRoot
+        {
+            get
+            {
+                return Path.Combine(ContentRoot, "logs");
+            }
+        }
+
         /// <summary>
         /// A logical identifier for the current process
         /// </summary>
@@ -60,7 +68,7 @@ namespace Bam.Net.Server
                 MultiTargetLogger multiLogger = new MultiTargetLogger();
                 TextFileLogger fileLogger = new TextFileLogger()
                 {
-                    Folder = new DirectoryInfo(ContentRoot)
+                    Folder = new DirectoryInfo(LogRoot)
                 };
                 multiLogger.AddLogger(fileLogger);
                 multiLogger.AddLogger(logger);

@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Bam.Net
 {
+    /// <summary>
+    /// Provides information about the current process.
+    /// </summary>
     public class ProcessInfo
     {
         public ProcessInfo()
