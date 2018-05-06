@@ -315,11 +315,13 @@ call git_tag_version.cmd %1");
             List<AssemblyAttributeInfo> _assemblyAttributeInfos = new List<AssemblyAttributeInfo>();
             NuspecFile nuspecFile = GetNuspecFile(fileName, nuspecRoot);
 
-            _assemblyAttributeInfos = new List<AssemblyAttributeInfo>();
-            _assemblyAttributeInfos.Add(new AssemblyAttributeInfo { AttributeName = "AssemblyVersion", Value = version });
-            _assemblyAttributeInfos.Add(new AssemblyAttributeInfo { AttributeName = "AssemblyFileVersion", Value = version });
-            _assemblyAttributeInfos.Add(new AssemblyAttributeInfo { AttributeName = "AssemblyCompany", NuspecFile = nuspecFile, NuspecProperty = "Owners" });
-            _assemblyAttributeInfos.Add(new AssemblyAttributeInfo { AttributeName = "AssemblyDescription", NuspecFile = nuspecFile, NuspecProperty = "Description" });
+            _assemblyAttributeInfos = new List<AssemblyAttributeInfo>
+            {
+                new AssemblyAttributeInfo { AttributeName = "AssemblyVersion", Value = version },
+                new AssemblyAttributeInfo { AttributeName = "AssemblyFileVersion", Value = version },
+                new AssemblyAttributeInfo { AttributeName = "AssemblyCompany", NuspecFile = nuspecFile, NuspecProperty = "Owners" },
+                new AssemblyAttributeInfo { AttributeName = "AssemblyDescription", NuspecFile = nuspecFile, NuspecProperty = "Description" }
+            };
 
             return _assemblyAttributeInfos;
         }
