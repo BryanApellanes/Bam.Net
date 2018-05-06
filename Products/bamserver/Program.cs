@@ -25,7 +25,7 @@ namespace Bam.Net.Application
         {
             CommandLineInterface.EnsureAdminRights();
 
-            SetInfo(new ServiceInfo("BamDaemon", "Bam Daemon", "Bam http application server"));
+            SetInfo(new ServiceInfo("BamHttpServer", "Bam Http Server", "Bam http application server"));
 
             if (!ProcessCommandLineArgs(args))
             {
