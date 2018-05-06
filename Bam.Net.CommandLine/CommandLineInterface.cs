@@ -1091,7 +1091,7 @@ File Version: {1}
 
         static AutoResetEvent _blocker = new AutoResetEvent(false);
         /// <summary>
-        /// Block 
+        /// Block the current thread indefinitely.
         /// </summary>
         protected static void Block()
         {

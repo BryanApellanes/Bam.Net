@@ -25,7 +25,7 @@ namespace Bam.Net.Application
         static ServiceProxyServer server;
 
         [ConsoleAction("killHeartServer", "Kill the Heart server")]
-        public void StopServer()
+        public static void StopServer()
         {
             if (server != null)
             {
@@ -39,14 +39,20 @@ namespace Bam.Net.Application
         }
 
         [ConsoleAction("startHeartServer", "Start the Heart server")]
-        public void StartCoreHeartServer()
+        public static void StartServerAndPause()
+        {
+            ServiceRegistry serviceRegistry = StartServer();
+            Pause($"Heart server is serving service registry {serviceRegistry.Name}");
+        }
+
+        internal static ServiceRegistry StartServer()
         {
             HostPrefix[] prefixes = GetConfiguredHostPrefixes();
             ILogger logger = GetLogger();
             Log.Default = logger;
-            ServiceRegistry serviceRegistry = ApplicationServiceRegistryContainer.Create();            
+            ServiceRegistry serviceRegistry = ApplicationServiceRegistryContainer.Create();
             server = serviceRegistry.Serve(prefixes, logger);
-            Pause($"Heart server is serving service registry {serviceRegistry.Name}");
+            return serviceRegistry;
         }
 
         public static HostPrefix[] GetConfiguredHostPrefixes()
@@ -67,7 +73,7 @@ namespace Bam.Net.Application
             return results.ToArray();
         }
 
-        private static ConsoleLogger GetLogger()
+        private static ILogger GetLogger()
         {
             ConsoleLogger logger = new ConsoleLogger()
             {
@@ -75,46 +81,8 @@ namespace Bam.Net.Application
                 UseColors = true
             };
             logger.StartLoggingThread();
-            return logger;
-        }
-
-        private Type GetServiceType(string className)
-        {
-            Assembly assembly = GetAssembly(className, out Type result);
-            return result;
-        }
-
-        private Assembly GetAssembly(string className, out Type type)
-        {
-            type = null;
-            Assembly result = null;
-            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            foreach (Assembly assembly in assemblies)
-            {
-                type = GetType(assembly, className);
-                if(type != null)
-                {
-                    result = assembly;
-                    break;
-                }
-            }
-            if(result == null)
-            {
-                string assemblyPath = GetArgument("assemblyPath", true);
-                result = Assembly.LoadFrom(assemblyPath);
-                type = GetType(result, className);
-                if(type == null)
-                {
-                    type = result.GetType(className);
-                }
-            }
-
-            return result;
-        }
-
-        private Type GetType(Assembly assembly, string className)
-        {
-            return assembly.GetTypes().Where(t => t.Name.Equals(className) || $"{t.Namespace}.{t.Name}".Equals(className)).FirstOrDefault();
+            Log.AddLogger(logger);
+            return Log.Default;
         }
     }
 }
