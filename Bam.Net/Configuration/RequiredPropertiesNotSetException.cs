@@ -9,8 +9,17 @@ using System.Reflection;
 
 namespace Bam.Net.Configuration
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="System.Exception" />
     public class RequiredPropertyNotSetException: Exception
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RequiredPropertyNotSetException"/> class.
+        /// </summary>
+        /// <param name="target">The target.</param>
+        /// <param name="p">The p.</param>
         public RequiredPropertyNotSetException(Type target, PropertyInfo p) :
             base(@"" + target.Name + "." + p.Name + ": The required property '" + p.Name + "' for object of type '" + 
             target.Name + "' was not set." +

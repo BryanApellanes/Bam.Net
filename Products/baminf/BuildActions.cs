@@ -18,6 +18,12 @@ namespace Bam.Net.Automation
     public class BuildActions: CommandLineTestInterface
     {
         static string _nugetReleaseDirectory;
+        /// <summary>
+        /// Gets the nuget release directory.
+        /// </summary>
+        /// <value>
+        /// The nuget release directory.
+        /// </value>
         public static string NugetReleaseDirectory
         {
             get
@@ -31,6 +37,12 @@ namespace Bam.Net.Automation
         }
 
         static string _lib;
+        /// <summary>
+        /// Gets the library.
+        /// </summary>
+        /// <value>
+        /// The library.
+        /// </value>
         public static string Lib
         {
             get
@@ -69,6 +81,9 @@ namespace Bam.Net.Automation
             public string Ext { get; set; }
         }
 
+        /// <summary>
+        /// Generates the bam executable script.
+        /// </summary>
         [ConsoleAction("generateBamDotExeScript", "Generate ILMerge script")]
         public static void GenerateBamDotExeScript()
         {
@@ -169,6 +184,9 @@ call git_tag_version.cmd %1");
             OutLineFormat("Wrote file {0}", cleanPath);
         }
 
+        /// <summary>
+        /// Sets the bam information.
+        /// </summary>
         [ConsoleAction("baminfo.json", "specify the path to the baminfo.json file to use")]
         public static void SetBamInfo()
         {
@@ -230,6 +248,9 @@ call git_tag_version.cmd %1");
             }
         }
 
+        /// <summary>
+        /// Sets the assembly information.
+        /// </summary>
         [ConsoleAction("sai", "Set assembly info")]
         public static void SetAssemblyInfo()
         {
@@ -269,6 +290,9 @@ call git_tag_version.cmd %1");
             });
         }
 
+        /// <summary>
+        /// Sets the msi version.
+        /// </summary>
         [ConsoleAction("smsiv", "Set msi version")]
         public static void SetMsiVersion()
         {

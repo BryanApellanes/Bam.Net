@@ -171,7 +171,6 @@
     <Compile Include="Configuration\IHasRequiredProperties.cs" />
     <Compile Include="Configuration\InvalidIHasRequiredPropertiesImplementationException.cs" />
     <Compile Include="Configuration\RequiredPropertiesNotSetException.cs" />
-    <Compile Include="Configuration\RequiredPropertyNotFoundException.cs" />
     <Compile Include="Configuration\RuntimeSettings.cs" />
     <Compile Include="Configuration\StaticApplicationNameProvider.cs" />
     <Compile Include="CsvPropertyAttribute.cs" />

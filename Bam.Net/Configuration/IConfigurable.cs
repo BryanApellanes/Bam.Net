@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Configuration
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="Bam.Net.Configuration.IHasRequiredProperties" />
     public interface IConfigurable : IHasRequiredProperties
     {
         void Configure(IConfigurer configurer);

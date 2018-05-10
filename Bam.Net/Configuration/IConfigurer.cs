@@ -9,8 +9,15 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Configuration
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IConfigurer
     {
+        /// <summary>
+        /// Configures the specified configurable.
+        /// </summary>
+        /// <param name="configurable">The configurable.</param>
         void Configure(IConfigurable configurable);
     }
 }

@@ -25,8 +25,12 @@ namespace Bam.Net.Configuration
         public const string DefaultProcessName = "UNKOWN-PROCESS";
 
         static NameValueCollection _appSettings = ConfigurationManager.AppSettings;
-        static ConnectionStringSettingsCollection _connectionStrings = ConfigurationManager.ConnectionStrings;        
+        static ConnectionStringSettingsCollection _connectionStrings = ConfigurationManager.ConnectionStrings;
 
+        /// <summary>
+        /// Gets the application settings.
+        /// </summary>
+        /// <returns></returns>
         public static NameValueCollection GetAppSettings()
         {
             return _appSettings;
@@ -97,11 +101,18 @@ namespace Bam.Net.Configuration
             }
         }
 
+        /// <summary>
+        /// Sets the connection strings back to those specified in the default configuration file.
+        /// </summary>
         public static void SetConnectionStrings()
         {
             _connectionStrings = ConfigurationManager.ConnectionStrings;
         }
 
+        /// <summary>
+        /// Gets the connection strings.
+        /// </summary>
+        /// <returns></returns>
         public static ConnectionStringSettingsCollection GetConnectionStrings()
         {
             return _connectionStrings;
@@ -118,6 +129,12 @@ namespace Bam.Net.Configuration
             return GetAppSetting(string.Format("{0}.{1}", type.Name, property));
         }
 
+        /// <summary>
+        /// Gets the connection string.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="property">The property.</param>
+        /// <returns></returns>
         public static string GetConnectionString(Type type, string property)
         {
             return GetConnectionString(string.Format("{0}.{1}", type.Name, property));
@@ -283,12 +300,23 @@ namespace Bam.Net.Configuration
             config.SaveAs(filePath);
         }
 
+        /// <summary>
+        /// Adds the connection string.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="connectionString">The connection string.</param>
         public static void AddConnectionString(string name, string connectionString)
         {
             System.Configuration.Configuration config = GetConfig();
             AddConnectionString(name, connectionString, config);
         }
 
+        /// <summary>
+        /// Adds the connection string.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="connectionString">The connection string.</param>
+        /// <param name="config">The configuration.</param>
         public static void AddConnectionString(string name, string connectionString, System.Configuration.Configuration config)
         {
             ConnectionStringSettings settings = new ConnectionStringSettings();
@@ -299,31 +327,65 @@ namespace Bam.Net.Configuration
             config.Save();
         }
 
+        /// <summary>
+        /// Removes the application setting.
+        /// </summary>
+        /// <param name="key">The key.</param>
         public static void RemoveAppSetting(string key)
         {
             RemoveAppSetting(Assembly.GetExecutingAssembly(), key);
         }
 
+        /// <summary>
+        /// Removes the application setting.
+        /// </summary>
+        /// <param name="assembly">The assembly.</param>
+        /// <param name="key">The key.</param>
         public static void RemoveAppSetting(this Assembly assembly, string key)
         {
             GetConfig(assembly).AppSettings.Settings.Remove(key);
         }
 
+        /// <summary>
+        /// Adds the application setting.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
         public static void AddAppSetting(string key, string value)
         {
             AddAppSetting(typeof(DefaultConfiguration), key, value);
         }
 
+        /// <summary>
+        /// Adds the application setting.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
         public static void AddAppSetting(this Type type, string key, string value)
         {
             AddAppSetting(type.Assembly, key, value);
         }
 
+        /// <summary>
+        /// Adds the application setting.
+        /// </summary>
+        /// <param name="assembly">The assembly.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
         public static void AddAppSetting(this Assembly assembly, string key, string value)
         {
             assembly.AddAppSetting(key, value, false);
         }
 
+        /// <summary>
+        /// Adds the application setting.
+        /// </summary>
+        /// <param name="assembly">The assembly.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="throwIfExisting">if set to <c>true</c> [throw if existing].</param>
+        /// <exception cref="InvalidOperationException">Attempted to set an appsetting that is already set</exception>
         public static void AddAppSetting(this Assembly assembly, string key, string value, bool throwIfExisting)
         {
             System.Configuration.Configuration config = GetConfig(assembly);
@@ -338,16 +400,31 @@ namespace Bam.Net.Configuration
             }
         }
 
+        /// <summary>
+        /// Gets the configuration.
+        /// </summary>
+        /// <returns></returns>
         public static System.Configuration.Configuration GetConfig()
         {
             return GetConfig(Assembly.GetExecutingAssembly());
         }
 
+        /// <summary>
+        /// Gets the configuration.
+        /// </summary>
+        /// <param name="assembly">The assembly.</param>
+        /// <returns></returns>
         public static System.Configuration.Configuration GetConfig(Assembly assembly)
         {
             return GetConfig(assembly.Location);
         }
 
+        /// <summary>
+        /// Sets the application setting.
+        /// </summary>
+        /// <param name="configPath">The configuration path.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
         public static void SetAppSetting(string configPath, string key, string value)
         {
             System.Configuration.Configuration config = GetConfig(configPath);
@@ -359,6 +436,11 @@ namespace Bam.Net.Configuration
             config.Save();
         }
 
+        /// <summary>
+        /// Gets the configuration.
+        /// </summary>
+        /// <param name="configPath">The configuration path.</param>
+        /// <returns></returns>
         public static System.Configuration.Configuration GetConfig(string configPath)
         {
             System.Configuration.ConfigurationFileMap fileMap = new ConfigurationFileMap(configPath);
@@ -366,6 +448,11 @@ namespace Bam.Net.Configuration
             return config;
         }
 
+        /// <summary>
+        /// Sets the property.
+        /// </summary>
+        /// <param name="target">The target.</param>
+        /// <param name="propertyName">Name of the property.</param>
         public static void SetProperty(object target, string propertyName)
         {
             Type type = target.GetType();
@@ -404,6 +491,12 @@ namespace Bam.Net.Configuration
             }
         }
 
+        /// <summary>
+        /// Gets the property.
+        /// </summary>
+        /// <param name="targetTypeName">Name of the target type.</param>
+        /// <param name="property">The property.</param>
+        /// <returns></returns>
         public static string GetProperty(string targetTypeName, string property)
         {
             Dictionary<string, string> appSettings = new Dictionary<string, string>();
@@ -415,6 +508,13 @@ namespace Bam.Net.Configuration
             return GetProperty(targetTypeName, property, appSettings);
         }
 
+        /// <summary>
+        /// Gets the property.
+        /// </summary>
+        /// <param name="targetTypeName">Name of the target type.</param>
+        /// <param name="property">The property.</param>
+        /// <param name="appSettings">The application settings.</param>
+        /// <returns></returns>
         public static string GetProperty(string targetTypeName, string property, Dictionary<string, string> appSettings)
         {
             if (appSettings.ContainsKey(targetTypeName + "." + property))
@@ -458,10 +558,10 @@ namespace Bam.Net.Configuration
             }
         }
         /// <summary>
-        /// Sets the properties of the current instance that match the property names of the specified proxy
-        /// from the default config file.  The config file should contain keys in the form <i>TypeName.PropertyName</i>, 
+        /// Sets the properties of the specified target from the default config file, where the property names of the specified proxy
+        /// match the property names of the target.  The config file should contain keys in the form <i>TypeName.PropertyName</i>, 
         /// where <i>TypeName</i> is the name of the proxy class and <i>PropertyName</i> is the name of the property to set
-        /// on the current instance.
+        /// on the target.
         /// </summary>
         /// <param name="target">The instance to set the properties for.</param>
         /// <param name="proxy">An instance of the proxy class to use.</param>
@@ -633,17 +733,15 @@ namespace Bam.Net.Configuration
             Dictionary<int, object[]> methodParams = new Dictionary<int, object[]>();
             foreach (MethodInfo method in methods)
             {
-                foreach (string appSettingKey in appSettingDictionary.Keys)//ConfigurationManager.AppSettings.AllKeys)
+                foreach (string appSettingKey in appSettingDictionary.Keys)
                 {
-                    // typeName.InvokeMethod.methodName.i
                     string[] splitKey = appSettingKey.Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries);
-                    int methNum;
                     if (splitKey.Length == 4 &&
                         splitKey[0].Equals(targetType.Name) &&
                         splitKey[1].Equals("InvokeMethod") &&
                         splitKey[2].Equals(method.Name))
                     {
-                        if (int.TryParse(splitKey[3], out methNum))
+                        if (int.TryParse(splitKey[3], out int methNum))
                         {
                             methodOrder.Add(methNum);
                             methodsToInvoke.Add(methNum, method);
