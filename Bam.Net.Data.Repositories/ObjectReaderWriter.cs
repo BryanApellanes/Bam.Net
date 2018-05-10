@@ -22,21 +22,31 @@ namespace Bam.Net.Data.Repositories
 	/// and another "searchable" version of all
 	/// the properties in crawlable files.  This should
     /// not be used for any IO intensive applications
-    /// as it needs more testing and has so far diasplayed
-    /// horrendous IO characteristics
+    /// as it needs more testing.
 	/// </summary>
 	[Serializable]
 	public class ObjectReaderWriter: Loggable, IObjectReaderWriter
 	{
-		public ObjectReaderWriter(string rootDirectory)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ObjectReaderWriter"/> class.
+        /// </summary>
+        /// <param name="rootDirectory">The root directory.</param>
+        public ObjectReaderWriter(string rootDirectory)
 			: base()
 		{
 			RootDirectory = rootDirectory;
             BackgroundThreadQueue = new BackgroundThreadQueue<Meta> { Process = Write };
 		}
+
 		static IObjectReaderWriter _objectReaderWriter;
 		static object _readerWriterLock = new object();
-		public static IObjectReaderWriter Default
+        /// <summary>
+        /// Gets or sets the default.
+        /// </summary>
+        /// <value>
+        /// The default.
+        /// </value>
+        public static IObjectReaderWriter Default
 		{
 			get
 			{
@@ -47,39 +57,89 @@ namespace Bam.Net.Data.Repositories
 				_objectReaderWriter = value;
 			}
 		}
-        public ILogger Logger { get; set; }
-		public int MaxRetries { get; set; }
 
-		public T Read<T>(long id)
+        /// <summary>
+        /// Gets or sets the logger.
+        /// </summary>
+        /// <value>
+        /// The logger.
+        /// </value>
+        public ILogger Logger { get; set; }
+
+        /// <summary>
+        /// Gets or sets the maximum retries.
+        /// </summary>
+        /// <value>
+        /// The maximum retries.
+        /// </value>
+        public int MaxRetries { get; set; }
+
+        /// <summary>
+        /// Reads the specified identifier.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        public T Read<T>(long id)
 		{
 			string idHash = GetIdHash(id, typeof(T));
 			return ReadByHash<T>(idHash);
 		}
-		
-		public object Read(Type type, long id)
+
+        /// <summary>
+        /// Reads the specified type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        public object Read(Type type, long id)
 		{
 			string idHash = GetIdHash(id, type);
 			return ReadByHash(type, idHash);
 		}
 
-		public T Read<T>(string uuid)
+        /// <summary>
+        /// Reads the specified UUID.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="uuid">The UUID.</param>
+        /// <returns></returns>
+        public T Read<T>(string uuid)
 		{
 			string uuidHash = GetUuidHash(uuid, typeof(T));
 			return ReadByHash<T>(uuidHash);
 		}
-		
-		public object Read(Type type, string uuid)
+
+        /// <summary>
+        /// Reads the specified type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="uuid">The UUID.</param>
+        /// <returns></returns>
+        public object Read(Type type, string uuid)
 		{
 			string uuidHash = GetUuidHash(uuid, type);
 			return ReadByHash(type, uuidHash);
 		}
 
-		public virtual T ReadByHash<T>(string hash)
+        /// <summary>
+        /// Reads the instance of T by hash.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="hash">The hash.</param>
+        /// <returns></returns>
+        public virtual T ReadByHash<T>(string hash)
 		{
 			return (T)ReadByHash(typeof(T), hash);
 		}
 
-		public virtual object ReadByHash(Type type, string hash)
+        /// <summary>
+        /// Reads the by hash.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="hash">The hash.</param>
+        /// <returns></returns>
+        public virtual object ReadByHash(Type type, string hash)
 		{
             if (type.HasCustomAttributeOfType<SerializableAttribute>())
             {
@@ -91,6 +151,12 @@ namespace Bam.Net.Data.Repositories
             }
         }
 
+        /// <summary>
+        /// Reads the properties by hash.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="hash">The hash.</param>
+        /// <returns></returns>
         protected virtual object ReadPropertiesByHash(Type type, string hash)
 		{
 			object result = type.Construct();
@@ -102,20 +168,38 @@ namespace Bam.Net.Data.Repositories
 			return result;
 		}
 
-		protected virtual object ReadSerializableTypeByHash(Type type, string hash)
+        /// <summary>
+        /// Reads the serializable type by hash.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="hash">The hash.</param>
+        /// <returns></returns>
+        protected virtual object ReadSerializableTypeByHash(Type type, string hash)
 		{
 			IpcMessage msg = IpcMessage.Get(hash, type, RootDirectory);
 			SubscribeToIpcMessageEvents(msg);
 			return msg.Read<object>();
 		}
 
+        /// <summary>
+        /// Gets or sets the background thread queue.
+        /// </summary>
+        /// <value>
+        /// The background thread queue.
+        /// </value>
         public BackgroundThreadQueue<Meta> BackgroundThreadQueue
         {
             get;
             set;
         }
-        
-		public int WriteQueueCount
+
+        /// <summary>
+        /// Gets the write queue count.
+        /// </summary>
+        /// <value>
+        /// The write queue count.
+        /// </value>
+        public int WriteQueueCount
 		{
 			get
 			{
@@ -125,14 +209,26 @@ namespace Bam.Net.Data.Repositories
 
 		Queue<object> _writeQueue = new Queue<object>();
 		object _writeQueueLock = new object();
-		public void Enqueue(Type type, object data)
+        /// <summary>
+        /// Enqueues the specified type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="data">The data.</param>
+        public void Enqueue(Type type, object data)
 		{
             BackgroundThreadQueue.Enqueue(new Meta(data, this) { Type = type });
 		}
-        
-		[Verbosity(VerbosityLevel.Warning, MessageFormat = "IpcMessage Failed:: RootDirectory={RootDirectory}\r\nMessage={Message}")]
+
+        /// <summary>
+        /// Occurs when [write object failed].
+        /// </summary>
+        [Verbosity(VerbosityLevel.Warning, MessageFormat = "IpcMessage Failed:: RootDirectory={RootDirectory}\r\nMessage={Message}")]
 		public event EventHandler WriteObjectFailed;
 
+        /// <summary>
+        /// Writes the specified meta.
+        /// </summary>
+        /// <param name="meta">The meta.</param>
         public virtual void Write(Meta meta)
         {
             object data = meta.Data;
@@ -157,11 +253,23 @@ namespace Bam.Net.Data.Repositories
             Task.WaitAll(waitFor.ToArray());
         }
 
+        /// <summary>
+        /// Writes the specified type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="data">The data.</param>
         public virtual void Write(Type type, object data)
         {
             Write(GetMeta(data, type));           
         }
 
+        /// <summary>
+        /// Tries the write.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="data">The data.</param>
+        /// <param name="retriedCount">The retried count.</param>
+        /// <param name="logger">The logger.</param>
         private void TryWrite(IpcMessage message, object data, int retriedCount = 0, ILogger logger = null)
         {
             try
@@ -183,7 +291,11 @@ namespace Bam.Net.Data.Repositories
             }
         }
 
-		protected void WriteHash(Meta meta)
+        /// <summary>
+        /// Writes the hash.
+        /// </summary>
+        /// <param name="meta">The meta.</param>
+        protected void WriteHash(Meta meta)
 		{
 			DirectoryInfo hashDir = GetHashDir(meta.Type);			
 			FileInfo uuidHash = new FileInfo(Path.Combine(hashDir.FullName, meta.UuidHash));
@@ -198,13 +310,22 @@ namespace Bam.Net.Data.Repositories
 			}
 		}
 
-		protected void DeleteHash(object data, Type type = null)
+        /// <summary>
+        /// Deletes the hash.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <param name="type">The type.</param>
+        protected void DeleteHash(object data, Type type = null)
 		{
 			Meta meta = GetMeta(data, type);
 			DeleteHash(meta);
 		}
 
-		protected void DeleteHash(Meta meta)
+        /// <summary>
+        /// Deletes the hash.
+        /// </summary>
+        /// <param name="meta">The meta.</param>
+        protected void DeleteHash(Meta meta)
 		{
 			DirectoryInfo hashDir = GetHashDir(meta.Type);
 			FileInfo uuidHash = new FileInfo(Path.Combine(hashDir.FullName, meta.UuidHash));
@@ -229,7 +350,12 @@ namespace Bam.Net.Data.Repositories
 			return hashDir;
 		}
 
-		protected HashSet<string> LoadHashes(Type type)
+        /// <summary>
+        /// Loads the hashes.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns></returns>
+        protected HashSet<string> LoadHashes(Type type)
 		{
 			DirectoryInfo hashDir = GetHashDir(type);
 			HashSet<string> results = new HashSet<string>();
@@ -240,7 +366,13 @@ namespace Bam.Net.Data.Repositories
 			return results;
 		}
 
-		protected Meta GetMeta(object data, Type type = null)
+        /// <summary>
+        /// Gets the meta.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <param name="type">The type.</param>
+        /// <returns></returns>
+        protected Meta GetMeta(object data, Type type = null)
 		{
 			Meta meta = data as Meta;
 			if (meta != null)
@@ -258,11 +390,16 @@ namespace Bam.Net.Data.Repositories
 			return meta;
 		}
 
-		public virtual bool Delete(object data, Type type = null)
+        /// <summary>
+        /// Deletes the specified data.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <param name="type">The type.</param>
+        /// <returns></returns>
+        public virtual bool Delete(object data, Type type = null)
 		{
 			try
 			{
-
 				if (data == null)
 					return false;
 				type = type ?? data.GetType();
@@ -282,29 +419,49 @@ namespace Bam.Net.Data.Repositories
 			}
 		}
 
-		public string RootDirectory { get; set; }
+        /// <summary>
+        /// Gets or sets the root directory.
+        /// </summary>
+        /// <value>
+        /// The root directory.
+        /// </value>
+        public string RootDirectory { get; set; }
 
-		public string Message { get; set; }
+        /// <summary>
+        /// Gets or sets the message.
+        /// </summary>
+        /// <value>
+        /// The message.
+        /// </value>
+        public string Message { get; set; }
 
-		[Verbosity(VerbosityLevel.Warning, MessageFormat = "Properties Failed:: RootDirectory={RootDirectory}\r\nMessage={Message}")]
+        /// <summary>
+        /// Occurs when [write object properties failed].
+        /// </summary>
+        [Verbosity(VerbosityLevel.Warning, MessageFormat = "Properties Failed:: RootDirectory={RootDirectory}\r\nMessage={Message}")]
 		public event EventHandler WriteObjectPropertiesFailed;
 
-
-		[Verbosity(VerbosityLevel.Warning, MessageFormat = "Properties Failed:: RootDirectory={RootDirectory}\r\nMessage={Message}")]
+        /// <summary>
+        /// Occurs when [delete failed].
+        /// </summary>
+        [Verbosity(VerbosityLevel.Warning, MessageFormat = "Properties Failed:: RootDirectory={RootDirectory}\r\nMessage={Message}")]
 		public event EventHandler DeleteFailed;
 
+        /// <summary>
+        /// Called when [delete failed].
+        /// </summary>
         protected void OnDeleteFailed()
 		{
-			if (DeleteFailed != null)
-			{
-				DeleteFailed(this, EventArgs.Empty);
-			}
-		}
-        //protected bool TryWriteObjectProperties(object value, int retryCount = 0)
-        //{
-        //    return TryWriteObjectProperties(value.GetType(), value, retryCount);
-        //}
+            DeleteFailed?.Invoke(this, EventArgs.Empty);
+        }
 
+        /// <summary>
+        /// Tries the write object properties.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="retryCount">The retry count.</param>
+        /// <returns></returns>
         protected bool TryWriteObjectProperties(Type type, object value, int retryCount = 0)
 		{
 			try
@@ -331,10 +488,21 @@ namespace Bam.Net.Data.Repositories
 			
 			return false;
 		}
+
+        /// <summary>
+        /// Writes the object properties.
+        /// </summary>
+        /// <param name="value">The value.</param>
         protected void WriteObjectProperties(object value)
         {
             WriteObjectProperties(value.GetType(), value);
         }
+
+        /// <summary>
+        /// Writes the object properties.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="value">The value.</param>
         protected void WriteObjectProperties(Type type, object value)
         {
             foreach (PropertyInfo prop in type
@@ -343,6 +511,8 @@ namespace Bam.Net.Data.Repositories
                     prop.PropertyType == typeof(bool) ||
                     prop.PropertyType == typeof(int) ||
                     prop.PropertyType == typeof(int?) ||
+                    prop.PropertyType == typeof(long) ||
+                    prop.PropertyType == typeof(long?) ||
                     prop.PropertyType == typeof(bool?) ||
                     prop.PropertyType == typeof(decimal) ||
                     prop.PropertyType == typeof(decimal?) ||
@@ -353,11 +523,12 @@ namespace Bam.Net.Data.Repositories
                 WriteProperty(type, prop, value);
             }
         }
-        //protected void DeleteObjectProperties(object value)
-        //{
-        //    DeleteObjectProperties(value, value.GetType());
-        //}
 
+        /// <summary>
+        /// Deletes the object properties.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="value">The value.</param>
         protected void DeleteObjectProperties(Type type, object value)
         {
 			type = type ?? value.GetType();
@@ -370,28 +541,61 @@ namespace Bam.Net.Data.Repositories
 			}
 		}
 
-		public object[] Query(Type type, Func<object, bool> predicate)
+        /// <summary>
+        /// Queries the specified type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="predicate">The predicate.</param>
+        /// <returns></returns>
+        public object[] Query(Type type, Func<object, bool> predicate)
 		{
             return NonSerializableQuery(type, predicate);
 		}
 
-		public T[] Query<T>(Func<T, bool> predicate)
+        /// <summary>
+        /// Queries the specified predicate.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="predicate">The predicate.</param>
+        /// <returns></returns>
+        public T[] Query<T>(Func<T, bool> predicate)
 		{
             return NonSerializableQuery<T>(predicate);
 		}
 
-		public T[] QueryProperty<T>(string propertyName, object value)
+        /// <summary>
+        /// Queries the property.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
+        public T[] QueryProperty<T>(string propertyName, object value)
 		{
 			return QueryProperty<T>(propertyName, (o) => o != null && (o.Equals(value) || o == value));
 		}
 
-		public T[] QueryProperty<T>(string propertyName, Func<object, bool> predicate)
+        /// <summary>
+        /// Queries the property.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="predicate">The predicate.</param>
+        /// <returns></returns>
+        public T[] QueryProperty<T>(string propertyName, Func<object, bool> predicate)
 		{
 			PropertyInfo prop = typeof(T).GetProperty(propertyName);
 			return QueryProperty<T>(prop, predicate);
 		}
 
-		public T[] QueryProperty<T>(PropertyInfo prop, Func<object, bool> predicate)
+        /// <summary>
+        /// Queries the property.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="prop">The property.</param>
+        /// <param name="predicate">The predicate.</param>
+        /// <returns></returns>
+        public T[] QueryProperty<T>(PropertyInfo prop, Func<object, bool> predicate)
 		{
 			HashSet<string> resultNames = new HashSet<string>();
 			List<Meta<T>> results = new List<Meta<T>>();
@@ -615,9 +819,8 @@ namespace Bam.Net.Data.Repositories
 
 		private IpcMessage GetHashMessage(object data, string hash, Type type = null)
 		{
-			IpcMessage idMessage;
-			type = type ?? data.GetType();
-			if (!IpcMessage.Exists(hash, type, RootDirectory, out idMessage))
+            type = type ?? data.GetType();
+            if (!IpcMessage.Exists(hash, type, RootDirectory, out IpcMessage idMessage))
 			{
 				idMessage = IpcMessage.Create(hash, type, RootDirectory);
 			}

@@ -14,19 +14,39 @@ using NCuid;
 
 namespace Bam.Net.Data.Repositories
 {
-	[Serializable]
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <seealso cref="Bam.Net.Data.Repositories.Meta" />
+    [Serializable]
 	public class Meta<T>: Meta
 	{
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Meta{T}"/> class.
+        /// </summary>
         public Meta() : base()
         {
             Type = typeof(T);
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Meta{T}"/> class.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <param name="objectReaderWriter">The object reader writer.</param>
         public Meta(T data, IObjectReaderWriter objectReaderWriter) : base(data, objectReaderWriter)
         {
             Type = typeof(T);
         }
 
-		public T TypedData
+        /// <summary>
+        /// Gets or sets the typed data.
+        /// </summary>
+        /// <value>
+        /// The typed data.
+        /// </value>
+        public T TypedData
 		{
 			get
 			{
@@ -38,20 +58,41 @@ namespace Bam.Net.Data.Repositories
 			}
 		}
 
-		public static implicit operator T(Meta<T> meta)
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="Meta{T}"/> to T.
+        /// </summary>
+        /// <param name="meta">The meta.</param>
+        /// <returns>
+        /// The result of the conversion.
+        /// </returns>
+        public static implicit operator T(Meta<T> meta)
 		{
 			return meta.TypedData;
 		}
 	}
 
-	[Serializable]
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="Bam.Net.Data.Repositories.Meta" />
+    [Serializable]
 	public class Meta
 	{
-		public Meta()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Meta"/> class.
+        /// </summary>
+        public Meta()
 		{
 			RequireIdProperty = true;
 		}
-		public Meta(object data, IObjectReaderWriter objectReaderWriter, bool setMeta = true)
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Meta"/> class.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <param name="objectReaderWriter">The object reader writer.</param>
+        /// <param name="setMeta">if set to <c>true</c> [set meta].</param>
+        public Meta(object data, IObjectReaderWriter objectReaderWriter, bool setMeta = true)
 		{
 			RequireIdProperty = true;
 			ObjectReaderWriter = objectReaderWriter;
@@ -63,7 +104,13 @@ namespace Bam.Net.Data.Repositories
 
 		IObjectReaderWriter _objectReaderWriter;
 		object _objectReaderWriterLock = new object();
-		public IObjectReaderWriter ObjectReaderWriter
+        /// <summary>
+        /// Gets or sets the object reader writer.
+        /// </summary>
+        /// <value>
+        /// The object reader writer.
+        /// </value>
+        public IObjectReaderWriter ObjectReaderWriter
 		{
 			get
 			{
