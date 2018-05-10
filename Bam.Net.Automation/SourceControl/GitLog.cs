@@ -114,7 +114,8 @@ namespace Bam.Net.Automation.SourceControl
             int num = 0;
             output.StandardOutput.DelimitSplit("\r", "\n").Each(log => 
             {
-                string line = log.DelimitedReplace("\"", "\'");
+                Dictionary<string, string> replacements = new Dictionary<string, string>() { { "\"", "\'" }, { "\\", "\\\\" } };
+                string line = log.DelimitedReplace(replacements);
                 line.SafeWriteToFile($".\\gitlog_{++num}.txt", true);
                 results.Add(line.FromJson<GitLog>());
             });

@@ -3245,6 +3245,11 @@ namespace Bam.Net
 
         public static string DelimitedReplace(this string input, string toReplace, string replaceWith, string startDelimiter = "$$~", string endDelimiter = "~$$")
         {
+            return DelimitedReplace(input, new Dictionary<string, string> { { toReplace, replaceWith } }, startDelimiter, endDelimiter);
+        }
+        
+        public static string DelimitedReplace(this string input, Dictionary<string, string> replacements, string startDelimiter = "$$~", string endDelimiter = "~$$")
+        {
             StringBuilder result = new StringBuilder();
             StringBuilder innerValue = new StringBuilder();
             bool replacing = false;
@@ -3254,12 +3259,15 @@ namespace Bam.Net
                 {
                     innerValue.Append(c);
                     string innerSoFar = innerValue.ToString();
-                    if (innerSoFar.EndsWith(toReplace))
+                    foreach(string toReplace in replacements.Keys)
                     {
-                        StringBuilder tmp = new StringBuilder();
-                        tmp.Append(innerSoFar.Truncate(toReplace.Length));
-                        tmp.Append(replaceWith);
-                        innerValue = tmp;
+                        if (innerSoFar.EndsWith(toReplace))
+                        {
+                            StringBuilder tmp = new StringBuilder();
+                            tmp.Append(innerSoFar.Truncate(toReplace.Length));
+                            tmp.Append(replacements[toReplace]);
+                            innerValue = tmp;
+                        }
                     }
 
                     if (innerValue.ToString().EndsWith(endDelimiter))
