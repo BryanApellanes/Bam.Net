@@ -116,4 +116,7 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /iery "$(TargetDir)*.*" "C:\bam\tools\BamToolkit"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
