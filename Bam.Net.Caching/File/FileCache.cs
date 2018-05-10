@@ -27,8 +27,26 @@ namespace Bam.Net.Caching.File
             _lock.DoubleCheckLock(ref _hashes, () => new ConcurrentDictionary<string, string>());
         }
 
+        /// <summary>
+        /// Gets or sets the file extension.
+        /// </summary>
+        /// <value>
+        /// The file extension.
+        /// </value>
         public string FileExtension { get; protected set; }
+
+        /// <summary>
+        /// Gets the content.
+        /// </summary>
+        /// <param name="filePath">The file path.</param>
+        /// <returns></returns>
         public abstract byte[] GetContent(string filePath);
+
+        /// <summary>
+        /// Gets the content of the zipped file.
+        /// </summary>
+        /// <param name="filePath">The file path.</param>
+        /// <returns></returns>
         public abstract byte[] GetZippedContent(string filePath);
 
         /// <summary>
@@ -78,6 +96,10 @@ namespace Bam.Net.Caching.File
             return _cachedFiles[file.FullName].GetZippedText();
         }
 
+        /// <summary>
+        /// Ensures the file is loaded.
+        /// </summary>
+        /// <param name="file">The file.</param>
         protected void EnsureFileIsLoaded(FileInfo file)
         {
             if (!_cachedFiles.ContainsKey(file.FullName) || HashChanged(file))
@@ -86,6 +108,11 @@ namespace Bam.Net.Caching.File
             }
         }
 
+        /// <summary>
+        /// Determines if the hash of the specified file has changed.
+        /// </summary>
+        /// <param name="file">The file.</param>
+        /// <returns></returns>
         protected bool HashChanged(FileInfo file)
         {
             if (_hashes.TryGetValue(file.FullName, out string hash) && 
@@ -96,17 +123,29 @@ namespace Bam.Net.Caching.File
             return false;
         }
 
+        /// <summary>
+        /// Removes the specified file.
+        /// </summary>
+        /// <param name="file">The file.</param>
         public void Remove(FileInfo file)
         {
             _cachedFiles.TryRemove(file.FullName, out CachedFile value);
         }
 
+        /// <summary>
+        /// Reloads the specified file.
+        /// </summary>
+        /// <param name="file">The file.</param>
         public virtual void Reload(FileInfo file)
         {
             _cachedFiles.TryRemove(file.FullName, out CachedFile value);
             Load(file);
         }
 
+        /// <summary>
+        /// Loads the specified file.
+        /// </summary>
+        /// <param name="file">The file.</param>
         public virtual void Load(FileInfo file)
         {
             string fullName = file.FullName;

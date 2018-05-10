@@ -9,11 +9,31 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Caching
 {
-	public class CacheEvictionEventArgs: EventArgs
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="System.EventArgs" />
+    public class CacheEvictionEventArgs: EventArgs
 	{
-		public CacheEvictionEventArgs() { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CacheEvictionEventArgs"/> class.
+        /// </summary>
+        public CacheEvictionEventArgs() { }
 
-		public Cache Cache { get; set; }
-		public CacheItem[] EvictedItems { get; set; }
+        /// <summary>
+        /// Gets or sets the cache.
+        /// </summary>
+        /// <value>
+        /// The cache.
+        /// </value>
+        public Cache Cache { get; set; }
+
+        /// <summary>
+        /// Gets or sets the evicted items.
+        /// </summary>
+        /// <value>
+        /// The evicted items.
+        /// </value>
+        public CacheItem[] EvictedItems { get; set; }
 	}
 }

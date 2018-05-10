@@ -13,13 +13,29 @@ using Bam.Net.Data.Repositories;
 
 namespace Bam.Net.Caching
 {
+    /// <summary>
+    /// Represents an item in a cache.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <seealso cref="Bam.Net.Caching.CacheItem" />
     [Serializable]
     public class CacheItem<T>: CacheItem where T: IMemorySize, new()
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CacheItem{T}"/> class.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="metaProvider">The meta provider.</param>
         public CacheItem(T value, IMetaProvider metaProvider) : base(value, metaProvider)
         {
         }
 
+        /// <summary>
+        /// Gets the value.
+        /// </summary>
+        /// <value>
+        /// The value.
+        /// </value>
         public new T Value
         {
             get
@@ -28,13 +44,28 @@ namespace Bam.Net.Caching
             }            
         }
 
+        /// <summary>
+        /// Gets the size of the value in memory.
+        /// </summary>
+        /// <value>
+        /// The size of the memory.
+        /// </value>
         public override int MemorySize => Value.MemorySize();
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="Bam.Net.Caching.CacheItem" />
     [Serializable]
 	public class CacheItem
 	{
-		public CacheItem(object value, IMetaProvider metaProvider)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CacheItem"/> class.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="metaProvider">The meta provider.</param>
+        public CacheItem(object value, IMetaProvider metaProvider)
 		{
 			Value = value;			
 			Meta = metaProvider.GetMeta(this);			
@@ -45,7 +76,13 @@ namespace Bam.Net.Caching
             Name = value.Property<string>("Name", false);
 		}
 
-		protected Meta Meta { get; set; }
+        /// <summary>
+        /// Gets or sets the meta.
+        /// </summary>
+        /// <value>
+        /// The meta.
+        /// </value>
+        protected Meta Meta { get; set; }
 
 		public long Id
 		{
