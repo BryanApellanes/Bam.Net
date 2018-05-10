@@ -23,6 +23,9 @@
     <Compile Include="BamToolkitMM.wxs" />
     <Compile Include="BamToolkitMMcustom.wxs" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="build-bamtoolkitmm.cmd" />
+  </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
   <!--
 	To modify your build process, add your task inside one of the targets below and uncomment it.
