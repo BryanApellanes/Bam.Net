@@ -149,6 +149,7 @@ namespace Bam.Net.Automation
                     }
                     else if(BuildMsi())
                     {
+                        _nugetArg = settings.OutputPath;
                         CreateNugetPackages();
                     }
                     else
