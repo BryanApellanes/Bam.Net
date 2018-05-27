@@ -41,6 +41,10 @@ namespace Bam.Net.Automation.MSBuild
         {
             Project project = projectFile.FromXmlFile<Project>();
             ProjectItemGroup itemGroup = project.ItemGroup.Where(pig => pig.None != null).FirstOrDefault();
+            if(itemGroup == null)
+            {
+                itemGroup = new ProjectItemGroup { None = new ProjectItemGroupNone[] { } };
+            }
             List<ProjectItemGroupNone> current = new List<ProjectItemGroupNone>(itemGroup.None);
             ProjectItemGroupNone toAdd = new ProjectItemGroupNone { Include = fileToAdd }; ;
             ProjectItemGroupNone existing = current.Where(pin => pin.Include.Equals(fileToAdd)).FirstOrDefault();
