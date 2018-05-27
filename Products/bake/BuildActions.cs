@@ -338,7 +338,7 @@ namespace Bam.Net.Automation
             {
                 return Task.Run(() =>
                 {
-                    OutLine(projectFile.FullName, ConsoleColor.Cyan);
+                    OutLineFormat("Updating nuspec for {0}", ConsoleColor.Cyan, projectFile.FullName);
                     DirectoryInfo currentProjectDirectory = projectFile.Directory;
                     NuspecFile nuspecFile = new NuspecFile(Path.Combine(currentProjectDirectory.FullName, $"{fileName}.nuspec"));
                     if (!System.IO.File.Exists(nuspecFile.Path))
