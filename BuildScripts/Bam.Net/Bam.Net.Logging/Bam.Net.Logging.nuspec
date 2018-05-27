@@ -9,8 +9,7 @@
     <projectUrl>http://bryanapellanes.github.io/Bam.Net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Supplemental data access object based loggers for Bam</description>
-    <releaseNotes>Version 1.9.1
- -   minor refactor (2a064e4)
+    <releaseNotes>Version v1.9.1
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>

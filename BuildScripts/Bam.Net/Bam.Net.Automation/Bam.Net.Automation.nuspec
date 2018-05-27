@@ -9,9 +9,17 @@
     <projectUrl>http://bryanapellanes.github.io/Bam.Net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Automation tools</description>
-    <releaseNotes>Version 1.9.1
- -   update app manifest handling (8302599)
- -   regen dao to add Top with order by (ed4095b)
+    <releaseNotes>Version v1.9.1
+Updates since v1.9.1:
+ -   handle slashes in git log messages (1fe6e6e5)
+ -   rename jobconductor to jobmanager (c10f5681)
+ -   refactor workstate handling; remove ci namespace to prepare for deletion (f6737ae4)
+ -   refactor JobConductorService to make ready for prime time; wip (1854de49)
+ -   refactor, preparing for prime time (7f4644f9)
+ -   make TestReportService extend ProxyableService (192130cb)
+ -   differentiate TestServiceRegistries by ProcessMode (b5b85f1f)
+ -   fix TestReportingServices registry (3f0ecf1a)
+ -   fix TestReportingServices registry (f9be3583)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>

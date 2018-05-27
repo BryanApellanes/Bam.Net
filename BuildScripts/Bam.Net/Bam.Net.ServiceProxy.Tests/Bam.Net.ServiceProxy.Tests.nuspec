@@ -12,7 +12,7 @@
 	Tests for System for simply and easily exposing pocos as RESTful webservices
 	with automatic generation of both .Net and Javascript clients
 	</description>
-    <releaseNotes>Version 1.9.1
+    <releaseNotes>Version v1.9.1
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>

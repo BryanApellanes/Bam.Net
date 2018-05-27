@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Bam.Net.Data.Schema</id>
+    <version>1.9.1</version>
+    <title>Bam.Net.Data.Schema</title>
+    <authors>Package Authors</authors>
+    <owners>Package Owners</owners>
+    <description>Bam.Net.Data.Schema</description>
+    <releaseNotes>Version v1.9.1
+</releaseNotes>
+    <copyright>Copyright © Bryan Apellanes 2018</copyright>
+    <dependencies>
+      <dependency id="Bam.Net" version="1.9.1" />
+      <dependency id="Bam.Net.Data.SQLite" version="1.9.1" />
+      <dependency id="Bam.Net.Data" version="1.9.1" />
+      <dependency id="Bam.Net.Data.Schema" version="1.9.1" />
+      <dependency id="Bam.Net.Documentation" version="1.9.1" />
+      <dependency id="Bam.Net.Javascript" version="1.9.1" />
+      <dependency id="Bam.Net.Presentation" version="1.9.1" />
+      <dependency id="Bam.Net.ServiceProxy" version="1.9.1" />
+      <dependency id="Microsoft.AspNet.Mvc" version="5.2.3" />
+      <dependency id="Microsoft.AspNet.Razor" version="3.2.3" />
+      <dependency id="Microsoft.AspNet.WebPages" version="3.2.3" />
+      <dependency id="Microsoft.Web.Infrastructure" version="1.0.0.0" />
+      <dependency id="Newtonsoft.Json" version="11.0.1" />
+      <dependency id="System.Data.SQLite.Core" version="1.0.99.0" />
+    </dependencies>
+  </metadata>
+</package>

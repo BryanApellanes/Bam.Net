@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <id>Bam.Net.CoreServices</id>
+    <id>Bam.Net.Caching</id>
     <version>1.9.1</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
@@ -9,10 +9,14 @@
     <projectUrl>http://bryanapellanes.github.io/Bam.Net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Memory caching for Bam.Net</description>
-    <releaseNotes>Version 1.9.1
- -   ++, update serviceregistryservice (59e715a)
- -   regenerate data access to add Top with order by (23406ea)
- -   additional diagnostic info (e08bb6b)
+    <releaseNotes>Version v1.9.1
+Updates since v1.9.1:
+ -   added docs (eafef417)
+ -   cache by name (39d69083)
+ -   improved type handling (521758e6)
+ -   check if file exists on load (3b53828e)
+ -   improved caching implementation (38e8ef86)
+ -   remove top lock on load (67a64103)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>

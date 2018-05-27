@@ -9,10 +9,19 @@
     <projectUrl>http://bryanapellanes.github.io/Bam.Net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Tools for distributed application services</description>
-    <releaseNotes>Version 1.9.1
- -   ++, update serviceregistryservice (59e715a)
- -   regenerate data access to add Top with order by (23406ea)
- -   additional diagnostic info (e08bb6b)
+    <releaseNotes>Version v1.9.1
+Updates since v1.9.1:
+ -   better user management (9162acc6)
+ -   specify assemblyservice db path (1aff366b)
+ -   account for custom attributes to determine reference assemblies for proxy generation (42e69b7d)
+ -   lock while registering service loader (e4300f57)
+ -   use locks and try-catches to aleviate file access race conditions (c3ed5cbc)
+ -   refactor testing related services (10ba3896)
+ -   serviceregistryservice; scan for serviceregistries (c2eb722c)
+ -   use locks, and try-catches to eliminate race and file access issues (e1c425cf)
+ -   refactor testing related services (e8c40c9c)
+ -   scan for serviceregistries (2dc067d5)
+ -   continued ServiceRegistryService implementation (e3b8428b)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>

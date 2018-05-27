@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <id>Bam.Net.Serices</id>
+    <id>Bam.Net.Services</id>
     <version>1.9.1</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
@@ -11,7 +11,12 @@
     <description>
 	Supplemental Bam.Net services
 	</description>
-    <releaseNotes>Version 1.9.1
+    <releaseNotes>Version v1.9.1
+Updates since v1.9.1:
+ -   update catalog services (fa0294e0)
+ -   expose key management to coreclient (c99b0da7)
+ -   add HostsService (2b6e84d9)
+ -   add additional reference assemblies to proxygen (82ab5268)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>

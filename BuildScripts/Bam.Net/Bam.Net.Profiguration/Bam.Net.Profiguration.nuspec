@@ -13,7 +13,7 @@
 	New projects should consider using the Vault class in
 	Bam.Net.Encryption
 	</description>
-    <releaseNotes>Version 1.9.1
+    <releaseNotes>Version v1.9.1
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>

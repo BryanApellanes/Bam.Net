@@ -9,11 +9,10 @@
     <projectUrl>http://bryanapellanes.github.io/Bam.Net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Repository pattern providers for the Bam framework</description>
-    <releaseNotes>Version 1.9.1
- -   correct assembly references in dao repo compilation (5c9877e)
- -   handle datasettings based on uri (e26f058)
- -   add generic 'Top' with sortby and sortorder (3ad33f5)
- -   update repository path handling (942bca6)
+    <releaseNotes>Version v1.9.1
+Updates since v1.9.1:
+ -   added docs (b834a9f1)
+ -   add attribute reference types when generating dao types for pocos (0b81acfb)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>

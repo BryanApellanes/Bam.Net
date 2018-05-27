@@ -11,9 +11,9 @@
     <description>
 	Basic user account management system for use with Bam
 	</description>
-    <releaseNotes>Version 1.9.1
- -   improved session caching (7c238ee)
- -   cache session (f95704e)
+    <releaseNotes>Version v1.9.1
+Updates since v1.9.1:
+ -   add local user management to bam.exe (4733d106)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>

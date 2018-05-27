@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Bam.Net.Services</id>
+    <version>1.9.1</version>
+    <authors>Bryan Apellanes</authors>
+    <owners>Bryan Apellanes</owners>
+    <description>
+	Supplemental Bam.Net services
+	</description>
+    <releaseNotes>Version v1.9.1
+Updates since v1.9.1:
+ -   update catalog services (fa0294e0)
+ -   expose key management to coreclient (c99b0da7)
+ -   add HostsService (2b6e84d9)
+ -   add additional reference assemblies to proxygen (82ab5268)
+</releaseNotes>
+    <copyright>Copyright © Bryan Apellanes 2018</copyright>
+    <dependencies>
+      <dependency id="Bam.Net" version="1.9.1" />
+      <dependency id="Bam.Net.Analytics" version="1.9.1" />
+      <dependency id="Bam.Net.CommandLine" version="1.9.1" />
+      <dependency id="Bam.Net.CoreServices" version="1.9.1" />
+      <dependency id="Bam.Net.Data" version="1.9.1" />
+      <dependency id="Bam.Net.Data.Repositories" version="1.9.1" />
+      <dependency id="Bam.Net.Data.Schema" version="1.9.1" />
+      <dependency id="Bam.Net.Encryption" version="1.9.1" />
+      <dependency id="Bam.Net.Incubation" version="1.9.1" />
+      <dependency id="Bam.Net.Messaging" version="1.9.1" />
+      <dependency id="Bam.Net.Server" version="1.9.1" />
+      <dependency id="Bam.Net.ServiceProxy" version="1.9.1" />
+      <dependency id="Bam.Net.Translation" version="1.9.1" />
+      <dependency id="Bam.Net.UserAccounts" version="1.9.1" />
+      <dependency id="NCuid" version="1.0.0" />
+      <dependency id="Newtonsoft.Json" version="11.0.1" />
+    </dependencies>
+  </metadata>
+</package>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Bam.Net.Data.Repositories.Tests</id>
+    <version>1.9.1</version>
+    <title>Bam.Net.Data.Repositories.Tests</title>
+    <authors>Bryan Apellanes</authors>
+    <owners>Bryan Apellanes</owners>
+    <description>Bam.Net.Data.Repositories.Tests</description>
+    <releaseNotes>Version v1.9.1
+</releaseNotes>
+    <copyright>Copyright 2018</copyright>
+    <dependencies>
+      <dependency id="Microsoft.AspNet.Mvc" version="5.2.3" />
+      <dependency id="Microsoft.AspNet.Razor" version="3.2.3" />
+      <dependency id="Microsoft.AspNet.WebPages" version="3.2.3" />
+      <dependency id="Microsoft.Web.Infrastructure" version="1.0.0.0" />
+      <dependency id="Newtonsoft.Json" version="11.0.1" />
+      <dependency id="System.Data.SQLite.Core" version="1.0.99.0" />
+      <dependency id="YamlSerializer" version="1.0" />
+    </dependencies>
+  </metadata>
+</package>

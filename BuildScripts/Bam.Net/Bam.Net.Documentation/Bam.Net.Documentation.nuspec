@@ -9,8 +9,10 @@
     <projectUrl>http://bryanapellanes.github.io/Bam.Net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Documentation generator for Bam.Net</description>
-    <releaseNotes>Version 1.9.1
- -   delete unused classes (28e175f)
+    <releaseNotes>Version v1.9.1
+Updates since v1.9.1:
+ -   start syntax walker (7f103acd)
+ -   syntax walker; wip (28f9b7f2)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>

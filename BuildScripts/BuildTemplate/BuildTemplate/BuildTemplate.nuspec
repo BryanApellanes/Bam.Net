@@ -3,12 +3,13 @@
   <metadata>
     <id>BuildTemplate</id>
     <version>1.9.1</version>
+    <title>BuildTemplate</title>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>http://bryanapellanes.github.io/Bam.Net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>description</description>
+    <description>BuildTemplate</description>
     <releaseNotes>Version 1.9.1
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>

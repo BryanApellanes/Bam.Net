@@ -13,7 +13,7 @@
 		Store sensitive information in an encrypted Vault that 
 		stores encrypted data in SQLite database files.
     </description>
-    <releaseNotes>Version 1.9.1
+    <releaseNotes>Version v1.9.1
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>

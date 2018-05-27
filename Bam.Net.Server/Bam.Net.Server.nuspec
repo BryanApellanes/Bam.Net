@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Bam.Net.Server</id>
+    <version>1.9.1</version>
+    <authors>Bryan Apellanes</authors>
+    <owners>Bryan Apellanes</owners>
+    <description>
+	Core Bam server allowing applications to self host outside of
+	IIS.  Simplifies distributed computing
+	</description>
+    <releaseNotes>Version v1.9.1
+Updates since v1.9.1:
+ -   add unescaped compiled property to ICompiledTemplate (95bf6b51)
+ -   reload layouts on change to include.js file; some bug fixes (7a82bd2d)
+ -   begin refactor html template handling (2292b305)
+ -   cleanup unused and deprecated methods (a6674977)
+ -   simplify, delete WriteAppScripts; moving to webpack (694eb0c8)
+ -   refactor to enable specifying which app(s) to serve (3436efb3)
+ -   fix HttpServer.stop (fece2963)
+ -   refactor data sources (3be0988c)
+ -   rename CustomContentHandler to ContentHandler; make HttpMethodResponder methods virtual instead of abstract (bfb2d803)
+ -   scan for custom handlers (b31a7996)
+ -   custom content handling; refactor serviceregistry (517a60cf)
+ -   get and set headers from file system if present (7983e10b)
+ -   mark events new in appcontentresponder (a4bc86d9)
+ -   improving errorhandling namespace (1ebb3f28)
+ -   update content page list handling (2bee0891)
+ -   add initial route handling (bb073cfa)
+ -   user ApplicationNameResolver instance instead of static method (abe7e939)
+ -   renamde BamApplicationManager to AppMetaManager; refactor etag handling (9842bf13)
+ -   add error handling components; clean up unused parameters, add some documentation (421f174b)
+ -   better content handling; vyoo.exe updated (58262c0c)
+ -   clean handling of hostname (98d25d67)
+ -   small refactor (65027436)
+ -   clean up handling of hostnames (de637dc8)
+ -   minor refactor (b1fdff03)
+</releaseNotes>
+    <copyright>Copyright © Bryan Apellanes 2018</copyright>
+    <dependencies>
+      <dependency id="Bam.Net" version="1.9.1" />
+      <dependency id="Bam.Net.CommandLine" version="1.9.1" />
+      <dependency id="Bam.Net.Data" version="1.9.1" />
+      <dependency id="Bam.Net.Drawing" version="1.9.1" />
+      <dependency id="Bam.Net.Encryption" version="1.9.1" />
+      <dependency id="Bam.Net.Html" version="1.9.1" />
+      <dependency id="Bam.Net.Incubation" version="1.9.1" />
+      <dependency id="Bam.Net.Javascript" version="1.9.1" />
+      <dependency id="Bam.Net.ServiceProxy" version="1.9.1" />
+      <dependency id="Bam.Net.UserAccounts" version="1.9.1" />
+      <dependency id="Bam.Net.Yaml" version="1.9.1" />
+      <dependency id="AngleSharp" version="0.9.9.1" />
+      <dependency id="dotless" version="1.5.2" />
+      <dependency id="EcmaScript.Net" version="1.0.1.0" />
+      <dependency id="Microsoft.AspNet.Mvc" version="5.2.3" />
+      <dependency id="Microsoft.AspNet.Razor" version="3.2.3" />
+      <dependency id="Microsoft.AspNet.WebPages" version="3.2.3" />
+      <dependency id="Microsoft.Web.Infrastructure" version="1.0.0.0" />
+      <dependency id="NCuid" version="1.0.0" />
+      <dependency id="Newtonsoft.Json" version="11.0.1" />
+      <dependency id="YamlSerializer" version="1.0" />
+      <dependency id="YUICompressor.NET" version="2.7.0.0" />
+    </dependencies>
+  </metadata>
+</package>
