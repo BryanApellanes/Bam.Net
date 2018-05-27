@@ -132,7 +132,7 @@ namespace Bam.Net.Automation
             BamInfo info = GetBamInfo(srcRoot);
             info.VersionString = GetNextVersion(info.VersionString);
             UpdateAssemblyVersions(srcRoot, info);
-            SetSolutionNuspecInfos(srcRoot, info.VersionString);
+            Task.WaitAll(SetSolutionNuspecInfos(srcRoot, info.VersionString).ToArray());
 
             BakeSettings settings = GetBuildTargetSettings(GetArgument("Solution", "Please enter path to the solution relative to the git repo root."));
             if (NugetRestore(settings))
