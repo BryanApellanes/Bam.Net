@@ -341,6 +341,8 @@ namespace Bam.Net.Automation
                     OutLineFormat("Updating nuspec for {0}", ConsoleColor.Cyan, projectFile.FullName);
                     DirectoryInfo currentProjectDirectory = projectFile.Directory;
                     NuspecFile nuspecFile = new NuspecFile(Path.Combine(currentProjectDirectory.FullName, $"{fileName}.nuspec"));
+                    nuspecFile.Version = new PackageVersion(version);
+                    nuspecFile.Save();
                     if (!System.IO.File.Exists(nuspecFile.Path))
                     {
                         nuspecFile = new NuspecFile(nuspecFile.Path)
@@ -360,8 +362,8 @@ namespace Bam.Net.Automation
                         nuspecFile.AddPackageDependencies(packageConfig);
                     }
                     nuspecFile.UpdateProjectDependencyVersions(version, predicate);
+                    nuspecFile.Save();
                     nuspecFile.UpdateReleaseNotes(sourceRoot.FullName);
-                    nuspecFile.Version = new PackageVersion(version);
                     nuspecFile.Save();
                     projectFile.SetNonCompileItem($"{fileName}.nuspec", FileCopyBehavior.Always);
                     OutLineFormat("{0}: Release Notes: {1}", ConsoleColor.DarkBlue, nuspecFile.Id, nuspecFile.ReleaseNotes);

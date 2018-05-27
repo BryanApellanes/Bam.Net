@@ -118,7 +118,6 @@ namespace Bam.Net.Automation.Nuget
                 releaseNotes.Summary = $"Version {Version.Value}";
             }
             ReleaseNotes = releaseNotes.Value;
-            Save();
         }
 
         package _package;
