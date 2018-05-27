@@ -245,7 +245,7 @@ namespace Bam.Net.Automation
         {
             string command = $"{bakeSettings.MsBuild} /t:Build /filelogger /p:AutoGenerateBindingRedirects={bakeSettings.AutoGenerateBindingRedirects};GenerateDocumentation={bakeSettings.GenerateDocumentation};OutputPath={bakeSettings.OutputPath};Configuration={bakeSettings.Config};Platform=\"{bakeSettings.Platform}\";TargetFrameworkVersion={bakeSettings.TargetFrameworkVersion};CompilerVersion={bakeSettings.TargetFrameworkVersion} {bakeSettings.ProjectFile} /m:{bakeSettings.MaxCpuCount}";
 
-            ProcessOutput output = command.Run((line) => OutLine(line, ConsoleColor.Cyan), (err) => OutLine(err, ConsoleColor.Magenta));
+            ProcessOutput output = command.Run((line) => Console.WriteLine(line), (err) => OutLine(err, ConsoleColor.Magenta), 600000);
             return output.ExitCode == 0;
         }
 
@@ -606,7 +606,7 @@ namespace Bam.Net.Automation
             DirectoryInfo outputDirectory = new DirectoryInfo(GetArgument("OutputDirectory", "Please specify the path to output nuget packages to."));
             string suffix = GetSuffix();
             //ProcessOutputCollector outputCollector = new ProcessOutputCollector((o) => OutLineFormat(o, ConsoleColor.Cyan), (err) => OutLineFormat(err, ConsoleColor.Magenta));
-            ProcessOutput output = $"{nugetPath} pack {nuspecFile.Path} -OutputDirectory \"{outputDirectory.FullName}\"{suffix}".Run((o) => OutLineFormat(o, ConsoleColor.Cyan), (err) => OutLineFormat(err, ConsoleColor.Magenta));
+            ProcessOutput output = $"{nugetPath} pack {nuspecFile.Path} -OutputDirectory \"{outputDirectory.FullName}\"{suffix}".Run((o) => OutLineFormat(o, ConsoleColor.Cyan), (err) => OutLineFormat(err, ConsoleColor.Magenta), 600000);
             return output;
         }
 
@@ -639,9 +639,7 @@ namespace Bam.Net.Automation
         private static bool NugetRestore(BakeSettings bakeSettings)
         {
             string command = $"{bakeSettings.Nuget} restore {bakeSettings.ProjectFile} -PackagesDirectory {bakeSettings.PackagesDirectory}";
-            ProcessOutput output = command.Run();
-            OutLineFormat(output.StandardOutput, ConsoleColor.Cyan);
-            OutLineFormat(output.StandardError, ConsoleColor.Magenta);
+            ProcessOutput output = command.Run((line) => Console.WriteLine(line), (err) => OutLineFormat(err, ConsoleColor.Magenta), 600000);
             return output.ExitCode == 0;
         }
 
