@@ -53,8 +53,9 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\bam\nuget\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -84,10 +85,6 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Stickerize.Business\Stickerize.Business.csproj">
-      <Project>{ab55e655-e43d-46b3-a484-781f5be37da8}</Project>
-      <Name>Stickerize.Business</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Bam.Net.Automation\Bam.Net.Automation.csproj">
       <Project>{b65e4fcd-de50-4d9e-91d7-dddf80c25c47}</Project>
       <Name>Bam.Net.Automation</Name>
