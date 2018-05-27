@@ -18,7 +18,9 @@ rem generate nuget scripts
 baminf /generateNugetScripts /dnf:.\dll_names.txt /enf:.\exe_names.txt /tf:.\copy_template.txt
 
 call build_solution.cmd Release %ROOT%
-call generate_bam_dot_exe_script.cmd
+
+baminf /generateBamDotExeScript /mdnf:.\dll_names_merge.txt
+
 call generate_bam_dot_exe.cmd
 call pack.cmd
 

@@ -298,6 +298,9 @@
     <Compile Include="_.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Bam.Net.nuspec">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Bam.Net.ruleset" />
     <None Include="Documentation\XmlDocumentation.xsd">
       <SubType>Designer</SubType>

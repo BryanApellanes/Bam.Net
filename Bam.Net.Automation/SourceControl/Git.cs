@@ -24,7 +24,7 @@ namespace Bam.Net.Automation.SourceControl
         {
             return new Git(repository);
         }
-
+        
         public static string LatestRelease(string repository)
         {
             return new Git(repository).LatestRelease();

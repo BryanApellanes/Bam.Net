@@ -30,7 +30,19 @@ namespace Bam.Net.CommandLine
             ValidArgumentInfo = new List<ArgumentInfo>();
             _cachedArguments = new Dictionary<string, string>();
         }
-        
+
+        /// <summary>
+        /// Spawns a new process executing the current exe with the specified arguments.
+        /// </summary>
+        /// <param name="arguments">The arguments.</param>
+        /// <returns></returns>
+        public static ProcessOutput SpawnSelf(string arguments)
+        {
+            Process process = Process.GetCurrentProcess();
+            FileInfo main = new FileInfo(process.MainModule.FileName);
+            return $"{main.FullName} {arguments}".Run();
+        }
+
         public static string PasswordPrompt(string promptMessage = null, ConsoleColor color = ConsoleColor.Cyan)
         {
             return PasswordPrompt(new ConsoleColorCombo(color), promptMessage);
@@ -122,6 +134,11 @@ namespace Bam.Net.CommandLine
                 Arguments.Contains(acronym) ? Arguments[acronym] :
                 !string.IsNullOrEmpty(fromConfig) ? fromConfig :
                 prompter(promptMessage);
+        }
+
+        public static bool HasArgument(string name)
+        {
+            return Arguments.Contains(name);
         }
 
         /// <summary>

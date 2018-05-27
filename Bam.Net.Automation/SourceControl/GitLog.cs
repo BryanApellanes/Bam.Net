@@ -70,6 +70,11 @@ namespace Bam.Net.Automation.SourceControl
             return false;
         }
 
+        static GitLog()
+        {
+            LineReader = (num, line) => Logging.Log.AddEntry("GitLog: {0}. {1}", num, line);
+        }
+
         static Dictionary<string, HashSet<GitLog>> _logCache = new Dictionary<string, HashSet<GitLog>>();
         static object _logCacheLock = new object();
         public static HashSet<GitLog> SinceLatestRelease(string gitRepoPath, bool useCache = true)
@@ -115,13 +120,26 @@ namespace Bam.Net.Automation.SourceControl
             output.StandardOutput.DelimitSplit("\r", "\n").Each(log => 
             {
                 Dictionary<string, string> replacements = new Dictionary<string, string>() { { "\"", "\'" }, { "\\", "\\\\" } };
-                string line = log.DelimitedReplace(replacements);
-                line.SafeWriteToFile($".\\gitlog_{++num}.txt", true);
+                string line = log.DelimitedReplace(replacements);                
+                LineReader(++num, line);
                 results.Add(line.FromJson<GitLog>());
             });
 
             return results;
         }
+
+        /// <summary>
+        /// Gets or sets the line reader.  The line reader is executed for each line read by
+        /// GitLog methods.
+        /// </summary>
+        /// <value>
+        /// The line reader.
+        /// </value>
+        public static Action<int, string> LineReader
+        {
+            get;
+            set;
+        } 
 
         private static string GetPrettyFormatArg()
         {

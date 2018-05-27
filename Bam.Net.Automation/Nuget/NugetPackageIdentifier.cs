@@ -11,6 +11,8 @@ namespace Bam.Net.Automation.Nuget
 {
     public class NugetPackageIdentifier
     {
+        public NugetPackageIdentifier() { }
+
         public NugetPackageIdentifier(string id)
         {
             this.Id = id;
@@ -24,5 +26,19 @@ namespace Bam.Net.Automation.Nuget
 
         public string Id { get; set; }
         public string Version { get; set; }
+
+        public override int GetHashCode()
+        {
+            return $"{Id}{Version}".GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if(obj is NugetPackageIdentifier npi)
+            {
+                return npi.Id.Equals(Id) && npi.Version.Equals(Version);
+            }
+            return false;
+        }
     }
 }

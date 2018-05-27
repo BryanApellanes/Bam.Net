@@ -313,7 +313,7 @@ namespace Bam.Net.Automation
         protected internal bool JobExists(string name, out string jobDirectoryPath)
         {
 			jobDirectoryPath = System.IO.Path.Combine(JobsDirectory, name);
-            return Directory.Exists(jobDirectoryPath);
+            return System.IO.Directory.Exists(jobDirectoryPath);
         }
 
         /// <summary>

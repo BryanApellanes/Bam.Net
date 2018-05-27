@@ -129,6 +129,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Bam.Net.Syndication.nuspec">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

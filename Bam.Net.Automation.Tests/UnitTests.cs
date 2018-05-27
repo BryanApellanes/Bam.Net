@@ -33,31 +33,28 @@ using Bam.Net.Testing.Unit;
 using Bam.Net.Services;
 using MSBuild = Bam.Net.Automation.MSBuild;
 using System.Threading;
+using Bam.Net.Automation.SourceControl;
+using Bam.Net.Automation.MSBuild;
+using System.Xml;
 
 namespace Bam.Net.Automation.Tests
 {
     [Serializable]
     public class UnitTests: CommandLineTestInterface
     {
-        [ConsoleAction]
-        public void CanDeserializeProject()
+        [UnitTest]
+        public void CanFindGitRepo()
         {
-            MSBuild.Project bamProj = "C:\\src\\Bam.Net\\Bam.Net\\Bam.Net.csproj".FromXmlFile<MSBuild.Project>();
-            OutLine("Item groups", ConsoleColor.Blue);
-            bamProj.ItemGroup.Each(igt =>
-            {
-                OutLine("Source files");
-                igt.Compile.Each(item =>
-                {
-                    OutLine(item.Include, ConsoleColor.Green);
-                });
-                OutLine("References");
-                igt.Reference.Each(reference =>
-                {
-                    OutLineFormat("File: {0}", reference.Include, ConsoleColor.DarkGreen);
-                    OutLineFormat("HintPath: {0}", reference.HintPath, ConsoleColor.DarkGreen);
-                });
-            });
+            DirectoryInfo dir = new DirectoryInfo("C:\\bam\\src\\Bam.Net\\Bam.Net\\bin\\Debug");
+
+            DirectoryInfo gitRepo = dir.UpToGitRoot();
+            Expect.IsNotNull(gitRepo);
+            Expect.AreEqual("C:\\bam\\src\\Bam.Net", gitRepo.FullName);
+            OutLineFormat(gitRepo.FullName);
+
+            dir = new DirectoryInfo("C:\\windows\\system32");
+            gitRepo = dir.UpToGitRoot();
+            Expect.IsNull(gitRepo);            
         }
 
         [UnitTest]
@@ -93,9 +90,9 @@ namespace Bam.Net.Automation.Tests
         public void UnzipResourceTest()
         {
             string extractTo = ".\\Unzip";
-            if (Directory.Exists(extractTo))
+            if (System.IO.Directory.Exists(extractTo))
             {
-                Directory.Delete(extractTo, true);
+                System.IO.Directory.Delete(extractTo, true);
             }
             Expect.IsTrue(Assembly.GetExecutingAssembly().UnzipResource(typeof(UnitTests), "Test.zip", extractTo));
             FileInfo[] files = new DirectoryInfo(extractTo).GetFiles();

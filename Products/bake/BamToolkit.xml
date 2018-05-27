@@ -1,0 +1,1479 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <?define ComponentRules="OneToOne"?>
+  <!-- SourceDir instructs IsWiX the location of the directory that contains files for this merge module -->
+  <?define SourceDir="C:\bam\tools\BamToolkit"?>
+  <Module Id="BamToolkitMM" Language="1033" Version="2.0.0">
+    <Package Id="20b3866a-15f3-4907-a826-5d42d616af76" Platform="x64" Manufacturer="Three Headz" InstallerVersion="200" />
+    <Component Id="SetPath" Guid="f8c46422-ab08-4dbe-b422-60fc01e6c0f1" Directory="TARGETDIR">
+      <CreateFolder />
+      <Environment Id="Environment" Action="set" Name="PATH" Part="last" Permanent="no" System="yes" Value="[MergeRedirectFolder]" Separator=";" />
+    </Component>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="MergeRedirectFolder">
+        <Component Id="owcB30605F54A7C5D173FA824C5937B1CBA" Guid="c0596e65-517d-7365-cedd-596e43f3bd9f" Win64="yes">
+          <File Id="owfB30605F54A7C5D173FA824C5937B1CBA" Source="$(var.SourceDir)\AngleSharp.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc2247BBD96A817CE30C6D14F5E4F7FD39" Guid="a115f864-8746-8fae-ea4b-6a0e7a1e1d75" Win64="yes">
+          <File Id="owf2247BBD96A817CE30C6D14F5E4F7FD39" Source="$(var.SourceDir)\AngleSharp.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owc00768E03B23760B04EEECE0FB0059218" Guid="8e8982ab-c841-7900-8eea-e83670713817" Win64="yes">
+          <File Id="owf00768E03B23760B04EEECE0FB0059218" Source="$(var.SourceDir)\app.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owc9ABDC9EF94EB0F840A14F038A6325029" Guid="3f98c0fc-ae03-a057-7c1f-9753048378ef" Win64="yes">
+          <File Id="owf9ABDC9EF94EB0F840A14F038A6325029" Source="$(var.SourceDir)\apppath" KeyPath="yes" />
+        </Component>
+        <Component Id="owc734997796B474228200EB86181858E4C" Guid="78f7dfda-415d-4cc5-54ff-b94354d72dfb" Win64="yes">
+          <File Id="owf734997796B474228200EB86181858E4C" Source="$(var.SourceDir)\Argotic.Common.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc2EC311993084D75AF202FD6899C6433A" Guid="7c527ea5-2bc1-1ced-793f-00028179f2c6" Win64="yes">
+          <File Id="owf2EC311993084D75AF202FD6899C6433A" Source="$(var.SourceDir)\Argotic.Core.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owcF62A505A33FD22C5F0E884293FEF74AA" Guid="8b082d91-be61-29a2-5da7-be0a86361f26" Win64="yes">
+          <File Id="owfF62A505A33FD22C5F0E884293FEF74AA" Source="$(var.SourceDir)\Argotic.Extensions.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owcA03C15B2EF6DC0E92A11E25B54E7AC98" Guid="ccc36690-2098-225b-fd3c-f67793decfc8" Win64="yes">
+          <File Id="owfA03C15B2EF6DC0E92A11E25B54E7AC98" Source="$(var.SourceDir)\Array.yaml" KeyPath="yes" />
+        </Component>
+        <Component Id="owcA7D01DE31E75C0B45A7129D4349EAF1C" Guid="b9f4b706-5f8c-7ba1-2ad6-8ad5c9f6675b" Win64="yes">
+          <File Id="owfA7D01DE31E75C0B45A7129D4349EAF1C" Source="$(var.SourceDir)\bake.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owcB860DF90F900245B7140DBD22D3A47A7" Guid="c2b46976-61eb-5532-742c-2f677c7b95d0" Win64="yes">
+          <File Id="owfB860DF90F900245B7140DBD22D3A47A7" Source="$(var.SourceDir)\bake.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owc1D584FD364B66F707A5B2EF45DB8B1E7" Guid="17e1413d-bcb9-0acc-9f34-d89d6b0818cb" Win64="yes">
+          <File Id="owf1D584FD364B66F707A5B2EF45DB8B1E7" Source="$(var.SourceDir)\bake.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owcD55E99D8A78101CE398010C253D2589E" Guid="bac888b8-0796-d7e4-6fe5-091d858e9575" Win64="yes">
+          <File Id="owfD55E99D8A78101CE398010C253D2589E" Source="$(var.SourceDir)\bam.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owcB2B6BD2E53BC30FC9262DDA17B166774" Guid="00bb787d-47d6-1542-ace3-f0a2facb9ea8" Win64="yes">
+          <File Id="owfB2B6BD2E53BC30FC9262DDA17B166774" Source="$(var.SourceDir)\bam.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc9AEAFF4CB917F70D2CB09483169D259A" Guid="25fff9d0-38c2-5ada-0aec-64e296b73f9d">
+          <File Id="owf9AEAFF4CB917F70D2CB09483169D259A" Source="$(var.SourceDir)\Bam.Net.Analytics.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc4049581B42B76806A4267BB59F12C52C" Guid="e96bd5ff-6ee6-6c36-2c02-0a2fdd1b28ce">
+          <File Id="owf4049581B42B76806A4267BB59F12C52C" Source="$(var.SourceDir)\Bam.Net.Analytics.dll.config" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcA75AD5B3D41F81D6512B76380874B455" Guid="e2e95fa9-e51e-9d59-08b3-8dcb20d07e2a">
+          <File Id="owfA75AD5B3D41F81D6512B76380874B455" Source="$(var.SourceDir)\Bam.Net.Analytics.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owcC9EB9698EC430EF7488474002D2DD629" Guid="1e68d75c-9afe-baa2-e3db-8f3e944b03ce" Win64="yes">
+          <File Id="owfC9EB9698EC430EF7488474002D2DD629" Source="$(var.SourceDir)\Bam.Net.Analytics.Tests.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owc503B3D86A3EEA5CB4E63401B6347E17D" Guid="1a705c26-42bb-7451-fca7-b93bec0747e4" Win64="yes">
+          <File Id="owf503B3D86A3EEA5CB4E63401B6347E17D" Source="$(var.SourceDir)\Bam.Net.Analytics.Tests.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owc56ACEFD0BDC36F78C995DA12AC63D006" Guid="af3d43c1-87c8-d898-c8aa-6758e8aa29d5" Win64="yes">
+          <File Id="owf56ACEFD0BDC36F78C995DA12AC63D006" Source="$(var.SourceDir)\Bam.Net.Analytics.Tests.pdb" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc838015E7E9466CDA6BAA2C22B3E0E2FA" Guid="34d08450-3886-d54b-32c6-e06cf9dd71d9">
+          <File Id="owf838015E7E9466CDA6BAA2C22B3E0E2FA" Source="$(var.SourceDir)\Bam.Net.Analytics.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcC3F5363F620F8D3977CEA642D8740296" Guid="0ab6a614-bd71-d155-0d80-6fac236f3d1e">
+          <File Id="owfC3F5363F620F8D3977CEA642D8740296" Source="$(var.SourceDir)\Bam.Net.Automation.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcAA3EC705AFDCF2E8057F053882039248" Guid="d72423e9-fa22-e6ab-0092-2a8031071589">
+          <File Id="owfAA3EC705AFDCF2E8057F053882039248" Source="$(var.SourceDir)\Bam.Net.Automation.dll.config" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc3ADEF91DD23B28FC99785D741DB99778" Guid="f61dfbe5-433b-4a9c-4a68-61420fcc3ffc">
+          <File Id="owf3ADEF91DD23B28FC99785D741DB99778" Source="$(var.SourceDir)\Bam.Net.Automation.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc17D3D72D66D8F83D5070DB926C3ECF5E" Guid="d4f0635a-2c9b-ebf6-cf1d-5fd6d667bea0" Win64="yes">
+          <File Id="owf17D3D72D66D8F83D5070DB926C3ECF5E" Source="$(var.SourceDir)\Bam.Net.Automation.Tests.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owcFCD51C0CCEA799D664EC27282F863631" Guid="335c4598-32a2-68cf-fe0f-ee7aa9f00541" Win64="yes">
+          <File Id="owfFCD51C0CCEA799D664EC27282F863631" Source="$(var.SourceDir)\Bam.Net.Automation.Tests.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owc0651D74C560DD19663FBFE4ED09E53C5" Guid="5bd98655-7a0d-5542-7647-9e18a46591f2" Win64="yes">
+          <File Id="owf0651D74C560DD19663FBFE4ED09E53C5" Source="$(var.SourceDir)\Bam.Net.Automation.Tests.pdb" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc7259A788870DC5A125852A556CFD03F0" Guid="954d2aec-01dc-026c-ae87-48eed66a384d">
+          <File Id="owf7259A788870DC5A125852A556CFD03F0" Source="$(var.SourceDir)\Bam.Net.Automation.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owcFF14C238C2D733040104BCF379F7D4E6" Guid="5aa0c445-3e68-401f-7ab9-ce42faf02777" Win64="yes">
+          <File Id="owfFF14C238C2D733040104BCF379F7D4E6" Source="$(var.SourceDir)\Bam.Net.Breve.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc01EBEF2F14AD8825F2AAE78EBD20B255" Guid="83dce4ae-9e88-278f-d7a7-ca807a13105c" Win64="yes">
+          <File Id="owf01EBEF2F14AD8825F2AAE78EBD20B255" Source="$(var.SourceDir)\Bam.Net.Breve.dll.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owc2F274F105ACFB0C96473DCA86892C0A9" Guid="2e65ffe3-d7fa-03fd-058b-9e6b1eed6072" Win64="yes">
+          <File Id="owf2F274F105ACFB0C96473DCA86892C0A9" Source="$(var.SourceDir)\Bam.Net.Breve.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc97E07CF596C045AD8E38C9796A3D2040" Guid="5164086a-3453-d6e5-4f3a-b92c212824f4" Win64="yes">
+          <File Id="owf97E07CF596C045AD8E38C9796A3D2040" Source="$(var.SourceDir)\Bam.Net.Breve.Tests.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owcCDD650146316C12D8607FAC335E5162C" Guid="17ca4c82-b6c5-c9d4-52fb-71ba0283b836" Win64="yes">
+          <File Id="owfCDD650146316C12D8607FAC335E5162C" Source="$(var.SourceDir)\Bam.Net.Breve.Tests.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owcC16B805F499633B7BFF03FC50FEBD0FE" Guid="55d19b79-dc74-10ca-5510-7257058da6e1" Win64="yes">
+          <File Id="owfC16B805F499633B7BFF03FC50FEBD0FE" Source="$(var.SourceDir)\Bam.Net.Breve.Tests.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owcE9AE3884820CC4AA164D1DEC6C3E7D38" Guid="0d4ca4cd-47f0-73c4-7e43-80ef63909838" Win64="yes">
+          <File Id="owfE9AE3884820CC4AA164D1DEC6C3E7D38" Source="$(var.SourceDir)\Bam.Net.Breve.XML" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcB5B235014FF6B40D7B7DDB9271FCEBCE" Guid="617d9e99-55df-bed7-6808-012c57e192ed">
+          <File Id="owfB5B235014FF6B40D7B7DDB9271FCEBCE" Source="$(var.SourceDir)\Bam.Net.Caching.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc6106548072A325052358696E422BD5FC" Guid="9a3c3703-7a8d-e969-626b-e5bb2aa270de">
+          <File Id="owf6106548072A325052358696E422BD5FC" Source="$(var.SourceDir)\Bam.Net.Caching.dll.config" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcD213550E33F3E5FBF6393FB1FC02A8BB" Guid="579499cd-adb4-45cb-db0b-eeccf0a117e9">
+          <File Id="owfD213550E33F3E5FBF6393FB1FC02A8BB" Source="$(var.SourceDir)\Bam.Net.Caching.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc5F7BE7D0C9965D992D2B1173FC6249F1" Guid="69ea8a47-7b01-f623-5287-039680f77916" Win64="yes">
+          <File Id="owf5F7BE7D0C9965D992D2B1173FC6249F1" Source="$(var.SourceDir)\Bam.Net.Caching.Tests.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owc90CABB17A9097CD1C9263CBC50C6D3BD" Guid="1ac10f44-ff22-5d1e-99b0-542b6ef2a368" Win64="yes">
+          <File Id="owf90CABB17A9097CD1C9263CBC50C6D3BD" Source="$(var.SourceDir)\Bam.Net.Caching.Tests.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owc4BFC747F153057B2CB27D4C59A2E6DBB" Guid="1ca7c61f-69c7-6c1a-5a23-f8bf78992a3f" Win64="yes">
+          <File Id="owf4BFC747F153057B2CB27D4C59A2E6DBB" Source="$(var.SourceDir)\Bam.Net.Caching.Tests.pdb" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcF0D51BB450E533F5553BB4075AE55559" Guid="5d857973-3546-cde5-3125-87b47285fbcb">
+          <File Id="owfF0D51BB450E533F5553BB4075AE55559" Source="$(var.SourceDir)\Bam.Net.Caching.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc0450D8EA8D169FB07BCE9AD5C9333F30" Guid="5fd08e02-f63a-a3b5-64cc-49a19f81c0d2">
+          <File Id="owf0450D8EA8D169FB07BCE9AD5C9333F30" Source="$(var.SourceDir)\Bam.Net.CommandLine.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcAA1CFA9DEC3A640CB280C9BBA7640FEF" Guid="0323644a-26fd-9683-a216-02a4abb54ba0">
+          <File Id="owfAA1CFA9DEC3A640CB280C9BBA7640FEF" Source="$(var.SourceDir)\Bam.Net.CommandLine.dll.config" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc54853005CBF94931B32084B0030B9574" Guid="57298a9c-0be5-6325-e697-65cf33485420">
+          <File Id="owf54853005CBF94931B32084B0030B9574" Source="$(var.SourceDir)\Bam.Net.CommandLine.pdb" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcC82B2BC0257DD7834450F38E7EB741F5" Guid="9fdaf8c1-a852-109e-d73e-d5fce345c7ba">
+          <File Id="owfC82B2BC0257DD7834450F38E7EB741F5" Source="$(var.SourceDir)\Bam.Net.CommandLine.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc7B171A3C52B34C4DC873B15BC605EBCD" Guid="0694876e-b5d7-3a5d-e509-54e61d652686">
+          <File Id="owf7B171A3C52B34C4DC873B15BC605EBCD" Source="$(var.SourceDir)\Bam.Net.CoreServices.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc43D84281BE49E1772F1691EDC0DA77C4" Guid="7dda74c0-d36c-02ab-788b-3c1e5768d92e">
+          <File Id="owf43D84281BE49E1772F1691EDC0DA77C4" Source="$(var.SourceDir)\Bam.Net.CoreServices.dll.config" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc74200C7D77B026E026F7DF89FD2D4C25" Guid="ab9e1e48-cbc8-077e-5fe4-260f52d96fa2">
+          <File Id="owf74200C7D77B026E026F7DF89FD2D4C25" Source="$(var.SourceDir)\Bam.Net.CoreServices.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc1E5900A3BC8B33C42A23D3003C2A7AFF" Guid="ae5410eb-6ceb-1990-eea2-aedfbac348a2" Win64="yes">
+          <File Id="owf1E5900A3BC8B33C42A23D3003C2A7AFF" Source="$(var.SourceDir)\Bam.Net.CoreServices.Tests.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owcAA41B26FBCA04F13E2B295B52D7F21CF" Guid="fd0dfa15-f048-eec4-95ba-ad6f1b032fef" Win64="yes">
+          <File Id="owfAA41B26FBCA04F13E2B295B52D7F21CF" Source="$(var.SourceDir)\Bam.Net.CoreServices.Tests.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owcED85E1510A835EE5472123619021C0C2" Guid="7f95327d-8c50-467b-c492-c8f174989908" Win64="yes">
+          <File Id="owfED85E1510A835EE5472123619021C0C2" Source="$(var.SourceDir)\Bam.Net.CoreServices.Tests.pdb" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc7827AF32CCF4E758E985C48845BBA51C" Guid="7f769f46-ae90-0bed-1871-e7e2c3c8fab2">
+          <File Id="owf7827AF32CCF4E758E985C48845BBA51C" Source="$(var.SourceDir)\Bam.Net.Data.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc8694923303B25F84779429830DDA8D02" Guid="3553f760-6872-b272-c5a1-4e9a7e8f6290">
+          <File Id="owf8694923303B25F84779429830DDA8D02" Source="$(var.SourceDir)\Bam.Net.Data.dll.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owc2104D44550FA39AD9DDBD1802707427A" Guid="a2d1d423-5945-73c7-84eb-432e91fa5960" Win64="yes">
+          <File Id="owf2104D44550FA39AD9DDBD1802707427A" Source="$(var.SourceDir)\Bam.Net.Data.Dynamic.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc073AD4BBC1411B3788446FB4D0C0E7D2" Guid="c21022ff-86d8-29fa-1a98-15c328ac0d6f" Win64="yes">
+          <File Id="owf073AD4BBC1411B3788446FB4D0C0E7D2" Source="$(var.SourceDir)\Bam.Net.Data.Dynamic.dll.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owcC8109198DBBCCDD9C44FD61741F25DF3" Guid="83a3abdf-f22a-25a2-769b-277ce265bf04" Win64="yes">
+          <File Id="owfC8109198DBBCCDD9C44FD61741F25DF3" Source="$(var.SourceDir)\Bam.Net.Data.Dynamic.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc10045EC0C6A1D41A7EB63A5C6B1DC259" Guid="dae97f7b-68e5-0d57-4504-6aa5c7f88e68" Win64="yes">
+          <File Id="owf10045EC0C6A1D41A7EB63A5C6B1DC259" Source="$(var.SourceDir)\Bam.Net.Data.Dynamic.Tests.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owcEB982A337010CA8C8A803FBEA8DE8062" Guid="2e716e85-0f5d-4e4a-5323-06d816dfe3ec" Win64="yes">
+          <File Id="owfEB982A337010CA8C8A803FBEA8DE8062" Source="$(var.SourceDir)\Bam.Net.Data.Dynamic.Tests.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owcF85CBD7D85B887AF371AB785C5B906E4" Guid="39547a75-9fa5-fa3a-1c2a-610a632844d6" Win64="yes">
+          <File Id="owfF85CBD7D85B887AF371AB785C5B906E4" Source="$(var.SourceDir)\Bam.Net.Data.Dynamic.Tests.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owcA35FEE0E0FF0A4F9D84CFF7B21282213" Guid="cf654193-4aad-b09a-d5de-a8db3aa75fc0" Win64="yes">
+          <File Id="owfA35FEE0E0FF0A4F9D84CFF7B21282213" Source="$(var.SourceDir)\Bam.Net.Data.Dynamic.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owcDAE20899A8FC9DA60B7D7E4EE841CC14" Guid="80ce4aa2-6711-7157-4539-0adb050ec4f3" Win64="yes">
+          <File Id="owfDAE20899A8FC9DA60B7D7E4EE841CC14" Source="$(var.SourceDir)\Bam.Net.Data.Model.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc2F433C7EBD9D1EFFA34B8E92590237F2" Guid="c104f7a1-3cb0-cfe6-bd80-037265a5b81a" Win64="yes">
+          <File Id="owf2F433C7EBD9D1EFFA34B8E92590237F2" Source="$(var.SourceDir)\Bam.Net.Data.Model.dll.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owc17F29EDD36A67823461BA4B727FC70AF" Guid="7e4ab56e-d42b-d033-bc98-c042441ae343" Win64="yes">
+          <File Id="owf17F29EDD36A67823461BA4B727FC70AF" Source="$(var.SourceDir)\Bam.Net.Data.Model.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc439D4F392BA2C676857151BAD05ED136" Guid="9ce088bd-0535-5dc6-6674-3a425a2c1739" Win64="yes">
+          <File Id="owf439D4F392BA2C676857151BAD05ED136" Source="$(var.SourceDir)\Bam.Net.Data.Model.XML" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcA5E7401A78254E1D46AEA1F8DA45C7CD" Guid="cc9e344b-3364-538b-6ae5-a20b31e57d10">
+          <File Id="owfA5E7401A78254E1D46AEA1F8DA45C7CD" Source="$(var.SourceDir)\Bam.Net.Data.MsSql.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc820B17E38E08D6A0CBC57E712C09ED26" Guid="2c9a785d-b59d-1bff-acd1-c262d45f2ffd">
+          <File Id="owf820B17E38E08D6A0CBC57E712C09ED26" Source="$(var.SourceDir)\Bam.Net.Data.MsSql.dll.config" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcA8749DCC42D66387660D43497EE4C4A7" Guid="9ef3d061-e260-b536-ae4c-2e53a8ecaebe">
+          <File Id="owfA8749DCC42D66387660D43497EE4C4A7" Source="$(var.SourceDir)\Bam.Net.Data.MsSql.pdb" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc5C828E6332D06F09ABF55F50D31644E0" Guid="78215994-30f4-b386-5fdf-e69d3984da2e">
+          <File Id="owf5C828E6332D06F09ABF55F50D31644E0" Source="$(var.SourceDir)\Bam.Net.Data.MsSql.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc75624B6C18C4B626784CC511DA4C2020" Guid="f5a45417-de16-8069-1b3e-21c16a5afc71">
+          <File Id="owf75624B6C18C4B626784CC511DA4C2020" Source="$(var.SourceDir)\Bam.Net.Data.MySql.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc3F14003F2BFCA0CE10AFB6DE2EB95F3B" Guid="dca64674-88a2-4248-c038-267c9b0a84e5">
+          <File Id="owf3F14003F2BFCA0CE10AFB6DE2EB95F3B" Source="$(var.SourceDir)\Bam.Net.Data.MySql.dll.config" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcCC7D81A633E177185BCA6DE2E286421D" Guid="f6144cfd-5af9-9a9b-2674-57a2e075608b">
+          <File Id="owfCC7D81A633E177185BCA6DE2E286421D" Source="$(var.SourceDir)\Bam.Net.Data.MySql.pdb" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc73FC8E6C6F6720A4B9F4853C5EA89E1C" Guid="93f85860-ba95-67c2-c9bf-ad8d80d32b41">
+          <File Id="owf73FC8E6C6F6720A4B9F4853C5EA89E1C" Source="$(var.SourceDir)\Bam.Net.Data.Npgsql.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc3B038073EAE371BF593E105C17B25D67" Guid="92a6a67b-3d05-c7da-11a2-e1158493ce9c">
+          <File Id="owf3B038073EAE371BF593E105C17B25D67" Source="$(var.SourceDir)\Bam.Net.Data.Npgsql.dll.config" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcDF0DC19BE8CC8DDC727D38C82E6D8DD6" Guid="282854e1-bbbe-8183-5be4-47421b6d75a9">
+          <File Id="owfDF0DC19BE8CC8DDC727D38C82E6D8DD6" Source="$(var.SourceDir)\Bam.Net.Data.Npgsql.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc05797D7F408AE3814143D2C9F1143BC5" Guid="34a78ce9-f66b-e90f-00e3-0489de3f232a" Win64="yes">
+          <File Id="owf05797D7F408AE3814143D2C9F1143BC5" Source="$(var.SourceDir)\Bam.Net.Data.OleDb.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc75121590D34569D778471097588D6C0E" Guid="db1a8b7e-819d-150c-ce2f-06279e01d2d8" Win64="yes">
+          <File Id="owf75121590D34569D778471097588D6C0E" Source="$(var.SourceDir)\Bam.Net.Data.OleDb.dll.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owc6F2D8B02C9CBE09161FD1AF8B47A2A64" Guid="2aa47ad0-b153-0dc4-485f-22fcc105feca" Win64="yes">
+          <File Id="owf6F2D8B02C9CBE09161FD1AF8B47A2A64" Source="$(var.SourceDir)\Bam.Net.Data.OleDb.pdb" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcE9324D146D73666C5B1DDB470EFECFDA" Guid="bba5e485-7b2a-9cf4-71c4-07bc89959648">
+          <File Id="owfE9324D146D73666C5B1DDB470EFECFDA" Source="$(var.SourceDir)\Bam.Net.Data.Oracle.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcB8F36CDA7BB6DEA63C228D5B4AD4028B" Guid="112ebc08-2d9e-caa7-3f2b-334e4713c724">
+          <File Id="owfB8F36CDA7BB6DEA63C228D5B4AD4028B" Source="$(var.SourceDir)\Bam.Net.Data.Oracle.dll.config" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcA1D0E6FE9F1E39E89097ED5B53D65FCE" Guid="644ff31f-befb-87ac-90b5-2f9efaffab2b">
+          <File Id="owfA1D0E6FE9F1E39E89097ED5B53D65FCE" Source="$(var.SourceDir)\Bam.Net.Data.Oracle.pdb" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc91C4BDA58F1EF229E76DCCC5ED4E00FA" Guid="ea2200b8-887d-6f14-693d-174dafb33493">
+          <File Id="owf91C4BDA58F1EF229E76DCCC5ED4E00FA" Source="$(var.SourceDir)\Bam.Net.Data.Oracle.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcCA550140A49E79B051AA9F027A17FD3C" Guid="bacf2cbd-9742-7448-3102-a92751953d6a">
+          <File Id="owfCA550140A49E79B051AA9F027A17FD3C" Source="$(var.SourceDir)\Bam.Net.Data.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc558EE7F2AEB3CC35D3B9C22B483EC370" Guid="0825b1a1-5b90-2d88-83a3-03c58b15b180" Win64="yes">
+          <File Id="owf558EE7F2AEB3CC35D3B9C22B483EC370" Source="$(var.SourceDir)\Bam.Net.Data.Protobuf.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owcBE6807A282F5060B419590DAE1B519F9" Guid="611a2fe1-8a92-2db6-dc11-31265fa26cfb" Win64="yes">
+          <File Id="owfBE6807A282F5060B419590DAE1B519F9" Source="$(var.SourceDir)\Bam.Net.Data.Protobuf.dll.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owcFE00BB3D51EC5BF5A7268F0E3F82AE45" Guid="4b9d06bb-46bd-1f7d-8bc5-389ae016a06d" Win64="yes">
+          <File Id="owfFE00BB3D51EC5BF5A7268F0E3F82AE45" Source="$(var.SourceDir)\Bam.Net.Data.Protobuf.pdb" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc9A34E5B4E6BC45C3C187E95D72E2C026" Guid="32c13990-f718-ce60-8d79-acb3e32beba7">
+          <File Id="owf9A34E5B4E6BC45C3C187E95D72E2C026" Source="$(var.SourceDir)\Bam.Net.Data.Repositories.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc533CB06B8AEF3F401B08603B93FB0E00" Guid="2d008d8f-3a21-1422-134b-51a057a410c9">
+          <File Id="owf533CB06B8AEF3F401B08603B93FB0E00" Source="$(var.SourceDir)\Bam.Net.Data.Repositories.dll.config" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcC10CDD8F5228E696232D0AD17C3E0B42" Guid="53356e4f-77a3-0006-8ed5-4178edf0ea75">
+          <File Id="owfC10CDD8F5228E696232D0AD17C3E0B42" Source="$(var.SourceDir)\Bam.Net.Data.Repositories.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owcD4367CA18C8D2D17AD9D38313AC2696F" Guid="c86feeaa-a4a0-811c-fff4-dca3de9142ed" Win64="yes">
+          <File Id="owfD4367CA18C8D2D17AD9D38313AC2696F" Source="$(var.SourceDir)\Bam.Net.Data.Repositories.SchemaRepositoryGenerator.Tests.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owc8E211F48B8BA5BA2186C8C55F01164EA" Guid="71ce0491-e1a5-81d2-e9b9-8f37f6404f17" Win64="yes">
+          <File Id="owf8E211F48B8BA5BA2186C8C55F01164EA" Source="$(var.SourceDir)\Bam.Net.Data.Repositories.SchemaRepositoryGenerator.Tests.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owcC8D8FB0A740B140F5C66DDE7728106A3" Guid="5ca3a667-eb7e-c5d2-1df1-8217eac99501" Win64="yes">
+          <File Id="owfC8D8FB0A740B140F5C66DDE7728106A3" Source="$(var.SourceDir)\Bam.Net.Data.Repositories.SchemaRepositoryGenerator.Tests.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owcF7EA0661DEB8430C0C1C3B1B00B994D1" Guid="153f15f0-da74-9f01-bc25-ca2f364dd3af" Win64="yes">
+          <File Id="owfF7EA0661DEB8430C0C1C3B1B00B994D1" Source="$(var.SourceDir)\Bam.Net.Data.Repositories.Tests.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owc8AF898DD517DE194301D17ED109CFBEA" Guid="572ac08c-74d4-efe6-bc56-a0aec3d9119b" Win64="yes">
+          <File Id="owf8AF898DD517DE194301D17ED109CFBEA" Source="$(var.SourceDir)\Bam.Net.Data.Repositories.Tests.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owcB7C4E57FD62F3081C63E147C4D7C0AC9" Guid="356879c7-cfe7-e932-2f16-5218cc885302" Win64="yes">
+          <File Id="owfB7C4E57FD62F3081C63E147C4D7C0AC9" Source="$(var.SourceDir)\Bam.Net.Data.Repositories.Tests.pdb" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcF02175B4C4C98AF89C3E5354BD517124" Guid="de97c91a-77ae-7ff5-0f6c-de6753885d42">
+          <File Id="owfF02175B4C4C98AF89C3E5354BD517124" Source="$(var.SourceDir)\Bam.Net.Data.Repositories.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcA74CBD8AA76A39A6E0F61EF28E76D94B" Guid="f688863d-5d6d-6c86-5b0f-a737400307a8">
+          <File Id="owfA74CBD8AA76A39A6E0F61EF28E76D94B" Source="$(var.SourceDir)\Bam.Net.Data.Schema.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc535CAF0B869DA6D2B18352E65FBFD315" Guid="8d8d8f29-3f17-7273-75a5-47d2fb28f2e8">
+          <File Id="owf535CAF0B869DA6D2B18352E65FBFD315" Source="$(var.SourceDir)\Bam.Net.Data.Schema.dll.config" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc11A6D351A66739279F30B297732A4B04" Guid="dbe70c11-aa70-325b-e031-d6d0c0cecf20">
+          <File Id="owf11A6D351A66739279F30B297732A4B04" Source="$(var.SourceDir)\Bam.Net.Data.Schema.pdb" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc98AD6761C1448DC8516702598AA95271" Guid="96ca5f3b-7899-643f-afae-589b57595899">
+          <File Id="owf98AD6761C1448DC8516702598AA95271" Source="$(var.SourceDir)\Bam.Net.Data.Schema.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcF3324566DBA38504FCCBF4E4030B4709" Guid="23a8c1c7-9f7b-9f02-415a-c542490927e4">
+          <File Id="owfF3324566DBA38504FCCBF4E4030B4709" Source="$(var.SourceDir)\Bam.Net.Data.SQLite.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc80912875AFA3D44BC2D169C0B5A5F87B" Guid="744c272d-e488-db7f-bf60-2cc3df4eb2ff">
+          <File Id="owf80912875AFA3D44BC2D169C0B5A5F87B" Source="$(var.SourceDir)\Bam.Net.Data.SQLite.dll.config" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc341A7116B342A088A95629CE50B39996" Guid="bc5aae93-573a-a80e-5f48-3ec9a94eedc7">
+          <File Id="owf341A7116B342A088A95629CE50B39996" Source="$(var.SourceDir)\Bam.Net.Data.SQLite.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc36EF26CECBD1D648C685F1AC1EFD8D1F" Guid="6fdbeca8-d49b-58e1-8ae3-0c7f93da3be4" Win64="yes">
+          <File Id="owf36EF26CECBD1D648C685F1AC1EFD8D1F" Source="$(var.SourceDir)\Bam.Net.Data.Tests.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owcD14214504EB2EC9B8C0CD51E09EF28FF" Guid="79acf0e9-3cb5-a449-037f-96809a94e01d" Win64="yes">
+          <File Id="owfD14214504EB2EC9B8C0CD51E09EF28FF" Source="$(var.SourceDir)\Bam.Net.Data.Tests.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owc0017CE8E4A85049C03ABA07172BECFEE" Guid="a1b00119-2ec7-faf3-7077-f2ff38dcad31" Win64="yes">
+          <File Id="owf0017CE8E4A85049C03ABA07172BECFEE" Source="$(var.SourceDir)\Bam.Net.Data.Tests.Integration.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owc608C1184C44D2F2439CE37A81C076B00" Guid="2ec06a9c-7045-cb41-96a6-c9a5f14bd129" Win64="yes">
+          <File Id="owf608C1184C44D2F2439CE37A81C076B00" Source="$(var.SourceDir)\Bam.Net.Data.Tests.Integration.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owc1C367F39BBB563EE6602C993B8A39506" Guid="404d7c4f-09b4-8bf9-f74f-9689e0bdf203" Win64="yes">
+          <File Id="owf1C367F39BBB563EE6602C993B8A39506" Source="$(var.SourceDir)\Bam.Net.Data.Tests.Integration.pdb" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc7C60D7E290ABCC983355CF5DB6526223" Guid="d26d43b9-97dc-2077-04e1-f9d138c53f9e">
+          <File Id="owf7C60D7E290ABCC983355CF5DB6526223" Source="$(var.SourceDir)\Bam.Net.Data.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc38B0D6DE43FD87D0E58325C7D9C6D76D" Guid="e001bfd3-1b1f-49ce-7189-8bb943a96308">
+          <File Id="owf38B0D6DE43FD87D0E58325C7D9C6D76D" Source="$(var.SourceDir)\Bam.Net.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc871D19DE1B4D75B4078123474781D7E4" Guid="9d4f4372-bce8-573a-da03-c6c0e570f02b">
+          <File Id="owf871D19DE1B4D75B4078123474781D7E4" Source="$(var.SourceDir)\Bam.Net.Documentation.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc8AFD2B9B7E78E1802A4901CD2266BFAF" Guid="6ed87b79-543c-804a-d7a9-a157231c6092">
+          <File Id="owf8AFD2B9B7E78E1802A4901CD2266BFAF" Source="$(var.SourceDir)\Bam.Net.Documentation.dll.config" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcD2BD65DC4857C466B0F22E3C291E6E24" Guid="56805600-58d2-3953-0c6d-14bf5f001cbc">
+          <File Id="owfD2BD65DC4857C466B0F22E3C291E6E24" Source="$(var.SourceDir)\Bam.Net.Documentation.pdb" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcB23EB0C20465324F7E2E947666456218" Guid="62311fdb-5b98-7f02-eb90-d02ce5f1447a">
+          <File Id="owfB23EB0C20465324F7E2E947666456218" Source="$(var.SourceDir)\Bam.Net.Encryption.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcFF997DDC52C02C55685AE7E88B9C2462" Guid="1d12c1aa-ce69-e90a-b103-7df27903700d">
+          <File Id="owfFF997DDC52C02C55685AE7E88B9C2462" Source="$(var.SourceDir)\Bam.Net.Encryption.dll.config" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc30174ED0D5BC97D5B34C7C1C32351EBD" Guid="2ee7b066-a5a4-903f-649b-7c104a239977">
+          <File Id="owf30174ED0D5BC97D5B34C7C1C32351EBD" Source="$(var.SourceDir)\Bam.Net.Encryption.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc66752D982D8CED48D16E50923FA7E640" Guid="7c935b24-dff5-1c7e-4d2c-4a0e8748ca8b" Win64="yes">
+          <File Id="owf66752D982D8CED48D16E50923FA7E640" Source="$(var.SourceDir)\Bam.Net.Encryption.Tests.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owc40D66C664BC3D7F6DD2794D315DA2F88" Guid="8c2c4a52-e36b-2fad-227c-9236e78e3866" Win64="yes">
+          <File Id="owf40D66C664BC3D7F6DD2794D315DA2F88" Source="$(var.SourceDir)\Bam.Net.Encryption.Tests.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owcB9D834DBE3136037898FC41B125CD084" Guid="8f5f79ba-b974-8435-72a9-bb554b806db7" Win64="yes">
+          <File Id="owfB9D834DBE3136037898FC41B125CD084" Source="$(var.SourceDir)\Bam.Net.Encryption.Tests.pdb" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcC9ACAAF6C8DAD89A7043A72EC4AF169E" Guid="ff8790f6-af65-f4b2-8f46-beb072aa4d4b">
+          <File Id="owfC9ACAAF6C8DAD89A7043A72EC4AF169E" Source="$(var.SourceDir)\Bam.Net.Encryption.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owc97AFE2A11CC4CA8BE93E0D9891FB2E38" Guid="6f883d46-a0e0-bc12-6928-607015b3f6a5" Win64="yes">
+          <File Id="owf97AFE2A11CC4CA8BE93E0D9891FB2E38" Source="$(var.SourceDir)\Bam.Net.Html.XML" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc6F7D6D8CB1307F58CBEED069496E3B73" Guid="7f6ec2a1-4535-acac-5e63-e34721b60a56">
+          <File Id="owf6F7D6D8CB1307F58CBEED069496E3B73" Source="$(var.SourceDir)\Bam.Net.Incubation.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc0EB52AC79AB5BE16C617BAFC05CA52BF" Guid="4d426eab-1301-6a6e-4b5b-44d6175e6153">
+          <File Id="owf0EB52AC79AB5BE16C617BAFC05CA52BF" Source="$(var.SourceDir)\Bam.Net.Incubation.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc0966EDBE251F095BED3C93DF5A84DCD1" Guid="027cee41-2f66-0cc4-b64c-610e27fe822d" Win64="yes">
+          <File Id="owf0966EDBE251F095BED3C93DF5A84DCD1" Source="$(var.SourceDir)\Bam.Net.Incubation.Tests.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owcC054732398C844DA6CADD70DB1F05ACF" Guid="d8725aec-15d1-f95d-fb9d-9cf7ba33d9a4" Win64="yes">
+          <File Id="owfC054732398C844DA6CADD70DB1F05ACF" Source="$(var.SourceDir)\Bam.Net.Incubation.Tests.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc0E0FE703D4FAE7F32ED9DE0BB86759DB" Guid="3d2ff0b1-d5e7-a965-9414-048a7b5dbf29">
+          <File Id="owf0E0FE703D4FAE7F32ED9DE0BB86759DB" Source="$(var.SourceDir)\Bam.Net.Incubation.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc938281818B8ED7D7E63A265F51B02073" Guid="02fad93e-7db5-10bc-cc97-94f98b65a638">
+          <File Id="owf938281818B8ED7D7E63A265F51B02073" Source="$(var.SourceDir)\Bam.Net.Javascript.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc11B2D67F676EEBD028621817C3924016" Guid="068876d3-71ea-27cf-e987-ceae54942966">
+          <File Id="owf11B2D67F676EEBD028621817C3924016" Source="$(var.SourceDir)\Bam.Net.Javascript.dll.config" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcA542B9795F1E78A32F589FCCD9E9310C" Guid="5a36eb8c-d928-63f1-2e54-c3b2477a5ccd">
+          <File Id="owfA542B9795F1E78A32F589FCCD9E9310C" Source="$(var.SourceDir)\Bam.Net.Javascript.pdb" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc39D7B66E76D559A267E9ACA68D4060E1" Guid="6dd30c1c-03d6-d4fd-3bf6-d9d241a92d15">
+          <File Id="owf39D7B66E76D559A267E9ACA68D4060E1" Source="$(var.SourceDir)\Bam.Net.Javascript.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owc636DAE01D8759E6BA6D6454BE0FE0354" Guid="1f78478b-3b01-c0ff-8c93-8f6f89be35aa" Win64="yes">
+          <File Id="owf636DAE01D8759E6BA6D6454BE0FE0354" Source="$(var.SourceDir)\Bam.Net.Logging.Debug.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc2A55B04E6C88B08080A1EEF10CB8912B" Guid="c6de4e12-8ea9-63e7-49bd-24eeb9b87074" Win64="yes">
+          <File Id="owf2A55B04E6C88B08080A1EEF10CB8912B" Source="$(var.SourceDir)\Bam.Net.Logging.Debug.pdb" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcAF0159DEE7B1FBE54E26E23CBAEBB844" Guid="23304cfb-9ae9-de73-0ddb-e8ea849c72ec">
+          <File Id="owfAF0159DEE7B1FBE54E26E23CBAEBB844" Source="$(var.SourceDir)\Bam.Net.Logging.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcEE63661CB72E366B5EDDC020BBD600AB" Guid="3373e40f-9722-d227-75b9-67fec22e5c6f">
+          <File Id="owfEE63661CB72E366B5EDDC020BBD600AB" Source="$(var.SourceDir)\Bam.Net.Logging.dll.config" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc699E2DE15B5CF400C0028BA5E9DE2C7E" Guid="fce16bb5-76b7-081b-f001-98d3f32424cb">
+          <File Id="owf699E2DE15B5CF400C0028BA5E9DE2C7E" Source="$(var.SourceDir)\Bam.Net.Logging.pdb" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcAB1CFF32F605282678D547ED3B611D36" Guid="833966f4-ef14-b7f7-27d0-653654ba025b">
+          <File Id="owfAB1CFF32F605282678D547ED3B611D36" Source="$(var.SourceDir)\Bam.Net.Logging.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc6135D5D46945FC447419A18900D598BD" Guid="38c40d9c-7d24-c111-3f73-cc6d271a6eba">
+          <File Id="owf6135D5D46945FC447419A18900D598BD" Source="$(var.SourceDir)\Bam.Net.Messaging.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc2648E9464204008B0EC61A8E76421C2F" Guid="2c19c1f7-302f-5493-b238-483f9552fced">
+          <File Id="owf2648E9464204008B0EC61A8E76421C2F" Source="$(var.SourceDir)\Bam.Net.Messaging.dll.config" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc45AC201B51D5CD0DC19C62EF0E71C7D2" Guid="ed79a9df-bafe-7563-6e3d-d62f19b607ad">
+          <File Id="owf45AC201B51D5CD0DC19C62EF0E71C7D2" Source="$(var.SourceDir)\Bam.Net.Messaging.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc1EC723DAE9811EEE6ECF1BBB5489CCC7" Guid="9d9ae13a-2232-4442-575e-5c1ed3a8924f" Win64="yes">
+          <File Id="owf1EC723DAE9811EEE6ECF1BBB5489CCC7" Source="$(var.SourceDir)\Bam.Net.Messaging.Tests.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owc98FCD57CA8988FAF799CE9B59FCD822B" Guid="498a9ddc-6fef-6357-12a7-2d745bc83ed8" Win64="yes">
+          <File Id="owf98FCD57CA8988FAF799CE9B59FCD822B" Source="$(var.SourceDir)\Bam.Net.Messaging.Tests.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owc2F43923EE4A5827E526A7E3E6EBAC55D" Guid="c843bbab-e2a7-6dc7-fcee-a5bb6a8df898" Win64="yes">
+          <File Id="owf2F43923EE4A5827E526A7E3E6EBAC55D" Source="$(var.SourceDir)\Bam.Net.Messaging.Tests.pdb" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcA5D7712CC6BE693B744A04AFF53ABE4F" Guid="d40d7215-4aa9-a044-a9c3-26aff367f724">
+          <File Id="owfA5D7712CC6BE693B744A04AFF53ABE4F" Source="$(var.SourceDir)\Bam.Net.Messaging.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owcFD8C3F4DB909326480B6523D5131EE23" Guid="7b86239f-6f56-f51e-1ac9-65c62db13a9b" Win64="yes">
+          <File Id="owfFD8C3F4DB909326480B6523D5131EE23" Source="$(var.SourceDir)\Bam.Net.Music.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owcE7D21B72DED1F9F9EB8716A86852C4E7" Guid="6c79e78c-d6c5-1324-7f0d-340bf6dbb596" Win64="yes">
+          <File Id="owfE7D21B72DED1F9F9EB8716A86852C4E7" Source="$(var.SourceDir)\Bam.Net.Music.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owcE7C0401D832948499250759A29BC935A" Guid="ece680a8-9e8b-1573-3c29-23d5c7432168" Win64="yes">
+          <File Id="owfE7C0401D832948499250759A29BC935A" Source="$(var.SourceDir)\Bam.Net.Music.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owcD3BFE304EDB231678551E836E2242C19" Guid="7e088d6c-9026-0cf6-11c1-812d710e26c2" Win64="yes">
+          <File Id="owfD3BFE304EDB231678551E836E2242C19" Source="$(var.SourceDir)\Bam.Net.Music.XML" KeyPath="yes" />
+        </Component>
+        <Component Id="owcC50E1827CFB9F0212A7EE4DE9E378D61" Guid="5923ac3e-95de-a1ad-f432-95d81077314d" Win64="yes">
+          <File Id="owfC50E1827CFB9F0212A7EE4DE9E378D61" Source="$(var.SourceDir)\Bam.Net.Net.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owcA8DFDB64AD69B960C6F4298C50CD899F" Guid="da09ab93-a32b-8a8a-d921-4368fc1cb829" Win64="yes">
+          <File Id="owfA8DFDB64AD69B960C6F4298C50CD899F" Source="$(var.SourceDir)\Bam.Net.Net.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc347610CBE1FF291CF14219A1E1C0FFCF" Guid="cf28702b-18c4-4150-5e3b-dfa8de623b1e" Win64="yes">
+          <File Id="owf347610CBE1FF291CF14219A1E1C0FFCF" Source="$(var.SourceDir)\Bam.Net.Net.XML" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc4EEF814E1E1E87AFC0BE35F19A84BCAB" Guid="2885a232-02ed-fb37-bb7e-24ee3cfe7461">
+          <File Id="owf4EEF814E1E1E87AFC0BE35F19A84BCAB" Source="$(var.SourceDir)\Bam.Net.pdb" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcC34C86D712CDA493F971AD9B55D1C889" Guid="cf9aa684-bbd3-9e41-ec08-1b1e7566d756">
+          <File Id="owfC34C86D712CDA493F971AD9B55D1C889" Source="$(var.SourceDir)\Bam.Net.Presentation.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc9B9A1826CF3D89F1C4DC19E6DC91E017" Guid="bd638e99-96bb-445c-c014-a681bf007acb">
+          <File Id="owf9B9A1826CF3D89F1C4DC19E6DC91E017" Source="$(var.SourceDir)\Bam.Net.Presentation.dll.config" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc083F0F7618EA02AB434655F2B6799513" Guid="dc07e7b8-999d-46a4-7010-d3f6872e27c0">
+          <File Id="owf083F0F7618EA02AB434655F2B6799513" Source="$(var.SourceDir)\Bam.Net.Presentation.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc55EF35F0D5898D5E6E20BE1D9467CA59" Guid="5c88f6fd-5d17-d6ee-3c4f-163834009fc8" Win64="yes">
+          <File Id="owf55EF35F0D5898D5E6E20BE1D9467CA59" Source="$(var.SourceDir)\Bam.Net.Presentation.Tests.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owc3D33B4E70C68AD67494F43738F37247E" Guid="d2539de2-50e3-974d-1296-072af8f237d9" Win64="yes">
+          <File Id="owf3D33B4E70C68AD67494F43738F37247E" Source="$(var.SourceDir)\Bam.Net.Presentation.Tests.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcB5D680EE966F6D54D5FDB9AEED7AA991" Guid="cf533b19-00c8-a9e5-c753-1092c23c17bc">
+          <File Id="owfB5D680EE966F6D54D5FDB9AEED7AA991" Source="$(var.SourceDir)\Bam.Net.Profiguration.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc614F70D0761A4BFD5BACA02C6A1B218C" Guid="4c1c82e5-e893-77ee-38c4-3c26389f8835">
+          <File Id="owf614F70D0761A4BFD5BACA02C6A1B218C" Source="$(var.SourceDir)\Bam.Net.Profiguration.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc47BF18B1C9A99C83A3D2F597A6CDF1E8" Guid="cf085ceb-f3bf-ac83-41ad-13cc125df97c" Win64="yes">
+          <File Id="owf47BF18B1C9A99C83A3D2F597A6CDF1E8" Source="$(var.SourceDir)\Bam.Net.Profiguration.Tests.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owc8310BF6D6C0398460A6BCA0FC1382629" Guid="eab08123-1a66-743e-9f6a-04b1e6f7eab4" Win64="yes">
+          <File Id="owf8310BF6D6C0398460A6BCA0FC1382629" Source="$(var.SourceDir)\Bam.Net.Profiguration.Tests.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owcC916CFD01C9A124596863F8C1AC81F56" Guid="a582bc16-d546-0963-f84b-304a1f50c0d8" Win64="yes">
+          <File Id="owfC916CFD01C9A124596863F8C1AC81F56" Source="$(var.SourceDir)\Bam.Net.Profiguration.Tests.pdb" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc5B3D78E35AA66E335E2005AE5AF271BA" Guid="bcb81dc1-c1c9-8e39-719d-a79c97719625">
+          <File Id="owf5B3D78E35AA66E335E2005AE5AF271BA" Source="$(var.SourceDir)\Bam.Net.Profiguration.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owc41FE6A289ED8C181482DAE958C7E01EF" Guid="4fc1bdbe-1d31-c04c-4b4d-6a443618e33e" Win64="yes">
+          <File Id="owf41FE6A289ED8C181482DAE958C7E01EF" Source="$(var.SourceDir)\Bam.Net.Schema.Org.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc6D521489C8259DDD962437E84CD8AB89" Guid="5afcd16f-4455-40b4-8c39-df91dfa39bcc" Win64="yes">
+          <File Id="owf6D521489C8259DDD962437E84CD8AB89" Source="$(var.SourceDir)\Bam.Net.Schema.Org.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc1E93772C7E32E6DE27F56949E1DE7231" Guid="638354c1-7d41-2c94-dd1a-028660a5fed5" Win64="yes">
+          <File Id="owf1E93772C7E32E6DE27F56949E1DE7231" Source="$(var.SourceDir)\Bam.Net.Schema.Org.Tests.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owc815E155CCAFFA10B4D1D6CECE618CFD7" Guid="f70e1491-af1b-2a66-774c-ed718be745b8" Win64="yes">
+          <File Id="owf815E155CCAFFA10B4D1D6CECE618CFD7" Source="$(var.SourceDir)\Bam.Net.Schema.Org.Tests.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owcDA591B91A6630C1B5B70F70AD797142E" Guid="f3b4d8d1-7bac-239b-0bbb-ebf79b0f64e0" Win64="yes">
+          <File Id="owfDA591B91A6630C1B5B70F70AD797142E" Source="$(var.SourceDir)\Bam.Net.Schema.Org.Tests.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owcE7AA3A68F8BC1D39CDA887CD4339EDEA" Guid="782f055e-8f54-5539-9630-33e43f4fccc0" Win64="yes">
+          <File Id="owfE7AA3A68F8BC1D39CDA887CD4339EDEA" Source="$(var.SourceDir)\Bam.Net.Schema.Org.XML" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcFFAA3FAB466A9042ADA1D23A506684B3" Guid="7c0d129d-60d2-0dd8-77a7-d6ab01b69171">
+          <File Id="owfFFAA3FAB466A9042ADA1D23A506684B3" Source="$(var.SourceDir)\Bam.Net.Server.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc0950BD5CC1E173F7942528F632C9FE6F" Guid="e9ffae47-5d9e-62d1-6436-555d6c424a78">
+          <File Id="owf0950BD5CC1E173F7942528F632C9FE6F" Source="$(var.SourceDir)\Bam.Net.Server.dll.config" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc3752F7E8970EEA4E5A7EC84096F589CA" Guid="17060cfe-42e3-70c9-7296-7a4c44d8fe67">
+          <File Id="owf3752F7E8970EEA4E5A7EC84096F589CA" Source="$(var.SourceDir)\Bam.Net.Server.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc49590104F30009A5E6C65223D6E1627C" Guid="24e606d3-9d87-3398-b710-f5901c3019b1" Win64="yes">
+          <File Id="owf49590104F30009A5E6C65223D6E1627C" Source="$(var.SourceDir)\Bam.Net.Server.Tests.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owc16F053C552ACA1B13BFB5B899FA75277" Guid="ed9ace62-9d81-94a8-8279-7fdae8958a11" Win64="yes">
+          <File Id="owf16F053C552ACA1B13BFB5B899FA75277" Source="$(var.SourceDir)\Bam.Net.Server.Tests.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owc0ACE1DF5AF33B8110C2103E2C5A033CF" Guid="b12dfddb-2838-58af-5826-b7c636c1e582" Win64="yes">
+          <File Id="owf0ACE1DF5AF33B8110C2103E2C5A033CF" Source="$(var.SourceDir)\Bam.Net.Server.Tests.pdb" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcFE807D110EA01EB7255B6D4D0DD24CC4" Guid="e9fe008c-a623-4ed9-28cf-5d2af1a012a8">
+          <File Id="owfFE807D110EA01EB7255B6D4D0DD24CC4" Source="$(var.SourceDir)\Bam.Net.Server.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc2E7D5F3348E92D8F4E32910C7AF67AA0" Guid="3c78800e-b955-0c37-d62a-3e3a501649f7">
+          <File Id="owf2E7D5F3348E92D8F4E32910C7AF67AA0" Source="$(var.SourceDir)\Bam.Net.ServiceProxy.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcADF97CCE44A856F7AEC3EB144FBD0E12" Guid="3889916e-6604-ebe3-4a89-34317650ace1">
+          <File Id="owfADF97CCE44A856F7AEC3EB144FBD0E12" Source="$(var.SourceDir)\Bam.Net.ServiceProxy.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owcC44DF792E9FE24A1D48D7517522E509A" Guid="edf2b3fb-3e67-fd2a-db42-b743f8b883b5" Win64="yes">
+          <File Id="owfC44DF792E9FE24A1D48D7517522E509A" Source="$(var.SourceDir)\Bam.Net.ServiceProxy.Tests.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owc7A0817804B2C2BE3F766C00953F20287" Guid="42ad20b1-62f7-67a3-b9f5-63458b941abc" Win64="yes">
+          <File Id="owf7A0817804B2C2BE3F766C00953F20287" Source="$(var.SourceDir)\Bam.Net.ServiceProxy.Tests.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owc3E98273FD8B59BB884CFFA1EE284CC35" Guid="92c801f3-8ed7-ee26-0f97-60e822ac9447" Win64="yes">
+          <File Id="owf3E98273FD8B59BB884CFFA1EE284CC35" Source="$(var.SourceDir)\Bam.Net.ServiceProxy.Tests.pdb" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc2CC870B4607454A2DE9E5F266D5257C0" Guid="ab5880f3-2bf0-922d-cbfb-9be59c725cd9">
+          <File Id="owf2CC870B4607454A2DE9E5F266D5257C0" Source="$(var.SourceDir)\Bam.Net.ServiceProxy.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcB156230F7C827ED83395C207219B75A3" Guid="cd58d5ee-e480-49ff-ef4f-d1de15ca7b2b">
+          <File Id="owfB156230F7C827ED83395C207219B75A3" Source="$(var.SourceDir)\Bam.Net.Services.Clients.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc57E9786D8442A5C57633A044CCFE6CD9" Guid="0b79efb3-c022-eeaa-346b-8582e1d81ae9">
+          <File Id="owf57E9786D8442A5C57633A044CCFE6CD9" Source="$(var.SourceDir)\Bam.Net.Services.Clients.dll.config" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc1A0A9DDCD5190096CBF84BE08335C614" Guid="a853ca45-bfe4-06f5-d7c0-484f846f921b">
+          <File Id="owf1A0A9DDCD5190096CBF84BE08335C614" Source="$(var.SourceDir)\Bam.Net.Services.Clients.pdb" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcB5BD5A1F0EC86C1E5AF07C888F3C5544" Guid="30ff3912-ed00-6bf8-1760-d4b064c12ab5">
+          <File Id="owfB5BD5A1F0EC86C1E5AF07C888F3C5544" Source="$(var.SourceDir)\Bam.Net.Services.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcA2B069C739D4A3FA35D1FBBFEE29CEA4" Guid="e2fee067-94e1-d541-e7a6-df9c48599c45">
+          <File Id="owfA2B069C739D4A3FA35D1FBBFEE29CEA4" Source="$(var.SourceDir)\Bam.Net.Services.dll.config" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcA89B9261FDBACACF258A8A1895049D3B" Guid="a0f8c7ea-502e-5c3c-07b8-c6601a51962a">
+          <File Id="owfA89B9261FDBACACF258A8A1895049D3B" Source="$(var.SourceDir)\Bam.Net.Services.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc7E391D53638923286C537A24956B1502" Guid="dc147a15-2178-53b9-2123-bd47c654ffde" Win64="yes">
+          <File Id="owf7E391D53638923286C537A24956B1502" Source="$(var.SourceDir)\Bam.Net.Services.Tests.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owc3D0139CA4FBD836CB2867A98FDE2ACA4" Guid="436e7ba6-9c19-24a9-b9d7-5090173fb0df" Win64="yes">
+          <File Id="owf3D0139CA4FBD836CB2867A98FDE2ACA4" Source="$(var.SourceDir)\Bam.Net.Services.Tests.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owc02A916A496A044F959FB53ABE906DFFD" Guid="184e1b23-a79e-458c-545a-6c46d8972b71" Win64="yes">
+          <File Id="owf02A916A496A044F959FB53ABE906DFFD" Source="$(var.SourceDir)\Bam.Net.Services.Tests.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owcEB5344F0BE2EE1B687945410E3E1D29C" Guid="70a5d98a-fd10-6c5d-fd7c-b31bd5a661ba" Win64="yes">
+          <File Id="owfEB5344F0BE2EE1B687945410E3E1D29C" Source="$(var.SourceDir)\Bam.Net.Syndication.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owcA0A0B49CCF56CD8FCF2FD37531C7CEC2" Guid="481659ba-947f-1b18-04b6-48373c5fcc56" Win64="yes">
+          <File Id="owfA0A0B49CCF56CD8FCF2FD37531C7CEC2" Source="$(var.SourceDir)\Bam.Net.Syndication.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc8F1E370E9DA37BB369C26AEAB5E000B7" Guid="8799b944-5b03-1b3e-93eb-c7f4127c46c0" Win64="yes">
+          <File Id="owf8F1E370E9DA37BB369C26AEAB5E000B7" Source="$(var.SourceDir)\Bam.Net.Syndication.XML" KeyPath="yes" />
+        </Component>
+        <Component Id="owcCDFFFB7336F60BE4B9A4CF73D0465D39" Guid="515ba219-65c2-6beb-05ee-49d91c20b44e" Win64="yes">
+          <File Id="owfCDFFFB7336F60BE4B9A4CF73D0465D39" Source="$(var.SourceDir)\Bam.Net.System.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owcF14EAD8D10F49D146A3732B24508247D" Guid="12adf576-c9c8-8fa7-e33b-ed3fac2b6c83" Win64="yes">
+          <File Id="owfF14EAD8D10F49D146A3732B24508247D" Source="$(var.SourceDir)\Bam.Net.System.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc542F9479EF60F06FA53D8F8F1B135E99" Guid="b1e6aeb9-00f7-3ea4-7e90-49a8bdd74234" Win64="yes">
+          <File Id="owf542F9479EF60F06FA53D8F8F1B135E99" Source="$(var.SourceDir)\Bam.Net.System.XML" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc38916412C779614CB00C487CB9AF9C26" Guid="de61e3f1-409f-083f-96c1-6a6083378f60">
+          <File Id="owf38916412C779614CB00C487CB9AF9C26" Source="$(var.SourceDir)\Bam.Net.Testing.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc59151942A0CEFD5A6BDE642B73D826EB" Guid="56695f14-ce57-3bed-435b-90c96f24f551">
+          <File Id="owf59151942A0CEFD5A6BDE642B73D826EB" Source="$(var.SourceDir)\Bam.Net.Testing.dll.config" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcA89DBEFDC656658522AE3A7399B7BEF3" Guid="276e4e24-8fda-0c61-9c5a-4e19fe7dd0ab">
+          <File Id="owfA89DBEFDC656658522AE3A7399B7BEF3" Source="$(var.SourceDir)\Bam.Net.Testing.pdb" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcB62782C02E818931F34E1ABF2DB31449" Guid="a61e4990-e20e-1180-48a1-6426c8baa5f2">
+          <File Id="owfB62782C02E818931F34E1ABF2DB31449" Source="$(var.SourceDir)\Bam.Net.Testing.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owcA30C17844C223EF8FC000D1FBA349D63" Guid="48da0cba-bae2-6b75-4169-a53f4216ad9f" Win64="yes">
+          <File Id="owfA30C17844C223EF8FC000D1FBA349D63" Source="$(var.SourceDir)\Bam.Net.Tests.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owcB3B2E83AE56FB6C3DCD557FB5F323B76" Guid="1de7f5aa-c655-2af9-07b3-9b16c2b00009" Win64="yes">
+          <File Id="owfB3B2E83AE56FB6C3DCD557FB5F323B76" Source="$(var.SourceDir)\Bam.Net.Tests.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owcDFA7995C14892340A70DDD1A21170DA6" Guid="093e8263-69aa-7304-fc25-f8ac37a6c3b0" Win64="yes">
+          <File Id="owfDFA7995C14892340A70DDD1A21170DA6" Source="$(var.SourceDir)\Bam.Net.Tests.pdb" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc62D59E0908EC7C566181CD20A9203AD7" Guid="3d77fd5e-f779-059d-935c-0dea72d26c8b">
+          <File Id="owf62D59E0908EC7C566181CD20A9203AD7" Source="$(var.SourceDir)\Bam.Net.Translation.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcBBB395312333B1794CBF4BBFAD7BE232" Guid="d0d9c3c0-4a68-91df-74b5-08cc6c49526e">
+          <File Id="owfBBB395312333B1794CBF4BBFAD7BE232" Source="$(var.SourceDir)\Bam.Net.Translation.dll.config" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc75BC9454212B8A1E5EAE2A0362ABD38A" Guid="db2bc7e7-0c9b-9dde-1f14-4e1a6cebebbf">
+          <File Id="owf75BC9454212B8A1E5EAE2A0362ABD38A" Source="$(var.SourceDir)\Bam.Net.Translation.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc76F919AC6DB0BCB1D75150F993966641" Guid="ede89972-7ee9-0542-cdbd-da05a04f8869" Win64="yes">
+          <File Id="owf76F919AC6DB0BCB1D75150F993966641" Source="$(var.SourceDir)\Bam.Net.Translation.Tests.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owc057BD865A981C77E1AB3322D862A2079" Guid="697fdf7f-c5e9-e072-1ab1-759b4af93b0a" Win64="yes">
+          <File Id="owf057BD865A981C77E1AB3322D862A2079" Source="$(var.SourceDir)\Bam.Net.Translation.Tests.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owc635151737AFD36C8910EACC1888B387D" Guid="8980f4c9-261f-a5c0-8ebb-677077eee8c6" Win64="yes">
+          <File Id="owf635151737AFD36C8910EACC1888B387D" Source="$(var.SourceDir)\Bam.Net.Translation.Tests.pdb" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc9EB964733A531B90A047D417CFFB9C34" Guid="be165ed4-d881-c43b-a8b5-36ea7675af68">
+          <File Id="owf9EB964733A531B90A047D417CFFB9C34" Source="$(var.SourceDir)\Bam.Net.Translation.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc56A925EF65F6252FE62AD0790D9C874F" Guid="8f5e107f-4e21-147a-2d4d-e486db8e91d7">
+          <File Id="owf56A925EF65F6252FE62AD0790D9C874F" Source="$(var.SourceDir)\Bam.Net.UserAccounts.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcCF3809B3E70E65B24CE0881C1B506F7F" Guid="e758d812-5a30-edd9-5c69-4432c88fb11a">
+          <File Id="owfCF3809B3E70E65B24CE0881C1B506F7F" Source="$(var.SourceDir)\Bam.Net.UserAccounts.dll.config" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc48A73C7B9F98BEF33142698C7476A111" Guid="c04a722a-54c9-905e-62bf-80d46d1d103d">
+          <File Id="owf48A73C7B9F98BEF33142698C7476A111" Source="$(var.SourceDir)\Bam.Net.UserAccounts.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owcA1A22479B04D4583C92F6E5972544A12" Guid="ae03c7ba-d2bd-a237-8931-2dd095175bd9" Win64="yes">
+          <File Id="owfA1A22479B04D4583C92F6E5972544A12" Source="$(var.SourceDir)\Bam.Net.UserAccounts.Tests.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owc6ADAAE288DABC952EC917454EE1D4DF9" Guid="825e9b88-60f6-9749-03e4-d9dcd2b42dbd" Win64="yes">
+          <File Id="owf6ADAAE288DABC952EC917454EE1D4DF9" Source="$(var.SourceDir)\Bam.Net.UserAccounts.Tests.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owc94058198043EF4973CD605CECA479509" Guid="4f454f13-a0d5-833b-e528-12bdb94a7f4b" Win64="yes">
+          <File Id="owf94058198043EF4973CD605CECA479509" Source="$(var.SourceDir)\Bam.Net.UserAccounts.Tests.Integration.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owcC55178907F78966EA65A9EC11660A25D" Guid="a5d1fa8f-ed92-bb5d-81df-92480c9679bc" Win64="yes">
+          <File Id="owfC55178907F78966EA65A9EC11660A25D" Source="$(var.SourceDir)\Bam.Net.UserAccounts.Tests.Integration.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owc87C2DE52976A9EAF3FD676E1FD51D8FD" Guid="f44f9292-12e3-e825-923a-0a9f2f4ba183" Win64="yes">
+          <File Id="owf87C2DE52976A9EAF3FD676E1FD51D8FD" Source="$(var.SourceDir)\Bam.Net.UserAccounts.Tests.Integration.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc35FEF1BA1CA8986647AAEED9C1ACDFC8" Guid="4054454a-0996-e9e5-234f-351a0f95d125" Win64="yes">
+          <File Id="owf35FEF1BA1CA8986647AAEED9C1ACDFC8" Source="$(var.SourceDir)\Bam.Net.UserAccounts.Tests.pdb" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc5BBBCE639766B7A2C2A368E29C9C219F" Guid="d396835f-1241-d267-0357-a36ba7f71560">
+          <File Id="owf5BBBCE639766B7A2C2A368E29C9C219F" Source="$(var.SourceDir)\Bam.Net.UserAccounts.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc200E9D56EF2B38C32424B01F299689C2" Guid="44bd553f-9ad1-48d1-029f-b6c526b0e753">
+          <File Id="owf200E9D56EF2B38C32424B01F299689C2" Source="$(var.SourceDir)\Bam.Net.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owc6D16125A7C8CFBFB1EB9AA3BD841C9D4" Guid="b8db672a-5b5d-ab6f-11bd-1a258ef9de64" Win64="yes">
+          <File Id="owf6D16125A7C8CFBFB1EB9AA3BD841C9D4" Source="$(var.SourceDir)\Bam.Net.Yaml.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc6B74A0ACE9B0AE5F91DA105D1BF78604" Guid="ed8de800-e816-4a58-7130-51e6791c4c44" Win64="yes">
+          <File Id="owf6B74A0ACE9B0AE5F91DA105D1BF78604" Source="$(var.SourceDir)\Bam.Net.Yaml.dll.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owc9A150A54C93AA5A1CD47897D1574296C" Guid="d365e5ae-02c7-1e5f-d4c5-510c47243eec" Win64="yes">
+          <File Id="owf9A150A54C93AA5A1CD47897D1574296C" Source="$(var.SourceDir)\Bam.Net.Yaml.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owcAD470117550FD77CA95018BA02D8D35F" Guid="61c94333-f0fb-1e21-08a9-b8706cf7fc47" Win64="yes">
+          <File Id="owfAD470117550FD77CA95018BA02D8D35F" Source="$(var.SourceDir)\Bam.Net.Yaml.Tests.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owc552283F9DD7FCB8767F60615BEBD4F30" Guid="e0ef7768-e45c-5d07-9797-b6c04ea8cfc9" Win64="yes">
+          <File Id="owf552283F9DD7FCB8767F60615BEBD4F30" Source="$(var.SourceDir)\Bam.Net.Yaml.Tests.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owcB6DEE0C0AE44816377CD129F5C6FEEF2" Guid="abe6638f-f532-5d35-f296-1f5ebe45d480" Win64="yes">
+          <File Id="owfB6DEE0C0AE44816377CD129F5C6FEEF2" Source="$(var.SourceDir)\Bam.Net.Yaml.Tests.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc279C300C584C40E0CDB7C9402F59BE0E" Guid="c732269d-6548-1b45-0de1-4447b3d9ba8e" Win64="yes">
+          <File Id="owf279C300C584C40E0CDB7C9402F59BE0E" Source="$(var.SourceDir)\Bam.Net.Yaml.XML" KeyPath="yes" />
+        </Component>
+        <Component Id="owc4DA1392A4694D0D9EAB17ABAF9D9F5A1" Guid="416b9a08-9a3a-587d-145d-6de36c4fb6c5" Win64="yes">
+          <File Id="owf4DA1392A4694D0D9EAB17ABAF9D9F5A1" Source="$(var.SourceDir)\bam.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc6CB687D852EE4D0AE89729F8152585AB" Guid="938e2aaa-ebac-d41e-7d7b-4bab94077285" Win64="yes">
+          <File Id="owf6CB687D852EE4D0AE89729F8152585AB" Source="$(var.SourceDir)\bam.XML" KeyPath="yes" />
+        </Component>
+        <Component Id="owc0AC2F872406B7691C98B3447500F9563" Guid="1ded90d9-c37b-394f-02a1-593494ce9760" Win64="yes">
+          <File Id="owf0AC2F872406B7691C98B3447500F9563" Source="$(var.SourceDir)\bamd.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owcDD8EFF78CF00893F68C31DDE04FAB8BE" Guid="bf93dde4-24c1-88cb-4dcc-27fbcec5b426" Win64="yes">
+          <File Id="owfDD8EFF78CF00893F68C31DDE04FAB8BE" Source="$(var.SourceDir)\bamd.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owcA0AEA80E831D8FC483C520C816DA3588" Guid="de723d46-7935-4b8a-55c0-ebe58fbf78f3" Win64="yes">
+          <File Id="owfA0AEA80E831D8FC483C520C816DA3588" Source="$(var.SourceDir)\bamd.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc5A544C9908A7B4AF05A6B89B5AB3A2B5" Guid="fffe9f08-0d86-8fb1-05c1-69e0d6a0e1e2" Win64="yes">
+          <File Id="owf5A544C9908A7B4AF05A6B89B5AB3A2B5" Source="$(var.SourceDir)\BamDaemonProcesses.json" KeyPath="yes" />
+        </Component>
+        <Component Id="owc03FF9595C2BDBC88BA5942929B18DDFF" Guid="59a894a6-3973-56f9-559c-4b06028f64fd" Win64="yes">
+          <File Id="owf03FF9595C2BDBC88BA5942929B18DDFF" Source="$(var.SourceDir)\bami.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owcCE2135990132E4A54B82B048B599C015" Guid="c0dffa3a-28ab-f848-3654-73e18662073f" Win64="yes">
+          <File Id="owfCE2135990132E4A54B82B048B599C015" Source="$(var.SourceDir)\bami.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owc36F840023F7318FDE29826247CE59D44" Guid="21200b38-996c-cc6c-503d-14f935ef6a21" Win64="yes">
+          <File Id="owf36F840023F7318FDE29826247CE59D44" Source="$(var.SourceDir)\bami.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owcECA750E29A8FC0944F9F6126A67F7F2C" Guid="c08513fa-ba5b-90db-8dec-a00ba09bfb40" Win64="yes">
+          <File Id="owfECA750E29A8FC0944F9F6126A67F7F2C" Source="$(var.SourceDir)\bami.XML" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc1FE7BC6F8D6159A007F6C6C90E7B3442" Guid="cbfcc90e-c125-71db-6f7f-dbc24a779a31">
+          <File Id="owf1FE7BC6F8D6159A007F6C6C90E7B3442" Source="$(var.SourceDir)\baminf.exe" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc471DEA9B6B88C5C969C88582000541A3" Guid="a32a6d49-029a-c914-e6db-8c41d79cff5e">
+          <File Id="owf471DEA9B6B88C5C969C88582000541A3" Source="$(var.SourceDir)\baminf.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcCB70DCE24D9AD88268A18A08F7CA6462" Guid="4ff27c2a-c843-5e2a-5707-e62721bbde7c">
+          <File Id="owfCB70DCE24D9AD88268A18A08F7CA6462" Source="$(var.SourceDir)\baminf.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc2D03125316A5CCD6FFEDC41A72FD15EA" Guid="bf9e4e35-8776-e59d-fad5-e3614a158c5f" Win64="yes">
+          <File Id="owf2D03125316A5CCD6FFEDC41A72FD15EA" Source="$(var.SourceDir)\bamtestrunner.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owc73F049302BEAF61530E7BA34FF82EBAA" Guid="3ff7f538-8aea-b7b9-8635-8587f3e46466" Win64="yes">
+          <File Id="owf73F049302BEAF61530E7BA34FF82EBAA" Source="$(var.SourceDir)\bamtestrunner.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owcBF4FDE5D8D15094E92D7CB201C934093" Guid="63206e2e-4f59-d14f-872b-86866f576dda" Win64="yes">
+          <File Id="owfBF4FDE5D8D15094E92D7CB201C934093" Source="$(var.SourceDir)\bamtestrunner.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc56AF57A3874E40F0C096A708C1B69248" Guid="9a01caf3-5c67-75b2-05ef-042839d0c736" Win64="yes">
+          <File Id="owf56AF57A3874E40F0C096A708C1B69248" Source="$(var.SourceDir)\bamtestrunner.XML" KeyPath="yes" />
+        </Component>
+        <Component Id="owc872D7511410417EFCCD4A25AA5CD3CAA" Guid="471fa170-f35c-a598-6c81-6e35edb6baf7" Win64="yes">
+          <File Id="owf872D7511410417EFCCD4A25AA5CD3CAA" Source="$(var.SourceDir)\bamtoolkit_files.txt" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcD0F26944F8A7766932744AA15ED7A2BA" Guid="58e28f30-45b6-1073-fd59-37d192a4b324">
+          <File Id="owfD0F26944F8A7766932744AA15ED7A2BA" Source="$(var.SourceDir)\BoneSoft.CSS.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc0D5E901B0EDC9AC66EDED7744C9C0EC4" Guid="bf900338-6ac3-e652-0358-b6c5a433ead1">
+          <File Id="owf0D5E901B0EDC9AC66EDED7744C9C0EC4" Source="$(var.SourceDir)\BouncyCastle.Crypto.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc9697D2264D97DBFC48D1AA1863A7F7BD" Guid="2c1da03d-682c-2c36-b449-1a810534339b">
+          <File Id="owf9697D2264D97DBFC48D1AA1863A7F7BD" Source="$(var.SourceDir)\BouncyCastle.Crypto.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc89C818098AA02CA118CA32BD5CAE687E" Guid="6ec8dc16-b158-a08f-a533-c8a3c8b3a625" Win64="yes">
+          <File Id="owf89C818098AA02CA118CA32BD5CAE687E" Source="$(var.SourceDir)\breve.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owc3673E8F6D7C695D16130991D744FE071" Guid="3f3b65b1-874f-3239-c1d7-d3a79004ff96" Win64="yes">
+          <File Id="owf3673E8F6D7C695D16130991D744FE071" Source="$(var.SourceDir)\breve.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owc4CCF1A0D617DFF5A943946790409EA4D" Guid="c2318a3d-fe36-8e34-1566-d188e9bddf4d" Win64="yes">
+          <File Id="owf4CCF1A0D617DFF5A943946790409EA4D" Source="$(var.SourceDir)\breve.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc1B01CBA13A0173E65549F4CA0A12EF68" Guid="678ab2bc-001d-9861-968c-d0213f73e851" Win64="yes">
+          <File Id="owf1B01CBA13A0173E65549F4CA0A12EF68" Source="$(var.SourceDir)\breveTest.js" KeyPath="yes" />
+        </Component>
+        <Component Id="owc1CE5C5C121FDA62A3E5AFBDE3F197E30" Guid="592a7573-f309-a893-a9be-f5f743a1d353" Win64="yes">
+          <File Id="owf1CE5C5C121FDA62A3E5AFBDE3F197E30" Source="$(var.SourceDir)\chunker.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owc38AC1C28022AAA086F72E9140C5F646E" Guid="7450e22c-be25-ff90-e7d5-a89344d56f23" Win64="yes">
+          <File Id="owf38AC1C28022AAA086F72E9140C5F646E" Source="$(var.SourceDir)\chunker.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owc3DCDB1E9633EF4B67C5AB6BC450B336B" Guid="d6d45c40-7f63-7ac1-461f-913932acd9d4" Win64="yes">
+          <File Id="owf3DCDB1E9633EF4B67C5AB6BC450B336B" Source="$(var.SourceDir)\chunker.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc1E747979731DAA96C11AE0F386E633DF" Guid="59c09c62-5865-5b58-9ed9-adabc5fbf8ed" Win64="yes">
+          <File Id="owf1E747979731DAA96C11AE0F386E633DF" Source="$(var.SourceDir)\Common.Logging.Core.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owcC341DEE7B7F17835DEF003250865F41D" Guid="7879f9d4-6220-7901-21f9-a65bbb1c2d70" Win64="yes">
+          <File Id="owfC341DEE7B7F17835DEF003250865F41D" Source="$(var.SourceDir)\Common.Logging.Core.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owcDFB735414EB8C60FBBEA3CE85A5EC7F6" Guid="a931e5a7-9066-d017-c62e-271ad99efe56" Win64="yes">
+          <File Id="owfDFB735414EB8C60FBBEA3CE85A5EC7F6" Source="$(var.SourceDir)\Common.Logging.Core.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owc3DFFD191AE48CBD819A1E33FC7ECA748" Guid="0609fd69-a011-7f84-a1a5-a4a7521671b8" Win64="yes">
+          <File Id="owf3DFFD191AE48CBD819A1E33FC7ECA748" Source="$(var.SourceDir)\Common.Logging.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owcC00249617B0C8A538F3F9D78478A78D2" Guid="735021c4-b9ea-88e8-7f79-bc402e0359fe" Win64="yes">
+          <File Id="owfC00249617B0C8A538F3F9D78478A78D2" Source="$(var.SourceDir)\Common.Logging.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owcB0F06B9092A6354C3F9E26C4E675A424" Guid="6a11fcc2-4d30-1c5a-d9c3-fad7080e831b" Win64="yes">
+          <File Id="owfB0F06B9092A6354C3F9E26C4E675A424" Source="$(var.SourceDir)\Common.Logging.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owc387A1C737F2D4C26BF946519A6375156" Guid="85232e9d-1c25-977d-fd5d-28dcd30a5ed9" Win64="yes">
+          <File Id="owf387A1C737F2D4C26BF946519A6375156" Source="$(var.SourceDir)\contentpath" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc8015538F20EF2B769062EA323C8CA790" Guid="1d0de674-1fb4-7d1d-14ef-1eea996fcff0">
+          <File Id="owf8015538F20EF2B769062EA323C8CA790" Source="$(var.SourceDir)\copy_template.txt" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcC4DD123731D2B0B55C2A7C25EE6075C4" Guid="9acf7346-836f-fee4-3cfe-37b882989de7">
+          <File Id="owfC4DD123731D2B0B55C2A7C25EE6075C4" Source="$(var.SourceDir)\CsQuery.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc038901A2D86ADFA1430E1446D4371F97" Guid="37b3eac6-44c4-8845-09cf-e031154f25e2">
+          <File Id="owf038901A2D86ADFA1430E1446D4371F97" Source="$(var.SourceDir)\CsQuery.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owc419F1DFC1082E27604124E591EBFF359" Guid="d41a588e-e16b-d45f-ab45-c290bb0fb277" Win64="yes">
+          <File Id="owf419F1DFC1082E27604124E591EBFF359" Source="$(var.SourceDir)\Dao.tmpl" KeyPath="yes" />
+        </Component>
+        <Component Id="owc17113081928FCFF23C2929C1D43555BB" Guid="f24e4c73-df83-97ba-af49-1254f8ba0d16" Win64="yes">
+          <File Id="owf17113081928FCFF23C2929C1D43555BB" Source="$(var.SourceDir)\DaoRef.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc734719F95C26B8D9D847C62D08FC9B7B" Guid="7c0ac79c-59af-aded-eed1-f4b7c2b46301" Win64="yes">
+          <File Id="owf734719F95C26B8D9D847C62D08FC9B7B" Source="$(var.SourceDir)\DaoRef.dll.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owcF3F4858739CF21DCC1FDDBB11CB16359" Guid="93801f55-1cbb-2f1c-fd3a-2e955e36086d" Win64="yes">
+          <File Id="owfF3F4858739CF21DCC1FDDBB11CB16359" Source="$(var.SourceDir)\DaoRef.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owcF57BF09CE11EA9C551258FBA4774D010" Guid="d10188b7-c82f-cf05-186d-dbd378a9fda4" Win64="yes">
+          <File Id="owfF57BF09CE11EA9C551258FBA4774D010" Source="$(var.SourceDir)\Data.yaml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcBBECF1BF9D5AC5369A2CE90EE9CCA937" Guid="a2d8cf57-ed35-e477-f16a-174d6dcaa303">
+          <File Id="owfBBECF1BF9D5AC5369A2CE90EE9CCA937" Source="$(var.SourceDir)\Dll_Names.txt" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc2261EB9195C280F0191CEE78913A8C2D" Guid="ad0de5c1-b5db-4dca-5287-90589557115a">
+          <File Id="owf2261EB9195C280F0191CEE78913A8C2D" Source="$(var.SourceDir)\Dll_Names_merge.txt" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc61CA37F0AB46B65EAF4A596E2F0D6BCF" Guid="8a21ad0e-d407-c1bf-0bdd-3d39f0480986">
+          <File Id="owf61CA37F0AB46B65EAF4A596E2F0D6BCF" Source="$(var.SourceDir)\dotless.Core.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc09683A00EBE3EEC29B8F705DAE30F7F5" Guid="d94a2f81-2566-83c6-a989-8cb2bab004f4">
+          <File Id="owf09683A00EBE3EEC29B8F705DAE30F7F5" Source="$(var.SourceDir)\dotless.Core.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc38603B27E0DADA3E61D88776C826F553" Guid="6467925b-939c-c7f7-137a-d7c9504de61a" Win64="yes">
+          <File Id="owf38603B27E0DADA3E61D88776C826F553" Source="$(var.SourceDir)\DotNetOpenAuth.AspNet.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owcB90AC584848A340C5C575EC96452FA1D" Guid="fcbd95f0-e309-9399-a150-0993c680d2a9" Win64="yes">
+          <File Id="owfB90AC584848A340C5C575EC96452FA1D" Source="$(var.SourceDir)\DotNetOpenAuth.AspNet.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owc39915E01FF810098A8D5650E6994C4EA" Guid="259f97bd-949f-cf88-fdd0-8e1090cbadfa" Win64="yes">
+          <File Id="owf39915E01FF810098A8D5650E6994C4EA" Source="$(var.SourceDir)\DotNetOpenAuth.Core.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc62B81FC52D06EBC7A076269DDDE6EC83" Guid="cde55a8f-bfe2-f89b-8e56-2b4d08b3f483" Win64="yes">
+          <File Id="owf62B81FC52D06EBC7A076269DDDE6EC83" Source="$(var.SourceDir)\DotNetOpenAuth.Core.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owcAEEDB01906AB5C64F8A5C0BFE271B618" Guid="1c4f1086-b489-6569-f780-4e48a2fd80ab" Win64="yes">
+          <File Id="owfAEEDB01906AB5C64F8A5C0BFE271B618" Source="$(var.SourceDir)\DotNetOpenAuth.OAuth.Consumer.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owcE58D272CA716F63AA5515C23B90196EB" Guid="0db5b9b9-4bc3-aea4-c33c-a8afee6d7b80" Win64="yes">
+          <File Id="owfE58D272CA716F63AA5515C23B90196EB" Source="$(var.SourceDir)\DotNetOpenAuth.OAuth.Consumer.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owc67B2A4B82472EFF4CD4EB4241864425D" Guid="bd5cc85f-3306-4a40-d2c2-0293271e0694" Win64="yes">
+          <File Id="owf67B2A4B82472EFF4CD4EB4241864425D" Source="$(var.SourceDir)\DotNetOpenAuth.OAuth.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc9D1BDC31133C25DFB8AAD188E4D49C61" Guid="1aad48b2-6e3b-94aa-eed8-39d92821de92" Win64="yes">
+          <File Id="owf9D1BDC31133C25DFB8AAD188E4D49C61" Source="$(var.SourceDir)\DotNetOpenAuth.OAuth.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owcCB71FE6B58C61EA1F50CDAF929A63373" Guid="c97feabc-6aaa-25ad-1a1e-4783b49b74f4" Win64="yes">
+          <File Id="owfCB71FE6B58C61EA1F50CDAF929A63373" Source="$(var.SourceDir)\DotNetOpenAuth.OpenId.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owcEA83924E7D19818B37CD211390901D50" Guid="4d7d6a0f-10bc-454e-21f3-853ed5bdf686" Win64="yes">
+          <File Id="owfEA83924E7D19818B37CD211390901D50" Source="$(var.SourceDir)\DotNetOpenAuth.OpenId.RelyingParty.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc1498C0F5D112A896968A1AAD4540C8BD" Guid="1260ea59-0db4-bcd5-711e-92c1ccd6c4c6" Win64="yes">
+          <File Id="owf1498C0F5D112A896968A1AAD4540C8BD" Source="$(var.SourceDir)\DotNetOpenAuth.OpenId.RelyingParty.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owcB114208995B0F8F66E7706F6F5014CD5" Guid="17af9278-2b8c-0192-6492-94db2c5eeff7" Win64="yes">
+          <File Id="owfB114208995B0F8F66E7706F6F5014CD5" Source="$(var.SourceDir)\DotNetOpenAuth.OpenId.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc04FDF1B89381D9C82B49B4BD0E8C7467" Guid="1feda477-2272-bf91-6625-348d0022a759">
+          <File Id="owf04FDF1B89381D9C82B49B4BD0E8C7467" Source="$(var.SourceDir)\EcmaScript.NET.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owcFCE6FFD7DA0778547CC19CA674A2CFC7" Guid="7e4c21dd-bcd8-206c-7f46-1d66bdb1d70b" Win64="yes">
+          <File Id="owfFCE6FFD7DA0778547CC19CA674A2CFC7" Source="$(var.SourceDir)\Emojis.sqlite" KeyPath="yes" />
+        </Component>
+        <Component Id="owcE4698B480C2620F0C5E8BB64770AC46D" Guid="5ef06954-9845-1e35-7e7e-809b78b73538" Win64="yes">
+          <File Id="owfE4698B480C2620F0C5E8BB64770AC46D" Source="$(var.SourceDir)\empty.accdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc26A192B8451F5142030ED047326B15C5" Guid="491ac24b-078d-9f47-1313-e6ff3e7ced2c" Win64="yes">
+          <File Id="owf26A192B8451F5142030ED047326B15C5" Source="$(var.SourceDir)\EntityFramework.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owcBBB39913228532D4BAB1CEE53395BA69" Guid="c123e70d-df49-c6ef-e053-668f2afcd11a" Win64="yes">
+          <File Id="owfBBB39913228532D4BAB1CEE53395BA69" Source="$(var.SourceDir)\EntityFramework.SqlServer.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owcC287FAAF3B7320F37DA2E49EC66696E8" Guid="d8f179db-59a8-a584-5c0f-dac03fbace35" Win64="yes">
+          <File Id="owfC287FAAF3B7320F37DA2E49EC66696E8" Source="$(var.SourceDir)\EntityFramework.SqlServer.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owcE365FCD4CC4A2D7ED265860CF7C9D9C4" Guid="fe95dd6d-0d3c-5119-b346-7aba136ebb78" Win64="yes">
+          <File Id="owfE365FCD4CC4A2D7ED265860CF7C9D9C4" Source="$(var.SourceDir)\EntityFramework.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc387EE6B7A0CADE7A7654F76011A55126" Guid="5ceae52d-c55e-6b22-caa5-b426ca77ebdf">
+          <File Id="owf387EE6B7A0CADE7A7654F76011A55126" Source="$(var.SourceDir)\exe_names.txt" KeyPath="yes" />
+        </Component>
+        <Component Id="owc37965825EA9078411F3E6F2078D2BBD3" Guid="36b5906b-6f7d-3bbe-7130-58ddd9f60d24" Win64="yes">
+          <File Id="owf37965825EA9078411F3E6F2078D2BBD3" Source="$(var.SourceDir)\FakeItEasy.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owcB0719E222CA182DAE998014971EDB33C" Guid="74eac0eb-096a-8ec0-c597-d911769a4719" Win64="yes">
+          <File Id="owfB0719E222CA182DAE998014971EDB33C" Source="$(var.SourceDir)\FakeItEasy.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owc98091D1335AEFD883287253A6BF5C527" Guid="adce6e05-409d-0776-d879-fdff47edb165" Win64="yes">
+          <File Id="owf98091D1335AEFD883287253A6BF5C527" Source="$(var.SourceDir)\gloo.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owc45C1A82F50C672FDF7FF8DE785AD6483" Guid="39f6bb56-c410-e358-130b-3d13168cca68" Win64="yes">
+          <File Id="owf45C1A82F50C672FDF7FF8DE785AD6483" Source="$(var.SourceDir)\gloo.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owcFFF5D16AA32BF72DB62D36FFFB26D774" Guid="42a782f7-1e3a-5612-1fa0-a5d660ca714e" Win64="yes">
+          <File Id="owfFFF5D16AA32BF72DB62D36FFFB26D774" Source="$(var.SourceDir)\gloo.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owcF752ED9A4769EB9DED6F9FE845E64D19" Guid="d13aee1d-6f9f-5d62-c24c-33d4e834331e" Win64="yes">
+          <File Id="owfF752ED9A4769EB9DED6F9FE845E64D19" Source="$(var.SourceDir)\Google.Protobuf.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owcE26E09C4BD6E612CC88C328CBBFAAA4D" Guid="f0e2475b-1ba6-b974-2965-1527cc0c50de" Win64="yes">
+          <File Id="owfE26E09C4BD6E612CC88C328CBBFAAA4D" Source="$(var.SourceDir)\Google.Protobuf.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc41105EF0652D6E37C83C31B8A8018A1E" Guid="1d53fc44-b6c2-00bb-08f4-d32af1b7d11c">
+          <File Id="owf41105EF0652D6E37C83C31B8A8018A1E" Source="$(var.SourceDir)\Handlebars.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc267B8EC350B9007CB2545E6D8D099D4C" Guid="125a0451-8fb5-6d44-4e18-8543f8db9eea" Win64="yes">
+          <File Id="owf267B8EC350B9007CB2545E6D8D099D4C" Source="$(var.SourceDir)\heart.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owc817F304D55C8DE20BD49DB979FD2F8BB" Guid="dc8640f8-2a0c-fe4c-4554-007473b560b9" Win64="yes">
+          <File Id="owf817F304D55C8DE20BD49DB979FD2F8BB" Source="$(var.SourceDir)\heart.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owc1C7D512AB0785D3FBB71BC1C7B12C546" Guid="fe86c05e-d102-0cc0-0707-bd17b9301519" Win64="yes">
+          <File Id="owf1C7D512AB0785D3FBB71BC1C7B12C546" Source="$(var.SourceDir)\heart.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owcC5CC36D3E4F8BE0A29F2F8F0FA45F5EC" Guid="86790a1c-f02a-cf93-700a-03cf50c67137" Win64="yes">
+          <File Id="owfC5CC36D3E4F8BE0A29F2F8F0FA45F5EC" Source="$(var.SourceDir)\hotelsApi.js" KeyPath="yes" />
+        </Component>
+        <Component Id="owc1BFE7DECB17E2F908ECCD2AD0EB26524" Guid="04a6aef3-5c04-e94b-dbd1-3b1886e22399" Win64="yes">
+          <File Id="owf1BFE7DECB17E2F908ECCD2AD0EB26524" Source="$(var.SourceDir)\ICSharpCode.SharpZipLib.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc9E326A0F260E0675C5EBC6AB2881A1E2" Guid="ffe16c3c-f17c-382c-bfc7-40425979a96c" Win64="yes">
+          <File Id="owf9E326A0F260E0675C5EBC6AB2881A1E2" Source="$(var.SourceDir)\jssql.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owc926248C4F3568F5A9AB961C8CEFE5AC2" Guid="0c02630e-b5a1-3399-1e3a-b4ea9519b7cd" Win64="yes">
+          <File Id="owf926248C4F3568F5A9AB961C8CEFE5AC2" Source="$(var.SourceDir)\jssql.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owc8A9E096DDCC70B078A06370767CD0C56" Guid="aa0e023e-2bf9-f5ce-ca0b-a44a074b2934" Win64="yes">
+          <File Id="owf8A9E096DDCC70B078A06370767CD0C56" Source="$(var.SourceDir)\jssql.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc7DF0035685C2FD1EC3BB67AF477C6A63" Guid="7859ad48-5313-5fcf-073f-568c663e627c" Win64="yes">
+          <File Id="owf7DF0035685C2FD1EC3BB67AF477C6A63" Source="$(var.SourceDir)\Language.sqlite" KeyPath="yes" />
+        </Component>
+        <Component Id="owcC3BB44B4A41B59CF3FD59BFF215F76AD" Guid="f95f38bc-e624-80e1-06c4-d2adfe9e3ad6" Win64="yes">
+          <File Id="owfC3BB44B4A41B59CF3FD59BFF215F76AD" Source="$(var.SourceDir)\laotze.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owc16D0393412FA197D6D938A48C3E7719E" Guid="017cfe41-a2c8-788e-c973-b3984a52ee42" Win64="yes">
+          <File Id="owf16D0393412FA197D6D938A48C3E7719E" Source="$(var.SourceDir)\laotze.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owc514242B4F4D7D6774F22B1838E542B6A" Guid="258a3a06-0e65-4c5d-57a8-f00a65a25dff" Win64="yes">
+          <File Id="owf514242B4F4D7D6774F22B1838E542B6A" Source="$(var.SourceDir)\laotze.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc76CB3D5F64CF668D5F74C03F27B10A65" Guid="164c1a92-af54-0596-3696-e4ed9e9e12a0" Win64="yes">
+          <File Id="owf76CB3D5F64CF668D5F74C03F27B10A65" Source="$(var.SourceDir)\laotze.XML" KeyPath="yes" />
+        </Component>
+        <Component Id="owc2DBA7181DCCCCC4AD5C9ED6E36FB2D5E" Guid="16a05fea-53d1-dba4-0fd9-ca73cb10ea5f" Win64="yes">
+          <File Id="owf2DBA7181DCCCCC4AD5C9ED6E36FB2D5E" Source="$(var.SourceDir)\laotzu.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owc0438B5930862256D913EA281466FA32E" Guid="d673a839-9b0b-196c-87f4-33477c7900e5" Win64="yes">
+          <File Id="owf0438B5930862256D913EA281466FA32E" Source="$(var.SourceDir)\laotzu.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owcAF00D5D4C577E89CC3CB3EB0E5253598" Guid="8c4d46f2-0fa0-ad04-940a-71baced9bdfe" Win64="yes">
+          <File Id="owfAF00D5D4C577E89CC3CB3EB0E5253598" Source="$(var.SourceDir)\laotzu.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owcE9B3CC1FF94C25C5F39189262EC9C97E" Guid="56e1b5da-c925-a4ab-a5a6-fa9b2669ed7a" Win64="yes">
+          <File Id="owfE9B3CC1FF94C25C5F39189262EC9C97E" Source="$(var.SourceDir)\laotzu.XML" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc0DA276FDDE21B6F3AF996DA894AA4966" Guid="f557f7c4-425d-5316-1252-d22dfee329fe">
+          <File Id="owf0DA276FDDE21B6F3AF996DA894AA4966" Source="$(var.SourceDir)\lib.txt" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcCEF05CE65AB26CE15E84CB0103504FDB" Guid="49064b11-f50f-f28e-f8ee-2df58a11568f">
+          <File Id="owfCEF05CE65AB26CE15E84CB0103504FDB" Source="$(var.SourceDir)\Lucene.Net.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcD4054906FCD31CBF28D9AD86336B746D" Guid="36464247-d244-cfdd-e1a0-dd70f8f86146">
+          <File Id="owfD4054906FCD31CBF28D9AD86336B746D" Source="$(var.SourceDir)\Lucene.Net.pdb" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc9E050B6E8806731FB30784A00A4599AD" Guid="9b0b1a48-a771-1ff7-f15a-6ed6aed5feea">
+          <File Id="owf9E050B6E8806731FB30784A00A4599AD" Source="$(var.SourceDir)\Lucene.Net.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owc2ED379E74C52C59B2BE15507F90EB857" Guid="04d4d191-ccd3-9797-b920-6ef459563d9b" Win64="yes">
+          <File Id="owf2ED379E74C52C59B2BE15507F90EB857" Source="$(var.SourceDir)\masuco.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owcB02440C23A05F9E4C7E7968EF883D428" Guid="fed65669-722f-1776-693d-7ebbb4413152" Win64="yes">
+          <File Id="owfB02440C23A05F9E4C7E7968EF883D428" Source="$(var.SourceDir)\masuco.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owc9D9AFD9D4C3291D9E5CA9A16E5A1716F" Guid="87716590-6c39-3139-ca3e-8ae1b6b983e9" Win64="yes">
+          <File Id="owf9D9AFD9D4C3291D9E5CA9A16E5A1716F" Source="$(var.SourceDir)\masuco.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc1F80AFE322DCC2963743FA3CD2E3C840" Guid="32596292-275a-e9ff-10f0-674b8f2e07d5" Win64="yes">
+          <File Id="owf1F80AFE322DCC2963743FA3CD2E3C840" Source="$(var.SourceDir)\masuco.XML" KeyPath="yes" />
+        </Component>
+        <Component Id="owc707EEBB3FEBE0F669722AD1632CBF49A" Guid="c49ecee2-3eb6-7ca2-afab-4dda297fd64b" Win64="yes">
+          <File Id="owf707EEBB3FEBE0F669722AD1632CBF49A" Source="$(var.SourceDir)\MathNet.Numerics.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc32B1EB4398D68E0F222377356189F8F9" Guid="ad1bb615-17d5-c0db-a5f8-a97bc6c31be5" Win64="yes">
+          <File Id="owf32B1EB4398D68E0F222377356189F8F9" Source="$(var.SourceDir)\MathNet.Numerics.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owc1CE50391F4FCF8BB4104578D055FEFFE" Guid="607f7bdd-912a-1eaf-b845-16bc7a9f9d1f" Win64="yes">
+          <File Id="owf1CE50391F4FCF8BB4104578D055FEFFE" Source="$(var.SourceDir)\Microsoft.Build.Framework.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owcADCC146A224C71C08A62768A9FCD2989" Guid="b0991e60-2d9a-b89c-eacc-b256966992aa" Win64="yes">
+          <File Id="owfADCC146A224C71C08A62768A9FCD2989" Source="$(var.SourceDir)\Microsoft.Build.Framework.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcBED5500FCECB7551175681E93EC9B191" Guid="e84e4591-8227-e9c2-b052-dc4583553c9a">
+          <File Id="owfBED5500FCECB7551175681E93EC9B191" Source="$(var.SourceDir)\Microsoft.CodeAnalysis.CSharp.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc319FEF975D029606AF56ADFEF65F7BD6" Guid="d33ccbd4-0765-ec8a-6296-b75e13fb2c35">
+          <File Id="owf319FEF975D029606AF56ADFEF65F7BD6" Source="$(var.SourceDir)\Microsoft.CodeAnalysis.CSharp.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc22712C0BC1335698D11567101E08590A" Guid="a6401514-71bb-7a2c-cab1-4798fcc6b185" Win64="yes">
+          <File Id="owf22712C0BC1335698D11567101E08590A" Source="$(var.SourceDir)\Microsoft.CodeAnalysis.CSharp.Workspaces.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owcC74A8C704C7FD30D81A4969326DAFC55" Guid="c526c658-c0e0-a62c-3cda-f6c10cea9b4a" Win64="yes">
+          <File Id="owfC74A8C704C7FD30D81A4969326DAFC55" Source="$(var.SourceDir)\Microsoft.CodeAnalysis.CSharp.Workspaces.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owcB7A4B99A191D7014AE5E7771355C0A98" Guid="0b3df953-a904-2bb3-7721-7a1f4fc1478e" Win64="yes">
+          <File Id="owfB7A4B99A191D7014AE5E7771355C0A98" Source="$(var.SourceDir)\Microsoft.CodeAnalysis.CSharp.Workspaces.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc37ECDC5BD6A36F82464B125AEADBE831" Guid="c357c4b4-5bda-dc1e-98f7-676ecc89b855">
+          <File Id="owf37ECDC5BD6A36F82464B125AEADBE831" Source="$(var.SourceDir)\Microsoft.CodeAnalysis.CSharp.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcDC0782CCA5E596145FD1FDFB67EDC2AF" Guid="8bfcc8b6-6693-60fe-2af9-d0e34ab6f421">
+          <File Id="owfDC0782CCA5E596145FD1FDFB67EDC2AF" Source="$(var.SourceDir)\Microsoft.CodeAnalysis.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcB7C955549ABEFBB8F60D1FB6FAFBC089" Guid="d0ec5a3c-5535-36aa-89ea-da3ad4a480a3">
+          <File Id="owfB7C955549ABEFBB8F60D1FB6FAFBC089" Source="$(var.SourceDir)\Microsoft.CodeAnalysis.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc5B810000B5C9BF9B2937A089EA3424BB" Guid="556f5a06-90d0-1724-a347-72f165226eea" Win64="yes">
+          <File Id="owf5B810000B5C9BF9B2937A089EA3424BB" Source="$(var.SourceDir)\Microsoft.CodeAnalysis.VisualBasic.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc488F2EA6BF0CB0C514B866676584724A" Guid="955f0d46-168e-27e8-dfd6-1c51a64c2064" Win64="yes">
+          <File Id="owf488F2EA6BF0CB0C514B866676584724A" Source="$(var.SourceDir)\Microsoft.CodeAnalysis.VisualBasic.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc3DBDDD0DBD79B7EB45CA6A5D6F1E3047" Guid="51e6faa0-ac27-787c-460a-e20fa9a3bb2a" Win64="yes">
+          <File Id="owf3DBDDD0DBD79B7EB45CA6A5D6F1E3047" Source="$(var.SourceDir)\Microsoft.CodeAnalysis.VisualBasic.Workspaces.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc6BB5941B109AFA35C7F326BD19E5BA48" Guid="150d4add-bddb-1f48-6160-8df85caef672" Win64="yes">
+          <File Id="owf6BB5941B109AFA35C7F326BD19E5BA48" Source="$(var.SourceDir)\Microsoft.CodeAnalysis.VisualBasic.Workspaces.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc37C0902911DEC13E13B08DBFA8AE224D" Guid="b87858de-70c9-d10d-6243-1aede817975f" Win64="yes">
+          <File Id="owf37C0902911DEC13E13B08DBFA8AE224D" Source="$(var.SourceDir)\Microsoft.CodeAnalysis.VisualBasic.Workspaces.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owc4AA55CB3C84F88BBE588A04A0FE2FEFA" Guid="7032ceba-c2d3-7515-861a-f7553d1a5bed" Win64="yes">
+          <File Id="owf4AA55CB3C84F88BBE588A04A0FE2FEFA" Source="$(var.SourceDir)\Microsoft.CodeAnalysis.VisualBasic.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owc7CD13E9F598FBCAD1CFC86C0CDEF3186" Guid="6439511b-1168-5485-ca92-7960057a088f" Win64="yes">
+          <File Id="owf7CD13E9F598FBCAD1CFC86C0CDEF3186" Source="$(var.SourceDir)\Microsoft.CodeAnalysis.Workspaces.Desktop.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc33A613015E65ECB0E7A1B31FED14936C" Guid="3deb40bf-cbbf-e2a0-2ba7-d4777408f0ad" Win64="yes">
+          <File Id="owf33A613015E65ECB0E7A1B31FED14936C" Source="$(var.SourceDir)\Microsoft.CodeAnalysis.Workspaces.Desktop.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc39D2C34910FCDF10340003764A44BB7E" Guid="52cb396c-c162-cefc-1b0b-626f46029954" Win64="yes">
+          <File Id="owf39D2C34910FCDF10340003764A44BB7E" Source="$(var.SourceDir)\Microsoft.CodeAnalysis.Workspaces.Desktop.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owc97A61F453B546EA2E16C300EF1F53F11" Guid="4525fd2b-a7a2-9a30-dade-275d0c2ce905" Win64="yes">
+          <File Id="owf97A61F453B546EA2E16C300EF1F53F11" Source="$(var.SourceDir)\Microsoft.CodeAnalysis.Workspaces.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc3677AF7A580662912B5CD456FBACDFC6" Guid="47660dd4-08ed-311f-f524-0cb97a02fcb3" Win64="yes">
+          <File Id="owf3677AF7A580662912B5CD456FBACDFC6" Source="$(var.SourceDir)\Microsoft.CodeAnalysis.Workspaces.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc3FD4FAD3EB3EAD0C50F9D3FE0677E8E5" Guid="30a2b59e-3c0c-f937-8542-93123c242cb2" Win64="yes">
+          <File Id="owf3FD4FAD3EB3EAD0C50F9D3FE0677E8E5" Source="$(var.SourceDir)\Microsoft.CodeAnalysis.Workspaces.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc94DA77F698D0255B6EBC241EBB094758" Guid="da5c31e1-cc50-819b-bff5-c7777c042c25">
+          <File Id="owf94DA77F698D0255B6EBC241EBB094758" Source="$(var.SourceDir)\Microsoft.CodeAnalysis.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc0D9325737EEF1104A8361B34DD369755" Guid="ea1359bf-0062-b800-83dd-5fb5b3dd953f">
+          <File Id="owf0D9325737EEF1104A8361B34DD369755" Source="$(var.SourceDir)\Microsoft.SqlServer.ConnectionInfo.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc1A0686835FB1FE8F7D1AB08DC2680E3D" Guid="8a12ad5a-4037-4d58-1e17-d19cec1e0e83">
+          <File Id="owf1A0686835FB1FE8F7D1AB08DC2680E3D" Source="$(var.SourceDir)\Microsoft.SqlServer.Management.Sdk.Sfc.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc8B2FB6A7ED41539C7C61BC12E3E99731" Guid="d0cd23ca-9174-1d43-7d2c-8bcccfefbd50">
+          <File Id="owf8B2FB6A7ED41539C7C61BC12E3E99731" Source="$(var.SourceDir)\Microsoft.SqlServer.Smo.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc3739FF48C45887C8633C9A0911743BBA" Guid="4dd052cc-4adb-ea55-3a9c-25c578a96c5d" Win64="yes">
+          <File Id="owf3739FF48C45887C8633C9A0911743BBA" Source="$(var.SourceDir)\Microsoft.SqlServer.SmoExtended.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc23A0E26A18CFD3A06D8C7FFEB62261E2" Guid="a88034ef-d20d-a4d7-1037-ee78312ea5ea">
+          <File Id="owf23A0E26A18CFD3A06D8C7FFEB62261E2" Source="$(var.SourceDir)\Microsoft.SqlServer.SqlEnum.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc0532097E2A50118A7A2B9AEA4465B3CE" Guid="4a0df948-598b-d3b7-055b-cdf0ec7ebbf0">
+          <File Id="owf0532097E2A50118A7A2B9AEA4465B3CE" Source="$(var.SourceDir)\Microsoft.Web.Infrastructure.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc415D43C9B85365DB9EE875B3B8790E70" Guid="a5368424-39a5-06a7-b85d-83a49cff480c" Win64="yes">
+          <File Id="owf415D43C9B85365DB9EE875B3B8790E70" Source="$(var.SourceDir)\Microsoft.Web.WebPages.OAuth.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owcA99DDD50455B1EDE84DEA1F406DE8776" Guid="31e6fa07-4d6b-b536-886b-78c84365dd25" Win64="yes">
+          <File Id="owfA99DDD50455B1EDE84DEA1F406DE8776" Source="$(var.SourceDir)\Microsoft.Web.WebPages.OAuth.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc9DE081FA286BFCE1943ECBAE23FAB07E" Guid="28a4b68b-a7d2-2f4a-bf8b-41a1adb6805a">
+          <File Id="owf9DE081FA286BFCE1943ECBAE23FAB07E" Source="$(var.SourceDir)\Microsoft.Web.XmlTransform.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc9A4FD06F1B5C58F2FA4D9CAD4BE2D2E4" Guid="1dc1460f-4876-7474-9866-460a9487e4c7" Win64="yes">
+          <File Id="owf9A4FD06F1B5C58F2FA4D9CAD4BE2D2E4" Source="$(var.SourceDir)\Midi.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owcDFB4C2CFBCE73D2C0B6CF970F2F96204" Guid="50daad73-a1e3-34d6-32e1-4f76e6652a1f" Win64="yes">
+          <File Id="owfDFB4C2CFBCE73D2C0B6CF970F2F96204" Source="$(var.SourceDir)\Midi.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc109599F508C3543647F1D3010F586AA7" Guid="5728674a-c421-70d5-846a-eb5f7357d66c">
+          <File Id="owf109599F508C3543647F1D3010F586AA7" Source="$(var.SourceDir)\MongoDB.Bson.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc87D9A76DF60A32E3FA5D127359203107" Guid="0c1927cb-b248-0554-0014-27190966db6f">
+          <File Id="owf87D9A76DF60A32E3FA5D127359203107" Source="$(var.SourceDir)\MongoDB.Bson.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcA2C62A08F8BE6748AACF9C029EDD1351" Guid="ced2e3f2-1d7c-4c3d-618d-aefcebdcdfa4">
+          <File Id="owfA2C62A08F8BE6748AACF9C029EDD1351" Source="$(var.SourceDir)\MongoDB.Driver.Core.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcDF4B0821C90070AC673FCE4FBDD41A69" Guid="789acc04-7380-b294-3c5a-19949c0d62df">
+          <File Id="owfDF4B0821C90070AC673FCE4FBDD41A69" Source="$(var.SourceDir)\MongoDB.Driver.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc0209D98D22667B65E022584434726380" Guid="f68ef5e2-eed3-5310-c2c4-6e087fcb9e62">
+          <File Id="owf0209D98D22667B65E022584434726380" Source="$(var.SourceDir)\MongoDB.Driver.Legacy.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcE2747A9D5044F733B63DE7C619D42E2E" Guid="407a9baa-dd99-2aef-2cb3-0942b01541d2">
+          <File Id="owfE2747A9D5044F733B63DE7C619D42E2E" Source="$(var.SourceDir)\MongoDB.Driver.Legacy.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcBCBECF098A4FD5A4A8623B40BDB2411B" Guid="ece13231-2359-a3e9-45b9-386e53e2c62c">
+          <File Id="owfBCBECF098A4FD5A4A8623B40BDB2411B" Source="$(var.SourceDir)\MongoDB.Driver.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owcDB200456A6A8A29D71BCD04567EDAA97" Guid="c22375a2-a5fc-a682-f3e9-8cc11e20b34b" Win64="yes">
+          <File Id="owfDB200456A6A8A29D71BCD04567EDAA97" Source="$(var.SourceDir)\Mono.Math.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owcF9FC865DC9321DBF66D3F560A503316B" Guid="ab0acb45-6930-9ec7-a549-c9701e7d2cee" Win64="yes">
+          <File Id="owfF9FC865DC9321DBF66D3F560A503316B" Source="$(var.SourceDir)\Mono.Math.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owc047D52522F6C264D71D233382F609F19" Guid="9bafb603-be0b-ac4f-a330-22fd46424e08" Win64="yes">
+          <File Id="owf047D52522F6C264D71D233382F609F19" Source="$(var.SourceDir)\Moq.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc12AE4FCF995A0808A8F1F21438535C83" Guid="8986d120-4d3f-c9c7-6bee-1a90ee500aad" Win64="yes">
+          <File Id="owf12AE4FCF995A0808A8F1F21438535C83" Source="$(var.SourceDir)\Moq.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc528548F48E3E3F6556E2C9BF8F1869AB" Guid="6f9dd612-d746-47fc-34e6-31410a219952">
+          <File Id="owf528548F48E3E3F6556E2C9BF8F1869AB" Source="$(var.SourceDir)\MySql.Data.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc80A7A69CE33E9C78EA861AF3205D566D" Guid="84a4ffbc-f6be-569d-47c4-9e851000d995">
+          <File Id="owf80A7A69CE33E9C78EA861AF3205D566D" Source="$(var.SourceDir)\NCuid.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc7B5CF6A5D2A48F8830FD3360F3AA588A" Guid="da660866-874f-a3cf-b2a5-bfb86779024d">
+          <File Id="owf7B5CF6A5D2A48F8830FD3360F3AA588A" Source="$(var.SourceDir)\NCuid.pdb" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcD9D455542A20B2B1DF193D5009F98001" Guid="2230024e-a963-63c0-bdda-1297a81f76df">
+          <File Id="owfD9D455542A20B2B1DF193D5009F98001" Source="$(var.SourceDir)\NCuid.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc3FC8434C1A84605AEEBC6A100CA2F3E1" Guid="47d7e276-db6d-424e-d797-1a69e1e24b3b">
+          <File Id="owf3FC8434C1A84605AEEBC6A100CA2F3E1" Source="$(var.SourceDir)\Newtonsoft.Json.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcDE8FDCCF922CA433A075036DF5C1BE38" Guid="3a65cb72-6e09-91ed-08ba-4f7eadd88867">
+          <File Id="owfDE8FDCCF922CA433A075036DF5C1BE38" Source="$(var.SourceDir)\Newtonsoft.Json.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc1ABFADF13B1A83A1FD6E8E7491F29950" Guid="366f719b-e849-056b-3d32-eade7aa9ff83">
+          <File Id="owf1ABFADF13B1A83A1FD6E8E7491F29950" Source="$(var.SourceDir)\NLog.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc029F1B21286A0C9BB397B5B66013246C" Guid="66813bad-9b56-d399-a2dc-6457846715b0">
+          <File Id="owf029F1B21286A0C9BB397B5B66013246C" Source="$(var.SourceDir)\NLog.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc2AC11C459CB8FE16F488266E6A7A38AE" Guid="2a2d79ab-3033-0fb6-f63e-f7310569e578">
+          <File Id="owf2AC11C459CB8FE16F488266E6A7A38AE" Source="$(var.SourceDir)\Npgsql.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc7DFDFCFCFA5AE90EAABEAFD64E5E482D" Guid="b3114ba5-b069-f458-e465-ec50f8e1331b">
+          <File Id="owf7DFDFCFCFA5AE90EAABEAFD64E5E482D" Source="$(var.SourceDir)\Npgsql.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owcF2E2EE401CC8505995D658D45DCDD604" Guid="33f97d21-bac5-6f98-4d9d-1c81a6b12a18" Win64="yes">
+          <File Id="owfF2E2EE401CC8505995D658D45DCDD604" Source="$(var.SourceDir)\NSubstitute.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc4B2EFAA32C2DDA3414A32E544FC6BD8A" Guid="daa5c332-83d9-3788-58a6-f5b65d9267dd" Win64="yes">
+          <File Id="owf4B2EFAA32C2DDA3414A32E544FC6BD8A" Source="$(var.SourceDir)\NSubstitute.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc970BA0C77917F874336B57BD6BF66574" Guid="ea1a95b9-7a96-5023-8e95-d094e2a1b07c">
+          <File Id="owf970BA0C77917F874336B57BD6BF66574" Source="$(var.SourceDir)\Oracle.ManagedDataAccess.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc1EECF397538B05CD709D791BF5AC04AA" Guid="3192a64b-4141-d921-f8a5-4a87605a08ab" Win64="yes">
+          <File Id="owf1EECF397538B05CD709D791BF5AC04AA" Source="$(var.SourceDir)\Org.Mentalis.Security.Cryptography.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc4BAAC1BDC6E9542D16191DAA35732A3A" Guid="1a1bd208-9f1d-89fc-6497-b4d26c87ccb0" Win64="yes">
+          <File Id="owf4BAAC1BDC6E9542D16191DAA35732A3A" Source="$(var.SourceDir)\Org.Mentalis.Security.Cryptography.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc0E3804041854073D34BD4FC6384E7D2D" Guid="03c5de29-db56-16e9-0276-2aa2a868228d">
+          <File Id="owf0E3804041854073D34BD4FC6384E7D2D" Source="$(var.SourceDir)\QRCoder.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owcF36F7DE8343E77863A22221B41D9F63B" Guid="6bf60988-3d70-7b3d-83c0-27f83e868cc8" Win64="yes">
+          <File Id="owfF36F7DE8343E77863A22221B41D9F63B" Source="$(var.SourceDir)\regendao.cmd" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc8BD50D34BBBE93D0581996C9FDD3216F" Guid="3feaef24-3930-732f-f3d3-3c24d6288ce5">
+          <File Id="owf8BD50D34BBBE93D0581996C9FDD3216F" Source="$(var.SourceDir)\Renci.SshNet.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc5DBDCF9F445C43020475A373D069C1C2" Guid="98bf85c7-9ad4-80a1-90f6-2b6dc265ced3">
+          <File Id="owf5DBDCF9F445C43020475A373D069C1C2" Source="$(var.SourceDir)\Renci.SshNet.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owc3074B153015EB8CC58CB5D95ED75411F" Guid="1b85f9a2-6397-c1ae-db74-57ee08bce27e" Win64="yes">
+          <File Id="owf3074B153015EB8CC58CB5D95ED75411F" Source="$(var.SourceDir)\rencopy.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owc036C3A74701F7B32DAC1558E8BE19891" Guid="db89ab7c-9d69-ba9b-de81-c7a209842a97" Win64="yes">
+          <File Id="owf036C3A74701F7B32DAC1558E8BE19891" Source="$(var.SourceDir)\rencopy.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owc110618BEBF6B7DD20300E1EA6B06DC50" Guid="3f4c87de-b05e-9bef-b77b-422737eb29bd" Win64="yes">
+          <File Id="owf110618BEBF6B7DD20300E1EA6B06DC50" Source="$(var.SourceDir)\rencopy.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc7E9F66A801AE30AA3FCF5B7648649C71" Guid="37a89fa4-f2a2-98ba-54ec-66124c5edc64" Win64="yes">
+          <File Id="owf7E9F66A801AE30AA3FCF5B7648649C71" Source="$(var.SourceDir)\rencopy.XML" KeyPath="yes" />
+        </Component>
+        <Component Id="owcD05A019DD6F0052D4F0B9231F9504717" Guid="50e4bdc6-3479-6b8f-8366-f71cfcc21035" Win64="yes">
+          <File Id="owfD05A019DD6F0052D4F0B9231F9504717" Source="$(var.SourceDir)\SQLite.Interop.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc977D4F1B30836A8C606BDE9B9F958D4F" Guid="1c0f2bbe-9397-5135-7992-f34d641a7496" Win64="yes">
+          <File Id="owf977D4F1B30836A8C606BDE9B9F958D4F" Source="$(var.SourceDir)\StorableTypesNamespaces.txt" KeyPath="yes" />
+        </Component>
+        <Component Id="owcB0AE3EAA394C6AB0EAA4187B338707F6" Guid="a765b0bb-5774-83e8-5a38-47b39d70aebb" Win64="yes">
+          <File Id="owfB0AE3EAA394C6AB0EAA4187B338707F6" Source="$(var.SourceDir)\Svg.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owcFC6A6F590F71C12A3E422DCB7984D4C2" Guid="c42f2688-be79-a8b3-023e-1ad9bdb04d70" Win64="yes">
+          <File Id="owfFC6A6F590F71C12A3E422DCB7984D4C2" Source="$(var.SourceDir)\Svg.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc044ECFCC4AE1A48C688195AEB3C711C7" Guid="99b44497-6406-f361-8e15-d525c29bd450" Win64="yes">
+          <File Id="owf044ECFCC4AE1A48C688195AEB3C711C7" Source="$(var.SourceDir)\Svg.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owc25FBE4153F32A5634B0ADA8A6954CC89" Guid="6c98bea6-1304-2fb8-4ce3-709ad7fb9601" Win64="yes">
+          <File Id="owf25FBE4153F32A5634B0ADA8A6954CC89" Source="$(var.SourceDir)\System.AppContext.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc2F5D24BF1EA2D036DA793146E86BDF87" Guid="4d4dbb14-d5d0-ce16-910a-fdb6e5ba134f">
+          <File Id="owf2F5D24BF1EA2D036DA793146E86BDF87" Source="$(var.SourceDir)\System.Collections.Immutable.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc2BE2107F9B51B79FDB1B19EA807C9C44" Guid="8c6158e8-d242-98f7-09ad-82feca6e05d9">
+          <File Id="owf2BE2107F9B51B79FDB1B19EA807C9C44" Source="$(var.SourceDir)\System.Collections.Immutable.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc6E200B54E484219A6B4A56FF0073B0AE" Guid="6eecccd4-6a28-dbf9-2356-8071f2f99b65">
+          <File Id="owf6E200B54E484219A6B4A56FF0073B0AE" Source="$(var.SourceDir)\System.Data.SQLite.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc21961C339B5ACD9732039CACEA75DFF8" Guid="d509eb1e-e11c-f415-9e8f-1481dbe69912" Win64="yes">
+          <File Id="owf21961C339B5ACD9732039CACEA75DFF8" Source="$(var.SourceDir)\System.Data.SQLite.EF6.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owcDE257BD50B097B51D45AD3FECB2C8851" Guid="f99c3e10-00df-08e2-e72a-035fe64f94c5" Win64="yes">
+          <File Id="owfDE257BD50B097B51D45AD3FECB2C8851" Source="$(var.SourceDir)\System.Data.SQLite.Linq.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcE3192E169830C4CA64E6D72FA97BBE7D" Guid="f999e0d7-7f11-4060-53f9-f7c9eabc2b6b">
+          <File Id="owfE3192E169830C4CA64E6D72FA97BBE7D" Source="$(var.SourceDir)\System.Data.SQLite.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc5AC6699E38D4EE124CC260C1E19F025A" Guid="c61fccad-8828-7db7-7b4c-a6e5c488d921">
+          <File Id="owf5AC6699E38D4EE124CC260C1E19F025A" Source="$(var.SourceDir)\System.IO.Compression.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc2075AC71B1F4DCEAAF08A06DBA771DDD" Guid="a46a2925-e652-a762-dd96-8ab47f495f75">
+          <File Id="owf2075AC71B1F4DCEAAF08A06DBA771DDD" Source="$(var.SourceDir)\System.Net.FtpClient.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc7BC332B5391266D8A5AABEA8832FD010" Guid="50e3e000-9134-818b-f921-75e92c7cb35a">
+          <File Id="owf7BC332B5391266D8A5AABEA8832FD010" Source="$(var.SourceDir)\System.Net.FtpClient.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owcD843CEB0B32E2875A02E6CAE916D491D" Guid="def9fcbe-b6b8-3b19-eaeb-a1dd04dbce48" Win64="yes">
+          <File Id="owfD843CEB0B32E2875A02E6CAE916D491D" Source="$(var.SourceDir)\System.Net.Http.Extensions.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc24FC028BEC641FDD3E4F9DA5FDEE77DF" Guid="1391dd07-c3c2-433c-a463-3072741763bd" Win64="yes">
+          <File Id="owf24FC028BEC641FDD3E4F9DA5FDEE77DF" Source="$(var.SourceDir)\System.Net.Http.Extensions.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owc074DF08C8CDC66C7D75D3FB1010124ED" Guid="b2bf9b46-3864-379e-b4f6-aff48274240a" Win64="yes">
+          <File Id="owf074DF08C8CDC66C7D75D3FB1010124ED" Source="$(var.SourceDir)\System.Net.Http.Primitives.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc97335DA4C510C8A0EECFFC0ED16736CA" Guid="9b03b70c-4ef3-ac17-d482-76395b1fe9ab" Win64="yes">
+          <File Id="owf97335DA4C510C8A0EECFFC0ED16736CA" Source="$(var.SourceDir)\System.Net.Http.Primitives.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcCD2580ECA1FA1A3513916545D2F2BFA5" Guid="6340e508-d6f8-8810-a6a8-ac0e78dde158">
+          <File Id="owfCD2580ECA1FA1A3513916545D2F2BFA5" Source="$(var.SourceDir)\System.Runtime.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc456C772F6BA4F8274FFF4540362C5A62" Guid="72ae39cf-24e7-236b-11f9-67b7675f0c4a">
+          <File Id="owf456C772F6BA4F8274FFF4540362C5A62" Source="$(var.SourceDir)\System.Runtime.InteropServices.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc3CF0579307E4A1BD0241C5C6F3C8B3D4" Guid="80fa7fae-900d-88df-1639-3dd6c24b807b">
+          <File Id="owf3CF0579307E4A1BD0241C5C6F3C8B3D4" Source="$(var.SourceDir)\System.Threading.Tasks.Extensions.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcFC38CBFA4209D2304E1F84333C911645" Guid="5a2379fb-0f25-8895-2500-ac32ae97dcd2">
+          <File Id="owfFC38CBFA4209D2304E1F84333C911645" Source="$(var.SourceDir)\System.Threading.Tasks.Extensions.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owc1268977FB6886DC35AB6DD4910EC47A5" Guid="553ce841-c554-609c-10f6-d76e19ccc3d8" Win64="yes">
+          <File Id="owf1268977FB6886DC35AB6DD4910EC47A5" Source="$(var.SourceDir)\System.Threading.Thread.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc466A3F65D4ACE555ED7450BE40EB15C0" Guid="253b3f1d-845e-cc2b-f8dd-a05d6b1ad370">
+          <File Id="owf466A3F65D4ACE555ED7450BE40EB15C0" Source="$(var.SourceDir)\System.Web.Helpers.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcD4D309380E06EF6CACA7C43B162B47A6" Guid="3ffa7f4b-0f6d-73af-a4f0-6a763bec7766">
+          <File Id="owfD4D309380E06EF6CACA7C43B162B47A6" Source="$(var.SourceDir)\System.Web.Helpers.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc8BF19428907B281604629F0A96F07BB2" Guid="e4ffd04f-93b6-b348-035e-6e74df96e6c3">
+          <File Id="owf8BF19428907B281604629F0A96F07BB2" Source="$(var.SourceDir)\System.Web.Mvc.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc5C1E75623053850A04D9169A0EEBD868" Guid="473c782a-bdee-4c91-ccc6-ff218003bd5d">
+          <File Id="owf5C1E75623053850A04D9169A0EEBD868" Source="$(var.SourceDir)\System.Web.Mvc.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc941DCD2507A57C7B7E8DACA984729072" Guid="e029e972-2f70-e724-a83b-9ccc31e3e98b">
+          <File Id="owf941DCD2507A57C7B7E8DACA984729072" Source="$(var.SourceDir)\System.Web.Razor.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc9DBDC70776EAC1EA1A0A38818D4FD32C" Guid="2c9e127e-6c03-b61d-a4c4-30be15a91968">
+          <File Id="owf9DBDC70776EAC1EA1A0A38818D4FD32C" Source="$(var.SourceDir)\System.Web.Razor.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc26DC90F1684ED30FD7D5C151D9E9274D" Guid="3b653864-31b6-6f30-9c46-0812cdf9acf7">
+          <File Id="owf26DC90F1684ED30FD7D5C151D9E9274D" Source="$(var.SourceDir)\System.Web.WebPages.Deployment.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc62E968916D274545029A2243AD821EC7" Guid="efed82c0-92a0-69fa-0e38-2c834c3708d4">
+          <File Id="owf62E968916D274545029A2243AD821EC7" Source="$(var.SourceDir)\System.Web.WebPages.Deployment.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc96E8ECF42C14DC7A6FC8B25D4F8701B1" Guid="708c506c-a8fb-05fc-93c0-750cb94bdb45">
+          <File Id="owf96E8ECF42C14DC7A6FC8B25D4F8701B1" Source="$(var.SourceDir)\System.Web.WebPages.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcBEAD82A8CD1BC99A61F5AF35F9C7037E" Guid="7ecda280-c7c5-3e70-121e-068fe80795f9">
+          <File Id="owfBEAD82A8CD1BC99A61F5AF35F9C7037E" Source="$(var.SourceDir)\System.Web.WebPages.Razor.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc6795FE60CDB251D2F4FD9EF5DA6AE1A4" Guid="8fbfa71e-7902-bb79-4f18-a1eca2095eac">
+          <File Id="owf6795FE60CDB251D2F4FD9EF5DA6AE1A4" Source="$(var.SourceDir)\System.Web.WebPages.Razor.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc95818FE2623878A303DA8524965B5A32" Guid="f4e7dfec-9cc3-2b96-772d-511695844c59">
+          <File Id="owf95818FE2623878A303DA8524965B5A32" Source="$(var.SourceDir)\System.Web.WebPages.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owc4501093665242137A07CD470FF1AEB5F" Guid="f829f26d-86bc-fccc-cf2d-20bbaa8b37de" Win64="yes">
+          <File Id="owf4501093665242137A07CD470FF1AEB5F" Source="$(var.SourceDir)\Tamir.SharpSSH.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc48AD2A654FFD051D589638B5F403024B" Guid="c2f6c8b7-ac7a-50d6-650e-7ed189a63499" Win64="yes">
+          <File Id="owf48AD2A654FFD051D589638B5F403024B" Source="$(var.SourceDir)\Test.zip" KeyPath="yes" />
+        </Component>
+        <Component Id="owcD335FFD27F1AECD75CBED216DC27199E" Guid="612191b8-3dda-e968-19c1-31efbd7043fa" Win64="yes">
+          <File Id="owfD335FFD27F1AECD75CBED216DC27199E" Source="$(var.SourceDir)\TestDoc.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owcDBD0EFD83671E42FE12B18A83529437A" Guid="02b47e63-6ec5-0e10-a45a-cc2d0f59991f" Win64="yes">
+          <File Id="owfDBD0EFD83671E42FE12B18A83529437A" Source="$(var.SourceDir)\TestFile1.txt" KeyPath="yes" />
+        </Component>
+        <Component Id="owc5155DD230302099AD71E76691C47A8C1" Guid="c0ba5b80-d56e-b6f7-eab3-c49bf8061138" Win64="yes">
+          <File Id="owf5155DD230302099AD71E76691C47A8C1" Source="$(var.SourceDir)\tests_with_coverage.cmd" KeyPath="yes" />
+        </Component>
+        <Component Id="owc3031FD224F175C9B3BD6E0EFE780352C" Guid="4d3ac19f-edd5-11fc-f4f9-23d2cbd18b9b" Win64="yes">
+          <File Id="owf3031FD224F175C9B3BD6E0EFE780352C" Source="$(var.SourceDir)\troo.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owc6C2EEA79C569554EEE76840AC458E9B1" Guid="1e70ef6e-e648-08b8-d6af-8af3e3d13e6d" Win64="yes">
+          <File Id="owf6C2EEA79C569554EEE76840AC458E9B1" Source="$(var.SourceDir)\troo.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owc4E862A5E4960969081E8FDADAD3E10FD" Guid="e86c47d0-fcfe-9c54-5eb8-ba5911cd2508" Win64="yes">
+          <File Id="owf4E862A5E4960969081E8FDADAD3E10FD" Source="$(var.SourceDir)\troo.pdb" KeyPath="yes" />
+        </Component>
+        <Component Id="owc42F315E7E14390062FBDEAAF04342138" Guid="b0771ef8-2766-804d-f5dd-b44493031292" Win64="yes">
+          <File Id="owf42F315E7E14390062FBDEAAF04342138" Source="$(var.SourceDir)\UnityEngine.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owcC863F4429277077299CEF63F87CCF72C" Guid="8832f662-92f7-7200-d455-0bdd7d180820" Win64="yes">
+          <File Id="owfC863F4429277077299CEF63F87CCF72C" Source="$(var.SourceDir)\vault.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owc7CFB10AB7DF6227B5FB862A20BFD339B" Guid="edd9727b-d9fc-f215-87ed-c2d153385429" Win64="yes">
+          <File Id="owf7CFB10AB7DF6227B5FB862A20BFD339B" Source="$(var.SourceDir)\vault.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owc4EB533335CCBB80512F8104C69735E15" Guid="c1a7b50b-a22f-d4b7-c669-22c0bbd88af9" Win64="yes">
+          <File Id="owf4EB533335CCBB80512F8104C69735E15" Source="$(var.SourceDir)\vault.pdb" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc963FF1822A99BE7DD2E0F3B9496B00CA" Guid="9f7ef458-43a0-6aa7-20c3-9b0460dcca3b">
+          <File Id="owf963FF1822A99BE7DD2E0F3B9496B00CA" Source="$(var.SourceDir)\ver.txt" KeyPath="yes" />
+        </Component>
+        <Component Id="owc63934C46D87A2AF7D60F84EE55BB03FC" Guid="8bdc1fc7-7f86-5e9e-b115-9119c4030d54" Win64="yes">
+          <File Id="owf63934C46D87A2AF7D60F84EE55BB03FC" Source="$(var.SourceDir)\vs7C4C.tmp" KeyPath="yes" />
+        </Component>
+        <Component Id="owc241D5489DF9C4916CD3A930B484976F6" Guid="3101fd43-f64b-ec2f-5e5a-2e6eddab2d66" Win64="yes">
+          <File Id="owf241D5489DF9C4916CD3A930B484976F6" Source="$(var.SourceDir)\vs819C.tmp" KeyPath="yes" />
+        </Component>
+        <Component Id="owcE167C77C920B0FD360FE0216E8884E0F" Guid="ca1f7f8a-05ad-3a66-785e-62a1e6c91ed8" Win64="yes">
+          <File Id="owfE167C77C920B0FD360FE0216E8884E0F" Source="$(var.SourceDir)\vs9767.tmp" KeyPath="yes" />
+        </Component>
+        <Component Id="owcFDC5AE75E96B881501230A925BE563B2" Guid="d3d84592-5556-453d-547e-e732d3efe08e" Win64="yes">
+          <File Id="owfFDC5AE75E96B881501230A925BE563B2" Source="$(var.SourceDir)\vsE061.tmp" KeyPath="yes" />
+        </Component>
+        <Component Id="owcB8EC4E45B0A82C8D1EF42BF06F3F3FDF" Guid="b17688f2-294a-cc21-1a6e-0848d3b7ae4a" Win64="yes">
+          <File Id="owfB8EC4E45B0A82C8D1EF42BF06F3F3FDF" Source="$(var.SourceDir)\vyoo.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owc1BB3681A01A743C593DDDD3000FE55DC" Guid="62e0cc44-29ad-c21f-cc84-6eb05ba3cf5c" Win64="yes">
+          <File Id="owf1BB3681A01A743C593DDDD3000FE55DC" Source="$(var.SourceDir)\vyoo.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owc562CBF9CF1AF694F70698774DAAD59ED" Guid="881dae0c-f242-42d1-5a04-7514b2ee702b" Win64="yes">
+          <File Id="owf562CBF9CF1AF694F70698774DAAD59ED" Source="$(var.SourceDir)\vyoo.pdb" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc9CAA4AA07EB4D76EE58F86423A0AF9C7" Guid="c4aa5b90-a73d-a386-9b0d-e0b370e69978">
+          <File Id="owf9CAA4AA07EB4D76EE58F86423A0AF9C7" Source="$(var.SourceDir)\WebMatrix.Data.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc5A84A46787C02114716AFEDA939204E2" Guid="aec9b59f-3a0f-e193-548b-82bae7aefa5c">
+          <File Id="owf5A84A46787C02114716AFEDA939204E2" Source="$(var.SourceDir)\WebMatrix.Data.xml" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcF0D22C35E53EE19D9B343B35EAD54F04" Guid="af098d70-0480-8213-82a8-feb6bb7985a9">
+          <File Id="owfF0D22C35E53EE19D9B343B35EAD54F04" Source="$(var.SourceDir)\WebMatrix.WebData.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc01E419D7028093E62773C2F62946D5B1" Guid="06d93278-08e8-4660-2afb-b1ce639a3e35">
+          <File Id="owf01E419D7028093E62773C2F62946D5B1" Source="$(var.SourceDir)\WebMatrix.WebData.xml" KeyPath="yes" />
+        </Component>
+        <Component Id="owc36F5DA9A85751F4E47E45591E37D0417" Guid="9d933fad-aac4-f7b5-5770-75fedc897e8f" Win64="yes">
+          <File Id="owf36F5DA9A85751F4E47E45591E37D0417" Source="$(var.SourceDir)\Winterdom.IO.FileMap.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc49BC32F9B6A948EFDA81199D96B3E548" Guid="3df0a39c-f44f-aa2e-212c-2c6647744140" Win64="yes">
+          <File Id="owf49BC32F9B6A948EFDA81199D96B3E548" Source="$(var.SourceDir)\wrapify.exe" KeyPath="yes" />
+        </Component>
+        <Component Id="owcF3D14F17BC866CD9D7E9828E5EDC8858" Guid="c8d052f1-1243-83a0-7f57-4a6da70db0d1" Win64="yes">
+          <File Id="owfF3D14F17BC866CD9D7E9828E5EDC8858" Source="$(var.SourceDir)\wrapify.exe.config" KeyPath="yes" />
+        </Component>
+        <Component Id="owc3EE5E9F9255E3C81BD0D96A87E9820B0" Guid="994df588-de7d-8a0f-0370-9a5703705197" Win64="yes">
+          <File Id="owf3EE5E9F9255E3C81BD0D96A87E9820B0" Source="$(var.SourceDir)\wrapify.pdb" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owc323C431AE94F0C36F4AA3BBA17CBCBF9" Guid="71a7189e-dbc7-0b22-d59c-d5ada76d96d7">
+          <File Id="owf323C431AE94F0C36F4AA3BBA17CBCBF9" Source="$(var.SourceDir)\Yahoo.Yui.Compressor.dll" KeyPath="yes" />
+        </Component>
+        <Component Win64="yes" Id="owcECC5304CBE3A820FA27BA5C913AC361E" Guid="9cfd6369-5631-e1f6-f5f6-caea669acb70">
+          <File Id="owfECC5304CBE3A820FA27BA5C913AC361E" Source="$(var.SourceDir)\YamlSerializer.dll" KeyPath="yes" />
+        </Component>
+        <Component Id="owc23B73D39263094B44F46052229A5C64F" Guid="51c8de1c-4e37-620e-813b-6453df3a52e6" Win64="yes">
+          <File Id="owf23B73D39263094B44F46052229A5C64F" Source="$(var.SourceDir)\ZKWeb.System.Drawing.dll" KeyPath="yes" />
+        </Component>
+        <Directory Id="owd6DA09AB581403FC80D4B344136A0C857" Name="AssemblyManagement">
+          <Component Id="owcA7DEA9DE662E23E77CF8B34FF5CCA8A2" Guid="52f93492-f9f0-5552-e1d9-69deb8d7344f" Win64="yes">
+            <File Id="owfA7DEA9DE662E23E77CF8B34FF5CCA8A2" Source="$(var.SourceDir)\AssemblyManagement\regen_assemblymanagement_dao.cmd" KeyPath="yes" />
+          </Component>
+        </Directory>
+        <Directory Id="owd0C64711E243FE4E29D1B4BF4C9D29858" Name="Data">
+          <Component Id="owc5D88BC9DCBE563BCEC04E8EAECDDDF5F" Guid="c163b1c3-0380-9ca3-91c2-95d2128aff86" Win64="yes">
+            <File Id="owf5D88BC9DCBE563BCEC04E8EAECDDDF5F" Source="$(var.SourceDir)\Data\Data.yaml" KeyPath="yes" />
+          </Component>
+          <Component Id="owcF922BD6B4978EC57C67C06C8588F0A21" Guid="98400bd3-b103-d653-c5e1-7b08e0537388" Win64="yes">
+            <File Id="owfF922BD6B4978EC57C67C06C8588F0A21" Source="$(var.SourceDir)\Data\Normalize.yaml" KeyPath="yes" />
+          </Component>
+        </Directory>
+        <Directory Id="owdD42A11A9E0224D93878822D5C74DA369" Name="Dust">
+          <Component Id="owcB0356533DC3D5B4CD4834B4A863E3490" Guid="d438e8d3-14b1-a537-8dbf-ddfba5b62040" Win64="yes">
+            <File Id="owfB0356533DC3D5B4CD4834B4A863E3490" Source="$(var.SourceDir)\Dust\test.dust" KeyPath="yes" />
+          </Component>
+        </Directory>
+        <Directory Id="owd679B16652F80A6F504564172DC17BA3E" Name="OpenApi">
+          <Component Id="owc338806E8FC5B194EEABBF2AEC5EA6BB2" Guid="de8c4322-2142-1746-199f-8ac24042e27f" Win64="yes">
+            <File Id="owf338806E8FC5B194EEABBF2AEC5EA6BB2" Source="$(var.SourceDir)\OpenApi\OpenApi.sqlite" KeyPath="yes" />
+          </Component>
+        </Directory>
+        <Directory Id="owd7C55663B2733F2B876CE3412D911A9E4" Name="SQLite">
+          <Directory Id="owdED3306B7EFC6021C2FD101B3E2E58ACC" Name="x64">
+            <Component Id="owc3A2598F0E77994639F636E2858EFFBB0" Guid="bfb7ee54-a0ba-634b-8a1c-c29923100d02" Win64="yes">
+              <File Id="owf3A2598F0E77994639F636E2858EFFBB0" Source="$(var.SourceDir)\SQLite\x64\SQLite.Interop.dll" KeyPath="yes" />
+            </Component>
+            <Component Id="owc9CE04FD834383BD2C7B9B3DE64DABD8B" Guid="2b284ee9-8fb7-e02e-e7fb-e37ccb54564f" Win64="yes">
+              <File Id="owf9CE04FD834383BD2C7B9B3DE64DABD8B" Source="$(var.SourceDir)\SQLite\x64\System.Data.SQLite.dll" KeyPath="yes" />
+            </Component>
+          </Directory>
+          <Directory Id="owdBF2CA95171712A68390B8C4818B25BE1" Name="x86">
+            <Component Id="owc4860930C45EF63CF1F11FDACB2E75B8E" Guid="0449d892-0f51-0685-2d01-a8aea89099b9" Win64="yes">
+              <File Id="owf4860930C45EF63CF1F11FDACB2E75B8E" Source="$(var.SourceDir)\SQLite\x86\SQLite.Interop.dll" KeyPath="yes" />
+            </Component>
+            <Component Id="owcDDBCCDD249B0A615E5D12CF1B4AA6DC4" Guid="75150033-1ecb-4cdf-710e-eec2300f18e1" Win64="yes">
+              <File Id="owfDDBCCDD249B0A615E5D12CF1B4AA6DC4" Source="$(var.SourceDir)\SQLite\x86\System.Data.SQLite.dll" KeyPath="yes" />
+            </Component>
+          </Directory>
+        </Directory>
+        <Directory Id="owd3E58D76C4D97D47793B6942C132BA015" Name="Test">
+          <Component Id="owcF4EAF0A35A49FE1F973FF21278B8C401" Guid="0336dd80-4171-b438-213c-7785fd8a5765" Win64="yes">
+            <File Id="owfF4EAF0A35A49FE1F973FF21278B8C401" Source="$(var.SourceDir)\Test\GlooTestScript.csgloo" KeyPath="yes" />
+          </Component>
+          <Component Id="owcEFCF2D8F821AB0937C0855DCEFB0266E" Guid="7e3c4a99-6eae-b590-78c5-7daf09791c42" Win64="yes">
+            <File Id="owfEFCF2D8F821AB0937C0855DCEFB0266E" Source="$(var.SourceDir)\Test\Test.txt" KeyPath="yes" />
+          </Component>
+          <Directory Id="owd854D12B92E79FF0C1DF935A0FCC5E879" Name="subfolder">
+            <Component Id="owcEFCC8837DF3BFCC70B4115955229C33F" Guid="a9ea25e2-a71b-d5cd-4e4a-dc3f6037e0e3" Win64="yes">
+              <File Id="owfEFCC8837DF3BFCC70B4115955229C33F" Source="$(var.SourceDir)\Test\subfolder\subitem.txt" KeyPath="yes" />
+            </Component>
+            <Directory Id="owdCE4DC1D825040E4564756ED2A087AB83" Name="anotherfolder">
+              <Component Id="owc615F7385328127716B5EAFDB48E1C8AE" Guid="985df5ee-2aef-3868-2ba5-17736ff77fb7" Win64="yes">
+                <File Id="owf615F7385328127716B5EAFDB48E1C8AE" Source="$(var.SourceDir)\Test\subfolder\anotherfolder\TextFile1.txt" KeyPath="yes" />
+              </Component>
+            </Directory>
+          </Directory>
+        </Directory>
+        <Directory Id="owd37EA32A018DF9B31395A1FCE42233062" Name="x64">
+          <Component Id="owc4365069B604640CFF4D8FD249E6E1D4F" Guid="e1c5ce87-dce9-9d42-3ef7-4d0aed705b22" Win64="yes">
+            <File Id="owf4365069B604640CFF4D8FD249E6E1D4F" Source="$(var.SourceDir)\x64\SQLite.Interop.dll" KeyPath="yes" />
+          </Component>
+        </Directory>
+        <Directory Id="owd3BCA71FC1DDF940F5FD535BAC750E17B" Name="x86">
+          <Component Id="owc00BF5CBA527D2487612460E7473ADA9A" Guid="6244d1c3-11f4-3db4-4486-bab5c9c96f95" Win64="yes">
+            <File Id="owf00BF5CBA527D2487612460E7473ADA9A" Source="$(var.SourceDir)\x86\SQLite.Interop.dll" KeyPath="yes" />
+          </Component>
+        </Directory>
+      </Directory>
+    </Directory>
+    <ComponentGroupRef Id="Custom" />
+  </Module>
+</Wix>

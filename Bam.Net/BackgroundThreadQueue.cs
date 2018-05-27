@@ -45,12 +45,16 @@ namespace Bam.Net
         }
 
         ConcurrentQueue<T> _processQueue = new ConcurrentQueue<T>();
+        object _procLock = new object();
         public void Enqueue(T data)
         {
-            if (ProcessThread.ThreadState != (ThreadState.Running | ThreadState.Background | ThreadState.WaitSleepJoin))
+            lock (_procLock)
             {
-                _processThread = null;
-                ProcessThread.Start();
+                if (ProcessThread.ThreadState != (ThreadState.Running | ThreadState.Background | ThreadState.WaitSleepJoin))
+                {
+                    _processThread = null;
+                    ProcessThread.Start();
+                }
             }
             
             _processQueue.Enqueue(data);

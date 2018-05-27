@@ -65,15 +65,15 @@ namespace Bam.Net.Automation.Tests
         public void ShouldUpload()
         {
             string testPath = "C:\\inetpub\\ftproot\\subfolder";
-            if (Directory.Exists(testPath))
+            if (System.IO.Directory.Exists(testPath))
             {
-                Directory.Delete(testPath, true);
+                System.IO.Directory.Delete(testPath, true);
             };
 
-            Expect.IsFalse(Directory.Exists(testPath));
+            Expect.IsFalse(System.IO.Directory.Exists(testPath));
             Ftp ftp = Ftp.Server("localhost");
             ftp.UserName("ftptest").Password("53cr3tP455w0rd1!").Upload(".\\Test");
-            Expect.IsTrue(Directory.Exists(testPath));
+            Expect.IsTrue(System.IO.Directory.Exists(testPath));
         }
 
         [UnitTest]

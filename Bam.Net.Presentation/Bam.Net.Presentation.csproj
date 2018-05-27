@@ -235,6 +235,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Bam.Net.Presentation.nuspec" />
     <None Include="Dust\test.dust">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

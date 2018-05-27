@@ -335,6 +335,9 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="AsyncCallback\regen_asyncecallback_dao.cmd" />
+    <None Include="Bam.Net.Services.nuspec">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="DataReplication\Data\regen_datareplication_dao.cmd" />
     <None Include="OpenApi\OpenApi.sqlite">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

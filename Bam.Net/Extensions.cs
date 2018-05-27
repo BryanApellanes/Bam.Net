@@ -201,6 +201,10 @@ namespace Bam.Net
         /// <returns></returns>
         public static bool IsAffirmative(this string value)
         {
+            if(string.IsNullOrEmpty(value))
+            {
+                return false;
+            }
             return value.Equals("true", StringComparison.InvariantCultureIgnoreCase) ||
                 value.Equals("yes", StringComparison.InvariantCultureIgnoreCase) ||
                 value.Equals("t", StringComparison.InvariantCultureIgnoreCase) ||
@@ -216,6 +220,10 @@ namespace Bam.Net
         /// <returns></returns>
         public static bool IsNegative(this string value)
         {
+            if (string.IsNullOrEmpty(value))
+            {
+                return true;
+            }
             return value.Equals("false", StringComparison.InvariantCultureIgnoreCase) ||
                 value.Equals("no", StringComparison.InvariantCultureIgnoreCase) ||
                 value.Equals("f", StringComparison.InvariantCultureIgnoreCase) ||

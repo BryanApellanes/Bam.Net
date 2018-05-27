@@ -8,8 +8,8 @@
     <ProjectGuid>{823141D0-42B2-46D9-9B18-7A0F876D9960}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>baminf</RootNamespace>
-    <AssemblyName>baminf</AssemblyName>
+    <RootNamespace>Bam.Net.Application</RootNamespace>
+    <AssemblyName>bake</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -100,12 +100,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BakeComponent.cs" />
+    <Compile Include="BakeDirectory.cs" />
+    <Compile Include="BakeFile.cs" />
+    <Compile Include="BakeSettings.cs" />
     <Compile Include="BuildActions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WixDocument.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="generate_bam_dot_exe.cmd" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Bam.Net.Automation\Bam.Net.Automation.csproj">
@@ -130,22 +139,18 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="BamToolkit.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="buildnum.txt" />
     <Content Include="copy_template.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Dll_Names.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Dll_Names_merge.txt">
+    <Content Include="AssemblyNames.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="exe_names.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="lib.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ver.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -281,6 +281,9 @@
     <Content Include="Secure\SecureServiceProxy.db.js" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Bam.Net.ServiceProxy.nuspec">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

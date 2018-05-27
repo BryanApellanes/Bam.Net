@@ -195,6 +195,9 @@
     <None Include="app.config" />
     <EmbeddedResource Include="Templates\PagedQueryClass.tmpl" />
     <EmbeddedResource Include="Templates\QueryClass.tmpl" />
+    <None Include="Bam.Net.Data.Schema.nuspec">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

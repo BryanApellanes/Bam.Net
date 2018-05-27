@@ -1,1 +1,1 @@
-baminf /generateBamDotExeScript /mdnf:.\dll_names_merge.txt
+bake /generateBamDotExeScript /mdnf:.\dll_names.txt

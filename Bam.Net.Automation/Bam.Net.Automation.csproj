@@ -169,13 +169,19 @@
     <Compile Include="Ftp.cs" />
     <Compile Include="IfElseWorker.cs" />
     <Compile Include="IWorkerTypeProvider.cs" />
+    <Compile Include="MSBuild\MSBuildExtensions.cs" />
     <Compile Include="MSBuild\Project.cs" />
     <Compile Include="JobManagerService.cs" />
+    <Compile Include="MSBuild\FileCopyBehavior.cs" />
+    <Compile Include="Nuget\packages.cs">
+      <DependentUpon>packages.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Partials\DeferredJob.cs" />
     <Compile Include="Partials\DeferredJobData.cs" />
     <Compile Include="Partials\JobData.cs" />
     <Compile Include="Partials\JobRunData.cs" />
     <Compile Include="Partials\RunningJob.cs" />
+    <Compile Include="ProjectReference.cs" />
     <Compile Include="ScanningWorkerTypeProvider.cs" />
     <Compile Include="Sftp.cs" />
     <Compile Include="Ssh.cs" />
@@ -370,7 +376,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Bam.Net.Automation.nuspec">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="MyPackage.1.0.0.nuspec" />
+    <None Include="Nuget\packages.xsc">
+      <DependentUpon>packages.xsd</DependentUpon>
+    </None>
+    <None Include="Nuget\packages.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>packages.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Nuget\packages.xss">
+      <DependentUpon>packages.xsd</DependentUpon>
+    </None>
     <None Include="nuspec.2010.7.xsd">
       <SubType>Designer</SubType>
     </None>

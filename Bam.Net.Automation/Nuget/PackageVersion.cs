@@ -31,23 +31,29 @@ namespace Bam.Net.Automation.Nuget
 
         private void SetVersion(string version)
         {
-            Args.ThrowIfNullOrEmpty(version, "version");
-            this._partSetters = new Dictionary<int, Action<string>>();
-            this._partSetters[0] = (s) =>
+            version = string.IsNullOrEmpty(version) ? "1.0.0" : version;
+            this._partSetters = new Dictionary<int, Action<string>>
             {
-                this.Major = s;
-            };
-            this._partSetters[1] = (s) =>
-            {
-                this.Minor = s;
-            };
-            this._partSetters[2] = (s) =>
-            {
-                this.Patch = s;
+                [0] = (s) =>
+                {
+                    this.Major = s;
+                },
+                [1] = (s) =>
+                {
+                    this.Minor = s;
+                },
+                [2] = (s) =>
+                {
+                    this.Patch = s;
+                }
             };
 
             string[] parts = version.DelimitSplit(".");
             SetVersionParts(parts);
+            if (version.Contains("-"))
+            {
+                BuildNumber = version.Split(new char[] { '-' }, 2)[1];                
+            }
         }
 
         internal packageMetadata MetaData
@@ -161,11 +167,30 @@ namespace Bam.Net.Automation.Nuget
             }
         }
 
+        string _buildNumber;
+        public string BuildNumber
+        {
+            get
+            {
+                return _buildNumber;
+            }
+            set
+            {
+                _buildNumber = value;
+                _meta.version = Value;
+            }
+        }
+
         public string Value
         {
             get
             {
-                return "{0}.{1}.{2}"._Format(Major, Minor, Patch);
+                string value = "{0}.{1}.{2}"._Format(Major, Minor, Patch);
+                if (!string.IsNullOrEmpty(BuildNumber))
+                {
+                    value = string.Format("{0}-{1}", value, BuildNumber);
+                }
+                return value;
             }
         }
 

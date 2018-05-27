@@ -248,6 +248,7 @@
     <EmbeddedResource Include="content.root" />
     <EmbeddedResource Include="app.base" />
     <None Include="app.config" />
+    <None Include="Bam.Net.Server.nuspec" />
     <None Include="packages.config" />
     <None Include="README.md" />
     <None Include="zip_base_app_and_content.cmd" />

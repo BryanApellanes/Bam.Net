@@ -1,1 +1,1 @@
-baminf /generateNugetScripts /dnf:.\dll_names.txt /enf:.\exe_names.txt /tf:.\copy_template.txt
+bake /generateNugetScripts /dnf:.\dll_names.txt /enf:.\exe_names.txt /tf:.\copy_template.txt

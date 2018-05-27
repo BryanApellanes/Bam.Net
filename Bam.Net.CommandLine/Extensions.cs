@@ -13,9 +13,13 @@ namespace Bam.Net.CommandLine
 {
     public static class Extensions
     {
-        public static void InvokeInCurrentAppDomain(this ConsoleMethod consoleInvokeableMethod)
+        /// <summary>
+        /// Invokes the specified console method in current application domain.
+        /// </summary>
+        /// <param name="consoleMethod">The console method.</param>
+        public static void InvokeInCurrentAppDomain(this ConsoleMethod consoleMethod)
         {
-            CommandLineInterface.InvokeInCurrentAppDomain(consoleInvokeableMethod.Method, consoleInvokeableMethod.Provider, consoleInvokeableMethod.Parameters);
+            CommandLineInterface.InvokeInCurrentAppDomain(consoleMethod.Method, consoleMethod.Provider, consoleMethod.Parameters);
         }
 
         public static void InvokeInSeparateAppDomain(this ConsoleMethod consoleInvokeableMethod)
@@ -28,6 +32,12 @@ namespace Bam.Net.CommandLine
             return Task.Run(()=> Run(command, timeout));
         }
 
+        /// <summary>
+        /// Runs the specified command.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="timeout">The timeout.</param>
+        /// <returns></returns>
         public static ProcessOutput Run(this string command, int timeout = 600000)
         {
             return command.Run(false, null, null, timeout);
@@ -85,6 +95,17 @@ namespace Bam.Net.CommandLine
             return Run(startInfo, outputCollector, timeout);
         }
 
+        public static ProcessStartInfo ToStartInfo(this string command, string workingDirectory, bool promptForAdmin = false, int timeout = 600000)
+        {
+            ValidateCommand(command);
+            GetExeAndArguments(command, out string exe, out string arguments);
+            ProcessStartInfo startInfo = CreateStartInfo(promptForAdmin);
+            startInfo.FileName = command;
+            startInfo.Arguments = arguments;
+            startInfo.WorkingDirectory = workingDirectory;
+            return startInfo;
+        }
+
         /// <summary>
         /// Start a new process for the specified startInfo.  This 
         /// operation will block if a timeout greater than 0 is specified
@@ -106,15 +127,24 @@ namespace Bam.Net.CommandLine
         /// <param name="error"></param>
         /// <param name="timeout"></param>
         /// <returns></returns>
-        public static ProcessOutput Run(this ProcessStartInfo startInfo, StringBuilder output = null, StringBuilder error = null, int timeout = 600000)
+        public static ProcessOutput Run(this ProcessStartInfo startInfo, StringBuilder output, StringBuilder error = null, int timeout = 600000)
         {
             output = output ?? new StringBuilder();
             error = error ?? new StringBuilder();
             ProcessOutputCollector receiver = new ProcessOutputCollector(output, error);
             return Run(startInfo, receiver, timeout);
         }
-        
-        public static ProcessOutput Run(this string command, Action<string> onStandardOutput, int timeout = 600000)
+
+        /// <summary>
+        /// Run the specified command in a separate process capturing the output
+        /// and error streams if any. This method will block if a timeout is specified, it will
+        /// not block if timeout is null.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="onStandardOutput">The on standard output.</param>
+        /// <param name="timeout">The timeout.</param>
+        /// <returns></returns>
+        public static ProcessOutput Run(this string command, Action<string> onStandardOutput, int? timeout = 600000)
         {
             return Run(command, null, onStandardOutput, (s) => { }, false, timeout);
         }
@@ -137,7 +167,8 @@ namespace Bam.Net.CommandLine
 
         /// <summary>
         /// Run the specified command in a separate process capturing the output
-        /// and error streams if any
+        /// and error streams if any. This method will block if a timeout is specified, it will
+        /// not block if timeout is null.
         /// </summary>
         /// <param name="command"></param>
         /// <param name="onExit"></param>
@@ -214,14 +245,15 @@ namespace Bam.Net.CommandLine
         /// <param name="output"></param>
         /// <param name="timeout"></param>
         /// <returns></returns>
-        public static ProcessOutput Run(this ProcessStartInfo startInfo, ProcessOutputCollector output = null, int? timeout = null)
+        public static ProcessOutput Run(this ProcessStartInfo startInfo, ProcessOutputCollector output, int? timeout = null)
         {
             return Run(startInfo, null, output, timeout);
         }
 
         /// <summary>
         /// Run the specified command in a separate process capturing the output
-        /// and error streams if any
+        /// and error streams if any. This method will block if a timeout is specified, it will
+        /// not block if timeout is null.
         /// </summary>
         /// <param name="startInfo"></param>
         /// <param name="onExit"></param>

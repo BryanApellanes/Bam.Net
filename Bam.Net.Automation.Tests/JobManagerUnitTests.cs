@@ -38,9 +38,9 @@ namespace Bam.Net.Automation.Tests
         {
             JobManagerService svc = new JobManagerService();
             string dir = svc.JobsDirectory;
-            if (Directory.Exists(dir))
+            if (System.IO.Directory.Exists(dir))
             {
-                Directory.Delete(svc.JobsDirectory, true);
+                System.IO.Directory.Delete(svc.JobsDirectory, true);
             }
         }
 

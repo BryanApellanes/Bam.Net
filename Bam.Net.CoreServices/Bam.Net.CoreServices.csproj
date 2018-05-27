@@ -446,6 +446,9 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="ApplicationRegistration\regen_core_registration_dao.cmd" />
+    <None Include="Bam.Net.CoreServices.nuspec">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

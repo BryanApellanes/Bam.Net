@@ -28,9 +28,11 @@ namespace Bam.Net.Automation.SourceControl
         public string Summary { get; set; }
         public string Bullet { get; set; }
         public PackageVersion Since { get; set; }
+        public int CommitCount { get; set; }
         protected StringBuilder Bullets { get; set; }
         protected void AddBullet(string value, string commitHash)
         {
+            CommitCount++;
             Bullets.AppendFormat("{0} {1} ({2})\r\n", Bullet, value, commitHash);
         }
         static Dictionary<string, Dictionary<string, GitReleaseNotes>> _logCache = new Dictionary<string, Dictionary<string, GitReleaseNotes>>();
@@ -57,16 +59,22 @@ namespace Bam.Net.Automation.SourceControl
             }
             return _logCache["Misc"][version];
         }
+
         public static GitReleaseNotes SinceLatestRelease(string packageId, string gitRepoPath)
         {
-            string version = Git.LatestRelease(gitRepoPath);
+            return SinceLatestRelease(packageId, gitRepoPath, out string ignore);
+        }
 
-            if (!_logCache.ContainsKey(packageId) || !_logCache[packageId].ContainsKey(version))
+        public static GitReleaseNotes SinceLatestRelease(string packageId, string gitRepoPath, out string latestRelease)
+        {
+            latestRelease = Git.LatestRelease(gitRepoPath);
+
+            if (!_logCache.ContainsKey(packageId) || !_logCache[packageId].ContainsKey(latestRelease))
             {
                 lock (_logCacheLock)
                 {
                     HashSet<GitLog> logsSinceLast = GitLog.SinceLatestRelease(gitRepoPath);
-                    GitReleaseNotes result = new GitReleaseNotes(version, packageId);
+                    GitReleaseNotes result = new GitReleaseNotes(latestRelease, packageId);
                     logsSinceLast.Each(gl =>
                     {
                         string prefix = $"{packageId}:";
@@ -77,10 +85,10 @@ namespace Bam.Net.Automation.SourceControl
                     });
 
                     _logCache.AddMissing(packageId, new Dictionary<string, GitReleaseNotes>());
-                    _logCache[packageId].AddMissing(version, result);
+                    _logCache[packageId].AddMissing(latestRelease, result);
                 }
             }
-            return _logCache[packageId][version];
+            return _logCache[packageId][latestRelease];
         }
 
         protected internal static bool HasPossibleProjectPrefix(string message)

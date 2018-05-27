@@ -227,6 +227,9 @@
     <EmbeddedResource Include="Templates\XrefLeftProperty.tmpl" />
     <EmbeddedResource Include="Templates\ChildPrimaryKeyProperty.tmpl" />
     <EmbeddedResource Include="Templates\XrefRightProperty.tmpl" />
+    <None Include="Bam.Net.Data.Repositories.nuspec">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <EmbeddedResource Include="Templates\Dto.tmpl" />
     <EmbeddedResource Include="Templates\SchemaRepository.tmpl" />
