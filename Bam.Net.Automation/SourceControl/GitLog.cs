@@ -72,7 +72,7 @@ namespace Bam.Net.Automation.SourceControl
 
         static GitLog()
         {
-            LineReader = (num, line) => Logging.Log.AddEntry("GitLog: {0}. {1}", num, line);
+            LineReader = (num, line) => Logging.Log.AddEntry("GitLog: {0}. {1}", Logging.LogEventType.Information, num.ToString(), line);
         }
 
         static Dictionary<string, HashSet<GitLog>> _logCache = new Dictionary<string, HashSet<GitLog>>();
