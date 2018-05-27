@@ -415,8 +415,15 @@ namespace Bam.Net.Automation
 
             srcRootDir.GetFiles("*.csproj", SearchOption.AllDirectories).Each(projectFile =>
             {
-                SetAssemblyInfo(projectFile, info.VersionString);
-                NuspecFile.ForFile(projectFile).UpdateProjectDependencyVersions(info.VersionString, GetPredicate());
+                try
+                {
+                    SetAssemblyInfo(projectFile, info.VersionString);
+                    NuspecFile.ForFile(projectFile).UpdateProjectDependencyVersions(info.VersionString, GetPredicate());
+                }
+                catch (Exception ex)
+                {
+                    OutLineFormat("Error updating version for ({0})", ex, projectFile.FullName);
+                }
             });
         }
 
