@@ -129,7 +129,10 @@ namespace Bam.Net.Automation
             // update version
             string targetPath = GetTargetPath();            
             DirectoryInfo srcRoot = GetSourceRoot(targetPath);
-            BamInfo bamInfo = UpdateVersion(srcRoot);
+            BamInfo info = GetBamInfo(srcRoot);
+            info.VersionString = GetNextVersion(info.VersionString);
+            UpdateAssemblyVersions(srcRoot, info);
+
             BakeSettings settings = GetBuildTargetSettings(GetArgument("Solution", "Please enter path to the solution relative to the git repo root."));
             if (NugetRestore(settings))
             {
@@ -139,13 +142,20 @@ namespace Bam.Net.Automation
                     // 
                     DirectoryInfo wixMergeModuleDirectory = new DirectoryInfo(Path.Combine(targetPath, GetArgument("WixMergeModule", "Please enter the source root relative path to the directory containing the wix file to update")));
                     string wixPath = Path.Combine(wixMergeModuleDirectory.FullName, $"{wixMergeModuleDirectory.Name}.wxs");
-                    if (!MsiVersionUpdater(wixPath, bamInfo.VersionString))
+                    if (!MsiVersionUpdater(wixPath, info.VersionString))
                     {
                         OutLineFormat("Failed to update msi version", ConsoleColor.Magenta);
                     }
+                    else if(BuildMsi())
+                    {
+                        _nugetArg = settings.OutputPath;
+                        List<Task> setNuspecInfo = SetSolutionNuspecInfos(new DirectoryInfo(_nugetArg), info.VersionString);
+                        Task.WaitAll(setNuspecInfo.ToArray());
+                        CreateNugetPackages();
+                    }
                     else
                     {
-                        BuildMsi();
+                        OutLineFormat("Failed to build msi, see output for more information");
                     }
                 }
             }
@@ -156,11 +166,11 @@ namespace Bam.Net.Automation
         {
             _nugetArg = Arguments["dev"];
             _suffix = "Dev";
-            CreateNugetPackage();
+            CreateNugetPackages();
         }
 
         [ConsoleAction("msi", "Build an msi from a set of related wix project files.")]
-        public static void BuildMsi()
+        public static bool BuildMsi()
         {
             string srcRoot = GetTargetPath();
             string releaseFolder = GetArgument("ReleaseFolder", "Please enter the path to the release folder.");
@@ -178,20 +188,18 @@ namespace Bam.Net.Automation
 
             // build the merge module
             BakeSettings settings = GetSettings();            
-            ProcessOutput mergeModuleBuildOutput = $"{settings.MsBuild} {wixMergeModuleProject} /p:OutputPath={wixOutput}".Run();
-            OutLine(mergeModuleBuildOutput.StandardOutput, ConsoleColor.Cyan);
-            OutLine(mergeModuleBuildOutput.StandardError, ConsoleColor.Magenta);
+            ProcessOutput mergeModuleBuildOutput = $"{settings.MsBuild} {wixMergeModuleProject} /p:OutputPath={wixOutput}".Run(line => Console.WriteLine(line), err => OutLineFormat(err, ConsoleColor.Magenta), 600000);
             if(mergeModuleBuildOutput.ExitCode == 0)
             {
                 // build the msi
-                ProcessOutput msiBuildOutput = $"{settings.MsBuild} {wixMsiProject} /p:OutputPath={wixOutput}".Run();
-                OutLine(msiBuildOutput.StandardOutput, ConsoleColor.Cyan);
-                OutLine(msiBuildOutput.StandardError, ConsoleColor.Magenta);
-            }            
+                ProcessOutput msiBuildOutput = $"{settings.MsBuild} {wixMsiProject} /p:OutputPath={wixOutput}".Run(line => Console.WriteLine(line), err=> OutLineFormat(err, ConsoleColor.Magenta), 600000);
+                return msiBuildOutput.ExitCode == 0;
+            }
+            return false;
         }
 
         [ConsoleAction("nuget", "Pack one or more binaries as nuget packages.")]
-        public static void CreateNugetPackage()
+        public static void CreateNugetPackages()
         {
             string targetPath = GetNugetArgument();
             if (targetPath.Equals("init"))
@@ -285,6 +293,14 @@ namespace Bam.Net.Automation
             }
 
             Task.WaitAll(tasks.ToArray());
+        }
+
+        protected static List<Task> SetSolutionNuspecInfos(DirectoryInfo sourceRoot, string version)
+        {
+            string owners = GetArgument("Owners", "Please enter the owners for new nuspec files.");
+            string authors = GetArgument("Authors", "Please enter the authors for new nuspec files.");
+            Predicate<string> predicate = GetPredicate();
+            return SetSolutionNuspecInfos(sourceRoot, version, owners, authors, predicate);
         }
 
         protected static List<Task> SetSolutionNuspecInfos(DirectoryInfo sourceRoot, string version, string defaultOwners, string defaultAuthors, Predicate<string> predicate)
@@ -401,11 +417,11 @@ namespace Bam.Net.Automation
         {
             BamInfo info = GetBamInfo(srcRootDir);
             info.VersionString = GetNextVersion(info.VersionString);
-            UpdateVersion(srcRootDir, info);
+            UpdateAssemblyVersions(srcRootDir, info);
             return info;
         }
 
-        protected static void UpdateVersion(DirectoryInfo srcRootDir, BamInfo info)
+        protected static void UpdateAssemblyVersions(DirectoryInfo srcRootDir, BamInfo info)
         {
             GitReleaseNotes miscReleaseNotes = GitReleaseNotes.MiscSinceLatestRelease(srcRootDir.FullName);
             miscReleaseNotes.Summary = $"Version {info.VersionString}";
