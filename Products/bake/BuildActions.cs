@@ -365,7 +365,7 @@ namespace Bam.Net.Automation
                     nuspecFile.Save();
                     nuspecFile.UpdateReleaseNotes(sourceRoot.FullName);
                     nuspecFile.Save();
-                    projectFile.SetNonCompileItem($"{fileName}.nuspec", FileCopyBehavior.Always);
+                    //projectFile.SetNonCompileItem($"{fileName}.nuspec", FileCopyBehavior.Always);
                     OutLineFormat("{0}: Release Notes: {1}", ConsoleColor.DarkBlue, nuspecFile.Id, nuspecFile.ReleaseNotes);
                 });
             }
