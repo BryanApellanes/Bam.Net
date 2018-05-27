@@ -149,6 +149,11 @@ namespace Bam.Net.CommandLine
             return Run(command, null, onStandardOutput, (s) => { }, false, timeout);
         }
 
+        public static ProcessOutput Run(this string command, Action<string> onStandardOut, Action<string> onErrorOut, int? timeout = null)
+        {
+            return Run(command, null, onStandardOut, onErrorOut, false, timeout);
+        }
+
         public static ProcessOutput Run(this string command, Action<string> onStandardOut, Action<string> onErrorOut, bool promptForAdmin = false)
         {
             return Run(command, null, onStandardOut, onErrorOut, promptForAdmin);
