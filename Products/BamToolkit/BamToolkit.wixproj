@@ -54,7 +54,6 @@
     <Folder Include="Resources" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="build-bamtoolkit.cmd" />
     <Content Include="Resources\Banner.jpg" />
     <Content Include="Resources\Dialog.jpg" />
     <Content Include="Resources\EULA.rtf" />
