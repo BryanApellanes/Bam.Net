@@ -540,7 +540,7 @@ namespace Bam.Net.Automation
             string bamInfoPath = Path.Combine(srcRootDir.FullName, "bam.json");
             if (!System.IO.File.Exists(bamInfoPath))
             {
-                throw new InvalidOperationException(string.Format("Unable to find baminfo.json, expected it at ({0})", bamInfoPath));
+                throw new InvalidOperationException(string.Format("Unable to find bam.json, expected it at ({0})", bamInfoPath));
             }
             BamInfo info = bamInfoPath.FromJsonFile<BamInfo>();
             Out("*** bam.json ***", ConsoleColor.Cyan);
