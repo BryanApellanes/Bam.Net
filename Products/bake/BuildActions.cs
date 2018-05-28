@@ -414,14 +414,7 @@ namespace Bam.Net.Automation
 
         private static List<Task> SetSolutionNuspecInfos(FileInfo solutionFile, string version, string defaultOwners, string defaultAuthors, Predicate<string> predicate)
         {
-            List<Task> tasks = new List<Task>();
-
-            ForEachProjectFileInSolution(solutionFile, (projectFile) =>
-            {
-                tasks.Add(SetProjectNuspecInfo(projectFile, version, defaultOwners, defaultAuthors, predicate));
-            });
-
-            return tasks;
+            return ForEachProjectFileInSolution(solutionFile, (projectFile) => SetProjectNuspecInfo(projectFile, version, defaultOwners, defaultAuthors, predicate));
         }
 
         private static Task SetProjectNuspecInfo(FileInfo projectFile, string version, string defaultOwners, string defaultAuthors, Predicate<string> predicate)
