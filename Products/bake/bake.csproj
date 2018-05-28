@@ -139,18 +139,9 @@
       <Name>Bam.Net</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="buildnum.txt" />
-    <Content Include="copy_template.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="exe_names.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /iery "$(TargetPath)" "C:\bam\tools\BamToolkit"</PostBuildEvent>
+    <PostBuildEvent>xcopy /iery "$(TargetDir)*.*" "C:\bam\tools\BamToolkit"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
