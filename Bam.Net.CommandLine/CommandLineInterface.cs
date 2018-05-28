@@ -110,6 +110,15 @@ namespace Bam.Net.CommandLine
             return GetArgument(name, promptMessage, (p) => PasswordPrompt(p));
         }
 
+        /// <summary>
+        /// Get the value specified for the argument with the 
+        /// specified name either from the command line or
+        /// from the default configuration file or prompt for
+        /// it if the value was not found.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="promptMessage">The prompt message.</param>
+        /// <returns></returns>
         public static string GetArgument(string name, string promptMessage = null)
         {
             return GetArgument(name, promptMessage, null);

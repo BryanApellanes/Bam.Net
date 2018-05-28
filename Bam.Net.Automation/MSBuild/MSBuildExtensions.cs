@@ -37,32 +37,6 @@ namespace Bam.Net.Automation.MSBuild
             }
         }
         
-        public static void SetNonCompileItem(this FileInfo projectFile, string fileToAdd, FileCopyBehavior behavior = FileCopyBehavior.None)
-        {
-            Project project = projectFile.FromXmlFile<Project>();
-            ProjectItemGroup itemGroup = project.ItemGroup.Where(pig => pig.None != null).FirstOrDefault();
-            if(itemGroup == null)
-            {
-                return;
-            }
-            List<ProjectItemGroupNone> current = new List<ProjectItemGroupNone>(itemGroup.None);
-            ProjectItemGroupNone toAdd = new ProjectItemGroupNone { Include = fileToAdd }; ;
-            ProjectItemGroupNone existing = current.Where(pin => pin.Include.Equals(fileToAdd)).FirstOrDefault();
-            if (existing != null)
-            {
-                toAdd = existing;
-                current.Remove(existing); // prevent dupes when adding it back
-            }
-
-            if (behavior != FileCopyBehavior.None)
-            {
-                toAdd.CopyToOutputDirectory = behavior.ToString();
-            }
-            current.Add(toAdd);
-            itemGroup.None = current.ToArray();
-            project.ToXmlFile(projectFile.FullName);
-        }
-
         public static IEnumerable<AssemblyReference> GetSolutionAssemblyReferences(this string solutionPath)
         {
             return GetSolutionAssemblyReferences(new FileInfo(solutionPath));

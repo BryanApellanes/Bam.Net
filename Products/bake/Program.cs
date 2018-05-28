@@ -39,13 +39,13 @@ namespace Bam.Net.Automation
         {
             AddValidArgument("v", false, description: "Set version", valueExample: "1.0.0");
             AddValidArgument("root", "The root of the source tree or the location of binaries when baking dev nuget packages");
-            AddValidArgument("OutputDirectory", false, addAcronym: true, description: "/bam: The directory to write files to");
-            AddValidArgument("ILMergePath", false, addAcronym: true, description: "/bam: The path to the ILMerge.exe file");
+            AddValidArgument("ILMergePath", false, addAcronym: true, description: "/bam: The path to the ILMerge.exe file.");
             AddValidArgument("MsBuildPath", false, addAcronym: false, description: "/release: The path to msbuild.exe");
             AddValidArgument("Solution", false, addAcronym: false, description: "/release: The repo root relative path to the solution file to build.");
             AddValidArgument("ReleaseFolder", false, addAcronym: false, description: "/release: The path to build to or the path where assemblies have already been built.");
             AddValidArgument("NugetPath", false, addAcronym: true, description: "/nuget: The path to the nuget.exe file");
-            AddValidArgument("prefix", true, addAcronym: false, description: "/nuget:  When initializing nuspec files, the prefix that a project name must start with for it to recieve a nuspec file.");
+            AddValidArgument("OutputDirectory", false, addAcronym: true, description: "/nuget, bam: The directory to write files or packages to.");
+            AddValidArgument("prefix", true, addAcronym: false, description: "/nuget:  When initializing nuspec files, the prefix that a project name must start with for it to recieve a nuspec file.  When publishing, the prefix that .nupkg files must start with for them to be published.");
             AddValidArgument("major", true, addAcronym: false, description: "/release: Increment the major version number.");
             AddValidArgument("minor", true, addAcronym: false, description: "/release: Increment the minor version number.");
             AddValidArgument("patch", true, addAcronym: false, description: "/release: Increment the patch version number.");

@@ -12,28 +12,74 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Linq;
 
 namespace Bam.Net.Automation
 {
     [Serializable]
     public class BuildActions : CommandLineTestInterface
     {
-        static string _nugetReleaseDirectory;
+        static string _nugetPath;
+        /// <summary>
+        /// Gets the path to nuget.exe.
+        /// </summary>
+        /// <value>
+        /// The nuget path.
+        /// </value>
+        public static string NugetPath
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_nugetPath))
+                {
+                    _nugetPath = GetArgument("NugetPath", "Please enter the path to nuget.exe");
+                }
+                return _nugetPath;
+            }
+        }
+
+        static string _outputDirectory;
+        public static string OutputDirectory
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_outputDirectory))
+                {
+                    _outputDirectory = GetArgument("OutputDirectory", "Please enter the path to output files or nuget packages to.");
+                }
+                return _outputDirectory;
+            }
+        }
+
+        static string _nugetInternalSource;
         /// <summary>
         /// Gets the nuget release directory.
         /// </summary>
         /// <value>
         /// The nuget release directory.
         /// </value>
-        public static string NugetReleaseDirectory
+        public static string NugetInternalSource
         {
             get
             {
-                if (string.IsNullOrEmpty(_nugetReleaseDirectory))
+                if (string.IsNullOrEmpty(_nugetInternalSource))
                 {
-                    _nugetReleaseDirectory = DefaultConfiguration.GetAppSetting("NugetReleaseDirectory", @"Z:\Workspace\NugetPackages\Push\");
+                    _nugetInternalSource = DefaultConfiguration.GetAppSetting("NugetInternalSource", @"C:\bam\nuget\repository");
                 }
-                return _nugetReleaseDirectory;
+                return _nugetInternalSource;
+            }
+        }
+
+        static string _nugetPublicSource;
+        public static string NugetPublicSource
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_nugetPublicSource))
+                {
+                    _nugetPublicSource = DefaultConfiguration.GetAppSetting("NugetPublicSource", @"nuget.org");
+                }
+                return _nugetPublicSource;
             }
         }
 
@@ -70,57 +116,24 @@ namespace Bam.Net.Automation
         }
 
         static string _defaultStage;
-        public static string DefaultStage
+        public static string NugetStage
         {
             get
             {
                 if (string.IsNullOrEmpty(_defaultStage))
                 {
-                    _defaultStage = DefaultConfiguration.GetAppSetting("Stage", "C:\\bam\\stage");
+                    _defaultStage = DefaultConfiguration.GetAppSetting("NugetStage", "C:\\bam\\stage");
                 }
                 return _defaultStage;
             }
         }
 
-        [ConsoleAction]
-        public static void Test()
+        [ConsoleAction("dev", "Create dev nuget packages from the specified ReleaseFolder.")]
+        public static void BuildDevPackages()
         {
-            WixDocument wix = new WixDocument("C:\\bam\\src\\Business\\Submodule\\Bam.Net\\Products\\BamToolkitMM\\BamToolkitMM.wxs");
-            wix.SetTargetContents("C:\\bam\\tools\\BamToolkit");            
-        }
-
-        [ConsoleAction("bam", "Create a single bam.exe by using ILMerge.exe to combine all Bam.Net binaries into one.")]
-        public static void CreateBamDotExe()
-        {
-            string ilMergePath = GetArgument("ILMergePath", "Please specify the path to ILMerge.exe");
-            string outputTo = GetArgument("outputDir", "Please specify where to write bam.exe");
-            string root = GetArgument("root", "Please specify the path to the Bam.Net binaries and nuspec files");
-
-            DirectoryInfo rootDir = new DirectoryInfo(root);
-            StringBuilder arguments = new StringBuilder();
-            arguments.Append("bam.exe");
-            foreach (FileInfo nuspecFile in rootDir.GetFiles("*.nuspec"))
-            {
-                string fileName = Path.GetFileNameWithoutExtension(nuspecFile.Name);
-                string argToAdd = Path.Combine(root, $"{fileName}.dll");
-                if (!File.Exists(argToAdd))
-                {
-                    argToAdd = Path.Combine(root, $"{fileName}.exe");
-                }
-                if (File.Exists(argToAdd))
-                {
-                    arguments.Append($" {argToAdd}");
-                }
-            }
-
-            string lib = $@"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\{FrameworkVersion}";
-            arguments.Append($" /closed /targetplatform:v4 /lib:\"{lib}\" /out:{outputTo}\\bam.exe");
-            string command = $"{ilMergePath} {arguments.ToString()}";
-            OutLine(command);
-            ProcessOutput output = command.ToStartInfo(root).Run();
-            OutLine(output.StandardOutput);
-            OutLine(output.StandardError, ConsoleColor.Red);
-            OutLine("done");
+            _nugetArg = Arguments["dev"];
+            _suffix = "Dev";
+            CreateNugetPackages();
         }
 
         [ConsoleAction("release", "Create the release from a specified source directory.  The release includes nuget packages and msi file.")]
@@ -160,15 +173,51 @@ namespace Bam.Net.Automation
             }
         }
 
-        [ConsoleAction("dev", "Create dev nuget packages from the specified ReleaseFolder.")]
-        public static void BuildDevPackages()
+        [ConsoleAction("publish", "Publish nuget packages to the internal or public nuget source.")]
+        public void Publish()
         {
-            _nugetArg = Arguments["dev"];
-            _suffix = "Dev";
-            CreateNugetPackages();
+            string publishFormat = "{NugetPath} {NugetAction} {Package} -Source {NugetSource}";
+
+            string publishTarget = GetArgument("publish", "Please enter the target nuget source to publish to.").PascalCase();
+            NugetSourceKind sourceKind = publishTarget.ToEnum<NugetSourceKind>();
+            string nugetAction = string.Empty;
+            string nugetSource = string.Empty;            
+            switch (sourceKind)
+            {                
+                case NugetSourceKind.Internal:
+                    nugetAction = "add";
+                    nugetSource = NugetInternalSource;
+                    break;
+                case NugetSourceKind.Public:
+                    nugetAction = "push";
+                    nugetSource = NugetPublicSource;
+                    break;
+                case NugetSourceKind.Invalid:
+                default:
+                    throw new InvalidOperationException(string.Format("Unrecognized publish argument, should be one of (Internal | Public): ({0})", publishTarget));
+            }
+            string searchPatternFormat = "*{Version}.nupkg";
+            string version = string.Empty;
+            if (Arguments.Contains("v"))
+            {
+                version = Arguments["v"];
+            }
+            if (Arguments.Contains("prefix"))
+            {
+                searchPatternFormat = string.Format("{0}*{{Version}}.nupkg", Arguments["prefix"]);
+            }
+            DirectoryInfo outputDirectory = new DirectoryInfo(OutputDirectory);
+            List<Task> publishTasks = new List<Task>();
+            foreach (FileInfo nugetPackage in outputDirectory.GetFiles(searchPatternFormat.NamedFormat(new { Version = version })))
+            {
+                OutLineFormat("Publishing {0} to {1}", ConsoleColor.DarkCyan, nugetPackage.FullName, nugetSource);
+                publishTasks.Add(Task.Run(() => publishFormat.NamedFormat(new { NugetPath, NugetAction = nugetAction, Package = nugetPackage.FullName, NugetSource = nugetSource }).Run(line => Console.WriteLine(line), err => OutLineFormat(err, ConsoleColor.Magenta), 600000)));                
+            }
+
+            Task.WaitAll(publishTasks.ToArray());
         }
 
-        [ConsoleAction("msi", "Build an msi from a set of related wix project files.")]
+        [ConsoleAction("msi", "Build an msi from a set of related wix project files.  The contents of the msi are set to the contents of the specified ReleaseFolder folder.")]
         public static bool BuildMsi()
         {
             string srcRoot = GetTargetPath();
@@ -197,7 +246,7 @@ namespace Bam.Net.Automation
             return false;
         }
 
-        [ConsoleAction("nuget", "Pack one or more binaries as nuget packages.")]
+        [ConsoleAction("nuget", "Pack one or more binaries as nuget packages provided they have associated nuspec files.")]
         public static void CreateNugetPackages()
         {
             string targetPath = GetNugetArgument();
@@ -238,22 +287,37 @@ namespace Bam.Net.Automation
             }
         }
 
-        static string _nugetArg;
-        private static string GetNugetArgument()
+        [ConsoleAction("bam", "Create a single bam.exe by using ILMerge.exe to combine all Bam.Net binaries into one.")]
+        public static void CreateBamDotExe()
         {
-            if (!string.IsNullOrEmpty(_nugetArg))
+            string ilMergePath = GetArgument("ILMergePath", "Please specify the path to ILMerge.exe");
+            string root = GetArgument("root", "Please specify the path to the Bam.Net binaries and nuspec files");
+
+            DirectoryInfo rootDir = new DirectoryInfo(root);
+            StringBuilder arguments = new StringBuilder();
+            arguments.Append("bam.exe");
+            foreach (FileInfo nuspecFile in rootDir.GetFiles("*.nuspec"))
             {
-                return _nugetArg;
+                string fileName = Path.GetFileNameWithoutExtension(nuspecFile.Name);
+                string argToAdd = Path.Combine(root, $"{fileName}.dll");
+                if (!File.Exists(argToAdd))
+                {
+                    argToAdd = Path.Combine(root, $"{fileName}.exe");
+                }
+                if (File.Exists(argToAdd))
+                {
+                    arguments.Append($" {argToAdd}");
+                }
             }
-            return GetArgument("nuget", "Please specify the path to pack nuget packages from");
-        }
 
-        private static bool Build(BakeSettings bakeSettings)
-        {
-            string command = $"{bakeSettings.MsBuild} /t:Build /filelogger /p:AutoGenerateBindingRedirects={bakeSettings.AutoGenerateBindingRedirects};GenerateDocumentation={bakeSettings.GenerateDocumentation};OutputPath={bakeSettings.OutputPath};Configuration={bakeSettings.Config};Platform=\"{bakeSettings.Platform}\";TargetFrameworkVersion={bakeSettings.TargetFrameworkVersion};CompilerVersion={bakeSettings.TargetFrameworkVersion} {bakeSettings.ProjectFile} /m:{bakeSettings.MaxCpuCount}";
-
-            ProcessOutput output = command.Run((line) => Console.WriteLine(line), (err) => OutLine(err, ConsoleColor.Magenta), 600000);
-            return output.ExitCode == 0;
+            string lib = $@"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\{FrameworkVersion}";
+            arguments.Append($" /closed /targetplatform:v4 /lib:\"{lib}\" /out:{OutputDirectory}\\bam.exe");
+            string command = $"{ilMergePath} {arguments.ToString()}";
+            OutLine(command);
+            ProcessOutput output = command.ToStartInfo(root).Run();
+            OutLine(output.StandardOutput);
+            OutLine(output.StandardError, ConsoleColor.Red);
+            OutLine("done");
         }
 
         [ConsoleAction("nuspec", "Initialize or update project nuspec files.")]
@@ -292,6 +356,26 @@ namespace Bam.Net.Automation
             }
 
             Task.WaitAll(tasks.ToArray());
+        }
+        /// <summary>
+        /// /The path to look for binaries when packing nuget packages
+        /// </summary>
+        static string _nugetArg; 
+        private static string GetNugetArgument()
+        {
+            if (!string.IsNullOrEmpty(_nugetArg))
+            {
+                return _nugetArg;
+            }
+            return GetArgument("nuget", "Please specify the path to pack nuget packages from.");
+        }
+
+        private static bool Build(BakeSettings bakeSettings)
+        {
+            string command = $"{bakeSettings.MsBuild} /t:Build /filelogger /p:AutoGenerateBindingRedirects={bakeSettings.AutoGenerateBindingRedirects};GenerateDocumentation={bakeSettings.GenerateDocumentation};OutputPath={bakeSettings.OutputPath};Configuration={bakeSettings.Config};Platform=\"{bakeSettings.Platform}\";TargetFrameworkVersion={bakeSettings.TargetFrameworkVersion};CompilerVersion={bakeSettings.TargetFrameworkVersion} {bakeSettings.ProjectFile} /m:{bakeSettings.MaxCpuCount}";
+
+            ProcessOutput output = command.Run((line) => Console.WriteLine(line), (err) => OutLine(err, ConsoleColor.Magenta), 600000);
+            return output.ExitCode == 0;
         }
 
         protected static List<Task> SetSolutionNuspecInfos(DirectoryInfo sourceRoot, string version)
@@ -366,7 +450,6 @@ namespace Bam.Net.Automation
                     nuspecFile.Save();
                     nuspecFile.UpdateReleaseNotes(sourceRoot.FullName);
                     nuspecFile.Save();
-                    //projectFile.SetNonCompileItem($"{fileName}.nuspec", FileCopyBehavior.Always);
                     OutLineFormat("{0}: Release Notes: {1}", ConsoleColor.DarkBlue, nuspecFile.Id, nuspecFile.ReleaseNotes);
                 });
             }
@@ -558,7 +641,7 @@ namespace Bam.Net.Automation
         /// then you're prompted for the value.
         /// </summary>
         /// <returns></returns>
-        private static string GetTargetPath()
+        protected static string GetTargetPath()
         {
             // get root where src is
             string targetPath = Arguments["release"];
@@ -575,7 +658,7 @@ namespace Bam.Net.Automation
             string fileName = Path.GetFileNameWithoutExtension(assemblyFile.Name);
             string xmlFileName = $"{fileName}.xml";
             FileInfo xmlFile = new FileInfo(Path.Combine(assemblyFile.Directory.FullName, xmlFileName));
-            DirectoryInfo stage = new DirectoryInfo(Path.Combine(DefaultStage, fileName));
+            DirectoryInfo stage = new DirectoryInfo(Path.Combine(NugetStage, fileName));
             if (!stage.Exists)
             {
                 stage.Create();
@@ -619,11 +702,8 @@ namespace Bam.Net.Automation
                 nuspecFile.Authors = GetArgument("Authors", $"Please enter the authors for the {fileName} nuget package."); ;
                 nuspecFile.Save();
             }
-            string nugetPath = GetArgument("NugetPath", "Please enter the path to nuget.exe");
-            DirectoryInfo outputDirectory = new DirectoryInfo(GetArgument("OutputDirectory", "Please specify the path to output nuget packages to."));
             string suffix = GetSuffix();
-            //ProcessOutputCollector outputCollector = new ProcessOutputCollector((o) => OutLineFormat(o, ConsoleColor.Cyan), (err) => OutLineFormat(err, ConsoleColor.Magenta));
-            ProcessOutput output = $"{nugetPath} pack {nuspecFile.Path} -OutputDirectory \"{outputDirectory.FullName}\"{suffix}".Run((o) => OutLineFormat(o, ConsoleColor.Cyan), (err) => OutLineFormat(err, ConsoleColor.Magenta), 600000);
+            ProcessOutput output = $"{NugetPath} pack {nuspecFile.Path} -OutputDirectory \"{OutputDirectory}\"{suffix}".Run((o) => OutLineFormat(o, ConsoleColor.Cyan), (err) => OutLineFormat(err, ConsoleColor.Magenta), 600000);
             return output;
         }
 
@@ -675,7 +755,7 @@ namespace Bam.Net.Automation
                 Platform = platform,
                 TargetFrameworkVersion = framework,
                 MsBuild = GetArgument("MsBuildPath", "Please enter the path to msbuild.exe."),
-                Nuget = GetArgument("NugetPath", "Please enter the path to nuget.exe"),
+                Nuget = NugetPath,
                 PackagesDirectory = GetArgument("PackagesDirectory", "Please enter the path to restore nuget packages to."),
             };
         }
@@ -697,9 +777,5 @@ namespace Bam.Net.Automation
             return (projectName) => !Arguments.Contains("prefix") || projectName.StartsWith(Arguments["prefix"]);
         }
 
-        private static string GetOutputDirectory()
-        {
-            return Arguments["od"].Or(Arguments["OutputDirectory"]).Or(".");
-        }
     }
 }
