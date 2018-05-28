@@ -216,7 +216,9 @@ namespace Bam.Net.Automation
                     break;
                 case NugetSourceKind.Invalid:
                 default:
-                    throw new InvalidOperationException(string.Format("Unrecognized publish argument, should be one of (Internal | Public): ({0})", publishTarget.Or("[null]")));
+                    OutLineFormat(string.Format("Unrecognized publish argument, should be one of (Internal | Public): ({0})", ConsoleColor.Magenta, publishTarget.Or("[null]")));
+                    Environment.Exit(1);
+                    break;
             }
             
             DirectoryInfo nugetPackageDirectory = new DirectoryInfo(OutputDirectory);
@@ -540,7 +542,8 @@ namespace Bam.Net.Automation
             string bamInfoPath = Path.Combine(srcRootDir.FullName, "bam.json");
             if (!System.IO.File.Exists(bamInfoPath))
             {
-                throw new InvalidOperationException(string.Format("Unable to find bam.json, expected it at ({0})", bamInfoPath));
+                OutLineFormat(string.Format("Unable to find bam.json, expected it at ({0})", ConsoleColor.Magenta, bamInfoPath));
+                Environment.Exit(1);
             }
             BamInfo info = bamInfoPath.FromJsonFile<BamInfo>();
             Out("*** bam.json ***", ConsoleColor.Cyan);
@@ -689,7 +692,8 @@ namespace Bam.Net.Automation
         {
             if (!assemblyOrNuspec.Exists)
             {
-                throw new ArgumentException(string.Format("File found: {0}", assemblyOrNuspec.FullName));
+                OutLineFormat(string.Format("File not found: {0}", ConsoleColor.Magenta, assemblyOrNuspec.FullName));
+                Environment.Exit(1);
             }
             string stagePath = PrepareNugetStage(assemblyOrNuspec);
             DirectoryInfo stage = new DirectoryInfo(stagePath);
@@ -774,7 +778,7 @@ namespace Bam.Net.Automation
             if (!srcRoot.IsInGitRepo())
             {
                 OutLineFormat("{0} is not a git repository", targetPath);
-                throw new InvalidOperationException("specified targetPath is not a git repository");
+                Environment.Exit(1);
             }
 
             return srcRoot;
