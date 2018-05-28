@@ -149,7 +149,7 @@ namespace Bam.Net.Automation
             CreateNugetPackages();
         }
 
-        [ConsoleAction("release", "Create the release from a specified source directory.  The release includes nuget packages and msi file.")]
+        [ConsoleAction("release", "Create the release from a specified source directory.  The release includes nuget packages and an msi file.")]
         public static void BuildRelease()
         {
             // update version
