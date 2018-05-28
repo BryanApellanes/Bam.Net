@@ -128,6 +128,19 @@ namespace Bam.Net.Automation
             }
         }
 
+        static string _gitPath;
+        public static string GitPath
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_gitPath))
+                {
+                    _gitPath = DefaultConfiguration.GetAppSetting("GitPath", "C:\\Program Files\\Git\\cmd\\git.exe");
+                }
+                return _gitPath;
+            }
+        }
+
         [ConsoleAction("dev", "Create dev nuget packages from the specified ReleaseFolder.")]
         public static void BuildDevPackages()
         {
@@ -176,14 +189,17 @@ namespace Bam.Net.Automation
         [ConsoleAction("publish", "Publish nuget packages to the internal or public nuget source.")]
         public void Publish()
         {
+            string searchPattern = GetSearchPattern(out string version);
             string publishFormat = "{NugetPath} {NugetAction} {Package} -Source {NugetSource}";
 
             string publishTarget = GetArgument("publish", "Please enter the target nuget source to publish to.").PascalCase();
             NugetSourceKind sourceKind = publishTarget.ToEnum<NugetSourceKind>();
             string nugetAction = string.Empty;
-            string nugetSource = string.Empty;            
+            string nugetSource = string.Empty;
+            DirectoryInfo sourceRoot = null;
+            Action finish = () => { };
             switch (sourceKind)
-            {                
+            {
                 case NugetSourceKind.Internal:
                     nugetAction = "add";
                     nugetSource = NugetInternalSource;
@@ -191,30 +207,28 @@ namespace Bam.Net.Automation
                 case NugetSourceKind.Public:
                     nugetAction = "push";
                     nugetSource = NugetPublicSource;
+                    sourceRoot = GetSourceRoot(GetTargetPath());
+                    finish = () =>
+                    {
+                        Commit(version, sourceRoot);
+                        Tag(version, sourceRoot);
+                    };
                     break;
                 case NugetSourceKind.Invalid:
                 default:
-                    throw new InvalidOperationException(string.Format("Unrecognized publish argument, should be one of (Internal | Public): ({0})", publishTarget));
+                    throw new InvalidOperationException(string.Format("Unrecognized publish argument, should be one of (Internal | Public): ({0})", publishTarget.Or("[null]")));
             }
-            string searchPatternFormat = "*{Version}.nupkg";
-            string version = string.Empty;
-            if (Arguments.Contains("v"))
-            {
-                version = Arguments["v"];
-            }
-            if (Arguments.Contains("prefix"))
-            {
-                searchPatternFormat = string.Format("{0}*{{Version}}.nupkg", Arguments["prefix"]);
-            }
-            DirectoryInfo outputDirectory = new DirectoryInfo(OutputDirectory);
+            
+            DirectoryInfo nugetPackageDirectory = new DirectoryInfo(OutputDirectory);
             List<Task> publishTasks = new List<Task>();
-            foreach (FileInfo nugetPackage in outputDirectory.GetFiles(searchPatternFormat.NamedFormat(new { Version = version })))
+            foreach (FileInfo nugetPackage in nugetPackageDirectory.GetFiles(searchPattern))
             {
                 OutLineFormat("Publishing {0} to {1}", ConsoleColor.DarkCyan, nugetPackage.FullName, nugetSource);
-                publishTasks.Add(Task.Run(() => publishFormat.NamedFormat(new { NugetPath, NugetAction = nugetAction, Package = nugetPackage.FullName, NugetSource = nugetSource }).Run(line => Console.WriteLine(line), err => OutLineFormat(err, ConsoleColor.Magenta), 600000)));                
+                publishTasks.Add(Task.Run(() => publishFormat.NamedFormat(new { NugetPath, NugetAction = nugetAction, Package = nugetPackage.FullName, NugetSource = nugetSource }).Run(line => Console.WriteLine(line), err => OutLineFormat(err, ConsoleColor.Magenta), 600000)));
             }
 
             Task.WaitAll(publishTasks.ToArray());
+            finish();
         }
 
         [ConsoleAction("msi", "Build an msi from a set of related wix project files.  The contents of the msi are set to the contents of the specified ReleaseFolder folder.")]
@@ -357,6 +371,7 @@ namespace Bam.Net.Automation
 
             Task.WaitAll(tasks.ToArray());
         }
+
         /// <summary>
         /// /The path to look for binaries when packing nuget packages
         /// </summary>
@@ -777,5 +792,38 @@ namespace Bam.Net.Automation
             return (projectName) => !Arguments.Contains("prefix") || projectName.StartsWith(Arguments["prefix"]);
         }
 
+        private static void Commit(string message, DirectoryInfo sourceRootDir = null)
+        {
+            if (message.Contains("'"))
+            {
+                OutLineFormat("Specified message contains one or more (') characters all of which will be replaced with (`) to avoid git command line errors.", ConsoleColor.Yellow);
+                message = message.Replace("'", "`");
+            }
+            sourceRootDir = sourceRootDir ?? GetSourceRoot(GetTargetPath());
+            string sourceRoot = sourceRootDir.FullName;
+            $"{GitPath} add --all".ToStartInfo(sourceRoot).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), (e) => OutLine(e, ConsoleColor.Magenta));
+            $"{GitPath} commit -m '{message}'".ToStartInfo(sourceRoot).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), (e) => OutLine(e, ConsoleColor.Magenta));
+            $"{GitPath} push origin".ToStartInfo(sourceRoot).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), (e) => OutLine(e, ConsoleColor.Magenta));
+        }
+
+        private static void Tag(string version, DirectoryInfo sourceRootDir = null)
+        {
+            sourceRootDir = sourceRootDir ?? GetSourceRoot(GetTargetPath());
+            string sourceRoot = sourceRootDir.FullName;
+            $"{GitPath} tag -a v{version} -m 'v{version}'".ToStartInfo(sourceRoot).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), (e) => OutLine(e, ConsoleColor.Magenta));
+            $"{GitPath} push origin v{version}".ToStartInfo(sourceRoot).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), (e) => OutLine(e, ConsoleColor.Magenta));
+        }
+
+        private static string GetSearchPattern(out string version)
+        {
+            string searchPatternFormat = "*{Version}.nupkg";
+            version = GetArgument("v", "Please enter the version to publish");
+            if (Arguments.Contains("prefix"))
+            {
+                searchPatternFormat = string.Format("{0}*{{Version}}.nupkg", Arguments["prefix"]);
+            }
+            string searchPattern = searchPatternFormat.NamedFormat(new { Version = version });
+            return searchPattern;
+        }
     }
 }

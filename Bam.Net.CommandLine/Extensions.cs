@@ -195,11 +195,38 @@ namespace Bam.Net.CommandLine
         /// <param name="exe"></param>
         /// <param name="arguments"></param>
         /// <param name="onExit"></param>
-        public static void Run(this string exe, string arguments, EventHandler<ProcessExitEventArgs> onExit)
+        public static ProcessOutput Run(this string exe, string arguments, EventHandler<ProcessExitEventArgs> onExit)
         {
-            Run(exe, arguments, (o, a) => onExit(o, (ProcessExitEventArgs)a), null);
+            return Run(exe, arguments, (o, a) => onExit(o, (ProcessExitEventArgs)a), null);
         }
 
+        public static ProcessOutput RunAndWait(this ProcessStartInfo info, Action<string> standardOut = null, Action<string> errorOut = null, int timeOut = 60000)
+        {
+            ProcessOutputCollector output = new ProcessOutputCollector(standardOut, errorOut);
+            return Run(info, output, timeOut);
+        }
+
+        /// <summary>
+        /// Runs the command and waits for it to complete.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="standardOut">The standard out.</param>
+        /// <param name="errorOut">The error out.</param>
+        /// <param name="timeOut">The time out.</param>
+        /// <returns></returns>
+        public static ProcessOutput RunAndWait(this string command, Action<string> standardOut = null, Action<string> errorOut = null, int timeOut = 60000)
+        {
+            GetExeAndArguments(command, out string exe, out string arguments);
+            return Run(exe, arguments, (o, a) => { }, standardOut, errorOut, false, timeOut);
+        }
+
+        /// <summary>
+        /// Runs the command and waits for it to complete.
+        /// </summary>
+        /// <param name="exe">The executable.</param>
+        /// <param name="arguments">The arguments.</param>
+        /// <param name="onExit">The on exit.</param>
+        /// <param name="timeOut">The time out.</param>
         public static void RunAndWait(this string exe, string arguments, EventHandler<ProcessExitEventArgs> onExit, int timeOut = 60000)
         {
             Run(exe, arguments, (o, a) => onExit(o, (ProcessExitEventArgs)a), timeOut);
