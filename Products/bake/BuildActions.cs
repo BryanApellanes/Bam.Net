@@ -189,7 +189,7 @@ namespace Bam.Net.Automation
         }
 
         [ConsoleAction("publish", "Publish nuget packages to the internal or public nuget source.")]
-        public void Publish()
+        public static void Publish()
         {
             string searchPattern = GetSearchPattern(out string version);
             string publishFormat = "{NugetPath} {NugetAction} {Package} -Source {NugetSource}";
