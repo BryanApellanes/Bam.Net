@@ -19,6 +19,8 @@ namespace Bam.Net.Automation
     [Serializable]
     public class BuildActions : CommandLineTestInterface
     {
+        public const string BamToolkitDirectory = "C:\\bam\\tools\\BamToolkit";
+
         static string _nugetPath;
         /// <summary>
         /// Gets the path to nuget.exe.
@@ -238,6 +240,9 @@ namespace Bam.Net.Automation
         {
             string srcRoot = GetTargetPath();
             string releaseFolder = GetArgument("ReleaseFolder", "Please enter the path to the release folder.");
+            DirectoryInfo releaseDirectory = new DirectoryInfo(releaseFolder);
+            DirectoryInfo toolkitDirectory = new DirectoryInfo(BamToolkitDirectory);            
+            releaseDirectory.Copy(toolkitDirectory, true);
 
             DirectoryInfo wixMergeModuleDirectory = new DirectoryInfo(Path.Combine(srcRoot, GetArgument("WixMergeModule", "Please enter the source root relative path to the directory containing the wix file to update.")));
             DirectoryInfo wixMsiDirectory = new DirectoryInfo(Path.Combine(srcRoot, GetArgument("WixMsi", "Please enter the path to the directory where the wix msi project file (.wixproj) is found.")));
@@ -247,7 +252,7 @@ namespace Bam.Net.Automation
             string wixMsiProject = Path.Combine(wixMsiDirectory.FullName, $"{wixMsiDirectory.Name}.wixproj");
             string wixOutput = GetArgument("WixOutput", "Please enter the path wix will use for output.");
 
-            WixDocument wixDoc = new WixDocument(wixMergeModuleXml);
+            WixDocument wixDoc = new WixDocument(wixMergeModuleXml);            
             wixDoc.SetTargetContents(releaseFolder);
 
             // build the merge module

@@ -2712,7 +2712,7 @@ namespace Bam.Net
             CopyDirectory(src.FullName, destination.FullName, overwrite, beforeFileCopy, beforeDirectoryCopy);
         }
 
-        private static void CopyDirectory(string sourcePath, string destPath, bool overwrite = false, Action<string, string> beforeFileCopy = null, Action<string, string> beforeDirectoryCopy = null)
+        public static void CopyDirectory(this string sourcePath, string destPath, bool overwrite = false, Action<string, string> beforeFileCopy = null, Action<string, string> beforeDirectoryCopy = null)
         {
             if (!Directory.Exists(destPath))
             {
