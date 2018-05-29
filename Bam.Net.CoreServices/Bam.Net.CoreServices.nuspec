@@ -2,11 +2,11 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.CoreServices</id>
-    <version>1.9.1</version>
+    <version>1.9.2</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>Tools for distributed application services</description>
-    <releaseNotes>Version v1.9.1
+    <releaseNotes>Version 1.9.2
 Updates since v1.9.1:
  -   better user management (9162acc6)
  -   specify assemblyservice db path (1aff366b)
@@ -22,18 +22,18 @@ Updates since v1.9.1:
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.9.1" />
-      <dependency id="Bam.Net.Data" version="1.9.1" />
-      <dependency id="Bam.Net.Data.Repositories" version="1.9.1" />
+      <dependency id="Bam.Net" version="1.9.2" />
+      <dependency id="Bam.Net.Data" version="1.9.2" />
+      <dependency id="Bam.Net.Data.Repositories" version="1.9.2" />
       <dependency id="Bam.Net.Distributed" version="1.9.1" />
       <dependency id="Bam.Net.Documentation" version="1.9.1" />
-      <dependency id="Bam.Net.Encryption" version="1.9.1" />
-      <dependency id="Bam.Net.Incubation" version="1.9.1" />
-      <dependency id="Bam.Net.Logging" version="1.9.1" />
-      <dependency id="Bam.Net.Messaging" version="1.9.1" />
-      <dependency id="Bam.Net.Server" version="1.9.1" />
-      <dependency id="Bam.Net.ServiceProxy" version="1.9.1" />
-      <dependency id="Bam.Net.UserAccounts" version="1.9.1" />
+      <dependency id="Bam.Net.Encryption" version="1.9.2" />
+      <dependency id="Bam.Net.Incubation" version="1.9.2" />
+      <dependency id="Bam.Net.Logging" version="1.9.2" />
+      <dependency id="Bam.Net.Messaging" version="1.9.2" />
+      <dependency id="Bam.Net.Server" version="1.9.2" />
+      <dependency id="Bam.Net.ServiceProxy" version="1.9.2" />
+      <dependency id="Bam.Net.UserAccounts" version="1.9.2" />
       <dependency id="Common.Logging" version="3.3.1" />
       <dependency id="Common.Logging.Core" version="3.3.1" />
       <dependency id="Microsoft.AspNet.Mvc" version="5.2.3" />

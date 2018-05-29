@@ -2,12 +2,12 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Presentation.Tests</id>
-    <version>1.9.1</version>
+    <version>1.9.2</version>
     <title>Bam.Net.Presentation.Tests</title>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>Bam.Net.Presentation.Tests</description>
-    <releaseNotes>Version v1.9.1
+    <releaseNotes>Version 1.9.2
 </releaseNotes>
     <copyright>Copyright 2018</copyright>
     <dependencies>

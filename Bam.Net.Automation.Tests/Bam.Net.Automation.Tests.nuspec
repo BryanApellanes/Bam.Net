@@ -2,32 +2,32 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Automation.Tests</id>
-    <version>1.9.1</version>
+    <version>1.9.2</version>
     <title>Bam.Net.Automation.Tests</title>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>Bam.Net.Automation.Tests</description>
-    <releaseNotes>Version v1.9.1
+    <releaseNotes>Version 1.9.2
 </releaseNotes>
     <copyright>Copyright 2018</copyright>
     <dependencies>
-      <dependency id="Bam.Net.Analytics" version="1.9.1" />
-      <dependency id="Bam.Net.Automation" version="1.9.1" />
-      <dependency id="Bam.Net.CommandLine" version="1.9.1" />
-      <dependency id="Bam.Net.CoreServices" version="1.9.1" />
-      <dependency id="Bam.Net.Data.Schema" version="1.9.1" />
-      <dependency id="Bam.Net.Data" version="1.9.1" />
-      <dependency id="Bam.Net.Documentation" version="1.9.1" />
-      <dependency id="Bam.Net.Incubation" version="1.9.1" />
-      <dependency id="Bam.Net.Javascript" version="1.9.1" />
-      <dependency id="Bam.Net.Logging" version="1.9.1" />
-      <dependency id="Bam.Net.Net" version="1.9.1" />
-      <dependency id="Bam.Net.Presentation" version="1.9.1" />
-      <dependency id="Bam.Net.Profiguration" version="1.9.1" />
-      <dependency id="Bam.Net.ServiceProxy" version="1.9.1" />
-      <dependency id="Bam.Net.Services" version="1.9.1" />
-      <dependency id="Bam.Net.Testing" version="1.9.1" />
-      <dependency id="Bam.Net" version="1.9.1" />
+      <dependency id="Bam.Net.Analytics" version="1.9.2" />
+      <dependency id="Bam.Net.Automation" version="1.9.2" />
+      <dependency id="Bam.Net.CommandLine" version="1.9.2" />
+      <dependency id="Bam.Net.CoreServices" version="1.9.2" />
+      <dependency id="Bam.Net.Data.Schema" version="1.9.2" />
+      <dependency id="Bam.Net.Data" version="1.9.2" />
+      <dependency id="Bam.Net.Documentation" version="1.9.2" />
+      <dependency id="Bam.Net.Incubation" version="1.9.2" />
+      <dependency id="Bam.Net.Javascript" version="1.9.2" />
+      <dependency id="Bam.Net.Logging" version="1.9.2" />
+      <dependency id="Bam.Net.Net" version="1.9.2" />
+      <dependency id="Bam.Net.Presentation" version="1.9.2" />
+      <dependency id="Bam.Net.Profiguration" version="1.9.2" />
+      <dependency id="Bam.Net.ServiceProxy" version="1.9.2" />
+      <dependency id="Bam.Net.Services" version="1.9.2" />
+      <dependency id="Bam.Net.Testing" version="1.9.2" />
+      <dependency id="Bam.Net" version="1.9.2" />
       <dependency id="Microsoft.Build.Framework" version="15.3.409" />
       <dependency id="SharpZipLib" version="0.86.0" />
       <dependency id="System.Collections" version="4.0.11" />
