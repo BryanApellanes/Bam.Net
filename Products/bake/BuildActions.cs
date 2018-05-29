@@ -240,9 +240,6 @@ namespace Bam.Net.Automation
         {
             string srcRoot = GetTargetPath();
             string releaseFolder = GetArgument("ReleaseFolder", "Please enter the path to the release folder.");
-            DirectoryInfo releaseDirectory = new DirectoryInfo(releaseFolder);
-            DirectoryInfo toolkitDirectory = new DirectoryInfo(BamToolkitDirectory);            
-            releaseDirectory.Copy(toolkitDirectory, true);
 
             DirectoryInfo wixMergeModuleDirectory = new DirectoryInfo(Path.Combine(srcRoot, GetArgument("WixMergeModule", "Please enter the source root relative path to the directory containing the wix file to update.")));
             DirectoryInfo wixMsiDirectory = new DirectoryInfo(Path.Combine(srcRoot, GetArgument("WixMsi", "Please enter the path to the directory where the wix msi project file (.wixproj) is found.")));

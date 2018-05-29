@@ -2,7 +2,7 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <?define ComponentRules="OneToOne"?>
   <!-- SourceDir instructs IsWiX the location of the directory that contains files for this merge module -->
-  <?define SourceDir="C:\bam\tools\BamToolkit"?>
+  <?define SourceDir="C:\bam\release"?>
   <Module Id="BamToolkitMM" Language="1033" Version="2.0.0">
     <Package Id="20b3866a-15f3-4907-a826-5d42d616af76" Platform="x64" Manufacturer="Three Headz" InstallerVersion="200" />
     <Component Id="SetPath" Guid="f8c46422-ab08-4dbe-b422-60fc01e6c0f1" Directory="TARGETDIR">
