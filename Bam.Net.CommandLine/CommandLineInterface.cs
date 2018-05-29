@@ -562,6 +562,7 @@ namespace Bam.Net.CommandLine
         {
             Console.ResetColor();
             OnExiting(code);
+            Thread.Sleep(1000);
             Environment.Exit(code);
             OnExited(code);
         }

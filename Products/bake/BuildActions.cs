@@ -219,7 +219,7 @@ namespace Bam.Net.Automation
                 case NugetSourceKind.Invalid:
                 default:
                     OutLineFormat(string.Format("Unrecognized publish argument, should be one of (Internal | Public): ({0})", ConsoleColor.Magenta, publishTarget.Or("[null]")));
-                    Environment.Exit(1);
+                    Exit(1);
                     break;
             }
             
@@ -545,7 +545,7 @@ namespace Bam.Net.Automation
             if (!System.IO.File.Exists(bamInfoPath))
             {
                 OutLineFormat(string.Format("Unable to find bam.json, expected it at ({0})", ConsoleColor.Magenta, bamInfoPath));
-                Environment.Exit(1);
+                Exit(1);
             }
             BamInfo info = bamInfoPath.FromJsonFile<BamInfo>();
             Out("*** bam.json ***", ConsoleColor.Cyan);
@@ -695,7 +695,7 @@ namespace Bam.Net.Automation
             if (!assemblyOrNuspec.Exists)
             {
                 OutLineFormat(string.Format("File not found: {0}", ConsoleColor.Magenta, assemblyOrNuspec.FullName));
-                Environment.Exit(1);
+                Exit(1);
             }
             string stagePath = PrepareNugetStage(assemblyOrNuspec);
             DirectoryInfo stage = new DirectoryInfo(stagePath);
@@ -780,7 +780,7 @@ namespace Bam.Net.Automation
             if (!srcRoot.IsInGitRepo())
             {
                 OutLineFormat("{0} is not a git repository", targetPath);
-                Environment.Exit(1);
+                Exit(1);
             }
 
             return srcRoot;
