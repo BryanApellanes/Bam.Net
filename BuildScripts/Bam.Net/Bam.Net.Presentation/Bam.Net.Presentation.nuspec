@@ -11,7 +11,10 @@
     <description>
 		View layer for Bam.Net
     </description>
-    <releaseNotes>Version 1.9.1
+    <releaseNotes>Version v1.9.1
+Updates since v1.9.1:
+ -   correct GraphicsManager scale method (172d2b4f)
+ -   automate calls to ImageMagick and Inkscape (2f9744ae)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>

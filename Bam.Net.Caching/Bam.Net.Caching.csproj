@@ -81,6 +81,7 @@
     <Compile Include="File\JsFileCache.cs" />
     <Compile Include="File\TextFileCache.cs" />
     <Compile Include="ICacheManager.cs" />
+    <Compile Include="IMemorySize.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CachingRepository.cs" />
     <Compile Include="File\FileCache.cs" />

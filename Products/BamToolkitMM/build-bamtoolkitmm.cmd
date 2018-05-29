@@ -1,0 +1,1 @@
+﻿msbuild C:\bam\src\Business\Submodule\Bam.Net\Products\BamToolkitMM\BamToolkitMM.wixproj /p:OutputPath=c:\bam\tools\wix\

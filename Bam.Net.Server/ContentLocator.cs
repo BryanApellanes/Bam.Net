@@ -36,10 +36,12 @@ namespace Bam.Net.Server
             string foundPath = string.Empty;
 			string checkNext = Fs.CleanPath("~" + path);
             Fs fs = ContentRoot;
-            List<string> pathsChecked = new List<string>();
-            pathsChecked.Add(checkNext);
+            List<string> pathsChecked = new List<string>
+            {
+                checkNext
+            };
 
-            if(!fs.FileExists(checkNext, out foundPath))
+            if (!fs.FileExists(checkNext, out foundPath))
             {
 				foundPath = string.Empty;
                 SearchRule[] extRules = _searchRules.Where(sr => sr.Ext.ToLowerInvariant().Equals(ext)).ToArray();
@@ -109,7 +111,7 @@ namespace Bam.Net.Server
             ContentLocator locator = null;
             if (rootToCheck.FileExists(FileName))
             {
-                FileInfo file = rootToCheck.GetFile(FileName);//new FileInfo(filePath);
+                FileInfo file = rootToCheck.GetFile(FileName);
                 locator = file.FromJsonFile<ContentLocator>();
             }
             else
@@ -153,6 +155,7 @@ namespace Bam.Net.Server
 
             AddSearchRule(new SearchRule(ext, searchDirs));
         }
+
         public void AddSearchRule(SearchRule rule)
         {
             _searchRules.Add(rule);

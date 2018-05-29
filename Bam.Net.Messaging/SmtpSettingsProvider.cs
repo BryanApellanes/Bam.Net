@@ -26,14 +26,14 @@ namespace Bam.Net.Messaging
             }
         }
 
-        public Vault GetSmtpSettingsVault(string applicationName = null)
+        public virtual Vault GetSmtpSettingsVault(string applicationName = null)
         {
             string vaultName = applicationName == null ? DefaultVaultName: $"{applicationName}-SmtpSettings";
             return Vault.Load(SmtpSettingsVaultPath, vaultName);
         }
 
         Vault _smtpSettingsVault;
-        public Vault SmtpSettingsVault
+        public virtual Vault SmtpSettingsVault
         {
             get
             {
@@ -50,7 +50,7 @@ namespace Bam.Net.Messaging
         }
 
         string _smtpSettingsVaultPath;
-        public string SmtpSettingsVaultPath
+        public virtual string SmtpSettingsVaultPath
         {
             get
             {
@@ -62,7 +62,7 @@ namespace Bam.Net.Messaging
             }
         }
 
-        public Email CreateEmail(string fromAddress = null, string fromDisplayName = null)
+        public virtual Email CreateEmail(string fromAddress = null, string fromDisplayName = null)
         {
             Email result = new Email();
             SetSmtpHostSettings(SmtpSettingsVault, result, fromAddress, fromDisplayName);
@@ -87,8 +87,17 @@ namespace Bam.Net.Messaging
             string displayName = fromDisplayName ?? smtpHostSettings[DisplayName];
             int port = int.Parse(smtpHostSettings[Port]);
             bool enableSsl = bool.Parse(smtpHostSettings[EnableSsl]);
+            return SetSmtpHostSettings(email, smtpHost, userName, password, from, displayName, port, enableSsl);
+        }
 
+        public static Email SetSmtpHostSettings(Email email, SmtpSettings settings)
+        {
+            return SetSmtpHostSettings(email, settings.SmtpHost, settings.UserName, settings.Password, settings.From, settings.DisplayName, settings.Port, settings.EnableSsl);
+        }
+
+        public static Email SetSmtpHostSettings(Email email, string smtpHost, string userName, string password, string from, string displayName, int port, bool enableSsl)
+        {
             return email.SmtpHost(smtpHost).UserName(userName).Password(password).From(from, displayName).Port(port).EnableSsl(enableSsl);
-        }        
+        }
     }
 }

@@ -73,10 +73,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Bam.Net.CommandLine\Bam.Net.CommandLine.csproj">
-      <Project>{ea9863a9-8e0b-4497-b7fd-abf450a3e468}</Project>
-      <Name>Bam.Net.CommandLine</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Data.Schema\Bam.Net.Data.Schema.csproj">
       <Project>{d2c2b1c0-1047-4211-92fc-37f332861161}</Project>
       <Name>Bam.Net.Data.Schema</Name>
@@ -93,10 +89,6 @@
       <Project>{34c5016d-5265-4394-a9ba-cb2f70d8e93b}</Project>
       <Name>Bam.Net.Javascript</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Bam.Net.Testing\Bam.Net.Testing.csproj">
-      <Project>{85212881-c676-4b40-b311-37c2d1706042}</Project>
-      <Name>Bam.Net.Testing</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Bam.Net\Bam.Net.csproj">
       <Project>{8794c09d-d72c-420c-812f-bfda251b64c9}</Project>
       <Name>Bam.Net</Name>
@@ -109,6 +101,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Bam.Net.Data.OleDb.nuspec">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

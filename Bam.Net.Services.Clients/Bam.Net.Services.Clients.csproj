@@ -49,8 +49,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>C:\bam\nuget\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -70,15 +70,22 @@
     <Compile Include="ApplicationLogDatabase.cs" />
     <Compile Include="ApplicationLogger.cs" />
     <Compile Include="ApplicationServiceRegistry.cs" />
+    <Compile Include="CoreAsyncProxyableService.cs" />
     <Compile Include="CoreClient.cs" />
+    <Compile Include="CoreProxyableService.cs" />
     <Compile Include="CoreSystemClient.cs" />
     <Compile Include="CoreLoggerClient.cs" />
+    <Compile Include="IHasCoreClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bam.Net.Caching\Bam.Net.Caching.csproj">
       <Project>{06bae7ad-8657-4415-bbc0-dad16bb29361}</Project>
       <Name>Bam.Net.Caching</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.CommandLine\Bam.Net.CommandLine.csproj">
+      <Project>{EA9863A9-8E0B-4497-B7FD-ABF450A3E468}</Project>
+      <Name>Bam.Net.CommandLine</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.CoreServices\Bam.Net.CoreServices.csproj">
       <Project>{5480d2a0-145b-4435-8e1c-4555ead0424a}</Project>
@@ -191,6 +198,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Bam.Net.Services.Clients.nuspec">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

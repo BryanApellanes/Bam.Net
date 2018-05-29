@@ -14,7 +14,7 @@ using Bam.Net.Web;
 namespace Bam.Net.Server
 {
     /// <summary>
-    /// A responder that checks the value of the X-Responder HttpHeader
+    /// A responder that checks the value of the X-Bam-Responder HttpHeader
     /// to determine if the current request is intended for this responder
     /// </summary>
     public abstract class HttpHeaderResponder: HttpMethodResponder
@@ -22,7 +22,7 @@ namespace Bam.Net.Server
         public HttpHeaderResponder(BamConf conf)
             : base(conf)
         {
-            this.RespondToHeaderValue = this.ResponderSignificantName;
+            RespondToHeaderValue = this.ResponderSignificantName;
         }
         public HttpHeaderResponder(BamConf conf, ILogger logger) : base(conf, logger) { }
 
@@ -34,7 +34,8 @@ namespace Bam.Net.Server
         /// <returns></returns>
         public override bool MayRespond(IHttpContext context)
         {
-            return GetRequestedResponderName(context).Equals(RespondToHeaderValue);
+            string requestedResponder = GetRequestedResponderName(context);
+            return requestedResponder == null ? true: requestedResponder.Equals(RespondToHeaderValue);
         }
 
         /// <summary>

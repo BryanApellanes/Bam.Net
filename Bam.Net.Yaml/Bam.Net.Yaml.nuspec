@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Bam.Net.Yaml</id>
+    <version>1.9.2</version>
+    <authors>Bryan Apellanes</authors>
+    <owners>Bryan Apellanes</owners>
+    <description>
+	Yaml extensions for Bam
+	</description>
+    <releaseNotes>Version 1.9.2
+</releaseNotes>
+    <copyright>Copyright © Bryan Apellanes 2018</copyright>
+    <dependencies>
+      <dependency id="Bam.Net" version="1.9.2" />
+      <dependency id="Bam.Net.Data" version="1.9.2" />
+      <dependency id="Bam.Net.Data.Repositories" version="1.9.2" />
+      <dependency id="Bam.Net.Data.Schema" version="1.9.2" />
+      <dependency id="Bam.Net.Data.Presentation" version="1.9.1" />
+      <dependency id="Bam.Net.ServiceProxy" version="1.9.2" />
+      <dependency id="Microsoft.AspNet.Mvc" version="5.2.3" />
+      <dependency id="Microsoft.AspNet.Razor" version="3.2.3" />
+      <dependency id="Microsoft.AspNet.WebPages" version="3.2.3" />
+      <dependency id="Microsoft.Web.Infrastructure" version="1.0.0.0" />
+      <dependency id="YamlSerializer" version="1.0" />
+    </dependencies>
+  </metadata>
+</package>

@@ -2,6 +2,17 @@
 Using Gloo you can create and expose a web service simply by creating a class
 and serving that class with gloo.exe.
 
+
+# TL;DR
+Serve services:	
+
+gloo /serve:[className] /assemblySearchPattern:[searchPattern]
+
+or
+
+gloo /registries:[commaSeparatedListOfRegistryNames] /assemblySearchPattern:[searchPattern]
+
+
 ### Web Service Class
 ```c#
 // Echo.cs

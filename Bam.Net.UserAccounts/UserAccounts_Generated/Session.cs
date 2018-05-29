@@ -55,10 +55,12 @@ namespace Bam.Net.UserAccounts.Data
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("SessionState_SessionId", new SessionStateCollection(Database.GetQuery<SessionStateColumns, SessionState>((c) => c.SessionId == GetLongValue("Id")), this, "SessionId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("UserBehavior_SessionId", new UserBehaviorCollection(Database.GetQuery<UserBehaviorColumns, UserBehavior>((c) => c.SessionId == GetLongValue("Id")), this, "SessionId"));				
 			}						
@@ -281,8 +283,10 @@ namespace Bam.Net.UserAccounts.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Session>();
 			Database db = database ?? Db.For<Session>();
-			var results = new SessionCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new SessionCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -719,6 +723,25 @@ namespace Bam.Net.UserAccounts.Data
 			if(orderBy != null)
 			{
 				query.OrderBy<SessionColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<SessionCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static SessionCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<Session>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<Session>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

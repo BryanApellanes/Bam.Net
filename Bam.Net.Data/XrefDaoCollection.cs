@@ -180,18 +180,27 @@ namespace Bam.Net.Data
         }
 
         /// <summary>
-        /// Adds the value to the collection in memory.  Does
+        /// Sets the specified item's Database property to that of the current
+        /// XrefDaoCollection and adds the value to the collection in memory.  Does
         /// not commit to the database until Save is called.
         /// </summary>
         /// <param name="item"></param>
         public void Add(L item)
         {
+            item.Database = Database;
             _values.Add(item);
             _book = new Book<L>(_values);
         }
 
+        /// <summary>
+        /// Sets the Database property of each value specified and adds them to the 
+        /// XrefDaoCollection in memory.  Does not commit to the database until Save is
+        /// called.
+        /// </summary>
+        /// <param name="values"></param>
         public void AddRange(IEnumerable<L> values)
         {
+            values.Each(v => v.Database = Database);
             _values.AddRange(values);
             _book = new Book<L>(_values);
         }

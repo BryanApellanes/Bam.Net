@@ -91,13 +91,6 @@ namespace Bam.Net.Presentation.Unicode
                 return new EmojiColumns("Facebook");
             }
         }
-        public EmojiColumns FacebookMessenger
-        {
-            get
-            {
-                return new EmojiColumns("FacebookMessenger");
-            }
-        }
         public EmojiColumns Samsung
         {
             get

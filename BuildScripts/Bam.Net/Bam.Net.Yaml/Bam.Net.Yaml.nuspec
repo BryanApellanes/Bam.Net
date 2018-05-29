@@ -11,8 +11,7 @@
     <description>
 	Yaml extensions for Bam
 	</description>
-    <releaseNotes>Version 1.9.1
- -   added extensions (57cf341)
+    <releaseNotes>Version v1.9.1
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>

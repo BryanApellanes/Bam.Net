@@ -38,8 +38,7 @@ namespace Bam.Net.Server
 
         public override bool Equals(object obj)
         {
-            HostPrefix compareTo = obj as HostPrefix;
-            if(compareTo != null)
+            if (obj is HostPrefix compareTo)
             {
                 return compareTo.ToString().Equals(this.ToString());
             }
@@ -56,6 +55,11 @@ namespace Bam.Net.Server
             HostPrefix result = this.CopyAs<HostPrefix>();
             result.HostName = $"{attr.Subdomain}.{HostName}";
             return result;
+        }
+
+        public static HostPrefix[] FromHostAppMaps(IEnumerable<HostAppMap> hostAppMaps)
+        {
+            return hostAppMaps.Select(hm => new HostPrefix { HostName = hm.Host, Port = 80 }).ToArray();
         }
 
         public static HostPrefix[] FromDefaultConfiguration(string defaultHostName = "localhost", int defaultPort = 80)

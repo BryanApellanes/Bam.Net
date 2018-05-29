@@ -7,6 +7,7 @@ using Bam.Net.Data.Repositories;
 
 namespace Bam.Net.Services.Catalog.Data
 {
+    [Serializable]
     public class CatalogDefinition: AuditRepoData
     {
         public string Name { get; set; }

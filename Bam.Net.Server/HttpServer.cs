@@ -20,12 +20,8 @@ namespace Bam.Net.Server
         private readonly HttpListener _listener;
         private readonly Thread _handlerThread;
         private ILogger _logger;
-
+        
         public HttpServer(ILogger logger = null)
-            : this(50, logger)
-        { }
-
-        public HttpServer(int maxThreads, ILogger logger)
         {
             logger = logger ?? Log.Default;
             
@@ -120,13 +116,21 @@ namespace Bam.Net.Server
         
         public void Stop()
         {
-            _listener.Stop();
-
-            foreach (HostPrefix hp in HostPrefixes)
+            try
             {
-                if (_listening.ContainsKey(hp))
+                _listener.Stop();
+                _listener.Close();
+            }
+            catch (Exception ex)
+            {
+                _logger.AddEntry("Error stopping HttpServer: {0}", ex, ex.Message);
+            }
+
+            foreach (HostPrefix hp in _listening.Keys)
+            {
+                try
                 {
-                    if(_listening[hp] == this)
+                    if (_listening[hp] == this)
                     {
                         if (_listening.TryRemove(hp, out HttpServer server))
                         {
@@ -134,6 +138,7 @@ namespace Bam.Net.Server
                         }
                     }
                 }
+                catch { }
             }
             
             if (_handlerThread.ThreadState == ThreadState.Running)

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Bam.Net</id>
+    <version>1.9.2</version>
+    <authors>Bryan Apellanes</authors>
+    <owners>Bryan Apellanes</owners>
+    <description>Productivity Tools</description>
+    <releaseNotes>Version 1.9.2
+Updates since v1.9.1:
+ -   implement new bake build/release tool (1260d46b)
+ -   added docs (27b109b9)
+ -   correct threadstate check in BackgroundThreadQueue (3f825f76)
+ -   add ; System.IO.Compression (0a2676b6)
+ -   add System.IO.Compression package reference (cb28bbee)
+</releaseNotes>
+    <copyright>Copyright © Bryan Apellanes 2018</copyright>
+    <dependencies>
+      <dependency id="Microsoft.AspNet.Mvc" version="5.2.3" />
+      <dependency id="Microsoft.AspNet.Razor" version="3.2.3" />
+      <dependency id="Microsoft.AspNet.WebPages" version="3.2.3" />
+      <dependency id="Microsoft.Web.Infrastructure" version="1.0.0.0" />
+      <dependency id="Newtonsoft.Json" version="11.0.1" />
+      <dependency id="System.IO.Compression" version="4.3.0" />
+      <dependency id="YamlSerializer" version="1.0" />
+    </dependencies>
+  </metadata>
+</package>

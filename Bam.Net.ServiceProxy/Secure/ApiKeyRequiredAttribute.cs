@@ -12,7 +12,7 @@ namespace Bam.Net.ServiceProxy.Secure
     /// <summary>
     /// Attribute used to addorn classes or methods that require
     /// authentication or authorization.  Implicity requires
-    /// application level encryption
+    /// application level encryption.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class ApiKeyRequiredAttribute: EncryptAttribute

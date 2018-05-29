@@ -78,10 +78,34 @@ namespace Bam.Net
             }
         }
 
+        public static string ToXml(this object target, bool includeXmlDeclaration)
+        {
+            return ToXml(target, new XmlWriterSettings { OmitXmlDeclaration = !includeXmlDeclaration, Indent = true });
+        }
+
+        public static string ToXml(this object target, XmlWriterSettings settings)
+        {
+            MemoryStream stream = new MemoryStream();
+            ToXmlStream(target, stream, settings);
+            stream.Seek(0, SeekOrigin.Begin);
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                return reader.ReadToEnd();
+            }
+        }
+
         public static void ToXmlStream(this object target, Stream stream)
         {
+            ToXmlStream(target, stream, new XmlWriterSettings { Indent = true });
+        }
+
+        public static void ToXmlStream(this object target, Stream stream, XmlWriterSettings settings)
+        {
             XmlSerializer ser = new XmlSerializer(target.GetType());
-            ser.Serialize(stream, target);
+            using (XmlWriter writer = XmlWriter.Create(stream, settings))
+            {
+                ser.Serialize(writer, target);
+            }                
         }
 
         public static bool IsSerializable(Type t)
@@ -122,9 +146,8 @@ namespace Bam.Net
 		/// <returns></returns>
 		public static int MemorySize(this object target)
 		{
-			byte[] ignore;
-			return MemorySize(target, out ignore);
-		}
+            return MemorySize(target, out byte[] ignore);
+        }
 
 		public static int MemorySize(this object target, out byte[] byteStream)
 		{

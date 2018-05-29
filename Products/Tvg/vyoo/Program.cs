@@ -24,23 +24,30 @@ namespace Bam.Net.Application
     {
         static void Main(string[] args)
         {
+            TryWritePid(true);
+            VyooService.SetInfo(VyooService.ServiceInfo);
             if (!VyooService.ProcessCommandLineArgs(args))
             {
                 IsolateMethodCalls = false;
                 Resolver.Register();
-                AddSwitches(typeof(ConsoleActions));
-                VyooService.SetInfo(VyooService.ServiceInfo);
+                AddSwitches(typeof(ConsoleActions));                
+                AddConfigurationSwitches();
+                ArgumentAdder.AddArguments(args);
 
                 Initialize(args, (a) =>
                 {
                     OutLineFormat("Error parsing arguments: {0}", ConsoleColor.Red, a.Message);
                     Environment.Exit(1);
                 });
+                if (Arguments.Contains("singleProcess"))
+                {
+                    KillExistingProcess();
+                }
                 if (Arguments.Contains("i"))
                 {
                     Interactive();
                 }
-                else
+                else if (!ExecuteSwitches(Arguments, new ConsoleActions()))
                 {
                     VyooService.RunService<VyooService>();
                 }

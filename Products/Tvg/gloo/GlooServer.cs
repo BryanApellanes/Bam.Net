@@ -72,13 +72,13 @@ namespace Bam.Net.Application
 
         private void AddCommonServices(ServiceProxyResponder responder)
         {
-            ServiceTypes.Each(new { Logger = Logger, Responder = responder }, (ctx, serviceType) =>
+            ServiceTypes.Each(new {  Logger, Responder = responder }, (ctx, serviceType) =>
             {
                 ctx.Responder.RemoveCommonService(serviceType);
-                ctx.Responder.AddCommonService(serviceType, GetServiceLoader(serviceType));
+                ctx.Responder.AddCommonService(serviceType, ServiceRegistry.GetServiceLoader(serviceType));
                 ctx.Logger.AddEntry("Added service: {0}", serviceType.FullName);
             });
-            IApiKeyResolver apiKeyResolver = (IApiKeyResolver)GetServiceLoader(typeof(IApiKeyResolver), new CoreClient())();
+            IApiKeyResolver apiKeyResolver = (IApiKeyResolver)ServiceRegistry.GetServiceLoader(typeof(IApiKeyResolver), new CoreClient())();
             responder.CommonSecureChannel.ApiKeyResolver = apiKeyResolver;
             responder.AppSecureChannels.Values.Each(sc => sc.ApiKeyResolver = apiKeyResolver);
         }
@@ -166,31 +166,6 @@ namespace Bam.Net.Application
             {
                 Logger.AddEntry("An exception occurred loading services: {0}", ex, ex.Message);
             }
-        }
-        
-        public static ServiceRegistry ServiceRegistry { get; set; }
-        protected Func<object> GetServiceLoader(Type type, object orDefault = null)
-        {
-            if(ServiceRegistry == null)
-            {
-                Type coreRegistryContainer = type.Assembly.GetTypes().Where(t => t.HasCustomAttributeOfType<ServiceRegistryContainerAttribute>()).FirstOrDefault();
-                if(coreRegistryContainer != null)
-                {
-                    MethodInfo provider = coreRegistryContainer.GetMethods().Where(mi => mi.HasCustomAttributeOfType<ServiceRegistryLoaderAttribute>() || mi.Name.Equals("Get")).FirstOrDefault();
-                    if (provider != null)
-                    {
-                        ServiceRegistry = (ServiceRegistry)provider.Invoke(null, null);
-                    }
-                }
-            }
-            return ServiceRegistry == null ? (() => type.Construct()) : (Func<object>)(() =>
-            {
-                if(!ServiceRegistry.TryGet(type, out object result))
-                {
-                    result = orDefault;
-                }
-                return result;
-            });
-        }                
+        }                        
     }
 }

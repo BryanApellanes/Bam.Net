@@ -12,7 +12,7 @@ using Bam.Net.Configuration;
 namespace Bam.Net.Logging
 {
     /// <summary>
-    /// An LoggerBase implementation that commits logs to the 
+    /// A LoggerBase implementation that commits logs to the 
     /// Windows event viewer.
     /// </summary>
     public class WindowsLogger: Logger
@@ -35,8 +35,10 @@ namespace Bam.Net.Logging
                 EventLog.CreateEventSource(logSource, logName);
             }
 
-            EventLog eventLog = new EventLog(logName);
-            eventLog.Source = logSource;
+            EventLog eventLog = new EventLog(logName)
+            {
+                Source = logSource
+            };
             eventLog.ModifyOverflowPolicy(OverflowAction.OverwriteAsNeeded, 7);
 
             return eventLog;

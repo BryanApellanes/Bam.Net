@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Bam.Net.Services.Clients</id>
+    <version>1.9.2</version>
+    <authors>Bryan Apellanes</authors>
+    <owners>Bryan Apellanes</owners>
+    <description>
+	Clients for Bam.Net services
+	</description>
+    <releaseNotes>Version 1.9.2
+</releaseNotes>
+    <copyright>Copyright © Bryan Apellanes 2018</copyright>
+    <dependencies>
+      <dependency id="Bam.Net" version="1.9.2" />
+      <dependency id="Bam.Net.Caching" version="1.9.2" />
+      <dependency id="Bam.Net.CoreServices" version="1.9.2" />
+      <dependency id="Bam.Net.Data.Dynamic" version="1.9.2" />
+      <dependency id="Bam.Net.Data" version="1.9.2" />
+      <dependency id="Bam.Net.Data.Model" version="1.9.2" />
+      <dependency id="Bam.Net.Data.MsSql" version="1.9.2" />
+      <dependency id="Bam.Net.Data.MySql" version="1.9.2" />
+      <dependency id="Bam.Net.Data.Npgsql" version="1.9.2" />
+      <dependency id="Bam.Net.Data.OleDb" version="1.9.2" />
+      <dependency id="Bam.Net.Data.Oracle" version="1.9.2" />
+      <dependency id="Bam.Net.Data.Protobuf" version="1.9.2" />
+      <dependency id="Bam.Net.Data.Repositories" version="1.9.2" />
+      <dependency id="Bam.Net.Data.Schema" version="1.9.2" />
+      <dependency id="Bam.Net.Data.SQLite" version="1.9.2" />
+      <dependency id="Bam.Net.Documentation" version="1.9.2" />
+      <dependency id="Bam.Net.Encryption" version="1.9.2" />
+      <dependency id="Bam.Net.Incubation" version="1.9.2" />
+      <dependency id="Bam.Net.Logging" version="1.9.2" />
+      <dependency id="Bam.Net.Logging.Debug" version="1.9.2" />
+      <dependency id="Bam.Net.Messaging" version="1.9.2" />
+      <dependency id="Bam.Net.Server" version="1.9.2" />
+      <dependency id="Bam.Net.ServiceProxy" version="1.9.2" />
+      <dependency id="Bam.Net.Services" version="1.9.2" />
+      <dependency id="Bam.Net.Testing" version="1.9.2" />
+      <dependency id="Bam.Net.Translation" version="1.9.2" />
+      <dependency id="Bam.Net.UserAccounts" version="1.9.2" />
+      <dependency id="Bam.Net.Yaml" version="1.9.2" />
+      <dependency id="Newtonsoft.Json" version="11.0.1" />
+    </dependencies>
+  </metadata>
+</package>

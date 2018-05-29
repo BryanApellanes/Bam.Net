@@ -5,7 +5,7 @@ C:
 cd %ROOT%\Bam.Net\BuildScripts\Bam.Net
 call clean.cmd
 call set_assembly_version.cmd %1 %2 %3
-call set_nuspec_info.cmd %1 %2 %3 %4
+call set_nuspec_info.cmd %1 %2 %3 %ROOT%
 call generate_nuget_scripts.cmd
 call set_msi_version.cmd %1.%2.%3 %ROOT%
 call build_solution.cmd Release %ROOT%

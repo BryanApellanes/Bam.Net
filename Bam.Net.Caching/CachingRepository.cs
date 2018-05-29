@@ -38,17 +38,30 @@ namespace Bam.Net.Caching
         public event EventHandler QueriedCache;
         public event EventHandler Evicted;
 
+        protected CachingRepository() { }
+
         public CachingRepository(IRepository sourceRepository, ILogger logger = null)
-		{
-			SourceRepository = sourceRepository;
+        {
+            SetSourceRepository(sourceRepository);
+            SetCacheManager();
+
+            Logger = logger ?? Log.Default;
+        }
+
+        protected void SetCacheManager()
+        {
+            _cacheManager = new CacheManager();
+            _cacheManager.SubscribeOnce(nameof(CacheManager.Evicted), OnEvicted);
+        }
+
+        protected void SetSourceRepository(IRepository sourceRepository)
+        {
+            SourceRepository = sourceRepository;
             SourceRepository.StorableTypes.Each(new { Repo = this }, (ctx, t) => ctx.Repo.AddType(t));
             ValidateTypes();
-			_cacheManager = new CacheManager();
-            _cacheManager.SubscribeOnce(nameof(CacheManager.Evicted), OnEvicted);
-		    Logger = logger ?? Log.Default;
-		}
+        }
 
-	    public CachingRepository(Database database, ILogger logger = null) : this(new DaoRepository(database, logger), logger)
+        public CachingRepository(Database database, ILogger logger = null) : this(new DaoRepository(database, logger), logger)
 	    {
 	    }
         

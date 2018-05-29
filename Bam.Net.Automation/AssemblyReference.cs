@@ -15,6 +15,5 @@ namespace Bam.Net.Automation
         }
         public string Uuid { get; set; }
         public string AssemblyName { get; set; }
-        public string HintPath { get; set; }
     }    
 }

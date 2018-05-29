@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <id>BamToolkit</id>
+    <id>BamToolkit-debug</id>
     <version>1.9.1</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
@@ -10,7 +10,6 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Tools for authoring distributed web based applications</description>
     <releaseNotes>Version 1.9.1
- -   update bam app update process; fix logger applicationname handling (8ebef70)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies />

@@ -20,7 +20,6 @@ using Bam.Net.Encryption;
 using Bam.Net.Automation;
 using Bam.Net.Automation.Nuget;
 using System.Collections.ObjectModel;
-using Bam.Net.Automation.ContinuousIntegration;
 using Bam.Net.ServiceProxy;
 using Bam.Net.Logging;
 using Microsoft.Build.BuildEngine;
@@ -29,7 +28,6 @@ using Microsoft.Build.Framework;
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Execution;
 using Microsoft.Build.Logging;
-using Bam.Net.Automation.ContinuousIntegration.Loggers;
 using Bam.Net.Documentation;
 using Bam.Net.Testing.Integration;
 using Bam.Net.Testing.Unit;
@@ -67,15 +65,15 @@ namespace Bam.Net.Automation.Tests
         public void ShouldUpload()
         {
             string testPath = "C:\\inetpub\\ftproot\\subfolder";
-            if (Directory.Exists(testPath))
+            if (System.IO.Directory.Exists(testPath))
             {
-                Directory.Delete(testPath, true);
+                System.IO.Directory.Delete(testPath, true);
             };
 
-            Expect.IsFalse(Directory.Exists(testPath));
+            Expect.IsFalse(System.IO.Directory.Exists(testPath));
             Ftp ftp = Ftp.Server("localhost");
             ftp.UserName("ftptest").Password("53cr3tP455w0rd1!").Upload(".\\Test");
-            Expect.IsTrue(Directory.Exists(testPath));
+            Expect.IsTrue(System.IO.Directory.Exists(testPath));
         }
 
         [UnitTest]

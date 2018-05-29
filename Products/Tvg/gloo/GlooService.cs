@@ -13,7 +13,7 @@ namespace Bam.Net.Application
         {
             get
             {
-                return new ServiceInfo("GlooService", "Gloo Service", "Exposes CLR types as web services, providing the gloo that binds");
+                return new ServiceInfo("GlooService", "Gloo Service", "Exposes CLR types as web services, providing the gloo that binds.");
             }
         }
 
@@ -25,9 +25,9 @@ namespace Bam.Net.Application
             {
                 return _serverLock.DoubleCheckLock(ref _server, () =>
                 {
+                    ILogger logger = GetLogger();
                     try
                     {
-                        ILogger logger = GetLogger();
                         GlooServer server = new GlooServer(BamConf.Load(ServiceConfig.ContentRoot), logger)
                         {
                             HostPrefixes = new HashSet<HostPrefix>(GetConfiguredHostPrefixes()),
@@ -38,12 +38,13 @@ namespace Bam.Net.Application
                     }
                     catch (Exception ex)
                     {
-                        GetLogger().AddEntry("Exception occurred: {0}", ex, ex.Message);
+                        logger.AddEntry("Exception occurred: {0}", ex, ex.Message);
                     }
                     return null;
                 });
             }
         }
+
         protected override void OnStart(string[] args)
         {
             Server.Start();

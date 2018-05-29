@@ -213,9 +213,11 @@ namespace Bam.Net
 
         public static CompilerParameters GetCompilerParameters(string assemblyFileName, string[] referenceAssemblies, bool executable)
         {
-            CompilerParameters parameters = new CompilerParameters();
-            parameters.GenerateExecutable = executable;
-            parameters.OutputAssembly = assemblyFileName;
+            CompilerParameters parameters = new CompilerParameters
+            {
+                GenerateExecutable = executable,
+                OutputAssembly = assemblyFileName
+            };
 
             SetCompilerOptions(referenceAssemblies, parameters);
             return parameters;

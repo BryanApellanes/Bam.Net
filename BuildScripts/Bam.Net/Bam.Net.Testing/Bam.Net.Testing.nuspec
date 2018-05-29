@@ -11,9 +11,9 @@
     <description>
 	Simple unit testing and assertion tools for use with Bam
 	</description>
-    <releaseNotes>Version 1.9.1
- -   add action argument to because (e58601b)
- -   output full method path for failed tests (ae6fb2c)
+    <releaseNotes>Version v1.9.1
+Updates since v1.9.1:
+ -   refactor to tag test runs (2a4c86b6)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>

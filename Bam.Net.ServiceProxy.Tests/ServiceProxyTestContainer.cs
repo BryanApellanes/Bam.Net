@@ -397,7 +397,14 @@ namespace Bam.Net.ServiceProxy.Tests
             public TestExecutionRequest(string c, string m, string f)
                 : base(c, m, f)
             {
-                this.Instance = new Echo();
+                Incubator inc = new Incubator();
+                inc.Set(new Echo());
+                ServiceProvider = inc;
+                Instance = new Echo();
+                MethodInfo = typeof(Echo).GetMethod(m);
+                Request = Substitute.For<IRequest>();
+                Request.Url.Returns(new Uri($"http://localhost/{c}/{m}.{f}"));
+                Request.QueryString.Returns(new System.Collections.Specialized.NameValueCollection());
             }
 
             public bool Called { get; set; }
@@ -410,7 +417,7 @@ namespace Bam.Net.ServiceProxy.Tests
         [UnitTest]
         public void ExecuteShouldCallValidate()
         {
-            TestExecutionRequest to = new TestExecutionRequest(null, "TestMethod", "json");
+            TestExecutionRequest to = new TestExecutionRequest("Echo", "Send", "json");
             Expect.IsFalse(to.Called);
             to.Execute();
             Expect.IsTrue(to.Called);
@@ -515,7 +522,7 @@ namespace Bam.Net.ServiceProxy.Tests
         {
             ServiceProxySystem.Register<TestClass>();
             ExecutionRequest er = new ExecutionRequest("TestClass", "TestMethod", "json");
-            er.Parameters = new object[] { new { }, new { } };
+            er.Arguments = new object[] { new { }, new { } };
             ValidationResult result = er.Validate();
             Expect.IsFalse(result.Success);
             Expect.IsTrue(result.ValidationFailures.ToList().Contains(ValidationFailures.ParameterCountMismatch));
@@ -638,14 +645,14 @@ namespace Bam.Net.ServiceProxy.Tests
         {
 			RegisterDb();
             ServiceProxySystem.Register<ApiKeyRequiredEcho>();
-            string methodName = MethodBase.GetCurrentMethod().Name;
-            IApplicationNameProvider nameProvider = new TestApplicationNameProvider(methodName);
+            string testName = MethodBase.GetCurrentMethod().Name;
+            IApplicationNameProvider nameProvider = new TestApplicationNameProvider(testName.RandomLetters(6));
             IApiKeyProvider keyProvider = new LocalApiKeyProvider();
 
             ExecutionRequest er = new ExecutionRequest("ApiKeyRequiredEcho", "Send", "json");
             er.ApiKeyResolver = new ApiKeyResolver(keyProvider, nameProvider);
 
-            er.Request = new ServiceProxyTestHelpers.TestRequest();
+            er.Request = new ServiceProxyTestHelpers.JsonTestRequest();
             string data = ApiParameters.ParametersToJsonParamsObjectString("some random data");
             er.InputString = data;
 
@@ -671,7 +678,7 @@ namespace Bam.Net.ServiceProxy.Tests
             ExecutionRequest er = new ExecutionRequest(className, method, "json");
             er.JsonParams = data;
             er.ApiKeyResolver = new ApiKeyResolver(keyProvider, nameProvider);
-            er.Request = new ServiceProxyTestHelpers.TestRequest();   
+            er.Request = new ServiceProxyTestHelpers.FormUrlEncodedTestRequest();   
             
             er.ApiKeyResolver.SetKeyToken(er.Request.Headers, ApiParameters.GetStringToHash(className, method, data));
 
@@ -689,10 +696,11 @@ namespace Bam.Net.ServiceProxy.Tests
             IApplicationNameProvider nameProvider = new TestApplicationNameProvider(methodName.RandomLetters(4));
             IApiKeyProvider keyProvider = new LocalApiKeyProvider();
 
-            ExecutionRequest er = new ExecutionRequest("ApiKeyRequiredEcho", "Send", "json");
-            er.ApiKeyResolver = new ApiKeyResolver(keyProvider, nameProvider);
-
-            er.Request = new ServiceProxyTestHelpers.TestRequest();
+            ExecutionRequest er = new ExecutionRequest("ApiKeyRequiredEcho", "Send", "json")
+            {
+                ApiKeyResolver = new ApiKeyResolver(keyProvider, nameProvider),
+                Request = new ServiceProxyTestHelpers.JsonTestRequest()
+            };
             string data = ApiParameters.ParametersToJsonParamsObjectString("some random data");
             er.InputString = data;
             ApiKeyResolver resolver = new ApiKeyResolver(keyProvider, nameProvider);

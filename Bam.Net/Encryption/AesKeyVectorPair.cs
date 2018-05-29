@@ -74,7 +74,20 @@ namespace Bam.Net.Encryption
             }
         }
 
+        /// <summary>
+        /// Gets or sets the key.
+        /// </summary>
+        /// <value>
+        /// The key.
+        /// </value>
         public string Key { get; set; }
+
+        /// <summary>
+        /// Gets or sets the initialization vector.
+        /// </summary>
+        /// <value>
+        /// The iv.
+        /// </value>
         public string IV { get; set; }
 
         /// <summary>
@@ -86,6 +99,11 @@ namespace Bam.Net.Encryption
             return Aes.Encrypt(value, this);
         }
 
+        /// <summary>
+        /// Decrypts the specified base64 encoded value.
+        /// </summary>
+        /// <param name="base64EncodedValue">The base64 encoded value.</param>
+        /// <returns></returns>
         public string Decrypt(string base64EncodedValue)
         {
             return Aes.Decrypt(base64EncodedValue, this);

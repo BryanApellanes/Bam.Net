@@ -39,7 +39,7 @@ namespace Bam.Net.ServiceProxy
         /// Can be used to uniquely identify an invocation
         /// when subscribing to events
         /// </summary>
-        public string Cuid { get; set; }
+        public string Cuid { get; internal set; }
         public bool CancelInvoke { get; set; }
         public string Message { get; set; }
         public string BaseAddress { get; set; }

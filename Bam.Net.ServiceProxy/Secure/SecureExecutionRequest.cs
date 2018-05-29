@@ -60,13 +60,20 @@ namespace Bam.Net.ServiceProxy.Secure
         {
             // turn off initialization for this type
             //base.Initialize();
+            IsInitialized = true;
         }
 
-        protected internal override void ParseRequestUrl()
+        protected internal override ExecutionTargetInfo ResolveExecutionTargetInfo()
         {
             // effectively turns off parsing of the url since
             // everything is explicitly set already
             //base.ParseRequestUrl();
+            return new ExecutionTargetInfo
+            {
+                ClassName = ClassName,
+                MethodName = MethodName,
+                Ext = Ext
+            };
         }
 
         SecureSession _session;
@@ -77,12 +84,6 @@ namespace Bam.Net.ServiceProxy.Secure
             {
                 return _sessionSync.DoubleCheckLock(ref _session, () => SecureSession.Get(Context));
             }
-        }
-
-        public SecureSession ReloadSession()
-        {
-            _session = null;
-            return Session;
         }
 
         /// <summary>

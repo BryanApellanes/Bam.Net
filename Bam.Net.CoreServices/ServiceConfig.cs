@@ -21,6 +21,14 @@ namespace Bam.Net.Server
             }
         }
 
+        public static string LogRoot
+        {
+            get
+            {
+                return Path.Combine(ContentRoot, "logs");
+            }
+        }
+
         /// <summary>
         /// A logical identifier for the current process
         /// </summary>
@@ -37,8 +45,7 @@ namespace Bam.Net.Server
             string dialect = DefaultConfiguration.GetAppSetting("SqlDialect");
             string connectionString = DefaultConfiguration.GetAppSetting("SqlConnectionString");
 
-            SqlDialect sqlDialect;
-            if(!Enum.TryParse<SqlDialect>(dialect, out sqlDialect))
+            if (!Enum.TryParse<SqlDialect>(dialect, out SqlDialect sqlDialect))
             {
                 sqlDialect = SqlDialect.SQLite;
                 connectionString = "Default";
@@ -60,7 +67,7 @@ namespace Bam.Net.Server
                 MultiTargetLogger multiLogger = new MultiTargetLogger();
                 TextFileLogger fileLogger = new TextFileLogger()
                 {
-                    Folder = new DirectoryInfo(ContentRoot)
+                    Folder = new DirectoryInfo(LogRoot)
                 };
                 multiLogger.AddLogger(fileLogger);
                 multiLogger.AddLogger(logger);

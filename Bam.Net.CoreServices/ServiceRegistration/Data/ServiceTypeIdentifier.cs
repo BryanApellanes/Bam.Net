@@ -21,11 +21,11 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data
         public string TypeName { get; set; }
 
         /// <summary>
-        /// The FullName property of the Assembly; used to attempt 
+        /// The name of the assembly file; used to attempt 
         /// to load the assembly locally before attempting
         /// to load from the AssemblyFileHash
         /// </summary>
-        public string AssemblyFullName { get; set; }
+        public string AssemblyName { get; set; }
         public string AssemblyFileHash { get; set; }
 
         /// <summary>
@@ -61,13 +61,14 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data
             {
                 buildNumber = commitFile.ReadAllText().Trim();
             }
+            FileInfo assemblyFileInfo = type.Assembly.GetFileInfo();
             ServiceTypeIdentifier result = new ServiceTypeIdentifier
             {
                 BuildNumber = buildNumber,
                 Namespace = type.Namespace,
                 TypeName = type.Name,
-                AssemblyFullName = type.Assembly.FullName,
-                AssemblyFileHash = type.Assembly.GetFileInfo().Sha1()
+                AssemblyName = assemblyFileInfo.Name,
+                AssemblyFileHash = assemblyFileInfo.Sha1()
             };
             result.SetDurableHashes();
             return result;
@@ -75,12 +76,12 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data
 
         public override string ToString()
         {
-            return $"{Namespace}.{TypeName}[{BuildNumber}]::{AssemblyFullName}({AssemblyFileHash})";
+            return $"{Namespace}.{TypeName}[{BuildNumber}]::{AssemblyName}({AssemblyFileHash})";
         }
 
         private string ToSecondaryString()
         {
-            return $"{Namespace}.{TypeName}::{AssemblyFullName}({AssemblyFileHash})";
+            return $"{Namespace}.{TypeName}::{AssemblyName}({AssemblyFileHash})";
         }
 
         public void SetDurableHashes(ILogger logger = null)
@@ -101,7 +102,7 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data
 
         private void WarnForBlanks(ILogger logger = null)
         {
-            foreach(string property in new[] { "BuildNumber", "Namespace", "TypeName", "AssemblyFullName", "AssemblyFileHash" })
+            foreach(string property in new[] { "BuildNumber", "Namespace", "TypeName", "AssemblyName", "AssemblyFileHash" })
             {
                 WarnForBlank(property, logger);
             }

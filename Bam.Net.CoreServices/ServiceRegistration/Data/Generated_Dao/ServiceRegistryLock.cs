@@ -220,8 +220,10 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<ServiceRegistryLock>();
 			Database db = database ?? Db.For<ServiceRegistryLock>();
-			var results = new ServiceRegistryLockCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new ServiceRegistryLockCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 

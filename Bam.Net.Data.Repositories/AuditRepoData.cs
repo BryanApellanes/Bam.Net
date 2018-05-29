@@ -14,10 +14,10 @@ namespace Bam.Net.Data.Repositories
 {
     /// <summary>
     /// An abstract base class defining common
-    /// properties for any object you may wish to 
-    /// save in a Repository including fields useful
+    /// properties for any object that is saved to
+    /// a Repository including fields useful
     /// for auditing the modification of persisted
-    /// data
+    /// data.
     /// </summary>
     [Serializable]
     public abstract class AuditRepoData: RepoData

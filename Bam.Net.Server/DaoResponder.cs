@@ -53,10 +53,12 @@ namespace Bam.Net.Server
 
         private void Init()
         {
-            _dynamicResponders = new Dictionary<string, Func<string, bool, string>>();
-            _dynamicResponders.Add("proxies", Proxies);
-            _dynamicResponders.Add("ctors", Ctors);
-            _dynamicResponders.Add("templates", Templates);
+            _dynamicResponders = new Dictionary<string, Func<string, bool, string>>
+            {
+                { "proxies", Proxies },
+                { "ctors", Ctors },
+                { "templates", Templates }
+            };
             Dao.BeforeWriteCommitAny += (db, dao) =>
             {
                 dao.PropertyIfNullOrBlank("Created", DateTime.UtcNow, false);
@@ -88,12 +90,12 @@ namespace Bam.Net.Server
                     // templates are in ~s:/dao/dust and ~a:/dao/dust
                     string dustRelativePath = ViewsRelativePath;
                     DirectoryInfo commonTemplateDir = new DirectoryInfo(ServerRoot.GetAbsolutePath(dustRelativePath));
-                    Fs appFs = AppFs(appName);
+                    Fs appFs = BamConf.AppFs(appName); //AppFs(appName);
                     DirectoryInfo appTemplateDir = new DirectoryInfo(appFs.GetAbsolutePath(dustRelativePath));
 
                     StringBuilder tmp = new StringBuilder();
-                    tmp.AppendLine(DustScript.CompileDirectory(commonTemplateDir));
-                    tmp.AppendLine(DustScript.CompileDirectory(appTemplateDir));
+                    tmp.AppendLine(DustScript.CompileTemplates(commonTemplateDir));
+                    tmp.AppendLine(DustScript.CompileTemplates(appTemplateDir));
                     _compiledTemplates[appName] = tmp.ToString();
                     result = _compiledTemplates[appName];
                 }
@@ -148,7 +150,6 @@ namespace Bam.Net.Server
             return result.ToString();
         }
 
-
         #region IResponder Members
 
         public override bool TryRespond(IHttpContext context)
@@ -162,7 +163,7 @@ namespace Bam.Net.Server
             IResponse response = context.Response;
             bool handled = false;
             string path = request.Url.AbsolutePath;
-            string appName = UriApplicationNameResolver.ResolveApplicationName(request.Url, BamConf.AppConfigs);
+            string appName = ApplicationNameResolver.ResolveApplicationName(context);//UriApplicationNameResolver.ResolveApplicationName(request.Url, BamConf.AppConfigs);
             string[] chunks = path.DelimitSplit("/");
 
             HttpArgs queryString = new HttpArgs(request.Url.Query);
@@ -249,6 +250,7 @@ namespace Bam.Net.Server
 
             return result;
         }
+
         public bool IsInitialized
         {
             get;
@@ -379,17 +381,11 @@ namespace Bam.Net.Server
 
         protected void OnSchemaInitializing(string appName, SchemaInitializer initializer)
         {
-            if (SchemaInitializing != null)
-            {
-                SchemaInitializing(appName, initializer);
-            }
+            SchemaInitializing?.Invoke(appName, initializer);
         }
         protected void OnSchemaInitialized(string appName, SchemaInitializer initializer)
         {
-            if (SchemaInitialized != null)
-            {
-                SchemaInitialized(appName, initializer);
-            }
+            SchemaInitialized?.Invoke(appName, initializer);
         }
 
         Dictionary<string, DaoProxyRegistration> _commonDaoProxyRegistrations;
@@ -479,8 +475,7 @@ namespace Bam.Net.Server
                     appConf.SchemaInitializers.Each(si =>
                     {
                         OnSchemaInitializing(name, si);
-                        Exception ex;
-                        if (!si.Initialize(Logger, out ex))
+                        if (!si.Initialize(Logger, out Exception ex))
                         {
                             Logger.AddEntry("Failed to initilialize schema ({0}): {1}", ex, si.SchemaContext, ex.Message);
                         }

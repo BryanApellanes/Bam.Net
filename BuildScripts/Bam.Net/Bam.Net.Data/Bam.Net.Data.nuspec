@@ -9,11 +9,12 @@
     <projectUrl>http://bryanapellanes.github.io/Bam.Net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Data access objects and tools for use with the Bam framework</description>
-    <releaseNotes>Version 1.9.1
- -   move DataTypes from Bam.Net.Data.Schema to Bam.Net (7568adb)
- -   fix XrefDaoCollection ctor bug.  Set the database to the Database of the specified parent (9570b41)
- -   fix bug in XrefDaoCollection where database not properly being specified in cascading save calls (4c97b8c)
- -   add sortby string argument to 'Top' (7e9c03d)
+    <releaseNotes>Version v1.9.1
+Updates since v1.9.1:
+ -   fix bug in book paging (f88a251a)
+ -   update documentation, minor refactor for syntax (da870788)
+ -   set databases on Add and AddRange (26567c68)
+ -   set database(s) on Add and AddRange (3de72168)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>

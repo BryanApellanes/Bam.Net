@@ -18,9 +18,24 @@ namespace Bam.Net.Automation
             : this(System.Guid.NewGuid().ToString())
         { }
 
-        public Worker(string name)
+        public Worker(string name, JobManagerService svc = null)
         {
-            this.Name = name ?? System.Guid.NewGuid().ToString();
+            Name = name ?? System.Guid.NewGuid().ToString();
+            JobConductorService = svc;
+        }
+
+        JobManagerService _jobConductorService;
+        object _jobConductorLock = new object();
+        public JobManagerService JobConductorService
+        {
+            get
+            {
+                return _jobConductorLock.DoubleCheckLock(ref _jobConductorService, () => new JobManagerService());
+            }
+            set
+            {
+                _jobConductorService = value;
+            }
         }
 
         public Job Job { get; set; }
@@ -65,32 +80,6 @@ namespace Bam.Net.Automation
             return (WorkState<T>)_state;
         }
 
-        /// <summary>
-        /// Sets all the properties of the current
-        /// worker from the properties of the current
-        /// WorkState.  All writable string properties that
-        /// match in name will be copied to the 
-        /// current worker
-        /// </summary>
-        protected internal void ConfigureFromWorkstate()
-        {
-            WorkState state = State();
-            if (state != null)
-            {
-                Type stateType = state.GetType();
-                Type currentType = this.GetType();                
-                PropertyInfo[] stateProperties = stateType.GetProperties().Where(pi => pi.PropertyType == typeof(string)).ToArray();
-                stateProperties.Each(prop =>
-                {
-                    PropertyInfo currentProp = currentType.GetProperty(prop.Name);
-                    if (currentProp.PropertyType == typeof(string) && currentProp.CanWrite)
-                    {
-                        currentProp.SetValue(this, prop.GetValue(state));
-                    }
-                });
-            }
-        }
-
         object _doLock = new object();
         public WorkState Do(Job job)
         {
@@ -98,19 +87,19 @@ namespace Bam.Net.Automation
             {
                 Busy = true;
                 Job = job;
-                WorkState state = null;
+                WorkState nextWorkState = null;
                 
                 try
                 {
-                    state = Do();
+                    nextWorkState = Do(job.CurrentWorkState);
                 }
                 catch (Exception ex)
                 {
-                    state = new WorkState(this, ex);
+                    nextWorkState = new WorkState(this, ex);
                 }
 
                 Busy = false;
-                return state;
+                return nextWorkState;
             }
         }
 
@@ -141,8 +130,8 @@ namespace Bam.Net.Automation
             });
             conf.Save(path);
         }
-
-        protected abstract WorkState Do();
+        
+        protected abstract WorkState Do(WorkState currentWorkState);
 
         public abstract string[] RequiredProperties { get;  }
        

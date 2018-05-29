@@ -1,10 +1,9 @@
-	- Lingus: Multi language service client proxy generator (CSharp, JavaScript, 
+	- Polyglot: Multi language service client proxy generator (CSharp, JavaScript, 
 		Java, Python)
-	- App Dashboard: A central management console for all custom software
-		developed by our group.  Including the ability to test, configure and
-		deploy.
+	- App Dashboard: A central management console for all custom software.  
+		Including the ability to test, configure and deploy.
 
-		-- Polyglot: An automatic translation script that can translate any page
+		-- Interpretor: An automatic translation script that can translate any page
 			and provides the ability to accept custom translations in the cases
 			where automatic translation (google translate, and others) provides
 			less than optimal translations.		

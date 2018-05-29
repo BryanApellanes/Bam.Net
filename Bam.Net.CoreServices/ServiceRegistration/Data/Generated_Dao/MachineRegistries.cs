@@ -248,8 +248,10 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<MachineRegistries>();
 			Database db = database ?? Db.For<MachineRegistries>();
-			var results = new MachineRegistriesCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new MachineRegistriesCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 

@@ -18,7 +18,7 @@ namespace Bam.Net.Data
     /// <summary>
     /// Data Access Object
     /// </summary>
-    public abstract class Dao : ICommittable, IHasDataRow
+    public abstract class Dao : ICommittable, IHasDataRow, IComparable
     {
         static Dictionary<string, string> _proxiedConnectionNames;
 
@@ -88,7 +88,7 @@ namespace Bam.Net.Data
         public static Dictionary<Type, Action<Dao>> PostConstructActions { get; set; }
 
         /// <summary>
-        /// Instantiate all dao types found in the assembly that contains the
+        /// Instantiate all dao types found in the assembly containing the
         /// specified type and place them into the Incubator.Default.
         /// </summary>
         /// <param name="daoSibling"></param>
@@ -98,7 +98,7 @@ namespace Bam.Net.Data
         }
 
         /// <summary>
-        /// Instantiate all Dao types in the assembly that contains the specified
+        /// Instantiate all Dao types in the assembly containing the specified
         /// type and place them into the specified
         /// serviceProvider
         /// </summary>
@@ -139,18 +139,36 @@ namespace Bam.Net.Data
             return GetSchemaTypes(typeof(T));
         }
 
+        /// <summary>
+        /// Returns all Types with a TableAttribute contained in the 
+        /// same assembly as the specified daoType.
+        /// </summary>
+        /// <param name="daoType"></param>
+        /// <returns></returns>
         public static Type[] GetSchemaTypes(Type daoType)
         {
-            List<Type> results = new List<Type>();
-            results.Add(daoType);
+            List<Type> results = new List<Type>
+            {
+                daoType
+            };
 
             results.AddRange(daoType.Assembly.GetTypes().Where(t => t.HasCustomAttributeOfType<TableAttribute>()));
             return results.ToArray();
         }
 
         /// <summary>
-        /// An overridable method to provide constructor functionality since the constructors are generated.
+        /// An overridable method to provide constructor functionality since the constructors are generated.  Overrides
+        /// should be defined in the generated partial file or similar.
         /// </summary>
+        /// <example>
+        /// public partial class MyDao: Dao
+        /// {
+        ///     public override void OnInitialize()
+        ///     {
+        ///         ... Your initialization code here ...
+        ///     }
+        /// }
+        /// </example>
         public virtual void OnInitialize()
         {
             // override if constructor functionality is required
@@ -181,9 +199,7 @@ namespace Bam.Net.Data
             {
                 if (_globalInitializer == null)
                 {
-                    return (dao) =>
-                    {
-                    };
+                    return (dao) => { };
                 }
                 return _globalInitializer;
             }
@@ -208,8 +224,7 @@ namespace Bam.Net.Data
 
         public override bool Equals(object obj)
         {
-            Dao dao = obj as Dao;
-            if (dao != null)
+            if (obj is Dao dao)
             {
                 return dao.GetType() == this.GetType() && dao.IdValue == this.IdValue;
             }
@@ -219,18 +234,55 @@ namespace Bam.Net.Data
             }
         }
 
+        /// <summary>
+        /// The name of the property to use in CompareTo operations.
+        /// </summary>
+        public string DefaultSortProperty { get; set; }
+
+        public virtual int CompareTo(object obj)
+        {
+            Type thisType = GetType();
+            Type objType = obj.GetType();
+            if(thisType != objType)
+            {
+                return thisType.Name.CompareTo(objType.Name);
+            }
+            PropertyInfo compareProp = thisType.GetProperty(DefaultSortProperty ?? "Name");
+            if(compareProp == null)
+            {
+                compareProp = thisType.GetProperty("IdValue");
+            }
+            IComparable val1 = (IComparable)compareProp.GetValue(this);
+            IComparable val2 = (IComparable)compareProp.GetValue(obj);
+            return val1.CompareTo(val2);
+        }
+
         PropertyInfo _uuidProp;
         bool? _hasUuid;
         protected bool HasUuidProperty(out PropertyInfo uuidProp)
         {
             if (_hasUuid == null)
             {
-                _uuidProp = this.GetType().GetProperty("Uuid");
+                _uuidProp = GetType().GetProperty("Uuid");
                 _hasUuid = _uuidProp != null;
             }
 
             uuidProp = _uuidProp;
             return _hasUuid.Value;
+        }
+
+        PropertyInfo _cuidProp;
+        bool? _hasCuid;
+        protected bool HasCuidProperty(out PropertyInfo cuidProp)
+        {
+            if (_hasCuid == null)
+            {
+                _cuidProp = GetType().GetProperty("Cuid");
+                _hasCuid = _uuidProp != null;
+            }
+
+            cuidProp = _cuidProp;
+            return _hasCuid.Value;
         }
 
         protected Database _database;
@@ -284,9 +336,9 @@ namespace Bam.Net.Data
         /// <summary>
         /// If true, any references to the current
         /// record will be deleted prior to deleting
-        /// the current record in a call to Delete()
-        /// if those references have been hydrated on
-        /// the current instance
+        /// the current record when Delete() is called as long as
+        /// those references were hydrated on
+        /// the current instance.
         /// </summary>
         [Exclude]
         public bool AutoDeleteChildren { get; set; }
@@ -297,7 +349,7 @@ namespace Bam.Net.Data
         /// Incurs performance cost if many child 
         /// collections must be loaded; can cause intense
         /// memory pressure if large amounts of data
-        /// need to be loaded
+        /// need to be loaded.
         /// </summary>
         [Exclude]
         public bool AutoHydrateChildrenOnDelete { get; set; }
@@ -306,45 +358,27 @@ namespace Bam.Net.Data
         public static event DaoDelegate BeforeWriteCommitAny;
         protected internal void OnBeforeWriteCommit(Database db)
         {
-            if (BeforeWriteCommit != null)
-            {
-                BeforeWriteCommit(db, this);
-            }
+            BeforeWriteCommit?.Invoke(db, this);
 
-            if (BeforeWriteCommitAny != null)
-            {
-                BeforeWriteCommitAny(db, this);
-            }
+            BeforeWriteCommitAny?.Invoke(db, this);
         }
 
         public event DaoDelegate AfterWriteCommit;
         public static event DaoDelegate AfterWriteCommitAny;
         protected internal void OnAfterWriteCommit(Database db)
         {
-            if (AfterWriteCommitAny != null)
-            {
-                AfterWriteCommitAny(db, this);
-            }
+            AfterWriteCommitAny?.Invoke(db, this);
 
-            if (AfterWriteCommitAny != null)
-            {
-                AfterWriteCommitAny(db, this);
-            }
+            AfterWriteCommitAny?.Invoke(db, this);
         }
 
         public event DaoDelegate BeforeCommit;
         public static event DaoDelegate BeforeCommitAny;
         protected internal void OnBeforeCommit(Database db)
         {
-            if (BeforeCommit != null)
-            {
-                BeforeCommit(db, this);
-            }
+            BeforeCommit?.Invoke(db, this);
 
-            if (BeforeCommitAny != null)
-            {
-                BeforeCommitAny(db, this);
-            }
+            BeforeCommitAny?.Invoke(db, this);
         }
 
         /// <summary>
@@ -367,60 +401,36 @@ namespace Bam.Net.Data
         public static event DaoDelegate BeforeWriteDeleteAny;
         protected void OnBeforeWriteDelete(Database db)
         {
-            if (BeforeWriteDelete != null)
-            {
-                BeforeWriteDelete(db, this);
-            }
+            BeforeWriteDelete?.Invoke(db, this);
 
-            if (BeforeWriteDeleteAny != null)
-            {
-                BeforeWriteDeleteAny(db, this);
-            }
+            BeforeWriteDeleteAny?.Invoke(db, this);
         }
 
         public event DaoDelegate AfterWriteDelete;
         public static event DaoDelegate AfterWriteDeleteAny;
         protected void OnAfterWriteDelete(Database db)
         {
-            if (AfterWriteDelete != null)
-            {
-                AfterWriteDelete(db, this);
-            }
+            AfterWriteDelete?.Invoke(db, this);
 
-            if (AfterWriteDeleteAny != null)
-            {
-                AfterWriteDeleteAny(db, this);
-            }
+            AfterWriteDeleteAny?.Invoke(db, this);
         }
 
         public event DaoDelegate BeforeDelete;
         public static event DaoDelegate BeforeDeleteAny;
         protected void OnBeforeDelete(Database db)
         {
-            if (BeforeDelete != null)
-            {
-                BeforeDelete(db, this);
-            }
+            BeforeDelete?.Invoke(db, this);
 
-            if (BeforeDeleteAny != null)
-            {
-                BeforeDeleteAny(db, this);
-            }
+            BeforeDeleteAny?.Invoke(db, this);
         }
 
         public event DaoDelegate AfterDelete;
         public static event DaoDelegate AfterDeleteAny;
         protected void OnAfterDelete(Database db)
         {
-            if (AfterDelete != null)
-            {
-                AfterDelete(db, this);
-            }
+            AfterDelete?.Invoke(db, this);
 
-            if (AfterDeleteAny != null)
-            {
-                AfterDeleteAny(db, this);
-            }
+            AfterDeleteAny?.Invoke(db, this);
 
         }
 
@@ -535,6 +545,7 @@ namespace Bam.Net.Data
                 Save(db);
             });
         }
+
         /// <summary>
         /// Save the current instance.  If the Id is less than or
         /// equal to 0 the current instance will be Inserted, otherwise
@@ -546,6 +557,7 @@ namespace Bam.Net.Data
         {
             Commit(db);
         }
+
         /// <summary>
         /// Save the current instance.  If the Id is less than or
         /// equal to 0 the current instance will be Inserted, otherwise
@@ -556,9 +568,9 @@ namespace Bam.Net.Data
         public virtual void Commit()
         {
             Database db = Database;
-
             Commit(db);
         }
+
         /// <summary>
         /// Save the current instance.  If the Id is less than or
         /// equal to 0 the current instance will be Inserted, otherwise
@@ -570,10 +582,12 @@ namespace Bam.Net.Data
         {
             Commit(tx.Database);
         }
+
         public void Commit(Database db)
         {
             Commit(db, true);
         }
+
         /// <summary>
         /// Save the current instance.  If the Id is less than or
         /// equal to 0 the current instance will be Inserted, otherwise
@@ -663,8 +677,7 @@ namespace Bam.Net.Data
 
         public virtual void Delete(Database database = null)
         {
-            Database db;
-            SqlStringBuilder sql = GetSqlStringBuilder(out db);
+            SqlStringBuilder sql = GetSqlStringBuilder(out Database db);
             if (database != null)
             {
                 sql = GetSqlStringBuilder(database);
@@ -699,8 +712,7 @@ namespace Bam.Net.Data
 
         protected virtual void Delete(IQueryFilter filter)
         {
-            Database db;
-            SqlStringBuilder sql = GetSqlStringBuilder(out db);
+            SqlStringBuilder sql = GetSqlStringBuilder(out Database db);
 
             foreach (string key in this.ChildCollections.Keys)
             {
@@ -714,8 +726,7 @@ namespace Bam.Net.Data
 
         protected internal SqlStringBuilder GetSqlStringBuilder()
         {
-            Database ignore;
-            return GetSqlStringBuilder(out ignore);
+            return GetSqlStringBuilder(out Database ignore);
         }
 
         protected internal SqlStringBuilder GetSqlStringBuilder(out Database db)
@@ -732,8 +743,7 @@ namespace Bam.Net.Data
 
         protected internal QuerySet GetQuerySet()
         {
-            Database ignore;
-            return GetQuerySet(out ignore);
+            return GetQuerySet(out Database ignore);
         }
 
         protected internal QuerySet GetQuerySet(out Database db)
@@ -1485,10 +1495,7 @@ namespace Bam.Net.Data
             this.IsNew = true;
             this.DataRow = this.ToDataRow();
             this.AutoDeleteChildren = true;
-            this.BeforeWriteCommit += (db, dao) =>
-            {
-                dao.EnsureUuid();
-            };
+            this.BeforeWriteCommit += (db, dao) => dao.SetUuid();
 
             Type currentType = this.GetType();
             if (PostConstructActions.ContainsKey(currentType))
@@ -1498,10 +1505,10 @@ namespace Bam.Net.Data
 
             this.OnInitialize();
         }
-        private void EnsureUuid()
+
+        private void SetUuid()
         {
-            PropertyInfo uuid;
-            if (HasUuidProperty(out uuid))
+            if (HasUuidProperty(out PropertyInfo uuid))
             {
                 string currentUuid = (string)uuid.GetValue(this);
                 if (string.IsNullOrEmpty(currentUuid))
@@ -1509,7 +1516,7 @@ namespace Bam.Net.Data
                     string uuidVal = Guid.NewGuid().ToString();
                     uuid.SetValue(this, uuidVal);
                 }
-            }
+            } 
         }
 
         private void ExecuteCommit(Database db, QuerySet querySet)

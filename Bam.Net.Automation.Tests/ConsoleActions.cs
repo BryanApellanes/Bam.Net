@@ -24,6 +24,8 @@ using System.Messaging;
 using System.Threading;
 using System.Diagnostics;
 using System.ComponentModel;
+using Bam.Net.CoreServices;
+using Bam.Net.Automation.Testing;
 using Bam.Net.Automation.SourceControl;
 
 namespace Bam.Net.Automation.Tests
@@ -31,9 +33,6 @@ namespace Bam.Net.Automation.Tests
     [Serializable]
     public class ConsoleActions: CommandLineTestInterface
     {
-        public const string TFSServer = "http://tfs.bamapps.com:8080/tfs";
-        public const string TeamProjectCollection = "ISDEV";
-
         [Serializable]
         public class TestMessage
         {
@@ -41,6 +40,27 @@ namespace Bam.Net.Automation.Tests
             public bool IsMonkey { get; set; }
         }
         string messageName = "test";
+
+
+        [ConsoleAction]
+        public void TestGetSettingsFromIntegrationServer()
+        {
+            ProxyFactory proxyFactory = new ProxyFactory();
+            ConsoleLogger logger = new ConsoleLogger()
+            {
+                AddDetails = false
+            };
+            logger.StartLoggingThread();
+            TestReportService svc = proxyFactory.GetProxy<TestReportService>("gloo.localhost", 9100, logger);
+            Dictionary<string, string> settings = svc.GetSettings();
+            if(settings != null)
+            {
+                foreach (string key in settings.Keys)
+                {
+                    OutLineFormat("{0}: {1}", key, settings[key]);
+                }
+            }
+        }
 
         [ConsoleAction]
         public void GetGitBranch()

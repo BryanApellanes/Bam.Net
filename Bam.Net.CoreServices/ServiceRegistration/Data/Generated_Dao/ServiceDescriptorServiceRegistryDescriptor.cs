@@ -192,8 +192,10 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<ServiceDescriptorServiceRegistryDescriptor>();
 			Database db = database ?? Db.For<ServiceDescriptorServiceRegistryDescriptor>();
-			var results = new ServiceDescriptorServiceRegistryDescriptorCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new ServiceDescriptorServiceRegistryDescriptorCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 

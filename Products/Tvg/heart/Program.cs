@@ -13,21 +13,24 @@ namespace Bam.Net.Application
         static void Main(string[] args)
         {
             TryWritePid(true);
-            IsolateMethodCalls = false;
-            AddSwitches(typeof(ConsoleActions));
-            AddConfigurationSwitches();
-            Initialize(args, (a) =>
+            if (!HeartService.ProcessCommandLineArgs(args))
             {
-                OutLineFormat("Error parsing arguments: {0}", ConsoleColor.Red, a.Message);
-                Environment.Exit(1);
-            });
-            if (Arguments.Contains("i"))
-            {
-                Interactive();
-            }
-            else
-            {
-                ExecuteSwitches(Arguments, new ConsoleActions());
+                IsolateMethodCalls = false;
+                AddSwitches(typeof(ConsoleActions));
+                AddConfigurationSwitches();
+                Initialize(args, (a) =>
+                {
+                    OutLineFormat("Error parsing arguments: {0}", ConsoleColor.Red, a.Message);
+                    Environment.Exit(1);
+                });
+                if (Arguments.Contains("i"))
+                {
+                    Interactive();
+                }
+                else if(!ExecuteSwitches(Arguments, new ConsoleActions()))
+                {
+                    HeartService.RunService<HeartService>();
+                }
             }
         }
     }

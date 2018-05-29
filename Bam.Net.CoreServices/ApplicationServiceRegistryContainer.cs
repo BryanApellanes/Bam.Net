@@ -28,7 +28,7 @@ using Bam.Net.CoreServices.ApplicationRegistration.Data.Dao.Repository;
 namespace Bam.Net.CoreServices
 {
     /// <summary>
-    /// Default application registry container for applications
+    /// Default application registry container for applications running locally.
     /// </summary>
     [ServiceRegistryContainer]
     public static class ApplicationServiceRegistryContainer
@@ -43,9 +43,20 @@ namespace Bam.Net.CoreServices
             return _coreIncubatorLock.DoubleCheckLock(ref _coreServiceRegistry, Create);
         }
 
+        static ServiceRegistry _instance;
+        static object _instanceLock = new object();
+        public static ServiceRegistry Instance
+        {
+            get
+            {
+                return _instanceLock.DoubleCheckLock(ref _instance, Create);
+            }
+        }
+
         public static ServiceRegistry Create()
         {
-            string databasesPath = DataSettings.Current.GetSysDatabaseDirectory().FullName;
+            DataSettings dataSettings = DataSettings.Current;
+            string databasesPath = dataSettings.GetSysDatabaseDirectory().FullName;
             string userDatabasesPath = Path.Combine(databasesPath, "UserDbs");
 
             AppConf conf = new AppConf(BamConf.Load(ServiceConfig.ContentRoot), ServiceConfig.ProcessName.Or(RegistryName));
@@ -60,9 +71,14 @@ namespace Bam.Net.CoreServices
             userResolver.Database = userMgr.Database;
             roleResolver.Database = userMgr.Database;
 
+            ServiceRegistryRepository serviceRegistryRepo = new ServiceRegistryRepository();
+            serviceRegistryRepo.Database = dataSettings.GetSysDatabaseFor(serviceRegistryRepo);
+            serviceRegistryRepo.EnsureDaoAssemblyAndSchema();
+
             DaoRoleProvider daoRoleProvider = new DaoRoleProvider(userMgr.Database);
             RoleService coreRoleService = new RoleService(daoRoleProvider, conf);
             AssemblyServiceRepository assSvcRepo = new AssemblyServiceRepository();
+            assSvcRepo.Database = dataSettings.GetSysDatabaseFor(assSvcRepo);
             assSvcRepo.EnsureDaoAssemblyAndSchema();
 
             ConfigurationService configSvc = new ConfigurationService(coreRepo, conf, userDatabasesPath);
@@ -82,6 +98,7 @@ namespace Bam.Net.CoreServices
                 .For<AppConf>().Use(conf)
                 .For<IDatabaseProvider>().Use(dbProvider)
                 .For<IUserManager>().Use(userMgr)
+                .For<UserManager>().Use(userMgr)
                 .For<IUserResolver>().Use(userResolver)
                 .For<DaoUserResolver>().Use(userResolver)
                 .For<IRoleResolver>().Use(roleResolver)
@@ -100,14 +117,15 @@ namespace Bam.Net.CoreServices
                 .For<IFileService>().Use<FileService>()
                 .For<AssemblyServiceRepository>().Use(assSvcRepo)
                 .For<IAssemblyService>().Use<AssemblyService>()
-                .For<ServiceRegistryRepository>().Use<ServiceRegistryRepository>()
+                .For<ServiceRegistryRepository>().Use(serviceRegistryRepo)
                 .For<ServiceRegistryService>().Use<ServiceRegistryService>()
                 .For<OAuthService>().Use<OAuthService>()
                 .For<ILog>().Use(loggerSvc)
                 .For<SystemLoggerService>().Use(loggerSvc)
-                .For<DataSettings>().Use(DataSettings.Default)
+                .For<DataSettings>().Use(DataSettings.Current)
                 .For<IApplicationNameResolver>().Use<ClientApplicationNameResolver>()
                 .For<ClientApplicationNameResolver>().Use<ClientApplicationNameResolver>()
+                .For<SmtpSettingsProvider>().Use(DataSettingsSmtpSettingsProvider.Default)
                 .For<NotificationService>().Use<NotificationService>();                
 
             reg.For<ServiceRegistry>().Use(reg)

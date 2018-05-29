@@ -24,7 +24,6 @@ namespace Bam.Net.Testing.Unit
             DaoRepository.AddType(typeof(TestResult));
             DaoRepository.EnsureDaoAssemblyAndSchema();            
         }
-
         public DaoRepository DaoRepository { get; set; }
 
         public override void TestFailed(object sender, TestExceptionEventArgs args)

@@ -32,7 +32,7 @@ namespace Bam.Net.Application
 
             EnsureAdminRights();
             // must match values in bamd.exe
-            ServiceExe.SetInfo(new ServiceInfo("BamDaemon", "Bam Daemon", "Bam http application server"));
+            ServiceExe.SetInfo(new ServiceInfo("BamHttpServer", "Bam Http Server", "Bam http application server"));
             ServiceExe.Kill(ServiceExe.Info.ServiceName);
             //
             IsolateMethodCalls = false;

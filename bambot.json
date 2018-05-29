@@ -1,6 +1,7 @@
 {
   "repoRoot": "git@github.com:BryanApellanes",
   "repoName": "Bam.Net",
+  "packageRestorePath": "C:\\bam\\nuget\\packages",
   "branch": "next",
   "clean": false,
   "buildName": "Bambot",

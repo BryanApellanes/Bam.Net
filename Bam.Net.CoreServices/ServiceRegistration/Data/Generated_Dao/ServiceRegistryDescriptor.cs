@@ -55,6 +55,7 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("ServiceDescriptorServiceRegistryDescriptor_ServiceRegistryDescriptorId", new ServiceDescriptorServiceRegistryDescriptorCollection(Database.GetQuery<ServiceDescriptorServiceRegistryDescriptorColumns, ServiceDescriptorServiceRegistryDescriptor>((c) => c.ServiceRegistryDescriptorId == GetLongValue("Id")), this, "ServiceRegistryDescriptorId"));				
@@ -287,8 +288,10 @@ namespace Bam.Net.CoreServices.ServiceRegistration.Data.Dao
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<ServiceRegistryDescriptor>();
 			Database db = database ?? Db.For<ServiceRegistryDescriptor>();
-			var results = new ServiceRegistryDescriptorCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new ServiceRegistryDescriptorCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 

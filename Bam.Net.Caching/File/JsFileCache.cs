@@ -8,11 +8,18 @@ using Bam.Net.Javascript;
 
 namespace Bam.Net.Caching.File
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="Bam.Net.Caching.File.TextFileCache" />
     public class JsFileCache: TextFileCache
     {
         Dictionary<string, MinifyResult> _minCache;
         Dictionary<string, string> _minText;
         Dictionary<string, byte[]> _minTextBytes;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JsFileCache"/> class.
+        /// </summary>
         public JsFileCache(): base()
         {
             _minCache = new Dictionary<string, MinifyResult>();
@@ -20,7 +27,20 @@ namespace Bam.Net.Caching.File
             _minTextBytes = new Dictionary<string, byte[]>();
             FileExtension = ".js";
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="JsFileCache"/> is minified.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if minified; otherwise, <c>false</c>.
+        /// </value>
         public bool Minify { get; set; }
+
+        /// <summary>
+        /// Gets the content.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <returns></returns>
         public override byte[] GetContent(string path)
         {
             if (Minify)
@@ -29,6 +49,12 @@ namespace Bam.Net.Caching.File
             }
             return Encoding.UTF8.GetBytes(GetText(new FileInfo(path)));
         }
+
+        /// <summary>
+        /// Gets the content of the zipped.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <returns></returns>
         public override byte[] GetZippedContent(string path)
         {
             if (Minify)
@@ -37,6 +63,12 @@ namespace Bam.Net.Caching.File
             }
             return GetZippedText(new FileInfo(path));
         }
+
+        /// <summary>
+        /// Gets the minified text.
+        /// </summary>
+        /// <param name="file">The file.</param>
+        /// <returns></returns>
         public string GetMinText(FileInfo file)
         {
             if (!_minText.ContainsKey(file.FullName))
@@ -46,14 +78,52 @@ namespace Bam.Net.Caching.File
             return _minText[file.FullName];
         }
 
+        /// <summary>
+        /// Gets the zipped minimum text.
+        /// </summary>
+        /// <param name="file">The file.</param>
+        /// <returns></returns>
         public byte[] GetZippedMinText(FileInfo file)
         {
             if (!_minTextBytes.ContainsKey(file.FullName))
             {
-                Load(file);
+                SetCacheContent(file);              
             }
             return _minTextBytes[file.FullName];
         }
+
+        /// <summary>
+        /// Sets the content of the cache.
+        /// </summary>
+        /// <param name="file">The file.</param>
+        protected void SetCacheContent(FileInfo file)
+        {
+            if (HashChanged(file))
+            {
+                Reload(file);
+            }
+            else
+            {
+                Load(file);
+            }
+        }
+
+        /// <summary>
+        /// Reloads the specified file.
+        /// </summary>
+        /// <param name="file">The file.</param>
+        public override void Reload(FileInfo file)
+        {
+            _minCache.Remove(file.FullName);
+            _minText.Remove(file.FullName);
+            _minTextBytes.Remove(file.FullName);
+            base.Reload(file);
+        }
+
+        /// <summary>
+        /// Loads the specified file.
+        /// </summary>
+        /// <param name="file">The file.</param>
         public override void Load(FileInfo file)
         {
             base.Load(file);

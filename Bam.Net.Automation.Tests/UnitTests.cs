@@ -20,7 +20,6 @@ using Bam.Net.Encryption;
 using Bam.Net.Automation;
 using Bam.Net.Automation.Nuget;
 using System.Collections.ObjectModel;
-using Bam.Net.Automation.ContinuousIntegration;
 using Bam.Net.ServiceProxy;
 using Bam.Net.Logging;
 using Microsoft.Build.BuildEngine;
@@ -29,36 +28,33 @@ using Microsoft.Build.Framework;
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Execution;
 using Microsoft.Build.Logging;
-using Bam.Net.Automation.ContinuousIntegration.Loggers;
 using Bam.Net.Documentation;
 using Bam.Net.Testing.Unit;
 using Bam.Net.Services;
 using MSBuild = Bam.Net.Automation.MSBuild;
+using System.Threading;
+using Bam.Net.Automation.SourceControl;
+using Bam.Net.Automation.MSBuild;
+using System.Xml;
 
 namespace Bam.Net.Automation.Tests
 {
     [Serializable]
     public class UnitTests: CommandLineTestInterface
     {
-        [ConsoleAction]
-        public void CanDeserializeProject()
+        [UnitTest]
+        public void CanFindGitRepo()
         {
-            MSBuild.Project bamProj = "C:\\src\\Bam.Net\\Bam.Net\\Bam.Net.csproj".FromXmlFile<MSBuild.Project>();
-            OutLine("Item groups", ConsoleColor.Blue);
-            bamProj.ItemGroup.Each(igt =>
-            {
-                OutLine("Source files");
-                igt.Compile.Each(item =>
-                {
-                    OutLine(item.Include, ConsoleColor.Green);
-                });
-                OutLine("References");
-                igt.Reference.Each(reference =>
-                {
-                    OutLineFormat("File: {0}", reference.Include, ConsoleColor.DarkGreen);
-                    OutLineFormat("HintPath: {0}", reference.HintPath, ConsoleColor.DarkGreen);
-                });
-            });
+            DirectoryInfo dir = new DirectoryInfo("C:\\bam\\src\\Bam.Net\\Bam.Net\\bin\\Debug");
+
+            DirectoryInfo gitRepo = dir.UpToGitRoot();
+            Expect.IsNotNull(gitRepo);
+            Expect.AreEqual("C:\\bam\\src\\Bam.Net", gitRepo.FullName);
+            OutLineFormat(gitRepo.FullName);
+
+            dir = new DirectoryInfo("C:\\windows\\system32");
+            gitRepo = dir.UpToGitRoot();
+            Expect.IsNull(gitRepo);            
         }
 
         [UnitTest]
@@ -82,69 +78,21 @@ namespace Bam.Net.Automation.Tests
         {
             string key = "Key_".RandomLetters(4);
             string value = "Value_".RandomLetters(4);
+            JobManagerService svc = new JobManagerService();
+            svc.SecureSet(key, value);
 
-            JobConductorService.Default.SecureSet(key, value);
-
-            string validate = JobConductorService.Default.SecureGet(key);
+            string validate = svc.SecureGet(key);
 
             Expect.AreEqual(value, validate);
         }
-
-        [UnitTest]
-        public void CsvBuildLoggerActualLoggerShouldBeCorrectType()
-        {
-            CsvBuildLogger csv = new CsvBuildLogger();
-            Expect.IsNotNull(csv.ActualLogger);
-            Expect.AreEqual(typeof(CsvLogger), csv.ActualLogger.GetType());
-        }
-
-        [UnitTest]
-        public void Dao2BuildLoggerActualLoggerShouldBeCorrectType()
-        {
-            Dao2BuildLogger csv = new Dao2BuildLogger();
-            Expect.IsNotNull(csv.ActualLogger);
-            Expect.AreEqual(typeof(DaoLogger2), csv.ActualLogger.GetType());
-        }
-
-        [UnitTest]
-        public void DaoBuildLoggerActualLoggerShouldBeCorrectType()
-        {
-            DaoBuildLogger csv = new DaoBuildLogger();
-            Expect.IsNotNull(csv.ActualLogger);
-            Expect.AreEqual(typeof(DaoLogger), csv.ActualLogger.GetType());
-        }
-
-        [UnitTest]
-        public void TextFileBuildLoggerActualLoggerShouldBeCorrectType()
-        {
-            TextFileBuildLogger csv = new TextFileBuildLogger();
-            Expect.IsNotNull(csv.ActualLogger);
-            Expect.AreEqual(typeof(TextFileLogger), csv.ActualLogger.GetType());
-        }
         
-        [UnitTest]
-        public void WindowsBuildLoggerActualLoggerShouldBeCorrectType()
-        {
-            WindowsBuildLogger csv = new WindowsBuildLogger();
-            Expect.IsNotNull(csv.ActualLogger);
-            Expect.AreEqual(typeof(WindowsLogger), csv.ActualLogger.GetType());
-        }
-
-        [UnitTest]
-        public void XmlBuildLoggerActualLoggerShouldBeCorrectType()
-        {
-            WindowsBuildLogger csv = new WindowsBuildLogger();
-            Expect.IsNotNull(csv.ActualLogger);
-            Expect.AreEqual(typeof(WindowsLogger), csv.ActualLogger.GetType());
-        }
-
         [UnitTest]
         public void UnzipResourceTest()
         {
             string extractTo = ".\\Unzip";
-            if (Directory.Exists(extractTo))
+            if (System.IO.Directory.Exists(extractTo))
             {
-                Directory.Delete(extractTo, true);
+                System.IO.Directory.Delete(extractTo, true);
             }
             Expect.IsTrue(Assembly.GetExecutingAssembly().UnzipResource(typeof(UnitTests), "Test.zip", extractTo));
             FileInfo[] files = new DirectoryInfo(extractTo).GetFiles();
@@ -198,7 +146,7 @@ namespace Bam.Net.Automation.Tests
                         member.Items.Each(item =>
                         {
                             Type itemType = item.GetType();
-                            OutFormat("\tItem type = {0}", ConsoleColor.Yellow, itemType.FullName);
+                            OutLineFormat("\tItem type = {0}", ConsoleColor.Yellow, itemType.FullName);
                             summary summary = item as summary;
                             if (summary != null)
                             {
@@ -213,7 +161,7 @@ namespace Bam.Net.Automation.Tests
         [UnitTest]
         public void DocInfoFromXmlFileShouldHaveDeclaringTypeName()
         {
-            Dictionary<string, List<DocInfo>> infos = DocInfo.FromXmlFile("./TestBuildProject.xml");
+            Dictionary<string, List<DocInfo>> infos = DocInfo.FromXmlFile("./TestDoc.xml");
             infos.Keys.Each(s =>
             {
                 OutLine(s, ConsoleColor.Cyan);
@@ -361,43 +309,6 @@ an empty string")]
             WorkerConf conf = new WorkerConf();
             conf.Name = "Test_".RandomLetters(4);
             return conf;
-        }
-
-        [UnitTest]
-        public void WhenWorkerConfSavesShouldSetWorkerTypeName()
-        {
-            string filePath = "{0}.json"._Format(MethodBase.GetCurrentMethod().Name);
-            AllProjectsBuildWorker worker = new AllProjectsBuildWorker("monkey");
-            worker.SaveConf(filePath);
-            WorkerConf conf = WorkerConf.Load(filePath);
-            Expect.IsNotNull(conf.WorkerTypeName);
-            Expect.AreEqual(typeof(AllProjectsBuildWorker).AssemblyQualifiedName, conf.WorkerTypeName);
-        }
-
-        [UnitTest]
-        public void JobConfShouldCreateValidJob()
-        {
-            DirectoryInfo dir = new DirectoryInfo(".\\{0}"._Format(MethodBase.GetCurrentMethod().Name));
-            if (dir.Exists)
-            {
-                dir.Delete(true);
-            }
-
-            JobConf jobConf = new JobConf();
-            jobConf.JobDirectory = dir.FullName;
-
-            GitGetSourceWorker worker = new GitGetSourceWorker("monkey");
-            jobConf.AddWorker(worker);
-            string filePath = jobConf.Save();
-
-            JobConf check = JobConf.Load(filePath);
-            Job job = check.CreateJob();
-            IWorker checkWork = job["monkey"];
-            Expect.IsNotNull(checkWork);
-            Expect.AreEqual(typeof(GitGetSourceWorker), checkWork.GetType());
-
-            GitGetSourceWorker checkWorker = job.GetWorker<GitGetSourceWorker>("monkey");
-            Expect.AreEqual("Git", checkWorker.SourceControlType);
         }
 
         [UnitTest]

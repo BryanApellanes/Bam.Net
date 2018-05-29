@@ -46,14 +46,18 @@ namespace Bam.Net
         public static void TryAsync(Action action, Action<Exception> onException = null)
         {
             Action<Exception> exceptionHandler = onException ?? ((ex) => { });
-            try
+
+            Task t = Task.Run(() =>
             {
-                Task.Run(action);
-            }
-            catch (Exception e)
-            {
-                exceptionHandler(e);
-            }
+                try
+                {
+                    action();
+                }
+                catch (Exception ex)
+                {
+                    exceptionHandler(ex);
+                }
+            });
         }
 
         /// <summary>
@@ -313,10 +317,10 @@ namespace Bam.Net
         /// <returns></returns>
         public static TimeSpan TimeExecution<TInput, TResult>(this Func<TInput, TResult> func, TInput input, out TResult result)
 		{
-			DateTime start = DateTime.Now;
+			DateTime? start = DateTime.Now;
 			result = func(input);
-			DateTime end = DateTime.Now;
-			return end.Subtract(start);
+			DateTime? end = DateTime.Now;
+			return end.Value.Subtract(start.Value);
 		}
 
         public static void InThread<TResult>(this Func<TResult> func, Func<TResult, TResult> callBack)
@@ -326,37 +330,41 @@ namespace Bam.Net
 
 		public static Thread ExecuteInThread(this Action action)
 		{
-			Thread thread = new Thread(() => action());
-			thread.IsBackground = true;
-			thread.Start();
+            Thread thread = new Thread(() => action())
+            {
+                IsBackground = true
+            };
+            thread.Start();
 			return thread;
 		}
 
 		public static Thread ExecuteInThread(this Action<dynamic> action, dynamic argContext)
 		{
-			ParameterizedThreadStart method = (o)=>
-			{
-				action(o);
-			};
-			Thread thread = new Thread(method);
-			thread.IsBackground = true;
-			thread.Start(argContext);
+            Thread thread = new Thread((o) => action(o))
+            {
+                IsBackground = true
+            };
+            thread.Start(argContext);
 			return thread;
 		}
 
         public static Thread InThread(this ThreadStart method)
         {
-            Thread thread = new Thread(method);
-			thread.IsBackground = true;
+            Thread thread = new Thread(method)
+            {
+                IsBackground = true
+            };
             thread.Start();
             return thread;
         }
 
         public static Thread InThread(this ParameterizedThreadStart method, object parameter)
         {
-            Thread thread = new Thread(method);
-			thread.IsBackground = true;
-			thread.Start(parameter);
+            Thread thread = new Thread(method)
+            {
+                IsBackground = true
+            };
+            thread.Start(parameter);
             return thread;
         }
     }

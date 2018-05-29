@@ -29,10 +29,17 @@ namespace Bam.Net.Web
         public HttpArgs(string inputString, string contentType = null)
             : this()
         {
+            InputString = inputString;
             ContentType = contentType;
-            ParseInput(inputString);
+            ParseInput();
         }
         
+        public string InputString
+        {
+            get;
+            set;
+        }
+
         string _contentType;
         public string ContentType
         {
@@ -48,15 +55,15 @@ namespace Bam.Net.Web
             set { _contentType = value; }
         }
         
-        private void ParseInput(string inputString)
+        protected virtual void ParseInput()
         {
-            if (ContentType.Contains("application/json;") || ContentType.Equals("application/json"))
+            if (ContentType.Contains("application/json") || ContentType.Equals("application/json"))
             {
-                ParseJson(inputString);               
+                ParseJson(InputString);               
             }
             else if(ContentType.Contains("application/x-www-form-urlencoded") || ContentType.Equals("application/x-www-form-urlencoded"))
             {
-                ParseForm(inputString);
+                ParseForm(InputString);
             }
         }
 
@@ -86,8 +93,7 @@ namespace Bam.Net.Web
 
                 obj.Children().Each(jtoken =>
                 {
-                    JProperty prop = jtoken as JProperty;
-                    if (prop != null)
+                    if (jtoken is JProperty prop)
                     {
                         this.Add(prop.Name, prop.Value.ToString());
                     }
@@ -128,8 +134,7 @@ namespace Bam.Net.Web
 
         public bool Has(string key)
         {
-            string ignore;
-            return Has(key, out ignore);
+            return Has(key, out string ignore);
         }
 
         /// <summary>

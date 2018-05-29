@@ -55,10 +55,12 @@ namespace Bam.Net.UserAccounts.Data
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("TreeNode_ParentTreeNodeId", new TreeNodeCollection(Database.GetQuery<TreeNodeColumns, TreeNode>((c) => c.ParentTreeNodeId == GetLongValue("Id")), this, "ParentTreeNodeId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("Permission_TreeNodeId", new PermissionCollection(Database.GetQuery<PermissionColumns, Permission>((c) => c.TreeNodeId == GetLongValue("Id")), this, "TreeNodeId"));				
 			}						
@@ -253,8 +255,10 @@ namespace Bam.Net.UserAccounts.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<TreeNode>();
 			Database db = database ?? Db.For<TreeNode>();
-			var results = new TreeNodeCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new TreeNodeCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -691,6 +695,25 @@ namespace Bam.Net.UserAccounts.Data
 			if(orderBy != null)
 			{
 				query.OrderBy<TreeNodeColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<TreeNodeCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static TreeNodeCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<TreeNode>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<TreeNode>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

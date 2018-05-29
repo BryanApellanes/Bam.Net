@@ -9,9 +9,12 @@
     <projectUrl>http://bryanapellanes.github.io/Bam.Net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Productivity Tools</description>
-    <releaseNotes>Version 1.9.1
- -   add date and time related extension methods (3c82534)
- -   minor logging refactor (d4750ab)
+    <releaseNotes>Version v1.9.1
+Updates since v1.9.1:
+ -   added docs (27b109b9)
+ -   correct threadstate check in BackgroundThreadQueue (3f825f76)
+ -   add ; System.IO.Compression (0a2676b6)
+ -   add System.IO.Compression package reference (cb28bbee)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies />

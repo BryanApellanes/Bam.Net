@@ -15,7 +15,7 @@ namespace Bam.Net.Caching
 	public class CacheManager : Loggable, ICacheManager
     {
 		ConcurrentDictionary<Type, Cache> _cacheDictionary;
-		public CacheManager(int maxCacheSizeBytes = 524288) // 512 kilobytes
+		public CacheManager(uint maxCacheSizeBytes = 524288) // 512 kilobytes
         {
 			_cacheDictionary = new ConcurrentDictionary<Type, Cache>();
             MaxCacheSizeBytes = maxCacheSizeBytes;
@@ -26,13 +26,13 @@ namespace Bam.Net.Caching
             _cacheDictionary.Clear();
         }
 
-        public int MaxCacheSizeBytes { get; set; }
+        public uint MaxCacheSizeBytes { get; set; }
 
-		public int AllCacheSize
+		public uint AllCacheSize
 		{
 			get
 			{
-				return _cacheDictionary.Values.Sum(c => c.ItemsMemorySize);
+				return (uint)_cacheDictionary.Values.Sum(c => c.ItemsMemorySize);
 			}
 		}
 
@@ -52,18 +52,20 @@ namespace Bam.Net.Caching
         [Verbosity(LogEventType.Warning, MessageFormat = "Failed to get Cache for type {TypeName}")]
         public event EventHandler GetCacheFailed;
 
-        public Cache CacheFor(Type type)
+        /// <summary>
+        /// Checks for a cache for the specified type setting it to the
+        /// return value of cacheProvider if its not present.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="cacheProvider"></param>
+        protected void EnsureCache(Type type, Func<Cache> cacheProvider)
         {
             if (!_cacheDictionary.ContainsKey(type))
             {
-                _cacheDictionary.TryAdd(type, new Cache(type.Name, MaxCacheSizeBytes, true, OnEvicted));
+                Cache cache = cacheProvider();
+                _cacheDictionary.TryAdd(type, cache);
+                FireEvent(CacheSet, new CacheManagerEventArgs { Type = type, Cache = cache });
             }
-            Cache result;
-            if(!_cacheDictionary.TryGetValue(type, out result))
-            {
-                FireEvent(GetCacheFailed, new CacheManagerEventArgs { Type = type });
-            }
-            return result;
         }
 
         private void OnEvicted(object sender, EventArgs args)
@@ -76,17 +78,32 @@ namespace Bam.Net.Caching
         [Verbosity(LogEventType.Information, MessageFormat = "Set Cache for type {TypeName}")]
         public event EventHandler CacheSet;
 
+        public Cache<CacheType> CacheFor<CacheType>(Func<Cache<CacheType>> cacheProvider) where CacheType : IMemorySize, new()
+        {
+            Cache<CacheType> cache = cacheProvider();
+            CacheFor(typeof(CacheType), cache);
+            return cache;
+        }
+
+        public Cache CacheFor(Type type)
+        {
+            EnsureCache(type, () => new Cache(type.Name, MaxCacheSizeBytes, true, OnEvicted));
+            if (!_cacheDictionary.TryGetValue(type, out Cache result))
+            {
+                FireEvent(GetCacheFailed, new CacheManagerEventArgs { Type = type });
+            }
+            return result;
+        }
+
         public void CacheFor(Type type, Cache cache)
         {
-            Cache removed;
-            if (_cacheDictionary.TryRemove(type, out removed))
+            if (_cacheDictionary.TryRemove(type, out Cache removed))
             {
                 FireEvent(CacheRemoved, new CacheManagerEventArgs { Type = type, Cache = removed });
             }
             cache.Name = type.Name;
             cache.MaxBytes = MaxCacheSizeBytes;
-            _cacheDictionary.TryAdd(type, cache);
-            FireEvent(CacheSet, new CacheManagerEventArgs { Type = type, Cache = cache });
+            EnsureCache(type, () => cache);            
         }
 
 		static CacheManager _defaultCacheManager;

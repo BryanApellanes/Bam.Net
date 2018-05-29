@@ -18,22 +18,35 @@ namespace Bam.Net.Caching.File
 	public abstract class FileCache: IFileCache
 	{
         static object _lock = new object();
-        static ConcurrentDictionary<string, CachedFile> _cachedFiles;        
-        static ConcurrentDictionary<string, string> _textCache;
-        static ConcurrentDictionary<string, byte[]> _zippedTextCache;
-        static ConcurrentDictionary<string, byte[]> _byteCache;
-        static ConcurrentDictionary<string, byte[]> _zippedByteCache;
+        static ConcurrentDictionary<string, CachedFile> _cachedFiles;
+        static ConcurrentDictionary<string, string> _hashes;
 
         public FileCache()
         {
             _lock.DoubleCheckLock(ref _cachedFiles, () => new ConcurrentDictionary<string, CachedFile>());
-            _lock.DoubleCheckLock(ref _textCache, () => new ConcurrentDictionary<string, string>());
-            _lock.DoubleCheckLock(ref _zippedTextCache, () => new ConcurrentDictionary<string, byte[]>());
-            _lock.DoubleCheckLock(ref _byteCache, () => new ConcurrentDictionary<string, byte[]>());
-            _lock.DoubleCheckLock(ref _zippedByteCache, () => new ConcurrentDictionary<string, byte[]>());
+            _lock.DoubleCheckLock(ref _hashes, () => new ConcurrentDictionary<string, string>());
         }
+
+        /// <summary>
+        /// Gets or sets the file extension.
+        /// </summary>
+        /// <value>
+        /// The file extension.
+        /// </value>
         public string FileExtension { get; protected set; }
+
+        /// <summary>
+        /// Gets the content.
+        /// </summary>
+        /// <param name="filePath">The file path.</param>
+        /// <returns></returns>
         public abstract byte[] GetContent(string filePath);
+
+        /// <summary>
+        /// Gets the content of the zipped file.
+        /// </summary>
+        /// <param name="filePath">The file path.</param>
+        /// <returns></returns>
         public abstract byte[] GetZippedContent(string filePath);
 
         /// <summary>
@@ -43,11 +56,8 @@ namespace Bam.Net.Caching.File
         /// <returns></returns>
         public virtual byte[] GetZippedBytes(FileInfo file)
         {
-            if (!_zippedByteCache.ContainsKey(file.FullName))
-            {
-                Load(file);
-            }
-            return _zippedByteCache[file.FullName];
+            EnsureFileIsLoaded(file);
+            return _cachedFiles[file.FullName].GetZippedBytes();
         }
 
         /// <summary>
@@ -57,11 +67,8 @@ namespace Bam.Net.Caching.File
         /// <returns></returns>
         public virtual byte[] GetBytes(FileInfo file)
         {
-            if (!_byteCache.ContainsKey(file.FullName))
-            {
-                Load(file);
-            }
-            return _byteCache[file.FullName];
+            EnsureFileIsLoaded(file);
+            return _cachedFiles[file.FullName].GetBytes();
         }
 
         /// <summary>
@@ -71,11 +78,11 @@ namespace Bam.Net.Caching.File
         /// <returns></returns>
         public virtual string GetText(FileInfo file)
         {
-            if (!_textCache.ContainsKey(file.FullName))
+            if (_cachedFiles.ContainsKey(file.FullName))
             {
-                Load(file);
+                return _cachedFiles[file.FullName].GetText();
             }
-            return _textCache[file.FullName];
+            return System.IO.File.ReadAllText(file.FullName);
         }
         
         /// <summary>
@@ -85,43 +92,68 @@ namespace Bam.Net.Caching.File
         /// <returns></returns>
         public virtual byte[] GetZippedText(FileInfo file)
         {
-            if (!_zippedTextCache.ContainsKey(file.FullName))
+            EnsureFileIsLoaded(file);
+            return _cachedFiles[file.FullName].GetZippedText();
+        }
+
+        /// <summary>
+        /// Ensures the file is loaded.
+        /// </summary>
+        /// <param name="file">The file.</param>
+        protected void EnsureFileIsLoaded(FileInfo file)
+        {
+            if (!_cachedFiles.ContainsKey(file.FullName) || HashChanged(file))
             {
                 Load(file);
             }
-            return _zippedTextCache[file.FullName];
         }
+
+        /// <summary>
+        /// Determines if the hash of the specified file has changed.
+        /// </summary>
+        /// <param name="file">The file.</param>
+        /// <returns></returns>
+        protected bool HashChanged(FileInfo file)
+        {
+            if (_hashes.TryGetValue(file.FullName, out string hash) && 
+                _cachedFiles.TryGetValue(file.FullName, out CachedFile cachedFile))
+            {
+                return !string.IsNullOrEmpty(hash) && cachedFile.ContentHash.Equals(hash);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Removes the specified file.
+        /// </summary>
+        /// <param name="file">The file.</param>
+        public void Remove(FileInfo file)
+        {
+            _cachedFiles.TryRemove(file.FullName, out CachedFile value);
+        }
+
+        /// <summary>
+        /// Reloads the specified file.
+        /// </summary>
+        /// <param name="file">The file.</param>
         public virtual void Reload(FileInfo file)
         {
-            string text;
-            byte[] bytes;
-            byte[] zipped;
-            byte[] zippedText;
-            _textCache.TryRemove(file.FullName, out text);
-            _byteCache.TryRemove(file.FullName, out bytes);
-            _zippedByteCache.TryRemove(file.FullName, out zipped);
-            _zippedTextCache.TryRemove(file.FullName, out zippedText);
+            _cachedFiles.TryRemove(file.FullName, out CachedFile value);
             Load(file);
         }
+
+        /// <summary>
+        /// Loads the specified file.
+        /// </summary>
+        /// <param name="file">The file.</param>
         public virtual void Load(FileInfo file)
         {
             string fullName = file.FullName;
 
             CachedFile cachedFile = new CachedFile(file);
-            if(_cachedFiles.TryAdd(fullName, cachedFile))
+            if (_cachedFiles.TryAdd(fullName, cachedFile))
             {
-                lock (_lock)
-                {
-                    string text = _cachedFiles[fullName].GetText();
-                    byte[] bytes = _cachedFiles[fullName].GetBytes();
-                    byte[] zippedBytes = _cachedFiles[fullName].GetZippedBytes();
-                    byte[] zippedText = _cachedFiles[fullName].GetZippedText();
-
-                    _textCache.TryAdd(fullName, text);
-                    _byteCache.TryAdd(fullName, bytes);
-                    _zippedByteCache.TryAdd(fullName, zippedBytes);
-                    _zippedTextCache.TryAdd(fullName, zippedText);
-                }
+                _hashes[fullName] = cachedFile.ContentHash;
             }
         }      
     }

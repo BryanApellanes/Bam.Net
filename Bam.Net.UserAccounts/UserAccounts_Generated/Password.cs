@@ -185,8 +185,10 @@ namespace Bam.Net.UserAccounts.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Password>();
 			Database db = database ?? Db.For<Password>();
-			var results = new PasswordCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new PasswordCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -623,6 +625,25 @@ namespace Bam.Net.UserAccounts.Data
 			if(orderBy != null)
 			{
 				query.OrderBy<PasswordColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<PasswordCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static PasswordCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<Password>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<Password>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

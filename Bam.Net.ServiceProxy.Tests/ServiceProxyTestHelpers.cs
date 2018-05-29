@@ -32,7 +32,17 @@ namespace Bam.Net.ServiceProxy.Tests
     /// </summary>
     public class ServiceProxyTestHelpers
     {
-        public class TestRequest : IRequest
+        public class JsonTestRequest: TestRequest
+        {
+            public override string ContentType => "application/json";
+        }
+
+        public class FormUrlEncodedTestRequest : TestRequest
+        {
+            public override string ContentType => "application/x-www-form-urlencoded; charset=utf-8";
+        }
+
+        public abstract class TestRequest : IRequest
         {
             public TestRequest()
             {
@@ -84,10 +94,7 @@ namespace Bam.Net.ServiceProxy.Tests
                 set;
             }
 
-            public string ContentType
-            {
-                get { return "application/x-www-form-urlencoded; charset=utf-8"; }
-            }
+            public abstract string ContentType { get; }
 
             public CookieCollection Cookies
             {

@@ -35,11 +35,20 @@ namespace Bam.Net.Encryption
             return Encrypt(value, key.Key, key.IV);
         }
 
+        /// <summary>
+        /// Encrypts the specified value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="base64EncodedKey">The base64 encoded key.</param>
+        /// <param name="base64EncodedIV">The base64 encoded iv.</param>
+        /// <returns></returns>
         public static string Encrypt(string value, string base64EncodedKey, string base64EncodedIV)
         {
-            AesManaged aes = new AesManaged();
-            aes.IV = Convert.FromBase64String(base64EncodedIV);
-            aes.Key = Convert.FromBase64String(base64EncodedKey);
+            AesManaged aes = new AesManaged
+            {
+                IV = Convert.FromBase64String(base64EncodedIV),
+                Key = Convert.FromBase64String(base64EncodedKey)
+            };
 
             ICryptoTransform encryptor = aes.CreateEncryptor();
 
@@ -61,16 +70,34 @@ namespace Bam.Net.Encryption
             }
         }
 
+        /// <summary>
+        /// Decrypts the specified base64 encoded value.
+        /// </summary>
+        /// <param name="base64EncodedValue">The base64 encoded value.</param>
+        /// <returns></returns>
         public static string Decrypt(string base64EncodedValue)
         {
             return Decrypt(base64EncodedValue, AesKeyVectorPair.AppKey);
         }
 
+        /// <summary>
+        /// Decrypts the specified base64 encoded value.
+        /// </summary>
+        /// <param name="base64EncodedValue">The base64 encoded value.</param>
+        /// <param name="key">The key.</param>
+        /// <returns></returns>
         public static string Decrypt(string base64EncodedValue, AesKeyVectorPair key)
         {
             return Decrypt(base64EncodedValue, key.Key, key.IV);
         }
 
+        /// <summary>
+        /// Decrypts the specified base64 encoded value.
+        /// </summary>
+        /// <param name="base64EncodedValue">The base64 encoded value.</param>
+        /// <param name="base64EncodedKey">The base64 encoded key.</param>
+        /// <param name="base64EncodedIV">The base64 encoded iv.</param>
+        /// <returns></returns>
         public static string Decrypt(string base64EncodedValue, string base64EncodedKey, string base64EncodedIV)
         {
             AesManaged aes = new AesManaged();
@@ -82,7 +109,6 @@ namespace Bam.Net.Encryption
             byte[] encData = Convert.FromBase64String(base64EncodedValue);
             using (MemoryStream decryptBuffer = new MemoryStream(encData))
             {
-
                 using(CryptoStream decryptStream = new CryptoStream(decryptBuffer, decryptor, CryptoStreamMode.Read))
                 {
                     byte[] decrypted = new byte[encData.Length];
@@ -98,8 +124,7 @@ namespace Bam.Net.Encryption
                         if (b == 0)
                             break;
                         
-                        retBytes.Add(b);
-                        
+                        retBytes.Add(b);                        
                     }
 
                     return Encoding.UTF8.GetString(retBytes.ToArray());
@@ -107,11 +132,26 @@ namespace Bam.Net.Encryption
             }
         }
 
+        /// <summary>
+        /// Encrypts the specified target after converting to xml writing it to the specified 
+        /// file path.
+        /// </summary>
+        /// <param name="target">The target.</param>
+        /// <param name="filePath">The file path.</param>
+        /// <returns></returns>
         public static AesKeyVectorPair Encrypt(this object target, string filePath)
         {
             return Encrypt(target, filePath, filePath + ".key", true);
         }
 
+        /// <summary>
+        /// Encrypts the specified target using the specified key file after converting to xml, then writes it to the specified 
+        /// file path.
+        /// </summary>
+        /// <param name="target">The target.</param>
+        /// <param name="filePath">The file path.</param>
+        /// <param name="keyFilePath">The key file path.</param>
+        /// <returns></returns>
         public static AesKeyVectorPair Encrypt(this object target, string filePath, string keyFilePath)
         {
             return Encrypt(target, filePath, keyFilePath, true);
@@ -119,8 +159,7 @@ namespace Bam.Net.Encryption
 
         public static AesKeyVectorPair Encrypt(this object target, string filePath, string keyFilePath, bool writeKeyFile)
         {
-            AesKeyVectorPair key;
-            string text = ToBase64EncodedEncryptedXml(target, out key);
+            string text = ToBase64EncodedEncryptedXml(target, out AesKeyVectorPair key);
             using (StreamWriter sw = new StreamWriter(filePath))
             {
                 sw.Write(text);
@@ -175,17 +214,28 @@ namespace Bam.Net.Encryption
             AesManaged rm = new AesManaged();
             rm.GenerateIV();
             rm.GenerateKey();
-            key = new AesKeyVectorPair();
-            key.Key = Convert.ToBase64String(rm.Key);
-            key.IV = Convert.ToBase64String(rm.IV);
+            key = new AesKeyVectorPair
+            {
+                Key = Convert.ToBase64String(rm.Key),
+                IV = Convert.ToBase64String(rm.IV)
+            };
             return Encrypt(xml, rm.CreateEncryptor());
         }
 
+        /// <summary>
+        /// Deserializes the specified base64 encrypted XML string.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="base64EncryptedXmlString">The base64 encrypted XML string.</param>
+        /// <param name="key">The key.</param>
+        /// <returns></returns>
         public static T Deserialize<T>(string base64EncryptedXmlString, AesKeyVectorPair key)
         {
-            AesManaged rKey = new AesManaged();
-            rKey.IV = Convert.FromBase64String(key.IV);
-            rKey.Key = Convert.FromBase64String(key.Key);
+            AesManaged rKey = new AesManaged
+            {
+                IV = Convert.FromBase64String(key.IV),
+                Key = Convert.FromBase64String(key.Key)
+            };
 
             string xml = Decrypt(base64EncryptedXmlString, key.Key, key.IV);
             return SerializationExtensions.FromXml<T>(xml);

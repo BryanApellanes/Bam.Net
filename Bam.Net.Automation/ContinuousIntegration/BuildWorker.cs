@@ -133,8 +133,7 @@ namespace Bam.Net.Automation.ContinuousIntegration
 
         protected override WorkState Do()
         {
-            B.ILogger threaded = Logger as B.ILogger;
-            if(threaded != null)
+            if (Logger is B.ILogger threaded)
             {
                 threaded.RestartLoggingThread();
             }

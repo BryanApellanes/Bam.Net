@@ -102,7 +102,7 @@ namespace Bam.Net.Data
 
         /// <summary>
         /// Registers SQLite as the fallback initializer for all databases.
-        /// This means that if the default database initializers fail SQLite
+        /// This means that if the default database initializers fail, SQLite
         /// will register itself as the database container and retry database
         /// initialization.
         /// </summary>

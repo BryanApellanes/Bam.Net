@@ -200,8 +200,7 @@ namespace Bam.Net.Server
 
                 Subscribe(MainLogger);
                 SubscribeResponders(MainLogger);
-
-                EnsureDefaults();
+                
                 MainLogger.AddEntry("{0} initializing: \r\n{1}", this.GetType().Name, this.PropertiesToString());
 
                 InitializeCommonSchemas();
@@ -513,19 +512,6 @@ namespace Bam.Net.Server
         public string ServerEventListenerAssemblySearchPattern { get; set; }
         // -end config values
 
-        int _maxThreads;
-        public int MaxThreads
-        {
-            get
-            {
-                return _maxThreads;
-            }
-            set
-            {
-                _maxThreads = value;
-            }
-        }
-
         string _contentRoot;
         public string ContentRoot
         {
@@ -542,18 +528,12 @@ namespace Bam.Net.Server
 
         protected void OnLoadingConf()
         {
-            if (LoadingConf != null)
-            {
-                LoadingConf(this, GetCurrentConf());
-            }
+            LoadingConf?.Invoke(this, GetCurrentConf());
         }
 
         protected void OnLoadedConf(BamConf conf)
         {
-            if (LoadedConf != null)
-            {
-                LoadedConf(this, conf);
-            }
+            LoadedConf?.Invoke(this, conf);
         }
 
         /// <summary>
@@ -572,18 +552,12 @@ namespace Bam.Net.Server
 
         protected void OnCreatingApp(AppConf conf)
         {
-            if (CreatingApp != null)
-            {
-                CreatingApp(this, conf);
-            }
+            CreatingApp?.Invoke(this, conf);
         }
 
         protected void OnCreatedApp(AppConf conf)
         {
-            if (CreatedApp != null)
-            {
-                CreatedApp(this, conf);
-            }
+            CreatedApp?.Invoke(this, conf);
         }
 
         public AppContentResponder CreateApp(string appName, string defaultLayout = null, int port = 8080, bool ssl = false)
@@ -604,26 +578,19 @@ namespace Bam.Net.Server
 
         protected void OnSettingConf(BamConf conf)
         {
-            if (SettingConf != null)
-            {
-                SettingConf(this, conf);
-            }
+            SettingConf?.Invoke(this, conf);
         }
 
         protected void OnSettedConf(BamConf conf)
         {
-            if (SettedConf != null)
-            {
-                SettedConf(this, conf);
-            }
+            SettedConf?.Invoke(this, conf);
         }
 
         public void SetConf(BamConf conf)
         {
             OnSettingConf(conf);
-            
-            Type loggerType;
-            this.MainLogger = Log.Default = conf.GetMainLogger(out loggerType);
+
+            this.MainLogger = Log.Default = conf.GetMainLogger(out Type loggerType);
             this.MainLogger.RestartLoggingThread();
             if (!loggerType.Name.Equals(conf.MainLoggerName))
             {
@@ -640,10 +607,7 @@ namespace Bam.Net.Server
         
         protected void OnSavedConf(BamConf conf)
         {
-            if (SavedConf != null)
-            {
-                SavedConf(this, conf);
-            }
+            SavedConf?.Invoke(this, conf);
         }
 
         /// <summary>
@@ -708,8 +672,7 @@ namespace Bam.Net.Server
         {
             Responders.Each(r =>
             {
-                T responder = r as T;
-                if (responder != null)
+                if (r is T responder)
                 {
                     responder.Responded += subscriber;
                 }
@@ -720,8 +683,7 @@ namespace Bam.Net.Server
         {
             Responders.Each(r =>
             {
-                T responder = r as T;
-                if (responder != null)
+                if (r is T responder)
                 {
                     responder.NotResponded += subscriber;
                 }
@@ -887,6 +849,7 @@ namespace Bam.Net.Server
         {
             ServiceProxyResponder.AddAppServices(appName, incubator);
         }
+
         /// <summary>
         /// Add or update the app service using the specified instanciator
         /// </summary>
@@ -1301,11 +1264,6 @@ namespace Bam.Net.Server
                 PostInitializationHandler.InitializationHandlers.Add(new DustTemplateInitializer(this));
             }
 
-            if (server.InitializeWebBooks)
-            {
-                PostInitializationHandler.InitializationHandlers.Add(new WebBookInitializer(this));
-            }
-
             PostInitializationHandler.HandleInitialization(this);
 
             this.IsInitialized = true;
@@ -1313,28 +1271,13 @@ namespace Bam.Net.Server
 
         private void ConfigureHttpServer()
         {
-            int maxThreads = this.MaxThreads;
-            if (maxThreads < 50)
-            {
-                maxThreads = 50;
-            }
-
-            _server = new HttpServer(maxThreads, MainLogger)
+            _server = new HttpServer(MainLogger)
             {
                 HostPrefixes = GetHostPrefixes()
             };
             _server.ProcessRequest += ProcessRequest;
         }
-
-        private void EnsureDefaults()
-        {
-            if (this.MaxThreads <= 0)
-            {
-                this.MaxThreads = 50;
-                MainLogger.AddEntry("Set MaxThreads to default value {0}", this.MaxThreads);
-            }
-        }
-
+        
         private void ListenForDaoGenServices()
         {
             ServiceProxyResponder.CommonServiceAdded += (t, o) =>

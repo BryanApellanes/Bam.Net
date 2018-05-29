@@ -18,7 +18,7 @@ namespace Bam.Net.Automation
         public int PatchVersion { get; set; }
         public string BuildNumber { get; set; }
 
-        internal string VersionString
+        public string VersionString
         {
             get
             {

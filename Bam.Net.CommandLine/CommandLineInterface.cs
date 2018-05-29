@@ -31,6 +31,18 @@ namespace Bam.Net.CommandLine
             _cachedArguments = new Dictionary<string, string>();
         }
 
+        /// <summary>
+        /// Spawns a new process executing the current exe with the specified arguments.
+        /// </summary>
+        /// <param name="arguments">The arguments.</param>
+        /// <returns></returns>
+        public static ProcessOutput SpawnSelf(string arguments)
+        {
+            Process process = Process.GetCurrentProcess();
+            FileInfo main = new FileInfo(process.MainModule.FileName);
+            return $"{main.FullName} {arguments}".Run();
+        }
+
         public static string PasswordPrompt(string promptMessage = null, ConsoleColor color = ConsoleColor.Cyan)
         {
             return PasswordPrompt(new ConsoleColorCombo(color), promptMessage);
@@ -98,6 +110,15 @@ namespace Bam.Net.CommandLine
             return GetArgument(name, promptMessage, (p) => PasswordPrompt(p));
         }
 
+        /// <summary>
+        /// Get the value specified for the argument with the 
+        /// specified name either from the command line or
+        /// from the default configuration file or prompt for
+        /// it if the value was not found.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="promptMessage">The prompt message.</param>
+        /// <returns></returns>
         public static string GetArgument(string name, string promptMessage = null)
         {
             return GetArgument(name, promptMessage, null);
@@ -107,7 +128,7 @@ namespace Bam.Net.CommandLine
         /// Get the value specified for the argument with the 
         /// specified name either from the command line or
         /// from the default configuration file or prompt for
-        /// it if the value was not found
+        /// it if the value was not found.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="promptMessage"></param>
@@ -122,6 +143,11 @@ namespace Bam.Net.CommandLine
                 Arguments.Contains(acronym) ? Arguments[acronym] :
                 !string.IsNullOrEmpty(fromConfig) ? fromConfig :
                 prompter(promptMessage);
+        }
+
+        public static bool HasArgument(string name)
+        {
+            return Arguments.Contains(name);
         }
 
         /// <summary>
@@ -189,7 +215,10 @@ namespace Bam.Net.CommandLine
             string pidFilePath = Path.Combine(main.Directory.FullName, pidFileName);
             try
             {
-                KillProcess(pidFilePath, commandLineArgs);                
+                if (killOldProcess)
+                {
+                    KillExistingProcess(pidFilePath, commandLineArgs);
+                }
                 info.SafeWriteToFile(pidFilePath, true);
                 Console.WriteLine("Wrote pid file {0}", pidFilePath);
             }
@@ -200,7 +229,7 @@ namespace Bam.Net.CommandLine
                 Console.WriteLine("Trying {0}", pidFilePath);
                 try
                 {
-                    KillProcess(pidFilePath, commandLineArgs);
+                    KillExistingProcess(pidFilePath, commandLineArgs);
                     info.SafeWriteToFile(pidFilePath, true);
                 }
                 catch (Exception ex2)
@@ -211,7 +240,18 @@ namespace Bam.Net.CommandLine
             }
         }
 
-        private static void KillProcess(string pidFilePath, string commandLineArgs)
+        protected static void KillExistingProcess()
+        {
+            Process process = Process.GetCurrentProcess();
+            FileInfo main = new FileInfo(process.MainModule.FileName);
+            string commandLineArgs = string.Join(" ", Environment.GetCommandLineArgs());
+            string info = $"{process.Id}~{commandLineArgs}";
+            string pidFileName = $"{Path.GetFileNameWithoutExtension(main.Name)}.pid";
+            string pidFilePath = Path.Combine(main.Directory.FullName, pidFileName);
+            KillExistingProcess(pidFilePath, commandLineArgs);
+        }
+
+        protected static void KillExistingProcess(string pidFilePath, string commandLineArgs)
         {
             if (File.Exists(pidFilePath))
             {
@@ -522,6 +562,7 @@ namespace Bam.Net.CommandLine
         {
             Console.ResetColor();
             OnExiting(code);
+            Thread.Sleep(1000);
             Environment.Exit(code);
             OnExited(code);
         }
@@ -591,7 +632,7 @@ File Version: {1}
         
         protected static void ShowMenu(Assembly assemblyToAnalyze, ConsoleMenu[] otherMenus, string headerText)
         {
-            List<ConsoleMethod> actions = ConsoleMethod.FromAssembly<ConsoleActionAttribute>(assemblyToAnalyze);// GetConsoleInvokeableMethods<ConsoleAction>(assemblyToAnalyze);
+            List<ConsoleMethod> actions = ConsoleMethod.FromAssembly<ConsoleActionAttribute>(assemblyToAnalyze);
             ShowMenu(otherMenus, headerText, actions);
         }
 
@@ -904,8 +945,8 @@ File Version: {1}
 
             if (_methodToInvoke != null)
             {
-                object inst = invokeOn == null ? AppDomain.CurrentDomain.GetData("Instance") : invokeOn;
-                object[] parms = parameters == null ? (object[])AppDomain.CurrentDomain.GetData("Parameters") : parameters;
+                object inst = invokeOn ?? AppDomain.CurrentDomain.GetData("Instance");
+                object[] parms = parameters ?? (object[])AppDomain.CurrentDomain.GetData("Parameters");
                 _methodToInvoke.Invoke(inst, parms);
             }
         }
@@ -1077,7 +1118,7 @@ File Version: {1}
 
         static AutoResetEvent _blocker = new AutoResetEvent(false);
         /// <summary>
-        /// Block 
+        /// Block the current thread indefinitely.
         /// </summary>
         protected static void Block()
         {

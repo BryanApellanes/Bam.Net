@@ -22,7 +22,6 @@
                 { Twitter: "String", Null: false },
                 { One: "String", Null: false },
                 { Facebook: "String", Null: false },
-                { FacebookMessenger: "String", Null: false },
                 { Samsung: "String", Null: false },
                 { Windows: "String", Null: false },
                 { GMail: "String", Null: false },

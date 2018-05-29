@@ -204,6 +204,8 @@ namespace Bam.Net.Data.Repositories
             }
 
             AddAdditionalReferenceAssemblies(new TypeInheritanceDescriptor(type));
+            CustomAttributeTypeDescriptor attrs = new CustomAttributeTypeDescriptor(type);
+            attrs.AttributeTypes.Each(attrType => AddAdditionalReferenceAssemblies(new TypeInheritanceDescriptor(attrType)));
             _types.Add(type);
         }
 
@@ -393,9 +395,11 @@ namespace Bam.Net.Data.Repositories
 
                 string writeSourceTo = TypeSchemaTempPathProvider(schema, typeSchema);
                 CompilerResults results = GenerateAndCompile(assemblyName, writeSourceTo);
-                GeneratedDaoAssemblyInfo info = new GeneratedDaoAssemblyInfo(schema.Name, results);
-                info.TypeSchema = typeSchema;
-                info.SchemaDefinition = schema;
+                GeneratedDaoAssemblyInfo info = new GeneratedDaoAssemblyInfo(schema.Name, results)
+                {
+                    TypeSchema = typeSchema,
+                    SchemaDefinition = schema
+                };
                 info.Save();
 
                 GeneratedAssemblies.SetAssemblyInfo(schema.Name, info);
@@ -465,7 +469,12 @@ namespace Bam.Net.Data.Repositories
                 }
                 references.Add(assemblyInfo.FullName);
             });
-            SchemaDefinitionCreateResult.TypeSchema.Tables.Each(type => references.Add(type.Assembly.GetFileInfo().FullName));
+            SchemaDefinitionCreateResult.TypeSchema.Tables.Each(type =>
+            {
+                references.Add(type.Assembly.GetFileInfo().FullName);
+                CustomAttributeTypeDescriptor attrTypes = new CustomAttributeTypeDescriptor(type);
+                attrTypes.AttributeTypes.Each(attrType => references.Add(attrType.Assembly.GetFileInfo().FullName));
+            });
             references.Add(typeof(DaoRepository).Assembly.GetFileInfo().FullName);
             CompilerResults results = _daoGenerator.Compile(new DirectoryInfo(writeSourceTo), assemblyNameToCreate, references.ToArray(), false);
             return results;
@@ -491,8 +500,7 @@ namespace Bam.Net.Data.Repositories
                 string newPath = tempPath.GetNextDirectoryName();
                 Directory.Move(tempPath, newPath);
             }
-            CompilationException compilationException;
-            if (!GenerateDaoAssembly(typeSchema, out compilationException))
+            if (!GenerateDaoAssembly(typeSchema, out CompilationException compilationException))
             {
                 throw new DaoGenerationException(SchemaName, typeSchema.Hash, Types.ToArray(), compilationException);
             }
@@ -530,6 +538,7 @@ namespace Bam.Net.Data.Repositories
             OldInfoString = info.TypeSchemaInfo ?? string.Empty;
             NewInfoString = typeSchema.ToString();
             DiffReport diff = DiffReport.Create(OldInfoString, NewInfoString);
+            // TODO: inject this and log
             ConsoleDiffReportFormatter diffFormatter = new ConsoleDiffReportFormatter(diff);
             diffFormatter.Format(); // outputs to console
             FireEvent(SchemaDifferenceDetected, new SchemaDifferenceEventArgs { GeneratedDaoAssemblyInfo = info, TypeSchema = typeSchema, DiffReport = diff });

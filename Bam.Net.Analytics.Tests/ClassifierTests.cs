@@ -40,17 +40,6 @@ namespace Bam.Net.Analytics.Tests
             .UnlessItFailed();
         }
 
-        //[UnitTest]
-        //public void ClassifyTest()
-        //{
-        //    SqlClientRegistrar.Register<Feature>();
-        //    _.TryEnsureSchema<Feature>();
-        //    string resultOne = "";
-        //    string resultTwo = "";
-        //    NaiveBayesClassifier classifier = new NaiveBayesClassifier();
-
-        //}
-
         private void SampleTrain(Classifier classifier)
         {
             classifier.Train("Nobody owns the water.", "good");

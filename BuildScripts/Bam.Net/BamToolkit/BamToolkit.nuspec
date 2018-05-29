@@ -9,8 +9,9 @@
     <projectUrl>http://bryanapellanes.github.io/Bam.Net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Tools for authoring distributed web based applications</description>
-    <releaseNotes>Version 1.9.1
- -   update bam app update process; fix logger applicationname handling (8ebef70)
+    <releaseNotes>Updates since v1.9.1
+ -   make heart.exe a windows service (4116442c)
+ -   repurposed bamd (ad2756aa)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies />

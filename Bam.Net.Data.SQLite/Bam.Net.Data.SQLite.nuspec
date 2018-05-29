@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Bam.Net.Data.SQLite</id>
+    <version>1.9.2</version>
+    <title>Bam.Net.Data.SQLite</title>
+    <authors>Package Authors</authors>
+    <owners>Package Owners</owners>
+    <description>Bam.Net.Data.SQLite</description>
+    <releaseNotes>Version 1.9.2
+</releaseNotes>
+    <copyright>Copyright © Bryan Apellanes 2018</copyright>
+    <dependencies>
+      <dependency id="Bam.Net" version="1.9.2" />
+      <dependency id="Bam.Net.Incubation" version="1.9.2" />
+      <dependency id="Bam.Net.Data" version="1.9.2" />
+      <dependency id="System.Data.SQLite.Core" version="1.0.99.0" />
+    </dependencies>
+  </metadata>
+</package>

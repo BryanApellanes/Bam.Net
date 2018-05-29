@@ -76,7 +76,7 @@ namespace Bam.Net.Data.Tests.Integration
                 }, e =>
                 {
                     Out(e, ConsoleColor.Red);
-                });
+                }, 600000);
             });
         }
 

@@ -14,15 +14,16 @@ namespace Bam.Net.Services
     public class CatalogService : AsyncProxyableService, ICatalogService
     {
         protected CatalogService() { }
-        public CatalogService(AsyncCallbackService callbackService, DaoRepository repo, AppConf conf) : base(callbackService, repo, conf)
+        public CatalogService(IRepository catalogRepo, AsyncCallbackService callbackService, DaoRepository repo, AppConf conf) : base(callbackService, repo, conf)
         {
+            Repository = catalogRepo;
             DaoRepository.WarningsAsErrors = false;
             DaoRepository.AddReferenceAssemblies(typeof(CoreExtensions).Assembly);
         }
 
         public override object Clone()
         {
-            CatalogService svc = new CatalogService(CallbackService, DaoRepository, AppConf);
+            CatalogService svc = new CatalogService(Repository, CallbackService, DaoRepository, AppConf);
             svc.CopyProperties(this);
             svc.CopyEventHandlers(this);
             return svc;

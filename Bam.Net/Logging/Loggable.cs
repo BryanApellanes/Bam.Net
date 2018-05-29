@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Reflection;
 using Bam.Net;
 using Bam.Net.Configuration;
+using Newtonsoft.Json;
 
 namespace Bam.Net.Logging
 {
@@ -38,6 +39,7 @@ namespace Bam.Net.Logging
         /// An array of all the ILoggers that have
         /// been subscribed to this Loggable
         /// </summary>
+        [JsonIgnore]
         public virtual ILogger[] Subscribers
         {
             get { return _subscribers.ToArray(); }

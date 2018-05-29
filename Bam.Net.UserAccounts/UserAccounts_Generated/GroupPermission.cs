@@ -192,8 +192,10 @@ namespace Bam.Net.UserAccounts.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<GroupPermission>();
 			Database db = database ?? Db.For<GroupPermission>();
-			var results = new GroupPermissionCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new GroupPermissionCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -630,6 +632,25 @@ namespace Bam.Net.UserAccounts.Data
 			if(orderBy != null)
 			{
 				query.OrderBy<GroupPermissionColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<GroupPermissionCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static GroupPermissionCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<GroupPermission>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<GroupPermission>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

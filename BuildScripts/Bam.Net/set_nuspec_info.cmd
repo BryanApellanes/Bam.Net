@@ -1,1 +1,1 @@
-baminf /baminfo.json:%4\Bam.Net\baminfo.json /root:%4\Bam.Net /nuspecRoot:"." /v:%1.%2.%3
+bake /baminfo.json:%4\Bam.Net\baminfo.json /root:%4\Bam.Net /nuspecRoot:"." /v:%1.%2.%3

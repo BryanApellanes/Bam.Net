@@ -8,6 +8,7 @@ using System.Text;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using Bam.Net.Presentation.Drawing;
 
 namespace Bam.Net.Drawing
 {
@@ -22,35 +23,36 @@ namespace Bam.Net.Drawing
         Brush fillBrush;
         Pen line;
 
-        public QuarterCircles(int lineWidth, int radius)
-        {
-            
-            this.Radius = radius;
-            this.Line.Width = lineWidth;
-            this.HorizontalMargin = 0;
-            this.VerticalMargin = 0;
+        public QuarterCircles(int lineWidth, int radius, GraphicsManager graphicsManager = null)
+        {            
+            Radius = radius;
+            Line.Width = lineWidth;
+            HorizontalMargin = 0;
+            VerticalMargin = 0;
+            GraphicsManager = graphicsManager ?? GraphicsManager.Default;
         }
 
         public QuarterCircles(int lineWidth, int radius, Brush backgroundBrush)
             : this(lineWidth, radius)
         {
-            this.BackgroundBrush = backgroundBrush;
+            BackgroundBrush = backgroundBrush;
         }
 
         public QuarterCircles(int lineWidth, int radius, Brush backgroundBrush, Brush fillBrush)
             : this(lineWidth, radius, backgroundBrush)
         {
-            this.FillBrush = fillBrush;
+            FillBrush = fillBrush;
         }
 
         public QuarterCircles(int lineWidth, int radius, Brush backgroundBrush, Brush fillBrush, int horizontalMargin, int verticalMargin)
             : this(lineWidth, radius, backgroundBrush, fillBrush)
         {
-            this.HorizontalMargin = horizontalMargin;
-            this.VerticalMargin = verticalMargin;
+            HorizontalMargin = horizontalMargin;
+            VerticalMargin = verticalMargin;
         }
 
         #region properties
+        public GraphicsManager GraphicsManager { get; set; }
         public Pen Line
         {
             get
@@ -129,6 +131,8 @@ namespace Bam.Net.Drawing
                 return (int)(this.Radius + (int)(this.Line.Width / 2) + this.HorizontalMargin);
             }
         }
+
+        
         #endregion
 
         int ellipseDimension;
@@ -152,8 +156,7 @@ namespace Bam.Net.Drawing
                             this.ellipseDimension);
 
                         graphics.FillEllipse(this.FillBrush, ellipseArea);
-                        graphics.DrawArc(this.Line, ellipseArea, QuarterCircles.topLeftStart, 90);
-                        //graphics.DrawArc(this.Line, this.HorizontalMargin, this.VerticalMargin, this.ellipseDimension, this.ellipseDimension, this.topLeftStart, 90); 
+                        graphics.DrawArc(this.Line, ellipseArea, topLeftStart, 90);                        
                     }
                 }
                 return topLeft;
@@ -173,7 +176,7 @@ namespace Bam.Net.Drawing
                         this.ellipseDimension);
 
                     graphics.FillEllipse(this.FillBrush, ellipseArea);
-                    graphics.DrawArc(this.Line, ellipseArea, QuarterCircles.topRightStart, 90);
+                    graphics.DrawArc(this.Line, ellipseArea, topRightStart, 90);
                 }
                 return this.topRight;
             }
@@ -192,7 +195,7 @@ namespace Bam.Net.Drawing
                         this.ellipseDimension);
 
                     graphics.FillEllipse(this.FillBrush, ellipseArea);
-                    graphics.DrawArc(this.Line, ellipseArea, QuarterCircles.bottomRightStart, 90);
+                    graphics.DrawArc(this.Line, ellipseArea, bottomRightStart, 90);
                 }
                 return this.bottomRight;
             }                
@@ -211,7 +214,7 @@ namespace Bam.Net.Drawing
                         this.ellipseDimension);
 
                     graphics.FillEllipse(this.FillBrush, ellipseArea);
-                    graphics.DrawArc(this.Line, ellipseArea, QuarterCircles.bottomLeftStart, 90);
+                    graphics.DrawArc(this.Line, ellipseArea, bottomLeftStart, 90);
                 }
                 return this.bottomLeft;
             }

@@ -14,6 +14,7 @@ using System.IO.Compression;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using Bam.Net.Configuration;
+using System.Linq;
 
 namespace Bam.Net.Application
 {
@@ -41,7 +42,7 @@ namespace Bam.Net.Application
             }
             if (isSolution)
             {
-                projectFilePaths.AddRange(GetProjectFilePaths(file));
+                projectFilePaths.AddRange(file.GetProjectFilePaths());
             }
 
             BamProject bamProject = CreateBamProject(projectFilePaths);
@@ -85,7 +86,7 @@ namespace Bam.Net.Application
             }
             else
             {
-                List<string> projectFilePaths = GetProjectFilePaths(solutionFile);
+                List<string> projectFilePaths = solutionFile.GetProjectFilePaths().ToList();
                 if (projectFilePaths.Count > 0)
                 {
                     string outputPath = GetArgument("outputPath", "Please specify the path to write the list to");
@@ -114,23 +115,12 @@ namespace Bam.Net.Application
             return bamProject;
         }
 
-        private static List<string> GetProjectFilePaths(FileInfo solutionFile)
-        {
-            List<string> projectFilePaths = new List<string>();
-            solutionFile.FullName.SafeReadFile().DelimitSplit("\r", "\n").Each(line =>
-            {
-                if (line.StartsWith("Project"))
-                {
-                    string[] options = line.DelimitSplit(",");
-                    if (options[1].EndsWith(".csproj\""))
-                    {
-                        projectFilePaths.Add(Path.Combine(solutionFile.Directory.FullName, options[1].TrimNonLetters()));
-                    }
-                }
-            });
-            return projectFilePaths;
-        }
-
+        /// <summary>
+        /// Fills the file and reference lists.
+        /// </summary>
+        /// <param name="projectFile">The project file.</param>
+        /// <param name="csFiles">The cs files.</param>
+        /// <param name="assemblyReferences">The assembly references.</param>
         protected static void FillFileAndReferenceLists(FileInfo projectFile, List<CsFile> csFiles, List<AssemblyReference> assemblyReferences)
         {
             Project project = projectFile.FromXmlFile<Project>();
@@ -145,7 +135,7 @@ namespace Bam.Net.Application
                 });
                 itemGroup.Reference.Each(reference =>
                 {
-                    assemblyReferences.Add(new AssemblyReference { AssemblyName = reference.Include, HintPath = reference.HintPath });
+                    assemblyReferences.Add(new AssemblyReference { AssemblyName = reference.Include });
                 });
             });
         }

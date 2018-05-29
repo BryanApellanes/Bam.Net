@@ -43,14 +43,17 @@ namespace Bam.Net.Data.Repositories
             return GeneratedAssemblyInfo.GetGeneratedAssembly(InfoFileName, this).Assembly;
         }
 
+        object _generateLock = new object();
         public GeneratedAssemblyInfo GenerateAssembly()
         {
-            CompilerResults results;
-            string fileName = $"{WrapperNamespace}.Wrapper.dll";
-            new DirectoryInfo(WriteSourceTo).ToAssembly(fileName, out results);
-            GeneratedAssemblyInfo result = new GeneratedAssemblyInfo(fileName, results);
-            result.Save();
-            return result;
+            lock (_generateLock)
+            {
+                string fileName = $"{WrapperNamespace}.Wrapper.dll";
+                new DirectoryInfo(WriteSourceTo).ToAssembly(fileName, out CompilerResults results);
+                GeneratedAssemblyInfo result = new GeneratedAssemblyInfo(fileName, results);
+                result.Save();
+                return result;
+            }
         }
 
         public void WriteSource(string writeSourceDir)

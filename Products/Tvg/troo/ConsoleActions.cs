@@ -41,20 +41,10 @@ namespace Bam.Net.Application
             BamConf conf = BamConf.Load(DefaultConfiguration.GetAppSetting(contentRootConfigKey).Or(defaultContentRoot));
             trooServer = new TrooServer(conf, logger, repo)
             {
-                HostPrefixes = new HashSet<HostPrefix> { GetConfiguredHostPrefix() },
+                HostPrefixes = new HashSet<HostPrefix>(HostPrefix.FromDefaultConfiguration()),
                 MonitorDirectories = DefaultConfiguration.GetAppSetting("MonitorDirectories").DelimitSplit(",", ";")
             };
             trooServer.Start();
-        }
-        public static HostPrefix GetConfiguredHostPrefix()
-        {
-            HostPrefix hostPrefix = new HostPrefix()
-            {
-                HostName = DefaultConfiguration.GetAppSetting("HostName").Or("localhost"),
-                Port = int.Parse(DefaultConfiguration.GetAppSetting("Port")),
-                Ssl = bool.Parse(DefaultConfiguration.GetAppSetting("Ssl"))
-            };
-            return hostPrefix;
         }
 
         private static IRepository GetRepository()

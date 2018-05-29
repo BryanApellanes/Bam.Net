@@ -2,6 +2,9 @@
 
 namespace Bam.Net.Configuration
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IConfigurationService
     {
         Dictionary<string, string> GetApplicationConfiguration(string applicationName, string configurationName = "");

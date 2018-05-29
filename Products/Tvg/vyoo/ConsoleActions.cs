@@ -26,13 +26,14 @@ namespace Bam.Net.Application
     {
         static string contentRootConfigKey = "ContentRoot";
         static string defaultRoot = "C:\\bam\\content";
+        static string hostAppMapsFileName = "hostAppMaps.json";
+
         static VyooServer vyooServer;
         
         [ConsoleAction("startVyooServer", "Start the vyoo server")]
         public void StartVyooServer()
         {
-            ConsoleLogger logger = GetLogger();
-            StartVyooServer(logger);
+            StartVyooServer(GetLogger());
             Pause("Vyoo is running");
         }
 
@@ -50,30 +51,48 @@ namespace Bam.Net.Application
             }
         }
 
+        [ConsoleAction("restartVyooServer", "Restart the vyoo server")]
+        public void RestartVyooServer()
+        {
+            if(vyooServer != null)
+            {
+                vyooServer.Stop();
+                StartVyooServer();
+            }
+        }
+
         public static void StartVyooServer(ConsoleLogger logger)
         {
-            DataSettings.Default.SetDefaultDatabaseFor<Session>(out Database userDb);
+            DataSettings.Current.SetDefaultDatabaseFor<Session>(out Database userDb);
             userDb.TryEnsureSchema<Session>();
-            DataSettings.Default.SetDefaultDatabaseFor<SecureSession>(out Database sessionDb);
+            DataSettings.Current.SetDefaultDatabaseFor<SecureSession>(out Database sessionDb);
             sessionDb.TryEnsureSchema<SecureSession>();
             BamConf conf = BamConf.Load(DefaultConfiguration.GetAppSetting(contentRootConfigKey).Or(defaultRoot));
-            vyooServer = new VyooServer(conf, logger)
+            AppConf[] appConfigs = conf.AppConfigs;
+
+            List<HostPrefix> hostPrefixes = new List<HostPrefix>(HostPrefix.FromDefaultConfiguration("localhost", 7400));
+            string hostAppMapsFilePath = Path.Combine(conf.ContentRoot, "apps", hostAppMapsFileName);
+            if (File.Exists(hostAppMapsFilePath))
             {
-                HostPrefixes = new HashSet<HostPrefix> { GetConfiguredHostPrefix() },
+                HostAppMap[] hostAppMaps = HostAppMap.Load(hostAppMapsFilePath);
+                if (Arguments.Contains("apps"))
+                {
+                    string[] appNamesToServe = Arguments["apps"].DelimitSplit(",", ";");
+                    appConfigs = conf.AppConfigs.Where(ac => ac.Name.In(appNamesToServe)).ToArray();
+                    hostPrefixes.AddRange(hostAppMaps.Where(ham => ham.AppName.In(appNamesToServe)).Select(ham => new HostPrefix { HostName = ham.Host, Port = 80 }).ToArray());
+                }
+                else
+                {
+                    hostPrefixes.AddRange(HostPrefix.FromHostAppMaps(hostAppMaps));
+                }
+            }
+
+            vyooServer = new VyooServer(appConfigs, logger, GetArgument("verbose", "Log responses to the console?").IsAffirmative())
+            {
+                HostPrefixes = new HashSet<HostPrefix>(hostPrefixes),
                 MonitorDirectories = DefaultConfiguration.GetAppSetting("MonitorDirectories").DelimitSplit(",", ";")
             };
             vyooServer.Start();
-        }
-
-        public static HostPrefix GetConfiguredHostPrefix()
-        {
-            HostPrefix hostPrefix = new HostPrefix()
-            {
-                HostName = DefaultConfiguration.GetAppSetting("HostName").Or("localhost"),
-                Port = int.Parse(DefaultConfiguration.GetAppSetting("Port")),
-                Ssl = bool.Parse(DefaultConfiguration.GetAppSetting("Ssl"))
-            };
-            return hostPrefix;
         }
 
         private static ConsoleLogger GetLogger()

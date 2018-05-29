@@ -9,9 +9,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Bam.Net.Data.Schema")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Bam.Net.Data.Schema")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Package Owners")]
 [assembly: AssemblyProduct("Bam.Net.Data.Schema")]
 [assembly: AssemblyCopyright("Copyright © Bryan Apellanes 2015")]
 [assembly: AssemblyTrademark("")]
@@ -40,5 +40,5 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("Bam.Net.Data.Tests")]
 [assembly: InternalsVisibleTo("Bam.Net.Data.MsSql")]
 [assembly: InternalsVisibleTo("Bam.Net.Data.Repositories")]
-[assembly: AssemblyVersion("1.9.1")]
-[assembly: AssemblyFileVersion("1.9.1")]
+[assembly: AssemblyVersion("1.9.2")]
+[assembly: AssemblyFileVersion("1.9.2")]

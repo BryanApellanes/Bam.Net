@@ -13,29 +13,94 @@ using System.Collections.Concurrent;
 
 namespace Bam.Net.Caching
 {
-	public class Cache: Loggable
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <seealso cref="Bam.Net.Caching.Cache" />
+    public class Cache<T>: Cache where T: IMemorySize, new()
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Cache{T}"/> class.
+        /// </summary>
+        public Cache() : base() { }
+
+        /// <summary>
+        /// Adds the specified values.
+        /// </summary>
+        /// <param name="values">The values.</param>
+        /// <returns></returns>
+        public CacheItem<T> Add(params T[] values)
+        {
+            return (CacheItem<T>)Add<T>(values);
+        }
+
+        public new IEnumerable<CacheItem<CacheItemType>> Add<CacheItemType>(params CacheItemType[] values) where CacheItemType: IMemorySize, new()
+        {
+            List<CacheItem> results = new List<CacheItem>();
+            HashSet<CacheItem> itemsCopy = new HashSet<CacheItem>(Items);
+            foreach (CacheItemType value in values)
+            {
+                CacheItem<CacheItemType> item = new CacheItem<CacheItemType>(value, MetaProvider);
+                if (itemsCopy.Add(item))
+                {
+                    yield return item;
+                }
+            }
+            Items = itemsCopy;
+            Organize();
+            GroomerSignal.Set();
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="Bam.Net.Caching.Cache" />
+    public class Cache: Loggable
 	{
 		bool _keepGrooming;
 		Thread _groomerThread;
 		AutoResetEvent _groomerSignal;
 		ConcurrentQueue<CacheItem> _evictionQueue;
-		
-		public Cache() : this(true) { }
 
-		public Cache(bool groomInBackground)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Cache"/> class.
+        /// </summary>
+        public Cache() : this(true) { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Cache"/> class.
+        /// </summary>
+        /// <param name="groomInBackground">if set to <c>true</c> [groom in background].</param>
+        public Cache(bool groomInBackground)
 			: this(System.Guid.NewGuid().ToString(), groomInBackground)
 		{ }
-		public Cache(string name, bool groomInBackground)
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Cache"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="groomInBackground">if set to <c>true</c> [groom in background].</param>
+        public Cache(string name, bool groomInBackground)
 			: this(name, 524288, groomInBackground) // 512 kilobytes
 		{ }
 
-		public Cache(string name, int maxBytes, bool groomInBackground, EventHandler evictionListener = null)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Cache"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="maxBytes">The maximum bytes.</param>
+        /// <param name="groomInBackground">if set to <c>true</c> [groom in background].</param>
+        /// <param name="evictionListener">The eviction listener.</param>
+        public Cache(string name, uint maxBytes, bool groomInBackground, EventHandler evictionListener = null)
 		{
 			Items = new HashSet<CacheItem>();
 			ItemsByHits = new SortedSet<CacheItem>();
 			ItemsByMisses = new SortedSet<CacheItem>();
 			ItemsById = new Dictionary<long, CacheItem>();
             ItemsByUuid = new Dictionary<string, CacheItem>();
+            ItemsByName = new Dictionary<string, CacheItem>();
 			MetaProvider = Bam.Net.Data.Repositories.MetaProvider.Default;
 			
 			Name = name;
@@ -55,22 +120,108 @@ namespace Bam.Net.Caching
 			}
 		}
 
-		public IMetaProvider MetaProvider { get; set; }
-		protected HashSet<CacheItem> Items { get; set; }
-		protected SortedSet<CacheItem> ItemsByHits { get; private set; }
-		protected SortedSet<CacheItem> ItemsByMisses { get; private set; }
-		protected Dictionary<long, CacheItem> ItemsById { get; set; }
-		protected Dictionary<string, CacheItem> ItemsByUuid { get; set; }
+        /// <summary>
+        /// Gets or sets the meta provider.
+        /// </summary>
+        /// <value>
+        /// The meta provider.
+        /// </value>
+        public IMetaProvider MetaProvider { get; set; }
+
+        /// <summary>
+        /// Gets or sets the items.
+        /// </summary>
+        /// <value>
+        /// The items.
+        /// </value>
+        protected HashSet<CacheItem> Items { get; set; }
+
+        /// <summary>
+        /// Gets the items by hits.
+        /// </summary>
+        /// <value>
+        /// The items by hits.
+        /// </value>
+        protected SortedSet<CacheItem> ItemsByHits { get; private set; }
+
+        /// <summary>
+        /// Gets the items by misses.
+        /// </summary>
+        /// <value>
+        /// The items by misses.
+        /// </value>
+        protected SortedSet<CacheItem> ItemsByMisses { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the items by identifier.
+        /// </summary>
+        /// <value>
+        /// The items by identifier.
+        /// </value>
+        protected Dictionary<long, CacheItem> ItemsById { get; set; }
+
+        /// <summary>
+        /// Gets or sets the items keyed by UUID.
+        /// </summary>
+        /// <value>
+        /// The items by UUID.
+        /// </value>
+        protected Dictionary<string, CacheItem> ItemsByUuid { get; set; }
+
+        /// <summary>
+        /// Gets or sets the items keyed by cuid.
+        /// </summary>
+        /// <value>
+        /// The items by cuid.
+        /// </value>
         protected Dictionary<string, CacheItem> ItemsByCuid { get; set; }
 
-        public int MaxBytes { get; set; }			
+        /// <summary>
+        /// Gets or sets the items keyed by name.
+        /// </summary>
+        /// <value>
+        /// The name of the items by.
+        /// </value>
+        protected Dictionary<string, CacheItem> ItemsByName { get; set; }
 
+        /// <summary>
+        /// Gets the groomer signal.
+        /// </summary>
+        /// <value>
+        /// The groomer signal.
+        /// </value>
+        protected AutoResetEvent GroomerSignal
+        {
+            get
+            {
+                return _groomerSignal;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the maximum bytes.
+        /// </summary>
+        /// <value>
+        /// The maximum bytes.
+        /// </value>
+        public uint MaxBytes { get; set; }
+
+        /// <summary>
+        /// Retrieves the specified instance using the Meta.Uuid.
+        /// </summary>
+        /// <param name="instance">The instance.</param>
+        /// <returns></returns>
         public CacheItem Retrieve(object instance)
         {
             Meta meta = MetaProvider.GetMeta(instance);
             return Retrieve(meta.Uuid);
         }
 
+        /// <summary>
+        /// Retrieves the specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
         public CacheItem Retrieve(long id)
         {
             if (ItemsById.TryGetValue(id, out CacheItem result))
@@ -80,10 +231,14 @@ namespace Bam.Net.Caching
             return result;
         }
 
+        /// <summary>
+        /// Retrieves the specified UUID.
+        /// </summary>
+        /// <param name="uuid">The UUID.</param>
+        /// <returns></returns>
         public CacheItem Retrieve(string uuid)
         {
-            CacheItem result = null;
-            if (ItemsByUuid.TryGetValue(uuid, out result))
+            if (ItemsByUuid.TryGetValue(uuid, out CacheItem result))
             {
                 result.IncrementHits();
             }
@@ -91,16 +246,60 @@ namespace Bam.Net.Caching
             return result;
         }
 
+        /// <summary>
+        /// Retrieves the instance of T with the specified name using the specified
+        /// sourceRetriever if it is not currently in the cache.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="name">The name.</param>
+        /// <param name="sourceRetriever">The source retriever.</param>
+        /// <returns></returns>
+        public virtual T RetrieveByName<T>(string name, Func<T> sourceRetriever)
+        {
+            CacheItem item = RetrieveByName(name);
+            if(item == null)
+            {
+                item = new CacheItem(sourceRetriever(), MetaProvider);
+                ItemsByName.Add(name, item);
+            }
+
+            return item.ValueAs<T>();
+        }
+
+        /// <summary>
+        /// Retrieves the CacheItem by the specified name.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
+        public CacheItem RetrieveByName(string name)
+        {
+            if(ItemsByName.TryGetValue(name, out CacheItem result))
+            {
+                result.IncrementHits();
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Retrieves the CacheItem by the specified cuid.
+        /// </summary>
+        /// <param name="cuid">The cuid.</param>
+        /// <returns></returns>
         public CacheItem RetrieveByCuid(string cuid)
         {
-            CacheItem result = null;
-            if(ItemsByCuid.TryGetValue(cuid, out result))
+            if (ItemsByCuid.TryGetValue(cuid, out CacheItem result))
             {
                 result.IncrementHits();
             }
             return result;
         }
 
+        /// <summary>
+        /// Adds the specified value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         public virtual CacheItem Add(object value)
         {
             HashSet<CacheItem> itemsCopy = new HashSet<CacheItem>(Items);
@@ -108,7 +307,7 @@ namespace Bam.Net.Caching
             itemsCopy.Add(item);
             Items = itemsCopy;
             Organize();
-            _groomerSignal.Set();
+            GroomerSignal.Set();
             return item;
         }
 
@@ -130,12 +329,14 @@ namespace Bam.Net.Caching
             foreach (object value in values)
             {
                 CacheItem item = new CacheItem(value, MetaProvider);
-                itemsCopy.Add(item);
-                yield return item;
+                if (itemsCopy.Add(item))
+                {
+                    yield return item;
+                }
             }
             Items = itemsCopy;
             Organize();
-            _groomerSignal.Set();
+            GroomerSignal.Set();
         }
 
         public IEnumerable<CacheItem> Query(Predicate<object> predicate)
@@ -189,7 +390,7 @@ namespace Bam.Net.Caching
             }
         }
 
-        public IEnumerable<T> Query<T>(Func<T, bool> predicate, Func<IEnumerable<T>> sourceRetriever)
+        public IEnumerable<T> Query<T>(Func<T, bool> predicate, Func<IEnumerable<T>> sourceRetriever, bool refresh = true)
         {
             IEnumerable<T> results = Query<T>(predicate);
             if (results.Count() == 0)
@@ -197,9 +398,9 @@ namespace Bam.Net.Caching
                 results = sourceRetriever();
                 Add(results);
             }
-            else
+            else if(refresh)
             {
-                Task.Run(() => Add(sourceRetriever()));
+                Task.Run(() => Add(sourceRetriever())); // refreshes the cache from source, results are one query behind fresh
             }
             return results;
         }
@@ -219,12 +420,12 @@ namespace Bam.Net.Caching
 			set;
 		}
 
-		public int ItemsMemorySize
+		public uint ItemsMemorySize
 		{
 			get
 			{
                 HashSet<CacheItem> itemsCopy = new HashSet<CacheItem>(Items);
-				return itemsCopy.Select(c => c.MemorySize).Sum();
+				return (uint)itemsCopy.Select(c => c.MemorySize).Sum();
 			}
 		}
 
@@ -274,12 +475,11 @@ namespace Bam.Net.Caching
 					{
 						while (_evictionQueue.Count > 0)
 						{
-                            CacheItem item;
-                            if(_evictionQueue.TryDequeue(out item))
+                            if (_evictionQueue.TryDequeue(out CacheItem item))
                             {
                                 Evict(item);
                             }
-						}
+                        }
 					}
 				}
 			}
@@ -292,7 +492,7 @@ namespace Bam.Net.Caching
 			{
 				_evictionQueue.Enqueue(Retrieve(id));
 			}
-			_groomerSignal.Set();
+			GroomerSignal.Set();
 		}
 
 		public void QueueEviction(string uuid)
@@ -301,7 +501,7 @@ namespace Bam.Net.Caching
 			{
 				_evictionQueue.Enqueue(Retrieve(uuid));
 			}
-			_groomerSignal.Set();
+			GroomerSignal.Set();
 		}
 
 		public void Evict(long id)
@@ -402,8 +602,8 @@ namespace Bam.Net.Caching
         /// <returns></returns>
 		protected int GetEvictableTailCount()
 		{
-			int maxBytes = MaxBytes;
-			int bytesOver = ItemsMemorySize - MaxBytes;
+			uint maxBytes = MaxBytes;
+			uint bytesOver = ItemsMemorySize - MaxBytes;
 			int result = 0;
 			if(bytesOver > 0)
 			{
@@ -428,7 +628,7 @@ namespace Bam.Net.Caching
 		{
 			while(_keepGrooming)
 			{
-				_groomerSignal.WaitOne();
+				GroomerSignal.WaitOne();
 				Groom();
 			}
 		}
@@ -440,10 +640,11 @@ namespace Bam.Net.Caching
 			_groomerThread.Join(3000);
 		}
 
-        private async void Organize()
+        protected async void Organize()
         {
             await Task.Run(() =>
             {
+                HashSet<CacheItem> itemsCopy = new HashSet<CacheItem>(Items);
                 Parallel.ForEach(new Action[] 
                 {
                     () =>
@@ -458,21 +659,23 @@ namespace Bam.Net.Caching
                     },
                     () =>
                     {
-                        HashSet<CacheItem> itemsCopy = new HashSet<CacheItem>(Items);
                         Dictionary<long, CacheItem> itemsById = itemsCopy.ToDictionary(ci => ci.Id);
                         ItemsById = itemsById;
                     },
                     () =>
                     {
-                        HashSet<CacheItem> itemsCopy = new HashSet<CacheItem>(Items);
                         Dictionary<string, CacheItem> itemsByUuid = itemsCopy.ToDictionary(ci => ci.Uuid);
                         ItemsByUuid = itemsByUuid;
                     },
                     () =>
                     {
-                        HashSet<CacheItem> itemsCopy = new HashSet<CacheItem>(Items);
                         Dictionary<string, CacheItem> itemsByCuid = itemsCopy.ToDictionary(ci => ci.Cuid);
                         ItemsByCuid = itemsByCuid;
+                    },
+                    () =>
+                    {
+                        Dictionary<string, CacheItem> itemsByName = itemsCopy.ToDictionary(ci=> ci.Property<string>("Name", false) ?? ci.Uuid);
+                        ItemsByName = itemsByName;
                     }
                 }, action => action());
             });

@@ -16,21 +16,24 @@ using Yahoo.Yui.Compressor;
 using Bam.Net.Presentation;
 using System.Reflection;
 using System.Threading.Tasks;
+using Bam.Net.Data.Repositories;
+using System.Linq;
+using Bam.Net.Configuration;
 
 namespace Bam.Net.Server
 {
     public class AppContentResponder : ContentResponder
     {
-        public const string CommonFolder = "common";        
+        public const string CommonFolder = "common";
 
-        public AppContentResponder(ContentResponder commonResponder, AppConf conf)
-            : base(commonResponder.BamConf)
+        public AppContentResponder(ContentResponder commonResponder, AppConf conf, DataSettings dataSettings = null, ILogger logger = null)
+            : base(commonResponder.BamConf, logger)
         {
             if (conf.BamConf == null)
             {
                 conf.BamConf = commonResponder.BamConf;
             }
-
+            DataSettings = dataSettings ?? DataSettings.Current;
             ContentResponder = commonResponder;
             ServerRoot = commonResponder.ServerRoot;
             AppConf = conf;
@@ -38,10 +41,93 @@ namespace Bam.Net.Server
             AppTemplateRenderer = new AppDustRenderer(this);
             AppContentLocator = ContentLocator.Load(this);
             Fs commonRoot = new Fs(new DirectoryInfo(Path.Combine(ServerRoot.Root, CommonFolder)));
+            ContentHandlers = new Dictionary<string, ContentHandler>();
+            AllRequestHandler = new ContentHandler($"{conf.Name}.AllRequestHandler", AppRoot) { CheckPaths = false };
+            CustomHandlerMethods = new List<MethodInfo>();
             CommonContentLocator = ContentLocator.Load(commonRoot);
-
+            SetUploadHandler();
             SetBaseIgnorePrefixes();
+            ContentHandlerScanTask = ScanForContentHandlers();
+            SetAllRequestHandler();
         }
+
+        protected ContentHandler AllRequestHandler { get; set; }
+        protected Dictionary<string, ContentHandler> ContentHandlers { get; set; }
+        protected Task ContentHandlerScanTask { get; }
+
+        protected Task ScanForContentHandlers()
+        {
+            Task scan = Task.Run(() =>
+            {
+                try
+                {
+                    string[] assemblySearchPatterns = DefaultConfiguration.GetAppSetting("AssemblySearchPattern", "*ContentHandlers.dll").DelimitSplit(",", true);
+                    DirectoryInfo entryDir = Assembly.GetEntryAssembly().GetFileInfo().Directory;
+                    DirectoryInfo sysAssemblies = DataSettings.GetSysAssemblyDirectory();
+                    List<FileInfo> files = new List<FileInfo>();
+                    foreach(string assemblySearchPattern in assemblySearchPatterns)
+                    {
+                        files.AddRange(entryDir.GetFiles(assemblySearchPattern));
+                        if (sysAssemblies.Exists)
+                        {
+                            files.AddRange(sysAssemblies.GetFiles(assemblySearchPattern));
+                        }
+                    }
+                    Parallel.ForEach(files, LoadCustomHandlers);
+                }
+                catch (Exception ex)
+                {
+                    Logger.AddEntry("Exception occurred scanning for custom content handlers: {0}", ex, ex.Message);
+                }
+            });
+            return scan;
+        }
+
+        protected List<MethodInfo> CustomHandlerMethods { get; }
+
+        /// <summary>
+        /// Load all methods found in the specified file that are addorned with the ContentHandlerAttribute attribute
+        /// into the CustomHandlerMethods list.
+        /// </summary>
+        /// <param name="file"></param>
+        protected void LoadCustomHandlers(FileInfo file)
+        {
+            try
+            {
+                string extension = Path.GetExtension(file.FullName);
+                if(!extension.Equals(".dll", StringComparison.InvariantCultureIgnoreCase) && !extension.Equals(".exe", StringComparison.InvariantCulture))
+                {
+                    return;
+                }
+                Assembly assembly = Assembly.LoadFrom(file.FullName);                
+                CustomHandlerMethods.AddRange(
+                    assembly.GetTypes()
+                        .Where(type => type.HasCustomAttributeOfType<ContentHandlerAttribute>())
+                            .SelectMany(type => type.GetMethods().Where(mi =>
+                            {
+                                bool hasAttribute = mi.HasCustomAttributeOfType<ContentHandlerAttribute>();
+                                bool isStatic = mi.IsStatic;
+                                if(hasAttribute && !isStatic)
+                                {
+                                    Logger.AddEntry("The method {0}.{1} is marked as a ContentHandler but it is not static", LogEventType.Warning, mi.DeclaringType.Name, mi.Name);
+                                }
+                                ParameterInfo[] parms = mi.GetParameters();
+                                return hasAttribute && 
+                                    isStatic &&
+                                    mi.ReturnType == typeof(byte[]) &&                                    
+                                    parms.Length == 2 &&
+                                    parms[0].ParameterType == typeof(IHttpContext) &&
+                                    parms[1].ParameterType == typeof(Fs);
+                            }))
+                );
+            }
+            catch (Exception ex)
+            {
+                Logger.AddEntry("Failed to load custom handlers from file {0}: {1}", ex, file.FullName, ex.Message);
+            }
+        }
+
+        public DataSettings DataSettings { get; }
 
         public ContentLocator AppContentLocator
         {
@@ -53,6 +139,51 @@ namespace Bam.Net.Server
         {
             get;
             private set;
+        }
+        
+        protected async void SetAllRequestHandler()
+        {
+            try
+            {
+                await ContentHandlerScanTask;
+            }
+            catch (AggregateException ae)
+            {
+                foreach (var e in ae.InnerExceptions)
+                {
+                    Console.WriteLine(e.Message);                    
+                }
+            }
+
+            AllRequestHandler.GetContent = (ctx, fs) =>
+            {
+                byte[] result = null;
+                foreach(MethodInfo method in CustomHandlerMethods)
+                {
+                    result = method.Invoke(null, ctx, fs) as byte[];
+                    if(result != null)
+                    {
+                        Logger.AddEntry("{0}.{1} handled request {2}\r\n{3}", method.DeclaringType.Name, method.Name, ctx.Request.Url.ToString(), ctx.Request.PropertiesToString());
+                        break;
+                    }
+                }
+                return result;
+            };
+        }
+
+        protected void SetUploadHandler()
+        {
+            SetCustomContentHandler("Application Upload", "/upload", (ctx, fs) =>
+            {
+                IRequest request = ctx.Request;
+                HandleUpload(ctx, HttpPostedFile.FromRequest(request));
+                string query = request.Url.Query.Length > 0 ? request.Url.Query : string.Empty;
+                if (query.StartsWith("?"))
+                {
+                    query = query.TruncateFront(1);
+                }
+                return RenderLayout(ctx.Response, request.Url.AbsolutePath, query);
+            });
         }
 
         /// <summary>
@@ -82,18 +213,12 @@ namespace Bam.Net.Server
 
         protected void OnAppInitializing()
         {
-            if (AppInitializing != null)
-            {
-                AppInitializing(this);
-            }
+            AppInitializing?.Invoke(this);
         }
 
         protected void OnAppInitialized()
         {
-            if (AppInitialized != null)
-            {
-                AppInitialized(this);
-            }
+            AppInitialized?.Invoke(this);
         }
 
         public string ApplicationName
@@ -110,6 +235,7 @@ namespace Bam.Net.Server
             mgr.HttpContext = context;
             return mgr.GetUser(context);
         }
+
         /// <summary>
         /// The server content root
         /// </summary>
@@ -120,6 +246,30 @@ namespace Bam.Net.Server
         /// </summary>
         public Fs AppRoot { get; private set; }
 
+        public void SetCustomContentHandler(string path, Func<IHttpContext, Fs, byte[]> handler)
+        {
+            SetCustomContentHandler(path, path, handler);
+        }
+
+        public void SetCustomContentHandler(string name, string path, Func<IHttpContext, Fs, byte[]> handler)
+        {
+            SetCustomContentHandler(name, new string[] { path }, handler);
+        }
+
+        public void SetCustomContentHandler(string name, string[] paths, Func<IHttpContext, Fs, byte[]> handler)
+        {
+            ContentHandler customHandler = new ContentHandler(name, AppRoot, paths) { GetContent = handler };
+            SetCustomContentHandler(customHandler);
+        }
+
+        public void SetCustomContentHandler(ContentHandler customContentHandler)
+        {
+            foreach(string path in customContentHandler.Paths)
+            {
+                ContentHandlers[path.ToLowerInvariant()] = customContentHandler;
+            }
+        }
+
         /// <summary>
         /// Initializes the file system from the embedded zip resource
         /// that represents a bare bones app.
@@ -127,7 +277,6 @@ namespace Bam.Net.Server
         public override void Initialize()
         {
             OnAppInitializing();
-            WriteAppScripts();
             WriteCompiledTemplates();
 
             AppRoot.WriteFile("appConf.json", AppConf.ToJson(true));
@@ -145,7 +294,7 @@ namespace Bam.Net.Server
             checkedPaths = new string[] { };
             try
             {
-                if (CheckEtags(context))
+                if (Etags.CheckEtags(context))
                 {
                     return true;
                 }
@@ -155,58 +304,53 @@ namespace Bam.Net.Server
 
                 string ext = Path.GetExtension(path);
 
-                path = RemoveBamAppsPrefix(path);
-
                 string[] split = path.DelimitSplit("/");
                 byte[] content = new byte[] { };
-                bool result = false;
+                bool handled = AllRequestHandler.HandleRequest(context, out content);
 
-                if (path.Equals("/upload", StringComparison.InvariantCultureIgnoreCase))
+                if (!handled)
                 {
-                    HandleUpload(context, HttpPostedFile.FromRequest(request));
-                    string query = request.Url.Query.Length > 0 ? request.Url.Query : string.Empty;
-                    if (query.StartsWith("?"))
+                    if (ContentHandlers.ContainsKey(path.ToLowerInvariant()))
                     {
-                        query = query.TruncateFront(1);
+                        handled = ContentHandlers[path.ToLowerInvariant()].HandleRequest(context, out content);
                     }
-                    content = RenderLayout(response, path, query);
-                    result = true;
-                }
-                else if (string.IsNullOrEmpty(ext) && !ShouldIgnore(path) ||
-                   (AppRoot.FileExists("~/pages{0}.html"._Format(path), out string locatedPath)))
-                {
-                    content = RenderLayout(response, path);
-                    result = true;
-                }
-                else if (AppContentLocator.Locate(path, out locatedPath, out checkedPaths))
-                {
-                    result = true;
-                    string foundExt = Path.GetExtension(locatedPath);
-                    if (FileCachesByExtension.ContainsKey(foundExt))
+                    else if (AppContentLocator.Locate(path, out string locatedPath, out checkedPaths))
                     {
-                        FileCache cache = FileCachesByExtension[ext];
-                        if (ShouldZip(request))
+                        handled = true;
+                        string foundExt = Path.GetExtension(locatedPath);
+                        if (FileCachesByExtension.ContainsKey(foundExt))
                         {
-                            SetGzipContentEncodingHeader(response);
-                            content = cache.GetZippedContent(locatedPath);
+                            FileCache cache = FileCachesByExtension[ext];
+                            if (ShouldZip(request))
+                            {
+                                SetGzipContentEncodingHeader(response);
+                                content = cache.GetZippedContent(locatedPath);
+                            }
+                            else
+                            {
+                                content = cache.GetContent(locatedPath);
+                            }
                         }
                         else
                         {
-                            content = cache.GetContent(locatedPath);
+                            content = File.ReadAllBytes(locatedPath);
                         }
+                        Etags.SetLastModified(response, request.Url.ToString(), new FileInfo(locatedPath).LastWriteTime);
                     }
-                    else
+                    else if (string.IsNullOrEmpty(ext) && !ShouldIgnore(path) || (AppRoot.FileExists("~/pages{0}.html"._Format(path), out locatedPath)))
                     {
-                        content = File.ReadAllBytes(locatedPath);
+
+                        content = RenderLayout(response, path);
+                        handled = true;
                     }
-                    SetLastModified(response, request.Url.ToString(), new FileInfo(locatedPath).LastWriteTime);
                 }
 
-                if (result)
+                if (handled)
                 {
                     SetContentType(response, path);
                     SetContentDisposition(response, path);
-                    SetEtag(response, path, content);
+                    Etags.Set(response, request.Url.ToString(), content);
+                    SetResponseHeaders(response, path);
                     SendResponse(response, content);
                     OnResponded(context);
                 }
@@ -214,7 +358,7 @@ namespace Bam.Net.Server
                 {
                     OnNotResponded(context);
                 }
-                return result;
+                return handled;
             }
             catch (Exception ex)
             {
@@ -224,11 +368,30 @@ namespace Bam.Net.Server
             }
         }
 
+        protected virtual void SetResponseHeaders(IResponse response, string path)
+        {
+            if (path.StartsWith("/meta"))
+            {
+                path = path.TruncateFront("/meta".Length);
+            }
+            Fs meta = new Fs(Path.Combine(AppRoot.Root, "meta", "headers"));
+            if (meta.FileExists(path, out string fullPath))
+            {
+                foreach (string header in fullPath.SafeReadFile().DelimitSplit("\n"))
+                {
+                    string[] split = header.Split(new char[] { ':' }, 2);
+                    if (split.Length == 2)
+                    {
+                        response.AddHeader(split[0].Trim(), split[1].Trim());
+                    }
+                }
+            }
+        }
 
         [Verbosity(LogEventType.Information)]
-        public event EventHandler FileUploading;
+        public new event EventHandler FileUploading;
         [Verbosity(LogEventType.Information)]
-        public event EventHandler FileUploaded;
+        public new event EventHandler FileUploaded;
 
         public virtual void HandleUpload(IHttpContext context, HttpPostedFile file)
         {
@@ -270,28 +433,27 @@ namespace Bam.Net.Server
                 path = "/{0}"._Format(AppConf.DefaultPage.Or(AppConf.DefaultLayoutConst));
             }
 
-            string absolutePath;
             string lowered = path.ToLowerInvariant();
             string[] layoutSegments = string.Format("~/pages/{0}{1}", path, LayoutFileExtension).DelimitSplit("/", "\\");
             string[] htmlSegments = string.Format("~/pages/{0}.html", path).DelimitSplit("/", "\\");
 
-            LayoutModel result = null;
+            LayoutModel layoutModel = null;
             if (LayoutModelsByPath.ContainsKey(lowered))
             {
-                result = LayoutModelsByPath[lowered];
+                layoutModel = LayoutModelsByPath[lowered];
             }
-            else if (AppRoot.FileExists(out absolutePath, layoutSegments))
+            else if (AppRoot.FileExists(out string absolutePath, layoutSegments))
             {
                 LayoutConf layoutConf = new LayoutConf(AppConf);
                 LayoutConf fromLayoutFile = FileCachesByExtension[LayoutFileExtension].GetText(new FileInfo(absolutePath)).FromJson<LayoutConf>();
                 layoutConf.CopyProperties(fromLayoutFile);
-                result = layoutConf.CreateLayoutModel(htmlSegments);
-                LayoutModelsByPath[lowered] = result;                
+                layoutModel = layoutConf.CreateLayoutModel(htmlSegments);
+                LayoutModelsByPath[lowered] = layoutModel;
             }
             else
             {
                 LayoutConf defaultLayoutConf = new LayoutConf(AppConf);
-                result = defaultLayoutConf.CreateLayoutModel(htmlSegments);
+                layoutModel = defaultLayoutConf.CreateLayoutModel(htmlSegments);
                 FileInfo file = new FileInfo(AppRoot.GetAbsolutePath(layoutSegments));
                 if (!file.Directory.Exists)
                 {
@@ -299,7 +461,7 @@ namespace Bam.Net.Server
                 }
                 // write the file to disk                 
                 defaultLayoutConf.ToJsonFile(file);
-                LayoutModelsByPath[lowered] = result;
+                LayoutModelsByPath[lowered] = layoutModel;
             }
 
             if (string.IsNullOrEmpty(Path.GetExtension(path)))
@@ -307,26 +469,15 @@ namespace Bam.Net.Server
                 string page = path.TruncateFront(1);
                 if (!string.IsNullOrEmpty(page))
                 {
-                    result.StartPage = page;
+                    layoutModel.StartPage = page;
                 }
             }
-            return result;
+            return layoutModel;
         }
 
         public Includes GetAppIncludes()
         {
             return GetAppIncludes(AppConf);
-        }
-
-        private string RemoveBamAppsPrefix(string path)
-        {
-            string mgmtPrefix = $"/bam/apps/{AppConf.DomApplicationIdFromAppName(ApplicationName)}"; // TODO: this is a legacy construct resulting from the way that client side js is written; investigate removal
-            if (path.StartsWith(mgmtPrefix, StringComparison.InvariantCultureIgnoreCase))
-            {
-                path = path.TruncateFront(mgmtPrefix.Length);
-            }
-
-            return path;
         }
 
         private byte[] RenderLayout(IResponse response, string path, string queryString = null)
@@ -346,37 +497,18 @@ namespace Bam.Net.Server
         {
             if (AppConf.CompileTemplates)
             {
-                AppConf.AppRoot.WriteFile("~/compiledTemplates.js", Regex.Unescape(AppTemplateRenderer.CompiledTemplates));
-            }
-        }
-        private void WriteAppScripts()
-        {
-            HashSet<string> filePaths = new HashSet<string>();
-            // get all js files
-            //		in ~/js folder non-recursively
-            AppRoot.GetFiles("~/js", "*.js").Each(fi => filePaths.Add(fi.FullName));
-            //		in ~/pages folder recursively
-            AppRoot.GetFiles("~/pages", "*.js", SearchOption.AllDirectories).Each(fi => filePaths.Add(fi.FullName));
-            //		in ~/viewModels folder recursively
-            AppRoot.GetFiles("~/viewModels", "*.js", SearchOption.AllDirectories).Each(fi => filePaths.Add(fi.FullName));
-            //		in ~/<appName>/include.js file
-            //		in ~s/include.js file
-            Includes appIncludes = GetAppIncludes();
-            LocateIncludes(filePaths, appIncludes);
-            Includes commonIncludes = GetCommonIncludes();
-            LocateIncludes(filePaths, commonIncludes);
+                // TODO: see DustScript.cs line 91 to make Regex.Unescape calls unecessary
+                AppConf.AppRoot.WriteFile("~/combinedTemplates.js", Regex.Unescape(AppTemplateRenderer.CombinedCompiledTemplates));
 
-            StringBuilder combined = new StringBuilder();
-            foreach (string scriptPath in filePaths)
-            {
-                combined.AppendLine(File.ReadAllText(scriptPath));
-            }
-            JavaScriptCompressor compressor = new JavaScriptCompressor();
-            AppConf.AppRoot.WriteFile("~/{0}.js"._Format(ApplicationName), combined.ToString());
-            string combinedSrc = combined.ToString();
-            if (!string.IsNullOrEmpty(combinedSrc))
-            {
-                AppConf.AppRoot.WriteFile("~/{0}.min.js"._Format(ApplicationName), compressor.Compress(combinedSrc));
+                Task.Run(() =>
+                {
+                    Parallel.ForEach(AppTemplateRenderer.CompiledTemplates, (template) =>
+                    {
+                        FileInfo templateFile = new FileInfo(template.SourceFilePath);
+                        FileInfo jsFile = new FileInfo(Path.Combine(templateFile.Directory.FullName, $"{Path.GetFileNameWithoutExtension(templateFile.Name)}.js"));
+                        jsFile.FullName.SafeWriteFile(template.UnescapedCompiled, true);
+                    });
+                });
             }
         }
 
@@ -384,9 +516,7 @@ namespace Bam.Net.Server
         {
             foreach (string script in includes.Scripts)
             {
-                string scriptPath;
-                string[] checkedPaths;
-                if (AppContentLocator.Locate(script, out scriptPath, out checkedPaths))
+                if (AppContentLocator.Locate(script, out string scriptPath, out string[] checkedPaths))
                 {
                     filePaths.Add(AppContentLocator.ContentRoot.GetAbsolutePath(scriptPath));
                 }

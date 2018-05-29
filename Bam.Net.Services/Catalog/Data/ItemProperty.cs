@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Services.Catalog.Data
 {
+    [Serializable]
     public class ItemProperty: AuditRepoData
     {
         public string ItemDefinitionCuid { get; set; }

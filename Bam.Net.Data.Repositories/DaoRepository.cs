@@ -24,15 +24,22 @@ namespace Bam.Net.Data.Repositories
     [Serializable] // for memory size calculation
     public class DaoRepository : Repository, IGeneratesDaoAssembly, IHasTypeSchemaTempPathProvider, IQueryFilterable
     {
+        public DaoRepository()
+        {
+            CtorInit();
+            Database = DataSettings.Current.GetSysDatabaseFor(this);
+            Logger = Log.Default;
+        }
         /// <summary>
         /// Create an instance of DaoRepository
         /// </summary>
         /// <param name="tableNameProvider"></param>
         /// <param name="schemaTempPathProvider"></param>
-        public DaoRepository(ITypeTableNameProvider tableNameProvider = null, Func<SchemaDefinition, TypeSchema, string> schemaTempPathProvider = null)
+        public DaoRepository(ITypeTableNameProvider tableNameProvider, Func<SchemaDefinition, TypeSchema, string> schemaTempPathProvider)
         {
             CtorInit(tableNameProvider, schemaTempPathProvider);
-            Database = new SQLiteDatabase(GetType().Name);
+            Database = DataSettings.Current.GetSysDatabaseFor(this);
+            Logger = Log.Default;
         }
 
         public DaoRepository(Database database, ILogger logger = null, string schemaName = null)
@@ -40,7 +47,7 @@ namespace Bam.Net.Data.Repositories
             CtorInit();
             Database = database;
             Logger = logger ?? Log.Default;
-            Subscribe(logger);
+            Subscribe(Logger);
             SchemaName = schemaName;
         }
 
@@ -574,8 +581,16 @@ namespace Bam.Net.Data.Repositories
             }
             MethodInfo whereMethod = daoType.GetMethod("Where", new Type[] { typeof(QueryFilter), typeof(Database) });
             IEnumerable daoResults = (IEnumerable)whereMethod.Invoke(null, new object[] { query, Database });
-            
-            return wrap ? Wrap(pocoType, daoResults): daoResults.CopyAs(pocoType);
+            if (wrap)
+            {
+                object[] results = Wrap(pocoType, daoResults).ToArray();
+                return results;
+            }
+            else
+            {
+                object[] results = daoResults.CopyAs(pocoType).ToArray();
+                return results;
+            }
         }
         #endregion
 
@@ -614,7 +629,16 @@ namespace Bam.Net.Data.Repositories
             Type daoType = GetDaoType(pocoType);
             MethodInfo topMethod = daoType.GetMethod("Top", new Type[] { typeof(int), typeof(QueryFilter), typeof(string), typeof(SortOrder), typeof(Database) });
             IEnumerable daoResults = (IEnumerable)topMethod.Invoke(null, new object[] { count, query, sortByColumn, sortOrder, Database });
-            return wrap ? Wrap(pocoType, daoResults) : daoResults.CopyAs(pocoType);
+            if (wrap)
+            {
+                object[] results = Wrap(pocoType, daoResults).ToArray();
+                return results;
+            }
+            else
+            {
+                object[] results = daoResults.CopyAs(pocoType).ToArray();
+                return results;
+            }
         }
 
         Dictionary<Type, Type> _daoTypeLookup = new Dictionary<Type, Type>();
@@ -747,7 +771,8 @@ namespace Bam.Net.Data.Repositories
 
 		public object ConstructWrapper(Type baseType)
 		{
-			Type wrapperType = GetWrapperType(baseType);
+
+            Type wrapperType = GetWrapperType(baseType);
 			ConstructorInfo ctor = wrapperType.GetConstructor(new Type[] { typeof(DaoRepository) });
 			object result = null;
 			if (ctor == null)

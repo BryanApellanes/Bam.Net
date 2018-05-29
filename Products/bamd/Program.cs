@@ -1,62 +1,55 @@
-/*
-	Copyright © Bryan Apellanes 2015  
-*/
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
-using Bam.Net;
-using Bam.Net.CommandLine;
-using Bam.Net.Logging;
-using Bam.Net.Incubation;
-using Bam.Net.Configuration;
-using System.IO;
-using Bam.Net.Yaml;
-using Bam.Net.Testing;
 using System.Reflection;
+using System.Data;
+using System.Data.Common;
+using System.Data.Sql;
+using System.Data.SqlClient;
+using System.IO;
+using Bam.Net.CommandLine;
+using Bam.Net;
+using Bam.Net.Testing;
+using Bam.Net.Encryption;
+using Bam.Net.Logging;
+using Bam.Net.Configuration;
 using Bam.Net.Server;
+using System.Threading;
 
 namespace Bam.Net.Application
 {
-    class Program : ServiceExe
+    [Serializable]
+    class Program : CommandLineTestInterface
     {
         static void Main(string[] args)
         {
-            CommandLineInterface.EnsureAdminRights();
-
-            SetInfo(new ServiceInfo("BamDaemon", "Bam Daemon", "Bam http application server"));
-
-            if (!ProcessCommandLineArgs(args))
+            TryWritePid(true);
+            BamDaemonService.SetInfo(BamDaemonService.ServiceInfo);
+            if (!BamDaemonService.ProcessCommandLineArgs(args))
             {
-                RunService<Program>();
-            }
-        }
+                IsolateMethodCalls = false;
+                Resolver.Register();
+                AddConfigurationSwitches();
 
-        protected override void OnStart(string[] args)
-        {
-            Server.Start();
-        }
-
-        protected override void OnStop()
-        {
-            Server.Stop();
-            Thread.Sleep(1000);
-        }
-
-        static BamServer _server;
-        static object _serverLock = new object();
-        public static BamServer Server
-        {
-            get
-            {
-                return _serverLock.DoubleCheckLock(ref _server, () =>
+                Initialize(args, (a) =>
                 {
-                    BamConf conf = BamConf.Load();
-                    return new BamServer(conf);
+                    OutLineFormat("Error parsing arguments: {0}", ConsoleColor.Red, a.Message);
+                    Environment.Exit(1);
                 });
+                if (Arguments.Contains("singleProcess"))
+                {
+                    KillExistingProcess();
+                }
+                if (Arguments.Contains("i"))
+                {
+                    Interactive();
+                }
+                else
+                {
+                    BamDaemonService.RunService<BamDaemonService>();
+                }
             }
         }
-
     }
 }

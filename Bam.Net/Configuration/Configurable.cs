@@ -9,6 +9,12 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Configuration
 {
+    /// <summary>
+    /// A base class providing methods for configuring 
+    /// properties using an IConfigurer.
+    /// </summary>
+    /// <seealso cref="Bam.Net.Configuration.IConfigurable" />
+    /// <seealso cref="Bam.Net.Configuration.IHasRequiredProperties" />
     public abstract class Configurable: IConfigurable, IHasRequiredProperties
     {
         /// <summary>

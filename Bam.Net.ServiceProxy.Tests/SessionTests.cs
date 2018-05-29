@@ -52,7 +52,7 @@ namespace Bam.Net.ServiceProxy.Tests
             config.SchemaInitializer.Initialize(new ConsoleLogger(), out ex);
             Expect.IsNull(ex);
 
-            SecureSession testObject = SecureSession.Get(new ServiceProxyTestHelpers.TestRequest(), A.Fake<IResponse>());
+            SecureSession testObject = SecureSession.Get(new ServiceProxyTestHelpers.FormUrlEncodedTestRequest(), A.Fake<IResponse>());
             string data = "Monkey";
             string cipher = testObject.EncryptWithPublicKey(data);
             string decrypted = testObject.DecryptWithPrivateKey(cipher);
@@ -74,7 +74,7 @@ namespace Bam.Net.ServiceProxy.Tests
         {
             SecureChannel server = new SecureChannel();
             server.HttpContext = A.Fake<IHttpContext>();
-            server.HttpContext.Request = new ServiceProxyTestHelpers.TestRequest();
+            server.HttpContext.Request = new ServiceProxyTestHelpers.FormUrlEncodedTestRequest();
 
             SecureChannelMessage<ClientSessionInfo> message = server.InitSession(new Instant());
             ClientSessionInfo sessionInfo = message.Data;
@@ -91,7 +91,7 @@ namespace Bam.Net.ServiceProxy.Tests
         {
             SecureChannel server = new SecureChannel();
             server.HttpContext = A.Fake<IHttpContext>();
-            server.HttpContext.Request = new ServiceProxyTestHelpers.TestRequest();
+            server.HttpContext.Request = new ServiceProxyTestHelpers.FormUrlEncodedTestRequest();
 
             SecureChannelMessage<ClientSessionInfo> one = server.InitSession(new Instant());
             SecureChannelMessage<ClientSessionInfo> two = server.InitSession(new Instant());
@@ -131,7 +131,7 @@ namespace Bam.Net.ServiceProxy.Tests
 
             SecureChannel server = new SecureChannel();
             server.HttpContext = A.Fake<IHttpContext>();
-            server.HttpContext.Request = new ServiceProxyTestHelpers.TestRequest();
+            server.HttpContext.Request = new ServiceProxyTestHelpers.FormUrlEncodedTestRequest();
             SecureChannelMessage<ClientSessionInfo> msg = server.InitSession(new Instant());
 
             AesKeyVectorPair kvp;
@@ -148,7 +148,7 @@ namespace Bam.Net.ServiceProxy.Tests
         {
             InitializeSecureChannelSchema();
 
-            SecureSession testObject = SecureSession.Get(new ServiceProxyTestHelpers.TestRequest(), A.Fake<IResponse>());
+            SecureSession testObject = SecureSession.Get(new ServiceProxyTestHelpers.FormUrlEncodedTestRequest(), A.Fake<IResponse>());
             string data = "Monkey";
             string cipher = testObject.EncryptWithPublicKey(data);
             string decrypted = testObject.DecryptWithPrivateKey(cipher);

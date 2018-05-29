@@ -14,6 +14,7 @@ using Bam.Net;
 using Bam.Net.ExceptionHandling;
 using Bam.Net.Testing.Integration;
 using Bam.Net.Testing.Unit;
+using System.Diagnostics;
 
 namespace Bam.Net.Testing
 {
@@ -31,7 +32,8 @@ namespace Bam.Net.Testing
 
         protected static MethodInfo DefaultMethod { get; set; }
 
-		public static void Initialize(string[] args, ConsoleArgsParsedDelegate parseErrorHandler = null)
+        [DebuggerStepThrough]
+        public static void Initialize(string[] args, ConsoleArgsParsedDelegate parseErrorHandler = null)
 		{
             AssemblyResolve.Monitor(()=>
             {
@@ -206,6 +208,7 @@ namespace Bam.Net.Testing
             }
             foreach(ITestRunListener<UnitTestMethod> listener in GetUnitTestRunListeners())
             {
+                listener.Tag = runner.Tag;
                 listener.Listen(runner);
             }
             runner.RunAllTests();

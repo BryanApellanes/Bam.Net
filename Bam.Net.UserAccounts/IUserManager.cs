@@ -11,7 +11,6 @@ namespace Bam.Net.UserAccounts
         Func<string, string> GetConfirmationUrlFunction { get; set; }
         Func<string, string> GetPasswordResetUrlFunction { get; set; }
         int PasswordResetTokensExpireInThisManyMinutes { get; set; }
-        string SmtpSettingsVaultPath { get; set; }
 
         event EventHandler ConfirmAccountFailed;
         event EventHandler ConfirmAccountSucceeded;
@@ -30,7 +29,6 @@ namespace Bam.Net.UserAccounts
         event EventHandler SignUpSucceeded;
 
         ConfirmResponse ConfirmAccount(string token);
-        Email CreateEmail(string fromAddress = null, string fromDisplayName = null);
         ForgotPasswordResponse ForgotPassword(string emailAddress);
         User GetUser(IHttpContext context);
         CheckEmailResponse IsEmailInUse(string emailAddress);

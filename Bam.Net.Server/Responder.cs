@@ -92,17 +92,17 @@ namespace Bam.Net.Server
             set;
         }
 
+        Fs _serverRoot;
         public Fs ServerRoot
         {
             get
             {
-                return BamConf.Fs;
+                return _serverRoot ?? BamConf.Fs;
             }
-        }
-
-        public Fs AppFs(string appName)
-        {
-            return BamConf.AppFs(appName);
+            protected set
+            {
+                _serverRoot = value;
+            }
         }
 
         /// <summary>
@@ -153,6 +153,12 @@ namespace Bam.Net.Server
         public static void SendResponse(IResponse response, string output, int statusCode = 200, Encoding encoding = null, Dictionary<string, string> headers = null)
         {
             encoding = encoding ?? Encoding.UTF8;
+            byte[] data = encoding.GetBytes(output);
+            SendResponse(response, data, statusCode, headers);
+        }
+
+        public static void SendResponse(IResponse response, byte[] data, int statusCode, Dictionary<string, string> headers)
+        {
             if (headers != null)
             {
                 headers.Keys.Each(key =>
@@ -160,12 +166,11 @@ namespace Bam.Net.Server
                     response.Headers.Add(key, headers[key]);
                 });
             }
-            byte[] data = encoding.GetBytes(output);
             response.OutputStream.Write(data, 0, data.Length);
             response.StatusCode = statusCode;
             response.Close();
         }
-        
+
         protected string GetContentTypeForExtension(string ext)
         {
             string contentType = string.Empty;
@@ -252,14 +257,8 @@ namespace Bam.Net.Server
 
         protected static void WireResponseLogging(IResponder responder, ILogger logger)
         {
-            responder.Responded += (r, context) =>
-            {
-                logger.AddEntry("*** ({0}) Responded ***\r\n{1}", LogEventType.Information, responder.Name, context.Request.PropertiesToString());
-            };
-            responder.NotResponded += (r, context) =>
-            {
-                logger.AddEntry("*** Didn't Respond ***\r\n{0}", LogEventType.Warning, context.Request.PropertiesToString());
-            };
+            responder.Responded += (r, context) => logger.AddEntry("*** ({0}) Responded ***\r\n{1}", LogEventType.Information, r.Name, context.Request.PropertiesToString());
+            responder.NotResponded += (r, context) => logger.AddEntry("*** ({0}) Didn't Respond ***\r\n{1}", LogEventType.Warning, r.Name, context.Request.PropertiesToString());
         }
 
         protected void WireResponseLogging(ILogger logger)

@@ -36,7 +36,7 @@ namespace Bam.Net.Automation
         /// final zip file including the desired extension
         /// </summary>
         public string TargetPath { get; set; }
-        protected override WorkState Do()
+        protected override WorkState Do(WorkState previousWorkState)
         {
             Validate.RequiredProperties(this);
             

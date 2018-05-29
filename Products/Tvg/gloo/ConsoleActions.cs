@@ -26,7 +26,6 @@ namespace Bam.Net.Application
         static string contentRootConfigKey = "ContentRoot";
         static string defaultContentRoot = "C:\\bam\\content";
         static string defaultGlooScriptsSrcPath = "C:\\bam\\sys\\gloo\\scripts";
-        static string csGlooBin = "C:\\bam\\sys\\gloo\\bin";
 
         static GlooServer glooServer;
         
@@ -64,7 +63,7 @@ namespace Bam.Net.Application
                 {
                     throw new InvalidOperationException(string.Format("The type {0} was not found in the assembly {1}", serviceClassName, assembly.GetFilePath()));
                 }
-                HostPrefix[] prefixes = GetConfiguredHostPrefix();
+                HostPrefix[] prefixes = ServiceConfig.GetConfiguredHostPrefixes();
                 if (serviceType.HasCustomAttributeOfType(out ServiceSubdomainAttribute attr))
                 {
                     foreach(HostPrefix prefix in prefixes)
@@ -92,7 +91,7 @@ namespace Bam.Net.Application
             string registries = GetArgument("registries", "Enter the registry names to serve in a comma separated list ");
             ServeRegistries(logger, registries);
         }
-
+        
         [ConsoleAction("app", "Start the gloo server serving the registry for the current application (determined by the default configuration file ApplicationName value)")]
         public void ServeApplicationRegistry()
         {
@@ -103,6 +102,10 @@ namespace Bam.Net.Application
         [ConsoleAction("createRegistry", "Menu driven Service Registry creation")]
         public void CreateRegistry()
         {
+            DataSettings dataSettings = DataSettings.Default;
+            IApplicationNameProvider appNameProvider = DefaultConfigurationApplicationNameProvider.Instance;
+            ServiceRegistryService serviceRegistryService = ServiceRegistryService.GetLocalServiceRegistryService(dataSettings, appNameProvider, GetArgument("AssemblySearchPattern", "Please specify the AssemblySearchPattern to use"), GetLogger());
+
             List<dynamic> types = new List<dynamic>();
             string assemblyPath = "\r\n";
             DirectoryInfo sysData = DataSettings.Current.GetSysDataDirectory(nameof(ServiceRegistry).Pluralize());
@@ -119,6 +122,8 @@ namespace Bam.Net.Application
                     }
                     else
                     {
+                        OutLineFormat("Storing assembly file chunks: {0}", ConsoleColor.Cyan, assembly.FullName);
+                        serviceRegistryService.FileService.StoreFileChunks(assembly.GetFileInfo(), assembly.FullName);
                         string className = "\r\n";
                         while (!className.Equals(string.Empty))
                         {
@@ -154,9 +159,22 @@ namespace Bam.Net.Application
         public void ServeCsGloo()
         {
             string csglooDirectoryPath = GetArgument("CsGlooSrc", $"Enter the path to the CsGloo source directory (default: {defaultGlooScriptsSrcPath})");
-            DirectoryInfo csglooSrcDirectory = new DirectoryInfo(csglooDirectoryPath.Or(defaultGlooScriptsSrcPath)).EnsureExists();
-            DirectoryInfo csglooBinDirectory = new DirectoryInfo(csGlooBin).EnsureExists();
-            FileInfo[] files = csglooSrcDirectory.GetFiles("*.csgloo", SearchOption.AllDirectories);
+            Assembly csglooAssembly = CompileTvgSource(csglooDirectoryPath, "csgloo");
+
+            string contentRoot = GetArgument("ContentRoot", $"Enter the path to the content root (default: {defaultContentRoot} ");
+
+            HostPrefix[] prefixes = ServiceConfig.GetConfiguredHostPrefixes();
+            Type[] glooTypes = csglooAssembly.GetTypes().Where(t => t.HasCustomAttributeOfType<ProxyAttribute>()).ToArray();
+            ServeServiceTypes(contentRoot, prefixes, null, glooTypes);
+            Pause($"Gloo server is serving cs gloo types: {string.Join(", ", glooTypes.Select(t => t.Name).ToArray())}");
+        }
+
+        public static Assembly CompileTvgSource(string csglooDirectoryPath, string extension)
+        {
+            string binPath = $"C:\\bam\\sys\\{extension}\\bin";
+            DirectoryInfo csTvgSrcDirectory = new DirectoryInfo(csglooDirectoryPath.Or(defaultGlooScriptsSrcPath)).EnsureExists();
+            DirectoryInfo csTvgBinDirectory = new DirectoryInfo(binPath).EnsureExists();
+            FileInfo[] files = csTvgSrcDirectory.GetFiles($"*.{extension}", SearchOption.AllDirectories);
             StringBuilder src = new StringBuilder();
             foreach (FileInfo file in files)
             {
@@ -164,39 +182,33 @@ namespace Bam.Net.Application
             }
             string hash = src.ToString().Sha1();
             string assemblyName = $"{hash}.dll";
-            Assembly csglooAssembly = null;
-            string csglooAssemblyBinPath = Path.Combine(csglooBinDirectory.FullName, assemblyName);
-            if (!File.Exists(csglooAssemblyBinPath))
+            Assembly csTvgAssembly = null;
+            string csTvgAssemblyBinPath = Path.Combine(csTvgBinDirectory.FullName, assemblyName);
+            if (!File.Exists(csTvgAssemblyBinPath))
             {
-                csglooAssembly = files.ToAssembly(assemblyName);
-                FileInfo assemblyFile = csglooAssembly.GetFileInfo();
-                FileInfo targetPath = new FileInfo(csglooAssemblyBinPath);
+                csTvgAssembly = files.ToAssembly(assemblyName);
+                FileInfo assemblyFile = csTvgAssembly.GetFileInfo();
+                FileInfo targetPath = new FileInfo(csTvgAssemblyBinPath);
                 if (!targetPath.Directory.Exists)
                 {
                     targetPath.Directory.Create();
                 }
-                File.Copy(assemblyFile.FullName, csglooAssemblyBinPath);
+                File.Copy(assemblyFile.FullName, csTvgAssemblyBinPath);
             }
             else
             {
-                csglooAssembly = Assembly.LoadFile(csglooAssemblyBinPath);
+                csTvgAssembly = Assembly.LoadFile(csTvgAssemblyBinPath);
             }
 
-            string contentRoot = GetArgument("ContentRoot", $"Enter the path to the content root (default: {defaultContentRoot} ");
-
-            HostPrefix[] prefixes = GetConfiguredHostPrefix();
-            Type[] glooTypes = csglooAssembly.GetTypes().Where(t => t.HasCustomAttributeOfType<ProxyAttribute>()).ToArray();
-            ServeServiceTypes(contentRoot, prefixes, null, glooTypes);
-            Pause($"Gloo server is serving cs gloo types: {string.Join(", ", glooTypes.Select(t => t.Name).ToArray())}");
+            return csTvgAssembly;
         }
 
         private static void ServeRegistries(ILogger logger, string registries)
         {
             string contentRoot = GetArgument("ContentRoot", $"Enter the path to the content root (default: {defaultContentRoot} ");
-            DataSettings dataSettings = DataSettings.Default;
+            DataSettings dataSettings = DataSettings.Current;
             IApplicationNameProvider appNameProvider = DefaultConfigurationApplicationNameProvider.Instance;
-
-            ServiceRegistryService serviceRegistryService = GetCoreServiceRegistrationService(logger, dataSettings, appNameProvider);
+            ServiceRegistryService serviceRegistryService = ServiceRegistryService.GetLocalServiceRegistryService(dataSettings, appNameProvider, GetArgument("AssemblySearchPattern", "Please specify the AssemblySearchPattern to use"), logger);
 
             string[] requestedRegistries = registries.DelimitSplit(",");
             HashSet<Type> serviceTypes = new HashSet<Type>();
@@ -215,38 +227,22 @@ namespace Bam.Net.Application
                 allTypes.CombineWith(registry);
             }
             Type[] services = serviceTypes.ToArray();
-            ServeServiceTypes(contentRoot, GetConfiguredHostPrefix(), allTypes, services);
+            if(services.Length == 0)
+            {
+                throw new ArgumentException("No services were loaded");
+            }
+            ServeServiceTypes(contentRoot, ServiceConfig.GetConfiguredHostPrefixes(), allTypes, services);
             Pause($"Gloo server is serving services\r\n\t{services.ToArray().ToDelimited(s => s.FullName, "\r\n\t")}");
-        }
-
-        private static ServiceRegistryService GetCoreServiceRegistrationService(ILogger logger, DataSettings dataSettings, IApplicationNameProvider appNameProvider)
-        {
-            FileService fileService = new FileService(new DaoRepository(dataSettings.GetSysDatabaseFor(typeof(FileService), $"{nameof(ServiceRegistryService)}_{nameof(FileService)}")));
-            AssemblyServiceRepository assRepo = new AssemblyServiceRepository();
-            assRepo.Database = dataSettings.GetSysDatabaseFor(assRepo);
-            assRepo.EnsureDaoAssemblyAndSchema();
-            AssemblyService assemblyService = new AssemblyService(DataSettings.Current, fileService, assRepo, appNameProvider);
-            ServiceRegistryRepository serviceRegistryRepo = new ServiceRegistryRepository();
-            serviceRegistryRepo.Database = dataSettings.GetSysDatabaseFor(serviceRegistryRepo);
-            serviceRegistryRepo.EnsureDaoAssemblyAndSchema();
-            ServiceRegistryService serviceRegistryService = new ServiceRegistryService(
-                fileService,
-                assemblyService,
-                serviceRegistryRepo,
-                DataSettings.Default.GetGenericDaoRepository(logger),
-                new AppConf { Name = appNameProvider.GetApplicationName() }
-            );
-            return serviceRegistryService;
         }
 
         public static void ServeServiceTypes(string contentRoot, HostPrefix[] prefixes, ServiceRegistry registry = null, params Type[] serviceTypes)
         {
             BamConf conf = BamConf.Load(contentRoot.Or(defaultContentRoot));
-            if(registry != null && GlooServer.ServiceRegistry == null)
+            if(registry != null && ServiceRegistry.Default == null)
             {
-                GlooServer.ServiceRegistry = registry;
+                ServiceRegistry.Default = registry;
             }
-            glooServer = new GlooServer(conf, GetLogger(), GetArgument("verbose", "Log responses?").IsAffirmative())
+            glooServer = new GlooServer(conf, GetLogger(), GetArgument("verbose", "Log responses to the console?").IsAffirmative())
             {
                 HostPrefixes = new HashSet<HostPrefix>(prefixes),
                 MonitorDirectories = new string[] { }                
@@ -259,27 +255,12 @@ namespace Bam.Net.Application
         public static void StartGlooServer(ConsoleLogger logger)
         {
             BamConf conf = BamConf.Load(DefaultConfiguration.GetAppSetting(contentRootConfigKey).Or(defaultContentRoot));
-            glooServer = new GlooServer(conf, logger, GetArgument("verbose", "Log responses?").IsAffirmative())
+            glooServer = new GlooServer(conf, logger, GetArgument("verbose", "Log responses to the console?").IsAffirmative())
             {
                 HostPrefixes = new HashSet<HostPrefix>(HostPrefix.FromDefaultConfiguration("localhost", 9100)),
                 MonitorDirectories = DefaultConfiguration.GetAppSetting("MonitorDirectories").DelimitSplit(",", ";")
             };
             glooServer.Start();
-        }
-
-        public static HostPrefix[] GetConfiguredHostPrefix()
-        {
-            HostPrefix hostPrefix = new HostPrefix()
-            {
-                HostName = GetArgument("HostName", true),
-                Port = int.Parse(GetArgument("Port", true).Or("9100")),
-                Ssl = bool.Parse(GetArgument("Ssl", true).Or("false"))
-            };
-            HashSet<HostPrefix> results = new HashSet<HostPrefix>(HostPrefix.FromDefaultConfiguration("localhost", 9100))
-            {
-                hostPrefix
-            };
-            return results.ToArray();
         }
 
         private static ConsoleLogger GetLogger()
@@ -316,11 +297,19 @@ namespace Bam.Net.Application
             if(result == null)
             {
                 string assemblyPath = GetArgument("assemblyPath", true);
-                result = Assembly.LoadFrom(assemblyPath);
-                type = GetType(result, className);
-                if(type == null)
+                if (!File.Exists(assemblyPath))
                 {
-                    type = result.GetType(className);
+                    assemblyPath = new FileInfo(assemblyPath).FullName;
+                }
+
+                if (File.Exists(assemblyPath))
+                { 
+                    result = Assembly.LoadFrom(assemblyPath);
+                    type = GetType(result, className);
+                    if (type == null)
+                    {
+                        type = result.GetType(className);
+                    }
                 }
             }
 

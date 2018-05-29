@@ -90,7 +90,7 @@ namespace Bam.Net.ServiceProxy
                 MethodName = method.Name,
                 MethodInfo = method,
                 IsInitialized = true,
-                Parameters = parameters,
+                Arguments = parameters,
                 ClassName = method.DeclaringType.Name,
                 TargetType = method.DeclaringType
             };
@@ -108,9 +108,11 @@ namespace Bam.Net.ServiceProxy
                 execRequest.Instance.GetType() == typeof(SecureChannel) &&
                 execRequest.MethodName.Equals(nameof(SecureChannel.Invoke)))
             {
-                execRequest.InputString = SecureSession.Get(execRequest.Context).Decrypt(execRequest.InputString);
+                execRequest.InputString = SecureSession.Get(execRequest.Context).Decrypt(execRequest.InputString, out Decrypted decrypted);                
+                execRequest.Decrypted = decrypted;
                 HttpArgs args = new HttpArgs();
                 args.ParseJson(execRequest.InputString);
+                
                 execRequest.JsonParams = args["jsonParams"];
                 execRequest.Instance.Property("Logger", execRequest.Logger);
             }
@@ -214,21 +216,7 @@ namespace Bam.Net.ServiceProxy
                 {
                     OnInitializing();
 
-                    if (HttpMethod.Equals("POST") && string.IsNullOrEmpty(Path.GetExtension(Request.Url.AbsolutePath)))
-                    {
-                        HttpArgs args = HttpArgs;
-                        string jsonParams;
-                        if (args.Has("jsonParams", out jsonParams))
-                        {
-                            JsonParams = jsonParams;
-                        }
-                    }
-                    else if (InputString.StartsWith("{")) // TODO: this should be reviewed for validity, check Content/Type
-                    {
-                        JsonParams = InputString;
-                    }
-
-                    ParseRequestUrl();
+                    ResolveExecutionTargetInfo();
                     IsInitialized = true;
 
                     OnInitialized();
@@ -288,10 +276,21 @@ namespace Bam.Net.ServiceProxy
             }
         }
         
-        protected internal virtual void ParseRequestUrl()
+        /// <summary>
+        /// Parse the Url to determine class, method and extension
+        /// </summary>
+        protected internal virtual ExecutionTargetInfo ResolveExecutionTargetInfo()
         {
             // parse the request url to set the className, methodName and ext
-            string path = RequestUrl.AbsolutePath;
+            ExecutionTargetInfo executionTargetInfo = ResolveExecutionTarget(RequestUrl.AbsolutePath, ServiceProvider, ProxyAliases);
+            _className = executionTargetInfo.ClassName;
+            _methodName = executionTargetInfo.MethodName;
+            _ext = executionTargetInfo.Ext;
+            return executionTargetInfo;
+        }
+
+        private static ExecutionTargetInfo ResolveExecutionTarget(string path, Incubator serviceProvider, ProxyAlias[] proxyAliases)
+        {
             if (path.ToLowerInvariant().StartsWith("/get"))
             {
                 path = path.TruncateFront(4);
@@ -301,40 +300,8 @@ namespace Bam.Net.ServiceProxy
                 path = path.TruncateFront(5);
             }
 
-            Queue<string> split = new Queue<string>(path.DelimitSplit("/", "."));
-            while (split.Count > 0)
-            {
-                string currentChunk = split.Dequeue();
-                string upperred = currentChunk.ToUpperInvariant();
+            return ExecutionTargetInfo.ResolveExecutionTarget(path, serviceProvider, proxyAliases);
 
-                if (string.IsNullOrEmpty(_className))
-                {
-                    if (!ServiceProvider.HasClass(currentChunk) && ProxyAliases != null)
-                    {
-                        ProxyAlias alias = ProxyAliases.Where(pa => pa.Alias.Equals(currentChunk)).FirstOrDefault();
-                        if (alias != null)
-                        {
-                            _className = alias.ClassName;
-                        }
-                        else
-                        {
-                            _className = currentChunk;
-                        }
-                    }
-                    else
-                    {
-                        _className = currentChunk;
-                    }
-                }
-                else if (string.IsNullOrEmpty(_methodName))
-                {
-                    _methodName = currentChunk;
-                }
-                else if (string.IsNullOrEmpty(_ext))
-                {
-                    _ext = currentChunk;
-                }
-            }
         }
 
         string _className;
@@ -457,7 +424,7 @@ namespace Bam.Net.ServiceProxy
                 }
                 return _methodInfo;
             }
-            private set
+            protected set
             {
                 _methodInfo = value;
             }
@@ -477,20 +444,20 @@ namespace Bam.Net.ServiceProxy
             }
         }
 
-        object[] _parameters;
-        public object[] Parameters
+        object[] _arguments;
+        public object[] Arguments
         {
             get
             {
-                if (_parameters == null)
+                if (_arguments == null)
                 {
-                    _parameters = GetParameters();
+                    _arguments = GetArguments();
                 }
-                return _parameters;
+                return _arguments;
             }
             set
             {
-                _parameters = value;
+                _arguments = value;
             }
         }
 
@@ -500,7 +467,7 @@ namespace Bam.Net.ServiceProxy
             set;
         }
 
-        protected object[] GetParameters() 
+        protected virtual object[] GetArguments() 
         {
             // TODO: consider breaking this class up into specific ExecutionRequest implementations that encapsulate the style of parameters
             //  JsonParamsExecutionRequest, OrderedHttpArgsExecutionRequest, FormEncodedPostExecutionRequest, QueryStringParametersExecutionRequest
@@ -511,33 +478,32 @@ namespace Bam.Net.ServiceProxy
             // changes continue to be necessary
 
             object[] result = new object[] { }; ;
-            string jsonParams;
-            if (HttpArgs.Has("jsonParams", out jsonParams))
+            if (HttpArgs.Has("jsonParams", out string jsonParams))
             {
                 string[] jsonStrings = jsonParams.FromJson<string[]>();
-                result = GetJsonParameters(jsonStrings);
+                result = GetJsonArguments(jsonStrings);
             }
-            else if (HttpArgs.Ordered.Length > 0)
-            {
-                result = new object[HttpArgs.Ordered.Length];
-                HttpArgs.Ordered.Each((val, i) =>
-                {
-                    result[i] = val;
-                });
-            }
+            //else if (HttpArgs.Ordered.Length > 0)
+            //{
+            //    result = new object[HttpArgs.Ordered.Length];
+            //    HttpArgs.Ordered.Each((val, i) =>
+            //    {
+            //        result[i] = val;
+            //    });
+            //}
             else if (!string.IsNullOrEmpty(JsonParams))
             {
                 // POST: bam.invoke
                 string[] jsonStrings = JsonParams.FromJson<string[]>();
 
-                result = GetJsonParameters(jsonStrings);
+                result = GetJsonArguments(jsonStrings);
             }
             else if (Request != null && InputString.Length > 0)
             {
                 // POST: probably from a form
                 Queue<string> inputValues = new Queue<string>(InputString.Split('&'));
 
-                result = GetFormParameters(inputValues);
+                result = GetFormArguments(inputValues);
             }
             else if (Request != null)
             {
@@ -556,15 +522,15 @@ namespace Bam.Net.ServiceProxy
                 {
                     dynamic o = JsonConvert.DeserializeObject<dynamic>(jsonParams);
                     string[] jsonStrings = ((string)(o["jsonParams"])).FromJson<string[]>();
-                    result = GetJsonParameters(jsonStrings);
+                    result = GetJsonArguments(jsonStrings);
                 }
                 else if (named)
                 {
-                    result = GetNamedQueryStringParameters();
+                    result = GetNamedQueryStringArguments();
                 }
                 else
                 {
-                    result = GetNumberedParameters();
+                    result = GetNumberedQueryStringArguments();
                 }
             }
 
@@ -623,7 +589,7 @@ namespace Bam.Net.ServiceProxy
             return string.Format("{0}:\r\n\r\n{1}", ex.Message, st);
         }
 
-        private object[] GetJsonParameters(string[] jsonStrings)
+        private object[] GetJsonArguments(string[] jsonStrings)
         {
             if (jsonStrings.Length != ParameterInfos.Length)
             {
@@ -642,7 +608,7 @@ namespace Bam.Net.ServiceProxy
             return paramInstances;
         }
 
-        private object[] GetNamedQueryStringParameters()
+        private object[] GetNamedQueryStringArguments()
         {
             object[] results = new object[ParameterInfos.Length];
             for (int i = 0; i < ParameterInfos.Length; i++)
@@ -667,7 +633,7 @@ namespace Bam.Net.ServiceProxy
             }
         }
 
-        private object[] GetNumberedParameters()
+        private object[] GetNumberedQueryStringArguments()
         {
             object[] results = new object[ParameterInfos.Length];
             for (int i = 0; i < ParameterInfos.Length; i++)
@@ -704,7 +670,7 @@ namespace Bam.Net.ServiceProxy
             }
         }
         // parse form input
-        private object[] GetFormParameters(Queue<string> inputValues)
+        private object[] GetFormArguments(Queue<string> inputValues)
         {
             object[] result = new object[ParameterInfos.Length]; // holder for results
 
@@ -951,7 +917,7 @@ namespace Bam.Net.ServiceProxy
                     target = SetServiceProvider(target);
                     OnAnyExecuting(target);
                     OnExecuting(target);
-                    Result = MethodInfo.Invoke(target, Parameters);
+                    Result = MethodInfo.Invoke(target, Arguments);
                     OnExecuted(target);
                     OnAnyExecuted(target);
                     result = true;
@@ -971,8 +937,7 @@ namespace Bam.Net.ServiceProxy
         protected internal object SetContext(object target)
         {
             object result = target;
-            IRequiresHttpContext takesContext = target as IRequiresHttpContext;
-            if (takesContext != null)
+            if (target is IRequiresHttpContext takesContext)
             {
                 takesContext = (IRequiresHttpContext)takesContext.Clone();
                 takesContext.HttpContext = Context;
@@ -985,8 +950,7 @@ namespace Bam.Net.ServiceProxy
         protected internal object SetServiceProvider(object target)
         {
             object result = target;
-            IHasServiceProvider hasIncubator = target as IHasServiceProvider;
-            if(hasIncubator != null)
+            if (target is IHasServiceProvider hasIncubator)
             {
                 hasIncubator.ServiceProvider = ServiceProvider;
                 OnServiceProviderSet(target);

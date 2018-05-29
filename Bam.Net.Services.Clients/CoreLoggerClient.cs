@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.CoreServices;
 using Bam.Net.Logging;
+using Bam.Net.CommandLine;
 
 namespace Bam.Net.Services.Clients
 {
@@ -19,7 +20,9 @@ namespace Bam.Net.Services.Clients
         public CoreLoggerClient(string hostName, int port)
         {
             _proxyFactory = new ProxyFactory();
-            _loggerService = _proxyFactory.GetProxy<SystemLoggerService>(hostName, port);
+            ConsoleLogger logger = new ConsoleLogger();
+            logger.StartLoggingThread();
+            _loggerService = _proxyFactory.GetProxy<SystemLoggerService>(hostName, port, logger);
         }
 
         public override void CommitLogEvent(LogEvent logEvent)

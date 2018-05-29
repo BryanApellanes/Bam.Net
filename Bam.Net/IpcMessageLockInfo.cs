@@ -25,8 +25,7 @@ namespace Bam.Net
 
         public override bool Equals(object obj)
         {
-            IpcMessageLockInfo lockInfo = obj as IpcMessageLockInfo;
-            if(lockInfo != null)
+            if (obj is IpcMessageLockInfo lockInfo)
             {
                 return lockInfo.ProcessId == ProcessId && MachineName.Equals(MachineName);
             }

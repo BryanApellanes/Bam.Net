@@ -12,7 +12,16 @@
 	System for simply and easily exposing pocos as RESTful webservices
 	with automatic generation of both .Net and Javascript clients
 	</description>
-    <releaseNotes>Version 1.9.1
+    <releaseNotes>Version v1.9.1
+Updates since v1.9.1:
+ -   enable logging and subscribing to proxy client invocation exceptions (5bdb3bda)
+ -   add details to generated proxies (acaf82d7)
+ -   add host to proxy (797d4475)
+ -   output host to generated js (843ee4fc)
+ -   refactor exeuction request resolution (21281925)
+ -   refactor executionrequest resolution (0a6221a6)
+ -   refactor content type handling (43827a62)
+ -   minor refactor for smoother en/de/cryption (b551a27e)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>

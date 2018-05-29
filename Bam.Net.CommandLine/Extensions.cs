@@ -13,9 +13,13 @@ namespace Bam.Net.CommandLine
 {
     public static class Extensions
     {
-        public static void InvokeInCurrentAppDomain(this ConsoleMethod consoleInvokeableMethod)
+        /// <summary>
+        /// Invokes the specified console method in current application domain.
+        /// </summary>
+        /// <param name="consoleMethod">The console method.</param>
+        public static void InvokeInCurrentAppDomain(this ConsoleMethod consoleMethod)
         {
-            CommandLineInterface.InvokeInCurrentAppDomain(consoleInvokeableMethod.Method, consoleInvokeableMethod.Provider, consoleInvokeableMethod.Parameters);
+            CommandLineInterface.InvokeInCurrentAppDomain(consoleMethod.Method, consoleMethod.Provider, consoleMethod.Parameters);
         }
 
         public static void InvokeInSeparateAppDomain(this ConsoleMethod consoleInvokeableMethod)
@@ -28,6 +32,12 @@ namespace Bam.Net.CommandLine
             return Task.Run(()=> Run(command, timeout));
         }
 
+        /// <summary>
+        /// Runs the specified command.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="timeout">The timeout.</param>
+        /// <returns></returns>
         public static ProcessOutput Run(this string command, int timeout = 600000)
         {
             return command.Run(false, null, null, timeout);
@@ -75,6 +85,27 @@ namespace Bam.Net.CommandLine
             return Run(string.IsNullOrEmpty(exe) ? command : exe, arguments, promptForAdmin, output, error, timeout);
         }
 
+        public static ProcessOutput Run(this string command, bool promptForAdmin, ProcessOutputCollector outputCollector, int timeout = 600000)
+        {
+            ValidateCommand(command);
+            GetExeAndArguments(command, out string exe, out string arguments);
+            ProcessStartInfo startInfo = CreateStartInfo(promptForAdmin);
+            startInfo.FileName = command;
+            startInfo.Arguments = arguments;
+            return Run(startInfo, outputCollector, timeout);
+        }
+
+        public static ProcessStartInfo ToStartInfo(this string command, string workingDirectory, bool promptForAdmin = false, int timeout = 600000)
+        {
+            ValidateCommand(command);
+            GetExeAndArguments(command, out string exe, out string arguments);
+            ProcessStartInfo startInfo = CreateStartInfo(promptForAdmin);
+            startInfo.FileName = command;
+            startInfo.Arguments = arguments;
+            startInfo.WorkingDirectory = workingDirectory;
+            return startInfo;
+        }
+
         /// <summary>
         /// Start a new process for the specified startInfo.  This 
         /// operation will block if a timeout greater than 0 is specified
@@ -96,17 +127,31 @@ namespace Bam.Net.CommandLine
         /// <param name="error"></param>
         /// <param name="timeout"></param>
         /// <returns></returns>
-        public static ProcessOutput Run(this ProcessStartInfo startInfo, StringBuilder output = null, StringBuilder error = null, int timeout = 600000)
+        public static ProcessOutput Run(this ProcessStartInfo startInfo, StringBuilder output, StringBuilder error = null, int timeout = 600000)
         {
             output = output ?? new StringBuilder();
             error = error ?? new StringBuilder();
             ProcessOutputCollector receiver = new ProcessOutputCollector(output, error);
             return Run(startInfo, receiver, timeout);
         }
-        
-        public static ProcessOutput Run(this string command, Action<string> onStandardOutput, int timeout = 600000)
+
+        /// <summary>
+        /// Run the specified command in a separate process capturing the output
+        /// and error streams if any. This method will block if a timeout is specified, it will
+        /// not block if timeout is null.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="onStandardOutput">The on standard output.</param>
+        /// <param name="timeout">The timeout.</param>
+        /// <returns></returns>
+        public static ProcessOutput Run(this string command, Action<string> onStandardOutput, int? timeout = 600000)
         {
             return Run(command, null, onStandardOutput, (s) => { }, false, timeout);
+        }
+
+        public static ProcessOutput Run(this string command, Action<string> onStandardOut, Action<string> onErrorOut, int? timeout = null)
+        {
+            return Run(command, null, onStandardOut, onErrorOut, false, timeout);
         }
 
         public static ProcessOutput Run(this string command, Action<string> onStandardOut, Action<string> onErrorOut, bool promptForAdmin = false)
@@ -127,7 +172,8 @@ namespace Bam.Net.CommandLine
 
         /// <summary>
         /// Run the specified command in a separate process capturing the output
-        /// and error streams if any
+        /// and error streams if any. This method will block if a timeout is specified, it will
+        /// not block if timeout is null.
         /// </summary>
         /// <param name="command"></param>
         /// <param name="onExit"></param>
@@ -140,10 +186,86 @@ namespace Bam.Net.CommandLine
         {
             GetExeAndArguments(command, out string exe, out string arguments);
 
+            return Run(exe, arguments, onExit, onStandardOut, onErrorOut, promptForAdmin, timeout);
+        }
+
+        /// <summary>
+        /// Execute the specified exe with the specified arguments.  This method will not block.
+        /// </summary>
+        /// <param name="exe"></param>
+        /// <param name="arguments"></param>
+        /// <param name="onExit"></param>
+        public static ProcessOutput Run(this string exe, string arguments, EventHandler<ProcessExitEventArgs> onExit)
+        {
+            return Run(exe, arguments, (o, a) => onExit(o, (ProcessExitEventArgs)a), null);
+        }
+
+        public static ProcessOutput RunAndWait(this ProcessStartInfo info, Action<string> standardOut = null, Action<string> errorOut = null, int timeOut = 60000)
+        {
+            ProcessOutputCollector output = new ProcessOutputCollector(standardOut, errorOut);
+            return Run(info, output, timeOut);
+        }
+
+        /// <summary>
+        /// Runs the command and waits for it to complete.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="standardOut">The standard out.</param>
+        /// <param name="errorOut">The error out.</param>
+        /// <param name="timeOut">The time out.</param>
+        /// <returns></returns>
+        public static ProcessOutput RunAndWait(this string command, Action<string> standardOut = null, Action<string> errorOut = null, int timeOut = 60000)
+        {
+            GetExeAndArguments(command, out string exe, out string arguments);
+            return Run(exe, arguments, (o, a) => { }, standardOut, errorOut, false, timeOut);
+        }
+
+        /// <summary>
+        /// Runs the command and waits for it to complete.
+        /// </summary>
+        /// <param name="exe">The executable.</param>
+        /// <param name="arguments">The arguments.</param>
+        /// <param name="onExit">The on exit.</param>
+        /// <param name="timeOut">The time out.</param>
+        public static void RunAndWait(this string exe, string arguments, EventHandler<ProcessExitEventArgs> onExit, int timeOut = 60000)
+        {
+            Run(exe, arguments, (o, a) => onExit(o, (ProcessExitEventArgs)a), timeOut);
+        }
+
+        /// <summary>
+        /// Run the specified exe with the specified arguments, executing the specified onExit
+        /// when the process completes.  This method will block if a timeout is specified, it will
+        /// not block if timeout is null.
+        /// </summary>
+        /// <param name="exe"></param>
+        /// <param name="arguments"></param>
+        /// <param name="onExit"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        public static ProcessOutput Run(this string exe, string arguments, EventHandler onExit, int? timeout)
+        {
+            return Run(exe, arguments, onExit, null, null, false, timeout);
+        }
+
+        /// <summary>
+        /// Run the specified exe with the specified arguments, executing the specified onExit
+        /// when the process completes.  This method will block if a timeout is specified, it will
+        /// not block if timeout is null.
+        /// </summary>
+        /// <param name="exe"></param>
+        /// <param name="arguments"></param>
+        /// <param name="onExit"></param>
+        /// <param name="onStandardOut"></param>
+        /// <param name="onErrorOut"></param>
+        /// <param name="promptForAdmin"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        public static ProcessOutput Run(this string exe, string arguments, EventHandler onExit, Action<string> onStandardOut = null, Action<string> onErrorOut = null, bool promptForAdmin = false, int? timeout = null)
+        {
             ProcessStartInfo startInfo = CreateStartInfo(promptForAdmin);
             startInfo.FileName = exe;
             startInfo.Arguments = arguments;
-            ProcessOutputCollector receiver = new ProcessOutputCollector(onStandardOut, onErrorOut);            
+            ProcessOutputCollector receiver = new ProcessOutputCollector(onStandardOut, onErrorOut);
             return Run(startInfo, onExit, receiver, timeout);
         }
 
@@ -155,14 +277,15 @@ namespace Bam.Net.CommandLine
         /// <param name="output"></param>
         /// <param name="timeout"></param>
         /// <returns></returns>
-        public static ProcessOutput Run(this ProcessStartInfo startInfo, ProcessOutputCollector output = null, int? timeout = null)
+        public static ProcessOutput Run(this ProcessStartInfo startInfo, ProcessOutputCollector output, int? timeout = null)
         {
             return Run(startInfo, null, output, timeout);
         }
 
         /// <summary>
         /// Run the specified command in a separate process capturing the output
-        /// and error streams if any
+        /// and error streams if any. This method will block if a timeout is specified, it will
+        /// not block if timeout is null.
         /// </summary>
         /// <param name="startInfo"></param>
         /// <param name="onExit"></param>
@@ -181,7 +304,7 @@ namespace Bam.Net.CommandLine
             };
             if (onExit != null)
             {
-                process.Exited += onExit;
+                process.Exited += (o, a) => onExit(o, new ProcessExitEventArgs { EventArgs = a, ProcessOutput = new ProcessOutput(process, output.StandardOutput, output.StandardError) });
             }
             process.StartInfo = startInfo;
             AutoResetEvent outputWaitHandle = new AutoResetEvent(false);
@@ -281,12 +404,15 @@ namespace Bam.Net.CommandLine
 
             return Run(startInfo, output, error, timeout);
         }
+
         private static ProcessStartInfo CreateStartInfo(bool promptForAdmin)
         {
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.UseShellExecute = false;
-            startInfo.ErrorDialog = false;
-            startInfo.CreateNoWindow = true; ;
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                UseShellExecute = false,
+                ErrorDialog = false,
+                CreateNoWindow = true
+            };
             startInfo.RedirectStandardOutput = true;
             startInfo.RedirectStandardError = true;
 

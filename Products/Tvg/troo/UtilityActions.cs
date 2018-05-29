@@ -21,9 +21,11 @@ namespace Bam.Net.Application
             GenerationInfo genInfo = GetDaoGenerationInfo();
             ConsoleLogger logger = new ConsoleLogger();
             logger.StartLoggingThread();
-            SchemaRepositoryGenerator schemaGen = new SchemaRepositoryGenerator(genInfo.Assembly, genInfo.FromNameSpace, logger);            
-            schemaGen.CheckIdField = GetArgument("checkForIds", "Check for Id field?").IsAffirmative();
-            schemaGen.BaseRepositoryType = GetArgument("useInheritanceSchema", "Use inheritance schema?").IsAffirmative() ? "DatabaseRepository" : "DaoRepository";
+            SchemaRepositoryGenerator schemaGen = new SchemaRepositoryGenerator(genInfo.Assembly, genInfo.FromNameSpace, logger)
+            {
+                CheckIdField = GetArgument("checkForIds", "Check for Id field?").IsAffirmative(),
+                BaseRepositoryType = GetArgument("useInheritanceSchema", "Use inheritance schema?").IsAffirmative() ? "DatabaseRepository" : "DaoRepository"
+            };
             string targetDir = GetArgument("writeSrc", "Please enter the directory to write source to");
             if (Directory.Exists(targetDir))
             {
@@ -90,8 +92,10 @@ namespace Bam.Net.Application
             }
             ConsoleLogger logger = new ConsoleLogger();
             logger.StartLoggingThread();
-            TypeDaoGenerator generator = new TypeDaoGenerator(typeAssembly, fromNameSpace, logger);
-            generator.WarningsAsErrors = true;
+            TypeDaoGenerator generator = new TypeDaoGenerator(typeAssembly, fromNameSpace, logger)
+            {
+                WarningsAsErrors = true
+            };
             generator.ThrowWarningsIfWarningsAsErrors();
             generator.BaseNamespace = toNameSpace;
             generator.GenerateSource(writeTo);

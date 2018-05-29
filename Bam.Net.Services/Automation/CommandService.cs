@@ -30,14 +30,14 @@ namespace Bam.Net.Services.Automation
 
                 CommandInfo info = new CommandInfo { Command = command };
                 IRepository repo = RepositoryResolver.GetRepository(HttpContext);
-                repo.Save(info);
+                info = repo.Save(info);
                 Task<ProcessOutput> task = command.RunAsync();
                 task.ContinueWith((t) =>
                 {
                     Logger.AddEntry("Command completed: {0}", command);
                     info.StandardOut = t.Result.StandardOutput;
                     info.StandardError = t.Result.StandardError;
-                    repo.Save(info);
+                    info = repo.Save(info);
                 });
                 Logger.AddEntry("Running command: {0}", command);
                 return new ServiceResponse<CommandInfo>

@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Configuration
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="Bam.Net.IOrganizationNameProvider" />
     public class DefaultConfigurationOrganizationNameProvider : IOrganizationNameProvider
     {
         static IOrganizationNameProvider _instance;
@@ -19,7 +23,7 @@ namespace Bam.Net.Configuration
         }
         public string GetOrganizationName()
         {
-            return DefaultConfiguration.GetAppSetting("OrganizationnName", ApplicationDiagnosticInfo.PublicOrganization);
+            return DefaultConfiguration.GetAppSetting("OrganizationName", ApplicationDiagnosticInfo.PublicOrganization);
         }
     }
 }

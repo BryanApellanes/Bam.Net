@@ -9,6 +9,7 @@ namespace Bam.Net.Application
     {
         static void Main(string[] args)
         {
+            TryWritePid();
             GlooService.SetInfo(GlooService.ServiceInfo);
             if (!GlooService.ProcessCommandLineArgs(args))
             {
@@ -23,6 +24,10 @@ namespace Bam.Net.Application
                     Thread.Sleep(1000);
                     Exit(1);
                 });
+                if (Arguments.Contains("singleProcess"))
+                {
+                    KillExistingProcess();
+                }
                 if (Arguments.Contains("i"))
                 {
                     Interactive();

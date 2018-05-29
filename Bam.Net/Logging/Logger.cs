@@ -94,7 +94,7 @@ namespace Bam.Net.Logging
         /// <summary>
         /// The number of milliseconds to wait after a LogEvent
         /// is queued to be committed before beginning the
-        /// commit loop
+        /// commit loop.
         /// </summary>
         public int CommitCycleDelay { get; set; }
         /// <summary>

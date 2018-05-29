@@ -91,7 +91,7 @@ namespace Bam.Net.UserAccounts
             }
         }
 
-        protected internal DaoUserResolver DaoUserResolver
+        public DaoUserResolver DaoUserResolver
         {
             get
             {
@@ -103,7 +103,7 @@ namespace Bam.Net.UserAccounts
             }
         }
 
-        protected internal EmailComposer EmailComposer
+        public EmailComposer EmailComposer
         {
             get
             {
@@ -115,7 +115,7 @@ namespace Bam.Net.UserAccounts
             }
         }
 
-        protected internal SmtpSettingsProvider SmtpSettingsProvider
+        public ISmtpSettingsProvider SmtpSettingsProvider
         {
             get;
             set;

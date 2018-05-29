@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Bam.Net.Automation</id>
+    <version>1.9.2</version>
+    <authors>Bryan Apellanes</authors>
+    <owners>Bryan Apellanes</owners>
+    <description>Automation tools</description>
+    <releaseNotes>Version 1.9.2
+Updates since v1.9.1:
+ -   account for null itemgroup (34ba80fb)
+ -   correct git log linereader (1e742911)
+ -   handle slashes in git log messages (1fe6e6e5)
+ -   rename jobconductor to jobmanager (c10f5681)
+ -   refactor workstate handling; remove ci namespace to prepare for deletion (f6737ae4)
+ -   refactor JobConductorService to make ready for prime time; wip (1854de49)
+ -   refactor, preparing for prime time (7f4644f9)
+ -   make TestReportService extend ProxyableService (192130cb)
+ -   differentiate TestServiceRegistries by ProcessMode (b5b85f1f)
+ -   fix TestReportingServices registry (3f0ecf1a)
+ -   fix TestReportingServices registry (f9be3583)
+</releaseNotes>
+    <copyright>Copyright © Bryan Apellanes 2018</copyright>
+    <dependencies>
+      <dependency id="Bam.Net" version="1.9.2" />
+      <dependency id="Bam.Net.Analytics" version="1.9.2" />
+      <dependency id="Bam.Net.Data" version="1.9.2" />
+      <dependency id="Bam.Net.Html" version="1.9.1" />
+      <dependency id="Bam.Net.Incubation" version="1.9.2" />
+      <dependency id="Bam.Net.Javascript" version="1.9.2" />
+      <dependency id="Bam.Net.Logging" version="1.9.2" />
+      <dependency id="Bam.Net.Management" version="1.9.1" />
+      <dependency id="Bam.Net.Net" version="1.9.1" />
+      <dependency id="Bam.Net.Profiguration" version="1.9.2" />
+      <dependency id="Bam.Net.Schema.Org" version="1.9.2" />
+      <dependency id="Bam.Net.ServiceProxy" version="1.9.2" />
+      <dependency id="Bam.Net.SourceControl" version="1.9.1" />
+      <dependency id="Bam.Net.Testing" version="1.9.2" />
+      <dependency id="Bam.Net.Yaml" version="1.9.2" />
+      <dependency id="Common.Logging" version="3.4.1" />
+      <dependency id="Common.Logging.Core" version="3.4.1" />
+      <dependency id="Microsoft.AspNet.Mvc" version="5.2.3" />
+      <dependency id="Microsoft.AspNet.Razor" version="3.2.3" />
+      <dependency id="Microsoft.AspNet.WebPages" version="3.2.3" />
+      <dependency id="Microsoft.Build.Framework" version="15.3.409" />
+      <dependency id="Microsoft.CSharp" version="4.0.1" />
+      <dependency id="Microsoft.Web.Infrastructure" version="1.0.0.0" />
+      <dependency id="Microsoft.Web.Xdt" version="2.1.1" />
+      <dependency id="Newtonsoft.Json" version="11.0.1" />
+      <dependency id="NuGet.Manifest.Schema" version="2.0.4" />
+      <dependency id="SSH.NET" version="2016.1.0" />
+      <dependency id="System.Collections" version="4.0.11" />
+      <dependency id="System.Diagnostics.Debug" version="4.0.11" />
+      <dependency id="System.Globalization" version="4.0.11" />
+      <dependency id="System.Linq" version="4.1.0" />
+      <dependency id="System.Net.FtpClient" version="1.0.5824.34026" />
+      <dependency id="System.Resources.ResourceManager" version="4.0.1" />
+      <dependency id="System.Runtime" version="4.1.0" />
+      <dependency id="System.Runtime.InteropServices" version="4.1.0" />
+      <dependency id="System.Threading" version="4.0.11" />
+      <dependency id="System.Threading.Thread" version="4.0.0" />
+      <dependency id="YamlSerializer" version="1.0" />
+    </dependencies>
+  </metadata>
+</package>

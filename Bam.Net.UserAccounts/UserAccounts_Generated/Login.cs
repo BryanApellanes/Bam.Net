@@ -185,8 +185,10 @@ namespace Bam.Net.UserAccounts.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Login>();
 			Database db = database ?? Db.For<Login>();
-			var results = new LoginCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new LoginCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -623,6 +625,25 @@ namespace Bam.Net.UserAccounts.Data
 			if(orderBy != null)
 			{
 				query.OrderBy<LoginColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<LoginCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static LoginCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<Login>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<Login>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

@@ -15,7 +15,7 @@ namespace Bam.Net
         /// <summary>
         /// Returns a hash representing the specified
         /// types using the specified HashAlgorithm 
-        /// and encoding
+        /// and encoding.
         /// </summary>
         /// <param name="types"></param>
         /// <param name="algorithm"></param>
@@ -69,7 +69,7 @@ namespace Bam.Net
         /// Return a string representation of the prop. This 
         /// is primarily used for hashing the property and
         /// the resulting string cannot be easily converted 
-        /// back to the original PropertyInfo
+        /// back to the original PropertyInfo.
         /// </summary>
         /// <param name="prop"></param>
         /// <returns></returns>
@@ -254,6 +254,11 @@ namespace Bam.Net
             return Subscribe<T>(instance, eventName, handler);
         }
 
+        public static T Subscribe<T, TEventArgs>(this T instance, string eventName, EventHandler<TEventArgs> handler)
+        {
+            return Subscribe<T>(instance, eventName, handler);
+        }
+
         public static T Subscribe<T>(this T instance, string eventName, Delegate handler)
         {
             EventInfo eventInfo = typeof(T).GetEvent(eventName);
@@ -261,38 +266,44 @@ namespace Bam.Net
             eventInfo.AddEventHandler(instance, handler);
             return instance;
         }
+
         public static T SubscribeOnce<T>(this T instance, string eventName, EventHandler handler)
         {
             return SubscribeOnce(instance, eventName, (Delegate)handler);
         }
+
         public static T SubscribeOnce<T>(this T instance, string eventName, Delegate handler)
         {
-            EventSubscription ignore;
-            return instance.SubscribeOnce<T>(eventName, handler, out ignore);
+            return instance.SubscribeOnce<T>(eventName, handler, out EventSubscription ignore);
         }
+
         public static T SubscribeOnce<T>(this T instance, string eventName, EventHandler handler, out EventSubscription subscription)
         {
             return SubscribeOnce(instance, eventName, (Delegate)handler, out subscription);
         }
+
         public static T SubscribeOnce<T>(this T instance, string eventName, Delegate handler, out EventSubscription subscription)
         {
             T result = instance.UnSubscribe(eventName, handler).Subscribe(eventName, handler);
             subscription = instance.GetEventSubscriptions(eventName).FirstOrDefault(es => es.Delegate.Equals(handler));
             return result;
         }
+
         public static object SubscribeOnce(this object instance, string eventName, EventHandler handler)
         {
             return SubscribeOnce(instance, eventName, (Delegate)handler);
         }
+
         public static object SubscribeOnce(this object instance, string eventName, Delegate handler)
         {
-            EventSubscription ignore;
-            return instance.SubscribeOnce(eventName, handler, out ignore);
+            return instance.SubscribeOnce(eventName, handler, out EventSubscription ignore);
         }
+
         public static object SubscribeOnce(this object instance, string eventName, EventHandler handler, out EventSubscription subscription)
         {
             return SubscribeOnce(instance, eventName, (Delegate)handler, out subscription);
         }
+
         public static object SubscribeOnce(this object instance, string eventName, Delegate handler, out EventSubscription subscription)
         {
             object result = instance.UnSubscribe(eventName, handler).Subscribe(eventName, handler);

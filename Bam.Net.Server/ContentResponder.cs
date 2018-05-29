@@ -18,6 +18,9 @@ using Bam.Net.ServiceProxy.Secure;
 using Bam.Net.UserAccounts.Data;
 using Newtonsoft.Json.Linq;
 using System.Reflection;
+using Bam.Net.Server.Meta;
+using Bam.Net.Data.Repositories;
+using Bam.Net.Configuration;
 
 namespace Bam.Net.Server
 {
@@ -26,39 +29,81 @@ namespace Bam.Net.Server
     /// </summary>
     public class ContentResponder : Responder, IInitialize<ContentResponder>
     {
+        static string contentRootConfigKey = "ContentRoot";
+        static string defaultRoot = "C:\\bam\\content";
         public const string IncludeFileName = "include.js";
         public const string LayoutFileExtension = ".layout";
-        public ContentResponder(BamConf conf)
-            : base(conf)
+        public const string HostAppMapFile = "hostAppMaps.json";
+
+        public ContentResponder(BamConf conf, ILogger logger, ITemplateRenderer commonTemplateRenderer = null)
+            : base(conf, logger)
         {
-            CommonTemplateRenderer = new CommonDustRenderer(this);
+            ContentRoot = conf?.ContentRoot ?? DefaultConfiguration.GetAppSetting(contentRootConfigKey, defaultRoot);
+            ServerRoot = new Fs(ContentRoot);
+            TemplateDirectoryNames = new List<string>(new string[] { "views", "templates" });
+            CommonTemplateRenderer = commonTemplateRenderer ?? new CommonDustRenderer(this);
             FileCachesByExtension = new Dictionary<string, FileCache>();
+            HostAppMappings = new Dictionary<string, HostAppMap>();            
             InitializeFileExtensions();
             InitializeCaches();
         }
 
-        public ContentResponder(BamConf conf, ILogger logger)
-            : base(conf, logger)
-        {
-            CommonTemplateRenderer = new CommonDustRenderer(this);
-            FileCachesByExtension = new Dictionary<string, FileCache>();
-            InitializeFileExtensions();
-            InitializeCaches();
-        }
+        public ContentResponder(ILogger logger, ITemplateRenderer commonTemplateRenderer = null) : this(null, logger, commonTemplateRenderer)
+        { }
+
+        public string ContentRoot { get; set; }
+
+        public AppMetaInitializer AppMetaInitializer { get; set; }
+        public List<string> TemplateDirectoryNames { get; set; }
         public List<string> FileExtensions { get; set; }
         public List<string> TextFileExtensions { get; set; }
+        public Dictionary<string, HostAppMap> HostAppMappings { get; set; }
         protected Dictionary<string, FileCache> FileCachesByExtension { get; set; }
         protected void InitializeFileExtensions()
         {
             FileExtensions = new List<string> { ".html", ".htm", ".js", ".json", ".css", ".yml", ".yaml", ".txt", ".md", ".layout", ".png", ".jpg", ".jpeg", ".gif", ".woff" };
             TextFileExtensions = new List<string> { ".html", ".htm", ".js", ".json", ".css", ".yml", ".yaml", ".layout", ".txt", ".md" };
         }
+
         protected void InitializeCaches()
-        {
-            foreach(string ext in FileExtensions)
+        { 
+            foreach (string ext in FileExtensions)
             {
                 FileCachesByExtension.AddMissing(ext, CreateCache(ext));
             }
+        }
+    
+        /// <summary>
+        /// Uncache the specified file forcing it to be reloaded the next time it is 
+        /// requested.
+        /// </summary>
+        /// <param name="file"></param>
+        public void UncacheFile(FileInfo file)
+        {
+            Task.Run(() =>
+            {
+                string extension = Path.GetExtension(file.FullName).ToLower();
+                if (FileCachesByExtension.ContainsKey(extension))
+                {
+                    FileCachesByExtension[extension].Remove(file);
+                }
+                foreach(AppContentResponder appContent in AppContentResponders.Values.ToArray())
+                {
+                    appContent.UncacheFile(file);
+                }
+            });
+        }
+
+        public void RefreshLayouts()
+        {
+            Task.Run(() =>
+            {
+                IncludesCache.Clear();
+                foreach(AppContentResponder appContent in AppContentResponders.Values.ToArray())
+                {
+                    appContent.LayoutModelsByPath.Clear();
+                }
+            });
         }
 
         /// <summary>
@@ -78,10 +123,21 @@ namespace Bam.Net.Server
             return !WillIgnore(context);
         }
 
+        AppConf[] _appConfs;
         public AppConf[] AppConfigs
         {
-            get;
-            internal set;
+            get
+            {
+                if(_appConfs == null)
+                {
+                    _appConfs = BamConf?.AppConfigs;
+                }
+                return _appConfs ?? new AppConf[] { };
+            }
+            set
+            {
+                _appConfs = value;
+            }
         }
 
         Dictionary<string, AppContentResponder> _appContentResponders;
@@ -125,11 +181,17 @@ namespace Bam.Net.Server
             CommonTemplateRendererInitialized?.Invoke(this);
         }
 
-        public ITemplateRenderer CommonTemplateRenderer
+        public ITemplateRenderer CommonTemplateRenderer // TODO: inject this
         {
             get;
             set;
         }
+
+        /// <summary>
+        /// Subscribe to the initialization related events
+        /// of this ContentResponder and its ApplicationResponders.
+        /// </summary>
+        /// <param name="logger"></param>
         public override void Subscribe(ILogger logger)
         {            
             if (!IsSubscribed(logger))
@@ -170,65 +232,24 @@ namespace Bam.Net.Server
                 };
             }
         }
-
-        protected void SetEtag(IResponse response, string path, byte[] content)
-        {
-            string etag = content.Sha1();
-            response.AddHeader("ETag", etag);
-            Etags.Values.AddOrUpdate(path, etag, (p, v) => etag);
-        }
-        protected void SetLastModified(IResponse response, string path, DateTime lastModified)
-        {
-            response.AddHeader("Last-Modified", lastModified.ToUniversalTime().ToString("r"));
-            Etags.LastModified.AddOrUpdate(path, lastModified, (p, v) => lastModified);
-        }
-        protected bool CheckEtags(IHttpContext context)
-        {
-            IRequest request = context.Request;
-            IResponse response = context.Response;
-            string path = request.Url.ToString();
-            string etag = request.Headers["If-None-Match"];
-            if (!string.IsNullOrEmpty(etag))
-            {
-                if (Etags.Values.ContainsKey(path) && Etags.Values[path].Equals(etag))
-                {
-                    response.StatusCode = 304;
-                    return true;
-                }
-            }
-            string lastModifiedString = request.Headers["If-Modified-Since"];
-            if (!string.IsNullOrEmpty(lastModifiedString) && Etags.LastModified.ContainsKey(path))
-            {
-                DateTime modifiedSince = DateTime.Parse(lastModifiedString);
-                if (Etags.LastModified[path] > modifiedSince)
-                {
-                    response.StatusCode = 304;
-                    return true;
-                }
-            }
-            return false;
-        }
-
+                
         protected virtual void SetBaseIgnorePrefixes()
         {
             AddIgnorPrefix("dao");
             AddIgnorPrefix("serviceproxy");
             AddIgnorPrefix("api");
             AddIgnorPrefix("bam");
+            AddIgnorPrefix("meta");
             AddIgnorPrefix("get");
             AddIgnorPrefix("post");
             AddIgnorPrefix("securechannel");
         }
+
         protected internal void InitializeCommonTemplateRenderer()
         {
             OnCommonTemplateRendererInitializing();
 
-            string viewRoot = Path.Combine(Root, "common", "views");
-            DirectoryInfo dir = new DirectoryInfo(viewRoot);
-            if (dir.Exists)
-            {
-                CommonTemplateRenderer = new CommonDustRenderer(this);
-            }
+            CommonTemplateRenderer = new CommonDustRenderer(this);
 
             OnCommonTemplateRendererInitialized();
         }
@@ -271,22 +292,24 @@ namespace Bam.Net.Server
             {
                 if (!IsAppsInitialized)
                 {
-                    InitializeAppResponders(BamConf.AppConfigs);
-
-                    AppConfigs = BamConf.AppConfigs;
-
+                    InitializeHostAppMap(ContentRoot, AppConfigs ?? BamConf.AppConfigs);
+                    InitializeAppResponders(AppConfigs ?? BamConf.AppConfigs);
+                    AppConfigs = AppConfigs ?? BamConf.AppConfigs;
                     IsAppsInitialized = true;
                 }
             }
             OnAppRespondersInitialized();
         }
 
+        [Verbosity(LogEventType.Information)]
         public event EventHandler FileUploading;
+        [Verbosity(LogEventType.Information)]
         public event EventHandler FileUploaded;
-
+        
         private void InitializeAppResponders(AppConf[] configs)
         {
-            configs.Each(ac =>
+            string currentMode = ProcessMode.Current.Mode.ToString();
+            configs.Where(c=> c.ProcessMode.Equals(currentMode)).Each(ac =>
             {
                 OnAppContentResponderInitializing(ac);
                 Logger.RestartLoggingThread();
@@ -303,6 +326,8 @@ namespace Bam.Net.Server
                 responder.Initialize();
                 responder.FileUploading += (o, a) => FileUploading?.Invoke(o, a);
                 responder.FileUploaded += (o, a) => FileUploaded?.Invoke(o, a);
+                responder.Responded += (r, context) => OnResponded(context);
+                responder.NotResponded += (r, context) => OnNotResponded(context);
                 AppContentResponders[appName] = responder;
 
                 OnAppContentResponderInitialized(ac);
@@ -321,8 +346,8 @@ namespace Bam.Net.Server
         }
 
         /// <summary>
-        /// Gets the Includes for the specified AppConf.  Also adds
-        /// the init.js and all viewModel .js files.
+        /// Gets the Includes for the specified AppConf by reading the 
+        /// include.js file in the application folder.
         /// </summary>
         /// <param name="appConf"></param>
         /// <returns></returns>
@@ -340,42 +365,7 @@ namespace Bam.Net.Server
                 includes.Css[i] = Path.Combine(appRoot, css).Replace("\\", "/");
             });
 
-            GetPageScripts(appConf).Each(script =>
-            {
-                includes.AddScript(Path.Combine(appRoot, script).Replace("\\", "/"));
-            });
-
-            DirectoryInfo viewModelsDir = appConf.AppRoot.GetDirectory("viewModels");
-            if (!Directory.Exists(viewModelsDir.FullName))
-            {
-                Directory.CreateDirectory(viewModelsDir.FullName);
-            }
-            FileInfo[] viewModels = viewModelsDir.GetFiles("*.js");
-            viewModels.Each(fi =>
-            {
-                includes.AddScript(Path.Combine(appRoot, "viewModels", fi.Name).Replace("\\", "/"));
-            });
-
-            includes.AddScript(Path.Combine(appRoot, "init.js").Replace("\\", "/"));
-
             return includes;
-        }
-
-        protected static internal string[] GetPageScripts(AppConf appConf)
-        {
-            BamApplicationManager manager = new BamApplicationManager(appConf.BamConf);
-            string[] pageNames = manager.GetPageNames(appConf.Name);
-            List<string> results = new List<string>();
-            pageNames.Each(pageName =>
-            {
-                string script = "/" + Fs.CleanPath(Path.Combine("pages", pageName + ".js")).Replace("\\", "/"); // for use in html
-                if (appConf.AppRoot.FileExists(script))
-                {
-                    results.Add(script);
-                }
-            });
-
-            return results.ToArray();
         }
 
         static Dictionary<string, Includes> _includesCache;
@@ -431,14 +421,27 @@ namespace Bam.Net.Server
         }
         #region IResponder Members
 
+        /// <summary>
+        /// If true, TryRespond will send 404 and close the connection
+        /// if no content is found.  Otherwise, nothing will be done
+        /// explicitly to close the connection or end the request.
+        /// </summary>
+        public bool EndResponse { get; set; }
+
         public override bool TryRespond(IHttpContext context)
+        {
+            return TryRespond(context, EndResponse);
+        }
+
+        public bool TryRespond(IHttpContext context, bool endResponse = false)
         {
             try
             {
-                if (CheckEtags(context))
+                if (Etags.CheckEtags(context))
                 {
                     return true;
                 }
+
                 if (!IsInitialized)
                 {
                     Initialize();
@@ -454,7 +457,7 @@ namespace Bam.Net.Server
                 string commonPath = Path.Combine("/common", path.TruncateFront(1));
 
                 byte[] content = new byte[] { };
-                string appName = UriApplicationNameResolver.ResolveApplicationName(request.Url, BamConf.AppConfigs);
+                string appName = ResolveApplicationName(context);
                 string[] checkedPaths = new string[] { };
                 if (AppContentResponders.ContainsKey(appName))
                 {
@@ -486,14 +489,14 @@ namespace Bam.Net.Server
                                 content = cache.GetContent(absoluteFileSystemPath);
                             }
                             handled = true;
-                            SetLastModified(response, request.Url.ToString(), new FileInfo(absoluteFileSystemPath).LastWriteTime);
+                            Etags.SetLastModified(response, request.Url.ToString(), new FileInfo(absoluteFileSystemPath).LastWriteTime);
                         }
                     }
 
                     if (handled)
                     {
                         SetContentType(response, path);
-                        SetEtag(response, path, content);
+                        Etags.Set(response, request.Url.ToString(), content);
                         SendResponse(response, content);
                         OnResponded(context);
                     }
@@ -504,6 +507,10 @@ namespace Bam.Net.Server
                     }
                 }
 
+                if(!handled && endResponse)
+                {
+                    SendResponse(response, "Not Found", 404);
+                }
                 return handled;
             }
             catch (Exception ex)
@@ -514,9 +521,21 @@ namespace Bam.Net.Server
             }
         }
 
+        private string ResolveApplicationName(IHttpContext context)
+        {
+            if (HostAppMappings.ContainsKey(context.Request.Url.Host))
+            {
+                return HostAppMappings[context.Request.Url.Host].AppName;
+            }
+            return ApplicationNameResolver.ResolveApplicationName(context);
+        }
+
         private void LogContentNotFound(string path, string appName, string[] checkedPaths)
         {
-            // Not Sure what this is checking for???
+            // Get the service names for the specified appName to determine whether it is
+            // worth logging that this request was not handled.  If the content was not 
+            // found because the request was intended for a different responder then 
+            // no log entry should be made.
             string[] svcNames = BamConf?.Server?.ServiceProxyResponder?.AppServices(appName).Select(s => s.ToLowerInvariant()).ToArray();
             List<string> serviceNames = new List<string>();
             if(svcNames != null)
@@ -525,7 +544,6 @@ namespace Bam.Net.Server
             }
             string[] splitPath = path.DelimitSplit("/", "\\");
             string firstPart = splitPath.Length > 0 ? splitPath[0] : path;
-            // / -- ???
 
             if(!ShouldIgnore(path) && !serviceNames.Contains(firstPart.ToLowerInvariant()))
             {
@@ -544,15 +562,7 @@ namespace Bam.Net.Server
                 );
             }
         }
-
-        private static void ConditionallySetGzipHeader(IResponse response, bool shouldZip)
-        {
-            if (shouldZip)
-            {
-                SetGzipContentEncodingHeader(response);
-            }
-        }
-
+        
         static HashSet<string> _cachedScripts = new HashSet<string>();
         static object _cachedScriptLock = new object();
         protected internal void SetScriptCache(
@@ -638,7 +648,7 @@ namespace Bam.Net.Server
                 OnInitializing();
                 InitializeCommonTemplateRenderer();
                 InitializeAppResponders();
-
+                AppMetaInitializer = new AppMetaInitializer(this);
                 OnInitialized();
             }
         }
@@ -672,24 +682,6 @@ namespace Bam.Net.Server
             }
         }
 
-        protected bool ReadCache(IRequest request, string path, out byte[] content)
-        {
-            if (ShouldZip(request))
-            {
-                if (!ZippedMinCache.TryGetValue(path, out content))
-                {
-                    return ZippedCache.TryGetValue(path, out content);
-                }
-            }
-            else
-            {
-                if (!MinCache.TryGetValue(path, out content))
-                {
-                    return Cache.TryGetValue(path, out content);
-                }
-            }
-            return true;
-        }
         static object cacheLock = new object();
         static object zippedCacheLock = new object();
         static object minCacheLock = new object();
@@ -710,6 +702,29 @@ namespace Bam.Net.Server
         private void SetZippedMinCacheBytes(string path, byte[] content)
         {
             ZippedCache.AddOrUpdate(path, content, (s, b) => content);
+        }
+        
+        private void InitializeHostAppMap(string contentRoot, AppConf[] appConfigs)
+        {
+            string jsonFile = Path.Combine(contentRoot, "apps", HostAppMapFile);
+            HashSet<HostAppMap> temp = new HashSet<HostAppMap>();
+            foreach (AppConf appConf in appConfigs)
+            {
+                temp.Add(new HostAppMap { Host = appConf.Name, AppName = appConf.Name });
+            }
+            if (File.Exists(jsonFile))
+            {
+                HostAppMap[] fromFile = jsonFile.FromJsonFile<HostAppMap[]>();
+                if (fromFile != null)
+                {
+                    foreach (HostAppMap mapping in fromFile)
+                    {
+                        temp.Add(mapping);
+                    }
+                }
+            }
+            temp.ToJsonFile(jsonFile);
+            HostAppMappings = temp.ToDictionary(ham => ham.Host);
         }
     }
 }

@@ -26,6 +26,10 @@ namespace Bam.Net.Configuration
                 return _lock.DoubleCheckLock(ref _instance, () => new DefaultConfigurationApplicationNameProvider());
             }
         }
+        /// <summary>
+        /// Gets the name of the application.
+        /// </summary>
+        /// <returns></returns>
         public string GetApplicationName()
         {
             return DefaultConfiguration.GetAppSetting("ApplicationName", ApplicationDiagnosticInfo.UnknownApplication);
