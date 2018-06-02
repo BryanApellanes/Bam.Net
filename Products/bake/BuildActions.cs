@@ -235,6 +235,25 @@ namespace Bam.Net.Automation
             finish();
         }
 
+        [ConsoleAction("tag", "Create and commit version tag")]
+        public static void CommitTag()
+        {
+            string version = GetVersionTag();
+            DirectoryInfo sourceRoot = GetSourceRoot(GetTargetPath());
+            Commit(version, sourceRoot);
+            Tag(version, sourceRoot);
+        }
+
+        private static string GetVersionTag()
+        {
+            string tag = Arguments["tag"];
+            if (string.IsNullOrEmpty(tag) && Arguments.Contains("v"))
+            {
+                tag = Arguments["v"];
+            }
+            return tag;
+        }
+
         [ConsoleAction("msi", "Build an msi from a set of related wix project files.  The contents of the msi are set to the contents of the specified ReleaseFolder folder.")]
         public static bool BuildMsi()
         {
@@ -800,17 +819,17 @@ namespace Bam.Net.Automation
             }
             sourceRootDir = sourceRootDir ?? GetSourceRoot(GetTargetPath());
             string sourceRoot = sourceRootDir.FullName;
-            $"{GitPath} add --all".ToStartInfo(sourceRoot).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), (e) => OutLine(e, ConsoleColor.Magenta));
-            $"{GitPath} commit -m '{message}'".ToStartInfo(sourceRoot).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), (e) => OutLine(e, ConsoleColor.Magenta));
-            $"{GitPath} push origin".ToStartInfo(sourceRoot).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), (e) => OutLine(e, ConsoleColor.Magenta));
+            GitPath.ToStartInfo("add --all", sourceRoot).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), (e) => OutLine(e, ConsoleColor.Magenta));
+            GitPath.ToStartInfo($"commit -m '{message}'", sourceRoot).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), (e) => OutLine(e, ConsoleColor.Magenta));
+            GitPath.ToStartInfo("push origin", sourceRoot).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), (e) => OutLine(e, ConsoleColor.Magenta));
         }
 
         private static void Tag(string version, DirectoryInfo sourceRootDir = null)
         {
             sourceRootDir = sourceRootDir ?? GetSourceRoot(GetTargetPath());
             string sourceRoot = sourceRootDir.FullName;
-            $"{GitPath} tag -a v{version} -m 'v{version}'".ToStartInfo(sourceRoot).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), (e) => OutLine(e, ConsoleColor.Magenta));
-            $"{GitPath} push origin v{version}".ToStartInfo(sourceRoot).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), (e) => OutLine(e, ConsoleColor.Magenta));
+            GitPath.ToStartInfo($"tag -a v{version} -m 'v{version}'", sourceRoot).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), (e) => OutLine(e, ConsoleColor.Magenta));
+            GitPath.ToStartInfo($"push origin v{version}", sourceRoot).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), (e) => OutLine(e, ConsoleColor.Magenta));
         }
 
         private static string GetSearchPattern(out string version)
