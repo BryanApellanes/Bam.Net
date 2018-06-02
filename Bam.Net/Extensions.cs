@@ -2818,6 +2818,7 @@ namespace Bam.Net
 
             postWriteAction?.Invoke(fileInfo);
         }
+
         public static void SafeWriteFileBytes(this string filePath, byte[] bytesToWrite, bool overwrite, Action<object> postWriteAction = null)
         {
             SafeWriteFileBytes(filePath, bytesToWrite, 0, overwrite, postWriteAction);

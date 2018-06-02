@@ -119,7 +119,7 @@ namespace Bam.Net.Server
             try
             {
                 _listener.Stop();
-                _listener.Close();
+                _logger.AddEntry("HttpServer listener stopped");
             }
             catch (Exception ex)
             {

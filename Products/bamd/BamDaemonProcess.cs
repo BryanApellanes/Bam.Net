@@ -14,8 +14,22 @@ namespace Bam.Net.Application
     {
         public BamDaemonProcess()
         {
-            MaxRetries = 3;
             WorkingDirectory = ".\\";
+            StandardOutSoFar = string.Empty;
+            StandardErrorSoFar = string.Empty;
+            StandardOut += (o, a) =>
+            {
+                BamDaemonProcessEventArgs args = (BamDaemonProcessEventArgs)a;
+                StandardOutSoFar += $"\r\n{args.Message}";
+                StandardOutLineCount++;
+            };
+
+            ErrorOut += (o, a) =>
+            {
+                BamDaemonProcessEventArgs args = (BamDaemonProcessEventArgs)a;
+                StandardErrorSoFar += $"\r\n{args.Message}";
+                ErrorOutLineCount++;
+            };
         }
 
         public BamDaemonProcess(string commandLine) : this()
@@ -54,6 +68,11 @@ namespace Bam.Net.Application
         [JsonIgnore]
         public ProcessOutput ProcessOutput { get; set; }
 
+        public void Kill()
+        {
+            ProcessOutput.Process.Kill();
+        }
+
         public ProcessOutput Start(EventHandler onExit = null)
         {
             ExitHandler = onExit;
@@ -71,27 +90,18 @@ namespace Bam.Net.Application
             return ProcessOutput;
         }
 
-        public bool RetryStart(EventHandler onExit = null)
-        {
-            if(RetryCount < MaxRetries)
-            {
-                RetryCount++;
-                Start(onExit);
-                return true;
-            }
-            return false;
-        }
-
         public override string ToString()
         {
             return $"{WorkingDirectory}:{Name} > {FileName} {Arguments}";
         }
 
-        protected int RetryCount { get; set; }
-        protected int MaxRetries { get; set; }
-        protected EventHandler ExitHandler { get; set; }
+        public int StandardOutLineCount { get; internal set; }
+        public int ErrorOutLineCount { get; internal set; }
 
-        internal int StandardOutLineCount { get; set; }
-        internal int StandardErrorLineCount { get; set; }
+        internal string StandardOutSoFar { get; set; }
+        internal string StandardErrorSoFar { get; set; }
+
+        protected int RetryCount { get; set; }
+        protected EventHandler ExitHandler { get; set; }        
     }
 }

@@ -53,20 +53,15 @@ namespace Bam.Net.Application
                 });
             }
         }
-
-        static Dictionary<string, BamDaemonProcess> _processes;
-        static Dictionary<string, FileInfo> _standardOuts;
-        static Dictionary<string, FileInfo> _standardErrors;
+                
+        static Dictionary<string, BamDaemonProcessMonitor> _monitors;
         protected override void OnStart(string[] args)
         {
             try
             {
                 Log.AddLogger(GetLogger());
                 Log.AddEntry("{0} starting", ServiceInfo.ServiceName);
-
-                _processes = new Dictionary<string, BamDaemonProcess>();
-                _standardOuts = new Dictionary<string, FileInfo>();
-                _standardErrors = new Dictionary<string, FileInfo>();
+                _monitors = new Dictionary<string, BamDaemonProcessMonitor>();
 
                 string contentRoot = ServiceConfig.ContentRoot;
                 string configRoot = Path.Combine(contentRoot, "conf");
@@ -94,88 +89,17 @@ namespace Bam.Net.Application
             }
         }
 
-        private void StartProcess(BamDaemonProcess process)
-        {
-            try
-            {
-                string key = process.ToString();
-                Log.AddEntry("Starting {0}", key);
-                if (!_processes.ContainsKey(key))
-                {
-                    _processes.Add(key, process);
-                }
-                if (!_standardOuts.ContainsKey(key))
-                {
-                    _standardOuts.Add(key, new FileInfo(Path.Combine(ServiceConfig.LogRoot, $"{Path.GetFileNameWithoutExtension(process.Name)}_out.txt")));
-                }
-                if (!_standardErrors.ContainsKey(key))
-                {
-                    _standardErrors.Add(key, new FileInfo(Path.Combine(ServiceConfig.LogRoot, $"{Path.GetFileNameWithoutExtension(process.Name)}_err.txt")));
-                }
-                process.Subscribe(Log.Default);
-                void restarter(object s, EventArgs a) // exit handler that restarts the process if it exits
-                {
-                    Log.AddEntry("Process died, restarting: {0}", key);
-                    Thread.Sleep(2500);
-                    try
-                    {
-                        BamDaemonProcess pr = _processes[key];
-                        pr.ProcessOutput.ActiveStandardOut = new StringBuilder();
-                        pr.ProcessOutput.ActiveStandardError = new StringBuilder();
-                        if (pr.RetryStart(restarter))
-                        {
-                            Log.AddEntry("{0} restarted", key);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.AddEntry("Error restarting process {0}: {1}", ex, key, ex.Message);
-                    }
-                }
-                process.StandardOut += (s, a) =>
-                {
-                    BamDaemonProcessEventArgs args = (BamDaemonProcessEventArgs)a;
-                    string msg = $"{args.Message}\r\n";
-                    if(args.BambotProcess.StandardOutLineCount > MaxLineCount)
-                    {
-                        msg.SafeWriteToFile(_standardOuts[key].FullName);
-                    }
-                    else
-                    {
-                        args.BambotProcess.StandardOutLineCount++;
-                        msg.SafeAppendToFile(_standardOuts[key].FullName);
-                    }
-                };
-                process.ErrorOut += (s, a) =>
-                {
-                    BamDaemonProcessEventArgs args = (BamDaemonProcessEventArgs)a;
-                    string msg = $"{args.Message}\r\n";
-                    if (args.BambotProcess.StandardErrorLineCount > MaxLineCount)
-                    {
-                        msg.SafeWriteToFile(_standardErrors[key].FullName);
-                    }
-                    else
-                    {
-                        args.BambotProcess.StandardErrorLineCount++;
-                        msg.SafeAppendToFile(_standardErrors[key].FullName);
-                    }
-                };
-                process.Start(restarter);
-            }
-            catch (Exception ex)
-            {
-                Log.AddEntry("Error starting process {0}: {1}", ex, process?.ToString(), ex.Message);
-            }
-        }
-
         protected override void OnStop()
         {
+            Log.AddEntry("{0} stopping", ServiceInfo.ServiceName);
             Server.Stop();
-            foreach (string key in _processes.Keys)
+            foreach (string key in _monitors.Keys)
             {
                 try
                 {
-                    _processes[key].ProcessOutput.Process.Kill();
+                    Log.AddEntry("Stopping {0}", key);
+                    _monitors[key].Process.Kill();
+                    Log.AddEntry("Stopped {0}", key);
                 }
                 catch (Exception ex)
                 {
@@ -195,6 +119,21 @@ namespace Bam.Net.Application
             ILogger logger = CreateLog(ServiceInfo.ServiceName);
             
             return ServiceConfig.GetMultiTargetLogger(logger);
+        }
+
+        private void StartProcess(BamDaemonProcess process)
+        {
+            try
+            {
+                string key = process.ToString();
+                Log.AddEntry("Starting {0}", key);
+                process.Subscribe(Log.Default);
+                _monitors.Add(key, BamDaemonProcessMonitor.Start(process));
+            }
+            catch (Exception ex)
+            {
+                Log.AddEntry("Error starting process {0}: {1}", ex, process?.ToString(), ex.Message);
+            }
         }
     }
 }
