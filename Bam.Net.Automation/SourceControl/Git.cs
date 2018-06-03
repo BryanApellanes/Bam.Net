@@ -95,7 +95,7 @@ namespace Bam.Net.Automation.SourceControl
 
         public Git Bin(string gitBinPath)
         {
-            _configStack.GitBinPath = gitBinPath;
+            _configStack.GitPath = gitBinPath;
             return this;
         }
 
@@ -117,7 +117,7 @@ namespace Bam.Net.Automation.SourceControl
         {
             get
             {
-                return new DirectoryInfo(_configStack.GitBinPath);
+                return new DirectoryInfo(_configStack.GitPath);
             }
         }
 
