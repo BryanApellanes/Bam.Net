@@ -124,7 +124,7 @@ namespace Bam.Net.Automation
             {
                 if (string.IsNullOrEmpty(_defaultStage))
                 {
-                    _defaultStage = DefaultConfiguration.GetAppSetting("NugetStage", "C:\\bam\\stage");
+                    _defaultStage = DefaultConfiguration.GetAppSetting("NugetStage", "C:\\bam\\nuget\\stage");
                 }
                 return _defaultStage;
             }
@@ -147,7 +147,13 @@ namespace Bam.Net.Automation
         public static void BuildDevPackages()
         {
             _nugetArg = Arguments["dev"];
-            _suffix = "Dev";
+            string commit = _nugetArg.CommitHash();
+            string commitFile = Path.Combine(_nugetArg, "commit");
+            if (string.IsNullOrEmpty(commit) && File.Exists(commitFile))
+            {
+                commit = commitFile.SafeReadFile().Trim();
+            }
+            _suffix = string.IsNullOrEmpty(commit) ? "Dev" : $"Dev-{commit.First(8)}";
             CreateNugetPackages();
         }
 
@@ -254,7 +260,7 @@ namespace Bam.Net.Automation
             return tag;
         }
 
-        [ConsoleAction("msi", "Build an msi from a set of related wix project files.  The contents of the msi are set to the contents of the specified ReleaseFolder folder.")]
+        [ConsoleAction("msi", "Build the bam toolkit msi from a set of related wix project files.  The contents of the msi are set to the contents of the specified ReleaseFolder folder.")]
         public static bool BuildMsi()
         {
             string srcRoot = GetTargetPath();
@@ -688,7 +694,7 @@ namespace Bam.Net.Automation
         protected static string PrepareNugetStage(FileInfo assemblyFile, string lib = null)
         {
             string fileName = Path.GetFileNameWithoutExtension(assemblyFile.Name);
-            string xmlFileName = $"{fileName}.xml";
+            string xmlFileName = $"{fileName}.xml"; // the documentation file
             FileInfo xmlFile = new FileInfo(Path.Combine(assemblyFile.Directory.FullName, xmlFileName));
             DirectoryInfo stage = new DirectoryInfo(Path.Combine(NugetStage, fileName));
             if (!stage.Exists)
@@ -737,6 +743,7 @@ namespace Bam.Net.Automation
             }
             string suffix = GetSuffix();
             ProcessOutput output = $"{NugetPath} pack {nuspecFile.Path} -OutputDirectory \"{OutputDirectory}\"{suffix}".Run((o) => OutLineFormat(o, ConsoleColor.Cyan), (err) => OutLineFormat(err, ConsoleColor.Magenta), 600000);
+            OutLineFormat("{0} {1}: package written to {2}", nuspecFile.Id, $"{nuspecFile.Id}.{nuspecFile.Version.ToString()}{suffix}", OutputDirectory);
             return output;
         }
 

@@ -1551,7 +1551,8 @@ namespace Bam.Net
         /// <summary>
         /// Double null check the specified toInit locking on the current
         /// object using the specified ifNull function to instantiate if 
-        /// toInit is null
+        /// toInit is null.  This guarantess thread safe access to the
+        /// resulting object.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="sync"></param>
