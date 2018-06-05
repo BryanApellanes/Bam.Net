@@ -163,6 +163,7 @@ namespace Bam.Net.Automation
             // update version
             string targetPath = GetTargetPath();            
             DirectoryInfo srcRoot = GetSourceRoot(targetPath);
+            srcRoot.GetCommitHash().SafeWriteToFile(Path.Combine(srcRoot.FullName, "commit"));
             BamInfo info = GetBamInfo(srcRoot);
             info.VersionString = GetNextVersion(info.VersionString);
             UpdateAssemblyVersions(srcRoot, info);
