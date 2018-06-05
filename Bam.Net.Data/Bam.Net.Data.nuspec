@@ -2,21 +2,18 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Data</id>
-    <version>1.9.2</version>
+    <version>1.9.3</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>Data access objects and tools for use with the Bam framework</description>
-    <releaseNotes>Version 1.9.2
-Updates since v1.9.1:
- -   fix bug in book paging (f88a251a)
- -   update documentation, minor refactor for syntax (da870788)
- -   set databases on Add and AddRange (26567c68)
- -   set database(s) on Add and AddRange (3de72168)
+    <releaseNotes>Version 1.9.3
+Updates since v1.9.2:
+ -   add Cache database support (b943bf04)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.9.2" />
-      <dependency id="Bam.Net.Incubation" version="1.9.2" />
+      <dependency id="Bam.Net" version="1.9.3" />
+      <dependency id="Bam.Net.Incubation" version="1.9.3" />
       <dependency id="EcmaScript.Net" version="1.0.1.0" />
       <dependency id="Microsoft.AspNet.Mvc" version="5.2.3" />
       <dependency id="Microsoft.AspNet.Razor" version="3.2.3" />

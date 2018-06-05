@@ -2,38 +2,26 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.CoreServices</id>
-    <version>1.9.2</version>
+    <version>1.9.3</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>Tools for distributed application services</description>
-    <releaseNotes>Version 1.9.2
-Updates since v1.9.1:
- -   better user management (9162acc6)
- -   specify assemblyservice db path (1aff366b)
- -   account for custom attributes to determine reference assemblies for proxy generation (42e69b7d)
- -   lock while registering service loader (e4300f57)
- -   use locks and try-catches to aleviate file access race conditions (c3ed5cbc)
- -   refactor testing related services (10ba3896)
- -   serviceregistryservice; scan for serviceregistries (c2eb722c)
- -   use locks, and try-catches to eliminate race and file access issues (e1c425cf)
- -   refactor testing related services (e8c40c9c)
- -   scan for serviceregistries (2dc067d5)
- -   continued ServiceRegistryService implementation (e3b8428b)
+    <releaseNotes>Version 1.9.3
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.9.2" />
-      <dependency id="Bam.Net.Data" version="1.9.2" />
-      <dependency id="Bam.Net.Data.Repositories" version="1.9.2" />
+      <dependency id="Bam.Net" version="1.9.3" />
+      <dependency id="Bam.Net.Data" version="1.9.3" />
+      <dependency id="Bam.Net.Data.Repositories" version="1.9.3" />
       <dependency id="Bam.Net.Distributed" version="1.9.1" />
       <dependency id="Bam.Net.Documentation" version="1.9.1" />
-      <dependency id="Bam.Net.Encryption" version="1.9.2" />
-      <dependency id="Bam.Net.Incubation" version="1.9.2" />
-      <dependency id="Bam.Net.Logging" version="1.9.2" />
-      <dependency id="Bam.Net.Messaging" version="1.9.2" />
-      <dependency id="Bam.Net.Server" version="1.9.2" />
-      <dependency id="Bam.Net.ServiceProxy" version="1.9.2" />
-      <dependency id="Bam.Net.UserAccounts" version="1.9.2" />
+      <dependency id="Bam.Net.Encryption" version="1.9.3" />
+      <dependency id="Bam.Net.Incubation" version="1.9.3" />
+      <dependency id="Bam.Net.Logging" version="1.9.3" />
+      <dependency id="Bam.Net.Messaging" version="1.9.3" />
+      <dependency id="Bam.Net.Server" version="1.9.3" />
+      <dependency id="Bam.Net.ServiceProxy" version="1.9.3" />
+      <dependency id="Bam.Net.UserAccounts" version="1.9.3" />
       <dependency id="Common.Logging" version="3.3.1" />
       <dependency id="Common.Logging.Core" version="3.3.1" />
       <dependency id="Microsoft.AspNet.Mvc" version="5.2.3" />
