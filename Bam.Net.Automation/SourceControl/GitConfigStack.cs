@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Bam.Net;
 using Bam.Net.CommandLine;
+using Bam.Net.Configuration;
 
 namespace Bam.Net.Automation.SourceControl
 {
@@ -16,7 +17,7 @@ namespace Bam.Net.Automation.SourceControl
         public GitConfigStack()
         {
             this.CredentialHelper = "winstore";
-            this.GitBinPath = "C:\\Program Files (x86)\\Git\\bin";
+            this.GitPath = DefaultConfiguration.GetAppSetting("GitPath",  "C:\\Program Files (x86)\\Git\\bin");
         }
 
         public string Repository { get; set; }
@@ -25,8 +26,18 @@ namespace Bam.Net.Automation.SourceControl
         public string UserEmail { get; set; }
         public string CredentialHelper { get; set; }
 
-        public string GitBinPath { get; set; }
+        public string GitPath { get; set; }
 
         public ProcessOutput LastOutput { get; set; }
+
+        static GitConfigStack _default;
+        static object _defaultLock = new object();
+        public static GitConfigStack Default
+        {
+            get
+            {
+                return _defaultLock.DoubleCheckLock(ref _default, () => new GitConfigStack());
+            }
+        }
     }
 }

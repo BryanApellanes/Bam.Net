@@ -58,18 +58,13 @@ namespace Bam.Net.Server
         {
             return HostPrefix.FromDefaultConfiguration();
         }
-
+        
         static ILogger multiTargetLogger;
         public static ILogger GetMultiTargetLogger(ILogger logger)
         {
             if (multiTargetLogger == null)
             {
                 MultiTargetLogger multiLogger = new MultiTargetLogger();
-                TextFileLogger fileLogger = new TextFileLogger()
-                {
-                    Folder = new DirectoryInfo(LogRoot)
-                };
-                multiLogger.AddLogger(fileLogger);
                 multiLogger.AddLogger(logger);
                 multiLogger.StartLoggingThread();
                 multiTargetLogger = multiLogger;

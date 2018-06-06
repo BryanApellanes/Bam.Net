@@ -2,17 +2,14 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net</id>
-    <version>1.9.2</version>
+    <version>1.9.3</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>Productivity Tools</description>
-    <releaseNotes>Version 1.9.2
-Updates since v1.9.1:
- -   implement new bake build/release tool (1260d46b)
- -   added docs (27b109b9)
- -   correct threadstate check in BackgroundThreadQueue (3f825f76)
- -   add ; System.IO.Compression (0a2676b6)
- -   add System.IO.Compression package reference (cb28bbee)
+    <releaseNotes>Version 1.9.3
+Updates since v1.9.2:
+ -   add commit file for better version tracking (522160be)
+ -   add logging documentation (3fbeff40)
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>

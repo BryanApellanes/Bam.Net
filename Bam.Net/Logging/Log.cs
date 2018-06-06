@@ -82,6 +82,15 @@ namespace Bam.Net.Logging
         }
 
         const string _loggingNamespace = "Bam.Net.Logging";
+        /// <summary>
+        /// Creates a logger of the specified type.  If the containing assembly is already loaded 
+        /// the type should be the namespace qualified name of the ILogger implementation to 
+        /// instantiate.  If the containing assembly is not already loaded the type should be
+        /// the AssemblyQualified name.  If the type is not found an InvalidOperationException is thrown.
+        /// </summary>
+        /// <param name="logType">Type of the log.</param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
         public static ILogger CreateLogger(string logType)
         {
             lock (_currentLoggerLock)
@@ -116,6 +125,12 @@ namespace Bam.Net.Logging
             }
         }
 
+        /// <summary>
+        /// Creates a logger of the specified type.
+        /// </summary>
+        /// <param name="loggerType">Type of logger to instantiate.</param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
         public static ILogger CreateLogger(Type loggerType)
         {
             ConstructorInfo ctor = loggerType.GetConstructor(Type.EmptyTypes);

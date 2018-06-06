@@ -2,21 +2,15 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.CommandLine</id>
-    <version>1.9.2</version>
+    <version>1.9.3</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>Command line tools</description>
-    <releaseNotes>Version 1.9.2
-Updates since v1.9.1:
- -   add timeout parameter to run (af8e81da)
- -   updated process handling (f611ef81)
- -   add overload to Run extension method taking command and arguments as separate parameters (a7bf7f5f)
- -   honor 'killOldProcess' parameter if specified (4b0fcad0)
- -   honor 'killOldProcess' parameter (f5dd29fb)
+    <releaseNotes>Version 1.9.3
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.9.2" />
+      <dependency id="Bam.Net" version="1.9.3" />
     </dependencies>
   </metadata>
 </package>

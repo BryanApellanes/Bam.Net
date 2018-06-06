@@ -173,6 +173,7 @@
     <Compile Include="MSBuild\Project.cs" />
     <Compile Include="JobManagerService.cs" />
     <Compile Include="MSBuild\FileCopyBehavior.cs" />
+    <Compile Include="NodeScripts\Node.cs" />
     <Compile Include="Nuget\packages.cs">
       <DependentUpon>packages.xsd</DependentUpon>
     </Compile>
@@ -404,6 +405,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Automation.db.js" />
+    <EmbeddedResource Include="NodeScripts\ln.node.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

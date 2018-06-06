@@ -15,7 +15,7 @@ namespace Bam.Net.Automation.SourceControl
             string curDir = Environment.CurrentDirectory;
             Environment.CurrentDirectory = dir.FullName;
             string currentBranch = string.Empty;
-            ProcessOutput po = "git branch".Run(line =>
+            ProcessOutput po = $"{GitConfigStack.Default.GitPath} branch".Run(line =>
             {
                 string trimmed = line.Trim();
                 if (trimmed.StartsWith("*"))
@@ -79,6 +79,53 @@ namespace Bam.Net.Automation.SourceControl
             }
 
             return UpToGitRoot(directory.Parent);
+        }
+
+        /// <summary>
+        /// Commits the hash.
+        /// </summary>
+        /// <param name="directoryPath">The directory path.</param>
+        /// <returns></returns>
+        public static string CommitHash(this string directoryPath)
+        {
+            return GetCommitHash(new DirectoryInfo(directoryPath));
+        }
+
+        /// <summary>
+        /// Commits the hash.
+        /// </summary>
+        /// <param name="directory">The directory.</param>
+        /// <returns></returns>
+        public static string CommitHash(this DirectoryInfo directory)
+        {
+            return GetCommitHash(directory);
+        }
+
+        /// <summary>
+        /// Gets the commit hash.
+        /// </summary>
+        /// <param name="directoryPath">The directory path.</param>
+        /// <returns></returns>
+        public static string GetCommitHash(this string directoryPath)
+        {
+            return GetCommitHash(new DirectoryInfo(directoryPath));
+        }
+
+        /// <summary>
+        /// Gets the commit hash for the specified directory.
+        /// </summary>
+        /// <param name="directory">The directory.</param>
+        /// <returns></returns>
+        public static string GetCommitHash(this DirectoryInfo directory)
+        {
+            if(directory.IsInGitRepo(out DirectoryInfo gitRepo))
+            {
+                string commitHash = string.Empty;
+                $"{GitConfigStack.Default.GitPath}".ToStartInfo("rev-parse HEAD", gitRepo.FullName).RunAndWait(hash => commitHash = hash, (e) => { }, 60000);
+                return commitHash;
+            }
+
+            return null;
         }
     }
 }

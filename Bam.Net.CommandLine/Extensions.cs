@@ -95,12 +95,17 @@ namespace Bam.Net.CommandLine
             return Run(startInfo, outputCollector, timeout);
         }
 
-        public static ProcessStartInfo ToStartInfo(this string command, string workingDirectory, bool promptForAdmin = false, int timeout = 600000)
+        public static ProcessStartInfo ToStartInfo(this string command, string workingDirectory, bool promptForAdmin = false)
         {
             ValidateCommand(command);
             GetExeAndArguments(command, out string exe, out string arguments);
+            return ToStartInfo(exe, arguments, workingDirectory, promptForAdmin);
+        }
+
+        public static ProcessStartInfo ToStartInfo(this string exe, string arguments, string workingDirectory, bool promptForAdmin = false)
+        {
             ProcessStartInfo startInfo = CreateStartInfo(promptForAdmin);
-            startInfo.FileName = command;
+            startInfo.FileName = exe;
             startInfo.Arguments = arguments;
             startInfo.WorkingDirectory = workingDirectory;
             return startInfo;

@@ -18,7 +18,7 @@ namespace Bam.Net.Application
         public override bool Respond(IHttpContext context)
         {
             Logger.AddEntry("BambotResponder Responding: {0}", context.Request.RawUrl);
-            SendResponse(context.Response, "Bambot is running");
+            SendResponse(context.Response, "OK");
             return true;
         }
     }

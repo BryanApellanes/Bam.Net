@@ -2,7 +2,7 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net.Encryption</id>
-    <version>1.9.2</version>
+    <version>1.9.3</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>
@@ -10,13 +10,13 @@
 		Store sensitive information in an encrypted Vault that 
 		stores encrypted data in SQLite database files.
     </description>
-    <releaseNotes>Version 1.9.2
+    <releaseNotes>Version 1.9.3
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>
-      <dependency id="Bam.Net" version="1.9.2" />
-      <dependency id="Bam.Net.Data" version="1.9.2" />
-      <dependency id="Bam.Net.Incubation" version="1.9.2" />
+      <dependency id="Bam.Net" version="1.9.3" />
+      <dependency id="Bam.Net.Data" version="1.9.3" />
+      <dependency id="Bam.Net.Incubation" version="1.9.3" />
       <dependency id="BouncyCastle" version="1.7.0" />
       <dependency id="Microsoft.AspNet.Mvc" version="5.2.3" />
       <dependency id="Microsoft.AspNet.Razor" version="3.2.3" />
