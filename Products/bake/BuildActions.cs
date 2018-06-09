@@ -85,6 +85,19 @@ namespace Bam.Net.Automation
             }
         }
 
+        static string _platform;
+        public static string Platform
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_platform))
+                {
+                    _platform = DefaultConfiguration.GetAppSetting("Platform", "x64");
+                }
+                return _platform;
+            }
+        }
+
         static string _defaultLib;
         /// <summary>
         /// Gets the library.
@@ -115,10 +128,6 @@ namespace Bam.Net.Automation
                 }
                 return _defaultVer;
             }
-            set
-            {
-                _defaultVer = value;
-            }
         }
 
         static string _defaultStage;
@@ -131,10 +140,6 @@ namespace Bam.Net.Automation
                     _defaultStage = DefaultConfiguration.GetAppSetting("NugetStage", "C:\\bam\\nuget\\stage");
                 }
                 return _defaultStage;
-            }
-            set
-            {
-                _defaultStage = value;
             }
         }
 
@@ -151,17 +156,51 @@ namespace Bam.Net.Automation
             }
         }
 
-        [ConsoleAction("dev", "Create dev nuget packages from the specified ReleaseFolder.")]
-        public static void BuildDevPackages()
+        static string _builds;
+        public static string Builds
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_builds))
+                {
+                    _builds = DefaultConfiguration.GetAppSetting("Builds", "C:\\bam\\build");
+                }
+                return _builds;
+            }
+        }
+
+        [ConsoleAction("commit", "Create dev nuget packages from the specified commit assuming it has been built to the path specified by {Builds} in the config file.")]
+        public void PackCommit()
+        {
+            string commitArg = Arguments["commit"];
+
+            //{Builds}{Platform}{FrameworkVersion}\Debug\_{commitHash}
+            DirectoryInfo debugRoot = new DirectoryInfo(Path.Combine(Builds, Platform, FrameworkVersion, "Debug"));
+            DirectoryInfo[] subDirectories = debugRoot.GetDirectories($"_{commitArg}*");
+            if(subDirectories.Length == 0)
+            {
+                OutLineFormat("Specified commit was not found in the builds directory ({0}): {1}", ConsoleColor.Magenta, debugRoot.FullName, commitArg);
+                Exit(1);
+            }
+            if(subDirectories.Length > 1)
+            {
+                OutLineFormat("Multiple directories found for specific commit hash prefix ({0}), specifiy more characters of the hash to isolate a single commit", ConsoleColor.Magenta, commitArg);
+                Exit(1);
+            }
+            DirectoryInfo _binRoot = subDirectories[0];
+            _nugetArg = _binRoot.FullName;
+            _suffix = $"Dev-{GetBuildNum()}-{_binRoot.Name.TruncateFront(1).First(8)}";
+            CreateNugetPackages();
+        }
+
+        [ConsoleAction("dev", "Create dev nuget packages from binaries in the specified folder.")]
+        public static void PackDev()
         {
             _nugetArg = Arguments["dev"];
-            string commit = _nugetArg.CommitHash();
-            string commitFile = Path.Combine(_nugetArg, "commit");
-            if (string.IsNullOrEmpty(commit) && File.Exists(commitFile))
-            {
-                commit = commitFile.SafeReadFile().Trim();
-            }
-            _suffix = string.IsNullOrEmpty(commit) ? "Dev" : $"Dev-{commit.First(8)}";
+            int buildNum = GetBuildNum();
+
+            string commit = GetCommitHash();
+            _suffix = string.IsNullOrEmpty(commit) ? $"Dev-{buildNum}" : $"Dev-{buildNum}-{commit.First(8)}";
             CreateNugetPackages();
         }
 
@@ -858,6 +897,30 @@ namespace Bam.Net.Automation
             }
             string searchPattern = searchPatternFormat.NamedFormat(new { Version = version });
             return searchPattern;
+        }
+
+        private static int GetBuildNum()
+        {
+            int buildNum = 1;
+            string buildFile = Path.Combine(_nugetArg, "buildnum");
+            if (File.Exists(buildFile))
+            {
+                buildNum += buildFile.SafeReadFile().ToInt();
+                buildNum.ToString().SafeWriteFile(buildFile);
+            }
+            return buildNum;
+        }
+
+        private static string GetCommitHash()
+        {
+            string commit = _nugetArg.CommitHash();
+            string commitFile = Path.Combine(_nugetArg, "commit");
+            if (string.IsNullOrEmpty(commit) && File.Exists(commitFile))
+            {
+                commit = commitFile.SafeReadFile().Trim();
+            }
+
+            return commit;
         }
     }
 }
