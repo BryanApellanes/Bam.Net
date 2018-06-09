@@ -17,8 +17,9 @@ the patch number is incremented and the result is used as the version.  You may 
 of the command line switches, /major, /minor or /patch to increment the associated version part.  Additionally, 
 an msi is created as part of the release by prompting for the location of wix merge module and project files.
 
+## Mode: Dev
 When dev mode is selected, **DirectoryPath** is the path to where the Bam.Net binaries are found.  The 
-version number used is the latest release version with the build number appended in the format -Dev.{0}.  
+version number used is the latest release version with the commit hash appended in the format -Dev.{commitHash}.  
 
 Example:
 ```

@@ -115,6 +115,10 @@ namespace Bam.Net.Automation
                 }
                 return _defaultVer;
             }
+            set
+            {
+                _defaultVer = value;
+            }
         }
 
         static string _defaultStage;
@@ -127,6 +131,10 @@ namespace Bam.Net.Automation
                     _defaultStage = DefaultConfiguration.GetAppSetting("NugetStage", "C:\\bam\\nuget\\stage");
                 }
                 return _defaultStage;
+            }
+            set
+            {
+                _defaultStage = value;
             }
         }
 

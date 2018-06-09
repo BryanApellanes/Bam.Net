@@ -167,21 +167,6 @@ namespace Bam.Net.Application
             }
         }
 
-        private string ConfirmPasswordPrompt()
-        {
-            string password1 = PasswordPrompt("Please enter the new user's password");
-            OutLine();
-            string password2 = PasswordPrompt("Please confirm the new user's password");
-            OutLine();
-            if (!password1.Equals(password2))
-            {
-                OutLine("passwords did not match", ConsoleColor.Yellow);
-                return ConfirmPasswordPrompt();
-            }
-
-            return password1;
-        }
-
         [ConsoleAction("signUp", "Sign Up for an account on bamapps.net")]
 		public void SignUp()
 		{
@@ -302,6 +287,21 @@ namespace Bam.Net.Application
                     Log.Warn("File {0} doesn't exist", srcFile.FullName);
                 }
             }
+        }
+
+        private string ConfirmPasswordPrompt()
+        {
+            string password1 = PasswordPrompt("Please enter the new user's password");
+            OutLine();
+            string password2 = PasswordPrompt("Please confirm the new user's password");
+            OutLine();
+            if (!password1.Equals(password2))
+            {
+                OutLine("passwords did not match", ConsoleColor.Yellow);
+                return ConfirmPasswordPrompt();
+            }
+
+            return password1;
         }
 
         private UserInfo GetUserInfo()
