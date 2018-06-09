@@ -446,6 +446,29 @@ namespace Bam.Net.CommandLine
             return results.ToArray();
         }
 
+        /// <summary>
+        /// Gets the configuration argument either from the config file or the command line
+        /// arguments.  If the specified argument is not found then a prompt is shown.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
+        public static string GetConfigArgument(string name)
+        {
+            string value = DefaultConfiguration.GetAppSetting("name", GetArgument(name));
+            return value;
+        }
+
+        /// <summary>
+        /// Gets the command line argument with the specified name.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
+        public static string GetArgument(string name)
+        {
+            string value = Arguments.Contains(name) ? Arguments[name] : Prompt("Please enter a value for {0}"._Format(name));
+            return value;
+        }
+
         public static string Prompt(string message)
         {
             return Prompt(message, ConsoleColor.Cyan);
