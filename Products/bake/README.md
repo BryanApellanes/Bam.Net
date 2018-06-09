@@ -2,19 +2,28 @@
 
 Bake.exe is a tool used to build the BamToolkit and Bam.Net nuget packages.
 
-## Modes (commit | dev | release)
+## Latest
+When latest mode is selected, the binaries are expected to exist in the path 
+{Builds}{Platform}{FrameworkVersion}\Debug\_**{latest}**, where **{latest}** is
+the commit hash read from {Builds}\latest and each remaining variable
+value is specified in the config file.  The resulting nuget packages will have 
+the suffix "-Dev-latest";
 
-- bake /**[mode]**:**[argument]**
+Example:
+```
+bake /latest
+```
 
 ## Commit
 When commit mode is selected, **argument** is the commit hash of the build to pack.  The argument specified can
 be the first X number of characters of the commit hash used to uniquely identify a specific commit.  The binaries
-are expected to exist in the path {Builds}{Platform}{FrameworkVersion}\Debug\_{**argument**}, where each value is
-specified in the config file.
+are expected to exist in the path {Builds}{Platform}{FrameworkVersion}\Debug\_**{argument}**, where each variable
+value is specified in the config file.  The resulting nuget packages will have the suffix 
+"-Dev-**first five characters of commit hash**".
 
 Example:
 ```
-bake /commit:0b81
+bake /commit:0b815
 ```
 
 ## Dev
