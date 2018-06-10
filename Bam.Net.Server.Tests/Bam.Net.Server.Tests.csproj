@@ -224,10 +224,6 @@
       <Project>{8794c09d-d72c-420c-812f-bfda251b64c9}</Project>
       <Name>Bam.Net</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DaoRef\DaoRef.csproj">
-      <Project>{88b5d719-69ed-45d8-9f04-c33d3fc5dcbe}</Project>
-      <Name>DaoRef</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
