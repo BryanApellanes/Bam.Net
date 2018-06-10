@@ -284,7 +284,7 @@ namespace Bam.Net.Automation
             BamInfo info = GetBamInfo(srcRoot);
             info.VersionString = GetNextVersion(info.VersionString);
             OutLineFormat("Setting version to {0}", ConsoleColor.DarkYellow, info.VersionString);
-            Thread.Sleep(1500); // in case someone is curious they'll have a short time to see the version
+            Thread.Sleep(3000); // in case someone is curious they'll have a short time to see the version
             UpdateAssemblyVersions(srcRoot, info);
             Task.WaitAll(SetSolutionNuspecInfos(srcRoot, info.VersionString).ToArray());
 
