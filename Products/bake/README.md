@@ -31,8 +31,10 @@ When latest mode is selected, the binaries are expected to exist in the path
 {Builds}{Platform}{FrameworkVersion}\Debug\_**{latest}**, where **{latest}** is
 the commit hash read from {Builds}\latest and each remaining variable
 value is specified in the config file.  The resulting nuget packages will have 
-the suffix "-Dev-latest";
+the suffix "-Dev-latest".
 
+All binaries are also copied to C:\bam\latest so any projects referencing the binaries
+are automatically updated to reference the latest binaries when they are rebuilt.
 
 ## Commit
 Example:
