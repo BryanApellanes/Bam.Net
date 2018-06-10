@@ -20,7 +20,23 @@ namespace Bam.Net.Application
         }
         public string MsBuild { get; set; }
         public string Nuget { get; set; }
+
+        /// <summary>
+        /// Gets or sets the packages directory.  The location of installed
+        /// nuget packages.
+        /// </summary>
+        /// <value>
+        /// The packages directory.
+        /// </value>
         public string PackagesDirectory { get; set; }
+
+        /// <summary>
+        /// Gets or sets the global packages directory.
+        /// </summary>
+        /// <value>
+        /// The global packages directory.
+        /// </value>
+        public string GlobalPackagesDirectory { get; set; }
         public string ProjectFile { get; set; }
         public string Config { get; set; } // Release or Debug
 

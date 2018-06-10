@@ -200,9 +200,9 @@ namespace Bam.Net.CommandLine
         /// <param name="exe"></param>
         /// <param name="arguments"></param>
         /// <param name="onExit"></param>
-        public static ProcessOutput Run(this string exe, string arguments, EventHandler<ProcessExitEventArgs> onExit)
+        public static ProcessOutput Run(this string exe, string arguments, EventHandler onExit)
         {
-            return Run(exe, arguments, (o, a) => onExit(o, (ProcessExitEventArgs)a), null);
+            return Run(exe, arguments, onExit, null);
         }
 
         public static ProcessOutput RunAndWait(this ProcessStartInfo info, Action<string> standardOut = null, Action<string> errorOut = null, int timeOut = 60000)
@@ -232,9 +232,9 @@ namespace Bam.Net.CommandLine
         /// <param name="arguments">The arguments.</param>
         /// <param name="onExit">The on exit.</param>
         /// <param name="timeOut">The time out.</param>
-        public static void RunAndWait(this string exe, string arguments, EventHandler<ProcessExitEventArgs> onExit, int timeOut = 60000)
+        public static void RunAndWait(this string exe, string arguments, EventHandler onExit = null, int timeOut = 60000)
         {
-            Run(exe, arguments, (o, a) => onExit(o, (ProcessExitEventArgs)a), timeOut);
+            Run(exe, arguments, onExit, timeOut);
         }
 
         /// <summary>

@@ -2,6 +2,9 @@
 
 Bake.exe is a tool used to build the BamToolkit and Bam.Net nuget packages.
 
+## Init
+
+
 ## Latest
 When latest mode is selected, the binaries are expected to exist in the path 
 {Builds}{Platform}{FrameworkVersion}\Debug\_**{latest}**, where **{latest}** is

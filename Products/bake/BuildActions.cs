@@ -169,7 +169,28 @@ namespace Bam.Net.Automation
             }
         }
 
-        [ConsoleAction("latest", "Create dev nuget packages from the latest build")]
+        [ConsoleAction("init", "Initialize nuget related paths to values expected by Bam.Net.")]
+        public static void InitNugetEnvironment()
+        {
+            BakeSettings settings = GetSettings();
+            string setRepoPath = $"config -Set repositoryPath=\"{settings.PackagesDirectory}\"";
+            string setGlobalPath = $"config -Set globalPackagesFolder=\"{settings.GlobalPackagesDirectory}\"";
+            OutLineFormat("Setting nuget config properties:\r\n{0}\r\n{1}", setRepoPath, setGlobalPath);
+            
+            $"{settings.Nuget}".RunAndWait(setRepoPath);
+            $"{settings.Nuget}".RunAndWait(setGlobalPath);
+        }
+
+        [ConsoleAction("clean", "Clear all local nuget caches by issuing the command: nuget locals all -clear")]
+        public static void CleanNuget()
+        {
+            OutLine("Clearing local nuget caches", ConsoleColor.Cyan);
+            $"{NugetPath}".RunAndWait("locals all -clear");
+            DeleteDevLatestPackages();
+            OutLine("Done", ConsoleColor.Green);
+        }
+
+        [ConsoleAction("latest", "Create dev nuget packages from the latest build, clear nuget caches, delete all existing dev-latest package from the internal source and republish.")]
         public static void PackLatest()
         {
             string latestFile = Path.Combine(Builds, "latest");
@@ -185,10 +206,25 @@ namespace Bam.Net.Automation
             {                
                 Exit(0);
             }
+            CleanNuget();
             DirectoryInfo _binRoot = GetCommitBinFolder(info.Commit.First(8));
             _nugetArg = _binRoot.FullName;
             _suffix = $"Dev-latest";
             CreateNugetPackages();
+        }
+
+        private static void DeleteDevLatestPackages()
+        {
+            OutLineFormat("Deleting *-Dev-latest from {0}", ConsoleColor.Yellow, NugetInternalSource);
+            DirectoryInfo internalSource = new DirectoryInfo(NugetInternalSource);
+            foreach (DirectoryInfo packageDirectory in internalSource.GetDirectories())
+            {
+                foreach (DirectoryInfo devLatestDirectory in packageDirectory.GetDirectories("*-Dev-latest"))
+                {
+                    OutLineFormat("Deleting {0}", ConsoleColor.Yellow, devLatestDirectory.FullName);
+                    devLatestDirectory.Delete(true);
+                }
+            }
         }
 
         [ConsoleAction("commit", "Create dev nuget packages from the specified commit assuming it has been built to the path specified by {Builds} in the config file.")]
@@ -873,6 +909,7 @@ namespace Bam.Net.Automation
                 MsBuild = GetArgument("MsBuildPath", "Please enter the path to msbuild.exe."),
                 Nuget = NugetPath,
                 PackagesDirectory = GetArgument("PackagesDirectory", "Please enter the path to restore nuget packages to."),
+                GlobalPackagesDirectory = GetArgument("GlobalPackagesDirectory", "Please enter the path to the global packages directory.")
             };
         }
 
