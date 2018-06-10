@@ -20,6 +20,7 @@ namespace Bam.Net.Automation.SourceControl
         {
             this._configStack = new GitConfigStack { Repository = repository };
         }
+
         public static Git Repository(string repository)
         {
             return new Git(repository);

@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Linq;
+using System.Threading;
 
 namespace Bam.Net.Automation
 {
@@ -279,8 +280,11 @@ namespace Bam.Net.Automation
             string targetPath = GetTargetPath();            
             DirectoryInfo srcRoot = GetSourceRoot(targetPath);
             srcRoot.GetCommitHash().SafeWriteToFile(Path.Combine(srcRoot.FullName, typeof(Args).Namespace, "commit"), true);
+            GitPath.ToStartInfo("reset --hard", srcRoot.FullName).RunAndWait();
             BamInfo info = GetBamInfo(srcRoot);
             info.VersionString = GetNextVersion(info.VersionString);
+            OutLineFormat("Setting version to {0}", ConsoleColor.DarkYellow, info.VersionString);
+            Thread.Sleep(1500); // in case someone is curious they'll have a short time to see the version
             UpdateAssemblyVersions(srcRoot, info);
             Task.WaitAll(SetSolutionNuspecInfos(srcRoot, info.VersionString).ToArray());
 
@@ -650,14 +654,6 @@ namespace Bam.Net.Automation
             }
         }
 
-        protected static BamInfo UpdateVersion(DirectoryInfo srcRootDir)
-        {
-            BamInfo info = GetBamInfo(srcRootDir);
-            info.VersionString = GetNextVersion(info.VersionString);
-            UpdateAssemblyVersions(srcRootDir, info);
-            return info;
-        }
-
         protected static void UpdateAssemblyVersions(DirectoryInfo srcRootDir, BamInfo info)
         {
             GitReleaseNotes miscReleaseNotes = GitReleaseNotes.MiscSinceLatestRelease(srcRootDir.FullName);
@@ -721,17 +717,60 @@ namespace Bam.Net.Automation
             }
             else
             {
-                if (Arguments.Contains("patch"))
-                    packageVersion.IncrementPatch();
-
-                if (Arguments.Contains("minor"))
-                    packageVersion.IncrementMinor();
-
-                if (Arguments.Contains("major"))
-                    packageVersion.IncrementMajor();
+                SetPatch(packageVersion);
+                SetMinor(packageVersion);
+                SetMajor(packageVersion);
             }
 
             return packageVersion.Value;
+        }
+
+        private static void SetMajor(PackageVersion packageVersion)
+        {
+            if (Arguments.Contains("major"))
+            {
+                string major = Arguments["major"];
+                if (string.IsNullOrEmpty(major))
+                {
+                    packageVersion.IncrementMajor();
+                }
+                else
+                {
+                    packageVersion.Major = major;
+                }
+            }
+        }
+
+        private static void SetMinor(PackageVersion packageVersion)
+        {
+            if (Arguments.Contains("minor"))
+            {
+                string minor = Arguments["minor"];
+                if (string.IsNullOrEmpty(minor))
+                {
+                    packageVersion.IncrementMinor();
+                }
+                else
+                {
+                    packageVersion.Minor = minor;
+                }
+            }
+        }
+
+        private static void SetPatch(PackageVersion packageVersion)
+        {
+            if (Arguments.Contains("patch"))
+            {
+                string patch = Arguments["patch"];
+                if (string.IsNullOrEmpty(patch))
+                {
+                    packageVersion.IncrementPatch();
+                }
+                else
+                {
+                    packageVersion.Patch = patch;
+                }
+            }
         }
 
         private static void SetAssemblyInfo(FileInfo projectFile, string version)
