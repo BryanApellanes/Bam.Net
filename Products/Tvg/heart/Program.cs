@@ -13,6 +13,7 @@ namespace Bam.Net.Application
         static void Main(string[] args)
         {
             TryWritePid(true);
+            ServiceExe.SetInfo(HeartService.ServiceInfo);
             if (!HeartService.ProcessCommandLineArgs(args))
             {
                 IsolateMethodCalls = false;
