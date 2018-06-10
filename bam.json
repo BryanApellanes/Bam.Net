@@ -3,10 +3,10 @@
   "Owners": "Bryan Apellanes",
   "LicenseUrl": "http://opensource.org/licenses/MIT",
   "ProjectUrl": "http://bryanapellanes.github.io/Bam.Net/",
-  "ReleaseNotes": "Version 1.9.3\r\n -  update intersystems nuget package path (d1e71e6a)\r\n -  overwrite (29e93b72)\r\n -  fix path to write commit hash to (0161cbb2)\r\n -  update git path in build event (fbc7350f)\r\n -  add commit file for build purposes (fc08b3d9)\r\n -  Merge pull request #87 from BryanApellanes/next (c6594d84)\r\n",
+  "ReleaseNotes": "Version 1.13.0\r\n -  Merge branch 'next' of github.com:BryanApellanes/Bam.Net into next (569790b1)\r\n -  minor refactor (11b446fd)\r\n -  Merge branch 'next' of github.com:BryanApellanes/Bam.Net into next (e16af7ec)\r\n -  tickle (64a2621f)\r\n -  tickle (f35376e5)\r\n -  tickle (cde8415b)\r\n -  tickle (7c939e48)\r\n -  tickle (c9e3c008)\r\n -  update bake README (6e35cf85)\r\n",
   "MajorVersion": 1,
-  "MinorVersion": 9,
-  "PatchVersion": 3,
+  "MinorVersion": 13,
+  "PatchVersion": 0,
   "BuildNumber": "",
-  "VersionString": "1.9.3"
+  "VersionString": "1.13.0"
 }

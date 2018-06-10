@@ -47,6 +47,6 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("Bam.Net.Services.Clients")]
 [assembly: InternalsVisibleTo("gloo")]
 
-[assembly: AssemblyVersion("1.9.3")]
-[assembly: AssemblyFileVersion("1.9.3")]
+[assembly: AssemblyVersion("1.13.0")]
+[assembly: AssemblyFileVersion("1.13.0")]
 
