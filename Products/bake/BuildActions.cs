@@ -187,7 +187,7 @@ namespace Bam.Net.Automation
             OutLine("Clearing local nuget caches", ConsoleColor.Cyan);
             $"{NugetPath}".RunAndWait("locals all -clear");
             DeleteDevLatestPackages();
-            OutLine("Done", ConsoleColor.Green);
+            OutLine("Done clearing local nuget caches", ConsoleColor.Green);
         }
 
         [ConsoleAction("latest", "Create dev nuget packages from the latest build, clear nuget caches, delete all existing dev-latest package from the internal source and republish.")]
@@ -210,6 +210,10 @@ namespace Bam.Net.Automation
             DirectoryInfo _binRoot = GetCommitBinFolder(info.Commit.First(8));
             _nugetArg = _binRoot.FullName;
             _suffix = $"Dev-latest";
+            DirectoryInfo bamLatest = new DirectoryInfo("C:\\bam\\latest");
+            OutLineFormat("Copying {0} to {1}", _binRoot.FullName, bamLatest.FullName);
+            bamLatest.Delete(true);
+            _binRoot.Copy(bamLatest.FullName, true);
             CreateNugetPackages();
         }
 
