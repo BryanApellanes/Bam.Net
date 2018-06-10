@@ -313,6 +313,11 @@
     </None>
     <None Include="signing.snk" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="buildnum">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

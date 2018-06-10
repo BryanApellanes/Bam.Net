@@ -2,14 +2,11 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Bam.Net</id>
-    <version>1.9.3</version>
+    <version>1.13.0</version>
     <authors>Bryan Apellanes</authors>
     <owners>Bryan Apellanes</owners>
     <description>Productivity Tools</description>
-    <releaseNotes>Version 1.9.3
-Updates since v1.9.2:
- -   add commit file for better version tracking (522160be)
- -   add logging documentation (3fbeff40)
+    <releaseNotes>Version 1.13.0
 </releaseNotes>
     <copyright>Copyright © Bryan Apellanes 2018</copyright>
     <dependencies>

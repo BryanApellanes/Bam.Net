@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Linq;
+using System.Threading;
 
 namespace Bam.Net.Automation
 {
@@ -85,6 +86,19 @@ namespace Bam.Net.Automation
             }
         }
 
+        static string _platform;
+        public static string Platform
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_platform))
+                {
+                    _platform = DefaultConfiguration.GetAppSetting("Platform", "x64");
+                }
+                return _platform;
+            }
+        }
+
         static string _defaultLib;
         /// <summary>
         /// Gets the library.
@@ -143,17 +157,119 @@ namespace Bam.Net.Automation
             }
         }
 
-        [ConsoleAction("dev", "Create dev nuget packages from the specified ReleaseFolder.")]
-        public static void BuildDevPackages()
+        static string _builds;
+        public static string Builds
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_builds))
+                {
+                    _builds = DefaultConfiguration.GetAppSetting("Builds", "C:\\bam\\build");
+                }
+                return _builds;
+            }
+        }
+
+        [ConsoleAction("init", "Initialize nuget related paths to values expected by Bam.Net.")]
+        public static void InitNugetEnvironment()
+        {
+            BakeSettings settings = GetSettings();
+            string setRepoPath = $"config -Set repositoryPath=\"{settings.PackagesDirectory}\"";
+            string setGlobalPath = $"config -Set globalPackagesFolder=\"{settings.GlobalPackagesDirectory}\"";
+            OutLineFormat("Setting nuget config properties:\r\n{0}\r\n{1}", setRepoPath, setGlobalPath);
+            
+            $"{settings.Nuget}".RunAndWait(setRepoPath);
+            $"{settings.Nuget}".RunAndWait(setGlobalPath);
+        }
+
+        [ConsoleAction("clean", "Clear all local nuget caches by issuing the command: nuget locals all -clear")]
+        public static void CleanNuget()
+        {
+            OutLine("Clearing local nuget caches", ConsoleColor.Cyan);
+            $"{NugetPath}".RunAndWait("locals all -clear");
+            DeleteDevLatestPackages();
+            OutLine("Done clearing local nuget caches", ConsoleColor.Green);
+        }
+
+        [ConsoleAction("latest", "Create dev nuget packages from the latest build, clear nuget caches, delete all existing dev-latest package from the internal source and republish.")]
+        public static void PackLatest()
+        {
+            string latestFile = Path.Combine(Builds, "latest");
+            if (!File.Exists(latestFile))
+            {
+                OutLineFormat("The file {0} was not found", ConsoleColor.Magenta, latestFile);
+                Exit(1);
+            }
+            BakeBuildInfo info = latestFile.FromJsonFile<BakeBuildInfo>();
+            string latestArg = Arguments["latest"];
+            OutLineFormat("{0}", ConsoleColor.Cyan, info.Commit);
+            if (!string.IsNullOrEmpty(latestArg) && latestArg.Equals("show"))
+            {                
+                Exit(0);
+            }
+            CleanNuget();
+            DirectoryInfo _binRoot = GetCommitBinFolder(info.Commit.First(8));
+            _nugetArg = _binRoot.FullName;
+            _suffix = $"Dev-latest";
+            DirectoryInfo bamLatest = new DirectoryInfo("C:\\bam\\latest");
+            OutLineFormat("Copying {0} to {1}", _binRoot.FullName, bamLatest.FullName);
+            bamLatest.Delete(true);
+            _binRoot.Copy(bamLatest.FullName, true);
+            CreateNugetPackages();
+        }
+
+        private static void DeleteDevLatestPackages()
+        {
+            OutLineFormat("Deleting *-Dev-latest from {0}", ConsoleColor.Yellow, NugetInternalSource);
+            DirectoryInfo internalSource = new DirectoryInfo(NugetInternalSource);
+            foreach (DirectoryInfo packageDirectory in internalSource.GetDirectories())
+            {
+                foreach (DirectoryInfo devLatestDirectory in packageDirectory.GetDirectories("*-Dev-latest"))
+                {
+                    OutLineFormat("Deleting {0}", ConsoleColor.Yellow, devLatestDirectory.FullName);
+                    devLatestDirectory.Delete(true);
+                }
+            }
+        }
+
+        [ConsoleAction("commit", "Create dev nuget packages from the specified commit assuming it has been built to the path specified by {Builds} in the config file.")]
+        public static void PackCommit()
+        {
+            string commitArg = Arguments["commit"];
+
+            DirectoryInfo _binRoot = GetCommitBinFolder(commitArg);
+            _nugetArg = _binRoot.FullName;
+            _suffix = $"Dev-{GetBuildNum()}-{_binRoot.Name.TruncateFront(1).First(5)}";
+            CreateNugetPackages();
+        }
+
+        private static DirectoryInfo GetCommitBinFolder(string commitPrefix)
+        {
+            //{Builds}{Platform}{FrameworkVersion}\Debug\_{commitHash}
+            DirectoryInfo debugRoot = new DirectoryInfo(Path.Combine(Builds, Platform, FrameworkVersion, "Debug"));
+            DirectoryInfo[] subDirectories = debugRoot.GetDirectories($"_{commitPrefix}*");
+            if (subDirectories.Length == 0)
+            {
+                OutLineFormat("Specified commit was not found in the builds directory ({0}): {1}", ConsoleColor.Magenta, debugRoot.FullName, commitPrefix);
+                Exit(1);
+            }
+            if (subDirectories.Length > 1)
+            {
+                OutLineFormat("Multiple directories found for specific commit hash prefix ({0}), specifiy more characters of the hash to isolate a single commit", ConsoleColor.Magenta, commitPrefix);
+                Exit(1);
+            }
+            DirectoryInfo _binRoot = subDirectories[0];
+            return _binRoot;
+        }
+
+        [ConsoleAction("dev", "Create dev nuget packages from binaries in the specified folder.")]
+        public static void PackDev()
         {
             _nugetArg = Arguments["dev"];
-            string commit = _nugetArg.CommitHash();
-            string commitFile = Path.Combine(_nugetArg, "commit");
-            if (string.IsNullOrEmpty(commit) && File.Exists(commitFile))
-            {
-                commit = commitFile.SafeReadFile().Trim();
-            }
-            _suffix = string.IsNullOrEmpty(commit) ? "Dev" : $"Dev-{commit.First(8)}";
+            int buildNum = GetBuildNum();
+
+            string commit = GetCommitHash();
+            _suffix = string.IsNullOrEmpty(commit) ? $"Dev-{buildNum}" : $"Dev-{buildNum}-{commit.First(8)}";
             CreateNugetPackages();
         }
 
@@ -164,8 +280,11 @@ namespace Bam.Net.Automation
             string targetPath = GetTargetPath();            
             DirectoryInfo srcRoot = GetSourceRoot(targetPath);
             srcRoot.GetCommitHash().SafeWriteToFile(Path.Combine(srcRoot.FullName, typeof(Args).Namespace, "commit"), true);
+            GitPath.ToStartInfo("reset --hard", srcRoot.FullName).RunAndWait();
             BamInfo info = GetBamInfo(srcRoot);
             info.VersionString = GetNextVersion(info.VersionString);
+            OutLineFormat("Setting version to {0}", ConsoleColor.DarkYellow, info.VersionString);
+            Thread.Sleep(3000); // in case someone is curious they'll have a short time to see the version
             UpdateAssemblyVersions(srcRoot, info);
             Task.WaitAll(SetSolutionNuspecInfos(srcRoot, info.VersionString).ToArray());
 
@@ -249,16 +368,6 @@ namespace Bam.Net.Automation
             DirectoryInfo sourceRoot = GetSourceRoot(GetTargetPath());
             Commit(version, sourceRoot);
             Tag(version, sourceRoot);
-        }
-
-        private static string GetVersionTag()
-        {
-            string tag = Arguments["tag"];
-            if (string.IsNullOrEmpty(tag) && Arguments.Contains("v"))
-            {
-                tag = Arguments["v"];
-            }
-            return tag;
         }
 
         [ConsoleAction("msi", "Build the bam toolkit msi from a set of related wix project files.  The contents of the msi are set to the contents of the specified ReleaseFolder folder.")]
@@ -402,6 +511,16 @@ namespace Bam.Net.Automation
             Task.WaitAll(tasks.ToArray());
         }
 
+        private static string GetVersionTag()
+        {
+            string tag = Arguments["tag"];
+            if (string.IsNullOrEmpty(tag) && Arguments.Contains("v"))
+            {
+                tag = Arguments["v"];
+            }
+            return tag;
+        }
+
         /// <summary>
         /// /The path to look for binaries when packing nuget packages
         /// </summary>
@@ -535,14 +654,6 @@ namespace Bam.Net.Automation
             }
         }
 
-        protected static BamInfo UpdateVersion(DirectoryInfo srcRootDir)
-        {
-            BamInfo info = GetBamInfo(srcRootDir);
-            info.VersionString = GetNextVersion(info.VersionString);
-            UpdateAssemblyVersions(srcRootDir, info);
-            return info;
-        }
-
         protected static void UpdateAssemblyVersions(DirectoryInfo srcRootDir, BamInfo info)
         {
             GitReleaseNotes miscReleaseNotes = GitReleaseNotes.MiscSinceLatestRelease(srcRootDir.FullName);
@@ -606,17 +717,60 @@ namespace Bam.Net.Automation
             }
             else
             {
-                if (Arguments.Contains("patch"))
-                    packageVersion.IncrementPatch();
-
-                if (Arguments.Contains("minor"))
-                    packageVersion.IncrementMinor();
-
-                if (Arguments.Contains("major"))
-                    packageVersion.IncrementMajor();
+                SetPatch(packageVersion);
+                SetMinor(packageVersion);
+                SetMajor(packageVersion);
             }
 
             return packageVersion.Value;
+        }
+
+        private static void SetMajor(PackageVersion packageVersion)
+        {
+            if (Arguments.Contains("major"))
+            {
+                string major = Arguments["major"];
+                if (string.IsNullOrEmpty(major))
+                {
+                    packageVersion.IncrementMajor();
+                }
+                else
+                {
+                    packageVersion.Major = major;
+                }
+            }
+        }
+
+        private static void SetMinor(PackageVersion packageVersion)
+        {
+            if (Arguments.Contains("minor"))
+            {
+                string minor = Arguments["minor"];
+                if (string.IsNullOrEmpty(minor))
+                {
+                    packageVersion.IncrementMinor();
+                }
+                else
+                {
+                    packageVersion.Minor = minor;
+                }
+            }
+        }
+
+        private static void SetPatch(PackageVersion packageVersion)
+        {
+            if (Arguments.Contains("patch"))
+            {
+                string patch = Arguments["patch"];
+                if (string.IsNullOrEmpty(patch))
+                {
+                    packageVersion.IncrementPatch();
+                }
+                else
+                {
+                    packageVersion.Patch = patch;
+                }
+            }
         }
 
         private static void SetAssemblyInfo(FileInfo projectFile, string version)
@@ -798,6 +952,7 @@ namespace Bam.Net.Automation
                 MsBuild = GetArgument("MsBuildPath", "Please enter the path to msbuild.exe."),
                 Nuget = NugetPath,
                 PackagesDirectory = GetArgument("PackagesDirectory", "Please enter the path to restore nuget packages to."),
+                GlobalPackagesDirectory = GetArgument("GlobalPackagesDirectory", "Please enter the path to the global packages directory.")
             };
         }
 
@@ -850,6 +1005,30 @@ namespace Bam.Net.Automation
             }
             string searchPattern = searchPatternFormat.NamedFormat(new { Version = version });
             return searchPattern;
+        }
+
+        private static int GetBuildNum()
+        {
+            int buildNum = 1;
+            string buildFile = Path.Combine(_nugetArg, "buildnum");
+            if (File.Exists(buildFile))
+            {
+                buildNum += buildFile.SafeReadFile().ToInt();
+            }
+            buildNum.ToString().SafeWriteToFile(buildFile, true);
+            return buildNum;
+        }
+
+        private static string GetCommitHash()
+        {
+            string commit = _nugetArg.CommitHash();
+            string commitFile = Path.Combine(_nugetArg, "commit");
+            if (string.IsNullOrEmpty(commit) && File.Exists(commitFile))
+            {
+                commit = commitFile.SafeReadFile().Trim();
+            }
+
+            return commit;
         }
     }
 }

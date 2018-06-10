@@ -2,30 +2,70 @@
 
 Bake.exe is a tool used to build the BamToolkit and Bam.Net nuget packages.
 
-## Mode
+## Init
+When init mode is selected, the repositoryPath and globalPackagesFolder nuget config settings
+are set by making calls to nuget.exe.
 
-- bake /**[mode]**:**]DirectoryPath]**
+Example:
+```
+bake /init
+```
 
-Where **mode** is one of **dev** or **release**.
+## Clean
+When clean mode is selected, the local nuget caches are cleared and any "-Dev-latest" packages
+are deleted.
 
-When release mode is selected **DirectoryPath** is the path to where the Bam.Net source directory is found. 
-The bake tool will initiate a release build before packing and adding the packages to the nuget repository.  
-As part of the release build the version is set in all AssemblyInfo.cs files. If no version is specified 
-the patch number is incremented and the result is used as the version.  Additionally, an msi is created
-as part of the release by prompting for the location of wix merge module and project files.
+Example:
+```
+bake /clean
+```
 
-When dev mode is selected, **DirectoryPath** is the path to where the Bam.Net binaries are found.  The 
-version number used is the latest release version with the build number appended in the format -Dev.{0}.  
+## Latest
 
+Example:
+```
+bake /latest
+```
+
+When latest mode is selected, the binaries are expected to exist in the path 
+{Builds}{Platform}{FrameworkVersion}\Debug\_**{latest}**, where **{latest}** is
+the commit hash read from {Builds}\latest and each remaining variable
+value is specified in the config file.  The resulting nuget packages will have 
+the suffix "-Dev-latest";
+
+
+## Commit
+Example:
+```
+bake /commit:0b815
+```
+
+When commit mode is selected, **argument** is the commit hash of the build to pack.  The argument specified can
+be the first X number of characters of the commit hash used to uniquely identify a specific commit.  The binaries
+are expected to exist in the path {Builds}{Platform}{FrameworkVersion}\Debug\_**{argument}**, where each variable
+value is specified in the config file.  The resulting nuget packages will have the suffix 
+"-Dev-**first five characters of commit hash**".
+
+## Dev
 Example:
 ```
 bake /dev:C:\bam\BuildOutput
 ```
 
-When release mode is selected, **DirectoryPath** is the path to the root directory where the Bam.Net source files are found.  If no version is specified, the patch level is incremented
-and the resulting version is used.
+When dev mode is selected, **argument** is the path to where the Bam.Net binaries are found.  The 
+version number used is the latest release version with the commit hash appended in the format -Dev.{commitHash}.  
 
+## Release 
 Example
 ```
 bake /release:C:\bam\src\Bam.Net
 ```
+
+When release mode is selected, **argument** is the path to the root directory where the Bam.Net source
+files are found.  If no version is specified, the patch level is incremented and the resulting version is used.
+
+The bake tool will initiate a release build before creating the nuget packages.
+As part of the release build the version is set in all AssemblyInfo.cs files. If no version is specified 
+the patch number is incremented and the result is used as the version.  You may specify any combination 
+of the command line switches, /major, /minor or /patch to increment the associated version part.  Additionally, 
+an msi is created as part of the release by prompting for the location of wix merge module and project files.

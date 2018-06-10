@@ -18,11 +18,12 @@ namespace Bam.Net.Data.Npgsql
 	{
 		public NpgsqlConnectionStringResolver(string serverName, string databaseName, NpgsqlCredentials credentials = null)
 		{
-			this.ServerName = serverName;
-			this.DatabaseName = databaseName;
-			this.Credentials = credentials ?? new NpgsqlCredentials();
-            this.Pooling = true;
-            this.Port = 5432;
+			ServerName = serverName;
+			DatabaseName = databaseName;
+			Credentials = credentials ?? new NpgsqlCredentials();
+            Pooling = true;
+            Port = 5432;
+            MaxPoolSize = 50;
 		}
 
 		public string ServerName { get; set; }
@@ -38,9 +39,11 @@ namespace Bam.Net.Data.Npgsql
 
 		public ConnectionStringSettings Resolve(string connectionName)
         {
-            ConnectionStringSettings s = new ConnectionStringSettings();
-            s.Name = connectionName;
-            s.ProviderName = typeof(NpgsqlFactory).AssemblyQualifiedName;
+            ConnectionStringSettings s = new ConnectionStringSettings
+            {
+                Name = connectionName,
+                ProviderName = typeof(NpgsqlFactory).AssemblyQualifiedName
+            };
             DbConnectionStringBuilder connectionStringBuilder = GetConnectionStringBuilder();
             s.ConnectionString = connectionStringBuilder.ConnectionString;
 
@@ -62,7 +65,8 @@ namespace Bam.Net.Data.Npgsql
             {
                 connectionStringBuilder.Add("Pooling", "true");
             }
-
+            connectionStringBuilder.Add("MinPoolSize", MinPoolSize);
+            connectionStringBuilder.Add("MaxPoolSize", MaxPoolSize);
             return connectionStringBuilder;
         }
 
