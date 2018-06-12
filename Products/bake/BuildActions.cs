@@ -191,6 +191,60 @@ namespace Bam.Net.Automation
             OutLine("Done clearing local nuget caches", ConsoleColor.Green);
         }
 
+        [ConsoleAction("build", "Build the specified branch.")]
+        public static void BuildBranch()
+        {
+            string buildConfigPath = GetArgument("build", "Please enter the path to the build config file.");
+            if (!File.Exists(buildConfigPath))
+            {
+                OutLineFormat("Build config not found: {0}", ConsoleColor.Magenta, buildConfigPath);
+                Thread.Sleep(1000);
+                Exit(1);
+            }
+            BakeBuildConfig buildConfig = buildConfigPath.FromJsonFile<BakeBuildConfig>();
+            string cloneTo = GetArgument("BambotSource", $"Please enter the path to clone the repository ({buildConfig.RepoName}/{buildConfig.RepoRoot}) to.");
+            // get latest
+            string clone = Path.Combine(cloneTo, buildConfig.RepoName);
+            if (Directory.Exists(clone) && buildConfig.Clean)
+            {
+                Directory.Delete(clone, true);
+            }
+            ProcessOutput getLatest = null;
+            if (!Directory.Exists(clone))
+            {
+                getLatest = GitPath.ToStartInfo($"clone {buildConfig.RepoName}", clone).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), e => OutLine(e, ConsoleColor.Magenta));
+            }
+            else
+            {
+                GitPath.ToStartInfo($"pull", clone).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), e => OutLine(e, ConsoleColor.Magenta));
+            }
+            if (getLatest.ExitCode != 0)
+            {
+                OutLineFormat("Failed to get latest: \r\n\t{0}\r\n\t{1}", ConsoleColor.Magenta, getLatest.StandardOutput, getLatest.StandardError);
+                Thread.Sleep(1000);
+                Exit(getLatest.ExitCode);
+            }
+            string projectFilePath = Path.Combine(clone, buildConfig.ProjectFile);
+            string arguments = $"restore {buildConfig.RestoreReference} -PackagesDirectory {GetArgument("PackagesDirectory", "Please enter the path to restore packages to")}";
+            NugetPath.ToStartInfo(arguments, clone).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), e => OutLine(e, ConsoleColor.Magenta));
+
+            string msBuildPath = GetArgument("MsBuildPath", "Please enter the path to msbuild.exe.");
+            //The root path where binaries are built.  Binaries will be in {Builds}{Platform}{FrameworkVersion}\Debug\_{commitHash}
+            DirectoryInfo clonedDir = new DirectoryInfo(clone);
+            ProcessOutput output = msBuildPath.ToStartInfo($"/t:Build /filelogger /p:OutDir={buildConfig.GetOutputPath(Builds, clonedDir.GetCommitHash())};GenerateDocumentation=true;Configuration={buildConfig.Config};Platform=\"{buildConfig.Platform}\";TargetFrameworkVersion={buildConfig.FrameworkVersion};CompilerVersion={buildConfig.FrameworkVersion} {buildConfig.ProjectFile} /m:1", clone).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), e => OutLine(e, ConsoleColor.Magenta));
+            if(output.ExitCode != 0)
+            {
+                OutLineFormat("Build Failed: {0}", ConsoleColor.Magenta, output.ExitCode);
+                Thread.Sleep(1000);
+                Exit(output.ExitCode);
+            }
+            else
+            {
+                OutLine("Build Succeeded", ConsoleColor.Green);
+            }
+        }
+
+
         [ConsoleAction("latest", "Create dev nuget packages from the latest build, clear nuget caches, delete all existing dev-latest package from the internal source and republish.")]
         public static void PackLatest()
         {
@@ -1030,5 +1084,6 @@ namespace Bam.Net.Automation
 
             return commit;
         }
+
     }
 }

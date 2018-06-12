@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,5 +26,11 @@ namespace Bam.Net.Application
         public string Description { get; set; }
         public string OutputPath { get; set; }
         public int Code { get; set; }
+
+        public string GetOutputPath(string root, string hash)
+        {
+            OutputPath = Path.Combine(root, Platform, FrameworkVersion, "Debug", $"_{hash}");
+            return OutputPath;
+        }
     }
 }

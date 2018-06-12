@@ -54,6 +54,7 @@ namespace Bam.Net.Automation
             AddValidArgument("WixMsi", false, addAcronym: false, description: "/msi, release: The path to the directory where the wix msi project file (.wixproj) is found.");
             AddValidArgument("WixOutput", false, addAcronym: false, description: "/msi, release: The path wix will use for output.");
             AddValidArgument("PackagesDirectory", false, addAcronym: false, description: "/release: The directory to restore nuget packages to.");
+            AddValidArgument("BambotSource", false, addAcronym: false, description: "/build: The directory to clone the repository to.");
         }
         #region do not modify
         public static void Start()
