@@ -249,7 +249,8 @@ namespace Bam.Net.Automation
             string msBuildPath = GetArgument("MsBuildPath", "Please enter the path to msbuild.exe.");
             //The root path where binaries are built.  Binaries will be in {Builds}{Platform}{FrameworkVersion}\Debug\_{commitHash}
             DirectoryInfo clonedDir = new DirectoryInfo(clone);
-            string outputPath = buildConfig.GetOutputPath(Builds, clonedDir.GetCommitHash());
+            string commitHash = clonedDir.GetCommitHash();
+            string outputPath = buildConfig.GetOutputPath(Builds, commitHash);
             string command = $"/t:Build /filelogger /p:OutDir={outputPath};GenerateDocumentation=true;Configuration={buildConfig.Config};Platform=\"{buildConfig.Platform}\";TargetFrameworkVersion={buildConfig.FrameworkVersion};CompilerVersion={buildConfig.FrameworkVersion} {buildConfig.ProjectFile} /m:1";
             ProcessOutput output = msBuildPath.ToStartInfo(command, clone)
                 .RunAndWait(o => Console.WriteLine(o), e => Console.WriteLine(e), 600000);
@@ -261,6 +262,9 @@ namespace Bam.Net.Automation
             }
             else
             {
+                string latestFile = Path.Combine(Builds, "latest");
+                BakeBuildInfo buildInfo = new BakeBuildInfo { LastBuild = DateTime.Now.ToLongDateString(), BuildConfig = buildConfig, Commit = commitHash };
+                buildInfo.ToJsonFile(latestFile);
                 OutLine("Build Succeeded", ConsoleColor.Green);
                 OutLineFormat("Files output to\r\n   {0}", ConsoleColor.Cyan, outputPath);
                 Thread.Sleep(1000);
