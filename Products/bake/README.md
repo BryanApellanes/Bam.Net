@@ -22,7 +22,14 @@ bake /clean
 ```
 
 ## Build
-When build mode is selected, a 
+When build mode is selected, a build is run using the specified build config.  The build config is
+a json serialized BakeBuildConfig object.  The BakeBuildConfig definition has the same properties
+defined as the bambot configs.  Bambot configs will properly deserialize as BakeBuildConfig instances.
+
+Example
+```
+bake /build:.\BakeBuildConfig.json
+```
 
 ## Latest
 
