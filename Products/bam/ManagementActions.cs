@@ -313,12 +313,6 @@ namespace Bam.Net.Application
             };
         }
 
-        private static string GetArgument(string name)
-		{
-			string value = Arguments.Contains(name) ? Arguments[name] : Prompt("Please enter a value for {0}"._Format(name));
-			return value;
-		}
-
 		private static string GetRoot()
 		{
 			string root;

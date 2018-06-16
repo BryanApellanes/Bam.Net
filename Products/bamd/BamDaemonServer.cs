@@ -14,7 +14,7 @@ namespace Bam.Net.Application
     {
         public BamDaemonServer(ILogger logger)
             : base(new BamDaemonResponder(), logger)
-        {        
+        {              
         }
     }
 }
