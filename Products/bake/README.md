@@ -4,7 +4,8 @@ Bake.exe is a tool used to build the BamToolkit and Bam.Net nuget packages.
 
 ## Init
 When init mode is selected, the repositoryPath and globalPackagesFolder nuget config settings
-are set by making calls to nuget.exe.
+are set by making calls to nuget.exe.  The values are from the app.config file (RepositoryPath and
+GlobalPackagesFolder), or, if the values are not present in app.config a prompt is shown.
 
 Example:
 ```
@@ -19,6 +20,9 @@ Example:
 ```
 bake /clean
 ```
+
+## Build
+When build mode is selected, a 
 
 ## Latest
 
