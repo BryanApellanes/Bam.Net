@@ -29,7 +29,7 @@ namespace Bam.Net.Data
         {
             WhereFormat where = MySqlFormatProvider.GetWhereFormat(filter, StringBuilder, NextNumber);
             NextNumber = where.NextNumber;
-            this.parameters.AddRange(where.Parameters);
+            parameters.AddRange(where.Parameters);
             return this;
         }
 
@@ -38,7 +38,7 @@ namespace Bam.Net.Data
             Builder.AppendFormat("UPDATE {0} ", TableNameFormatter(tableName));
             SetFormat set = MySqlFormatProvider.GetSetFormat(tableName, StringBuilder, NextNumber, values);
             NextNumber = set.NextNumber;
-            this.parameters.AddRange(set.Parameters);
+            parameters.AddRange(set.Parameters);
             return this;
         }
 

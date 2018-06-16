@@ -3200,6 +3200,15 @@ namespace Bam.Net
             return result.ToString();
         }
 
+        public static bool StartsWithLetter(this string theString)
+        {
+            if (string.IsNullOrEmpty(theString))
+            {
+                return false;
+            }
+            return theString[0].IsLetter();
+        }
+
         /// <summary>
         /// Intended to delimit the specified array of T using the
         /// specified ToDelimitedDelegate.  Each item will be represented

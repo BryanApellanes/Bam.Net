@@ -4,15 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{18137474-E31B-4592-9891-44ADC7039FE0}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Bam.Net.Data.Cache</RootNamespace>
-    <AssemblyName>Bam.Net.Data.Cache</AssemblyName>
+    <ProjectGuid>{77C91DDB-7E9C-4F72-AA67-7356EB5089E2}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Bam.Net.Data.Cache.Tests</RootNamespace>
+    <AssemblyName>Bam.Net.Data.Cache.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -37,6 +40,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
@@ -46,13 +50,10 @@
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="InterSystems.Data.CacheClient, Version=4.0.0.0, Culture=neutral, PublicKeyToken=ad350a26c4a4447c, processorArchitecture=MSIL">
-      <HintPath>C:\bam\nuget\packages\InterSystemsCache.1.0.4\lib\netstandard2.0\InterSystems.Data.CacheClient.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -62,28 +63,36 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CacheConnectionStringResolver.cs" />
-    <Compile Include="CacheCredentials.cs" />
-    <Compile Include="CacheDatabase.cs" />
-    <Compile Include="CacheDatabaseInitializer.cs" />
-    <Compile Include="CacheFieldDescriptor.cs" />
-    <Compile Include="CacheFormatProvder.cs" />
-    <Compile Include="CacheJavascriptSqlProvider.cs" />
-    <Compile Include="CacheParameterBuilder.cs" />
-    <Compile Include="CacheQuerySet.cs" />
-    <Compile Include="CacheRegistrar.cs" />
-    <Compile Include="CacheRegistrarCaller.cs" />
-    <Compile Include="CacheSchemaExtractor.cs" />
-    <Compile Include="CacheSchemaExtractorConfig.cs" />
-    <Compile Include="CacheSqlStringBuilder.cs" />
+    <Compile Include="CacheExtractorTests.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Bam.Net.CommandLine\Bam.Net.CommandLine.csproj">
+      <Project>{ea9863a9-8e0b-4497-b7fd-abf450a3e468}</Project>
+      <Name>Bam.Net.CommandLine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.CoreServices\Bam.Net.CoreServices.csproj">
+      <Project>{5480d2a0-145b-4435-8e1c-4555ead0424a}</Project>
+      <Name>Bam.Net.CoreServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.Cache\Bam.Net.Data.Cache.csproj">
+      <Project>{18137474-e31b-4592-9891-44adc7039fe0}</Project>
+      <Name>Bam.Net.Data.Cache</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.Dynamic\Bam.Net.Data.Dynamic.csproj">
+      <Project>{ca7f3115-848c-49ac-a0c3-f156afb6c844}</Project>
+      <Name>Bam.Net.Data.Dynamic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net.Data.Repositories\Bam.Net.Data.Repositories.csproj">
+      <Project>{222ef625-a115-49c7-8bdb-5879725a7d17}</Project>
+      <Name>Bam.Net.Data.Repositories</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Data.Schema\Bam.Net.Data.Schema.csproj">
-      <Project>{D2C2B1C0-1047-4211-92FC-37F332861161}</Project>
+      <Project>{d2c2b1c0-1047-4211-92fc-37f332861161}</Project>
       <Name>Bam.Net.Data.Schema</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net.Data\Bam.Net.Data.csproj">
@@ -94,9 +103,9 @@
       <Project>{aa186331-a0d0-4f77-bea2-e7b7650d3ff5}</Project>
       <Name>Bam.Net.Incubation</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Bam.Net.Javascript\Bam.Net.Javascript.csproj">
-      <Project>{34c5016d-5265-4394-a9ba-cb2f70d8e93b}</Project>
-      <Name>Bam.Net.Javascript</Name>
+    <ProjectReference Include="..\Bam.Net.Testing\Bam.Net.Testing.csproj">
+      <Project>{85212881-c676-4b40-b311-37c2d1706042}</Project>
+      <Name>Bam.Net.Testing</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bam.Net\Bam.Net.csproj">
       <Project>{8794c09d-d72c-420c-812f-bfda251b64c9}</Project>

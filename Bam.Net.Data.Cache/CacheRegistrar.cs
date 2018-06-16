@@ -66,7 +66,7 @@ namespace Bam.Net.Data
             CacheParameterBuilder b = new CacheParameterBuilder();
             incubator.Set<IParameterBuilder>(b);
 
-            incubator.Set<SqlStringBuilder>(() => new SqlStringBuilder());
+            incubator.Set<SqlStringBuilder>(() => new CacheSqlStringBuilder());
             incubator.Set<SchemaWriter>(() => new CacheSqlStringBuilder());
             incubator.Set<QuerySet>(() => new CacheQuerySet());
         }

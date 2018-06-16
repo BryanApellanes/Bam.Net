@@ -624,11 +624,11 @@ namespace Bam.Net.Data.Schema
             }
         }
 
-
         internal void ExecutePostColumnAugmentations(string tableName)
         {
             ExecutePostColumnAugmentations(tableName, this);
         }
+
         private void ExecutePostColumnAugmentations(string tableName, SchemaManager manager)
         {
             foreach (SchemaManagerAugmentation augmentation in PostColumnAugmentations)
@@ -636,10 +636,12 @@ namespace Bam.Net.Data.Schema
                 augmentation.Execute(tableName, manager);
             }
         }
+
         internal void ExecutePreColumnAugmentations(string tableName)
         {
             ExecutePreColumnAugmentations(tableName, this);
         }
+
         protected static void ExecutePreColumnAugmentations(string tableName, SchemaManager manager)
         {
             foreach (SchemaManagerAugmentation augmentation in manager.PreColumnAugmentations)

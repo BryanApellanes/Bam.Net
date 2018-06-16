@@ -201,14 +201,14 @@ namespace Bam.Net.Data
             return GetSqlStringBuilder();
         }
 
-        public SqlStringBuilder GetSqlStringBuilder()
+        public virtual SqlStringBuilder GetSqlStringBuilder()
         {
             SqlStringBuilder sql = ServiceProvider.Get<SqlStringBuilder>();
             sql.SelectStar = SelectStar;
             return sql;
         }
 
-        public QuerySet GetQuerySet()
+        public virtual QuerySet GetQuerySet()
         {
             QuerySet sql = ServiceProvider.Get<QuerySet>();
             sql.Database = this;

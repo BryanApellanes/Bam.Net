@@ -47,6 +47,7 @@ namespace Bam.Net.Data.Cache
 
         private void Register()
         {
+            SelectStar = true;
             ServiceProvider = new Incubator();
             ServiceProvider.Set<DbProviderFactory>(CacheFactory.Instance);
             CacheRegistrar.Register(this);
@@ -75,6 +76,26 @@ namespace Bam.Net.Data.Cache
             {
                 _connectionString = value;
             }
+        }
+
+        /// <summary>
+        /// The prefix to prepend to table names when a SqlStringBuilder is retrieved.
+        /// </summary>
+        public string TableNamePrefix { get; set; }
+
+        public override SqlStringBuilder GetSqlStringBuilder()
+        {
+            CacheSqlStringBuilder sqlStringBuilder = (CacheSqlStringBuilder)base.GetSqlStringBuilder();
+            sqlStringBuilder.TableNamePrefix = TableNamePrefix;
+            sqlStringBuilder.SelectStar = SelectStar;
+            return sqlStringBuilder;
+        }
+
+        public override QuerySet GetQuerySet()
+        {
+            CacheQuerySet qs = (CacheQuerySet)base.GetQuerySet();
+            qs.TableNamePrefix = TableNamePrefix;
+            return qs;
         }
     }
 }
