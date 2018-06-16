@@ -303,6 +303,10 @@
       <Project>{8794C09D-D72C-420C-812F-BFDA251B64C9}</Project>
       <Name>Bam.Net</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DaoRef\DaoRef.csproj">
+      <Project>{88b5d719-69ed-45d8-9f04-c33d3fc5dcbe}</Project>
+      <Name>DaoRef</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
