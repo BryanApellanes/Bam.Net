@@ -12,9 +12,9 @@ namespace Bam.Net.Application
 {
     public class BamDaemonServer : SimpleServer<BamDaemonResponder>
     {
-        public BamDaemonServer(ILogger logger)
-            : base(new BamDaemonResponder(), logger)
+        public BamDaemonServer(BamConf conf, ILogger logger, bool verbose = false)
+            : base(new BamDaemonResponder(conf, logger, verbose), logger)
         {              
-        }
+        }        
     }
 }

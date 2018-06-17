@@ -16,8 +16,6 @@ namespace Bam.Net.Application
 {
     public class BamDaemonService : ServiceExe
     {
-        const int MaxLineCount = 10000;
-
         public static ServiceInfo ServiceInfo
         {
             get
@@ -35,9 +33,10 @@ namespace Bam.Net.Application
                 return _serverLock.DoubleCheckLock(ref _server, () =>
                 {
                     ILogger logger = GetLogger();
+                    Log.Default = logger;
                     try
-                    {                        
-                        BamDaemonServer server = new BamDaemonServer(logger)
+                    {
+                        BamDaemonServer server = new BamDaemonServer(BamConf.Load(ServiceConfig.ContentRoot), logger)
                         {
                             HostPrefixes = new HashSet<HostPrefix>(GetConfiguredHostPrefixes()),
                             MonitorDirectories = DefaultConfiguration.GetAppSetting("MonitorDirectories").DelimitSplit(",", ";")
@@ -115,10 +114,8 @@ namespace Bam.Net.Application
         }
 
         private static ILogger GetLogger()
-        {
-            ILogger logger = CreateLog(ServiceInfo.ServiceName);
-            
-            return ServiceConfig.GetMultiTargetLogger(logger);
+        {   
+            return ServiceConfig.GetMultiTargetLogger(CreateLog(ServiceInfo.ServiceName));
         }
 
         private void StartProcess(BamDaemonProcess process)
