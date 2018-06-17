@@ -1,4 +1,4 @@
-﻿# bake
+﻿# Bake
 
 Bake.exe is a tool used to build the BamToolkit and Bam.Net nuget packages.
 

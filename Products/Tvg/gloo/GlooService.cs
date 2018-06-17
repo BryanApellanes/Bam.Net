@@ -26,6 +26,7 @@ namespace Bam.Net.Application
                 return _serverLock.DoubleCheckLock(ref _server, () =>
                 {
                     ILogger logger = GetLogger();
+                    Log.Default = logger;
                     try
                     {
                         GlooServer server = new GlooServer(BamConf.Load(ServiceConfig.ContentRoot), logger)
@@ -63,7 +64,7 @@ namespace Bam.Net.Application
 
         private static ILogger GetLogger()
         {
-            return ServiceConfig.GetMultiTargetLogger(GlooService.CreateLog(GlooService.ServiceInfo.ServiceName));
+            return ServiceConfig.GetMultiTargetLogger(CreateLog(ServiceInfo.ServiceName));
         }
     }
 }

@@ -50,7 +50,7 @@ namespace Bam.Net.Application
         {
             if (!TryRespond(context))
             {
-                SendResponse(context, "Gloo Server");
+                SendResponse(context, 404, new { BamServer = "Gloo Server" } );
             }
             context.Response.Close();
             return true;

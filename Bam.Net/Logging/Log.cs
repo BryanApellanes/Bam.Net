@@ -139,7 +139,7 @@ namespace Bam.Net.Logging
                 throw new InvalidOperationException(string.Format("The specified logType ({0}) doesn't have a parameterless constructor.", loggerType.FullName));
             }
 
-            return (ILogger)ctor.Invoke(null);
+            return ((ILogger)ctor.Invoke(null)).StartLoggingThread();
         }
 
         public static MultiTargetLogger AddLogger(Type loggerType)

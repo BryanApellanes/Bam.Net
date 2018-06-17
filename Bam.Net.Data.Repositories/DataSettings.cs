@@ -66,6 +66,11 @@ namespace Bam.Net.Data.Repositories
             Vault.ApplicationVaultDatabase = Current.GetAppDatabaseFor(appNameProvider, typeof(Vault), appNameProvider.GetApplicationName());
         }
 
+        public void SetRuntimeAppDataDirectory()
+        {
+            SetRuntimeAppDataDirectory(DefaultConfigurationApplicationNameProvider.Instance);
+        }
+
         public void SetRuntimeAppDataDirectory(IApplicationNameProvider appNameProvider)
         {
             RuntimeSettings.AppDataFolder = GetAppDataDirectory(appNameProvider).FullName;
