@@ -16,6 +16,9 @@ using Bam.Net.ServiceProxy;
 
 namespace Bam.Net.Server.Renderers
 {
+    /// <summary>
+    /// Factory for creating renderers based on file extension.
+    /// </summary>
     public class RendererFactory: Renderer
     {
         Dictionary<string, Func<IRenderer>> _renderers;
@@ -147,14 +150,10 @@ namespace Bam.Net.Server.Renderers
             output.Write(toRenderAsByteArray, 0, toRenderAsByteArray.Length);
         }
 
-        private void AddBaseRenderers()
-        {
-            AddRenderer(() => new JsonRenderer());
-            AddRenderer(() => new XmlRenderer());
-            AddRenderer(() => new YamlRenderer());
-            AddRenderer(() => new TxtRenderer());
-        }
-
+        /// <summary>
+        /// Adds the renderer.
+        /// </summary>
+        /// <param name="renderer">The renderer.</param>
         public void AddRenderer(Func<IRenderer> renderer)
         {
             if (_renderers == null)
@@ -180,6 +179,15 @@ namespace Bam.Net.Server.Renderers
                     );
                 }
             });
+        }
+        
+        private void AddBaseRenderers()
+        {
+            AddRenderer(() => new JsonRenderer());
+            AddRenderer(() => new XmlRenderer());
+            AddRenderer(() => new YamlRenderer());
+            AddRenderer(() => new CsvRenderer());
+            AddRenderer(() => new TxtRenderer());            
         }
     }
 }

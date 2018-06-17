@@ -247,7 +247,7 @@ namespace Bam.Net.Server
             CommonServiceAdded?.Invoke(type, instance);
         }
 
-        public void AddCommoneService(Type type, Func<object> instanciator)
+        public void AddCommonService(Type type, Func<object> instanciator)
         {
             _commonServiceProvider.Set(type, instanciator);
             OnCommonServiceAdded(type, instanciator);
