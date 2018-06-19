@@ -192,8 +192,8 @@ namespace Bam.Net.Data.Tests
             string propValue = "ByProperty";
             instance.Name = propValue;
             string value = 16.RandomLetters();
-            string setValue = instance.Value<string>("MonkeyBoy", value);
-            string checkValue = instance.Value<string>("MonkeyBoy");
+            string setValue = instance.ColumnValue<string>("MonkeyBoy", value);
+            string checkValue = instance.ColumnValue<string>("MonkeyBoy");
             Expect.AreEqual(value, checkValue);
             dynamic obj = instance.ToDynamic();
             Expect.AreEqual(value, obj.MonkeyBoy);
