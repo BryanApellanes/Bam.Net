@@ -307,7 +307,6 @@ namespace Bam.Net.Data.Schema
 
         public SchemaResult SetForeignKey(string targetTable, string referencingTable, string referencingColumn, string referencedKey = null, INameFormatter nameFormatter = null)
         {
-
             try
             {
                 Table table = CurrentSchema.GetTable(referencingTable);
@@ -315,9 +314,11 @@ namespace Bam.Net.Data.Schema
                 Column col = table[referencingColumn];
                 if (col.DataType == DataTypes.Int || col.DataType == DataTypes.Long)
                 {
-                    ForeignKeyColumn fk = new ForeignKeyColumn(col, targetTable);
-                    fk.ReferencedKey = referencedKey != null ? referencedKey : target.Key != null ? target.Key.Name : "Id";
-                    fk.ReferencedTable = target.Name;
+                    ForeignKeyColumn fk = new ForeignKeyColumn(col, targetTable)
+                    {
+                        ReferencedKey = referencedKey ?? (target.Key != null ? target.Key.Name : "Id"),
+                        ReferencedTable = target.Name
+                    };
                     if (nameFormatter != null)
                     {
                         fk.ReferencedClass = nameFormatter.FormatClassName(targetTable);
@@ -624,11 +625,11 @@ namespace Bam.Net.Data.Schema
             }
         }
 
+
         internal void ExecutePostColumnAugmentations(string tableName)
         {
             ExecutePostColumnAugmentations(tableName, this);
         }
-
         private void ExecutePostColumnAugmentations(string tableName, SchemaManager manager)
         {
             foreach (SchemaManagerAugmentation augmentation in PostColumnAugmentations)
@@ -636,12 +637,10 @@ namespace Bam.Net.Data.Schema
                 augmentation.Execute(tableName, manager);
             }
         }
-
         internal void ExecutePreColumnAugmentations(string tableName)
         {
             ExecutePreColumnAugmentations(tableName, this);
         }
-
         protected static void ExecutePreColumnAugmentations(string tableName, SchemaManager manager)
         {
             foreach (SchemaManagerAugmentation augmentation in manager.PreColumnAugmentations)

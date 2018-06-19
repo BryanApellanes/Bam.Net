@@ -318,11 +318,19 @@ namespace Bam.Net.Data
                 return _columns.ToArray();
             }
         }
-        
-        public T Value<T>(string columnName, object value = null)
+
+        /// <summary>
+        /// Get the value of the specified column, setting it if
+        /// value is specified.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="columnName">Name of the column.</param>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
+        public T ColumnValue<T>(string columnName, object value = null)
         {
             DataTable table = DataRow.Table;
-            if (!table.Columns.Contains(columnName))
+            if (!table.Columns.Contains(columnName) && value != null)
             {
                 table.Columns.Add(columnName);
             }
@@ -330,7 +338,13 @@ namespace Bam.Net.Data
             {
                 DataRow[columnName] = value;
             }
-            return (T)GetCurrentValue(columnName);
+            object currentValue = GetCurrentValue(columnName);
+            
+            if(currentValue == null || currentValue == DBNull.Value)
+            {
+                return default(T);
+            }
+            return (T)currentValue;
         }
 
         /// <summary>

@@ -435,7 +435,7 @@ namespace Bam.Net.Data
             }
         }
 
-        public QueryFilter<C> In(object[] values)
+        public QueryFilter<C> In(params object[] values)
         {
             this.Add(new InComparison(this.ColumnName, values));
             return this;
