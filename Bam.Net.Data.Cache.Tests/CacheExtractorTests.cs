@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Testing;
+using Bam.Net.Data.Cache.Tests;
 
 namespace Bam.Net.Cache.Tests
 {
