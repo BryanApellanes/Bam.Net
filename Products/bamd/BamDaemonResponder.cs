@@ -16,12 +16,13 @@ namespace Bam.Net.Application
 {
     public class BamDaemonResponder : HttpHeaderResponder
     {
-        public BamDaemonResponder(BamConf conf, ILogger logger, bool verbose = false) 
+        public BamDaemonResponder(BamConf conf, BamDaemonProcessMonitorService monitorService, ILogger logger, bool verbose = false) 
             : base(conf, logger)
         {
             RendererFactory = new RendererFactory(logger);
             ServiceProxyResponder = new ServiceProxyResponder(conf, logger);
             ServiceProxyResponder.AddCommonService(new CommandService());
+            ServiceProxyResponder.AddCommonService(monitorService);
             DataSettings.Current.SetRuntimeAppDataDirectory();
             if (verbose)
             {
