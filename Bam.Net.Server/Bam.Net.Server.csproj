@@ -128,6 +128,7 @@
     <Compile Include="AppContentResponder.cs" />
     <Compile Include="Bam.cs" />
     <Compile Include="BamController.cs" />
+    <Compile Include="HttpStatusCodeHandler.cs" />
     <Compile Include="IPostServerInitialize.cs" />
     <Compile Include="Meta\ApiTypeRoute.cs" />
     <Compile Include="Meta\BamTypeRoute.cs" />

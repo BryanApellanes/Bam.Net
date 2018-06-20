@@ -4100,6 +4100,39 @@ namespace Bam.Net
             }
         }
 
+        public static Dictionary<string, T> ToDictionary<T>(this object instance, Func<PropertyInfo, string> keyMunger, Func<object, T> valueConverter)
+        {
+            Type dyn = instance.GetType();
+            Dictionary<string, T> result = new Dictionary<string, T>();
+            foreach (PropertyInfo prop in dyn.GetProperties())
+            {
+                string key = keyMunger(prop);
+                result[key] = valueConverter(prop.GetValue(instance));
+            }
+            return result;
+
+        }
+
+        /// <summary>
+        /// Intended to turn a dynamic object into a dictionary. For example,
+        /// new { key1 = value1, key2 = value 2} becomes a dictionary with
+        /// two keys.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="instance">The instance.</param>
+        /// <param name="valueConverter">The value converter.</param>
+        /// <returns></returns>
+        public static Dictionary<string, T> ToDictionary<T>(this object instance, Func<object, T> valueConverter)
+        {
+            Type dyn = instance.GetType();
+            Dictionary<string, T> result = new Dictionary<string, T>();
+            foreach (PropertyInfo prop in dyn.GetProperties())
+            {
+                result[prop.Name] = valueConverter(prop.GetValue(instance));
+            }
+            return result;
+        }
+
         /// <summary>
         /// Intended to turn a dynamic object into a dictionary. For example,
         /// new { key1 = value1, key2 = value 2} becomes a dictionary with

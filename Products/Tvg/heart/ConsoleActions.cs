@@ -30,7 +30,7 @@ namespace Bam.Net.Application
             if (server != null)
             {
                 server.Stop();
-                Pause("Heart stopped");
+                OutLine("Heart stopped", ConsoleColor.Yellow);
             }
             else
             {

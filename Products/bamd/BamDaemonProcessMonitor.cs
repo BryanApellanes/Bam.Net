@@ -68,8 +68,7 @@ namespace Bam.Net.Application
             string err = Process.StandardErrorSoFar;
             err.SafeWriteToFile(ErrorOutLog.FullName, true);
             Log.AddEntry("Flushed err: {0}", err);
-            Process.StandardErrorSoFar = string.Empty;
-            
+            Process.StandardErrorSoFar = string.Empty;            
         }
 
         private void LogIfNull(object obj, string name)

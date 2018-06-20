@@ -144,6 +144,21 @@ namespace Bam.Net.Server
 
         public abstract bool TryRespond(IHttpContext context);
 
+        public static void SendResponse(IHttpContext context, int code, object dynamicObjectHeaders = null)
+        {
+            SendResponse(context, HttpStatusCodeHandler.Get(code), dynamicObjectHeaders ?? new object());
+        }
+
+        public static void SendResponse(IHttpContext context, HttpStatusCodeHandler handler)
+        {
+            SendResponse(context, handler.Handle(), handler.Code);
+        }
+
+        public static void SendResponse(IHttpContext context, HttpStatusCodeHandler handler, object dynamicObjectHeaders)
+        {
+            SendResponse(context, handler.Handle(), handler.Code, null, dynamicObjectHeaders.ToDictionary(pi => $"X-{pi.Name.PascalSplit("-")}", (o) => (string)o));
+        }
+
         public static void SendResponse(IHttpContext context, string output, int statusCode = 200, Encoding encoding = null, Dictionary<string, string> headers = null)
         {
             encoding = encoding ?? Encoding.UTF8;
@@ -244,7 +259,7 @@ namespace Bam.Net.Server
 
         /// <summary>
         /// Set the status code, flush the response and close the output 
-        /// stream
+        /// stream.
         /// </summary>
         /// <param name="context"></param>
         /// <param name="statusCode"></param>

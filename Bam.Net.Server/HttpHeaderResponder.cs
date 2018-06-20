@@ -22,9 +22,13 @@ namespace Bam.Net.Server
         public HttpHeaderResponder(BamConf conf)
             : base(conf)
         {
-            RespondToHeaderValue = this.ResponderSignificantName;
+            RespondToHeaderValue = ResponderSignificantName;
         }
-        public HttpHeaderResponder(BamConf conf, ILogger logger) : base(conf, logger) { }
+
+        public HttpHeaderResponder(BamConf conf, ILogger logger) : base(conf, logger)
+        {
+            RespondToHeaderValue = ResponderSignificantName;
+        }
 
         /// <summary>
         /// Returns true if the request Header named "X-Bam-Responder" exists 

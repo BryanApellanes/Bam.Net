@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 
@@ -16,8 +17,6 @@ namespace Bam.Net.Application
 {
     public class BamDaemonService : ServiceExe
     {
-        const int MaxLineCount = 10000;
-
         public static ServiceInfo ServiceInfo
         {
             get
@@ -35,9 +34,11 @@ namespace Bam.Net.Application
                 return _serverLock.DoubleCheckLock(ref _server, () =>
                 {
                     ILogger logger = GetLogger();
+                    Log.Default = logger;
                     try
-                    {                        
-                        BamDaemonServer server = new BamDaemonServer(logger)
+                    {
+                        ProcessMonitorService = new BamDaemonProcessMonitorService(logger);
+                        BamDaemonServer server = new BamDaemonServer(BamConf.Load(ServiceConfig.ContentRoot), ProcessMonitorService, logger)
                         {
                             HostPrefixes = new HashSet<HostPrefix>(GetConfiguredHostPrefixes()),
                             MonitorDirectories = DefaultConfiguration.GetAppSetting("MonitorDirectories").DelimitSplit(",", ";")
@@ -53,7 +54,8 @@ namespace Bam.Net.Application
                 });
             }
         }
-                
+
+        protected static BamDaemonProcessMonitorService ProcessMonitorService { get; set; }
         static Dictionary<string, BamDaemonProcessMonitor> _monitors;
         protected override void OnStart(string[] args)
         {
@@ -61,26 +63,7 @@ namespace Bam.Net.Application
             {
                 Log.AddLogger(GetLogger());
                 Log.AddEntry("{0} starting", ServiceInfo.ServiceName);
-                _monitors = new Dictionary<string, BamDaemonProcessMonitor>();
-
-                string contentRoot = ServiceConfig.ContentRoot;
-                string configRoot = Path.Combine(contentRoot, "conf");
-                FileInfo file = new FileInfo(Path.Combine(configRoot, $"{nameof(BamDaemonProcess).Pluralize()}.json"));
-                if (!file.Exists)
-                {
-                    Log.AddEntry("BambotProcesses.json not found: {0}", file.FullName);
-                }
-                else
-                {
-                    BamDaemonProcess[] processes = file.FullName.FromJsonFile<BamDaemonProcess[]>();
-                    Expect.IsNotNull(processes, "processes was null");
-                    Log.AddEntry("{0} processes in BambotProcesses.json", processes.Length.ToString());
-                    foreach (BamDaemonProcess process in processes)
-                    {
-                        StartProcess(process);
-                    }
-                }
-
+                ProcessMonitorService.Start();
                 Server.Start();
             }
             catch (Exception ex)
@@ -93,19 +76,7 @@ namespace Bam.Net.Application
         {
             Log.AddEntry("{0} stopping", ServiceInfo.ServiceName);
             Server.Stop();
-            foreach (string key in _monitors.Keys)
-            {
-                try
-                {
-                    Log.AddEntry("Stopping {0}", key);
-                    _monitors[key].Process.Kill();
-                    Log.AddEntry("Stopped {0}", key);
-                }
-                catch (Exception ex)
-                {
-                    Log.AddEntry("Exception stopping process {0}: {1}", ex, key, ex.Message);
-                }
-            }
+            ProcessMonitorService.Stop();
             Thread.Sleep(1000);
         }
 
@@ -115,25 +86,8 @@ namespace Bam.Net.Application
         }
 
         private static ILogger GetLogger()
-        {
-            ILogger logger = CreateLog(ServiceInfo.ServiceName);
-            
-            return ServiceConfig.GetMultiTargetLogger(logger);
-        }
-
-        private void StartProcess(BamDaemonProcess process)
-        {
-            try
-            {
-                string key = process.ToString();
-                Log.AddEntry("Starting {0}", key);
-                process.Subscribe(Log.Default);
-                _monitors.Add(key, BamDaemonProcessMonitor.Start(process));
-            }
-            catch (Exception ex)
-            {
-                Log.AddEntry("Error starting process {0}: {1}", ex, process?.ToString(), ex.Message);
-            }
+        {   
+            return ServiceConfig.GetMultiTargetLogger(CreateLog(ServiceInfo.ServiceName));
         }
     }
 }

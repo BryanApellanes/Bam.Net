@@ -13,7 +13,7 @@ namespace Bam.Net.Application
         {
             get
             {
-                return new ServiceInfo("HeartService", "Heart Service", "Provides core application functionality, the heart of the system.");
+                return new ServiceInfo("HeartService", "Heart Service", "Provides core bam application functionality, the heart of the system.");
             }
         }
         

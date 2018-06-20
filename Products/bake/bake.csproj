@@ -116,6 +116,9 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="build.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="generate_bam_dot_exe.cmd" />
     <None Include="README.md" />
   </ItemGroup>
