@@ -199,8 +199,10 @@ namespace Bam.Net.Analytics
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<CustomTimer>();
 			Database db = database ?? Db.For<CustomTimer>();
-			var results = new CustomTimerCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new CustomTimerCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -637,6 +639,25 @@ namespace Bam.Net.Analytics
 			if(orderBy != null)
 			{
 				query.OrderBy<CustomTimerColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<CustomTimerCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static CustomTimerCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<CustomTimer>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<CustomTimer>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

@@ -192,8 +192,10 @@ namespace Bam.Net.Analytics
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<ImageTag>();
 			Database db = database ?? Db.For<ImageTag>();
-			var results = new ImageTagCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new ImageTagCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -630,6 +632,25 @@ namespace Bam.Net.Analytics
 			if(orderBy != null)
 			{
 				query.OrderBy<ImageTagColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<ImageTagCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static ImageTagCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<ImageTag>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<ImageTag>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

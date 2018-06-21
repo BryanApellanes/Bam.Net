@@ -55,13 +55,16 @@ namespace Bam.Net.Analytics
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("MethodTimer_TimerId", new MethodTimerCollection(Database.GetQuery<MethodTimerColumns, MethodTimer>((c) => c.TimerId == GetLongValue("Id")), this, "TimerId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("LoadTimer_TimerId", new LoadTimerCollection(Database.GetQuery<LoadTimerColumns, LoadTimer>((c) => c.TimerId == GetLongValue("Id")), this, "TimerId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("CustomTimer_TimerId", new CustomTimerCollection(Database.GetQuery<CustomTimerColumns, CustomTimer>((c) => c.TimerId == GetLongValue("Id")), this, "TimerId"));				
 			}						
@@ -231,8 +234,10 @@ namespace Bam.Net.Analytics
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Timer>();
 			Database db = database ?? Db.For<Timer>();
-			var results = new TimerCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new TimerCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -669,6 +674,25 @@ namespace Bam.Net.Analytics
 			if(orderBy != null)
 			{
 				query.OrderBy<TimerColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<TimerCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static TimerCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<Timer>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<Timer>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

@@ -55,6 +55,7 @@ namespace Bam.Net.Data.Repositories.Tests
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("SecondaryObjectTernaryObject_TernaryObjectId", new SecondaryObjectTernaryObjectCollection(Database.GetQuery<SecondaryObjectTernaryObjectColumns, SecondaryObjectTernaryObject>((c) => c.TernaryObjectId == GetLongValue("Id")), this, "TernaryObjectId"));				
@@ -217,8 +218,10 @@ namespace Bam.Net.Data.Repositories.Tests
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<TernaryObject>();
 			Database db = database ?? Db.For<TernaryObject>();
-			var results = new TernaryObjectCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new TernaryObjectCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -655,6 +658,25 @@ namespace Bam.Net.Data.Repositories.Tests
 			if(orderBy != null)
 			{
 				query.OrderBy<TernaryObjectColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<TernaryObjectCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static TernaryObjectCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<TernaryObject>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<TernaryObject>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

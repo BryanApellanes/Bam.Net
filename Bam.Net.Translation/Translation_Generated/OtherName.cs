@@ -199,8 +199,10 @@ namespace Bam.Net.Translation
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<OtherName>();
 			Database db = database ?? Db.For<OtherName>();
-			var results = new OtherNameCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new OtherNameCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -637,6 +639,25 @@ namespace Bam.Net.Translation
 			if(orderBy != null)
 			{
 				query.OrderBy<OtherNameColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<OtherNameCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static OtherNameCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<OtherName>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<OtherName>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

@@ -55,16 +55,20 @@ namespace Bam.Net.Analytics
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("MethodCounter_CounterId", new MethodCounterCollection(Database.GetQuery<MethodCounterColumns, MethodCounter>((c) => c.CounterId == GetLongValue("Id")), this, "CounterId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("LoadCounter_CounterId", new LoadCounterCollection(Database.GetQuery<LoadCounterColumns, LoadCounter>((c) => c.CounterId == GetLongValue("Id")), this, "CounterId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("ClickCounter_CounterId", new ClickCounterCollection(Database.GetQuery<ClickCounterColumns, ClickCounter>((c) => c.CounterId == GetLongValue("Id")), this, "CounterId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("LoginCounter_CounterId", new LoginCounterCollection(Database.GetQuery<LoginCounterColumns, LoginCounter>((c) => c.CounterId == GetLongValue("Id")), this, "CounterId"));				
 			}						
@@ -258,8 +262,10 @@ namespace Bam.Net.Analytics
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Counter>();
 			Database db = database ?? Db.For<Counter>();
-			var results = new CounterCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new CounterCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -696,6 +702,25 @@ namespace Bam.Net.Analytics
 			if(orderBy != null)
 			{
 				query.OrderBy<CounterColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<CounterCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static CounterCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<Counter>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<Counter>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

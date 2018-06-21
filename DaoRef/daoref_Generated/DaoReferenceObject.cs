@@ -55,6 +55,7 @@ namespace Bam.Net.DaoRef
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("DaoReferenceObjectWithForeignKey_DaoReferenceObjectId", new DaoReferenceObjectWithForeignKeyCollection(Database.GetQuery<DaoReferenceObjectWithForeignKeyColumns, DaoReferenceObjectWithForeignKey>((c) => c.DaoReferenceObjectId == GetLongValue("Id")), this, "DaoReferenceObjectId"));				
@@ -261,8 +262,10 @@ namespace Bam.Net.DaoRef
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<DaoReferenceObject>();
 			Database db = database ?? Db.For<DaoReferenceObject>();
-			var results = new DaoReferenceObjectCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new DaoReferenceObjectCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -699,6 +702,25 @@ namespace Bam.Net.DaoRef
 			if(orderBy != null)
 			{
 				query.OrderBy<DaoReferenceObjectColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<DaoReferenceObjectCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static DaoReferenceObjectCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<DaoReferenceObject>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<DaoReferenceObject>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

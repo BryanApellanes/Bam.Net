@@ -192,8 +192,10 @@ namespace Bam.Net.Automation.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<DeferredJobData>();
 			Database db = database ?? Db.For<DeferredJobData>();
-			var results = new DeferredJobDataCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new DeferredJobDataCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 

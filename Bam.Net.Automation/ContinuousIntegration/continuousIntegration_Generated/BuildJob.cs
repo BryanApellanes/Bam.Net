@@ -55,6 +55,7 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("BuildResult_BuildJobId", new BuildResultCollection(Database.GetQuery<BuildResultColumns, BuildResult>((c) => c.BuildJobId == GetLongValue("Id")), this, "BuildJobId"));				
@@ -219,8 +220,10 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<BuildJob>();
 			Database db = database ?? Db.For<BuildJob>();
-			var results = new BuildJobCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new BuildJobCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 

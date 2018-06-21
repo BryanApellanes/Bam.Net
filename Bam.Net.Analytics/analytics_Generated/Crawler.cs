@@ -55,6 +55,7 @@ namespace Bam.Net.Analytics
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("Image_CrawlerId", new ImageCollection(Database.GetQuery<ImageColumns, Image>((c) => c.CrawlerId == GetLongValue("Id")), this, "CrawlerId"));				
@@ -191,8 +192,10 @@ namespace Bam.Net.Analytics
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Crawler>();
 			Database db = database ?? Db.For<Crawler>();
-			var results = new CrawlerCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new CrawlerCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -629,6 +632,25 @@ namespace Bam.Net.Analytics
 			if(orderBy != null)
 			{
 				query.OrderBy<CrawlerColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<CrawlerCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static CrawlerCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<Crawler>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<Crawler>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

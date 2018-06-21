@@ -55,10 +55,12 @@ namespace Bam.Net.Translation
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("LanguageDetection_TextId", new LanguageDetectionCollection(Database.GetQuery<LanguageDetectionColumns, LanguageDetection>((c) => c.TextId == GetLongValue("Id")), this, "TextId"));				
-			}			if(_database != null)
+			}
+			if(_database != null)
 			{
 				this.ChildCollections.Add("Translation_TextId", new TranslationCollection(Database.GetQuery<TranslationColumns, Translation>((c) => c.TextId == GetLongValue("Id")), this, "TextId"));				
 			}						
@@ -239,8 +241,10 @@ namespace Bam.Net.Translation
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Text>();
 			Database db = database ?? Db.For<Text>();
-			var results = new TextCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new TextCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -677,6 +681,25 @@ namespace Bam.Net.Translation
 			if(orderBy != null)
 			{
 				query.OrderBy<TextColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<TextCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static TextCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<Text>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<Text>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

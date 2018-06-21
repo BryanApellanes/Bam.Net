@@ -55,6 +55,7 @@ namespace Bam.Net.Analytics
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("ImageTag_ImageId", new ImageTagCollection(Database.GetQuery<ImageTagColumns, ImageTag>((c) => c.ImageId == GetLongValue("Id")), this, "ImageId"));				
@@ -273,8 +274,10 @@ namespace Bam.Net.Analytics
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Image>();
 			Database db = database ?? Db.For<Image>();
-			var results = new ImageCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new ImageCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -711,6 +714,25 @@ namespace Bam.Net.Analytics
 			if(orderBy != null)
 			{
 				query.OrderBy<ImageColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<ImageCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static ImageCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<Image>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<Image>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

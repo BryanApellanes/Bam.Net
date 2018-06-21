@@ -227,8 +227,10 @@ namespace Bam.Net.Services.OpenApi
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<PatternedField>();
 			Database db = database ?? Db.For<PatternedField>();
-			var results = new PatternedFieldCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new PatternedFieldCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -665,6 +667,25 @@ namespace Bam.Net.Services.OpenApi
 			if(orderBy != null)
 			{
 				query.OrderBy<PatternedFieldColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<PatternedFieldCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static PatternedFieldCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<PatternedField>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<PatternedField>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

@@ -55,6 +55,7 @@ namespace Bam.Net.DaoRef
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("LeftRight_RightId", new LeftRightCollection(Database.GetQuery<LeftRightColumns, LeftRight>((c) => c.RightId == GetLongValue("Id")), this, "RightId"));				
@@ -203,8 +204,10 @@ namespace Bam.Net.DaoRef
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Right>();
 			Database db = database ?? Db.For<Right>();
-			var results = new RightCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new RightCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -641,6 +644,25 @@ namespace Bam.Net.DaoRef
 			if(orderBy != null)
 			{
 				query.OrderBy<RightColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<RightCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static RightCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<Right>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<Right>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);
