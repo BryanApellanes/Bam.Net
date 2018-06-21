@@ -82,3 +82,6 @@ As part of the release build the version is set in all AssemblyInfo.cs files. If
 the patch number is incremented and the result is used as the version.  You may specify any combination 
 of the command line switches, /major, /minor or /patch to increment the associated version part.  Additionally, 
 an msi is created as part of the release by prompting for the location of wix merge module and project files.
+
+## What's next?
+- [Unit and Integration Tests](../bamtestrunner/) using bamtestrunner.exe
