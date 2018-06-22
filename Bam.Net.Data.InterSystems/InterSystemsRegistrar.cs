@@ -63,12 +63,12 @@ namespace Bam.Net.Data
         /// <param name="incubator"></param>
         public static void Register(Incubator incubator)
         {
-            CacheParameterBuilder b = new CacheParameterBuilder();
+            InterSystemsParameterBuilder b = new InterSystemsParameterBuilder();
             incubator.Set<IParameterBuilder>(b);
 
-            incubator.Set<SqlStringBuilder>(() => new CacheSqlStringBuilder());
-            incubator.Set<SchemaWriter>(() => new CacheSqlStringBuilder());
-            incubator.Set<QuerySet>(() => new CacheQuerySet());
+            incubator.Set<SqlStringBuilder>(() => new InterSystemsSqlStringBuilder());
+            incubator.Set<SchemaWriter>(() => new InterSystemsSqlStringBuilder());
+            incubator.Set<QuerySet>(() => new InterSystemsQuerySet());
         }
     }
 }

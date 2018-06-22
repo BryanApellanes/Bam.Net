@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Data.Cache
+namespace Bam.Net.Data.Intersystems
 {
-    public class CacheFieldDescriptor
+    public class InterSystemsFieldDescriptor
     {
         public string CacheID { get; set; }
         public string SqlTableName { get; set; }

@@ -14,7 +14,7 @@ using InterSystems.Data.CacheClient;
 
 namespace Bam.Net.Data
 {
-    public class CacheParameterBuilder : ParameterBuilder
+    public class InterSystemsParameterBuilder : ParameterBuilder
     {
         public override DbParameter BuildParameter(string name, object value)
         {

@@ -11,35 +11,35 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using InterSystems.Data.CacheClient;
 
-namespace Bam.Net.Data.Cache
+namespace Bam.Net.Data.Intersystems
 {
-    public class CacheDatabase : Database, IHasConnectionStringResolver
+    public class InterSystemsDatabase : Database, IHasConnectionStringResolver
     {
-        public CacheDatabase()
+        public InterSystemsDatabase()
         {
             ConnectionStringResolver = DefaultConnectionStringResolver.Instance;
             Register();
         }
-        public CacheDatabase(string serverName, string databaseName, CacheCredentials credentials = null)
+        public InterSystemsDatabase(string serverName, string databaseName, InterSystemsCredentials credentials = null)
             : this(serverName, databaseName, databaseName, credentials)
         { }
 
-        public CacheDatabase(string serverName, string databaseName, string connectionName, CacheCredentials credentials = null)
+        public InterSystemsDatabase(string serverName, string databaseName, string connectionName, InterSystemsCredentials credentials = null)
             : base()
         {
-            ConnectionStringResolver = new CacheConnectionStringResolver(serverName, databaseName, credentials);
+            ConnectionStringResolver = new InterSystemsConnectionStringResolver(serverName, databaseName, credentials);
             ConnectionName = connectionName;
             Register();
         }
 
-        public CacheDatabase(CacheConnectionStringResolver connectionStringResolver)
+        public InterSystemsDatabase(InterSystemsConnectionStringResolver connectionStringResolver)
         {
             ConnectionName = connectionStringResolver.DatabaseName;
             ConnectionStringResolver = connectionStringResolver;
             Register();
         }
 
-        public CacheDatabase(string connectionString, string connectionName = null)
+        public InterSystemsDatabase(string connectionString, string connectionName = null)
             : base(connectionString, connectionName)
         {
             Register();
@@ -85,7 +85,7 @@ namespace Bam.Net.Data.Cache
 
         public override SqlStringBuilder GetSqlStringBuilder()
         {
-            CacheSqlStringBuilder sqlStringBuilder = (CacheSqlStringBuilder)base.GetSqlStringBuilder();
+            InterSystemsSqlStringBuilder sqlStringBuilder = (InterSystemsSqlStringBuilder)base.GetSqlStringBuilder();
             sqlStringBuilder.TableNamePrefix = TableNamePrefix;
             sqlStringBuilder.SelectStar = SelectStar;
             return sqlStringBuilder;
@@ -93,7 +93,7 @@ namespace Bam.Net.Data.Cache
 
         public override QuerySet GetQuerySet()
         {
-            CacheQuerySet qs = (CacheQuerySet)base.GetQuerySet();
+            InterSystemsQuerySet qs = (InterSystemsQuerySet)base.GetQuerySet();
             qs.TableNamePrefix = TableNamePrefix;
             return qs;
         }

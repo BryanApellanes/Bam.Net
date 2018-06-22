@@ -7,19 +7,19 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Data.Cache
+namespace Bam.Net.Data.Intersystems
 {
-    public class CacheSchemaExtractor : SchemaExtractor
+    public class InterSystemsSchemaExtractor : SchemaExtractor
     {
-        CacheSchemaExtractorConfig _config;
-        CacheDatabase _cacheDatabase;
-        List<CacheFieldDescriptor> _fieldDescriptors;
+        InterSystemsSchemaExtractorConfig _config;
+        InterSystemsDatabase _cacheDatabase;
+        List<InterSystemsFieldDescriptor> _fieldDescriptors;
         object _fieldDescriptorLock = new object();
 
-        public CacheSchemaExtractor(CacheSchemaExtractorConfig config)
+        public InterSystemsSchemaExtractor(InterSystemsSchemaExtractorConfig config)
         {
             _config = config;
-            _cacheDatabase = new CacheDatabase(config.ConnectionString);
+            _cacheDatabase = new InterSystemsDatabase(config.ConnectionString);
         }
 
         #region Don't look at me, I'm hideous
@@ -31,11 +31,11 @@ namespace Bam.Net.Data.Cache
   cc.ID LIKE '{TableNameFilter}' AND ClassType = 'persistent'";
         #endregion
 
-        protected List<CacheFieldDescriptor> FieldDescriptors
+        protected List<InterSystemsFieldDescriptor> FieldDescriptors
         {
             get
             {
-                return _fieldDescriptorLock.DoubleCheckLock(ref _fieldDescriptors, () => _cacheDatabase.ExecuteReader<CacheFieldDescriptor>(FieldDescriptorQuery.NamedFormat(_config), new CacheParameter[] { }).ToList());
+                return _fieldDescriptorLock.DoubleCheckLock(ref _fieldDescriptors, () => _cacheDatabase.ExecuteReader<InterSystemsFieldDescriptor>(FieldDescriptorQuery.NamedFormat(_config), new CacheParameter[] { }).ToList());
             }
         }
 
@@ -47,20 +47,20 @@ namespace Bam.Net.Data.Cache
             }
         }
 
-        Dictionary<string, List<CacheFieldDescriptor>> _fieldDescriptorsByTable;
+        Dictionary<string, List<InterSystemsFieldDescriptor>> _fieldDescriptorsByTable;
         object _fieldDescriptorsByTableLock = new object();
-        protected Dictionary<string, List<CacheFieldDescriptor>> FieldDescriptorsByTable
+        protected Dictionary<string, List<InterSystemsFieldDescriptor>> FieldDescriptorsByTable
         {
             get
             {
                 return _fieldDescriptorsByTableLock.DoubleCheckLock(ref _fieldDescriptorsByTable, () =>
                 {
-                    Dictionary<string, List<CacheFieldDescriptor>> result = new Dictionary<string, List<CacheFieldDescriptor>>();
-                    foreach (CacheFieldDescriptor fieldDescriptor in FieldDescriptors)
+                    Dictionary<string, List<InterSystemsFieldDescriptor>> result = new Dictionary<string, List<InterSystemsFieldDescriptor>>();
+                    foreach (InterSystemsFieldDescriptor fieldDescriptor in FieldDescriptors)
                     {
                         if (!result.ContainsKey(fieldDescriptor.SqlTableName))
                         {
-                            result.Add(fieldDescriptor.SqlTableName, new List<CacheFieldDescriptor>());
+                            result.Add(fieldDescriptor.SqlTableName, new List<InterSystemsFieldDescriptor>());
                         }
 
                         result[fieldDescriptor.SqlTableName].Add(fieldDescriptor);
@@ -76,7 +76,7 @@ namespace Bam.Net.Data.Cache
             foreach(string tableName in FieldDescriptorsByTable.Keys)
             {
                 NameMap.Set(new TableNameToClassName { TableName = tableName, ClassName = tableName.TrimNonLetters() });
-                foreach(CacheFieldDescriptor fieldDescriptor in FieldDescriptorsByTable[tableName])
+                foreach(InterSystemsFieldDescriptor fieldDescriptor in FieldDescriptorsByTable[tableName])
                 {
                     NameMap.Set(new ColumnNameToPropertyName { TableName = tableName, ColumnName = fieldDescriptor.SqlFieldName, PropertyName = fieldDescriptor.SqlFieldName.TrimNonLetters() });
                 }
@@ -104,7 +104,7 @@ namespace Bam.Net.Data.Cache
 
         public override string GetColumnDbDataType(string tableName, string columnName)
         {
-            CacheFieldDescriptor cfd = FieldDescriptorsByTable[tableName].Where(f => f.SqlFieldName.Equals(columnName)).FirstOrDefault();
+            InterSystemsFieldDescriptor cfd = FieldDescriptorsByTable[tableName].Where(f => f.SqlFieldName.Equals(columnName)).FirstOrDefault();
             if(cfd == null || cfd.OdbcType.Equals("varchar", StringComparison.InvariantCultureIgnoreCase))
             {
                 return "VARCHAR";
@@ -128,7 +128,7 @@ namespace Bam.Net.Data.Cache
         public override string[] GetColumnNames(string tableName)
         {
             List<string> results = new List<string>();
-            foreach(CacheFieldDescriptor fieldDescriptor in FieldDescriptorsByTable[tableName])
+            foreach(InterSystemsFieldDescriptor fieldDescriptor in FieldDescriptorsByTable[tableName])
             {
                 results.Add(fieldDescriptor.SqlFieldName);
             }
@@ -159,7 +159,7 @@ namespace Bam.Net.Data.Cache
         public override string[] GetTableNames()
         {
             HashSet<string> results = new HashSet<string>();
-            foreach(CacheFieldDescriptor fd in FieldDescriptors)
+            foreach(InterSystemsFieldDescriptor fd in FieldDescriptors)
             {
                 results.Add(fd.SqlTableName);
             }

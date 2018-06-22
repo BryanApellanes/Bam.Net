@@ -7,14 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bam.Net.Data;
-using Bam.Net.Data.Cache;
+using Bam.Net.Data.Intersystems;
 using Bam.Net.Configuration;
 
 namespace Bam.Net.Javascript.Sql
 {
-    public class CacheJavscriptSqlProvider : JavaScriptSqlProvider
+    public class InterSystemsJavscriptSqlProvider : JavaScriptSqlProvider
     {
-        public CacheJavscriptSqlProvider()
+        public InterSystemsJavscriptSqlProvider()
         {
         }
 
@@ -25,9 +25,9 @@ namespace Bam.Net.Javascript.Sql
 
         protected override void Initialize()
         {
-            CacheDatabase database = new CacheDatabase();
-            CacheCredentials creds = new CacheCredentials { UserName = CacheUserId, Password = CachePassword };
-            CacheConnectionStringResolver conn = new CacheConnectionStringResolver(CacheServerName, CacheDatabaseName, creds);
+            InterSystemsDatabase database = new InterSystemsDatabase();
+            InterSystemsCredentials creds = new InterSystemsCredentials { UserName = CacheUserId, Password = CachePassword };
+            InterSystemsConnectionStringResolver conn = new InterSystemsConnectionStringResolver(CacheServerName, CacheDatabaseName, creds);
             database.ConnectionStringResolver = conn;
             Database = database;
         }

@@ -1,16 +1,12 @@
 ﻿/*
 	Copyright © Bryan Apellanes 2015  
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Bam.Net.Incubation;
+using System;
 
 namespace Bam.Net.Data
 {
-    public class CacheRegistrarCaller : IRegistrarCaller
+    public class InterSystemsRegistrarCaller : IRegistrarCaller
     {
         public void Register(Database database)
         {

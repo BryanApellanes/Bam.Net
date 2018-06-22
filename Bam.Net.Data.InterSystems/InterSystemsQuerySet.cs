@@ -5,13 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Bam.Net.Data.Cache;
+using Bam.Net.Data.Intersystems;
 
 namespace Bam.Net.Data
 {
-    public class CacheQuerySet : QuerySet
+    public class InterSystemsQuerySet : QuerySet
     {
-        public CacheQuerySet() : base()
+        public InterSystemsQuerySet() : base()
         {
             Reset();
             TableNameFormatter = t => $"{TableNamePrefix}{t}";
@@ -22,7 +22,7 @@ namespace Bam.Net.Data
 
         public override SqlStringBuilder Where(IQueryFilter filter)
         {
-            WhereFormat where = CacheFormatProvider.GetWhereFormat(filter, StringBuilder, NextNumber);
+            WhereFormat where = InterSystemsFormatProvider.GetWhereFormat(filter, StringBuilder, NextNumber);
             NextNumber = where.NextNumber;
             parameters.AddRange(where.Parameters);
             return this;
@@ -31,7 +31,7 @@ namespace Bam.Net.Data
         public override SqlStringBuilder Update(string tableName, params AssignValue[] values)
         {
             Builder.AppendFormat("UPDATE {0} ", TableNameFormatter(tableName));
-            SetFormat set = CacheFormatProvider.GetSetFormat(tableName, StringBuilder, NextNumber, values);
+            SetFormat set = InterSystemsFormatProvider.GetSetFormat(tableName, StringBuilder, NextNumber, values);
             NextNumber = set.NextNumber;
             parameters.AddRange(set.Parameters);
             return this;

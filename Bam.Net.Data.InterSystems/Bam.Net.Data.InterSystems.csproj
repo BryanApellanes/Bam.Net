@@ -62,20 +62,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CacheConnectionStringResolver.cs" />
-    <Compile Include="CacheCredentials.cs" />
-    <Compile Include="CacheDatabase.cs" />
-    <Compile Include="CacheDatabaseInitializer.cs" />
-    <Compile Include="CacheFieldDescriptor.cs" />
-    <Compile Include="CacheFormatProvder.cs" />
-    <Compile Include="CacheJavascriptSqlProvider.cs" />
-    <Compile Include="CacheParameterBuilder.cs" />
-    <Compile Include="CacheQuerySet.cs" />
-    <Compile Include="CacheRegistrar.cs" />
-    <Compile Include="CacheRegistrarCaller.cs" />
-    <Compile Include="CacheSchemaExtractor.cs" />
-    <Compile Include="CacheSchemaExtractorConfig.cs" />
-    <Compile Include="CacheSqlStringBuilder.cs" />
+    <Compile Include="InterSystemsConnectionStringResolver.cs" />
+    <Compile Include="InterSystemsCredentials.cs" />
+    <Compile Include="InterSystemsDatabase.cs" />
+    <Compile Include="InterSystemsDatabaseInitializer.cs" />
+    <Compile Include="InterSystemsFieldDescriptor.cs" />
+    <Compile Include="InterSystemsFormatProvder.cs" />
+    <Compile Include="InterSystemsJavascriptSqlProvider.cs" />
+    <Compile Include="InterSystemsParameterBuilder.cs" />
+    <Compile Include="InterSystemsQuerySet.cs" />
+    <Compile Include="InterSystemsRegistrar.cs" />
+    <Compile Include="InterSystemsRegistrarCaller.cs" />
+    <Compile Include="InterSystemsSchemaExtractor.cs" />
+    <Compile Include="InterSystemsSchemaExtractorConfig.cs" />
+    <Compile Include="InterSystemsSqlStringBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

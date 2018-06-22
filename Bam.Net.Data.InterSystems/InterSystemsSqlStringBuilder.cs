@@ -9,13 +9,13 @@ using System.Reflection;
 using Bam.Net.Incubation;
 using Bam.Net;
 using Bam.Net.Data;
-using Bam.Net.Data.Cache;
+using Bam.Net.Data.Intersystems;
 
 namespace Bam.Net.Data
 {
-    public class CacheSqlStringBuilder : SchemaWriter
+    public class InterSystemsSqlStringBuilder : SchemaWriter
     {
-        public CacheSqlStringBuilder(): base()
+        public InterSystemsSqlStringBuilder(): base()
         {
             Reset();
             TableNameFormatter = t => $"{TableNamePrefix}{t}";
@@ -27,14 +27,14 @@ namespace Bam.Net.Data
 
         public static void Register(Incubator incubator)
         {
-            CacheSqlStringBuilder builder = new CacheSqlStringBuilder();
+            InterSystemsSqlStringBuilder builder = new InterSystemsSqlStringBuilder();
             incubator.Set(typeof(SqlStringBuilder), builder);
             incubator.Set<SqlStringBuilder>(builder);
         }
 
         public override SqlStringBuilder Where(IQueryFilter filter)
         {
-            WhereFormat where = CacheFormatProvider.GetWhereFormat(filter, StringBuilder, NextNumber);
+            WhereFormat where = InterSystemsFormatProvider.GetWhereFormat(filter, StringBuilder, NextNumber);
             NextNumber = where.NextNumber;
             parameters.AddRange(where.Parameters);
             return this;
@@ -43,7 +43,7 @@ namespace Bam.Net.Data
         public override SqlStringBuilder Update(string tableName, params AssignValue[] values)
         {
             Builder.AppendFormat("UPDATE {0} ", TableNameFormatter(tableName));
-            SetFormat set = CacheFormatProvider.GetSetFormat(tableName, StringBuilder, NextNumber, values);
+            SetFormat set = InterSystemsFormatProvider.GetSetFormat(tableName, StringBuilder, NextNumber, values);
             NextNumber = set.NextNumber;
             parameters.AddRange(set.Parameters);
             return this;
@@ -58,16 +58,6 @@ namespace Bam.Net.Data
         {
             return Select(TableNameFormatter(Dao.TableName(typeof(T))), SelectStar ? "*" : ColumnAttribute.GetColumns(typeof(T)).ToDelimited(c => ColumnNameFormatter(c.Name)));
         }
-
-        //public override SqlStringBuilder Select(string tableName, params string[] columnNames)
-        //{
-        //    base.Select(tableName, columnNames);
-        //    //if (!tableName.StartsWith(TableNamePrefix))
-        //    //{
-        //    //    tableName = TableNameFormatter(tableName);
-        //    //}
-        //    return SelectTop(-1, tableName, columnNames);
-        //}
 
         public override string GetColumnDefinition(ColumnAttribute column)
         {

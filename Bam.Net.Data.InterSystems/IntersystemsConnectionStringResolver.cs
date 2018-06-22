@@ -11,11 +11,11 @@ using System.Data.SqlClient;
 using System.Data.Common;
 using InterSystems.Data.CacheClient;
 
-namespace Bam.Net.Data.Cache
+namespace Bam.Net.Data.Intersystems
 {
-    public class CacheConnectionStringResolver : IConnectionStringResolver
+    public class InterSystemsConnectionStringResolver : IConnectionStringResolver
     {
-        public CacheConnectionStringResolver(string serverName, string databaseName, CacheCredentials credentials = null)
+        public InterSystemsConnectionStringResolver(string serverName, string databaseName, InterSystemsCredentials credentials = null)
         {
             this.ServerName = serverName;
             this.DatabaseName = databaseName;
@@ -28,7 +28,7 @@ namespace Bam.Net.Data.Cache
 
         public bool TrustedConnection { get; set; }
 
-        public CacheCredentials Credentials { get; set; }
+        public InterSystemsCredentials Credentials { get; set; }
 
         #region IConnectionStringResolver Members
 

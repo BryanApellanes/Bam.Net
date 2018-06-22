@@ -10,20 +10,20 @@ using System.Data;
 using System.Data.Common;
 using System.Configuration;
 
-namespace Bam.Net.Data.Cache
+namespace Bam.Net.Data.Intersystems
 {
-    public class CacheDatabaseInitializer : DefaultDatabaseInitializer
+    public class InterSystemsDatabaseInitializer : DefaultDatabaseInitializer
     {
-        public CacheDatabaseInitializer()
+        public InterSystemsDatabaseInitializer()
         {
         }
 
-        public CacheDatabaseInitializer(params string[] ignoreConnectionNames)
+        public InterSystemsDatabaseInitializer(params string[] ignoreConnectionNames)
         {
             this.Ignore(ignoreConnectionNames);
         }
 
-        public CacheDatabaseInitializer(params Type[] ignoreConnectionsForTypes)
+        public InterSystemsDatabaseInitializer(params Type[] ignoreConnectionsForTypes)
         {
             this.Ignore(ignoreConnectionsForTypes);
         }

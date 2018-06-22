@@ -926,22 +926,58 @@ namespace Bam.Net
             });
             return result;
         }
+
+        /// <summary>
+        /// Parses key value pairs from the string.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <param name="pascalCasify">if set to <c>true</c> [pascal casify].</param>
+        /// <param name="keyValueSeparator">The key value separator.</param>
+        /// <param name="elementSeparator">The element separator.</param>
+        /// <returns></returns>
+        public static Dictionary<string, object> ParseKeyValuePairs(this string input, bool pascalCasify = true, string keyValueSeparator = ":", string elementSeparator = ";")
+        {
+            Dictionary<string, object> result = new Dictionary<string, object>();
+            string[] elements = input.DelimitSplit(elementSeparator);
+            elements.Each(element =>
+            {
+                GetKeyValue(pascalCasify, keyValueSeparator, element, out string key, out string value);
+
+                if (result.ContainsKey(key))
+                {
+                    Args.Throw<InvalidOperationException>("The key {0} exists more than once in the specified string: {1}", key, input);
+                }
+                result.Add(key, value);
+            });
+
+            return result;
+        }
+
         public static T ParseKeyValuePairs<T>(this string input, bool pascalCasify = true, string keyValueSeparator = ":", string elementSeparator = ";") where T : class, new()
         {
             T result = new T();
             string[] elements = input.DelimitSplit(elementSeparator);
             elements.Each(element =>
             {
-                string[] kvp = element.DelimitSplit(keyValueSeparator);
-                Args.ThrowIf<ArgumentException>(kvp.Length != 2, "Unrecognized Key Value pair format: ({0})", element);
-
-                string key = pascalCasify ? kvp[0].PascalCase() : kvp[0];
-                string value = pascalCasify ? kvp[1].PascalCase() : kvp[1];
+                GetKeyValue(pascalCasify, keyValueSeparator, element, out string key, out string value);
 
                 result.Property(key, value);
             });
 
             return result;
+        }
+        
+        private static void GetKeyValue(bool pascalCasify, string keyValueSeparator, string element, out string key, out string value)
+        {
+            string[] kvp = element.DelimitSplit(keyValueSeparator);
+            Args.ThrowIf<ArgumentException>(kvp.Length < 1 || kvp.Length > 2, "Unrecognized Key Value pair format: ({0})", element);
+
+            key = pascalCasify ? kvp[0].PascalCase() : kvp[0];
+            value = string.Empty;
+            if (kvp.Length == 2)
+            {
+                value = pascalCasify ? kvp[1].PascalCase() : kvp[1];
+            }
         }
 
         /// <summary>
@@ -3573,8 +3609,7 @@ namespace Bam.Net
         /// <returns></returns>
         public static dynamic ValuePropertiesToDynamic(this object instance)
         {
-            Type ignore;
-            return ValuePropertiesToDynamic(instance, out ignore);
+            return ValuePropertiesToDynamic(instance, out Type ignore);
         }
 
         /// <summary>
@@ -3585,10 +3620,9 @@ namespace Bam.Net
         /// <returns></returns>
         public static dynamic ValuePropertiesToDynamic(this object instance, out Type dynamicType)
         {
-            AssemblyBuilder ignore;
             Type instanceType = instance.GetType();
             string newTypeName = "ValuesOf.{0}.{1}"._Format(instanceType.Namespace, instanceType.Name);
-            dynamicType = ValuePropertiesToDynamicType(instance, newTypeName, out ignore);
+            dynamicType = ValuePropertiesToDynamicType(instance, newTypeName, out AssemblyBuilder ignore);
             ConstructorInfo ctor = dynamicType.GetConstructor(new Type[] { });
             object valuesOnlyInstance = ctor.Invoke(null);
             DefaultConfiguration.CopyProperties(instance, valuesOnlyInstance);
@@ -4077,6 +4111,34 @@ namespace Bam.Net
             SetProperties(dictionary, result);
             return result;
         }
+
+        public static TResult FromDictionary<TKey, TValue, TResult>(this Dictionary<TKey, TValue> dictionary, params object[] ctorParams)
+        {
+            return FromDictionary<TKey, TValue, TResult>(dictionary, (k) => k.ToString(), (p, v) => v, ctorParams);
+        }
+
+        /// <summary>
+        /// Convert a dictionary to an instance of a specified type.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the key.</typeparam>
+        /// <typeparam name="TValue">The type of the value.</typeparam>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="dictionary">The dictionary.</param>
+        /// <param name="keyMunger">The key munger.</param>
+        /// <param name="valueMunger">The value munger.</param>
+        /// <param name="ctorParams">The ctor parameters.</param>
+        /// <returns></returns>
+        public static TResult FromDictionary<TKey, TValue, TResult>(this Dictionary<TKey, TValue> dictionary, Func<TKey, string> keyMunger, Func<PropertyInfo, TValue, object> valueMunger, params object[] ctorParams)
+        {
+            TResult result = Construct<TResult>(typeof(TResult), ctorParams);
+            foreach(TKey key in dictionary.Keys)
+            {
+                string propertyName = keyMunger(key);
+                result.Property(propertyName, valueMunger(typeof(TResult).GetProperty(propertyName), dictionary[key]));
+            }
+            return result;
+        }
+
         /// <summary>
         /// Convert the specified dicationary to an instance
         /// of type T

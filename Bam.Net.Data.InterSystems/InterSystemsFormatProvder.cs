@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.Data.Cache
+namespace Bam.Net.Data.Intersystems
 {
     /// <summary>
     /// Provides MySql specific expression formatting.
@@ -15,7 +15,7 @@ namespace Bam.Net.Data.Cache
     /// container, especially when moving on to implement 
     /// support for other databases.  
     /// </summary>
-    internal class CacheFormatProvider
+    internal class InterSystemsFormatProvider
     {
         public static SetFormat GetSetFormat(string tableName, StringBuilder stringBuilder, int? startNumber, params AssignValue[] values)
         {
