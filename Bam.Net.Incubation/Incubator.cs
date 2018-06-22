@@ -712,6 +712,12 @@ namespace Bam.Net.Incubation
             }
         }
 
+        /// <summary>
+        /// Gets the constructor parameter value.
+        /// </summary>
+        /// <param name="forType">For type.</param>
+        /// <param name="parameterName">Name of the parameter.</param>
+        /// <returns></returns>
         public object GetCtorParameterValue(Type forType, string parameterName)
         {
             if(_ctorParams.ContainsKey(forType) && _ctorParams[forType].ContainsKey(parameterName))
@@ -730,12 +736,12 @@ namespace Bam.Net.Incubation
             }
         }
 
-        private List<object> GetCtorParams(Type type)
+        public List<object> GetCtorParams(Type type)
         {
-            ConstructorInfo ctor;
-            return GetCtorParams(type, out ctor);
+            return GetCtorParams(type, out ConstructorInfo ctor);
         }
-        private List<object> GetCtorParams(Type type, out ConstructorInfo ctorInfo)
+
+        public List<object> GetCtorParams(Type type, out ConstructorInfo ctorInfo)
         {
             ctorInfo = null;
             ConstructorInfo[] ctors = type.GetConstructors();
