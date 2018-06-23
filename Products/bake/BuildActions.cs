@@ -370,8 +370,8 @@ namespace Bam.Net.Automation
             // read BamDaemonProcessInfos.json
             // for each entry 
             //      copy the latest binaries to c:\bam\sys\{Name}
-            //      update the appsettings to match what's in the info entry
-            //      write c:\bam\tools\bamd\BamDaemonProcess.json with appropriate settings derived from info
+            //      update the appsettings to match what's in the info entry; Use "SetAppSettings"
+            //      prepare array of BamDaemonProcesses with appropriate settings derived from info to be written to bamd below
 
             // deploy bamd
             //      uninstall existing bamd
