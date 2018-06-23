@@ -7,8 +7,8 @@
     <ProjectGuid>{18137474-E31B-4592-9891-44ADC7039FE0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Bam.Net.Data.Cache</RootNamespace>
-    <AssemblyName>Bam.Net.Data.Cache</AssemblyName>
+    <RootNamespace>Bam.Net.Data.InterSystems</RootNamespace>
+    <AssemblyName>Bam.Net.Data.InterSystems</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
