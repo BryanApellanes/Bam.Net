@@ -185,8 +185,10 @@ namespace Bam.Net.DaoRef
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<TestFkTable>();
 			Database db = database ?? Db.For<TestFkTable>();
-			var results = new TestFkTableCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new TestFkTableCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -623,6 +625,25 @@ namespace Bam.Net.DaoRef
 			if(orderBy != null)
 			{
 				query.OrderBy<TestFkTableColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<TestFkTableCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static TestFkTableCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<TestFkTable>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<TestFkTable>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

@@ -199,8 +199,10 @@ namespace Bam.Net.Automation.ContinuousIntegration.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<BuildResult>();
 			Database db = database ?? Db.For<BuildResult>();
-			var results = new BuildResultCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new BuildResultCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 

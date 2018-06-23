@@ -55,6 +55,7 @@ namespace Bam.Net.ServiceProxy.Secure
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("ConfigSetting_ConfigurationId", new ConfigSettingCollection(Database.GetQuery<ConfigSettingColumns, ConfigSetting>((c) => c.ConfigurationId == GetLongValue("Id")), this, "ConfigurationId"));				
@@ -212,8 +213,10 @@ namespace Bam.Net.ServiceProxy.Secure
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Configuration>();
 			Database db = database ?? Db.For<Configuration>();
-			var results = new ConfigurationCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new ConfigurationCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -650,6 +653,25 @@ namespace Bam.Net.ServiceProxy.Secure
 			if(orderBy != null)
 			{
 				query.OrderBy<ConfigurationColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<ConfigurationCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static ConfigurationCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<Configuration>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<Configuration>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

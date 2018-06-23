@@ -234,8 +234,10 @@ namespace Bam.Net.Translation
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<LanguageDetection>();
 			Database db = database ?? Db.For<LanguageDetection>();
-			var results = new LanguageDetectionCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new LanguageDetectionCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -672,6 +674,25 @@ namespace Bam.Net.Translation
 			if(orderBy != null)
 			{
 				query.OrderBy<LanguageDetectionColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<LanguageDetectionCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static LanguageDetectionCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<LanguageDetection>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<LanguageDetection>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

@@ -199,8 +199,10 @@ namespace Bam.Net.Analytics.EnglishDictionary
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Definition>();
 			Database db = database ?? Db.For<Definition>();
-			var results = new DefinitionCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new DefinitionCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -637,6 +639,25 @@ namespace Bam.Net.Analytics.EnglishDictionary
 			if(orderBy != null)
 			{
 				query.OrderBy<DefinitionColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<DefinitionCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static DefinitionCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<Definition>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<Definition>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

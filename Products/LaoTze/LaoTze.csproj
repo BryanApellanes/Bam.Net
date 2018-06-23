@@ -54,8 +54,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DocumentationFile>..\BUILD\BamToolkit\laotze.XML</DocumentationFile>
+    <OutputPath>..\..\..\..\..\..\tools\laotze\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
     <PlatformTarget>x64</PlatformTarget>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -141,7 +142,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="enso.ico" />
-    <EmbeddedResource Include="base.db.js" />
     <Content Include="White.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

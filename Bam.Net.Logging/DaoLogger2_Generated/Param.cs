@@ -55,6 +55,7 @@ namespace Bam.Net.Logging.Data
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("EventParam_ParamId", new EventParamCollection(Database.GetQuery<EventParamColumns, EventParam>((c) => c.ParamId == GetLongValue("Id")), this, "ParamId"));				
@@ -217,8 +218,10 @@ namespace Bam.Net.Logging.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<Param>();
 			Database db = database ?? Db.For<Param>();
-			var results = new ParamCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new ParamCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -655,6 +658,25 @@ namespace Bam.Net.Logging.Data
 			if(orderBy != null)
 			{
 				query.OrderBy<ParamColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<ParamCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static ParamCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<Param>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<Param>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);

@@ -84,4 +84,5 @@ of the command line switches, /major, /minor or /patch to increment the associat
 an msi is created as part of the release by prompting for the location of wix merge module and project files.
 
 ## What's next?
-- [Unit and Integration Tests](../bamtestrunner/) using bamtestrunner.exe
+- [Run unit and integration tests](../bamtestrunner/) using bamtestrunner.exe
+- [Define BAM managed services](../bamd/) using bamd.exe

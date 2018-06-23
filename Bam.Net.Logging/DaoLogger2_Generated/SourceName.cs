@@ -55,6 +55,7 @@ namespace Bam.Net.Logging.Data
 
 		private void SetChildren()
 		{
+
 			if(_database != null)
 			{
 				this.ChildCollections.Add("Event_SourceNameId", new EventCollection(Database.GetQuery<EventColumns, Event>((c) => c.SourceNameId == GetLongValue("Id")), this, "SourceNameId"));				
@@ -177,8 +178,10 @@ namespace Bam.Net.Logging.Data
 			SqlStringBuilder sql = new SqlStringBuilder();
 			sql.Select<SourceName>();
 			Database db = database ?? Db.For<SourceName>();
-			var results = new SourceNameCollection(db, sql.GetDataTable(db));
-			results.Database = db;
+			var results = new SourceNameCollection(db, sql.GetDataTable(db))
+			{
+				Database = db
+			};
 			return results;
 		}
 
@@ -615,6 +618,25 @@ namespace Bam.Net.Logging.Data
 			if(orderBy != null)
 			{
 				query.OrderBy<SourceNameColumns>(orderBy);
+			}
+
+			query.Execute(db);
+			var results = query.Results.As<SourceNameCollection>(0);
+			results.Database = db;
+			return results;
+		}
+
+		[Bam.Net.Exclude]
+		public static SourceNameCollection Top(int count, QueryFilter where, string orderBy = null, SortOrder sortOrder = SortOrder.Ascending, Database database = null)
+		{
+			Database db = database ?? Db.For<SourceName>();
+			QuerySet query = GetQuerySet(db);
+			query.Top<SourceName>(count);
+			query.Where(where);
+
+			if(orderBy != null)
+			{
+				query.OrderBy(orderBy, sortOrder);
 			}
 
 			query.Execute(db);
