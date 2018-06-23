@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Bam.Net.Data.MsSql")]
 [assembly: AssemblyDescription("Bam.Net.Data.MsSql")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Package Owners")]
+[assembly: AssemblyCompany("Bryan Apellanes")]
 [assembly: AssemblyProduct("Bam.Net.Data.MsSql")]
 [assembly: AssemblyCopyright("Copyright © Bryan Apellanes 2015")]
 [assembly: AssemblyTrademark("")]

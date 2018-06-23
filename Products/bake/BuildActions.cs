@@ -226,12 +226,18 @@ namespace Bam.Net.Automation
             string arguments = $"restore {buildConfig.RestoreReference} -PackagesDirectory {GetArgument("PackagesDirectory", "Please enter the path to restore packages to")}";
             NugetPath.ToStartInfo(arguments, clone).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), e => OutLine(e, ConsoleColor.Magenta));
 
-            string msBuildPath = GetArgument("MsBuildPath", "Please enter the path to msbuild.exe.");
+            FileInfo msbuild = new FileInfo(buildConfig.MsBuildPath);
+            if (!msbuild.Exists)
+            {
+                msbuild = new FileInfo(GetArgument("MsBuildPath", "Please enter the path to msbuild.exe."));
+            }
+            string msBuildPath = msbuild.FullName;
             //The root path where binaries are built.  Binaries will be in {Builds}{Platform}{FrameworkVersion}\Debug\_{commitHash}
             DirectoryInfo clonedDir = new DirectoryInfo(clone);
             string commitHash = clonedDir.GetCommitHash();
             string outputPath = buildConfig.GetOutputPath(Builds, commitHash);
             string command = $"/t:Build /filelogger /p:OutDir={outputPath};GenerateDocumentation=true;Configuration={buildConfig.Config};Platform=\"{buildConfig.Platform}\";TargetFrameworkVersion={buildConfig.FrameworkVersion};CompilerVersion={buildConfig.FrameworkVersion} {buildConfig.ProjectFile} /m:1";
+            OutLineFormat("Using msbuild: {0}", ConsoleColor.Yellow, msBuildPath);
             ProcessOutput output = msBuildPath.ToStartInfo(command, clone)
                 .RunAndWait(o => Console.WriteLine(o), e => Console.WriteLine(e), 600000);
             if (output.ExitCode != 0)
