@@ -42,6 +42,13 @@ namespace Bam.Net.Automation
         }
 
         static string _outputDirectory;
+        /// <summary>
+        /// Gets the output directory.  Either the binary output or the nuget package output results
+        /// from packing.
+        /// </summary>
+        /// <value>
+        /// The output directory.
+        /// </value>
         public static string OutputDirectory
         {
             get
@@ -258,59 +265,34 @@ namespace Bam.Net.Automation
             }
         }
 
-        private static void GetLatest(string clone)
-        {
-            OutLineFormat("Getting latest: {0}", ConsoleColor.DarkGreen, clone);
-            ProcessOutput pullProcess = GitPath.ToStartInfo("pull", clone).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), e => OutLine(e, ConsoleColor.Blue));
-            if (pullProcess.ExitCode != 0)
-            {
-                OutLineFormat("Failed to checkout branch: \r\n\t{0}\r\n\t{1}", ConsoleColor.Magenta, pullProcess.StandardOutput, pullProcess.StandardError);
-                Thread.Sleep(1000);
-                Exit(pullProcess.ExitCode);
-            }
-        }
-
-        private static void CheckoutBranch(BakeBuildConfig buildConfig, string clone)
-        {
-            OutLineFormat("Checking out branch: {0}", ConsoleColor.DarkGray, buildConfig.Branch);
-            ProcessOutput checkoutProcess = GitPath.ToStartInfo($"checkout {buildConfig.Branch}", clone).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), e => OutLine(e, ConsoleColor.Blue));
-            if (checkoutProcess.ExitCode != 0)
-            {
-                OutLineFormat("Failed to checkout branch: \r\n\t{0}\r\n\t{1}", ConsoleColor.Magenta, checkoutProcess.StandardOutput, checkoutProcess.StandardError);
-                Thread.Sleep(1000);
-                Exit(checkoutProcess.ExitCode);
-            }
-        }
-
-        private static void CloneRepository(BakeBuildConfig buildConfig, string cloneIn, string clone)
-        {
-            if (Directory.Exists(clone) && buildConfig.Clean)
-            {
-                try
-                {
-                    Directory.Delete(clone, true);
-                }
-                catch (Exception ex)
-                {
-                    OutLineFormat("Yikes! Error on clean: {0}", ConsoleColor.DarkYellow, ex.Message);
-                }
-            }
-
-            if (!Directory.Exists(clone))
-            {
-                OutLineFormat("Cloning repository to: {0}", ConsoleColor.DarkGreen, clone);
-                ProcessOutput cloneProcess = GitPath.ToStartInfo($"clone {buildConfig.RepoRoot}/{buildConfig.RepoName}", cloneIn).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), e => OutLine(e, ConsoleColor.Blue));
-                if (cloneProcess.ExitCode != 0)
-                {
-                    OutLineFormat("Failed to get latest: \r\n\t{0}\r\n\t{1}", ConsoleColor.Magenta, cloneProcess.StandardOutput, cloneProcess.StandardError);
-                    Thread.Sleep(1000);
-                    Exit(cloneProcess.ExitCode);
-                }
-            }
-        }
 
         [ConsoleAction("latest", "Create dev nuget packages from the latest build, clear nuget caches, delete all existing dev-latest packages from the internal source and republish.")]
         public static void PackLatest()
+        {
+            BakeBuildInfo info = GetLatestBuildInfo();
+            string latestArg = Arguments["latest"];
+            OutLineFormat("{0}", ConsoleColor.Cyan, info.Commit);
+            if (!string.IsNullOrEmpty(latestArg) && latestArg.Equals("show"))
+            {
+                Exit(0);
+            }
+            CleanNuget();
+            DirectoryInfo _binRoot = GetBinaryDirectoryForCommit(info.Commit.First(8));
+            _nugetArg = _binRoot.FullName;
+            _suffix = $"Dev-latest";
+            DirectoryInfo bamLatest = new DirectoryInfo("C:\\bam\\latest");
+            OutLineFormat("Copying {0} to {1}", _binRoot.FullName, bamLatest.FullName);
+            bamLatest.Delete(true);
+            _binRoot.Copy(bamLatest.FullName, true);
+            CreateNugetPackages();
+        }
+
+        private static string GetLatestBuildCommitHash()
+        {
+            return GetLatestBuildInfo().Commit;
+        }
+
+        private static BakeBuildInfo GetLatestBuildInfo()
         {
             string latestFile = Path.Combine(Builds, "latest");
             if (!File.Exists(latestFile))
@@ -319,21 +301,7 @@ namespace Bam.Net.Automation
                 Exit(1);
             }
             BakeBuildInfo info = latestFile.FromJsonFile<BakeBuildInfo>();
-            string latestArg = Arguments["latest"];
-            OutLineFormat("{0}", ConsoleColor.Cyan, info.Commit);
-            if (!string.IsNullOrEmpty(latestArg) && latestArg.Equals("show"))
-            {                
-                Exit(0);
-            }
-            CleanNuget();
-            DirectoryInfo _binRoot = GetCommitBinFolder(info.Commit.First(8));
-            _nugetArg = _binRoot.FullName;
-            _suffix = $"Dev-latest";
-            DirectoryInfo bamLatest = new DirectoryInfo("C:\\bam\\latest");
-            OutLineFormat("Copying {0} to {1}", _binRoot.FullName, bamLatest.FullName);
-            bamLatest.Delete(true);
-            _binRoot.Copy(bamLatest.FullName, true);
-            CreateNugetPackages();
+            return info;
         }
 
         private static void DeleteDevLatestPackages()
@@ -355,13 +323,18 @@ namespace Bam.Net.Automation
         {
             string commitArg = Arguments["commit"];
 
-            DirectoryInfo _binRoot = GetCommitBinFolder(commitArg);
+            DirectoryInfo _binRoot = GetBinaryDirectoryForCommit(commitArg);
             _nugetArg = _binRoot.FullName;
             _suffix = $"Dev-{GetBuildNum()}-{_binRoot.Name.TruncateFront(1).First(5)}";
             CreateNugetPackages();
         }
 
-        private static DirectoryInfo GetCommitBinFolder(string commitPrefix)
+        private static DirectoryInfo GetBinaryDirectoryForLatestBuild()
+        {
+            return GetBinaryDirectoryForCommit(GetLatestBuildCommitHash());
+        }
+
+        private static DirectoryInfo GetBinaryDirectoryForCommit(string commitPrefix)
         {
             //{Builds}{Platform}{FrameworkVersion}\Debug\_{commitHash}
             DirectoryInfo debugRoot = new DirectoryInfo(Path.Combine(Builds, Platform, FrameworkVersion, "Debug"));
@@ -389,6 +362,24 @@ namespace Bam.Net.Automation
             string commit = GetCommitHash();
             _suffix = string.IsNullOrEmpty(commit) ? $"Dev-{buildNum}" : $"Dev-{buildNum}-{commit.First(8)}";
             CreateNugetPackages();
+        }
+
+        [ConsoleAction("deploy", @"Deploy BamDaemon processes from the latest build to the folder C:\bam\sys\")]
+        public static void Deploy()
+        {
+            // read BamDaemonProcessInfos.json
+            // for each entry 
+            //      copy the latest binaries to c:\bam\sys\{Name}
+            //      update the appsettings to match what's in the info entry
+            //      write c:\bam\tools\bamd\BamDaemonProcess.json with appropriate settings derived from info
+
+            // deploy bamd
+            //      uninstall existing bamd
+            //      delete existing bamd
+            //      copy new bamd
+            //      install new bamd
+            //      start new bamd
+
         }
 
         [ConsoleAction("release", "Create the release from a specified source directory.  The release includes nuget packages and an msi file.")]
@@ -482,8 +473,9 @@ namespace Bam.Net.Automation
         [ConsoleAction("tag", "Create and commit version tag")]
         public static void CommitTag()
         {
-            string version = GetVersionTag();
             DirectoryInfo sourceRoot = GetSourceRoot(GetTargetPath());
+            string version = GetVersionTag();
+            
             Commit(version, sourceRoot);
             Tag(version, sourceRoot);
         }
@@ -627,16 +619,6 @@ namespace Bam.Net.Automation
             }
 
             Task.WaitAll(tasks.ToArray());
-        }
-
-        private static string GetVersionTag()
-        {
-            string tag = Arguments["tag"];
-            if (string.IsNullOrEmpty(tag) && Arguments.Contains("v"))
-            {
-                tag = Arguments["v"];
-            }
-            return tag;
         }
 
         /// <summary>
@@ -807,6 +789,16 @@ namespace Bam.Net.Automation
             OutLine(info.PropertiesToString(), ConsoleColor.Cyan);
             OutLine("***", ConsoleColor.Cyan);
             return info;
+        }
+
+        private static string GetVersionTag()
+        {
+            string tag = Arguments["tag"];
+            if (string.IsNullOrEmpty(tag) && Arguments.Contains("v"))
+            {
+                tag = Arguments["v"];
+            }
+            return tag;
         }
 
         private static string GetVersion(DirectoryInfo referenceDirectory)
@@ -1149,5 +1141,55 @@ namespace Bam.Net.Automation
             return commit;
         }
 
+        private static void GetLatest(string clone)
+        {
+            OutLineFormat("Getting latest: {0}", ConsoleColor.DarkGreen, clone);
+            ProcessOutput pullProcess = GitPath.ToStartInfo("pull", clone).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), e => OutLine(e, ConsoleColor.Blue));
+            if (pullProcess.ExitCode != 0)
+            {
+                OutLineFormat("Failed to checkout branch: \r\n\t{0}\r\n\t{1}", ConsoleColor.Magenta, pullProcess.StandardOutput, pullProcess.StandardError);
+                Thread.Sleep(1000);
+                Exit(pullProcess.ExitCode);
+            }
+        }
+
+        private static void CheckoutBranch(BakeBuildConfig buildConfig, string clone)
+        {
+            OutLineFormat("Checking out branch: {0}", ConsoleColor.DarkGray, buildConfig.Branch);
+            ProcessOutput checkoutProcess = GitPath.ToStartInfo($"checkout {buildConfig.Branch}", clone).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), e => OutLine(e, ConsoleColor.Blue));
+            if (checkoutProcess.ExitCode != 0)
+            {
+                OutLineFormat("Failed to checkout branch: \r\n\t{0}\r\n\t{1}", ConsoleColor.Magenta, checkoutProcess.StandardOutput, checkoutProcess.StandardError);
+                Thread.Sleep(1000);
+                Exit(checkoutProcess.ExitCode);
+            }
+        }
+
+        private static void CloneRepository(BakeBuildConfig buildConfig, string cloneIn, string clone)
+        {
+            if (Directory.Exists(clone) && buildConfig.Clean)
+            {
+                try
+                {
+                    Directory.Delete(clone, true);
+                }
+                catch (Exception ex)
+                {
+                    OutLineFormat("Yikes! Error on clean: {0}", ConsoleColor.DarkYellow, ex.Message);
+                }
+            }
+
+            if (!Directory.Exists(clone))
+            {
+                OutLineFormat("Cloning repository to: {0}", ConsoleColor.DarkGreen, clone);
+                ProcessOutput cloneProcess = GitPath.ToStartInfo($"clone {buildConfig.RepoRoot}/{buildConfig.RepoName}", cloneIn).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), e => OutLine(e, ConsoleColor.Blue));
+                if (cloneProcess.ExitCode != 0)
+                {
+                    OutLineFormat("Failed to get latest: \r\n\t{0}\r\n\t{1}", ConsoleColor.Magenta, cloneProcess.StandardOutput, cloneProcess.StandardError);
+                    Thread.Sleep(1000);
+                    Exit(cloneProcess.ExitCode);
+                }
+            }
+        }
     }
 }

@@ -11,6 +11,17 @@ that are run by Bamd.  The file is assumed to be in the "conf" folder found in t
 **ContentRoot** is not specified in the app.config the value "C:\bam" is used
 and BamDaemonProcesses.json is assumed to be at the path "C:\bam\conf\BamDaemonProcess.json".
 
+```
+[
+  {
+    "Name": "bambotjs",
+    "FileName": "C:\\bam\\tools\\node.exe",
+    "Arguments": "bambot.js",
+    "WorkingDirectory": "C:\\bam\\sys\\bamjs\\bambotjs"
+  }
+]
+```
+
 ## Processes
 Each process defined in BamDaemonProcess.json should be written such that they do not 
 immediately exit and are intended to be long running processes that perform service operations.

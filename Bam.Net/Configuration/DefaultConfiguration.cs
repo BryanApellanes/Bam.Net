@@ -427,15 +427,28 @@ namespace Bam.Net.Configuration
         /// <param name="value">The value.</param>
         public static void SetAppSetting(string configPath, string key, string value)
         {
-            System.Configuration.Configuration config = GetConfig(configPath);
-            if(config.AppSettings.Settings[key] != null)
-            {
-                config.AppSettings.Settings.Remove(key);
-            }
-            config.AppSettings.Settings.Add(key, value);
-            config.Save();
+            SetAppSettings(configPath, new Dictionary<string, string> { { key, value } });
         }
 
+        public static void SetAppSettings(FileInfo exePath, Dictionary<string, string> values)
+        {
+            SetAppSettings($"{exePath.FullName}.config", values);
+        }
+
+        public static void SetAppSettings(string configPath, Dictionary<string, string> values)
+        {
+            System.Configuration.Configuration config = GetConfig(configPath);
+            foreach(string key in values.Keys)
+            {
+                if(config.AppSettings.Settings[key] != null)
+                {
+                    config.AppSettings.Settings.Remove(key);
+                }
+                config.AppSettings.Settings.Add(key, values[key]);
+            }            
+
+            config.Save();
+        }
         /// <summary>
         /// Gets the configuration.
         /// </summary>

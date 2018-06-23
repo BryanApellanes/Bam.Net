@@ -106,6 +106,7 @@
     <Compile Include="BakeDirectory.cs" />
     <Compile Include="BakeFile.cs" />
     <Compile Include="BakeSettings.cs" />
+    <Compile Include="BamDaemonProcessInfo.cs" />
     <Compile Include="BuildActions.cs" />
     <Compile Include="NugetSourceKind.cs" />
     <Compile Include="Program.cs" />
