@@ -207,41 +207,21 @@ namespace Bam.Net.Automation
                 OutLineFormat("BamBotRoot not defined in config file: {0}", ConsoleColor.Magenta, buildConfigPath);
                 Exit(1);
             }
+
+            // get latest
             string cloneIn = $"{buildConfig.BamBotRoot}\\src";
             if (!Directory.Exists(cloneIn))
             {
                 Directory.CreateDirectory(cloneIn);
             }
-            // get latest
             string clone = Path.Combine(cloneIn, buildConfig.RepoName);
-            if (Directory.Exists(clone) && buildConfig.Clean)
-            {
-                try
-                {
-                    Directory.Delete(clone, true);
-                }
-                catch (Exception ex)
-                {
-                    OutLineFormat("Yikes! Error on clean: {0}", ConsoleColor.DarkYellow, ex.Message);
-                }
-            }
-            ProcessOutput getLatest = null;
-            if (!Directory.Exists(clone))
-            {
-                OutLineFormat("Cloning repository to: {0}", ConsoleColor.DarkGreen, clone);
-                getLatest = GitPath.ToStartInfo($"clone {buildConfig.RepoRoot}/{buildConfig.RepoName}", cloneIn).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), e => OutLine(e, ConsoleColor.Blue));
-            }
-            else
-            {
-                OutLineFormat("Getting latest: {0}", ConsoleColor.DarkGreen, clone);
-                getLatest = GitPath.ToStartInfo($"pull", clone).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), e => OutLine(e, ConsoleColor.Blue));
-            }
-            if (getLatest.ExitCode != 0)
-            {
-                OutLineFormat("Failed to get latest: \r\n\t{0}\r\n\t{1}", ConsoleColor.Magenta, getLatest.StandardOutput, getLatest.StandardError);
-                Thread.Sleep(1000);
-                Exit(getLatest.ExitCode);
-            }
+
+            CloneRepository(buildConfig, cloneIn, clone);
+
+            CheckoutBranch(buildConfig, clone);
+
+            GetLatest(clone);
+
             string projectFilePath = Path.Combine(clone, buildConfig.ProjectFile);
             string arguments = $"restore {buildConfig.RestoreReference} -PackagesDirectory {GetArgument("PackagesDirectory", "Please enter the path to restore packages to")}";
             NugetPath.ToStartInfo(arguments, clone).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), e => OutLine(e, ConsoleColor.Magenta));
@@ -254,7 +234,7 @@ namespace Bam.Net.Automation
             string command = $"/t:Build /filelogger /p:OutDir={outputPath};GenerateDocumentation=true;Configuration={buildConfig.Config};Platform=\"{buildConfig.Platform}\";TargetFrameworkVersion={buildConfig.FrameworkVersion};CompilerVersion={buildConfig.FrameworkVersion} {buildConfig.ProjectFile} /m:1";
             ProcessOutput output = msBuildPath.ToStartInfo(command, clone)
                 .RunAndWait(o => Console.WriteLine(o), e => Console.WriteLine(e), 600000);
-            if(output.ExitCode != 0)
+            if (output.ExitCode != 0)
             {
                 OutLineFormat("Build Failed: {0}", ConsoleColor.Magenta, output.ExitCode);
                 Thread.Sleep(1000);
@@ -269,6 +249,57 @@ namespace Bam.Net.Automation
                 OutLineFormat("Files output to\r\n   {0}", ConsoleColor.Cyan, outputPath);
                 Thread.Sleep(1000);
                 Exit(0);
+            }
+        }
+
+        private static void GetLatest(string clone)
+        {
+            OutLineFormat("Getting latest: {0}", ConsoleColor.DarkGreen, clone);
+            ProcessOutput pullProcess = GitPath.ToStartInfo("pull", clone).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), e => OutLine(e, ConsoleColor.Blue));
+            if (pullProcess.ExitCode != 0)
+            {
+                OutLineFormat("Failed to checkout branch: \r\n\t{0}\r\n\t{1}", ConsoleColor.Magenta, pullProcess.StandardOutput, pullProcess.StandardError);
+                Thread.Sleep(1000);
+                Exit(pullProcess.ExitCode);
+            }
+        }
+
+        private static void CheckoutBranch(BakeBuildConfig buildConfig, string clone)
+        {
+            OutLineFormat("Checking out branch: {0}", ConsoleColor.DarkGray, buildConfig.Branch);
+            ProcessOutput checkoutProcess = GitPath.ToStartInfo($"checkout {buildConfig.Branch}", clone).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), e => OutLine(e, ConsoleColor.Blue));
+            if (checkoutProcess.ExitCode != 0)
+            {
+                OutLineFormat("Failed to checkout branch: \r\n\t{0}\r\n\t{1}", ConsoleColor.Magenta, checkoutProcess.StandardOutput, checkoutProcess.StandardError);
+                Thread.Sleep(1000);
+                Exit(checkoutProcess.ExitCode);
+            }
+        }
+
+        private static void CloneRepository(BakeBuildConfig buildConfig, string cloneIn, string clone)
+        {
+            if (Directory.Exists(clone) && buildConfig.Clean)
+            {
+                try
+                {
+                    Directory.Delete(clone, true);
+                }
+                catch (Exception ex)
+                {
+                    OutLineFormat("Yikes! Error on clean: {0}", ConsoleColor.DarkYellow, ex.Message);
+                }
+            }
+
+            if (!Directory.Exists(clone))
+            {
+                OutLineFormat("Cloning repository to: {0}", ConsoleColor.DarkGreen, clone);
+                ProcessOutput cloneProcess = GitPath.ToStartInfo($"clone {buildConfig.RepoRoot}/{buildConfig.RepoName}", cloneIn).RunAndWait(o => OutLine(o, ConsoleColor.Cyan), e => OutLine(e, ConsoleColor.Blue));
+                if (cloneProcess.ExitCode != 0)
+                {
+                    OutLineFormat("Failed to get latest: \r\n\t{0}\r\n\t{1}", ConsoleColor.Magenta, cloneProcess.StandardOutput, cloneProcess.StandardError);
+                    Thread.Sleep(1000);
+                    Exit(cloneProcess.ExitCode);
+                }
             }
         }
 
