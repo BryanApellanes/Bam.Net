@@ -8,15 +8,15 @@ using System.Xml.Linq;
 
 namespace Bam.Net.Application
 {
-    public class BakeComponent
+    public class WixComponent
     {
-        public BakeComponent(string sourceDirRelativeFilePath)
+        public WixComponent(string sourceDirRelativeFilePath)
         {
             string stringValue = 32.RandomString().ToUpperInvariant();
             Id = "owc" + stringValue;
             Guid = System.Guid.NewGuid().ToString();
             Win64 = "yes";
-            File = new BakeFile { Id = "owf" + stringValue, Source = "$(var.SourceDir)\\" + sourceDirRelativeFilePath, KeyPath = "yes" };
+            File = new WixFile { Id = "owf" + stringValue, Source = "$(var.SourceDir)\\" + sourceDirRelativeFilePath, KeyPath = "yes" };
         }
         public string Id { get; set; }
         public string Guid { get; set; }
@@ -28,7 +28,7 @@ namespace Bam.Net.Application
             set { _win64 = value; }
         }
 
-        public BakeFile File { get; set; }
+        public WixFile File { get; set; }
 
         public override string ToString()
         {

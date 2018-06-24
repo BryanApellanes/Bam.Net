@@ -13,18 +13,18 @@ namespace Bam.Net.Application
 {
     [Serializable]
     [Proxy("processMonitor")]
-    public class BamDaemonProcessMonitorService : ProxyableService
+    public class DaemonProcessMonitorService : ProxyableService
     {
-        public BamDaemonProcessMonitorService(ILogger logger)
+        public DaemonProcessMonitorService(ILogger logger)
         {
-            _monitors = new Dictionary<string, BamDaemonProcessMonitor>();
+            _monitors = new Dictionary<string, DaemonProcessMonitor>();
             Logger = logger;
 
         }
 
         public override object Clone()
         {
-            BamDaemonProcessMonitorService clone = new BamDaemonProcessMonitorService(Logger);
+            DaemonProcessMonitorService clone = new DaemonProcessMonitorService(Logger);
             clone.CopyProperties(this);
             clone.CopyEventHandlers(this);
             return clone;
@@ -33,7 +33,7 @@ namespace Bam.Net.Application
         public void Start()
         {
             string configRoot = Path.Combine(ServiceConfig.ContentRoot, "conf");
-            string fileName = $"{nameof(BamDaemonProcess).Pluralize()}.json";
+            string fileName = $"{nameof(DaemonProcess).Pluralize()}.json";
             File = new FileInfo(Path.Combine(configRoot, fileName));
             if (!File.Exists)
             {
@@ -41,10 +41,10 @@ namespace Bam.Net.Application
             }
             else
             {
-                Processes = File.FullName.FromJsonFile<BamDaemonProcess[]>();
+                Processes = File.FullName.FromJsonFile<DaemonProcess[]>();
                 Expect.IsNotNull(Processes, $"No processes defined in {fileName}");
                 Logger.AddEntry("{0} processes in {1}", Processes.Length, fileName);
-                foreach(BamDaemonProcess process in Processes)
+                foreach(DaemonProcess process in Processes)
                 {
                     StartProcess(process);
                 }
@@ -70,17 +70,17 @@ namespace Bam.Net.Application
 
         public FileInfo File { get; set; }
 
-        public virtual List<BamDaemonProcessInfo> GetProcesses()
+        public virtual List<DaemonProcessInfo> GetProcesses()
         {
-            return MonitoredProcesses.Select(m => m.Process.CopyAs<BamDaemonProcessInfo>()).ToList();
+            return MonitoredProcesses.Select(m => m.Process.CopyAs<DaemonProcessInfo>()).ToList();
         }
 
-        public virtual CoreServiceResponse AddProcess(BamDaemonProcessInfo processInfo)
+        public virtual CoreServiceResponse AddProcess(DaemonProcessInfo processInfo)
         {
             try
             {
-                BamDaemonProcess process = processInfo.CopyAs<BamDaemonProcess>();
-                List<BamDaemonProcess> current = new List<BamDaemonProcess>(Processes)
+                DaemonProcess process = processInfo.CopyAs<DaemonProcess>();
+                List<DaemonProcess> current = new List<DaemonProcess>(Processes)
                 {
                     process
                 };
@@ -112,26 +112,26 @@ namespace Bam.Net.Application
             }
         }
 
-        public List<BamDaemonProcessMonitor> MonitoredProcesses
+        public List<DaemonProcessMonitor> MonitoredProcesses
         {
             get
             {
-                return _monitors.Values?.ToList() ?? new List<BamDaemonProcessMonitor>();
+                return _monitors.Values?.ToList() ?? new List<DaemonProcessMonitor>();
             }
         }
 
 
-        public BamDaemonProcess[] Processes { get; set; }
+        public DaemonProcess[] Processes { get; set; }
 
-        Dictionary<string, BamDaemonProcessMonitor> _monitors;
-        private void StartProcess(BamDaemonProcess process)
+        Dictionary<string, DaemonProcessMonitor> _monitors;
+        private void StartProcess(DaemonProcess process)
         {
             try
             {
                 string key = process.ToString();
                 Logger.AddEntry("Starting {0}", key);
                 process.Subscribe(Log.Default);
-                _monitors.Add(key, BamDaemonProcessMonitor.Start(process));
+                _monitors.Add(key, DaemonProcessMonitor.Start(process));
             }
             catch (Exception ex)
             {

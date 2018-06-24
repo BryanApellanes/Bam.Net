@@ -3,13 +3,13 @@
 The Bam Application Management Daemon (Bamd) is a Windows service used to run and
 monitor processes defined in BamDaemonProcess.json.  
 
-## BamDaemonProcesses.json
+## DaemonProcesses.json
 
-The BamDaemonProcesses.json file defines an array of BamDaemonProcess instances
+The DaemonProcesses.json file defines an array of BamDaemonProcess instances
 that are run by Bamd.  The file is assumed to be in the "conf" folder found in the 
 **ContentRoot** folder where **ContentRoot** is defined in the app.config.  If
 **ContentRoot** is not specified in the app.config the value "C:\bam" is used
-and BamDaemonProcesses.json is assumed to be at the path "C:\bam\conf\BamDaemonProcess.json".
+and DaemonProcesses.json is assumed to be at the path "C:\bam\conf\DaemonProcesses.json".
 
 ```
 [

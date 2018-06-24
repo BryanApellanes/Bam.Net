@@ -69,18 +69,18 @@
   <ItemGroup>
     <Compile Include="BambotHostConfig.cs" />
     <Compile Include="BambotHostMode.cs" />
-    <Compile Include="BamDaemonProcess.cs" />
-    <Compile Include="BamDaemonProcessEventArgs.cs" />
+    <Compile Include="DaemonProcess.cs" />
+    <Compile Include="DaemonProcessEventArgs.cs" />
     <Compile Include="BambotServiceConfig.cs" />
-    <Compile Include="BamDaemonProcessInfo.cs" />
-    <Compile Include="BamDaemonProcessMonitor.cs" />
-    <Compile Include="BamDaemonProcessMonitorService.cs" />
+    <Compile Include="DaemonProcessInfo.cs" />
+    <Compile Include="DaemonProcessMonitor.cs" />
+    <Compile Include="DaemonProcessMonitorService.cs" />
     <Compile Include="ConsoleActions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="BamDaemonResponder.cs" />
-    <Compile Include="BamDaemonServer.cs" />
-    <Compile Include="BamDaemonService.cs">
+    <Compile Include="DaemonResponder.cs" />
+    <Compile Include="DaemonServer.cs" />
+    <Compile Include="DaemonService.cs">
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
@@ -188,7 +188,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="BamDaemonProcesses.json">
+    <None Include="DaemonProcesses.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -14,9 +14,9 @@ using Bam.Net.Data.Repositories;
 
 namespace Bam.Net.Application
 {
-    public class BamDaemonResponder : HttpHeaderResponder
+    public class DaemonResponder : HttpHeaderResponder
     {
-        public BamDaemonResponder(BamConf conf, BamDaemonProcessMonitorService monitorService, ILogger logger, bool verbose = false) 
+        public DaemonResponder(BamConf conf, DaemonProcessMonitorService monitorService, ILogger logger, bool verbose = false) 
             : base(conf, logger)
         {
             RendererFactory = new RendererFactory(logger);

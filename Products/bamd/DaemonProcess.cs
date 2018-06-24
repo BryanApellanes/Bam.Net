@@ -10,29 +10,29 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Application
 {
-    public class BamDaemonProcess: Loggable
+    public class DaemonProcess: Loggable
     {
-        public BamDaemonProcess()
+        public DaemonProcess()
         {
             WorkingDirectory = ".\\";
             StandardOutSoFar = string.Empty;
             StandardErrorSoFar = string.Empty;
             StandardOut += (o, a) =>
             {
-                BamDaemonProcessEventArgs args = (BamDaemonProcessEventArgs)a;
+                DaemonProcessEventArgs args = (DaemonProcessEventArgs)a;
                 StandardOutSoFar += $"\r\n{args.Message}";
                 StandardOutLineCount++;
             };
 
             ErrorOut += (o, a) =>
             {
-                BamDaemonProcessEventArgs args = (BamDaemonProcessEventArgs)a;
+                DaemonProcessEventArgs args = (DaemonProcessEventArgs)a;
                 StandardErrorSoFar += $"\r\n{args.Message}";
                 ErrorOutLineCount++;
             };
         }
 
-        public BamDaemonProcess(string commandLine) : this()
+        public DaemonProcess(string commandLine) : this()
         {
             string[] split = commandLine.Split(new char[] { ' ' }, 2);
             FileName = split[0];
@@ -85,7 +85,7 @@ namespace Bam.Net.Application
             };
             startInfo.RedirectStandardOutput = true;
             startInfo.RedirectStandardError = true;
-            ProcessOutputCollector collector = new ProcessOutputCollector((data) => FireEvent(StandardOut, new BamDaemonProcessEventArgs { BambotProcess = this, Message = data }), (error) => FireEvent(ErrorOut, new BamDaemonProcessEventArgs { BambotProcess = this, Message = error }));
+            ProcessOutputCollector collector = new ProcessOutputCollector((data) => FireEvent(StandardOut, new DaemonProcessEventArgs { BambotProcess = this, Message = data }), (error) => FireEvent(ErrorOut, new DaemonProcessEventArgs { BambotProcess = this, Message = error }));
             ProcessOutput = startInfo.Run(onExit, collector);
             return ProcessOutput;
         }

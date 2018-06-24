@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Application
 {
-    public class BakeBuildInfo
+    public class BuildInfo
     {
         public string LastBuild { get; set; }
         public string Commit { get; set; }
-        public BakeBuildConfig BuildConfig { get; set; }
+        public BuildConfig BuildConfig { get; set; }
     }
 }

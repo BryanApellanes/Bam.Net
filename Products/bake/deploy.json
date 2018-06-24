@@ -1,0 +1,58 @@
+﻿{
+  "WindowsServices": [
+    {
+      "Host": "integration",
+      "Name": "Heart",
+      "FileName": "heart.exe"
+    },
+    {
+      "Host": "www.threeheadz.com",
+      "Name": "Heart",
+      "FileName": "heart.exe"
+    }
+  ],
+  "Daemons": [
+    {
+      "Copy": false,
+      "Host": "core",
+      "Name": "bambotjs",
+      "FileName": "C:\\bam\\tools\\node.exe",
+      "Arguments": "bambot.js",
+      "WorkingDirectory": "C:\\bam\\sys\\bamjs\\bambotjs"
+    },
+    {
+      "Copy": true,
+      "Host": "integration",
+      "Name": "GlooTestRegistry",
+      "FileName": "gloo.exe",
+      "Arguments": "/registries:GlooTestRegistry /verbose:true",
+      "AppSettings": {
+        "CoreHostName": "int-heart.bamapps.net",
+        "CorePort": 80,
+        "ContentRoot": "C:\\bam\\content",
+        "AssemblySearchPattern": "gloo.exe",
+        "HostNames": "gloo-test.bamapps.net,gloo-test.threeheadz.io",
+        "Ssl": false,
+        "Port": 9100,
+        "ApplicationName": "gloo-test.bamapps.net"
+      }
+    },
+    {
+      "Copy": true,
+      "Host": "core",
+      "Name": "TestingServicesRegistry",
+      "FileName": "gloo.exe",
+      "Arguments": "/registries:TestingServicesRegistry /verbose:true",
+      "AppSettings": {
+        "CoreHostName": "int-heart.bamapps.net",
+        "CorePort": 80,
+        "ContentRoot": "C:\\bam\\content",
+        "AssemblySearchPattern": "Bam.Net.Automation.dll",
+        "HostNames": "int.bamapps.net,int.threeheadz.io",
+        "Ssl": false,
+        "Port": 80,
+        "ApplicationName": "int.bamapps.net"
+      }
+    }
+  ]
+}

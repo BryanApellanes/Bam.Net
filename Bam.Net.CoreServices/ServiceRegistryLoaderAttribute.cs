@@ -28,7 +28,7 @@ namespace Bam.Net.CoreServices
         }
 
         /// <summary>
-        /// The modes during which this loader will be registered.
+        /// The modes during which this loader is registered.
         /// </summary>
         public List<ProcessModes> ProcessModes { get; set; }
 

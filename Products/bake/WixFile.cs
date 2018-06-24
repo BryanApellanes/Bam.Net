@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Application
 {
-    public class BakeFile
+    public class WixFile
     {
         public string Id { get; set; }
         public string Source { get; set; }

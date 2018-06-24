@@ -28,7 +28,7 @@ namespace Bam.Net.Application
         /// <exception cref="InvalidOperationException"></exception>
         public void SetTargetContents(string path)
         {
-            BakeDirectory dir = BakeDirectory.FromPath(path);
+            WixDirectory dir = WixDirectory.FromPath(path);
             dir.Name = string.Empty;
             dir.Id = MergeRedirectFolder;            
             XElement targetDirElement = _xDocument.Descendants().FirstOrDefault(el => (string)el.Attribute("Id") == TargetDir);

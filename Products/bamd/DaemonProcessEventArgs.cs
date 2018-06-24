@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Application
 {
-    public class BamDaemonProcessEventArgs: EventArgs
+    public class DaemonProcessEventArgs: EventArgs
     {
-        public BamDaemonProcess BambotProcess { get; set; }
+        public DaemonProcess BambotProcess { get; set; }
         public string Message { get; set; }
     }
 }

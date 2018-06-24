@@ -15,7 +15,7 @@ using System.Threading;
 
 namespace Bam.Net.Application
 {
-    public class BamDaemonService : ServiceExe
+    public class DaemonService : ServiceExe
     {
         public static ServiceInfo ServiceInfo
         {
@@ -25,9 +25,9 @@ namespace Bam.Net.Application
             }
         }
 
-        static BamDaemonServer _server;
+        static DaemonServer _server;
         static object _serverLock = new object();
-        public static BamDaemonServer Server
+        public static DaemonServer Server
         {
             get
             {
@@ -37,13 +37,13 @@ namespace Bam.Net.Application
                     Log.Default = logger;
                     try
                     {
-                        ProcessMonitorService = new BamDaemonProcessMonitorService(logger);
-                        BamDaemonServer server = new BamDaemonServer(BamConf.Load(ServiceConfig.ContentRoot), ProcessMonitorService, logger)
+                        ProcessMonitorService = new DaemonProcessMonitorService(logger);
+                        DaemonServer server = new DaemonServer(BamConf.Load(ServiceConfig.ContentRoot), ProcessMonitorService, logger)
                         {
                             HostPrefixes = new HashSet<HostPrefix>(GetConfiguredHostPrefixes()),
                             MonitorDirectories = DefaultConfiguration.GetAppSetting("MonitorDirectories").DelimitSplit(",", ";")
                         };
-                        logger.AddEntry("Created Server of Type {0}: {1}", typeof(BamDaemonServer).FullName, server.PropertiesToString());
+                        logger.AddEntry("Created Server of Type {0}: {1}", typeof(DaemonServer).FullName, server.PropertiesToString());
                         return server;
                     }
                     catch (Exception ex)
@@ -55,8 +55,8 @@ namespace Bam.Net.Application
             }
         }
 
-        protected static BamDaemonProcessMonitorService ProcessMonitorService { get; set; }
-        static Dictionary<string, BamDaemonProcessMonitor> _monitors;
+        protected static DaemonProcessMonitorService ProcessMonitorService { get; set; }
+        static Dictionary<string, DaemonProcessMonitor> _monitors;
         protected override void OnStart(string[] args)
         {
             try

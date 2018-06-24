@@ -100,13 +100,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BakeBuildConfig.cs" />
-    <Compile Include="BakeBuildInfo.cs" />
-    <Compile Include="BakeComponent.cs" />
-    <Compile Include="BakeDirectory.cs" />
-    <Compile Include="BakeFile.cs" />
+    <Compile Include="BuildConfig.cs" />
+    <Compile Include="BuildInfo.cs" />
+    <Compile Include="DeployInfo.cs" />
+    <Compile Include="WindowsServiceInfo.cs" />
+    <Compile Include="WixComponent.cs" />
+    <Compile Include="WixDirectory.cs" />
+    <Compile Include="WixFile.cs" />
     <Compile Include="BakeSettings.cs" />
-    <Compile Include="BamDaemonProcessInfo.cs" />
+    <Compile Include="DaemonInfo.cs" />
     <Compile Include="BuildActions.cs" />
     <Compile Include="NugetSourceKind.cs" />
     <Compile Include="Program.cs" />
@@ -120,6 +122,7 @@
     <None Include="build.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="deploy.json" />
     <None Include="generate_bam_dot_exe.cmd" />
     <None Include="README.md" />
   </ItemGroup>

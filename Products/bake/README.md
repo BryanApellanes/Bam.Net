@@ -31,6 +31,10 @@ Example
 bake /build:.\BakeBuildConfig.json
 ```
 
+## Deploy
+
+## Test
+
 ## Latest
 
 Example:
