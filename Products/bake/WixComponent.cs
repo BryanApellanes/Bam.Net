@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
+using Sys = System;
 
 namespace Bam.Net.Application
 {
@@ -14,7 +15,7 @@ namespace Bam.Net.Application
         {
             string stringValue = 32.RandomString().ToUpperInvariant();
             Id = "owc" + stringValue;
-            Guid = System.Guid.NewGuid().ToString();
+            Guid = Sys.Guid.NewGuid().ToString();
             Win64 = "yes";
             File = new WixFile { Id = "owf" + stringValue, Source = "$(var.SourceDir)\\" + sourceDirRelativeFilePath, KeyPath = "yes" };
         }

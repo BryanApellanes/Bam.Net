@@ -90,6 +90,11 @@ namespace Bam.Net.Application
             return ProcessOutput;
         }
 
+        public string ToCommandLine()
+        {
+            return $"{FileName} {Arguments}";
+        }
+
         public override string ToString()
         {
             return $"{WorkingDirectory}:{Name} > {FileName} {Arguments}";

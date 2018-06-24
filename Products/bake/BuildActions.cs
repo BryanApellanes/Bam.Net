@@ -12,8 +12,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
-using System.Linq;
 using System.Threading;
+using Bam.Net.System;
 
 namespace Bam.Net.Automation
 {
@@ -277,7 +277,7 @@ namespace Bam.Net.Automation
                 Exit(0);
             }
             CleanNuget();
-            DirectoryInfo _binRoot = GetBinaryDirectoryForCommit(info.Commit.First(8));
+            DirectoryInfo _binRoot = GetCommitBinaryDirectory(info.Commit.First(8));
             _nugetArg = _binRoot.FullName;
             _suffix = $"Dev-latest";
             DirectoryInfo bamLatest = new DirectoryInfo("C:\\bam\\latest");
@@ -292,7 +292,7 @@ namespace Bam.Net.Automation
         {
             string commitArg = Arguments["commit"];
 
-            DirectoryInfo _binRoot = GetBinaryDirectoryForCommit(commitArg);
+            DirectoryInfo _binRoot = GetCommitBinaryDirectory(commitArg);
             _nugetArg = _binRoot.FullName;
             _suffix = $"Dev-{GetBuildNum()}-{_binRoot.Name.TruncateFront(1).First(5)}";
             CreateNugetPackages();
@@ -320,24 +320,98 @@ namespace Bam.Net.Automation
                 Thread.Sleep(1000);
                 Exit(1);
             }
-            DeployInfo deployInfo= deployConfigPath.FromJsonFile<DeployInfo>();
+            DirectoryInfo latestBinaries = GetLatestBuildBinaryDirectory();
+            DeployInfo deployInfo = deployConfigPath.FromJsonFile<DeployInfo>();
             // for each windows service
-            //      copy the latest binaries to c:\bam\tools\{Name}
-            //      install the service: [path] -i
-            //      start the service: [path] -s
+            foreach(WindowsServiceInfo svcInfo in deployInfo.WindowsServices)
+            {
+                Args.ThrowIf(string.IsNullOrEmpty(svcInfo.Host), "Host not specified");
+                Args.ThrowIf(string.IsNullOrEmpty(svcInfo.Name), "Name not specified");
+                //      copy the latest binaries to \\computer\c:\bam\tools\{Name}
+                string remotePath = Path.Combine(Paths.Tools, svcInfo.Name);                
+                latestBinaries.CopyTo(svcInfo.Host, remotePath);
+                //      install the service: [path] -i
+                OutLineFormat("Installing service {0} on {1} > {2}", ConsoleColor.Yellow, svcInfo.Name, svcInfo.Host, remotePath);
+                object result = svcInfo.Host.StartProcess($"{remotePath} -i");
+                OutLineFormat("Installation result for {0} on {1}: {2}", ConsoleColor.DarkYellow, svcInfo.Name, svcInfo.Host, result);
 
+                //      start the service: [path] -s
+                OutLineFormat("Starting service {0} on {1} > {2}", ConsoleColor.Yellow, svcInfo.Name, svcInfo.Host, remotePath);
+                object startResult = svcInfo.Host.StartProcess($"{remotePath} -s");
+                OutLineFormat("Starting result for {0} on {1}: {2}", ConsoleColor.DarkYellow, svcInfo.Name, svcInfo.Host, startResult);
+            }
+
+            Dictionary<string, List<DaemonProcess>> daemonsByHost = new Dictionary<string, List<DaemonProcess>>();
             // for each daemon entry 
-            //      copy the latest binaries to c:\bam\sys\{Name}
-            //      update the appsettings to match what's in the info entry; Use "SetAppSettings"
-            //      prepare array of DaemonProcessInfos with appropriate settings derived from info to be written to bamd below
+            foreach (DaemonInfo daemonInfo in deployInfo.Daemons)
+            {
+                Args.ThrowIf(string.IsNullOrEmpty(daemonInfo.Host), "Host not specified");
+                Args.ThrowIf(string.IsNullOrEmpty(daemonInfo.Name), "Name not specified");
+                if (!daemonsByHost.ContainsKey(daemonInfo.Host))
+                {
+                    daemonsByHost.Add(daemonInfo.Host, new List<DaemonProcess>());
+                }
+                //      copy the latest binaries to c:\bam\sys\{Name}
+                //      prepare array of DaemonProcessInfos with appropriate settings derived from info to be written to bamd below
+                string remotePath = Path.Combine(Paths.Sys, daemonInfo.Name);
+                if (daemonInfo.Copy)
+                {
+                    latestBinaries.CopyTo(daemonInfo.Host, remotePath);
+                    daemonsByHost[daemonInfo.Host].Add(daemonInfo.ToDaemonProcess(remotePath));
+                }
+                else
+                {
+                    daemonsByHost[daemonInfo.Host].Add(daemonInfo.ToDaemonProcess());
+                }
 
-            // deploy bamd
-            //      uninstall existing bamd
-            //      delete existing bamd
-            //      copy new bamd
-            //      install new bamd
-            //      write DaemonProcessInfos using above
-            //      start new bamd
+                if(daemonInfo.AppSettings != null)
+                {
+                    //      update the appsettings to match what's in the info entry; Use "SetAppSettings"
+                    string configPath = Path.Combine(remotePath, $"{daemonInfo.FileName}.config");
+                    DefaultConfiguration.SetAppSettings(configPath, daemonInfo.AppSettings);
+                }
+            }
+            foreach(string host in daemonsByHost.Keys)
+            {
+                // deploy bamd
+                //      uninstall existing bamd
+                string bamd = Path.Combine(Paths.Tools, "bamd", "bamd.exe");
+                OutLineFormat("Killing bamd");
+                object killResult = host.StartProcess($"{bamd} -k");
+                OutLineFormat("Result of killing bamd: {0}", ConsoleColor.Yellow, killResult);
+                OutLineFormat("Uninstalling bamd");
+                object uninstallResult = host.StartProcess($"{bamd} -u");
+                OutLineFormat("Result of uninstall of bamd: {0}", ConsoleColor.Yellow, killResult);
+                //      delete existing bamd
+                FileInfo remoteBamd = new FileInfo(new FileInfo(bamd).GetAdminSharePath(host));
+                try
+                {
+                    OutLineFormat("Deleting remote bamd: {0}", remoteBamd.FullName);
+                    remoteBamd.Directory.Delete(true);
+                    OutLineFormat("Delete complete: {0}", remoteBamd.FullName);
+                }
+                catch (Exception ex)
+                {
+                    Logger.AddEntry("Exception deleting remote bamd: {0}, {1}", ex, remoteBamd.FullName, ex.Message);
+                }
+
+                OutLineFormat("Copying bamd to remote: {0}", ConsoleColor.Cyan, host);
+                //      copy new bamd
+                latestBinaries.CopyTo(host, new FileInfo(bamd).Directory.FullName);
+                OutLineFormat("Done copying bamd to remote: {0}", ConsoleColor.Cyan, host);
+
+                OutLineFormat("Installing bamd: {0}", ConsoleColor.DarkBlue, host);
+                //      install new bamd
+                object installResult = host.StartProcess($"{bamd} -i");
+                OutLineFormat("Done installing bamd: {0}", ConsoleColor.DarkBlue, host);
+
+                //      write DaemonProcessInfos using above
+                string daemonConfig = Path.Combine(Paths.Conf, $"{typeof(DaemonProcess).Name.Pluralize()}.json");
+                daemonsByHost[host].ToJsonFile(daemonConfig);
+
+                //      start new bamd
+                host.StartProcess($"{bamd} -s");
+            }
         }
 
         [ConsoleAction("test", "Run unit and integration tests for the specified build")]
@@ -482,12 +556,12 @@ namespace Bam.Net.Automation
             {
                 SetNuspecFiles();
             }
-            else if (System.IO.File.Exists(targetPath))
+            else if (File.Exists(targetPath))
             {
                 FileInfo assemblyFile = new FileInfo(targetPath);
                 PackAssembly(assemblyFile);
             }
-            else if (System.IO.Directory.Exists(targetPath))
+            else if (Directory.Exists(targetPath))
             {
                 // look for nuspec files in the targetPath
                 // assume that assemblies are in the targetPath
@@ -498,11 +572,11 @@ namespace Bam.Net.Automation
                     string fileName = Path.GetFileNameWithoutExtension(nuspecFile.Name);
                     string dllName = Path.Combine(nuspecFile.Directory.FullName, $"{fileName}.dll");
                     string exeName = Path.Combine(nuspecFile.Directory.FullName, $"{fileName}.exe");
-                    if (System.IO.File.Exists(dllName))
+                    if (File.Exists(dllName))
                     {
                         tasks.Add(Task.Run(() => PackAssembly(new FileInfo(dllName))));
                     }
-                    else if (System.IO.File.Exists(exeName))
+                    else if (File.Exists(exeName))
                     {
                         tasks.Add(Task.Run(() => PackAssembly(new FileInfo(exeName))));
                     }
@@ -563,13 +637,13 @@ namespace Bam.Net.Automation
                 string version = GetVersion(sourceRoot);
                 tasks.AddRange(SetSolutionNuspecInfos(sourceRoot, version, owners, authors, predicate));
             }
-            else if (System.IO.Directory.Exists(argValue))
+            else if (Directory.Exists(argValue))
             {
                 DirectoryInfo target = new DirectoryInfo(argValue);
                 string version = GetVersion(target);
                 tasks.AddRange(SetSolutionNuspecInfos(target, version, owners, authors, predicate));
             }
-            else if (System.IO.File.Exists(argValue))
+            else if (File.Exists(argValue))
             {
                 FileInfo fileArg = new FileInfo(argValue);
                 string version = GetVersion(fileArg.Directory);
@@ -650,7 +724,7 @@ namespace Bam.Net.Automation
                     NuspecFile nuspecFile = new NuspecFile(Path.Combine(currentProjectDirectory.FullName, $"{fileName}.nuspec"));
                     nuspecFile.Version = new PackageVersion(version);
                     nuspecFile.Save();
-                    if (!System.IO.File.Exists(nuspecFile.Path))
+                    if (!File.Exists(nuspecFile.Path))
                     {
                         nuspecFile = new NuspecFile(nuspecFile.Path)
                         {
@@ -744,7 +818,7 @@ namespace Bam.Net.Automation
         protected static BamInfo GetBamInfo(DirectoryInfo srcRootDir)
         {
             string bamInfoPath = Path.Combine(srcRootDir.FullName, "bam.json");
-            if (!System.IO.File.Exists(bamInfoPath))
+            if (!File.Exists(bamInfoPath))
             {
                 OutLineFormat("Unable to find bam.json, expected it at ({0})", ConsoleColor.Magenta, bamInfoPath);
                 Exit(1);
@@ -932,9 +1006,9 @@ namespace Bam.Net.Automation
                 stage.Create();
             }
             string libPath = Path.Combine(stage.FullName, "lib", lib ?? NugetLib);
-            if (!System.IO.Directory.Exists(libPath))
+            if (!Directory.Exists(libPath))
             {
-                System.IO.Directory.CreateDirectory(libPath);
+                Directory.CreateDirectory(libPath);
             }
             assemblyFile.CopyTo(Path.Combine(libPath, assemblyFile.Name), true);
             if (xmlFile.Exists)
@@ -957,12 +1031,12 @@ namespace Bam.Net.Automation
             string fileName = Path.GetFileNameWithoutExtension(assemblyOrNuspec.Name);
             string existingNuspec = Path.Combine(assemblyOrNuspec.Directory.FullName, $"{fileName}.nuspec");
             string stageNuspec = Path.Combine(stage.FullName, $"{fileName}.nuspec");
-            if (System.IO.File.Exists(existingNuspec))
+            if (File.Exists(existingNuspec))
             {
-                System.IO.File.Copy(existingNuspec, stageNuspec, true);
+                File.Copy(existingNuspec, stageNuspec, true);
             }
             NuspecFile nuspecFile = new NuspecFile(stageNuspec);
-            if (!System.IO.File.Exists(nuspecFile.Path))
+            if (!File.Exists(nuspecFile.Path))
             {
                 nuspecFile.Id = fileName;
                 nuspecFile.Title = fileName;
@@ -1157,12 +1231,12 @@ namespace Bam.Net.Automation
             }
         }
 
-        private static DirectoryInfo GetBinaryDirectoryForLatestBuild()
+        private static DirectoryInfo GetLatestBuildBinaryDirectory()
         {
-            return GetBinaryDirectoryForCommit(GetLatestBuildCommitHash());
+            return GetCommitBinaryDirectory(GetLatestBuildCommitHash());
         }
 
-        private static DirectoryInfo GetBinaryDirectoryForCommit(string commitPrefix)
+        private static DirectoryInfo GetCommitBinaryDirectory(string commitPrefix)
         {
             //{Builds}{Platform}{FrameworkVersion}\Debug\_{commitHash}
             DirectoryInfo debugRoot = new DirectoryInfo(Path.Combine(Builds, Platform, FrameworkVersion, "Debug"));
