@@ -51,14 +51,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Bam.Net, Version=1.9.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\bam\latest\Bam.Net.dll</HintPath>
-    </Reference>
-    <Reference Include="Bam.Net.Data, Version=1.9.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\bam\latest\Bam.Net.Data.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>C:\bam\nuget\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
@@ -219,6 +211,16 @@
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bam.Net.Data\Bam.Net.Data.csproj">
+      <Project>{3b52b739-58fd-4b49-b815-6b317e701520}</Project>
+      <Name>Bam.Net.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bam.Net\Bam.Net.csproj">
+      <Project>{8794c09d-d72c-420c-812f-bfda251b64c9}</Project>
+      <Name>Bam.Net</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

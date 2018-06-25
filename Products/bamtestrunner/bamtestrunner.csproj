@@ -37,7 +37,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
+    <OutputPath>C:\bam\tools\bamtestrunner\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DocumentationFile>..\BUILD\BamToolkit\bamtestrunner.XML</DocumentationFile>
     <DebugType>full</DebugType>

@@ -54,7 +54,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\..\..\..\..\tools\laotze\</OutputPath>
+    <OutputPath>C:\bam\tools\laotze\</OutputPath>
     <DocumentationFile>
     </DocumentationFile>
     <PlatformTarget>x64</PlatformTarget>
@@ -69,10 +69,10 @@
   <ItemGroup>
     <Reference Include="EcmaScript.NET, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\EcmaScript.Net.1.0.1.0\lib\net20\EcmaScript.NET.dll</HintPath>
+      <HintPath>C:\bam\nuget\packages\EcmaScript.Net.1.0.1.0\lib\net20\EcmaScript.NET.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>C:\bam\nuget\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
