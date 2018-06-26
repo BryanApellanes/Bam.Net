@@ -172,6 +172,7 @@
     <Compile Include="PasswordResetResponse.cs" />
     <Compile Include="SignOutResponse.cs" />
     <Compile Include="SignUpOptions.cs" />
+    <Compile Include="UserAccountsDatabase.cs" />
     <Compile Include="UserAccounts_Generated\Account.cs" />
     <Compile Include="UserAccounts_Generated\AccountCollection.cs" />
     <Compile Include="UserAccounts_Generated\AccountColumns.cs" />

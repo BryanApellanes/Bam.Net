@@ -53,10 +53,15 @@ namespace Bam.Net.UserAccounts
             LastException = new NullException();
         }
 
+        public UserManager(UserAccountsDatabase db): this()
+        {
+            Database = db;
+        }
+
         [Exclude]
         public object Clone()
         {
-            UserManager result = new UserManager();
+            UserManager result = new UserManager(Database);
             result.CopyProperties(this);
             result.CopyEventHandlers(this);
             result._serviceProvider = _serviceProvider.Clone();
