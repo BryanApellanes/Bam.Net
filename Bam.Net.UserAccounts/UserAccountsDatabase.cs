@@ -1,4 +1,6 @@
-﻿using Bam.Net.Data;
+﻿using Bam.Net.Configuration;
+using Bam.Net.Data;
+using Bam.Net.Data.SQLite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,5 +27,16 @@ namespace Bam.Net.UserAccounts
         }
 
         public Database Database { get; }
+
+        static UserAccountsDatabase _default;
+        static object _defaultLock = new object();           
+        public static UserAccountsDatabase Default
+        {
+            get
+            {
+                return _defaultLock.DoubleCheckLock(ref _default, 
+                    () => new UserAccountsDatabase(new SQLiteDatabase(RuntimeSettings.AppDataFolder, DefaultConfigurationApplicationNameProvider.Instance.GetApplicationName())));
+            }
+        }
     }
 }

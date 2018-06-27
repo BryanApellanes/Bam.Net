@@ -56,6 +56,7 @@ namespace Bam.Net.UserAccounts
         public UserManager(UserAccountsDatabase db): this()
         {
             Database = db;
+            Authenticator = new DaoAuthenticator(Database);
         }
 
         [Exclude]
@@ -86,6 +87,8 @@ namespace Bam.Net.UserAccounts
                     serviceProvider.Set<DaoRoleResolver>(roleResolver);
                     serviceProvider.Set<EmailComposer>(new NamedFormatEmailComposer());
                     serviceProvider.Set<IApplicationNameProvider>(DefaultConfigurationApplicationNameProvider.Instance);
+                    serviceProvider.Set<UserAccountsDatabase>(UserAccountsDatabase.Default);
+                    serviceProvider.Set<IAuthenticator>(new DaoAuthenticator(UserAccountsDatabase.Default));
 
                     return serviceProvider;
                 });
@@ -93,6 +96,18 @@ namespace Bam.Net.UserAccounts
             set
             {
                 _serviceProvider = value;
+            }
+        }
+
+        public IAuthenticator Authenticator
+        {
+            get
+            {
+                return ServiceProvider.Get<IAuthenticator>();
+            }
+            set
+            {
+                ServiceProvider.Set<IAuthenticator>(value);
             }
         }
 
@@ -125,7 +140,7 @@ namespace Bam.Net.UserAccounts
             get;
             set;
         }
-
+        
         [Local]
         public Vault GetSmtpSettingsVault(string applicationName = null)
         {
@@ -457,6 +472,7 @@ namespace Bam.Net.UserAccounts
                 if (user != null)
                 {
                     bool passwordIsValid = Password.Validate(user, passHash, Database);
+                    //bool passwordIsValid = Authenticator.IsPasswordValid()
 
                     result = GetSuccess<LoginResponse>(passwordIsValid);
                     if (!passwordIsValid)
