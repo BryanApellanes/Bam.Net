@@ -685,7 +685,7 @@ namespace Bam.Net.UserAccounts
 
         public override bool ValidateUser(string username, string password)
         {
-            return Password.Validate(username, password);
+            return Password.Validate(username, password, true);
         }
     }
 }

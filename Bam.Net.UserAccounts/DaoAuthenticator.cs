@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.UserAccounts
 {
-    public class DaoAuthenticator : IAuthenticator, IPasswordHashValidator
+    public class DaoAuthenticator : IAuthenticator
     {
         public DaoAuthenticator(UserAccountsDatabase db)
         {
@@ -19,35 +19,9 @@ namespace Bam.Net.UserAccounts
 
         public UserAccountsDatabase UserAccountsDatabase { get; }
 
-        public bool IsPasswordHashValid(User user, string passwordHash)
-        {
-            return Password.Validate(user, passwordHash, UserAccountsDatabase);
-        }
-
         public bool IsPasswordValid(string userName, string password)
         {
-            return IsPasswordHashValid(userName, password.Sha1());
+            return Password.Validate(userName, password, UserAccountsDatabase);
         }
-
-        public bool IsPasswordHashValid(string userName, string passwordHash)
-        {
-            return IsPasswordHashValid(GetUser(userName), passwordHash);
-        }
-        
-        protected User GetUser(string userName)
-        {
-            User user = null;
-            if (userName.Contains("@"))
-            {
-                user = User.GetByEmail(userName, UserAccountsDatabase);
-            }
-            else
-            {
-                user = User.GetByUserName(userName, UserAccountsDatabase);
-            }
-
-            return user;
-        }
-
     }
 }

@@ -166,7 +166,6 @@
     <Compile Include="ForgotPasswordResponse.cs" />
     <Compile Include="IAuthenticator.cs" />
     <Compile Include="InvalidTokenException.cs" />
-    <Compile Include="IPasswordHashValidator.cs" />
     <Compile Include="IRoleProvider.cs" />
     <Compile Include="IsAuthenticatedResponse.cs" />
     <Compile Include="IUserManager.cs" />
