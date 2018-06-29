@@ -59,29 +59,71 @@ namespace Bam.Net.UserAccounts.ActiveDirectory
         [Verbosity(VerbosityLevel.Information, MessageFormat = "User found: UserName = {UserName}, Server = {Server}")]
         public event EventHandler UserFound;
 
-        //public string[] GetGroups(string userName, bool reload = false)
-        //{
-        //    return GetGroups(GetDirectoryEntry(userName, reload), reload);
-        //}
+        public string[] GetGroupNames(string userName)
+        {
+            HashSet<string> results = new HashSet<string>();
+            foreach(DirectoryEntry directoryEntry in GetGroups(userName))
+            {
+                results.Add(ReadProperty(directoryEntry, "sAMAccountName")?.ToString());
+            }
+            return results.ToArray();
+        }
 
-        //public string[] GetGroups(DirectoryEntry userEntry, bool reload = false)
-        //{
-        //    if(userEntry == null)
-        //    {
-        //        throw new ArgumentNullException("userEntry");
-        //    }
+        private static object ReadProperty(DirectoryEntry directoryEntry, string propertyName)
+        {
+            return directoryEntry.Properties[propertyName].Value;
+        }
 
-        //    StringBuilder filter = new StringBuilder();
-        //    filter.Append("(|");
-        //    userEntry.RefreshCache(new string[] { "tokenGroups" });
-        //    foreach(byte[] sid in userEntry.Properties["tokenGroups"])
-        //    {
-        //        filter.AppendFormat("(objectSid={0})", BuildOctetString(sid));
-        //    }
-        //    filter.Append(")");
+        /// <summary>
+        /// Gets the groups that the user is a member of.
+        /// </summary>
+        /// <param name="userName">Name of the user.</param>
+        /// <param name="reload">if set to <c>true</c> [reload].</param>
+        /// <returns></returns>
+        public DirectoryEntry[] GetGroups(string userName)
+        {
+            return GetGroups(GetDirectoryEntry(userName));
+        }
 
-        //    using ()
-        //}
+        /// <summary>
+        /// Gets the groups.
+        /// </summary>
+        /// <param name="userEntry">The user entry.</param>
+        /// <param name="reload">if set to <c>true</c> [reload].</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException">userEntry</exception>
+        public DirectoryEntry[] GetGroups(DirectoryEntry userEntry)
+        {
+            if (userEntry == null)
+            {
+                throw new ArgumentNullException("userEntry");
+            }
+
+            StringBuilder filter = new StringBuilder();
+            filter.Append("(|");
+            userEntry.RefreshCache(new string[] { "tokenGroups" });
+            foreach (byte[] sid in userEntry.Properties["tokenGroups"])
+            {
+                filter.AppendFormat("(objectSid={0})", BuildOctetString(sid));
+            }
+            filter.Append(")");
+
+            List<DirectoryEntry> groups = new List<DirectoryEntry>();
+            using (DirectorySearcher searcher = GetDirectoryRootSearcher())
+            {
+                searcher.Filter = filter.ToString();
+                searcher.PropertiesToLoad.Add("distinguishedName");
+                searcher.PropertiesToLoad.Add("objectSid");
+                using(SearchResultCollection results = searcher.FindAll())
+                {
+                    foreach(SearchResult result in results)
+                    {
+                        groups.Add(result.GetDirectoryEntry());
+                    }
+                }
+            }
+            return groups.ToArray();
+        }
 
         public DirectoryEntry GetDirectoryEntry(string userName, bool reload = false)
         {
@@ -155,7 +197,11 @@ namespace Bam.Net.UserAccounts.ActiveDirectory
                     }
                 }
             }
-            return SearchResults[userName][DistinguishedName];
+            if(SearchResults.ContainsKey(userName) && SearchResults[userName].ContainsKey(DistinguishedName))
+            {
+                return SearchResults[userName][DistinguishedName];
+            }
+            return string.Empty;
         }
  
         public bool TryGetDirectoryPath(string userName, out string directoryPath)

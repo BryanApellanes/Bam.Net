@@ -306,6 +306,7 @@
     <Compile Include="UserAccounts_Generated\UserRoleColumns.cs" />
     <Compile Include="UserAccounts_Generated\UserRolePagedQuery.cs" />
     <Compile Include="UserAccounts_Generated\UserRoleQuery.cs" />
+    <Compile Include="UserInfo.cs" />
     <Compile Include="UserManagerConfig.cs" />
     <Compile Include="DaoUserResolver.cs" />
     <Compile Include="LoginResponse.cs" />
