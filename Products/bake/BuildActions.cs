@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Threading;
 using Bam.Net.System;
+using System.Management;
 
 namespace Bam.Net.Automation
 {
@@ -327,18 +328,22 @@ namespace Bam.Net.Automation
             {
                 Args.ThrowIf(string.IsNullOrEmpty(svcInfo.Host), "Host not specified");
                 Args.ThrowIf(string.IsNullOrEmpty(svcInfo.Name), "Name not specified");
-                //      copy the latest binaries to \\computer\c:\bam\tools\{Name}
-                string remotePath = Path.Combine(Paths.Tools, svcInfo.Name);                
-                latestBinaries.CopyTo(svcInfo.Host, remotePath);
-                //      install the service: [path] -i
-                OutLineFormat("Installing service {0} on {1} > {2}", ConsoleColor.Yellow, svcInfo.Name, svcInfo.Host, remotePath);
-                object result = svcInfo.Host.StartProcess($"{remotePath} -i");
-                OutLineFormat("Installation result for {0} on {1}: {2}", ConsoleColor.DarkYellow, svcInfo.Name, svcInfo.Host, result);
+                //      copy the latest binaries to \\computer\c$\bam\tools\{Name}
+                string remoteDirectory = Path.Combine(Paths.Tools, svcInfo.Name);
+                string remoteFile = Path.Combine(remoteDirectory, svcInfo.FileName);
+                OutLineFormat("Copying files for {0} to {1}", ConsoleColor.Cyan, svcInfo.Name, svcInfo.Host);
+                latestBinaries.CopyTo(svcInfo.Host, remoteDirectory);
 
-                //      start the service: [path] -s
-                OutLineFormat("Starting service {0} on {1} > {2}", ConsoleColor.Yellow, svcInfo.Name, svcInfo.Host, remotePath);
-                object startResult = svcInfo.Host.StartProcess($"{remotePath} -s");
-                OutLineFormat("Starting result for {0} on {1}: {2}", ConsoleColor.DarkYellow, svcInfo.Name, svcInfo.Host, startResult);
+                CallServiceExecutable(svcInfo, "Kill", remoteFile, "-k");
+                CallServiceExecutable(svcInfo, "Un-install", remoteFile, "-u");
+                CallServiceExecutable(svcInfo, "Install", remoteFile, "-i");
+
+                if (svcInfo.AppSettings != null)
+                {
+                    SetAppSettings(svcInfo.Host, remoteDirectory, svcInfo.FileName, svcInfo.AppSettings);
+                }
+
+                CallServiceExecutable(svcInfo, "Start", remoteFile, "-s");
             }
 
             Dictionary<string, List<DaemonProcess>> daemonsByHost = new Dictionary<string, List<DaemonProcess>>();
@@ -353,11 +358,11 @@ namespace Bam.Net.Automation
                 }
                 //      copy the latest binaries to c:\bam\sys\{Name}
                 //      prepare array of DaemonProcessInfos with appropriate settings derived from info to be written to bamd below
-                string remotePath = Path.Combine(Paths.Sys, daemonInfo.Name);
+                string directoryPathOnRemote = Path.Combine(Paths.Sys, daemonInfo.Name);
                 if (daemonInfo.Copy)
                 {
-                    latestBinaries.CopyTo(daemonInfo.Host, remotePath);
-                    daemonsByHost[daemonInfo.Host].Add(daemonInfo.ToDaemonProcess(remotePath));
+                    latestBinaries.CopyTo(daemonInfo.Host, directoryPathOnRemote);
+                    daemonsByHost[daemonInfo.Host].Add(daemonInfo.ToDaemonProcess(directoryPathOnRemote));
                 }
                 else
                 {
@@ -367,23 +372,20 @@ namespace Bam.Net.Automation
                 if(daemonInfo.AppSettings != null)
                 {
                     //      update the appsettings to match what's in the info entry; Use "SetAppSettings"
-                    string configPath = Path.Combine(remotePath, $"{daemonInfo.FileName}.config");
-                    DefaultConfiguration.SetAppSettings(configPath, daemonInfo.AppSettings);
+                    SetAppSettings(daemonInfo.Host, directoryPathOnRemote, daemonInfo.FileName, daemonInfo.AppSettings);
                 }
             }
             foreach(string host in daemonsByHost.Keys)
             {
                 // deploy bamd
-                //      uninstall existing bamd
-                string bamd = Path.Combine(Paths.Tools, "bamd", "bamd.exe");
-                OutLineFormat("Killing bamd");
-                object killResult = host.StartProcess($"{bamd} -k");
-                OutLineFormat("Result of killing bamd: {0}", ConsoleColor.Yellow, killResult);
-                OutLineFormat("Uninstalling bamd");
-                object uninstallResult = host.StartProcess($"{bamd} -u");
-                OutLineFormat("Result of uninstall of bamd: {0}", ConsoleColor.Yellow, killResult);
+                //      uninstall existing bamd                
+                string bamdOnRemote = Path.Combine(Paths.Tools, "bamd", "bamd.exe");
+
+                CallServiceExecutable(host, "bamd", "Kill", bamdOnRemote, "-k");
+                CallServiceExecutable(host, "bamd", "Un-install", bamdOnRemote, "-u");
+
                 //      delete existing bamd
-                FileInfo remoteBamd = new FileInfo(new FileInfo(bamd).GetAdminSharePath(host));
+                FileInfo remoteBamd = new FileInfo(new FileInfo(bamdOnRemote).GetAdminSharePath(host));
                 try
                 {
                     OutLineFormat("Deleting remote bamd: {0}", remoteBamd.FullName);
@@ -397,27 +399,23 @@ namespace Bam.Net.Automation
 
                 OutLineFormat("Copying bamd to remote: {0}", ConsoleColor.Cyan, host);
                 //      copy new bamd
-                latestBinaries.CopyTo(host, new FileInfo(bamd).Directory.FullName);
+                latestBinaries.CopyTo(host, new FileInfo(bamdOnRemote).Directory.FullName);
                 OutLineFormat("Done copying bamd to remote: {0}", ConsoleColor.Cyan, host);
 
-                OutLineFormat("Installing bamd: {0}", ConsoleColor.DarkBlue, host);
-                //      install new bamd
-                object installResult = host.StartProcess($"{bamd} -i");
-                OutLineFormat("Done installing bamd: {0}", ConsoleColor.DarkBlue, host);
+                CallServiceExecutable(host, "bamd", "Install", bamdOnRemote, "-i");
 
                 //      write DaemonProcessInfos using above
                 string daemonConfig = Path.Combine(Paths.Conf, $"{typeof(DaemonProcess).Name.Pluralize()}.json");
                 daemonsByHost[host].ToJsonFile(daemonConfig);
 
                 //      start new bamd
-                host.StartProcess($"{bamd} -s");
+                CallServiceExecutable(host, "bamd", "Start", bamdOnRemote, "-s");
             }
         }
 
         [ConsoleAction("test", "Run unit and integration tests for the specified build")]
         public static void Test()
         {
-
             throw new NotImplementedException();
         }
 
@@ -1285,5 +1283,32 @@ namespace Bam.Net.Automation
                 }
             }
         }
+
+        private static void CallServiceExecutable(WindowsServiceInfo svcInfo, string action, string pathOnRemote, string commandSwitch)
+        {
+            string host = svcInfo.Host;
+            string name = svcInfo.Name;
+
+            CallServiceExecutable(host, name, action, pathOnRemote, commandSwitch);
+        }
+
+        private static void CallServiceExecutable(string host, string serviceName, string action, string pathOnRemote, string commandSwitch)
+        {
+            OutLineFormat("Trying to {0} service {1} on {2} > {3}", ConsoleColor.Yellow, action, serviceName, host, pathOnRemote);
+            ProcessOutput uninstallOutput = PsExec.Run(host, $"{pathOnRemote} -{commandSwitch}");
+            OutLineFormat("{0} output:\r\n{1}", ConsoleColor.DarkYellow, action, uninstallOutput.StandardOutput);
+            if (!string.IsNullOrEmpty(uninstallOutput.StandardError))
+            {
+                OutLineFormat("{0} error output:\r\n{1}", ConsoleColor.DarkMagenta, action, uninstallOutput.StandardError);
+            }
+        }
+
+        private static void SetAppSettings(string host, string directoryPathOnRemote, string fileName, Dictionary<string, string> appSettings)
+        {
+            string configPath = Path.Combine(directoryPathOnRemote, $"{fileName}.config");
+            FileInfo configFile = new FileInfo(configPath);
+            DefaultConfiguration.SetAppSettings(configFile.GetAdminSharePath(host), appSettings);
+        }
+
     }
 }

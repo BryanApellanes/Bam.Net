@@ -37,7 +37,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
+    <OutputPath>C:\bam\tools\bam\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DocumentationFile>..\BUILD\BamToolkit\bam.XML</DocumentationFile>
     <DebugType>full</DebugType>
@@ -59,7 +59,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>C:\bam\nuget\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -146,6 +146,10 @@
     <ProjectReference Include="..\..\Bam.Net.Services\Bam.Net.Services.csproj">
       <Project>{f67630bf-5e73-46bf-a7f1-6d7e9648135f}</Project>
       <Name>Bam.Net.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Bam.Net.System\Bam.Net.System.csproj">
+      <Project>{4DEB35A5-81A9-4F2A-BFB2-52CA5C4AB3BC}</Project>
+      <Name>Bam.Net.System</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Bam.Net.Testing\Bam.Net.Testing.csproj">
       <Project>{85212881-c676-4b40-b311-37c2d1706042}</Project>

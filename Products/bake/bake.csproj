@@ -123,7 +123,9 @@
     <None Include="build.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="deploy.json" />
+    <None Include="deploy.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="generate_bam_dot_exe.cmd" />
     <None Include="README.md" />
   </ItemGroup>

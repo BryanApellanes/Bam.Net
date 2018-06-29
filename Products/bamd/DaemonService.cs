@@ -56,7 +56,6 @@ namespace Bam.Net.Application
         }
 
         protected static DaemonProcessMonitorService ProcessMonitorService { get; set; }
-        static Dictionary<string, DaemonProcessMonitor> _monitors;
         protected override void OnStart(string[] args)
         {
             try

@@ -33,6 +33,22 @@ bake /build:.\BakeBuildConfig.json
 
 ## Deploy
 
+Example:
+```
+bake /deploy:.\BakeDeployConfig.json
+```
+
+When deploy mode is selected, the Bam based Windows services and Daemon executables defined in the 
+specified deploy config are deployed.  The json in the specified deploy config should deserializable
+to a DeployInfo instance.
+
+Each Windows service defined in the deploy config is an executable that defines a ServiceExe
+derivative in such a way that ServiceExe.ProcessCommandLineArgs is called for each of the command line
+switches defined therein.
+
+Each Daemon defined in the deploy config is a long running process but is not necessarily a Windows service.
+Daemons are executed and monitored by the Bam Daemon, see [bamd](../bamd/).
+
 ## Test
 
 ## Latest

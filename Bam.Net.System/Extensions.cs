@@ -16,9 +16,8 @@ namespace Bam.Net.System
             foreach(FileInfo file in directory.GetFiles())
             {
                 string localPath = file.FullName;
-                string subPath = file.FullName.TruncateFront(directory.FullName.Length);
-                string remote = Path.Combine(remoteDirectory, subPath);
-                copyTasks.Add(Task.Run(() => file.CopyTo(computerName, remote)));
+                string subPath = file.FullName.TruncateFront(directory.FullName.Length + 1);
+                copyTasks.Add(Task.Run(() => file.CopyTo(computerName, remoteDirectory)));
             }
             Task.WaitAll(copyTasks.ToArray());
         }
@@ -31,16 +30,21 @@ namespace Bam.Net.System
             }
         }
 
-        public static void CopyTo(this FileInfo file, string computerName, string remotePath = null)
+        public static void CopyTo(this FileInfo file, string computerName, string remoteDirectory = null)
         {
             try
             {
-                string adminSharePath = GetAdminSharePath(file.Name, computerName, remotePath);
-                file.CopyTo(adminSharePath);
+                string adminSharePath = GetAdminSharePath(file.Name, computerName, remoteDirectory);
+                FileInfo destination = new FileInfo(adminSharePath);
+                if (!destination.Directory.Exists)
+                {
+                    destination.Directory.Create();
+                }
+                file.CopyTo(adminSharePath, true);
             }
             catch (Exception ex)
             {
-                Logging.Log.Error("Exception copying file ({0}) to target computer ({1}), Path={2}", ex, file.FullName, computerName, remotePath);
+                Logging.Log.Error("Exception copying file ({0}) to target computer ({1}), Path={2}", ex, file.FullName, computerName, remoteDirectory);
             }
         }
 
@@ -60,7 +64,7 @@ namespace Bam.Net.System
         {
             remoteDirectory = remoteDirectory ?? "C$\\Windows\\Temp";
             string destinationFile = Path.Combine(remoteDirectory, fileName);
-            if (destinationFile.Length >= 2 && destinationFile[1].Equals(":"))
+            if (destinationFile.Length >= 2 && destinationFile[1].Equals(':'))
             {
                 StringBuilder df = new StringBuilder(destinationFile);
                 df[1] = '$';
