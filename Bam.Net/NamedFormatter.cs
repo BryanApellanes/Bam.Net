@@ -9,11 +9,13 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI;
 using System.IO;
+using System.Diagnostics;
 
 namespace Bam.Net
 {
     public static class NamedFormatter
     {
+        [DebuggerStepThrough]
         private static string OutExpression(object source, string expression)
         {
             string format = "";
@@ -40,6 +42,7 @@ namespace Bam.Net
             }
         }
 
+        [DebuggerStepThrough]
         public static string NamedFormat(this string format, object source)
         {
             if (format == null)

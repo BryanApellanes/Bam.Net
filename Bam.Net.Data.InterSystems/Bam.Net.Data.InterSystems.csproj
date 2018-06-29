@@ -48,7 +48,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="InterSystems.Data.CacheClient, Version=4.0.0.0, Culture=neutral, PublicKeyToken=ad350a26c4a4447c, processorArchitecture=MSIL">
+    <Reference Include="InterSystems.Data.CacheClient">
       <HintPath>C:\bam\nuget\packages\InterSystemsCache.1.0.4\lib\netstandard2.0\InterSystems.Data.CacheClient.dll</HintPath>
     </Reference>
     <Reference Include="System" />

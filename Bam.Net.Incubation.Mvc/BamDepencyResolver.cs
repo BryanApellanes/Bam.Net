@@ -31,7 +31,9 @@ namespace Bam.Net.Incubation.Mvc
             catch (Exception ex)
             {
                 Logger.Warning("Failed to get service of type {0}, falling back to DefaultResolver: {1}", serviceType.Name, ex.Message);
-                return DefaultResolver.GetService(serviceType);
+                object defaultInstance = DefaultResolver.GetService(serviceType);
+                ServiceRegistry.Set(serviceType, defaultInstance);
+                return defaultInstance;
             }
         }
 

@@ -10,6 +10,7 @@ using System.Reflection;
 using Bam.Net;
 using Bam.Net.Configuration;
 using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace Bam.Net.Logging
 {
@@ -77,6 +78,7 @@ namespace Bam.Net.Logging
         /// </summary>
         /// <param name="logger"></param>
         [Exclude]
+        [DebuggerStepThrough]
         public virtual void Subscribe(ILogger logger)
         {
             lock (_subscriberLock)

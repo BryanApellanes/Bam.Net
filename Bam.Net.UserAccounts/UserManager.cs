@@ -471,8 +471,7 @@ namespace Bam.Net.UserAccounts
 
                 if (user != null)
                 {
-                    bool passwordIsValid = Password.Validate(user, passHash, Database);
-                    //bool passwordIsValid = Authenticator.IsPasswordValid()
+                    bool passwordIsValid = Password.Validate(user, passHash, Database);                    
 
                     result = GetSuccess<LoginResponse>(passwordIsValid);
                     if (!passwordIsValid)

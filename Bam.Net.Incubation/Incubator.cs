@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using Bam.Net;
+using System.Diagnostics;
 
 namespace Bam.Net.Incubation
 {
@@ -219,6 +220,7 @@ namespace Bam.Net.Incubation
             return this[type];
         }
 
+        [DebuggerStepThrough]
         private static void Throw(Type type, Type[] ctorTypes)
         {
             throw new ConstructFailedException(type, ctorTypes);

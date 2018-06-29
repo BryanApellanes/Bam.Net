@@ -23,6 +23,11 @@ namespace Bam.Net.UserAccounts
             }
         }
 
+        public void AddAuthenticator(IAuthenticator authenticator)
+        {
+            _authenticators.Add(authenticator);
+        }
+
         public void AddAuthenticators(params IAuthenticator[] authenticators)
         {
             _authenticators.AddRange(authenticators);

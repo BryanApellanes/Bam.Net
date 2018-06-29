@@ -170,6 +170,8 @@
     <Compile Include="IRoleProvider.cs" />
     <Compile Include="IsAuthenticatedResponse.cs" />
     <Compile Include="IUserManager.cs" />
+    <Compile Include="IUserProvider.cs" />
+    <Compile Include="IWebUserResolver.cs" />
     <Compile Include="NullException.cs" />
     <Compile Include="Partials\Group.cs" />
     <Compile Include="Partials\GroupPermission.cs" />
