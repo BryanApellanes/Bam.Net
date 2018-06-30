@@ -68,6 +68,12 @@ namespace Bam.Net.UserAccounts.Data
             return Validate(user, password, updateFailure: updateFailure);
         }
 
+        public static bool Validate(string userName, string password, Database db = null, bool updateFailure = true)
+        {
+            User user = User.GetByUserName(userName, db);
+            return Validate(user, password, db, updateFailure);
+        }
+
         public static bool Validate(User user, string password, Database db = null, bool updateFailure = true)
         {
             Password passwordEntry = user.PasswordsByUserId.FirstOrDefault();

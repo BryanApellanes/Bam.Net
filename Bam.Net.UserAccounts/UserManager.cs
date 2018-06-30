@@ -454,43 +454,27 @@ namespace Bam.Net.UserAccounts
         public event EventHandler LoginFailed;
         public LoginResponse Login(string userName, string passHash)
         {
-            string failureMessage = "User name and password combination was invalid";
-            EventHandler eventToFire = LoginSucceeded;
-            LoginResponse result = GetFailure<LoginResponse>(new Exception("Unknown exception occurred"));
+            EventHandler eventToFire = LoginFailed;
+            LoginResponse result = GetFailure<LoginResponse>(new Exception("User name and password combination was invalid"));
             try
             {
-                User user = null;
-                if (userName.Contains("@"))
+                bool passwordIsValid = Authenticator.IsPasswordValid(userName, passHash);
+                if (passwordIsValid)
                 {
-                    user = User.GetByEmail(userName, Database);
-                }
-                else
-                {
-                    user = User.GetByUserName(userName, Database);
-                }
-
-                if (user != null)
-                {
-                    bool passwordIsValid = Password.Validate(user, passHash, Database);                    
-
+                    eventToFire = LoginSucceeded;
                     result = GetSuccess<LoginResponse>(passwordIsValid);
-                    if (!passwordIsValid)
+                    User user = null;
+                    if (userName.Contains("@"))
                     {
-                        result.Message = failureMessage;
-                        result.Success = false;
-                        eventToFire = LoginFailed;
+                        user = User.GetByEmail(userName, Database);
                     }
                     else
                     {
-                        DaoUserResolver.SetUser(HttpContext, user, true, Database);
-                        user.AddLoginRecord(Database);
+                        user = User.GetByUserName(userName, Database);
                     }
-                }
-                else
-                {
-                    eventToFire = LoginFailed;
-                    result = GetFailure<LoginResponse>(new Exception(failureMessage));
-                }                
+                    DaoUserResolver.SetUser(HttpContext, user, true, Database);
+                    user.AddLoginRecord(Database);
+                }              
             }
             catch (Exception ex)
             {
