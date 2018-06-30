@@ -62,8 +62,8 @@ namespace Bam.Net.Application
             {
                 Log.AddLogger(GetLogger());
                 Log.AddEntry("{0} starting", ServiceInfo.ServiceName);
-                ProcessMonitorService.Start();
                 Server.Start();
+                ProcessMonitorService.Start();
             }
             catch (Exception ex)
             {
