@@ -19,7 +19,7 @@ namespace Bam.Net.System
             }
             foreach(DirectoryInfo dir in directory.GetDirectories())
             {
-                string subPath = dir.FullName.TruncateFront(dir.FullName.Length + 1);
+                string subPath = dir.FullName.TruncateFront(directory.FullName.Length + 1);
                 copyTasks.Add(Task.Run(() => dir.CopyTo(computerName, remoteDirectory + subPath)));
             }
             Task.WaitAll(copyTasks.ToArray());
