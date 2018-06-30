@@ -1302,8 +1302,9 @@ namespace Bam.Net.Automation
             CallServiceExecutable(host, "bamd", "Install", bamdLocalPathNotation, "-i");
 
             //      write DaemonProcessInfos using above
-            string daemonConfig = Path.Combine(Paths.Conf, $"{typeof(DaemonProcess).Name.Pluralize()}.json");
-            daemonProcesses.ToJsonFile(daemonConfig);
+            string adminShareDaemonConfig = $"{typeof(DaemonProcess).Name.Pluralize()}.json".GetAdminSharePath(host, Paths.Conf);
+            OutLineFormat("Writing {0}", ConsoleColor.DarkCyan, adminShareDaemonConfig);
+            daemonProcesses.ToJsonFile(adminShareDaemonConfig);
 
             //      start new bamd
             CallServiceExecutable(host, "bamd", "Start", bamdLocalPathNotation, "-s");
