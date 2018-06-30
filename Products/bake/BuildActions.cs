@@ -179,7 +179,7 @@ namespace Bam.Net.Automation
         }
 
         [ConsoleAction("init", "Initialize nuget related paths to values expected by Bam.Net.")]
-        public static void InitNugetEnvironment()
+        public static void Init()
         {
             BakeSettings settings = GetSettings();
             string setRepoPath = $"config -Set repositoryPath=\"{settings.PackagesDirectory}\"";
@@ -191,7 +191,7 @@ namespace Bam.Net.Automation
         }
 
         [ConsoleAction("clean", "Clear all local nuget caches by issuing the command: nuget locals all -clear")]
-        public static void CleanNuget()
+        public static void Clean()
         {
             OutLine("Clearing local nuget caches", ConsoleColor.Cyan);
             $"{NugetPath}".RunAndWait("locals all -clear");
@@ -200,7 +200,7 @@ namespace Bam.Net.Automation
         }
 
         [ConsoleAction("build", "Build the specified branch.")]
-        public static void BuildBranch()
+        public static void Build()
         {
             string buildConfigPath = GetArgument("build", "Please enter the path to the build config file.");
             if (!File.Exists(buildConfigPath))
@@ -308,7 +308,7 @@ namespace Bam.Net.Automation
         }
 
         [ConsoleAction("latest", "Create dev nuget packages from the latest build, clear nuget caches, delete all existing dev-latest packages from the internal source and republish.")]
-        public static void PackLatest()
+        public static void Latest()
         {
             BuildInfo info = GetLatestBuildInfo();
             string latestArg = Arguments["latest"];
@@ -317,7 +317,7 @@ namespace Bam.Net.Automation
             {
                 Exit(0);
             }
-            CleanNuget();
+            Clean();
             DirectoryInfo _binRoot = GetCommitBinaryDirectory(info.Commit.First(8));
             _nugetArg = _binRoot.FullName;
             _suffix = $"Dev-latest";
@@ -325,33 +325,33 @@ namespace Bam.Net.Automation
             OutLineFormat("Copying {0} to {1}", _binRoot.FullName, bamLatest.FullName);
             bamLatest.Delete(true);
             _binRoot.Copy(bamLatest.FullName, true);
-            CreateNugetPackages();
+            Nuget();
         }
 
         [ConsoleAction("commit", "Create dev nuget packages from the specified commit assuming it has been built to the path specified by {Builds} in the config file.")]
-        public static void PackCommit()
+        public static void Commit()
         {
             string commitArg = Arguments["commit"];
 
             DirectoryInfo _binRoot = GetCommitBinaryDirectory(commitArg);
             _nugetArg = _binRoot.FullName;
             _suffix = $"Dev-{GetBuildNum()}-{_binRoot.Name.TruncateFront(1).First(5)}";
-            CreateNugetPackages();
+            Nuget();
         }
 
         [ConsoleAction("dev", "Create dev nuget packages from binaries in the specified folder.")]
-        public static void PackDev()
+        public static void Dev()
         {
             _nugetArg = Arguments["dev"];
             int buildNum = GetBuildNum();
 
             string commit = GetCommitHash();
             _suffix = string.IsNullOrEmpty(commit) ? $"Dev-{buildNum}" : $"Dev-{buildNum}-{commit.First(8)}";
-            CreateNugetPackages();
+            Nuget();
         }
         
         [ConsoleAction("release", "Create the release from a specified source directory.  The release includes nuget packages and an msi file.")]
-        public static void BuildRelease()
+        public static void Release()
         {
             // update version
             string targetPath = GetTargetPath();            
@@ -378,10 +378,10 @@ namespace Bam.Net.Automation
                     {
                         OutLineFormat("Failed to update msi version", ConsoleColor.Magenta);
                     }
-                    else if(BuildMsi())
+                    else if(Msi())
                     {
                         _nugetArg = settings.OutputPath;
-                        CreateNugetPackages();
+                        Nuget();
                     }
                     else
                     {
@@ -439,7 +439,7 @@ namespace Bam.Net.Automation
         }
 
         [ConsoleAction("tag", "Create and commit version tag")]
-        public static void CommitTag()
+        public static void Tag()
         {
             DirectoryInfo sourceRoot = GetSourceRoot(GetTargetPath());
             string version = GetVersionTag();
@@ -449,7 +449,7 @@ namespace Bam.Net.Automation
         }
 
         [ConsoleAction("msi", "Build the bam toolkit msi from a set of related wix project files.  The contents of the msi are set to the contents of the specified ReleaseFolder folder.")]
-        public static bool BuildMsi()
+        public static bool Msi()
         {
             string srcRoot = GetTargetPath();
             string releaseFolder = GetArgument("ReleaseFolder", "Please enter the path to the release folder.");
@@ -478,12 +478,12 @@ namespace Bam.Net.Automation
         }
 
         [ConsoleAction("nuget", "Pack one or more binaries as nuget packages provided they have associated nuspec files.")]
-        public static void CreateNugetPackages()
+        public static void Nuget()
         {
             string targetPath = GetNugetArgument();
             if (targetPath.Equals("init"))
             {
-                SetNuspecFiles();
+                Nuspec();
             }
             else if (File.Exists(targetPath))
             {
@@ -519,7 +519,7 @@ namespace Bam.Net.Automation
         }
 
         [ConsoleAction("bam", "Create a single bam.exe by using ILMerge.exe to combine all Bam.Net binaries into one.")]
-        public static void CreateBamDotExe()
+        public static void Bam()
         {
             string ilMergePath = GetArgument("ILMergePath", "Please specify the path to ILMerge.exe");
             string root = GetArgument("root", "Please specify the path to the Bam.Net binaries and nuspec files");
@@ -552,7 +552,7 @@ namespace Bam.Net.Automation
         }
 
         [ConsoleAction("nuspec", "Initialize or update project nuspec files.")]
-        public static void SetNuspecFiles()
+        public static void Nuspec()
         {
             string argValue = Arguments["nuspec"];
             List<Task> tasks = new List<Task>();
