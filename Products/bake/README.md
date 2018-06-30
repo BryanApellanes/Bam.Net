@@ -39,7 +39,7 @@ bake /deploy:.\BakeDeployConfig.json
 ```
 
 When deploy mode is selected, the Bam based Windows services and Daemon executables defined in the 
-specified deploy config are deployed.  The json in the specified deploy config should deserializable
+specified deploy config are deployed.  The json in the specified deploy config should deserizlize
 to a DeployInfo instance.
 
 Each Windows service defined in the deploy config is an executable that defines a ServiceExe

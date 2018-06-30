@@ -29,6 +29,7 @@ namespace Bam.Net.Documentation.Markdown
                 OnUpdated(new DocumentComponentEventArgs { DocumentComponent = this });
             }
         }
+
         string _name;
         public string Name
         {
@@ -56,6 +57,7 @@ namespace Bam.Net.Documentation.Markdown
                 OnUpdated(new DocumentComponentEventArgs { DocumentComponent = this });
             }
         }
+
         public override string GetTitle()
         {
             return $"{new string('#', HeaderLevel)}{TitleFormat.NamedFormat(this)}";

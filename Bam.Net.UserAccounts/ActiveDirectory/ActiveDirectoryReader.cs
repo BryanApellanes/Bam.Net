@@ -22,7 +22,7 @@ namespace Bam.Net.UserAccounts.ActiveDirectory
         }
 
         /// <summary>
-        /// Gets or sets the search results, keyed by username (samaccountname) then by distinguishedname.
+        /// Gets or sets the search results, keyed by username (samaccountname) then by properties.
         /// </summary>
         /// <value>
         /// The search results.
@@ -78,7 +78,6 @@ namespace Bam.Net.UserAccounts.ActiveDirectory
         /// Gets the groups that the user is a member of.
         /// </summary>
         /// <param name="userName">Name of the user.</param>
-        /// <param name="reload">if set to <c>true</c> [reload].</param>
         /// <returns></returns>
         public DirectoryEntry[] GetGroups(string userName)
         {

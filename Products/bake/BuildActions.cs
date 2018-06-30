@@ -266,50 +266,6 @@ namespace Bam.Net.Automation
             }
         }
 
-
-        [ConsoleAction("latest", "Create dev nuget packages from the latest build, clear nuget caches, delete all existing dev-latest packages from the internal source and republish.")]
-        public static void PackLatest()
-        {
-            BuildInfo info = GetLatestBuildInfo();
-            string latestArg = Arguments["latest"];
-            OutLineFormat("{0}", ConsoleColor.Cyan, info.Commit);
-            if (!string.IsNullOrEmpty(latestArg) && latestArg.Equals("show"))
-            {
-                Exit(0);
-            }
-            CleanNuget();
-            DirectoryInfo _binRoot = GetCommitBinaryDirectory(info.Commit.First(8));
-            _nugetArg = _binRoot.FullName;
-            _suffix = $"Dev-latest";
-            DirectoryInfo bamLatest = new DirectoryInfo("C:\\bam\\latest");
-            OutLineFormat("Copying {0} to {1}", _binRoot.FullName, bamLatest.FullName);
-            bamLatest.Delete(true);
-            _binRoot.Copy(bamLatest.FullName, true);
-            CreateNugetPackages();
-        }
-
-        [ConsoleAction("commit", "Create dev nuget packages from the specified commit assuming it has been built to the path specified by {Builds} in the config file.")]
-        public static void PackCommit()
-        {
-            string commitArg = Arguments["commit"];
-
-            DirectoryInfo _binRoot = GetCommitBinaryDirectory(commitArg);
-            _nugetArg = _binRoot.FullName;
-            _suffix = $"Dev-{GetBuildNum()}-{_binRoot.Name.TruncateFront(1).First(5)}";
-            CreateNugetPackages();
-        }
-
-        [ConsoleAction("dev", "Create dev nuget packages from binaries in the specified folder.")]
-        public static void PackDev()
-        {
-            _nugetArg = Arguments["dev"];
-            int buildNum = GetBuildNum();
-
-            string commit = GetCommitHash();
-            _suffix = string.IsNullOrEmpty(commit) ? $"Dev-{buildNum}" : $"Dev-{buildNum}-{commit.First(8)}";
-            CreateNugetPackages();
-        }
-
         [ConsoleAction("deploy", @"Deploy Windows Services from the latest build to the folder C:\bam\sys\")]
         public static void Deploy()
         {
@@ -324,7 +280,7 @@ namespace Bam.Net.Automation
             DirectoryInfo latestBinaries = GetLatestBuildBinaryDirectory();
             DeployInfo deployInfo = deployConfigPath.FromJsonFile<DeployInfo>();
             // for each windows service
-            foreach(WindowsServiceInfo svcInfo in deployInfo.WindowsServices)
+            foreach (WindowsServiceInfo svcInfo in deployInfo.WindowsServices)
             {
                 Args.ThrowIf(string.IsNullOrEmpty(svcInfo.Host), "Host not specified");
                 Args.ThrowIf(string.IsNullOrEmpty(svcInfo.Name), "Name not specified");
@@ -369,13 +325,13 @@ namespace Bam.Net.Automation
                     daemonsByHost[daemonInfo.Host].Add(daemonInfo.ToDaemonProcess());
                 }
 
-                if(daemonInfo.AppSettings != null)
+                if (daemonInfo.AppSettings != null)
                 {
                     //      update the appsettings to match what's in the info entry; Use "SetAppSettings"
                     SetAppSettings(daemonInfo.Host, directoryPathOnRemote, daemonInfo.FileName, daemonInfo.AppSettings);
                 }
             }
-            foreach(string host in daemonsByHost.Keys)
+            foreach (string host in daemonsByHost.Keys)
             {
                 // deploy bamd
                 //      uninstall existing bamd                
@@ -419,6 +375,49 @@ namespace Bam.Net.Automation
             throw new NotImplementedException();
         }
 
+        [ConsoleAction("latest", "Create dev nuget packages from the latest build, clear nuget caches, delete all existing dev-latest packages from the internal source and republish.")]
+        public static void PackLatest()
+        {
+            BuildInfo info = GetLatestBuildInfo();
+            string latestArg = Arguments["latest"];
+            OutLineFormat("{0}", ConsoleColor.Cyan, info.Commit);
+            if (!string.IsNullOrEmpty(latestArg) && latestArg.Equals("show"))
+            {
+                Exit(0);
+            }
+            CleanNuget();
+            DirectoryInfo _binRoot = GetCommitBinaryDirectory(info.Commit.First(8));
+            _nugetArg = _binRoot.FullName;
+            _suffix = $"Dev-latest";
+            DirectoryInfo bamLatest = new DirectoryInfo("C:\\bam\\latest");
+            OutLineFormat("Copying {0} to {1}", _binRoot.FullName, bamLatest.FullName);
+            bamLatest.Delete(true);
+            _binRoot.Copy(bamLatest.FullName, true);
+            CreateNugetPackages();
+        }
+
+        [ConsoleAction("commit", "Create dev nuget packages from the specified commit assuming it has been built to the path specified by {Builds} in the config file.")]
+        public static void PackCommit()
+        {
+            string commitArg = Arguments["commit"];
+
+            DirectoryInfo _binRoot = GetCommitBinaryDirectory(commitArg);
+            _nugetArg = _binRoot.FullName;
+            _suffix = $"Dev-{GetBuildNum()}-{_binRoot.Name.TruncateFront(1).First(5)}";
+            CreateNugetPackages();
+        }
+
+        [ConsoleAction("dev", "Create dev nuget packages from binaries in the specified folder.")]
+        public static void PackDev()
+        {
+            _nugetArg = Arguments["dev"];
+            int buildNum = GetBuildNum();
+
+            string commit = GetCommitHash();
+            _suffix = string.IsNullOrEmpty(commit) ? $"Dev-{buildNum}" : $"Dev-{buildNum}-{commit.First(8)}";
+            CreateNugetPackages();
+        }
+        
         [ConsoleAction("release", "Create the release from a specified source directory.  The release includes nuget packages and an msi file.")]
         public static void BuildRelease()
         {
