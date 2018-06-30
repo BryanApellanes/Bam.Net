@@ -1238,7 +1238,9 @@ namespace Bam.Net.Automation
         {
             string configPath = Path.Combine(directoryPathOnRemote, $"{fileName}.config");
             FileInfo configFile = new FileInfo(configPath);
-            DefaultConfiguration.SetAppSettings(configFile.GetAdminSharePath(host), appSettings);
+            string adminSharePath = configFile.GetAdminSharePath(host);
+            OutLineFormat("Setting appsettings in {0}", ConsoleColor.DarkCyan, adminSharePath);
+            DefaultConfiguration.SetAppSettings(adminSharePath, appSettings);
         }
         
         private static void DeployWindowsService(DirectoryInfo latestBinaries, WindowsServiceInfo svcInfo)
@@ -1254,8 +1256,8 @@ namespace Bam.Net.Automation
             {
                 CallServiceExecutable(svcInfo, "Kill", remoteFile, "-k");
                 CallServiceExecutable(svcInfo, "Un-install", remoteFile, "-u");
-                OutLineFormat("Deleting {0} from {1}", ConsoleColor.DarkYellow, remoteDirectoryInfo.FullName, svcInfo.Host);
-                remoteDirectoryInfo.Delete(true);
+                string host = svcInfo.Host;
+                TryDeleteDirectory(remoteDirectoryInfo, host);
             }
 
             OutLineFormat("Copying files for {0} to {1}", ConsoleColor.Cyan, svcInfo.Name, svcInfo.Host);
@@ -1283,7 +1285,8 @@ namespace Bam.Net.Automation
                 {
                     CallServiceExecutable(host, "bamd", "Kill", bamdLocalPathNotation, "-k");
                     CallServiceExecutable(host, "bamd", "Un-install", bamdLocalPathNotation, "-u");
-                    remoteDirectoryInfo.Delete(true);
+
+                    TryDeleteDirectory(remoteDirectoryInfo, host);
                 }
             }
         }
@@ -1337,6 +1340,19 @@ namespace Bam.Net.Automation
             {
                 //      update the appsettings to match what's in the info entry; Use "SetAppSettings"
                 SetAppSettings(daemonInfo.Host, directoryPathOnRemote, daemonInfo.FileName, daemonInfo.AppSettings);
+            }
+        }
+
+        private static void TryDeleteDirectory(DirectoryInfo remoteDirectoryInfo, string host)
+        {
+            try
+            {
+                OutLineFormat("Deleting {0} from {1}", ConsoleColor.DarkYellow, remoteDirectoryInfo.FullName, host);
+                remoteDirectoryInfo.Delete(true);
+            }
+            catch (Exception ex)
+            {
+                OutLineFormat("Exception occurred deleting {0}: {1} ", ConsoleColor.DarkMagenta, remoteDirectoryInfo.FullName, ex.Message);
             }
         }
     }
