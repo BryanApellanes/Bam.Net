@@ -73,5 +73,23 @@ namespace Bam.Net.System
             string adminSharePath = $"\\\\{computerName}\\{destinationFile}";
             return adminSharePath;
         }
+
+        /// <summary>
+        /// Gets the admin share directory in the format \\{computerName}\{driveLetter}$\{directoryPath}
+        /// </summary>
+        /// <param name="directoryPath">The directory path.</param>
+        /// <param name="computerName">Name of the computer.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException">Specified directoryPath not in expected format: [DriveLetter]:[path]</exception>
+        public static DirectoryInfo GetAdminShareDirectory(this string directoryPath, string computerName)
+        {
+            if(directoryPath.Length >= 2 && directoryPath[1].Equals(':'))
+            {
+                StringBuilder path = new StringBuilder(directoryPath);
+                path[1] = '$';
+                return new DirectoryInfo($"\\\\{computerName}\\{path.ToString()}");
+            }
+            throw new ArgumentException("Specified directoryPath not in expected format: [DriveLetter]:[directoryPath]");
+        }
     }
 }

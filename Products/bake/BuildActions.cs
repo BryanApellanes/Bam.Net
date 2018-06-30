@@ -282,94 +282,22 @@ namespace Bam.Net.Automation
             // for each windows service
             foreach (WindowsServiceInfo svcInfo in deployInfo.WindowsServices)
             {
-                Args.ThrowIf(string.IsNullOrEmpty(svcInfo.Host), "Host not specified");
-                Args.ThrowIf(string.IsNullOrEmpty(svcInfo.Name), "Name not specified");
-                //      copy the latest binaries to \\computer\c$\bam\tools\{Name}
-                string remoteDirectory = Path.Combine(Paths.Sys, svcInfo.Name);
-                string remoteFile = Path.Combine(remoteDirectory, svcInfo.FileName);
-                OutLineFormat("Copying files for {0} to {1}", ConsoleColor.Cyan, svcInfo.Name, svcInfo.Host);
-                latestBinaries.CopyTo(svcInfo.Host, remoteDirectory);
-
-                CallServiceExecutable(svcInfo, "Kill", remoteFile, "-k");
-                CallServiceExecutable(svcInfo, "Un-install", remoteFile, "-u");
-                CallServiceExecutable(svcInfo, "Install", remoteFile, "-i");
-
-                if (svcInfo.AppSettings != null)
-                {
-                    SetAppSettings(svcInfo.Host, remoteDirectory, svcInfo.FileName, svcInfo.AppSettings);
-                }
-
-                CallServiceExecutable(svcInfo, "Start", remoteFile, "-s");
+                DeployWindowsService(latestBinaries, svcInfo);
             }
+
+            StopAndDeleteBamDaemonOnHosts(deployInfo);
 
             Dictionary<string, List<DaemonProcess>> daemonsByHost = new Dictionary<string, List<DaemonProcess>>();
             // for each daemon entry 
             foreach (DaemonInfo daemonInfo in deployInfo.Daemons)
             {
-                Args.ThrowIf(string.IsNullOrEmpty(daemonInfo.Host), "Host not specified");
-                Args.ThrowIf(string.IsNullOrEmpty(daemonInfo.Name), "Name not specified");
-                if (!daemonsByHost.ContainsKey(daemonInfo.Host))
-                {
-                    daemonsByHost.Add(daemonInfo.Host, new List<DaemonProcess>());
-                }
-                //      copy the latest binaries to c:\bam\sys\{Name}
-                //      prepare array of DaemonProcessInfos with appropriate settings derived from info to be written to bamd below
-                string directoryPathOnRemote = Path.Combine(Paths.Sys, daemonInfo.Name);
-                if (daemonInfo.Copy)
-                {
-                    daemonInfo.WorkingDirectory = directoryPathOnRemote;
-                    latestBinaries.CopyTo(daemonInfo.Host, directoryPathOnRemote);
-                    daemonsByHost[daemonInfo.Host].Add(daemonInfo.ToDaemonProcess(directoryPathOnRemote));
-                }
-                else
-                {
-                    daemonsByHost[daemonInfo.Host].Add(daemonInfo.ToDaemonProcess());
-                }
-
-                if (daemonInfo.AppSettings != null)
-                {
-                    //      update the appsettings to match what's in the info entry; Use "SetAppSettings"
-                    SetAppSettings(daemonInfo.Host, directoryPathOnRemote, daemonInfo.FileName, daemonInfo.AppSettings);
-                }
+                PrepareDaemonFiles(latestBinaries, daemonsByHost, daemonInfo);
             }
+
             foreach (string host in daemonsByHost.Keys)
             {
-                // deploy bamd
-                //      uninstall existing bamd                
-                string bamdOnRemote = Path.Combine(Paths.Sys, "bamd", "bamd.exe");
-
-                CallServiceExecutable(host, "bamd", "Kill", bamdOnRemote, "-k");
-                CallServiceExecutable(host, "bamd", "Un-install", bamdOnRemote, "-u");
-
-                //      delete existing bamd
-                FileInfo remoteBamd = new FileInfo(new FileInfo(bamdOnRemote).GetAdminSharePath(host));
-                try
-                {
-                    if (remoteBamd.Directory.Exists)
-                    {
-                        OutLineFormat("Deleting remote bamd: {0}", remoteBamd.FullName);
-                        remoteBamd.Directory.Delete(true);
-                        OutLineFormat("Delete complete: {0}", remoteBamd.FullName);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logger.AddEntry("Exception deleting remote bamd: {0}, {1}", ex, remoteBamd.FullName, ex.Message);
-                }
-
-                OutLineFormat("Copying bamd to remote: {0}", ConsoleColor.Cyan, host);
-                //      copy new bamd
-                latestBinaries.CopyTo(host, new FileInfo(bamdOnRemote).Directory.FullName);
-                OutLineFormat("Done copying bamd to remote: {0}", ConsoleColor.Cyan, host);
-
-                CallServiceExecutable(host, "bamd", "Install", bamdOnRemote, "-i");
-
-                //      write DaemonProcessInfos using above
-                string daemonConfig = Path.Combine(Paths.Conf, $"{typeof(DaemonProcess).Name.Pluralize()}.json");
-                daemonsByHost[host].ToJsonFile(daemonConfig);
-
-                //      start new bamd
-                CallServiceExecutable(host, "bamd", "Start", bamdOnRemote, "-s");
+                List<DaemonProcess> daemonProcesses = daemonsByHost[host];
+                ConfigureAndStartBamDaemon(latestBinaries, host, daemonProcesses);
             }
         }
 
@@ -1312,6 +1240,103 @@ namespace Bam.Net.Automation
             FileInfo configFile = new FileInfo(configPath);
             DefaultConfiguration.SetAppSettings(configFile.GetAdminSharePath(host), appSettings);
         }
+        
+        private static void DeployWindowsService(DirectoryInfo latestBinaries, WindowsServiceInfo svcInfo)
+        {
+            Args.ThrowIf(string.IsNullOrEmpty(svcInfo.Host), "Host not specified");
+            Args.ThrowIf(string.IsNullOrEmpty(svcInfo.Name), "Name not specified");
+            //      copy the latest binaries to \\computer\c$\bam\tools\{Name}
+            string remoteDirectory = Path.Combine(Paths.Sys, svcInfo.Name);
+            string remoteFile = Path.Combine(remoteDirectory, svcInfo.FileName);
 
+            DirectoryInfo remoteDirectoryInfo = remoteDirectory.GetAdminShareDirectory(svcInfo.Host);
+            if (remoteDirectoryInfo.Exists)
+            {
+                CallServiceExecutable(svcInfo, "Kill", remoteFile, "-k");
+                CallServiceExecutable(svcInfo, "Un-install", remoteFile, "-u");
+                remoteDirectoryInfo.Delete(true);
+            }
+
+            OutLineFormat("Copying files for {0} to {1}", ConsoleColor.Cyan, svcInfo.Name, svcInfo.Host);
+            latestBinaries.CopyTo(svcInfo.Host, remoteDirectory);
+            CallServiceExecutable(svcInfo, "Install", remoteFile, "-i");
+
+            if (svcInfo.AppSettings != null)
+            {
+                SetAppSettings(svcInfo.Host, remoteDirectory, svcInfo.FileName, svcInfo.AppSettings);
+            }
+
+            CallServiceExecutable(svcInfo, "Start", remoteFile, "-s");
+        }
+
+        private static void StopAndDeleteBamDaemonOnHosts(DeployInfo deployInfo)
+        {
+            string bamdLocalPathNotation = Path.Combine(Paths.Sys, "bamd", "bamd.exe");
+            OutLineFormat("Stopping Bam Daemon on each host", ConsoleColor.DarkCyan);
+            DirectoryInfo bamdLocalPath = new FileInfo(bamdLocalPathNotation).Directory;
+            HashSet<string> daemonHosts = new HashSet<string>(deployInfo.Daemons.Select(di => di.Host).ToList());
+            foreach (string host in daemonHosts)
+            {
+                DirectoryInfo remoteDirectoryInfo = bamdLocalPath.FullName.GetAdminShareDirectory(host);
+                if (remoteDirectoryInfo.Exists)
+                {
+                    CallServiceExecutable(host, "bamd", "Kill", bamdLocalPathNotation, "-k");
+                    CallServiceExecutable(host, "bamd", "Un-install", bamdLocalPathNotation, "-u");
+                    remoteDirectoryInfo.Delete(true);
+                }
+            }
+        }
+
+        private static void ConfigureAndStartBamDaemon(DirectoryInfo latestBinaries, string host, List<DaemonProcess> daemonProcesses)
+        {
+            string bamdLocalPathNotation = Path.Combine(Paths.Sys, "bamd", "bamd.exe");
+            OutLineFormat("Copying bamd to remote: {0}", ConsoleColor.Cyan, host);
+            //      copy new bamd
+            latestBinaries.CopyTo(host, new FileInfo(bamdLocalPathNotation).Directory.FullName);
+            OutLineFormat("Done copying bamd to remote: {0}", ConsoleColor.Cyan, host);
+
+            CallServiceExecutable(host, "bamd", "Install", bamdLocalPathNotation, "-i");
+
+            //      write DaemonProcessInfos using above
+            string daemonConfig = Path.Combine(Paths.Conf, $"{typeof(DaemonProcess).Name.Pluralize()}.json");
+            daemonProcesses.ToJsonFile(daemonConfig);
+
+            //      start new bamd
+            CallServiceExecutable(host, "bamd", "Start", bamdLocalPathNotation, "-s");
+        }
+
+        private static void PrepareDaemonFiles(DirectoryInfo latestBinaries, Dictionary<string, List<DaemonProcess>> daemonsByHost, DaemonInfo daemonInfo)
+        {
+            Args.ThrowIf(string.IsNullOrEmpty(daemonInfo.Host), "Host not specified");
+            Args.ThrowIf(string.IsNullOrEmpty(daemonInfo.Name), "Name not specified");
+            if (!daemonsByHost.ContainsKey(daemonInfo.Host))
+            {
+                daemonsByHost.Add(daemonInfo.Host, new List<DaemonProcess>());
+            }
+            //      copy the latest binaries to c:\bam\sys\{Name}
+            //      prepare array of DaemonProcessInfos with appropriate settings derived from info to be written to bamd below
+            string directoryPathOnRemote = Path.Combine(Paths.Sys, daemonInfo.Name);
+            if (daemonInfo.Copy)
+            {
+                DirectoryInfo adminSharePath = directoryPathOnRemote.GetAdminShareDirectory(daemonInfo.Host);
+                if (adminSharePath.Exists)
+                {
+                    adminSharePath.Delete(true);
+                }
+                daemonInfo.WorkingDirectory = directoryPathOnRemote;
+                latestBinaries.CopyTo(daemonInfo.Host, directoryPathOnRemote);
+                daemonsByHost[daemonInfo.Host].Add(daemonInfo.ToDaemonProcess(directoryPathOnRemote));
+            }
+            else
+            {
+                daemonsByHost[daemonInfo.Host].Add(daemonInfo.ToDaemonProcess());
+            }
+
+            if (daemonInfo.AppSettings != null)
+            {
+                //      update the appsettings to match what's in the info entry; Use "SetAppSettings"
+                SetAppSettings(daemonInfo.Host, directoryPathOnRemote, daemonInfo.FileName, daemonInfo.AppSettings);
+            }
+        }
     }
 }
