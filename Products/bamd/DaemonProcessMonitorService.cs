@@ -44,28 +44,28 @@ namespace Bam.Net.Application
                 Processes = File.FullName.FromJsonFile<DaemonProcess[]>();
                 Expect.IsNotNull(Processes, $"No processes defined in {fileName}");
                 Logger.AddEntry("{0} processes in {1}", Processes.Length, fileName);
-                foreach(DaemonProcess process in Processes)
+                Parallel.ForEach(Processes, (process) =>
                 {
                     StartProcess(process);
-                }
+                });
             }            
         }
 
         public void Stop()
         {
-            foreach (string key in _monitors.Keys)
+            Parallel.ForEach(_monitors.Keys, (key) =>
             {
                 try
                 {
-                    Log.AddEntry("Stopping {0}", key);
+                    Logger.AddEntry("Stopping {0}", key);
                     _monitors[key].Process.Kill();
-                    Log.AddEntry("Stopped {0}", key);
+                    Logger.AddEntry("Stopped {0}", key);
                 }
                 catch (Exception ex)
                 {
-                    Log.AddEntry("Exception stopping process {0}: {1}", ex, key, ex.Message);
+                    Logger.AddEntry("Exception stopping process {0}: {1}", ex, key, ex.Message);
                 }
-            }            
+            });          
         }
 
         public FileInfo File { get; set; }

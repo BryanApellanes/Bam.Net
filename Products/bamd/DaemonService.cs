@@ -75,8 +75,7 @@ namespace Bam.Net.Application
         {
             Log.AddEntry("{0} stopping", ServiceInfo.ServiceName);
             Server.Stop();
-            ProcessMonitorService.Stop();
-            Thread.Sleep(1000);
+            ProcessMonitorService.Stop();            
         }
 
         private static HostPrefix[] GetConfiguredHostPrefixes()

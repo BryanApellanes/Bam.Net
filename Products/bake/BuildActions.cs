@@ -1254,6 +1254,7 @@ namespace Bam.Net.Automation
             {
                 CallServiceExecutable(svcInfo, "Kill", remoteFile, "-k");
                 CallServiceExecutable(svcInfo, "Un-install", remoteFile, "-u");
+                OutLineFormat("Deleting {0} from {1}", ConsoleColor.DarkYellow, remoteDirectoryInfo.FullName, svcInfo.Host);
                 remoteDirectoryInfo.Delete(true);
             }
 
