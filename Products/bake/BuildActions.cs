@@ -285,7 +285,7 @@ namespace Bam.Net.Automation
                 Args.ThrowIf(string.IsNullOrEmpty(svcInfo.Host), "Host not specified");
                 Args.ThrowIf(string.IsNullOrEmpty(svcInfo.Name), "Name not specified");
                 //      copy the latest binaries to \\computer\c$\bam\tools\{Name}
-                string remoteDirectory = Path.Combine(Paths.Tools, svcInfo.Name);
+                string remoteDirectory = Path.Combine(Paths.Sys, svcInfo.Name);
                 string remoteFile = Path.Combine(remoteDirectory, svcInfo.FileName);
                 OutLineFormat("Copying files for {0} to {1}", ConsoleColor.Cyan, svcInfo.Name, svcInfo.Host);
                 latestBinaries.CopyTo(svcInfo.Host, remoteDirectory);
@@ -336,7 +336,7 @@ namespace Bam.Net.Automation
             {
                 // deploy bamd
                 //      uninstall existing bamd                
-                string bamdOnRemote = Path.Combine(Paths.Tools, "bamd", "bamd.exe");
+                string bamdOnRemote = Path.Combine(Paths.Sys, "bamd", "bamd.exe");
 
                 CallServiceExecutable(host, "bamd", "Kill", bamdOnRemote, "-k");
                 CallServiceExecutable(host, "bamd", "Un-install", bamdOnRemote, "-u");
@@ -1295,7 +1295,7 @@ namespace Bam.Net.Automation
         private static void CallServiceExecutable(string host, string serviceName, string action, string pathOnRemote, string commandSwitch)
         {
             OutLineFormat("Trying to {0} service {1} on {2} > {3}", ConsoleColor.Yellow, action, serviceName, host, pathOnRemote);
-            ProcessOutput uninstallOutput = PsExec.Run(host, $"{pathOnRemote} -{commandSwitch}");
+            ProcessOutput uninstallOutput = PsExec.Run(host, $"{pathOnRemote} {commandSwitch}");
             OutLineFormat("{0} output:\r\n{1}", ConsoleColor.DarkYellow, action, uninstallOutput.StandardOutput);
             if (!string.IsNullOrEmpty(uninstallOutput.StandardError))
             {

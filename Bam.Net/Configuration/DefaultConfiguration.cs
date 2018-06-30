@@ -456,8 +456,8 @@ namespace Bam.Net.Configuration
         /// <returns></returns>
         public static System.Configuration.Configuration GetConfig(string configPath)
         {
-            System.Configuration.ConfigurationFileMap fileMap = new ConfigurationFileMap(configPath);
-            System.Configuration.Configuration config = ConfigurationManager.OpenMappedMachineConfiguration(fileMap);
+            ExeConfigurationFileMap fileMap = new ExeConfigurationFileMap { ExeConfigFilename = configPath };
+            System.Configuration.Configuration config = ConfigurationManager.OpenMappedExeConfiguration(fileMap, ConfigurationUserLevel.None);
             return config;
         }
 
