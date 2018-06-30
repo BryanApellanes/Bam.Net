@@ -345,9 +345,12 @@ namespace Bam.Net.Automation
                 FileInfo remoteBamd = new FileInfo(new FileInfo(bamdOnRemote).GetAdminSharePath(host));
                 try
                 {
-                    OutLineFormat("Deleting remote bamd: {0}", remoteBamd.FullName);
-                    remoteBamd.Directory.Delete(true);
-                    OutLineFormat("Delete complete: {0}", remoteBamd.FullName);
+                    if (remoteBamd.Directory.Exists)
+                    {
+                        OutLineFormat("Deleting remote bamd: {0}", remoteBamd.FullName);
+                        remoteBamd.Directory.Delete(true);
+                        OutLineFormat("Delete complete: {0}", remoteBamd.FullName);
+                    }
                 }
                 catch (Exception ex)
                 {
