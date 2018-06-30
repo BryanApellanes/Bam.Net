@@ -28,14 +28,14 @@ defined as the bambot configs.  Bambot configs will properly deserialize as Bake
 
 Example
 ```
-bake /build:.\BakeBuildConfig.json
+bake /build:[path_to_build_json_file]
 ```
 
 ## Deploy
 
 Example:
 ```
-bake /deploy:.\BakeDeployConfig.json
+bake /deploy:[path_to_deploy_json_file]
 ```
 
 When deploy mode is selected, the Bam based Windows services and Daemon executables defined in the 

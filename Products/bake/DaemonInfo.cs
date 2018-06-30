@@ -14,7 +14,7 @@ namespace Bam.Net.Application
         public string Name { get; set; }
         public string FileName { get; set; }
         public string Arguments { get; set; }
-        public string WorkingDirecotry { get; set; }
+        public string WorkingDirectory { get; set; }
         public Dictionary<string, string> AppSettings { get; set; }
 
         public DaemonProcess ToDaemonProcess(string workingDirectory)
@@ -32,7 +32,7 @@ namespace Bam.Net.Application
                 Name = Name,
                 FileName = FileName,
                 Arguments = Arguments,
-                WorkingDirectory = WorkingDirecotry
+                WorkingDirectory = WorkingDirectory
             };
         }
     }

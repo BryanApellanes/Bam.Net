@@ -317,6 +317,7 @@ namespace Bam.Net.Automation
                 string directoryPathOnRemote = Path.Combine(Paths.Sys, daemonInfo.Name);
                 if (daemonInfo.Copy)
                 {
+                    daemonInfo.WorkingDirectory = directoryPathOnRemote;
                     latestBinaries.CopyTo(daemonInfo.Host, directoryPathOnRemote);
                     daemonsByHost[daemonInfo.Host].Add(daemonInfo.ToDaemonProcess(directoryPathOnRemote));
                 }
