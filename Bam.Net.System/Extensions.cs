@@ -15,9 +15,12 @@ namespace Bam.Net.System
             List<Task> copyTasks = new List<Task>();
             foreach(FileInfo file in directory.GetFiles())
             {
-                string localPath = file.FullName;
-                string subPath = file.FullName.TruncateFront(directory.FullName.Length + 1);
                 copyTasks.Add(Task.Run(() => file.CopyTo(computerName, remoteDirectory)));
+            }
+            foreach(DirectoryInfo dir in directory.GetDirectories())
+            {
+                string subPath = dir.FullName.TruncateFront(dir.FullName.Length + 1);
+                copyTasks.Add(Task.Run(() => dir.CopyTo(computerName, remoteDirectory + subPath)));
             }
             Task.WaitAll(copyTasks.ToArray());
         }
