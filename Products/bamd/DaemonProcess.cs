@@ -100,8 +100,8 @@ namespace Bam.Net.Application
             return $"{WorkingDirectory}:{Name} > {FileName} {Arguments}";
         }
 
-        public int StandardOutLineCount { get; internal set; }
-        public int ErrorOutLineCount { get; internal set; }
+        internal int StandardOutLineCount { get; set; }
+        internal int ErrorOutLineCount { get; set; }
 
         internal string StandardOutSoFar { get; set; }
         internal string StandardErrorSoFar { get; set; }
