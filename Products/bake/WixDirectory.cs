@@ -9,28 +9,28 @@ using System.Xml.Linq;
 
 namespace Bam.Net.Application
 {
-    public class BakeDirectory
+    public class WixDirectory
     {
-        public BakeDirectory()
+        public WixDirectory()
         {
             string stringValue = 32.RandomString().ToUpperInvariant();
             Id = "owc" + stringValue;
-            _components = new List<BakeComponent>();
-            _directories = new List<BakeDirectory>();
+            _components = new List<WixComponent>();
+            _directories = new List<WixDirectory>();
         }
 
         public string Id { get; set; }
         public string Name { get; set; }
 
-        List<BakeComponent> _components;
-        public BakeComponent[] Components
+        List<WixComponent> _components;
+        public WixComponent[] Components
         {
             get { return _components.ToArray(); }
             set { _components = value.ToList(); }
         }
 
-        List<BakeDirectory> _directories;
-        public BakeDirectory[] Directories
+        List<WixDirectory> _directories;
+        public WixDirectory[] Directories
         {
             get { return _directories.ToArray(); }
             set { _directories.ToList(); }
@@ -38,15 +38,15 @@ namespace Bam.Net.Application
 
         public void AddComponent(string sourceDirRelativeFilePath)
         {
-            _components.Add(new BakeComponent(sourceDirRelativeFilePath));
+            _components.Add(new WixComponent(sourceDirRelativeFilePath));
         }
 
-        public void AddComponent(BakeComponent component)
+        public void AddComponent(WixComponent component)
         {
             _components.Add(component);
         }
 
-        public void AddDirectory(BakeDirectory directory)
+        public void AddDirectory(WixDirectory directory)
         {
             _directories.Add(directory);
         }
@@ -64,38 +64,38 @@ namespace Bam.Net.Application
             {
                 directory.SetAttributeValue("Name", Name);
             }
-            foreach(BakeComponent component in Components)
+            foreach(WixComponent component in Components)
             {
                 directory.Add(component.ToXElement(ns));
             }
-            foreach(BakeDirectory subDir in Directories)
+            foreach(WixDirectory subDir in Directories)
             {
                 directory.Add(subDir.ToXElement(ns));
             }
             return directory;
         }
 
-        public static BakeDirectory FromPath(string id, string directoryPath)
+        public static WixDirectory FromPath(string id, string directoryPath)
         {
-            BakeDirectory result = FromPath(directoryPath);
+            WixDirectory result = FromPath(directoryPath);
             result.Id = id;
             return result;
         }
 
-        public static BakeDirectory FromPath(string directoryPath)
+        public static WixDirectory FromPath(string directoryPath)
         {
             DirectoryInfo dir = new DirectoryInfo(directoryPath);
             return Traverse(dir, directoryPath);
         }
 
-        private static BakeDirectory Traverse(DirectoryInfo dir, string root = null)
+        private static WixDirectory Traverse(DirectoryInfo dir, string root = null)
         {
             root = root ?? dir.FullName;
             if (!root.EndsWith("\\"))
             {
                 root += "\\";
             }
-            BakeDirectory current = new BakeDirectory { Name = dir.Name };
+            WixDirectory current = new WixDirectory { Name = dir.Name };
             foreach (FileInfo file in dir.GetFiles())
             {
                 current.AddComponent(file.FullName.Replace(root, ""));

@@ -13,6 +13,7 @@ using Bam.Net.Server;
 
 namespace Bam.Net.CoreServices
 {
+    // TODO: full implement this
     [Proxy("oauthSvc")]
     [ServiceSubdomain("oauth")]
     public class OAuthService: ApplicationProxyableService // This is not fully implemented

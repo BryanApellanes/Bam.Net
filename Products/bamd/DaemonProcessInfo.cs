@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Application
 {
-    public class BamDaemonProcessInfo
+    public class DaemonProcessInfo
     {
         public string Name { get; set; }
         public string FileName { get; set; }

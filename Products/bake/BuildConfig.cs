@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Application
 {
-    public class BakeBuildConfig
+    public class BuildConfig
     {
         public string RepoRoot { get; set; }
         public string RepoName { get; set; }

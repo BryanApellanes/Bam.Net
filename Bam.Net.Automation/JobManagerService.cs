@@ -27,7 +27,7 @@ namespace Bam.Net.Automation
     [Proxy("jobManagerSvc")]
     public class JobManagerService: AsyncProxyableService
     {
-        static string ProfigurationSetKey = $"{nameof(JobManagerService)}Settings";
+        static readonly string ProfigurationSetKey = $"{nameof(JobManagerService)}Settings";
 
         AutoResetEvent _enqueueSignal;
         AutoResetEvent _runCompleteSignal;

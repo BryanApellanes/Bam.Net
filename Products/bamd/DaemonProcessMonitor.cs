@@ -10,9 +10,9 @@ using Bam.Net.Server;
 
 namespace Bam.Net.Application
 {
-    public class BamDaemonProcessMonitor
+    public class DaemonProcessMonitor
     {
-        public BamDaemonProcessMonitor(BamDaemonProcess process)
+        public DaemonProcessMonitor(DaemonProcess process)
         {
             Process = process;
             FlushLineCount = 25;
@@ -26,15 +26,15 @@ namespace Bam.Net.Application
             StartTimedFlush();
         }
 
-        public static BamDaemonProcessMonitor Start(BamDaemonProcess process)
+        public static DaemonProcessMonitor Start(DaemonProcess process)
         {
             Log.AddEntry("Monitoring {0}", process.Name);
-            BamDaemonProcessMonitor result = new BamDaemonProcessMonitor(process);
+            DaemonProcessMonitor result = new DaemonProcessMonitor(process);
             process.Start(result.TryRestart);
             return result;
         }
 
-        public BamDaemonProcess Process { get; set; }
+        public DaemonProcess Process { get; set; }
         
         public int MaxRetries { get; set; }
         public int FlushLineCount { get; set; }

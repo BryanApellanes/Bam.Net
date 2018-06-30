@@ -709,6 +709,12 @@ namespace Bam.Net
             }
         }
 
+        /// <summary>
+        /// Parse the string as the specified generic enum.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         public static T ToEnum<T>(this string value)
         {
             return (T)Enum.Parse(typeof(T), value);

@@ -169,7 +169,14 @@ namespace Bam.Net.Server.Streaming
             while (true)
             {
                 TcpClient client = Listener.AcceptTcpClient();
-                Logger.Info("Client Connected: LocalEndpoint={0}, RemoteEndpoint={1}", client.Client.LocalEndPoint.ToString(), client.Client.RemoteEndPoint.ToString());
+                try
+                {
+                    Logger.Info("Client Connected: LocalEndpoint={0}, RemoteEndpoint={1}", client.Client.LocalEndPoint.ToString(), client.Client.RemoteEndPoint.ToString());
+                }
+                catch (Exception ex)
+                {
+                    Logger.AddEntry("Error logging connection: {0}", ex, ex.Message);
+                }
                 Task.Run(() => ReadRequest(client));
             }
         }
@@ -192,10 +199,6 @@ namespace Bam.Net.Server.Streaming
                             ResponseStream = stream,
                             Encoding = Encoding
                         });
-                    }
-                    else
-                    {
-
                     }
                 }
                 catch (Exception ex)

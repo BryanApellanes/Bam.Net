@@ -71,9 +71,11 @@ namespace Bam.Net.CommandLine
         /// Executes the current string on the command line
         /// and returns the output.
         /// </summary>
-        /// <param name="command"></param>
-        /// <param name="promptForAdmin"></param>
-        /// <param name="timeout"></param>
+        /// <param name="command">The command.</param>
+        /// <param name="promptForAdmin">if set to <c>true</c> [prompt for admin].</param>
+        /// <param name="output">The output.</param>
+        /// <param name="error">The error.</param>
+        /// <param name="timeout">The timeout.</param>
         /// <returns></returns>
         public static ProcessOutput Run(this string command, bool promptForAdmin, StringBuilder output = null, StringBuilder error = null, int timeout = 600000)
         {
