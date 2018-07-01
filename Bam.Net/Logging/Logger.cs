@@ -9,7 +9,6 @@ using System.Threading;
 using System.Diagnostics;
 using Bam.Net.Configuration;
 using System.Collections.Concurrent;
-//using Bam.Net.Helpers;
 
 namespace Bam.Net.Logging
 {

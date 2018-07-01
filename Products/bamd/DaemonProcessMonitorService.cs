@@ -43,7 +43,7 @@ namespace Bam.Net.Application
             {
                 Processes = File.FullName.FromJsonFile<DaemonProcess[]>();
                 Expect.IsNotNull(Processes, $"No processes defined in {fileName}");
-                Logger.AddEntry("{0} processes in {1}", Processes.Length, fileName);
+                Logger.AddEntry("{0} processes in {1}", Processes.Length.ToString(), fileName);
                 Parallel.ForEach(Processes, (process) =>
                 {
                     StartProcess(process);
