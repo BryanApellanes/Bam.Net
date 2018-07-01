@@ -62,7 +62,7 @@ namespace Bam.Net.Logging
         {
             foreach(ILogger logger in Loggers)
             {
-                logger.RestartLoggingThread();
+                logger.StopLoggingThread();
             }
             return base.StartLoggingThread();
         }
