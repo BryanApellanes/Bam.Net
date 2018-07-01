@@ -34,7 +34,7 @@ namespace Bam.Net.Logging
         /// <param name="logger"></param>
         public void AddLogger(ILogger logger)
         {
-            if (logger.IsNull)
+            if (logger.IsNull || logger == null)
             {
                 return;
             }
