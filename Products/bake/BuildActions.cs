@@ -1237,11 +1237,23 @@ namespace Bam.Net.Automation
         {
             OutLineFormat("Trying to {0} service {1} on {2} > {3}", ConsoleColor.Yellow, action, serviceName, host, pathOnRemote);
             ProcessOutput uninstallOutput = PsExec.Run(host, $"{pathOnRemote} {commandSwitch}");
+            OutputActionResult(action, uninstallOutput);
+        }
+
+        private static void OutputActionResult(string action, ProcessOutput uninstallOutput)
+        {
             OutLineFormat("{0} output:\r\n{1}", ConsoleColor.DarkYellow, action, uninstallOutput.StandardOutput);
             if (!string.IsNullOrEmpty(uninstallOutput.StandardError))
             {
                 OutLineFormat("{0} error output:\r\n{1}", ConsoleColor.DarkMagenta, action, uninstallOutput.StandardError);
             }
+        }
+
+        private static void KillProcess(string host, string processNameOrId)
+        {
+            OutLineFormat("Calling pskill on {0} for process {1}", host, processNameOrId);
+            ProcessOutput  killOutput = PsKill.Run(host, processNameOrId);
+            OutputActionResult(string.Format("PsKill {0} on {1}", processNameOrId, host), killOutput);
         }
 
         private static void SetAppSettings(string host, string directoryPathOnRemote, string fileName, Dictionary<string, string> appSettings)
@@ -1296,6 +1308,7 @@ namespace Bam.Net.Automation
                     if (remoteDirectoryInfo.Exists)
                     {
                         CallServiceExecutable(host, "bamd", "Kill", bamdLocalPathNotation, "-k");
+                        KillProcess(host, "bamd");
                         CallServiceExecutable(host, "bamd", "Un-install", bamdLocalPathNotation, "-u");
 
                         TryDeleteDirectory(remoteDirectoryInfo, host);

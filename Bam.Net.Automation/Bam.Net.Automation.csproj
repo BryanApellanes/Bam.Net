@@ -184,6 +184,7 @@
     <Compile Include="Partials\RunningJob.cs" />
     <Compile Include="ProjectReference.cs" />
     <Compile Include="PsExec.cs" />
+    <Compile Include="PsKill.cs" />
     <Compile Include="ScanningWorkerTypeProvider.cs" />
     <Compile Include="Sftp.cs" />
     <Compile Include="Ssh.cs" />
