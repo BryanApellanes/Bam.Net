@@ -12,6 +12,10 @@ namespace Bam.Net.System
 
         public static void CopyTo(this DirectoryInfo directory, string computerName, string remoteDirectory)
         {
+            if (!remoteDirectory.EndsWith("\\"))
+            {
+                remoteDirectory += "\\";
+            }
             List<Task> copyTasks = new List<Task>();
             foreach(FileInfo file in directory.GetFiles())
             {
@@ -19,7 +23,7 @@ namespace Bam.Net.System
             }
             foreach(DirectoryInfo dir in directory.GetDirectories())
             {
-                string subPath = dir.FullName.TruncateFront(directory.FullName.Length + 1);
+                string subPath = dir.FullName.TruncateFront(directory.FullName.Length);
                 copyTasks.Add(Task.Run(() => dir.CopyTo(computerName, remoteDirectory + subPath)));
             }
             Task.WaitAll(copyTasks.ToArray());
