@@ -54,7 +54,7 @@ namespace Bam.Net.Logging
         {
             get
             {
-                return _loggers.ToArray();
+                return _loggers == null ? new ILogger[] { }: _loggers.ToArray();
             }
         }
 
