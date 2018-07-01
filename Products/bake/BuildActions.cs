@@ -1240,12 +1240,12 @@ namespace Bam.Net.Automation
             OutputActionResult(action, uninstallOutput);
         }
 
-        private static void OutputActionResult(string action, ProcessOutput uninstallOutput)
+        private static void OutputActionResult(string action, ProcessOutput actionOutput)
         {
-            OutLineFormat("{0} output:\r\n{1}", ConsoleColor.DarkYellow, action, uninstallOutput.StandardOutput);
-            if (!string.IsNullOrEmpty(uninstallOutput.StandardError))
+            OutLineFormat("{0} output:\r\n{1}", ConsoleColor.DarkYellow, action, actionOutput.StandardOutput);
+            if (!string.IsNullOrEmpty(actionOutput.StandardError))
             {
-                OutLineFormat("{0} error output:\r\n{1}", ConsoleColor.DarkMagenta, action, uninstallOutput.StandardError);
+                OutLineFormat("{0} error output:\r\n{1}", ConsoleColor.DarkMagenta, action, actionOutput.StandardError);
             }
         }
 
