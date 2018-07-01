@@ -29,7 +29,7 @@ namespace Bam.Net.Logging
         /// <summary>
         /// Adds the specified logger if it hasn't already been added.  If
         /// the specified logger is the current MultiTargetLogger it will not be added.
-        /// If the specified logger is a NullLoger it will not be added.
+        /// If the specified logger is a NullLoger or another MultiTargetLogger it will not be added.
         /// </summary>
         /// <param name="logger"></param>
         public void AddLogger(ILogger logger)
@@ -39,7 +39,7 @@ namespace Bam.Net.Logging
                 return;
             }
 
-            if (!_loggers.Contains(logger) && logger != this)
+            if (!_loggers.Contains(logger) && logger != this && logger.GetType() != typeof(MultiTargetLogger))
             {
                 _loggers.Add(logger);
                 SetApplicationNames();
