@@ -117,7 +117,7 @@ namespace Bam.Net.Logging
 
                     if (loggerType == null)
                     {
-                        throw new InvalidOperationException(string.Format("The specified logType ({0}) could not be found.", logType));
+                        throw new InvalidOperationException(string.Format("The specified logType ({0}) was not found.", logType));
                     }
                 }
 
@@ -249,11 +249,19 @@ namespace Bam.Net.Logging
         #endregion
 
         /// <summary>
+        /// Restarts the background logging commit thread.
+        /// </summary>
+        public static void Restart()
+        {
+            Default.RestartLoggingThread();
+        }
+
+        /// <summary>
         /// Starts the background logging commit thread.
         /// </summary>
         public static void Start()
         {
-            Default.RestartLoggingThread();
+            Default.StartLoggingThread();
         }
 
         /// <summary>

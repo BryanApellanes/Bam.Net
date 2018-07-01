@@ -12,36 +12,46 @@ namespace Bam.Net.Application
 {
     public class DaemonProcessMonitor
     {
-        public DaemonProcessMonitor(DaemonProcess process)
+        public DaemonProcessMonitor(DaemonProcess process, ILogger logger = null)
         {
+            Logger = logger ?? Log.Default;
+            MaxLogSizeInBytes = 1048576;
             Process = process;
             FlushLineCount = 25;
             FlushTimeout = 5000;
-            string outlog = Path.Combine(ServiceConfig.LogRoot, $"{Process.Name}_out.txt");
-            string errLog = Path.Combine(ServiceConfig.LogRoot, $"{Process.Name}_err.txt");
-            Log.AddEntry("Outlog for {0} is {1}", Process.Name, outlog);
-            Log.AddEntry("ErrorLog for {0} is {1}", Process.Name, errLog);
-            StandardOutLog = new FileInfo(outlog);
-            ErrorOutLog = new FileInfo(errLog);
+            OutLogName = Path.Combine(ServiceConfig.LogRoot, $"{Process.Name}_out.txt");
+            ErrorLogName = Path.Combine(ServiceConfig.LogRoot, $"{Process.Name}_err.txt");
+            Logger.AddEntry("Outlog for {0} is {1}", Process.Name, OutLogName);
+            Logger.AddEntry("ErrorLog for {0} is {1}", Process.Name, ErrorLogName);
+            StandardOutLog = new FileInfo(OutLogName);
+            ErrorOutLog = new FileInfo(ErrorLogName);
             StartTimedFlush();
         }
 
-        public static DaemonProcessMonitor Start(DaemonProcess process)
+        public static DaemonProcessMonitor Start(DaemonProcess process, ILogger logger = null)
         {
-            Log.AddEntry("Monitoring {0}", process.Name);
-            DaemonProcessMonitor result = new DaemonProcessMonitor(process);
+            logger = logger ?? Log.Default;
+            logger.AddEntry("Monitoring {0}", process.Name);
+            DaemonProcessMonitor result = new DaemonProcessMonitor(process, logger);
+            process.StandardOut += (o, a) => logger.Info(((DaemonProcessEventArgs)a).Message);
+            process.ErrorOut += (o, a) => logger.Warning(((DaemonProcessEventArgs)a).Message);
             process.Start(result.TryRestart);
             return result;
         }
 
         public DaemonProcess Process { get; set; }
         
+        public ILogger Logger { get; set; }
+
+        public int MaxLogSizeInBytes { get; set; }
         public int MaxRetries { get; set; }
         public int FlushLineCount { get; set; }
         public int FlushTimeout { get; set; }
 
-        public FileInfo StandardOutLog { get; }
-        public FileInfo ErrorOutLog { get; }
+        protected string OutLogName { get; set; }
+        protected string ErrorLogName { get; set; }
+        public FileInfo StandardOutLog { get; private set; }
+        public FileInfo ErrorOutLog { get; private set; }
 
         protected int RetryCount { get; set; }
 
@@ -61,14 +71,27 @@ namespace Bam.Net.Application
             LogIfNull(Process.ProcessOutput, "Process.ProcessOutput");
 
             string std = Process.StandardOutSoFar;
+            SetNextLogFiles();
             std.SafeWriteToFile(StandardOutLog.FullName, true);
-            Log.AddEntry("Flushed: {0}", std);
+            Logger.AddEntry("Flushed: {0}", std);
             Process.StandardOutSoFar = string.Empty;
 
             string err = Process.StandardErrorSoFar;
             err.SafeWriteToFile(ErrorOutLog.FullName, true);
-            Log.AddEntry("Flushed err: {0}", err);
-            Process.StandardErrorSoFar = string.Empty;            
+            Logger.AddEntry("Flushed err: {0}", err);
+            Process.StandardErrorSoFar = string.Empty;
+        }
+
+        private void SetNextLogFiles()
+        {
+            if (StandardOutLog.Length >= MaxLogSizeInBytes)
+            {
+                StandardOutLog = new FileInfo(OutLogName.GetNextFileName());
+            }
+            if (ErrorOutLog.Length >= MaxLogSizeInBytes)
+            {
+                ErrorOutLog = new FileInfo(ErrorLogName.GetNextFileName());
+            }
         }
 
         private void LogIfNull(object obj, string name)
@@ -89,28 +112,28 @@ namespace Bam.Net.Application
                 if (standardLineCount > FlushLineCount ||
                     errorLineCount > FlushLineCount)
                 {
-                    Log.AddEntry("Flushing {0}", Process.Name);
+                    Logger.AddEntry("Flushing {0}", Process.Name);
                     Flush();
-                    Log.AddEntry("Flushed {0}", Process.Name);
+                    Logger.AddEntry("Flushed {0}", Process.Name);
                 }
                 else
                 {
-                    Log.AddEntry("Not flushing yet: Std = {0}, Err = {1}", standardLineCount.ToString(), errorLineCount.ToString());
+                    Logger.AddEntry("Not flushing yet: Std = {0}, Err = {1}", standardLineCount.ToString(), errorLineCount.ToString());
                 }
             }
             catch (Exception ex)
             {
-                Log.AddEntry("Error flushing process output for ({0}): {1}", LogEventType.Warning, Process.ToString(), ex.Message);
+                Logger.AddEntry("Error flushing process output for ({0}): {1}", LogEventType.Warning, Process.ToString(), ex.Message);
             }
         }
 
         Timer _flushTimer;
         public void StartTimedFlush()
         {
-            Log.AddEntry("Starting flush timer for {0}", Process.Name);
+            Logger.AddEntry("Starting flush timer for {0}", Process.Name);
             _flushTimer = new Timer((state) =>
             {
-                Log.AddEntry("timer triggered flush");
+                Logger.AddEntry("timer triggered flush");
                 TryFlush();
             }, this, 0, FlushTimeout);
         }

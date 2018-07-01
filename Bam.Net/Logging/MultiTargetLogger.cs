@@ -39,7 +39,7 @@ namespace Bam.Net.Logging
                 return;
             }
 
-            if (!_loggers.Contains(logger) && logger != this && _loggers.Where(l => l.GetType() == logger.GetType()).FirstOrDefault() == null)
+            if (!_loggers.Contains(logger) && logger != this)
             {
                 _loggers.Add(logger);
                 SetApplicationNames();
@@ -57,7 +57,16 @@ namespace Bam.Net.Logging
                 return _loggers.ToArray();
             }
         }
-        
+
+        public override ILogger StartLoggingThread()
+        {
+            foreach(ILogger logger in Loggers)
+            {
+                logger.RestartLoggingThread();
+            }
+            return base.StartLoggingThread();
+        }
+
         /// <summary>
         /// Passes the specified logEvent to the Commit method
         /// of each of the ILoggers in Loggers.

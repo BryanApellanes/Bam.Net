@@ -9,7 +9,7 @@ namespace Bam.Net.Application
 {
     public class DaemonProcessEventArgs: EventArgs
     {
-        public DaemonProcess BambotProcess { get; set; }
+        public DaemonProcess DaemonProcess { get; set; }
         public string Message { get; set; }
     }
 }

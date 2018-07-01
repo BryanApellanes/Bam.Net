@@ -34,7 +34,7 @@ namespace Bam.Net.Application
                 return _serverLock.DoubleCheckLock(ref _server, () =>
                 {
                     ILogger logger = GetLogger();
-                    Log.Default = logger;
+                    Log.Default = logger.RestartLoggingThread();
                     try
                     {
                         ProcessMonitorService = new DaemonProcessMonitorService(logger);

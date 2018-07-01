@@ -19,7 +19,6 @@ namespace Bam.Net.Application
         {
             _monitors = new Dictionary<string, DaemonProcessMonitor>();
             Logger = logger;
-
         }
 
         public override object Clone()
@@ -34,14 +33,14 @@ namespace Bam.Net.Application
         {
             string configRoot = Path.Combine(ServiceConfig.ContentRoot, "conf");
             string fileName = $"{nameof(DaemonProcess).Pluralize()}.json";
-            File = new FileInfo(Path.Combine(configRoot, fileName));
-            if (!File.Exists)
+            ConfigFile = new FileInfo(Path.Combine(configRoot, fileName));
+            if (!ConfigFile.Exists)
             {
-                Logger.AddEntry("{0} not found: {1}", fileName, File.FullName);
+                Logger.AddEntry("{0} not found: {1}", fileName, ConfigFile.FullName);
             }
             else
             {
-                Processes = File.FullName.FromJsonFile<DaemonProcess[]>();
+                Processes = ConfigFile.FullName.FromJsonFile<DaemonProcess[]>() ?? new DaemonProcess[] { };
                 Expect.IsNotNull(Processes, $"No processes defined in {fileName}");
                 Logger.AddEntry("{0} processes in {1}", Processes.Length.ToString(), fileName);
                 Parallel.ForEach(Processes, (process) =>
@@ -68,7 +67,7 @@ namespace Bam.Net.Application
             });          
         }
 
-        public FileInfo File { get; set; }
+        public FileInfo ConfigFile { get; set; }
 
         public virtual List<DaemonProcessInfo> GetProcesses()
         {
@@ -85,7 +84,7 @@ namespace Bam.Net.Application
                     process
                 };
                 Processes = current.ToArray();
-                Processes.ToJsonFile(File);
+                Processes.ToJsonFile(ConfigFile);
                 StartProcess(process);
                 return new CoreServiceResponse { Success = true };
             }
@@ -130,7 +129,7 @@ namespace Bam.Net.Application
             {
                 string key = process.ToString();
                 Logger.AddEntry("Starting {0}", key);
-                process.Subscribe(Log.Default);
+                process.Subscribe(Logger);
                 _monitors.Add(key, DaemonProcessMonitor.Start(process));
             }
             catch (Exception ex)

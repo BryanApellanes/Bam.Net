@@ -85,7 +85,7 @@ namespace Bam.Net.Application
             };
             startInfo.RedirectStandardOutput = true;
             startInfo.RedirectStandardError = true;
-            ProcessOutputCollector collector = new ProcessOutputCollector((data) => FireEvent(StandardOut, new DaemonProcessEventArgs { BambotProcess = this, Message = data }), (error) => FireEvent(ErrorOut, new DaemonProcessEventArgs { BambotProcess = this, Message = error }));
+            ProcessOutputCollector collector = new ProcessOutputCollector((data) => FireEvent(StandardOut, new DaemonProcessEventArgs { DaemonProcess = this, Message = data }), (error) => FireEvent(ErrorOut, new DaemonProcessEventArgs { DaemonProcess = this, Message = error }));
             ProcessOutput = startInfo.Run(onExit, collector);
             return ProcessOutput;
         }
