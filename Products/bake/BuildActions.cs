@@ -266,7 +266,7 @@ namespace Bam.Net.Automation
             }
         }
 
-        [ConsoleAction("deploy", @"Deploy Windows Services from the latest build to the folder C:\bam\sys\")]
+        [ConsoleAction("deploy", @"Deploy Windows Services and Daemons from the latest build to the folder C:\bam\sys\")]
         public static void Deploy()
         {
             // read deploy.json
@@ -277,27 +277,37 @@ namespace Bam.Net.Automation
                 Thread.Sleep(1000);
                 Exit(1);
             }
+            string targetHost = Arguments.Contains("host") ? Arguments["host"] : string.Empty;
             DirectoryInfo latestBinaries = GetLatestBuildBinaryDirectory();
             DeployInfo deployInfo = deployConfigPath.FromJsonFile<DeployInfo>();
             // for each windows service
             foreach (WindowsServiceInfo svcInfo in deployInfo.WindowsServices)
             {
-                DeployWindowsService(latestBinaries, svcInfo);
+                if(string.IsNullOrEmpty(targetHost) || svcInfo.Host.Equals(targetHost))
+                {
+                    DeployWindowsService(latestBinaries, svcInfo);
+                }
             }
 
-            StopAndDeleteBamDaemonOnHosts(deployInfo);
+            StopAndDeleteBamDaemonOnHosts(deployInfo, targetHost);
 
             Dictionary<string, List<DaemonProcess>> daemonsByHost = new Dictionary<string, List<DaemonProcess>>();
             // for each daemon entry 
             foreach (DaemonInfo daemonInfo in deployInfo.Daemons)
             {
-                PrepareDaemonFiles(latestBinaries, daemonsByHost, daemonInfo);
+                if(string.IsNullOrEmpty(targetHost) || daemonInfo.Host.Equals(targetHost))
+                {
+                    PrepareDaemonFilesOnHost(latestBinaries, daemonsByHost, daemonInfo);
+                }
             }
 
             foreach (string host in daemonsByHost.Keys)
             {
-                List<DaemonProcess> daemonProcesses = daemonsByHost[host];
-                ConfigureAndStartBamDaemon(latestBinaries, host, daemonProcesses);
+                if(string.IsNullOrEmpty(targetHost) || host.Equals(targetHost))
+                {
+                    List<DaemonProcess> daemonProcesses = daemonsByHost[host];
+                    ConfigureAndStartBamDaemon(latestBinaries, host, daemonProcesses);
+                }
             }
         }
 
@@ -1272,7 +1282,7 @@ namespace Bam.Net.Automation
             CallServiceExecutable(svcInfo, "Start", remoteFile, "-s");
         }
 
-        private static void StopAndDeleteBamDaemonOnHosts(DeployInfo deployInfo)
+        private static void StopAndDeleteBamDaemonOnHosts(DeployInfo deployInfo, string targetHost)
         {
             string bamdLocalPathNotation = Path.Combine(Paths.Sys, "bamd", "bamd.exe");
             OutLineFormat("Stopping Bam Daemon on each host", ConsoleColor.DarkCyan);
@@ -1280,13 +1290,16 @@ namespace Bam.Net.Automation
             HashSet<string> daemonHosts = new HashSet<string>(deployInfo.Daemons.Select(di => di.Host).ToList());
             foreach (string host in daemonHosts)
             {
-                DirectoryInfo remoteDirectoryInfo = bamdLocalPath.FullName.GetAdminShareDirectory(host);
-                if (remoteDirectoryInfo.Exists)
+                if(string.IsNullOrEmpty(targetHost) || host.Equals(targetHost))
                 {
-                    CallServiceExecutable(host, "bamd", "Kill", bamdLocalPathNotation, "-k");
-                    CallServiceExecutable(host, "bamd", "Un-install", bamdLocalPathNotation, "-u");
+                    DirectoryInfo remoteDirectoryInfo = bamdLocalPath.FullName.GetAdminShareDirectory(host);
+                    if (remoteDirectoryInfo.Exists)
+                    {
+                        CallServiceExecutable(host, "bamd", "Kill", bamdLocalPathNotation, "-k");
+                        CallServiceExecutable(host, "bamd", "Un-install", bamdLocalPathNotation, "-u");
 
-                    TryDeleteDirectory(remoteDirectoryInfo, host);
+                        TryDeleteDirectory(remoteDirectoryInfo, host);
+                    }
                 }
             }
         }
@@ -1310,7 +1323,7 @@ namespace Bam.Net.Automation
             CallServiceExecutable(host, "bamd", "Start", bamdLocalPathNotation, "-s");
         }
 
-        private static void PrepareDaemonFiles(DirectoryInfo latestBinaries, Dictionary<string, List<DaemonProcess>> daemonsByHost, DaemonInfo daemonInfo)
+        private static void PrepareDaemonFilesOnHost(DirectoryInfo latestBinaries, Dictionary<string, List<DaemonProcess>> daemonsByHost, DaemonInfo daemonInfo)
         {
             Args.ThrowIf(string.IsNullOrEmpty(daemonInfo.Host), "Host not specified");
             Args.ThrowIf(string.IsNullOrEmpty(daemonInfo.Name), "Name not specified");
