@@ -9,9 +9,15 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Encryption
 {
-    [Obsolete("This class should be moved to the Encryption project and switched over to BouncyCastle")]
     public static class Rsa
     {
+        static Rsa()
+        {
+            DefaultKeySize = 1024;
+        }
+
+        public static int DefaultKeySize { get; set; }
+
         public static string Encrypt(string value)
         {
             return RsaKeyPair.Default.EncryptWithPublicKey(value);

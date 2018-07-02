@@ -15,7 +15,7 @@ namespace Bam.Net.Encryption
     {
         public RsaKeyPair()
         {
-            RSACryptoServiceProvider initial = CreateRSACryptoServiceProvider();
+            RSACryptoServiceProvider initial = CreateRSACryptoServiceProvider(Rsa.DefaultKeySize);
             PublicKeyXml = initial.ToXmlString(false);
             PrivateKeyXml = initial.ToXmlString(true);
         }
@@ -30,10 +30,8 @@ namespace Bam.Net.Encryption
                 {
                     string applicationName = DefaultConfiguration.GetAppSetting("ApplicationName", DefaultConfiguration.DefaultApplicationName);
                     RsaKeyPair result = new RsaKeyPair();
-                    string pubKeyPath;
-                    string privKeyPath;
-                    if (result.PubExists(applicationName, out pubKeyPath) &&
-                        result.PrivExists(applicationName, out privKeyPath))
+                    if (result.PubExists(applicationName, out string pubKeyPath) &&
+                        result.PrivExists(applicationName, out string privKeyPath))
                     {
                         LoadPublic(result, pubKeyPath);
                         LoadPrivate(result, privKeyPath);
@@ -131,25 +129,18 @@ namespace Bam.Net.Encryption
         {
             get
             {
-                RSACryptoServiceProvider publicKey = CreateRSACryptoServiceProvider();
+                RSACryptoServiceProvider publicKey = CreateRSACryptoServiceProvider(Rsa.DefaultKeySize);
                 publicKey.FromXmlString(PublicKeyXml);
                 return publicKey;
             }
         }
 
-        private static RSACryptoServiceProvider CreateRSACryptoServiceProvider(int keySize = 1024)
-        {
-            CspParameters RSAParams = new CspParameters();
-            RSAParams.Flags = CspProviderFlags.UseMachineKeyStore;
-            RSACryptoServiceProvider publicKey = new RSACryptoServiceProvider(keySize, RSAParams);
-            return publicKey;
-        }
 
         public RSACryptoServiceProvider PrivateKey
         {
             get
             {
-                RSACryptoServiceProvider privateKey = CreateRSACryptoServiceProvider();
+                RSACryptoServiceProvider privateKey = CreateRSACryptoServiceProvider(Rsa.DefaultKeySize);
                 privateKey.FromXmlString(PrivateKeyXml);
                 return privateKey;
             }
@@ -178,6 +169,16 @@ namespace Bam.Net.Encryption
             byte[] enc = key.Encrypt(data, false);
             string base64Enc = Convert.ToBase64String(enc);
             return base64Enc;
+        }
+
+        private static RSACryptoServiceProvider CreateRSACryptoServiceProvider(int keySize = 1024)
+        {
+            CspParameters RSAParams = new CspParameters
+            {
+                Flags = CspProviderFlags.UseMachineKeyStore
+            };
+            RSACryptoServiceProvider publicKey = new RSACryptoServiceProvider(keySize, RSAParams);
+            return publicKey;
         }
     }
 }

@@ -56,8 +56,7 @@ namespace Bam.Net.Encryption
 
         public static bool TryEnsureSchema(Database db)
         {
-            Exception ignore;
-            return TryEnsureSchema(db, out ignore);
+            return TryEnsureSchema(db, out Exception ignore);
         }
 
         public static bool TryEnsureSchema(Database db, out Exception ex)
@@ -86,9 +85,11 @@ namespace Bam.Net.Encryption
             {
                 Args.ThrowIfNull(VaultFile, "VaultFile");
 
-                ConnectionStringSettings s = new ConnectionStringSettings();
-                s.ProviderName = SQLiteRegistrar.SQLiteFactoryAssemblyQualifiedName();
-                s.ConnectionString = string.Format("Data Source={0};Version=3;", VaultFile.FullName);
+                ConnectionStringSettings s = new ConnectionStringSettings
+                {
+                    ProviderName = SQLiteRegistrar.SQLiteFactoryAssemblyQualifiedName(),
+                    ConnectionString = string.Format("Data Source={0};Version=3;", VaultFile.FullName)
+                };
 
                 return new ConnectionStringResolveResult(s);
             }

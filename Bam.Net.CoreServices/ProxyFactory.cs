@@ -40,6 +40,7 @@ namespace Bam.Net.CoreServices
             ServiceProvider = serviceProvider ?? Incubator.Default;
             HostNameMunger = NoMungeMunger;
         }
+
         protected Func<Type, string, string> SubdomainPrefixMunger
         {
             get

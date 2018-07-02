@@ -102,7 +102,7 @@ namespace Bam.Net.Encryption
         }
 
         internal static Database InitializeSystemDatabase()
-        {
+        {            
             return InitializeDatabase(".\\System.vault.sqlite", Log.Default);
         }
 
@@ -157,6 +157,11 @@ namespace Bam.Net.Encryption
             }
         }
 
+        public static Vault Load(VaultInfo vaultInfo)
+        {
+            return Load(vaultInfo.FilePath, vaultInfo.Name);
+        }
+
         public static Vault Load(string filePath, string vaultName)
         {
             return Load(new FileInfo(filePath), vaultName);            
@@ -189,7 +194,7 @@ namespace Bam.Net.Encryption
         }
 
         /// <summary>
-        /// Get the vault with the specified name
+        /// Get the vault with the specified name from the SystemVaultDatabase.
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
@@ -201,6 +206,7 @@ namespace Bam.Net.Encryption
         /// <summary>
         /// Get the Vault with the specified name using the
         /// specified password to create it if it doesn't exist
+        /// in the SystemVaultDatabase.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="password"></param>
@@ -239,7 +245,7 @@ namespace Bam.Net.Encryption
         /// Create a vault in the specified file by the 
         /// specified name.  If the vault already exists
         /// in the specified file the existing vault
-        /// will be returned
+        /// is returned
         /// </summary>
         /// <param name="file"></param>
         /// <param name="name"></param>
@@ -359,8 +365,7 @@ namespace Bam.Net.Encryption
 
         public bool HasKey(string key)
         {
-            string ignore;
-            return HasKey(key, out ignore);
+            return HasKey(key, out string ignore);
         }
 
         public bool HasKey(string key, out string value)

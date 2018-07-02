@@ -157,6 +157,11 @@
     <Compile Include="AssemblyResolve.cs" />
     <Compile Include="BackgroundThreadQueue.cs" />
     <Compile Include="BackgroundThreadQueueEventArgs.cs" />
+    <Compile Include="Encryption\CredentialProvider.cs" />
+    <Compile Include="Encryption\DefaultConfigurationCredentialProvider.cs" />
+    <Compile Include="Encryption\ICredentialProvider.cs" />
+    <Compile Include="Encryption\ISaltProvider.cs" />
+    <Compile Include="Encryption\DefaultConfigurationSaltProvider.cs" />
     <Compile Include="Paths.cs" />
     <Compile Include="TypeResolver.cs" />
     <Compile Include="CompilationException.cs" />
