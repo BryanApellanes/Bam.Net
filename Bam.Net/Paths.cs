@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bam.Net.Configuration;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -33,6 +34,12 @@ namespace Bam.Net
         public static string Tools { get; private set; }
         public static string NugetPackages { get; private set; }
         public static string Builds { get; set; }
+
+        public static string AppData
+        {
+            get { return RuntimeSettings.AppDataFolder; }
+            set { RuntimeSettings.AppDataFolder = value; }
+        }
 
         private static void SetPaths()
         {

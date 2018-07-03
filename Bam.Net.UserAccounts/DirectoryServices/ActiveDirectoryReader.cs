@@ -60,6 +60,8 @@ namespace Bam.Net.UserAccounts.DirectoryServices
         [Verbosity(VerbosityLevel.Information, MessageFormat = "User found: UserName = {UserName}, Server = {Server}")]
         public event EventHandler UserFound;
 
+        
+
         public string[] GetGroupNames(string userName)
         {
             HashSet<string> results = new HashSet<string>();
