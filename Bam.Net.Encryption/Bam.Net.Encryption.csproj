@@ -138,6 +138,7 @@
     <Compile Include="RsaKeyLength.cs" />
     <Compile Include="Secure.cs" />
     <Compile Include="VaultCredentialProvider.cs" />
+    <Compile Include="VaultDatabase.cs" />
     <Compile Include="VaultDatabaseInitializer.cs" />
     <Compile Include="VaultInfo.cs" />
     <Compile Include="VaultKeyInfo.cs" />

@@ -158,6 +158,15 @@ namespace Bam.Net.Encryption
             }
         }
 
+        /// <summary>
+        /// Loads the default vault for the current application.
+        /// </summary>
+        /// <returns></returns>
+        public static Vault Load()
+        {
+            return Load(new VaultInfo());
+        }
+
         public static Vault Load(VaultInfo vaultInfo)
         {
             return Load(vaultInfo.FilePath, vaultInfo.Name);
@@ -192,6 +201,13 @@ namespace Bam.Net.Encryption
                 }
             }
             return _loadedVaults[key];
+        }
+
+        public Vault Rename(string newName)
+        {
+            Name = newName;
+            Save(Database);
+            return this;
         }
 
         /// <summary>
@@ -297,8 +313,10 @@ namespace Bam.Net.Encryption
             Vault result = Vault.OneWhere(c => c.Name == name, database);
             if (result == null)
             {
-                result = new Vault();
-                result.Name = name;
+                result = new Vault
+                {
+                    Name = name
+                };
                 result.Save(database);
                 VaultKey key = result.VaultKeysByVaultId.JustOne(database, false);
                 AsymmetricCipherKeyPair keys = RsaKeyGen.GenerateKeyPair(rsaKeyLength);
