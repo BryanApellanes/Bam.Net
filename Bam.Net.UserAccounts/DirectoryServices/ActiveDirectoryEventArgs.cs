@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.UserAccounts.ActiveDirectory
+namespace Bam.Net.UserAccounts.DirectoryServices
 {
     public class ActiveDirectoryEventArgs: EventArgs
     {

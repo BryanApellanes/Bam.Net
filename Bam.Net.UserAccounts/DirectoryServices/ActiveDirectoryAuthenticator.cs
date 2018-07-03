@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Bam.Net.Logging;
 using Bam.Net.UserAccounts.Data;
 
-namespace Bam.Net.UserAccounts.ActiveDirectory
+namespace Bam.Net.UserAccounts.DirectoryServices
 {
     public class ActiveDirectoryAuthenticator : Loggable, IAuthenticator
     {

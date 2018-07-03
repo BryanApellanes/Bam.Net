@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bam.Net.UserAccounts.ActiveDirectory
+namespace Bam.Net.UserAccounts.DirectoryServices
 {
     public class ActiveDirectoryReader: Loggable
     {
@@ -23,6 +23,7 @@ namespace Bam.Net.UserAccounts.ActiveDirectory
 
         /// <summary>
         /// Gets or sets the search results, keyed by username (samaccountname) then by properties.
+        /// All search results are "cached" in this property.
         /// </summary>
         /// <value>
         /// The search results.

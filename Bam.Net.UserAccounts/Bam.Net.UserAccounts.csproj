@@ -151,9 +151,10 @@
   <ItemGroup>
     <Compile Include="AccountConfirmationEmailData.cs" />
     <Compile Include="AccountCreationFailedException.cs" />
-    <Compile Include="ActiveDirectory\ActiveDirectoryAuthenticator.cs" />
-    <Compile Include="ActiveDirectory\ActiveDirectoryEventArgs.cs" />
-    <Compile Include="ActiveDirectory\ActiveDirectoryReader.cs" />
+    <Compile Include="DirectoryServices\ActiveDirectoryAuthenticator.cs" />
+    <Compile Include="DirectoryServices\ActiveDirectoryEventArgs.cs" />
+    <Compile Include="DirectoryServices\ActiveDirectoryReader.cs" />
+    <Compile Include="DirectoryServices\ActiveDirectoryRoleReader.cs" />
     <Compile Include="Authenticator.cs" />
     <Compile Include="CheckEmailResponse.cs" />
     <Compile Include="CheckUserNameResponse.cs" />
@@ -167,6 +168,7 @@
     <Compile Include="IAuthenticator.cs" />
     <Compile Include="InvalidTokenException.cs" />
     <Compile Include="IRoleProvider.cs" />
+    <Compile Include="IRoleReader.cs" />
     <Compile Include="IsAuthenticatedResponse.cs" />
     <Compile Include="IUserManager.cs" />
     <Compile Include="IUserProvider.cs" />
