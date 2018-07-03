@@ -161,26 +161,14 @@ namespace Bam.Net
                     }
                 }
 
-                // TODO: handle vaulted credentials separately
-                //// handle credentials -vc:'vault credentials'
-                //if ((args[0].Equals("-i") || args[0].StartsWith("-vc:")) &&
-                //    args[1].Equals("-i") || args[1].StartsWith("-vc:"))
-                //{
-                //    string ckArg = args[0].StartsWith("-vc:") ? args[0] : args[1];
-                //    string[] splitCk = ckArg.Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
-                //    if (splitCk.Length == 2)
-                //    {
-                //        Install(serviceName, displayName, description, splitCk[1]);
-                //        return true;
-                //    }
-                //}
-
                 if ((args[0].Equals("-i") && (args[1].Equals("1") || args[1].ToLower().Equals("true"))))
                 {
                     Install(serviceName, displayName, description, null, true);
                     return true;
                 }
             }
+
+            // if length 3 expect -i -u:username -p:password
 
             return false;
         }
