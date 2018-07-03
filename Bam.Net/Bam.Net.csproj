@@ -159,7 +159,9 @@
     <Compile Include="BackgroundThreadQueueEventArgs.cs" />
     <Compile Include="Encryption\CredentialProvider.cs" />
     <Compile Include="Encryption\DefaultConfigurationCredentialProvider.cs" />
+    <Compile Include="Encryption\IServiceCredentialProvider.cs" />
     <Compile Include="Encryption\ICredentialProvider.cs" />
+    <Compile Include="Encryption\INamedCredentialProvider.cs" />
     <Compile Include="Encryption\ISaltProvider.cs" />
     <Compile Include="Encryption\DefaultConfigurationSaltProvider.cs" />
     <Compile Include="Paths.cs" />

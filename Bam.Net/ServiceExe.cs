@@ -161,9 +161,24 @@ namespace Bam.Net
                     }
                 }
 
+                // TODO: handle vaulted credentials separately
+                //// handle credentials -vc:'vault credentials'
+                //if ((args[0].Equals("-i") || args[0].StartsWith("-vc:")) &&
+                //    args[1].Equals("-i") || args[1].StartsWith("-vc:"))
+                //{
+                //    string ckArg = args[0].StartsWith("-vc:") ? args[0] : args[1];
+                //    string[] splitCk = ckArg.Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
+                //    if (splitCk.Length == 2)
+                //    {
+                //        Install(serviceName, displayName, description, splitCk[1]);
+                //        return true;
+                //    }
+                //}
+
                 if ((args[0].Equals("-i") && (args[1].Equals("1") || args[1].ToLower().Equals("true"))))
                 {
                     Install(serviceName, displayName, description, null, true);
+                    return true;
                 }
             }
 
@@ -293,7 +308,7 @@ namespace Bam.Net
             Install(serviceName, displayName, description, false, serviceAccountName, serviceAccountPassword);
         }
 
-        public static void Install(string serviceName, string displayName, string description, bool allowDesktopInteraction, string userName, string serviceAccountPassword)
+        public static void Install(string serviceName, string displayName, string description, bool allowDesktopInteraction, string serviceAccountName, string serviceAccountPassword)
         {
             OnStartInstall();
             try
@@ -305,7 +320,7 @@ namespace Bam.Net
 
                 Console.WriteLine("INFO:: ServiceName={0},DisplayName={1},Description={2}", serviceName, displayName, description);
 
-                object ret = win32Service.InvokeMethod("Create", new object[] { serviceName, displayName, cur.Location, 16, 0, "Automatic", allowDesktopInteraction, userName, serviceAccountPassword, null, null, null });
+                object ret = win32Service.InvokeMethod("Create", new object[] { serviceName, displayName, cur.Location, 16, 0, "Automatic", allowDesktopInteraction, serviceAccountName, serviceAccountPassword, null, null, null });
                 if (ret.ToString().Equals("0"))
                 {
                     Console.WriteLine("INFO:: Service was created successfully");

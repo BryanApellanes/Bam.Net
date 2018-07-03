@@ -6,40 +6,90 @@ using System.Threading.Tasks;
 
 namespace Bam.Net.Encryption
 {
-    public class VaultCredentialProvider : ICredentialProvider
+    public class VaultCredentialProvider : CredentialProvider
     {
-        public VaultCredentialProvider(Vault vault, string userNameKey = "UserName", string passwordKey = "Password")
+        public VaultCredentialProvider(Vault vault, string userNameKey = "User", string passwordKey = "Password")
         {
             Vault = vault;
             UserNameKey = userNameKey;
             PasswordKey = passwordKey;
         }
 
-        public VaultCredentialProvider(VaultInfo vaultInfo, string userNameKey = "UserName", string passwordKey = "Password") : this(Vault.Load(vaultInfo))
+        public VaultCredentialProvider(VaultInfo vaultInfo, string userNameKey = "User", string passwordKey = "Password") : this(Vault.Load(vaultInfo))
         { }
 
-        static ICredentialProvider _instance;
+        static CredentialProvider _instance;
         static object _instanceLock = new object();
-        public static ICredentialProvider Instance
+        public static CredentialProvider Instance
         {
             get
             {
                 return _instanceLock.DoubleCheckLock(ref _instance, () => new VaultCredentialProvider(Vault.System));
             }
         }
-
+                
         public string UserNameKey { get; set; }
         public string PasswordKey { get; set; }
         public Vault Vault { get; set; }
 
-        public string GetPassword()
+        public override string GetPassword()
         {
             return Vault[PasswordKey];
         }
 
-        public string GetUserName()
+        public override string GetUserName()
         {
             return Vault[UserNameKey];
+        }
+        
+        public override string GetUserNameFor(string targetIdentifier)
+        {
+            return Vault[$"{targetIdentifier}.{UserNameKey}"];
+        }
+
+        public override string GetPasswordFor(string targetIdentifier)
+        {
+            return Vault[$"{targetIdentifier}.{PasswordKey}"];
+        }
+
+        public override string GetUserNameFor(string machineName, string serviceName)
+        {
+            return Vault[$"{machineName}.{serviceName}.{UserNameKey}"];
+        }
+
+        public override string GetPasswordFor(string machineName, string serviceName)
+        {
+            return Vault[$"{machineName}.{serviceName}.{PasswordKey}"];
+        }
+
+        public void SetUserName(string userName)
+        {
+            Vault[UserNameKey] = userName;
+        }
+
+        public void SetPassword(string password)
+        {
+            Vault[PasswordKey] = password;
+        }
+
+        public void SetUserNameFor(string targetIdentifier, string userName)
+        {
+            Vault[$"{targetIdentifier}.{UserNameKey}"] = userName;
+        }
+
+        public void SetPasswordFor(string targetIdentifier, string password)
+        {
+            Vault[$"{targetIdentifier}.{PasswordKey}"] = password;
+        }
+
+        public void SetUserNameFor(string machineName, string serviceName, string userName)
+        {
+            Vault[$"{machineName}.{serviceName}.{UserNameKey}"] = userName;
+        }
+
+        public void SetPasswordFor(string machineName, string serviceName, string password)
+        {
+            Vault[$"{machineName}.{serviceName}.{PasswordKey}"] = password;
         }
     }
 }

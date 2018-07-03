@@ -8,6 +8,12 @@ namespace Bam.Net.Application
 {
     public class DeployInfo
     {
+        public DeployInfo()
+        {
+            Daemons = new DaemonInfo[] { };
+            WindowsServices = new WindowsServiceInfo[] { };
+        }
+
         public DaemonInfo[] Daemons { get; set; }
         public WindowsServiceInfo[] WindowsServices { get; set; }
     }

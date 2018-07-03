@@ -20,10 +20,11 @@ using Bam.Net.Testing.Integration;
 namespace Bam.Net.Application
 {
     [Serializable]
-	public class ManagementActions : CommandLineTestInterface
+	public class UserAdministrationActions : CommandLineTestInterface
 	{
         const string BamSysPath = "C:\\bam\\sys\\";
 
+        // TODO: move this method to one of the integration test projects
         [IntegrationTest]
         public void NotifyThroughCore()
         {
@@ -40,15 +41,17 @@ namespace Bam.Net.Application
         [ConsoleAction]
         public void SetDefaultSmtpSettings()
         {
-            SmtpSettings settings = new SmtpSettings
+            string smtpSettingsFile = ".\\default-smtp-settings.json";
+            if (!File.Exists(smtpSettingsFile))
             {
-                SmtpHost = "mail.privateemail.com",
-                Port = 587,
-                UserName = "support@threeheadz.com",
-                From = "support@threeheadz.com",
-                DisplayName = "Three Headz",
-                EnableSsl = true
-            };
+                smtpSettingsFile = Prompt("Please enter the path to the smtp settings json file");
+            }
+            if (!File.Exists(smtpSettingsFile))
+            {
+                OutLineFormat("Specified smtp settings file doesn't exist: {0}", ConsoleColor.Magenta, smtpSettingsFile);
+                return;
+            }
+            SmtpSettings settings = smtpSettingsFile.FromJsonFile<SmtpSettings>();
 
             settings.Password = PasswordPrompt("Please enter the smtp password", ConsoleColor.Yellow);
 
@@ -59,7 +62,7 @@ namespace Bam.Net.Application
         /// List all users from the local database.
         /// </summary>
         [ConsoleAction("listLocalUsers", "list local users")]
-        public void UserAdmin()
+        public void ListLocalUsers()
         {
             Database userDatabase = GetUserDatabase();
             UserCollection users = User.LoadAll(userDatabase);
@@ -85,8 +88,11 @@ namespace Bam.Net.Application
             OutLineFormat("User created: \r\n{0}", ConsoleColor.Cyan, user.ToJsonSafe().ToJson(true));
         }
 
-        [ConsoleAction("listRoles", "list local roles")]
-        public void ListRoles()
+        /// <summary>
+        /// Lists the local roles.
+        /// </summary>
+        [ConsoleAction("listLocalRoles", "list local roles")]
+        public void ListLocalRoles()
         {
             Database userDatabase = GetUserDatabase();
             RoleCollection roles = Role.LoadAll(userDatabase);
@@ -97,6 +103,9 @@ namespace Bam.Net.Application
             }
         }
 
+        /// <summary>
+        /// Adds the user to role.
+        /// </summary>
         [ConsoleAction("addUserToRole", "add user to role")]
         public void AddUserToRole()
         {
@@ -131,6 +140,9 @@ namespace Bam.Net.Application
             }
         }
 
+        /// <summary>
+        /// Deletes a local user.
+        /// </summary>
         [ConsoleAction("deleteLocalUser", "delete a local user account")]
         public void DeleteLocalUser()
         {
@@ -167,6 +179,9 @@ namespace Bam.Net.Application
             }
         }
 
+        /// <summary>
+        /// Signs up.
+        /// </summary>
         [ConsoleAction("signUp", "Sign Up for an account on bamapps.net")]
 		public void SignUp()
 		{
@@ -183,8 +198,11 @@ namespace Bam.Net.Application
             }
 		}
 
-		[ConsoleAction("createClientApplication", "Create Client Application")]
-		public void RegisterApp()
+        /// <summary>
+        /// Registers the application.
+        /// </summary>
+        [ConsoleAction("createClientApplication", "Create Client Application")]
+		public void CreateClientApplication()
 		{
 			BamServer server = new BamServer(BamConf.Load(GetRoot()));
             ConsoleLogger logger = new ConsoleLogger()
@@ -198,97 +216,6 @@ namespace Bam.Net.Application
 			app.Initialize();
 		}
         
-        [ConsoleAction("createManifest", "Create BamAppManifest from a specified directory")]
-        public void CreateManifest()
-        {
-            string directoryPath = GetArgument("appDirectory", true, "Please enter the path to the directory");
-            string appName = GetArgument("appName", true, "Please enter the name of the application to create the manifest for");
-            BamAppManifest manifest = new BamAppManifest() { AppName = appName };
-            DirectoryInfo dirInfo = new DirectoryInfo(directoryPath);
-            List<string> fileNames = new List<string>();
-            foreach(FileInfo file in dirInfo.GetFiles())
-            {
-                fileNames.Add(file.Name);
-            }
-            manifest.FileNames = fileNames.ToArray();
-            List<string> dirNames = new List<string>();
-            foreach(DirectoryInfo dir in dirInfo.GetDirectories())
-            {
-                dirNames.Add(dir.Name);
-            }
-            manifest.DirectoryNames = dirNames.ToArray();
-            manifest.ToJsonFile(Path.Combine(BamSysPath, $"{manifest.AppName}.bamapp.json"));
-        }
-
-        [ConsoleAction("updateFromManifest", "Update the specified system app in c:\\bam\\sys\\{appName}")]
-        public void UpdateSysApp()
-        {
-            string appName = GetArgument("appName", true, "Please enter the name of the application to update");
-            string manifestPath = Path.Combine(BamSysPath, $"{appName}.bamapp.json");
-            if (!File.Exists(manifestPath))
-            {
-                Warn("Manifest for the specified app was not found");
-                return;
-            }            
-            Log.AddLogger(new ConsoleLogger { UseColors = true, AddDetails = false, ApplicationName = Assembly.GetEntryAssembly().GetFileInfo().Name });
-            string appPath = Path.Combine(BamSysPath, appName);
-            BamAppManifest manifest = manifestPath.FromJsonFile<BamAppManifest>();
-            DirectoryInfo source = new DirectoryInfo(".");
-            DirectoryInfo dest = new DirectoryInfo(appPath);
-            if (dest.Exists)
-            {
-                string moveTo = $"{appPath}_unkown-commit-".RandomLetters(4);
-                string commitFile = Path.Combine(dest.FullName, "commit");
-                if (File.Exists(commitFile))
-                {
-                    moveTo = $"{appPath}_{File.ReadAllText(commitFile)}";
-                }
-                else
-                {
-                    Log.Warn("Commit file {0} not found", commitFile);
-                }
-                Log.Info("Moving old instance from {0} to {1}", dest.Name, moveTo);
-                dest.MoveTo(moveTo);
-            }
-            dest = new DirectoryInfo(appPath);
-            foreach(string dirName in manifest.DirectoryNames)
-            {
-                DirectoryInfo srcSubdir = new DirectoryInfo(Path.Combine(source.FullName, dirName));
-                if (srcSubdir.Exists)
-                {
-                    DirectoryInfo destSubDir = new DirectoryInfo(Path.Combine(dest.FullName, dirName));
-                    if (!destSubDir.Parent.Exists)
-                    {
-                        destSubDir.Parent.Create();
-                    }
-                    Log.Info("Copying {0} to {1}", srcSubdir.FullName, destSubDir.FullName);
-                    srcSubdir.Copy(destSubDir.FullName);
-                }
-                else
-                {
-                    Log.Warn("Directory {0} doesn't exist", srcSubdir.FullName);
-                }
-            }
-            foreach(string fileName in manifest.FileNames)
-            {
-                FileInfo srcFile = new FileInfo(Path.Combine(source.FullName, fileName));
-                if (srcFile.Exists)
-                {
-                    FileInfo destFile = new FileInfo(Path.Combine(dest.FullName, fileName));
-                    if (!destFile.Directory.Exists)
-                    {
-                        destFile.Directory.Create();
-                    }
-                    Log.Info("Copying {0} to {1}", srcFile.FullName, destFile.FullName);
-                    srcFile.CopyTo(destFile.FullName);
-                }
-                else
-                {
-                    Log.Warn("File {0} doesn't exist", srcFile.FullName);
-                }
-            }
-        }
-
         private string ConfirmPasswordPrompt()
         {
             string password1 = PasswordPrompt("Please enter the new user's password");
@@ -319,17 +246,7 @@ namespace Bam.Net.Application
 			root = Arguments.Contains("root") ? Arguments["root"] : Prompt("Please enter the root directory path");
 			return root;
 		}
-
-		private static void GetRootAndSaveTarget(out string root, out string saveTo)
-		{
-			root = GetRoot();
-			saveTo = Arguments.Contains("saveTo") ? Arguments["saveTo"] : Prompt("Please enter the file name to save to");
-			if (!saveTo.EndsWith(".zip"))
-			{
-				saveTo += ".zip";
-			}
-		}
-
+        
         static ILogger _logger;
         private static ILogger GetLogger()
         {

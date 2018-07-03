@@ -72,14 +72,13 @@ namespace Bam.Net.Encryption
             ChildCollections.Clear();
         }
 
-
         static Database _systemVaultDatabase;
         static object _systemVaultDatabaseSync = new object();
         public static Database SystemVaultDatabase
         {
             get
             {
-                return _systemVaultDatabaseSync.DoubleCheckLock(ref _systemVaultDatabase, () => InitializeSystemDatabase());
+                return _systemVaultDatabaseSync.DoubleCheckLock(ref _systemVaultDatabase, () => InitializeSystemVaultDatabase());
             }
             set
             {
@@ -93,7 +92,7 @@ namespace Bam.Net.Encryption
         {
             get
             {
-                return _applicationVaultDatabaseSync.DoubleCheckLock(ref _applicationVaultDatabase, () => InitializeApplicationDatabase());
+                return _applicationVaultDatabaseSync.DoubleCheckLock(ref _applicationVaultDatabase, () => InitializeApplicationVaultDatabase());
             }
             set
             {
@@ -101,18 +100,20 @@ namespace Bam.Net.Encryption
             }
         }
 
-        internal static Database InitializeSystemDatabase()
+        internal static Database InitializeSystemVaultDatabase()
         {            
-            return InitializeDatabase(".\\System.vault.sqlite", Log.Default);
+            string path = Path.Combine(Paths.Data, $"System.vault.sqlite");
+            return InitializeVaultDatabase(path, Log.Default);
         }
 
-        internal static Database InitializeApplicationDatabase()
+        internal static Database InitializeApplicationVaultDatabase()
         {
             string appName = DefaultConfigurationApplicationNameProvider.Instance.GetApplicationName();
-            return InitializeDatabase($".\\Application_{appName}.vault.sqlite", Log.Default);
+            string path = Path.Combine(Paths.Data, $"Application_{appName}.vault.sqlite");
+            return InitializeVaultDatabase(path, Log.Default);
         }
 
-        public static Database InitializeDatabase(string filePath, ILogger logger = null)
+        public static Database InitializeVaultDatabase(string filePath, ILogger logger = null)
         {
             Database db = null;
 
@@ -185,7 +186,7 @@ namespace Bam.Net.Encryption
                     {
                         logger = Log.Default;
                     }
-                    Database db = InitializeDatabase(file.FullName, logger);
+                    Database db = InitializeVaultDatabase(file.FullName, logger);
                     db.SelectStar = true;
                     _loadedVaults.Add(key, Retrieve(db, vaultName, password));
                 }
@@ -258,7 +259,7 @@ namespace Bam.Net.Encryption
 
         public static Vault Create(FileInfo file, string name, string password)
         {
-            Database db = InitializeDatabase(file.FullName, Log.Default);
+            Database db = InitializeVaultDatabase(file.FullName, Log.Default);
             return Create(db, name, password);
         }
 
@@ -277,7 +278,7 @@ namespace Bam.Net.Encryption
 
         public static Vault Create(string name, string password)
         {
-            Database db = InitializeSystemDatabase();
+            Database db = InitializeSystemVaultDatabase();
             return Create(db, name, password);
         }
 

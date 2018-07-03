@@ -9,7 +9,7 @@
         "Ssl": false,
         "Port": 9101,
         "ApplicationName": "int-heart.bamapps.net",
-        "LogType":  "Windows"
+        "LogType": "Windows"
       }
     },
     {

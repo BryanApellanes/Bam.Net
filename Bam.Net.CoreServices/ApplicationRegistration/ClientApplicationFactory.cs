@@ -21,6 +21,7 @@ namespace Bam.Net.CoreServices
             ClientIpAddress = service.ClientIpAddress;
             HostName = service.HostName;
         }
+
         public ClientApplicationFactory(ApplicationRegistrationService service, User user)
         {
             CoreApplicationRegistryService = service;
@@ -28,13 +29,21 @@ namespace Bam.Net.CoreServices
             ApplicationRegistrationRepository = service.ApplicationRegistrationRepository;
             OrganizationName = Organization.Public.Name;
         }
+
         public string ClientIpAddress { get; set; }
+
         public string HostName { get; set; }
+
         public User User { get; set; }
+
         public ProcessDescriptor ProcessDescriptor { get; set; }
+
         public string OrganizationName { get; set; }
+
         public ApplicationRegistrationRepository ApplicationRegistrationRepository { get; set; }
+
         public ApplicationRegistrationService CoreApplicationRegistryService { get; set; }
+
         public override int GetMaximumLimit()
         {
             int max = 1;
@@ -47,6 +56,7 @@ namespace Bam.Net.CoreServices
             }
             return max;
         }
+
         public override int GetThrottledValue()
         {
             Organization org = User.Organizations.Where(o => o.Name.Equals(OrganizationName)).FirstOrDefault();

@@ -14,13 +14,13 @@ namespace Bam.Net.Encryption
             CredentialKey = credentialKey;
         }
 
-        static ICredentialProvider _instance;
+        static CredentialProvider _instance;
         static object _instanceLock = new object();
-        public static ICredentialProvider Instance
+        public static CredentialProvider Instance
         {
             get
             {
-                return _instanceLock.DoubleCheckLock(ref _instance, () => new DefaultConfigurationCredentialProvider("UserName"));
+                return _instanceLock.DoubleCheckLock(ref _instance, () => new DefaultConfigurationCredentialProvider("User"));
             }
         }
 
@@ -32,6 +32,26 @@ namespace Bam.Net.Encryption
         public override string GetUserName()
         {
             return DefaultConfiguration.GetAppSetting(CredentialKey, string.Empty);
+        }
+
+        public override string GetUserNameFor(string targetIdentifier)
+        {
+            return DefaultConfiguration.GetAppSetting($"{targetIdentifier}.{CredentialKey}", string.Empty);
+        }
+
+        public override string GetPasswordFor(string targetIdentifier)
+        {
+            return DefaultConfiguration.GetAppSetting($"{targetIdentifier}.{CredentialKey}Password", string.Empty);
+        }
+
+        public override string GetUserNameFor(string machineName, string serviceName)
+        {
+            return DefaultConfiguration.GetAppSetting($"{machineName}.{serviceName}.{CredentialKey}");
+        }
+
+        public override string GetPasswordFor(string machineName, string serviceName)
+        {
+            return DefaultConfiguration.GetAppSetting($"{machineName}.{serviceName}.{CredentialKey}Password");
         }
     }
 }

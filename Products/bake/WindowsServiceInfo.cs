@@ -19,6 +19,7 @@ namespace Bam.Net.Application
         public string Host { get; set; }
         public string Name { get; set; }
         public string FileName { get; set; }
+        public bool UseCredentials { get; set; }
         public Dictionary<string, string> AppSettings { get; set; }
     }
 }

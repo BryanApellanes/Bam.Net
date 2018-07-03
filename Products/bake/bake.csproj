@@ -123,6 +123,7 @@
     <None Include="build.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="deploy-core-heart.json" />
     <None Include="deploy.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
