@@ -19,9 +19,9 @@ namespace Bam.Net.Encryption
         public VaultDatabase(FileInfo sqliteVaultDatabase) : this(SQLiteDatabase.FromFile(sqliteVaultDatabase))
         { }
 
-        public static VaultDatabase FromFile(string filePath)
+        public static VaultDatabase FromFile(string sqliteVaultDatabasePath)
         {
-            return new VaultDatabase(new FileInfo(filePath));
+            return new VaultDatabase(new FileInfo(sqliteVaultDatabasePath));
         }
 
         public static VaultDatabase FromFile(FileInfo sqliteVaultDatabase)
@@ -45,6 +45,11 @@ namespace Bam.Net.Encryption
         {
             VaultCollection vaults = Vault.LoadAll(Database);
             return vaults.Select(v => v.Name).ToArray();
+        }
+
+        public Vault GetVault(string vaultName)
+        {
+            return Vault.FirstOneWhere(v => v.Name == vaultName, Database);
         }
     }
 }

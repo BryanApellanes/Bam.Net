@@ -168,7 +168,23 @@ namespace Bam.Net
                 }
             }
 
-            // if length 3 expect -i -u:username -p:password
+            //if length 3 expect -i -u:username -p:password
+            if(args.Length == 3)
+            {
+                if (args[0].Equals("-i"))
+                {
+                    string userNameArg = args[1];                    
+                    string passwordArg = args[2];                    
+
+                    if(userNameArg.StartsWith("-u:") && passwordArg.StartsWith("-p:"))
+                    {
+                        string userName = args[1].TruncateFront("-u:".Length);
+                        string password = args[2].TruncateFront("-p:".Length);
+                        Install(serviceName, displayName, description, userName, password);
+                        return true;
+                    }
+                }
+            }
 
             return false;
         }

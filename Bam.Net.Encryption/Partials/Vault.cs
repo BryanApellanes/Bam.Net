@@ -159,12 +159,30 @@ namespace Bam.Net.Encryption
         }
 
         /// <summary>
-        /// Loads the default vault for the current application.
+        /// Loads the default vault for the current application.  The default path is
+        /// {RuntimeSettings.AppDataFolder}\{ApplicationName}.vault.sqlite.  Paths.AppData
+        /// references RuntimeSettings.AppDataFolder so the former can be used as shorthand
+        /// for the latter.  Setting Paths.AppData will effectively redirect where the vault
+        /// is loaded from.
         /// </summary>
         /// <returns></returns>
         public static Vault Load()
         {
             return Load(new VaultInfo());
+        }
+
+        /// <summary>
+        /// Loads the specified vault name.  The default path is
+        /// {RuntimeSettings.AppDataFolder}\{vaultName}.vault.sqlite.  Paths.AppData
+        /// references RuntimeSettings.AppDataFolder so the former can be used as shorthand
+        /// for the latter.  Setting Paths.AppData will effectively redirect where the vault
+        /// is loaded from.
+        /// </summary>
+        /// <param name="vaultName">Name of the vault.</param>
+        /// <returns></returns>
+        public static Vault Load(string vaultName)
+        {
+            return Load(new VaultInfo(vaultName));
         }
 
         public static Vault Load(VaultInfo vaultInfo)
