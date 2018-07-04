@@ -1300,7 +1300,7 @@ namespace Bam.Net.Automation
         private static string GetInstallSwitch(string machineName, string serviceName)
         {
             CredentialInfo credentialInfo = CredentialManager.Local.GetCredentials(machineName, serviceName);
-            if (credentialInfo.IsNull)
+            if (credentialInfo.IsNull) // if machine specific credentials aren't found, try just for the service
             {
                 credentialInfo = CredentialManager.Local.GetCredentials(serviceName);
             }
@@ -1349,7 +1349,7 @@ namespace Bam.Net.Automation
             OutLineFormat("Done copying bamd to remote: {0}", ConsoleColor.Cyan, host);
 
             string installSwitch = GetInstallSwitch(host, "bamd");
-            CallServiceExecutable(host, "bamd", "Install", bamdLocalPathNotation, "-i");
+            CallServiceExecutable(host, "bamd", "Install", bamdLocalPathNotation, installSwitch);
 
             //      write DaemonProcessInfos using above
             string adminShareDaemonConfig = $"{typeof(DaemonProcess).Name.Pluralize()}.json".GetAdminSharePath(host, Paths.Conf);
