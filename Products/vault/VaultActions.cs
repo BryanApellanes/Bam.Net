@@ -54,7 +54,7 @@ namespace vault
         public void ImportCredentials()
         {
             CredentialManager mgr = CredentialManager.Local;
-            string jsonFile = GetArgument("importCredentials");
+            string jsonFile = GetArgument("importCredentials", "Please enter the path to the credential json file to import");
             CredentialInfo[] infos = jsonFile.FromJsonFile<CredentialInfo[]>();
             foreach(CredentialInfo info in infos)
             {
